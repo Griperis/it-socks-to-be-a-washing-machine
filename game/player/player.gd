@@ -56,6 +56,9 @@ var _input_blocked := false
 ## True while this player has the mouse captured (L03): the look turns only then. Kept here as well as
 ## in Input.mouse_mode, which a headless run does not hold.
 var _captured := false
+## True from the click that captured the mouse to the next physics frame: that frame's presses are
+## the click's own and do nothing (R01).
+var _swallow_press := false
 ## True while crouched (C01).
 var crouching := false
 ## The lying Sock the crosshair rests on, or -1; the one drawn outlined.
@@ -134,8 +137,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if _input_blocked:
 		return
 	if event is InputEventMouseButton and event.is_pressed() and not _captured:
-		_captured = true
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		# L03, R01: the click that captures does nothing else; the wheel never captures.
+		if not _is_wheel(event as InputEventMouseButton):
+			capture_mouse()
+			_swallow_press = true
 	elif event.is_action_pressed(LET_MOUSE_GO):
 		_captured = false
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -143,10 +148,21 @@ func _unhandled_input(event: InputEvent) -> void:
 		var motion := event as InputEventMouseMotion
 		var step := tuning.look_sensitivity * tuning.look_scale * zoom_slow()
 		_turn(-motion.relative.x * step, -motion.relative.y * step * (-1.0 if tuning.invert_y else 1.0))
-	if event.is_action_pressed(HANDS_NEXT) or event.is_action_pressed(HANDS_PREV):
+	if _captured and (event.is_action_pressed(HANDS_NEXT) or event.is_action_pressed(HANDS_PREV)):
 		var h := hands()
 		if h != null and h.items_of(player_id()).size() > 1:
 			h.cycle(player_id(), 1 if event.is_action_pressed(HANDS_NEXT) else -1)
+
+
+## This player takes the mouse (a click does it; the pause menu and tests too): from now on the look
+## turns and the buttons act.
+func capture_mouse() -> void:
+	_captured = true
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+static func _is_wheel(event: InputEventMouseButton) -> bool:
+	return event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_LEFT, MOUSE_BUTTON_WHEEL_RIGHT]
 
 
 ## Turns the body sideways by `yaw` and tilts the head by `pitch` (radians), the tilt kept to the limit.
@@ -229,7 +245,7 @@ func use_aimed() -> Part:
 
 ## H21: the zoom eases the view in while held and back out when let go.
 func _update_zoom(delta: float) -> void:
-	var want := 1.0 if not _input_blocked and Input.is_action_pressed(ZOOM) else 0.0
+	var want := 1.0 if _acting() and Input.is_action_pressed(ZOOM) else 0.0
 	_zoom = move_toward(_zoom, want, delta / maxf(hands_tuning.zoom_time, 0.001))
 	_camera.fov = lerpf(tuning.fov, hands_tuning.zoom_fov, smoothstep(0.0, 1.0, _zoom))
 
@@ -247,21 +263,24 @@ func _update_hands(delta: float) -> void:
 	if h == null:
 		return
 	var me := player_id()
-	_aim.force_raycast_update()
-	aimed_sock = h.mess.sock_at(_aim.get_collider_rid()) if h.mess != null else -1
+	aimed_sock = aim_found(h)["sock"]
 	_outline(h.mess, aimed_sock)
 	var holding := h.active_of(me) >= 0
 	drop_refused = holding and drop_refusal(h) != ""
 	_crosshair.modulate = CROSSHAIR_NO if drop_refused else CROSSHAIR_OK
 	_held_view.me = me
-	_held_view.turning = not _input_blocked and Input.is_action_pressed(TURN)
+	_held_view.turning = _acting() and Input.is_action_pressed(TURN)
 	var design := h.mess.design_of(h.active_of(me)) if holding and h.mess != null else null
 	_size.visible = design != null
 	_size.text = design.size_letter() if design != null else ""
-	if _input_blocked:
-		# A menu opening mid-charge drops the charge without a throw.
+	if not _acting():
+		# A menu opening or the mouse let go mid-charge drops the charge without a throw.
 		_drop_down_at = -1.0
 		_set_charge(false)
+		_swallow_press = false
+		return
+	if _swallow_press:
+		_swallow_press = false
 		return
 	if Input.is_action_just_pressed(PICK):
 		if aimed_sock >= 0:
@@ -283,6 +302,12 @@ func _update_hands(delta: float) -> void:
 			_throw(h)
 		elif tapped:
 			_drop(h)
+
+
+## Whether the buttons of the Hands, the zoom and the turn act: not under a menu, and only with the
+## mouse captured (L03, R01).
+func _acting() -> bool:
+	return _captured and not _input_blocked
 
 
 ## T01: starts a charge (the ring shows, empty) or ends one (the ring hides).
@@ -345,9 +370,20 @@ func drop_refusal(h: Hands) -> String:
 	return h.drop_refusal(player_id(), spot["point"], spot["normal"])
 
 
+## The Sock or Pair under the crosshair, lying or moving (R02, R03): AimFinder.find()'s answer.
+func aim_found(h: Hands) -> Dictionary:
+	return AimFinder.find(self, h.mess, _head.global_position, aim_dir(), hands_tuning.reach, [get_rid()])
+
+
 ## Where the crosshair meets a top within reach, seen through a gap no narrower than the drop gap:
-## {"point", "normal"} in the level, or {} when it meets nothing.
+## {"point", "normal"} in the level, or {} when it meets nothing. A lying Sock or Pair under the
+## crosshair takes the drop anywhere on it (R05).
 func drop_spot() -> Dictionary:
+	var h := hands()
+	if h != null and h.mess != null:
+		var found := aim_found(h)
+		if found["sock"] >= 0 and found["lying"]:
+			return {"point": found["point"], "normal": Vector3.UP}
 	return PhysicsQueries.ball_hit(self, _head.global_position, -_head.global_basis.z * hands_tuning.reach,
 			hands_tuning.drop_gap, Mess.AIM_MASK, [get_rid()])
 

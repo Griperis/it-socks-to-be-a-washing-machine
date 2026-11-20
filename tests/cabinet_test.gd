@@ -63,6 +63,10 @@ func cases() -> Array[Dictionary]:
 				"title": "C14: the Cabinet is built from the model's parts (base, 3 segments, top, a drawer each with 25 slots, a handle within 4 cm) and stands against the wall facing out"},
 		{"name": "t05_thrown_shelves", "method": "case_t05", "world": false,
 				"title": "T05: a thrown Pair touching its own Cabinet shelves itself into the lowest drawer with room, which pops open, pays the thrower, and nothing lies on the floor"},
+		{"name": "r06_top_no_shelve", "method": "case_r06", "world": false,
+				"title": "R06: a thrown Pair shelves only on touching a drawer front; landing on the Cabinet's top does not shelve it"},
+		{"name": "r07_frame_click", "method": "case_r07", "world": false,
+				"title": "R07: with Pairs held, a click or the use button on the Cabinet's frame shelves nothing; a drawer's does"},
 		{"name": "t06_bounces", "method": "case_t06", "world": false,
 				"title": "T06: a thrown Pair touching another Collection's Cabinet, or a locked one, bounces off and lies as a sock ball, with no message"},
 		{"name": "t07_loose", "method": "case_t07", "world": false,
@@ -340,6 +344,37 @@ func case_t07() -> void:
 	_check(_cabinet.shelved().is_empty(), "nothing is shelved")
 
 
+func case_r06() -> void:
+	await _build()
+	await _pair(S0, S0_MATE)
+	var top := (_cabinet.get_parent() as Node3D).to_global(Vector3(0.0, 1.05, 0.0))
+	_player.global_position = top + Vector3(0.0, 0.8, 0.0)
+	_player.velocity = Vector3.ZERO
+	_player.reset_physics_interpolation()
+	_player.rotation = Vector3.ZERO
+	(_player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-85.0)
+	await _physics_ticks(1)
+	_hands.throw(1, _player.aim_dir(), 0.0)
+	await _until(func() -> bool: return _mess.state_of(S0) == Mess.State.FLYING and _mess.flight_of(S0) != null, "the Pair to fly")
+	await _until(func() -> bool: return _mess.state_of(S0) != Mess.State.FLYING, "the thrown Pair to land or shelve", 600)
+	_check(_mess.state_of(S0) != Mess.State.SHELVED and _cabinet.shelved().is_empty(), "landing on the top shelves nothing (state %d)" % _mess.state_of(S0))
+
+
+func case_r07() -> void:
+	await _build()
+	await _pair(S0, S0_MATE)
+	_stand(BY_DRAWERS)
+	var frame := (_cabinet.get_parent() as Node3D).to_global(Vector3(0.3, 1.05, 0.0))
+	await _aim(_player, frame)
+	await _press(&"pick")
+	await _press(&"interact")
+	await _physics_ticks(5)
+	_check(_cabinet.shelved().is_empty() and _hands.items_of(1) == PackedInt32Array([S0]), "a click and the use button on the frame shelve nothing")
+	await _aim(_player, _drawer_front(0))
+	await _press(&"interact")
+	await _until(func() -> bool: return _cabinet.contents(0) == PackedInt32Array([S0]), "the use button on a drawer front to shelve")
+
+
 # --- Doors and openables -------------------------------------------------------------------------
 
 func case_d02() -> void:
@@ -479,6 +514,7 @@ func _build() -> void:
 	_player = (load(PLAYER) as PackedScene).instantiate() as Player
 	_player.position = _station.position + BY_SOCKS
 	_level.add_child(_player)
+	_player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 	_parts = Parts.new()
 	_parts.name = "Parts"
 	_level.add_child(_parts)

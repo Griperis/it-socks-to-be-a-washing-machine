@@ -132,13 +132,14 @@ func accepts() -> Dictionary[StringName, Dictionary]:
 
 ## Why player `by` may not pick Sock `sock` now, or "" when they may.
 func pick_refusal(by: int, sock: int) -> String:
-	if mess == null or sock < 0 or sock >= mess.count() or mess.state_of(sock) != Mess.State.LYING:
+	if mess == null or sock < 0 or sock >= mess.count() \
+			or not (mess.state_of(sock) == Mess.State.LYING or mess.is_moving(sock)):
 		return GONE
 	var t := tuning_of(by)
 	var since := clock - float(grabbed_at.get(by, -INF))
 	if since >= 0.0 and since < t.grab_interval:
 		return SOON
-	if not parts.near_point(by, mess.pose_of(sock).origin, t.reach + t.reach_slack):
+	if not parts.near_point(by, mess.where_of(sock), t.reach + t.reach_slack):
 		return FAR
 	if items_of(by).size() >= t.capacity and mate_held(by, sock) < 0:
 		return FULL
@@ -166,6 +167,8 @@ func drop_refusal(by: int, point: Vector3, normal: Vector3) -> String:
 		return NO_SPOT
 	if not parts.near_point(by, point, t.reach + t.reach_slack):
 		return FAR
+	if _on_lying(point):
+		return ""
 	if normal.normalized().y < cos(deg_to_rad(t.drop_slope)):
 		return NO_SPOT
 	if not _top_at(point, t.drop_slope):
@@ -185,10 +188,13 @@ func decide(cmd: Command) -> Dictionary:
 			var stamp := {"grabbed_at": _with(grabbed_at, cmd.by, clock)}
 			var lead := mate_held(cmd.by, sock)
 			if lead >= 0:
-				var held_items := items_of(cmd.by)
+				# R04: the Pair goes to the end of the Hands and is the active item.
+				var held_items := items_of(cmd.by).duplicate()
+				held_items.remove_at(held_items.find(lead))
+				held_items.append(lead)
 				return {"ok": true, "paired": lead, "changes": {
 					mess.id: mess.paired_patch(lead, sock),
-					id: _patch(cmd.by, held_items, held_items.find(lead), stamp)}}
+					id: _patch(cmd.by, held_items, held_items.size() - 1, stamp)}}
 			var items := items_of(cmd.by).duplicate()
 			items.append(sock)
 			return {"ok": true, "changes": {
@@ -284,6 +290,19 @@ func _let_go(by: int, point: Vector3) -> Transform3D:
 			var to := point - (at as Vector3)
 			yaw = atan2(-to.x, -to.z)
 	return Transform3D(Basis(Vector3.UP, yaw), point + Vector3.UP * t.drop_lift)
+
+
+## Whether `point` is on a lying Sock or Pair (within SPOT_PROBE of its body): a drop there is allowed
+## anywhere on it, with no slope test (R05, the old rig_drop.gd).
+func _on_lying(point: Vector3) -> bool:
+	if mess == null or not is_inside_tree():
+		return false
+	var probe := SphereShape3D.new()
+	probe.radius = SPOT_PROBE
+	for rid in PhysicsQueries.overlap_rids(self, probe, Transform3D(Basis.IDENTITY, point), Mess.LAYER_LYING, 8):
+		if mess.sock_at(rid) >= 0:
+			return true
+	return false
 
 
 ## Whether a top a drop rests on is at `point`: straight down from just over it, the first thing
