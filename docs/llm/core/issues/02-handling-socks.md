@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-info
+status: ready-for-agent
 kind: build
 area: core
 feature: core
@@ -12,9 +12,9 @@ notes: []
 terms: []
 ---
 
-# Handling Socks: pick, hold, drop, Throw
+# Handling Socks: pick, hold, drop
 
-Milestone M0.5. A station with loose Socks: the Hands, picking a Sock the crosshair reaches, carry capacity, dropping, the Throw. Socks at this station are few and real entities; the Mess as one bulk system comes in M3 (Q2168), but the Sock's look and its state fields are the real ones.
+Milestone M0.5. A station with loose Socks: the Hands, picking a Sock the crosshair reaches, carry capacity, dropping. The Throw is core/08 (Q2250). Socks at this station are few and real entities; the Mess as one bulk system comes in M3 (Q2168), but the Sock's look and its state fields are the real ones.
 
 Port by the `migration-port` skill: behaviour list approved, design and grilling, a zoo station with the real
 entity, tests from the list, walkthrough. `needs-info` until the designer has approved the behaviour list.
@@ -65,35 +65,22 @@ them. M0.5 is one player (a Host of one); the co-op lines are listed at the end 
 - H11 When dropped on a Sock, beside it, or half over a table's edge, then it settles or falls; it never floats or
   sinks into anything.
 
-**Throw**
-- T01 When you hold the right button past 0.25 s with something in the Hands, then a ring fills round the crosshair
-  (full in 1.2 s) and releasing throws the active item along the aim with a gravity arc; no cancel.
-- T02 When a charge is released under 15%, then it is a short lob (3.5 m/s forward, 2 m/s up), not a drop.
-- T03 When thrown with more charge, then it flies faster: 3 m/s at the tap to 5 m/s at full charge. The free Throw
-  is weak (Long Arm and Quick Charge: M4).
-- T04 When you press Q, then nothing happens.
-- T07 When a loose Sock is thrown at a Cabinet, then it bounces off and lies loose again, never shelved. (With
-  core/04's Cabinet.)
-- T08 When a Sock is thrown, then it never ends inside a wall or furniture and always ends up lying loose.
-- T11 When a Throw faster than 1.5 m/s hits lying Socks, then it wakes the Sock hit and at most 8 touching it; a
-  slow drop wakes none.
-- T13 When a thrown Sock comes to rest, then it lies where its body stopped; a flight that never settles is put
-  down after 6 s.
-- T14 When a thrown Sock leaves the playable space or goes above the ceiling, then it comes down at once and lies
-  at a set return spot (in the old game, in front of the washer; in the zoo, the station's).
-
 **Invariants** (from the survey's part 4)
 - I.1 No Sock is lost or doubled: each is in exactly one place (lying, in the Hands, in flight), through every
   pick, drop and Throw.
 - I.3 An item is in at most one player's Hands.
 - I.6 Every resting Sock lies on what is drawn; none in a wall, floor or furniture; none aimable inside a shut
   container.
+- T13 When a dropped Sock comes to rest, then it lies where its body stopped; a fall that never settles is put down
+  after 6 s.
 - I.7 A drop is accepted only where it would rest, within reach; otherwise refused and the item stays.
 - I.8 Nothing flies through walls; every flight ends exactly once.
 - Every Hands change is asked as a Command and decided by the Host of one (Q2212); the held items are decided
   state, a Sock in flight is the Host's physics body (Q2221, Q2222).
 
 **Not in this ticket**
+- The Throw (T01-T04, T07, T08, T11, T14; charge, ring, lob, speeds): core/08 (Q2250). A drop's falling body
+  and its 6 s settle limit (T13) are here, because a drop needs them.
 - Pairs (H04's mate case, H12 picking up a floor Pair, a Pair's drop and Throw): core/03.
 - Shelving by Throw (T05, T06): core/04.
 - Co-op, M0.6: hand-off and its refusals (H13-H15), no stealing (H16), the race (H17), Guest prediction (H18,
@@ -102,16 +89,102 @@ them. M0.5 is one player (a Host of one); the co-op lines are listed at the end 
 - Upgrades, M4: Quick Grab, Big Hands, Long Arm, Quick Charge, Sock Smarts, Sock Sense (base values above stay).
 - New Game, M4: the Guide card in the Hands (H05).
 - Other features, M5: things that take the whole Hands (H19), the Upgrade station's top (H20).
-- Sounds and rumble (T16's sounds): with the first audio ticket; the ring itself is here.
+- Sounds and rumble (T16's sounds): with the first audio ticket; the ring is core/08.
 - The Mess as one bulk system (laying, Heaps, the wake budget of 512): M3 (Q2168). Here a handful of real Socks.
 
 ## Design
-<Step 2.>
+The co-op structure (`docs/migration/coop-structure-for-the-port.md`, sections 1, 4, 5, 6) already decides the
+buckets: loose Socks are the **Mess**, one bulk system that is one Part; the **Hands** are per-player decided state;
+a Sock in flight is a **Host-owned body**. This design builds the smallest true version of each, so M3 grows them
+instead of replacing them. Old code: about 1,950 lines of Hands, 2,260 of flights, 4,400 of Mess; here about 600
+in all, because the bulk machinery (MultiMesh per room, the settle stream, the wake budget, the 1,726-line layout
+bake) waits for M3.
+
+**What each piece of state is**
+| State | Kind | Where |
+|---|---|---|
+| Each loose Sock: id, Design, state (lying, held, flying), pose | the Mess, one Part | `Mess` (records in packed arrays; the "big piece under one id" `parts.gd` already allows) |
+| Each player's held items (ids, in order) and the active one | decided state | `Hands`, one Part for all players, keyed by player id (1 alone) |
+| A Sock flying after a drop or Throw | Host-owned body | a `Flight` RigidBody3D added by a `MultiplayerSpawner`, removed when it rests; in M0.6 one synchronizer per body (Q2221) |
+| The aim, the outline, the ring, zoom, turn, the held layout | looks of this machine | the player and a `HeldView` |
+
+**Commands** (each a verb in its Part's `accepts()`, with args, rate and reach, as if a Guest sent it):
+- `pick(sock)` to `Hands`: refused "far" (over reach), "gone" (not lying), "full", "soon" (grab interval).
+  Granted, one answer changes two Parts: the Sock's record becomes held (Mess) and its id joins the Hands.
+- `cycle(step)` to `Hands`: the active item steps and wraps.
+- `drop(point, normal)` to `Hands` (core/08 adds `throw(dir, charge)` the same way): refused "far", "nothing", "no_spot" (the Host checks the
+  spot again). Granted: the id leaves the Hands, the Sock becomes flying, and the Host spawns its `Flight`. When
+  the body rests, the Host writes the Sock lying at that pose (a Host-only `rest` change to Mess).
+- The crosshair's white or red, "Can't drop there" and "Hands full" are shown from the same checks the Host makes
+  (one function, two callers), so the player sees the refusal before asking.
+
+**The Sock's look and data**
+- `SockLooks` scene: graybox now is the old game's `assets/sock/crew.glb`, copied unported and tinted by its
+  Design's colour, scaled by Size (Q2249); the ported models replace it in M1. Its contract (`looks_contract.json`) names `Body`, `Outline` and an AnimationPlayer with `held` and
+  `lying`; the outline and states play there, not in code (Q2213).
+- The Designs: the old `data/designs.json` (605 Designs: id, name, colour, pattern, size, rarity, collection)
+  converted once into a typed `DesignCatalogue` Resource of `SockDesign` entries, edited in the inspector (Q2248). A Sock's record holds the Design id only.
+- Lying Socks are drawn one MeshInstance each in M0.5 (a handful); M3 switches to MultiMesh.
+
+**The station** `game/zoo/stations/handling.tscn`: `SockSpot` markers (a Node3D with a Design id, placed in the
+editor) that `Mess` turns into lying Socks when the level binds, then hides; a table, a shelf, a wall, a gap
+narrower than 8 cm, the zoo's example cupboard (M15, H09). The zoo's player instance
+overrides capacity to 3 (Q2244).
+
+**Code sketch**
+```gdscript
+# game/mess/mess.gd: one Part for every loose Sock. M3 adds the MultiMesh, settle stream and bulk snapshot.
+class_name Mess extends Part
+enum State { LYING, HELD, FLYING }
+@export_group("State")
+@export var designs := PackedInt32Array()     # by Sock id
+@export var states := PackedByteArray()
+@export var poses := PackedFloat32Array()     # 12 floats a Sock (a Transform3D)
+
+func sock_at(collider: Object) -> int: ...    # the Sock a ray hit, or -1; only LYING Socks have colliders
+
+# game/hands/hands.gd: every player's Hands, keyed by player id.
+class_name Hands extends Part
+@export_group("State")
+@export var held := {}                         # player id -> PackedInt32Array of Sock ids, newest last
+@export var active := {}                       # player id -> index
+
+func decide(cmd: Command) -> Dictionary:
+	match cmd.kind:
+		&"pick":
+			var why := pick_refusal(cmd.by, cmd.args.sock)   # the same check the crosshair shows
+			if why != "":
+				return refuse(why)
+			return {"ok": true, "changes": {
+				mess.id: mess.held_patch(cmd.args.sock),
+				id: held_patch_add(cmd.by, cmd.args.sock)}}
+		...
+```
+
+**Numbers** (`HandsTuning`, typed Resource, each `# placeholder:`): reach 2.5 m, grab interval 0.35 s, capacity 1,
+tap 0.25 s, drop slope 25 degrees, drop gap 0.08 m, drop lift 0.03 m, flick 0.1 s, settle limit 6 s, zoom 50 degrees in
+0.15 s, turn 2 s a turn; the held layout from the old `held.json` (active at (0.2, -0.13, -0.55) scale 0.6,
+tucked at (-0.3, -0.3, -0.55) stepping 0.075, scale 0.3), compared with `held-sock.png` (Q2246).
+
+**Input**: `pick` (left click, pad A), `drop_throw` (right button, pad B), `zoom` (G), `turn` (R), `hands_next` /
+`hands_prev` (wheel, RB / LB); `interact` moves to pad Y (Q2245). The kit's hands code in `player.gd` (the crate
+carry) goes: the player asks `Hands`.
+
+**Tests**: one case per behaviour line, named after it, plus the invariants (a count of Socks in every place after
+each step). The real-path case loads `handling.tscn` with the player and, with real input actions, picks a Sock,
+drops it on the table, picks it again and drops it into the open cupboard.
+
+**Shared**: `player.gd` (core/01's body stays as it is; this adds the aim and the input). `Mess` and `Hands` are
+used by core/03 (Pairs join the Mess and the Hands) and core/04 (shelving).
 
 ## Acceptance
 - Every change to the Hands goes through a Command answered by the Host of one (Q2212).
 - A Sock's look comes from a Looks scene (graybox now); held, flying and resting are states, not code animation where an AnimationPlayer can do it (Q2213).
-- Tests follow the approved behaviour list.
+- Tests follow the approved behaviour list, one case per line, plus a count of every Sock's place after each step
+  (I.1).
+- One real-path case: `game/zoo/stations/handling.tscn` with the player, real input actions: pick a Sock, drop it
+  on the table, pick it again, drop it into the open cupboard. `kit/tools/run.sh` prints PASS.
+- `kit/tools/asset_lint.py` passes for the Sock's Looks and its contract.
 
 ## Answers
 - Zoom (G held: the view narrows 75 to 50 degrees over 0.15 s, eased; mouse look slows with it) is ported here, with the held Sock (Q2234, 2026-11-20).
@@ -122,7 +195,14 @@ them. M0.5 is one player (a Host of one); the co-op lines are listed at the end 
   LB/RB the wheel (Q2245, 2026-11-20).
 - The held items keep the old layout (active big right of centre, others tucked small left, G brings the active
   one close), taken from the old numbers and compared with the baseline still `held-sock.png` (Q2246, 2026-11-20).
+- The design is approved: loose Socks live in a small `Mess` Part from now on (records, one mesh each; M3 adds
+  the bulk parts), Socks placed in the editor as `SockSpot` markers (Q2247, 2026-11-20).
+- The Designs become a typed `DesignCatalogue` Resource (Q2248, 2026-11-20).
+- The graybox Sock is the old `crew.glb` tinted by Design colour, unported, until M1 (Q2249, 2026-11-20).
+- The Throw is split off into core/08, built after this ticket (Q2250, 2026-11-20).
 
 ## Open follow-ups
 
 ## Built log
+- 2026-11-20 (lead): handed to a ticket agent on Opus: the Mess and Hands Parts are the core data model and a
+  Command that changes two Parts (the Models value: opus for hard netcode).

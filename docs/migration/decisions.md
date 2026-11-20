@@ -1,4 +1,4 @@
-Next free Q number: Q2247 (update this line whenever a round of questions is asked)
+Next free Q number: Q2251 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -151,3 +151,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2244: carry capacity is a player tuning field (1); the zoo's player instance overrides it in the editor.
 - Q2245: pad buttons as the old game: A pick, B drop/Throw, Y interact, X jump, LB/RB the wheel.
 - Q2246: the held items keep the old layout, compared with the baseline still `held-sock.png`.
+- Q2247: loose Socks live in a small `Mess` Part from M0.5 (records; one mesh each); M3 adds the bulk parts. Socks are placed as `SockSpot` markers.
+- Q2248: the 605 Designs become a typed `DesignCatalogue` Resource.
+- Q2249: the graybox Sock is the old `crew.glb`, tinted, unported, until M1.
+- Q2250: the Throw is split into core/08, after core/02.
