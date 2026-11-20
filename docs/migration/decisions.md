@@ -1,4 +1,4 @@
-Next free Q number: Q2286 (update this line whenever a round of questions is asked)
+Next free Q number: Q2289 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -198,3 +198,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2283: the Cabinet's shelving flight and the old drawer slide ease (out both ways) go into core/09.
 - Q2284: the zoo has one Mess and one Hands for all stations (core/10).
 - Q2285: the Cabinet's refusal order is the old game's: "Wrong Cabinet" before "Cabinet locked".
+- Q2286: core/09's cloth bends with the Sock's speed, as the spring-bone node does by itself; the old bend-on-a-change-of-speed waits in the polish backlog.
+- Q2287: core/09's cloth uses the node's own ground plane (may crumple at the contact); the old straightening waits in the polish backlog.
+- Q2288: core/09's design is approved; it builds after core/10.

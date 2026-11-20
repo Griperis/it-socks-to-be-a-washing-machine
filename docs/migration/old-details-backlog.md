@@ -31,6 +31,10 @@ A ticket that builds a line moves it out of here.
   needs core/09's cloth.
 - The drop flick and a Throw's catch-up from the hand eased in and out, not linear (`release.json` flick,
   catch_up; `hands/thrown_item.gd:180-250`).
+- The cloth bends only on a change of speed (start, stop, jump, turn), hanging still at a steady walk: the old
+  "gravity minus acceleration" (`world/sock_actor.gd`); core/09 uses the spring-bone node's bend with speed (Q2286).
+- A cloth Sock near the ground straightens its whole bend so no part dips below (`world/sock_actor.gd` `_room`, up to
+  8 rings of 12 mesh points); core/09 uses the node's per-joint plane, which may crumple (Q2287).
 
 ## Decided elsewhere (for the record)
 - The Cabinet's "+N" Coins pop and flight to the bank, a filled drawer paying the team's Drawers, and new Rows

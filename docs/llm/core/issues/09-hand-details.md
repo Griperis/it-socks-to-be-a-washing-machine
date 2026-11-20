@@ -1,13 +1,13 @@
 ---
 type: ticket
-status: needs-info
+status: ready-for-agent
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-20
 done:
-blocked_by: ["[[04-one-cabinet]]"]
+blocked_by: ["[[04-one-cabinet]]", "[[10-one-mess-for-the-zoo]]"]
 notes: []
 terms: []
 ---
@@ -64,18 +64,18 @@ Approved (Q2276, 2026-11-20). Numbers are the old game's.
 Draft for the designer (facts: `docs/research/sock-cloth-spring-bones.md`, tried on 4.7.2). Everything here is looks of
 this machine: no Part, Command or `PROTOCOL` change. Numbers go in typed Resources, the old ones marked as ported.
 
-**Cloth (D01-D07): Godot's `SpringBoneSimulator3D` plus a small feed.** In each Sock Looks, a `Cloth` node
-(`SpringBoneSimulator3D`) under the `Skeleton3D`: chain `Leg` to `Toe`, `extend_end_bone`, `drag` 1 (no overshoot),
-`stiffness` and `gravity` tuned to the old droop and the 0.06 s lag (bend size and lag move together in the node:
-tuned by eye against the old game, marked placeholder until the designer's go on the still). Its centre is the
-skeleton, so the node ignores plain movement; a script on the Looks, `sock_cloth.gd` (one class, about 60 lines),
-each physics tick:
-- measures the Looks' acceleration and turn and feeds `external_force` (gravity minus acceleration, the old rule: a
-  steady walk bends nothing, a start, stop, jump or turn does; D02, D03; see Q2286);
+**Cloth (D01-D07): Godot's `SpringBoneSimulator3D` doing what it does by itself** (Q2286, Q2287). In each Sock Looks,
+a `Cloth` node (`SpringBoneSimulator3D`) under the `Skeleton3D`: chain `Leg` to `Toe`, `extend_end_bone`, `drag` 1
+(no overshoot), `stiffness` and `gravity` tuned by eye to the old droop and lag (placeholders until the designer's go
+on the still). Its centre stays the world, so the Sock bends with its own speed and turn: it stays bent while you
+walk and swings as you go (D02, D03 as the node does them; the old "bend only on a change of speed" is in the polish
+backlog). A small script on the Looks, `sock_cloth.gd` (one class), each physics tick:
 - ramps `influence` to 0 under `flat_speed` 0.6 m/s, so a Sock lies in the flat rest pose the Mess draws (D04);
-- puts a `SpringBoneCollisionPlane3D` at the surface under the Sock (one ray down) for D05 (see Q2287);
-- is switched on (`active`) for held Socks and the 4 nearest flying Socks to the camera, a ranking the same
-  script runs once a tick over the `sock_cloth` group (D07); off, the Sock is rigid and its tick costs nothing.
+- puts a `SpringBoneCollisionPlane3D` at the surface under the Sock (one ray down); the joints slide and may crumple
+  at the contact, a small poke between joints allowed (D05 as the node does it; the old straightening is in the
+  polish backlog);
+- is switched on (`active`) for held Socks and the 4 nearest flying Socks to the camera, a ranking run once a tick
+  over the `sock_cloth` group (D07); off, the Sock is rigid and costs nothing.
 The known one-tick jump when a Sock's cloth is switched on after moving is hidden by turning it on at `influence` 0
 and ramping up. A Pair's ball has no `Cloth` (D06). `looks_contract.json` gains `Cloth`.
 
@@ -112,6 +112,9 @@ ease-out; `_show` plays `open` or `shut` from the current pose, so a reverse mid
 
 - The behaviour list is approved as written (Q2276, 2026-11-20).
 - D11 and D12 (the shelving flight, the drawer slide ease) are added (Q2283, 2026-11-20).
+- The cloth bends with the Sock's speed, as Godot's node does by itself (Q2286, 2026-11-20).
+- At the ground the node's own collision: the Sock may slide and crumple at the contact (Q2287, 2026-11-20).
+- The design is approved (Q2288, 2026-11-20).
 
 ## Open follow-ups
 - [later] The designer says what else looks different about the Throw after seeing the cloth (Q2275).
