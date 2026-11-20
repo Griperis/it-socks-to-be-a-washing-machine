@@ -1,0 +1,16 @@
+# The pairing moment (core/03, P05, Q2255): a Sock held, its mate picked at frame 90, then the fly,
+# line-up, fold, roll, the ball's pop with the sparkles and ring, frame by frame (60 a second).
+f89  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=89
+f93  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=93
+f96  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=96
+f99  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=99
+f102  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=102
+f105  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=105
+f108  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=108
+f111  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=111
+f114  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=114
+f117  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=117
+f120  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=120
+f124  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=124
+f130  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=130
+f140  --size=1280x720 --do='60:pair_first;90:pair_mate' --shots=140

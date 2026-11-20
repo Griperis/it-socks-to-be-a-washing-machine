@@ -5,12 +5,19 @@
 ## the Host alone writes a Sock lying again when its body comes to rest or leaves the level's
 ## bounds (`rest`), and wakes lying Socks a fast body hits (`wake`), both Host-only Commands.
 ##
+## A Pair (core/03) is two Sock records: its lead (the Sock held first) is where the Pair is, LYING,
+## HELD or FLYING like any Sock, drawn as one sock ball; the other is IN_PAIR, never drawn, aimed or
+## simulated on its own. `mates` names each one's mate. So every Design keeps exactly two records
+## (I.1). Pairs form only in the Hands' pick answer (paired_patch()) and are never split. When a
+## pick takes a lying Sock or Pair away, the Host lets the lying Pairs that rested on it fall (P08,
+## `fall`, a Host-only Command).
+##
 ## M0.5 draws a lying Sock as one body each (a handful); M3 adds the MultiMesh, the settle stream,
 ## the wake budget and the bulk snapshot, without changing the records.
 class_name Mess
 extends Part
 
-enum State { LYING, HELD, FLYING }
+enum State { LYING, HELD, FLYING, IN_PAIR }
 
 ## The physics layers (bits): the house and its furniture, a falling Sock, a lying Sock. The
 ## player's body collides with the house only, so it walks over Socks; the crosshair sees the house
@@ -28,6 +35,8 @@ const TOUCH_MARGIN := 0.01
 
 const LYING_SCENE := preload("res://game/sock/lying_sock.tscn")
 const FLIGHT_SCENE := preload("res://game/sock/flight.tscn")
+const LYING_BALL_SCENE := preload("res://game/sock/lying_ball.tscn")
+const BALL_FLIGHT_SCENE := preload("res://game/sock/ball_flight.tscn")
 
 ## The Designs a Sock's record names.
 @export var catalogue: DesignCatalogue
@@ -55,6 +64,8 @@ const FLIGHT_SCENE := preload("res://game/sock/flight.tscn")
 ## The launch of each thrown Sock still in the air: {Sock id: {"vel": Vector3, "spin": Vector3,
 ## "by": the thrower's player id}}. A dropped or woken Sock has none.
 @export var throws := {}
+## Each Sock's mate once paired, else -1, by Sock id (both ways: a Pair's lead and its IN_PAIR Sock).
+@export var mates := PackedInt32Array()
 @export_group("")
 
 ## The lying Sock bodies drawn now, and the falling ones (the Host's), by Sock id.
@@ -67,6 +78,11 @@ var _airborne: Dictionary[int, float] = {}
 ## lying Socks a fast body hit in the step, woken at the next.
 var _speeds: Dictionary[int, float] = {}
 var _hit: Dictionary[int, bool] = {}
+## The Host: where lying things were taken away by a pick (their shape and its place, grown by the
+## wake reach), looked at at the next physics step for Pairs that rested on them (P08).
+var _taken: Array[Dictionary] = []
+## The Host: the falling Pairs that drag as Pairs do (P07).
+var _damped: Dictionary[int, bool] = {}
 
 
 ## Before the level binds: the SockSpots become the starting records (as if placed in the
@@ -80,6 +96,7 @@ func _ready() -> void:
 			continue
 		designs.append(spot.design)
 		states.append(State.LYING)
+		mates.append(-1)
 		poses.append_array(pack(spot.global_transform))
 		spot.visible = false
 
@@ -99,7 +116,22 @@ func design_of(sock: int) -> SockDesign:
 	return catalogue.design(designs[sock])
 
 
-## Where the Sock lies, or where it was let go, in the level.
+## The Sock's mate (the other Sock of its Pair), or -1 while it is loose.
+func mate_of(sock: int) -> int:
+	return mates[sock] if sock >= 0 and sock < mates.size() else -1
+
+
+## Whether `sock` is a Pair's lead: where the Pair is, drawn as a sock ball.
+func is_pair(sock: int) -> bool:
+	return mate_of(sock) >= 0 and state_of(sock) != State.IN_PAIR
+
+
+## How many records Design `design` has (two for a Design of the level, paired or not: I.1).
+func count_of(design: int) -> int:
+	return designs.count(design)
+
+
+## Where the Sock lies, or where it was let go, in the level (a Pair's: its ball's centre).
 func pose_of(sock: int) -> Transform3D:
 	return unpack(poses, sock)
 
@@ -131,8 +163,22 @@ func held_patch(sock: int) -> Dictionary:
 	return {"states": s, "throws": _without_throw(sock)}
 
 
-## The change that lets a held Sock go at `pose` (part of the Hands' drop answer): it falls from there.
+## The change that fuses lying Sock `picked` with its held mate `lead` into one Pair (part of the
+## Hands' pick answer, P01): `picked` goes IN_PAIR, the two name each other, the lead stays held.
+func paired_patch(lead: int, picked: int) -> Dictionary:
+	var s := states.duplicate()
+	s[picked] = State.IN_PAIR
+	var m := mates.duplicate()
+	m[lead] = picked
+	m[picked] = lead
+	return {"states": s, "mates": m, "throws": _without_throw(picked)}
+
+
+## The change that lets a held Sock go at `pose` (part of the Hands' drop answer): it falls from
+## there. A Pair's ball is let go with its bottom at the pose, its centre a radius higher.
 func flying_patch(sock: int, pose: Transform3D) -> Dictionary:
+	if is_pair(sock):
+		pose.origin += Vector3.UP * SockDress.ball_radius(design_of(sock))
 	var s := states.duplicate()
 	s[sock] = State.FLYING
 	return {"states": s, "poses": _with_pose(sock, pose), "throws": _without_throw(sock)}
@@ -148,7 +194,7 @@ func thrown_patch(sock: int, pose: Transform3D, vel: Vector3, spin: Vector3, by:
 	return {"states": s, "poses": _with_pose(sock, pose), "throws": t}
 
 
-## Only the Host's own `rest` and `wake` (no Guest may send one: nothing in accepts()).
+## Only the Host's own `rest`, `wake` and `fall` (no Guest may send one: nothing in accepts()).
 func decide(cmd: Command) -> Dictionary:
 	if cmd.by != Parts.HOST:
 		return refuse("wrong")
@@ -171,6 +217,13 @@ func decide(cmd: Command) -> Dictionary:
 			for woken in touching(sock) + PackedInt32Array([sock]):
 				s[woken] = State.FLYING
 			return grant({"states": s})
+		&"fall":
+			var sock: Variant = cmd.args.get("sock")
+			if not (sock is int) or state_of(sock) != State.LYING or not is_pair(sock):
+				return refuse("wrong")
+			var s := states.duplicate()
+			s[sock] = State.FLYING
+			return grant({"states": s})
 	return refuse("wrong")
 
 
@@ -182,9 +235,7 @@ func touching(sock: int) -> PackedInt32Array:
 	if body == null or most <= 0:
 		return out
 	var shape := body.get_node(^"Shape") as CollisionShape3D
-	var box := (shape.shape as BoxShape3D).duplicate() as BoxShape3D
-	box.size += Vector3.ONE * TOUCH_MARGIN * 2.0
-	for collider in PhysicsQueries.overlaps(self, box, shape.global_transform, LAYER_LYING, most + 1):
+	for collider in PhysicsQueries.overlaps(self, _grown(shape.shape, TOUCH_MARGIN), shape.global_transform, LAYER_LYING, most + 1):
 		var other := sock_at(collider)
 		if other >= 0 and other != sock and not out.has(other) and out.size() < most:
 			out.append(other)
@@ -206,6 +257,8 @@ func _show(now: bool) -> void:
 	var woken: Dictionary[int, bool] = {}
 	for sock: int in _bodies.keys():
 		if sock >= count() or state_of(sock) != State.LYING:
+			if sock < count() and state_of(sock) in [State.HELD, State.IN_PAIR] and _is_host():
+				_note_taken(_bodies[sock])
 			_bodies[sock].queue_free()
 			_bodies.erase(sock)
 			woken[sock] = true
@@ -215,6 +268,9 @@ func _show(now: bool) -> void:
 	for sock: int in _flicking.keys():
 		if state_of(sock) != State.FLYING:
 			_flicking.erase(sock)
+	for sock: int in _damped.keys():
+		if not _flights.has(sock):
+			_damped.erase(sock)
 	for sock in count():
 		match state_of(sock):
 			State.LYING:
@@ -235,6 +291,12 @@ func _physics_process(delta: float) -> void:
 		if state_of(sock) == State.LYING:
 			parts.ask(Command.new(&"wake", Parts.HOST, id, {"sock": sock}))
 	_hit.clear()
+	var taken := _taken
+	_taken = []
+	for place in taken:
+		for pair in _unheld_pairs(place):
+			if state_of(pair) == State.LYING:
+				parts.ask(Command.new(&"fall", Parts.HOST, id, {"sock": pair}))
 	for sock: int in _flicking.keys():
 		_flicking[sock] -= delta
 		if _flicking[sock] <= 0.0:
@@ -263,18 +325,51 @@ func _rest(sock: int, t: Transform3D) -> void:
 
 
 ## Where a Sock is put down when it cannot lie where its body is: the return spot, or straight under
-## the body with no spot set.
+## the body with no spot set (a Pair's ball a radius over the spot).
 func _return_pose(body: RigidBody3D) -> Transform3D:
+	var sock := int(body.get_meta(SOCK_META, -1))
+	var lift := Vector3.UP * SockDress.ball_radius(design_of(sock)) if is_pair(sock) else Vector3.ZERO
 	if return_spot != null and return_spot.is_inside_tree():
-		return return_spot.global_transform.orthonormalized()
+		var t := return_spot.global_transform.orthonormalized()
+		return Transform3D(t.basis, t.origin + lift)
 	return Transform3D(Basis.IDENTITY, body.global_position)
 
 
-## Draws a lying Sock at its pose (a body the crosshair and falling Socks meet).
+## The Host: a lying body is being taken away; notes its shape, grown by the wake reach, and where
+## it is, to look for Pairs resting on it at the next step (P08).
+func _note_taken(body: StaticBody3D) -> void:
+	var shape := body.get_node(^"Shape") as CollisionShape3D
+	var reach := tuning.wake_reach if tuning != null else 0.03
+	_taken.append({"shape": _grown(shape.shape, reach), "at": shape.global_transform})
+
+
+## The lying Pairs near a place a lying thing was taken from that nothing holds up any more: nothing
+## of the house or lying within the wake gap under the middle of their ball (P08). A Pair beside
+## the place stands on the floor and stays.
+func _unheld_pairs(place: Dictionary) -> PackedInt32Array:
+	var out := PackedInt32Array()
+	var gap := tuning.wake_gap if tuning != null else 0.006
+	for collider in PhysicsQueries.overlaps(self, place["shape"], place["at"], LAYER_LYING, 16):
+		var pair := sock_at(collider)
+		if pair < 0 or not is_pair(pair) or out.has(pair):
+			continue
+		var r := SockDress.ball_radius(design_of(pair))
+		var under := BoxShape3D.new()
+		under.size = Vector3(r, gap * 1.5, r)
+		var at := Transform3D(Basis.IDENTITY, pose_of(pair).origin + Vector3.DOWN * (r + gap * 0.25))
+		var held_up := false
+		for below in PhysicsQueries.overlaps(self, under, at, LAYER_HOUSE | LAYER_LYING, 4):
+			held_up = held_up or (below != collider and not (below as Node).is_queued_for_deletion())
+		if not held_up:
+			out.append(pair)
+	return out
+
+
+## Draws a lying Sock at its pose (a body the crosshair and falling Socks meet), a Pair as its ball.
 func _lie(sock: int) -> void:
 	var body: StaticBody3D = _bodies.get(sock)
 	if body == null:
-		body = LYING_SCENE.instantiate() as StaticBody3D
+		body = (LYING_BALL_SCENE if is_pair(sock) else LYING_SCENE).instantiate() as StaticBody3D
 		body.name = "Sock%d" % sock
 		body.set_meta(SOCK_META, sock)
 		_fit(body, design_of(sock))
@@ -285,10 +380,13 @@ func _lie(sock: int) -> void:
 
 
 ## The Host lets a Sock go: one physical body from its pose, falling, or flying with its throw's
-## launch and drag (the thrower's own body does not stop it).
+## launch and drag (the thrower's own body does not stop it). A Pair is its ball's body; it drags
+## as a Pair from its first touch (P07), a dropped or fallen one from the start.
 func _launch(sock: int) -> void:
-	var body := FLIGHT_SCENE.instantiate() as RigidBody3D
+	var pair := is_pair(sock)
+	var body := (BALL_FLIGHT_SCENE if pair else FLIGHT_SCENE).instantiate() as RigidBody3D
 	body.name = "Flight%d" % sock
+	body.set_meta(SOCK_META, sock)
 	_fit(body, design_of(sock))
 	var launch: Dictionary = throws.get(sock, {})
 	if not launch.is_empty():
@@ -305,6 +403,8 @@ func _launch(sock: int) -> void:
 		_spare_thrower(body, int(launch["by"]))
 	body.body_entered.connect(_on_contact.bind(sock))
 	_flights[sock] = body
+	if pair and launch.is_empty():
+		_damp_pair(sock)
 	_airborne[sock] = 0.0
 	_speeds[sock] = body.linear_velocity.length()
 
@@ -321,10 +421,24 @@ func _spare_thrower(body: RigidBody3D, by: int) -> void:
 ## The Host: a falling body touched `other`. A lying Sock hit faster than the wake speed wakes, with
 ## those touching it, at the next physics step (T11): no body is swapped inside the step.
 func _on_contact(other: Node, sock: int) -> void:
+	if is_pair(sock) and not _damped.has(sock):
+		_damp_pair(sock)
 	var hit := sock_at(other)
 	var fast := tuning.wake_speed if tuning != null else 1.5
 	if hit >= 0 and float(_speeds.get(sock, 0.0)) > fast:
 		_hit[hit] = true
+
+
+## A falling Pair drags as a Pair from now on: it stops within a few cm (P07).
+func _damp_pair(sock: int) -> void:
+	var body: RigidBody3D = _flights.get(sock)
+	if body == null:
+		return
+	_damped[sock] = true
+	body.linear_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
+	body.angular_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
+	body.linear_damp = tuning.pair_linear_damp if tuning != null else 2.5
+	body.angular_damp = tuning.pair_angular_damp if tuning != null else 8.0
 
 
 func _drop_flight(sock: int) -> void:
@@ -332,18 +446,35 @@ func _drop_flight(sock: int) -> void:
 	_flights.erase(sock)
 	_airborne.erase(sock)
 	_speeds.erase(sock)
+	_damped.erase(sock)
 
 
-## A body's box and Looks fitted to its Design (Size and colour).
+## A body's box (a Pair's ball) and Looks fitted to its Design (Size and colour).
 func _fit(body: CollisionObject3D, design: SockDesign) -> void:
 	var shape := body.get_node(^"Shape") as CollisionShape3D
+	var looks := body.get_node(^"Looks") as Node3D
+	SockDress.dress(looks, design)
+	SockDress.play(looks, SockDress.LYING)
+	if shape.shape is SphereShape3D:
+		var ball := (shape.shape as SphereShape3D).duplicate() as SphereShape3D
+		ball.radius = SockDress.ball_radius(design)
+		shape.shape = ball
+		return
 	var box := (shape.shape as BoxShape3D).duplicate() as BoxShape3D
 	box.size = SockDress.box(design)
 	shape.shape = box
 	shape.position.y = box.size.y * 0.5
-	var looks := body.get_node(^"Looks") as Node3D
-	SockDress.dress(looks, design)
-	SockDress.play(looks, SockDress.LYING)
+
+
+## A copy of a box or ball shape, `margin` bigger all round.
+static func _grown(shape: Shape3D, margin: float) -> Shape3D:
+	if shape is SphereShape3D:
+		var ball := (shape as SphereShape3D).duplicate() as SphereShape3D
+		ball.radius += margin
+		return ball
+	var box := (shape as BoxShape3D).duplicate() as BoxShape3D
+	box.size += Vector3.ONE * margin * 2.0
+	return box
 
 
 func _container(node: Node3D) -> Node:
