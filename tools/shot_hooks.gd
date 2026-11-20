@@ -9,7 +9,7 @@ static func act(world: Node, what: String, _arg: String) -> bool:
 			# The zoo's player steps onto the handling station, takes its first Sock and holds the
 			# drop button: the Throw's ring starts filling after the tap (core/08).
 			var player := world.get_node("Player") as Player
-			var hands := world.get_tree().get_first_node_in_group(Hands.GROUP) as Hands
+			var hands := world.get_node("Stations/Handling/Socks/Hands") as Hands
 			var station := hands.get_parent().get_parent() as Node3D
 			player.global_position = station.global_position + Vector3(0.0, 0.0, 1.5)
 			player.rotation.y = 0.0
@@ -20,7 +20,7 @@ static func act(world: Node, what: String, _arg: String) -> bool:
 			# The zoo's player steps onto the handling station and takes its first Sock, then (a
 			# grab interval later) that Sock's mate: the pairing moment plays in the Hands (core/03).
 			var player := world.get_node("Player") as Player
-			var hands := world.get_tree().get_first_node_in_group(Hands.GROUP) as Hands
+			var hands := world.get_node("Stations/Handling/Socks/Hands") as Hands
 			var station := hands.get_parent().get_parent() as Node3D
 			if what == "pair_first":
 				player.global_position = station.global_position + Vector3(0.0, 0.0, 1.5)

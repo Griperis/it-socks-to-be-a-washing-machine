@@ -1,0 +1,195 @@
+[gd_scene format=3 uid="uid://ckkmqe7lqy056"]
+
+[ext_resource type="PackedScene" uid="uid://h3610c6dred6" path="res://game/entities/cabinet/cabinet.tscn" id="1_cabinet"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="2_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="3_hands"]
+[ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="4_spot"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="5_designs"]
+[ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
+[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="7_coins"]
+[ext_resource type="PackedScene" uid="uid://ccaa5ngdrkqig" path="res://game/entities/door/door.tscn" id="8_door"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.3, 0.5, 0.42, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_pad")
+size = Vector2(5, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.78, 0.76, 0.72, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_back"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(3, 2, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_back"]
+size = Vector3(3, 2, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_jamb"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(0.5, 2.3, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jamb"]
+size = Vector3(0.5, 2.3, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lintel"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(0.9, 0.3, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lintel"]
+size = Vector3(0.9, 0.3, 0.1)
+
+[node name="Cabinet" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 5)
+
+[node name="Pad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
+billboard = 1
+text = "One Cabinet (Simple Socks): pair two Socks, left click a drawer to shelve the Pair, or throw it at the Cabinet. A click with no Pair opens or shuts a drawer. The striped Socks are another Collection's. Left click the door on the right"
+
+[node name="BackWall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -2.3)
+
+[node name="Mesh" type="MeshInstance3D" parent="BackWall"]
+mesh = SubResource("BoxMesh_back")
+
+[node name="Shape" type="CollisionShape3D" parent="BackWall"]
+shape = SubResource("BoxShape3D_back")
+
+[node name="JambLeft" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 1.15, -0.8)
+
+[node name="Mesh" type="MeshInstance3D" parent="JambLeft"]
+mesh = SubResource("BoxMesh_jamb")
+
+[node name="Shape" type="CollisionShape3D" parent="JambLeft"]
+shape = SubResource("BoxShape3D_jamb")
+
+[node name="JambRight" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25, 1.15, -0.8)
+
+[node name="Mesh" type="MeshInstance3D" parent="JambRight"]
+mesh = SubResource("BoxMesh_jamb")
+
+[node name="Shape" type="CollisionShape3D" parent="JambRight"]
+shape = SubResource("BoxShape3D_jamb")
+
+[node name="Lintel" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.55, 2.15, -0.8)
+
+[node name="Mesh" type="MeshInstance3D" parent="Lintel"]
+mesh = SubResource("BoxMesh_lintel")
+
+[node name="Shape" type="CollisionShape3D" parent="Lintel"]
+shape = SubResource("BoxShape3D_lintel")
+
+[node name="Cabinet" parent="." instance=ExtResource("1_cabinet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -2)
+
+[node name="Cabinet" parent="Cabinet" index="0" node_paths=PackedStringArray("hands", "coins")]
+hands = NodePath("../../Socks/Hands")
+coins = NodePath("../../Socks/Coins")
+
+[node name="Door" parent="." instance=ExtResource("8_door")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.55, 0, -0.8)
+
+[node name="Spots" type="Node3D" parent="."]
+
+[node name="Simple0" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0.2)
+script = ExtResource("4_spot")
+
+[node name="Simple0Mate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.55, 0, 0.2)
+script = ExtResource("4_spot")
+
+[node name="Simple1" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0, 0.2)
+script = ExtResource("4_spot")
+design = 1
+
+[node name="Simple1Mate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 0, 0.2)
+script = ExtResource("4_spot")
+design = 1
+
+[node name="Simple4" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0, 0.2)
+script = ExtResource("4_spot")
+design = 4
+
+[node name="Simple4Mate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0.2)
+script = ExtResource("4_spot")
+design = 4
+
+[node name="Uncommon" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, 0.2)
+script = ExtResource("4_spot")
+design = 78
+
+[node name="UncommonMate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0.75)
+script = ExtResource("4_spot")
+design = 78
+
+[node name="Rare" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.55, 0, 0.75)
+script = ExtResource("4_spot")
+design = 114
+
+[node name="RareMate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0, 0.75)
+script = ExtResource("4_spot")
+design = 114
+
+[node name="Patterns" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.65, 0, 0.75)
+script = ExtResource("4_spot")
+design = 130
+
+[node name="PatternsMate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0, 0.75)
+script = ExtResource("4_spot")
+design = 130
+
+[node name="PatternsLoose" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0, 0.75)
+script = ExtResource("4_spot")
+design = 131
+
+[node name="ReturnSpot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.8)
+
+[node name="Lying" type="Node3D" parent="."]
+
+[node name="Flights" type="Node3D" parent="."]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://game/sock/flight.tscn", "res://game/sock/ball_flight.tscn")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="."]
+
+[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+script = ExtResource("2_mess")
+catalogue = ExtResource("5_designs")
+tuning = ExtResource("6_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+bounds = AABB(-4, -2, -4, 8, 8, 8)
+return_spot = NodePath("../../ReturnSpot")
+
+[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess")]
+script = ExtResource("3_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("6_tuning")
+
+[node name="Coins" type="Node" parent="Socks"]
+script = ExtResource("7_coins")

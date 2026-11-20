@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="CabinetTuning" format=3 uid="uid://m8htn4ybja5v"]
+
+[ext_resource type="Script" uid="uid://car7kbiufbmg7" path="res://game/entities/cabinet/cabinet_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")

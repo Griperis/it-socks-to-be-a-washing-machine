@@ -108,17 +108,30 @@ func player_id() -> int:
 	return multiplayer.get_unique_id()
 
 
-## The level's Hands, or null where there are none (the movement station alone).
+## The level's Hands, or null where there are none (the movement station alone). Where several
+## stations each have their own (the zoo), the Hands whose Mess's bounds the player stands in.
 func hands() -> Hands:
-	if _hands == null or not is_instance_valid(_hands) or not _hands.is_inside_tree():
-		_hands = get_tree().get_first_node_in_group(Hands.GROUP) as Hands if is_inside_tree() else null
-		_held_view.hands = _hands
+	if _hands == null or not is_instance_valid(_hands) or not _hands.is_inside_tree() or not _stands_in(_hands):
+		var found: Hands = null
+		if is_inside_tree():
+			for node in get_tree().get_nodes_in_group(Hands.GROUP):
+				var h := node as Hands
+				if found == null or (_stands_in(h) and not _stands_in(found)):
+					found = h
+		if found != _hands:
+			_hands = found
+			_held_view.hands = _hands
 	if _hands != null and _hands.parts != null and _listening != _hands.parts:
 		if _listening != null and is_instance_valid(_listening) and _listening.applied.is_connected(_on_applied):
 			_listening.applied.disconnect(_on_applied)
 		_listening = _hands.parts
 		_listening.applied.connect(_on_applied)
 	return _hands
+
+
+## Whether the player stands inside the bounds of the Mess of `h` (always, with no bounds set).
+func _stands_in(h: Hands) -> bool:
+	return h != null and (h.mess == null or h.mess.in_bounds(global_position))
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -204,12 +217,17 @@ func interact() -> Part:
 	return use_aimed()
 
 
-## Uses the Part the crosshair is on, as this player; returns it, or null when it aims at none.
+## Uses the Part the crosshair is on, as this player; returns it, or null when it aims at none. A
+## Cabinet's drawer is clicked through its Cabinet (core/04: with Pairs held the click shelves).
 func use_aimed() -> Part:
 	_aim.force_raycast_update()
 	var part := part_of(_aim.get_collider() as Node)
 	if part != null:
-		part.use(player_id())
+		var cabinet := Cabinet.of(part)
+		if cabinet != null and cabinet != part:
+			cabinet.click(player_id(), cabinet.index_of(part))
+		else:
+			part.use(player_id())
 	return part
 
 
@@ -249,8 +267,12 @@ func _update_hands(delta: float) -> void:
 		_drop_down_at = -1.0
 		_set_charge(false)
 		return
-	if Input.is_action_just_pressed(PICK) and aimed_sock >= 0:
-		_pick(h, aimed_sock)
+	if Input.is_action_just_pressed(PICK):
+		if aimed_sock >= 0:
+			_pick(h, aimed_sock)
+		else:
+			# D08, C01: a left click on a thing that is not a Sock uses it (a drawer, a Door, a cupboard).
+			use_aimed()
 	if Input.is_action_just_pressed(DROP_THROW):
 		_drop_down_at = _time
 	if _drop_down_at >= 0.0 and not charging and holding and _time - _drop_down_at >= hands_tuning.tap:
@@ -383,6 +405,12 @@ func _outline(mess: Mess, sock: int) -> void:
 ## A refusal the Host answered to this player shows on the HUD.
 func _on_applied(ev: Dictionary) -> void:
 	if ev.get("ok", false) or int(ev.get("by", 0)) != player_id() or _hands == null:
+		return
+	var to := _hands.parts.of(StringName(ev.get("to", &""))) if _hands.parts != null else null
+	if to is Cabinet:
+		var text := String(Cabinet.SAYS.get(String(ev.get("reason", "")), ""))
+		if text != "":
+			say(text)
 		return
 	if StringName(ev.get("to", &"")) != _hands.id:
 		return

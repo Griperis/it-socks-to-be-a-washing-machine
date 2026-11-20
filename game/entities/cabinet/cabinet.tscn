@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://h3610c6dred6"]
+
+[ext_resource type="Script" uid="uid://dq0ntcpk8crrb" path="res://game/entities/cabinet/cabinet.gd" id="1_cabinet"]
+[ext_resource type="Resource" uid="uid://m8htn4ybja5v" path="res://game/entities/cabinet/cabinet_tuning.tres" id="2_tuning"]
+[ext_resource type="PackedScene" uid="uid://bcuynsur3or1g" path="res://game/entities/cabinet/looks_simple.tscn" id="3_looks"]
+[ext_resource type="PackedScene" uid="uid://bkncq1hu4v824" path="res://game/entities/drawer/drawer.tscn" id="4_drawer"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_shell"]
+size = Vector3(1.5, 1.05, 0.46)
+
+[node name="Cabinet" type="StaticBody3D"]
+
+[node name="Cabinet" type="Node" parent="."]
+script = ExtResource("1_cabinet")
+tuning = ExtResource("2_tuning")
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.525, -0.02)
+shape = SubResource("BoxShape3D_shell")
+
+[node name="Looks" parent="." instance=ExtResource("3_looks")]
+
+[node name="Drawer1" parent="." instance=ExtResource("4_drawer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11, 0)
+
+[node name="Drawer2" parent="." instance=ExtResource("4_drawer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41, 0)
+
+[node name="Drawer3" parent="." instance=ExtResource("4_drawer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.71, 0)

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bkncq1hu4v824"]
+
+[ext_resource type="Script" uid="uid://bilshnr7wp5ir" path="res://game/parts/openable.gd" id="1_openable"]
+[ext_resource type="PackedScene" uid="uid://cpgwgtg7amdc" path="res://game/entities/drawer/looks_simple.tscn" id="2_looks"]
+
+[node name="Drawer" type="Node3D"]
+
+[node name="Openable" type="Node" parent="."]
+script = ExtResource("1_openable")
+
+[node name="Looks" parent="." instance=ExtResource("2_looks")]

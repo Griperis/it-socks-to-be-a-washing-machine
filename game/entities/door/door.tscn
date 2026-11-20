@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://ccaa5ngdrkqig"]
+
+[ext_resource type="Script" uid="uid://bilshnr7wp5ir" path="res://game/parts/openable.gd" id="1_openable"]
+[ext_resource type="PackedScene" uid="uid://cq2ix7o0hgo2q" path="res://game/entities/door/looks_graybox.tscn" id="2_looks"]
+
+[node name="Door" type="Node3D"]
+
+[node name="Openable" type="Node" parent="."]
+script = ExtResource("1_openable")
+
+[node name="Looks" parent="." instance=ExtResource("2_looks")]

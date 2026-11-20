@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: core
@@ -138,6 +138,34 @@ the Cabinet's drawer, see the Pair in its slot and the Coins; throw a second Pai
 - The zoo's Cabinet takes the Simple Collection (Q2266, 2026-11-20).
 
 ## Open follow-ups
+Old details not built (Q2277; the lead asks the designer about each before the merge):
+- The shelving flight: each Pair flies from the Hands into its slot (0.45 s + 0.06 s a slot, arc 0.22), the drawer's balls redrawn when all landed (reference `game/campaign/campaign_installer.gd:82`, `data/tuning/cloth.json:11`). Here the ball shows in its slot at once.
+- Drawer open and shut sounds (`drawer_open__a/b`, `drawer_close__a/b`) and the Door's (`game/campaign/cabinet_drawer.gd:56`, `game/house/openable.gd:39`): no audio system yet.
+- The "+N" Coins pop over the drawer and the flight to the bank, with the coins sound (`game/player/rig.gd:653`): M4's HUD.
+- A drawer filled pays the team's Drawers and pops "+N" (`game/campaign/cabinets.gd:291`, `game/player/rig.gd:661`): M4 (C06).
+- Rows growing: drawers drop in on top with a thunk and a dust puff (`game/campaign/cabinet.gd:125`, `:201`, `:209`): M4.
+- The slide eases out both ways in the old tween (`game/house/openable.gd:187`); here the AnimationPlayer eases out opening and so in when played back shutting. The Door eases in and out both ways (`game/house/room_door.gd:68`), as here.
+- The old "Pair socks first" refusal with no Pair held (`game/campaign/cabinets.gd:369`) is replaced by C04 (the click opens or shuts the drawer).
+
+- [later] Refusal order chosen: far, locked, wrong, full ("Cabinet locked" before "Wrong Cabinet", so a locked Cabinet does not tell its Collection); the old game said "Wrong Cabinet" first (`game/campaign/cabinets.gd:348`).
+- [later] A left click on a thing that is not a Sock now uses it, as the old game's click did (D08): the handling station's cupboard opens by a left click too; the handling suite's M15 case says so.
+- [later] The zoo has two Messes (handling, cabinet), each with its own Hands: the player uses the Hands of the station whose bounds it stands in, so what is held in one station is not in the Hands at the other. One Mess per level comes with the house (M2).
+- [later] Drawer3 is above the 2 Rows: a click with empty Hands does nothing; with Pairs the search starts at the top Row (the old rule).
+- [later] A shelved Pair's lead is SHELVED and its mate stays IN_PAIR (the design said both records SHELVED; IN_PAIR keeps "never drawn on its own" true for the mate).
 
 ## Built log
 - Model: Opus (lead): a new entity with Openable drawers and a Part that spans the Mess and Hands.
+- 2026-11-20 (agent): Changed: a `Cabinet` Part (Collection, locked, rows, shelf) with the `shelve`
+  Command and the Host's `thrown_shelve` (a thrown Pair's contact, from the Mess's new
+  `flight_touched` signal), `CabinetTuning` (capacity 25, 10 x rarity 1/2/5, reach 2.5, placeholders);
+  `drawer.tscn` (the kit's Openable, Looks with `Slide`, `Slot01..25`, "open" 0.3 s) and `cabinet.tscn`
+  (Base, Segment1..3, Top from the old `simple.glb`, its meshes saved by the importer); a `Coins`
+  Part; the Mess's `SHELVED` state and `shelved_patch()`, the Hands' `taken_patch()`; a `door.tscn`
+  (Openable, graybox swing 0.6 s); the player's left click uses a thing that is not a Sock and goes
+  through the Cabinet for a drawer, says "Wrong Cabinet", "Cabinet locked", "Cabinet full", and uses
+  the Hands of the station it stands in. Station `cabinet.tscn` off the grid at (9, 0, 5), pad 5 x 5.
+  PROTOCOL 4. Shot hooks find the handling station by path.
+  Files: game/entities/cabinet/, game/entities/drawer/, game/entities/door/, game/coins/,
+  game/zoo/stations/cabinet.tscn, game/mess/mess.gd, game/hands/hands.gd, game/player/player.gd,
+  game/parts/session.gd, tests/cabinet_test.gd, tests/handling_test.gd, tools/shot_hooks.gd
+  Verified: PASS 833 checks, 127 cases (--touched); PASS rules; PASS asset_lint
