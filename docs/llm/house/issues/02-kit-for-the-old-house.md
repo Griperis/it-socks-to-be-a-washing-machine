@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: house
 feature: house
@@ -76,6 +76,12 @@ pieces (one piece per re-gridded window size, or a wall piece plus a frame piece
 what the plan file looks like (a Markdown table in `docs/architecture/house-kit.md` or its own file, plus the plan
 stills). Open choices go back as `[blocking]` follow-ups.
 
+The plan (first stop, drafted): its own file, `docs/architecture/house-kit-plan.md`, written with its stills by
+`tools/house_plan.py`, which holds the old numbers beside the new ones and checks the plan's rules (centre lines on
+grid lines; an opening centred in a wall piece of 0.5 m steps, so on a 0.25 m lattice, old widths kept; an
+opening's edge a casing clear of a meeting wall; heights over a floor kept). House/03 reads the new numbers there.
+The pieces' design follows the designer's go on the plan.
+
 ## Acceptance
 - One test per behaviour line (`tests/house_kit_test.gd`); the real-path case: in the kit station the player walks in
   the room's door, climbs the U stair to the upper floor and stands at a window, by its own input.
@@ -92,6 +98,24 @@ stills). Open choices go back as `[blocking]` follow-ups.
 - house/01 merged as a first step; its open follow-ups are carried here (Q2346, 2026-11-20).
 
 ## Open follow-ups
+The plan's choices, for the designer's go on the first stop (stills in `builds/review-house-02/`):
+- [blocking] The stair: the first riser had to move south to z 5.5 (+0.25), so the U stair is 36.1 degrees (old
+  31.3; 7 goings of 0.257 m, rise 0.1875, landing 1.1 m). Moving it north instead (29.7 degrees) leaves 0.82 m for
+  the 0.9 m bedroom doorway between the partition and the elevator hatch. Keep 36.1, or a 0.9 m landing (33.3
+  degrees, landing shallower than the 1.13 m flight)?
+- [blocking] The laundry and bedroom doorways (D2, D8) move 0.32 m south: centred at z 4.0 the partition's face
+  would stand 1 cm in the opening. Keep that, or an off-centre door piece for these two (0.12 m)?
+- [blocking] The width: outer wall centre lines 10.5 m apart (inside 10.3 m, +0.2; the east rooms 3.84 m wide,
+  old 3.7) rather than the ticket's "about 10" (10.0 would make them 3.34 m)?
+- [blocking] K02: storeys 3.0 m with the old clear heights kept exactly (2.7, 2.7, 2.6) through thicker ceiling
+  tiles (0.2, 0.2, 0.3 m), rather than house/01's 0.1 m tile (2.8 m on every floor)?
+- [blocking] The roof keeps the old ridge height (3.59 m over the attic floor), so 37.5 degrees as the old house
+  (37.4) rather than the ticket's 40 (ridge 3.88 m).
+- [blocking] Openings keep their old widths (18 window pieces, 2 door pieces) rather than widths rounded to the
+  grid (fewer pieces, a look change).
+- [later] The plan includes the Cellar hatch in the workshop floor (not in the ticket's list), the shaft's and the
+  hatch's floor holes need 1 x 1 m tile pieces with the hole.
+
 Carried from house/01:
 - [later] The corner question (K04): one L piece is both the outer and the inner corner; an inner corner or filler
   piece only if the plan needs one.
@@ -100,3 +124,11 @@ Carried from house/01:
 
 ## Built log
 - Model: Opus (lead): many pieces, a build script, geometry from the old Blender script.
+
+### 2026-11-20
+- Changed: the first stop. The old house re-gridded: footprint, storeys, every wall line, room, doorway, window,
+  the U stair, the elevator shaft and hatch, the Cellar hatch, roof, dormer and posts, old and new side by side
+  with the move; a plan still per floor and a section, old (red) over new. No piece built.
+- Files: `tools/house_plan.py`, `docs/architecture/house-kit-plan.md`, `docs/architecture/house-kit.md`;
+  stills `builds/review-house-02/plan_1_basement.png` to `plan_5_section.png`.
+- Verified: `house_plan: PASS, 0 rules broken`; `PASS rules: 9 rules, no new hit`.
