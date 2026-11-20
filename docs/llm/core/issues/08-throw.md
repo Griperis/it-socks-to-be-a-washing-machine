@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-info
+status: ready-for-agent
 kind: build
 area: core
 feature: core
@@ -40,17 +40,66 @@ Approved with core/02's list (Q2243, 2026-11-20); the lines moved here unchanged
   at a set return spot (in the old game, in front of the washer; in the zoo, the station's).
 
 ## Design
-<Step 2: the charge timing on the player, the ring's look (a still first), the Flight's launch from the eyes, the
-wake of lying Socks (T11), the out-of-bounds return (T14). Ask the open looks questions before building.>
+Built on what core/02 merged: `Hands.decide()` already grants a `drop` by changing two Parts (the Sock's record
+becomes FLYING in `Mess`, its id leaves the Hands), and `Mess` already launches a Host-owned `Flight` RigidBody3D
+and writes the Sock lying again with a Host-only `rest` when the body sleeps or after the 6 s limit. The Throw is
+the same path with a speed. Old code: `game/hands/thrower.gd` (170 lines), parts of `flights.gd`,
+`sock_flights.gd`, `game/ui/power_ring.gd`.
+
+**On the player (looks and input only)**: the right button already times a tap for the drop. Held past `hold`
+(0.25 s) with something in the Hands, `charge` runs 0 to 1 over `charge_time` (1.2 s) and the ring shows it;
+release sends `throw(dir, charge)`. No cancel. A menu opening mid-charge drops the charge without a throw (the old
+knockdown rule, kept for the freeze).
+
+**The Command** `throw(dir, charge)` to `Hands`, in `accepts()` (dir a unit Vector3, charge 0..1, a rate limit):
+- refused "nothing" with empty Hands; "wrong" for a bad dir or charge;
+- granted: like a drop, the Sock leaves the Hands and becomes FLYING, with the launch in the answer: `from` (just in
+  front of the eyes, 0.35 m ahead and 0.08 m low, pulled back so it never starts inside a wall, the old
+  `_start_point`), `vel` (dir times `lerp(min_speed, max_speed, charge)`; below `tap_charge` the lob: `lob_speed`
+  plus `lob_lift` up), `spin` (the old fixed (2, 1, 3) rad/s). The Host decides from and vel; a Guest's dir is
+  only a direction (M0.6 reads it from the Guest's eyes).
+- `Mess` launches the `Flight` at once, no flick (a drop keeps its 0.1 s flick), with the thrown damping (linear
+  0.05, angular 0.8).
+
+**T11, the wake**: the `Flight` reports its first contacts on the Host. When it hits a lying Sock faster than
+`wake_speed` (1.5 m/s), `Mess` turns that Sock and at most `wake_count` (8) lying Socks touching it into FLYING
+bodies (a Host-only `wake` change), and they rest again the normal way. A drop is slower than that, so it wakes
+none.
+
+**T14, out of bounds**: `Mess` gets an `@export var bounds: AABB` and `@export var return_spot: Marker3D`, set per
+level in the editor (the zoo: its floor's box up to 6 m; the house later: the house and under its roof). A flying
+body outside `bounds` is put down at once lying at `return_spot` (Host-only `rest` there).
+
+**The ring**: a `Control` drawn round the crosshair, its look from the old `power_ring.gd` unless the designer says
+otherwise (radius 26 px, 5 px line, a faint white track, filling from cream to orange). See the questions.
+
+**Numbers** (`HandsTuning`, each `# placeholder:`): hold 0.25 s, charge_time 1.2 s, tap_charge 0.15, lob_speed
+3.5 m/s, lob_lift 2 m/s, min_speed 3, max_speed 5 m/s, spin (2, 1, 3), thrown damping 0.05 / 0.8, wake_speed
+1.5 m/s, wake_count 8.
+
+**Tests** (`tests/handling_test.gd` is over 600 lines: the Throw goes in its own `tests/throw_test.gd`): one case per
+line T01-T04, T07 (with a stand-in Cabinet body until core/04: a StaticBody on the house layer), T08, T11, T13,
+T14; the I.1 count after each Throw. Real path: the handling station, real input, hold, release, the Sock lands
+farther than a drop would.
+
+**Co-op, M0.6** (not built here, nothing blocks it): the Guest's ghost and 0.2 s blend (Q2221), the Flight's
+synchronizer with the stamp (coop-structure section 4, option A), a teammate catching (T09), the knockdown (T10).
 
 ## Acceptance
 - The Throw goes through a `throw` Command answered by the Host of one; the flying Sock is the Host's body.
 - Tests follow the behaviour lines above, one case each.
+- A still of the ring mid-charge in `builds/review-core-08/` (Q2260).
 - One real-path case: in `game/zoo/stations/handling.tscn`, with real input, pick a Sock, hold the right button,
   release, and the Sock lands farther than a drop would.
 
 ## Answers
+- The design is approved as written (Q2259, 2026-11-20).
+- The ring keeps the old look (26 px radius, 5 px line, faint white track, cream to orange, clockwise); a still of
+  it mid-charge goes in `builds/review-core-08/` before merging (Q2260, 2026-11-20).
+- The zoo's return spot is a marker on the handling station's pad (Q2261, 2026-11-20).
 
 ## Open follow-ups
 
 ## Built log
+- 2026-11-20 (lead): handed to a ticket agent on Opus: a Host-owned physics body with contacts and the wake (the
+  Models value: opus for hard netcode and physics debugging).
