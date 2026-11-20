@@ -7,6 +7,11 @@
 [ext_resource type="Script" path="res://game/parts/avatar/avatars.gd" id="6_avatars"]
 [ext_resource type="PackedScene" path="res://game/parts/avatar/avatar.tscn" id="7_avatar"]
 [ext_resource type="Script" path="res://game/zoo/zoo_net.gd" id="8_net"]
+[ext_resource type="Script" path="res://game/hands/hands_tuning.gd" id="9_hands_tuning"]
+
+[sub_resource type="Resource" id="Resource_zoo_hands"]
+script = ExtResource("9_hands_tuning")
+capacity = 3
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_zoo"]
 
@@ -58,6 +63,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 
 [node name="Player" parent="." instance=ExtResource("2_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+hands_tuning = SubResource("Resource_zoo_hands")
 
 [node name="Stations" type="Node3D" parent="."]
 script = ExtResource("3_stations")

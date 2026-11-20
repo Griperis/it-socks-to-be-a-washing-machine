@@ -1,0 +1,2 @@
+# The game's one physics-query helper (the space is read there only).
+exempt space_query game/hands/physics_queries.gd

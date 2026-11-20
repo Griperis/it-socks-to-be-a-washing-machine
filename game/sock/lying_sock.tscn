@@ -1,0 +1,16 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://game/sock/looks_graybox.tscn" id="1_looks"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sock"]
+size = Vector3(0.3, 0.026, 0.18)
+
+[node name="LyingSock" type="StaticBody3D"]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.013, 0)
+shape = SubResource("BoxShape3D_sock")
+
+[node name="Looks" parent="." instance=ExtResource("1_looks")]

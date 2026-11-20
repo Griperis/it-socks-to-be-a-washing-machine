@@ -1,12 +1,12 @@
 ## The graybox player: it walks with the InputMap actions, jumps, its use button opens the thing it
-## aims at through Parts, and it carries a crate and puts it down. Its own small level, never the zoo.
+## aims at through Parts. Its own small level, never the zoo. Its Hands are tests/handling_test.gd's.
 extends TestSuite
 
 const PLAYER := "res://game/player/player.tscn"
 const CUPBOARD := "res://game/entities/cupboard/cupboard.tscn"
 const STATION := "res://game/zoo/stations/movement.tscn"
-const CRATE := "res://game/entities/crate/crate.tscn"
-const ACTIONS: Array[StringName] = [&"move_forward", &"move_back", &"move_left", &"move_right", &"jump", &"crouch", &"look_left", &"look_right", &"look_up", &"look_down", &"interact"]
+const ACTIONS: Array[StringName] = [&"move_forward", &"move_back", &"move_left", &"move_right", &"jump", &"crouch", &"look_left", &"look_right", &"look_up", &"look_down", &"interact",
+		&"pick", &"drop_throw", &"zoom", &"turn", &"hands_next", &"hands_prev"]
 
 var _level: Node3D = null
 
@@ -57,8 +57,6 @@ func cases() -> Array[Dictionary]:
 				"title": "real path: in the movement station the real actions walk the ramp, jump onto the box, crouch under the beam"},
 		{"name": "use", "method": "case_use", "world": false,
 				"title": "interact opens the cupboard it faces, and again shuts it"},
-		{"name": "carry", "method": "case_carry", "world": false,
-				"title": "interact picks up the crate it looks at, walking carries it in the hands, interact puts it down on the floor"},
 	]
 
 
@@ -121,25 +119,6 @@ func case_use() -> void:
 	_check(not openable.open, "interact again shuts it")
 	_check(player.use_aimed() == openable, "the crosshair finds the cupboard's Openable")
 	_check(Player.part_of(_level.get_child(0)) == null, "the floor belongs to no part")
-
-
-func case_carry() -> void:
-	var player := await _build(false, true)
-	var crate := _level.get_node("Crate") as Node3D
-	var carriable := crate.get_node("Carriable") as Carriable
-	(player.get_node("Head") as Node3D).rotation.x = -0.73
-	_check(player.interact() == carriable and player.carried() == carriable, "interact picks up the crate it looks at")
-	await _hold(&"move_forward", 20)
-	await _frames(1)
-	_check(crate.global_position.distance_to(player.global_transform * Player.HANDS) < 0.01,
-			"the crate is in its hands after a walk (%s)" % crate.global_position)
-	var carried_at := crate.global_position
-	_check(player.interact() == carriable and carriable.holder == 0, "interact again puts it down")
-	_near(crate.global_position.y, player.global_position.y, 0.01, "it lies on the floor")
-	_check(Vector2(crate.global_position.x, crate.global_position.z).distance_to(Vector2(carried_at.x, carried_at.z)) < 0.01,
-			"under where the hands held it")
-	await _frames(3)
-	_check(crate.global_position.y < 0.01, "and stays there: the hands let go")
 
 
 func _mouse(player: Player, dx: float, dy: float) -> void:
@@ -404,7 +383,7 @@ func case_b02_blocked() -> void:
 
 
 func case_station() -> void:
-	var player := await _build(false, false, true)
+	var player := await _build(false, true)
 	# walk the ramp onto the ledge, facing +Z
 	player.global_position = Vector3(-1, 0, -3.5)
 	player.rotation.y = PI
@@ -462,8 +441,8 @@ func _ramp() -> void:
 # --- Helpers -------------------------------------------------------------------------------------
 
 ## A floor, a Parts, the player at the origin facing -Z, and with `cupboard` one 1.5 m ahead
-## facing it (with `crate`, a crate there). Returns the player once it stands.
-func _build(cupboard := false, crate := false, station := false) -> Player:
+## facing it. Returns the player once it stands.
+func _build(cupboard := false, station := false) -> Player:
 	_level = Node3D.new()
 	_level.name = "Level"
 	var floor_body := StaticBody3D.new()
@@ -479,11 +458,6 @@ func _build(cupboard := false, crate := false, station := false) -> Player:
 		c.name = "Cupboard"
 		c.position = Vector3(0.0, 0.0, -1.5)
 		_level.add_child(c)
-	if crate:
-		var thing := (load(CRATE) as PackedScene).instantiate() as Node3D
-		thing.name = "Crate"
-		thing.position = Vector3(0.0, 0.0, -1.5)
-		_level.add_child(thing)
 	if station:
 		var st := (load(STATION) as PackedScene).instantiate() as Node3D
 		st.name = "Station"
