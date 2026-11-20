@@ -6,7 +6,7 @@ area: core
 feature: core
 priority: now
 created: 2026-11-19
-done:
+done: 2026-11-20
 blocked_by: []
 notes: []
 terms: []
@@ -212,3 +212,4 @@ the ramp, jumps, crouches under the beam. `zoo_test` and the co-op crate case ke
   `Input.mouse_mode`. `Aim` moved under `Head` (the top-level camera no longer carries it).
   Files: game/player/*, game/zoo/stations/movement.tscn, game/zoo/zoo.tscn, project.godot, tests/player_test.gd,
   tests/zoo_test.gd, tests/hooks.gd. Verified: PASS 370 checks, 91 cases.
+- Merged: 071acd19 (2026-11-20, branch core/01-zoo-movement)
