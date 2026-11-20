@@ -1,4 +1,4 @@
-Next free Q number: Q2276 (update this line whenever a round of questions is asked)
+Next free Q number: Q2277 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -188,3 +188,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2273: core/09 is built right after core/04, before M0.5 closes; each detail stops at its first still.
 - Q2274: the pairing moment's second Sock flies in from where it lay, like a pick (replaces Q2270).
 - Q2275: what else looks different about the Throw: asked again after the cloth is in.
+- Q2276: core/09's behaviour list approved as written.

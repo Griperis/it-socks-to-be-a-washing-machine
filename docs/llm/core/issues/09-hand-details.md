@@ -21,7 +21,7 @@ Looks of this machine only: nothing here writes a Part. The old code: `reference
 `game/hands/thrown_item.gd` (a thrown cloth Sock); the numbers: `data/tuning/cloth.json`, `held.json`.
 
 ## Behaviour list
-Waits for the designer's approval. Numbers are the old game's.
+Approved (Q2276, 2026-11-20). Numbers are the old game's.
 
 **Cloth** (ADR-0004: spring bones on the Sock's own skeleton, not a cloth simulation)
 - D01 When you hold a Sock, then it droops from its cuff and settles quickly (heavy, fully damped: it follows its
@@ -66,6 +66,8 @@ To come after the behaviour list is approved.
 - All three are ported: cloth (held and thrown), the glide on switching, the pick fly-up (Q2272, 2026-11-20).
 - Built right after core/04, before M0.5 closes; each detail stops at its first still (Q2273, 2026-11-20).
 - The pairing moment's second Sock flies in from where it lay, like a pick (Q2274, 2026-11-20; replaces Q2270).
+
+- The behaviour list is approved as written (Q2276, 2026-11-20).
 
 ## Open follow-ups
 - [later] The designer says what else looks different about the Throw after seeing the cloth (Q2275).
