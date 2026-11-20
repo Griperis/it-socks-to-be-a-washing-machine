@@ -1,0 +1,3 @@
+# core/22: the Sounds station built from the catalogue: the whole station from above, and its block of 0.3 m buttons close.
+sounds-overview  --size=1280x720 --do='10:sounds:overview' --shots=60
+sounds-block  --size=1280x720 --do='10:sounds:block' --shots=60

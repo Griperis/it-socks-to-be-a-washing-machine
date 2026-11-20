@@ -31,6 +31,21 @@ static func act(world: Node, what: String, arg: String) -> bool:
 				cam.look_at(station.to_global(Vector3(-11.5, 0.0, -0.4)))
 			cam.make_current()
 			return true
+		"sounds":
+			# A camera over the Sounds station's buttons (core/22): arg "overview" looks down on the
+			# whole station, "block" from above the button block.
+			var station := world.get_node("Stations/Sounds") as Node3D
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 60.0
+			if arg == "overview":
+				cam.global_position = station.to_global(Vector3(0.0, 12.0, 6.0))
+				cam.look_at(station.to_global(Vector3(0.0, 0.0, -0.5)))
+			else:
+				cam.global_position = station.to_global(Vector3(0.0, 4.2, -0.6))
+				cam.look_at(station.to_global(Vector3(0.0, 0.0, -2.6)))
+			cam.make_current()
+			return true
 		"pair_first", "pair_mate":
 			# The zoo's player steps onto the handling station and takes its first Sock, then (a
 			# grab interval later) that Sock's mate: the pairing moment plays in the Hands (core/03).
