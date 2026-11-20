@@ -35,6 +35,10 @@ window/stretch/aspect="expand"
 
 enabled=PackedStringArray("res://addons/profily/plugin.cfg")
 
+[gui]
+
+theme/custom="res://game/look/theme.tres"
+
 [input]
 
 toggle_profiler={
@@ -144,6 +148,12 @@ hands_prev={
 3d/physics_engine="Jolt Physics"
 common/physics_interpolation=true
 
+[it_socks]
+
+graphics/preset="high"
+
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+anti_aliasing/quality/msaa_3d=2
+anti_aliasing/quality/screen_space_aa=1

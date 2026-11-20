@@ -1,0 +1,30 @@
+[gd_resource type="Theme" format=3]
+
+[ext_resource type="FontFile" path="res://assets/fonts/patrickhand/PatrickHand-Regular.ttf" id="1_ffxfw"]
+
+[resource]
+Button/fonts/font = ExtResource("1_ffxfw")
+CheckBox/fonts/font = ExtResource("1_ffxfw")
+CheckButton/fonts/font = ExtResource("1_ffxfw")
+Heading1/base_type = &"OutlinedLabel"
+Heading1/font_sizes/font_size = 44
+Heading2/base_type = &"OutlinedLabel"
+Heading2/font_sizes/font_size = 30
+ItemList/fonts/font = ExtResource("1_ffxfw")
+Label/fonts/font = ExtResource("1_ffxfw")
+LineEdit/fonts/font = ExtResource("1_ffxfw")
+LinkButton/fonts/font = ExtResource("1_ffxfw")
+MenuButton/fonts/font = ExtResource("1_ffxfw")
+OptionButton/fonts/font = ExtResource("1_ffxfw")
+OutlinedLabel/base_type = &"Label"
+OutlinedLabel/colors/font_color = Color(1, 1, 1, 1)
+OutlinedLabel/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
+OutlinedLabel/constants/outline_size = 8
+PlainLabel/base_type = &"OutlinedLabel"
+PlainLabel/constants/outline_size = 0
+RichTextLabel/fonts/font = ExtResource("1_ffxfw")
+TabBar/fonts/font = ExtResource("1_ffxfw")
+TextEdit/fonts/font = ExtResource("1_ffxfw")
+ThinLabel/base_type = &"OutlinedLabel"
+ThinLabel/constants/outline_size = 6
+TooltipLabel/fonts/font = ExtResource("1_ffxfw")

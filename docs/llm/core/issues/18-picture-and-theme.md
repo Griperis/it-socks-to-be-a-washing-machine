@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: core
 feature: core
@@ -49,6 +49,11 @@ stills.
 - Q2299, Q2300, Q2317, Q2322-Q2324 (2026-11-20).
 
 ## Open follow-ups
+- [later] Q2324 premise: the old game never put Patrick Hand on its HUD or menus (only the Collection whiteboard; `reference/it-socks` grep: the font is loaded in `whiteboard_view.gd` only; `ui_bits.gd` sets no font). Built as the ticket says: Patrick Hand on every 2D Control through `game/look/theme.tres`. Say if the old default font was meant.
+- [later] The HUD's Message and Size labels stay at the default 16 px (old: 28 pt, row at 70 percent height) and the Message is still red by modulate; position and size are the other audit rows, not this ticket.
+- [later] Noon ambient: the ticket says 0.7 (the old base); the old noon key sets 0.75 through the day cycle. Built 0.7.
+- [later] Not built (waits for menus): keycap buttons, keycap panels, sliders, fields, upgrade rows of `ui_bits.gd`; they need the KeycapStyle custom StyleBox (an inner class in the old code, against Q2253).
 
 ## Built log
+- 2026-11-20: Changed: `game/look/` (day_sky shader, noon_environment.tres, graphics_preset.gd + low/medium/high .tres, picture.gd/.tscn with the vignette, crosshair.gd/.tscn, theme.tres); zoo.tscn WorldEnvironment and Sun; the player's HUD uses the Crosshair scene and OutlinedLabel on Message/Size, blocked red now (0.95, 0.25, 0.2); project.godot: MSAA 4x, FXAA, `gui/theme/custom`, `it_socks/graphics/preset`; assets (day HDRI, Patrick Hand, licences). The Theme sets the font per Control type, not as default font, so the zoo's Label3D signs stay plain (V05). Stills in builds/review-core-18/. Files: game/look/*, tests/look_test.gd, tools/shot_hooks.gd, tools/shots/sets/look-picture.txt. Verified: kit/tools/run.sh --touched PASS 6233 checks (before the font fix; look suite PASS 1104 after).
 - Model: Sonnet (lead): settings, resources and a Theme from a known reference.
