@@ -1,4 +1,4 @@
-Next free Q number: Q2297 (update this line whenever a round of questions is asked)
+Next free Q number: Q2305 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -209,3 +209,11 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2294: the every-Sock zoo station lays the Socks out in rows by Collection, with the Collection's name, in Design order, each Sock beside its mate.
 - Q2295: its Socks are real Mess Socks you can play with; the zoo is never saved and always starts fresh; each Sock has its info as text in front of it.
 - Q2296: M0.5 is a true vertical slice of the core: the core's sounds and rumble (a plug-and-play sound system) and its polish details (old-details-backlog.md, core/11 outline) are built in M0.5; a deeper audit lists every other difference from the old game's core.
+- Q2297: the rules audit's differences are decided one by one; the mouse-capture click is a bug against L03, fixed.
+- Q2298: the Cabinet's drawers are outlined too (core/11), unlike the old game.
+- Q2299: the zoo gets the old picture (AgX, grade, vignette, SSAO, glow, MSAA 4x + FXAA, HDRI sky, the tuned sun) at a fixed noon; the 20-minute day comes with the house and the run.
+- Q2300: into M0.5: the old font and theme, and the old crosshair (two bars, 18 x 2 px); the Coins and Pairs counter and the ESC menu and Options stay out.
+- Q2301: core/12 merged as built (one label per pair); the two-tier Mess (MultiMesh drawing, static colliders) is next, and the designer is asked what to remove or change in the rewrite.
+- Q2302: the pad differences (full-speed stick, the old look stick, the crouch trigger, pad zoom and turn) wait for later.
+- Q2303: back to the old: the nearer of a Sock and a ball under the crosshair wins, and a sliding Sock can be picked; kept: no 3 cm forgiveness, our zoom slow-down curve.
+- Q2304: back to the old: a new Pair goes to the end of the Hands and becomes active, and a drop onto a lying Sock or Pair is allowed; kept: a drop lands square to the dropper (no R turn).

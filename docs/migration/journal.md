@@ -145,3 +145,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Looks | none |
 | Decisions | Q2284, Q2289-Q2291 |
 
+## core/12 every-Sock station (M0.5), merged 2026-11-20
+| Field | Content |
+|---|---|
+| Ticket | core/12, both Socks of every Design laid out by Collection with their info, real Mess Socks; M0.5; approved and merged (8c30aaa, main 9a6e58c) |
+| Planned vs actual | 1 planned, 1 actual; follow-up: the two-tier Mess (Q2301) |
+| Redo count | 0 |
+| Cost | core/12 1 6,427,237 62 9m13s (Sonnet) |
+| Time | the agent ran about 9 min |
+| Surprises | about 2,000 lying Socks as full Looks scenes cost a 40 ms physics tick (was 3 ms): the two-tier Mess is needed now; the agent's test came without its `.uid` (third time: core/01, core/08, core/12); PROTOCOL bumped to 6 at merge (Sock ids shift) |
+| Stop rules | the same failure three times (a missing `.uid`): retro question |
+| Looks | `builds/review-core-12/overview.png`, `row.png` |
+| Decisions | Q2290, Q2294, Q2295, Q2301 |
+
