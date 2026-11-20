@@ -1,4 +1,4 @@
-Next free Q number: Q2292 (update this line whenever a round of questions is asked)
+Next free Q number: Q2296 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -204,3 +204,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2289: core/10 merged: one Mess, Hands and Coins for the zoo.
 - Q2290: Designs may repeat across zoo stations; the zoo gets a station of every Sock in the game laid out on the ground, at the end.
 - Q2291: the return scatter and pop and the unsinking of a sunk Sock wait for the polish pass.
+- Q2292: the outline is one reusable component (Outline plus an OutlineStyle resource) on every interactable, ported from the old highlight; plan approved (core/11).
+- Q2293: core/11 is built in the polish pass.
+- Q2294: the every-Sock zoo station lays the Socks out in rows by Collection, with the Collection's name, in Design order, each Sock beside its mate.
+- Q2295: its Socks are real Mess Socks you can play with; the zoo is never saved and always starts fresh; each Sock has its info as text in front of it.

@@ -23,8 +23,8 @@ A ticket that builds a line moves it out of here.
 - A "Paired!" message on fusing (`core/game.gd:1461`).
 - The held Size letter boxed beside the active Sock, following it, the zoom and the sway (`ui/hud.gd:452-500`,
   `hands/held_view.gd:785-815`).
-- The aimed outline: warm white, three soft shells fading outward, constant width on screen (`ui/highlight.gd:20-26`,
-  `outline.gdshader`).
+- The aimed outline: warm white, three soft shells fading outward, constant width on screen, as one reusable
+  component on every interactable: ticket core/11, approved (Q2292, Q2293).
 - The refusal wobble (0.45 s, 0.07 rad, 5 Hz) and 2 s on screen (`ui/hud.gd:22-24, 646-660`).
 - A sock ball landing squashes, hops 4 cm and rolls 12 cm (`world/sock_ball.gd:263-345`, `ball.json`).
 - The pairing fold curls the Socks along their cloth bones, curl 1.3 (`hands/paired_moment.gd`, `paired.json`);

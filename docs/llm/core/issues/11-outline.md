@@ -1,10 +1,10 @@
 ---
 type: ticket
-status: needs-info
+status: ready-for-agent
 kind: build
 area: core
 feature: core
-priority: now
+priority: later
 created: 2026-11-20
 done:
 blocked_by: ["[[09-hand-details]]"]
@@ -42,7 +42,7 @@ The old code: `reference/it-socks/game/ui/highlight.gd` (265 lines), `game/ui/ou
   "full" tint.
 
 ## Behaviour list
-Waits for the designer's approval. The numbers are the old game's.
+Approved (Q2292). The numbers are the old game's.
 - O01 When the crosshair rests on something you can use within reach, then it gets a soft warm-white outline, drawn
   outside its shape. It is three shells fading outward and keeps the same width on screen near and far.
 - O02 When the crosshair leaves it, or it goes out of reach, then the outline goes at once.
@@ -84,6 +84,8 @@ Waits for the designer's approval. The numbers are the old game's.
 - A line-up still in `builds/review-core-11/`, stopped at the first still for the designer's go.
 
 ## Answers
+- The behaviour list and design are approved (Q2292, 2026-11-20).
+- Built in the polish pass, not in M0.5 (Q2293, 2026-11-20); it starts when the designer calls the polish pass.
 
 ## Open follow-ups
 
