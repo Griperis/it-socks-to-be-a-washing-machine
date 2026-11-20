@@ -254,7 +254,7 @@ func _line_hits_door(player: Player, spot: Vector3) -> bool:
 func case_s07() -> void:
 	await _zoo_up()
 	var player := _zoo.get_node("Player") as Player
-	_stand(player, Vector3(-8.0, 0.0, 8.0))
+	_stand(player, Vector3(17.0, 0.0, 18.0))   # open zoo floor, clear of every station pad
 	await _physics_ticks(4)
 	_heard.clear()
 	var start := player.global_position
