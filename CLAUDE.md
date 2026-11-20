@@ -118,6 +118,8 @@ through that feature's own rules object. Otherwise they go through the co-op sha
   `kit/skills/` today; a new folder of notes, sources or pictures gets one when it is made. Untracked files the
   editor makes inside `kit/` are ignored by the game's git (`.gitmodules` `ignore = untracked`), never committed
   into the kit.
+- **A zoo station that shows game data is built from that data at load** (designer, Q2337): a new Design, sound
+  or other entry appears in its station with no other change.
 - **A journal line per merged ticket** in `docs/migration/journal.md`.
 - **No commit message carries a Claude (or any AI assistant) `Co-Authored-By` line** (designer, 2026-11-20);
   `kit/tools/commit.sh` refuses one.

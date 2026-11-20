@@ -1,4 +1,4 @@
-Next free Q number: Q2333 (update this line whenever a round of questions is asked)
+Next free Q number: Q2338 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -245,3 +245,8 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2330: a fast hit never wakes a lying Pair, as the old game's Q1742; lying Socks only (fixed on main, case t11_pair_stays).
 - Q2331: the HUD and messages keep Godot's default font, as the old game; Patrick Hand waits for the whiteboard and the screens that used it (replaces Q2324).
 - Q2332: the Sock held stiff during a throw's catch-up: polish batch 5.
+- Q2333: core/17 (sound system) and core/18 (picture and theme) merged ahead of their batches.
+- Q2334: the heap station spawns Socks by a click, about 500 a batch (a tuning number).
+- Q2335: the heap is spilled live from a spout above the pad in waves, settling under the moving budget.
+- Q2336: the heap station has a respill button, live counters (moving, waiting, resting, physics time), low walls round the pad, and a slope or table.
+- Q2337: a zoo station that shows game data is built from that data at load (a new Design, sound or other entry appears with no other change); the Sounds station is rebuilt from the sound catalogue with smaller boxes (designer, 2026-11-20).
