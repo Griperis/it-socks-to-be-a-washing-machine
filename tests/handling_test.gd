@@ -64,7 +64,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "h09_into_cupboard", "method": "case_h09", "world": false,
 				"title": "H09: aimed into the open cupboard, a drop lands inside"},
 		{"name": "h10_flick_fall", "method": "case_h10", "world": false,
-				"title": "H10: a dropped Sock flicks for 0.1 s, is let go 3 cm over the spot, falls as one body that cannot be picked, and lies where it settles"},
+				"title": "H10: a dropped Sock flicks for 0.1 s, is let go 3 cm over the spot, falls as one body that can be picked (Q2339), and lies where it settles"},
 		{"name": "h11_settles", "method": "case_h11", "world": false,
 				"title": "H11: dropped on a Sock or half over the table's edge it settles or falls, never floating or sinking"},
 		{"name": "m06_no_limit", "method": "case_t13", "world": false,
@@ -424,7 +424,8 @@ func case_h10() -> void:
 	var body := _mess.flight_of(ON_FLOOR)
 	_check(body != null and body.global_position.y > 0.015 and body.global_position.y < 0.06,
 			"3 cm over the spot (%s)" % (body.global_position if body != null else Vector3.INF))
-	_check(_hands.pick_refusal(1, ON_FLOOR) == Hands.GONE and _mess.looks_of(ON_FLOOR) == null, "while it falls it cannot be picked or aimed at")
+	_hands.clock += 1.0   # past the grab interval of the pick
+	_check(_hands.pick_refusal(1, ON_FLOOR) == "" and _mess.looks_of(ON_FLOOR) == null, "while it falls it can be picked (R03, Q2339)")
 	_places("while it falls")
 	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "it to come to rest")
 	var rest := _mess.pose_of(ON_FLOOR).origin
@@ -534,6 +535,7 @@ func _build() -> void:
 	_player = (load(PLAYER) as PackedScene).instantiate() as Player
 	_player.position = FRONT
 	_level.add_child(_player)
+	_player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 	_parts = Parts.new()
 	_parts.name = "Parts"
 	_level.add_child(_parts)

@@ -53,6 +53,16 @@ func cases() -> Array[Dictionary]:
 				"title": "P08: when the Sock under a lying Pair is picked the Pair falls and lands on the floor"},
 		{"name": "p08_beside", "method": "case_p08_beside", "world": false,
 				"title": "P08: a Pair lying beside a picked Sock stays where it is"},
+		{"name": "r01_free_mouse", "method": "case_r01", "world": false,
+				"title": "R01: the click that captures the mouse does nothing else; with the mouse free, clicks, the drop button, zoom and the wheel do nothing"},
+		{"name": "r02_nearer", "method": "case_r02", "world": false,
+				"title": "R02: with a lying Sock and a lying Pair both under the crosshair the nearer is aimed, the ball's surface against the Sock's middle"},
+		{"name": "r03_moving_pick", "method": "case_r03", "world": false,
+				"title": "R03: a moving Sock can be aimed and picked mid-air or mid-slide"},
+		{"name": "r03_thrown", "method": "case_r03_thrown", "world": false,
+				"title": "R03: a Sock thrown by the player can be caught by a click while it is in the air"},
+		{"name": "r05_drop_on_pair", "method": "case_r05", "world": false,
+				"title": "R05: a drop onto a lying Pair's ball or a Sock is allowed anywhere on it, with no slope test"},
 		{"name": "invariants", "method": "case_invariants", "world": false,
 				"title": "I.1, I.4 and the Commands: two records per Design, Pairs only in one player's Hands, the Host's answer decides, a Sock in a Pair is refused \"gone\", a Pair survives a save"},
 	]
@@ -106,8 +116,8 @@ func case_p01() -> void:
 	await _repick(OVER)
 	_check(_hands.active_of(1) == OVER, "the newest Sock is active")
 	await _repick(MATE_FLOOR)
-	_check(_hands.items_of(1) == PackedInt32Array([ON_FLOOR, OVER]), "the mate took no place of its own (%s)" % _hands.items_of(1))
-	_check(_hands.active_of(1) == ON_FLOOR, "the Pair is the active item")
+	_check(_hands.items_of(1) == PackedInt32Array([OVER, ON_FLOOR]), "R04: the Pair goes to the end, the mate takes no place of its own (%s)" % _hands.items_of(1))
+	_check(_hands.active_of(1) == ON_FLOOR and _hands.active_index(1) == 1, "the Pair is the active item, the last")
 	_check(_mess.mate_of(ON_FLOOR) == MATE_FLOOR and _mess.mate_of(MATE_FLOOR) == ON_FLOOR, "the two name each other")
 	_check(_mess.state_of(MATE_FLOOR) == Mess.State.IN_PAIR and _mess.state_of(ON_FLOOR) == Mess.State.HELD, "the picked one is in the Pair, the held one leads it")
 	_check(_mess.looks_of(MATE_FLOOR) == null, "the mate no longer lies on the floor")
@@ -154,7 +164,7 @@ func case_p03() -> void:
 	_check(_mess.is_pair(ON_FLOOR), "the mate fuses")
 	await _repick(stray)
 	_check(_mess.mate_of(stray) == -1 and _mess.mate_of(ON_FLOOR) == MATE_FLOOR, "a held Pair never takes a third Sock of its Design")
-	_check(_hands.items_of(1) == PackedInt32Array([ON_FLOOR, MATE_UNDER, stray]), "the third is held loose (%s)" % _hands.items_of(1))
+	_check(_hands.items_of(1) == PackedInt32Array([MATE_UNDER, ON_FLOOR, stray]), "the third is held loose (%s)" % _hands.items_of(1))
 	_places("after a third Sock", SOCKS + 1)
 
 
@@ -263,7 +273,8 @@ func case_p07() -> void:
 	_check((body.get_node("Shape") as CollisionShape3D).shape is SphereShape3D, "it falls as a ball")
 	_near(body.linear_damp, 2.5, 0.001, "dragging 2.5")
 	_near(body.angular_damp, 8.0, 0.001, "and 8 turning")
-	_check(_hands.pick_refusal(1, ON_FLOOR) == Hands.GONE, "it cannot be picked while it falls")
+	_hands.clock += 1.0   # past the grab interval
+	_check(_hands.pick_refusal(1, ON_FLOOR) == "", "it can be picked while it falls (Q2339)")
 	_places("while it falls")
 	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "it to come to rest")
 	var rest := _mess.pose_of(ON_FLOOR).origin
@@ -343,6 +354,163 @@ func case_p08_beside() -> void:
 	_places("after the pick beside")
 
 
+# --- Rules back to the old game (core/14) -----------------------------------------------------
+
+## Lets the mouse go as Esc does, through the viewport.
+func _free_mouse() -> void:
+	var esc := InputEventAction.new()
+	esc.action = &"ui_cancel"
+	esc.pressed = true
+	Input.parse_input_event(esc)
+	await _physics_ticks(2)
+
+
+## A left button press or release through the viewport, as the mouse sends it.
+func _button(pressed: bool, index := MOUSE_BUTTON_LEFT) -> void:
+	var ev := InputEventMouseButton.new()
+	ev.button_index = index
+	ev.pressed = pressed
+	Input.parse_input_event(ev)
+	await _physics_ticks(2)
+
+
+func case_r01() -> void:
+	await _build()
+	await _free_mouse()
+	await _aim(_player, _centre(ON_FLOOR))
+	_check(_player.aimed_sock == ON_FLOOR, "the crosshair is on the Sock")
+	await _press(&"pick")
+	_check(_hands.items_of(1).is_empty(), "free: the pick button picks nothing")
+	var fov := _player.camera().fov
+	Input.action_press(&"zoom")
+	await _physics_ticks(30)
+	_near(_player.camera().fov, fov, 0.001, "free: zoom does nothing")
+	Input.action_release(&"zoom")
+	await _wheel(&"hands_next")
+	await _button(true, MOUSE_BUTTON_WHEEL_DOWN)
+	await _button(false, MOUSE_BUTTON_WHEEL_DOWN)
+	await _button(true)
+	_check(_hands.items_of(1).is_empty(), "the click that captures picks nothing")
+	await _button(false)
+	await _physics_ticks(25)
+	await _button(true)
+	await _button(false)
+	await _until(func() -> bool: return _hands.items_of(1).has(ON_FLOOR), "the next click to pick the Sock")
+	await _free_mouse()
+	Input.action_press(&"drop_throw")
+	await _physics_ticks(30)
+	Input.action_release(&"drop_throw")
+	await _physics_ticks(2)
+	_check(_hands.items_of(1).has(ON_FLOOR) and not _player.charging, "free: the drop button does nothing, no charge")
+	await _button(true, MOUSE_BUTTON_WHEEL_UP)
+	await _button(false, MOUSE_BUTTON_WHEEL_UP)
+	await _button(true, MOUSE_BUTTON_RIGHT)
+	_check(_hands.items_of(1).has(ON_FLOOR), "the right click that captures drops nothing")
+	await _button(false, MOUSE_BUTTON_RIGHT)
+	_check(_hands.items_of(1).has(ON_FLOOR), "nor on its release")
+
+
+func case_r02() -> void:
+	await _build()
+	# A Pair lying where the Sock MATE_UNDER lies, its ball's centre over the Sock's middle.
+	var box := _mess.box_of(MATE_UNDER)
+	var middle := box.get_center()
+	var radius := SockDress.ball_radius(_mess.design_of(ON_FLOOR))
+	var states := _mess.states.duplicate()
+	states[MATE_FLOOR] = Mess.State.IN_PAIR
+	var mates := _mess.mates.duplicate()
+	mates[ON_FLOOR] = MATE_FLOOR
+	mates[MATE_FLOOR] = ON_FLOOR
+	var poses := _mess.poses.duplicate()
+	var at := Vector3(middle.x, radius, middle.z)
+	for i in Mess.POSE:
+		poses[ON_FLOOR * Mess.POSE + i] = Mess.pack(Transform3D(Basis.IDENTITY, at))[i]
+	_mess.write({"states": states, "mates": mates, "poses": poses}, true)
+	await _physics_ticks(2)
+	var from := Vector3(middle.x, 0.02, middle.z + 1.0)
+	var first := PhysicsQueries.ray(_player, from, from + Vector3(0.0, 0.0, -1.6), Mess.SOCK_MASK)
+	_check(_mess.sock_of_hit(first) == MATE_UNDER, "the line meets the Sock's edge first (%d)" % _mess.sock_of_hit(first))
+	var found := AimFinder.find(_player, _mess, from, Vector3(0.0, 0.0, -1.0), 1.6, [_player.get_rid()])
+	_check(found["sock"] == ON_FLOOR, "the ball's surface is nearer than the Sock's middle: the Pair is aimed (%d)" % found["sock"])
+	# The Pair further along the line: the Sock is nearer.
+	at.z -= 0.3
+	for i in Mess.POSE:
+		poses[ON_FLOOR * Mess.POSE + i] = Mess.pack(Transform3D(Basis.IDENTITY, at))[i]
+	_mess.write({"poses": poses}, true)
+	await _physics_ticks(2)
+	found = AimFinder.find(_player, _mess, from, Vector3(0.0, 0.0, -1.0), 1.6, [_player.get_rid()])
+	_check(found["sock"] == MATE_UNDER, "a Pair behind the Sock's middle: the Sock is aimed (%d)" % found["sock"])
+	# And through the player: a Pair lying on a Sock is the one aimed from above.
+	at.z = middle.z
+	for i in Mess.POSE:
+		poses[ON_FLOOR * Mess.POSE + i] = Mess.pack(Transform3D(Basis.IDENTITY, at + Vector3.UP * 0.03))[i]
+	_mess.write({"poses": poses}, true)
+	await _physics_ticks(2)
+	_player.global_position = Vector3(middle.x, 0.0, middle.z + 1.0)
+	await _aim(_player, _centre(ON_FLOOR))
+	_check(_player.aimed_sock == ON_FLOOR, "from the player's eyes the Pair on the Sock is aimed (%d)" % _player.aimed_sock)
+
+
+func case_r03() -> void:
+	await _build()
+	_parts.apply(_parts.answer(Command.new(&"wake", Parts.HOST, _mess.id, {"sock": ON_FLOOR})))
+	await _until(func() -> bool: return _mess.flight_of(ON_FLOOR) != null, "the woken Sock to move")
+	await _aim(_player, _mess.where_of(ON_FLOOR) + Vector3(0.0, 0.01, 0.0))
+	_check(_mess.state_of(ON_FLOOR) == Mess.State.FLYING, "it is still moving")
+	_check(_player.aimed_sock == ON_FLOOR, "the crosshair rests on the moving Sock (%d)" % _player.aimed_sock)
+	await _press(&"pick")
+	_check(_hands.items_of(1).has(ON_FLOOR), "a click picks it mid-slide")
+	_check(_mess.state_of(ON_FLOOR) == Mess.State.HELD and _mess.flight_of(ON_FLOOR) == null, "held, its body gone")
+	_places("after the mid-slide pick")
+
+
+func case_r03_thrown() -> void:
+	await _build()
+	await _pick(ON_FLOOR)
+	await _aim(_player, Vector3(0.0, 1.2, -2.0))
+	Input.action_press(&"drop_throw")
+	await _until(func() -> bool: return _player.charging, "the ring to show", 100)
+	Input.action_release(&"drop_throw")
+	await _until(func() -> bool: return _mess.flight_of(ON_FLOOR) != null, "the Sock to fly")
+	# Hang it in the air a moment, in reach, so the aim has something to hold on to.
+	var body := _mess.flight_of(ON_FLOOR)
+	body.freeze = true
+	await _physics_ticks(1)
+	await _aim(_player, _mess.where_of(ON_FLOOR))
+	_check(_mess.state_of(ON_FLOOR) == Mess.State.FLYING and _mess.throws.has(ON_FLOOR) and _player.aimed_sock == ON_FLOOR, "the crosshair rests on the Sock in the air (%d)" % _player.aimed_sock)
+	await _press(&"pick")
+	_check(_hands.items_of(1).has(ON_FLOOR), "a click catches it mid-air")
+	_places("after the catch")
+
+
+func case_r05() -> void:
+	await _build()
+	await _pair()
+	_player.global_position = Vector3(-0.57, 0.0, 1.0)
+	await _physics_ticks(2)
+	await _drop_at(Vector3(-0.57, 0.0, 0.0), ON_FLOOR, "the floor beside the Sock")
+	_capacity(2)
+	await _physics_ticks(25)
+	await _pick(MATE_UNDER)
+	var ball := _mess.pose_of(ON_FLOOR).origin
+	_player.global_position = ball + Vector3(0.0, 0.0, 1.0)
+	await _physics_ticks(2)
+	# Aimed at the ball's middle, the line meets a side steeper than the drop slope.
+	await _aim(_player, ball)
+	var raw := PhysicsQueries.ball_hit(_player, _player.eyes(), _player.aim_dir() * 2.5, 0.08, Mess.AIM_MASK, [_player.get_rid()])
+	_check(not raw.is_empty() and (raw["normal"] as Vector3).y < cos(deg_to_rad(25.0)), "the ball's side there is steeper than the slope (%s)" % [raw.get("normal")])
+	_check(_player.aimed_sock == ON_FLOOR, "the Pair is aimed")
+	_check(_player.crosshair_colour() == Player.CROSSHAIR_OK and not _player.drop_refused, "the crosshair is white on the ball")
+	var side := ball + Vector3(SockDress.ball_radius(_mess.design_of(ON_FLOOR)), 0.0, 0.0)
+	_check(_hands.drop_refusal(1, side, Vector3.RIGHT) == "", "the Host takes a spot on the ball's very side, no slope test")
+	var nothing := _hands.drop_refusal(1, side + Vector3(0.0, 0.5, 0.0), Vector3.UP)
+	_check(nothing == Hands.NO_SPOT, "a spot in the air is still refused (%s)" % nothing)
+	await _press(&"drop_throw")
+	_check(_hands.items_of(1).is_empty() and _player.message() == "", "the drop is allowed on it, no \"Can't drop there\"")
+	await _until(func() -> bool: return _mess.state_of(MATE_UNDER) == Mess.State.LYING, "the dropped Sock to come to rest")
+	_places("after the drop on the Pair")
+
+
 # --- Invariants and Commands ---------------------------------------------------------------------
 
 func case_invariants() -> void:
@@ -392,6 +560,7 @@ func _build() -> void:
 	_player = (load(PLAYER) as PackedScene).instantiate() as Player
 	_player.position = FRONT
 	_level.add_child(_player)
+	_player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 	_parts = Parts.new()
 	_parts.name = "Parts"
 	_level.add_child(_parts)

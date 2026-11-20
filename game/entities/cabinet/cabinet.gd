@@ -9,7 +9,7 @@
 ## changes five Parts in one answer: the Hands (the Pairs leave, the rest kept: C02), the Mess (the
 ## leads go SHELVED), this shelf (the aimed drawer, then the nearest with room, the lower of two as
 ## near: C03), each drawer used (opens) and the Coins (10 x rarity a Pair, paid once per drawer used:
-## C05, I.12). A thrown Pair that touches its own Cabinet is shelved by the Host's `thrown_shelve`
+## C05, I.12). A thrown Pair that touches one of its own Cabinet's drawer fronts is shelved by the Host's `thrown_shelve`
 ## (T05); any other touch asks nothing and the body bounces (T06, T07). No icon shows the
 ## Collection: the refusal tells it (C11).
 class_name Cabinet
@@ -211,11 +211,10 @@ func click(by: int, index: int) -> void:
 		drawer(index).use(by)
 
 
-## The use button on the Cabinet's body (between the drawers): a shelve into the bottom drawer
-## with Pairs held; with none, nothing.
-func use(by: int) -> void:
-	if locked or holds_pair(by):
-		click(by, 0)
+## The use button on the Cabinet's body (its frame between the drawers): nothing, only a drawer takes
+## a shelve (R07, the old game: only a CabinetDrawer is a Station).
+func use(_by: int) -> void:
+	pass
 
 
 ## A Guest asks to shelve into a drawer, at most 5 a second; `thrown_shelve` is the Host's alone.
@@ -313,7 +312,7 @@ func _shelve(leads: PackedInt32Array, aimed: int, by: int, from_hands: bool) -> 
 ## The Host: a falling body touched something. A thrown Pair of this Collection touching this
 ## Cabinet asks `thrown_shelve` after the physics step (no body is swapped inside it).
 func _on_flight_touched(sock: int, other: Node) -> void:
-	if parts == null or not parts.is_host() or other == null or not _owns(other):
+	if parts == null or not parts.is_host() or other == null or not _is_drawer_front(other):
 		return
 	var mess := mess_of()
 	if not mess.throws.has(sock) or not _shelves_thrown(sock):
@@ -322,9 +321,17 @@ func _on_flight_touched(sock: int, other: Node) -> void:
 	parts.ask.call_deferred(Command.new(&"thrown_shelve", Parts.HOST, id, {"sock": sock, "thrower": thrower}))
 
 
-func _owns(node: Node) -> bool:
+## Whether `node` is part of a drawer in use (a drawer front): the Cabinet's top, sides and frame
+## are not (R06, the old game's Station boxes).
+func _is_drawer_front(node: Node) -> bool:
 	var root := get_parent()
-	return root != null and (node == root or root.is_ancestor_of(node))
+	if root == null:
+		return false
+	for i in rows_in_use():
+		var d := root.get_node_or_null(NodePath(DRAWER % (i + 1)))
+		if d != null and (node == d or d.is_ancestor_of(node)):
+			return true
+	return false
 
 
 ## Draws each drawer's shelved Pairs as sock balls at its slot points, in shelving order; a drawer

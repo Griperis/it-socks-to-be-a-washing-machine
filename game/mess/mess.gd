@@ -40,6 +40,9 @@ const LAYER_HOUSE := 1
 const LAYER_FLIGHT := 2
 const LAYER_LYING := 4
 const AIM_MASK := LAYER_HOUSE | LAYER_LYING
+## What the crosshair looks for a Sock in: a lying one or a moving one (a woken or thrown body, as the
+## old game's SOCK_LIVE), never a wall (R03).
+const SOCK_MASK := LAYER_LYING | LAYER_FLIGHT
 ## Floats in one pose: a Transform3D (basis columns x, y, z, then the origin).
 const POSE := 12
 ## The metadata a falling body carries: its Sock id.
@@ -185,6 +188,39 @@ func sock_at(rid: RID) -> int:
 		return -1
 	var sock := _lying_bodies.sock_of(rid)
 	return sock if sock >= 0 and state_of(sock) == State.LYING else -1
+
+
+## The Sock the thing a crosshair line met is (a `PhysicsQueries.ray` hit): a lying Sock by its body, a
+## moving one by its falling body; -1 for the house or a Sock that is neither (R03).
+func sock_of_hit(hit: Dictionary) -> int:
+	if hit.is_empty():
+		return -1
+	var body := hit.get("collider") as RigidBody3D
+	if body != null:
+		var sock := _sock_of_flight(body)
+		return sock if is_moving(sock) and moving_body(sock) == body else -1
+	return sock_at(hit.get("rid", RID()))
+
+
+## Whether Sock `sock` is a moving body now (woken, dropped after its flick, or thrown), which may be
+## aimed at and picked mid-air or mid-slide (R03, the old SOCK_LIVE, Q2339). On any machine: a Guest's
+## spawned copy counts.
+func is_moving(sock: int) -> bool:
+	return state_of(sock) == State.FLYING and moving_body(sock) != null
+
+
+## The falling body of Sock `sock` on this machine (the Host's own, or a Guest's spawned copy), or null.
+func moving_body(sock: int) -> RigidBody3D:
+	for body in _flight_nodes():
+		if _sock_of_flight(body) == sock:
+			return body
+	return null
+
+
+## Where Sock `sock` is now: its falling body's place while it moves, else where its record puts it.
+func where_of(sock: int) -> Vector3:
+	var body := moving_body(sock) if state_of(sock) == State.FLYING else null
+	return body.global_position if body != null else pose_of(sock).origin
 
 
 ## Whether lying Sock `sock` is shown now: as an instance of its cell or as its lent Looks.

@@ -250,6 +250,7 @@ func _stand(station: Node3D, at: Vector3) -> void:
 
 func _aim(target: Vector3) -> void:
 	var player := _zoo.get_node("Player") as Player
+	player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 	var head := player.get_node("Head") as Node3D
 	var to := target - player.global_position
 	player.rotation.y = atan2(-to.x, -to.z)

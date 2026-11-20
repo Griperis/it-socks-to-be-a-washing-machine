@@ -30,14 +30,17 @@ static func ball_hit(node: Node3D, from: Vector3, motion: Vector3, gap: float, m
 
 
 ## The first thing of `mask` on the line from `from` to `to`: {"position", "normal", "collider"},
-## or {} for none (or when `node` has no world yet).
-static func ray(node: Node, from: Vector3, to: Vector3, mask: int) -> Dictionary:
+## or {} for none (or when `node` has no world yet). A body of the physics server with no node has a
+## "rid" and no "collider". `exclude`: bodies the line passes through.
+static func ray(node: Node, from: Vector3, to: Vector3, mask: int, exclude: Array[RID] = []) -> Dictionary:
 	if not node.is_inside_tree():
 		return {}
 	var world := node.get_viewport().find_world_3d()
 	if world == null:
 		return {}
-	return world.direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(from, to, mask))
+	var query := PhysicsRayQueryParameters3D.create(from, to, mask)
+	query.exclude = exclude
+	return world.direct_space_state.intersect_ray(query)
 
 
 ## The things of `mask` that `shape` at `xform` overlaps, at most `most`: their colliders (a lying
