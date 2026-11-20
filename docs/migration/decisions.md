@@ -1,4 +1,4 @@
-Next free Q number: Q2231 (update this line whenever a round of questions is asked)
+Next free Q number: Q2232 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -131,3 +131,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2228: at most 5 parallel agents.
 - Q2229: platforms Windows and Linux desktop.
 - Q2230: no GitHub remote for now; commits stay local.
+- Q2231: the old game is the git submodule `reference/it-socks`, pinned at `v0.1.1` (the designer added it as `prototype/`; moved so the kit skips it).

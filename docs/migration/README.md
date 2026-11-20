@@ -1,6 +1,6 @@
 # Migration: index
 
-Reference commit (the old game, `reference/it-socks/`): _filled in at START-HERE step 5: hash, date_ (tag `v0.1.1`).
+Reference commit (the old game, `reference/it-socks/`, a git submodule pinned here, Q2231): `1b51d5424a560b26364c7124bd7f7b6ca23dd8ed`, 2026-11-20 00:33:58 +0100, "docs: the hand-off for the port (starter kit 7.1 + the port pack); maintenance/153 done" (tag `v0.1.1`).
 Planning page (private to the designer): https://claude.ai/artifact/5sjTiUUdoSFHDeEwtkMAe2 . Its source is
 `page/native-godot-move.html`, unedited. To change the page: read it with the Artifact tool first, then republish to the
 same URL. Its first tab, "The port", is the current plan; the other tabs are the older research and are marked so.

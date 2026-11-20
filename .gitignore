@@ -39,7 +39,8 @@ extras/blender-*
 # on this machine across reboots, never committed; each entry is a test to rework.
 tests/flaky/
 
-# The port: the old game as a plain clone, never committed (START-HERE step 4)
+# The port: reference/ holds the old game (the submodule reference/it-socks, pinned at v0.1.1, Q2231);
+# anything else put there stays out of git
 /reference/*
 !/reference/.gdignore
 

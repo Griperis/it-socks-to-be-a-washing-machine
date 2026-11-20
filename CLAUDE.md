@@ -89,8 +89,8 @@ through that feature's own rules object. Otherwise they go through the co-op sha
 
 ## Rules only this project has
 
-- **This is a port.** The old game is the reference: a plain clone in `reference/it-socks/` (its own git
-  repository, ignored here, skipped by Godot and by the tools). Grep it; do not read its big files whole. What is
+- **This is a port.** The old game is the reference: the git submodule `reference/it-socks/`, pinned at
+  tag `v0.1.1` (Q2231; skipped by Godot and by the kit's tools). Never commit inside it or move its pin. Grep it; do not read its big files whole. What is
   known and decided: `docs/migration/README.md`. How one piece is ported: the `migration-port` skill.
 - **Q numbers continue the old game's sequence;** the next free number is line 1 of `docs/migration/decisions.md`
   (not Q1, as `designer-grilling` says for a new game). Read that file before asking anything: most questions

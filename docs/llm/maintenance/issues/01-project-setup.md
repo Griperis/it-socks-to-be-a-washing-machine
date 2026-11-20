@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: docs
 area: tools
 feature: maintenance
 priority: next
 created: 2026-11-20
-done:
+done: 2026-11-20
 blocked_by: []
 notes: []
 terms: []
@@ -39,11 +39,9 @@ and check the tools run on this machine.
 - Parallel agents: 5 (Q2228, 2026-11-20).
 - Platforms: Windows and Linux desktop (Q2229, 2026-11-20).
 - No GitHub remote for now: commit locally, push later (Q2230, 2026-11-20).
+- The old game is the submodule `reference/it-socks` (the designer added it as `prototype/`), pinned at `v0.1.1` (Q2231, 2026-11-20).
 
 ## Open follow-ups
-- [blocking] The reference clone (START-HERE step 5) failed: `git clone` of the private `Griperis/sock-it` says
-  `could not read Username for 'https://github.com'`. The sandbox has no GitHub token; the designer runs on the
-  host: `sbx secret set github --sandbox claude-it-socks-to-be-a-washing-machine -t "$(gh auth token)"`.
 - [later] Add a private remote as a backup (`git remote add origin <url>`): the designer makes the repo.
 
 ## Built log
@@ -66,4 +64,12 @@ and check the tools run on this machine.
   - `CLAUDE.md` "Rules only this project has" from `docs/migration/claude-md-section.md`; `docs/llm/mvp/spec.md`
     holds the pitch. `placeholders.py`: `PASS placeholders: wrote 4 items`.
   - `housekeeping.sh`: one WARN only, the host disk 90% full (194 GB free).
-  - Not done: the reference clone (above, blocking), the push (no remote, Q2230).
+  - Not done here: the reference clone (no GitHub token in the sandbox), the push (no remote, Q2230).
+- 2026-11-20 (lead). The designer added the old game as a submodule at `prototype/`, checked out at its `main`
+  (88279002, an ancestor of `v0.1.1`). With it there `kit/tools/run.sh` failed (`FAIL check
+  res://prototype/tools/shots/wardrobe.gd does not load`, the old scripts parsed) and `asset_lint.py` scanned
+  1363 binaries: the kit skips only `reference/`. Q2231: moved with `git mv prototype reference/it-socks` and
+  checked out `v0.1.1` (1b51d542, 2026-11-20 00:33:58 +0100); `git lfs pull`: no pointer left, `file
+  .../assets/house/house.glb`: `glTF binary model`. Then `run.sh`: `PASS 303 checks, 74 cases`; `check.sh`:
+  `PASS check: 37 scripts, 21 scenes`; `asset_lint.py`: `0 glb of 71 binaries, no problem`; `setup.py --check`: OK.
+  Left: the push (no remote, Q2230).

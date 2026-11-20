@@ -59,3 +59,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
   glitch twice: four index entries pointed at blobs missing from the object store, and `git_repair.sh` cannot help
   before the first commit (no HEAD). Re-hashing the four files (`git hash-object -w`, re-add) fixed it.
 - Not done: the reference clone, the push (no remote yet, Q2230).
+- Later the same day: the designer added the old game as a submodule at `prototype/` (at its `main`, behind
+  `v0.1.1`). The kit's tools skip only `reference/`, so `run.sh` failed on the old scripts; moved to
+  `reference/it-socks` and pinned at `v0.1.1` (Q2231). Lesson for the reusable skill set: the reference goes under
+  `reference/`, whether a plain clone or a submodule, and is pinned at the tag.
