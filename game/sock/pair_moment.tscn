@@ -1,0 +1,311 @@
+[gd_scene format=3 uid="uid://d30ref6s3w1xt"]
+
+[ext_resource type="PackedScene" path="res://game/sock/looks_graybox.tscn" id="1_b6aa3"]
+[ext_resource type="PackedScene" uid="uid://nnbih1vyjajy" path="res://game/sock/looks_ball.tscn" id="2_12w58"]
+
+[sub_resource type="Gradient" id="Gradient_vnmgs"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_loqev"]
+gradient = SubResource("Gradient_vnmgs")
+
+[sub_resource type="Curve" id="Curve_r5w2b"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_c15pb"]
+curve = SubResource("Curve_r5w2b")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vwxmx"]
+resource_local_to_scene = true
+emission_shape = 1
+emission_sphere_radius = 0.06
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 0.64
+initial_velocity_max = 1.6
+gravity = Vector3(0, -1, 0)
+damping_min = 1.9
+damping_max = 3.2
+scale_min = 0.6
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_c15pb")
+color = Color(1, 0.8, 0.4, 1)
+color_ramp = SubResource("GradientTexture1D_loqev")
+
+[sub_resource type="Gradient" id="Gradient_c0uvg"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h1wvw"]
+gradient = SubResource("Gradient_c0uvg")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mh0r8"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = SubResource("GradientTexture2D_h1wvw")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_ptrqc"]
+material = SubResource("StandardMaterial3D_mh0r8")
+size = Vector2(0.06, 0.06)
+
+[sub_resource type="Gradient" id="Gradient_crn3q"]
+offsets = PackedFloat32Array(0, 0.82, 0.928, 0.98, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0.3, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4wxut"]
+gradient = SubResource("Gradient_crn3q")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ckphu"]
+resource_local_to_scene = true
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+no_depth_test = true
+shading_mode = 0
+albedo_color = Color(1, 0.8, 0.4, 0.8)
+albedo_texture = SubResource("GradientTexture2D_4wxut")
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_4iy3x"]
+size = Vector2(0.6, 0.6)
+
+[sub_resource type="Animation" id="Animation_hprdy"]
+length = 0.85
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mate:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.35, 0.43),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.4, -0.5, 0.15), Vector3(0.22, -0.1, 0.12), Vector3(0.05625, 0, 0.015), Vector3(0.0225, 0, 0.015), Vector3(0.0084375, 0, 0.01)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Held:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.35, 0.43),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -0.06, 0), Vector3(-0.05625, 0, 0), Vector3(-0.0225, 0, 0), Vector3(-0.0084375, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Mate:rotation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.35, 0.43),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.6, 1.8, -0.4), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(2.5, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Held:rotation")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.35, 0.43),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(2.5, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Mate:scale")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.35, 0.43, 0.4625),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.625, 0.625, 0.625), Vector3(0.625, 0.625, 0.625), Vector3(0.625, 0.3125, 0.6875), Vector3(0.28125, 0.084374994, 0.28125), Vector3(0.1875, 0.1875, 0.1875)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Mate:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.4625),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Held:scale")
+tracks/6/interp = 2
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.35, 0.43, 0.4625),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.625, 0.625, 0.625), Vector3(0.625, 0.625, 0.625), Vector3(0.625, 0.3125, 0.6875), Vector3(0.28125, 0.084374994, 0.28125), Vector3(0.1875, 0.1875, 0.1875)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Held:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.4625),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Ball:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Ball:scale")
+tracks/9/interp = 2
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.35, 0.4025, 0.455, 0.47, 0.485, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.001, 0.001, 0.001), Vector3(0.001, 0.001, 0.001), Vector3(0.62, 0.84, 0.62), Vector3(1.45, 1.45, 1.45), Vector3(1.4, 1.05, 1.4), Vector3(1, 1.15, 1), Vector3(1, 1, 1)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("Ball:rotation")
+tracks/10/interp = 2
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 0.35, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-2, 0, 0), Vector3(-2, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("Burst:emitting")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 0.455),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("Ring:visible")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0, 0.455, 0.84),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("Ring:scale")
+tracks/13/interp = 2
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0, 0.455, 0.6, 0.805),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.05, 0.05, 0.05), Vector3(0.05, 0.05, 0.05), Vector3(0.85, 0.85, 0.85), Vector3(1, 1, 1)]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("Ring:transparency")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0, 0.455, 0.805),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ao8vk"]
+_data = {
+&"pair": SubResource("Animation_hprdy")
+}
+
+[node name="PairMoment" type="Node3D" unique_id=1138301750]
+
+[node name="Held" type="Node3D" parent="." unique_id=1146266808]
+
+[node name="Looks" type="Node3D" parent="Held" unique_id=1244533262 instance=ExtResource("1_b6aa3")]
+transform = Transform3D(-1.4988538e-08, 0.34289777, -0.9393727, -1, -4.371139e-08, 0, -4.1061284e-08, 0.9393727, 0.34289777, -0.004457671, 5.6824806e-10, -0.012211845)
+
+[node name="Mate" type="Node3D" parent="." unique_id=1927824108]
+
+[node name="Looks" type="Node3D" parent="Mate" unique_id=321039270 instance=ExtResource("1_b6aa3")]
+transform = Transform3D(-1.4988538e-08, 0.34289777, -0.9393727, -1, -4.371139e-08, 0, -4.1061284e-08, 0.9393727, 0.34289777, -0.004457671, 5.6824806e-10, -0.012211845)
+
+[node name="Ball" type="Node3D" parent="." unique_id=440932874 instance=ExtResource("2_12w58")]
+
+[node name="Burst" type="GPUParticles3D" parent="." unique_id=1543881952]
+emitting = false
+amount = 44
+lifetime = 0.55
+one_shot = true
+explosiveness = 1.0
+visibility_aabb = AABB(-1, -1, -1, 2, 2, 2)
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_vwxmx")
+draw_pass_1 = SubResource("QuadMesh_ptrqc")
+
+[node name="Ring" type="MeshInstance3D" parent="." unique_id=945673571]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+visible = false
+material_override = SubResource("StandardMaterial3D_ckphu")
+cast_shadow = 0
+mesh = SubResource("QuadMesh_4iy3x")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=646585170]
+libraries/ = SubResource("AnimationLibrary_ao8vk")

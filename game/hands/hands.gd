@@ -4,6 +4,11 @@
 ## the active item along a direction (core/08). A pick, a drop and a throw each change two Parts in
 ## one answer: the Sock's record in the Mess and these Hands.
 ##
+## Pairs (core/03): picking a loose Sock whose loose mate (same Design) is held fuses the two at once
+## into one Pair in that place, which becomes the active item (P01); it is never refused "full" (P02).
+## A held Pair never takes a third Sock (P03) and is never split. A Pair is held, dropped and thrown
+## as its lead Sock's id, one item.
+##
 ## The refusals the player sees before asking (the crosshair's red, "Hands full", "Can't drop
 ## there") come from the same checks decide() makes: pick_refusal() and drop_refusal().
 class_name Hands
@@ -135,9 +140,20 @@ func pick_refusal(by: int, sock: int) -> String:
 		return SOON
 	if not parts.near_point(by, mess.pose_of(sock).origin, t.reach + t.reach_slack):
 		return FAR
-	if items_of(by).size() >= t.capacity:
+	if items_of(by).size() >= t.capacity and mate_held(by, sock) < 0:
 		return FULL
 	return ""
+
+
+## The held loose Sock that lying Sock `sock` would fuse with if player `by` picked it (same Design,
+## both loose: I.4), or -1. A held Pair is never one (P03).
+func mate_held(by: int, sock: int) -> int:
+	if mess == null or mess.mate_of(sock) >= 0 or sock < 0 or sock >= mess.count():
+		return -1
+	for item in items_of(by):
+		if item != sock and mess.mate_of(item) < 0 and mess.designs[item] == mess.designs[sock]:
+			return item
+	return -1
 
 
 ## Why player `by` may not drop their active item at `point` (a top whose up is `normal`), or ""
@@ -166,11 +182,18 @@ func decide(cmd: Command) -> Dictionary:
 			var why := pick_refusal(cmd.by, sock)
 			if why != "":
 				return refuse(why)
+			var stamp := {"grabbed_at": _with(grabbed_at, cmd.by, clock)}
+			var lead := mate_held(cmd.by, sock)
+			if lead >= 0:
+				var held_items := items_of(cmd.by)
+				return {"ok": true, "paired": lead, "changes": {
+					mess.id: mess.paired_patch(lead, sock),
+					id: _patch(cmd.by, held_items, held_items.find(lead), stamp)}}
 			var items := items_of(cmd.by).duplicate()
 			items.append(sock)
 			return {"ok": true, "changes": {
 				mess.id: mess.held_patch(sock),
-				id: _patch(cmd.by, items, items.size() - 1, {"grabbed_at": _with(grabbed_at, cmd.by, clock)})}}
+				id: _patch(cmd.by, items, items.size() - 1, stamp)}}
 		&"cycle":
 			var step: Variant = cmd.args.get("step")
 			if not (step is int) or step == 0:

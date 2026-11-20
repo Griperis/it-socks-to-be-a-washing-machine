@@ -74,3 +74,16 @@ extends Resource
 @export_range(0.1, 4.0, 0.05) var zoom_scale := 1.6 # placeholder: the old held.json (Q2246)
 ## Seconds for one turn of the active item while the turn button is held.
 @export_range(0.2, 10.0, 0.1, "suffix:s") var turn_time := 2.0 # placeholder: the designer's number (today's value from the old game)
+
+@export_group("Pairs")
+## How long the pairing moment plays (P05): its animation is drawn at this length.
+@export_range(0.1, 2.0, 0.05, "suffix:s") var moment := 0.5 # placeholder: the designer's number (today's value from the old game, Q2255)
+## A held Pair's sock ball is drawn this many times bigger than a Sock in the same place (P06).
+@export_range(0.5, 4.0, 0.05) var ball_scale := 1.6 # placeholder: the old held.json (today's value)
+## A dropped or thrown Pair's drag from its first touch, so it stops within a few cm (P07).
+@export_range(0.0, 20.0, 0.1) var pair_linear_damp := 2.5 # placeholder: the old release.json
+@export_range(0.0, 40.0, 0.5) var pair_angular_damp := 8.0 # placeholder: the old release.json
+## How far over and round a picked Sock or Pair a lying Pair is looked for that may have rested on it (P08).
+@export_range(0.0, 0.2, 0.005, "suffix:m") var wake_reach := 0.03 # placeholder: the old release.json
+## How far under a lying Pair's ball something must lie to still hold it up, else it falls (P08).
+@export_range(0.0, 0.05, 0.001, "suffix:m") var wake_gap := 0.006 # placeholder: the old release.json

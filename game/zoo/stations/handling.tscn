@@ -95,7 +95,7 @@ mesh = SubResource("PlaneMesh_pad")
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 billboard = 1
-text = "Handling Socks: left click picks, a right click drops where the crosshair is white, a right hold charges a Throw and the release throws; the wheel steps, G zooms, R turns; E opens the cupboard"
+text = "Handling Socks: left click picks, a right click drops where the crosshair is white, a right hold charges a Throw and the release throws; the wheel steps, G zooms, R turns; E opens the cupboard. Pick a Sock, then its mate on the left: they become a Pair"
 
 [node name="Table" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -0.5)
@@ -238,6 +238,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.015, -1.44)
 script = ExtResource("4_spot")
 design = 7
 
+[node name="MateFloor" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0.6)
+script = ExtResource("4_spot")
+
+[node name="MateUnder" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+script = ExtResource("4_spot")
+design = 1
+
 [node name="ReturnSpot" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5)
 
@@ -246,7 +255,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5)
 [node name="Flights" type="Node3D" parent="."]
 
 [node name="FlightSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://game/sock/flight.tscn")
+_spawnable_scenes = PackedStringArray("res://game/sock/flight.tscn", "res://game/sock/ball_flight.tscn")
 spawn_path = NodePath("../Flights")
 
 [node name="Socks" type="Node" parent="."]

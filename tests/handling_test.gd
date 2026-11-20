@@ -632,4 +632,4 @@ func _places(when: String) -> void:
 			Mess.State.FLYING:
 				ok = ok and holders == 0 and _mess.looks_of(sock) == null
 				counts["flying"] += 1
-	_check(ok and _mess.count() == 6, "%s every Sock is in exactly one place (%s)" % [when, counts])
+	_check(ok and _mess.count() == 8, "%s every Sock is in exactly one place (%s)" % [when, counts])

@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-19
-done:
+done: 2026-11-20
 blocked_by: ["[[02-handling-socks]]", "[[08-throw]]"]
 notes: []
 terms: []
@@ -112,6 +112,26 @@ it again.
 - The sock ball stand-in is the old `ball_crew_plain.glb`, tinted by Design, until M1 (Q2263, 2026-11-20).
 
 ## Open follow-ups
+- [later] The pairing moment's picked Sock flies in from below right of the view, a fixed path in the
+  AnimationPlayer, not from where it lay in the room as the old game's did; the fold is a squash and
+  roll (the graybox crew's bones are not curled). The strip `builds/review-core-03/pair-moment-strip.png`
+  shows it; the designer may want the old path or a real fold with the M1 models.
+- [later] The Socks inside the moment are drawn at 1 / 1.6 of the ball (the animation's own keys): a
+  changed `ball_scale` resizes the held ball but not the moment's Socks.
 
 ## Built log
 - 2026-11-20 (lead): handed to a ticket agent on Opus: the records change shape (mates, IN_PAIR) under Hands, Mess and the Throw, and the moment is an AnimationPlayer (the Models value: big refactors).
+- 2026-11-20 (agent): Changed: `Mess` gains `mates` and the `IN_PAIR` state (a Pair is its lead Sock's
+  record), `paired_patch()`, a Host-only `fall` Command and the P08 look under a picked Sock or Pair
+  (`wake_reach`, `wake_gap`); lying and falling Pairs are sock balls (`lying_ball.tscn`,
+  `ball_flight.tscn`, Pair drag 2.5 / 8 from the first touch). `Hands.pick_refusal()` never says
+  "full" for a mate (`mate_held()`); the pick answer fuses (P01-P03). `HeldView` draws a held Pair as
+  the ball at `ball_scale` 1.6 and plays `pair_moment.tscn` (AnimationPlayer `pair`, GPU burst and ring
+  in the Collection's colour, `DesignCatalogue.collection_colours` from the old designs.json). The
+  handling station has two mates (ids 6, 7); the old `ball_crew_plain.glb` copied unported. Shot set
+  `pair-moment`, strip in `builds/review-core-03/`.
+  Files: game/mess/mess.gd, game/hands/{hands,hands_tuning,held_view}.gd, game/sock/{sock_dress,design_catalogue}.gd,
+  game/sock/designs.tres, game/sock/{looks_ball,lying_ball,ball_flight,pair_moment}.tscn,
+  game/sock/ball_crew_plain.glb, game/zoo/stations/handling.tscn, tests/pairing_test.gd,
+  tests/{handling,throw}_test.gd (Sock count 8), tools/shot_hooks.gd, tools/shots/sets/pair-moment.txt.
+  Verified: PASS 491 checks, 86 cases (run.sh --touched); PASS rules; PASS asset_lint.

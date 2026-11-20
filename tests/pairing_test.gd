@@ -1,0 +1,521 @@
+## Pairing (core/03): two Socks of one Design become one Pair in the Hands that picked the second.
+## One case per line of the approved behaviour list (P01-P03, P05-P08, H12), the never-split rule,
+## the invariants I.1 and I.4, the refusals and the real path. Every case plays the station scene
+## game/zoo/stations/handling.tscn on a floor, with the game's player and a Parts (a Host of one),
+## as the zoo does.
+extends TestSuite
+
+const STATION := "res://game/zoo/stations/handling.tscn"
+const PLAYER := "res://game/player/player.tscn"
+const ACTIONS: Array[StringName] = [&"pick", &"drop_throw", &"hands_next", &"hands_prev", &"move_forward"]
+## The station's Socks, by id (the order of its SockSpots): two pairs of mates and singles.
+const ON_FLOOR := 0
+const UNDER := 1
+const OVER := 2
+const ON_TABLE := 3
+const MATE_FLOOR := 6
+const MATE_UNDER := 7
+## Where the player stands for most cases: in front of the Socks on the floor, facing -Z.
+const FRONT := Vector3(0.0, 0.0, 1.5)
+const SOCKS := 8
+
+var _level: Node3D = null
+var _station: Node3D = null
+var _player: Player = null
+var _mess: Mess = null
+var _hands: Hands = null
+var _parts: Parts = null
+## Each Design's record count when the case began (I.1: it never changes).
+var _design_counts := {}
+
+
+func cases() -> Array[Dictionary]:
+	return [
+		{"name": "real_path", "method": "case_real_path", "world": false,
+				"title": "real path: in the station the real actions pick a Sock, pick its mate, see one Pair in the Hands, drop it and pick it again"},
+		{"name": "p01_fuse", "method": "case_p01", "world": false,
+				"title": "P01: picking the mate of a held Sock fuses the two at once into one Pair in the Hands, the active item, in one place"},
+		{"name": "p02_full_mate", "method": "case_p02", "world": false,
+				"title": "P02: with the Hands otherwise full the mate still fuses, with no \"Hands full\"; another Sock is still refused \"full\""},
+		{"name": "p03_not_mate", "method": "case_p03", "world": false,
+				"title": "P03: a Sock of another Design never fuses; a held Pair never takes a third Sock"},
+		{"name": "never_split", "method": "case_never_split", "world": false,
+				"title": "a held Pair is never split: cycled, dropped, thrown and picked again it stays one Pair"},
+		{"name": "p05_moment", "method": "case_p05", "world": false,
+				"title": "P05: a pairing plays the moment once (fly, fold, roll, the ball pops at 0.5 s with the burst and ring in the Collection's colour); a whole Pair picked plays none; a drop ends it"},
+		{"name": "p06_held_ball", "method": "case_p06", "world": false,
+				"title": "P06: a held Pair is drawn as one sock ball, tinted as its Sock, 1.6 times a Sock's size"},
+		{"name": "p07_floor", "method": "case_p07", "world": false,
+				"title": "P07: a dropped Pair falls as a ball that drags 2.5 / 8, lies where it lands and is pickable once settled; a Sock dropped on it rests on or beside it, never inside"},
+		{"name": "h12_floor_pair", "method": "case_h12", "world": false,
+				"title": "H12: a click on a lying Pair takes it back as a Pair with a free place, else it stays and \"Hands full\" shows"},
+		{"name": "p08_falls", "method": "case_p08", "world": false,
+				"title": "P08: when the Sock under a lying Pair is picked the Pair falls and lands on the floor"},
+		{"name": "p08_beside", "method": "case_p08_beside", "world": false,
+				"title": "P08: a Pair lying beside a picked Sock stays where it is"},
+		{"name": "invariants", "method": "case_invariants", "world": false,
+				"title": "I.1, I.4 and the Commands: two records per Design, Pairs only in one player's Hands, the Host's answer decides, a Sock in a Pair is refused \"gone\", a Pair survives a save"},
+	]
+
+
+func _before_case() -> void:
+	for a in ACTIONS:
+		if InputMap.has_action(a):
+			Input.action_release(a)
+	if _level != null:
+		_level.free()
+		_level = null
+
+
+# --- The real path -------------------------------------------------------------------------------
+
+func case_real_path() -> void:
+	await _build()
+	await _aim(_player, _centre(ON_FLOOR))
+	await _press(&"pick")
+	await _until(func() -> bool: return _hands.active_of(1) == ON_FLOOR, "the first Sock to be in the Hands")
+	await _physics_ticks(25)
+	await _aim(_player, _centre(MATE_FLOOR))
+	await _press(&"pick")
+	await _until(func() -> bool: return _mess.is_pair(ON_FLOOR), "the mate to fuse")
+	_check(_hands.items_of(1) == PackedInt32Array([ON_FLOOR]), "one Pair in the Hands (%s)" % _hands.items_of(1))
+	_check(_player.message() == "", "no refusal shows")
+	await _frames(2)
+	_check(_is_ball(_player.held_view().looks_of(ON_FLOOR)), "the Hands show one sock ball")
+	_places("after the pairing")
+	var spot := Vector3(0.3, 0.0, 0.4)
+	await _aim(_player, spot)
+	await _press(&"drop_throw")
+	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "the Pair to come to rest")
+	_check(_is_ball(_mess.looks_of(ON_FLOOR)), "it lies as a sock ball")
+	_places("after the drop")
+	await _physics_ticks(25)
+	await _aim(_player, _mess.pose_of(ON_FLOOR).origin)
+	await _press(&"pick")
+	await _until(func() -> bool: return _hands.active_of(1) == ON_FLOOR, "the Pair to be in the Hands again")
+	_check(_mess.is_pair(ON_FLOOR) and _mess.mate_of(ON_FLOOR) == MATE_FLOOR, "still the same Pair")
+	_places("after the second pick")
+
+
+# --- Forming a Pair ------------------------------------------------------------------------------
+
+func case_p01() -> void:
+	await _build()
+	_capacity(3)
+	await _pick(ON_FLOOR)
+	await _repick(OVER)
+	_check(_hands.active_of(1) == OVER, "the newest Sock is active")
+	await _repick(MATE_FLOOR)
+	_check(_hands.items_of(1) == PackedInt32Array([ON_FLOOR, OVER]), "the mate took no place of its own (%s)" % _hands.items_of(1))
+	_check(_hands.active_of(1) == ON_FLOOR, "the Pair is the active item")
+	_check(_mess.mate_of(ON_FLOOR) == MATE_FLOOR and _mess.mate_of(MATE_FLOOR) == ON_FLOOR, "the two name each other")
+	_check(_mess.state_of(MATE_FLOOR) == Mess.State.IN_PAIR and _mess.state_of(ON_FLOOR) == Mess.State.HELD, "the picked one is in the Pair, the held one leads it")
+	_check(_mess.looks_of(MATE_FLOOR) == null, "the mate no longer lies on the floor")
+	_places("after the fuse")
+
+
+func case_p02() -> void:
+	await _build()
+	_check(_player.hands_tuning.capacity == 1, "the Hands hold one item")
+	await _pick(ON_FLOOR)
+	_check(_hands.pick_refusal(1, MATE_FLOOR) != Hands.FULL, "the mate is never refused \"full\"")
+	await _repick(MATE_FLOOR)
+	_check(_mess.is_pair(ON_FLOOR) and _hands.items_of(1).size() == 1, "full Hands still fuse the mate")
+	_check(_player.message() == "", "\"Hands full\" never shows for a mate (%s)" % _player.message())
+	await _physics_ticks(25)
+	await _aim(_player, _centre(OVER))
+	await _press(&"pick")
+	_check(_mess.state_of(OVER) == Mess.State.LYING, "another Sock stays")
+	_check(_player.message() == Player.HANDS_FULL, "and \"Hands full\" shows (%s)" % _player.message())
+	_places("after the refused pick")
+
+
+func case_p03() -> void:
+	await _build()
+	_capacity(3)
+	# A third Sock of the Pair's Design (a stray, never in a real level) shows a held Pair takes none.
+	var stray := SOCKS
+	var poses := _mess.poses.duplicate()
+	poses.append_array(Mess.pack(Transform3D(Basis.IDENTITY, Vector3(0.3, 0.0, 0.5))))
+	var states := _mess.states.duplicate()
+	states.append(Mess.State.LYING)
+	var designs := _mess.designs.duplicate()
+	designs.append(_mess.designs[ON_FLOOR])
+	var mates := _mess.mates.duplicate()
+	mates.append(-1)
+	_mess.write({"designs": designs, "states": states, "poses": poses, "mates": mates}, true)
+	_design_counts = _counts()
+	await _physics_ticks(2)
+	await _pick(ON_FLOOR)
+	await _repick(MATE_UNDER)
+	_check(_mess.mate_of(ON_FLOOR) == -1 and _mess.mate_of(MATE_UNDER) == -1, "a Sock of another Design never fuses")
+	_check(_hands.items_of(1).size() == 2, "it takes its own place")
+	await _repick(MATE_FLOOR)
+	_check(_mess.is_pair(ON_FLOOR), "the mate fuses")
+	await _repick(stray)
+	_check(_mess.mate_of(stray) == -1 and _mess.mate_of(ON_FLOOR) == MATE_FLOOR, "a held Pair never takes a third Sock of its Design")
+	_check(_hands.items_of(1) == PackedInt32Array([ON_FLOOR, MATE_UNDER, stray]), "the third is held loose (%s)" % _hands.items_of(1))
+	_places("after a third Sock", SOCKS + 1)
+
+
+func case_never_split() -> void:
+	await _build()
+	_capacity(3)
+	await _pair()
+	await _repick(OVER)
+	await _wheel(&"hands_next")
+	_check(_hands.active_of(1) == ON_FLOOR and _mess.is_pair(ON_FLOOR), "cycled to, it is still one Pair")
+	var verbs := PackedStringArray()
+	for verb: StringName in _hands.accepts():
+		verbs.append(String(verb))
+	verbs.sort()
+	_same(verbs, PackedStringArray(["cycle", "drop", "pick", "throw"]), "no Command splits a Pair")
+	Input.action_press(&"drop_throw")
+	await _until(func() -> bool: return _player.charging and _player.charge >= 1.0, "the ring to fill", 200)
+	Input.action_release(&"drop_throw")
+	await _until(func() -> bool: return not _hands.items_of(1).has(ON_FLOOR), "the Pair to be thrown", 10)
+	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "the thrown Pair to come to rest")
+	_check(_mess.is_pair(ON_FLOOR) and _mess.state_of(MATE_FLOOR) == Mess.State.IN_PAIR, "thrown, it lands as one Pair")
+	_check(_is_ball(_mess.looks_of(ON_FLOOR)), "drawn as a ball")
+	_places("after the throw")
+
+
+# --- How it looks --------------------------------------------------------------------------------
+
+func case_p05() -> void:
+	await _build()
+	var view := _player.held_view()
+	await _pick(ON_FLOOR)
+	_check(view.moments_played == 0, "a loose Sock picked plays no moment")
+	await _repick(MATE_FLOOR)
+	await _frames(1)
+	var moment := view.moment_of(ON_FLOOR)
+	_check(moment != null and view.moments_played == 1, "the pairing starts the moment once")
+	if moment == null:
+		return
+	_check(not view.looks_of(ON_FLOOR).visible, "the held ball is hidden under the moment")
+	_near(moment.transform.origin.distance_to(view.looks_of(ON_FLOOR).transform.origin), 0.0, 0.0001, "it plays at the Pair's place")
+	var colour := _mess.catalogue.collection_colour(_mess.design_of(ON_FLOOR).collection)
+	var burst := moment.get_node("Burst") as GPUParticles3D
+	_check((burst.process_material as ParticleProcessMaterial).color == colour, "the burst is in the Collection's colour")
+	_check(((moment.get_node("Ring") as MeshInstance3D).material_override as StandardMaterial3D).albedo_color.r == colour.r, "and so is the ring")
+	var anim := moment.get_node("AnimationPlayer") as AnimationPlayer
+	var mate := moment.get_node("Mate") as Node3D
+	var start := mate.position
+	_check(anim.current_animation == HeldView.PAIR, "its AnimationPlayer plays \"pair\"")
+	_check((moment.get_node("Ball") as Node3D).visible == false and mate.visible, "first the two Socks show, no ball")
+	await _until(func() -> bool: return anim.current_animation_position >= 0.2, "the fly to end", 120)
+	_check(mate.position.distance_to(start) > 0.2, "the picked Sock has flown in")
+	await _until(func() -> bool: return anim.current_animation_position >= HeldView.PAIR_TIME, "the roll to end", 120)
+	var ball := moment.get_node("Ball") as Node3D
+	_check(ball.visible and not mate.visible, "the Socks rolled into the ball")
+	_near(ball.scale.x, 1.0, 0.1, "at 0.5 s the ball has popped and settled to its size")
+	_check(burst.emitting or burst.one_shot, "the burst went off")
+	await _until(func() -> bool: return view.moment_of(ON_FLOOR) == null, "the moment to end", 120)
+	_check(view.looks_of(ON_FLOOR).visible, "then the held ball shows")
+	await _drop_at(Vector3(0.3, 0.0, 0.4), ON_FLOOR, "the floor")
+	await _repick(ON_FLOOR)
+	await _frames(2)
+	_check(view.moments_played == 1 and view.moment_of(ON_FLOOR) == null, "a whole Pair picked plays none")
+	await _drop_at(Vector3(0.3, 0.0, 0.4), ON_FLOOR, "the floor")
+	await _repick(MATE_UNDER)
+	await _physics_ticks(25)
+	await _aim(_player, Vector3(0.45, 0.016, 0.0))
+	await _press(&"pick")
+	await _until(func() -> bool: return _mess.is_pair(MATE_UNDER), "the second pair of mates to fuse")
+	await _frames(1)
+	_check(view.moment_of(MATE_UNDER) != null and view.moments_played == 2, "a second pairing plays its own moment")
+	await _aim(_player, Vector3(0.3, 0.0, 0.3))
+	await _press(&"drop_throw")
+	await _frames(1)
+	_check(view.moment_of(MATE_UNDER) == null and _mess.state_of(MATE_UNDER) == Mess.State.FLYING, "dropping the Pair mid-moment ends it")
+	_places("after the moments")
+
+
+func case_p06() -> void:
+	await _build()
+	await _pair()
+	await _frames(2)
+	var view := _player.held_view()
+	var looks := view.looks_of(ON_FLOOR)
+	_check(_is_ball(looks), "the held Pair is one sock ball")
+	var mesh := looks.get_node("Body/ball_crew_plain/crew_plain_ball") as MeshInstance3D
+	var design := _mess.design_of(ON_FLOOR)
+	_check((mesh.material_override as StandardMaterial3D).albedo_color == design.colour, "tinted as its Sock")
+	var t := _player.hands_tuning
+	var sock := design.size_scale() * t.active_scale * t.depth
+	_near(looks.scale.x / sock, 1.6, 0.01, "1.6 times a Sock's size (%.3f)" % (looks.scale.x / sock))
+	_places("while held")
+
+
+# --- A Pair on the floor -------------------------------------------------------------------------
+
+func case_p07() -> void:
+	await _build()
+	await _pair()
+	var spot := Vector3(0.3, 0.0, 0.4)
+	await _aim(_player, spot)
+	await _press(&"drop_throw")
+	await _until(func() -> bool: return _mess.flight_of(ON_FLOOR) != null, "the Pair's body to be let go")
+	var body := _mess.flight_of(ON_FLOOR)
+	_check((body.get_node("Shape") as CollisionShape3D).shape is SphereShape3D, "it falls as a ball")
+	_near(body.linear_damp, 2.5, 0.001, "dragging 2.5")
+	_near(body.angular_damp, 8.0, 0.001, "and 8 turning")
+	_check(_hands.pick_refusal(1, ON_FLOOR) == Hands.GONE, "it cannot be picked while it falls")
+	_places("while it falls")
+	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "it to come to rest")
+	var rest := _mess.pose_of(ON_FLOOR).origin
+	var r := SockDress.ball_radius(_mess.design_of(ON_FLOOR))
+	_check(Vector2(rest.x, rest.z).distance_to(Vector2(spot.x, spot.z)) < 0.08, "it lies within a few cm of the spot (%s)" % rest)
+	_near(rest.y, r, 0.01, "on the floor, neither sinking nor floating")
+	_check(_hands.pick_refusal(1, ON_FLOOR) == "", "settled, it can be picked")
+	# A Sock dropped on it rests on or beside it.
+	_capacity(2)
+	await _physics_ticks(25)
+	_player.global_position = Vector3(-0.6, 0.0, 1.0)
+	await _physics_ticks(2)
+	await _pick(MATE_UNDER)
+	_player.global_position = Vector3(0.3, 0.0, 1.2)
+	await _physics_ticks(2)
+	await _drop_at(rest + Vector3.UP * r, MATE_UNDER, "the lying Pair")
+	var gap := _gap_to_box(MATE_UNDER, _mess.pose_of(ON_FLOOR).origin)
+	_check(gap > r - 0.006, "the Sock is not inside the ball (%.3f from its centre, radius %.3f)" % [gap, r])
+	_places("after a Sock dropped on the Pair")
+
+
+func case_h12() -> void:
+	await _build()
+	await _pair()
+	await _drop_at(Vector3(0.3, 0.0, 0.4), ON_FLOOR, "the floor")
+	await _repick(OVER)
+	await _physics_ticks(25)
+	await _aim(_player, _mess.pose_of(ON_FLOOR).origin)
+	await _press(&"pick")
+	_check(_mess.state_of(ON_FLOOR) == Mess.State.LYING, "with full Hands the Pair stays")
+	_check(_player.message() == Player.HANDS_FULL, "\"Hands full\" shows (%s)" % _player.message())
+	await _drop_at(Vector3(-0.3, 0.0, 0.5), OVER, "the floor")
+	await _repick(ON_FLOOR)
+	_check(_hands.items_of(1) == PackedInt32Array([ON_FLOOR]) and _mess.is_pair(ON_FLOOR), "with a free place it goes back as a Pair")
+	_places("after the floor Pair picks")
+
+
+func case_p08() -> void:
+	await _build()
+	await _pair()
+	var top := _mess.pose_of(MATE_UNDER) * Vector3(0.0, SockDress.box(_mess.design_of(MATE_UNDER)).y, 0.0)
+	_player.global_position = Vector3(-0.8, 0.0, 1.0)
+	await _physics_ticks(2)
+	await _drop_at(top, ON_FLOOR, "the Sock")
+	var r := SockDress.ball_radius(_mess.design_of(ON_FLOOR))
+	var lying := _mess.pose_of(ON_FLOOR).origin
+	_check(lying.y > top.y + r - 0.01, "the Pair rests on the Sock (%s)" % lying)
+	_capacity(2)
+	await _physics_ticks(25)
+	await _aim(_player, _mess.pose_of(MATE_UNDER) * Vector3(0.12, 0.016, 0.0))
+	await _press(&"pick")
+	await _until(func() -> bool: return _hands.items_of(1).has(MATE_UNDER), "the Sock under it to be picked")
+	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.FLYING, "the Pair to fall", 10)
+	_places("while it falls")
+	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "it to land")
+	_near(_mess.pose_of(ON_FLOOR).origin.y, r, 0.01, "it lands on the floor")
+	_places("after it lands")
+
+
+func case_p08_beside() -> void:
+	await _build()
+	await _pair()
+	_player.global_position = Vector3(-0.57, 0.0, 1.0)
+	await _physics_ticks(2)
+	await _drop_at(Vector3(-0.57, 0.0, 0.0), ON_FLOOR, "the floor beside the Sock")
+	var r := SockDress.ball_radius(_mess.design_of(ON_FLOOR))
+	var lying := _mess.pose_of(ON_FLOOR).origin
+	_near(lying.y, r, 0.01, "the Pair lies on the floor")
+	_capacity(2)
+	await _physics_ticks(25)
+	await _aim(_player, _centre(MATE_UNDER))
+	await _press(&"pick")
+	await _until(func() -> bool: return _hands.items_of(1).has(MATE_UNDER), "the Sock beside it to be picked")
+	await _physics_ticks(10)
+	_check(_mess.state_of(ON_FLOOR) == Mess.State.LYING, "the Pair beside stays")
+	_near(_mess.pose_of(ON_FLOOR).origin.distance_to(lying), 0.0, 0.001, "where it was")
+	_places("after the pick beside")
+
+
+# --- Invariants and Commands ---------------------------------------------------------------------
+
+func case_invariants() -> void:
+	await _build()
+	_parts.where = func(_by: int) -> Variant: return _player.global_position
+	_parts.apply(_parts.answer(Command.new(&"pick", 2, _hands.id, {"sock": MATE_FLOOR})))
+	_check(_hands.items_of(2) == PackedInt32Array([MATE_FLOOR]), "another player holds one Sock of the Design")
+	await _pick(ON_FLOOR)
+	_check(_mess.mate_of(ON_FLOOR) == -1 and _mess.mate_of(MATE_FLOOR) == -1, "halves in two players' Hands never pair (I.4)")
+	_places("with the halves apart")
+	_parts.apply(_parts.answer(Command.new(&"drop", 2, _hands.id, {"point": Vector3(0.3, 0.0, 0.6), "normal": Vector3.UP})))
+	await _until(func() -> bool: return _mess.state_of(MATE_FLOOR) == Mess.State.LYING, "the other player's Sock to come to rest")
+	await _physics_ticks(25)
+	var ev := _parts.answer(Command.new(&"pick", 1, _hands.id, {"sock": MATE_FLOOR}))
+	_check(ev["ok"] and int(ev.get("paired", -1)) == ON_FLOOR, "the Host's answer is the fuse (%s)" % ev)
+	_parts.apply(ev)
+	_check(_mess.is_pair(ON_FLOOR), "and the Pair formed in the picker's Hands")
+	_places("after the fuse")
+	ev = _parts.answer(Command.new(&"pick", 2, _hands.id, {"sock": MATE_FLOOR}))
+	_check(not ev["ok"] and ev["reason"] == Hands.GONE, "a Sock in a Pair is refused \"gone\" (%s)" % ev)
+	_check(not _parts.answer(Command.new(&"fall", 2, _mess.id, {"sock": ON_FLOOR}))["ok"], "only the Host lets a Pair fall")
+	_check(not _parts.answer(Command.new(&"fall", Parts.HOST, _mess.id, {"sock": ON_FLOOR}))["ok"], "and only a lying one")
+	var snap := _parts.snapshot()
+	var back := _roundtrip(snap)
+	var saved: Dictionary = back[String(_mess.id)]
+	_same(saved["mates"], snap[_mess.id]["mates"], "the Pair survives a save")
+	_parts.where = Callable()
+
+
+# --- Helpers -------------------------------------------------------------------------------------
+
+## A floor, the station, a Parts and the player standing at FRONT facing -Z.
+func _build() -> void:
+	_level = Node3D.new()
+	_level.name = "Level"
+	var floor_body := StaticBody3D.new()
+	floor_body.name = "Floor"
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(20.0, 0.2, 20.0)
+	shape.shape = box
+	shape.position.y = -0.1
+	floor_body.add_child(shape)
+	_level.add_child(floor_body)
+	_station = (load(STATION) as PackedScene).instantiate() as Node3D
+	_level.add_child(_station)
+	_player = (load(PLAYER) as PackedScene).instantiate() as Player
+	_player.position = FRONT
+	_level.add_child(_player)
+	_parts = Parts.new()
+	_parts.name = "Parts"
+	_level.add_child(_parts)
+	add_child(_level)
+	_mess = _station.get_node("Socks/Mess") as Mess
+	_hands = _station.get_node("Socks/Hands") as Hands
+	await _until(func() -> bool: return _player.is_on_floor() and _mess.looks_of(0) != null, "the player to stand and the Socks to lie")
+	_design_counts = _counts()
+
+
+## Turns the body to `target` and pitches the head at it, as the mouse would.
+func _aim(player: Player, target: Vector3) -> void:
+	var head := player.get_node("Head") as Node3D
+	var to := target - player.global_position
+	player.rotation.y = atan2(-to.x, -to.z)
+	var up := target - head.global_position
+	head.rotation.x = atan2(up.y, Vector2(up.x, up.z).length())
+	await _physics_ticks(2)
+
+
+## Presses an action for two physics ticks, then lets it go.
+func _press(action: StringName) -> void:
+	Input.action_press(action)
+	await _physics_ticks(2)
+	Input.action_release(action)
+	await _physics_ticks(2)
+
+
+## A wheel step through the viewport, as the mouse wheel's event comes.
+func _wheel(action: StringName) -> void:
+	for pressed: bool in [true, false]:
+		var ev := InputEventAction.new()
+		ev.action = action
+		ev.pressed = pressed
+		Input.parse_input_event(ev)
+	await _physics_ticks(2)
+
+
+## Aims at Sock (or Pair) `sock` where it lies and picks it with the real action.
+func _pick(sock: int) -> void:
+	await _aim(_player, _centre(sock))
+	await _press(&"pick")
+	await _until(func() -> bool: return _hands.items_of(1).has(sock) or _mess.state_of(sock) == Mess.State.IN_PAIR,
+			"Sock %d to be picked" % sock)
+
+
+## Waits out the grab interval and picks `sock`.
+func _repick(sock: int) -> void:
+	await _physics_ticks(25)
+	await _pick(sock)
+
+
+## Picks ON_FLOOR, then its mate: one Pair in the Hands.
+func _pair() -> void:
+	await _pick(ON_FLOOR)
+	await _repick(MATE_FLOOR)
+	_check(_mess.is_pair(ON_FLOOR), "the two fused into a Pair")
+
+
+## Aims at `spot`, taps the drop button and waits for `sock` to come to rest.
+func _drop_at(spot: Vector3, sock: int, what: String) -> void:
+	await _aim(_player, spot)
+	_check(_player.crosshair_colour() == Player.CROSSHAIR_OK, "the crosshair is white on %s" % what)
+	await _press(&"drop_throw")
+	_check(not _hands.items_of(1).has(sock), "a tap drops it on %s" % what)
+	await _until(func() -> bool: return _mess.state_of(sock) == Mess.State.LYING, "it to come to rest on %s" % what)
+
+
+func _capacity(n: int) -> void:
+	_player.hands_tuning = _player.hands_tuning.duplicate() as HandsTuning
+	_player.hands_tuning.capacity = n
+	_player.held_view().tuning = _player.hands_tuning
+
+
+## The middle of a lying Sock, or of a lying Pair's ball.
+func _centre(sock: int) -> Vector3:
+	if _mess.is_pair(sock):
+		return _mess.pose_of(sock).origin
+	return _mess.pose_of(sock) * Vector3(0.0, SockDress.box(_mess.design_of(sock)).y * 0.5, 0.0)
+
+
+## How far `point` is from lying Sock `sock`'s box.
+func _gap_to_box(sock: int, point: Vector3) -> float:
+	var b := SockDress.box(_mess.design_of(sock))
+	var local := _mess.pose_of(sock).affine_inverse() * point
+	var near := Vector3(clampf(local.x, -b.x * 0.5, b.x * 0.5), clampf(local.y, 0.0, b.y), clampf(local.z, -b.z * 0.5, b.z * 0.5))
+	return local.distance_to(near)
+
+
+## Whether `looks` is a sock ball's Looks.
+func _is_ball(looks: Node3D) -> bool:
+	return looks != null and looks.has_node("Body/ball_crew_plain")
+
+
+func _counts() -> Dictionary:
+	var out := {}
+	for d in _mess.designs:
+		out[d] = int(out.get(d, 0)) + 1
+	return out
+
+
+## I.1: every Sock is in exactly one place: lying (drawn), in exactly one player's Hands, falling, or
+## in a Pair whose lead is in one of those; mates name each other; each Design keeps its records.
+func _places(when: String, total := SOCKS) -> void:
+	var counts := {"lying": 0, "held": 0, "flying": 0, "in_pair": 0}
+	var ok := true
+	for sock in _mess.count():
+		var holders := 0
+		for by: Variant in _hands.held:
+			holders += (_hands.held[by] as PackedInt32Array).count(sock)
+		var mate := _mess.mate_of(sock)
+		ok = ok and (mate < 0 or (_mess.mate_of(mate) == sock and _mess.designs[mate] == _mess.designs[sock]))
+		match _mess.state_of(sock):
+			Mess.State.LYING:
+				ok = ok and holders == 0 and _mess.looks_of(sock) != null and _mess.flight_of(sock) == null
+				ok = ok and _is_ball(_mess.looks_of(sock)) == (mate >= 0)
+				counts["lying"] += 1
+			Mess.State.HELD:
+				ok = ok and holders == 1 and _mess.looks_of(sock) == null and _mess.flight_of(sock) == null
+				counts["held"] += 1
+			Mess.State.FLYING:
+				ok = ok and holders == 0 and _mess.looks_of(sock) == null
+				counts["flying"] += 1
+			Mess.State.IN_PAIR:
+				ok = ok and holders == 0 and mate >= 0 and _mess.state_of(mate) != Mess.State.IN_PAIR
+				ok = ok and _mess.looks_of(sock) == null and _mess.flight_of(sock) == null
+				counts["in_pair"] += 1
+	_check(ok and _mess.count() == total, "%s every Sock is in exactly one place (%s)" % [when, counts])
+	_same(_counts(), _design_counts, "%s each Design keeps its records" % when)
