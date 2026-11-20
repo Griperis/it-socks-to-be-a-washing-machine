@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-20
-done:
+done: 2026-11-20
 blocked_by: ["[[04-one-cabinet]]", "[[10-one-mess-for-the-zoo]]"]
 notes: []
 terms: []
