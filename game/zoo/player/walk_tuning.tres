@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="WalkTuning" format=3]
+
+[ext_resource type="Script" path="res://game/zoo/player/walk_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")
+walk_speed = 4.0
+jump_speed = 4.5
+look_sensitivity = 0.003

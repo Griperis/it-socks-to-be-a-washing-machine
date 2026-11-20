@@ -1,0 +1,92 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/parts/parts.gd" id="1_parts"]
+[ext_resource type="PackedScene" path="res://game/zoo/player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://game/zoo/stations.gd" id="3_stations"]
+[ext_resource type="Script" path="res://game/parts/session.gd" id="5_session"]
+[ext_resource type="Script" path="res://game/parts/avatar/avatars.gd" id="6_avatars"]
+[ext_resource type="PackedScene" path="res://game/parts/avatar/avatar.tscn" id="7_avatar"]
+[ext_resource type="Script" path="res://game/zoo/zoo_net.gd" id="8_net"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_zoo"]
+
+[sub_resource type="Sky" id="Sky_zoo"]
+sky_material = SubResource("ProceduralSkyMaterial_zoo")
+
+[sub_resource type="Environment" id="Environment_zoo"]
+background_mode = 2
+sky = SubResource("Sky_zoo")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.42, 0.44, 0.46, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+material = SubResource("StandardMaterial3D_floor")
+size = Vector3(40, 0.2, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(40, 0.2, 40)
+
+[node name="Zoo" type="Node3D"]
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_zoo")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 6, 0)
+shadow_enabled = true
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+mesh = SubResource("BoxMesh_floor")
+
+[node name="Shape" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_floor")
+
+[node name="GridNote" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.01, 6)
+pixel_size = 0.004
+text = "Everything here sits on a 0.5 m grid: in the editor, Transform > Configure Snap, Translate Snap 0.5, then snap with the magnet button.
+Each station is a pad with a name, one scene file in game/zoo/stations/: entities on it are instances of the game's own scenes.
+A new feature adds its own file there; this scene is not edited for it."
+
+[node name="Spawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="Stations" type="Node3D" parent="."]
+script = ExtResource("3_stations")
+
+[node name="Parts" type="Node" parent="."]
+script = ExtResource("1_parts")
+
+[node name="Players" type="Node3D" parent="."]
+
+[node name="Avatars" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("local_body")]
+spawn_path = NodePath("../Players")
+script = ExtResource("6_avatars")
+avatar_scene = ExtResource("7_avatar")
+local_body = NodePath("../Player")
+
+[node name="Session" type="Node" parent="." node_paths=PackedStringArray("parts")]
+script = ExtResource("5_session")
+parts = NodePath("../Parts")
+
+[node name="Net" type="Node" parent="." node_paths=PackedStringArray("session", "avatars")]
+script = ExtResource("8_net")
+session = NodePath("../Session")
+avatars = NodePath("../Avatars")
+
+[node name="Hud" type="CanvasLayer" parent="Net"]
+
+[node name="Mode" type="Label" parent="Net/Hud"]
+unique_name_in_owner = true
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 600.0
+offset_bottom = 34.0

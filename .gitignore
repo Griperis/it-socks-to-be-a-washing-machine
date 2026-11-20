@@ -1,0 +1,47 @@
+# Godot's import cache and class registry. A build product, re-made on the next --import.
+.godot/
+/android/
+
+# The engine binary (~140MB, over GitHub's per-file limit). kit/tools/engine.sh fetches it.
+extras/Godot_*
+
+# Python bytecode from any generators in tools/
+__pycache__/
+
+# Screenshots taken by kit/tools/shot.sh. They are how the game is looked at while it is being
+# worked on, not a record of anything: one command re-takes any of them.
+docs/screens/shots/
+
+# Per-user Claude Code settings and runtime files (settings.local.json also holds this machine's
+# path to the kit plugin: python3 kit/tools/setup.py --plugin).
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# Obsidian's per-session window state (the vault's settings themselves are kept).
+**/.obsidian/workspace*.json
+**/.obsidian/cache
+
+# Exported builds. Each is re-made by one command.
+/builds/
+
+# >>> opt:blender
+# Blender (~385MB, over GitHub's per-file limit); kit/tools/blender.sh unpacks it.
+extras/blender-*
+
+# Blender's save backups; the .blend sources in assets_src/blender/ are kept.
+*.blend1
+# <<< opt:blender
+
+# Agent and integration worktrees (Claude Code puts isolated agents here).
+.claude/worktrees/
+
+# The flaky ledger (kit/tools/run.sh --ledger): which test failed and then passed on its rerun. Kept
+# on this machine across reboots, never committed; each entry is a test to rework.
+tests/flaky/
+
+# The port: the old game as a plain clone, never committed (START-HERE step 4)
+/reference/*
+!/reference/.gdignore
+
+# The port pack zip stays out of git
+/it-socks-port-pack.zip

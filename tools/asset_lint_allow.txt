@@ -1,0 +1,4 @@
+# Nodes kit/tools/asset_lint.py may let through although their name ends in a Godot import hint.
+# One per line: <glb path from the project root> <node name>. The path may use * ; '#' starts a comment.
+# A new project has none. Each line needs a reason in a comment above it: the node is meant to import
+# that way (say what Godot makes of it), or the model is third-party and cannot be renamed.

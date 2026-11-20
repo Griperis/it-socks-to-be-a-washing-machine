@@ -1,0 +1,86 @@
+filters:
+  and:
+    - type == "ticket"
+    - not:
+        - file.inFolder("_templates")
+properties:
+  file.name:
+    displayName: Ticket
+  status:
+    displayName: Status
+  kind:
+    displayName: Kind
+  area:
+    displayName: Area
+  feature:
+    displayName: Feature
+  created:
+    displayName: Created
+  done:
+    displayName: Done
+  priority:
+    displayName: Priority
+views:
+  - type: table
+    name: Board
+    filters:
+      and:
+        - status != "done"
+        - status != "wontfix"
+    groupBy:
+      property: status
+      direction: ASC
+    order:
+      - file.name
+      - priority
+      - kind
+      - area
+      - feature
+      - created
+  - type: table
+    name: Needs you
+    filters:
+      or:
+        - status == "needs-info"
+        - status == "needs-triage"
+        - status == "ready-for-human"
+    groupBy:
+      property: area
+      direction: ASC
+    order:
+      - file.name
+      - status
+      - kind
+      - feature
+  - type: table
+    name: In progress
+    filters:
+      and:
+        - status == "in-progress"
+    order:
+      - file.name
+      - area
+      - feature
+  - type: table
+    name: Done
+    filters:
+      and:
+        - status == "done"
+    order:
+      - file.name
+      - done
+      - area
+      - feature
+    sort:
+      - property: done
+        direction: DESC
+  - type: table
+    name: By area
+    groupBy:
+      property: area
+      direction: ASC
+    order:
+      - file.name
+      - status
+      - kind
+      - feature

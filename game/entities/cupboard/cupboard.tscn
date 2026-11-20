@@ -1,0 +1,18 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/parts/openable.gd" id="1_openable"]
+[ext_resource type="PackedScene" path="res://game/entities/cupboard/looks_graybox.tscn" id="2_looks"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_body"]
+size = Vector3(1, 2, 0.45)
+
+[node name="Cupboard" type="StaticBody3D"]
+
+[node name="Openable" type="Node" parent="."]
+script = ExtResource("1_openable")
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.025)
+shape = SubResource("BoxShape3D_body")
+
+[node name="Looks" parent="." instance=ExtResource("2_looks")]

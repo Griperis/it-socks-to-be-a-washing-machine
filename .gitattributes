@@ -1,0 +1,36 @@
+# Godot rewrites files it touches with CRLF on Windows, which breaks exact-match edits from a
+# shell. Pin everything the engine and the tools read.
+* text=auto eol=lf
+
+# Binaries go through Git LFS from the first commit (`git lfs install` once per machine). Adding
+# LFS later means renormalising history and conflicts on every older branch that touched a binary.
+# Without git-lfs installed these lines are ignored and the files are stored as plain blobs.
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.webp filter=lfs diff=lfs merge=lfs -text
+*.hdr filter=lfs diff=lfs merge=lfs -text
+*.exr filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.glb filter=lfs diff=lfs merge=lfs -text
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.ogg filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.ogv filter=lfs diff=lfs merge=lfs -text
+*.ttf filter=lfs diff=lfs merge=lfs -text
+*.otf filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+
+# Vendored add-ons stay out of LFS: they are small, and they must arrive whole wherever the
+# repository is copied without its LFS objects (a zip download, a clone without git-lfs).
+addons/** !filter !diff !merge
+addons/**/*.ttf binary
+addons/**/*.otf binary
+addons/**/*.png binary
+
+# Two branches that each add an input action merge with both, instead of a conflict where both
+# appended at one place. The driver is kit/tools/input_actions.py, registered in this clone's git
+# config by `python3 kit/tools/setup.py --init` (or --plugin); without it git merges the file as text.
+project.godot merge=godot-project

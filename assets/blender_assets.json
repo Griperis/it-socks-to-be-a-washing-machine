@@ -1,0 +1,4 @@
+{
+  "_doc": "Every Blender asset: its source is assets_src/blender/<asset>.blend and its export assets/<asset>/<asset>.glb (kit/tools/blender/export.sh <asset>). class picks the triangle budget (BUDGETS in kit/tools/blender/asset_checks.py); colliders is the least number of collider meshes. Optional: source (the .blend's name when several assets share one), glb (the export path when it differs), lods (each level's triangle limit, <mesh>_lod1, <mesh>_lod2 ...), origin_xy (false for an asset not centred on its origin by design). Example: \"crate\": {\"class\": \"prop\", \"colliders\": 1}",
+  "assets": {}
+}

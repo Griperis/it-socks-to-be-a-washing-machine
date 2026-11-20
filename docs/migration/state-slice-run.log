@@ -1,0 +1,21 @@
+  ok   the Host listens on 24611
+  ok   the Guest starts joining
+  ok   the Guest is welcomed
+  ok   the Cellar Door is locked (set in level.tscn)
+  ok   the Guest's Door is still shut before the Host answers
+  ok   the Guest's Door opens
+  ok   the Host's Door is open
+  ok   the Guest holds the Radio
+  ok   the Host sees the Guest holding the Radio
+  ok   the Guest hears 'locked'
+  ok   the late Guest starts joining
+  ok   the late Guest is welcomed
+  ok   the late Guest sees the Door open
+  ok   the late Guest sees who holds the Radio
+  ok   the late Guest's Door stands open at once, without a swing
+  ok   the Radio stays with the first Guest
+  ok   all three machines agree
+SNAPSHOT { &"Hall/Cellar/Openable": { "locked": true, "open": false }, &"Hall/Door/Openable": { "locked": false, "open": true }, &"Hall/Radio/Carriable": { "at": Vector3(inf, inf, inf), "holder": 610451033, "yaw": 0.0 } }
+  ok   the late Guest sees the Radio dropped
+  ok   the Host dropped the Radio of the Guest who left
+PASS 19 checks, 0 failed

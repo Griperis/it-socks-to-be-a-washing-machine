@@ -1,0 +1,12 @@
+{
+  "statusLine": { "type": "command", "command": "bash \"$CLAUDE_PROJECT_DIR/kit/tools/statusline.sh\"" },
+  "attribution": { "commit": "", "pr": "" },
+  "permissions": {
+    "allow": [
+      "Bash(kit/tools/:*)",
+      "Bash(bash kit/tools/:*)",
+      "Bash(python3 kit/tools/:*)",
+      "Bash(python3 -B kit/tools/:*)"
+    ]
+  }
+}

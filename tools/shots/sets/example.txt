@@ -1,0 +1,3 @@
+# The placeholder scene before and after one click on its square (delete or replace with the game's own sets)
+start  --size=1280x720 --shots=30
+click  --size=1280x720 --do='20:click:640,360' --shots=40

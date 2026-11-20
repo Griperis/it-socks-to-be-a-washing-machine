@@ -1,0 +1,80 @@
+views file: res://game/debug/tour/views_baseline.json
+game: It Socks 0.1.0 (debug build)
+preset: high, every Option at its default
+engine: Godot 4.7.1-stable (official)
+renderer: llvmpipe (LLVM 21.1.8, 256 bits), Unknown (forward_plus, vulkan 1.4.335)
+os: Linux 26.04, AMD Ryzen 7 7800X3D 8-Core Processor
+resolution: 1280x720 (screen (1920, 1080))
+date: 2026-11-19 22:42:39 UTC
+time: 639 s, 14 scene loads
+views: 70: 70 captured, 0 skipped, 0 failed
+ok cab-simple 1280x720
+ok cab-patterns 1280x720
+ok cab-winter 1280x720
+ok sock-simple-inst 1280x720
+ok sock-patterns-inst 1280x720
+ok sock-sport-inst 1280x720
+ok sock-winter-inst 1280x720
+ok sock-animals-inst 1280x720
+ok lineup-simple 1280x720
+ok lineup-sport 1280x720
+ok lineup-winter 1280x720
+ok lineup-animals 1280x720
+ok floor 1280x720
+ok held-sock 1280x720
+ok held-pair 1280x720
+ok held-radio 1280x720
+ok held-lantern 1280x720
+ok avatar-wardrobe-ui 1280x720
+ok exterior-front 1280x720
+ok exterior-high 1280x720
+ok ui-hud 1280x720
+ok ui-upgrades 1280x720
+ok ui-esc-options 1280x720
+ok room-workshop 1280x720
+ok room-laundry 1280x720
+ok room-boiler 1280x720
+ok room-stair_lobby 1280x720
+ok room-garage 1280x720
+ok room-stairs_basement 1280x720
+ok room-kitchen 1280x720
+ok room-hall 1280x720
+ok room-living 1280x720
+ok room-stairs_ground 1280x720
+ok room-office 1280x720
+ok room-bedroom 1280x720
+ok room-landing 1280x720
+ok room-bathroom 1280x720
+ok room-kids 1280x720
+ok room-stairs_first 1280x720
+ok room-loft 1280x720
+ok room-kitchen-b 1280x720
+ok room-living-b 1280x720
+ok f-sofa 1280x720
+ok f-piano 1280x720
+ok f-bed 1280x720
+ok f-bathtub 1280x720
+ok f-desk 1280x720
+ok f-workbench 1280x720
+ok f-car 1280x720
+ok f-boiler 1280x720
+ok c-cupboard 1280x720
+ok c-oven 1280x720
+ok c-fridge 1280x720
+ok c-dresser 1280x720
+ok c-basket 1280x720
+ok c-litterflap 1280x720
+ok held-nozzle 1280x720
+ok held-backpack-worn 1280x720
+ok dev-sockvac 1280x720
+ok dev-backpack 1280x720
+ok dev-splitter 1280x720
+ok cat-sit 1280x720
+ok cat-nap 1280x720
+ok avatar-hat-clothes 1280x720
+ok elevator-stand 1280x720
+ok elevator-in 1280x720
+ok ui-ending 1280x720
+ok ui-title 1280x720
+ok ui-options 1280x720
+ok ui-encyclopedia 1280x720

@@ -1,0 +1,410 @@
+### exp/a12_placed_modes.gd
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+=== a12_placed_modes.gd ===
+CHECK A1 guest connects: true
+CHECK A1 ALWAYS: Host's starting value (Host never changed it) reaches a Guest connected from the start: arrived after 34 ms
+CHECK A1 ON_CHANGE: Host's starting value (never changed) reaches a Guest connected from the start: arrived after 34 ms
+CHECK A1 SPAWN-only on a placed node: Host's starting value within 1.5 s: never arrived (Guest still -1)
+CHECK A1 ALWAYS: a Host change reaches the Guest: arrived after 17 ms
+CHECK A1 ON_CHANGE: a Host change reaches the Guest: arrived after 17 ms
+CHECK A1 SPAWN-only: a Host change reaches the Guest: never arrived
+CHECK A1 Guest writes its own copy (not authority): ALWAYS value 0.5 s later: 11 (Host 11): overwritten by the next tick
+CHECK A1 Guest writes its own copy (not authority): ON_CHANGE value 0.5 s later: 99 (Host 21): silently diverged until the Host changes it
+CHECK A1 Host's values after the Guest's local writes: a=11 b=21 (unchanged: a Guest's writes are never sent)
+CHECK A1 the diverged ON_CHANGE value heals at the Host's next change: after 17 ms / 1 frames
+CHECK A2 late Guest connects: true
+CHECK A2 late Guest, Host quiet: ALWAYS current value: arrived after 50 ms
+CHECK A2 late Guest, Host quiet: ON_CHANGE current value: arrived after 50 ms
+CHECK A2 late Guest, Host quiet: SPAWN-only current value: never in 2 s (still -1)
+CHECK A2 late Guest: a further Host change (ON_CHANGE): after 0 ms / 1 frames
+CHECK A2 the early Guest also has it: true
+CHECK A2 SPAWN-only after a further change: -1
+CHECK engine errors in this experiment: no engine errors
+SUMMARY a12_placed_modes.gd: 19 checks
+  - A1 guest connects: true
+  - A1 ALWAYS: Host's starting value (Host never changed it) reaches a Guest connected from the start: arrived after 34 ms
+  - A1 ON_CHANGE: Host's starting value (never changed) reaches a Guest connected from the start: arrived after 34 ms
+  - A1 SPAWN-only on a placed node: Host's starting value within 1.5 s: never arrived (Guest still -1)
+  - A1 ALWAYS: a Host change reaches the Guest: arrived after 17 ms
+  - A1 ON_CHANGE: a Host change reaches the Guest: arrived after 17 ms
+  - A1 SPAWN-only: a Host change reaches the Guest: never arrived
+  - A1 Guest writes its own copy (not authority): ALWAYS value 0.5 s later: 11 (Host 11): overwritten by the next tick
+  - A1 Guest writes its own copy (not authority): ON_CHANGE value 0.5 s later: 99 (Host 21): silently diverged until the Host changes it
+  - A1 Host's values after the Guest's local writes: a=11 b=21 (unchanged: a Guest's writes are never sent)
+  - A1 the diverged ON_CHANGE value heals at the Host's next change: after 17 ms / 1 frames
+  - A2 late Guest connects: true
+  - A2 late Guest, Host quiet: ALWAYS current value: arrived after 50 ms
+  - A2 late Guest, Host quiet: ON_CHANGE current value: arrived after 50 ms
+  - A2 late Guest, Host quiet: SPAWN-only current value: never in 2 s (still -1)
+  - A2 late Guest: a further Host change (ON_CHANGE): after 0 ms / 1 frames
+  - A2 the early Guest also has it: true
+  - A2 SPAWN-only after a further change: -1
+  - engine errors in this experiment: no engine errors
+### exit 0 exp/a12_placed_modes.gd
+### exp/a3_mismatch.gd
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+=== a3_mismatch.gd ===
+ERROR: Node not found: "Level/Thing/Sync" (relative to "/root/G_renamed").
+   at: get_node (scene/main/node.cpp:1975)
+ERROR: Parameter "node" is null.
+   at: process_simplify_path (modules/multiplayer/scene_cache_interface.cpp:118)
+CHECK A3 renamed: connected=true; the mismatched node on the Guest after 1 s: a_always=-1 b_watch=-1
+CHECK A3 renamed: the good node Other still syncs: true
+CHECK A3 renamed: an RPC to another node still arrives: true
+CHECK A3 renamed: engine errors in the first second: 1x "Node not found: "Level/Thing/Sync" (relative to "/root/G_renamed"). (node.cpp:1975 get_node)"; 1x "Parameter "node" is null. (scene_cache_interface.cpp:118 process_simplify_path)"
+CHECK A3 renamed: engine errors in the next second, after one more Host change: no engine errors
+ERROR: Node not found: "Level/Thing/Sync" (relative to "/root/G_moved").
+   at: get_node (scene/main/node.cpp:1975)
+ERROR: Parameter "node" is null.
+   at: process_simplify_path (modules/multiplayer/scene_cache_interface.cpp:118)
+CHECK A3 moved: connected=true; the mismatched node on the Guest after 1 s: a_always=-1 b_watch=-1
+CHECK A3 moved: the good node Other still syncs: true
+CHECK A3 moved: an RPC to another node still arrives: true
+CHECK A3 moved: engine errors in the first second: 1x "Node not found: "Level/Thing/Sync" (relative to "/root/G_moved"). (node.cpp:1975 get_node)"; 1x "Parameter "node" is null. (scene_cache_interface.cpp:118 process_simplify_path)"
+CHECK A3 moved: engine errors in the next second, after one more Host change: no engine errors
+ERROR: Node not found: "Level/Thing/Sync" (relative to "/root/G_missing").
+   at: get_node (scene/main/node.cpp:1975)
+ERROR: Parameter "node" is null.
+   at: process_simplify_path (modules/multiplayer/scene_cache_interface.cpp:118)
+CHECK A3 missing: connected=true; the mismatched node on the Guest after 1 s: no node
+CHECK A3 missing: the good node Other still syncs: true
+CHECK A3 missing: an RPC to another node still arrives: true
+CHECK A3 missing: engine errors in the first second: 1x "Node not found: "Level/Thing/Sync" (relative to "/root/G_missing"). (node.cpp:1975 get_node)"; 1x "Parameter "node" is null. (scene_cache_interface.cpp:118 process_simplify_path)"
+CHECK A3 missing: engine errors in the next second, after one more Host change: no engine errors
+CHECK A3 other_script: connected=true; the mismatched node on the Guest after 1 s: a_always=<null> b_watch=<null>
+CHECK A3 other_script: the good node Other still syncs: true
+CHECK A3 other_script: an RPC to another node still arrives: true
+CHECK A3 other_script: engine errors in the first second: no engine errors
+CHECK A3 other_script: engine errors in the next second, after one more Host change: no engine errors
+SUMMARY a3_mismatch.gd: 20 checks
+  - A3 renamed: connected=true; the mismatched node on the Guest after 1 s: a_always=-1 b_watch=-1
+  - A3 renamed: the good node Other still syncs: true
+  - A3 renamed: an RPC to another node still arrives: true
+  - A3 renamed: engine errors in the first second: 1x "Node not found: "Level/Thing/Sync" (relative to "/root/G_renamed"). (node.cpp:1975 get_node)"; 1x "Parameter "node" is null. (scene_cache_interface.cpp:118 process_simplify_path)"
+  - A3 renamed: engine errors in the next second, after one more Host change: no engine errors
+  - A3 moved: connected=true; the mismatched node on the Guest after 1 s: a_always=-1 b_watch=-1
+  - A3 moved: the good node Other still syncs: true
+  - A3 moved: an RPC to another node still arrives: true
+  - A3 moved: engine errors in the first second: 1x "Node not found: "Level/Thing/Sync" (relative to "/root/G_moved"). (node.cpp:1975 get_node)"; 1x "Parameter "node" is null. (scene_cache_interface.cpp:118 process_simplify_path)"
+  - A3 moved: engine errors in the next second, after one more Host change: no engine errors
+  - A3 missing: connected=true; the mismatched node on the Guest after 1 s: no node
+  - A3 missing: the good node Other still syncs: true
+  - A3 missing: an RPC to another node still arrives: true
+  - A3 missing: engine errors in the first second: 1x "Node not found: "Level/Thing/Sync" (relative to "/root/G_missing"). (node.cpp:1975 get_node)"; 1x "Parameter "node" is null. (scene_cache_interface.cpp:118 process_simplify_path)"
+  - A3 missing: engine errors in the next second, after one more Host change: no engine errors
+  - A3 other_script: connected=true; the mismatched node on the Guest after 1 s: a_always=<null> b_watch=<null>
+  - A3 other_script: the good node Other still syncs: true
+  - A3 other_script: an RPC to another node still arrives: true
+  - A3 other_script: engine errors in the first second: no engine errors
+  - A3 other_script: engine errors in the next second, after one more Host change: no engine errors
+### exit 0 exp/a3_mismatch.gd
+### exp/a4_types_cost.gd
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+=== a4_types_cost.gd ===
+CHECK A4 types that arrive equal: t_bool, t_int, t_big_int, t_float, t_string, t_string_name, t_vector2, t_vector3, t_transform3d, t_color, t_array, t_typed_array, t_dict, t_bytes, t_vec3s, t_node_path
+CHECK A4 types that do not: t_resource -> <null> (Nil); t_node -> <null> (Nil); t_callable -> null::null (Callable)
+CHECK A4 engine errors for the types: no engine errors
+CHECK A4 Array.append in place is noticed (ON_CHANGE compares a deep copy): true
+CHECK A4 Dictionary key added in place is noticed: true
+CHECK A4 a Vector3 component set in place is noticed: true
+CHECK A4 cost ON_CHANGE: 1 s with NO change: Host sent bytes/packets, Guest sent bytes/packets: 44 B / 4 pk, 44 B / 4 pk
+CHECK A4 cost ON_CHANGE: 1 s with ONE bool change: Host sent bytes/packets, Guest sent bytes/packets (arrived: true): 56 B / 4 pk, 36 B / 4 pk
+CHECK A4 cost ON_CHANGE: 120 frames, the bool flipped every frame: Host bytes/packets, Guest bytes/packets; Host bytes per frame: 3400 B / 124 pk, 1232 B / 124 pk; 28.3 B per frame
+CHECK A4 cost ALWAYS interval 0: 1 s with NO change: Host sent bytes/packets, Guest sent bytes/packets: 1364 B / 64 pk, 44 B / 4 pk
+CHECK A4 cost ALWAYS interval 0: 1 s with ONE bool change: Host sent bytes/packets, Guest sent bytes/packets (arrived: true): 1356 B / 64 pk, 36 B / 4 pk
+CHECK A4 cost ALWAYS interval 0: 120 frames, the bool flipped every frame: Host bytes/packets, Guest bytes/packets; Host bytes per frame: 2712 B / 128 pk, 72 B / 8 pk; 22.6 B per frame
+CHECK A4 cost ALWAYS interval 0.1: 1 s with NO change: Host sent bytes/packets, Guest sent bytes/packets: 242 B / 13 pk, 44 B / 4 pk
+CHECK A4 cost ALWAYS interval 0.1: 1 s with ONE bool change: Host sent bytes/packets, Guest sent bytes/packets (arrived: true): 234 B / 13 pk, 36 B / 4 pk
+CHECK A4 cost ALWAYS interval 0.1: 120 frames, the bool flipped every frame: Host bytes/packets, Guest bytes/packets; Host bytes per frame: 468 B / 26 pk, 72 B / 8 pk; 3.9 B per frame
+CHECK A4 engine errors in the cost runs: no engine errors
+SUMMARY a4_types_cost.gd: 16 checks
+  - A4 types that arrive equal: t_bool, t_int, t_big_int, t_float, t_string, t_string_name, t_vector2, t_vector3, t_transform3d, t_color, t_array, t_typed_array, t_dict, t_bytes, t_vec3s, t_node_path
+  - A4 types that do not: t_resource -> <null> (Nil); t_node -> <null> (Nil); t_callable -> null::null (Callable)
+  - A4 engine errors for the types: no engine errors
+  - A4 Array.append in place is noticed (ON_CHANGE compares a deep copy): true
+  - A4 Dictionary key added in place is noticed: true
+  - A4 a Vector3 component set in place is noticed: true
+  - A4 cost ON_CHANGE: 1 s with NO change: Host sent bytes/packets, Guest sent bytes/packets: 44 B / 4 pk, 44 B / 4 pk
+  - A4 cost ON_CHANGE: 1 s with ONE bool change: Host sent bytes/packets, Guest sent bytes/packets (arrived: true): 56 B / 4 pk, 36 B / 4 pk
+  - A4 cost ON_CHANGE: 120 frames, the bool flipped every frame: Host bytes/packets, Guest bytes/packets; Host bytes per frame: 3400 B / 124 pk, 1232 B / 124 pk; 28.3 B per frame
+  - A4 cost ALWAYS interval 0: 1 s with NO change: Host sent bytes/packets, Guest sent bytes/packets: 1364 B / 64 pk, 44 B / 4 pk
+  - A4 cost ALWAYS interval 0: 1 s with ONE bool change: Host sent bytes/packets, Guest sent bytes/packets (arrived: true): 1356 B / 64 pk, 36 B / 4 pk
+  - A4 cost ALWAYS interval 0: 120 frames, the bool flipped every frame: Host bytes/packets, Guest bytes/packets; Host bytes per frame: 2712 B / 128 pk, 72 B / 8 pk; 22.6 B per frame
+  - A4 cost ALWAYS interval 0.1: 1 s with NO change: Host sent bytes/packets, Guest sent bytes/packets: 242 B / 13 pk, 44 B / 4 pk
+  - A4 cost ALWAYS interval 0.1: 1 s with ONE bool change: Host sent bytes/packets, Guest sent bytes/packets (arrived: true): 234 B / 13 pk, 36 B / 4 pk
+  - A4 cost ALWAYS interval 0.1: 120 frames, the bool flipped every frame: Host bytes/packets, Guest bytes/packets; Host bytes per frame: 468 B / 26 pk, 72 B / 8 pk; 3.9 B per frame
+  - A4 engine errors in the cost runs: no engine errors
+### exit 0 exp/a4_types_cost.gd
+### exp/a5_authority.gd
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+=== a5_authority.gd ===
+CHECK A5 avatar authority on Host / A / B: 9202318 / 9202318 / 9202318 (A is 9202318)
+CHECK A5 Guest A moves its own avatar (ALWAYS): the Host sees it: arrived after 33 ms
+CHECK A5 Guest A moves its own avatar: Guest B sees it (sent A->Host->B by SceneMultiplayer's server relay): arrived after 33 ms
+CHECK A5 Host writes A's avatar position locally: Host / A / B 0.5 s later: (1.0, 2.0, 3.0) / (1.0, 2.0, 3.0) / (1.0, 2.0, 3.0)
+CHECK A5 Host writes A's avatar ON_CHANGE field locally: Host / A / B: 77 / 0 / 0
+CHECK A5 errors so far (honest use): no engine errors
+ERROR: Ignoring delta for non-authority or invalid synchronizer.
+   at: on_delta_receive (modules/multiplayer/scene_replication_interface.cpp:781)
+ERROR: Ignoring delta for non-authority or invalid synchronizer.
+   at: on_delta_receive (modules/multiplayer/scene_replication_interface.cpp:781)
+CHECK A5 modified Guest B claims HostThing on its side and writes 666: Host / A / B see: 5 / 5 / 666
+CHECK A5 what the Host (and A) log for B's packets: 2x "Ignoring delta for non-authority or invalid synchronizer. (scene_replication_interface.cpp:781 on_delta_receive)"
+ERROR: Ignoring delta for non-authority or invalid synchronizer.
+   at: on_delta_receive (modules/multiplayer/scene_replication_interface.cpp:781)
+CHECK A5 after the Host changes HostThing again: Host / A / B: 6 / 6 / 666 (B ignores the Host now: it thinks it is authority)
+CHECK A5 errors after that: 1x "Ignoring delta for non-authority or invalid synchronizer. (scene_replication_interface.cpp:781 on_delta_receive)"
+SUMMARY a5_authority.gd: 10 checks
+  - A5 avatar authority on Host / A / B: 9202318 / 9202318 / 9202318 (A is 9202318)
+  - A5 Guest A moves its own avatar (ALWAYS): the Host sees it: arrived after 33 ms
+  - A5 Guest A moves its own avatar: Guest B sees it (sent A->Host->B by SceneMultiplayer's server relay): arrived after 33 ms
+  - A5 Host writes A's avatar position locally: Host / A / B 0.5 s later: (1.0, 2.0, 3.0) / (1.0, 2.0, 3.0) / (1.0, 2.0, 3.0)
+  - A5 Host writes A's avatar ON_CHANGE field locally: Host / A / B: 77 / 0 / 0
+  - A5 errors so far (honest use): no engine errors
+  - A5 modified Guest B claims HostThing on its side and writes 666: Host / A / B see: 5 / 5 / 666
+  - A5 what the Host (and A) log for B's packets: 2x "Ignoring delta for non-authority or invalid synchronizer. (scene_replication_interface.cpp:781 on_delta_receive)"
+  - A5 after the Host changes HostThing again: Host / A / B: 6 / 6 / 666 (B ignores the Host now: it thinks it is authority)
+  - A5 errors after that: 1x "Ignoring delta for non-authority or invalid synchronizer. (scene_replication_interface.cpp:781 on_delta_receive)"
+### exit 0 exp/a5_authority.gd
+### exp/b_spawner.gd
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+=== b_spawner.gd ===
+CHECK B1 connected Guest gets the Host's 3 new balls: true: Red(tint 1 at (1.0, 0.0, 0.0)), Blue(tint 2 at (2.0, 0.0, 0.0)), Ball(tint 3 at (0.0, 0.0, 0.0))
+CHECK B1 Host's names for comparison: Red(tint 1 at (1.0, 0.0, 0.0)), Blue(tint 2 at (2.0, 0.0, 0.0)), Ball(tint 3 at (0.0, 0.0, 0.0))
+CHECK B1 spawn-state at the Guest's _ready (tint, position): { "tint": 1, "position": (1.0, 0.0, 0.0), "c_spawn": 0 }
+CHECK B1 after the Host changes Red: tint (spawn-only) / position (ON_CHANGE) on the Guest: 1 / (5.0, 5.0, 5.0)
+CHECK B1 late Guest gets the existing balls replayed: true: Red(tint 10 at (5.0, 5.0, 5.0)), Blue(tint 2 at (2.0, 0.0, 0.0)), Ball(tint 3 at (0.0, 0.0, 0.0))
+CHECK B1 late Guest: Red's spawn state at _ready is the CURRENT value (tint 10, at 5,5,5): { "tint": 10, "position": (5.0, 5.0, 5.0), "c_spawn": 0 }
+CHECK B1 errors so far: no engine errors
+CHECK B2 Host queue_free(Blue): gone on both Guests: true
+CHECK B2 Guest frees its own copy of Red: Host still has it / errors: true / no engine errors
+ERROR: Ignoring delta for non-authority or invalid synchronizer.
+   at: on_delta_receive (modules/multiplayer/scene_replication_interface.cpp:781)
+CHECK B2 Host moves Red afterwards: what the Guest logs: 1x "Ignoring delta for non-authority or invalid synchronizer. (scene_replication_interface.cpp:781 on_delta_receive)"
+ERROR: Condition "parent->has_node(name)" is true. Returning: ERR_INVALID_DATA
+   at: on_spawn_receive (modules/multiplayer/scene_replication_interface.cpp:602)
+ERROR: Ignoring delta for non-authority or invalid synchronizer.
+   at: on_delta_receive (modules/multiplayer/scene_replication_interface.cpp:781)
+CHECK B3 name clash: the Guest already has a 'Green' child: what the Guest has / logs: Ball, Green / 1x "Condition "parent->has_node(name)" is true. Returning: ERR_INVALID_DATA (scene_replication_interface.cpp:602 on_spawn_receive)"; 1x "Ignoring delta for non-authority or invalid synchronizer. (scene_replication_interface.cpp:781 on_delta_receive)"
+ERROR: Ignoring delta for non-authority or invalid synchronizer.
+   at: on_delta_receive (modules/multiplayer/scene_replication_interface.cpp:781)
+CHECK B3 Host then moves its Green: Guest logs: 1x "Ignoring delta for non-authority or invalid synchronizer. (scene_replication_interface.cpp:781 on_delta_receive)"
+CHECK B3 Host adds another 'Green' with add_child(n, true): names on Host / late Guest: Red, Ball, Green, Green2 / Red, Ball, Green, Green2
+CHECK B3 errors: no engine errors
+CHECK B2 custom spawn(data): Guest gets it: true: Custom(tint 8 at (3.0, 3.0, 3.0))
+CHECK B2 custom spawn, late Guest: at _ready (data replays as first given: tint 8 at 3,3,3; spawn props then overwrite): { "tint": 9, "position": (4.0, 4.0, 4.0), "c_spawn": 0 }
+CHECK B2 custom spawn, late Guest a moment later: Custom(tint 9 at (4.0, 4.0, 4.0))
+CHECK B2 errors: no engine errors
+CHECK B4 a ball added while offline (before host()) reaches a Guest after hosting: true: Loaded(tint 6 at (6.0, 0.0, 0.0))
+CHECK B4 a Node3D.new() (no scene_file_path) under the spawn path reaches the Guest: false
+CHECK B4 errors: no engine errors
+SUMMARY b_spawner.gd: 21 checks
+  - B1 connected Guest gets the Host's 3 new balls: true: Red(tint 1 at (1.0, 0.0, 0.0)), Blue(tint 2 at (2.0, 0.0, 0.0)), Ball(tint 3 at (0.0, 0.0, 0.0))
+  - B1 Host's names for comparison: Red(tint 1 at (1.0, 0.0, 0.0)), Blue(tint 2 at (2.0, 0.0, 0.0)), Ball(tint 3 at (0.0, 0.0, 0.0))
+  - B1 spawn-state at the Guest's _ready (tint, position): { "tint": 1, "position": (1.0, 0.0, 0.0), "c_spawn": 0 }
+  - B1 after the Host changes Red: tint (spawn-only) / position (ON_CHANGE) on the Guest: 1 / (5.0, 5.0, 5.0)
+  - B1 late Guest gets the existing balls replayed: true: Red(tint 10 at (5.0, 5.0, 5.0)), Blue(tint 2 at (2.0, 0.0, 0.0)), Ball(tint 3 at (0.0, 0.0, 0.0))
+  - B1 late Guest: Red's spawn state at _ready is the CURRENT value (tint 10, at 5,5,5): { "tint": 10, "position": (5.0, 5.0, 5.0), "c_spawn": 0 }
+  - B1 errors so far: no engine errors
+  - B2 Host queue_free(Blue): gone on both Guests: true
+  - B2 Guest frees its own copy of Red: Host still has it / errors: true / no engine errors
+  - B2 Host moves Red afterwards: what the Guest logs: 1x "Ignoring delta for non-authority or invalid synchronizer. (scene_replication_interface.cpp:781 on_delta_receive)"
+  - B3 name clash: the Guest already has a 'Green' child: what the Guest has / logs: Ball, Green / 1x "Condition "parent->has_node(name)" is true. Returning: ERR_INVALID_DATA (scene_replication_interface.cpp:602 on_spawn_receive)"; 1x "Ignoring delta for non-authority or invalid synchronizer. (scene_replication_interface.cpp:781 on_delta_receive)"
+  - B3 Host then moves its Green: Guest logs: 1x "Ignoring delta for non-authority or invalid synchronizer. (scene_replication_interface.cpp:781 on_delta_receive)"
+  - B3 Host adds another 'Green' with add_child(n, true): names on Host / late Guest: Red, Ball, Green, Green2 / Red, Ball, Green, Green2
+  - B3 errors: no engine errors
+  - B2 custom spawn(data): Guest gets it: true: Custom(tint 8 at (3.0, 3.0, 3.0))
+  - B2 custom spawn, late Guest: at _ready (data replays as first given: tint 8 at 3,3,3; spawn props then overwrite): { "tint": 9, "position": (4.0, 4.0, 4.0), "c_spawn": 0 }
+  - B2 custom spawn, late Guest a moment later: Custom(tint 9 at (4.0, 4.0, 4.0))
+  - B2 errors: no engine errors
+  - B4 a ball added while offline (before host()) reaches a Guest after hosting: true: Loaded(tint 6 at (6.0, 0.0, 0.0))
+  - B4 a Node3D.new() (no scene_file_path) under the spawn path reaches the Guest: false
+  - B4 errors: no engine errors
+### exit 0 exp/b_spawner.gd
+### exp/c_request.gd
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+=== c_request.gd ===
+CHECK C granted: the Guest's door.open frame by frame from asking until the change arrives: false, then true after 16 ms / 1 frames (one round trip: RPC up, delta down)
+CHECK C refused (locked), no answer sent: what the Guest sees after 1 s: door.open=true, heard=[]: nothing at all
+CHECK C refused with an explicit answer RPC: the Guest hears: ["locked"] after 18 ms / 1 frames
+ERROR: RPC '_refused' is not allowed on node /root/Host/Door from: 1858905664. Mode is "authority", authority is 1.
+   at: _process_rpc (modules/multiplayer/scene_rpc_interface.cpp:263)
+CHECK C a Guest calls the Host's authority-only RPC: engine log: 1x "RPC '_refused' is not allowed on node /root/Host/Door from: 1858905664. Mode is "authority", authority is 1. (scene_rpc_interface.cpp:263 _p"
+CHECK C a Guest writes door.open directly: Host's door.open: true
+SUMMARY c_request.gd: 5 checks
+  - C granted: the Guest's door.open frame by frame from asking until the change arrives: false, then true after 16 ms / 1 frames (one round trip: RPC up, delta down)
+  - C refused (locked), no answer sent: what the Guest sees after 1 s: door.open=true, heard=[]: nothing at all
+  - C refused with an explicit answer RPC: the Guest hears: ["locked"] after 18 ms / 1 frames
+  - C a Guest calls the Host's authority-only RPC: engine log: 1x "RPC '_refused' is not allowed on node /root/Host/Door from: 1858905664. Mode is "authority", authority is 1. (scene_rpc_interface.cpp:263 _p"
+  - C a Guest writes door.open directly: Host's door.open: true
+### exit 0 exp/c_request.gd
+### exp/d_hybrid.gd
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+=== d_hybrid.gd ===
+CHECK D1 Guest A welcomed by the Session: true
+CHECK D1 A has both avatars (spawner): true: 1@(0.0, 0.0, 0.0)/yaw 0.0/auth 1, 508286055@(0.0, 0.0, 0.0)/yaw 0.0/auth self
+CHECK D1 A asks the Session to open the door: A sees it open: after 20 ms / 1 frames
+CHECK D1 avatars move both ways AND the Commands land, on one SceneMultiplayer: true
+CHECK D1 Host sees: 1@(1.0, 0.0, 1.0)/yaw 1.0/auth self, 508286055@(2.0, 0.0, 2.0)/yaw 2.0/auth 508286055
+CHECK D1 errors so far: no engine errors
+CHECK D1 late Guest welcomed: true
+CHECK D1 late Guest: parts snapshot agrees with Host and A (from welcomed): arrived after 0 ms
+CHECK D1 late Guest: the Host's avatar at its place (Host's own sync): arrived after 0 ms
+CHECK D1 late Guest: A's avatar at its place (A's sync, relayed by the Host; A did not move): arrived after 30 ms
+CHECK D1 late Guest's own avatar exists on all three: arrived after 0 ms
+CHECK D1 late Guest sees: 1@(1.0, 0.0, 1.0)/yaw 1.0/auth 1, 508286055@(2.0, 0.0, 2.0)/yaw 2.0/auth 508286055, 1983353878@(0.0, 0.0, 0.0)/yaw 0.0/auth self
+CHECK D1 the late Guest moves: Guest A sees it (Guest to Guest via relay): true
+CHECK D1 errors in the late join: no engine errors
+CHECK D1 Session dropped packets (Host): { "bad_packets": 0 }
+CHECK D1 wire cost of one Session event (door shut) to 2 Guests: Host bytes in 0.5 s quiet / with the event; per Guest: 2256 / 3064; about 404 B per Guest
+CHECK D1 that event's encoded size by var_to_bytes (no RPC header): 192 B: { "ok": true, "changes": { &"Room/Door/Openable": { "open": true } }, "kind": &"open", "by": 1, "to": &"Room/Door/Openable" }
+CHECK D2 A's write to the crate before the grant arrived: Host / A / Late: (0.0, 0.0, 6.0) / (0.0, 0.0, 6.0) / (0.0, 0.0, 6.0)
+CHECK D2 crate authority after the pick: Host / A / Late (A is 508286055): 508286055 / 508286055 / 508286055
+CHECK D2 errors around the pick-up hand-over: no engine errors
+CHECK D2 A carries the crate: Host and Late follow: true at (0.0, 1.0, 2.9)
+CHECK D2 errors while carrying: no engine errors
+CHECK D2 after the drop: crate position Host / A / Late: (7.0, 0.0, 7.0) / (7.0, 0.0, 7.0) / (7.0, 0.0, 7.0)
+CHECK D2 after the drop: authority Host / A / Late: 1 / 1 / 1
+CHECK D2 errors around the hand-back: no engine errors
+CHECK D2 authority changes seen by the Host's part / A's part: [508286055, 1] / [508286055, 1]
+CHECK D2 A leaves holding the crate: Late sees it dropped and A's avatar gone: true
+CHECK D2 after the leave: crate Host / Late position, authority: (7.0, 0.0, 7.0) / (7.0, 0.0, 7.0), 1 / 1
+CHECK D2 the Host moves the crate again after the leave: Late follows: true
+CHECK D2 errors around the leave: no engine errors
+CHECK D Host Session stats at the end: { "bad_packets": 0 }
+SUMMARY d_hybrid.gd: 31 checks
+  - D1 Guest A welcomed by the Session: true
+  - D1 A has both avatars (spawner): true: 1@(0.0, 0.0, 0.0)/yaw 0.0/auth 1, 508286055@(0.0, 0.0, 0.0)/yaw 0.0/auth self
+  - D1 A asks the Session to open the door: A sees it open: after 20 ms / 1 frames
+  - D1 avatars move both ways AND the Commands land, on one SceneMultiplayer: true
+  - D1 Host sees: 1@(1.0, 0.0, 1.0)/yaw 1.0/auth self, 508286055@(2.0, 0.0, 2.0)/yaw 2.0/auth 508286055
+  - D1 errors so far: no engine errors
+  - D1 late Guest welcomed: true
+  - D1 late Guest: parts snapshot agrees with Host and A (from welcomed): arrived after 0 ms
+  - D1 late Guest: the Host's avatar at its place (Host's own sync): arrived after 0 ms
+  - D1 late Guest: A's avatar at its place (A's sync, relayed by the Host; A did not move): arrived after 30 ms
+  - D1 late Guest's own avatar exists on all three: arrived after 0 ms
+  - D1 late Guest sees: 1@(1.0, 0.0, 1.0)/yaw 1.0/auth 1, 508286055@(2.0, 0.0, 2.0)/yaw 2.0/auth 508286055, 1983353878@(0.0, 0.0, 0.0)/yaw 0.0/auth self
+  - D1 the late Guest moves: Guest A sees it (Guest to Guest via relay): true
+  - D1 errors in the late join: no engine errors
+  - D1 Session dropped packets (Host): { "bad_packets": 0 }
+  - D1 wire cost of one Session event (door shut) to 2 Guests: Host bytes in 0.5 s quiet / with the event; per Guest: 2256 / 3064; about 404 B per Guest
+  - D1 that event's encoded size by var_to_bytes (no RPC header): 192 B: { "ok": true, "changes": { &"Room/Door/Openable": { "open": true } }, "kind": &"open", "by": 1, "to": &"Room/Door/Openable" }
+  - D2 A's write to the crate before the grant arrived: Host / A / Late: (0.0, 0.0, 6.0) / (0.0, 0.0, 6.0) / (0.0, 0.0, 6.0)
+  - D2 crate authority after the pick: Host / A / Late (A is 508286055): 508286055 / 508286055 / 508286055
+  - D2 errors around the pick-up hand-over: no engine errors
+  - D2 A carries the crate: Host and Late follow: true at (0.0, 1.0, 2.9)
+  - D2 errors while carrying: no engine errors
+  - D2 after the drop: crate position Host / A / Late: (7.0, 0.0, 7.0) / (7.0, 0.0, 7.0) / (7.0, 0.0, 7.0)
+  - D2 after the drop: authority Host / A / Late: 1 / 1 / 1
+  - D2 errors around the hand-back: no engine errors
+  - D2 authority changes seen by the Host's part / A's part: [508286055, 1] / [508286055, 1]
+  - D2 A leaves holding the crate: Late sees it dropped and A's avatar gone: true
+  - D2 after the leave: crate Host / Late position, authority: (7.0, 0.0, 7.0) / (7.0, 0.0, 7.0), 1 / 1
+  - D2 the Host moves the crate again after the leave: Late follows: true
+  - D2 errors around the leave: no engine errors
+  - D Host Session stats at the end: { "bad_packets": 0 }
+### exit 0 exp/d_hybrid.gd
+### exp/e_latency.gd
+Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org
+
+=== e_latency.gd ===
+CHECK E1 Guest A welcomed by the Session: true
+CHECK E1 A has both avatars (spawner): true: 1@(0.0, 0.0, 0.0)/yaw 0.0/auth 1, 18136262@(0.0, 0.0, 0.0)/yaw 0.0/auth self
+CHECK E1 A asks the Session to open the door: A sees it open: after 116 ms / 7 frames
+CHECK E1 avatars move both ways AND the Commands land, on one SceneMultiplayer: true
+CHECK E1 Host sees: 1@(1.0, 0.0, 1.0)/yaw 1.0/auth self, 18136262@(2.0, 0.0, 2.0)/yaw 2.0/auth 18136262
+CHECK E1 errors so far: no engine errors
+CHECK E1 late Guest welcomed: true
+CHECK E1 late Guest: parts snapshot agrees with Host and A (from welcomed): arrived after 0 ms
+CHECK E1 late Guest: the Host's avatar at its place (Host's own sync): arrived after 0 ms
+CHECK E1 late Guest: A's avatar at its place (A's sync, relayed by the Host; A did not move): arrived after 300 ms
+CHECK E1 late Guest's own avatar exists on all three: arrived after 0 ms
+CHECK E1 late Guest sees: 1@(1.0, 0.0, 1.0)/yaw 1.0/auth 1, 18136262@(2.0, 0.0, 2.0)/yaw 2.0/auth 18136262, 600929639@(0.0, 0.0, 0.0)/yaw 0.0/auth self
+CHECK E1 the late Guest moves: Guest A sees it (Guest to Guest via relay): true
+CHECK E1 errors in the late join: no engine errors
+CHECK E1 Session dropped packets (Host): { "bad_packets": 0 }
+CHECK E1 wire cost of one Session event (door shut) to 2 Guests: Host bytes in 0.5 s quiet / with the event; per Guest: 2256 / 2858; about 301 B per Guest
+CHECK E1 that event's encoded size by var_to_bytes (no RPC header): 192 B: { "ok": true, "changes": { &"Room/Door/Openable": { "open": true } }, "kind": &"open", "by": 1, "to": &"Room/Door/Openable" }
+CHECK E2 A's write to the crate before the grant arrived: Host / A / Late: (0.0, 0.0, 5.0) / (0.0, 0.0, 5.0) / (0.0, 0.0, 5.0)
+CHECK E2 crate authority after the pick: Host / A / Late (A is 18136262): 18136262 / 18136262 / 18136262
+CHECK E2 errors around the pick-up hand-over: no engine errors
+CHECK E2 A carries the crate: Host and Late follow: true at (0.0, 1.0, 2.9)
+CHECK E2 errors while carrying: no engine errors
+ERROR: Ignoring sync data from non-authority or for missing node.
+   at: on_sync_receive (modules/multiplayer/scene_replication_interface.cpp:879)
+ERROR: Ignoring sync data from non-authority or for missing node.
+   at: on_sync_receive (modules/multiplayer/scene_replication_interface.cpp:879)
+ERROR: Ignoring sync data from non-authority or for missing node.
+   at: on_sync_receive (modules/multiplayer/scene_replication_interface.cpp:879)
+ERROR: Ignoring sync data from non-authority or for missing node.
+   at: on_sync_receive (modules/multiplayer/scene_replication_interface.cpp:879)
+ERROR: Ignoring sync data from non-authority or for missing node.
+   at: on_sync_receive (modules/multiplayer/scene_replication_interface.cpp:879)
+ERROR: Ignoring sync data from non-authority or for missing node.
+   at: on_sync_receive (modules/multiplayer/scene_replication_interface.cpp:879)
+ERROR: Ignoring sync data from non-authority or for missing node.
+   at: on_sync_receive (modules/multiplayer/scene_replication_interface.cpp:879)
+ERROR: Ignoring sync data from non-authority or for missing node.
+   at: on_sync_receive (modules/multiplayer/scene_replication_interface.cpp:879)
+ERROR: Ignoring sync data from non-authority or for missing node.
+   at: on_sync_receive (modules/multiplayer/scene_replication_interface.cpp:879)
+ERROR: Ignoring sync data from non-authority or for missing node.
+   at: on_sync_receive (modules/multiplayer/scene_replication_interface.cpp:879)
+ERROR: Ignoring sync data from non-authority or for missing node.
+   at: on_sync_receive (modules/multiplayer/scene_replication_interface.cpp:879)
+ERROR: Ignoring sync data from non-authority or for missing node.
+   at: on_sync_receive (modules/multiplayer/scene_replication_interface.cpp:879)
+CHECK E2 after the drop: crate position Host / A / Late: (7.0, 0.0, 7.0) / (7.0, 0.0, 7.0) / (7.0, 0.0, 7.0)
+CHECK E2 after the drop: authority Host / A / Late: 1 / 1 / 1
+CHECK E2 errors around the hand-back: 12x "Ignoring sync data from non-authority or for missing node. (scene_replication_interface.cpp:879 on_sync_receive)"
+CHECK E2 authority changes seen by the Host's part / A's part: [18136262, 1] / [18136262, 1]
+CHECK E2 A leaves holding the crate: Late sees it dropped and A's avatar gone: true
+CHECK E2 after the leave: crate Host / Late position, authority: (7.0, 0.0, 7.0) / (7.0, 0.0, 7.0), 1 / 1
+CHECK E2 the Host moves the crate again after the leave: Late follows: true
+CHECK E2 errors around the leave: no engine errors
+CHECK E Host Session stats at the end: { "bad_packets": 0 }
+SUMMARY e_latency.gd: 31 checks
+  - E1 Guest A welcomed by the Session: true
+  - E1 A has both avatars (spawner): true: 1@(0.0, 0.0, 0.0)/yaw 0.0/auth 1, 18136262@(0.0, 0.0, 0.0)/yaw 0.0/auth self
+  - E1 A asks the Session to open the door: A sees it open: after 116 ms / 7 frames
+  - E1 avatars move both ways AND the Commands land, on one SceneMultiplayer: true
+  - E1 Host sees: 1@(1.0, 0.0, 1.0)/yaw 1.0/auth self, 18136262@(2.0, 0.0, 2.0)/yaw 2.0/auth 18136262
+  - E1 errors so far: no engine errors
+  - E1 late Guest welcomed: true
+  - E1 late Guest: parts snapshot agrees with Host and A (from welcomed): arrived after 0 ms
+  - E1 late Guest: the Host's avatar at its place (Host's own sync): arrived after 0 ms
+  - E1 late Guest: A's avatar at its place (A's sync, relayed by the Host; A did not move): arrived after 300 ms
+  - E1 late Guest's own avatar exists on all three: arrived after 0 ms
+  - E1 late Guest sees: 1@(1.0, 0.0, 1.0)/yaw 1.0/auth 1, 18136262@(2.0, 0.0, 2.0)/yaw 2.0/auth 18136262, 600929639@(0.0, 0.0, 0.0)/yaw 0.0/auth self
+  - E1 the late Guest moves: Guest A sees it (Guest to Guest via relay): true
+  - E1 errors in the late join: no engine errors
+  - E1 Session dropped packets (Host): { "bad_packets": 0 }
+  - E1 wire cost of one Session event (door shut) to 2 Guests: Host bytes in 0.5 s quiet / with the event; per Guest: 2256 / 2858; about 301 B per Guest
+  - E1 that event's encoded size by var_to_bytes (no RPC header): 192 B: { "ok": true, "changes": { &"Room/Door/Openable": { "open": true } }, "kind": &"open", "by": 1, "to": &"Room/Door/Openable" }
+  - E2 A's write to the crate before the grant arrived: Host / A / Late: (0.0, 0.0, 5.0) / (0.0, 0.0, 5.0) / (0.0, 0.0, 5.0)
+  - E2 crate authority after the pick: Host / A / Late (A is 18136262): 18136262 / 18136262 / 18136262
+  - E2 errors around the pick-up hand-over: no engine errors
+  - E2 A carries the crate: Host and Late follow: true at (0.0, 1.0, 2.9)
+  - E2 errors while carrying: no engine errors
+  - E2 after the drop: crate position Host / A / Late: (7.0, 0.0, 7.0) / (7.0, 0.0, 7.0) / (7.0, 0.0, 7.0)
+  - E2 after the drop: authority Host / A / Late: 1 / 1 / 1
+  - E2 errors around the hand-back: 12x "Ignoring sync data from non-authority or for missing node. (scene_replication_interface.cpp:879 on_sync_receive)"
+  - E2 authority changes seen by the Host's part / A's part: [18136262, 1] / [18136262, 1]
+  - E2 A leaves holding the crate: Late sees it dropped and A's avatar gone: true
+  - E2 after the leave: crate Host / Late position, authority: (7.0, 0.0, 7.0) / (7.0, 0.0, 7.0), 1 / 1
+  - E2 the Host moves the crate again after the leave: Late follows: true
+  - E2 errors around the leave: no engine errors
+  - E Host Session stats at the end: { "bad_packets": 0 }
+WARNING: 8 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2536)
+ERROR: 1 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)
+### exit 0 exp/e_latency.gd
