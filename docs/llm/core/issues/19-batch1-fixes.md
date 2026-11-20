@@ -61,3 +61,4 @@ Found by the designer playing batch 1 (2026-11-20), reproduced by the lead.
   game/zoo/stations/*.tscn (Name), tests/hand_details_test.gd, tools/shots/sets/throw-hand.txt, station-signs.txt.
 - Verified: PASS 4933 checks, 134 cases (--touched); builds/review-core-19/f1-throw-before-after.png,
   f2-pair-ring-before-after.png, f3-sign-before-after.png (frames in before/ and after/).
+- Merged: a70e1bef (2026-11-20, branch core/19-batch1-fixes)

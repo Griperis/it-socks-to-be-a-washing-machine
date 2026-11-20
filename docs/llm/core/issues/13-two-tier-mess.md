@@ -149,3 +149,4 @@ the spawnable changed, so `Session.PROTOCOL` goes to 7.
     `game/parts/openable.gd`, `game/parts/session.gd`, `game/player/player.gd`, `game/hands/physics_queries.gd`,
     `tests/mess_test.gd` (new), handling, throw, hand_details and zoo tests, `docs/architecture/mess.md`.
   - Verified: `kit/tools/run.sh --touched`: PASS 5121 checks, 166 cases; grep_rules PASS
+- Merged: 746852f1 (2026-11-20, branch core/13-two-tier-mess)
