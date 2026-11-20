@@ -120,3 +120,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Looks | the moment as a strip in `builds/review-core-03/`; the glow of the grey Simple Collection reads near white |
 | Decisions | Q2254, Q2255, Q2262, Q2263, Q2269-Q2271 |
 
+## core/04 one Cabinet (M0.5), merged 2026-11-20
+| Field | Content |
+|---|---|
+| Ticket | core/04, the Cabinet with Drawers and a Door, shelving by click and by Throw; M0.5; approved and merged (dc4a350, main 703620a) |
+| Planned vs actual | 1 planned, 1 actual; follow-ups core/09 (D11, D12) and core/10 (one Mess for the zoo) |
+| Redo count | 0 |
+| Cost | core/04 1 20,736,753 126 19m23s (Opus) |
+| Time | the agent ran about 19 min |
+| Surprises | the first report under Q2277 listed seven old details not built, each asked about before the merge; the agent gave each station its own Hands, which the designer did not want (Q2284); no still was made, so the lead took one; the station signs ran off the screen (all four now wrap at 3 m) |
+| Stop rules | none fired |
+| Looks | `builds/review-core-04/cabinet-station.png` |
+| Decisions | Q2256, Q2264-Q2266, Q2282-Q2285 |
+

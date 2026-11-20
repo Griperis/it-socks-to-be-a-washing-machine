@@ -12,7 +12,7 @@ notes: []
 terms: []
 ---
 
-# Hand details: cloth, glide, pick fly-up
+# Hand details: cloth, glide, pick fly-up, shelving flight
 
 Milestone M0.5, the last ticket before it closes. core/02 and core/08 ported the Hands without the old game's
 small motions (core/02's `[later]` follow-up); the designer wants them as the old game has them (Q2272, Q2273).
@@ -46,6 +46,13 @@ Approved (Q2276, 2026-11-20). Numbers are the old game's.
 - D10 When the picked Sock completes a Pair, then the pairing moment's second Sock flies in from where it lay, as
   D09, not on the fixed path (Q2274; replaces Q2270).
 
+**Shelving** (Q2283)
+- D11 When Pairs are shelved by a click, then each flies from the Hands into its slot (0.45 s, 0.06 s later for each
+  next slot, arc 0.22), and the drawer shows its balls when all have landed (`game/campaign/campaign_installer.gd:82`,
+  `data/tuning/cloth.json`).
+- D12 When a drawer slides open or shut, then it eases out both ways, as the old tween did
+  (`game/house/openable.gd:187`); today the AnimationPlayer played backwards eases in when it shuts.
+
 **Invariants**
 - Looks only: the Hands and the Mess decide; a Guest sees its own picks and Throws the same way.
 - The Sock's Looks keeps its contract; the cloth is on the Looks' skeleton (the stand-in `crew.glb` has one), so the
@@ -68,6 +75,7 @@ To come after the behaviour list is approved.
 - The pairing moment's second Sock flies in from where it lay, like a pick (Q2274, 2026-11-20; replaces Q2270).
 
 - The behaviour list is approved as written (Q2276, 2026-11-20).
+- D11 and D12 (the shelving flight, the drawer slide ease) are added (Q2283, 2026-11-20).
 
 ## Open follow-ups
 - [later] The designer says what else looks different about the Throw after seeing the cloth (Q2275).

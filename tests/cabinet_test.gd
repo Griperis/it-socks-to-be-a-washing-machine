@@ -53,6 +53,8 @@ func cases() -> Array[Dictionary]:
 				"title": "C04: with empty Hands or only loose Socks a click opens or shuts the drawer; the click carries the state it asks for"},
 		{"name": "c05_coins", "method": "case_c05", "world": false,
 				"title": "C05, I.12: a shelving pays 10 x rarity (1, 2, 5) a Pair to the shelver alone, once per drawer used, never doubled"},
+		{"name": "c08_wrong_before_locked", "method": "case_c08_order", "world": false,
+				"title": "C08: holding only another Collection's Pairs at a locked Cabinet says \"Wrong Cabinet\", the old game's order (Q2285)"},
 		{"name": "c08_locked_full", "method": "case_c08", "world": false,
 				"title": "C08: a locked Cabinet says \"Cabinet locked\" and its drawers stay shut; full Rows say \"Cabinet full\"; the Pairs stay; far away a shelve is refused"},
 		{"name": "c11_no_icon", "method": "case_c11", "world": false,
@@ -226,6 +228,15 @@ func case_c05() -> void:
 	await _click_drawer(0)
 	await _physics_ticks(4)
 	_check(_coins.of_player(1) == 80, "a click with nothing to shelve pays nothing")
+
+
+func case_c08_order() -> void:
+	await _build()
+	_parts.load_snapshot({_cabinet.id: {"locked": true}})
+	await _pair(PATTERNS, PATTERNS_MATE)
+	await _click_drawer(0)
+	await _until(func() -> bool: return _player.message() != "", "a refusal to show")
+	_check(_player.message() == "Wrong Cabinet", "it says \"Wrong Cabinet\", not \"Cabinet locked\" (%s)" % _player.message())
 
 
 func case_c08() -> void:

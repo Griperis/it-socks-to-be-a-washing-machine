@@ -55,6 +55,8 @@ mesh = SubResource("PlaneMesh_pad")
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 billboard = 1
+autowrap_mode = 3
+width = 600.0
 text = "Movement: wall, ramp, ledge, low beam, 0.5 m box"
 
 [node name="Wall" type="StaticBody3D" parent="."]

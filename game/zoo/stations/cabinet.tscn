@@ -50,6 +50,8 @@ mesh = SubResource("PlaneMesh_pad")
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
 billboard = 1
+autowrap_mode = 3
+width = 600.0
 text = "One Cabinet (Simple Socks): pair two Socks, left click a drawer to shelve the Pair, or throw it at the Cabinet. A click with no Pair opens or shuts a drawer. The striped Socks are another Collection's. Left click the door on the right"
 
 [node name="BackWall" type="StaticBody3D" parent="."]

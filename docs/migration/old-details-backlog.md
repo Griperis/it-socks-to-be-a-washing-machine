@@ -12,6 +12,8 @@ A ticket that builds a line moves it out of here.
 - Refusal: "refuse" (`core/game.gd:1448`).
 - Pairing: "pair" on fusing, "pop" when the ball pops (`core/game.gd:1462`, `player/rig.gd:259`).
 - Throw: "throw_charge" at charge start, "throw" swish on release (`hands/thrower.gd:116`, `hands/hands_rules.gd:374`).
+- Drawer open and shut (`drawer_open__a/b`, `drawer_close__a/b`) and the Door's (`game/campaign/cabinet_drawer.gd:56`,
+  `game/house/openable.gd:39`).
 - Bounce: a ball landing or a thrown item hitting something (`world/flights.gd:39`).
 - Pad rumble on throw (0.3 weak / 0.7 strong, 0.25 s), pair and knock (`player/pad_rumble.gd:19-26`, `pad.json`).
 
@@ -31,5 +33,7 @@ A ticket that builds a line moves it out of here.
   catch_up; `hands/thrown_item.gd:180-250`).
 
 ## Decided elsewhere (for the record)
+- The Cabinet's "+N" Coins pop and flight to the bank, a filled drawer paying the team's Drawers, and new Rows
+  dropping in with a thunk and dust: M4 (core/04 C06; `game/player/rig.gd:653, 661`, `game/campaign/cabinet.gd:125-209`).
 - Pad stick curve and speed-up: a later ticket (Q2235). Held count, Collection and Design name: Sock Smarts, M4
   (Q2243). The Sock's knit look and the ball's print: M1 (Q2249, Q2263). Co-op match glow and a teammate's burst: M0.6.

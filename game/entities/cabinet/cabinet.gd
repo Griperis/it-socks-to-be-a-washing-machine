@@ -224,6 +224,9 @@ func shelve_refusal(by: int) -> String:
 	var t := tuning_of()
 	if parts != null and not parts.near(by, get_parent(), t.reach + t.reach_slack):
 		return FAR
+	# The old game's order (Q2285): Pairs held but none of this Collection say so before a lock.
+	if held_pairs(by).is_empty() and holds_pair(by):
+		return WRONG
 	if locked:
 		return LOCKED
 	if held_pairs(by).is_empty():

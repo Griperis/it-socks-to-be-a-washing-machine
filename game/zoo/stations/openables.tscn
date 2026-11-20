@@ -18,6 +18,8 @@ mesh = SubResource("PlaneMesh_pad")
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
 billboard = 1
+autowrap_mode = 3
+width = 600.0
 text = "Openables: open, shut mid-swing; the right one is locked"
 
 [node name="Cupboard" parent="." instance=ExtResource("1_cupboard")]

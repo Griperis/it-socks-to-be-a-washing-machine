@@ -1,4 +1,4 @@
-Next free Q number: Q2282 (update this line whenever a round of questions is asked)
+Next free Q number: Q2286 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -194,3 +194,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2279: the old screen text (prompt and key hints, aimed Size, "Paired!", boxed held Size) is ported in a polish pass.
 - Q2280: the old soft outline and the refusal wobble are ported in the polish pass.
 - Q2281: the ball's landing squash, hop and roll, the cloth curl in the pairing fold and the smooth flick ease are ported in the polish pass.
+- Q2282: core/04 merged as built; a left click uses anything that is not a Sock, as the old game's click did.
+- Q2283: the Cabinet's shelving flight and the old drawer slide ease (out both ways) go into core/09.
+- Q2284: the zoo has one Mess and one Hands for all stations (core/10).
+- Q2285: the Cabinet's refusal order is the old game's: "Wrong Cabinet" before "Cabinet locked".
