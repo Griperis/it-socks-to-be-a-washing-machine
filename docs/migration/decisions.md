@@ -1,4 +1,4 @@
-Next free Q number: Q2278 (update this line whenever a round of questions is asked)
+Next free Q number: Q2282 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -190,3 +190,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2275: what else looks different about the Throw: asked again after the cloth is in.
 - Q2276: core/09's behaviour list approved as written.
 - Q2277: the small details (motions, glides, flies, sways, pops, sounds) of every piece are always explored and listed; only the designer drops one, and a left-out detail is asked about at once, never parked as [later].
+- Q2278: sound is its own milestone, M1.1, made plug-and-play; every old sound and rumble goes there (old-details-backlog.md).
+- Q2279: the old screen text (prompt and key hints, aimed Size, "Paired!", boxed held Size) is ported in a polish pass.
+- Q2280: the old soft outline and the refusal wobble are ported in the polish pass.
+- Q2281: the ball's landing squash, hop and roll, the cloth curl in the pairing fold and the smooth flick ease are ported in the polish pass.
