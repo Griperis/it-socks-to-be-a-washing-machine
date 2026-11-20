@@ -13,6 +13,12 @@ What the house is built from by hand in the editor (house/01, Q2154-Q2157, Q2175
 - `house_kit_sizes.tres` (`HouseKitSizes`): every size. `house_kit_build.gd` makes `pieces/` and
   `meshes/` from it and any missing material; run it headless after a size change (its header).
 
+## The old house on the grid (house/02)
+
+`house-kit-plan.md`: the old house re-gridded, every wall, room, opening, the stair, the shaft and the
+roof with its old and new numbers. It is written by `tools/house_plan.py`, which holds the numbers and
+checks the plan's rules; its stills go to `builds/review-house-02/`.
+
 ## The grid convention
 
 Origins on 0.5 m grid corners, turns in 90 degree steps. Walls centred on grid lines, running +X
