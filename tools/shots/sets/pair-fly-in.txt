@@ -1,0 +1,11 @@
+# core/09 D10: the pairing moment's second Sock flies in from where it lay: a Sock held at 60, the head down at 61, its mate taken at 90.
+f89  --size=1280x720 --do='60:pair_first;61:look_down;90:pair_mate' --shots=89
+f91  --size=1280x720 --do='60:pair_first;61:look_down;90:pair_mate' --shots=91
+f93  --size=1280x720 --do='60:pair_first;61:look_down;90:pair_mate' --shots=93
+f95  --size=1280x720 --do='60:pair_first;61:look_down;90:pair_mate' --shots=95
+f97  --size=1280x720 --do='60:pair_first;61:look_down;90:pair_mate' --shots=97
+f99  --size=1280x720 --do='60:pair_first;61:look_down;90:pair_mate' --shots=99
+f101  --size=1280x720 --do='60:pair_first;61:look_down;90:pair_mate' --shots=101
+f103  --size=1280x720 --do='60:pair_first;61:look_down;90:pair_mate' --shots=103
+f106  --size=1280x720 --do='60:pair_first;61:look_down;90:pair_mate' --shots=106
+f112  --size=1280x720 --do='60:pair_first;61:look_down;90:pair_mate' --shots=112

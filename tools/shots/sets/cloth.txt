@@ -1,0 +1,17 @@
+# core/09 D01-D04: the cloth: a Sock taken at 60, held still, walking (110-150), the view turning (180-204), then thrown at 230: it flops in the air and lies flat as it slows.
+f105  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=105
+f120  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=120
+f135  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=135
+f150  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=150
+f165  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=165
+f185  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=185
+f195  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=195
+f205  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=205
+f225  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=225
+f234  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=234
+f240  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=240
+f246  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=246
+f254  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=254
+f264  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=264
+f280  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=280
+f310  --size=1280x720 --do='60:pick_floor;90:look_up;110:walk;150:stop;180:turn_view;230:throw_lob' --shots=310

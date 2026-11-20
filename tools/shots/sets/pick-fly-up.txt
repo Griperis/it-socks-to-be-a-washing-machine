@@ -1,0 +1,11 @@
+# core/09 D09: the pick fly-up: the zoo's player looks down at the handling station and takes the Sock on the floor at frame 60; it flies from where it lay into the Hands in 0.3 s on a small hop (60 frames a second).
+f59  --size=1280x720 --do='60:pick_floor' --shots=59
+f61  --size=1280x720 --do='60:pick_floor' --shots=61
+f63  --size=1280x720 --do='60:pick_floor' --shots=63
+f65  --size=1280x720 --do='60:pick_floor' --shots=65
+f67  --size=1280x720 --do='60:pick_floor' --shots=67
+f69  --size=1280x720 --do='60:pick_floor' --shots=69
+f71  --size=1280x720 --do='60:pick_floor' --shots=71
+f73  --size=1280x720 --do='60:pick_floor' --shots=73
+f76  --size=1280x720 --do='60:pick_floor' --shots=76
+f80  --size=1280x720 --do='60:pick_floor' --shots=80

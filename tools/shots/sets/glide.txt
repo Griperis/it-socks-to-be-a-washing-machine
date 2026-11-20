@@ -1,0 +1,8 @@
+# core/09 D08: the glide: two Socks held (taken at 60 and 85), the wheel at 130 makes the other active; both glide to their new places.
+f129  --size=1280x720 --do='60:pick_floor;85:pick_over;130:wheel' --shots=129
+f131  --size=1280x720 --do='60:pick_floor;85:pick_over;130:wheel' --shots=131
+f133  --size=1280x720 --do='60:pick_floor;85:pick_over;130:wheel' --shots=133
+f135  --size=1280x720 --do='60:pick_floor;85:pick_over;130:wheel' --shots=135
+f138  --size=1280x720 --do='60:pick_floor;85:pick_over;130:wheel' --shots=138
+f142  --size=1280x720 --do='60:pick_floor;85:pick_over;130:wheel' --shots=142
+f150  --size=1280x720 --do='60:pick_floor;85:pick_over;130:wheel' --shots=150
