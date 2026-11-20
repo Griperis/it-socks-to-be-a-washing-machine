@@ -9,16 +9,21 @@
 ## HELD or FLYING like any Sock, drawn as one sock ball; the other is IN_PAIR, never drawn, aimed or
 ## simulated on its own. `mates` names each one's mate. So every Design keeps exactly two records
 ## (I.1). Pairs form only in the Hands' pick answer (paired_patch()) and are never split. When a
-## pick takes a lying Sock or Pair away, the Host lets the lying Pairs that rested on it fall (P08,
-## `fall`, a Host-only Command).
+## pick takes a lying Sock or Pair away, the Host lets the lying Socks and Pairs that rested on it
+## fall (P08, M07: `fall`, a Host-only Command); a moving Door or drawer wakes the Socks in its way
+## (M09: `wake`, like a hit).
 ##
 ## A shelved Pair (core/04) has its lead SHELVED (its mate stays IN_PAIR): in a Cabinet's drawer,
 ## drawn by the drawer, never by the Mess, and never taken out again. Only a Cabinet's answer
 ## writes it (shelved_patch()). A thrown body's touches are told to whoever listens
 ## (`flight_touched`, the Host's): a Cabinet shelves a Pair that touched it.
 ##
-## M0.5 draws a lying Sock as one body each (a handful); M3 adds the MultiMesh, the settle stream,
-## the wake budget and the bulk snapshot, without changing the records.
+## Two tiers (core/13, Q2305): a lying Sock is a static body made in the physics server plus an
+## instance of a floor cell's MultiMesh, with no node (MessBodies, MessDrawing); only where it matters
+## is it a full Looks scene: lent to the aimed Sock (looks_of), the Hands' own (HeldView) and the
+## flying Socks nearest the camera (core/09's flying_cap, for their cloth). A moving Sock is a body
+## counted against the moving budget (MessTuning): woken Socks wait their turn, nearest the players
+## first; drops and Throws never wait.
 class_name Mess
 extends Part
 
@@ -37,20 +42,23 @@ const LAYER_LYING := 4
 const AIM_MASK := LAYER_HOUSE | LAYER_LYING
 ## Floats in one pose: a Transform3D (basis columns x, y, z, then the origin).
 const POSE := 12
-## The metadata a lying Sock's body carries: its Sock id.
+## The metadata a falling body carries: its Sock id.
 const SOCK_META := &"sock"
 ## How near another lying Sock must be to count as touching one (T11).
 const TOUCH_MARGIN := 0.01
+## The name of a falling body (a Guest's spawned copy is found by it), and of its Looks child.
+const FLIGHT_NAME := "Flight%d"
+const LOOKS := ^"Looks"
 
-const LYING_SCENE := preload("res://game/sock/lying_sock.tscn")
-const FLIGHT_SCENE := preload("res://game/sock/flight.tscn")
-const LYING_BALL_SCENE := preload("res://game/sock/lying_ball.tscn")
-const BALL_FLIGHT_SCENE := preload("res://game/sock/ball_flight.tscn")
+const FLIGHT_SCENE := MessMoving.FLIGHT_SCENE
+const CLOTH_TUNING := preload("res://game/sock/sock_cloth_tuning.tres")
 
 ## The Designs a Sock's record names.
 @export var catalogue: DesignCatalogue
-## The flick before a dropped Sock falls, the settle limit of a fall, a Throw's drag and the wake.
+## The flick before a dropped Sock falls, a Throw's drag and the hit's wake.
 @export var tuning: HandsTuning
+## The two tiers' numbers: the moving budget, the wakes, the rest rule, the bodies, the drawing.
+@export var bodies: MessTuning = preload("res://game/mess/mess_tuning.tres")
 ## Where the SockSpots placed in the editor are (their children); they become the starting Socks.
 @export var spots: Node3D
 ## Where lying Socks are drawn, and where the Host adds falling ones (a MultiplayerSpawner's
@@ -77,21 +85,16 @@ const BALL_FLIGHT_SCENE := preload("res://game/sock/ball_flight.tscn")
 @export var mates := PackedInt32Array()
 @export_group("")
 
-## The lying Sock bodies drawn now, and the falling ones (the Host's), by Sock id.
-var _bodies: Dictionary[int, StaticBody3D] = {}
-var _flights: Dictionary[int, RigidBody3D] = {}
-## The Host: a dropped Sock's flick time left before its body is let go, and a body's time in the air.
-var _flicking: Dictionary[int, float] = {}
-var _airborne: Dictionary[int, float] = {}
-## The Host: each body's speed before this physics step (what its contacts are judged by), and the
-## lying Socks a fast body hit in the step, woken at the next.
-var _speeds: Dictionary[int, float] = {}
-var _hit: Dictionary[int, bool] = {}
-## The Host: where lying things were taken away by a pick (their shape and its place, grown by the
-## wake reach), looked at at the next physics step for Pairs that rested on them (P08).
-var _taken: Array[Dictionary] = []
-## The Host: the falling Pairs that drag as Pairs do (P07).
-var _damped: Dictionary[int, bool] = {}
+## The lying tier: the static bodies and the drawn instances (made once inside the tree).
+var _lying_bodies: MessBodies
+var _drawing: MessDrawing
+## The records as they were last shown (what _show compares with).
+var _shown_states := PackedByteArray()
+var _shown_poses := PackedFloat32Array()
+## The lying Socks lent their Looks scene now (looks_of), by Sock id.
+var _lent: Dictionary[int, Node3D] = {}
+## The Host's moving Socks: the falling bodies, the budget and the wakes.
+var _moving := MessMoving.new(self)
 ## More nodes of SockSpots, handed over before this Mess is ready by a scene that joins the level
 ## (a zoo station, whose own Mess steps aside for the zoo's: ZooStations): read after `spots`, in order.
 var more_spots: Array[Node3D] = []
@@ -120,6 +123,25 @@ func _add_spots(holder: Node3D) -> void:
 		mates.append(-1)
 		poses.append_array(pack(spot.global_transform))
 		spot.visible = false
+
+
+## Back in the tree after leaving it (bound before): every Sock is shown again.
+func _enter_tree() -> void:
+	if parts != null and _lying_bodies == null and not designs.is_empty():
+		_show.call_deferred(true)
+
+
+## Leaving the tree, the lying bodies and drawings go with it (they are not nodes of the tree).
+func _exit_tree() -> void:
+	_moving.clear()
+	if _lying_bodies != null:
+		_lying_bodies.clear()
+	if _drawing != null:
+		_drawing.clear()
+	_lying_bodies = null
+	_drawing = null
+	_shown_states = PackedByteArray()
+	_shown_poses = PackedFloat32Array()
 
 
 ## How many Socks there are (every id from 0 to count() - 1).
@@ -157,24 +179,73 @@ func pose_of(sock: int) -> Transform3D:
 	return unpack(poses, sock)
 
 
-## The Sock whose lying body `collider` is (what the crosshair rests on), or -1.
-func sock_at(collider: Object) -> int:
-	var body := collider as StaticBody3D
-	if body == null or not body.has_meta(SOCK_META):
+## The lying Sock whose body `rid` is (what the crosshair rests on: RayCast3D.get_collider_rid()), or -1.
+func sock_at(rid: RID) -> int:
+	if _lying_bodies == null or not rid.is_valid():
 		return -1
-	var sock := int(body.get_meta(SOCK_META))
-	return sock if _bodies.get(sock) == body and state_of(sock) == State.LYING else -1
+	var sock := _lying_bodies.sock_of(rid)
+	return sock if sock >= 0 and state_of(sock) == State.LYING else -1
 
 
-## The Looks a lying Sock is drawn with (the outline plays there), or null.
+## Whether lying Sock `sock` is shown now: as an instance of its cell or as its lent Looks.
+func is_drawn(sock: int) -> bool:
+	return _drawing != null and (_drawing.is_drawn(sock) or _lent.has(sock))
+
+
+## The Looks scene of lying Sock `sock`, lent to it now if it had none (the outline plays there,
+## M03): from now on it is drawn as that scene, not as an instance, until return_looks(). Null when
+## the Sock does not lie.
 func looks_of(sock: int) -> Node3D:
-	var body: StaticBody3D = _bodies.get(sock)
-	return body.get_node_or_null(^"Looks") as Node3D if body != null else null
+	if _lent.has(sock):
+		return _lent[sock]
+	if _drawing == null or not _drawing.is_drawn(sock) or state_of(sock) != State.LYING:
+		return null
+	var pair := is_pair(sock)
+	var design := design_of(sock)
+	var looks := SockDress.make(design, SockDress.LYING, pair)
+	looks.name = "Sock%d" % sock
+	_container(lying).add_child(looks)
+	looks.global_transform = pose_of(sock) * Transform3D(Basis.from_scale(Vector3.ONE * _scale(design)))
+	looks.reset_physics_interpolation()
+	_drawing.undraw(sock)
+	_drawing.flush()
+	_lent[sock] = looks
+	return looks
+
+
+## Lying Sock `sock` gives its lent Looks back: drawn as an instance again, with no pop.
+func return_looks(sock: int) -> void:
+	if not _lent.has(sock):
+		return
+	_lent[sock].queue_free()
+	_lent.erase(sock)
+	if state_of(sock) == State.LYING and _lying_bodies != null and _lying_bodies.has(sock):
+		_draw_lying(sock)
+		_drawing.flush()
+
+
+## How many lying Socks are drawn as instances now.
+func drawn_count() -> int:
+	return _drawing.drawn_count() if _drawing != null else 0
+
+
+## How many lying bodies there are now.
+func body_count() -> int:
+	return _lying_bodies.size() if _lying_bodies != null else 0
 
 
 ## The falling body of a Sock (the Host's), or null.
 func flight_of(sock: int) -> RigidBody3D:
-	return _flights.get(sock)
+	return _moving.flight_of(sock)
+
+
+## How many Socks move now (falling bodies), and how many wait to.
+func moving_count() -> int:
+	return _moving.moving_count()
+
+
+func waiting_count() -> int:
+	return _moving.waiting_count()
 
 
 ## The change that takes a lying Sock into somebody's Hands (part of the Hands' pick answer).
@@ -227,6 +298,9 @@ func shelved_patch(leads: PackedInt32Array) -> Dictionary:
 
 
 ## Only the Host's own `rest`, `wake` and `fall` (no Guest may send one: nothing in accepts()).
+## `wake` (a hit, a moving Door) and `fall` (what held it up was picked) start lying Socks or Pairs
+## moving: "sock", one, or "socks", the ones the Host starts this tick (its args never travel; the
+## answer's change does).
 func decide(cmd: Command) -> Dictionary:
 	if cmd.by != Parts.HOST:
 		return refuse("wrong")
@@ -241,37 +315,46 @@ func decide(cmd: Command) -> Dictionary:
 			s[sock] = State.LYING
 			return grant({"states": s, "poses": _with_pose(sock, Transform3D(Basis.from_euler(rot), at)),
 					"throws": _without_throw(sock)})
-		&"wake":
-			var sock: Variant = cmd.args.get("sock")
-			if not (sock is int) or state_of(sock) != State.LYING:
-				return refuse("wrong")
+		&"wake", &"fall":
+			var socks := PackedInt32Array()
+			var one: Variant = cmd.args.get("sock")
+			var many: Variant = cmd.args.get("socks")
+			if one is int:
+				socks.append(one)
+			elif many is PackedInt32Array:
+				socks = many
 			var s := states.duplicate()
-			for woken in touching(sock) + PackedInt32Array([sock]):
-				s[woken] = State.FLYING
-			return grant({"states": s})
-		&"fall":
-			var sock: Variant = cmd.args.get("sock")
-			if not (sock is int) or state_of(sock) != State.LYING or not is_pair(sock):
+			var any := false
+			for sock in socks:
+				if state_of(sock) == State.LYING:
+					s[sock] = State.FLYING
+					any = true
+			if not any:
 				return refuse("wrong")
-			var s := states.duplicate()
-			s[sock] = State.FLYING
 			return grant({"states": s})
 	return refuse("wrong")
 
 
 ## The lying Socks touching lying Sock `sock`, at most the tuning's wake_count (T11).
 func touching(sock: int) -> PackedInt32Array:
-	var out := PackedInt32Array()
 	var most := tuning.wake_count if tuning != null else 8
-	var body: StaticBody3D = _bodies.get(sock)
-	if body == null or most <= 0:
-		return out
-	var shape := body.get_node(^"Shape") as CollisionShape3D
-	for collider in PhysicsQueries.overlaps(self, _grown(shape.shape, TOUCH_MARGIN), shape.global_transform, LAYER_LYING, most + 1):
-		var other := sock_at(collider)
-		if other >= 0 and other != sock and not out.has(other) and out.size() < most:
-			out.append(other)
-	return out
+	if _lying_bodies == null:
+		return PackedInt32Array()
+	return _lying_bodies.touching(sock, TOUCH_MARGIN, most)
+
+
+## The lying Socks and Pairs resting on the place `under` (a box in the level), lowest first, at
+## most the tuning's pick_wakes (M07).
+func resting_on(under: AABB) -> PackedInt32Array:
+	if _lying_bodies == null:
+		return PackedInt32Array()
+	var t := bodies_tuning()
+	return _lying_bodies.above(under, t.wake_margin, t.pick_column, t.above_slack, t.pick_wakes)
+
+
+## The box lying Sock `sock` takes in the level, or an empty one.
+func box_of(sock: int) -> AABB:
+	return _lying_bodies.bounds_of(sock) if _lying_bodies != null else AABB()
 
 
 ## Whether `point` (in the level) is inside the playable space (always, with no bounds).
@@ -282,232 +365,192 @@ func in_bounds(point: Vector3) -> bool:
 	return bounds.has_point(local)
 
 
-## Every Sock is drawn as its record says: lying Socks as bodies, held ones not at all (the Hands
-## draw them), a falling one as the Host's body: a dropped one let go after the flick, a thrown or
-## woken one (or any when `now`) at once.
+## The Host: lying Socks `socks` wait their turn to move, started by Command `kind` (&"wake" or
+## &"fall"), nearest the players first (M05).
+func queue_wake(socks: PackedInt32Array, kind: StringName) -> void:
+	_moving.queue_wake(socks, kind)
+
+
+## Every Sock is drawn as its record says: lying Socks as bodies and instances, held ones not at
+## all (the Hands draw them), a falling one as the Host's body: a dropped one let go after the
+## flick, a thrown or woken one (or any when `now`) at once. Only the Socks whose record changed
+## since the last time are touched; `now` (or a new count) shows every one.
 func _show(now: bool) -> void:
+	if not is_inside_tree():
+		return
+	if _lying_bodies == null:
+		_drawing = MessDrawing.new(_container(lying) as Node3D, bodies_tuning())
+		_lying_bodies = MessBodies.new(self, _drawing.sock_points())
+		now = true
+	var changed: PackedInt32Array
+	if now or _shown_states.size() != states.size() or _shown_poses.size() != poses.size():
+		for sock: int in _lent.keys():
+			return_looks(sock)
+		changed = PackedInt32Array(range(count()))
+		_moving.clear()
+		_lying_bodies.clear()
+		for sock in range(count(), _shown_states.size()):
+			_drawing.undraw(sock)
+		for sock in count():
+			_drawing.undraw(sock)
+		_shown_states = PackedByteArray()
+		_shown_states.resize(count())
+		_shown_states.fill(255)
+	else:
+		var found: Dictionary[int, bool] = {}
+		_changed(_shown_states, states, 1, 0, count(), found)
+		_changed(_shown_poses, poses, POSE, 0, count(), found)
+		changed = PackedInt32Array(found.keys())
 	var woken: Dictionary[int, bool] = {}
-	for sock: int in _bodies.keys():
-		if sock >= count() or state_of(sock) != State.LYING:
-			if sock < count() and state_of(sock) in [State.HELD, State.IN_PAIR] and _is_host():
-				_note_taken(_bodies[sock])
-			_bodies[sock].queue_free()
-			_bodies.erase(sock)
-			woken[sock] = true
-	for sock: int in _flights.keys():
-		if sock >= count() or state_of(sock) != State.FLYING:
-			_drop_flight(sock)
-	for sock: int in _flicking.keys():
-		if state_of(sock) != State.FLYING:
-			_flicking.erase(sock)
-	for sock: int in _damped.keys():
-		if not _flights.has(sock):
-			_damped.erase(sock)
-	for sock in count():
+	for sock in changed:
+		var was := _shown_states[sock]
+		if _lying_bodies.has(sock):
+			if state_of(sock) in [State.HELD, State.IN_PAIR] and _is_host():
+				_moving.note_taken(_lying_bodies.bounds_of(sock))
+			if state_of(sock) == State.FLYING and was == State.LYING:
+				woken[sock] = true
+			if _lent.has(sock):
+				_lent[sock].queue_free()
+				_lent.erase(sock)
+			_drawing.undraw(sock)
+			_lying_bodies.remove(sock)
+		_moving.forget(sock)
+	for sock in changed:
 		match state_of(sock):
 			State.LYING:
 				_lie(sock)
 			State.FLYING:
-				if _is_host() and not _flights.has(sock) and not _flicking.has(sock):
-					if now or woken.has(sock) or throws.has(sock) or tuning == null or tuning.flick <= 0.0:
-						_launch(sock)
-					else:
-						_flicking[sock] = tuning.flick
+				if _is_host():
+					_moving.start(sock, woken.has(sock), now)
+	_shown_states = states.duplicate()
+	_shown_poses = poses.duplicate()
+	_drawing.flush()
 
 
-## The Host: wakes the lying Socks a fast body hit (T11), lets flicked Socks go, and writes a fallen
-## one lying where its body rests (T13: put down where it is after the settle limit), or at the
-## return spot when it left the bounds (T14) or would lie inside a wall (T08).
+## The Host: starts the Socks woken by a hit, a pick or a moving Door as the budget allows, lets
+## flicked Socks go, and writes a fallen one lying where its body rests (M06: under the rest speed
+## and spin for the rest time), or at the return spot when it left the bounds (T14) or would lie
+## inside a wall (T08). Every machine: the flights nearest the camera get their Looks.
 func _physics_process(delta: float) -> void:
-	for sock: int in _hit.keys():
-		if state_of(sock) == State.LYING:
-			parts.ask(Command.new(&"wake", Parts.HOST, id, {"sock": sock}))
-	_hit.clear()
-	var taken := _taken
-	_taken = []
-	for place in taken:
-		for pair in _unheld_pairs(place):
-			if state_of(pair) == State.LYING:
-				parts.ask(Command.new(&"fall", Parts.HOST, id, {"sock": pair}))
-	for sock: int in _flicking.keys():
-		_flicking[sock] -= delta
-		if _flicking[sock] <= 0.0:
-			_flicking.erase(sock)
-			_launch(sock)
-	for sock: int in _flights.keys():
-		var body := _flights[sock]
-		_airborne[sock] += delta
-		_speeds[sock] = body.linear_velocity.length()
-		if not in_bounds(body.global_position):
-			_rest(sock, _return_pose(body))
+	if _lying_bodies == null:
+		return
+	give_looks()
+	if _is_host() and parts != null:
+		_moving.tick(delta)
+
+
+## Every machine, each frame: the flights with no Looks are drawn as instances where their bodies are.
+func _process(_delta: float) -> void:
+	if _drawing == null:
+		return
+	_drawing.flush()
+	var rows: Dictionary[StringName, Array] = {}
+	for body in _flight_nodes():
+		if body.has_node(LOOKS):
 			continue
-		var limit := tuning.settle_limit if tuning != null else 6.0
-		if (body.sleeping and _airborne[sock] > 0.1) or _airborne[sock] >= limit:
-			var t := body.global_transform.orthonormalized()
-			var centre := t * (body.get_node(^"Shape") as CollisionShape3D).position
-			_rest(sock, _return_pose(body) if PhysicsQueries.inside(self, centre, LAYER_HOUSE) else t)
+		var sock := _sock_of_flight(body)
+		var design := design_of(sock)
+		var shape := MessDrawing.shape_of(design, is_pair(sock))
+		if not rows.has(shape):
+			rows[shape] = []
+		rows[shape].append([body.get_global_transform_interpolated().orthonormalized(), design])
+	_drawing.draw_flying(rows)
 
 
 func _is_host() -> bool:
 	return parts == null or parts.is_host()
 
 
-func _rest(sock: int, t: Transform3D) -> void:
-	parts.ask(Command.new(&"rest", Parts.HOST, id, {"sock": sock, "at": t.origin, "rot": t.basis.get_euler()}))
+## The two tiers' numbers (a default when none is set).
+func bodies_tuning() -> MessTuning:
+	if bodies == null:
+		bodies = MessTuning.new()
+	return bodies
 
 
-## Where a Sock is put down when it cannot lie where its body is: the return spot, or straight under
-## the body with no spot set (a Pair's ball a radius over the spot).
-func _return_pose(body: RigidBody3D) -> Transform3D:
-	var sock := int(body.get_meta(SOCK_META, -1))
-	var lift := Vector3.UP * SockDress.ball_radius(design_of(sock)) if is_pair(sock) else Vector3.ZERO
-	if return_spot != null and return_spot.is_inside_tree():
-		var t := return_spot.global_transform.orthonormalized()
-		return Transform3D(t.basis, t.origin + lift)
-	return Transform3D(Basis.IDENTITY, body.global_position)
+## A lying Sock gets its body where its record says, and is drawn there (a Pair as its ball).
+func _lie(sock: int) -> void:
+	var design := design_of(sock)
+	var pair := is_pair(sock)
+	_lying_bodies.place(sock, pose_of(sock), pair, _scale(design), SockDress.ball_radius(design))
+	_draw_lying(sock)
 
 
-## The Host: a lying body is being taken away; notes its shape, grown by the wake reach, and where
-## it is, to look for Pairs resting on it at the next step (P08).
-func _note_taken(body: StaticBody3D) -> void:
-	var shape := body.get_node(^"Shape") as CollisionShape3D
-	var reach := tuning.wake_reach if tuning != null else 0.03
-	_taken.append({"shape": _grown(shape.shape, reach), "at": shape.global_transform})
+func _draw_lying(sock: int) -> void:
+	var design := design_of(sock)
+	_drawing.draw(sock, pose_of(sock), MessDrawing.shape_of(design, is_pair(sock)), design)
 
 
-## The lying Pairs near a place a lying thing was taken from that nothing holds up any more: nothing
-## of the house or lying within the wake gap under the middle of their ball (P08). A Pair beside
-## the place stands on the floor and stays.
-func _unheld_pairs(place: Dictionary) -> PackedInt32Array:
-	var out := PackedInt32Array()
-	var gap := tuning.wake_gap if tuning != null else 0.006
-	for collider in PhysicsQueries.overlaps(self, place["shape"], place["at"], LAYER_LYING, 16):
-		var pair := sock_at(collider)
-		if pair < 0 or not is_pair(pair) or out.has(pair):
-			continue
-		var r := SockDress.ball_radius(design_of(pair))
-		var under := BoxShape3D.new()
-		under.size = Vector3(r, gap * 1.5, r)
-		var at := Transform3D(Basis.IDENTITY, pose_of(pair).origin + Vector3.DOWN * (r + gap * 0.25))
-		var held_up := false
-		for below in PhysicsQueries.overlaps(self, under, at, LAYER_HOUSE | LAYER_LYING, 4):
-			held_up = held_up or (below != collider and not (below as Node).is_queued_for_deletion())
-		if not held_up:
-			out.append(pair)
+## Every machine: while fewer than the cloth's flying_cap flights have a Looks (core/09), the
+## nearest the camera without one gets it; none is taken from a flight that has one (no pop).
+func give_looks() -> void:
+	var cap := CLOTH_TUNING.flying_cap if CLOTH_TUNING != null else 4
+	var without: Array[RigidBody3D] = []
+	var have := 0
+	for body in _flight_nodes():
+		if body.has_node(LOOKS):
+			have += 1
+		else:
+			without.append(body)
+	if have >= cap or without.is_empty():
+		return
+	var camera := get_viewport().get_camera_3d() if is_inside_tree() else null
+	if camera != null and without.size() > cap - have:
+		var eye := camera.global_position
+		without.sort_custom(func(a: RigidBody3D, b: RigidBody3D) -> bool:
+			return a.global_position.distance_squared_to(eye) < b.global_position.distance_squared_to(eye))
+	for i in mini(cap - have, without.size()):
+		var body := without[i]
+		var sock := _sock_of_flight(body)
+		var looks := SockDress.make(design_of(sock), SockDress.LYING, is_pair(sock))
+		looks.name = String(LOOKS)
+		body.add_child(looks)
+
+
+## Where the falling bodies go (the spawner's path in co-op).
+func flight_holder() -> Node:
+	return _container(flights)
+
+
+## The lying Socks `shape` at `xform` overlaps, at most `most`.
+func lying_overlapping(shape: Shape3D, xform: Transform3D, most: int) -> PackedInt32Array:
+	return _lying_bodies.overlapping(shape, xform, most) if _lying_bodies != null else PackedInt32Array()
+
+
+## The falling bodies under `flights` on this machine (the Host's own, or a Guest's spawned copies).
+func _flight_nodes() -> Array[RigidBody3D]:
+	var out: Array[RigidBody3D] = []
+	var holder := _container(flights)
+	for child in holder.get_children():
+		var body := child as RigidBody3D
+		if body != null and not body.is_queued_for_deletion() and String(body.name).begins_with("Flight"):
+			out.append(body)
 	return out
 
 
-## Draws a lying Sock at its pose (a body the crosshair and falling Socks meet), a Pair as its ball.
-func _lie(sock: int) -> void:
-	var body: StaticBody3D = _bodies.get(sock)
-	if body == null:
-		body = (LYING_BALL_SCENE if is_pair(sock) else LYING_SCENE).instantiate() as StaticBody3D
-		body.name = "Sock%d" % sock
-		body.set_meta(SOCK_META, sock)
-		_fit(body, design_of(sock))
-		_container(lying).add_child(body)
-		_bodies[sock] = body
-	body.global_transform = pose_of(sock)
-	body.reset_physics_interpolation()
+## The Sock a falling body is: its metadata (the Host's), else its name (a spawned copy).
+func _sock_of_flight(body: RigidBody3D) -> int:
+	if body.has_meta(SOCK_META):
+		return int(body.get_meta(SOCK_META))
+	var digits := String(body.name).trim_prefix("Flight")
+	return int(digits) if digits.is_valid_int() else -1
 
 
-## The Host lets a Sock go: one physical body from its pose, falling, or flying with its throw's
-## launch and drag (the thrower's own body does not stop it). A Pair is its ball's body; it drags
-## as a Pair from its first touch (P07), a dropped or fallen one from the start.
-func _launch(sock: int) -> void:
-	var pair := is_pair(sock)
-	var body := (BALL_FLIGHT_SCENE if pair else FLIGHT_SCENE).instantiate() as RigidBody3D
-	body.name = "Flight%d" % sock
-	body.set_meta(SOCK_META, sock)
-	_fit(body, design_of(sock))
-	var launch: Dictionary = throws.get(sock, {})
-	if not launch.is_empty():
-		body.linear_velocity = launch["vel"]
-		body.angular_velocity = launch["spin"]
-		body.linear_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
-		body.angular_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
-		body.linear_damp = tuning.thrown_linear_damp if tuning != null else 0.05
-		body.angular_damp = tuning.thrown_angular_damp if tuning != null else 0.8
-	_container(flights).add_child(body, true)
-	body.global_transform = pose_of(sock)
-	body.reset_physics_interpolation()
-	if not launch.is_empty():
-		_spare_thrower(body, int(launch["by"]))
-	body.body_entered.connect(_on_contact.bind(sock))
-	_flights[sock] = body
-	if pair and launch.is_empty():
-		_damp_pair(sock)
-	_airborne[sock] = 0.0
-	_speeds[sock] = body.linear_velocity.length()
+static func _scale(design: SockDesign) -> float:
+	return design.size_scale() if design != null else 1.0
 
 
-## The thrower's own body (alone: the local player) lets their thrown Sock through: it leaves from
-## inside their reach. A Guest's avatar is M0.6's.
-func _spare_thrower(body: RigidBody3D, by: int) -> void:
-	for node in get_tree().get_nodes_in_group(Hands.PLAYERS):
-		var player := node as Player
-		if player != null and player.player_id() == by:
-			body.add_collision_exception_with(player)
-
-
-## The Host: a falling body touched `other`. A lying Sock hit faster than the wake speed wakes, with
-## those touching it, at the next physics step (T11): no body is swapped inside the step.
-func _on_contact(other: Node, sock: int) -> void:
-	if is_pair(sock) and not _damped.has(sock):
-		_damp_pair(sock)
-	var hit := sock_at(other)
-	var fast := tuning.wake_speed if tuning != null else 1.5
-	if hit >= 0 and float(_speeds.get(sock, 0.0)) > fast:
-		_hit[hit] = true
-	flight_touched.emit(sock, other)
-
-
-## A falling Pair drags as a Pair from now on: it stops within a few cm (P07).
-func _damp_pair(sock: int) -> void:
-	var body: RigidBody3D = _flights.get(sock)
-	if body == null:
+## The records `lo` to `hi` (stride floats or bytes each) that differ between `a` and `b`, into
+## `out`: the halves are compared whole (native), so a few changes cost a few compares, not one a record.
+static func _changed(a: Variant, b: Variant, stride: int, lo: int, hi: int, out: Dictionary[int, bool]) -> void:
+	if hi <= lo or a.slice(lo * stride, hi * stride) == b.slice(lo * stride, hi * stride):
 		return
-	_damped[sock] = true
-	body.linear_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
-	body.angular_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
-	body.linear_damp = tuning.pair_linear_damp if tuning != null else 2.5
-	body.angular_damp = tuning.pair_angular_damp if tuning != null else 8.0
-
-
-func _drop_flight(sock: int) -> void:
-	_flights[sock].queue_free()
-	_flights.erase(sock)
-	_airborne.erase(sock)
-	_speeds.erase(sock)
-	_damped.erase(sock)
-
-
-## A body's box (a Pair's ball) and Looks fitted to its Design (Size and colour).
-func _fit(body: CollisionObject3D, design: SockDesign) -> void:
-	var shape := body.get_node(^"Shape") as CollisionShape3D
-	var looks := body.get_node(^"Looks") as Node3D
-	SockDress.dress(looks, design)
-	SockDress.play(looks, SockDress.LYING)
-	if shape.shape is SphereShape3D:
-		var ball := (shape.shape as SphereShape3D).duplicate() as SphereShape3D
-		ball.radius = SockDress.ball_radius(design)
-		shape.shape = ball
+	if hi - lo == 1:
+		out[lo] = true
 		return
-	var box := (shape.shape as BoxShape3D).duplicate() as BoxShape3D
-	box.size = SockDress.box(design)
-	shape.shape = box
-	shape.position.y = box.size.y * 0.5
-
-
-## A copy of a box or ball shape, `margin` bigger all round.
-static func _grown(shape: Shape3D, margin: float) -> Shape3D:
-	if shape is SphereShape3D:
-		var ball := (shape as SphereShape3D).duplicate() as SphereShape3D
-		ball.radius += margin
-		return ball
-	var box := (shape as BoxShape3D).duplicate() as BoxShape3D
-	box.size += Vector3.ONE * margin * 2.0
-	return box
+	var mid := (lo + hi) / 2
+	_changed(a, b, stride, lo, mid, out)
+	_changed(a, b, stride, mid, hi, out)
 
 
 func _container(node: Node3D) -> Node:

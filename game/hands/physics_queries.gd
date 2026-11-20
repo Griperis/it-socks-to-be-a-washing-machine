@@ -69,3 +69,21 @@ static func inside(node: Node, point: Vector3, mask: int) -> bool:
 	query.position = point
 	query.collision_mask = mask
 	return not world.direct_space_state.intersect_point(query, 1).is_empty()
+
+
+## The bodies of `mask` that `shape` at `xform` overlaps, at most `most`: their RIDs (the Mess's
+## lying Socks are bodies of the physics server with no node, core/13). Empty when `node` has no world yet.
+static func overlap_rids(node: Node, shape: Shape3D, xform: Transform3D, mask: int, most: int) -> Array[RID]:
+	var out: Array[RID] = []
+	if not node.is_inside_tree() or most <= 0:
+		return out
+	var world := node.get_viewport().find_world_3d()
+	if world == null:
+		return out
+	var query := PhysicsShapeQueryParameters3D.new()
+	query.shape = shape
+	query.transform = xform
+	query.collision_mask = mask
+	for hit: Dictionary in world.direct_space_state.intersect_shape(query, most):
+		out.append(hit["rid"])
+	return out

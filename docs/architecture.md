@@ -50,7 +50,7 @@ How this game is built, unless a decision record says otherwise. They are the ga
 
 | Subsystem | File | Read it when |
 |---|---|---|
-| <the first system> | `docs/architecture/<name>.md` | <you change X or Y> |
+| The Mess | `docs/architecture/mess.md` | you change how Socks lie, are drawn, move or wake |
 
 A ticket that adds a subsystem adds its row here and its file.
 

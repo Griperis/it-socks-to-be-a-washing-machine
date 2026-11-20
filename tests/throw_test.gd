@@ -47,7 +47,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "t11_wake", "method": "case_t11", "world": false,
 				"title": "T11: a Throw faster than 1.5 m/s wakes the lying Sock it hits and those touching it (at most 8); a slow drop wakes none"},
 		{"name": "t13_rest", "method": "case_t13", "world": false,
-				"title": "T13: a thrown Sock lies where its body stopped; a flight that never settles is put down after 6 s"},
+				"title": "T13, M06: a thrown Sock lies where its body stopped; one Jolt never sleeps rests once it is still"},
 		{"name": "t14_bounds", "method": "case_t14", "world": false,
 				"title": "T14: a thrown Sock that leaves the playable space or goes above the ceiling comes down at once at the station's return spot"},
 		{"name": "commands", "method": "case_commands", "world": false,
@@ -165,6 +165,9 @@ func case_t03() -> void:
 	var distances: Array[float] = []
 	for hold: float in [0.6, 1.3]:
 		await _repick(ON_FLOOR)
+		# Both from the same place (a bouncing Throw lies far off, M10: the pick walks there).
+		_player.global_position = FRONT
+		await _physics_ticks(2)
 		_face(Vector3(0.0, 0.0, 1.0), 15.0)
 		Input.action_press(&"drop_throw")
 		await _until(func() -> bool: return _player.charging, "the charge to start", 30)
@@ -173,11 +176,17 @@ func case_t03() -> void:
 		await _until(func() -> bool: return _mess.flight_of(ON_FLOOR) != null, "the Sock to fly")
 		var speed: float = (_last(&"throw")["launch"]["vel"] as Vector3).length()
 		_near(speed, lerpf(3.0, 5.0, minf(hold / 1.2, 1.0)), 0.1, "held %.1f s it leaves at %.2f m/s" % [hold, speed])
-		await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "it to lie")
-		distances.append(_flat_distance(_mess.pose_of(ON_FLOOR).origin))
+		# Where its arc first comes down (a Throw bounces and slides on from there, M10).
+		var body := _mess.flight_of(ON_FLOOR)
+		var landed := Vector3.INF
+		while _mess.state_of(ON_FLOOR) == Mess.State.FLYING:
+			if landed == Vector3.INF and is_instance_valid(body) and body.global_position.y < 0.06:
+				landed = body.global_position
+			await _physics_ticks(1)
+		distances.append(_flat_distance(landed if landed != Vector3.INF else _mess.pose_of(ON_FLOOR).origin))
 		_player.global_position = FRONT
 		await _physics_ticks(2)
-	_check(distances[1] > distances[0] + 0.3, "the full Throw lands farther (%.2f m) than the half one (%.2f m)" % [distances[1], distances[0]])
+	_check(distances[1] > distances[0] + 0.3, "the full Throw comes down farther (%.2f m) than the half one (%.2f m)" % [distances[1], distances[0]])
 	_places("after the Throws")
 
 
@@ -303,11 +312,8 @@ func case_t13() -> void:
 	_face(Vector3(0.0, 0.0, 1.0), 10.0)
 	await _throw_full()
 	_mess.flight_of(ON_FLOOR).can_sleep = false
-	await _physics_ticks(int(5.5 * TICKS))
-	_check(_mess.state_of(ON_FLOOR) == Mess.State.FLYING, "a thrown body that never sleeps still flies at 5.5 s")
-	await _physics_ticks(int(0.6 * TICKS))
-	_check(_mess.state_of(ON_FLOOR) == Mess.State.LYING, "after 6 s it is put down")
-	_places("after the settle limit")
+	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "a body that never sleeps to rest once still", 600)
+	_places("after a rest without sleep")
 
 
 func case_t14() -> void:

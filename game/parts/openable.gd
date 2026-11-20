@@ -15,6 +15,8 @@ const SHUT := &"shut"
 const MATCH_STEPS := 60
 ## Where the Looks sits, from this part.
 const LOOKS := ^"../Looks"
+## Every Openable is in this group: the Mess sweeps the Socks in the way of the moving ones (core/13, M09).
+const GROUP := &"openables"
 
 ## How far from the thing a player may stand to use it, in metres (Parts.near(); checked only once
 ## the game sets Parts.where).
@@ -29,6 +31,27 @@ const LOOKS := ^"../Looks"
 
 var _looks: Node
 var _animator: AnimationPlayer
+
+
+func _enter_tree() -> void:
+	add_to_group(GROUP)
+
+
+## Whether it is swinging or sliding now (its animation plays).
+func is_moving() -> bool:
+	var player := animator()
+	return player != null and player.is_playing()
+
+
+## The bodies of its Looks that move as it opens (a door's leaf, a drawer's slide): what pushes the
+## Socks in their way.
+func movers() -> Array[AnimatableBody3D]:
+	var out: Array[AnimatableBody3D] = []
+	var looks := get_node_or_null(LOOKS)
+	if looks != null:
+		for node in looks.find_children("*", "AnimatableBody3D", true, false):
+			out.append(node as AnimatableBody3D)
+	return out
 
 
 ## The player's use button: ask to turn it the other way. The Command carries the wanted value, so
