@@ -1,4 +1,4 @@
-Next free Q number: Q2257 (update this line whenever a round of questions is asked)
+Next free Q number: Q2259 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -167,3 +167,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 
 ## M0.5, core/04 one Cabinet (2026-11-20)
 - Q2256: the Cabinet behaviour list approved; a drawer's capacity is a configurable field (25 today), the model keeps 25 slots.
+- Q2257: core/02 merged; the held Sock matches the old layout.
+- Q2258: the kit's example crate and the Carriables station are retired.

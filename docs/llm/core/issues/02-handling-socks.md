@@ -200,17 +200,14 @@ used by core/03 (Pairs join the Mess and the Hands) and core/04 (shelving).
 - The Designs become a typed `DesignCatalogue` Resource (Q2248, 2026-11-20).
 - The graybox Sock is the old `crew.glb` tinted by Design colour, unported, until M1 (Q2249, 2026-11-20).
 - The Throw is split off into core/08, built after this ticket (Q2250, 2026-11-20).
+- Merge it; the held Sock matches the old layout (`builds/review-core-02/held-sock-before-after.png`) (Q2257,
+  2026-11-20).
+- The kit's crate and the Carriables station are retired (Q2258, 2026-11-20).
 
 ## Open follow-ups
-- [later] Pad buttons (Q2245): `pick` has A, `drop_throw` B, `interact` gained Y; but `jump` still has A and
-  `interact` still has X from core/01. Removing those two events is a project.godot change beyond added
-  [input] entries, so it needs the lead (`commit.sh --allow-project`). Until then A both jumps and picks.
-- [later] The Carriables station and the crate (`game/zoo/stations/carriables.tscn`, `game/entities/crate/`):
-  the player no longer carries a Carriable (the kit's crate-carry hands are gone), but E on the crate still asks
-  its `pick`, so the crate is then held by nobody visible and cannot be put down. Retire the station and the
-  crate, or keep them for co-op demos (a lead/designer call; not this ticket's files).
-- [later] `game/parts/session.gd` PROTOCOL: the station adds a spawnable scene (`game/sock/flight.tscn` on a
-  MultiplayerSpawner); bump PROTOCOL in game/parts (not this ticket's files) before co-op is played with it.
+- Done by the lead after the merge: `jump` lost pad A and `interact` lost pad X (Q2245 in full).
+- Done by the lead after the merge: the crate and the Carriables station are gone (Q2258).
+- Done by the lead after the merge: PROTOCOL 2 -> 3 (the Flight spawnable scene).
 - [later] M0.6: a Guest's capacity and reach (Hands read the HandsTuning of a player on this machine, else
   their own: a Guest gets capacity 1); a leaver's Hands (`Hands.left()` returns nothing, so a leaver's Socks
   stay HELD: H24); a Guest sees a falling Sock only as the spawned untinted body.

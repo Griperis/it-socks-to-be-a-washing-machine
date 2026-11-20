@@ -78,3 +78,17 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Stop rules | none fired |
 | Looks | not compared (the zoo is new; nothing of the 70 baseline views changed) |
 | Decisions | Q2232-Q2240 |
+
+## core/02 handling Socks (M0.5), merged 2026-11-20
+| Field | Content |
+|---|---|
+| Ticket | core/02, the Mess and Hands Parts, pick, hold, drop, zoom, turn; M0.5; approved and merged (e035aa2) |
+| Planned vs actual | 1 planned; the Throw split off into core/08 before building (Q2250) |
+| Redo count | 0 |
+| Corrections | behaviour list unchanged; design choices Q2244-Q2249; the crate retired after (Q2258) |
+| Cost | core/02 1 20,490,929 123 22m55s (Opus) |
+| Time | the agent ran about 23 min; lead review with a before/after still |
+| Surprises | the agent left two Q2245 pad bindings because removing events needs `--allow-project`; the kit crate lost its put-down when the kit hands went; a commit hit missing git objects once (fsck clean after); the code-shape questions (Q2251-Q2253) were asked late, mid-build |
+| Stop rules | none fired |
+| Looks | held-sock.png compared by eye: same place and size; crew model and plain Size letter differ (expected) |
+| Decisions | Q2243-Q2250, Q2257, Q2258 |
