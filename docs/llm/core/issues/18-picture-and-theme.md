@@ -56,3 +56,4 @@ stills.
 ## Built log
 - 2026-11-20: Changed: `game/look/` (day_sky shader, noon_environment.tres, graphics_preset.gd + low/medium/high .tres, picture.gd/.tscn with the vignette, crosshair.gd/.tscn, theme.tres); zoo.tscn WorldEnvironment and Sun; the player's HUD uses the Crosshair scene and OutlinedLabel on Message/Size, blocked red now (0.95, 0.25, 0.2); project.godot: MSAA 4x, FXAA, `gui/theme/custom`, `it_socks/graphics/preset`; assets (day HDRI, Patrick Hand, licences). After Q2331 the Theme sets no font; ambient 0.75; the Patrick Hand file stays in assets/ unused. Stills in builds/review-core-18/. Files: game/look/*, tests/look_test.gd, tools/shot_hooks.gd, tools/shots/sets/look-picture.txt. Verified: kit/tools/run.sh --touched PASS 6233 checks (before the font fix; look suite PASS 1104 after).
 - Model: Sonnet (lead): settings, resources and a Theme from a known reference.
+- Merged: f9dadafe (2026-11-20, branch core/18-picture-and-theme)

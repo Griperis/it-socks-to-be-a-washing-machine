@@ -108,3 +108,4 @@ seam: "sounds and the HUD may listen"):
   clips (only the picked clips came); `silent` flag; `layers`/`playlist` modes; window ambience and its fade;
   UI sounds and their +-1.5 dB jitter; the music duck in cutscenes; teammates' sounds from where they happen (Q246);
   pad rumble; the piano voice pool.
+- Merged: f79dfa29 (2026-11-20, branch core/17-sound-system)
