@@ -1,4 +1,4 @@
-Next free Q number: Q2277 (update this line whenever a round of questions is asked)
+Next free Q number: Q2278 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -189,3 +189,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2274: the pairing moment's second Sock flies in from where it lay, like a pick (replaces Q2270).
 - Q2275: what else looks different about the Throw: asked again after the cloth is in.
 - Q2276: core/09's behaviour list approved as written.
+- Q2277: the small details (motions, glides, flies, sways, pops, sounds) of every piece are always explored and listed; only the designer drops one, and a left-out detail is asked about at once, never parked as [later].

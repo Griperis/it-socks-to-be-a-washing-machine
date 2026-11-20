@@ -99,6 +99,9 @@ through that feature's own rules object. Otherwise they go through the co-op sha
   walkthrough; it merges on the designer's OK, in batches. Code is approved per piece, assets per family batch.
 - **Ported by examination, never copied unexamined.** "Improve" means technical only; a look change is its own
   ticket (Q2153).
+- **The small details are always explored** (designer, Q2277): every motion, glide, fly, sway, pop and sound of the
+  old piece is in its behaviour list. Only the designer drops one: a detail an agent or the lead left out, or
+  noted as `[later]`, goes to the designer at once, before the merge (the `migration-port` skill, step 1).
 - **Decided state lives on scene parts** and only the Host's answer to a Command writes it. A player's body and
   things in the air use Godot's synchronizers; things created during play use Godot's spawner; the Mess is one
   bulk system that is one Part. Prediction is looks only (`docs/migration/coop-structure-for-the-port.md`).

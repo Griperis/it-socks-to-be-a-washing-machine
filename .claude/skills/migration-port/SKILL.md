@@ -15,6 +15,12 @@ the job. The designer approves each stage. The kit's skills own the mechanics (t
    when-then lines in plain words and glossary terms, plus the invariants. The lead asks the designer to approve
    or change it. Mark every line that the designer's later answers changed (`decisions.md`; for co-op,
    Q2220-Q2226). `since-the-research.md` lists what the research does not know.
+   **The small details are explored, always** (designer, Q2277): read the reference's looks code too (held and
+   thrown views, tweens, AnimationPlayers, particles, sounds, cloth, the timing numbers in `data/tuning/`) and list
+   every motion, glide, fly, sway, pop and sound the piece has, each as its own line. A detail may be left out only
+   by the designer's answer, never by the lead or an agent; one that will not be built now is asked about at once,
+   not parked as a `[later]` follow-up. In review, the lead compares the piece with the reference for anything
+   missing and asks about each gap before the merge.
 2. **Design and grilling, before any code.** In `## Design`: the entities and Parts, their state fields, the
    Commands, what Looks must provide (node and animation names for `looks_contract.json`), a code sketch, what
    is shared with other pieces and who owns it. For each piece of state, say which kind it is
