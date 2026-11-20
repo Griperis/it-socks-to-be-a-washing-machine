@@ -106,6 +106,10 @@ through that feature's own rules object. Otherwise they go through the co-op sha
   code animation. A new feature is first a station in the zoo, with the game's real entities.
 - **Numbers are typed Resources edited in the inspector; screens are scenes on one Theme; Jolt and Godot's own
   nodes wherever they can do the job** (the ragdoll included).
+- **What Godot should not see carries a `.gdignore`** (designer, Q2242): `docs/`, `reference/`, `assets_src/`,
+  `kit/skills/` today; a new folder of notes, sources or pictures gets one when it is made. Untracked files the
+  editor makes inside `kit/` are ignored by the game's git (`.gitmodules` `ignore = untracked`), never committed
+  into the kit.
 - **A journal line per merged ticket** in `docs/migration/journal.md`.
 - **No commit message carries a Claude (or any AI assistant) `Co-Authored-By` line** (designer, 2026-11-20);
   `kit/tools/commit.sh` refuses one.

@@ -1,4 +1,4 @@
-Next free Q number: Q2241 (update this line whenever a round of questions is asked)
+Next free Q number: Q2243 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -143,3 +143,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2238: mouse sensitivity and Invert Y are `MoveTuning` fields until the Options screen (M4).
 - Q2239: core/01 merged on the designer's OK.
 - Q2240: editor re-saves in the designer's working copy (`project.godot` reordered, `.mcp.json` tabs) are discarded, not committed.
+- Q2241: no play session now; go on with core/02.
+- Q2242: kit noise is fixed locally, not upstream: "what shouldn't be in godot should be gdignored". `docs/.gdignore`; the game's git ignores untracked files in `kit/`.

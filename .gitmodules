@@ -1,6 +1,7 @@
 [submodule "kit"]
 	path = kit
 	url = https://github.com/Griperis/game-dev-claude-starter-kit.git
+	ignore = untracked
 [submodule "prototype"]
 	path = reference/it-socks
 	url = https://github.com/Griperis/sock-it.git
