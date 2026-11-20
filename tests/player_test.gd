@@ -461,6 +461,7 @@ func _build(cupboard := false, station := false) -> Player:
 	if station:
 		var st := (load(STATION) as PackedScene).instantiate() as Node3D
 		st.name = "Station"
+		st.position = Vector3.ZERO   # its root carries its place in the zoo; the case walks it alone
 		_level.add_child(st)
 	var player := (load(PLAYER) as PackedScene).instantiate() as Player
 	_level.add_child(player)

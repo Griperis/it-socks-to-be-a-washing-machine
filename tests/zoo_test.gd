@@ -63,12 +63,21 @@ func case_stations() -> void:
 	_check(not stations.is_empty(), "the zoo has stations")
 	_check(stations.size() == files.size(), "every scene in %s is a station (%d files, %d stations)" % [ZooStations.FOLDER, files.size(), stations.size()])
 	var places: Array[Vector3] = []
+	var pads: Array[Array] = []   # [station name, its pad on the floor]
 	for station: Node3D in stations:
 		_check(files.has(station.scene_file_path), "station %s comes from its own scene file (%s)" % [station.name, station.scene_file_path])
 		var label := station.get_node_or_null("Name") as Label3D
 		_check(label != null and not label.text.is_empty(), "station %s has a name" % station.name)
 		_check(not places.has(station.position), "station %s stands on a place of its own (%s)" % [station.name, station.position])
 		places.append(station.position)
+		var pad := station.get_node_or_null("Pad") as MeshInstance3D
+		_check(pad != null, "station %s has a Pad" % station.name)
+		if pad != null:
+			var box := pad.global_transform * pad.get_aabb()
+			var rect := Rect2(box.position.x, box.position.z, box.size.x, box.size.z)
+			for other: Array in pads:
+				_check(not rect.intersects(other[1]), "station %s's pad stays clear of %s's" % [station.name, other[0]])
+			pads.append([station.name, rect])
 		for child in station.get_children():
 			if child.scene_file_path.is_empty():
 				continue
