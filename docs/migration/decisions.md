@@ -1,4 +1,4 @@
-Next free Q number: Q2243 (update this line whenever a round of questions is asked)
+Next free Q number: Q2247 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -145,3 +145,9 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2240: editor re-saves in the designer's working copy (`project.godot` reordered, `.mcp.json` tabs) are discarded, not committed.
 - Q2241: no play session now; go on with core/02.
 - Q2242: kit noise is fixed locally, not upstream: "what shouldn't be in godot should be gdignored". `docs/.gdignore`; the game's git ignores untracked files in `kit/`.
+
+## M0.5, core/02 handling Socks (2026-11-20)
+- Q2243: the handling behaviour list approved as written.
+- Q2244: carry capacity is a player tuning field (1); the zoo's player instance overrides it in the editor.
+- Q2245: pad buttons as the old game: A pick, B drop/Throw, Y interact, X jump, LB/RB the wheel.
+- Q2246: the held items keep the old layout, compared with the baseline still `held-sock.png`.
