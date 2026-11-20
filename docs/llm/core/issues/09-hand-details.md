@@ -115,26 +115,14 @@ ease-out; `_show` plays `open` or `shut` from the current pose, so a reverse mid
 - The cloth bends with the Sock's speed, as Godot's node does by itself (Q2286, 2026-11-20).
 - At the ground the node's own collision: the Sock may slide and crumple at the contact (Q2287, 2026-11-20).
 - The design is approved (Q2288, 2026-11-20).
+- Merged on the designer's go; the cloth numbers by eye stand (Q2313, 2026-11-20).
+- The pairing fly-in keeps 0.2 s (Q2314, 2026-11-20).
+- The held bend carried into a throw waits for polish batch 5 (Q2315, 2026-11-20).
+- The shelved ball's squash and a thrown shelve's flight: batch 5; a teammate's flight and burst: M0.6 (Q2316, 2026-11-20).
 
 ## Open follow-ups
-- [later] The designer says what else looks different about the Throw after seeing the cloth (Q2275).
-- [blocking] The designer's go on the six strips in `builds/review-core-09/` (cloth, glide, pick-fly-up,
-  pair-fly-in, shelve-flight, drawer-shut); the cloth's `stiffness` 2, `gravity` 3, `radius` 0.012
-  (`game/sock/sock_cloth_tuning.tres`) are by eye and wait for it.
-- [later] The pairing moment's second Sock flies in over the moment's first 0.2 s (until its line-up),
-  not D09's 0.3 s; say if it should take 0.3 s (the moment would then grow longer).
-- [later] A thrown Sock leaves the Hands drooped and its flying body starts flat, blending its bend in
-  over 0.3 s: the old game carried the held bend into the throw. Visible only up close at release.
-- [later] `game/sock/looks_contract.json` does not list `Cloth`: the sock ball's Looks shares that
-  folder's contract and has none (D06). The suite checks it instead (`hand_details:looks_cloth`); the
-  ball in a folder of its own would let the contract require it.
-- [later] Old details not built (Q2277): the bend only on a change of speed (the old `g - accel`
-  feed) and the ground straightening (the old `_room`, mesh probes) are the polish backlog (Q2286,
-  Q2287); the old `max_pitch`/`max_yaw` clamps and `lag_time` apart from the bend size (no such knobs
-  on the node); `turn_drag` and `motion_source` (the node's own turn drag stands in); `bend_limit`
-  of the pairing moment; the shelved ball's landing squash, hop and roll (`ball.json`); a flight from
-  a teammate's hand, and from a thrown shelve (T05): those balls show at once; a teammate's
-  sparkle burst when their new Pair reaches their hand.
+- [later] What else looks different about the Throw, asked after the designer plays the cloth (Q2275).
+- [later] `game/sock/looks_contract.json` does not list `Cloth` (the ball shares the folder); the suite checks it.
 
 ## Built log
 - Model: Opus.

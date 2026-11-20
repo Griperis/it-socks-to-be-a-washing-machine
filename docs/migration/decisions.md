@@ -1,4 +1,4 @@
-Next free Q number: Q2313 (update this line whenever a round of questions is asked)
+Next free Q number: Q2317 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -225,3 +225,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2310: lying Socks are drawn in MultiMeshes grouped by an 8 m floor grid (placeholder), with Godot's automatic LOD and visibility ranges.
 - Q2311: back to the old: thrown and dropped bodies bounce 0.35 and slide at friction 0.6; the old damping (woken 0.6 / 3.0, dropped 0.05 / 0.8); kept: the same spin each Throw, a thrown Pair's drag all the way.
 - Q2312: back to the old: a thrown Pair shelves only on a drawer front; only a drawer takes a shelve by click.
+- Q2313: core/09 merged; the cloth numbers set by eye stand until tuned in play.
+- Q2314: the pairing moment's fly-in keeps 0.2 s; the moment stays 0.5 s.
+- Q2315: a thrown Sock carries its held bend into the throw: polish batch 5.
+- Q2316: a shelved ball's landing squash, hop and roll and a thrown-shelve's flight to its slot: polish batch 5; a teammate's shelving flight and sparkle burst: M0.6.

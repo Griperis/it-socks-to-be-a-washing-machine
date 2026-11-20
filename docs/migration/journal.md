@@ -158,3 +158,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Looks | `builds/review-core-12/overview.png`, `row.png` |
 | Decisions | Q2290, Q2294, Q2295, Q2301 |
 
+## core/09 hand details (M0.5, batch 1), merged 2026-11-20
+| Field | Content |
+|---|---|
+| Ticket | core/09, cloth (spring bones), glide, pick fly-up, pairing fly-in, shelving flight, drawer shut; M0.5; approved and merged (31e8061, main d961c2c) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Cost | core/09 2 25,136,212 162 34m32s (Opus) |
+| Time | the agent ran about 28 min |
+| Surprises | the go commit hit the missing-object glitch (repaired); the agent edited the shared `openable.gd` for the `shut` animation (kept) |
+| Stop rules | none fired |
+| Looks | six strips in `builds/review-core-09/` |
+| Decisions | Q2272-Q2276, Q2283, Q2286-Q2288, Q2313-Q2316 |
+

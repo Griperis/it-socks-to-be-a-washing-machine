@@ -37,9 +37,12 @@ A ticket that builds a line moves it out of here.
   8 rings of 12 mesh points); core/09 uses the node's per-joint plane, which may crumple (Q2287).
 - A Sock lost out of bounds comes back to one spot scattered within 0.2 m, with a pop; a Sock sunk into a floor slab
   is pushed back up (core/08, core/10 left out; Q2291).
+- A thrown Sock carries its held bend into the throw (Q2315).
+- A shelved ball lands in its slot with the squash, hop and roll; a Pair thrown into a Cabinet flies to its slot
+  (Q2316).
 
 ## Decided elsewhere (for the record)
 - The Cabinet's "+N" Coins pop and flight to the bank, a filled drawer paying the team's Drawers, and new Rows
   dropping in with a thunk and dust: M4 (core/04 C06; `game/player/rig.gd:653, 661`, `game/campaign/cabinet.gd:125-209`).
 - Pad stick curve and speed-up: a later ticket (Q2235). Held count, Collection and Design name: Sock Smarts, M4
-  (Q2243). The Sock's knit look and the ball's print: M1 (Q2249, Q2263). Co-op match glow and a teammate's burst: M0.6.
+  (Q2243). The Sock's knit look and the ball's print: M1 (Q2249, Q2263). Co-op match glow, a teammate's burst and shelving flight: M0.6 (Q2316).
