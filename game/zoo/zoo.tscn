@@ -28,10 +28,10 @@ albedo_color = Color(0.42, 0.44, 0.46, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_floor"]
 material = SubResource("StandardMaterial3D_floor")
-size = Vector3(40, 0.2, 40)
+size = Vector3(40, 0.2, 80)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
-size = Vector3(40, 0.2, 40)
+size = Vector3(40, 0.2, 80)
 
 [sub_resource type="Resource" id="Resource_zoo_hands"]
 script = ExtResource("9_hands_tuning")
@@ -49,11 +49,11 @@ shadow_enabled = true
 [node name="Floor" type="StaticBody3D" parent="." unique_id=512353599]
 
 [node name="Mesh" type="MeshInstance3D" parent="Floor" unique_id=1088862979]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, -20)
 mesh = SubResource("BoxMesh_floor")
 
 [node name="Shape" type="CollisionShape3D" parent="Floor" unique_id=1686360137]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, -20)
 shape = SubResource("BoxShape3D_floor")
 
 [node name="GridNote" type="Label3D" parent="." unique_id=1080642151]
@@ -96,7 +96,7 @@ tuning = ExtResource("14_tuning")
 spots = NodePath("../../Spots")
 lying = NodePath("../../Lying")
 flights = NodePath("../../Flights")
-bounds = AABB(-20, -2, -20, 40, 8, 40)
+bounds = AABB(-20, -2, -60, 40, 8, 80)
 return_spot = NodePath("../../ReturnSpot")
 
 [node name="Hands" type="Node" parent="Socks" unique_id=982001843 node_paths=PackedStringArray("mess")]

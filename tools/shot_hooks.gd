@@ -3,7 +3,7 @@ extends RefCounted
 
 
 ## The game's own --do actions. Return true when `what` was handled.
-static func act(world: Node, what: String, _arg: String) -> bool:
+static func act(world: Node, what: String, arg: String) -> bool:
 	match what:
 		"throw_charge":
 			# The zoo's player steps onto the handling station, takes its first Sock and holds the
@@ -15,6 +15,21 @@ static func act(world: Node, what: String, _arg: String) -> bool:
 			player.rotation.y = 0.0
 			hands.pick(player.player_id(), (station.get_node("Spots/Floor") as SockSpot).sock)
 			Input.action_press(Player.DROP_THROW)
+			return true
+		"every_sock":
+			# A camera over the every-Sock station (core/12): arg "overview" looks down on all of
+			# it, "row" stands at the first row's start and looks along it.
+			var station := world.get_node("Stations/EverySock") as Node3D
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 70.0
+			if arg == "overview":
+				cam.global_position = station.to_global(Vector3(0.0, 32.0, 10.0))
+				cam.look_at(station.to_global(Vector3(0.0, 0.0, -18.0)))
+			else:
+				cam.global_position = station.to_global(Vector3(-10.0, 1.6, 2.2))
+				cam.look_at(station.to_global(Vector3(-11.5, 0.0, -0.4)))
+			cam.make_current()
 			return true
 		"pair_first", "pair_mate":
 			# The zoo's player steps onto the handling station and takes its first Sock, then (a
