@@ -47,7 +47,7 @@ func case_real_path() -> void:
 	var spout := _spout()
 	var before := mess.count()
 	var more := _station().get_node("More") as Node3D
-	_stand(more.global_position + Vector3(0.0, -0.5, -1.5))
+	_stand(more.global_position + _station().global_basis * Vector3(0.0, -0.5, -1.5))
 	await _aim(more.global_position)
 	await _press(&"pick")
 	await _until(func() -> bool: return mess.count() > before, "the click on More to pour Socks")
@@ -137,7 +137,7 @@ func case_h03() -> void:
 	_zoo.get_node("Parts").ask(Command.new(&"pick", 1, hands.id, {"sock": held}))
 	await _until(func() -> bool: return hands.active_of(1) == held, "a heap Sock to be held")
 	var respill := _station().get_node("Respill") as Node3D
-	_stand(respill.global_position + Vector3(0.0, -0.5, -1.5))
+	_stand(respill.global_position + _station().global_basis * Vector3(0.0, -0.5, -1.5))
 	await _aim(respill.global_position)
 	await _press(&"pick")
 	await _until(func() -> bool: return spout.respills == 1, "the click on Respill to be answered")
@@ -272,6 +272,7 @@ func _zoo_up() -> void:
 	var player := _zoo.get_node("Player") as Player
 	await _until(func() -> bool: return player.is_on_floor() and mess.looks_of(mess.count() - 1) != null, "the player to stand and every Sock to lie", 600)
 	mess.return_looks(mess.count() - 1)
+	player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 
 
 func _mess() -> Mess:

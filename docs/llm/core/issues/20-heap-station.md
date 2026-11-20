@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-20
-done:
+done: 2026-11-20
 blocked_by: ["[[13-two-tier-mess]]"]
 notes: []
 terms: []
@@ -53,8 +53,8 @@ Drafted (agent, 2026-11-20):
   Design at a time, both Socks each, and wrap. A respill asks `take_out` for every record from `first` on.
 - Buttons: `HeapButton`, a Part on each StaticBody3D (clicked like a drawer: pick on a non-Sock uses it), asking the
   spout its verb. Counter: `HeapCounter` (Label3D, looks only), tick timed from its first `_physics_process` to its
-  next `_process`. Numbers: `game/zoo/heap/heap_tuning.tres`. Station off the grid at (-13, 0, 12): 6x6 pad, 0.3 m
-  walls, a 25 degree slope, a table.
+  next `_process`. Numbers: `game/zoo/heap/heap_tuning.tres`. Station off the grid at (13, 0, -7), turned to face the
+  spawn (Q2347): 6x6 pad, 0.3 m walls, a 25 degree slope, a table.
 
 ## Acceptance
 - One test per line; the real-path case: the player clicks "More", Socks pour and come to rest, the player picks one
@@ -64,10 +64,14 @@ Drafted (agent, 2026-11-20):
 
 ## Answers
 - Q2290, Q2334-Q2336 (2026-11-20).
+- Q2347 (2026-11-20): the designer's go; the heap station moves clear of every pad (the house kit's included) and of
+  sounds:s07's walk, then merges with no new still.
+- Q2348 (2026-11-20): nothing pours at start; the first batch waits for a click on More.
 
 ## Open follow-ups
-- [later] Nothing pours when the zoo starts: the first batch waits for a click on More (a pour at start would cost
-  every zoo load and every zoo test 500 Socks). Should the station pour once at start?
+- [later] The old zoo spawner's other pour modes are not built: a heap where the crosshair aims, rain over every room,
+  a count set by hand, clear all; also SockPour.stop() resting every falling Sock at POUR_MAX and the `poured` signal
+  with the "Last pour" line. The designer has not chosen yet.
 - [later] Co-op cost: every `add` and `rest` answer carries the Mess's whole arrays (about 4,000 records with 2,000
   poured): M0.6 should measure it with a Guest.
 - [later] The sign's Moving count is the Host's flights; a Guest shows 0 moving.
@@ -88,3 +92,8 @@ Drafted (agent, 2026-11-20):
     14.9 ms, at rest median 0.61 ms, worst 9.0 ms (828 frames to rest); 4,031 records, 4,031 lying bodies.
   - Review: builds/review-core-20/heap-pour-f480.png (still at rest), heap-pour-strip.png (the pour, frames 66-480).
   - Verified: see the commit's suite line (`kit/tools/run.sh --touched`).
+- 2026-11-20 (agent, core/20-heap-station, Q2347): main merged in (core/14, house/01, core/22; mess.gd auto-merged,
+  PROTOCOL stays 8 as main kept 7). The station moved to (13, 0, -7), turned to face the spawn, clear of every pad
+  and of sounds:s07's walk; the suite takes the mouse as the player's (core/14 R01) before clicking.
+  - Files: game/zoo/stations/heap.tscn, tests/heap_test.gd, this ticket.
+  - Verified: suite: PASS 7279 checks, 218 cases (`--touched`, 18 suites).

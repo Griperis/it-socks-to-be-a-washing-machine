@@ -81,7 +81,7 @@ size = Vector3(0.5, 1, 0.3)
 size = Vector3(0.5, 1, 0.3)
 
 [node name="Heap" type="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0, 12)
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 13, 0, -7)
 
 [node name="Pad" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
