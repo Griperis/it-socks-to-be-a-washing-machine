@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://eeo00psskhcj"]
+
+[resource]
+resource_name = "wall_lobby"
+albedo_color = Color(0.91, 0.88, 0.82, 1)
+roughness = 0.9

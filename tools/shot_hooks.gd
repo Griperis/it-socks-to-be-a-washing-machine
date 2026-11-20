@@ -31,6 +31,43 @@ static func act(world: Node, what: String, arg: String) -> bool:
 				cam.look_at(station.to_global(Vector3(-11.5, 0.0, -0.4)))
 			cam.make_current()
 			return true
+		"house_kit":
+			# A camera on the house kit station (house/01): arg "lineup" (the walls), "floors" (the
+			# tiles and stairs), "room" (the
+			# small room from above the door side), "door" and "window" (close-ups from inside),
+			# "stair" (up the stair from the door).
+			var station := world.get_node("Stations/HouseKit") as Node3D
+			var views := {
+				"lineup": [Vector3(-0.5, 11.0, -11.5), Vector3(-0.5, 0.0, -3.0)],
+				"floors": [Vector3(-10.5, 6.5, 3.5), Vector3(-3.0, 0.5, 3.5)],
+				"room": [Vector3(10.0, 9.0, -5.0), Vector3(3.5, 1.0, 3.0)],
+				"door": [Vector3(4.6, 1.5, 2.6), Vector3(3.5, 1.1, 0.0)],
+				"window": [Vector3(3.2, 1.6, 2.5), Vector3(6.0, 1.5, 2.5)],
+				"stair": [Vector3(4.6, 1.6, 0.6), Vector3(1.5, 2.2, 3.5)],
+			}
+			var view: Array = views.get(arg, views["lineup"])
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 70.0
+			cam.global_position = station.to_global(view[0])
+			cam.look_at(station.to_global(view[1]))
+			cam.make_current()
+			return true
+		"sounds":
+			# A camera over the Sounds station's buttons (core/22): arg "overview" looks down on the
+			# whole station, "block" from above the button block.
+			var station := world.get_node("Stations/Sounds") as Node3D
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 60.0
+			if arg == "overview":
+				cam.global_position = station.to_global(Vector3(0.0, 12.0, 6.0))
+				cam.look_at(station.to_global(Vector3(0.0, 0.0, -0.5)))
+			else:
+				cam.global_position = station.to_global(Vector3(0.0, 4.2, 2.2))
+				cam.look_at(station.to_global(Vector3(0.0, 0.0, -0.1)))
+			cam.make_current()
+			return true
 		"pair_first", "pair_mate":
 			# The zoo's player steps onto the handling station and takes its first Sock, then (a
 			# grab interval later) that Sock's mate: the pairing moment plays in the Hands (core/03).

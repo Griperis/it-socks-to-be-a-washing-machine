@@ -6,9 +6,7 @@ extends TestSuite
 
 const ZOO := "res://game/zoo/zoo.tscn"
 const STATION := Vector3(13.0, 0.0, 13.0)
-## Where a case stands, in the Sounds station's space, before the Pick pillar and the Drawer open one.
-const BY_PICK := Vector3(-4.9, 0.0, -1.3)
-const BY_DRAWER_OPEN := Vector3(-3.5, 0.0, 2.2)
+const STATION_SCENE := "res://game/zoo/stations/sounds.tscn"
 ## The Door of the station, the pillar behind it, and the one in the open.
 const DOOR := Vector3(5.0, 0.0, 3.0)
 const BEHIND_DOOR := Vector3(5.0, 0.0, 2.0)
@@ -25,6 +23,7 @@ const ACTIONS: Array[StringName] = [&"move_forward", &"interact"]
 
 var _zoo: Node3D = null
 var _heard: Array[Dictionary] = []
+var _alone: Node3D = null
 
 
 func cases() -> Array[Dictionary]:
@@ -50,7 +49,13 @@ func cases() -> Array[Dictionary]:
 		{"name": "s08_ambience", "method": "case_s08", "world": false,
 				"title": "S08: the zoo plays a looping ambience on the Ambient bus"},
 		{"name": "s10_station", "method": "case_s10", "world": false,
-				"title": "S10, real path: the Sounds station has a pillar for every event, and the player's use plays the flat one flat and the world one from its spot"},
+				"title": "S10, real path: the Sounds station has a button for every event, and the player's use plays the flat one flat and the world one from its spot"},
+		{"name": "d01_from_catalogue", "method": "case_d01", "world": false,
+				"title": "core/22 D01: one button per event of the catalogue, in its order, grouped by bus, named; an event added to a copy of the catalogue gets its button"},
+		{"name": "d02_small_boxes", "method": "case_d02", "world": false,
+				"title": "core/22 D02: the buttons are 0.3 m boxes in rows that fit the station's pad"},
+		{"name": "d04_alone", "method": "case_d04", "world": false,
+				"title": "core/22 D04: the station runs alone with its buttons, its ambience and its tile patch"},
 	]
 
 
@@ -60,6 +65,9 @@ func _before_case() -> void:
 	if _zoo != null:
 		_zoo.free()
 		_zoo = null
+	if _alone != null and is_instance_valid(_alone):
+		_alone.free()
+	_alone = null
 	_heard.clear()
 	if not Sounds.played.is_connected(_on_played):
 		Sounds.played.connect(_on_played)
@@ -246,7 +254,7 @@ func _line_hits_door(player: Player, spot: Vector3) -> bool:
 func case_s07() -> void:
 	await _zoo_up()
 	var player := _zoo.get_node("Player") as Player
-	_stand(player, Vector3(-8.0, 0.0, 8.0))
+	_stand(player, Vector3(17.0, 0.0, 18.0))   # open zoo floor, clear of every station pad
 	await _physics_ticks(4)
 	_heard.clear()
 	var start := player.global_position
@@ -297,38 +305,143 @@ func case_s08() -> void:
 
 func case_s10() -> void:
 	await _zoo_up()
-	var station := _zoo.get_node("Stations/Sounds") as Node3D
+	var station := _zoo.get_node("Stations/Sounds") as SoundsStation
 	var cat := Sounds.catalogue
 	for e in cat.events:
 		if e.loop:
 			continue
-		var spots := station.find_children("*", "SoundSpot", true, false)
-		var found := false
-		for s: SoundSpot in spots:
-			if s.event == e.event:
-				found = true
-		_check(found, "the station has a pillar for %s" % e.event)
+		var spot := station.buttons.get_node_or_null("%s/Spot" % e.event) as SoundSpot
+		_check(spot != null and spot.event == e.event, "the station has a button for %s" % e.event)
 	var player := _zoo.get_node("Player") as Player
-	_stand(player, STATION + BY_PICK)
-	await _physics_ticks(3)
-	await _frames(2)
-	Input.action_press(&"interact")
-	await _frames(3)
-	Input.action_release(&"interact")
-	_check(_count(&"pick") == 1, "use on the Pick pillar plays pick (%d)" % _count(&"pick"))
-	_check(_heard[0]["spatial"] == false, "flat")
-	_heard.clear()
-	_stand(player, STATION + BY_DRAWER_OPEN)
-	await _physics_ticks(3)
-	await _frames(2)
-	Input.action_press(&"interact")
-	await _frames(3)
-	Input.action_release(&"interact")
-	_check(_count(&"drawer_open") == 1, "use on the Drawer open pillar plays drawer_open (%d)" % _count(&"drawer_open"))
-	if _count(&"drawer_open") > 0:
+	var flat := _front_row(station, false)
+	await _press_button(player, station, flat)
+	_check(_count(flat) == 1, "use on the %s button plays it (%d)" % [flat, _count(flat)])
+	if _count(flat) > 0:
+		_check(_heard[0]["spatial"] == false, "flat")
+	var world := _front_row(station, true)
+	await _press_button(player, station, world)
+	_check(_count(world) == 1, "use on the %s button plays it (%d)" % [world, _count(world)])
+	if _count(world) > 0:
 		var h: Dictionary = _heard[0]
 		_check(h["spatial"] == true, "from a spot")
-		_check((h["at"] as Vector3).distance_to(STATION + Vector3(-3.5, 0.0, 1.0)) < 0.01, "where the pillar stands (%s)" % h["at"])
+		var foot := station.global_position + station.button_position(world)
+		_check((h["at"] as Vector3).distance_to(foot) < 0.01, "where the button stands (%s)" % h["at"])
+
+
+## The first event of the front row that is a world one (or a flat one).
+func _front_row(station: SoundsStation, world: bool) -> StringName:
+	var front := station.layout.origin.z
+	for e in station.events():
+		if e.spatial == world and is_equal_approx(station.button_position(e.event).z, front):
+			return e.event
+	_check(false, "the front row has a %s event" % ("world" if world else "flat"))
+	return &""
+
+
+## The player walks up to the button, looks down at it with the mouse and presses use.
+func _press_button(player: Player, station: SoundsStation, event: StringName) -> void:
+	var at := station.global_position + station.button_position(event)
+	var top := at + Vector3(0.0, station.layout.button_size * 0.5, 0.0)
+	_stand(player, at + Vector3(0.0, 0.0, 0.7))
+	await _physics_ticks(3)
+	var click := InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.pressed = true
+	player._unhandled_input(click)
+	var want := atan2(player.camera().global_position.y - top.y, 0.7)
+	for i in 40:
+		var pitch := -asin((-player.camera().global_basis.z).y)
+		if pitch >= want - 0.02:
+			break
+		var ev := InputEventMouseMotion.new()
+		ev.relative = Vector2(0.0, 20.0)
+		player._unhandled_input(ev)
+		await _physics_ticks(1)
+	await _physics_ticks(3)
+	await _frames(2)
+	_heard.clear()
+	Input.action_press(&"interact")
+	await _frames(3)
+	Input.action_release(&"interact")
+
+
+func _station_alone(cat: SoundCatalogue = null) -> SoundsStation:
+	_alone = (load(STATION_SCENE) as PackedScene).instantiate() as Node3D
+	var st := _alone as SoundsStation
+	if cat != null:
+		st.catalogue = cat
+	add_child(_alone)
+	return st
+
+
+func case_d01() -> void:
+	var st := _station_alone()
+	await _frames(2)
+	var cat := st.catalogue
+	var list := st.events()
+	var looping := 0
+	for e in cat.events:
+		looping += 1 if e.loop else 0
+	_check(list.size() == cat.events.size() - looping and list.size() > 0, "a button for each of the %d events but the loops (%d)" % [cat.events.size(), list.size()])
+	var buttons := st.buttons.get_children().filter(func(n: Node) -> bool: return n.get_node_or_null("Spot") != null)
+	_check(buttons.size() == list.size(), "and no other button (%d)" % buttons.size())
+	var last_group := -1
+	var last_order := -1
+	for e in list:
+		var node := st.buttons.get_node_or_null(String(e.event)) as Node3D
+		_check(node != null and (node.get_node("Label") as Label3D).text == String(e.event), "%s has its button, named" % e.event)
+		var order := cat.names().find(e.event)
+		_check(order > last_order or st.groups().find(e.bus) > last_group, "%s comes after the one before it in the catalogue's order or in a later group" % e.event)
+		last_order = order
+		last_group = st.groups().find(e.bus)
+	_check(st.buttons.get_node_or_null("Group_SFX") != null, "the SFX group has its name")
+	var extra := SoundEvent.new()
+	extra.event = &"zebra"
+	extra.bus = "UI"
+	extra.clips = [cat.find(&"pick").clips[0]]
+	var copy := cat.duplicate() as SoundCatalogue
+	var events: Array[SoundEvent] = copy.events.duplicate()
+	events.append(extra)
+	copy.events = events
+	_alone.free()
+	var st2 := _station_alone(copy)
+	await _frames(2)
+	_check(st2.buttons.get_node_or_null("zebra/Spot") != null and (st2.buttons.get_node("zebra/Spot") as SoundSpot).event == &"zebra",
+			"an event added to a copy of the catalogue has its button")
+	_check(st2.groups()[-1] == "UI" and st2.buttons.get_node_or_null("Group_UI") != null, "in a group of its own, for its bus")
+	_check(st2.button_position(&"zebra").z < st2.button_position(&"pick").z, "behind the SFX group")
+	_check((st2.buttons.get_node("zebra/Label") as Label3D).text == "zebra", "named")
+
+
+func case_d02() -> void:
+	var st := _station_alone()
+	await _frames(2)
+	var size := st.layout.button_size
+	_check(is_equal_approx(size, 0.3), "a button is 0.3 m (the layout's number)")
+	var pad := st.get_node("Pad") as MeshInstance3D
+	var half := (pad.mesh as PlaneMesh).size * 0.5
+	var rows := {}
+	var spots := {}
+	for e in st.events():
+		var node := st.buttons.get_node(String(e.event)) as Node3D
+		var box := node.get_node("Body/Mesh") as MeshInstance3D
+		_check((box.mesh as BoxMesh).size.is_equal_approx(Vector3.ONE * size), "%s is a %.1f m box" % [e.event, size])
+		_check(absf(node.position.x) + size * 0.5 <= half.x and absf(node.position.z - pad.position.z) + size * 0.5 <= half.y, "%s stands on the pad" % e.event)
+		_check(not spots.has(node.position), "%s has a spot of its own" % e.event)
+		spots[node.position] = true
+		rows[snappedf(node.position.z, 0.001)] = true
+	_check(rows.size() > 1 and rows.size() <= 4, "in %d rows, a compact block" % rows.size())
+
+
+func case_d04() -> void:
+	var st := _station_alone()
+	await _frames(3)
+	_check(st.buttons.get_child_count() > st.events().size(), "the buttons and the group names are built")
+	_check(st.get_node_or_null("Ambience") != null and st.get_node_or_null("TilePatch") != null and st.get_node_or_null("Door") != null, "the ambience, the tile patch and the Door stay")
+	_check(Sounds.is_looping(&"amb_room"), "the ambience plays")
+	_alone.free()
+	_alone = null
+	_check(not Sounds.is_looping(&"amb_room"), "and stops with the station")
 
 
 ## The zoo, whole, with the player in it and the Parts bound.

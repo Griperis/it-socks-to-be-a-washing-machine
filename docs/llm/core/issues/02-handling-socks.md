@@ -61,7 +61,8 @@ them. M0.5 is one player (a Host of one); the co-op lines are listed at the end 
   always white.
 - H09 When the crosshair sees into an open cupboard or drawer, then a drop lands inside.
 - H10 When a Sock is dropped, then after a 0.1 s flick from the hand it is let go 3 cm over the spot, falls as one
-  physical body and lies where it settles; while it falls it cannot be aimed at or picked.
+  physical body and lies where it settles; while it falls it can be aimed at and picked (changed by Q2339; was
+  "cannot").
 - H11 When dropped on a Sock, beside it, or half over a table's edge, then it settles or falls; it never floats or
   sinks into anything.
 

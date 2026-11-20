@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://0yuuksfpwckk"]
+
+[ext_resource type="ArrayMesh" uid="uid://dngssbohvawrm" path="res://game/house/kit/meshes/stair_half.tres" id="1_evpoe"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dm83k"]
+size = Vector3(1, 0.3, 2.34375)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sy386"]
+size = Vector3(1, 0.3, 0.125)
+
+[node name="StairHalf" type="MeshInstance3D" unique_id=1437380448]
+mesh = ExtResource("1_evpoe")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=677115482]
+collision_mask = 0
+
+[node name="Box1" type="CollisionShape3D" parent="Body" unique_id=2075486998]
+transform = Transform3D(1, 0, 0, 0, 0.8, 0.6, 0, -0.6, 0.8, 0.5, 0.676875, 1.0275)
+shape = SubResource("BoxShape3D_dm83k")
+
+[node name="Box2" type="CollisionShape3D" parent="Body" unique_id=575400906]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1.35, 1.9375)
+shape = SubResource("BoxShape3D_sy386")

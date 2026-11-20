@@ -202,6 +202,7 @@ func case_real_path() -> void:
 	var hands := _zoo.get_node("Socks/Hands") as Hands
 	var handling := _zoo.get_node("Stations/Handling") as Node3D
 	var cross := player.get_node("Hud/Crosshair") as Crosshair
+	player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 	await _until(func() -> bool: return player.is_on_floor() and mess.looks_of(0) != null, "the player to stand and the Socks to lie")
 	var sock := (handling.get_node("Spots/Floor") as SockSpot).sock
 	player.global_position = handling.to_global(Vector3(0.0, 0.0, 1.5))

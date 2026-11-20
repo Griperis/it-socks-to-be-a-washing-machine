@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://csvgcxnmhnamb"]
+
+[resource]
+resource_name = "wall_boiler"
+albedo_color = Color(0.84, 0.81, 0.78, 1)
+roughness = 0.9

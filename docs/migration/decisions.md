@@ -1,4 +1,4 @@
-Next free Q number: Q2338 (update this line whenever a round of questions is asked)
+Next free Q number: Q2349 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -250,3 +250,14 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2335: the heap is spilled live from a spout above the pad in waves, settling under the moving budget.
 - Q2336: the heap station has a respill button, live counters (moving, waiting, resting, physics time), low walls round the pad, and a slope or table.
 - Q2337: a zoo station that shows game data is built from that data at load (a new Design, sound or other entry appears with no other change); the Sounds station is rebuilt from the sound catalogue with smaller boxes (designer, 2026-11-20).
+- Q2338: core/14 (the rules back to the old game) merged.
+- Q2339: any moving Sock can be aimed and picked, a dropped or thrown one in the air too (as the old Q783); changes core/02's H10.
+- Q2340: core/22's still: the overlapping labels and the sign over the buttons are fixed, then it merges without another still.
+- Q2341: a woken, sliding (or flying) Sock under the crosshair gets the outline in core/11, not before.
+- Q2342: only a click captures the mouse; a wheel notch while it is free does nothing (kept as built).
+- Q2343: the house kit must build the old house nearly identically; the old house is re-gridded to the kit's 0.5 m grid (about 10 x 8.5 m, rooms and windows move up to 0.25 m), not sized pieces nor a fine grid (designer, 2026-11-20; widens Q2325-Q2326).
+- Q2344: the kit also covers every old window (frames, sills, casings, glass, frosted) and door frames, skirting and the U stair's newel wall and railings, the pitched roof, knee walls, gables, dormer and attic, and wall openings for the entities (elevator shaft, garage door, front door, basement window wells).
+- Q2345: the proof is the whole old house (4 floors) rebuilt from kit pieces only, stills from the old looks-baseline views beside the old game's.
+- Q2346: house/01 merges as a first step; house/02 widens it.
+- Q2347: core/20's heap station moves clear of every pad (it stood on the house kit's spot), then merges with no new still.
+- Q2348: the heap station pours nothing at start; the first batch waits for More.

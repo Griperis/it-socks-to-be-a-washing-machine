@@ -385,6 +385,7 @@ func _build() -> void:
 	_player = (load(PLAYER) as PackedScene).instantiate() as Player
 	_player.position = FRONT
 	_level.add_child(_player)
+	_player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 	_parts = Parts.new()
 	_parts.name = "Parts"
 	_level.add_child(_parts)
@@ -401,6 +402,7 @@ func _zoo_up() -> void:
 	_hands = _zoo.get_node("Socks/Hands") as Hands
 	_parts = _zoo.get_node("Parts") as Parts
 	_player = _zoo.get_node("Player") as Player
+	_player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 	await _until(func() -> bool: return _player.is_on_floor() and _mess.looks_of(_mess.count() - 1) != null, "the player to stand and every Sock to lie", 600)
 
 

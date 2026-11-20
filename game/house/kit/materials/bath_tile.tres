@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://wqj0x7udlktn"]
+
+[ext_resource type="Texture2D" uid="uid://bltvclupb3kxh" path="res://game/house/kit/textures/bath_tiles.png" id="1_5un10"]
+
+[resource]
+resource_name = "bath_tile"
+albedo_texture = ExtResource("1_5un10")
+roughness = 0.4
+uv1_scale = Vector3(1.6666666, 1.6666666, 1.6666666)
+uv1_triplanar = true
+uv1_world_triplanar = true

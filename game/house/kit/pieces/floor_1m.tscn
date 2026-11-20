@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://cbo2ks630qyfi"]
+
+[ext_resource type="ArrayMesh" uid="uid://485tp2rbkfc3" path="res://game/house/kit/meshes/floor_1m.tres" id="1_ukvpi"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6ggh0"]
+size = Vector3(1, 0.1, 1)
+
+[node name="Floor1m" type="MeshInstance3D" unique_id=650757225]
+mesh = ExtResource("1_ukvpi")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1054355551]
+collision_mask = 0
+
+[node name="Box" type="CollisionShape3D" parent="Body" unique_id=1013796944]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.05, 0.5)
+shape = SubResource("BoxShape3D_6ggh0")

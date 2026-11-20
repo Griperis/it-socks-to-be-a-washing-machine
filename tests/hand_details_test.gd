@@ -507,6 +507,7 @@ func _build() -> void:
 	_player = (load(PLAYER) as PackedScene).instantiate() as Player
 	_player.position = FRONT
 	_level.add_child(_player)
+	_player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 	_parts = Parts.new()
 	_parts.name = "Parts"
 	_level.add_child(_parts)
