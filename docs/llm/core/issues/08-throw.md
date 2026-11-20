@@ -97,6 +97,7 @@ synchronizer with the stamp (coop-structure section 4, option A), a teammate cat
 - The ring keeps the old look (26 px radius, 5 px line, faint white track, cream to orange, clockwise); a still of
   it mid-charge goes in `builds/review-core-08/` before merging (Q2260, 2026-11-20).
 - The zoo's return spot is a marker on the handling station's pad (Q2261, 2026-11-20).
+- Merge it; core/02's "a long press does not drop" check is removed, a long press throws (Q2267, 2026-11-20).
 
 ## Open follow-ups
 - [later] T11: the wake is judged on the Flight's first contact, so the hit Socks are woken one step after the

@@ -92,3 +92,17 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Stop rules | none fired |
 | Looks | held-sock.png compared by eye: same place and size; crew model and plain Size letter differ (expected) |
 | Decisions | Q2243-Q2250, Q2257, Q2258 |
+
+## core/08 the Throw (M0.5), merged 2026-11-20
+| Field | Content |
+|---|---|
+| Ticket | core/08, charge, ring, lob, Throw speeds, the wake, out of bounds; M0.5; approved and merged (49f22f4) |
+| Planned vs actual | 1 (split from core/02, Q2250) |
+| Redo count | 0 |
+| Corrections | none; one approved test retired with the designer's OK (Q2267) |
+| Cost | core/08 1 9,796,855 89 13m03s (Opus) |
+| Time | the agent ran about 13 min |
+| Surprises | a commit hit the missing-object glitch (re-hashed); the agent's new `tools/shot_hooks.gd` came without its `.uid` and stopped `integrate.sh` (second time: core/01 too); the designer's editor re-saved four files again |
+| Stop rules | none fired |
+| Looks | the ring compared with the old `power_ring.gd` numbers; stills in `builds/review-core-08/` |
+| Decisions | Q2259-Q2261, Q2267 |

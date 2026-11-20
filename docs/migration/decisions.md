@@ -1,4 +1,4 @@
-Next free Q number: Q2267 (update this line whenever a round of questions is asked)
+Next free Q number: Q2268 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -179,3 +179,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2264: the Cabinet design approved (drawer entities with Openable; Cabinet Part; shelve Command; Coins Part).
 - Q2265: the Cabinet stand-in is the old simple.glb, unported.
 - Q2266: the zoo Cabinet is the Simple Collection.
+- Q2267: core/08 merged; the stand-in check "a long press does not drop" is retired (a long press throws).
