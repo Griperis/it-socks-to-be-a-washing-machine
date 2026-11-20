@@ -114,3 +114,4 @@ it again.
 ## Open follow-ups
 
 ## Built log
+- 2026-11-20 (lead): handed to a ticket agent on Opus: the records change shape (mates, IN_PAIR) under Hands, Mess and the Throw, and the moment is an AnimationPlayer (the Models value: big refactors).
