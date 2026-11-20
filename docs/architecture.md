@@ -51,6 +51,7 @@ How this game is built, unless a decision record says otherwise. They are the ga
 | Subsystem | File | Read it when |
 |---|---|---|
 | <the first system> | `docs/architecture/<name>.md` | <you change X or Y> |
+| The house kit | `docs/architecture/house-kit.md` | you add or change a kit piece, a library material or the kit's sizes |
 
 A ticket that adds a subsystem adds its row here and its file.
 

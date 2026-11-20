@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dys61w5jbovb2"]
+
+[resource]
+resource_name = "trim"
+albedo_color = Color(0.98, 0.96, 0.91, 1)
+roughness = 0.55

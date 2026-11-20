@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://jih8kkejx1oj"]
+
+[ext_resource type="ArrayMesh" uid="uid://bskyprl6hil7x" path="res://game/house/kit/meshes/floor_05m.tres" id="1_x4vyv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u7end"]
+size = Vector3(0.5, 0.1, 0.5)
+
+[node name="Floor05m" type="MeshInstance3D" unique_id=670072910]
+mesh = ExtResource("1_x4vyv")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1000629503]
+collision_mask = 0
+
+[node name="Box" type="CollisionShape3D" parent="Body" unique_id=59577911]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.05, 0.25)
+shape = SubResource("BoxShape3D_u7end")

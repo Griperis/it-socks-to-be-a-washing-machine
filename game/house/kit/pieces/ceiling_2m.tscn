@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bp1xcpd321mvx"]
+
+[ext_resource type="ArrayMesh" uid="uid://bvkc22q8qwh5b" path="res://game/house/kit/meshes/ceiling_2m.tres" id="1_rnt2d"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7tr4g"]
+size = Vector3(2, 0.1, 2)
+
+[node name="Ceiling2m" type="MeshInstance3D" unique_id=366332327]
+mesh = ExtResource("1_rnt2d")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1175079229]
+collision_mask = 0
+
+[node name="Box" type="CollisionShape3D" parent="Body" unique_id=35181256]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -0.15, 1)
+shape = SubResource("BoxShape3D_7tr4g")
