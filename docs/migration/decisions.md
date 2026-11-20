@@ -1,4 +1,4 @@
-Next free Q number: Q2349 (update this line whenever a round of questions is asked)
+Next free Q number: Q2350 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -261,3 +261,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2346: house/01 merges as a first step; house/02 widens it.
 - Q2347: core/20's heap station moves clear of every pad (it stood on the house kit's spot), then merges with no new still.
 - Q2348: the heap station pours nothing at start; the first batch waits for More.
+- Q2349: measure frozen full Socks against the two-tier Mess at 500, 2,000 and 10,000 before deciding whether the rest swap stays (docs/research/frozen-socks-vs-two-tier.md).
