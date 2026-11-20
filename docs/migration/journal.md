@@ -106,3 +106,17 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Stop rules | none fired |
 | Looks | the ring compared with the old `power_ring.gd` numbers; stills in `builds/review-core-08/` |
 | Decisions | Q2259-Q2261, Q2267 |
+
+## core/03 pairing (M0.5), merged 2026-11-20
+| Field | Content |
+|---|---|
+| Ticket | core/03, two mates fuse in the Hands into a Pair (sock ball), the pairing moment, falling Pairs; M0.5; approved and merged (55ead41, main a60e724) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Cost | core/03 1 15,803,409 96 16m54s (Opus) |
+| Time | the agent ran about 17 min |
+| Surprises | the designer's editor re-indented `.mcp.json`, which stopped `integrate.sh` (committed as editor format); the new scenes carry hand-written uids |
+| Stop rules | none fired |
+| Looks | the moment as a strip in `builds/review-core-03/`; the glow of the grey Simple Collection reads near white |
+| Decisions | Q2254, Q2255, Q2262, Q2263, Q2269-Q2271 |
+

@@ -1,4 +1,4 @@
-Next free Q number: Q2269 (update this line whenever a round of questions is asked)
+Next free Q number: Q2272 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -181,3 +181,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2266: the zoo Cabinet is the Simple Collection.
 - Q2267: core/08 merged; the stand-in check "a long press does not drop" is retired (a long press throws).
 - Q2268: files are kept in the Godot editor's format; editor re-saves are committed, not discarded (replaces Q2240).
+- Q2269: core/03 merged as built (the Collection colours, two mate Socks in the handling station and the shot set kept).
+- Q2270: the pairing moment's Sock keeps the fixed fly-in path, as the old game's.
+- Q2271: the moment's Socks keep their sizes in the animation keys; ball_scale does not resize them.

@@ -110,14 +110,11 @@ it again.
   before merging (Q2255, 2026-11-20).
 - The design is approved (Q2262, 2026-11-20).
 - The sock ball stand-in is the old `ball_crew_plain.glb`, tinted by Design, until M1 (Q2263, 2026-11-20).
+- Merged as built, with its additions (Q2269, 2026-11-20).
+- The fly-in keeps its fixed path; the fold stays a squash and roll (Q2270, 2026-11-20).
+- The moment's Socks keep their sizes in the animation keys (Q2271, 2026-11-20).
 
 ## Open follow-ups
-- [later] The pairing moment's picked Sock flies in from below right of the view, a fixed path in the
-  AnimationPlayer, not from where it lay in the room as the old game's did; the fold is a squash and
-  roll (the graybox crew's bones are not curled). The strip `builds/review-core-03/pair-moment-strip.png`
-  shows it; the designer may want the old path or a real fold with the M1 models.
-- [later] The Socks inside the moment are drawn at 1 / 1.6 of the ball (the animation's own keys): a
-  changed `ball_scale` resizes the held ball but not the moment's Socks.
 
 ## Built log
 - 2026-11-20 (lead): handed to a ticket agent on Opus: the records change shape (mates, IN_PAIR) under Hands, Mess and the Throw, and the moment is an AnimationPlayer (the Models value: big refactors).
