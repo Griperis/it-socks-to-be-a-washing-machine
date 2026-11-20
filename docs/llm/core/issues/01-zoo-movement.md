@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: core
@@ -196,7 +196,19 @@ the ramp, jumps, crouches under the beam. `zoo_test` and the co-op crate case ke
   screen writes them in M4 (Q2238, 2026-11-20).
 
 ## Open follow-ups
+- [later] The pad's X (button 2) is now on `jump` (Q2236, as the old game) and the kit already had it on
+  `interact`: one press does both. Where interact goes on the pad is the designer's (ticket 02 owns the hands).
+- [later] `tests/main_test.gd` runs the kit's placeholder `main/main.tscn` through the new `tests/hooks.gd`
+  `WORLD`, since the main scene is now the zoo. Drop it when the game has a real start.
 
 ## Built log
 - 2026-11-20 (lead): handed to a ticket agent on Sonnet (the Models value: sonnet by default; this is no
   Blender, netcode or big refactor).
+- 2026-11-20 (agent): the player moved to `game/player/` as `Player` with `MoveTuning` (all placeholder).
+  Changed: look (scale, invert, 85 degree tilt, stick look in `_process`), gravity 20, jump 5.5, crouch with
+  `test_move` stand-up check, 0.35 radius body, fov 75, top-level interpolated camera, physics interpolation
+  on, main scene is the zoo, crouch and look_* actions, X on jump, `movement.tscn` station (five pieces).
+  The mouse-captured state is kept in the player (`_captured`) because a headless run does not hold
+  `Input.mouse_mode`. `Aim` moved under `Head` (the top-level camera no longer carries it).
+  Files: game/player/*, game/zoo/stations/movement.tscn, game/zoo/zoo.tscn, project.godot, tests/player_test.gd,
+  tests/zoo_test.gd, tests/hooks.gd. Verified: PASS 370 checks, 91 cases.

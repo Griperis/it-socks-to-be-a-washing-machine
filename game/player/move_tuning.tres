@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="MoveTuning" format=3]
+
+[ext_resource type="Script" path="res://game/player/move_tuning.gd" id="1_tuning"]
+
+; placeholder: the designer's numbers (today's values from the old game, core/01 Q2236)
+[resource]
+script = ExtResource("1_tuning")

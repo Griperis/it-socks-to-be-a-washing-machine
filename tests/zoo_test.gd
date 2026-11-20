@@ -127,8 +127,8 @@ func case_coop() -> void:
 	var ha := host.get_node("Avatars") as Avatars
 	var ga := guest.get_node("Avatars") as Avatars
 	await _until(func() -> bool: return ha.of(g_id) != null and ga.of(1) != null, "each zoo to show the other's avatar")
-	var host_player := host.get_node("Player") as GrayboxPlayer
-	var guest_player := guest.get_node("Player") as GrayboxPlayer
+	var host_player := host.get_node("Player") as Player
+	var guest_player := guest.get_node("Player") as Player
 	var crate_at := (guest.get_node(CRATE) as Node3D).global_position
 	guest_player.global_position = crate_at + Vector3(0.0, 0.0, 1.5)
 	host_player.global_position = Vector3(3.0, 0.0, 4.0)
@@ -142,7 +142,7 @@ func case_coop() -> void:
 	_check(guest_player.interact() == guest.get_node(CRATE + "/Carriable"), "the guest's player aims at the crate and asks for it")
 	await _until(func() -> bool: return host_carriable.holder == g_id and guest_player.carried() != null, "the guest's player to hold the crate")
 	guest_player.global_position += Vector3(2.0, 0.0, 0.0)
-	var in_hands := func() -> bool: return host_crate.global_position.distance_to(guest_player.global_transform * GrayboxPlayer.HANDS) < 0.01
+	var in_hands := func() -> bool: return host_crate.global_position.distance_to(guest_player.global_transform * Player.HANDS) < 0.01
 	await _until(in_hands, "the host to see the crate in the guest's hands")
 	guest_player.interact()
 	var guest_crate := guest.get_node(CRATE) as Node3D
