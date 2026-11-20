@@ -2,7 +2,7 @@
 
 Kept from the first day; the retrospective and the reusable skills are written from it at the end. Never summarised
 in place. The agent drafts its entry in its report; the lead copies it in at merge and adds the cost from
-`python3 tools/agent_cost.py --by ticket --json` (never from memory). A merge without its journal line is incomplete.
+`python3 kit/tools/agent_cost.py --by ticket --json` (never from memory). A merge without its journal line is incomplete.
 
 ## Entry format (per merged ticket)
 | Field | Content |
@@ -46,3 +46,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
   official demo projects. Their result is the co-op structure in `decisions.md`.
 - The designer's answers Q2188-Q2226 (`decisions.md`).
 - No asset ported and no game code of the new project written by 2026-11-19.
+
+## 2026-11-20: M0, setup (new session)
+- The kit arrived as kit 8.0, a Claude Code plugin in the `kit/` submodule, not the zipped kit 7.1 START-HERE names.
+  Setup followed `kit/docs/SETUP.md` section 1; the pack's kit-7 paths were repointed to `kit/tools/...`, and kit 8's
+  extra example ticket (`mvp/issues/02-walking-skeleton.md`) was deleted with the other two.
+- Project values: Q2227-Q2230 (`decisions.md`). Engine 4.7.2 (the 4.7 minor's newest patch; the old game ran 4.7.1).
+- Checks: `run.sh` PASS 303 checks, 74 cases; shot, grep_rules, asset_lint, `setup.py --check`, 168 kit unit tests,
+  `check_pack.py` (115 files) all pass. First commit e7d6f228, `git_check` PASS.
+- What went wrong: the sandbox lacked git-lfs, xvfb and Pillow (installed); the private reference repository
+  cannot be cloned without a GitHub token in the sandbox (open); the first commit hit the drive's "invalid object"
+  glitch twice: four index entries pointed at blobs missing from the object store, and `git_repair.sh` cannot help
+  before the first commit (no HEAD). Re-hashing the four files (`git hash-object -w`, re-add) fixed it.
+- Not done: the reference clone, the push (no remote yet, Q2230).
