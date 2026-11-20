@@ -58,7 +58,9 @@ func cases() -> Array[Dictionary]:
 		{"name": "r02_nearer", "method": "case_r02", "world": false,
 				"title": "R02: with a lying Sock and a lying Pair both under the crosshair the nearer is aimed, the ball's surface against the Sock's middle"},
 		{"name": "r03_moving_pick", "method": "case_r03", "world": false,
-				"title": "R03: a woken Sock sliding can be aimed and picked mid-slide; a dropped one still cannot (H10)"},
+				"title": "R03: a moving Sock can be aimed and picked mid-air or mid-slide"},
+		{"name": "r03_thrown", "method": "case_r03_thrown", "world": false,
+				"title": "R03: a Sock thrown by the player can be caught by a click while it is in the air"},
 		{"name": "r05_drop_on_pair", "method": "case_r05", "world": false,
 				"title": "R05: a drop onto a lying Pair's ball or a Sock is allowed anywhere on it, with no slope test"},
 		{"name": "invariants", "method": "case_invariants", "world": false,
@@ -271,7 +273,8 @@ func case_p07() -> void:
 	_check((body.get_node("Shape") as CollisionShape3D).shape is SphereShape3D, "it falls as a ball")
 	_near(body.linear_damp, 2.5, 0.001, "dragging 2.5")
 	_near(body.angular_damp, 8.0, 0.001, "and 8 turning")
-	_check(_hands.pick_refusal(1, ON_FLOOR) == Hands.GONE, "it cannot be picked while it falls")
+	_hands.clock += 1.0   # past the grab interval
+	_check(_hands.pick_refusal(1, ON_FLOOR) == "", "it can be picked while it falls (Q2339)")
 	_places("while it falls")
 	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "it to come to rest")
 	var rest := _mess.pose_of(ON_FLOOR).origin
@@ -459,6 +462,25 @@ func case_r03() -> void:
 	_check(_hands.items_of(1).has(ON_FLOOR), "a click picks it mid-slide")
 	_check(_mess.state_of(ON_FLOOR) == Mess.State.HELD and _mess.flight_of(ON_FLOOR) == null, "held, its body gone")
 	_places("after the mid-slide pick")
+
+
+func case_r03_thrown() -> void:
+	await _build()
+	await _pick(ON_FLOOR)
+	await _aim(_player, Vector3(0.0, 1.2, -2.0))
+	Input.action_press(&"drop_throw")
+	await _until(func() -> bool: return _player.charging, "the ring to show", 100)
+	Input.action_release(&"drop_throw")
+	await _until(func() -> bool: return _mess.flight_of(ON_FLOOR) != null, "the Sock to fly")
+	# Hang it in the air a moment, in reach, so the aim has something to hold on to.
+	var body := _mess.flight_of(ON_FLOOR)
+	body.freeze = true
+	await _physics_ticks(1)
+	await _aim(_player, _mess.where_of(ON_FLOOR))
+	_check(_mess.state_of(ON_FLOOR) == Mess.State.FLYING and _mess.throws.has(ON_FLOOR) and _player.aimed_sock == ON_FLOOR, "the crosshair rests on the Sock in the air (%d)" % _player.aimed_sock)
+	await _press(&"pick")
+	_check(_hands.items_of(1).has(ON_FLOOR), "a click catches it mid-air")
+	_places("after the catch")
 
 
 func case_r05() -> void:

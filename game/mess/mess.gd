@@ -202,10 +202,11 @@ func sock_of_hit(hit: Dictionary) -> int:
 	return sock_at(hit.get("rid", RID()))
 
 
-## Whether Sock `sock` is a woken Sock sliding now, which may be aimed at and picked mid-slide (R03).
-## A dropped or thrown one is not (H10). Known to the Host; a Guest's copies do not say (M0.6).
+## Whether Sock `sock` is a moving body now (woken, dropped after its flick, or thrown), which may be
+## aimed at and picked mid-air or mid-slide (R03, the old SOCK_LIVE, Q2339). On any machine: a Guest's
+## spawned copy counts.
 func is_moving(sock: int) -> bool:
-	return state_of(sock) == State.FLYING and _moving.is_woken(sock)
+	return state_of(sock) == State.FLYING and moving_body(sock) != null
 
 
 ## The falling body of Sock `sock` on this machine (the Host's own, or a Guest's spawned copy), or null.

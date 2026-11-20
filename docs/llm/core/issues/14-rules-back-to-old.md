@@ -40,12 +40,10 @@ Each line names the approved line it changes, if any; the audit row gives the ol
 
 ## Answers
 - Q2297, Q2303, Q2304, Q2312 (2026-11-20).
+- Q2339 (2026-11-20): R03 as the old game (Q783): any moving Sock can be aimed and picked, a dropped or thrown one in
+  the air too; core/02's H10 ("cannot be aimed at or picked while it falls") changes to match.
 
 ## Open follow-ups
-- [later] R03 reads "woken or moving": built for woken Socks only (a hit, a pick, a Door woke them). A dropped or
-  thrown Sock in the air stays unpickable, as the approved H10 says; the old game's SOCK_LIVE took them too. Widening
-  it is one line in `Mess.is_moving` (and H10 changes). A Guest cannot pick a woken Sock until M0.6 (only the Host
-  knows which bodies were woken).
 - [later] A woken Sock aimed mid-slide is not outlined (the outline is the lent Looks of a lying Sock).
 - [later] The mouse wheel never captures the mouse (a wheel notch while free does nothing, R01); the old game is not
   known to differ.
@@ -60,5 +58,5 @@ Each line names the approved line it changes, if any; the audit row gives the ol
   every test that builds a player calls `capture_mouse()`. New: pairing r01, r02, r03, r05; cabinet r06, r07. No
   PROTOCOL change (nothing synced changed shape). Files: game/hands/{aim_finder,hands,physics_queries}.gd,
   game/mess/{mess,mess_moving}.gd, game/player/player.gd, game/entities/cabinet/cabinet.gd, tests/*.
-  Verified: PASS 4999 checks (--touched).
+  Q2339: any moving Sock is pickable (`Mess.is_moving`), H10's case and p07 changed, new case pairing r03_thrown. Verified: PASS 4999 checks (--touched).
 - Model: Sonnet (lead): rule changes with known old code and tests.

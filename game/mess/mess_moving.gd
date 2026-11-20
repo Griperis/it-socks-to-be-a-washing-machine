@@ -24,9 +24,6 @@ var _speeds: Dictionary[int, float] = {}
 ## The boxes lying things were taken from by a pick, looked over at the next tick for what rested on
 ## them (M07).
 var _taken: Array[AABB] = []
-## The bodies of woken Socks (a hit, a pick, a Door woke them), the only moving ones the crosshair
-## sees and a click may pick (R03). A dropped or thrown one is not (H10).
-var _woken: Dictionary[int, bool] = {}
 ## The falling Pairs that drag as Pairs do (P07).
 var _damped: Dictionary[int, bool] = {}
 ## The lying Socks waiting to move, with the Command that starts them (&"wake" or &"fall"), and
@@ -52,11 +49,6 @@ func moving_count() -> int:
 
 func waiting_count() -> int:
 	return _waiting.size()
-
-
-## Whether Sock `sock` moves as a woken body now (on the Host).
-func is_woken(sock: int) -> bool:
-	return _woken.has(sock) and _flights.has(sock)
 
 
 func is_waiting(sock: int) -> bool:
@@ -348,8 +340,6 @@ func _launch(sock: int, woken: bool) -> void:
 		_spare_thrower(body, int(launch["by"]))
 	body.body_entered.connect(_on_contact.bind(sock))
 	_flights[sock] = body
-	if woken:
-		_woken[sock] = true
 	if pair and launch.is_empty():
 		_damp_pair(sock)
 	_airborne[sock] = 0.0
@@ -391,7 +381,6 @@ func _damp_pair(sock: int) -> void:
 func _drop_flight(sock: int) -> void:
 	_flights[sock].queue_free()
 	_flights.erase(sock)
-	_woken.erase(sock)
 	_airborne.erase(sock)
 	_still.erase(sock)
 	_speeds.erase(sock)
