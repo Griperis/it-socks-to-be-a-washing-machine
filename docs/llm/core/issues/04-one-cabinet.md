@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-info
+status: ready-for-agent
 kind: build
 area: core
 feature: core
@@ -73,7 +73,57 @@ cupboard already does).
   swinging Door (D04, with the Mess), muffled sound (D06), the Door's prompt (D07).
 
 ## Design
-<Step 2.>
+Built on core/02 (Mess, Hands), core/03 (Pairs as linked records, named by the lead Sock) and core/08 (the Throw's
+Flight and its Host-side contacts). Old code: `game/campaign/cabinets.gd`, `drawers` rules, `house/openable.gd`,
+the per-Collection models in `assets/cabinet/` (a `base`, stacked `segment`s, a `drawer` with `slot_01..25`).
+
+**The entities** (the kit's pattern: behaviour Parts plus a swappable `Looks`; code shape Q2251-Q2253):
+- `game/entities/drawer/drawer.tscn`: one drawer. Its only behaviour is the kit's `Openable` (open, locked); its
+  `Looks` has the AnimationPlayer `open` (a slide) and the slot points `Slot01..Slot25` where shelved balls show.
+  No script of its own.
+- `game/entities/cabinet/cabinet.tscn`: the root (its collision is the footprint), a `Cabinet` Part, a `Looks`
+  (base, segments, top), and `Drawer1..DrawerN` as instances of `drawer.tscn`, one per segment the model has.
+  Contract (`looks_contract.json`): `Base`, `Segment1..N`, `Top`.
+
+**State and who owns it**
+| State | Part |
+|---|---|
+| The Collection, `locked`, `rows` (drawers in use, 2 to start), and the shelf: each drawer's shelved Pair leads in order | `Cabinet` |
+| Each drawer open or shut | that drawer's `Openable` (the kit's, unchanged) |
+| A shelved Pair's two Sock records | `Mess`, new state `SHELVED` (not drawn by the Mess; the drawer shows it) |
+| Each player's Coins | a new `Coins` Part, keyed by player id (in M4 the Players Part with Personal upgrades) |
+
+**Commands**
+- `shelve(drawer)` to `Cabinet` (a left click on a drawer while holding Pairs): refused "locked", "wrong" (no held
+  Pair of its Collection: "Wrong Cabinet"), "full" (no room in any row: "Cabinet full"), "far". Granted, one
+  answer changes four kinds of Part: the held Pairs of its Collection leave the Hands in order (others stay, C02),
+  their records become SHELVED (Mess), they join the aimed drawer then overflow to the nearest with room, the
+  lower when two are as near (C03, Cabinet), each drawer used opens (Openable), and the shelver gets 10 x rarity
+  per drawer used (Coins, C05).
+- With empty Hands (or only loose Socks) the click is the drawer's own `Openable.use` (C04), unchanged.
+- `thrown_shelve(sock, by)`, Host-only (nothing in `accepts()`): when a flying Pair's body touches its own
+  Collection's Cabinet (core/08's contact report), the lowest drawer with room takes it, opens, and pays the
+  thrower (T05). Another Collection's, a locked or a full Cabinet, or a loose Sock: nothing is asked and the body
+  bounces as physics does (T06, T07).
+
+**Capacity** (Q2256): `drawer_capacity` is a `CabinetTuning` field, 25 today. The model has 25 slot points; a
+drawer holding more draws the first 25 and keeps the rest in the shelf state (shown when real models with more
+slots arrive). Nothing in code assumes 25.
+
+**Looks**: shelved balls are drawn in their slots by the drawer's Looks from the Cabinet's shelf state (`_show`);
+the drawer slides by its AnimationPlayer (Q2213). No icon (C11). The stand-in look is the old `assets/cabinet/simple.glb`, copied unported (Q2265).
+
+**The station** `game/zoo/stations/cabinet.tscn`: one Cabinet of the Simple Collection (Q2266), Socks of Simple and of
+another Collection nearby (so "Wrong Cabinet" and the bounce can be tried), a Door (an `Openable` with a swinging Looks,
+D02, D05), and room to throw.
+
+**Numbers** (`CabinetTuning`, `# placeholder:`): drawer_capacity 25, start rows 2, coins per rarity 10 x (1, 2, 5),
+reach 2.5 m, Door swing 0.6 s.
+
+**Tests**: one case per line (C01-C05, C08, C11, T05-T07, D02, D05, D08, C14), the invariants I.5 and I.12, a
+snapshot round trip with Pairs shelved (C12). Real path: in the station, with real input, pair two Socks, click
+the Cabinet's drawer, see the Pair in its slot and the Coins; throw a second Pair at it.
+
 
 ## Acceptance
 - The Cabinet is an entity: behaviour plus a Looks scene with a `looks_contract.json`; `kit/tools/asset_lint.py` passes.
@@ -83,6 +133,9 @@ cupboard already does).
 ## Answers
 - The behaviour list is approved, with one change: the Pairs a drawer holds is configurable (a tuning field, 25
   today), not fixed by the model; the model keeps its 25 slots (Q2256, 2026-11-20).
+- The design is approved (Q2264, 2026-11-20).
+- The Cabinet's stand-in is the old `simple.glb`, unported, until M1 (Q2265, 2026-11-20).
+- The zoo's Cabinet takes the Simple Collection (Q2266, 2026-11-20).
 
 ## Open follow-ups
 
