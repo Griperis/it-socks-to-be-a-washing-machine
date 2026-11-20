@@ -1,4 +1,4 @@
-Next free Q number: Q2350 (update this line whenever a round of questions is asked)
+Next free Q number: Q2354 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -262,3 +262,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2347: core/20's heap station moves clear of every pad (it stood on the house kit's spot), then merges with no new still.
 - Q2348: the heap station pours nothing at start; the first batch waits for More.
 - Q2349: measure frozen full Socks against the two-tier Mess at 500, 2,000 and 10,000 before deciding whether the rest swap stays (docs/research/frozen-socks-vs-two-tier.md).
+- Q2350: house plan: the U stair gets a 0.9 m half landing, 33.3 degrees (old 31.3).
+- Q2351: house plan: the laundry and bedroom doorways keep their old places through an off-centre door piece.
+- Q2352: house plan: outer wall centre lines 10.5 m apart (inside 10.3 m, 0.2 m wider than the old house).
+- Q2353: house plan: storeys 3.0 m with the old clear heights kept (2.7, 2.7, 2.6 m) through thicker ceiling tiles.
