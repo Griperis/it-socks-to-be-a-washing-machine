@@ -1,12 +1,11 @@
 ## The picture and the theme (core/18, V01-V07): the zoo is lit as the old game at noon, the old post-processing and
 ## anti-aliasing are in force at the high preset, the three presets are chosen by a project setting, every 2D text takes
-## the Patrick Hand theme and the crosshair is the old two bars. One real-path case: a player holds a Sock at the
+## the old Theme (default font, ink outline) and the crosshair is the old two bars. One real-path case: a player holds a Sock at the
 ## handling station and aims where it cannot drop, and the crosshair on screen turns red.
 extends TestSuite
 
 const ZOO := "res://game/zoo/zoo.tscn"
 const THEME := "res://game/look/theme.tres"
-const FONT := "res://assets/fonts/patrickhand/PatrickHand-Regular.ttf"
 ## The old picture's numbers (room.gd, day_cycle.gd, ambient.gd).
 const SUN_COLOUR := Color(1.0, 0.93, 0.82)
 
@@ -16,7 +15,7 @@ var _zoo: Node3D = null
 func cases() -> Array[Dictionary]:
 	return [
 		{"name": "v01_light", "method": "case_v01", "world": false,
-				"title": "V01: the zoo's sky is the day HDRI, it gives ambient light 0.7 and the reflections, and the sun is warm, 2.4, soft, 4 cascades to 18 m"},
+				"title": "V01: the zoo's sky is the day HDRI, it gives ambient light 0.75 and the reflections, and the sun is warm, 2.4, soft, 4 cascades to 18 m"},
 		{"name": "v02_post", "method": "case_v02", "world": false,
 				"title": "V02: AgX at exposure 1.1, the old grade, the vignette, SSAO and glow as the old game set them"},
 		{"name": "v03_aa", "method": "case_v03", "world": false,
@@ -24,7 +23,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "v04_presets", "method": "case_v04", "world": false,
 				"title": "V04: low, medium and high are the old presets; the project setting names one, high by default, and each applies its numbers"},
 		{"name": "v05_theme", "method": "case_v05", "world": false,
-				"title": "V05: the project's one Theme gives every 2D text Patrick Hand, the HUD's labels are outlined, a 3D sign keeps the plain font"},
+				"title": "V05 (Q2331): the project's one Theme keeps the default font everywhere, the HUD's Message and Size are outlined, a 3D sign keeps the plain font"},
 		{"name": "v06_crosshair", "method": "case_v06", "world": false,
 				"title": "V06: the crosshair is two bars 18 by 2 px around the screen centre, white at alpha 0.9"},
 		{"name": "v06_real_path", "method": "case_real_path", "world": false,
@@ -57,7 +56,7 @@ func case_v01() -> void:
 			and (material.get_shader_parameter("day_panorama") as Texture2D).resource_path.ends_with("suburban_garden_2k.hdr"),
 			"the sky shows the old day HDRI")
 	_check(env.ambient_light_source == Environment.AMBIENT_SOURCE_SKY, "ambient light comes from the sky")
-	_near(env.ambient_light_energy, 0.7, 0.0001, "ambient energy 0.7")
+	_near(env.ambient_light_energy, 0.75, 0.0001, "ambient energy 0.75")
 	_check(env.reflected_light_source == Environment.REFLECTION_SOURCE_SKY, "reflections come from the sky")
 	var sun := _zoo.get_node("Sun") as DirectionalLight3D
 	_check(sun.light_color.is_equal_approx(SUN_COLOUR), "the sun is warm (1.0, 0.93, 0.82)")
@@ -152,24 +151,19 @@ func case_v04() -> void:
 func case_v05() -> void:
 	await _zoo_up()
 	_check(String(ProjectSettings.get_setting("gui/theme/custom")) == THEME, "the project's Theme is %s" % THEME)
-	var font := load(FONT) as Font
 	var theme := load(THEME) as Theme
-	_check(theme.get_font("font", "Label") == font and theme.get_font("font", "Button") == font, "the Theme gives Label and Button Patrick Hand")
-	_check(not theme.has_default_font(), "the Theme sets no default font, so a Label3D keeps the plain one")
+	var plain := ThemeDB.fallback_font
+	_check(not theme.has_default_font() and not theme.has_font("font", "Label"), "the Theme sets no font (Q2331: Patrick Hand waits for the whiteboard)")
 	var label := Label.new()
 	add_child(label)
-	_check(label.get_theme_font("font") == font, "a plain Label takes Patrick Hand")
-	var button := Button.new()
-	add_child(button)
-	_check(button.get_theme_font("font") == font, "a Button takes Patrick Hand")
+	_check(label.get_theme_font("font") == plain, "a plain Label keeps Godot's default font")
 	label.free()
-	button.free()
 	var player := _zoo.get_node("Player") as Player
 	var texts := 0
 	for node: Node in player.find_children("*", "Label", true, false):
 		var l := node as Label
 		texts += 1
-		_check(l.get_theme_font("font") == font, "the HUD's %s is in Patrick Hand" % l.name)
+		_check(l.get_theme_font("font") == plain, "the HUD's %s keeps the default font" % l.name)
 	_check(texts >= 2, "the HUD has its labels (%d)" % texts)
 	for name_: String in ["Message", "Size"]:
 		var l := player.get_node("Hud/" + name_) as Label
@@ -226,7 +220,7 @@ func case_real_path() -> void:
 	await _physics_ticks(3)
 	_check(player.message() == Player.CANT_DROP, "the refusal shows in the old words (%s)" % player.message())
 	var message := player.get_node("Hud/Message") as Label
-	_check(message.visible and message.get_theme_font("font") == load(FONT), "the message is on screen in Patrick Hand")
+	_check(message.visible and message.get_theme_font("font") == ThemeDB.fallback_font, "the message is on screen in the default font")
 	await _aim(player, aim_at)
 	await _until(func() -> bool: return cross.modulate == Player.CROSSHAIR_OK, "the crosshair to turn white again where a drop is allowed")
 
