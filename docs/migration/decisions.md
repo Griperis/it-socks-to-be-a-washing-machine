@@ -1,4 +1,4 @@
-Next free Q number: Q2236 (update this line whenever a round of questions is asked)
+Next free Q number: Q2239 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -138,3 +138,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2233: no sprint in M0.5; sprint and Footwork come with the Upgrades (M4).
 - Q2234: zoom is ported with handling Socks (core/02).
 - Q2235: pad bindings for movement now; the stick look's deadzone, curve and speed-up in a later ticket.
+- Q2236: the core/01 design approved: the kit's graybox player becomes the game's `Player` in `game/player/`, with `MoveTuning`.
+- Q2237: the movement station: wall, ramp, ledge, low beam, 0.5 m box.
+- Q2238: mouse sensitivity and Invert Y are `MoveTuning` fields until the Options screen (M4).

@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-info
+status: ready-for-agent
 kind: build
 area: core
 feature: core
@@ -90,7 +90,90 @@ a typed Resource marked placeholder until the designer sets it. "Untested" = no 
 the engine's 9.8, look 0.003 rad per pixel, tilt limit 80 degrees, no crouch.
 
 ## Design
-<Step 2.>
+**Start from the kit's graybox player, not from the old 800-line `player.gd`.** The kit's player already walks,
+looks, jumps, captures the mouse, is frozen by a menu, and is the body the co-op avatars copy. This ticket adds
+what the behaviour list has that it lacks and makes it the game's own. About 60 lines more than today; the rest
+of the old file is listed under "Not in this ticket".
+
+**Where it lives.** The player is the game's entity, not a zoo thing: `game/zoo/player/` moves to
+`game/player/` (`player.tscn`, `player.gd`, `move_tuning.gd`, `move_tuning.tres`), class `GrayboxPlayer`
+renamed `Player`. The zoo instances it as before. Its hands and `interact()` stay as the kit wrote them
+until ticket 02 replaces them.
+
+**State.** All of it is continuous state this machine owns (position, velocity, yaw, head tilt, crouching),
+so no Part and no Command. Alone the player is a Host of one with nothing to send. In M0.6 the existing
+`Avatars` copy the body, and crouching is added to what they copy.
+
+**Numbers: `MoveTuning`** (a typed Resource, replacing `WalkTuning`), each `# placeholder: the designer's
+number`, today's values from the old game:
+
+| Field | Value | Line |
+|---|---|---|
+| `walk_speed` | 4.0 m/s | W01 |
+| `crouch_speed_factor` | 0.5 | C01 |
+| `jump_speed` | 5.5 m/s | J01 |
+| `gravity` | 20 m/s² (the player only; the world keeps Godot's 9.8, as in the old game) | W04 |
+| `look_sensitivity` | 0.0025 rad per pixel | L01 |
+| `look_scale`, `invert_y` | 1.0, off (the Options screen writes them in M4, Q2238) | L01 |
+| `pad_look_speed` | 170 degrees a second at full tilt, straight, no curve (the old turn rate; tuning later, Q2235) | P01 |
+| `pitch_limit` | 85 degrees | L02 |
+| `stand_height`, `crouch_height`, `eye_below_top`, `radius` | 1.7 m, 1.0 m, 0.1 m, 0.35 m | B01, C01 |
+| `fov` | 75 degrees | L05 |
+
+**Code sketch** (`game/player/player.gd`, only what changes):
+```gdscript
+@export var tuning: MoveTuning
+var crouching := false
+
+func _physics_process(delta: float) -> void:
+	var walk := Vector2.ZERO if _input_blocked else Input.get_vector(MOVE_LEFT, MOVE_RIGHT, MOVE_FORWARD, MOVE_BACK)
+	_update_crouch(not _input_blocked and Input.is_action_pressed(CROUCH))
+	if not is_on_floor():
+		velocity.y -= tuning.gravity * delta
+	elif not _input_blocked and not crouching and Input.is_action_just_pressed(JUMP):
+		velocity.y = tuning.jump_speed
+	var pace := tuning.walk_speed * (tuning.crouch_speed_factor if crouching else 1.0)
+	var dir := global_basis * Vector3(walk.x, 0.0, walk.y)   # get_vector keeps a diagonal at length 1
+	velocity.x = dir.x * pace
+	velocity.z = dir.z * pace
+	move_and_slide()
+
+## C01, C02: down at once; up only when the crouched body could move up into the standing height.
+func _update_crouch(want: bool) -> void:
+	if not want and crouching and test_move(global_transform, Vector3.UP * (tuning.stand_height - tuning.crouch_height)):
+		want = true   # something overhead: stay down
+	if want != crouching:
+		crouching = want
+		_apply_height(tuning.crouch_height if crouching else tuning.stand_height)
+
+## L04: the camera is top-level, drawn every frame at the head's interpolated place but turned by the look as
+## it is now, so a mouse turn never waits for a physics tick (Godot's own recipe for interpolated first person).
+func _process(_delta: float) -> void:
+	_camera.global_transform = Transform3D(_head.global_basis, _head.get_global_transform_interpolated().origin)
+```
+- `test_move` is Godot's own check (the old game cast a ray), and it sees the whole body.
+- `move_and_slide` with `floor_constant_speed = true` keeps the pace on ramps (W03); walls slide (W02).
+- Physics interpolation goes on for the project (`physics/common/physics_interpolation`), as in the old game.
+- The right stick turns the view in `_process` at `pad_look_speed` (P01); the mouse in `_unhandled_input`.
+
+**Input** (with `kit/tools/input_actions.py`): new `crouch` (Ctrl, LT) and `look_left/right/up/down` (right
+stick). The kit already put the left stick on `move_*`; `jump` gets the pad's X (button 2, as in the old game) if
+it lacks it.
+
+**The movement station** `game/zoo/stations/movement.tscn`: graybox level pieces, not entities (there is no
+behaviour in them): a wall to slide along (W02), a ramp (W03), a ledge to walk off (W04), a low beam to crouch
+under (C02), a 0.5 m box to jump onto (J01), and a `Name` label. See the questions.
+
+**Play starts in the zoo** (acceptance line 1): `run/main_scene` becomes `res://game/zoo/zoo.tscn`;
+`main/` stays as the kit's placeholder until the game has a real start.
+
+**Tests** (`tests/player_test.gd`, grown from the kit's): one case per behaviour line, named after it
+(`l02_tilt_limit`, `w01_walk`, `c02_stays_down_under_beam`, ...), each building the floor or beam it needs. One
+real-path case loads `movement.tscn` with the player, presses the real actions (`Input.action_press`) and walks
+the ramp, jumps, crouches under the beam. `zoo_test` and the co-op crate case keep passing.
+
+**Shared with other pieces:** `player.gd` is touched again by ticket 02 (the crosshair, hands, zoom) and M0.6
+(avatar crouch, push). This ticket owns the body and the camera; 02 owns everything the hands do.
 
 ## Acceptance
 - The zoo is a scene edited in the editor, one station per feature, and Play starts in it.
@@ -103,6 +186,11 @@ the engine's 9.8, look 0.003 rad per pixel, tilt limit 80 degrees, no crouch.
 - Zoom moves to ticket 02, handling Socks (Q2234, 2026-11-20).
 - Pad: the movement actions get their pad bindings now; the stick look tuning gets its own later ticket
   (Q2235, 2026-11-20).
+- The design is approved as written; build it (Q2236, 2026-11-20).
+- The movement station holds five graybox pieces: a wall to slide along, a ramp, a ledge to walk off, a low beam
+  to crouch under, a 0.5 m box to jump onto (Q2237, 2026-11-20).
+- Mouse sensitivity and Invert Y are `MoveTuning` fields (`look_scale` 1.0, `invert_y` off) until the Options
+  screen writes them in M4 (Q2238, 2026-11-20).
 
 ## Open follow-ups
 
