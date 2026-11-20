@@ -31,6 +31,7 @@ entity, tests from the list, walkthrough. `needs-info` until the designer has ap
 - Tests follow the approved behaviour list.
 
 ## Answers
+- Zoom (G held: the view narrows 75 to 50 degrees over 0.15 s, eased; mouse look slows with it) is ported here, with the held Sock (Q2234, 2026-11-20).
 
 ## Open follow-ups
 

@@ -1,4 +1,4 @@
-Next free Q number: Q2232 (update this line whenever a round of questions is asked)
+Next free Q number: Q2236 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -132,3 +132,9 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2229: platforms Windows and Linux desktop.
 - Q2230: no GitHub remote for now; commits stay local.
 - Q2231: the old game is the git submodule `reference/it-socks`, pinned at `v0.1.1` (the designer added it as `prototype/`; moved so the kit skips it).
+
+## M0.5, core/01 zoo movement (2026-11-20)
+- Q2232: the movement behaviour list approved as written (`docs/llm/core/issues/01-zoo-movement.md`).
+- Q2233: no sprint in M0.5; sprint and Footwork come with the Upgrades (M4).
+- Q2234: zoom is ported with handling Socks (core/02).
+- Q2235: pad bindings for movement now; the stick look's deadzone, curve and speed-up in a later ticket.
