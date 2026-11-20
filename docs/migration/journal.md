@@ -64,3 +64,17 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
   `reference/it-socks` and pinned at `v0.1.1` (Q2231). Lesson for the reusable skill set: the reference goes under
   `reference/`, whether a plain clone or a submodule, and is pinned at the tag.
 - M0 done: the designer made the remote `Griperis/it-socks-to-be-a-washing-machine` and pushed `3e8b31e` from the host; the sandbox has read access but no push token.
+
+## core/01 zoo movement (M0.5), merged 2026-11-20
+| Field | Content |
+|---|---|
+| Ticket | core/01, the game's Player and the movement station, M0.5, approved and merged (dd134fc) |
+| Planned vs actual | 1 ticket planned, 1 actual |
+| Redo count | 0 after the designer's review; 1 lead review round before it (camera interpolation, placeholder marks, header) |
+| Corrections | none to the behaviour list or the design; scope moved: sprint to M4 (Q2233), zoom to core/02 (Q2234), pad look tuning later (Q2235) |
+| Cost | 3,045,492 tokens, 34 tool calls, 6 min, Sonnet, 2 runs (`kit/tools/agent_cost.py --by ticket`) |
+| Time | behaviour list and design: about one hour of lead reading; designer approvals: two dialogs |
+| Surprises | the agent left Godot's own interpolation on the top-level camera (headless tests cannot see it: a lead read caught it); the new `tests/hooks.gd` was committed without its `.uid`, so `integrate.sh` stopped once; the designer's editor re-saved `project.godot` and `.mcp.json` and imported the baseline PNGs in `docs/migration/` (now `.gdignore`d) |
+| Stop rules | none fired |
+| Looks | not compared (the zoo is new; nothing of the 70 baseline views changed) |
+| Decisions | Q2232-Q2240 |

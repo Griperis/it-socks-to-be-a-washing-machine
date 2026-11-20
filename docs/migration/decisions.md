@@ -1,4 +1,4 @@
-Next free Q number: Q2239 (update this line whenever a round of questions is asked)
+Next free Q number: Q2241 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -141,3 +141,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2236: the core/01 design approved: the kit's graybox player becomes the game's `Player` in `game/player/`, with `MoveTuning`.
 - Q2237: the movement station: wall, ramp, ledge, low beam, 0.5 m box.
 - Q2238: mouse sensitivity and Invert Y are `MoveTuning` fields until the Options screen (M4).
+- Q2239: core/01 merged on the designer's OK.
+- Q2240: editor re-saves in the designer's working copy (`project.godot` reordered, `.mcp.json` tabs) are discarded, not committed.

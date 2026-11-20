@@ -194,6 +194,7 @@ the ramp, jumps, crouches under the beam. `zoo_test` and the co-op crate case ke
   to crouch under, a 0.5 m box to jump onto (Q2237, 2026-11-20).
 - Mouse sensitivity and Invert Y are `MoveTuning` fields (`look_scale` 1.0, `invert_y` off) until the Options
   screen writes them in M4 (Q2238, 2026-11-20).
+- Merge it (Q2239, 2026-11-20).
 
 ## Open follow-ups
 - [later] The pad's X (button 2) is now on `jump` (Q2236, as the old game) and the kit already had it on
