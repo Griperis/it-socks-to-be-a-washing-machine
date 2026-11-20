@@ -6,7 +6,7 @@ area: core
 feature: core
 priority: now
 created: 2026-11-20
-done:
+done: 2026-11-20
 blocked_by: ["[[13-two-tier-mess]]"]
 notes: []
 terms: []
@@ -60,3 +60,4 @@ Each line names the approved line it changes, if any; the audit row gives the ol
   game/mess/{mess,mess_moving}.gd, game/player/player.gd, game/entities/cabinet/cabinet.gd, tests/*.
   Q2339: any moving Sock is pickable (`Mess.is_moving`), H10's case and p07 changed, new case pairing r03_thrown. Verified: PASS 4999 checks (--touched).
 - Model: Sonnet (lead): rule changes with known old code and tests.
+- Merged: c747e6a6 (2026-11-20, branch core/14-rules-back-to-old)
