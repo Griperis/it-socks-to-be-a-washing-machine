@@ -1,0 +1,2 @@
+# The Throw's ring round the crosshair mid-charge (core/08, Q2260): the whole view
+mid-charge  --size=1280x720 --do='60:throw_charge' --shots=110

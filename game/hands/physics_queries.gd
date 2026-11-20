@@ -38,3 +38,34 @@ static func ray(node: Node, from: Vector3, to: Vector3, mask: int) -> Dictionary
 	if world == null:
 		return {}
 	return world.direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(from, to, mask))
+
+
+## The things of `mask` that `shape` at `xform` overlaps, at most `most`: their colliders (a lying
+## Sock's touching neighbours, T11). Empty when `node` has no world yet.
+static func overlaps(node: Node, shape: Shape3D, xform: Transform3D, mask: int, most: int) -> Array[Object]:
+	var out: Array[Object] = []
+	if not node.is_inside_tree() or most <= 0:
+		return out
+	var world := node.get_viewport().find_world_3d()
+	if world == null:
+		return out
+	var query := PhysicsShapeQueryParameters3D.new()
+	query.shape = shape
+	query.transform = xform
+	query.collision_mask = mask
+	for hit: Dictionary in world.direct_space_state.intersect_shape(query, most):
+		out.append(hit["collider"])
+	return out
+
+
+## Whether `point` is inside something solid of `mask` (a Sock that would end inside a wall, T08).
+static func inside(node: Node, point: Vector3, mask: int) -> bool:
+	if not node.is_inside_tree():
+		return false
+	var world := node.get_viewport().find_world_3d()
+	if world == null:
+		return false
+	var query := PhysicsPointQueryParameters3D.new()
+	query.position = point
+	query.collision_mask = mask
+	return not world.direct_space_state.intersect_point(query, 1).is_empty()

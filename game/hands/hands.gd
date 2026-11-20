@@ -1,7 +1,8 @@
 ## Every player's Hands as one Part, keyed by player id (1 alone, Q2212): the Socks each holds, in
 ## the order picked (newest last), and which one is active. Every change is a Command the Host
-## answers: `pick` a lying Sock, `cycle` the active item, `drop` the active item on a spot. A pick
-## and a drop each change two Parts in one answer: the Sock's record in the Mess and these Hands.
+## answers: `pick` a lying Sock, `cycle` the active item, `drop` the active item on a spot, `throw`
+## the active item along a direction (core/08). A pick, a drop and a throw each change two Parts in
+## one answer: the Sock's record in the Mess and these Hands.
 ##
 ## The refusals the player sees before asking (the crosshair's red, "Hands full", "Can't drop
 ## there") come from the same checks decide() makes: pick_refusal() and drop_refusal().
@@ -22,6 +23,16 @@ const NOTHING := "nothing"
 const NO_SPOT := "no_spot"
 ## How far over and under a drop's spot the Host looks for the top it would rest on.
 const SPOT_PROBE := 0.05
+## Where a thrown Sock leaves: this far ahead of the eyes along the aim and this far below them
+## (the old game's _start_point), pulled back by THROW_CLEAR body depths when a wall is nearer.
+const THROW_AHEAD := 0.35
+const THROW_LOW := 0.08
+const THROW_CLEAR := 0.09
+## How far above a player's feet their eyes are when the Host has no body of theirs to ask (a
+## Guest's, until M0.6 reads the Guest's eyes).
+const EYES_FALLBACK := 1.5
+## The most throws a Guest may send in a second (each needs a held button past the tap).
+const THROW_RATE := 5
 
 ## The level's loose Socks.
 @export var mess: Mess
@@ -96,12 +107,21 @@ func drop(by: int, point: Vector3, normal: Vector3) -> void:
 	parts.ask(Command.new(&"drop", by, id, {"point": point, "normal": normal}))
 
 
-## What a Guest may send: a Sock id, a step, a spot. A pick at most 10 a second.
+## The player asks to throw the active item along `dir` (a unit vector, the aim) with `charge` (0
+## to 1, how full the ring was). The Host decides where it leaves and how fast.
+func throw(by: int, dir: Vector3, charge: float) -> void:
+	parts.ask(Command.new(&"throw", by, id, {"dir": dir, "charge": charge}))
+
+
+## What a Guest may send: a Sock id, a step, a spot, a direction and a charge. A pick at most 10 a
+## second, a throw at most THROW_RATE.
 func accepts() -> Dictionary[StringName, Dictionary]:
 	return {
 		&"pick": {"args": {"sock": {"type": TYPE_INT, "min": 0, "max": 1 << 30}}},
 		&"cycle": {"args": {"step": {"type": TYPE_INT, "min": -1, "max": 1}}},
 		&"drop": {"args": {"point": TYPE_VECTOR3, "normal": {"type": TYPE_VECTOR3, "min": -1.01, "max": 1.01}}},
+		&"throw": {"args": {"dir": {"type": TYPE_VECTOR3, "min": -1.01, "max": 1.01},
+				"charge": {"type": TYPE_FLOAT, "min": 0.0, "max": 1.0}}, "rate": THROW_RATE},
 	}
 
 
@@ -173,7 +193,51 @@ func decide(cmd: Command) -> Dictionary:
 			return {"ok": true, "changes": {
 				mess.id: mess.flying_patch(sock, _let_go(cmd.by, point)),
 				id: _patch(cmd.by, items, items.size() - 1)}}
+		&"throw":
+			var dir: Variant = cmd.args.get("dir")
+			var charge: Variant = cmd.args.get("charge")
+			if not (dir is Vector3) or not (charge is float) or not (dir as Vector3).is_finite() \
+					or not is_equal_approx((dir as Vector3).length(), 1.0) or charge < 0.0 or charge > 1.0:
+				return refuse("wrong")
+			if active_of(cmd.by) < 0:
+				return refuse(NOTHING)
+			var sock := active_of(cmd.by)
+			var items := items_of(cmd.by).duplicate()
+			items.remove_at(active_index(cmd.by))
+			var launch := launch_of(cmd.by, (dir as Vector3).normalized(), charge)
+			return {"ok": true, "launch": launch, "changes": {
+				mess.id: mess.thrown_patch(sock, launch["from"], launch["vel"], launch["spin"], cmd.by),
+				id: _patch(cmd.by, items, items.size() - 1)}}
 	return refuse("wrong")
+
+
+## Where and how a Throw by player `by` along `dir` with `charge` leaves: {"from": the pose it leaves
+## at (just in front of the eyes, never through a wall, its length across the view), "vel", "spin"}.
+## Below the tap charge it is the lob (T02); above, faster the fuller the charge (T03).
+func launch_of(by: int, dir: Vector3, charge: float) -> Dictionary:
+	var t := tuning_of(by)
+	var vel := dir * lerpf(t.min_speed, t.max_speed, charge)
+	if charge < t.tap_charge:
+		vel = dir * t.lob_speed + Vector3.UP * t.lob_lift
+	var eyes := eyes_of(by)
+	var at := eyes + dir * THROW_AHEAD + Vector3.DOWN * THROW_LOW
+	var hit := PhysicsQueries.ray(self, eyes, at + dir * THROW_CLEAR, Mess.LAYER_HOUSE)
+	if not hit.is_empty():
+		at = eyes + dir * maxf(0.0, eyes.distance_to(hit["position"]) - THROW_CLEAR * 1.5)
+	var yaw := atan2(-dir.x, -dir.z)
+	return {"from": Transform3D(Basis(Vector3.UP, yaw), at), "vel": vel, "spin": t.spin}
+
+
+## Where player `by`'s eyes are: their player's when it is on this machine (alone, always), else
+## EYES_FALLBACK above where they stand.
+func eyes_of(by: int) -> Vector3:
+	if is_inside_tree():
+		for node in get_tree().get_nodes_in_group(PLAYERS):
+			var player := node as Player
+			if player != null and player.player_id() == by:
+				return player.eyes()
+	var at: Variant = parts.where.call(by) if parts != null and parts.where.is_valid() else null
+	return (at as Vector3 if at is Vector3 else Vector3.ZERO) + Vector3.UP * EYES_FALLBACK
 
 
 ## The pose a dropped Sock is let go at: flat, `drop_lift` over its spot, its length across the

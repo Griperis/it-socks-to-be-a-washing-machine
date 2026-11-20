@@ -16,7 +16,8 @@ extends Resource
 @export_range(1, 12, 1) var capacity := 1 # placeholder: the designer's number (today's value from the old game)
 
 @export_group("Drop")
-## A press of the drop button shorter than this is a drop (a longer one is the Throw's, core/08).
+## A press of the drop button shorter than this is a drop; held longer with something in the Hands,
+## the Throw's charge starts (T01: the `hold` of core/08's design, one number for both).
 @export_range(0.05, 1.0, 0.05, "suffix:s") var tap := 0.25 # placeholder: the designer's number (today's value from the old game)
 ## The steepest top a drop may land on.
 @export_range(0.0, 60.0, 1.0, "suffix:°") var drop_slope := 25.0 # placeholder: the designer's number (today's value from the old game)
@@ -31,6 +32,26 @@ extends Resource
 
 ## How long a refusal ("Hands full", "Can't drop there") stays on screen.
 @export_range(0.2, 5.0, 0.1, "suffix:s") var refusal_time := 1.5 # placeholder: the designer's number (the old HUD's wobble and fade are a look ticket)
+
+@export_group("Throw")
+## How long a charge takes to fill the ring, from the hold to full (T01).
+@export_range(0.1, 5.0, 0.05, "suffix:s") var charge_time := 1.2 # placeholder: the designer's number (today's value from the old game; Quick Charge is M4)
+## A charge released under this share is the lob (T02).
+@export_range(0.0, 1.0, 0.01) var tap_charge := 0.15 # placeholder: the designer's number (today's value from the old game)
+## The lob: its speed along the aim, and the speed added straight up (T02).
+@export_range(0.0, 20.0, 0.1, "suffix:m/s") var lob_speed := 3.5 # placeholder: the designer's number (today's value from the old game)
+@export_range(0.0, 10.0, 0.1, "suffix:m/s") var lob_lift := 2.0 # placeholder: the designer's number (today's value from the old game)
+## The speed along the aim at the tap charge and at a full charge (T03; Long Arm is M4).
+@export_range(0.0, 30.0, 0.1, "suffix:m/s") var min_speed := 3.0 # placeholder: the designer's number (today's value from the old game)
+@export_range(0.0, 30.0, 0.1, "suffix:m/s") var max_speed := 5.0 # placeholder: the designer's number (today's value from the old game)
+## The turn a thrown Sock leaves the Hands with.
+@export var spin := Vector3(2.0, 1.0, 3.0) # placeholder: the old game's fixed spin (rad/s)
+## A thrown Sock's drag in the air (a dropped one has the body's own).
+@export_range(0.0, 5.0, 0.01) var thrown_linear_damp := 0.05 # placeholder: the old release.json
+@export_range(0.0, 10.0, 0.05) var thrown_angular_damp := 0.8 # placeholder: the old release.json
+## A falling body faster than this wakes the lying Sock it hits and up to `wake_count` touching it (T11).
+@export_range(0.0, 10.0, 0.1, "suffix:m/s") var wake_speed := 1.5 # placeholder: the designer's number (today's value from the old game)
+@export_range(0, 32, 1) var wake_count := 8 # placeholder: the designer's number (today's value from the old game)
 
 @export_group("Holding")
 ## Where the active item hangs, in the camera's space (x right, y up, -z ahead), before `depth`.
