@@ -1,9 +1,8 @@
-## A plain first-person walker for graybox levels and the zoo. The move_* actions walk, the mouse
-## looks (a click captures it, ui_cancel lets it go), jump jumps, and interact uses the Part the
-## crosshair is on, through Parts like any player's input: alone this player is the Host of one.
-## A Carriable it picked is carried in its hands once the pick is granted, and interact puts it down.
-## In co-op it is the local player: Avatars copies its body to the others. It stands in until the
-## game has its own player.
+## The game's player: a first-person body. It walks (move_*, at the pace of walking or crouching), looks
+## (the mouse once a click has captured it, ui_cancel lets it go; the right stick), jumps and crouches.
+## Its hands are the kit's until core/02: interact uses the Part the crosshair is on, through Parts like
+## any player's input (alone this player is the Host of one), and carries a Carriable once the pick is
+## granted. In co-op it is the local player: Avatars copies its body to the others.
 class_name Player
 extends CharacterBody3D
 

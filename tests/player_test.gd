@@ -208,6 +208,7 @@ func case_l04_camera() -> void:
 	_click(player)
 	var camera := player.get_node("Head/Camera") as Camera3D
 	_check(camera.top_level, "the camera is top-level")
+	_check(camera.physics_interpolation_mode == Node.PHYSICS_INTERPOLATION_MODE_OFF, "its own interpolation is off")
 	_mouse(player, 200, 0)
 	await _frames(1)
 	var forward := -camera.global_basis.z
