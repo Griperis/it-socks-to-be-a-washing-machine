@@ -241,3 +241,33 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2299, Q2300, Q2317, Q2322-Q2324, Q2331, Q2333 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | house/01, the house kit (walls, corners, Ts, floor and ceiling tiles, door and window walls, a straight stair with a landing, the kit station); merged as a first step (76e771d, main 75f0b47) |
+| Planned vs actual | 1 planned, 1 actual; widened by house/02 and house/03 |
+| Redo count | 0 |
+| Corrections | the designer wants the kit to build the old house nearly identically, the old house re-gridded to 0.5 m (Q2343-Q2346); the agent had nudged 2.9 m storeys to 3.0 m and left out windows, frames, skirting, railings, roof |
+| Cost | house/01 1 15,172,921 100 22m27s (Opus) |
+| Time | the agent ran about 22 min |
+| Surprises | 5 staged blobs went missing from the object store at the agent's finish (rewritten); the kit station stood in sounds:s07's walking path, fixed at the merge |
+| Stop rules | stopped at its stills |
+| Looks | `builds/review-house-01/` |
+| Decisions | Q2325-Q2328, Q2343-Q2346 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | core/22, the Sounds station built from the sound catalogue with small buttons; approved and merged (f0f6e33) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 1 (overlapping labels and the sign over the buttons, Q2340) |
+| Corrections | "Fix both, then merge" (Q2340) |
+| Cost | core/22 1 3,133,847 37 9m44s (Sonnet) |
+| Time | the agent ran about 10 min |
+| Surprises | its first commit left out two script .uid files (the agent added them) |
+| Stop rules | stopped at its first still |
+| Looks | `builds/review-core-22/` |
+| Decisions | Q2337, Q2340 |
+
+---
