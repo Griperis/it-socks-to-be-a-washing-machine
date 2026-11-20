@@ -1,4 +1,4 @@
-Next free Q number: Q2251 (update this line whenever a round of questions is asked)
+Next free Q number: Q2254 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -155,3 +155,8 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2248: the 605 Designs become a typed `DesignCatalogue` Resource.
 - Q2249: the graybox Sock is the old `crew.glb`, tinted, unported, until M1.
 - Q2250: the Throw is split into core/08, after core/02.
+
+## Code shape (2026-11-20; open-questions B1 7-9)
+- Q2251: inheritance one step: Part, then Openable; nothing extends Openable.
+- Q2252: one class per file, named alike.
+- Q2253: a thing gets a script only when no Part can do the job.

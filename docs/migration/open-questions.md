@@ -20,7 +20,7 @@ For the dialog: at most four options each, the recommended one first.
 "Co-op structure"). 2 and 3 are how the kit's `Part` works (a "State" group in the inspector; the rule in the part's
 `decide()`): confirm them at the first design rather than asking afresh. 4: node paths now, stable ids with kit 7.2.
 5: answered by Q2220-Q2222 (looks only). 6: the Mess is one Part (the lead's mapping; grilled in M3). 10: the kit
-has both the test-suite check and the Host's guard. **7, 8 and 9 are still open: ask them at the first M0.5 design.**
+has both the test-suite check and the Host's guard. 7, 8 and 9: answered 2026-11-20, all as recommended (Q2251-Q2253, now a rule in `CLAUDE.md`).
 
 1. **Network.** How should a Door's state get to the other players? (a) Our own messages and one snapshot (recommended) (b) Godot's MultiplayerSynchronizer on each thing (c) Ours up to the Host, Godot's back down
 2. **Marking state.** How does a part say which fields are its state? (a) A "State" heading in the inspector (recommended) (b) A written list at the top of each part (c) A name prefix or custom code per part

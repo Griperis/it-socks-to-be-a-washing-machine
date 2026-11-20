@@ -106,6 +106,8 @@ through that feature's own rules object. Otherwise they go through the co-op sha
   code animation. A new feature is first a station in the zoo, with the game's real entities.
 - **Numbers are typed Resources edited in the inspector; screens are scenes on one Theme; Jolt and Godot's own
   nodes wherever they can do the job** (the ragdoll included).
+- **Code shape** (Q2251-Q2253): inheritance one step (Part, then Openable; nothing extends Openable); one class per
+  file, named alike, no inner classes; a thing gets a script only when no Part can do the job.
 - **What Godot should not see carries a `.gdignore`** (designer, Q2242): `docs/`, `reference/`, `assets_src/`,
   `kit/skills/` today; a new folder of notes, sources or pictures gets one when it is made. Untracked files the
   editor makes inside `kit/` are ignored by the game's git (`.gitmodules` `ignore = untracked`), never committed
