@@ -1,10 +1,19 @@
 ## The zoo scene itself: it loads, runs a few frames with no script error, and keeps the zoo's
 ## rules; alone it opens no network, and two zoos in co-op see each other's players and what one's
 ## player uses the other sees. Nothing here tests a feature's rules through the zoo: features have their own
-## suites, and the zoo is for a person to play in.
+## suites, and the zoo is for a person to play in. The one exception is the zoo's one Mess, Hands and
+## Coins (core/10, Z01-Z04), which only the zoo has.
 extends TestSuite
 
 const ZOO := "res://game/zoo/zoo.tscn"
+const ACTIONS: Array[StringName] = [&"pick", &"drop_throw", &"interact", &"move_forward"]
+## Where the player stands, in a station's space: before the handling station's Socks, before the
+## Cabinet's drawers, and a step back to throw at it (as the stations' own suites do).
+const BY_HANDLING := Vector3(0.0, 0.0, 1.5)
+const BY_DRAWERS := Vector3(-1.0, 0.0, -0.4)
+const THROW_FROM := Vector3(-1.0, 0.0, 0.6)
+## Where a Throw at the Cabinet station's Cabinet is aimed, in the station's space.
+const CABINET_AIM := Vector3(-1.0, 1.6, -2.0)
 ## Scenes that may only appear in the zoo: everything else on a station comes from the game.
 const ZOO_FOLDER := "res://game/zoo/"
 
@@ -27,10 +36,23 @@ func cases() -> Array[Dictionary]:
 				"title": "each station scene runs on its own, and two zoos hold the same stations in the same order"},
 		{"name": "coop", "method": "case_coop", "world": false,
 				"title": "alone the zoo opens no network; a hosting zoo and a joining zoo show each other's players, and the guest's player opens a cupboard on both"},
+		{"name": "z01_click", "method": "case_z01_click", "world": false,
+				"title": "Z01, real path: in the zoo the player pairs two Socks at the handling station, walks to the Cabinet station and shelves the Pair by a click"},
+		{"name": "z01_throw", "method": "case_z01_throw", "world": false,
+				"title": "Z01: a Pair made at the handling station is still in the Hands at the Cabinet station and shelves itself when thrown at the Cabinet"},
+		{"name": "z02", "method": "case_z02", "world": false,
+				"title": "Z02: the zoo has one Mess, one Hands and one Coins; every station's Socks are records of that Mess, lying where the station places them"},
+		{"name": "z03", "method": "case_z03", "world": false,
+				"title": "Z03: a station instanced without the zoo keeps its own Mess, Hands and Coins, and its links point at them"},
+		{"name": "z04", "method": "case_z04", "world": false,
+				"title": "Z04: a Sock thrown off the zoo's floor comes back to the zoo's return spot, in the zoo's Mess"},
 	]
 
 
 func _before_case() -> void:
+	for a in ACTIONS:
+		if InputMap.has_action(a):
+			Input.action_release(a)
 	wait_floor_s = NET_WAIT_S
 	if _zoo != null:
 		_zoo.free()
@@ -152,6 +174,211 @@ func case_coop() -> void:
 	_check(guest_player.interact() == guest_openable, "the guest's player aims at the cupboard and asks to open it")
 	await _until(func() -> bool: return host_openable.open and guest_openable.open, "both zoos to have the cupboard open")
 	_drop_branches()
+
+
+# --- One Mess for the zoo (core/10) -------------------------------------------------------------
+
+func case_z01_click() -> void:
+	await _zoo_up()
+	var handling := _zoo.get_node("Stations/Handling") as Node3D
+	var station := _zoo.get_node("Stations/Cabinet") as Node3D
+	var mess := _zoo.get_node("Socks/Mess") as Mess
+	var hands := _zoo.get_node("Socks/Hands") as Hands
+	var coins := _zoo.get_node("Socks/Coins") as Coins
+	var cabinet := station.get_node("Cabinet/Cabinet") as Cabinet
+	var player := _zoo.get_node("Player") as Player
+	var sock := _sock_of(handling, "Floor")
+	var mate := _sock_of(handling, "MateFloor")
+	_stand(handling, BY_HANDLING)
+	await _aim(_centre(mess, sock))
+	await _press(&"pick")
+	await _until(func() -> bool: return hands.active_of(1) == sock, "the first Sock to be in the Hands")
+	await _physics_ticks(25)
+	await _aim(_centre(mess, mate))
+	await _press(&"pick")
+	await _until(func() -> bool: return mess.is_pair(sock), "the mate to fuse into a Pair")
+	_stand(station, BY_DRAWERS)
+	await _physics_ticks(2)
+	_check(player.hands() == hands and hands.items_of(1) == PackedInt32Array([sock]),
+			"at the Cabinet station the Pair is still in the Hands (%s)" % [hands.items_of(1)])
+	await _aim(_drawer_front(cabinet, 0))
+	await _press(&"pick")
+	await _until(func() -> bool: return cabinet.contents(0) == PackedInt32Array([sock]), "the Pair to be shelved in the bottom drawer")
+	_check(hands.items_of(1).is_empty(), "the Hands are empty")
+	_check(mess.state_of(sock) == Mess.State.SHELVED, "the Pair's record is shelved")
+	_check(coins.of_player(1) == 10, "10 Coins are the player's (%d)" % coins.of_player(1))
+	_check(cabinet.drawer(0).open, "the drawer slid open")
+
+
+func case_z01_throw() -> void:
+	await _zoo_up()
+	var handling := _zoo.get_node("Stations/Handling") as Node3D
+	var station := _zoo.get_node("Stations/Cabinet") as Node3D
+	var mess := _zoo.get_node("Socks/Mess") as Mess
+	var hands := _zoo.get_node("Socks/Hands") as Hands
+	var cabinet := station.get_node("Cabinet/Cabinet") as Cabinet
+	var player := _zoo.get_node("Player") as Player
+	var sock := _sock_of(handling, "Under")
+	var mate := _sock_of(handling, "MateUnder")
+	_stand(handling, BY_HANDLING)
+	await _physics_ticks(2)
+	hands.clock += 10.0
+	hands.pick(1, sock)
+	await _physics_ticks(1)
+	hands.clock += 10.0
+	hands.pick(1, mate)
+	await _physics_ticks(1)
+	_check(mess.is_pair(sock), "the two handling Socks fused into a Pair")
+	_stand(station, THROW_FROM)
+	await _aim(station.to_global(CABINET_AIM))
+	_check(player.hands() == hands and hands.active_of(1) == sock, "at the Cabinet station the Pair is still the active item")
+	Input.action_press(&"drop_throw")
+	await _until(func() -> bool: return player.charging and player.charge >= 1.0, "the ring to fill", 200)
+	Input.action_release(&"drop_throw")
+	await _until(func() -> bool: return mess.state_of(sock) != Mess.State.HELD, "the Pair to leave the Hands")
+	await _until(func() -> bool: return mess.state_of(sock) != Mess.State.FLYING, "the thrown Pair to land or shelve")
+	_check(mess.state_of(sock) == Mess.State.SHELVED, "the thrown Pair shelved itself (state %d)" % mess.state_of(sock))
+	_check(cabinet.shelved().has(sock), "it is on the Cabinet's shelf (%s)" % [cabinet.shelved()])
+
+
+func case_z02() -> void:
+	await _zoo_up()
+	var mess := _zoo.get_node("Socks/Mess") as Mess
+	var hands := _zoo.get_node("Socks/Hands") as Hands
+	var coins := _zoo.get_node("Socks/Coins") as Coins
+	var found := {"Mess": 0, "Hands": 0, "Coins": 0}
+	for node in _zoo.find_children("*", "Node", true, false):
+		if node is Mess:
+			found["Mess"] += 1
+		elif node is Hands:
+			found["Hands"] += 1
+		elif node is Coins:
+			found["Coins"] += 1
+	_check(found == {"Mess": 1, "Hands": 1, "Coins": 1}, "one Mess, one Hands, one Coins in the zoo (%s)" % [found])
+	_check(hands.mess == mess and hands.id == &"Socks/Hands" and mess.id == &"Socks/Mess" and coins.id == &"Socks/Coins",
+			"the Hands' Mess is the Mess; their ids are the zoo's (%s, %s, %s)" % [hands.id, mess.id, coins.id])
+	var seen := {}
+	var spots := 0
+	for station in _zoo.get_node("Stations").get_children():
+		_check(station.get_node_or_null(ZooStations.SOCKS) == null, "station %s has no Socks of its own" % station.name)
+		for node in station.find_children("*", "Marker3D", true, false):
+			var spot := node as SockSpot
+			if spot == null:
+				continue
+			spots += 1
+			_check(spot.sock >= 0 and spot.sock < mess.count() and not seen.has(spot.sock),
+					"%s/%s is Sock %d of the zoo's Mess" % [station.name, spot.name, spot.sock])
+			seen[spot.sock] = true
+			_check(mess.state_of(spot.sock) == Mess.State.LYING and mess.designs[spot.sock] == spot.design
+					and mess.pose_of(spot.sock).origin.distance_to(spot.global_position) < 0.001 and mess.looks_of(spot.sock) != null,
+					"it lies where %s/%s places it, as its Design" % [station.name, spot.name])
+	_check(mess.count() == spots and spots > 0, "every SockSpot of every station is one record (%d records, %d spots)" % [mess.count(), spots])
+	var cabinet := _zoo.get_node("Stations/Cabinet/Cabinet/Cabinet") as Cabinet
+	_check(cabinet.hands_of() == hands and cabinet.coins_of() == coins and cabinet.mess_of() == mess,
+			"the Cabinet takes from the zoo's Hands and Mess and pays into the zoo's Coins")
+
+
+func case_z03() -> void:
+	var with_socks := 0
+	for path in ZooStations.scenes():
+		var station := (load(path) as PackedScene).instantiate() as Node3D
+		add_child(station)
+		await _frames(1)
+		var mess := station.get_node_or_null(^"Socks/Mess") as Mess
+		if mess != null:
+			with_socks += 1
+			var spots := mess.spots.get_children().filter(func(n: Node) -> bool: return n is SockSpot).size()
+			_check(mess.count() == spots, "%s alone: its own Mess holds its %d Socks (%d)" % [path, spots, mess.count()])
+			var hands := station.get_node(^"Socks/Hands") as Hands
+			_check(hands.mess == mess, "%s alone: its own Hands take from its own Mess" % path)
+			for node in station.find_children("*", "Node", true, false):
+				if node is Cabinet:
+					_check((node as Cabinet).hands_of() == hands, "%s alone: its Cabinet takes from its own Hands" % path)
+		station.free()
+	_check(with_socks >= 2, "the handling and Cabinet stations keep Socks of their own (%d)" % with_socks)
+
+
+func case_z04() -> void:
+	await _zoo_up()
+	var handling := _zoo.get_node("Stations/Handling") as Node3D
+	var mess := _zoo.get_node("Socks/Mess") as Mess
+	var hands := _zoo.get_node("Socks/Hands") as Hands
+	var spot := _zoo.get_node("ReturnSpot") as Marker3D
+	var player := _zoo.get_node("Player") as Player
+	var sock := _sock_of(handling, "Floor")
+	_stand(handling, BY_HANDLING)
+	await _physics_ticks(2)
+	hands.clock += 10.0
+	hands.pick(1, sock)
+	await _physics_ticks(1)
+	_check(hands.active_of(1) == sock, "the handling station's Sock is in the Hands")
+	# To the zoo floor's west edge, throwing off it.
+	player.global_position = Vector3(-19.0, 0.0, handling.global_position.z + 1.5)
+	player.velocity = Vector3.ZERO
+	player.rotation.y = PI * 0.5
+	(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(15.0)
+	await _physics_ticks(2)
+	_check(mess.in_bounds(player.global_position) and not mess.in_bounds(Vector3(-21.0, 1.0, 0.0)), "the zoo's playable space ends at its floor's edge")
+	hands.throw(1, player.aim_dir(), 1.0)
+	await _until(func() -> bool: return mess.state_of(sock) == Mess.State.FLYING, "the Sock to fly")
+	await _until(func() -> bool: return mess.state_of(sock) == Mess.State.LYING, "the Sock to come down")
+	_near(mess.pose_of(sock).origin.distance_to(spot.global_position), 0.0, 0.001, "it lies at the zoo's return spot")
+	var looks := mess.looks_of(sock)
+	_check(looks != null and looks.get_parent().get_parent() == _zoo.get_node("Lying"), "drawn in the zoo's Lying")
+
+
+## A zoo, its player standing on the floor and every Sock lying.
+func _zoo_up() -> void:
+	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
+	add_child(_zoo)
+	var mess := _zoo.get_node("Socks/Mess") as Mess
+	var player := _zoo.get_node("Player") as Player
+	await _until(func() -> bool: return player.is_on_floor() and mess.looks_of(0) != null, "the player to stand and the Socks to lie")
+
+
+## The Sock a station's SockSpot `spot_name` (under its Spots) became.
+func _sock_of(station: Node, spot_name: String) -> int:
+	return (station.get_node("Spots/" + spot_name) as SockSpot).sock
+
+
+## Puts the zoo's player at `at` in `station`'s space.
+func _stand(station: Node3D, at: Vector3) -> void:
+	var player := _zoo.get_node("Player") as Player
+	player.global_position = station.to_global(at)
+	player.velocity = Vector3.ZERO
+	player.reset_physics_interpolation()
+
+
+## Turns the zoo's player to `target` and pitches the head at it, as the mouse would.
+func _aim(target: Vector3) -> void:
+	var player := _zoo.get_node("Player") as Player
+	var head := player.get_node("Head") as Node3D
+	var to := target - player.global_position
+	player.rotation.y = atan2(-to.x, -to.z)
+	var up := target - head.global_position
+	head.rotation.x = atan2(up.y, Vector2(up.x, up.z).length())
+	await _physics_ticks(2)
+
+
+## Presses an action for two physics ticks, then lets it go.
+func _press(action: StringName) -> void:
+	Input.action_press(action)
+	await _physics_ticks(2)
+	Input.action_release(action)
+	await _physics_ticks(2)
+
+
+## The middle of a lying Sock, or of a lying Pair's ball.
+func _centre(mess: Mess, sock: int) -> Vector3:
+	if mess.is_pair(sock):
+		return mess.pose_of(sock).origin
+	return mess.pose_of(sock) * Vector3(0.0, SockDress.box(mess.design_of(sock)).y * 0.5, 0.0)
+
+
+## The middle of drawer `index`'s front, in the level (the drawer shut).
+func _drawer_front(cabinet: Cabinet, index: int) -> Vector3:
+	var front := cabinet.get_parent().get_node("Drawer%d/Looks/Slide/Front" % (index + 1)) as Node3D
+	return front.global_position + Vector3(0.3, 0.0, 0.0)
 
 
 ## A zoo in a machine of its own: a Node with its own MultiplayerAPI, and a SubViewport with its own
