@@ -1,0 +1,2 @@
+# core/19 F3: the handling station's sign seen from where the player stands on its pad (a Sock taken at 60).
+handling  --size=1280x720 --do='60:pair_first' --shots=70

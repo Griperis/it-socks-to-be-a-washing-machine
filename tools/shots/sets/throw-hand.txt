@@ -1,0 +1,11 @@
+# core/19 F1: a Sock held (60), the view turned to the open floor (90), thrown at 120: the drawn Sock leaves from the hand and joins its flight over catch_up (0.1 s), frame by frame (60 a second).
+f118  --size=1280x720 --do='60:pick_floor;90:look_up;120:throw_lob' --shots=118
+f121  --size=1280x720 --do='60:pick_floor;90:look_up;120:throw_lob' --shots=121
+f122  --size=1280x720 --do='60:pick_floor;90:look_up;120:throw_lob' --shots=122
+f123  --size=1280x720 --do='60:pick_floor;90:look_up;120:throw_lob' --shots=123
+f124  --size=1280x720 --do='60:pick_floor;90:look_up;120:throw_lob' --shots=124
+f125  --size=1280x720 --do='60:pick_floor;90:look_up;120:throw_lob' --shots=125
+f126  --size=1280x720 --do='60:pick_floor;90:look_up;120:throw_lob' --shots=126
+f128  --size=1280x720 --do='60:pick_floor;90:look_up;120:throw_lob' --shots=128
+f132  --size=1280x720 --do='60:pick_floor;90:look_up;120:throw_lob' --shots=132
+f140  --size=1280x720 --do='60:pick_floor;90:look_up;120:throw_lob' --shots=140

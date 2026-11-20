@@ -59,6 +59,14 @@ func cases() -> Array[Dictionary]:
 				"title": "D09: a picked Sock flies from where it lay into its place in 0.3 s on a small hop"},
 		{"name": "d10_fly_in", "method": "case_d10", "world": false,
 				"title": "D10: the pairing moment's second Sock flies in from where it lay"},
+		{"name": "f1_throw_from_hand", "method": "case_f1_throw", "world": false,
+				"title": "core/19 F1: a Sock thrown with the real button is drawn leaving from where it hung in the hand and joins its body (which flies from the eyes) over catch_up 0.1 s"},
+		{"name": "f1_drop_from_hand", "method": "case_f1_drop", "world": false,
+				"title": "core/19 F1: a dropped Sock is drawn leaving from the hand too: it flicks to its spot before its body falls"},
+		{"name": "f2_ring_round_ball", "method": "case_f2_ring", "world": false,
+				"title": "core/19 F2: the pairing moment's ring and sparkles keep its scale: the ring grows round the ball, at the ball's size, not round the view"},
+		{"name": "f3_sign_clear", "method": "case_f3_sign", "world": false,
+				"title": "core/19 F3: standing on the handling station's pad, its sign does not cover the view's centre"},
 		{"name": "looks_cloth", "method": "case_looks", "world": false,
 				"title": "the Sock's Looks has its Cloth on the skeleton, from the leg to the toe"},
 	]
@@ -333,6 +341,133 @@ func case_d10() -> void:
 	await _until(func() -> bool: return anim.current_animation_position >= HeldView.FLY_IN_END, "the fly-in to end", 120)
 	await _frames(1)
 	_check((moment.get_node(^"Mate/FlyIn") as Node3D).transform.is_equal_approx(Transform3D.IDENTITY), "then it is in its line-up place")
+
+
+# --- core/19: batch 1 fixes ----------------------------------------------------------------------
+
+func case_f1_throw() -> void:
+	await _build()
+	await _pick(ON_FLOOR)
+	var view := _player.held_view()
+	await _until(view.settled, "the fly-up to end")
+	await _aim(_player, _player.global_position + Vector3(0.0, 1.6, -3.0))
+	await _frames(2)
+	var held := view.looks_of(ON_FLOOR)
+	var cam := _player.camera()
+	Input.action_press(&"drop_throw")
+	await _until(func() -> bool: return _player.charging and _player.charge >= 1.0, "the ring to fill", 200)
+	var hand := held.global_transform
+	var hand_px := cam.unproject_position(hand.origin)
+	# What is drawn, each frame (read as the next frame starts, after every _process): where on screen, how big.
+	var drawn: Array[Array] = []
+	var held_id := held.get_instance_id()
+	var record := func() -> void:
+		var looks := instance_from_id(held_id) as Node3D
+		if looks != null and view.catching_up(ON_FLOOR):
+			drawn.append([cam.unproject_position(looks.global_position), looks.global_transform.basis.get_scale().x,
+					view.catch_up_offset(ON_FLOOR)])
+	get_tree().process_frame.connect(record)
+	Input.action_release(&"drop_throw")
+	await _until(func() -> bool: return not drawn.is_empty(), "the throw's catch-up to be drawn", 10)
+	var body_looks := _mess.flight_of(ON_FLOOR).get_node(^"Looks") as Node3D
+	_check(is_instance_valid(held) and held.visible, "the Looks that hung in the hand is still what is drawn")
+	if not drawn.is_empty():
+		var first_px: Vector2 = drawn[0][0]
+		_check(first_px.distance_to(hand_px) < 40.0,
+				"its first frame is at the hand on screen (%.0f px from it), not at the eyes" % first_px.distance_to(hand_px))
+		_check(float(drawn[0][1]) < hand.basis.get_scale().x * 1.5, "and about its size in the hand (%.2f, held %.2f)" % [drawn[0][1], hand.basis.get_scale().x])
+	_check(not body_looks.visible, "the body's own Looks is hidden while it catches up")
+	await _until(func() -> bool: return not view.catching_up(ON_FLOOR), "the catch-up to end", 30)
+	get_tree().process_frame.disconnect(record)
+	_check(drawn.size() >= 3, "the catch-up is drawn over several frames (%d)" % drawn.size())
+	if drawn.size() >= 2:
+		var gap: float = drawn[-1][2]
+		_check(float(drawn[0][2]) > 0.05 and gap < float(drawn[0][2]) * 0.1,
+				"it starts off its body and on its last frame has nearly joined it (%.3f m off, from %.3f)" % [gap, drawn[0][2]])
+	await _frames(1)
+	_check(body_looks.visible, "then the body's Looks is drawn")
+	_check(not is_instance_valid(held) or held.is_queued_for_deletion(), "and the hand's Looks is gone")
+
+
+func case_f1_drop() -> void:
+	await _build()
+	await _pick(ON_FLOOR)
+	var view := _player.held_view()
+	await _until(view.settled, "the fly-up to end")
+	await _aim(_player, _player.global_position + Vector3(0.0, 0.0, -1.0))
+	var held := view.looks_of(ON_FLOOR)
+	var hand := held.global_position
+	var drawn: Array[Vector3] = []
+	var held_id := held.get_instance_id()
+	var record := func() -> void:
+		var looks := instance_from_id(held_id) as Node3D
+		if looks != null and _hands.items_of(1).is_empty() and _mess.flight_of(ON_FLOOR) == null:
+			drawn.append(looks.global_position)
+	get_tree().process_frame.connect(record)
+	await _press(&"drop_throw")
+	await _until(func() -> bool: return _mess.flight_of(ON_FLOOR) != null or _mess.state_of(ON_FLOOR) == Mess.State.LYING, "the body to fall", 60)
+	get_tree().process_frame.disconnect(record)
+	_check(drawn.size() >= 3, "the dropped Sock is drawn from the hand over several frames before its body falls (%d)" % drawn.size())
+	if not drawn.is_empty():
+		_check(drawn[0].distance_to(hand) < 0.1, "its first frame is near the hand (%.3f m off)" % drawn[0].distance_to(hand))
+	_check(not view.catching_up(ON_FLOOR), "a drop flicks: no catch-up")
+
+
+func case_f2_ring() -> void:
+	await _build()
+	await _pick(ON_FLOOR)
+	await _physics_ticks(25)
+	await _pick(MATE_FLOOR)
+	var view := _player.held_view()
+	await _until(func() -> bool: return view.moment_of(ON_FLOOR) != null, "the pairing moment to start")
+	var moment := view.moment_of(ON_FLOOR)
+	var ring := moment.get_node(^"Ring") as MeshInstance3D
+	var ball := moment.get_node(^"Ball") as Node3D
+	var burst := moment.get_node(^"Burst") as GPUParticles3D
+	_check((ring.material_override as StandardMaterial3D).billboard_keep_scale, "the ring's billboard keeps its scale (else it is drawn at 0.6 m round the view)")
+	_check(((burst.draw_pass_1 as QuadMesh).material as StandardMaterial3D).billboard_keep_scale, "and so do the sparkles")
+	await _until(func() -> bool: return ring.visible, "the ring to show", 120)
+	var cam := _player.camera()
+	var size := cam.get_viewport().get_visible_rect().size
+	var widest := 0.0
+	var off := 0.0
+	while is_instance_valid(ring) and ring.visible:
+		var centre := cam.unproject_position(ring.global_position)
+		var radius := (ring.mesh as QuadMesh).size.x * 0.5 * ring.global_transform.basis.get_scale().x
+		var rim := cam.unproject_position(ring.global_position + cam.global_basis.x * radius)
+		widest = maxf(widest, rim.distance_to(centre))
+		off = maxf(off, centre.distance_to(cam.unproject_position(ball.global_position)))
+		await _frames(1)
+	_check(off < 2.0, "the ring's centre stays on the ball (%.1f px off at most)" % off)
+	_check(widest * 2.0 < size.y * 0.4, "it grows round the ball only: %.0f px across at most, of a %.0f px view" % [widest * 2.0, size.y])
+	_check(widest > 20.0, "and it is seen (%.0f px across)" % (widest * 2.0))
+
+
+func case_f3_sign() -> void:
+	await _build()
+	var sign := _station.get_node(^"Name") as Label3D
+	var cam := _player.camera()
+	for at: Vector3 in [FRONT, Vector3.ZERO, Vector3(1.5, 0.0, 1.5)]:
+		_player.global_position = _station.to_global(at)
+		_player.rotation.y = 0.0
+		(_player.get_node(^"Head") as Node3D).rotation.x = 0.0
+		_player.reset_physics_interpolation()
+		await _physics_ticks(3)
+		await _frames(1)
+		var size := cam.get_viewport().get_visible_rect().size
+		# A billboard's AABB is a cube that covers every turn: the text's own box, from its font.
+		var font := sign.font if sign.font != null else ThemeDB.fallback_font
+		var text := font.get_multiline_string_size(sign.text, sign.horizontal_alignment, sign.width, sign.font_size,
+				-1, TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND | TextServer.BREAK_ADAPTIVE) * sign.pixel_size
+		var right := cam.global_basis.x * sign.width * sign.pixel_size * 0.5
+		var up := cam.global_basis.y * text.y * 0.5
+		var mid := sign.global_position
+		var rect := Rect2(cam.unproject_position(mid - right + up), Vector2.ZERO)
+		for corner: Vector3 in [mid + right + up, mid - right - up, mid + right - up]:
+			rect = rect.expand(cam.unproject_position(corner))
+		_check(not rect.has_point(size * 0.5), "from %s on the pad the sign (%s) does not cover the view's centre" % [at, rect])
+		_check(text.y > 0.05 and rect.size.y < size.y * 0.25, "and it is a short band, not a tall block (%.0f of %.0f px high)" % [rect.size.y, size.y])
+	_check(sign.text.begins_with("Handling Socks"), "the sign keeps its words")
 
 
 func case_looks() -> void:

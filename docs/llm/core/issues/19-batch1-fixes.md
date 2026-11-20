@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: core
 feature: core
@@ -41,6 +41,23 @@ Found by the designer playing batch 1 (2026-11-20), reproduced by the lead.
 ## Answers
 
 ## Open follow-ups
+- [later] F1: in the old game the drawn Sock was carried stiff during the catch-up (its cloth's bend held at 0); here
+  the Looks keeps its held cloth for the 0.1 s. Stiff too? (Not built; the strip shows no swing.)
+- [later] F2: the ring and the sparkles are now the old sizes (ring radius 0.14 x depth, specks 0.03 x depth, as the old
+  `_pop`): the scene's numbers were twice that, hidden while the billboards dropped their scale. Keep the old sizes?
+- [later] F3: every station's sign is now half the letter size, 2.5 m wide, 3 m up (3.2 m at the Cabinet), at the pad's
+  back edge (the every-Sock station keeps its place at its entrance). Is that the placement wanted?
 
 ## Built log
 - Model: Opus (lead): debugging looks across the held view, the flight and the pairing moment.
+
+### 2026-11-20
+- Changed: F1 a thrown Sock is drawn leaving from where it hung in the hand and joins its body (which flies from the
+  eyes) over `catch_up` 0.1 s, position, turn and size, as the old `lead_from`; the body's Looks hides meanwhile. The
+  drop already left from the hand (the flick), checked. F2 the pairing moment's ring and sparkles keep their node's
+  scale (billboard_keep_scale): the ring grows round the ball, centred on it. F3 the station signs: smaller, higher,
+  at the pad's back edge, same words.
+- Files: game/hands/held_view.gd, game/hands/hands_tuning.gd (catch_up), game/sock/pair_moment.tscn,
+  game/zoo/stations/*.tscn (Name), tests/hand_details_test.gd, tools/shots/sets/throw-hand.txt, station-signs.txt.
+- Verified: PASS 4933 checks, 134 cases (--touched); builds/review-core-19/f1-throw-before-after.png,
+  f2-pair-ring-before-after.png, f3-sign-before-after.png (frames in before/ and after/).
