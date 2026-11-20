@@ -6,7 +6,7 @@ area: core
 feature: core
 priority: now
 created: 2026-11-19
-done:
+done: 2026-11-20
 blocked_by: ["[[03-pairing]]", "[[08-throw]]"]
 notes: []
 terms: []
@@ -169,3 +169,4 @@ Old details not built (Q2277; the lead asks the designer about each before the m
   game/zoo/stations/cabinet.tscn, game/mess/mess.gd, game/hands/hands.gd, game/player/player.gd,
   game/parts/session.gd, tests/cabinet_test.gd, tests/handling_test.gd, tools/shot_hooks.gd
   Verified: PASS 833 checks, 127 cases (--touched); PASS rules; PASS asset_lint
+- Merged: 83849868 (2026-11-20, branch core/04-one-cabinet)
