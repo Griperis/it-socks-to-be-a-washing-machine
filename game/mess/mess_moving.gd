@@ -220,7 +220,7 @@ func _start_waiting() -> void:
 
 
 ## A flight faster than the wake speed before this step that touches a lying Sock wakes it and up
-## to wake_count touching it (T11, M08), one hit a flight a tick. The lying bodies have no node, so
+## to wake_count Socks touching it (T11, M08), one hit a flight a tick; lying Pairs stay (Q2330). The lying bodies have no node, so
 ## the contacts are read from the flight's body state.
 func _hits() -> void:
 	var fast := _mess.tuning.wake_speed if _mess.tuning != null else 1.5
@@ -232,8 +232,13 @@ func _hits() -> void:
 			continue
 		for c in state.get_contact_count():
 			var hit := _mess.sock_at(state.get_contact_collider(c))
-			if hit >= 0 and not _waiting.has(hit):
-				queue_wake(PackedInt32Array([hit]) + _mess.touching(hit), &"wake")
+			# A resting Pair is never moved by a hit, as in the old game (Q2330, old Q1742).
+			if hit >= 0 and not _mess.is_pair(hit) and not _waiting.has(hit):
+				var woken := PackedInt32Array([hit])
+				for other: int in _mess.touching(hit):
+					if not _mess.is_pair(other):
+						woken.append(other)
+				queue_wake(woken, &"wake")
 				break
 
 

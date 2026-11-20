@@ -171,3 +171,29 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Looks | six strips in `builds/review-core-09/` |
 | Decisions | Q2272-Q2276, Q2283, Q2286-Q2288, Q2313-Q2316 |
 
+## core/13 two-tier Mess (M0.5, batch 2), merged 2026-11-20
+| Field | Content |
+|---|---|
+| Ticket | core/13, lying Socks as server bodies and MultiMesh instances, the moving budget, wakes and pushes, the old physics numbers; M0.5; approved and merged (753ab66, main c111ee1) |
+| Planned vs actual | 0 planned (came from core/12's cost, Q2301), 1 actual |
+| Redo count | 0 |
+| Cost | core/13 1 36,370,272 165 39m29s (Opus) |
+| Time | the agent ran about 40 min |
+| Surprises | with the every-Sock station: process frame 16 ms to 0.9 ms, nodes 48,060 to 3,407; core/12's "39 ms" was Godot's physics monitor, which does not measure the tick; a hit woke lying Pairs against the old Q1742 (fixed, Q2330); PROTOCOL 7 |
+| Stop rules | none fired |
+| Looks | none (no change meant) |
+| Decisions | Q2168, Q2301, Q2305-Q2312, Q2330 |
+
+## core/19 batch 1 fixes (M0.5), merged 2026-11-20
+| Field | Content |
+|---|---|
+| Ticket | core/19, the Throw leaves from the hand, the pairing ring around the ball, readable station signs; approved and merged (976f3aa, main c111ee1) |
+| Planned vs actual | 0 planned (from the designer's play of batch 1), 1 actual |
+| Redo count | 1 (core/09's throw and ring came back after play) |
+| Cost | core/19 1 9,173,197 95 15m18s (Opus) |
+| Time | the agent ran about 15 min |
+| Surprises | the ring ignored the moment's scale; the signs' wrap (the lead's fast fix at core/04) had made them cover the view |
+| Stop rules | none fired |
+| Looks | `builds/review-core-19/` before and after |
+| Decisions | Q2329, Q2332 |
+

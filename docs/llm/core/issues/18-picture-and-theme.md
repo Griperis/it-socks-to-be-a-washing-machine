@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: core
 feature: core
@@ -29,7 +29,7 @@ From the designer's answers (Q2299, Q2300, Q2322-Q2324).
 - V03 Anti-aliasing MSAA 4x plus FXAA (at the high preset).
 - V04 The old graphics presets low, medium and high, as a setting chosen by a project setting until the Options menu
   exists; high is the default (Q2323).
-- V05 Every 2D screen text uses the old Patrick Hand theme, on one Theme; the zoo's 3D station signs keep a plain
+- V05 (Q2331 replaces Q2324) 2D screen text keeps Godot's default font as in the old game, on one Theme file (outline variations); Patrick Hand waits for the whiteboard. The zoo's 3D station signs keep a plain
   readable font (Q2324).
 - V06 The crosshair is the old one: two crisp bars, 18 by 2 px (its colours and states as the old game had them).
 - V07 Nothing else about play changes; the zoo's stations and Socks look as before apart from the light.
@@ -47,8 +47,12 @@ stills.
 
 ## Answers
 - Q2299, Q2300, Q2317, Q2322-Q2324 (2026-11-20).
+- Q2331 (2026-11-20, replaces Q2324): the HUD and messages keep Godot's default font as in the old game; Patrick Hand waits for the whiteboard and the screens that used it. The Theme file stays (outline variations, no font). Noon ambient is the old 0.75 (the 0.7 in V01 was the lead's error).
 
 ## Open follow-ups
+- [later] The HUD's Message and Size labels stay at the default 16 px (old: 28 pt, row at 70 percent height) and the Message is still red by modulate; position and size are the other audit rows, not this ticket.
+- [later] Not built (waits for menus): keycap buttons, keycap panels, sliders, fields, upgrade rows of `ui_bits.gd`; they need the KeycapStyle custom StyleBox (an inner class in the old code, against Q2253).
 
 ## Built log
+- 2026-11-20: Changed: `game/look/` (day_sky shader, noon_environment.tres, graphics_preset.gd + low/medium/high .tres, picture.gd/.tscn with the vignette, crosshair.gd/.tscn, theme.tres); zoo.tscn WorldEnvironment and Sun; the player's HUD uses the Crosshair scene and OutlinedLabel on Message/Size, blocked red now (0.95, 0.25, 0.2); project.godot: MSAA 4x, FXAA, `gui/theme/custom`, `it_socks/graphics/preset`; assets (day HDRI, Patrick Hand, licences). After Q2331 the Theme sets no font; ambient 0.75; the Patrick Hand file stays in assets/ unused. Stills in builds/review-core-18/. Files: game/look/*, tests/look_test.gd, tools/shot_hooks.gd, tools/shots/sets/look-picture.txt. Verified: kit/tools/run.sh --touched PASS 6233 checks (before the font fix; look suite PASS 1104 after).
 - Model: Sonnet (lead): settings, resources and a Theme from a known reference.

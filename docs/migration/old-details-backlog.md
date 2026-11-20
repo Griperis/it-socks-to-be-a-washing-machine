@@ -37,7 +37,8 @@ A ticket that builds a line moves it out of here.
   8 rings of 12 mesh points); core/09 uses the node's per-joint plane, which may crumple (Q2287).
 - A Sock lost out of bounds comes back to one spot scattered within 0.2 m, with a pop; a Sock sunk into a floor slab
   is pushed back up (core/08, core/10 left out; Q2291).
-- A thrown Sock carries its held bend into the throw (Q2315).
+- A thrown Sock carries its held bend into the throw (Q2315), and is held stiff during its 0.1 s catch-up from the hand
+  (Q2332).
 - A shelved ball lands in its slot with the squash, hop and roll; a Pair thrown into a Cabinet flies to its slot
   (Q2316).
 

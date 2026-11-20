@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: core
 feature: core
@@ -42,12 +42,40 @@ From the designer's answers (Q2278, Q2318-Q2321).
 - S10 A "Sounds" station in the zoo plays every event, flat or from a spot, so each is heard in place (Q2320).
 
 ## Design
-To be drafted by the agent here first (classes, the catalogue, the voice pools or players, the bus layout file, how
-muffling knows a Door is between, how the floor says its surface), then built. Godot's own nodes first; code shape
-Q2251-Q2253.
-**Parked scope:** footsteps, the landing, ambience and the station are wired now. The game's other events (pick, drop,
-the Throw, pairing, the Cabinet, Doors) are in the catalogue with their clips and named in the station, but the calls
-from the game's code are added when batch 6 comes (the motions are final then); list where each call will go.
+Built as follows (Godot's own nodes first; Q2251-Q2253).
+- `SoundEvent` (Resource: name, clips, volume_db, bus, spatial, loop, note) and `SoundCatalogue` (Resource: the events,
+  pitch jitter 0.05, unit size 3, max distance 20, the scenes that muffle) in `game/audio/`; the one catalogue is
+  `game/audio/sound_catalogue.tres`. Clips are `assets/audio/*.ogg` with `assets/audio/SOURCES.md` (licences).
+- `Sounds` (autoload): `play(name)` flat, `play_at(name, where)` world, `start_loop`/`stop_loop`, `is_muffled(where)`.
+  Eight flat `AudioStreamPlayer`s and eight `AudioStreamPlayer3D`s in turn; each play uses an `AudioStreamRandomizer`
+  over the event's clips (random clip, pitch 1 +- 0.05). A name that is unknown, or asked the wrong way (a world
+  event flat, a flat one from a spot), is an error.
+- Buses: `default_bus_layout.tres` (Master -4.4 dB = 0.6, SFX 0, Ambient -6 = 0.5, Music -1.9 = 0.8, UI -1.9 = 0.8, and
+  MuffledSFX/Ambient/Music: -9 dB, 900 Hz low-pass, sending into their bus). Volume per bus is a setting
+  `audio/<bus>_volume` (0 to 1, default 1) kept by `Settings` (the kit's settings template, copied to
+  `game/settings/`, autoload) and multiplied onto the layout's mix; Options writes it later.
+- Muffling: a ray from the listener's camera toward the sound, hop by hop, meets a shut `Openable` of a scene in
+  `muffling_scenes` (the room Door) -> the voice goes to the Muffled bus.
+- Floor: `Footsteps` (a child of the player) walks 1.4 m per step (`FootstepTuning`), looks straight down for the floor
+  and reads its `surface` metadata (the zoo floor "wood", the Sounds station's tile patch "tile", set in the editor;
+  none = wood); `land` after a fall of 3 m/s. `player.gd` is unchanged; `player.tscn` has the node.
+- Zoo: `SoundSpot` (a Part: use plays its event), `AmbientLoop` (a node: plays a loop while in the tree), and the
+  station `game/zoo/stations/sounds.tscn` (a pillar per event, blue flat and orange from the spot, a tile patch, a
+  shut Door with a pillar behind it and one beside it, the room ambience).
+
+**Parked scope.** Wired now: steps, landing, ambience, the station. Where each call goes in batch 6 (all
+`Sounds.play(&"x")` for the player's own, `Sounds.play_at(&"x", position)` for the world; `Parts.applied` is the
+seam: "sounds and the HUD may listen"):
+- `pick`, `drop`, `cycle`: when the Host's answer to the Hands' pick, drop, cycle reaches this machine (`Parts.applied`
+  with the Hands' id, or `Player._on_applied` in `game/player/player.gd`); the player's own, flat.
+- `refuse`: the same `_on_applied` where it calls `say(...)` for a refusal (and `Player.say`).
+- `pair`: where Hands/Mess answers a pairing (the fuse); `pop`: where the paired moment's ball pops.
+- `throw_charge`: `Player._set_charge(true)`; `throw`: `Player._throw` after `h.throw(...)`.
+- `bounce`: where a thrown item or ball lands or hits (`game/mess/` flights), `play_at` at the contact.
+- `drawer_open`/`drawer_close`: `Openable._show(false)` of a drawer (Cabinet drawers, `game/entities/cabinet/cabinet.gd`
+  and `game/entities/drawer/`), `play_at` the drawer's position; `shelve`: the Cabinet's answer to a shelving click.
+- `door_open`/`door_close` and `cupboard_open`/`cupboard_close`: `Openable._show(false)` for the Door and cupboard
+  scenes. (`_show(true)`, a state arriving whole, makes no sound.)
 
 ## Acceptance
 - One test per behaviour line; the real-path case: walking in the zoo plays steps by surface; the station plays an
@@ -58,6 +86,25 @@ from the game's code are added when batch 6 comes (the motions are final then); 
 - Q2278, Q2317-Q2321 (2026-11-20).
 
 ## Open follow-ups
+- [later] `amb_room`: the old game's room tone was silent (no pick). S08 asks for a quiet ambience, so it plays the
+  old first candidate `rubberduck_ambient1` at -12 dB as a placeholder. The designer picks the clip and level.
+- [later] The first autoloads of the game's own are added: `Settings` (copied template, `game/settings/`) and `Sounds`.
+  The Options menu (later) writes `audio/*_volume`. Settings' own Master apply is overridden by `Sounds` (mix times slider).
+- [later] The Sounds station stands at (13, 0, 13) beside the Movement and Cabinet stations, off the grid.
+- [later] Run output prints `ERROR: res://game/sock/pair_moment.tscn ... looks_graybox.tscn non-existent` on this
+  branch's base (not this ticket's); the suites pass.
+- [later] Not built from the old game: see the Built log, "Old details not built".
 
 ## Built log
 - Model: Sonnet (lead): a new system from a known design, data and wiring.
+- 2026-11-20 Changed: the sound system (see Design); the old game's picks for the 19 named events plus the room tone,
+  with licences; the Sounds station; footsteps by floor and the landing in the player. Files: `game/audio/*`,
+  `game/settings/settings.gd`, `assets/audio/*`, `default_bus_layout.tres`, `game/zoo/stations/sounds.tscn`,
+  `game/player/player.tscn` (Footsteps node), `game/zoo/zoo.tscn` (floor `surface` metadata), `project.godot`
+  (autoloads Settings, Sounds), `tests/sounds_test.gd`, `tests/settings_test.gd`, `tests/hooks.gd` (scrub).
+  Verified: `PASS 5376 checks, 200 cases` (`--touched`), `PASS rules`, `PASS asset_lint`.
+  Old details not built: the other ~80 old events (UI clicks and hover, piano, voices, vacuum, radio, cat, fridge);
+  `shares` (an event borrowing another's clips: the Door has its own pick); the sound bench and its ~800 candidate
+  clips (only the picked clips came); `silent` flag; `layers`/`playlist` modes; window ambience and its fade;
+  UI sounds and their +-1.5 dB jitter; the music duck in cutscenes; teammates' sounds from where they happen (Q246);
+  pad rumble; the piano voice pool.

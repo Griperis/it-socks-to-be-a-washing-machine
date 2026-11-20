@@ -46,6 +46,8 @@ func cases() -> Array[Dictionary]:
 				"title": "T08: a Sock thrown at a wall from up close never ends inside it and always lies loose"},
 		{"name": "t11_wake", "method": "case_t11", "world": false,
 				"title": "T11: a Throw faster than 1.5 m/s wakes the lying Sock it hits and those touching it (at most 8); a slow drop wakes none"},
+		{"name": "t11_pair_stays", "method": "case_t11_pair", "world": false,
+				"title": "T11, Q2330: a full Throw into a lying Pair does not wake it, as in the old game (Q1742)"},
 		{"name": "t13_rest", "method": "case_t13", "world": false,
 				"title": "T13, M06: a thrown Sock lies where its body stopped; one Jolt never sleeps rests once it is still"},
 		{"name": "t14_bounds", "method": "case_t14", "world": false,
@@ -291,6 +293,36 @@ func case_t11() -> void:
 	await _aim(_player, _centre(UNDER))
 	var near := _mess.touching(UNDER)
 	_check(near.size() <= 1, "the wake takes at most wake_count touching Socks (%s)" % near)
+
+
+func case_t11_pair() -> void:
+	await _build()
+	# The Heap's two Socks become one lying Pair: UNDER its lead, OVER inside it.
+	var states := _mess.states.duplicate()
+	states[OVER] = Mess.State.IN_PAIR
+	var mates := _mess.mates.duplicate()
+	mates[UNDER] = OVER
+	mates[OVER] = UNDER
+	var designs := _mess.designs.duplicate()
+	designs[OVER] = designs[UNDER]
+	_mess.write({"designs": designs, "states": states, "poses": _mess.poses.duplicate(), "mates": mates}, true)
+	await _physics_ticks(2)
+	_check(_mess.is_pair(UNDER) and _mess.state_of(UNDER) == Mess.State.LYING, "a lying Pair stands where the Heap was")
+	await _pick(ON_FLOOR)
+	var woken := {}
+	_parts.applied.connect(func(ev: Dictionary) -> void:
+		if ev.get("ok", false) and StringName(ev.get("kind", &"")) == &"wake":
+			var s: PackedByteArray = ev["changes"][_mess.id]["states"]
+			for sock in s.size():
+				if s[sock] == Mess.State.FLYING and sock != ON_FLOOR:
+					woken[sock] = true)
+	# The same Throw as T11's, which hits the Heap.
+	_player.global_position = Vector3(0.6, 0.0, 0.7)
+	await _physics_ticks(2)
+	await _aim(_player, _centre(UNDER) + Vector3(0.0, 0.0, -0.2))
+	await _throw_full()
+	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "the thrown Sock to rest", 900)
+	_check(not woken.has(UNDER) and _mess.state_of(UNDER) == Mess.State.LYING, "the hit Pair stays lying (%s)" % [woken.keys()])
 
 
 func case_t13() -> void:

@@ -1,4 +1,4 @@
-Next free Q number: Q2329 (update this line whenever a round of questions is asked)
+Next free Q number: Q2333 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -241,3 +241,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2326: the first kit has walls and corners (0.5, 1, 2 m; outer, inner, T), floor and ceiling tiles (0.5, 1, 2 m), door and window walls sized as the old house's, and a straight stair with a landing.
 - Q2327: kit pieces snap by Godot's own 0.5 m grid: each piece's origin on a grid corner; no plugin.
 - Q2328: each kit piece has a simple box collider and one material slot overridden per placed piece, from a shared library of the old house's materials.
+- Q2329: core/13 (the two-tier Mess) and core/19 (batch 1 fixes) merged.
+- Q2330: a fast hit never wakes a lying Pair, as the old game's Q1742; lying Socks only (fixed on main, case t11_pair_stays).
+- Q2331: the HUD and messages keep Godot's default font, as the old game; Patrick Hand waits for the whiteboard and the screens that used it (replaces Q2324).
+- Q2332: the Sock held stiff during a throw's catch-up: polish batch 5.
