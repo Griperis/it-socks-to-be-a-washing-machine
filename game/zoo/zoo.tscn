@@ -8,6 +8,11 @@
 [ext_resource type="PackedScene" path="res://game/parts/avatar/avatar.tscn" id="7_avatar"]
 [ext_resource type="Script" uid="uid://dljsr8dxran6u" path="res://game/zoo/zoo_net.gd" id="8_net"]
 [ext_resource type="Script" uid="uid://bmngmh2k1ssr6" path="res://game/hands/hands_tuning.gd" id="9_hands_tuning"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="10_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="11_hands"]
+[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="12_coins"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="13_designs"]
+[ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="14_tuning"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_zoo"]
 
@@ -65,8 +70,42 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 hands_tuning = SubResource("Resource_zoo_hands")
 
-[node name="Stations" type="Node3D" parent="." unique_id=1917466477]
+[node name="Stations" type="Node3D" parent="." unique_id=1917466477 node_paths=PackedStringArray("socks")]
 script = ExtResource("3_stations")
+socks = NodePath("../Socks")
+
+[node name="Spots" type="Node3D" parent="." unique_id=1540973286]
+
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=1397039282]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.5)
+
+[node name="Lying" type="Node3D" parent="." unique_id=1939434701]
+
+[node name="Flights" type="Node3D" parent="." unique_id=1866703913]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=630388163]
+_spawnable_scenes = PackedStringArray("res://game/sock/flight.tscn", "res://game/sock/ball_flight.tscn")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="." unique_id=1247451138]
+
+[node name="Mess" type="Node" parent="Socks" unique_id=278618895 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+script = ExtResource("10_mess")
+catalogue = ExtResource("13_designs")
+tuning = ExtResource("14_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+bounds = AABB(-20, -2, -20, 40, 8, 40)
+return_spot = NodePath("../../ReturnSpot")
+
+[node name="Hands" type="Node" parent="Socks" unique_id=982001843 node_paths=PackedStringArray("mess")]
+script = ExtResource("11_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("14_tuning")
+
+[node name="Coins" type="Node" parent="Socks" unique_id=1032541670]
+script = ExtResource("12_coins")
 
 [node name="Parts" type="Node" parent="." unique_id=1728372765]
 script = ExtResource("1_parts")

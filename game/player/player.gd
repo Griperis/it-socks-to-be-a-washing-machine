@@ -108,15 +108,16 @@ func player_id() -> int:
 	return multiplayer.get_unique_id()
 
 
-## The level's Hands, or null where there are none (the movement station alone). Where several
-## stations each have their own (the zoo), the Hands whose Mess's bounds the player stands in.
+## The level's one Hands (the zoo's for every station, Q2284), or null where there are none (the
+## movement station alone). Where several levels share the tree (two zoos in a co-op test), the
+## Hands of this player's own scene.
 func hands() -> Hands:
-	if _hands == null or not is_instance_valid(_hands) or not _hands.is_inside_tree() or not _stands_in(_hands):
+	if _hands == null or not is_instance_valid(_hands) or not _hands.is_inside_tree():
 		var found: Hands = null
 		if is_inside_tree():
 			for node in get_tree().get_nodes_in_group(Hands.GROUP):
 				var h := node as Hands
-				if found == null or (_stands_in(h) and not _stands_in(found)):
+				if found == null or (owner != null and h.owner == owner and found.owner != owner):
 					found = h
 		if found != _hands:
 			_hands = found
@@ -127,11 +128,6 @@ func hands() -> Hands:
 		_listening = _hands.parts
 		_listening.applied.connect(_on_applied)
 	return _hands
-
-
-## Whether the player stands inside the bounds of the Mess of `h` (always, with no bounds set).
-func _stands_in(h: Hands) -> bool:
-	return h != null and (h.mess == null or h.mess.in_bounds(global_position))
 
 
 func _unhandled_input(event: InputEvent) -> void:

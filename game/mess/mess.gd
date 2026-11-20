@@ -92,17 +92,29 @@ var _hit: Dictionary[int, bool] = {}
 var _taken: Array[Dictionary] = []
 ## The Host: the falling Pairs that drag as Pairs do (P07).
 var _damped: Dictionary[int, bool] = {}
+## More nodes of SockSpots, handed over before this Mess is ready by a scene that joins the level
+## (a zoo station, whose own Mess steps aside for the zoo's: ZooStations): read after `spots`, in order.
+var more_spots: Array[Node3D] = []
 
 
-## Before the level binds: the SockSpots become the starting records (as if placed in the
-## inspector), and hide. A snapshot (a late Guest, a load) replaces them whole.
+## Before the level binds: the SockSpots (of `spots`, then of `more_spots`) become the starting
+## records (as if placed in the inspector), and hide. A snapshot (a late Guest, a load) replaces them whole.
 func _ready() -> void:
-	if spots == null or not designs.is_empty():
+	if not designs.is_empty():
 		return
-	for node in spots.get_children():
+	var holders: Array[Node3D] = [spots]
+	holders.append_array(more_spots)
+	for holder in holders:
+		if holder != null:
+			_add_spots(holder)
+
+
+func _add_spots(holder: Node3D) -> void:
+	for node in holder.get_children():
 		var spot := node as SockSpot
 		if spot == null:
 			continue
+		spot.sock = designs.size()
 		designs.append(spot.design)
 		states.append(State.LYING)
 		mates.append(-1)

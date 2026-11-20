@@ -7,3 +7,6 @@ extends Marker3D
 
 ## The id of the Sock's Design (game/sock/designs.tres).
 @export var design := 0
+
+## The Sock id it became when the level started (-1 before): what a test or a shot finds it by.
+var sock := -1

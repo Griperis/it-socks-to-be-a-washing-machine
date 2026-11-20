@@ -7,10 +7,21 @@
 ## Where it stands: a station whose root sits at the origin gets the next free place on the grid
 ## (file-name order, COLUMNS a row, the first row in front of the spawn); a root moved off the
 ## origin in its own scene stays where it was put.
+##
+## One Mess, one Hands and one Coins for the whole zoo (Q2284): a station's own `Socks` gives way to
+## the zoo's `socks` before the station is added (_join_socks()), so what is held at one station is
+## still held at the next. A station played alone keeps its own.
 class_name ZooStations
 extends Node3D
 
 const FOLDER := "res://game/zoo/stations"
+## The node a station keeps its own Mess, Hands and Coins under (and the zoo its own).
+const SOCKS := ^"Socks"
+## Its Mess, under it.
+const MESS := ^"Mess"
+
+## The zoo's Socks: the level's one Mess, Hands and Coins. Empty, every station keeps its own.
+@export var socks: Node
 ## Stations a row, and the step between them in metres (x across, z away from the spawn).
 const COLUMNS := 5
 const STEP := Vector2(6.0, 5.0)
@@ -62,4 +73,37 @@ func _enter_tree() -> void:
 		if station.position.is_zero_approx():
 			station.position = place(placed)
 			placed += 1
+		_join_socks(station)
 		add_child(station)
+
+
+## A station's own Socks give way to the zoo's, before the station enters the tree (so before its
+## parts are ready or bound): its SockSpots become records of the zoo's Mess, after those of the
+## stations before it; every link of a station node to its own Mess, Hands or Coins (a Cabinet's)
+## points at the zoo's node of the same path, and its Socks go. Its empty Lying, Flights and
+## spawner stay.
+func _join_socks(station: Node3D) -> void:
+	var own := station.get_node_or_null(SOCKS)
+	if socks == null or own == null:
+		return
+	var own_mess := own.get_node_or_null(MESS) as Mess
+	var mess := socks.get_node_or_null(MESS) as Mess
+	if own_mess != null and mess != null and own_mess.spots != null:
+		mess.more_spots.append(own_mess.spots)
+	_relink(station, own)
+	station.remove_child(own)
+	own.queue_free()
+
+
+## Every stored link of `node` and its children (outside `own`) to `own` or a node under it now
+## points at the node of the same path under the zoo's Socks, or at nothing.
+func _relink(node: Node, own: Node) -> void:
+	for p: Dictionary in node.get_property_list():
+		if int(p["type"]) != TYPE_OBJECT or not (int(p["usage"]) & PROPERTY_USAGE_STORAGE):
+			continue
+		var linked := node.get(p["name"]) as Node
+		if linked != null and (linked == own or own.is_ancestor_of(linked)):
+			node.set(p["name"], socks.get_node_or_null(own.get_path_to(linked)))
+	for child in node.get_children():
+		if child != own:
+			_relink(child, own)

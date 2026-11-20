@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-20
-done:
+done: 2026-11-20
 blocked_by: ["[[04-one-cabinet]]"]
 notes: []
 terms: []
@@ -30,10 +30,25 @@ From Q2284; no line of an approved list changes.
 - Z04 A Sock thrown out of bounds comes back to a return spot (core/08) in the zoo's Mess as before.
 
 ## Design
-To be drafted by the agent in this section first (the ownership of `Socks` between `zoo.tscn` and the stations; how
-a station's SockSpots join the zoo's Mess and how a station alone gets its own; what `player.gd`'s per-station Hands
-search becomes; Part ids and `PROTOCOL`), then built. Prefer the least code: what the scene-parts template and
-`Parts.part_of()` already give. Code shape Q2251-Q2253. Ask in the report about any choice of play.
+Drafted by the agent (core/10), then built.
+- **Who owns `Socks`.** `zoo.tscn` gets the level's `Socks` (one `Mess`, one `Hands`, one `Coins`) with its own
+  `Spots` (empty), `Lying`, `Flights`, `FlightSpawner` and `ReturnSpot`; its Mess's bounds are the zoo's floor
+  (40 x 40 m, 6 m high). Every station scene keeps its own `Socks` unchanged, so a station alone (the wiring check,
+  `zoo:alone`, its own suite) plays as today (Z03).
+- **How a station joins.** `ZooStations` gets `@export var socks: Node` (the zoo's). In `_enter_tree`, before a
+  station is added (so before any `_ready` and before Parts binds), `_join_socks()`: the station's Mess hands its
+  `spots` node to the zoo's Mess (`Mess.more_spots`, read after `spots` in `_ready`), every stored link of a station
+  node to a node of its own `Socks` (the Cabinet's `hands` and `coins`) is set to the node at the same path under
+  the zoo's `Socks`, and the station's `Socks` is freed. With `socks` empty a station keeps its own. The station's
+  `Lying`, `Flights`, `FlightSpawner` and `ReturnSpot` stay, empty and unused.
+- **Sock ids.** The zoo's records are its own SockSpots (none), then each station's in file-name order, each in its
+  `Spots` order: the same on every machine. A SockSpot keeps the id it became (`SockSpot.sock`), so tests and shot
+  hooks find a station's Sock without counting.
+- **The player.** `Player.hands()` no longer looks for the Hands whose Mess's bounds it stands in: it takes the
+  level's one Hands (the first of the group, one of its own scene first when several levels share the tree, as two
+  zoos in the co-op test do). `_stands_in()` goes.
+- **Part ids and PROTOCOL.** The Socks' ids become `Socks/Mess`, `Socks/Hands`, `Socks/Coins` (were
+  `Stations/<Station>/Socks/...`) and flights spawn under the zoo's `Flights`: `Session.PROTOCOL` 4 -> 5.
 
 ## Acceptance
 - One test per behaviour line; the real-path case: in the zoo scene, the player pairs two Socks at the handling
@@ -44,6 +59,20 @@ search becomes; Part ids and `PROTOCOL`), then built. Prefer the least code: wha
 - One Mess and one Hands for the zoo (Q2284, 2026-11-20).
 
 ## Open follow-ups
+- [later] Designs repeat across stations: in the zoo's one Mess, Designs 0 and 1 have four records and Designs 4 and
+  130 three (handling's and the Cabinet station's SockSpots), so I.1 "two records per Design" holds per station
+  only, and a Sock may pair with a same-Design Sock of another station. Keep, or give the stations distinct Designs?
+- [later] The zoo's return spot stands at (1.5, 0, 2.5), beside the spawn; the zoo's playable space is its floor
+  (40 x 40 m, 6 m high). Placement chosen by the agent.
+- [later] `docs/architecture.md` (the zoo paragraph) could say the zoo owns the one Mess, Hands and Coins.
 
 ## Built log
 - Model: Opus (lead): it moves ownership of the Mess and Hands across scenes, Part ids and every station's suite.
+- 2026-11-20. Changed: the zoo owns the level's `Socks` (one Mess, Hands, Coins, its own Lying, Flights,
+  FlightSpawner, ReturnSpot); `ZooStations._join_socks()` hands each station's SockSpots to the zoo's Mess
+  (`Mess.more_spots`), relinks the station's links to its own Socks (the Cabinet's) to the zoo's and drops the
+  station's Socks; a station alone keeps its own. `SockSpot.sock` keeps the id a spot became. `Player.hands()` takes
+  the level's one Hands (its own scene's first). `Session.PROTOCOL` 5. Shot hooks find the handling Socks by spot.
+  Files: game/zoo/zoo.tscn, game/zoo/stations.gd, game/mess/mess.gd, game/mess/sock_spot.gd, game/player/player.gd,
+  game/parts/session.gd, tools/shot_hooks.gd, tests/zoo_test.gd. Verified: PASS 873 checks, 126 cases
+  (`run.sh --touched`: cabinet, handling, pairing, player, runner, scene_parts, throw, wiring, zoo).

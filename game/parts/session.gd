@@ -28,7 +28,7 @@ signal ended(text: String)
 ## The wire's version: a Guest on another one is refused at the gate. Bump it whenever an RPC, a
 ## synchronized property, a spawnable scene or the shape of a Command, an event or a snapshot
 ## changes. The gate's own bytes (below) never change, so any two builds can tell they differ.
-const PROTOCOL := 4
+const PROTOCOL := 5
 ## The gate's answers, one byte each; a Guest's word is its PROTOCOL as 4 bytes (encode_u32).
 const ACCEPTED := 1
 const REFUSED := 0
