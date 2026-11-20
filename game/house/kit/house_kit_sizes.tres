@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="HouseKitSizes" format=3]
+
+[ext_resource type="Script" path="res://game/house/kit/house_kit_sizes.gd" id="1_sizes"]
+
+; placeholder: the stair's width, steps, going and landing wait for the designer (house/01)
+[resource]
+script = ExtResource("1_sizes")

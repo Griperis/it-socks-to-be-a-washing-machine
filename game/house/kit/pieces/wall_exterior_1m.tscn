@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://oul2y4ja61sm"]
+
+[ext_resource type="ArrayMesh" uid="uid://be46l1t2wi3jo" path="res://game/house/kit/meshes/wall_exterior_1m.tres" id="1_nu6c5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5mt1p"]
+size = Vector3(1, 3, 0.2)
+
+[node name="WallExterior1m" type="MeshInstance3D" unique_id=1882206328]
+mesh = ExtResource("1_nu6c5")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1998262095]
+collision_mask = 0
+
+[node name="Box" type="CollisionShape3D" parent="Body" unique_id=1152648840]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1.5, 0)
+shape = SubResource("BoxShape3D_5mt1p")

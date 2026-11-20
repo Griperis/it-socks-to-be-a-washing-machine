@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bre6jq2d2sh5h"]
+
+[resource]
+resource_name = "wall_garage"
+albedo_color = Color(0.88, 0.86, 0.8, 1)
+roughness = 0.9

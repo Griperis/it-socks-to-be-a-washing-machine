@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://3jdj87vtjm1u"]
+
+[resource]
+resource_name = "wall_workshop"
+albedo_color = Color(0.86, 0.84, 0.78, 1)
+roughness = 0.9

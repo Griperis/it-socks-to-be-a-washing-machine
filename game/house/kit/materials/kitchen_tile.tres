@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b563q4jm153gw"]
+
+[ext_resource type="Texture2D" uid="uid://bfb5f7hkxcucx" path="res://game/house/kit/textures/kitchen_tiles.png" id="1_brx7e"]
+
+[resource]
+resource_name = "kitchen_tile"
+albedo_texture = ExtResource("1_brx7e")
+roughness = 0.5
+uv1_scale = Vector3(0.8333333, 0.8333333, 0.8333333)
+uv1_triplanar = true
+uv1_world_triplanar = true

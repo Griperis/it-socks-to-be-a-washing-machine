@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bjjmc1ri5du87"]
+
+[ext_resource type="Texture2D" uid="uid://by2xbak8gds3g" path="res://game/house/kit/textures/wall_tiles.png" id="1_kqrs7"]
+
+[resource]
+resource_name = "wall_tile"
+albedo_texture = ExtResource("1_kqrs7")
+roughness = 0.3
+uv1_scale = Vector3(1.6666666, 1.6666666, 1.6666666)
+uv1_triplanar = true
+uv1_world_triplanar = true

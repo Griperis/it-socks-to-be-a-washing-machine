@@ -51,6 +51,7 @@ How this game is built, unless a decision record says otherwise. They are the ga
 | Subsystem | File | Read it when |
 |---|---|---|
 | The Mess | `docs/architecture/mess.md` | you change how Socks lie, are drawn, move or wake |
+| The house kit | `docs/architecture/house-kit.md` | you add or change a kit piece, a library material or the kit's sizes |
 
 A ticket that adds a subsystem adds its row here and its file.
 

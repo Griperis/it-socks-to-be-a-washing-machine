@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://rympa2jdrjl7"]
+
+[ext_resource type="ArrayMesh" uid="uid://bqm075w6ypyxa" path="res://game/house/kit/meshes/corner_partition.tres" id="1_1x5s1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u0b6r"]
+size = Vector3(0.56, 3, 0.12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wddpf"]
+size = Vector3(0.12, 3, 0.44)
+
+[node name="CornerPartition" type="MeshInstance3D" unique_id=2085607678]
+mesh = ExtResource("1_1x5s1")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=439788775]
+collision_mask = 0
+
+[node name="Box1" type="CollisionShape3D" parent="Body" unique_id=213600069]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 1.5, 0)
+shape = SubResource("BoxShape3D_u0b6r")
+
+[node name="Box2" type="CollisionShape3D" parent="Body" unique_id=1839841880]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0.28)
+shape = SubResource("BoxShape3D_wddpf")

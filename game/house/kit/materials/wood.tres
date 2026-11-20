@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dlijeojk7h3ib"]
+
+[ext_resource type="Texture2D" uid="uid://cros0e0uapv01" path="res://game/house/kit/textures/planks.png" id="1_meeal"]
+
+[resource]
+resource_name = "wood"
+albedo_texture = ExtResource("1_meeal")
+roughness = 0.6
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true

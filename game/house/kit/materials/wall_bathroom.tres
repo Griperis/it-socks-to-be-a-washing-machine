@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dgx53fp1pcyk7"]
+
+[resource]
+resource_name = "wall_bathroom"
+albedo_color = Color(0.8, 0.91, 0.88, 1)
+roughness = 0.9

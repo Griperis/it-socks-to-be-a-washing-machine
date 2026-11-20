@@ -1,0 +1,7 @@
+# house/01: the House kit station: the wall line-up, the tiles and stairs, the small room, a door, a window and the stair from inside.
+lineup  --size=1280x720 --do='30:house_kit:lineup' --shots=40
+floors  --size=1280x720 --do='30:house_kit:floors' --shots=40
+room    --size=1280x720 --do='30:house_kit:room' --shots=40
+door    --size=1280x720 --do='30:house_kit:door' --shots=40
+window  --size=1280x720 --do='30:house_kit:window' --shots=40
+stair   --size=1280x720 --do='30:house_kit:stair' --shots=40
