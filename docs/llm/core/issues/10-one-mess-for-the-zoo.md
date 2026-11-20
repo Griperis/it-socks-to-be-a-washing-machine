@@ -57,13 +57,13 @@ Drafted by the agent (core/10), then built.
 
 ## Answers
 - One Mess and one Hands for the zoo (Q2284, 2026-11-20).
+- Merged as built (Q2289, 2026-11-20).
+- Designs may repeat across stations in the zoo; the zoo gets a station showing every Sock of the game laid out on
+  the ground, at the end (Q2290, 2026-11-20; its own ticket).
+- The return scatter and pop, and a sunk Sock pushed back up, wait for the polish pass (Q2291, 2026-11-20).
 
 ## Open follow-ups
-- [later] Designs repeat across stations: in the zoo's one Mess, Designs 0 and 1 have four records and Designs 4 and
-  130 three (handling's and the Cabinet station's SockSpots), so I.1 "two records per Design" holds per station
-  only, and a Sock may pair with a same-Design Sock of another station. Keep, or give the stations distinct Designs?
-- [later] The zoo's return spot stands at (1.5, 0, 2.5), beside the spawn; the zoo's playable space is its floor
-  (40 x 40 m, 6 m high). Placement chosen by the agent.
+- [later] The zoo's return spot stands at (1.5, 0, 2.5), beside the spawn (placed by the agent).
 - [later] `docs/architecture.md` (the zoo paragraph) could say the zoo owns the one Mess, Hands and Coins.
 
 ## Built log

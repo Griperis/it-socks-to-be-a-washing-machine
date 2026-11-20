@@ -133,3 +133,15 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Looks | `builds/review-core-04/cabinet-station.png` |
 | Decisions | Q2256, Q2264-Q2266, Q2282-Q2285 |
 
+## core/10 one Mess for the zoo (M0.5), merged 2026-11-20
+| Field | Content |
+|---|---|
+| Ticket | core/10, the zoo owns one Mess, Hands and Coins; stations join it and still run alone; M0.5; approved and merged (6f07aa6, main c42ca7d) |
+| Planned vs actual | 0 planned (came from core/04's review, Q2284), 1 actual |
+| Redo count | 0 |
+| Cost | see `agent_cost.py --by ticket` core/10 (Opus), about 8 min |
+| Surprises | Designs repeat across stations once there is one Mess (Q2290) |
+| Stop rules | none fired |
+| Looks | none |
+| Decisions | Q2284, Q2289-Q2291 |
+

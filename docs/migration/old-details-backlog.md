@@ -35,6 +35,8 @@ A ticket that builds a line moves it out of here.
   "gravity minus acceleration" (`world/sock_actor.gd`); core/09 uses the spring-bone node's bend with speed (Q2286).
 - A cloth Sock near the ground straightens its whole bend so no part dips below (`world/sock_actor.gd` `_room`, up to
   8 rings of 12 mesh points); core/09 uses the node's per-joint plane, which may crumple (Q2287).
+- A Sock lost out of bounds comes back to one spot scattered within 0.2 m, with a pop; a Sock sunk into a floor slab
+  is pushed back up (core/08, core/10 left out; Q2291).
 
 ## Decided elsewhere (for the record)
 - The Cabinet's "+N" Coins pop and flight to the bank, a filled drawer paying the team's Drawers, and new Rows

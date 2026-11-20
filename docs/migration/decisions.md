@@ -1,4 +1,4 @@
-Next free Q number: Q2289 (update this line whenever a round of questions is asked)
+Next free Q number: Q2292 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -201,3 +201,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2286: core/09's cloth bends with the Sock's speed, as the spring-bone node does by itself; the old bend-on-a-change-of-speed waits in the polish backlog.
 - Q2287: core/09's cloth uses the node's own ground plane (may crumple at the contact); the old straightening waits in the polish backlog.
 - Q2288: core/09's design is approved; it builds after core/10.
+- Q2289: core/10 merged: one Mess, Hands and Coins for the zoo.
+- Q2290: Designs may repeat across zoo stations; the zoo gets a station of every Sock in the game laid out on the ground, at the end.
+- Q2291: the return scatter and pop and the unsinking of a sunk Sock wait for the polish pass.
