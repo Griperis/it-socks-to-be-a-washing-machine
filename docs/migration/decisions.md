@@ -1,4 +1,4 @@
-Next free Q number: Q2254 (update this line whenever a round of questions is asked)
+Next free Q number: Q2256 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -160,3 +160,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2251: inheritance one step: Part, then Openable; nothing extends Openable.
 - Q2252: one class per file, named alike.
 - Q2253: a thing gets a script only when no Part can do the job.
+
+## M0.5, core/03 pairing (2026-11-20)
+- Q2254: the pairing behaviour list approved as written (the survey's Pairs questions answered "keep").
+- Q2255: the pairing moment stays as it was; AnimationPlayer in the Looks and a particle burst; a strip before merging.
