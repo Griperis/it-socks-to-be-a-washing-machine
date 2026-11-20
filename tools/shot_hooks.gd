@@ -179,4 +179,19 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			else:
 				(station.get_node("Cabinet/Cabinet") as Cabinet).drawer(0).use(player.player_id())
 			return true
+		"heap_more":
+			# core/20: a camera over the heap station's front (its buttons, its counter sign, the pad),
+			# and the zoo's player, standing at the buttons, presses More: the spout pours one batch.
+			var station := world.get_node("Stations/Heap") as Node3D
+			var player := world.get_node("Player") as Player
+			player.global_position = station.to_global(Vector3(2.5, 0.0, -4.6))
+			player.reset_physics_interpolation()
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 60.0
+			cam.global_position = station.to_global(Vector3(-2.8, 3.4, -6.4))
+			cam.look_at(station.to_global(Vector3(0.0, 0.4, 0.2)))
+			cam.make_current()
+			(station.get_node("More/HeapButton") as HeapButton).use(player.player_id())
+			return true
 	return false

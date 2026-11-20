@@ -24,6 +24,11 @@
 ## flying Socks nearest the camera (core/09's flying_cap, for their cloth). A moving Sock is a body
 ## counted against the moving budget (MessTuning): woken Socks wait their turn, nearest the players
 ## first; drops and Throws never wait.
+##
+## Records come and go during play only through the Host's own Commands (core/20): `add` appends
+## falling Socks (a spout's pour, launched at once with their own push), `take_out` makes loose
+## lying or falling ones GONE (never drawn, aimed or simulated; ids stay as they are, and trailing
+## GONE records are cut off). The answer's change carries the records, so a Guest sees them too.
 class_name Mess
 extends Part
 
@@ -31,7 +36,7 @@ extends Part
 ## listener decides nothing in the handler, it asks a Command.
 signal flight_touched(sock: int, other: Node)
 
-enum State { LYING, HELD, FLYING, IN_PAIR, SHELVED }
+enum State { LYING, HELD, FLYING, IN_PAIR, SHELVED, GONE }
 
 ## The physics layers (bits): the house and its furniture, a falling Sock, a lying Sock. The
 ## player's body collides with the house only, so it walks over Socks; the crosshair sees the house
@@ -52,6 +57,8 @@ const TOUCH_MARGIN := 0.01
 ## The name of a falling body (a Guest's spawned copy is found by it), and of its Looks child.
 const FLIGHT_NAME := "Flight%d"
 const LOOKS := ^"Looks"
+## The thrower of a poured Sock's launch (`add`): no player, so no body lets it through.
+const NOBODY := -1
 
 const FLIGHT_SCENE := MessMoving.FLIGHT_SCENE
 const CLOTH_TUNING := preload("res://game/sock/sock_cloth_tuning.tres")
@@ -82,7 +89,7 @@ const CLOTH_TUNING := preload("res://game/sock/sock_cloth_tuning.tres")
 ## Each Sock's pose in the level (POSE floats a Sock): where it lies, or where it was let go.
 @export var poses := PackedFloat32Array()
 ## The launch of each thrown Sock still in the air: {Sock id: {"vel": Vector3, "spin": Vector3,
-## "by": the thrower's player id}}. A dropped or woken Sock has none.
+## "by": the thrower's player id}}. A dropped or woken Sock has none; a poured one has its push, by NOBODY.
 @export var throws := {}
 ## Each Sock's mate once paired, else -1, by Sock id (both ways: a Pair's lead and its IN_PAIR Sock).
 @export var mates := PackedInt32Array()
@@ -368,7 +375,79 @@ func decide(cmd: Command) -> Dictionary:
 			if not any:
 				return refuse("wrong")
 			return grant({"states": s})
+		&"add":
+			return _decide_add(cmd.args)
+		&"take_out":
+			return _decide_take_out(cmd.args)
 	return refuse("wrong")
+
+
+## `add` (Host-only): "designs" (PackedInt32Array), "poses" (PackedFloat32Array, POSE floats each),
+## "vels" and "spins" (PackedVector3Array, one each): new FLYING records at the end, launched at
+## once with that push (a throw by NOBODY).
+func _decide_add(args: Dictionary) -> Dictionary:
+	var ds: Variant = args.get("designs")
+	var ps: Variant = args.get("poses")
+	var vs: Variant = args.get("vels")
+	var ss: Variant = args.get("spins")
+	if not (ds is PackedInt32Array) or not (ps is PackedFloat32Array) or not (vs is PackedVector3Array) \
+			or not (ss is PackedVector3Array):
+		return refuse("wrong")
+	var add_designs: PackedInt32Array = ds
+	var n := add_designs.size()
+	if n == 0 or (ps as PackedFloat32Array).size() != n * POSE or (vs as PackedVector3Array).size() != n \
+			or (ss as PackedVector3Array).size() != n:
+		return refuse("wrong")
+	for design in add_designs:
+		if catalogue == null or catalogue.design(design) == null:
+			return refuse("wrong")
+	var first := count()
+	var d := designs.duplicate()
+	d.append_array(add_designs)
+	var s := states.duplicate()
+	s.resize(first + n)
+	var m := mates.duplicate()
+	m.resize(first + n)
+	var p := poses.duplicate()
+	p.append_array(ps)
+	var t := throws.duplicate()
+	for i in n:
+		s[first + i] = State.FLYING
+		m[first + i] = -1
+		t[first + i] = {"vel": (vs as PackedVector3Array)[i], "spin": (ss as PackedVector3Array)[i], "by": NOBODY}
+	return grant({"designs": d, "states": s, "mates": m, "poses": p, "throws": t})
+
+
+## `take_out` (Host-only): "socks" (PackedInt32Array): those lying or falling go GONE, a Pair only
+## when both its Socks are named; held and shelved ones stay. Trailing GONE records are cut off.
+func _decide_take_out(args: Dictionary) -> Dictionary:
+	var named: Variant = args.get("socks")
+	if not (named is PackedInt32Array):
+		return refuse("wrong")
+	var asked: Dictionary[int, bool] = {}
+	for sock: int in named:
+		asked[sock] = true
+	var s := states.duplicate()
+	var t := throws.duplicate()
+	var any := false
+	for sock: int in named:
+		if sock < 0 or sock >= count() or state_of(sock) not in [State.LYING, State.FLYING]:
+			continue
+		var mate := mate_of(sock)
+		if mate >= 0 and not asked.has(mate):
+			continue
+		s[sock] = State.GONE
+		t.erase(sock)
+		if mate >= 0:
+			s[mate] = State.GONE
+		any = true
+	if not any:
+		return refuse("already")
+	var keep := s.size()
+	while keep > 0 and s[keep - 1] == State.GONE:
+		keep -= 1
+	return grant({"states": s.slice(0, keep), "designs": designs.slice(0, keep), "mates": mates.slice(0, keep),
+			"poses": poses.slice(0, keep * POSE), "throws": t})
 
 
 ## The lying Socks touching lying Sock `sock`, at most the tuning's wake_count (T11).
@@ -410,7 +489,7 @@ func queue_wake(socks: PackedInt32Array, kind: StringName) -> void:
 ## Every Sock is drawn as its record says: lying Socks as bodies and instances, held ones not at
 ## all (the Hands draw them), a falling one as the Host's body: a dropped one let go after the
 ## flick, a thrown or woken one (or any when `now`) at once. Only the Socks whose record changed
-## since the last time are touched; `now` (or a new count) shows every one.
+## since the last time are touched, records added or cut off included; `now` shows every one.
 func _show(now: bool) -> void:
 	if not is_inside_tree():
 		return
@@ -419,7 +498,7 @@ func _show(now: bool) -> void:
 		_lying_bodies = MessBodies.new(self, _drawing.sock_points())
 		now = true
 	var changed: PackedInt32Array
-	if now or _shown_states.size() != states.size() or _shown_poses.size() != poses.size():
+	if now:
 		for sock: int in _lent.keys():
 			return_looks(sock)
 		changed = PackedInt32Array(range(count()))
@@ -434,8 +513,15 @@ func _show(now: bool) -> void:
 		_shown_states.fill(255)
 	else:
 		var found: Dictionary[int, bool] = {}
-		_changed(_shown_states, states, 1, 0, count(), found)
-		_changed(_shown_poses, poses, POSE, 0, count(), found)
+		var common := mini(_shown_states.size(), count())
+		_changed(_shown_states, states, 1, 0, common, found)
+		_changed(_shown_poses, poses, POSE, 0, common, found)
+		for sock in range(common, _shown_states.size()):
+			_cut_off(sock)
+		_shown_states.resize(count())
+		for sock in range(common, count()):
+			_shown_states[sock] = 255
+			found[sock] = true
 		changed = PackedInt32Array(found.keys())
 	var woken: Dictionary[int, bool] = {}
 	for sock in changed:
@@ -461,6 +547,17 @@ func _show(now: bool) -> void:
 	_shown_states = states.duplicate()
 	_shown_poses = poses.duplicate()
 	_drawing.flush()
+
+
+## A record cut off the end (`take_out`): its body, drawing, lent Looks and flight go.
+func _cut_off(sock: int) -> void:
+	if _lent.has(sock):
+		_lent[sock].queue_free()
+		_lent.erase(sock)
+	_drawing.undraw(sock)
+	if _lying_bodies.has(sock):
+		_lying_bodies.remove(sock)
+	_moving.forget(sock)
 
 
 ## The Host: starts the Socks woken by a hit, a pick or a moving Door as the budget allows, lets

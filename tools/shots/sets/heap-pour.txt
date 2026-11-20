@@ -1,0 +1,12 @@
+# core/20 H01, H02: the heap station: a camera over its front; the player presses More at frame 60 and the spout pours one batch (500) in waves onto the pad, which comes to rest; the counter sign counts (60 frames a second).
+f59  --size=1280x720 --do='60:heap_more' --shots=59
+f66  --size=1280x720 --do='60:heap_more' --shots=66
+f72  --size=1280x720 --do='60:heap_more' --shots=72
+f80  --size=1280x720 --do='60:heap_more' --shots=80
+f90  --size=1280x720 --do='60:heap_more' --shots=90
+f105  --size=1280x720 --do='60:heap_more' --shots=105
+f125  --size=1280x720 --do='60:heap_more' --shots=125
+f150  --size=1280x720 --do='60:heap_more' --shots=150
+f200  --size=1280x720 --do='60:heap_more' --shots=200
+f300  --size=1280x720 --do='60:heap_more' --shots=300
+f480  --size=1280x720 --do='60:heap_more' --shots=480
