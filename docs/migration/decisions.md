@@ -1,4 +1,4 @@
-Next free Q number: Q2325 (update this line whenever a round of questions is asked)
+Next free Q number: Q2329 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -237,3 +237,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2322: the zoo's sky is the old day HDRI at noon: sky ambient 0.7, sky reflections, the warm sun (1.0, 0.93, 0.82) at 2.4 with soft shadows.
 - Q2323: the old graphics presets (low, medium, high) are ported now as a setting, chosen by a project setting until the Options menu exists.
 - Q2324: the old Patrick Hand theme on all 2D screen text; the zoo's 3D station signs keep a plain readable font.
+- Q2325: the house kit's wall heights and thickness are the old house's, per floor where they differed, nudged to the grid.
+- Q2326: the first kit has walls and corners (0.5, 1, 2 m; outer, inner, T), floor and ceiling tiles (0.5, 1, 2 m), door and window walls sized as the old house's, and a straight stair with a landing.
+- Q2327: kit pieces snap by Godot's own 0.5 m grid: each piece's origin on a grid corner; no plugin.
+- Q2328: each kit piece has a simple box collider and one material slot overridden per placed piece, from a shared library of the old house's materials.
