@@ -179,6 +179,9 @@ the ramp, jumps, crouches under the beam. `zoo_test` and the co-op crate case ke
 - The zoo is a scene edited in the editor, one station per feature, and Play starts in it.
 - Movement matches the approved behaviour list; its numbers are a typed Resource, each marked decided or placeholder.
 - The player is a Host of one: nothing here blocks a second player in M0.6.
+- One test per behaviour line, named after it; one real-path case loads `game/zoo/stations/movement.tscn` with
+  the player and drives the real input actions (walk the ramp, jump onto the box, crouch under the beam);
+  `kit/tools/run.sh` prints PASS, `zoo` and `player` suites included.
 
 ## Answers
 - The behaviour list is approved as written (Q2232, 2026-11-20).
@@ -195,3 +198,5 @@ the ramp, jumps, crouches under the beam. `zoo_test` and the co-op crate case ke
 ## Open follow-ups
 
 ## Built log
+- 2026-11-20 (lead): handed to a ticket agent on Sonnet (the Models value: sonnet by default; this is no
+  Blender, netcode or big refactor).
