@@ -1,4 +1,4 @@
-Next free Q number: Q2317 (update this line whenever a round of questions is asked)
+Next free Q number: Q2325 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -229,3 +229,11 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2314: the pairing moment's fly-in keeps 0.2 s; the moment stays 0.5 s.
 - Q2315: a thrown Sock carries its held bend into the throw: polish batch 5.
 - Q2316: a shelved ball's landing squash, hop and roll and a thrown-shelve's flight to its slot: polish batch 5; a teammate's shelving flight and sparkle burst: M0.6.
+- Q2317: the sound system (core/17) and the picture and theme (core/18) start now in their own worktrees and wait ready for batches 6 and 7; the Sock models (M1) do not start yet.
+- Q2318: the sound catalogue is typed Resources in the inspector: one SoundEvent per named event (clips, volume, bus, flat or 3D) holding an AudioStreamRandomizer for variations and pitch; buses in the editor's bus layout.
+- Q2319: the clips are the old game's picks for each core event, with their volumes; the other candidates stay in the reference.
+- Q2320: a 'Sounds' station in the zoo plays every event, flat or from a spot.
+- Q2321: built with the system: muffling behind a shut Door (-9 dB, 900 Hz low-pass), footsteps by surface (1.4 m, wood or tile) and the landing sound, volume per bus as settings, a quiet zoo ambience.
+- Q2322: the zoo's sky is the old day HDRI at noon: sky ambient 0.7, sky reflections, the warm sun (1.0, 0.93, 0.82) at 2.4 with soft shadows.
+- Q2323: the old graphics presets (low, medium, high) are ported now as a setting, chosen by a project setting until the Options menu exists.
+- Q2324: the old Patrick Hand theme on all 2D screen text; the zoo's 3D station signs keep a plain readable font.
