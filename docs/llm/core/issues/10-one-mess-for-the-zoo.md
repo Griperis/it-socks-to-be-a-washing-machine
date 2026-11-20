@@ -76,3 +76,4 @@ Drafted by the agent (core/10), then built.
   Files: game/zoo/zoo.tscn, game/zoo/stations.gd, game/mess/mess.gd, game/mess/sock_spot.gd, game/player/player.gd,
   game/parts/session.gd, tools/shot_hooks.gd, tests/zoo_test.gd. Verified: PASS 873 checks, 126 cases
   (`run.sh --touched`: cabinet, handling, pairing, player, runner, scene_parts, throw, wiring, zoo).
+- Merged: 10b9a2dd (2026-11-20, branch core/10-one-mess-for-the-zoo)
