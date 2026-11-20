@@ -271,3 +271,18 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2337, Q2340 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/20, the heap station (a spout pours real Socks in waves, More and Respill, counters, walls, a table and a slope); approved and merged (main 73bc87e) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 1 (moved off the house kit station's spot, Q2347) |
+| Corrections | "Move it, then merge"; nothing pours at start (Q2347, Q2348) |
+| Cost | core/20 1 16,864,657 107 25m56s (Opus) |
+| Time | the agent ran about 23 min |
+| Surprises | the agent placed it on the spot house/01 took in parallel; a FLAKY heap:h04 once, reworked, 4 runs clean; 500 Socks: 3 ms a tick pouring, 0.6 ms at rest |
+| Stop rules | stopped at its still |
+| Looks | `builds/review-core-20/` |
+| Decisions | Q2334-Q2336, Q2347, Q2348 |
+
+---
