@@ -140,3 +140,4 @@ the Cabinet's drawer, see the Pair in its slot and the Coins; throw a second Pai
 ## Open follow-ups
 
 ## Built log
+- Model: Opus (lead): a new entity with Openable drawers and a Part that spans the Mess and Hands.
