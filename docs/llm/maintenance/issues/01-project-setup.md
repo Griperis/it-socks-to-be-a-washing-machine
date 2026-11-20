@@ -42,7 +42,7 @@ and check the tools run on this machine.
 - The old game is the submodule `reference/it-socks` (the designer added it as `prototype/`), pinned at `v0.1.1` (Q2231, 2026-11-20).
 
 ## Open follow-ups
-- [later] Add a private remote as a backup (`git remote add origin <url>`): the designer makes the repo.
+- [later] Pushing from the sandbox needs a GitHub token: `sbx secret set github --sandbox claude-it-socks-to-be-a-washing-machine -t "$(gh auth token)"` on the host (the designer pushed M0 from the host).
 
 ## Built log
 - 2026-11-20 (lead). Kit 8.0 (`kit/` submodule at 1cd1ec6), not the zipped kit 7.1 START-HERE names: setup

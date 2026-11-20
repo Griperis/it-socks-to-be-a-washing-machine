@@ -63,3 +63,4 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
   `v0.1.1`). The kit's tools skip only `reference/`, so `run.sh` failed on the old scripts; moved to
   `reference/it-socks` and pinned at `v0.1.1` (Q2231). Lesson for the reusable skill set: the reference goes under
   `reference/`, whether a plain clone or a submodule, and is pinned at the tag.
+- M0 done: the designer made the remote `Griperis/it-socks-to-be-a-washing-machine` and pushed `3e8b31e` from the host; the sandbox has read access but no push token.
