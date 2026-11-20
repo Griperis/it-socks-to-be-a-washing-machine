@@ -60,6 +60,19 @@ static func act(world: Node, what: String, arg: String) -> bool:
 				spot = "Spots/Over"
 			hands.pick(player.player_id(), (station.get_node(spot) as SockSpot).sock)
 			return true
+		"refuse":
+			# core/18: the zoo's player takes the first Sock and aims at the open air, where a drop is refused: the
+			# crosshair is red and the message shows.
+			var player := world.get_node("Player") as Player
+			var hands := world.get_node("Socks/Hands") as Hands
+			var station := world.get_node("Stations/Handling") as Node3D
+			player.global_position = station.global_position + Vector3(0.0, 0.0, 1.5)
+			player.rotation.y = 0.0
+			(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(8.0)
+			player.reset_physics_interpolation()
+			hands.pick(player.player_id(), (station.get_node("Spots/Floor") as SockSpot).sock)
+			player.say(Player.CANT_DROP)
+			return true
 		"look_down":
 			# The head tilts down at the Socks on the floor (core/09: a fly-in seen from where it lay).
 			var player := world.get_node("Player") as Player

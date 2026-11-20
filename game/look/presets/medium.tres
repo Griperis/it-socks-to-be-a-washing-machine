@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="GraphicsPreset" format=3]
+
+[ext_resource type="Script" path="res://game/look/graphics_preset.gd" id="1_preset"]
+
+; placeholder: the designer's numbers (the old game's medium preset, core/18)
+[resource]
+script = ExtResource("1_preset")
+msaa = 0
+render_scale = 0.85
+fsr = true
+sun_splits = 2
+sun_atlas = 2048
+sky_radiance = 128

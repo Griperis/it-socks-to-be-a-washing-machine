@@ -13,15 +13,8 @@
 [ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="12_coins"]
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="13_designs"]
 [ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="14_tuning"]
-
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_zoo"]
-
-[sub_resource type="Sky" id="Sky_zoo"]
-sky_material = SubResource("ProceduralSkyMaterial_zoo")
-
-[sub_resource type="Environment" id="Environment_zoo"]
-background_mode = 2
-sky = SubResource("Sky_zoo")
+[ext_resource type="Environment" path="res://game/look/noon_environment.tres" id="15_env"]
+[ext_resource type="PackedScene" path="res://game/look/picture.tscn" id="16_picture"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.42, 0.44, 0.46, 1)
@@ -40,11 +33,21 @@ capacity = 3
 [node name="Zoo" type="Node3D" unique_id=433960228]
 
 [node name="Environment" type="WorldEnvironment" parent="." unique_id=1707552116]
-environment = SubResource("Environment_zoo")
+environment = ExtResource("15_env")
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=1584814552]
-transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 6, 0)
+transform = Transform3D(0.900969, -0.198987, 0.385564, 0, 0.888633, 0.458618, -0.433884, -0.413201, 0.800631, 0, 6, 0)
+light_color = Color(1, 0.93, 0.82, 1)
+light_energy = 2.4
 shadow_enabled = true
+shadow_blur = 1.5
+sky_mode = 1
+directional_shadow_mode = 2
+directional_shadow_max_distance = 18.0
+
+[node name="Picture" parent="." unique_id=1262930417 node_paths=PackedStringArray("world_environment", "sun") instance=ExtResource("16_picture")]
+world_environment = NodePath("../Environment")
+sun = NodePath("../Sun")
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=512353599]
 metadata/surface = "wood"

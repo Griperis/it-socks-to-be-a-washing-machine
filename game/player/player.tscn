@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://game/player/power_ring.gd" id="5_ring"]
 [ext_resource type="Script" uid="uid://5bfknrgi4c41" path="res://game/audio/footsteps.gd" id="6_steps"]
 [ext_resource type="Resource" path="res://game/audio/footstep_tuning.tres" id="7_steps_tuning"]
+[ext_resource type="PackedScene" path="res://game/look/crosshair.tscn" id="6_cross"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -54,22 +55,8 @@ target_position = Vector3(0, 0, -2.5)
 
 [node name="Hud" type="CanvasLayer" parent="."]
 
-[node name="Crosshair" type="Label" parent="Hud"]
+[node name="Crosshair" parent="Hud" instance=ExtResource("6_cross")]
 unique_name_in_owner = true
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -8.0
-offset_top = -12.0
-offset_right = 8.0
-offset_bottom = 12.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "+"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Message" type="Label" parent="Hud"]
 unique_name_in_owner = true
@@ -86,6 +73,7 @@ offset_right = 200.0
 offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_type_variation = &"OutlinedLabel"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -104,6 +92,7 @@ offset_bottom = 70.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "M"
+theme_type_variation = &"OutlinedLabel"
 horizontal_alignment = 1
 vertical_alignment = 1
 

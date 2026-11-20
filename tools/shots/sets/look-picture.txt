@@ -1,0 +1,6 @@
+# core/18: the picture and the theme: the same views before (main) and after: the handling station with a Sock in the Hands, the Cabinet's drawers, the every-Sock station from above and along a row, and the crosshair with a refusal message.
+handling  --size=1280x720 --do='60:pick_floor' --shots=100
+cabinet   --size=1280x720 --do='60:shelve_pair' --shots=100
+every-overview  --size=1280x720 --do='10:every_sock:overview' --shots=60
+every-row  --size=1280x720 --do='10:every_sock:row' --shots=60
+refusal  --size=1280x720 --do='60:refuse' --shots=75

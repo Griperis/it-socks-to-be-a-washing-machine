@@ -34,7 +34,7 @@ const HANDS_FULL := "Hands full"
 const CANT_DROP := "Can't drop there"
 ## The crosshair where a drop may go (and always with empty Hands), and where it may not.
 const CROSSHAIR_OK := Color.WHITE
-const CROSSHAIR_NO := Color(1.0, 0.25, 0.2)
+const CROSSHAIR_NO := Color(0.95, 0.25, 0.2)
 
 @export var tuning: MoveTuning
 ## How its Hands pick, hold and drop; its capacity is here (the zoo's player holds 3, Q2244).
@@ -46,7 +46,7 @@ const CROSSHAIR_NO := Color(1.0, 0.25, 0.2)
 @onready var _mesh: MeshInstance3D = %Mesh
 @onready var _aim: RayCast3D = %Aim
 @onready var _held_view: HeldView = %HeldView
-@onready var _crosshair: Label = %Crosshair
+@onready var _crosshair: Crosshair = %Crosshair
 @onready var _message: Label = %Message
 @onready var _size: Label = %Size
 @onready var _ring: PowerRing = %Ring
