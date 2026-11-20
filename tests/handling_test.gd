@@ -58,7 +58,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "h28_right_empty", "method": "case_h28", "world": false,
 				"title": "H28: the right button with empty Hands does nothing"},
 		{"name": "h07_drop", "method": "case_h07", "world": false,
-				"title": "H07: a tap with the crosshair white drops the active Sock where the crosshair is: the floor, the table, the shelf, a Heap; a long press does not"},
+				"title": "H07: a tap with the crosshair white drops the active Sock where the crosshair is: the floor, the table, the shelf, a Heap"},
 		{"name": "h08_refused", "method": "case_h08", "world": false,
 				"title": "H08: with the crosshair red (too far, a wall, a narrow gap) nothing drops and \"Can't drop there\" shows; empty Hands keep it white"},
 		{"name": "h09_into_cupboard", "method": "case_h09", "world": false,
@@ -342,11 +342,7 @@ func case_h07() -> void:
 	var spot := Vector3(0.3, 0.0, 0.4)
 	await _aim(_player, spot)
 	_check(_player.crosshair_colour() == Player.CROSSHAIR_OK, "the crosshair is white on the floor")
-	Input.action_press(&"drop_throw")
-	await _physics_ticks(int(0.4 * 60.0))
-	Input.action_release(&"drop_throw")
-	await _physics_ticks(2)
-	_check(_hands.active_of(1) == ON_FLOOR, "a long press (0.4 s) does not drop")
+	# A long press is the Throw's since core/08 (tests/throw_test.gd, T01).
 	await _drop_at(spot, ON_FLOOR, "the floor")
 	_near(_mess.pose_of(ON_FLOOR).origin.y, 0.0, 0.03, "it lies on the floor")
 	_player.global_position = Vector3(-1.5, 0.0, 0.8)

@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-20
-done:
+done: 2026-11-20
 blocked_by: ["[[02-handling-socks]]"]
 notes: []
 terms: []
@@ -99,7 +99,28 @@ synchronizer with the stamp (coop-structure section 4, option A), a teammate cat
 - The zoo's return spot is a marker on the handling station's pad (Q2261, 2026-11-20).
 
 ## Open follow-ups
+- [later] T11: the wake is judged on the Flight's first contact, so the hit Socks are woken one step after the
+  bounce and fall where they lie; the old game woke them just before contact so the thrown item pushed them. Is a
+  push wanted?
+- [later] The ring's faint white track hardly shows on a light wall (`builds/review-core-08/throw-ring-close-up.png`).
+  Keep the old look, or add an outline?
+- [later] M0.6: a Guest's Throw leaves from `EYES_FALLBACK` (1.5 m) above where it stands, and only the local
+  player's body lets its own thrown Sock through (`Mess._spare_thrower`). Both need the Guest's eyes and avatar.
 
 ## Built log
 - 2026-11-20 (lead): handed to a ticket agent on Opus: a Host-owned physics body with contacts and the wake (the
   Models value: opus for hard netcode and physics debugging).
+
+### 2026-11-20
+- Changed: holding the right button past the tap with something in the Hands charges a Throw: a ring round the
+  crosshair fills over 1.2 s, and a menu drops the charge. Releasing sends `throw(dir, charge)` to the Hands. The
+  Host decides from and vel (the lob under 15%) and the spin, and the Mess launches the Host's Flight at once with
+  the thrown drag (`throws` record). A Flight hitting a lying Sock faster than 1.5 m/s wakes it and up to 8
+  touching it (Host-only `wake`). A Flight outside `bounds` comes down at `return_spot` (on the handling pad),
+  and so does one that would rest inside a wall. The hold is HandsTuning's existing `tap`. The H07 long-press
+  check moved here.
+- Files: game/hands/hands.gd, hands_tuning.gd, physics_queries.gd, game/mess/mess.gd, game/player/player.gd,
+  power_ring.gd, player.tscn, game/sock/flight.tscn, game/zoo/stations/handling.tscn, tests/throw_test.gd,
+  tests/handling_test.gd, tools/shot_hooks.gd, tools/shots/sets/throw-ring.txt
+- Verified: `run.sh --touched` PASS 366 checks, 74 cases; grep_rules PASS; stills
+  builds/review-core-08/throw-ring-mid-charge.png, throw-ring-close-up.png

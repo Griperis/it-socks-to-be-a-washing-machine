@@ -3,7 +3,9 @@
 ## Interact uses the Part the crosshair is on, through Parts like any player's input (alone this player
 ## is the Host of one). Its Hands (core/02) are the level's Hands Part: it aims (the crosshair outlines
 ## a lying Sock in reach, and turns red where a drop may not go), asks to pick, cycle and drop, and
-## shows what it holds in its HeldView; zoom and turn are looks of this machine. In co-op it is the
+## shows what it holds in its HeldView; zoom and turn are looks of this machine. The drop button held
+## past the tap with something in the Hands charges a Throw (core/08: the ring round the crosshair
+## fills) and its release asks to throw along the aim; no cancel. In co-op it is the
 ## local player: Avatars copies its body to the others.
 class_name Player
 extends CharacterBody3D
@@ -47,6 +49,7 @@ const CROSSHAIR_NO := Color(1.0, 0.25, 0.2)
 @onready var _crosshair: Label = %Crosshair
 @onready var _message: Label = %Message
 @onready var _size: Label = %Size
+@onready var _ring: PowerRing = %Ring
 
 ## True while a menu has the player's input (set_input_blocked()).
 var _input_blocked := false
@@ -69,6 +72,9 @@ var _time := 0.0
 var _drop_down_at := -1.0
 var _zoom := 0.0
 var _message_left := 0.0
+## T01: whether a Throw is charging, and how full its ring is (0 to 1 over the charge time).
+var charging := false
+var charge := 0.0
 
 
 func _ready() -> void:
@@ -239,17 +245,57 @@ func _update_hands(delta: float) -> void:
 	_size.visible = design != null
 	_size.text = design.size_letter() if design != null else ""
 	if _input_blocked:
+		# A menu opening mid-charge drops the charge without a throw.
 		_drop_down_at = -1.0
+		_set_charge(false)
 		return
 	if Input.is_action_just_pressed(PICK) and aimed_sock >= 0:
 		_pick(h, aimed_sock)
 	if Input.is_action_just_pressed(DROP_THROW):
 		_drop_down_at = _time
+	if _drop_down_at >= 0.0 and not charging and holding and _time - _drop_down_at >= hands_tuning.tap:
+		_set_charge(true)
+	if charging:
+		charge = minf(1.0, charge + delta / maxf(hands_tuning.charge_time, 0.01))
+		_ring.value = charge
 	if Input.is_action_just_released(DROP_THROW) and _drop_down_at >= 0.0:
 		var tapped := _time - _drop_down_at < hands_tuning.tap
 		_drop_down_at = -1.0
-		if tapped:
+		if charging:
+			_throw(h)
+		elif tapped:
 			_drop(h)
+
+
+## T01: starts a charge (the ring shows, empty) or ends one (the ring hides).
+func _set_charge(on: bool) -> void:
+	charging = on
+	charge = 0.0
+	_ring.value = 0.0
+	_ring.visible = on
+
+
+## T01-T03: asks to throw the active item along the aim with the charge the ring shows.
+func _throw(h: Hands) -> void:
+	var power := charge
+	_set_charge(false)
+	if h.active_of(player_id()) >= 0:
+		h.throw(player_id(), aim_dir(), power)
+
+
+## Where the eyes are, in the level: where a Throw leaves from.
+func eyes() -> Vector3:
+	return _head.global_position
+
+
+## Where the crosshair points, a unit vector in the level.
+func aim_dir() -> Vector3:
+	return -_head.global_basis.z.normalized()
+
+
+## The Throw's ring round the crosshair.
+func ring() -> PowerRing:
+	return _ring
 
 
 ## H01-H04: asks to pick the aimed Sock; what the Host would refuse shows first ("Hands full"; a
