@@ -55,6 +55,10 @@ const WIRING_OPTIONAL := ["hands", "coins"]
 @export_group("")
 
 var _mess: Mess
+## Shelving flights still on their way into each drawer, and the balls waiting for them to land, by
+## drawer index (D11).
+var _pending: Dictionary[int, int] = {}
+var _waiting: Dictionary[int, Array] = {}
 
 
 func _ready() -> void:
@@ -324,8 +328,10 @@ func _owns(node: Node) -> bool:
 
 
 ## Draws each drawer's shelved Pairs as sock balls at its slot points, in shelving order; a drawer
-## holding more Pairs than it has slots draws the first ones.
-func _show(_now: bool) -> void:
+## holding more Pairs than it has slots draws the first ones. A Pair newly shelved from Hands drawn
+## on this machine flies from where they drew it to its slot first, and the drawer shows its new
+## balls when all its flights have landed (D11).
+func _show(now: bool) -> void:
 	var mess := mess_of()
 	for i in drawer_count():
 		var looks := get_parent().get_node_or_null(NodePath((DRAWER % (i + 1)) + "/Looks"))
@@ -350,4 +356,64 @@ func _show(_now: bool) -> void:
 				slot.add_child(ball)
 				ball.position = Vector3(0.0, TRAY_FLOOR_Y + SockDress.ball_radius(mess.design_of(want)) - slot.position.y, 0.0)
 				ball.rotation.y = fposmod(j * TURN, TAU)
+				var from: Variant = null if now else _drawn_in_hands(want)
+				if from is Transform3D:
+					_fly(i, j, ball, from)
 			j += 1
+
+
+## How many shelving flights are still on their way into each drawer, by drawer index.
+func flights_into(index: int) -> int:
+	return _pending.get(index, 0)
+
+
+## Where Hands on this machine draw Pair `sock` now, or null.
+func _drawn_in_hands(sock: int) -> Variant:
+	if not is_inside_tree():
+		return null
+	for node in get_tree().get_nodes_in_group(HeldView.GROUP):
+		var at: Variant = (node as HeldView).drawn_of(sock)
+		if at is Transform3D:
+			return at
+	return null
+
+
+## Flies a copy of shelved `ball` (slot `slot` of drawer `index`) from `from` to it, on an arc, in
+## `flight_time` plus `flight_step` for each slot before it; the ball itself shows when every
+## flight into that drawer has landed (D11). It lands where the ball is then, the drawer sliding.
+func _fly(index: int, slot: int, ball: Node3D, from: Transform3D) -> void:
+	var t := tuning_of()
+	var mess := mess_of()
+	var flier := SockDress.make(mess.design_of(int(ball.get_meta(Mess.SOCK_META))), SockDress.LYING, true)
+	flier.name = "Flight%d" % int(ball.get_meta(Mess.SOCK_META))
+	flier.top_level = true
+	get_parent().add_child(flier)
+	flier.global_transform = from
+	ball.visible = false
+	var waiting: Array = _waiting.get(index, [])
+	waiting.append(ball)
+	_waiting[index] = waiting
+	_pending[index] = int(_pending.get(index, 0)) + 1
+	var step := func(u: float) -> void:
+		if not is_instance_valid(ball) or not ball.is_inside_tree():
+			return
+		var to := ball.global_transform
+		var at := from.interpolate_with(to, u)
+		at.origin = from.origin.lerp(to.origin, u) + Vector3.UP * (4.0 * t.flight_arc * u * (1.0 - u))
+		flier.global_transform = at
+	var tween := flier.create_tween()
+	tween.tween_method(step, 0.0, 1.0, t.flight_time + t.flight_step * slot)
+	tween.tween_callback(_landed.bind(index, flier))
+
+
+## A shelving flight into drawer `index` landed: once none is left, its waiting balls show.
+func _landed(index: int, flier: Node3D) -> void:
+	flier.queue_free()
+	_pending[index] = int(_pending.get(index, 1)) - 1
+	if _pending[index] > 0:
+		return
+	_pending.erase(index)
+	for ball: Variant in _waiting.get(index, []):
+		if is_instance_valid(ball):
+			(ball as Node3D).visible = true
+	_waiting.erase(index)

@@ -1,0 +1,10 @@
+# core/09 D11: the shelving flight: a Pair made at 60/85 at the Cabinet station, shelved by a click on the bottom drawer at 160; the ball flies from the Hands into its slot (0.45 s) and the drawer shows it when it lands.
+f159  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=159
+f162  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=162
+f165  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=165
+f168  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=168
+f171  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=171
+f174  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=174
+f178  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=178
+f184  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=184
+f190  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=190

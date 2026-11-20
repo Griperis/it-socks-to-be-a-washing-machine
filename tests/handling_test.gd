@@ -264,8 +264,8 @@ func case_h21() -> void:
 	await _pick(ON_FLOOR)
 	await _physics_ticks(25)
 	await _pick(OVER)
-	await _frames(2)
 	var view := _player.held_view()
+	await _until(view.settled, "the glide and the fly-up to end")
 	var camera := _player.camera()
 	var active_before := view.looks_of(OVER).transform
 	var tucked_before := view.looks_of(ON_FLOOR).transform

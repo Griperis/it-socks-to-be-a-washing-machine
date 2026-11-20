@@ -1,12 +1,18 @@
 ## The ability to be opened and shut (a door, a drawer, a lid). Put it on the thing's scene as a
 ## child of the root, beside the thing's Looks: a child scene named "Looks" whose AnimationPlayer
 ## has an animation "open" (shut at its start, open at its end). The state is the truth; the
-## animation only shows it, so any Looks with that animation can replace another.
+## animation only shows it, so any Looks with that animation can replace another. A Looks may also
+## have "shut" (open to shut, its own easing): it is played to shut instead of "open" backwards.
 class_name Openable
 extends Part
 
 ## The animation every Looks of an openable thing has.
 const ANIMATION := &"open"
+## An animation a Looks may also have: open at its start, shut at its end, played to shut instead of
+## "open" backwards (its own easing, core/09 D12).
+const SHUT := &"shut"
+## How finely "shut" is searched for the pose "open" has now, when a swing turns back.
+const MATCH_STEPS := 60
 ## Where the Looks sits, from this part.
 const LOOKS := ^"../Looks"
 
@@ -62,11 +68,53 @@ func _show(now: bool) -> void:
 		player.seek(end, true)
 		player.pause()
 		return
+	if player.has_animation(SHUT):
+		_swing(player)
+		return
 	# Mid-swing the pose is where the animation is; at rest it is the other end (the state before).
 	var from := player.current_animation_position if player.is_playing() and player.current_animation == ANIMATION \
 			else length - end
 	player.play(ANIMATION, 0.0, 1.0 if open else -1.0, not open)
 	player.seek(from, true)
+
+
+## With a Looks that has its own "shut" (a drawer easing out both ways, core/09 D12): plays "open"
+## or "shut" forwards, from the time in it whose pose matches the pose now, so a reverse mid-swing
+## stays smooth.
+func _swing(player: AnimationPlayer) -> void:
+	var to := ANIMATION if open else SHUT
+	var other := SHUT if open else ANIMATION
+	var from := 0.0
+	if player.is_playing() and player.current_animation == other:
+		from = _matching(player.get_animation(other), player.current_animation_position, player.get_animation(to))
+	elif player.is_playing() and player.current_animation == to:
+		from = player.current_animation_position
+	player.play(to)
+	player.seek(from, true)
+
+
+## The time in `to` whose first track has the value `from`'s first track has at time `t`; without a
+## value track to compare, the same share of its length.
+static func _matching(from: Animation, t: float, to: Animation) -> float:
+	var share := t / maxf(from.length, 0.0001)
+	if from.get_track_count() == 0 or to.get_track_count() == 0 or from.track_get_type(0) != Animation.TYPE_VALUE \
+			or to.track_get_type(0) != Animation.TYPE_VALUE:
+		return to.length * (1.0 - share)
+	var want: Variant = from.value_track_interpolate(0, t)
+	var best := to.length * (1.0 - share)
+	var best_gap := INF
+	for i in MATCH_STEPS + 1:
+		var at := to.length * float(i) / float(MATCH_STEPS)
+		var have: Variant = to.value_track_interpolate(0, at)
+		var gap := INF
+		if want is Vector3 and have is Vector3:
+			gap = (want as Vector3).distance_to(have as Vector3)
+		elif (want is float or want is int) and (have is float or have is int):
+			gap = absf(float(want) - float(have))
+		if gap < best_gap:
+			best_gap = gap
+			best = at
+	return best
 
 
 ## The Looks' AnimationPlayer that has "open", or null (no Looks yet: state only). Searched once

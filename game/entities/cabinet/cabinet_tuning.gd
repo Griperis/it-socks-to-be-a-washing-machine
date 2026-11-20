@@ -18,6 +18,13 @@ extends Resource
 ## Guest's place reaches the Host a little late.
 @export_range(0.0, 2.0, 0.1, "suffix:m") var reach_slack := 1.0 # placeholder: the Host's allowance, not felt in play
 
+@export_group("Shelving flight")
+## A Pair shelved from the Hands flies to its slot in this long, plus `flight_step` for each slot
+## before it in the drawer, on an arc this high (D11).
+@export_range(0.05, 3.0, 0.01, "suffix:s") var flight_time := 0.45 # placeholder: the old cloth.json
+@export_range(0.0, 0.5, 0.01, "suffix:s") var flight_step := 0.06 # placeholder: the old campaign_installer.gd's constant
+@export_range(0.0, 2.0, 0.01, "suffix:m") var flight_arc := 0.22 # placeholder: the old cloth.json
+
 
 ## The Coins one Pair of a Design of rarity `rarity` pays.
 func pay_for(rarity: int) -> int:

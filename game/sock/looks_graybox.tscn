@@ -1,6 +1,8 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://game/sock/crew.glb" id="1_crew"]
+[ext_resource type="Script" uid="uid://bjo58sea851lj" path="res://game/sock/sock_cloth.gd" id="2_cloth"]
+[ext_resource type="Resource" uid="uid://bdf3heqmvrq7q" path="res://game/sock/sock_cloth_tuning.tres" id="3_tuning"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_outline"]
 cull_mode = 1
@@ -137,6 +139,27 @@ visible = false
 
 [node name="crew_lod2" parent="Body/sock_crew/crew_rig/Skeleton3D" index="2"]
 visible = false
+
+[node name="Cloth" type="SpringBoneSimulator3D" parent="Body/sock_crew/crew_rig/Skeleton3D"]
+active = false
+influence = 0.0
+setting_count = 1
+settings/0/root_bone_name = "Leg"
+settings/0/root_bone = 1
+settings/0/end_bone_name = "Toe"
+settings/0/end_bone = 4
+settings/0/extend_end_bone = true
+settings/0/end_bone/direction = 2
+settings/0/end_bone/length = 0.05
+settings/0/radius/value = 0.012
+settings/0/stiffness/value = 2.0
+settings/0/drag/value = 1.0
+settings/0/gravity/value = 3.0
+script = ExtResource("2_cloth")
+tuning = ExtResource("3_tuning")
+
+[node name="Ground" type="SpringBoneCollisionPlane3D" parent="Body/sock_crew/crew_rig/Skeleton3D/Cloth"]
+top_level = true
 
 [node name="Outline" parent="." instance=ExtResource("1_crew")]
 visible = false

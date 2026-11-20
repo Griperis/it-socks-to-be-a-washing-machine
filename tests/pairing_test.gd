@@ -201,11 +201,13 @@ func case_p05() -> void:
 	_check(((moment.get_node("Ring") as MeshInstance3D).material_override as StandardMaterial3D).albedo_color.r == colour.r, "and so is the ring")
 	var anim := moment.get_node("AnimationPlayer") as AnimationPlayer
 	var mate := moment.get_node("Mate") as Node3D
-	var start := mate.position
+	var fly_in := moment.get_node("Mate/FlyIn") as Node3D
 	_check(anim.current_animation == HeldView.PAIR, "its AnimationPlayer plays \"pair\"")
 	_check((moment.get_node("Ball") as Node3D).visible == false and mate.visible, "first the two Socks show, no ball")
+	_check(not fly_in.transform.is_equal_approx(Transform3D.IDENTITY), "the picked Sock starts away from its line-up place")
 	await _until(func() -> bool: return anim.current_animation_position >= 0.2, "the fly to end", 120)
-	_check(mate.position.distance_to(start) > 0.2, "the picked Sock has flown in")
+	await _frames(1)
+	_check(fly_in.transform.is_equal_approx(Transform3D.IDENTITY), "the picked Sock has flown in")
 	await _until(func() -> bool: return anim.current_animation_position >= HeldView.PAIR_TIME, "the roll to end", 120)
 	var ball := moment.get_node("Ball") as Node3D
 	_check(ball.visible and not mate.visible, "the Socks rolled into the ball")

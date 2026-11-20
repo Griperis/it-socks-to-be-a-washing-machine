@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: core
 feature: core
@@ -118,5 +118,36 @@ ease-out; `_show` plays `open` or `shut` from the current pose, so a reverse mid
 
 ## Open follow-ups
 - [later] The designer says what else looks different about the Throw after seeing the cloth (Q2275).
+- [blocking] The designer's go on the six strips in `builds/review-core-09/` (cloth, glide, pick-fly-up,
+  pair-fly-in, shelve-flight, drawer-shut); the cloth's `stiffness` 2, `gravity` 3, `radius` 0.012
+  (`game/sock/sock_cloth_tuning.tres`) are by eye and wait for it.
+- [later] The pairing moment's second Sock flies in over the moment's first 0.2 s (until its line-up),
+  not D09's 0.3 s; say if it should take 0.3 s (the moment would then grow longer).
+- [later] A thrown Sock leaves the Hands drooped and its flying body starts flat, blending its bend in
+  over 0.3 s: the old game carried the held bend into the throw. Visible only up close at release.
+- [later] `game/sock/looks_contract.json` does not list `Cloth`: the sock ball's Looks shares that
+  folder's contract and has none (D06). The suite checks it instead (`hand_details:looks_cloth`); the
+  ball in a folder of its own would let the contract require it.
+- [later] Old details not built (Q2277): the bend only on a change of speed (the old `g - accel`
+  feed) and the ground straightening (the old `_room`, mesh probes) are the polish backlog (Q2286,
+  Q2287); the old `max_pitch`/`max_yaw` clamps and `lag_time` apart from the bend size (no such knobs
+  on the node); `turn_drag` and `motion_source` (the node's own turn drag stands in); `bend_limit`
+  of the pairing moment; the shelved ball's landing squash, hop and roll (`ball.json`); a flight from
+  a teammate's hand, and from a thrown shelve (T05): those balls show at once; a teammate's
+  sparkle burst when their new Pair reaches their hand.
 
 ## Built log
+- Model: Opus.
+- 2026-11-20 (agent): Changed: `SockCloth` (a `SpringBoneSimulator3D` named `Cloth` on the Sock Looks'
+  skeleton, Leg to Toe, drag 1, a `Ground` plane put on the surface under a flying Sock each tick;
+  on for held Socks and the 4 nearest flying ones, ranked once a tick; blends flat under 0.6 m/s and
+  in from flat when switched on; gravity scaled by the drawn size) with `SockClothTuning`. `HeldView`:
+  the glide (follow 14), the pick fly-up (0.3 s, 0.18 m hop), the moment's `Mate/FlyIn` fly-in
+  (the moment's fixed path removed), `drawn_of()`, `settled()`. `Cabinet`: the shelving flight (0.45 s
+  + 0.06 s a slot, arc 0.22, its tuning) and the drawer's balls shown when they land. Openable plays a
+  Looks' own `shut` when it has one, from the matching pose; the drawer Looks has `shut`
+  (contract). Six shot sets.
+  Files: game/sock/, game/hands/, game/entities/cabinet/, game/entities/drawer/, game/parts/openable.gd,
+  tests/hand_details_test.gd, tests/drawer_details_test.gd, tests/handling_test.gd (h21 waits for the
+  glide), tests/pairing_test.gd (p05 reads the fly-in), tools/shot_hooks.gd, tools/shots/sets/.
+  Verified: PASS 963 checks, 147 cases (`--touched`); rules PASS; asset_lint PASS.

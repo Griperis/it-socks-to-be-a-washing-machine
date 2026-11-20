@@ -1,0 +1,13 @@
+# core/09 D12: a drawer opened at 70 and shut at 110 eases out both ways (its own shut animation).
+f69  --size=1280x720 --do='60:drawer_view;70:drawer_use;110:drawer_use' --shots=69
+f72  --size=1280x720 --do='60:drawer_view;70:drawer_use;110:drawer_use' --shots=72
+f75  --size=1280x720 --do='60:drawer_view;70:drawer_use;110:drawer_use' --shots=75
+f78  --size=1280x720 --do='60:drawer_view;70:drawer_use;110:drawer_use' --shots=78
+f82  --size=1280x720 --do='60:drawer_view;70:drawer_use;110:drawer_use' --shots=82
+f90  --size=1280x720 --do='60:drawer_view;70:drawer_use;110:drawer_use' --shots=90
+f109  --size=1280x720 --do='60:drawer_view;70:drawer_use;110:drawer_use' --shots=109
+f112  --size=1280x720 --do='60:drawer_view;70:drawer_use;110:drawer_use' --shots=112
+f115  --size=1280x720 --do='60:drawer_view;70:drawer_use;110:drawer_use' --shots=115
+f118  --size=1280x720 --do='60:drawer_view;70:drawer_use;110:drawer_use' --shots=118
+f122  --size=1280x720 --do='60:drawer_view;70:drawer_use;110:drawer_use' --shots=122
+f130  --size=1280x720 --do='60:drawer_view;70:drawer_use;110:drawer_use' --shots=130

@@ -64,6 +64,13 @@ extends Resource
 ## Every held item is drawn at this share of its apparent distance and size (it looks the same),
 ## so it sits inside the player's body and does not sink into a wall as easily.
 @export_range(0.1, 1.0, 0.05) var depth := 0.5 # placeholder: the old held.json (Q2246)
+## How fast the held items glide to their new places when the active item changes, per second (an
+## exponential follow, D08).
+@export_range(0.0, 60.0, 0.5, "suffix:/s") var follow_rate := 14.0 # placeholder: the old held.json
+## How long a picked item flies from where it lay into its place in the Hands, and the hop on the
+## way (D09; the pairing moment's second Sock flies the same way, D10).
+@export_range(0.05, 2.0, 0.01, "suffix:s") var pick_time := 0.3 # placeholder: the old cloth.json
+@export_range(0.0, 1.0, 0.01, "suffix:m") var pick_hop := 0.18 # placeholder: the old held_view.gd's constant
 
 @export_group("Zoom and turn")
 ## The field of view while the zoom button is held, and how long the view takes to get there.
