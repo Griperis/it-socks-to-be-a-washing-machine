@@ -197,3 +197,47 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Looks | `builds/review-core-19/` before and after |
 | Decisions | Q2329, Q2332 |
 
+| Field | Content |
+|---|---|
+| Ticket | core/14, the rules back to the old game (free mouse, nearer aim, woken pick, Pair last, drop on a Pair, drawer-front shelve, mid-air pick); approved and merged (c747e6a, main af34977) |
+| Planned vs actual | 1 planned, 1 actual (widened once, Q2339) |
+| Redo count | 0 |
+| Corrections | the designer chose the old mid-air pick: "As the old game" (Q2339) |
+| Cost | core/14 1 10,669,558 75 14m54s (Sonnet) |
+| Time | the agent ran about 15 min |
+| Surprises | core/18's look:v06 real path pressed pick with a free mouse; it failed after the merge until it captured the mouse (R01) |
+| Stop rules | none fired |
+| Looks | none (rules only) |
+| Decisions | Q2297, Q2303, Q2304, Q2312, Q2338, Q2339 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | core/17, the sound system (SoundEvent Resources, the old buses and mix, footsteps by surface, muffle, ambience, Settings and Sounds); built ahead of batch 6 and merged (f79dfa2) |
+| Planned vs actual | 1 planned, 1 actual; the call sites wait for batch 6 |
+| Redo count | 0 |
+| Corrections | "Sound a different M1.X milestone, sounds made nicely plug-and-play" (Q2278); then built early as long parallel work (Q2317) |
+| Cost | core/17 1 8,690,877 73 11m33s (Opus) |
+| Time | the agent ran about 12 min |
+| Surprises | its .tres files lacked `uid=` headers (the editor re-save is committed as editor format when it comes); a missing .uid stopped the merge |
+| Stop rules | none fired |
+| Looks | none (sound) |
+| Decisions | Q2278, Q2317-Q2321, Q2333 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | core/18, the picture and theme (old noon HDRI, AgX, grade, vignette, SSAO, glow, AA, presets, old crosshair); built ahead of batch 7, approved and merged (f9dadaf) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | the HUD keeps the default font: Patrick Hand was only on the old whiteboard (Q2331; the lead's premise in Q2324 was wrong); noon ambient 0.75, not the ticket's 0.7 |
+| Cost | core/18 1 8,774,745 84 4h04m (Opus; the wall time includes waiting for the designer's go) |
+| Time | the agent's work about 20 min; the rest waited on the still |
+| Surprises | its real-path case pressed pick with a free mouse and broke when core/14 (R01) merged |
+| Stop rules | stopped at the first still (Q2333 go) |
+| Looks | `builds/review-core-18/` |
+| Decisions | Q2299, Q2300, Q2317, Q2322-Q2324, Q2331, Q2333 |
+
+---
