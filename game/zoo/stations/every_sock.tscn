@@ -1,0 +1,66 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/zoo/every_sock_station.gd" id="1_station"]
+[ext_resource type="Resource" path="res://game/zoo/every_sock_layout.tres" id="2_layout"]
+[ext_resource type="Script" path="res://game/mess/mess.gd" id="3_mess"]
+[ext_resource type="Script" path="res://game/hands/hands.gd" id="4_hands"]
+[ext_resource type="Resource" path="res://game/sock/designs.tres" id="5_designs"]
+[ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.86, 0.84, 0.78, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_pad")
+size = Vector2(36, 42)
+
+[node name="EverySock" type="Node3D" node_paths=PackedStringArray("spots", "labels")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -14)
+script = ExtResource("1_station")
+catalogue = ExtResource("5_designs")
+layout = ExtResource("2_layout")
+spots = NodePath("Spots")
+labels = NodePath("Labels")
+
+[node name="Pad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, -18)
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 1.5)
+billboard = 1
+autowrap_mode = 3
+width = 600.0
+text = "Every Sock: both Socks of every Design, in rows by Collection, each beside its mate; its info lies in front. Pick, pair, throw and shelve them like any Sock"
+
+[node name="Labels" type="Node3D" parent="."]
+
+[node name="Spots" type="Node3D" parent="."]
+
+[node name="ReturnSpot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+[node name="Lying" type="Node3D" parent="."]
+
+[node name="Flights" type="Node3D" parent="."]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://game/sock/flight.tscn", "res://game/sock/ball_flight.tscn")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="."]
+
+[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+script = ExtResource("3_mess")
+catalogue = ExtResource("5_designs")
+tuning = ExtResource("6_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+bounds = AABB(-20, -2, -48, 40, 8, 54)
+return_spot = NodePath("../../ReturnSpot")
+
+[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess")]
+script = ExtResource("4_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("6_tuning")
