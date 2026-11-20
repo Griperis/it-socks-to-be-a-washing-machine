@@ -1,4 +1,4 @@
-Next free Q number: Q2340 (update this line whenever a round of questions is asked)
+Next free Q number: Q2343 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -252,3 +252,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2337: a zoo station that shows game data is built from that data at load (a new Design, sound or other entry appears with no other change); the Sounds station is rebuilt from the sound catalogue with smaller boxes (designer, 2026-11-20).
 - Q2338: core/14 (the rules back to the old game) merged.
 - Q2339: any moving Sock can be aimed and picked, a dropped or thrown one in the air too (as the old Q783); changes core/02's H10.
+- Q2340: core/22's still: the overlapping labels and the sign over the buttons are fixed, then it merges without another still.
+- Q2341: a woken, sliding (or flying) Sock under the crosshair gets the outline in core/11, not before.
+- Q2342: only a click captures the mouse; a wheel notch while it is free does nothing (kept as built).

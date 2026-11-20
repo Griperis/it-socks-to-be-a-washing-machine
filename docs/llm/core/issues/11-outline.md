@@ -54,6 +54,8 @@ Approved (Q2292). The numbers are the old game's.
 - O06 A box or any hard-edged mesh is outlined without gaps at its corners.
 - O07 A part that should not be outlined (a drawer's shelved balls, say) is left out by a group, and a thing may name
   exactly which of its meshes are outlined.
+- O08 A woken Sock sliding or flying under the crosshair (pickable since Q2339) is outlined like a lying one
+  (Q2341).
 
 ## Design (draft)
 - **`Outline`** (`game/outline/outline.gd`, `class_name Outline extends Node3D`, one class) is a component dropped
@@ -86,6 +88,7 @@ Approved (Q2292). The numbers are the old game's.
 ## Answers
 - The behaviour list and design are approved (Q2292, 2026-11-20).
 - Built in the polish pass, not in M0.5 (Q2293, 2026-11-20); it starts when the designer calls the polish pass.
+- O08, a moving Sock under the crosshair is outlined, added (Q2341, 2026-11-20).
 
 ## Open follow-ups
 

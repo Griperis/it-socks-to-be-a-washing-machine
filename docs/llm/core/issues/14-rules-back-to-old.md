@@ -42,11 +42,11 @@ Each line names the approved line it changes, if any; the audit row gives the ol
 - Q2297, Q2303, Q2304, Q2312 (2026-11-20).
 - Q2339 (2026-11-20): R03 as the old game (Q783): any moving Sock can be aimed and picked, a dropped or thrown one in
   the air too; core/02's H10 ("cannot be aimed at or picked while it falls") changes to match.
+- A woken Sock aimed mid-slide gets its outline in core/11 (Q2341, 2026-11-20).
+- A wheel notch while the mouse is free does nothing; only a click captures it (Q2342, 2026-11-20).
+- Merged (Q2338, 2026-11-20).
 
 ## Open follow-ups
-- [later] A woken Sock aimed mid-slide is not outlined (the outline is the lent Looks of a lying Sock).
-- [later] The mouse wheel never captures the mouse (a wheel notch while free does nothing, R01); the old game is not
-  known to differ.
 
 ## Built log
 - 2026-11-20 core/14 (Sonnet). Changed: R01 `Player` acts only with the mouse captured, the capturing click's press is
