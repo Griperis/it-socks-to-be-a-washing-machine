@@ -42,8 +42,8 @@ static func act(world: Node, what: String, arg: String) -> bool:
 				cam.global_position = station.to_global(Vector3(0.0, 12.0, 6.0))
 				cam.look_at(station.to_global(Vector3(0.0, 0.0, -0.5)))
 			else:
-				cam.global_position = station.to_global(Vector3(0.0, 4.2, -0.6))
-				cam.look_at(station.to_global(Vector3(0.0, 0.0, -2.6)))
+				cam.global_position = station.to_global(Vector3(0.0, 4.2, 2.2))
+				cam.look_at(station.to_global(Vector3(0.0, 0.0, -0.1)))
 			cam.make_current()
 			return true
 		"pair_first", "pair_mate":
