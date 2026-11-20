@@ -1,4 +1,4 @@
-Next free Q number: Q2262 (update this line whenever a round of questions is asked)
+Next free Q number: Q2264 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -174,3 +174,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2259: the Throw design approved (the drop path with a speed; wake; bounds and return spot).
 - Q2260: the charge ring keeps the old look.
 - Q2261: the zoo's return spot is on the handling station's pad.
+- Q2262: the pairing design approved (Pairs are linked Sock records in the Mess, named by the lead Sock).
+- Q2263: the sock ball stand-in is the old ball_crew_plain.glb, tinted.
