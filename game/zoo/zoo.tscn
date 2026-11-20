@@ -1,17 +1,13 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dbrxpuh26w4q3"]
 
-[ext_resource type="Script" path="res://game/parts/parts.gd" id="1_parts"]
+[ext_resource type="Script" uid="uid://bq3k03tw0pu2k" path="res://game/parts/parts.gd" id="1_parts"]
 [ext_resource type="PackedScene" path="res://game/player/player.tscn" id="2_player"]
-[ext_resource type="Script" path="res://game/zoo/stations.gd" id="3_stations"]
-[ext_resource type="Script" path="res://game/parts/session.gd" id="5_session"]
-[ext_resource type="Script" path="res://game/parts/avatar/avatars.gd" id="6_avatars"]
+[ext_resource type="Script" uid="uid://w44840xcogmg" path="res://game/zoo/stations.gd" id="3_stations"]
+[ext_resource type="Script" uid="uid://bq8jis41s6u7e" path="res://game/parts/session.gd" id="5_session"]
+[ext_resource type="Script" uid="uid://cdi6pnkd82hwo" path="res://game/parts/avatar/avatars.gd" id="6_avatars"]
 [ext_resource type="PackedScene" path="res://game/parts/avatar/avatar.tscn" id="7_avatar"]
-[ext_resource type="Script" path="res://game/zoo/zoo_net.gd" id="8_net"]
-[ext_resource type="Script" path="res://game/hands/hands_tuning.gd" id="9_hands_tuning"]
-
-[sub_resource type="Resource" id="Resource_zoo_hands"]
-script = ExtResource("9_hands_tuning")
-capacity = 3
+[ext_resource type="Script" uid="uid://dljsr8dxran6u" path="res://game/zoo/zoo_net.gd" id="8_net"]
+[ext_resource type="Script" uid="uid://bmngmh2k1ssr6" path="res://game/hands/hands_tuning.gd" id="9_hands_tuning"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_zoo"]
 
@@ -32,65 +28,69 @@ size = Vector3(40, 0.2, 40)
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(40, 0.2, 40)
 
-[node name="Zoo" type="Node3D"]
+[sub_resource type="Resource" id="Resource_zoo_hands"]
+script = ExtResource("9_hands_tuning")
+capacity = 3
 
-[node name="Environment" type="WorldEnvironment" parent="."]
+[node name="Zoo" type="Node3D" unique_id=433960228]
+
+[node name="Environment" type="WorldEnvironment" parent="." unique_id=1707552116]
 environment = SubResource("Environment_zoo")
 
-[node name="Sun" type="DirectionalLight3D" parent="."]
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1584814552]
 transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 6, 0)
 shadow_enabled = true
 
-[node name="Floor" type="StaticBody3D" parent="."]
+[node name="Floor" type="StaticBody3D" parent="." unique_id=512353599]
 
-[node name="Mesh" type="MeshInstance3D" parent="Floor"]
+[node name="Mesh" type="MeshInstance3D" parent="Floor" unique_id=1088862979]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 mesh = SubResource("BoxMesh_floor")
 
-[node name="Shape" type="CollisionShape3D" parent="Floor"]
+[node name="Shape" type="CollisionShape3D" parent="Floor" unique_id=1686360137]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 shape = SubResource("BoxShape3D_floor")
 
-[node name="GridNote" type="Label3D" parent="."]
+[node name="GridNote" type="Label3D" parent="." unique_id=1080642151]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.01, 6)
 pixel_size = 0.004
 text = "Everything here sits on a 0.5 m grid: in the editor, Transform > Configure Snap, Translate Snap 0.5, then snap with the magnet button.
 Each station is a pad with a name, one scene file in game/zoo/stations/: entities on it are instances of the game's own scenes.
 A new feature adds its own file there; this scene is not edited for it."
 
-[node name="Spawn" type="Marker3D" parent="."]
+[node name="Spawn" type="Marker3D" parent="." unique_id=1377517963]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 
-[node name="Player" parent="." instance=ExtResource("2_player")]
+[node name="Player" parent="." unique_id=792447717 instance=ExtResource("2_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 hands_tuning = SubResource("Resource_zoo_hands")
 
-[node name="Stations" type="Node3D" parent="."]
+[node name="Stations" type="Node3D" parent="." unique_id=1917466477]
 script = ExtResource("3_stations")
 
-[node name="Parts" type="Node" parent="."]
+[node name="Parts" type="Node" parent="." unique_id=1728372765]
 script = ExtResource("1_parts")
 
-[node name="Players" type="Node3D" parent="."]
+[node name="Players" type="Node3D" parent="." unique_id=625099761]
 
-[node name="Avatars" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("local_body")]
+[node name="Avatars" type="MultiplayerSpawner" parent="." unique_id=614340951 node_paths=PackedStringArray("local_body")]
 spawn_path = NodePath("../Players")
 script = ExtResource("6_avatars")
 avatar_scene = ExtResource("7_avatar")
 local_body = NodePath("../Player")
 
-[node name="Session" type="Node" parent="." node_paths=PackedStringArray("parts")]
+[node name="Session" type="Node" parent="." unique_id=1091206714 node_paths=PackedStringArray("parts")]
 script = ExtResource("5_session")
 parts = NodePath("../Parts")
 
-[node name="Net" type="Node" parent="." node_paths=PackedStringArray("session", "avatars")]
+[node name="Net" type="Node" parent="." unique_id=2061444600 node_paths=PackedStringArray("session", "avatars")]
 script = ExtResource("8_net")
 session = NodePath("../Session")
 avatars = NodePath("../Avatars")
 
-[node name="Hud" type="CanvasLayer" parent="Net"]
+[node name="Hud" type="CanvasLayer" parent="Net" unique_id=1484433855]
 
-[node name="Mode" type="Label" parent="Net/Hud"]
+[node name="Mode" type="Label" parent="Net/Hud" unique_id=975392515]
 unique_name_in_owner = true
 offset_left = 12.0
 offset_top = 8.0

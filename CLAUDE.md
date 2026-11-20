@@ -108,6 +108,9 @@ through that feature's own rules object. Otherwise they go through the co-op sha
   nodes wherever they can do the job** (the ragdoll included).
 - **Code shape** (Q2251-Q2253): inheritance one step (Part, then Openable; nothing extends Openable); one class per
   file, named alike, no inner classes; a thing gets a script only when no Part can do the job.
+- **Files are kept in the Godot editor's own format** (Q2268): scenes and resources with their `uid=` references,
+  every script with its committed `.uid`. When the designer's editor re-saves a file with no real change, the lead
+  commits that re-save ("editor format") instead of discarding it.
 - **What Godot should not see carries a `.gdignore`** (designer, Q2242): `docs/`, `reference/`, `assets_src/`,
   `kit/skills/` today; a new folder of notes, sources or pictures gets one when it is made. Untracked files the
   editor makes inside `kit/` are ignored by the game's git (`.gitmodules` `ignore = untracked`), never committed
