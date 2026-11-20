@@ -5,6 +5,8 @@
 [ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="3_hands"]
 [ext_resource type="Script" path="res://game/hands/held_view.gd" id="4_held"]
 [ext_resource type="Script" path="res://game/player/power_ring.gd" id="5_ring"]
+[ext_resource type="Script" uid="uid://5bfknrgi4c41" path="res://game/audio/footsteps.gd" id="6_steps"]
+[ext_resource type="Resource" path="res://game/audio/footstep_tuning.tres" id="7_steps_tuning"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -117,3 +119,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("5_ring")
+
+[node name="Footsteps" type="Node" parent="."]
+script = ExtResource("6_steps")
+tuning = ExtResource("7_steps_tuning")

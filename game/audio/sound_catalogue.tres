@@ -1,0 +1,162 @@
+[gd_resource type="Resource" script_class="SoundCatalogue" format=3]
+
+[ext_resource type="Script" path="res://game/audio/sound_event.gd" id="1_76itk"]
+[ext_resource type="AudioStream" path="res://assets/audio/pick__owlish_cloth5.ogg" id="2_wjh0y"]
+[ext_resource type="AudioStream" path="res://assets/audio/drop__kenney_drop_leather.ogg" id="3_4rodq"]
+[ext_resource type="AudioStream" path="res://assets/audio/cycle__a.ogg" id="4_4mx4k"]
+[ext_resource type="AudioStream" path="res://assets/audio/pair__owlish_cloth4.ogg" id="5_107j2"]
+[ext_resource type="AudioStream" path="res://assets/audio/pop__wubitog_pop1.ogg" id="6_gx20l"]
+[ext_resource type="AudioStream" path="res://assets/audio/pop__cogitollc_pop1.ogg" id="7_qhhf7"]
+[ext_resource type="AudioStream" path="res://assets/audio/throw_charge__b.ogg" id="8_8t70n"]
+[ext_resource type="AudioStream" path="res://assets/audio/throw__artisticdude_swish1.ogg" id="9_x8f1u"]
+[ext_resource type="AudioStream" path="res://assets/audio/refuse__kenney_error6.ogg" id="10_ofhh1"]
+[ext_resource type="AudioStream" path="res://assets/audio/bounce__owlish_fruit2.ogg" id="11_nn5js"]
+[ext_resource type="AudioStream" path="res://assets/audio/drawer_open__laleksic_drawer_open.ogg" id="12_o8a3p"]
+[ext_resource type="AudioStream" path="res://assets/audio/drawer_close__laleksic_drawer_close.ogg" id="13_nr0n5"]
+[ext_resource type="AudioStream" path="res://assets/audio/wardrobe_open__oiboo_door_open.ogg" id="14_hlpqd"]
+[ext_resource type="AudioStream" path="res://assets/audio/wardrobe_close__starninjas_door2.ogg" id="15_uxhm0"]
+[ext_resource type="AudioStream" path="res://assets/audio/cupboard_open__qubodup_door_open1.ogg" id="16_palt6"]
+[ext_resource type="AudioStream" path="res://assets/audio/cupboard_close__qubodup_door_close1.ogg" id="17_jwn0n"]
+[ext_resource type="AudioStream" path="res://assets/audio/shelve__kenney_book_place1.ogg" id="18_uka3b"]
+[ext_resource type="AudioStream" path="res://assets/audio/step_wood__kenney_footstep00.ogg" id="19_cfsws"]
+[ext_resource type="AudioStream" path="res://assets/audio/step_tile__owlish_hard1.ogg" id="20_bd74q"]
+[ext_resource type="AudioStream" path="res://assets/audio/land__qubodup_jumpland.ogg" id="21_7fcml"]
+[ext_resource type="AudioStream" path="res://assets/audio/amb_room__rubberduck_ambient1.ogg" id="22_jwf8e"]
+[ext_resource type="Script" path="res://game/audio/sound_catalogue.gd" id="23_7apgx"]
+
+[sub_resource type="Resource" id="Resource_5vpok"]
+script = ExtResource("1_76itk")
+event = &"pick"
+clips = Array[AudioStream]([ExtResource("2_wjh0y")])
+note = "Old pick cc0/owlish_cloth5."
+
+[sub_resource type="Resource" id="Resource_6qs2x"]
+script = ExtResource("1_76itk")
+event = &"drop"
+clips = Array[AudioStream]([ExtResource("3_4rodq")])
+note = "Old pick cc0/kenney_drop_leather."
+
+[sub_resource type="Resource" id="Resource_44v0t"]
+script = ExtResource("1_76itk")
+event = &"cycle"
+clips = Array[AudioStream]([ExtResource("4_4mx4k")])
+note = "Old pick synth/cycle_a."
+
+[sub_resource type="Resource" id="Resource_6xncf"]
+script = ExtResource("1_76itk")
+event = &"pair"
+clips = Array[AudioStream]([ExtResource("5_107j2")])
+note = "Old pick cc0/owlish_cloth4."
+
+[sub_resource type="Resource" id="Resource_mm35u"]
+script = ExtResource("1_76itk")
+event = &"pop"
+clips = Array[AudioStream]([ExtResource("6_gx20l"), ExtResource("7_qhhf7")])
+volume_db = 3.0
+note = "Old picks wubitog_pop1 and cogitollc_pop1, +3 dB for the bigger pop (Q541)."
+
+[sub_resource type="Resource" id="Resource_l5euo"]
+script = ExtResource("1_76itk")
+event = &"throw_charge"
+clips = Array[AudioStream]([ExtResource("8_8t70n")])
+note = "Old pick synth/throw_charge_b."
+
+[sub_resource type="Resource" id="Resource_x67l6"]
+script = ExtResource("1_76itk")
+event = &"throw"
+clips = Array[AudioStream]([ExtResource("9_x8f1u")])
+note = "Old pick cc0/artisticdude_swish1."
+
+[sub_resource type="Resource" id="Resource_ns1cr"]
+script = ExtResource("1_76itk")
+event = &"refuse"
+clips = Array[AudioStream]([ExtResource("10_ofhh1")])
+note = "Old pick cc0/kenney_error6."
+
+[sub_resource type="Resource" id="Resource_ss5n6"]
+script = ExtResource("1_76itk")
+event = &"bounce"
+clips = Array[AudioStream]([ExtResource("11_nn5js")])
+spatial = true
+note = "Old pick cc0/owlish_fruit2."
+
+[sub_resource type="Resource" id="Resource_4jl0v"]
+script = ExtResource("1_76itk")
+event = &"drawer_open"
+clips = Array[AudioStream]([ExtResource("12_o8a3p")])
+spatial = true
+note = "Old pick cc0/laleksic_drawer_open."
+
+[sub_resource type="Resource" id="Resource_ojnwv"]
+script = ExtResource("1_76itk")
+event = &"drawer_close"
+clips = Array[AudioStream]([ExtResource("13_nr0n5")])
+spatial = true
+note = "Old pick cc0/laleksic_drawer_close."
+
+[sub_resource type="Resource" id="Resource_p8q3v"]
+script = ExtResource("1_76itk")
+event = &"door_open"
+clips = Array[AudioStream]([ExtResource("14_hlpqd")])
+spatial = true
+note = "Old placeholder pick cc0/oiboo_door_open (the old game borrowed the wardrobe's clips)."
+
+[sub_resource type="Resource" id="Resource_dxuwf"]
+script = ExtResource("1_76itk")
+event = &"door_close"
+clips = Array[AudioStream]([ExtResource("15_uxhm0")])
+spatial = true
+note = "Old placeholder pick cc0/starninjas_door2."
+
+[sub_resource type="Resource" id="Resource_ubdnb"]
+script = ExtResource("1_76itk")
+event = &"cupboard_open"
+clips = Array[AudioStream]([ExtResource("16_palt6")])
+spatial = true
+note = "Old pick cc0/qubodup_door_open1."
+
+[sub_resource type="Resource" id="Resource_32gqa"]
+script = ExtResource("1_76itk")
+event = &"cupboard_close"
+clips = Array[AudioStream]([ExtResource("17_jwn0n")])
+spatial = true
+note = "Old pick cc0/qubodup_door_close1."
+
+[sub_resource type="Resource" id="Resource_ogaco"]
+script = ExtResource("1_76itk")
+event = &"shelve"
+clips = Array[AudioStream]([ExtResource("18_uka3b")])
+spatial = true
+note = "Old pick cc0/kenney_book_place1."
+
+[sub_resource type="Resource" id="Resource_mf1m7"]
+script = ExtResource("1_76itk")
+event = &"step_wood"
+clips = Array[AudioStream]([ExtResource("19_cfsws")])
+note = "Old pick cc0/kenney_footstep00."
+
+[sub_resource type="Resource" id="Resource_5o7ks"]
+script = ExtResource("1_76itk")
+event = &"step_tile"
+clips = Array[AudioStream]([ExtResource("20_bd74q")])
+note = "Old pick cc0/owlish_hard1."
+
+[sub_resource type="Resource" id="Resource_cepnw"]
+script = ExtResource("1_76itk")
+event = &"land"
+clips = Array[AudioStream]([ExtResource("21_7fcml")])
+note = "Old pick cc0/qubodup_jumpland."
+
+[sub_resource type="Resource" id="Resource_rksdm"]
+script = ExtResource("1_76itk")
+event = &"amb_room"
+clips = Array[AudioStream]([ExtResource("22_jwf8e")])
+volume_db = -12.0
+bus = "Ambient"
+loop = true
+note = "PLACEHOLDER: the old game's amb_room was silent (no pick); this is its first candidate, cc0/rubberduck_ambient1, at -12 dB. The designer picks the clip and level."
+
+[resource]
+script = ExtResource("23_7apgx")
+events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_rksdm")])
+muffling_scenes = Array[String](["res://game/entities/door/door.tscn"])
