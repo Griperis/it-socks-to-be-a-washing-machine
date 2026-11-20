@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: house
 feature: house
 priority: now
 created: 2026-11-20
-done:
+done: 2026-11-20
 blocked_by: []
 notes: []
 terms: []
@@ -68,8 +68,13 @@ Drafted (agent, 2026-11-20):
 
 ## Answers
 - Q2154-Q2157, Q2175, Q2325-Q2328.
+- The kit should build the old house nearly identically; the old house is re-gridded to the 0.5 m grid (Q2343,
+  2026-11-20), the kit grows to windows and door frames, skirting and railings, roof and attic, openings for
+  entities (Q2344), proved by rebuilding the whole house from it (Q2345): all in house/02.
+- Merged as a first step; the open follow-ups below are carried into house/02 (Q2346, 2026-11-20).
 
 ## Open follow-ups
+Carried into house/02 (Q2346).
 - [later] Storey height: the old house was 2.9 m floor to floor on every floor (clear 2.7 m basement and ground,
   2.6 m first); nudged to the grid that is one 3.0 m storey everywhere, 0.2 m of floor and ceiling, clear 2.8 m. Is
   2.8 m clear right, or should the first floor be lower (it cannot be on the grid with a 2.9 m storey)?
