@@ -178,7 +178,7 @@ func case_m15() -> void:
 	_check(_player.aimed_sock == -1, "a Sock in the shut cupboard is not aimed at")
 	await _press(&"pick")
 	_check(_mess.state_of(IN_CUPBOARD) == Mess.State.LYING, "nor picked")
-	await _press(&"interact")
+	# The left click on the shut cupboard opens it (core/04, D08: a click on a thing that is not a Sock uses it).
 	var door := _station.get_node("Cupboard/Openable") as Openable
 	await _until(func() -> bool: return door.open, "the cupboard to open")
 	await _physics_ticks(40)

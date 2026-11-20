@@ -12,12 +12,21 @@
 ## pick takes a lying Sock or Pair away, the Host lets the lying Pairs that rested on it fall (P08,
 ## `fall`, a Host-only Command).
 ##
+## A shelved Pair (core/04) has its lead SHELVED (its mate stays IN_PAIR): in a Cabinet's drawer,
+## drawn by the drawer, never by the Mess, and never taken out again. Only a Cabinet's answer
+## writes it (shelved_patch()). A thrown body's touches are told to whoever listens
+## (`flight_touched`, the Host's): a Cabinet shelves a Pair that touched it.
+##
 ## M0.5 draws a lying Sock as one body each (a handful); M3 adds the MultiMesh, the settle stream,
 ## the wake budget and the bulk snapshot, without changing the records.
 class_name Mess
 extends Part
 
-enum State { LYING, HELD, FLYING, IN_PAIR }
+## The Host: a falling body of Sock `sock` (a Pair's lead) touched `other`. Thrown or not; a
+## listener decides nothing in the handler, it asks a Command.
+signal flight_touched(sock: int, other: Node)
+
+enum State { LYING, HELD, FLYING, IN_PAIR, SHELVED }
 
 ## The physics layers (bits): the house and its furniture, a falling Sock, a lying Sock. The
 ## player's body collides with the house only, so it walks over Socks; the crosshair sees the house
@@ -192,6 +201,17 @@ func thrown_patch(sock: int, pose: Transform3D, vel: Vector3, spin: Vector3, by:
 	var t := throws.duplicate()
 	t[sock] = {"vel": vel, "spin": spin, "by": by}
 	return {"states": s, "poses": _with_pose(sock, pose), "throws": t}
+
+
+## The change that puts held or flying Pairs (their leads `leads`) into a Cabinet's drawer (part
+## of the Cabinet's shelve answer): each lead goes SHELVED, its mate stays IN_PAIR, a throw is over.
+func shelved_patch(leads: PackedInt32Array) -> Dictionary:
+	var s := states.duplicate()
+	var t := throws.duplicate()
+	for sock in leads:
+		s[sock] = State.SHELVED
+		t.erase(sock)
+	return {"states": s, "throws": t}
 
 
 ## Only the Host's own `rest`, `wake` and `fall` (no Guest may send one: nothing in accepts()).
@@ -427,6 +447,7 @@ func _on_contact(other: Node, sock: int) -> void:
 	var fast := tuning.wake_speed if tuning != null else 1.5
 	if hit >= 0 and float(_speeds.get(sock, 0.0)) > fast:
 		_hit[hit] = true
+	flight_touched.emit(sock, other)
 
 
 ## A falling Pair drags as a Pair from now on: it stops within a few cm (P07).

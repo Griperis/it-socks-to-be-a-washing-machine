@@ -234,6 +234,16 @@ func decide(cmd: Command) -> Dictionary:
 	return refuse("wrong")
 
 
+## The change that takes Socks `socks` out of player `by`'s Hands, the others kept in their order and
+## the newest active (part of a Cabinet's shelve answer, core/04).
+func taken_patch(by: int, socks: PackedInt32Array) -> Dictionary:
+	var items := PackedInt32Array()
+	for item in items_of(by):
+		if not socks.has(item):
+			items.append(item)
+	return _patch(by, items, items.size() - 1)
+
+
 ## Where and how a Throw by player `by` along `dir` with `charge` leaves: {"from": the pose it leaves
 ## at (just in front of the eyes, never through a wall, its length across the view), "vel", "spin"}.
 ## Below the tap charge it is the lob (T02); above, faster the fuller the charge (T03).
