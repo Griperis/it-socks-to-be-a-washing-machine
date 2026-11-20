@@ -1,4 +1,4 @@
-Next free Q number: Q2296 (update this line whenever a round of questions is asked)
+Next free Q number: Q2297 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -208,3 +208,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2293: core/11 is built in the polish pass.
 - Q2294: the every-Sock zoo station lays the Socks out in rows by Collection, with the Collection's name, in Design order, each Sock beside its mate.
 - Q2295: its Socks are real Mess Socks you can play with; the zoo is never saved and always starts fresh; each Sock has its info as text in front of it.
+- Q2296: M0.5 is a true vertical slice of the core: the core's sounds and rumble (a plug-and-play sound system) and its polish details (old-details-backlog.md, core/11 outline) are built in M0.5; a deeper audit lists every other difference from the old game's core.
