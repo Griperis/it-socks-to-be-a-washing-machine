@@ -1,4 +1,4 @@
-Next free Q number: Q2272 (update this line whenever a round of questions is asked)
+Next free Q number: Q2276 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -184,3 +184,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2269: core/03 merged as built (the Collection colours, two mate Socks in the handling station and the shot set kept).
 - Q2270: the pairing moment's Sock keeps the fixed fly-in path, as the old game's.
 - Q2271: the moment's Socks keep their sizes in the animation keys; ball_scale does not resize them.
+- Q2272: the old hand motions are ported: cloth Socks (held and thrown), the glide on switching, the pick fly-up (core/09).
+- Q2273: core/09 is built right after core/04, before M0.5 closes; each detail stops at its first still.
+- Q2274: the pairing moment's second Sock flies in from where it lay, like a pick (replaces Q2270).
+- Q2275: what else looks different about the Throw: asked again after the cloth is in.
