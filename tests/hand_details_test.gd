@@ -256,6 +256,9 @@ func case_d07() -> void:
 		var body := Mess.FLIGHT_SCENE.instantiate() as RigidBody3D
 		body.name = "Probe%d" % i
 		body.gravity_scale = 0.0
+		var looks := SockDress.make(null)
+		looks.name = "Looks"
+		body.add_child(looks)
 		_level.add_child(body)
 		body.global_position = _player.global_position + Vector3(0.0, 1.0, -1.0 - float(i))
 		flights.append(body)

@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="MessTuning" format=3 uid="uid://na261t1wvwc8"]
+
+[ext_resource type="Script" uid="uid://ccm2kbyjdlqw6" path="res://game/mess/mess_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")

@@ -1,10 +1,5 @@
 [gd_scene format=3 uid="uid://1pbfln7cmu0i"]
 
-[ext_resource type="PackedScene" uid="uid://nnbih1vyjajy" path="res://game/sock/looks_ball.tscn" id="1_looks"]
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cloth"]
-friction = 0.9
-
 [sub_resource type="SphereShape3D" id="SphereShape3D_ball"]
 radius = 0.042
 
@@ -12,12 +7,9 @@ radius = 0.042
 collision_layer = 2
 collision_mask = 7
 mass = 0.1
-physics_material_override = SubResource("PhysicsMaterial_cloth")
 continuous_cd = true
 contact_monitor = true
 max_contacts_reported = 4
 
 [node name="Shape" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_ball")
-
-[node name="Looks" parent="." instance=ExtResource("1_looks")]

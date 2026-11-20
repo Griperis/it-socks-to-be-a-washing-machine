@@ -34,7 +34,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "m12_aim_pick", "method": "case_m12", "world": false,
 				"title": "M12: a Sock in reach under the crosshair is outlined and a click picks it; the floor beside it, or one out of reach, picks nothing"},
 		{"name": "m13_tip", "method": "case_m13", "world": false,
-				"title": "M13: aiming at the tip of a Sock under another picks the lower one; the one on top stays"},
+				"title": "M13: aiming at the tip of a Sock under another picks the lower one; the one on top is not picked (it falls, M07)"},
 		{"name": "m14_wall", "method": "case_m14", "world": false,
 				"title": "M14: a Sock behind a wall is not outlined and cannot be picked"},
 		{"name": "m15_cupboard", "method": "case_m15", "world": false,
@@ -67,8 +67,8 @@ func cases() -> Array[Dictionary]:
 				"title": "H10: a dropped Sock flicks for 0.1 s, is let go 3 cm over the spot, falls as one body that cannot be picked, and lies where it settles"},
 		{"name": "h11_settles", "method": "case_h11", "world": false,
 				"title": "H11: dropped on a Sock or half over the table's edge it settles or falls, never floating or sinking"},
-		{"name": "t13_settle_limit", "method": "case_t13", "world": false,
-				"title": "T13: a fall that never settles is put down where it is after 6 s"},
+		{"name": "m06_no_limit", "method": "case_t13", "world": false,
+				"title": "M06: a fall still moving after 7 s is not put down (no time limit, Q2308); it rests once still"},
 		{"name": "i3_commands", "method": "case_i3", "world": false,
 				"title": "I.3 and the Commands: every Hands change is a Command the Host answers; a held or falling Sock is refused to anyone else, a far one is refused"},
 		{"name": "looks_contract", "method": "case_looks", "world": false,
@@ -155,7 +155,10 @@ func case_m13() -> void:
 	_check(_player.aimed_sock == UNDER, "aiming at the tip finds the lower Sock (%d)" % _player.aimed_sock)
 	await _press(&"pick")
 	await _until(func() -> bool: return _hands.active_of(1) == UNDER, "the lower Sock to be picked")
-	_check(_mess.state_of(OVER) == Mess.State.LYING, "the Sock on top stays")
+	_check(not _hands.items_of(1).has(OVER), "the Sock on top is not picked")
+	# Since Q2308 (core/13, M07) the Sock that lay on it wakes and falls, then lies again.
+	await _until(func() -> bool: return _mess.state_of(OVER) == Mess.State.FLYING, "the Sock on top to fall", 10)
+	await _until(func() -> bool: return _mess.state_of(OVER) == Mess.State.LYING, "it to lie again")
 	_places("after picking the lower Sock")
 
 
@@ -455,11 +458,15 @@ func case_t13() -> void:
 	await _until(func() -> bool: return _mess.flight_of(ON_FLOOR) != null, "the body to be let go")
 	var body := _mess.flight_of(ON_FLOOR)
 	body.can_sleep = false
-	await _physics_ticks(int(5.5 * 60.0))
-	_check(_mess.state_of(ON_FLOOR) == Mess.State.FLYING, "a body that never sleeps still falls at 5.5 s")
-	await _physics_ticks(int(0.6 * 60.0))
-	_check(_mess.state_of(ON_FLOOR) == Mess.State.LYING, "after 6 s it is put down")
-	_places("after the settle limit")
+	# Kept moving, slowly, for longer than the old settle limit: never put down by its time (M06, Q2308).
+	for i in int(7.0 * 60.0):
+		if not is_instance_valid(body):
+			break
+		body.linear_velocity = Vector3(0.2, body.linear_velocity.y, 0.0)
+		await _physics_ticks(1)
+	_check(_mess.state_of(ON_FLOOR) == Mess.State.FLYING, "a body still moving after 7 s still falls: no time limit")
+	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "it to rest once it stops", 120)
+	_places("after it stopped")
 
 
 # --- Invariants and Commands ---------------------------------------------------------------------

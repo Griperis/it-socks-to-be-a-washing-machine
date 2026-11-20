@@ -324,7 +324,7 @@ func case_z04() -> void:
 	await _until(func() -> bool: return mess.state_of(sock) == Mess.State.LYING, "the Sock to come down")
 	_near(mess.pose_of(sock).origin.distance_to(spot.global_position), 0.0, 0.001, "it lies at the zoo's return spot")
 	var looks := mess.looks_of(sock)
-	_check(looks != null and looks.get_parent().get_parent() == _zoo.get_node("Lying"), "drawn in the zoo's Lying")
+	_check(looks != null and looks.get_parent() == _zoo.get_node("Lying"), "drawn in the zoo's Lying")
 
 
 ## A zoo, its player standing on the floor and every Sock lying.

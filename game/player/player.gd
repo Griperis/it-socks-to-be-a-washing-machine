@@ -248,7 +248,7 @@ func _update_hands(delta: float) -> void:
 		return
 	var me := player_id()
 	_aim.force_raycast_update()
-	aimed_sock = h.mess.sock_at(_aim.get_collider()) if h.mess != null else -1
+	aimed_sock = h.mess.sock_at(_aim.get_collider_rid()) if h.mess != null else -1
 	_outline(h.mess, aimed_sock)
 	var holding := h.active_of(me) >= 0
 	drop_refused = holding and drop_refusal(h) != ""
@@ -384,14 +384,13 @@ func camera() -> Camera3D:
 	return _camera
 
 
-## The outline plays on the aimed Sock's Looks and leaves the one aimed before.
+## The outline plays on the aimed Sock's Looks (the Mess lends it, core/13) and the one aimed before
+## gives its Looks back.
 func _outline(mess: Mess, sock: int) -> void:
 	if mess == null:
 		return
 	if _outlined != sock and _outlined >= 0:
-		var old := mess.looks_of(_outlined)
-		if old != null:
-			SockDress.play(old, SockDress.LYING)
+		mess.return_looks(_outlined)
 	_outlined = sock
 	var looks := mess.looks_of(sock) if sock >= 0 else null
 	if looks != null and SockDress.state_of(looks) != SockDress.AIMED:
