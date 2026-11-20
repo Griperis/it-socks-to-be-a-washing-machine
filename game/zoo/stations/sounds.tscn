@@ -1,0 +1,573 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://dcsu6kgbm1dcp" path="res://game/audio/sound_spot.gd" id="1_spot"]
+[ext_resource type="Script" uid="uid://bb32hee1mash0" path="res://game/audio/ambient_loop.gd" id="2_amb"]
+[ext_resource type="PackedScene" uid="uid://ccaa5ngdrkqig" path="res://game/entities/door/door.tscn" id="3_door"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.36, 0.34, 0.5, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_pad")
+size = Vector2(12, 8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flat"]
+albedo_color = Color(0.45, 0.65, 0.85, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_world"]
+albedo_color = Color(0.9, 0.65, 0.3, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_button"]
+size = Vector3(0.5, 1.8, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_button"]
+size = Vector3(0.5, 1.8, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tile"]
+albedo_color = Color(0.85, 0.85, 0.88, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tile"]
+material = SubResource("StandardMaterial3D_tile")
+size = Vector3(3, 0.1, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tile"]
+size = Vector3(3, 0.1, 2)
+
+[node name="Sounds" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, 13)
+
+[node name="Pad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+billboard = 1
+autowrap_mode = 3
+width = 700.0
+text = "Sounds: blue buttons play flat, orange ones from where they stand; a tile patch for the footsteps; one button behind a shut Door"
+
+[node name="Ambience" type="Node" parent="."]
+script = ExtResource("2_amb")
+
+[node name="TilePatch" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, -0.03, 2.5)
+metadata/surface = "tile"
+
+[node name="Mesh" type="MeshInstance3D" parent="TilePatch"]
+mesh = SubResource("BoxMesh_tile")
+
+[node name="Shape" type="CollisionShape3D" parent="TilePatch"]
+shape = SubResource("BoxShape3D_tile")
+
+[node name="TileNote" type="Label3D" parent="TilePatch"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.06, 0)
+pixel_size = 0.004
+text = "tile"
+
+[node name="Pick" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.9, 0, -2.5)
+
+[node name="Body" type="StaticBody3D" parent="Pick"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Pick/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_flat")
+
+[node name="Shape" type="CollisionShape3D" parent="Pick/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="Pick"]
+script = ExtResource("1_spot")
+event = &"pick"
+
+[node name="Label" type="Label3D" parent="Pick"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "pick"
+
+[node name="Drop" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, -2.5)
+
+[node name="Body" type="StaticBody3D" parent="Drop"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Drop/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_flat")
+
+[node name="Shape" type="CollisionShape3D" parent="Drop/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="Drop"]
+script = ExtResource("1_spot")
+event = &"drop"
+
+[node name="Label" type="Label3D" parent="Drop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "drop"
+
+[node name="Cycle" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 0, -2.5)
+
+[node name="Body" type="StaticBody3D" parent="Cycle"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Cycle/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_flat")
+
+[node name="Shape" type="CollisionShape3D" parent="Cycle/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="Cycle"]
+script = ExtResource("1_spot")
+event = &"cycle"
+
+[node name="Label" type="Label3D" parent="Cycle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "cycle"
+
+[node name="Pair" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0, -2.5)
+
+[node name="Body" type="StaticBody3D" parent="Pair"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Pair/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_flat")
+
+[node name="Shape" type="CollisionShape3D" parent="Pair/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="Pair"]
+script = ExtResource("1_spot")
+event = &"pair"
+
+[node name="Label" type="Label3D" parent="Pair"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "pair"
+
+[node name="Pop" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, -2.5)
+
+[node name="Body" type="StaticBody3D" parent="Pop"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Pop/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_flat")
+
+[node name="Shape" type="CollisionShape3D" parent="Pop/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="Pop"]
+script = ExtResource("1_spot")
+event = &"pop"
+
+[node name="Label" type="Label3D" parent="Pop"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "pop"
+
+[node name="ThrowCharge" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1, 0, -2.5)
+
+[node name="Body" type="StaticBody3D" parent="ThrowCharge"]
+
+[node name="Mesh" type="MeshInstance3D" parent="ThrowCharge/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_flat")
+
+[node name="Shape" type="CollisionShape3D" parent="ThrowCharge/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="ThrowCharge"]
+script = ExtResource("1_spot")
+event = &"throw_charge"
+
+[node name="Label" type="Label3D" parent="ThrowCharge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "throw_charge"
+
+[node name="Throw" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -2.5)
+
+[node name="Body" type="StaticBody3D" parent="Throw"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Throw/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_flat")
+
+[node name="Shape" type="CollisionShape3D" parent="Throw/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="Throw"]
+script = ExtResource("1_spot")
+event = &"throw"
+
+[node name="Label" type="Label3D" parent="Throw"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "throw"
+
+[node name="Refuse" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9, 0, -2.5)
+
+[node name="Body" type="StaticBody3D" parent="Refuse"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Refuse/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_flat")
+
+[node name="Shape" type="CollisionShape3D" parent="Refuse/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="Refuse"]
+script = ExtResource("1_spot")
+event = &"refuse"
+
+[node name="Label" type="Label3D" parent="Refuse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "refuse"
+
+[node name="StepWood" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, -0.5)
+
+[node name="Body" type="StaticBody3D" parent="StepWood"]
+
+[node name="Mesh" type="MeshInstance3D" parent="StepWood/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_flat")
+
+[node name="Shape" type="CollisionShape3D" parent="StepWood/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="StepWood"]
+script = ExtResource("1_spot")
+event = &"step_wood"
+
+[node name="Label" type="Label3D" parent="StepWood"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "step_wood"
+
+[node name="StepTile" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0, 0, -0.5)
+
+[node name="Body" type="StaticBody3D" parent="StepTile"]
+
+[node name="Mesh" type="MeshInstance3D" parent="StepTile/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_flat")
+
+[node name="Shape" type="CollisionShape3D" parent="StepTile/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="StepTile"]
+script = ExtResource("1_spot")
+event = &"step_tile"
+
+[node name="Label" type="Label3D" parent="StepTile"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "step_tile"
+
+[node name="Land" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -0.5)
+
+[node name="Body" type="StaticBody3D" parent="Land"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Land/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_flat")
+
+[node name="Shape" type="CollisionShape3D" parent="Land/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="Land"]
+script = ExtResource("1_spot")
+event = &"land"
+
+[node name="Label" type="Label3D" parent="Land"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "land"
+
+[node name="Bounce" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.9, 0, 1.0)
+
+[node name="Body" type="StaticBody3D" parent="Bounce"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Bounce/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_world")
+
+[node name="Shape" type="CollisionShape3D" parent="Bounce/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="Bounce"]
+script = ExtResource("1_spot")
+event = &"bounce"
+
+[node name="Label" type="Label3D" parent="Bounce"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "bounce"
+
+[node name="DrawerOpen" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, 1.0)
+
+[node name="Body" type="StaticBody3D" parent="DrawerOpen"]
+
+[node name="Mesh" type="MeshInstance3D" parent="DrawerOpen/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_world")
+
+[node name="Shape" type="CollisionShape3D" parent="DrawerOpen/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="DrawerOpen"]
+script = ExtResource("1_spot")
+event = &"drawer_open"
+
+[node name="Label" type="Label3D" parent="DrawerOpen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "drawer_open"
+
+[node name="DrawerClose" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 0, 1.0)
+
+[node name="Body" type="StaticBody3D" parent="DrawerClose"]
+
+[node name="Mesh" type="MeshInstance3D" parent="DrawerClose/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_world")
+
+[node name="Shape" type="CollisionShape3D" parent="DrawerClose/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="DrawerClose"]
+script = ExtResource("1_spot")
+event = &"drawer_close"
+
+[node name="Label" type="Label3D" parent="DrawerClose"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "drawer_close"
+
+[node name="DoorOpen" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0, 1.0)
+
+[node name="Body" type="StaticBody3D" parent="DoorOpen"]
+
+[node name="Mesh" type="MeshInstance3D" parent="DoorOpen/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_world")
+
+[node name="Shape" type="CollisionShape3D" parent="DoorOpen/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="DoorOpen"]
+script = ExtResource("1_spot")
+event = &"door_open"
+
+[node name="Label" type="Label3D" parent="DoorOpen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "door_open"
+
+[node name="DoorClose" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, 1.0)
+
+[node name="Body" type="StaticBody3D" parent="DoorClose"]
+
+[node name="Mesh" type="MeshInstance3D" parent="DoorClose/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_world")
+
+[node name="Shape" type="CollisionShape3D" parent="DoorClose/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="DoorClose"]
+script = ExtResource("1_spot")
+event = &"door_close"
+
+[node name="Label" type="Label3D" parent="DoorClose"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "door_close"
+
+[node name="CupboardOpen" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1, 0, 1.0)
+
+[node name="Body" type="StaticBody3D" parent="CupboardOpen"]
+
+[node name="Mesh" type="MeshInstance3D" parent="CupboardOpen/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_world")
+
+[node name="Shape" type="CollisionShape3D" parent="CupboardOpen/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="CupboardOpen"]
+script = ExtResource("1_spot")
+event = &"cupboard_open"
+
+[node name="Label" type="Label3D" parent="CupboardOpen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "cupboard_open"
+
+[node name="CupboardClose" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 1.0)
+
+[node name="Body" type="StaticBody3D" parent="CupboardClose"]
+
+[node name="Mesh" type="MeshInstance3D" parent="CupboardClose/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_world")
+
+[node name="Shape" type="CollisionShape3D" parent="CupboardClose/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="CupboardClose"]
+script = ExtResource("1_spot")
+event = &"cupboard_close"
+
+[node name="Label" type="Label3D" parent="CupboardClose"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "cupboard_close"
+
+[node name="Shelve" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.9, 0, 1.0)
+
+[node name="Body" type="StaticBody3D" parent="Shelve"]
+
+[node name="Mesh" type="MeshInstance3D" parent="Shelve/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_world")
+
+[node name="Shape" type="CollisionShape3D" parent="Shelve/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="Shelve"]
+script = ExtResource("1_spot")
+event = &"shelve"
+
+[node name="Label" type="Label3D" parent="Shelve"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "shelve"
+
+[node name="Door" parent="." instance=ExtResource("3_door")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 3)
+
+[node name="BehindDoor" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 2.0)
+
+[node name="Body" type="StaticBody3D" parent="BehindDoor"]
+
+[node name="Mesh" type="MeshInstance3D" parent="BehindDoor/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_world")
+
+[node name="Shape" type="CollisionShape3D" parent="BehindDoor/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="BehindDoor"]
+script = ExtResource("1_spot")
+event = &"bounce"
+
+[node name="Label" type="Label3D" parent="BehindDoor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "bounce, behind the Door"
+
+[node name="InTheOpen" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6, 0, 2.0)
+
+[node name="Body" type="StaticBody3D" parent="InTheOpen"]
+
+[node name="Mesh" type="MeshInstance3D" parent="InTheOpen/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_button")
+surface_material_override/0 = SubResource("StandardMaterial3D_world")
+
+[node name="Shape" type="CollisionShape3D" parent="InTheOpen/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Spot" type="Node" parent="InTheOpen"]
+script = ExtResource("1_spot")
+event = &"bounce"
+
+[node name="Label" type="Label3D" parent="InTheOpen"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0)
+billboard = 1
+pixel_size = 0.004
+text = "bounce, in the open"

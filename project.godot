@@ -19,6 +19,8 @@ config/features=PackedStringArray("4.7", "Forward Plus")
 
 ProfilerBoot="*res://game/debug/profiler_boot.gd"
 Profily="*res://addons/profily/profily.tscn"
+Settings="*res://game/settings/settings.gd"
+Sounds="*res://game/audio/sounds.gd"
 
 [debug]
 
