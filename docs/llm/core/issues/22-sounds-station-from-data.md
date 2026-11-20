@@ -6,7 +6,7 @@ area: core
 feature: core
 priority: now
 created: 2026-11-20
-done:
+done: 2026-11-20
 blocked_by: ["[[17-sound-system]]"]
 notes: []
 terms: []
@@ -47,3 +47,4 @@ data station built from its data (Q2337) and smaller boxes here.
 - Files: game/zoo/sounds_station.gd, sounds_layout.gd, sounds_layout.tres, stations/sounds.tscn, tests/sounds_test.gd, tools/shot_hooks.gd, tools/shots/sets/sounds-station.txt.
 - Verified: PASS 5915 checks, 96 cases. Stills: builds/review-core-22/.
 - Q2340 fix: column pitch 0.55 to 0.75 m, block origin to (-3.0, 0, 0.9), sounds_layout.tres given its uid. Verified: see commit.
+- Merged: f0f6e333 (2026-11-20, branch core/22-sounds-station-from-data)
