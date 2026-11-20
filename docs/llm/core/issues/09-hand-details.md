@@ -61,7 +61,43 @@ Approved (Q2276, 2026-11-20). Numbers are the old game's.
   cannot (a `research` question at design).
 
 ## Design
-To come after the behaviour list is approved.
+Draft for the designer (facts: `docs/research/sock-cloth-spring-bones.md`, tried on 4.7.2). Everything here is looks of
+this machine: no Part, Command or `PROTOCOL` change. Numbers go in typed Resources, the old ones marked as ported.
+
+**Cloth (D01-D07): Godot's `SpringBoneSimulator3D` plus a small feed.** In each Sock Looks, a `Cloth` node
+(`SpringBoneSimulator3D`) under the `Skeleton3D`: chain `Leg` to `Toe`, `extend_end_bone`, `drag` 1 (no overshoot),
+`stiffness` and `gravity` tuned to the old droop and the 0.06 s lag (bend size and lag move together in the node:
+tuned by eye against the old game, marked placeholder until the designer's go on the still). Its centre is the
+skeleton, so the node ignores plain movement; a script on the Looks, `sock_cloth.gd` (one class, about 60 lines),
+each physics tick:
+- measures the Looks' acceleration and turn and feeds `external_force` (gravity minus acceleration, the old rule: a
+  steady walk bends nothing, a start, stop, jump or turn does; D02, D03; see Q2286);
+- ramps `influence` to 0 under `flat_speed` 0.6 m/s, so a Sock lies in the flat rest pose the Mess draws (D04);
+- puts a `SpringBoneCollisionPlane3D` at the surface under the Sock (one ray down) for D05 (see Q2287);
+- is switched on (`active`) for held Socks and the 4 nearest flying Socks to the camera, a ranking the same
+  script runs once a tick over the `sock_cloth` group (D07); off, the Sock is rigid and its tick costs nothing.
+The known one-tick jump when a Sock's cloth is switched on after moving is hidden by turning it on at `influence` 0
+and ramping up. A Pair's ball has no `Cloth` (D06). `looks_contract.json` gains `Cloth`.
+
+**Glide (D08)**: `HeldView` keeps each item's drawn place and eases it to its new place each frame
+(`follow_rate` 14, the old exponential follow); the zoom is applied on top, unglided.
+
+**Pick fly-up (D09)**: on a new id in the Hands, `HeldView` starts that item at the Sock's last world pose from the
+Mess and flies it to its slot in 0.3 s (smoothstep, 0.18 m hop), then hands it to the glide.
+**Pairing fly-in (D10)**: `pair_moment.tscn`'s picked Sock sits under a `FlyIn` node; the moment starts `FlyIn` at the
+offset from its slot to where the Sock lay and shrinks the offset to nothing over the fly's first part, so the
+AnimationPlayer keeps the line-up, fold, roll and pop as they are.
+
+**Shelving flight (D11)**: when a Pair leaves the Hands into a drawer, `HeldView` hands its last drawn transform to
+the drawer's Looks, which flies a ball from there to its slot (0.45 s, 0.06 s later each slot, arc 0.22) and shows
+the drawer's balls when all have landed. **Drawer slide (D12)**: the drawer Looks gets a `shut` animation with its own
+ease-out; `_show` plays `open` or `shut` from the current pose, so a reverse mid-slide stays smooth. Contract gains
+`shut`.
+
+**Tests** (one per line, the real path through the handling station): bones read in `modification_processed`
+(reading poses from outside returns the unmodified pose, a research pitfall).
+**Owns**: `game/hands/held_view.gd`, `game/sock/` Looks and `sock_cloth.gd`, `game/sock/pair_moment.tscn`,
+`game/entities/cabinet/` drawer Looks. Model: Opus.
 
 ## Acceptance
 - Each behaviour line has a test named after it; the real-path case: the player picks a Sock in the handling
