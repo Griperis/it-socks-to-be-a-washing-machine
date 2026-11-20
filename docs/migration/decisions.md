@@ -1,4 +1,4 @@
-Next free Q number: Q2305 (update this line whenever a round of questions is asked)
+Next free Q number: Q2313 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -217,3 +217,11 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2302: the pad differences (full-speed stick, the old look stick, the crouch trigger, pad zoom and turn) wait for later.
 - Q2303: back to the old: the nearer of a Sock and a ball under the crosshair wins, and a sliding Sock can be picked; kept: no 3 cm forgiveness, our zoom slow-down curve.
 - Q2304: back to the old: a new Pair goes to the end of the Hands and becomes active, and a drop onto a lying Sock or Pair is allowed; kept: a drop lands square to the dropper (no R turn).
+- Q2305: the two-tier Mess: a lying Sock is a static collider made in the physics server plus a MultiMesh instance, no node; a Looks scene only for the aimed, held and nearby flying Socks; records, Commands and co-op unchanged.
+- Q2306: the old moving budget is ported whole: 512 with 32 reserved for Throws, a queue nearest-first, per-tick start and stop caps, the pressure rules (numbers placeholders until a stress test).
+- Q2307: no stored support links: a pick asks the physics which lying Socks sit just above the picked one.
+- Q2308: built with the rewrite: a pick wakes up to 40 Socks lying on it (Socks too); a body at 1.5 m/s or more wakes the Sock it hits and up to 8 touching; Doors and drawers wake and push Socks, and Socks ride out in a drawer; a flight rests after it has stopped moving for a short time, never forced by its total time (designer's correction).
+- Q2309: a lying Sock collides as two boxes (leg and foot), a Pair as a sphere.
+- Q2310: lying Socks are drawn in MultiMeshes grouped by an 8 m floor grid (placeholder), with Godot's automatic LOD and visibility ranges.
+- Q2311: back to the old: thrown and dropped bodies bounce 0.35 and slide at friction 0.6; the old damping (woken 0.6 / 3.0, dropped 0.05 / 0.8); kept: the same spin each Throw, a thrown Pair's drag all the way.
+- Q2312: back to the old: a thrown Pair shelves only on a drawer front; only a drawer takes a shelve by click.

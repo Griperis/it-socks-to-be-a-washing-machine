@@ -17,6 +17,24 @@ M1 and M2 run beside M0.5 and M0.6, not after them.
 | M4 | The frame of a run | Stages, the Laundry day, menus, saves and the lobby (with the proving token for the player id); screens are scenes on one Theme (Q2163) | planned |
 | M5 | Features by need | Each switched-off or planned feature (the vacuum devices, Hampers, the Grotto, Dirty Socks, the Cat, cutscenes, ...) is ported when the designer calls it, each first as a zoo station (Q2144, Q2214) | planned |
 
+## M0.5 batches (Q2296)
+Each batch is one theme, tested in one sitting at one or two stations, ending with a short play session and the
+designer's go. Order: what the later batches show on comes first.
+
+| Batch | What | Tickets | You test |
+|---|---|---|---|
+| 1 | Hand details | core/09 (building) | cloth held and thrown, glide, pick fly-up, pairing fly-in, shelving flight, drawer shut |
+| 2 | The two-tier Mess | core/13 | the every-Sock station runs smoothly; Socks on top fall when one below is picked; a throw wakes Socks; Doors and drawers push Socks; bounce and skid |
+| 3 | Rules back to the old | core/14 | the nearer of a Sock and a ball is aimed; a sliding Sock can be picked; a new Pair is active; drop onto Socks; Cabinet: drawer fronts and drawers only; the capturing click does nothing else |
+| 4 | Aiming and screen | core/11 outline, core/15 | the outline on everything you can use (red on a full drawer); the prompt and key hints; the aimed Size; the old crosshair |
+| 5 | Feedback and motion polish | core/16 | the refusal wobble, "Paired!", the boxed held Size, the ball's squash, hop and roll, the flick ease, the old cloth bend and ground, the lost Sock's scatter and pop |
+| 6 | Sound | core/17 | the plug-and-play sound system and every core sound and rumble |
+| 7 | The picture | core/18 | the old light at noon (AgX, grade, vignette, SSAO, glow, MSAA and FXAA, HDRI sky, the sun) and the old font and theme |
+| 8 | Close-out | walkthrough | the walkthrough page; you play every station in one zoo run |
+
+Later, not in M0.5: the pad differences (Q2302), the Coins and Pairs counter and the ESC menu (Q2300), the 20-minute
+day (Q2299).
+
 ## What changed from the first plan
 - M0.5 is a true vertical slice of the core: its sounds, rumble and polish details move into it from M1.1 and the polish pass (Q2296).
 - Sound is its own milestone, M1.1, out of M1 (Q2278); the old game's small looks and screen details wait for a polish pass (Q2279-Q2281).
