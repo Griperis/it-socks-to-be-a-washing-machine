@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-19
-done:
+done: 2026-11-20
 blocked_by: ["[[01-zoo-movement]]"]
 notes: []
 terms: []
@@ -202,7 +202,37 @@ used by core/03 (Pairs join the Mess and the Hands) and core/04 (shelving).
 - The Throw is split off into core/08, built after this ticket (Q2250, 2026-11-20).
 
 ## Open follow-ups
+- [later] Pad buttons (Q2245): `pick` has A, `drop_throw` B, `interact` gained Y; but `jump` still has A and
+  `interact` still has X from core/01. Removing those two events is a project.godot change beyond added
+  [input] entries, so it needs the lead (`commit.sh --allow-project`). Until then A both jumps and picks.
+- [later] The Carriables station and the crate (`game/zoo/stations/carriables.tscn`, `game/entities/crate/`):
+  the player no longer carries a Carriable (the kit's crate-carry hands are gone), but E on the crate still asks
+  its `pick`, so the crate is then held by nobody visible and cannot be put down. Retire the station and the
+  crate, or keep them for co-op demos (a lead/designer call; not this ticket's files).
+- [later] `game/parts/session.gd` PROTOCOL: the station adds a spawnable scene (`game/sock/flight.tscn` on a
+  MultiplayerSpawner); bump PROTOCOL in game/parts (not this ticket's files) before co-op is played with it.
+- [later] M0.6: a Guest's capacity and reach (Hands read the HandsTuning of a player on this machine, else
+  their own: a Guest gets capacity 1); a leaver's Hands (`Hands.left()` returns nothing, so a leaver's Socks
+  stay HELD: H24); a Guest sees a falling Sock only as the spawned untinted body.
+- [later] The zoo's cupboard entity is a solid box, so the station hollows its instance with overrides
+  (walls, a shelf, the solid shape off). A hollow cupboard of its own belongs to the furniture port.
+- [later] Looks: the outline is white and 4 mm (a look the designer has not set); the refusal line shows
+  red with no wobble; held items have no cloth sway and no pick-up flight. Stills for `held-sock.png`
+  were not asked for here.
+- [later] `tests/handling_test.gd` is 640 lines (grep_rules notes over 600): split it when next touched.
 
 ## Built log
 - 2026-11-20 (lead): handed to a ticket agent on Opus: the Mess and Hands Parts are the core data model and a
   Command that changes two Parts (the Models value: opus for hard netcode).
+- 2026-11-20 (agent):
+  - Changed: loose Socks are the `Mess` Part (records in packed arrays: Design, state LYING/HELD/FLYING, pose;
+    SockSpots placed in the editor become the starting Socks); every player's Hands are the `Hands` Part
+    (pick, cycle, drop as Commands; a pick and a drop answer change both Parts; the Host writes a fallen Sock
+    lying with a Host-only `rest`). The player aims (outline, red crosshair, "Hands full", "Can't drop
+    there" from the Host's own checks), zooms (G), turns (R), cycles (wheel), shows the Size letter; the
+    HeldView draws the old layout; the kit's crate carry is gone. Designs: `DesignCatalogue` of 1005
+    `SockDesign`s; graybox Looks is the old crew.glb (lying, held, aimed). Handling station; zoo player holds 3.
+  - Files: game/mess/, game/hands/, game/sock/, game/player/, game/zoo/stations/handling.tscn, game/zoo/zoo.tscn,
+    tests/handling_test.gd, tests/player_test.gd, tests/zoo_test.gd (co-op case opens a cupboard instead of the
+    crate hand-over), tools/grep_rules_allow.txt, project.godot (actions added).
+  - Verified: `kit/tools/run.sh --touched`: PASS 510 checks, 112 cases; grep_rules PASS; asset_lint PASS.

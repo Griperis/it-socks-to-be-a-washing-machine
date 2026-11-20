@@ -1,6 +1,6 @@
 ## The zoo scene itself: it loads, runs a few frames with no script error, and keeps the zoo's
-## rules; alone it opens no network, and two zoos in co-op see each other's players and hand the
-## crate over. Nothing here tests a feature's rules through the zoo: features have their own
+## rules; alone it opens no network, and two zoos in co-op see each other's players and what one's
+## player uses the other sees. Nothing here tests a feature's rules through the zoo: features have their own
 ## suites, and the zoo is for a person to play in.
 extends TestSuite
 
@@ -10,7 +10,7 @@ const ZOO_FOLDER := "res://game/zoo/"
 
 ## Network waits give real time, which a busy machine stretches.
 const NET_WAIT_S := 20.0
-const CRATE := "Stations/Carriables/Crate"
+const CUPBOARD := "Stations/Openables/Cupboard"
 
 var _zoo: Node3D = null
 ## The co-op case's machines: each a Node with its own MultiplayerAPI.
@@ -26,7 +26,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "alone", "method": "case_alone", "world": false,
 				"title": "each station scene runs on its own, and two zoos hold the same stations in the same order"},
 		{"name": "coop", "method": "case_coop", "world": false,
-				"title": "alone the zoo opens no network; a hosting zoo and a joining zoo show each other's players, and the crate goes over"},
+				"title": "alone the zoo opens no network; a hosting zoo and a joining zoo show each other's players, and the guest's player opens a cupboard on both"},
 	]
 
 
@@ -129,29 +129,19 @@ func case_coop() -> void:
 	await _until(func() -> bool: return ha.of(g_id) != null and ga.of(1) != null, "each zoo to show the other's avatar")
 	var host_player := host.get_node("Player") as Player
 	var guest_player := guest.get_node("Player") as Player
-	var crate_at := (guest.get_node(CRATE) as Node3D).global_position
-	guest_player.global_position = crate_at + Vector3(0.0, 0.0, 1.5)
+	var cupboard_at := (guest.get_node(CUPBOARD) as Node3D).global_position
+	guest_player.global_position = cupboard_at + Vector3(0.0, 0.0, 1.5)
+	guest_player.rotation.y = 0.0
 	host_player.global_position = Vector3(3.0, 0.0, 4.0)
 	var guest_seen := func() -> bool: return ha.of(g_id).position.distance_to(guest_player.global_position) < 0.05
 	await _until(guest_seen, "the host to see the guest's avatar where the guest's player stands")
 	var host_seen := func() -> bool: return ga.of(1).position.distance_to(host_player.global_position) < 0.05
 	await _until(host_seen, "the guest to see the host's avatar where the host's player stands")
-	(guest_player.get_node("Head") as Node3D).rotation.x = -0.73
-	var host_crate := host.get_node(CRATE) as Node3D
-	var host_carriable := host_crate.get_node("Carriable") as Carriable
-	_check(guest_player.interact() == guest.get_node(CRATE + "/Carriable"), "the guest's player aims at the crate and asks for it")
-	await _until(func() -> bool: return host_carriable.holder == g_id and guest_player.carried() != null, "the guest's player to hold the crate")
-	guest_player.global_position += Vector3(2.0, 0.0, 0.0)
-	var in_hands := func() -> bool: return host_crate.global_position.distance_to(guest_player.global_transform * Player.HANDS) < 0.01
-	await _until(in_hands, "the host to see the crate in the guest's hands")
-	guest_player.interact()
-	var guest_crate := guest.get_node(CRATE) as Node3D
-	var put_down := func() -> bool:
-		return host_carriable.holder == 0 and host_crate.global_position.y < 0.01 \
-				and host_crate.global_position.distance_to(guest_crate.global_position) < 0.001
-	await _until(put_down, "both zoos to have the crate put down at one place")
-	_check(host_crate.get_multiplayer_authority() == 1 and guest_crate.get_multiplayer_authority() == 1,
-			"the host moves it again, on both")
+	(guest_player.get_node("Head") as Node3D).rotation.x = 0.0
+	var host_openable := host.get_node(CUPBOARD + "/Openable") as Openable
+	var guest_openable := guest.get_node(CUPBOARD + "/Openable") as Openable
+	_check(guest_player.interact() == guest_openable, "the guest's player aims at the cupboard and asks to open it")
+	await _until(func() -> bool: return host_openable.open and guest_openable.open, "both zoos to have the cupboard open")
 	_drop_branches()
 
 
