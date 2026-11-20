@@ -1,4 +1,4 @@
-Next free Q number: Q2256 (update this line whenever a round of questions is asked)
+Next free Q number: Q2257 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -164,3 +164,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 ## M0.5, core/03 pairing (2026-11-20)
 - Q2254: the pairing behaviour list approved as written (the survey's Pairs questions answered "keep").
 - Q2255: the pairing moment stays as it was; AnimationPlayer in the Looks and a particle burst; a strip before merging.
+
+## M0.5, core/04 one Cabinet (2026-11-20)
+- Q2256: the Cabinet behaviour list approved; a drawer's capacity is a configurable field (25 today), the model keeps 25 slots.
