@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: core
 feature: core
@@ -33,6 +33,7 @@ data station built from its data (Q2337) and smaller boxes here.
 
 ## Answers
 - Q2337 (2026-11-20).
+- Q2340 (2026-11-20): the still showed overlapping labels and the station sign over the buttons; fix both (column pitch 0.75 m, block moved forward to z 0.9) and merge without another still.
 
 ## Open follow-ups
 - [later] The hand-made `BehindDoor` and `InTheOpen` buttons stay beside the Door (the muffling test's fixtures); looping events (amb_room) get no button, the station's Ambience node plays them. Say if either should change.
@@ -45,3 +46,4 @@ data station built from its data (Q2337) and smaller boxes here.
 - Changed: `SoundsStation` builds a 0.3 m box button (body, SoundSpot, name) per non-loop event in the catalogue's order, grouped by bus, in rows of 9 on the front of the pad; the 19 hand-placed pillars are gone from sounds.tscn. S10 now walks to a front-row button, looks down with the mouse and presses use. New cases d01, d02, d04; shot action `sounds` and set `sounds-station`.
 - Files: game/zoo/sounds_station.gd, sounds_layout.gd, sounds_layout.tres, stations/sounds.tscn, tests/sounds_test.gd, tools/shot_hooks.gd, tools/shots/sets/sounds-station.txt.
 - Verified: PASS 5915 checks, 96 cases. Stills: builds/review-core-22/.
+- Q2340 fix: column pitch 0.55 to 0.75 m, block origin to (-3.0, 0, 0.9), sounds_layout.tres given its uid. Verified: see commit.

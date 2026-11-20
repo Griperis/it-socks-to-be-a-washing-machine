@@ -1,4 +1,4 @@
-Next free Q number: Q2343 (update this line whenever a round of questions is asked)
+Next free Q number: Q2347 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -255,3 +255,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2340: core/22's still: the overlapping labels and the sign over the buttons are fixed, then it merges without another still.
 - Q2341: a woken, sliding (or flying) Sock under the crosshair gets the outline in core/11, not before.
 - Q2342: only a click captures the mouse; a wheel notch while it is free does nothing (kept as built).
+- Q2343: the house kit must build the old house nearly identically; the old house is re-gridded to the kit's 0.5 m grid (about 10 x 8.5 m, rooms and windows move up to 0.25 m), not sized pieces nor a fine grid (designer, 2026-11-20; widens Q2325-Q2326).
+- Q2344: the kit also covers every old window (frames, sills, casings, glass, frosted) and door frames, skirting and the U stair's newel wall and railings, the pitched roof, knee walls, gables, dormer and attic, and wall openings for the entities (elevator shaft, garage door, front door, basement window wells).
+- Q2345: the proof is the whole old house (4 floors) rebuilt from kit pieces only, stills from the old looks-baseline views beside the old game's.
+- Q2346: house/01 merges as a first step; house/02 widens it.
