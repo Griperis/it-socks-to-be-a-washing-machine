@@ -4,7 +4,7 @@
 ## the station shows on its wall.
 extends TestSuite
 
-const STATION := "res://game/zoo/pending/icons.tscn"
+const STATION := "res://game/zoo/stations/icons.tscn"
 ## The 111 names of the old game's assets/ui (tag v0.1.1).
 const OLD_NAMES: Array[String] = [
 	"animals", "ball", "carry", "coins", "cursor", "dirty", "drawers", "drinks", "emoji_help",

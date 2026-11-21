@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="PackedScene" path="res://game/zoo/pending/icons.tscn" id="1_icons"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/icons.tscn" id="1_icons"]
 
 [node name="IconsStill" type="Node3D"]
 
