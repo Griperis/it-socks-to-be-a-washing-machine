@@ -25,10 +25,11 @@ The rules, the tests and every placed copy stay as they are. The example is `gam
 
 ## Step 2: export and import
 
-1. Put the source in `assets_src/blender/<name>.blend` and list it in `assets/blender_assets.json` (class and number of collider meshes). Today the file lists nothing.
-2. Run `kit/tools/blender/export.sh --check <name>`, then `kit/tools/blender/export.sh <name>`. The `.glb` lands in `assets/<name>/<name>.glb`. A good run prints `EXPORT-OK`.
-3. Open Godot. It imports the `.glb` and writes `<name>.glb.import` and a `.uid`. Both are kept in git.
-4. In the import dock, use the family's settings (see `models-update-a-model.md`). For a Cabinet-like model: save meshes to `.res` files, turn LOD generation on. For a Sock-like model: set the import script `res://game/sock/model_lods_import.gd` and LOD generation off.
+1. Put the source in its family's folder, `assets_src/blender/<family>/<name>.blend` (the folders today: `sock`, `cabinet`, `furniture`; make a new one for a new family). One root object named `<name>` holds the model. If a script builds it, put the script in `assets_src/generate/<family>/` and keep it to meshes (`assets_src/generate/README.md`).
+2. List it in `assets/blender_assets.json`: `"<name>": {"class": "prop", "colliders": 0, "source": "<family>/<name>", "glb": "assets/<family>/<name>.glb"}`. Copy an entry of the same family for the shape. `.blend` files go through Git LFS on their own (`.gitattributes`).
+3. Run `assets_src/generate/export.sh --check <name>` (the kit's contract report), then `assets_src/generate/export.sh <name>`. The `.glb` lands at the manifest's `glb`. A good run prints `EXPORT-OK`. Do not use `kit/tools/blender/export.sh` for now: it looks for the manifest in the wrong folder (open follow-up of `docs/llm/assets/issues/08-model-sources.md`).
+4. Open Godot. It imports the `.glb` and writes `<name>.glb.import` and a `.uid`. Both are kept in git.
+5. In the import dock, use the family's settings (see `models-update-a-model.md`). For a Cabinet-like model: save meshes to `.res` files, turn LOD generation on. For a Sock-like model: set the import script `res://game/sock/model_lods_import.gd` and LOD generation off.
 
 ## Step 3: the Looks scene
 
@@ -96,4 +97,4 @@ Each feature has one station: one file `game/zoo/stations/<feature>.tscn`. Copy 
 - Never hand-edit a file in `game/house/kit/pieces/`; see `house-kit.md`.
 - Files stay in the Godot editor's own format with their `uid=` lines and `.uid` files; let the editor write them.
 
-Sources: `kit/skills/zoo-design/SKILL.md` parts A and B; `kit/tools/asset_lint.py`; `kit/tools/blender/asset_checks.py`; Q2151, Q2152, Q2337.
+Sources: `kit/skills/zoo-design/SKILL.md` parts A and B; `kit/tools/asset_lint.py`; `kit/tools/blender/asset_checks.py`; Q2151, Q2152, Q2337, Q2400; `assets_src/generate/README.md`.

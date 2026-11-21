@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: assets
 feature: assets
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: []
 notes: []
 terms: []
@@ -42,6 +42,26 @@ where possible. Old: `reference/it-socks/assets_src/blender/` (151 `.blend`), `r
   (Q2400, 2026-11-21).
 
 ## Open follow-ups
+- [later] The checks ran with pip's `bpy` 5.3.0 (`assets_src/generate/bpy_run.py`), the same Blender release as the
+  pin, not with the binary from `kit/tools/blender.sh`: its `--fetch` got HTTP 403 "Approval required for
+  download.blender.org". Once the designer approves that host, run `build.py` and `export.sh` once with the binary.
+- [later] Kit fault: `kit/tools/blender/asset_checks.py` sets `REPO` two folders up from `kit/tools/blender/`,
+  which is `kit/` in a game, so `kit/tools/blender/export.sh` reads `kit/assets/blender_assets.json` and writes the
+  glb under `kit/`. Its `BUDGETS` also cannot take a game's classes (`sock` 320, `sock_ball` 540 from the old game).
+  `assets_src/generate/export.py` works around both.
+- [later] The kit's contract wants snake_case node names; the game's furniture uses `Body`, `Door_L`, `Drawer_1` ...
+  and 18 old pieces have more than 8 materials. Shown as advice by `export.sh`, never enforced. Which one gives way?
 
 ## Built log
 - Model: Opus (lead): Blender scripts and the pinned Blender.
+
+### 2026-11-21
+- Changed: every Sock shape and ball, Cabinet and furniture piece now has a Blender source in
+  `assets_src/blender/<family>/` (2 + 17 old `.blend`, 67 written by the ported script; LFS) and a meshes-only script
+  in `assets_src/generate/`; `build.py` (script to glb), `export.sh` (`.blend` to glb), `glb_compare.py` (the mesh
+  check). The house shell's scripts are kept to read (`house/README.md` says why they do not run).
+  `assets/blender_assets.json` lists the 97 sources. Nothing in `game/` or `assets/` changed.
+- Files: `assets_src/blender/`, `assets_src/generate/`, `assets/blender_assets.json`, `docs/human/models-*.md`.
+- Verified: script to glb and `.blend` to glb, each against the game's glb: socks `PASS glb_compare: 13/13`,
+  cabinets `17/17` (front art pixels too), furniture `67/67` (0.1 mm); `PASS 45 checks, 9 cases`
+  (`run.sh --touched`); `PASS rules`; `PASS asset_lint`.
