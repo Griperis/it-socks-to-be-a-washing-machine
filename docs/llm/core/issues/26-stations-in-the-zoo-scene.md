@@ -23,8 +23,9 @@ in `zoo.tscn` by hand, knowing branches that add stations will meet in that file
 ## Behaviour list
 - Z05 Every station scene in `game/zoo/stations/` is an instance under `Stations` in `zoo.tscn`, seen in the editor;
   the designer moves it by dragging, on the 0.5 m grid. Today's places are kept (each station where it stands now).
-- Z06 Nothing places a station by code: the folder collector and the grid placement go. A station's own scene keeps
-  its root at the origin, so alone it plays where it always did.
+- Z06 Nothing places a station by code: the folder collector and the grid placement go. The station scenes are not
+  edited (other branches own them): a station whose root already stands where it should keeps that; one the grid
+  placed gets its place as the instance's transform in `zoo.tscn`.
 - Z07 The zoo still has one Mess, Hands and Coins: `ZooStations._join_socks()` still hands each station's Socks to the
   zoo's (core/10), now for the instances already under `Stations` (it runs before their `_ready`).
 - Z08 A station file in the folder that is not instanced in `zoo.tscn` fails the zoo suite with its name (so a new
