@@ -21,7 +21,7 @@ The zoo station `HouseKit` (`game/zoo/stations/house_kit.tscn`) shows every file
 
 ## Place pieces in the editor
 
-1. Open a scene (a station, or start from `game/house/kit/rooms/u_room.tscn`, a sample room).
+1. Open a scene (a station, or start from `game/zoo/house_kit/rooms/u_room.tscn`, a sample room).
 2. In the 3D view turn on **Use Snap** (the magnet button, or Y). In the snap settings set **Translate Snap** to 0.5 and **Rotate Snap** to 90.
 3. Drag a piece from the file dock into the scene. Its origin is on a grid corner, so it snaps.
 4. Walls run along +X from their origin. A wall's inside (the face you paint with the room's colour) is on +Z. So place the walls of a room **clockwise as seen from above**, and the inside faces the room.
@@ -65,11 +65,11 @@ Both stay for now. The two stations `old_house_a.tscn` (old widths) and `old_hou
 
 ## Change a piece's size and rebuild
 
-Never edit a piece, a mesh or a file in `rooms/` by hand: a rebuild replaces them.
+Never edit a piece, a mesh or a file in `game/zoo/house_kit/rooms/` by hand: a rebuild replaces them.
 
 1. Open `game/house/kit/house_kit_sizes.tres` in the Inspector. Groups: Grid, Walls, Floors, Openings, Stairs and more. Change a number: wall thickness (`exterior` 0.2 m, `partition` 0.12 m), storey (3.0 m), skirting height, door width and height (0.9 by 2.1 m), a window row (width, sill, head, piece length), the stair's steps, and so on.
 2. Save, then run the build script from the project folder:
-   `"$(kit/tools/engine.sh --path)" --headless --path . --script res://game/house/kit/house_kit_build.gd`
+   `"$(kit/tools/engine.sh --path)" --headless --path . --script res://tools/house_kit_build.gd`
 3. The script rewrites `pieces/`, `meshes/`, `rooms/` and any missing material. Piece files keep their uid; node ids inside change.
 4. If you want the old house stations to follow, run:
    `"$(kit/tools/engine.sh --path)" --headless --path . --script res://tools/old_house_build.gd`

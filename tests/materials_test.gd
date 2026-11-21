@@ -5,7 +5,7 @@
 extends TestSuite
 
 const STATION := "res://game/zoo/stations/materials.tscn"
-const LAYOUT := "res://game/zoo/material_board_layout.tres"
+const LAYOUT := "res://game/zoo/materials/material_board_layout.tres"
 const PLAYER := "res://game/player/player.tscn"
 ## The old furniture's material names (54, `tools/materials_from_old.py`): each is one file of the
 ## library or one candidate group.

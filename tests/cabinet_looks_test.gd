@@ -9,7 +9,7 @@ const STATION := "res://game/zoo/stations/cabinet.tscn"
 const CABINET := "res://game/entities/cabinet/cabinet.tscn"
 const PLAYER := "res://game/player/player.tscn"
 const DESIGNS := "res://game/sock/designs.tres"
-const LAYOUT := "res://game/zoo/cabinet_gallery_layout.tres"
+const LAYOUT := "res://game/zoo/cabinet_gallery/cabinet_gallery_layout.tres"
 const ACTIONS: Array[StringName] = [&"pick", &"drop_throw", &"interact", &"move_forward"]
 ## The station's Patterns Pair (its SockSpots' order, as in cabinet_test.gd).
 const PATTERNS := 10

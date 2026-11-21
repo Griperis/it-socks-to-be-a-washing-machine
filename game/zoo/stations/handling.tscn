@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://game/mess/sock_spot.gd" id="4_spot"]
 [ext_resource type="Resource" path="res://game/sock/designs.tres" id="5_designs"]
 [ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
-[ext_resource type="Script" uid="uid://bijzj4p250y1i" path="res://game/zoo/lose_button.gd" id="7_lose"]
+[ext_resource type="Script" uid="uid://bijzj4p250y1i" path="res://game/zoo/handling/lose_button.gd" id="7_lose"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.3, 0.5, 0.42, 1)

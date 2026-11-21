@@ -120,8 +120,9 @@ func case_stations() -> void:
 		for child in station.get_children():
 			if child.scene_file_path.is_empty():
 				continue
-			_check(not child.scene_file_path.begins_with(ZOO_FOLDER),
-					"%s on %s is the game's own scene (%s)" % [child.name, station.name, child.scene_file_path])
+			var own_folder := ZOO_FOLDER + station.scene_file_path.get_file().get_basename() + "/"
+			_check(not child.scene_file_path.begins_with(ZOO_FOLDER) or child.scene_file_path.begins_with(own_folder),
+					"%s on %s is the game's own scene or the station's own zoo-only one (%s)" % [child.name, station.name, child.scene_file_path])
 	_zoo.free()
 	_zoo = null
 

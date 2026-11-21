@@ -8,7 +8,7 @@ extends TestSuite
 
 const FOLDER := "res://game/furniture"
 const STATION := "res://game/zoo/stations/furniture.tscn"
-const LAYOUT := "res://game/zoo/furniture_line_up_layout.tres"
+const LAYOUT := "res://game/zoo/furniture/furniture_line_up_layout.tres"
 const PLAYER := "res://game/player/player.tscn"
 const LIBRARY := "res://game/materials/"
 ## The old manifest's numbers (docs/migration/assets-inventory.md section 2): 67 pieces; 28 containers

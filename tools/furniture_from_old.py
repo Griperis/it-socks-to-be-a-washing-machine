@@ -2,7 +2,7 @@
 """The old game's 67 furniture pieces into this project (assets/04 F02, F04), step one of two.
 
     python3 tools/furniture_from_old.py [--old <dir>] [--pieces a,b] [--data <file>]
-    python3 tools/furniture_from_old.py --uids     after game/furniture/furniture_build.gd: the uids
+    python3 tools/furniture_from_old.py --uids     after tools/furniture_build.gd: the uids
 
 For every old `assets/house/furniture/<piece>.glb` and its manifest entry it writes:
 

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bdri2mp6dmyc6"]
 
-[ext_resource type="Script" uid="uid://2kafq2cefj44" path="res://game/house/kit/house_kit_line_up.gd" id="1_lineup"]
-[ext_resource type="PackedScene" uid="uid://csgi5mriqinly" path="res://game/house/kit/rooms/u_room.tscn" id="2_uroom"]
-[ext_resource type="PackedScene" uid="uid://yrvw83wa1w1m" path="res://game/house/kit/rooms/attic_corner.tscn" id="3_attic"]
+[ext_resource type="Script" uid="uid://2kafq2cefj44" path="res://game/zoo/house_kit/house_kit_line_up.gd" id="1_lineup"]
+[ext_resource type="PackedScene" uid="uid://csgi5mriqinly" path="res://game/zoo/house_kit/rooms/u_room.tscn" id="2_uroom"]
+[ext_resource type="PackedScene" uid="uid://yrvw83wa1w1m" path="res://game/zoo/house_kit/rooms/attic_corner.tscn" id="3_attic"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_730al"]
 albedo_color = Color(0.36, 0.42, 0.5, 1)

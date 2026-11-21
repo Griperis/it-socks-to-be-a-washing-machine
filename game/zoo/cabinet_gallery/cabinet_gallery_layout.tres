@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CabinetGalleryLayout" format=3 uid="uid://wcgv001f35kf"]
 
-[ext_resource type="Script" uid="uid://den0fr0o1gnee" path="res://game/zoo/cabinet_gallery_layout.gd" id="1_layout"]
+[ext_resource type="Script" uid="uid://den0fr0o1gnee" path="res://game/zoo/cabinet_gallery/cabinet_gallery_layout.gd" id="1_layout"]
 
 ; placeholder: the designer's eye on the first still (assets/02)
 [resource]

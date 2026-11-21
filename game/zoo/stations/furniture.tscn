@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://sv5wba3wf252"]
 
-[ext_resource type="Script" uid="uid://crnvtwpwbx2ud" path="res://game/zoo/furniture_line_up.gd" id="1_line_up"]
-[ext_resource type="Resource" uid="uid://bagumvnvvmy5b" path="res://game/zoo/furniture_line_up_layout.tres" id="2_layout"]
+[ext_resource type="Script" uid="uid://crnvtwpwbx2ud" path="res://game/zoo/furniture/furniture_line_up.gd" id="1_line_up"]
+[ext_resource type="Resource" uid="uid://bagumvnvvmy5b" path="res://game/zoo/furniture/furniture_line_up_layout.tres" id="2_layout"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.58, 0.6, 0.56, 1)

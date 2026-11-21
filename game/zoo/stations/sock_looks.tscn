@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c3oefe5hwybf0"]
 
-[ext_resource type="Script" uid="uid://cpb7x3f0p2o47" path="res://game/zoo/sock_looks_station.gd" id="1_station"]
-[ext_resource type="Resource" uid="uid://me4wvxwwbfhq" path="res://game/zoo/sock_looks_layout.tres" id="2_layout"]
+[ext_resource type="Script" uid="uid://cpb7x3f0p2o47" path="res://game/zoo/sock_looks/sock_looks_station.gd" id="1_station"]
+[ext_resource type="Resource" uid="uid://me4wvxwwbfhq" path="res://game/zoo/sock_looks/sock_looks_layout.tres" id="2_layout"]
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="3_designs"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
