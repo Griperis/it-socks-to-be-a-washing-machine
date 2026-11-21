@@ -1,4 +1,647 @@
 {
-  "_doc": "Every Blender asset: its source is assets_src/blender/<asset>.blend and its export assets/<asset>/<asset>.glb (kit/tools/blender/export.sh <asset>). class picks the triangle budget (BUDGETS in kit/tools/blender/asset_checks.py); colliders is the least number of collider meshes. Optional: source (the .blend's name when several assets share one), glb (the export path when it differs), lods (each level's triangle limit, <mesh>_lod1, <mesh>_lod2 ...), origin_xy (false for an asset not centred on its origin by design). Example: \"crate\": {\"class\": \"prop\", \"colliders\": 1}",
-  "assets": {}
+  "_doc": "Every Blender asset: its source is assets_src/blender/<asset>.blend and its export assets/<asset>/<asset>.glb (kit/tools/blender/export.sh <asset>). class picks the triangle budget (BUDGETS in kit/tools/blender/asset_checks.py); colliders is the least number of collider meshes. Optional: source (the .blend's name when several assets share one), glb (the export path when it differs), lods (each level's triangle limit, <mesh>_lod1, <mesh>_lod2 ...), origin_xy (false for an asset not centred on its origin by design). Example: \"crate\": {\"class\": \"prop\", \"colliders\": 1} Sources sorted by family: source \"sock/socks\" is assets_src/blender/sock/socks.blend. The game's own export of these is assets_src/generate/export.sh (assets_src/generate/README.md); classes sock and sock_ball are the old game's budgets (320 and 540 render triangles), which kit/tools/blender/asset_checks.py BUDGETS does not list yet.",
+  "assets": {
+    "ball_ankle": {
+      "class": "sock_ball",
+      "colliders": 0,
+      "source": "sock/sock_balls",
+      "glb": "assets/sock/ball_ankle.glb",
+      "lods": [
+        80
+      ]
+    },
+    "ball_chunky_fold": {
+      "class": "sock_ball",
+      "colliders": 0,
+      "source": "sock/sock_balls",
+      "glb": "assets/sock/ball_chunky_fold.glb",
+      "lods": [
+        80
+      ]
+    },
+    "ball_crew_cape": {
+      "class": "sock_ball",
+      "colliders": 0,
+      "source": "sock/sock_balls",
+      "glb": "assets/sock/ball_crew_cape.glb",
+      "lods": [
+        80
+      ]
+    },
+    "ball_crew_ears": {
+      "class": "sock_ball",
+      "colliders": 0,
+      "source": "sock/sock_balls",
+      "glb": "assets/sock/ball_crew_ears.glb",
+      "lods": [
+        80
+      ]
+    },
+    "ball_crew_plain": {
+      "class": "sock_ball",
+      "colliders": 0,
+      "source": "sock/sock_balls",
+      "glb": "assets/sock/ball_crew_plain.glb",
+      "lods": [
+        80
+      ]
+    },
+    "ball_crew_rolled": {
+      "class": "sock_ball",
+      "colliders": 0,
+      "source": "sock/sock_balls",
+      "glb": "assets/sock/ball_crew_rolled.glb",
+      "lods": [
+        80
+      ]
+    },
+    "ball_crew_scallop": {
+      "class": "sock_ball",
+      "colliders": 0,
+      "source": "sock/sock_balls",
+      "glb": "assets/sock/ball_crew_scallop.glb",
+      "lods": [
+        80
+      ]
+    },
+    "ball_crew_stripe": {
+      "class": "sock_ball",
+      "colliders": 0,
+      "source": "sock/sock_balls",
+      "glb": "assets/sock/ball_crew_stripe.glb",
+      "lods": [
+        80
+      ]
+    },
+    "ball_tube_rib": {
+      "class": "sock_ball",
+      "colliders": 0,
+      "source": "sock/sock_balls",
+      "glb": "assets/sock/ball_tube_rib.glb",
+      "lods": [
+        80
+      ]
+    },
+    "cabinet_animals": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/animals.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_animals"
+    },
+    "cabinet_drinks": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/drinks.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_drinks"
+    },
+    "cabinet_food": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/food.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_food"
+    },
+    "cabinet_fruit": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/fruit.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_fruit"
+    },
+    "cabinet_lost": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/lost.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_lost"
+    },
+    "cabinet_machinery": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/machinery.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_machinery"
+    },
+    "cabinet_math": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/math.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_math"
+    },
+    "cabinet_nature": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/nature.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_nature"
+    },
+    "cabinet_patterns": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/patterns.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_patterns"
+    },
+    "cabinet_simple": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/simple.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_simple"
+    },
+    "cabinet_space": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/space.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_space"
+    },
+    "cabinet_sport": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/sport.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_sport"
+    },
+    "cabinet_superhero": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/superhero.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_superhero"
+    },
+    "cabinet_tech": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/tech.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_tech"
+    },
+    "cabinet_transport": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/transport.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_transport"
+    },
+    "cabinet_vegetables": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/vegetables.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_vegetables"
+    },
+    "cabinet_winter": {
+      "class": "furniture",
+      "colliders": 2,
+      "glb": "assets/cabinet/winter.glb",
+      "origin_xy": false,
+      "source": "cabinet/cabinet_winter"
+    },
+    "sock_ankle": {
+      "class": "sock",
+      "colliders": 0,
+      "source": "sock/socks",
+      "glb": "assets/sock/ankle.glb",
+      "lods": [
+        90,
+        20
+      ]
+    },
+    "sock_chunky": {
+      "class": "sock",
+      "colliders": 0,
+      "source": "sock/socks",
+      "glb": "assets/sock/chunky.glb",
+      "lods": [
+        90,
+        20
+      ]
+    },
+    "sock_crew": {
+      "class": "sock",
+      "colliders": 0,
+      "source": "sock/socks",
+      "glb": "assets/sock/crew.glb",
+      "lods": [
+        90,
+        20
+      ]
+    },
+    "sock_tube": {
+      "class": "sock",
+      "colliders": 0,
+      "source": "sock/socks",
+      "glb": "assets/sock/tube.glb",
+      "lods": [
+        90,
+        20
+      ]
+    },
+    "armchair": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/armchair",
+      "glb": "assets/furniture/armchair.glb"
+    },
+    "bath_mat": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/bath_mat",
+      "glb": "assets/furniture/bath_mat.glb"
+    },
+    "bathtub": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/bathtub",
+      "glb": "assets/furniture/bathtub.glb"
+    },
+    "bikes": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/bikes",
+      "glb": "assets/furniture/bikes.glb"
+    },
+    "boiler": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/boiler",
+      "glb": "assets/furniture/boiler.glb"
+    },
+    "bookshelf": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/bookshelf",
+      "glb": "assets/furniture/bookshelf.glb"
+    },
+    "bunk_bed": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/bunk_bed",
+      "glb": "assets/furniture/bunk_bed.glb"
+    },
+    "car": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/car",
+      "glb": "assets/furniture/car.glb"
+    },
+    "coat_nook": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/coat_nook",
+      "glb": "assets/furniture/coat_nook.glb"
+    },
+    "coffee_table": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/coffee_table",
+      "glb": "assets/furniture/coffee_table.glb"
+    },
+    "collection_board": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/collection_board",
+      "glb": "assets/furniture/collection_board.glb"
+    },
+    "desk": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/desk",
+      "glb": "assets/furniture/desk.glb"
+    },
+    "dining_chair": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/dining_chair",
+      "glb": "assets/furniture/dining_chair.glb"
+    },
+    "dining_table": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/dining_table",
+      "glb": "assets/furniture/dining_table.glb"
+    },
+    "doormat": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/doormat",
+      "glb": "assets/furniture/doormat.glb"
+    },
+    "double_bed": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/double_bed",
+      "glb": "assets/furniture/double_bed.glb"
+    },
+    "dresser": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/dresser",
+      "glb": "assets/furniture/dresser.glb"
+    },
+    "drying_rack": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/drying_rack",
+      "glb": "assets/furniture/drying_rack.glb"
+    },
+    "filing_cabinet": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/filing_cabinet",
+      "glb": "assets/furniture/filing_cabinet.glb"
+    },
+    "floor_lamp": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/floor_lamp",
+      "glb": "assets/furniture/floor_lamp.glb"
+    },
+    "fridge": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/fridge",
+      "glb": "assets/furniture/fridge.glb"
+    },
+    "hand_basin": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/hand_basin",
+      "glb": "assets/furniture/hand_basin.glb"
+    },
+    "ironing_board": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/ironing_board",
+      "glb": "assets/furniture/ironing_board.glb"
+    },
+    "kids_shelf": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/kids_shelf",
+      "glb": "assets/furniture/kids_shelf.glb"
+    },
+    "kitchen_corner": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/kitchen_corner",
+      "glb": "assets/furniture/kitchen_corner.glb"
+    },
+    "kitchen_cupboard": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/kitchen_cupboard",
+      "glb": "assets/furniture/kitchen_cupboard.glb"
+    },
+    "kitchen_drawers": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/kitchen_drawers",
+      "glb": "assets/furniture/kitchen_drawers.glb"
+    },
+    "kitchen_filler": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/kitchen_filler",
+      "glb": "assets/furniture/kitchen_filler.glb"
+    },
+    "kitchen_oven": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/kitchen_oven",
+      "glb": "assets/furniture/kitchen_oven.glb"
+    },
+    "kitchen_shelf": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/kitchen_shelf",
+      "glb": "assets/furniture/kitchen_shelf.glb"
+    },
+    "kitchen_sink": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/kitchen_sink",
+      "glb": "assets/furniture/kitchen_sink.glb"
+    },
+    "kitchen_wall_cupboard": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/kitchen_wall_cupboard",
+      "glb": "assets/furniture/kitchen_wall_cupboard.glb"
+    },
+    "laundry_basket": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/laundry_basket",
+      "glb": "assets/furniture/laundry_basket.glb"
+    },
+    "laundry_shelf": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/laundry_shelf",
+      "glb": "assets/furniture/laundry_shelf.glb"
+    },
+    "litterbox": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/litterbox",
+      "glb": "assets/furniture/litterbox.glb"
+    },
+    "living_rug": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/living_rug",
+      "glb": "assets/furniture/living_rug.glb"
+    },
+    "mine_barrel": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/mine_barrel",
+      "glb": "assets/furniture/mine_barrel.glb"
+    },
+    "mine_crate": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/mine_crate",
+      "glb": "assets/furniture/mine_crate.glb"
+    },
+    "nightstand": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/nightstand",
+      "glb": "assets/furniture/nightstand.glb"
+    },
+    "office_chair": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/office_chair",
+      "glb": "assets/furniture/office_chair.glb"
+    },
+    "old_cot": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/old_cot",
+      "glb": "assets/furniture/old_cot.glb"
+    },
+    "old_tree": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/old_tree",
+      "glb": "assets/furniture/old_tree.glb"
+    },
+    "paint_tins": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/paint_tins",
+      "glb": "assets/furniture/paint_tins.glb"
+    },
+    "piano": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/piano",
+      "glb": "assets/furniture/piano.glb"
+    },
+    "plant_big": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/plant_big",
+      "glb": "assets/furniture/plant_big.glb"
+    },
+    "plant_cactus": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/plant_cactus",
+      "glb": "assets/furniture/plant_cactus.glb"
+    },
+    "plant_snake": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/plant_snake",
+      "glb": "assets/furniture/plant_snake.glb"
+    },
+    "plant_trailing": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/plant_trailing",
+      "glb": "assets/furniture/plant_trailing.glb"
+    },
+    "play_rug": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/play_rug",
+      "glb": "assets/furniture/play_rug.glb"
+    },
+    "printer": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/printer",
+      "glb": "assets/furniture/printer.glb"
+    },
+    "rocking_horse": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/rocking_horse",
+      "glb": "assets/furniture/rocking_horse.glb"
+    },
+    "sheeted_sofa": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/sheeted_sofa",
+      "glb": "assets/furniture/sheeted_sofa.glb"
+    },
+    "shelf_rack": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/shelf_rack",
+      "glb": "assets/furniture/shelf_rack.glb"
+    },
+    "side_table": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/side_table",
+      "glb": "assets/furniture/side_table.glb"
+    },
+    "ski_bag": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/ski_bag",
+      "glb": "assets/furniture/ski_bag.glb"
+    },
+    "sofa": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/sofa",
+      "glb": "assets/furniture/sofa.glb"
+    },
+    "storage_boxes": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/storage_boxes",
+      "glb": "assets/furniture/storage_boxes.glb"
+    },
+    "telescope": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/telescope",
+      "glb": "assets/furniture/telescope.glb"
+    },
+    "toilet": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/toilet",
+      "glb": "assets/furniture/toilet.glb"
+    },
+    "tool_shelves": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/tool_shelves",
+      "glb": "assets/furniture/tool_shelves.glb"
+    },
+    "towel_rail": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/towel_rail",
+      "glb": "assets/furniture/towel_rail.glb"
+    },
+    "toy_chest": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/toy_chest",
+      "glb": "assets/furniture/toy_chest.glb"
+    },
+    "trunk": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/trunk",
+      "glb": "assets/furniture/trunk.glb"
+    },
+    "vanity": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/vanity",
+      "glb": "assets/furniture/vanity.glb"
+    },
+    "wall_mirror": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/wall_mirror",
+      "glb": "assets/furniture/wall_mirror.glb"
+    },
+    "water_tank": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/water_tank",
+      "glb": "assets/furniture/water_tank.glb"
+    },
+    "workbench": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "furniture/workbench",
+      "glb": "assets/furniture/workbench.glb"
+    }
+  }
 }
