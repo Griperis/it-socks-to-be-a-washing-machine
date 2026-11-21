@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: house
 feature: house
 priority: now
 created: 2026-11-20
-done:
+done: 2026-11-21
 blocked_by: ["[[02-kit-for-the-old-house]]"]
 notes: []
 terms: []
@@ -41,26 +41,23 @@ House/02's plan (`docs/architecture/house-kit-plan.md`) and kit are approved (Q2
 ## Answers
 - Built twice, A (old widths) and B (rounded) (Q2381); both stand beside the zoo as stations (Q2386) (2026-11-21).
 - The whole house is rebuilt as the kit's proof (Q2345, 2026-11-20).
+- The designer's go on both houses from the stills in `builds/review-house-03/` (Q2391, 2026-11-21).
+- `mess:m04_every_sock` counts only the Mess's own nodes (the zoo's Socks, its lying and flying Socks)
+  and keeps its 8,000 budget (Q2392, 2026-11-21).
+- Both 1 cm K14 fixes (the shaft hole into the x 4 partition, the balustrade's north rail back from the
+  void) and both new pieces (`corner_exterior_open`, `door_partition_offset_hatch_2m`) stay; the pieces
+  are in `tools/house_plan.py`'s list (Q2393, 2026-11-21).
 
 ## Open follow-ups
-- [blocking] `mess:m04_every_sock` fails: the zoo must keep under 8,000 nodes and now has 11,309; each
-  house station is about 2,050 nodes (a kit piece is a mesh, a body and its boxes; ~600 pieces a
-  house), so even one house goes over. Not raised by the agent (a budget). Raise the zoo's budget,
-  count only the Mess's nodes in m04, or keep the old houses out of the zoo (their own scene)?
-- [blocking] The designer's go on the stills in `builds/review-house-03/` (`side-<view>.png`: old | A | B,
-  21 views). Differences seen, each for the designer: shell only (no furniture, lamps, rugs, room doors,
-  elevator); the zoo's noon light (old: 9:08, lamps on); a flat lawn at the ground floor's height (old:
-  0.3 m lower with plinth, front step, fences, trees, street), wells without concrete walls or grates,
-  the garage ramp a plain slope; no bathroom tile wainscot (a skin in the old shell, no kit piece); the
-  elevator shaft an open hole in the ground, first and attic floors; the plan's moves (first riser
-  +0.25 m, 3.0 m storeys, 40 deg roof); small orange marks on the south slope seen from the front (also
-  in the old still); the station's name label floats over the house in the exterior views.
-- [later] Kit fixes made here (the lead's to confirm, they change approved pieces by 1 cm): the shaft
-  hole runs 0.01 m into the x 4 partition (its side lay in the partition's face, K14); the attic
-  balustrade's north rail stands 0.01 m back from the void (its foot lay in the floor tile's edge, K14).
-- [later] Two pieces added (`corner_exterior_open`, `door_partition_offset_hatch_2m`): the plan's W15
-  piece runs into the SW corner's arm, and D8's and the hatch's pieces overlap on the first floor's x 4
-  partition. `tools/house_plan.py`'s piece list does not name them yet.
+- [later] The bathroom's tile wainscot to 1.2 m (a skin in the old shell) has no kit piece: its walls are plain paint.
+- [later] The light wells are holes in the lawn with a gravel floor: no concrete walls, no grates.
+- [later] No plinth band round the house; the lawn is at the ground floor's height (old: 0.3 m lower).
+- [later] No front step at the front door (only a flat threshold).
+- [later] No fences, trees, neighbours' houses or street round the stations.
+- [later] The garage ramp is one plain slope: no retaining walls, kerbs or posts.
+- [later] The elevator shaft is an open hole in the ground, first and attic floors until the elevator stands in it.
+- [later] The station's name label floats over the house in the exterior views.
+- [later] Small orange marks on the south roof slope seen from the front (also in the old still): to be looked at.
 
 ## Built log
 - 2026-11-21 (agent). Changed: both houses built from kit pieces only by `tools/old_house_build.gd` at
@@ -71,4 +68,7 @@ House/02's plan (`docs/architecture/house-kit-plan.md`) and kit are approved (Q2
   sizes, 2 new pieces, shaft tiles, balustrade), tools/shot_hooks.gd, tools/shots/sets/old-house.txt,
   docs/architecture/house-kit.md. Verified: --touched FAIL 1 of 8752 checks, 146 cases (only m04, above); old_house 9 cases incl. the
   real paths front door to attic (A) and basement out of the front door (B), K14 on both houses.
+- 2026-11-21 (agent). Changed: m04 counts the Mess's own nodes (Q2392); the two new pieces in
+  `tools/house_plan.py`'s list and the plan (Q2393); answers and follow-ups in. Files: tests/mess_test.gd,
+  tools/house_plan.py, docs/architecture/house-kit-plan.md, this ticket. Verified: PASS 8752 checks, 146 cases (--touched).
 - Model: Opus (lead): a large hand-built scene from many pieces, on the approved plan.
