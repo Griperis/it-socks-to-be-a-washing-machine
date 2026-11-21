@@ -194,4 +194,50 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.make_current()
 			(station.get_node("More/HeapButton") as HeapButton).use(player.player_id())
 			return true
+		"outline":
+			# core/11: the zoo's player stands before a thing of the outline station and aims at it, so
+			# its own aim shows the outline. arg "<thing>_<near|far>": thing sock, box, drawer (the
+			# middle one), top (the top drawer, above the Rows: no room), door or cupboard; near and far
+			# are eye distances (1.5 and 2.4 m; a Sock on the floor 1.8 and 2.4 m). arg "pair": the
+			# player takes the station's first Sock and its mate, one Pair in the Hands.
+			var station := world.get_node("Stations/Outline") as Node3D
+			var player := world.get_node("Player") as Player
+			if arg == "pair":
+				var hands := world.get_node("Socks/Hands") as Hands
+				player.global_position = station.to_global(Vector3(-1.7, 0.0, 1.2))
+				player.reset_physics_interpolation()
+				hands.pick(player.player_id(), (station.get_node("Spots/Sock") as SockSpot).sock)
+				hands.clock += 10.0
+				hands.pick(player.player_id(), (station.get_node("Spots/Mate") as SockSpot).sock)
+				return true
+			var parts := arg.split("_")
+			var thing := parts[0]
+			var far := parts.size() > 1 and parts[1] == "far"
+			var target := Vector3.ZERO
+			match thing:
+				"sock":
+					var mess := world.get_node("Socks/Mess") as Mess
+					target = mess.box_of((station.get_node("Spots/Sock") as SockSpot).sock).get_center()
+				"box":
+					target = (station.get_node("Box") as Node3D).global_position
+				"drawer", "top":
+					var drawer := "Cabinet/Drawer3/Looks/Slide" if thing == "top" else "Cabinet/Drawer2/Looks/Slide"
+					target = (station.get_node(drawer) as Node3D).global_transform * Vector3(0.0, 0.14, 0.25)
+				"door":
+					target = (station.get_node("Door/Looks/Hinge") as Node3D).global_transform * Vector3(0.45, 1.3, 0.025)
+				"cupboard":
+					target = (station.get_node("Cupboard") as Node3D).global_transform * Vector3(0.0, 0.6, 0.3)
+			var head := player.get_node("Head") as Node3D
+			var eye := station.global_position.y + head.global_position.y - player.global_position.y
+			var dist := (2.4 if far else 1.8) if thing == "sock" else (2.4 if far else 1.5)
+			var dy := eye - target.y
+			var flat := sqrt(maxf(dist * dist - dy * dy, 0.04))
+			var side := Vector3(0.3, 0.0, 1.0).normalized()
+			player.global_position = Vector3(target.x, station.global_position.y, target.z) + side * flat
+			player.velocity = Vector3.ZERO
+			var to := target - player.global_position
+			player.rotation.y = atan2(-to.x, -to.z)
+			head.rotation.x = atan2(target.y - eye, flat)
+			player.reset_physics_interpolation()
+			return true
 	return false

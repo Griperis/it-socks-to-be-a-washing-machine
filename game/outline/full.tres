@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="OutlineStyle" format=3 uid="uid://c37553ojuxvr8"]
+
+[ext_resource type="Script" uid="uid://bh3tprchpdk0q" path="res://game/outline/outline_style.gd" id="1_style"]
+
+; placeholder: the "full" tint's red shade (Q221; the old game's UiBits.REFUSE, itself a placeholder)
+[resource]
+script = ExtResource("1_style")
+colour = Color(0.95, 0.25, 0.2, 1)

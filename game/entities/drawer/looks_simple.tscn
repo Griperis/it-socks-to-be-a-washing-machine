@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cpgwgtg7amdc"]
 
 [ext_resource type="ArrayMesh" uid="uid://cyqtop2nmxvax" path="res://game/entities/cabinet/simple_drawer.res" id="1_mesh"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="9_outline"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_front"]
 size = Vector3(1.46, 0.28, 0.04)
@@ -144,6 +145,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.195, 0.085, 0.14)
 
 [node name="Slot25" type="Marker3D" parent="Slide"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.455, 0.085, 0.14)
+
+[node name="Outline" type="Node3D" parent="."]
+visible = false
+script = ExtResource("9_outline")
+meshes = Array[NodePath]([NodePath("../Slide/Mesh")])
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 callback_mode_process = 0
