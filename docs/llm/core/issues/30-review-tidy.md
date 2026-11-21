@@ -7,7 +7,7 @@ feature: core
 priority: now
 created: 2026-11-21
 done:
-blocked_by: ["[[28-review-correctness-fixes]]", "[[29-review-frame-cost]]", "[[31-mess-benchmark-and-settling]]"]
+blocked_by: ["[[28-review-correctness-fixes]]", "[[29-review-frame-cost]]", "[[31-mess-benchmark-and-settling]]", "[[34-zoo-only-into-the-zoo]]"]
 notes: []
 terms: []
 ---
@@ -16,7 +16,7 @@ terms: []
 
 The M0.5 code review's duplication, unused code and rule tensions, which the designer chose to fix (Q2404). Nothing
 the player sees, hears or feels changes; the designer gains numbers in the inspector and zoo labels in the editor.
-Runs after core/28, 29 and 31 because it touches their files.
+Runs after core/28, 29, 31 and 34 because it touches their files (paths as core/34 left them).
 
 ## Behaviour list
 - T1 Felt numbers move from code constants into their tuning Resources, with the same values:
@@ -55,7 +55,7 @@ Runs after core/28, 29 and 31 because it touches their files.
   `_hexa`, `_room_root`, the twice-written `pick` lambda in `house_kit_build.gd`; `zoo_net.gd:77-79`'s dead `Log`
   branch. Check tests and tools for callers first; kit template files (`carriable.gd`, `profiler.gd`, `settings.gd`,
   `session.gd`) are not touched.
-- T5 `Prompts.target()` asks the Part for its title (`prompt_title()` on `Part`) instead of switching on classes
+- T5 (done in core/34 instead) `Prompts.target()` asks the Part for its title (`prompt_title()` on `Part`) instead of switching on classes
   (`game/ui/prompts.gd:35-40`); `Prompt` is a `RefCounted`.
 - T6 Small naming fixes the review listed (`house_kit_build.gd:2` says `.tres`, `_offset` at the top, the stale
   path in `tools/furniture_from_old.py:14`, `lose_button.gd` verb as a StringName).

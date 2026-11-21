@@ -1,4 +1,4 @@
-Next free Q number: Q2409 (update this line whenever a round of questions is asked)
+Next free Q number: Q2410 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -321,3 +321,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2406: the benchmark takes the old game's way (tools/stress.sh, game/debug/physics_stress.gd, docs/perf/tools.md) as its model, kept well structured (designer: "Inspire from the old game, how it's done. But try to keep the code well structured.").
 - Q2407: the Mess glitch is at the moment Socks settle: "they teleport and there is a visible glitch" (designer, 2026-11-21); core/31 starts from it (it reopens core/21's rest blip, which a still had found pixel-identical).
 - Q2408: the zoo's station names and the houses' names stand near the ground where the player reads them easily, not floating high over the station (designer: "they should be near on the ground, so I can read them easily"; core/33).
+- Q2409: what only the zoo needs (switches, sound buttons, line-ups, sample rooms, zoo-only data) lives under game/zoo/, grouped per station; the game never refers to game/zoo/; the build-time generators move to tools/ (designer: "the switches, texts, ... that are used in the zoo should only be in the zoo"; core/34). Real entities that only the zoo uses today (the Cabinet, the cupboard, the Player, the kit pieces) stay in game/: they are the game's.

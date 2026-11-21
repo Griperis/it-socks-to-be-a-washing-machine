@@ -53,7 +53,8 @@ Each is stated once here and owned by the file named; three are enforced by a ho
 <!-- opt:zoo -->
 - **A feature is built in its zoo station first** (`game/zoo/stations/<feature>.tscn`, one file per
   station, instanced by hand under `Stations` in `zoo.tscn`, Q2359; not collected by code) and then lands in the main
-  scene (the `zoo-design` skill).
+  scene (the `zoo-design` skill). What only the zoo needs lives under `game/zoo/`, grouped per station; nothing outside
+  `game/zoo/` refers to it (Q2409).
 <!-- /opt:zoo -->
 - **Every build ticket has one real-path case:** player input through the scene's own wiring to
   what the player sees (`kit/docs/TESTING.md` "The real path").
