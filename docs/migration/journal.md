@@ -406,3 +406,18 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2371-Q2377 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/15, aiming and screen: the old prompts, corner hints, keycaps, the aimed and held readouts with Sock Smarts and Sense flags, the old openable names; approved and merged (main 5c324b8) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 1 (the openable wording back to the old names, Q2388) |
+| Corrections | "This worked different by upgrades. Explore more." (Q2360); the Throw hint was never gated (Q2365, the draft's premise was wrong); old names on openables (Q2388) |
+| Cost | core/15 2 32,520,955 197 29m29s (Opus) |
+| Time | the agent ran about 25 min |
+| Surprises | a "nonexistent object" at the agent's finish again (committed by hand, read back) |
+| Stop rules | stopped at its first still |
+| Looks | `builds/review-core-15/` |
+| Decisions | Q2360-Q2365, Q2387, Q2388 |
+
+---
