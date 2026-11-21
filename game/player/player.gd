@@ -76,6 +76,12 @@ var _outlined := -1
 var aimed_outline: Outline = null
 ## Whether a drop would be refused where the crosshair is now (the crosshair is red).
 var drop_refused := false
+## This physics tick's drop spot ({} for none) and why the Host would refuse it ("" for nothing), found
+## once from the tick's aim; a drop click in the same tick uses them.
+var _tick_spot: Dictionary = {}
+## How many times the aim was looked up (a timing case counts these per tick, not wall time).
+var aim_finds := 0
+var _tick_refusal := ""
 ## The Hands it last bound to, and the Parts whose answers it listens to.
 var _hands: Hands = null
 var _listening: Parts = null
@@ -283,7 +289,12 @@ func _update_hands(delta: float) -> void:
 	_outline(h.mess, aimed_sock)
 	_outline_thing(_aimed_outline(h.mess, aimed_sock, found["lying"]))
 	var holding := h.active_of(me) >= 0
-	drop_refused = holding and drop_refusal(h) != ""
+	_tick_spot = {}
+	_tick_refusal = ""
+	if holding:
+		_tick_spot = drop_spot(found)
+		_tick_refusal = _refusal_of(h, _tick_spot)
+	drop_refused = _tick_refusal != ""
 	_held_view.me = me
 	_held_view.turning = _acting() and Input.is_action_pressed(TURN)
 	_update_screen(h)
@@ -371,8 +382,8 @@ func _pick(h: Hands, sock: int) -> void:
 func _drop(h: Hands) -> void:
 	if h.active_of(player_id()) < 0:
 		return
-	var spot := drop_spot()
-	if spot.is_empty() or h.drop_refusal(player_id(), spot["point"], spot["normal"]) != "":
+	var spot := _tick_spot
+	if spot.is_empty() or _tick_refusal != "":
 		say(CANT_DROP)
 		return
 	h.drop(player_id(), spot["point"], spot["normal"])
@@ -380,7 +391,10 @@ func _drop(h: Hands) -> void:
 
 ## Why a drop where the crosshair is would be refused now, or "" (the Host's own check).
 func drop_refusal(h: Hands) -> String:
-	var spot := drop_spot()
+	return _refusal_of(h, drop_spot())
+
+
+func _refusal_of(h: Hands, spot: Dictionary) -> String:
 	if spot.is_empty():
 		return Hands.NO_SPOT
 	return h.drop_refusal(player_id(), spot["point"], spot["normal"])
@@ -388,16 +402,18 @@ func drop_refusal(h: Hands) -> String:
 
 ## The Sock or Pair under the crosshair, lying or moving (R02, R03): AimFinder.find()'s answer.
 func aim_found(h: Hands) -> Dictionary:
+	aim_finds += 1
 	return AimFinder.find(self, h.mess, _head.global_position, aim_dir(), hands_tuning.reach, [get_rid()])
 
 
 ## Where the crosshair meets a top within reach, seen through a gap no narrower than the drop gap:
 ## {"point", "normal"} in the level, or {} when it meets nothing. A lying Sock or Pair under the
-## crosshair takes the drop anywhere on it (R05).
-func drop_spot() -> Dictionary:
+## crosshair takes the drop anywhere on it (R05). `found`: the tick's aim_found(), or {} to look it up.
+func drop_spot(found: Dictionary = {}) -> Dictionary:
 	var h := hands()
 	if h != null and h.mess != null:
-		var found := aim_found(h)
+		if found.is_empty():
+			found = aim_found(h)
 		if found["sock"] >= 0 and found["lying"]:
 			return {"point": found["point"], "normal": Vector3.UP}
 	return PhysicsQueries.ball_hit(self, _head.global_position, -_head.global_basis.z * hands_tuning.reach,

@@ -31,6 +31,8 @@ func cases() -> Array[Dictionary]:
 	return [
 		{"name": "real_path", "method": "case_real_path", "world": false,
 				"title": "real path: in the station the real actions pick a Sock, drop it on the table, pick it again, open the cupboard and drop it inside"},
+		{"name": "core29_frame_cost", "method": "case_frame_cost", "world": false,
+				"title": "core/29: held, one aim lookup, one drop-spot query and no cloth search per tick; the drop lands where the aim showed"},
 		{"name": "m12_aim_pick", "method": "case_m12", "world": false,
 				"title": "M12: a Sock in reach under the crosshair is outlined and a click picks it; the floor beside it, or one out of reach, picks nothing"},
 		{"name": "m13_tip", "method": "case_m13", "world": false,
@@ -121,6 +123,34 @@ func case_real_path() -> void:
 	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "the Sock to come to rest inside")
 	_places("after the drop into the cupboard")
 	_check(_inside_cupboard(_mess.pose_of(ON_FLOOR).origin), "it lies inside the cupboard (%s)" % _mess.pose_of(ON_FLOOR).origin)
+
+
+func case_frame_cost() -> void:
+	await _build()
+	await _pick(ON_FLOOR)
+	var view := _player.held_view()
+	await _physics_ticks(5)
+	var spot := Vector3(-1.3, 0.0, 0.5)
+	_player.global_position = Vector3(-1.3, 0.0, 2.0)
+	await _physics_ticks(2)
+	await _aim(_player, spot)
+	_check(_player.crosshair_colour() == Player.CROSSHAIR_OK, "the crosshair is white on the floor")
+	var finds := _player.aim_finds
+	var balls := PhysicsQueries.ball_queries
+	var searches := view.cloth_searches
+	await _physics_ticks(10)
+	_check(_player.aim_finds - finds == 10, "one aim lookup per held tick (%d in 10)" % (_player.aim_finds - finds))
+	_check(PhysicsQueries.ball_queries - balls == 10, "one drop-spot query per held tick (%d in 10)" % (PhysicsQueries.ball_queries - balls))
+	_check(view.cloth_searches == searches, "no cloth search while the Sock is held")
+	var shown := _player.drop_spot()
+	_check(not shown.is_empty(), "the aim shows a spot")
+	finds = _player.aim_finds
+	await _press(&"drop_throw")
+	_check(_player.aim_finds - finds <= 4, "a drop click looks the aim up no more than the ticks do (%d)" % (_player.aim_finds - finds))
+	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "the Sock to come to rest")
+	var at := _mess.pose_of(ON_FLOOR).origin
+	_check(Vector2(at.x, at.z).distance_to(Vector2(shown["point"].x, shown["point"].z)) < 0.4,
+			"it lands where the aim showed (%s, aim %s)" % [at, shown["point"]])
 
 
 # --- Aim and pick --------------------------------------------------------------------------------

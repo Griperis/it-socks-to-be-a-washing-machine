@@ -36,6 +36,7 @@ const KEY_NAMES: Dictionary[int, String] = {
 	KEY_SPACE: "space", KEY_CTRL: "ctrl", KEY_SHIFT: "shift", KEY_ESCAPE: "esc",
 }
 
+## Each key's icon, or null for a key with none (a miss is kept too: no file lookup twice).
 static var _cache: Dictionary[String, Texture2D] = {}
 
 
@@ -45,8 +46,7 @@ static func texture(key: String) -> Texture2D:
 		return _cache[key]
 	var file := path_of(key)
 	var tex: Texture2D = load(file) if ResourceLoader.exists(file) else null
-	if tex != null:
-		_cache[key] = tex
+	_cache[key] = tex
 	return tex
 
 

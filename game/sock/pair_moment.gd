@@ -18,6 +18,9 @@ const SOCKS: Array[NodePath] = [^"Held/Looks", ^"Mate/FlyIn/Looks"]
 
 ## Each skeleton's chain bones at their pose before the fold, by the skeleton's instance id.
 var _unfolded: Dictionary[int, Dictionary] = {}
+## The SockCloth of each of SOCKS, found once, and how many searches found them.
+var _cloths: Dictionary[NodePath, SockCloth] = {}
+var cloth_searches := 0
 
 
 ## How far each Sock's bones are rolled now (tests read it): the first chain bone's turn from its
@@ -59,9 +62,17 @@ func _apply() -> void:
 			skeleton.set_bone_pose_rotation(b, (unfolded[b] as Quaternion) * roll)
 
 
+## The SockCloth under the Looks at `path`, found once and kept.
 func _cloth(path: NodePath) -> SockCloth:
+	var kept: SockCloth = _cloths.get(path)
+	if kept != null and is_instance_valid(kept):
+		return kept
 	var looks := get_node_or_null(path)
 	if looks == null:
 		return null
+	cloth_searches += 1
 	var found := looks.find_children("*", "SockCloth", true, false)
-	return found[0] as SockCloth if not found.is_empty() else null
+	var cloth := found[0] as SockCloth if not found.is_empty() else null
+	if cloth != null:
+		_cloths[path] = cloth
+	return cloth
