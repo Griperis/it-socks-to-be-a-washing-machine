@@ -223,6 +223,15 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			var player := world.get_node("Player") as Player
 			(world.get_node("Socks/Hands") as Hands).cycle(player.player_id(), 1)
 			return true
+		"cloth":
+			# core/36: a tuning override for this run only, arg "drag/stiffness/gravity" (the .tres is not
+			# written); do it before the Sock is picked, as the cloth reads drag and stiffness when it is made.
+			var parts := arg.split("/")
+			var tuning := load("res://game/sock/sock_cloth_tuning.tres") as SockClothTuning
+			tuning.drag = float(parts[0])
+			tuning.stiffness = float(parts[1])
+			tuning.gravity = float(parts[2])
+			return true
 		"walk", "stop":
 			# Walking forward, or standing again.
 			if what == "walk":
@@ -239,9 +248,12 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			player.reset_physics_interpolation()
 			return true
 		"turn_view":
-			# The view turns left by 1.2 rad in 0.4 s, as the mouse would.
+			# The view turns left by 1.2 rad in 0.4 s, as the mouse would; arg "quick" (core/36): 90 degrees in 0.15 s.
 			var player := world.get_node("Player") as Player
-			player.create_tween().tween_property(player, ^"rotation:y", player.rotation.y + 1.2, 0.4)
+			if arg == "quick":
+				player.create_tween().tween_property(player, ^"rotation:y", player.rotation.y + PI / 2.0, 0.15)
+			else:
+				player.create_tween().tween_property(player, ^"rotation:y", player.rotation.y + 1.2, 0.4)
 			return true
 		"drop_aimed":
 			# core/23: arg "look" tilts the head 45 degrees down at the open floor; without one, the held
