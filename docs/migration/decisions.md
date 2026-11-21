@@ -1,4 +1,4 @@
-Next free Q number: Q2401 (update this line whenever a round of questions is asked)
+Next free Q number: Q2404 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -313,3 +313,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2398: core/16's five looks merge as built; the rest of the motion polish (P03, P08, P10, P11, P14, P15) is its own ticket, core/27.
 - Q2399: human documentation starts in docs/human/: how to update models, the model pipeline, the sound pipeline and the house kit (for the designer, plain words).
 - Q2400: the model sources come into the project: the .blend files into assets_src/blender/ and the Blender scripts into assets_src/generate/ where possible (assets/08; changes Q2152's tools/blender/ place).
+- Q2401: a dropped Sock keeps no bend from the hand; only a Throw carries it.
+- Q2402: core/27 merges after its complexity report (about 300 lines of game code); the designer reviews the code once M0.5 is complete.
+- Q2403: the Door and cupboard swing ease stays as built; the designer tunes the AnimationPlayer keys' curve in the editor.
