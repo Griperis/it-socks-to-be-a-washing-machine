@@ -61,8 +61,9 @@ static func overlaps(node: Node, shape: Shape3D, xform: Transform3D, mask: int, 
 	return out
 
 
-## Whether `point` is inside something solid of `mask` (a Sock that would end inside a wall, T08).
-static func inside(node: Node, point: Vector3, mask: int) -> bool:
+## Whether `point` is inside something solid of `mask` (a Sock that would end inside a wall, T08),
+## `exclude` not counted.
+static func inside(node: Node, point: Vector3, mask: int, exclude: Array[RID] = []) -> bool:
 	if not node.is_inside_tree():
 		return false
 	var world := node.get_viewport().find_world_3d()
@@ -71,6 +72,7 @@ static func inside(node: Node, point: Vector3, mask: int) -> bool:
 	var query := PhysicsPointQueryParameters3D.new()
 	query.position = point
 	query.collision_mask = mask
+	query.exclude = exclude
 	return not world.direct_space_state.intersect_point(query, 1).is_empty()
 
 

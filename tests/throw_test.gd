@@ -214,7 +214,7 @@ func case_t07() -> void:
 	# A stand-in Cabinet until core/04: a box on the house layer in the throw's path.
 	var cabinet := _box("Cabinet", Vector3(1.2, 1.6, 0.5), FRONT + Vector3(0.0, 0.8, 2.2))
 	await _pick(ON_FLOOR)
-	_face(Vector3(0.0, 0.0, 1.0), 0.0)
+	await _aim(_player, cabinet.global_position + Vector3(0.0, 0.0, -0.25))  # core/23: it lands where aimed
 	await _throw_full()
 	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "it to lie again")
 	var at := _mess.pose_of(ON_FLOOR).origin
@@ -232,7 +232,7 @@ func case_t08() -> void:
 	await _physics_ticks(5)
 	for pitch: float in [0.0, -30.0, 20.0]:
 		if pitch != 0.0:
-			await _repick(ON_FLOOR)
+			await _take(ON_FLOOR)  # it may lie under the table: taken, not aimed at
 			_player.global_position = Vector3(0.0, 0.0, -0.75)
 			await _physics_ticks(2)
 		_face(Vector3(0.0, 0.0, -1.0), pitch)
@@ -243,7 +243,7 @@ func case_t08() -> void:
 		_check(centre.z > -1.15, "it stayed on the thrower's side of the wall (pitch %d, z %.2f)" % [pitch, centre.z])
 		_places("after the Throw at the wall (pitch %d)" % pitch)
 	# The Host's own guard: a body that would rest inside a wall lies at the return spot.
-	await _repick(ON_FLOOR)
+	await _take(ON_FLOOR)
 	_player.global_position = FRONT
 	await _physics_ticks(2)
 	_face(Vector3(0.0, 0.0, 1.0), 0.0)
@@ -412,7 +412,7 @@ func case_commands() -> void:
 	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "it to lie")
 	_check(_mess.throws.is_empty(), "a Sock at rest keeps no launch")
 	var guest := _hands.launch_of(2, Vector3.FORWARD, 1.0)
-	_check(guest["from"] is Transform3D and (guest["vel"] as Vector3).is_equal_approx(Vector3.FORWARD * 5.0),
+	_check(guest["from"] is Transform3D and is_equal_approx((guest["vel"] as Vector3).length(), 5.0),
 			"a Guest's direction is only a direction: the Host decides from and speed")
 	_places("after the Commands")
 
@@ -511,6 +511,17 @@ func _repick(sock: int) -> void:
 	_player.global_position = flat + off
 	await _physics_ticks(2)
 	await _pick(sock)
+
+
+## Waits out the grab interval, steps to 0.6 m from the Sock and takes it (the Hands' own pick, not
+## the crosshair: a Throw at the wall may leave it under the table).
+func _take(sock: int) -> void:
+	await _physics_ticks(25)
+	var at := _mess.pose_of(sock).origin
+	_player.global_position = Vector3(at.x, 0.0, at.z + 0.6)
+	await _physics_ticks(2)
+	_hands.pick(1, sock)
+	await _until(func() -> bool: return _hands.items_of(1).has(sock), "Sock %d to be taken" % sock)
 
 
 ## The last granted answer of `kind`, or {}.

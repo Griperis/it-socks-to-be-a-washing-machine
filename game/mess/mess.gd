@@ -65,7 +65,7 @@ const CLOTH_TUNING := preload("res://game/sock/sock_cloth_tuning.tres")
 
 ## The Designs a Sock's record names.
 @export var catalogue: DesignCatalogue
-## The flick before a dropped Sock falls, a Throw's drag and the hit's wake.
+## A Throw's (and a drop's) drag and the hit's wake.
 @export var tuning: HandsTuning
 ## The two tiers' numbers: the moving budget, the wakes, the rest rule, the bodies, the drawing.
 @export var bodies: MessTuning = preload("res://game/mess/mess_tuning.tres")
@@ -88,8 +88,9 @@ const CLOTH_TUNING := preload("res://game/sock/sock_cloth_tuning.tres")
 @export var states := PackedByteArray()
 ## Each Sock's pose in the level (POSE floats a Sock): where it lies, or where it was let go.
 @export var poses := PackedFloat32Array()
-## The launch of each thrown Sock still in the air: {Sock id: {"vel": Vector3, "spin": Vector3,
-## "by": the thrower's player id}}. A dropped or woken Sock has none; a poured one has its push, by NOBODY.
+## The launch of each thrown or dropped Sock still in the air: {Sock id: {"vel": Vector3, "spin":
+## Vector3, "by": the thrower's player id}, a drop's with "drop": true}. A woken Sock has none; a
+## poured one has its push, by NOBODY.
 @export var throws := {}
 ## Each Sock's mate once paired, else -1, by Sock id (both ways: a Pair's lead and its IN_PAIR Sock).
 @export var mates := PackedInt32Array()
@@ -209,7 +210,7 @@ func sock_of_hit(hit: Dictionary) -> int:
 	return sock_at(hit.get("rid", RID()))
 
 
-## Whether Sock `sock` is a moving body now (woken, dropped after its flick, or thrown), which may be
+## Whether Sock `sock` is a moving body now (woken, dropped, or thrown), which may be
 ## aimed at and picked mid-air or mid-slide (R03, the old SOCK_LIVE, Q2339). On any machine: a Guest's
 ## spawned copy counts.
 func is_moving(sock: int) -> bool:
@@ -309,14 +310,15 @@ func paired_patch(lead: int, picked: int) -> Dictionary:
 	return {"states": s, "mates": m, "throws": _without_throw(picked)}
 
 
-## The change that lets a held Sock go at `pose` (part of the Hands' drop answer): it falls from
-## there. A Pair's ball is let go with its bottom at the pose, its centre a radius higher.
-func flying_patch(sock: int, pose: Transform3D) -> Dictionary:
-	if is_pair(sock):
-		pose.origin += Vector3.UP * SockDress.ball_radius(design_of(sock))
+## The change that lets a held Sock go at `pose` (part of the Hands' drop answer, Q2367): it leaves
+## the hand at once with drift `vel` and turn `spin` and falls on its own to its spot, let go by player `by` (their
+## body lets it through). A Pair's pose is its ball's centre. Never shelved by a Cabinet's front.
+func dropped_patch(sock: int, pose: Transform3D, vel: Vector3, spin: Vector3, by: int) -> Dictionary:
 	var s := states.duplicate()
 	s[sock] = State.FLYING
-	return {"states": s, "poses": _with_pose(sock, pose), "throws": _without_throw(sock)}
+	var t := throws.duplicate()
+	t[sock] = {"vel": vel, "spin": spin, "by": by, "drop": true}
+	return {"states": s, "poses": _with_pose(sock, pose), "throws": t}
 
 
 ## The change that throws a held Sock (part of the Hands' throw answer): it leaves `pose` at once,
@@ -487,8 +489,7 @@ func queue_wake(socks: PackedInt32Array, kind: StringName) -> void:
 
 
 ## Every Sock is drawn as its record says: lying Socks as bodies and instances, held ones not at
-## all (the Hands draw them), a falling one as the Host's body: a dropped one let go after the
-## flick, a thrown or woken one (or any when `now`) at once. Only the Socks whose record changed
+## all (the Hands draw them), a falling one as the Host's body, at once. Only the Socks whose record changed
 ## since the last time are touched, records added or cut off included; `now` shows every one.
 func _show(now: bool) -> void:
 	if not is_inside_tree():
@@ -560,8 +561,8 @@ func _cut_off(sock: int) -> void:
 	_moving.forget(sock)
 
 
-## The Host: starts the Socks woken by a hit, a pick or a moving Door as the budget allows, lets
-## flicked Socks go, and writes a fallen one lying where its body rests (M06: under the rest speed
+## The Host: starts the Socks woken by a hit, a pick or a moving Door as the budget allows, and
+## writes a fallen one lying where its body rests (M06: under the rest speed
 ## and spin for the rest time), or at the return spot when it left the bounds (T14) or would lie
 ## inside a wall (T08). Every machine: the flights nearest the camera get their Looks.
 func _physics_process(delta: float) -> void:

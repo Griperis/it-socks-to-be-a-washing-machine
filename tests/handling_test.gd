@@ -64,7 +64,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "h09_into_cupboard", "method": "case_h09", "world": false,
 				"title": "H09: aimed into the open cupboard, a drop lands inside"},
 		{"name": "h10_flick_fall", "method": "case_h10", "world": false,
-				"title": "H10: a dropped Sock flicks for 0.1 s, is let go 3 cm over the spot, falls as one body that can be picked (Q2339), and lies where it settles"},
+				"title": "H10 (Q2367): a dropped Sock is let go at the hand at once (no flick, no hold over the spot), falls as one body that can be picked (Q2339), and lies where it settles"},
 		{"name": "h11_settles", "method": "case_h11", "world": false,
 				"title": "H11: dropped on a Sock or half over the table's edge it settles or falls, never floating or sinking"},
 		{"name": "m06_no_limit", "method": "case_t13", "world": false,
@@ -414,16 +414,10 @@ func case_h10() -> void:
 	await _aim(_player, spot)
 	await _press(&"drop_throw")
 	_check(_mess.state_of(ON_FLOOR) == Mess.State.FLYING and _hands.items_of(1).is_empty(), "the Sock leaves the Hands")
-	_check(_mess.flight_of(ON_FLOOR) == null, "during the flick it has no body yet")
-	_places("during the flick")
-	var flick_ticks := 0
-	while _mess.flight_of(ON_FLOOR) == null and flick_ticks < 60:
-		await _physics_ticks(1)
-		flick_ticks += 1
-	_near(flick_ticks / 60.0, 0.1, 0.04, "it is let go after the 0.1 s flick (%d ticks)" % flick_ticks)
 	var body := _mess.flight_of(ON_FLOOR)
-	_check(body != null and body.global_position.y > 0.015 and body.global_position.y < 0.06,
-			"3 cm over the spot (%s)" % (body.global_position if body != null else Vector3.INF))
+	_check(body != null, "its body is let go at once: no flick")
+	_check(body != null and body.global_position.y > 0.5,
+			"at the hand, not over the spot (%s)" % (body.global_position if body != null else Vector3.INF))
 	_hands.clock += 1.0   # past the grab interval of the pick
 	_check(_hands.pick_refusal(1, ON_FLOOR) == "" and _mess.looks_of(ON_FLOOR) == null, "while it falls it can be picked (R03, Q2339)")
 	_places("while it falls")
