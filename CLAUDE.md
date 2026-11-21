@@ -57,7 +57,8 @@ Each is stated once here and owned by the file named; three are enforced by a ho
   `game/zoo/` refers to it (Q2409).
 <!-- /opt:zoo -->
 - **Every build ticket has one real-path case:** player input through the scene's own wiring to
-  what the player sees (`kit/docs/TESTING.md` "The real path").
+  what the player sees (`kit/docs/TESTING.md` "The real path"). A visual tweak (a look or feel number) gets no
+  test: its stills or strip and the designer's eye judge it (Q2421).
 - **A flaky test is a defect to rework**, never to tolerate or switch off (`kit/docs/TESTING.md`
   "Flaky cases").
 - **Look and feel work stops at its first still** and waits for the designer's go
