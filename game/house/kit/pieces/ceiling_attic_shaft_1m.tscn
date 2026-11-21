@@ -6,25 +6,25 @@
 size = Vector3(0.24, 0.3, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wkonj"]
-size = Vector3(0.060000002, 0.3, 1)
+size = Vector3(0.050000012, 0.3, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ms4ya"]
-size = Vector3(0.7, 0.3, 0.3)
+size = Vector3(0.71, 0.3, 0.3)
 
-[node name="CeilingAtticShaft1m" type="MeshInstance3D" unique_id=1698320555]
+[node name="CeilingAtticShaft1m" type="MeshInstance3D" unique_id=326185351]
 mesh = ExtResource("1_b8ks4")
 
-[node name="Body" type="StaticBody3D" parent="." unique_id=82592397]
+[node name="Body" type="StaticBody3D" parent="." unique_id=1253152221]
 collision_mask = 0
 
-[node name="Box1" type="CollisionShape3D" parent="Body" unique_id=1099066825]
+[node name="Box1" type="CollisionShape3D" parent="Body" unique_id=1216025726]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12, -0.25, 0.5)
 shape = SubResource("BoxShape3D_mjskx")
 
-[node name="Box2" type="CollisionShape3D" parent="Body" unique_id=1256973547]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.97, -0.25, 0.5)
+[node name="Box2" type="CollisionShape3D" parent="Body" unique_id=292349010]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.975, -0.25, 0.5)
 shape = SubResource("BoxShape3D_wkonj")
 
-[node name="Box3" type="CollisionShape3D" parent="Body" unique_id=303052084]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.59, -0.25, 0.15)
+[node name="Box3" type="CollisionShape3D" parent="Body" unique_id=1521933813]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.59499997, -0.25, 0.15)
 shape = SubResource("BoxShape3D_ms4ya")

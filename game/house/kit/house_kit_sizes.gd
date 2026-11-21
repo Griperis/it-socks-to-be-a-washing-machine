@@ -42,8 +42,10 @@ extends Resource
 @export_range(0.02, 0.5, 0.01, "suffix:m") var ceiling_thickness := 0.2
 ## The first floor's ceiling, under the attic floor: 0.3 m keeps its old 2.6 m (Q2353).
 @export_range(0.02, 0.5, 0.01, "suffix:m") var attic_ceiling_thickness := 0.3
-## The elevator shaft's hole in a 1 m tile (x, z from the tile's origin, plan K09).
-@export var shaft_hole := Rect2(0.24, 0.3, 0.7, 0.7)
+## The elevator shaft's hole in a 1 m tile (x, z from the tile's origin, plan K09). Its east side
+## runs 0.01 m into the x 4 partition, so the hole's side never lies in the partition's face (K14,
+## house/03): the shaft stays 0.7 m wide inside, from x 3.24 to the partition's face.
+@export var shaft_hole := Rect2(0.24, 0.3, 0.71, 0.7)
 ## The Cellar hatch's hole, in the middle of a tile this big (plan K09).
 @export_range(0.5, 3.0, 0.5, "suffix:m") var hatch_tile := 1.5
 @export var hatch_hole := Rect2(0.375, 0.375, 0.75, 0.75)
@@ -56,6 +58,10 @@ extends Resource
 @export var door_lengths: Array[float] = [1.0, 1.5]
 ## The off-centre door piece (Q2351): its length and where its doorway starts along it.
 @export var door_offset := Vector2(1.5, 0.15)
+## The off-centre doorway and the elevator's hatch in one partition (house/03: on the first floor's
+## x 4 partition D8's piece and the hatch's would overlap): its length, and where the hatch's 1 m
+## (elevator_hatch) starts along it.
+@export var door_offset_hatch := Vector2(2.0, 1.0)
 ## The garage door's opening: width, height, its piece's length.
 @export var garage_door := Vector3(2.4, 2.1, 2.5)
 ## The old jamb linings and casings (make_house.py make_door_frames).

@@ -42,7 +42,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "m03_looks", "method": "case_m03", "world": false,
 				"title": "M03: the aimed Sock is lent its Looks where its instance was (no pop) and gives it back; a thrown one flies with its Looks"},
 		{"name": "m04_every_sock", "method": "case_m04", "world": false,
-				"title": "M04: with the every-Sock station in the zoo, no lying Sock has a node and the zoo keeps a few thousand nodes"},
+				"title": "M04: with the every-Sock station in the zoo, no lying Sock has a node and the Mess keeps a few thousand nodes"},
 		{"name": "m05_budget", "method": "case_m05", "world": false,
 				"title": "M05: woken Socks wait for the budget, start nearest first and a few a tick, rest under pressure; a Throw never waits"},
 		{"name": "m06_rest", "method": "case_m06", "world": false,
@@ -231,8 +231,12 @@ func case_m03() -> void:
 
 func case_m04() -> void:
 	await _zoo_up()
-	var nodes := int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT))
-	_check(nodes < 8000, "the zoo with every Sock keeps a few thousand nodes (%d; 48,000 with a node a Sock)" % nodes)
+	# The Mess's own nodes (Q2392): the zoo's Socks (the Mess, the Hands, the Coins) and the Mess's
+	# lying and flying Socks; the rest of the zoo (the old houses' pieces) is not the Mess's.
+	var nodes := 0
+	for root: Node in [_zoo.get_node("Socks"), _mess.lying, _mess.flights]:
+		nodes += 1 + root.find_children("*", "", true, false).size()
+	_check(nodes < 8000, "the Mess with every Sock keeps a few thousand nodes (%d; 48,000 with a node a Sock)" % nodes)
 	var station := _zoo.get_node(EVERY)
 	_check(station.find_children("*", "StaticBody3D", true, false).is_empty() and station.find_children("Sock*", "", true, false).is_empty(),
 			"no lying Sock of the station is a node")

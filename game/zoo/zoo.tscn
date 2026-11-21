@@ -28,6 +28,8 @@
 [ext_resource type="PackedScene" path="res://game/zoo/stations/icons.tscn" id="30_icons"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/screen.tscn" id="31_screen"]
 [ext_resource type="Resource" path="res://game/player/zoo_upgrades.tres" id="32_upgrades"]
+[ext_resource type="PackedScene" uid="uid://cxdl2ou7emvsm" path="res://game/zoo/stations/old_house_a.tscn" id="33_old_house_a"]
+[ext_resource type="PackedScene" uid="uid://c47w01e8dt8aq" path="res://game/zoo/stations/old_house_b.tscn" id="34_old_house_b"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.42, 0.44, 0.46, 1)
@@ -121,6 +123,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -6)
 
 [node name="Screen" parent="Stations" unique_id=1700095128 instance=ExtResource("31_screen")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 4)
+
+[node name="OldHouseA" parent="Stations" unique_id=1700111011 instance=ExtResource("33_old_house_a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 0, -10)
+
+[node name="OldHouseB" parent="Stations" unique_id=1700103047 instance=ExtResource("34_old_house_b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, -10)
 
 [node name="Spots" type="Node3D" parent="." unique_id=1540973286]
 

@@ -1,0 +1,3232 @@
+[gd_scene format=3 uid="uid://c47w01e8dt8aq"]
+
+[ext_resource type="PackedScene" uid="uid://ci8kqq05p50h0" path="res://game/house/kit/pieces/corner_exterior.tscn" id="1_b18gn"]
+[ext_resource type="ArrayMesh" uid="uid://drwb03vu85jnp" path="res://game/house/kit/meshes/corner_exterior.tres" id="2_4fgvh"]
+[ext_resource type="Material" uid="uid://3jdj87vtjm1u" path="res://game/house/kit/materials/wall_workshop.tres" id="3_obwga"]
+[ext_resource type="PackedScene" uid="uid://bcrn42ucil2g" path="res://game/house/kit/pieces/wall_exterior_05m.tscn" id="4_6r7lu"]
+[ext_resource type="ArrayMesh" uid="uid://boweay2f6trjk" path="res://game/house/kit/meshes/wall_exterior_05m.tres" id="5_e7lvx"]
+[ext_resource type="PackedScene" uid="uid://c1nji84mexfjq" path="res://game/house/kit/pieces/window_100_175_245_15m.tscn" id="6_hdwvi"]
+[ext_resource type="ArrayMesh" uid="uid://ncvuyj2gvwgj" path="res://game/house/kit/meshes/window_100_175_245_15m.tres" id="7_yh6k8"]
+[ext_resource type="PackedScene" uid="uid://w66hojg041ls" path="res://game/house/kit/pieces/wall_exterior_2m.tscn" id="8_roxmx"]
+[ext_resource type="ArrayMesh" uid="uid://bei5by3xdjdih" path="res://game/house/kit/meshes/wall_exterior_2m.tres" id="9_uytyp"]
+[ext_resource type="Material" uid="uid://csvgcxnmhnamb" path="res://game/house/kit/materials/wall_boiler.tres" id="10_rosg0"]
+[ext_resource type="Material" uid="uid://bre6jq2d2sh5h" path="res://game/house/kit/materials/wall_garage.tres" id="11_1o1lt"]
+[ext_resource type="PackedScene" uid="uid://dkwgb8yvwdqn4" path="res://game/house/kit/pieces/door_garage.tscn" id="12_mdls1"]
+[ext_resource type="ArrayMesh" uid="uid://dgmwn6n2ttgga" path="res://game/house/kit/meshes/door_garage.tres" id="13_6uwqy"]
+[ext_resource type="PackedScene" uid="uid://oul2y4ja61sm" path="res://game/house/kit/pieces/wall_exterior_1m.tscn" id="14_ctx3j"]
+[ext_resource type="ArrayMesh" uid="uid://be46l1t2wi3jo" path="res://game/house/kit/meshes/wall_exterior_1m.tres" id="15_r70hg"]
+[ext_resource type="Material" uid="uid://dgx53fp1pcyk7" path="res://game/house/kit/materials/wall_bathroom.tres" id="16_kdhrf"]
+[ext_resource type="Material" uid="uid://eeo00psskhcj" path="res://game/house/kit/materials/wall_lobby.tres" id="17_6meqd"]
+[ext_resource type="PackedScene" uid="uid://c4a2e02j81rxi" path="res://game/house/kit/pieces/wall_partition_end_exterior_2m.tscn" id="18_ew0y3"]
+[ext_resource type="ArrayMesh" uid="uid://cu6gsc7vx8nk2" path="res://game/house/kit/meshes/wall_partition_end_exterior_2m.tres" id="19_xoxfi"]
+[ext_resource type="PackedScene" uid="uid://wpqf48pm7og3" path="res://game/house/kit/pieces/door_partition_15m.tscn" id="20_6kmdh"]
+[ext_resource type="ArrayMesh" uid="uid://hwoon0urylo1" path="res://game/house/kit/meshes/door_partition_15m.tres" id="21_5tski"]
+[ext_resource type="PackedScene" uid="uid://bcjsjwfo4cqc3" path="res://game/house/kit/pieces/door_partition_offset_15m.tscn" id="22_1ya0a"]
+[ext_resource type="ArrayMesh" uid="uid://d3mlx5k36rhuo" path="res://game/house/kit/meshes/door_partition_offset_15m.tres" id="23_3534g"]
+[ext_resource type="PackedScene" uid="uid://bg87l45armfea" path="res://game/house/kit/pieces/wall_partition_2m.tscn" id="24_ft5ty"]
+[ext_resource type="ArrayMesh" uid="uid://b4qrdncn108j3" path="res://game/house/kit/meshes/wall_partition_2m.tres" id="25_k41oo"]
+[ext_resource type="PackedScene" uid="uid://bcmupvwy2s30s" path="res://game/house/kit/pieces/wall_partition_05m.tscn" id="26_7q5dg"]
+[ext_resource type="ArrayMesh" uid="uid://8kgis88gb1m4" path="res://game/house/kit/meshes/wall_partition_05m.tres" id="27_tdind"]
+[ext_resource type="PackedScene" uid="uid://ca5oynrg2gy5q" path="res://game/house/kit/pieces/wall_partition_end_exterior_1m.tscn" id="28_urv5b"]
+[ext_resource type="ArrayMesh" uid="uid://0c0xcdyub1os" path="res://game/house/kit/meshes/wall_partition_end_exterior_1m.tres" id="29_7vd0n"]
+[ext_resource type="PackedScene" uid="uid://t5ko0qvryfke" path="res://game/house/kit/pieces/wall_partition_end_partition_2m.tscn" id="30_3flea"]
+[ext_resource type="ArrayMesh" uid="uid://5bq7us8cune3" path="res://game/house/kit/meshes/wall_partition_end_partition_2m.tres" id="31_sjtxq"]
+[ext_resource type="PackedScene" uid="uid://bjh1di7v7m4qj" path="res://game/house/kit/pieces/wall_partition_end_partition_05m.tscn" id="32_1hhc3"]
+[ext_resource type="ArrayMesh" uid="uid://cm0waxblw8yta" path="res://game/house/kit/meshes/wall_partition_end_partition_05m.tres" id="33_8ulg2"]
+[ext_resource type="PackedScene" uid="uid://bmmm2c3s76ud" path="res://game/house/kit/pieces/stair_u_solid.tscn" id="34_a4l88"]
+[ext_resource type="ArrayMesh" uid="uid://bnr5h0l3tgk2o" path="res://game/house/kit/meshes/stair_u_solid.tres" id="35_xy35d"]
+[ext_resource type="PackedScene" uid="uid://blxb6oaadu0l5" path="res://game/house/kit/pieces/floor_hatch_15m.tscn" id="36_fuwtx"]
+[ext_resource type="ArrayMesh" uid="uid://crgk1ukxet5ax" path="res://game/house/kit/meshes/floor_hatch_15m.tres" id="37_cvstk"]
+[ext_resource type="PackedScene" uid="uid://6vld1hsionme" path="res://game/house/kit/pieces/floor_2m.tscn" id="38_r072j"]
+[ext_resource type="ArrayMesh" uid="uid://dqqj2lw3x1mcm" path="res://game/house/kit/meshes/floor_2m.tres" id="39_1rtb8"]
+[ext_resource type="Material" uid="uid://c4mw6sssvjedy" path="res://game/house/kit/materials/basement_tile.tres" id="40_nu2qb"]
+[ext_resource type="PackedScene" uid="uid://cbo2ks630qyfi" path="res://game/house/kit/pieces/floor_1m.tscn" id="41_qu7xj"]
+[ext_resource type="ArrayMesh" uid="uid://485tp2rbkfc3" path="res://game/house/kit/meshes/floor_1m.tres" id="42_hrdvb"]
+[ext_resource type="PackedScene" uid="uid://jih8kkejx1oj" path="res://game/house/kit/pieces/floor_05m.tscn" id="43_yq5ut"]
+[ext_resource type="ArrayMesh" uid="uid://bskyprl6hil7x" path="res://game/house/kit/meshes/floor_05m.tres" id="44_qlqid"]
+[ext_resource type="PackedScene" uid="uid://ctihhd5f8qinw" path="res://game/house/kit/pieces/window_100_110_215_15m.tscn" id="45_jle07"]
+[ext_resource type="ArrayMesh" uid="uid://cr5iav1ttc162" path="res://game/house/kit/meshes/window_100_110_215_15m.tres" id="46_0c84q"]
+[ext_resource type="PackedScene" uid="uid://3faifauqgrqx" path="res://game/house/kit/pieces/window_050_130_200_1m.tscn" id="47_dy14b"]
+[ext_resource type="ArrayMesh" uid="uid://dyu6lm3iwtrx0" path="res://game/house/kit/meshes/window_050_130_200_1m.tres" id="48_pewuk"]
+[ext_resource type="Material" uid="uid://4uogcl7a446p" path="res://game/house/kit/materials/wall_hall.tres" id="49_y6gpl"]
+[ext_resource type="PackedScene" uid="uid://3woe3fuw6ggn" path="res://game/house/kit/pieces/door_exterior_15m.tscn" id="50_tpxhp"]
+[ext_resource type="ArrayMesh" uid="uid://cvcm45v44mpvi" path="res://game/house/kit/meshes/door_exterior_15m.tres" id="51_mgaxe"]
+[ext_resource type="PackedScene" uid="uid://bvut3h6k6dy6r" path="res://game/house/kit/pieces/window_100_090_215_15m.tscn" id="52_86u0w"]
+[ext_resource type="ArrayMesh" uid="uid://bb0mw2x1hho6t" path="res://game/house/kit/meshes/window_100_090_215_15m.tres" id="53_yck6p"]
+[ext_resource type="PackedScene" uid="uid://xq2w6vy88gyy" path="res://game/house/kit/pieces/window_150_090_215_25m.tscn" id="54_rvyni"]
+[ext_resource type="ArrayMesh" uid="uid://d2tw8k25yqvg5" path="res://game/house/kit/meshes/window_150_090_215_25m.tres" id="55_u6iac"]
+[ext_resource type="PackedScene" uid="uid://b0stjah83lkvc" path="res://game/house/kit/pieces/window_200_090_215_25m.tscn" id="56_rp5ss"]
+[ext_resource type="ArrayMesh" uid="uid://8nebdk751iem" path="res://game/house/kit/meshes/window_200_090_215_25m.tres" id="57_53ta3"]
+[ext_resource type="PackedScene" uid="uid://brurojvfexf1g" path="res://game/house/kit/pieces/window_stair.tscn" id="58_3nuvc"]
+[ext_resource type="ArrayMesh" uid="uid://dpq2ean60nejm" path="res://game/house/kit/meshes/window_stair.tres" id="59_b6h01"]
+[ext_resource type="PackedScene" uid="uid://d4m1i7plma1aq" path="res://game/house/kit/pieces/window_250_090_215_35m.tscn" id="60_notq6"]
+[ext_resource type="ArrayMesh" uid="uid://cjg2hnlh1j0im" path="res://game/house/kit/meshes/window_250_090_215_35m.tres" id="61_k2ul1"]
+[ext_resource type="Material" uid="uid://crrxp2v0p880j" path="res://game/house/kit/materials/wall_kitchen.tres" id="62_m3a7o"]
+[ext_resource type="PackedScene" uid="uid://xi0exsyhsry2" path="res://game/house/kit/pieces/stair_u.tscn" id="63_yrj5s"]
+[ext_resource type="ArrayMesh" uid="uid://bdha31r8evp4a" path="res://game/house/kit/meshes/stair_u.tres" id="64_hrt8m"]
+[ext_resource type="PackedScene" uid="uid://7qsies4s3srn" path="res://game/house/kit/pieces/floor_shaft_1m.tscn" id="65_1xse3"]
+[ext_resource type="ArrayMesh" uid="uid://du8ie8wv5clj1" path="res://game/house/kit/meshes/floor_shaft_1m.tres" id="66_7m83a"]
+[ext_resource type="Material" uid="uid://b563q4jm153gw" path="res://game/house/kit/materials/kitchen_tile.tres" id="67_s68k6"]
+[ext_resource type="PackedScene" uid="uid://dciyj22pkdfhi" path="res://game/house/kit/pieces/ceiling_shaft_1m.tscn" id="68_nmvoc"]
+[ext_resource type="ArrayMesh" uid="uid://cy2axa67ql7py" path="res://game/house/kit/meshes/ceiling_shaft_1m.tres" id="69_i2c74"]
+[ext_resource type="PackedScene" uid="uid://bp1xcpd321mvx" path="res://game/house/kit/pieces/ceiling_2m.tscn" id="70_7j33u"]
+[ext_resource type="ArrayMesh" uid="uid://bvkc22q8qwh5b" path="res://game/house/kit/meshes/ceiling_2m.tres" id="71_o3bxt"]
+[ext_resource type="PackedScene" uid="uid://dpx6hrkxh3u7m" path="res://game/house/kit/pieces/ceiling_1m.tscn" id="72_ny4e3"]
+[ext_resource type="ArrayMesh" uid="uid://dghurmqs6kbd3" path="res://game/house/kit/meshes/ceiling_1m.tres" id="73_p00ob"]
+[ext_resource type="PackedScene" uid="uid://bcnv5mdywmv7m" path="res://game/house/kit/pieces/ceiling_05m.tscn" id="74_ofj1c"]
+[ext_resource type="ArrayMesh" uid="uid://cslul46ycdp72" path="res://game/house/kit/meshes/ceiling_05m.tres" id="75_i0mw2"]
+[ext_resource type="Material" uid="uid://qvwuxeg3bhce" path="res://game/house/kit/materials/wall_office.tres" id="76_qpxa8"]
+[ext_resource type="PackedScene" uid="uid://c4xow8531e2kn" path="res://game/house/kit/pieces/window_100_090_210_15m.tscn" id="77_pgcti"]
+[ext_resource type="ArrayMesh" uid="uid://c24rgjyu0tpjl" path="res://game/house/kit/meshes/window_100_090_210_15m.tres" id="78_qtp1e"]
+[ext_resource type="PackedScene" uid="uid://iv1j3h3dl5n1" path="res://game/house/kit/pieces/window_100_130_200_frosted_15m.tscn" id="79_xo2me"]
+[ext_resource type="ArrayMesh" uid="uid://bja7hi1oyf0df" path="res://game/house/kit/meshes/window_100_130_200_frosted_15m.tres" id="80_0f141"]
+[ext_resource type="Material" uid="uid://1wesemeg16r7" path="res://game/house/kit/materials/wall_kids.tres" id="81_3m4hd"]
+[ext_resource type="Material" uid="uid://bsf0wq8kydvan" path="res://game/house/kit/materials/wall_bedroom.tres" id="82_snnc6"]
+[ext_resource type="PackedScene" uid="uid://bn770ups6b64n" path="res://game/house/kit/pieces/window_150_090_210_25m.tscn" id="83_a46om"]
+[ext_resource type="ArrayMesh" uid="uid://bv8uxji8kbe88" path="res://game/house/kit/meshes/window_150_090_210_25m.tres" id="84_bb0ad"]
+[ext_resource type="PackedScene" uid="uid://cx8ugc45wjq1x" path="res://game/house/kit/pieces/window_150_090_210_2m.tscn" id="85_5s2xa"]
+[ext_resource type="ArrayMesh" uid="uid://4k0f47ybi57m" path="res://game/house/kit/meshes/window_150_090_210_2m.tres" id="86_iyr7m"]
+[ext_resource type="PackedScene" uid="uid://bl6ovaw55cqao" path="res://game/house/kit/pieces/corner_exterior_open.tscn" id="87_7id1p"]
+[ext_resource type="ArrayMesh" uid="uid://dcs383m8xyblh" path="res://game/house/kit/meshes/corner_exterior_open.tres" id="88_76mp4"]
+[ext_resource type="PackedScene" uid="uid://cpmtxy0gie1th" path="res://game/house/kit/pieces/door_partition_offset_hatch_2m.tscn" id="89_xrd25"]
+[ext_resource type="ArrayMesh" uid="uid://bhxbrvw4ddnk7" path="res://game/house/kit/meshes/door_partition_offset_hatch_2m.tres" id="90_v25d7"]
+[ext_resource type="Material" uid="uid://wqj0x7udlktn" path="res://game/house/kit/materials/bath_tile.tres" id="91_1bvdt"]
+[ext_resource type="PackedScene" uid="uid://c40kon6x2utql" path="res://game/house/kit/pieces/gable_exterior_grid_mirrored.tscn" id="92_vmnj2"]
+[ext_resource type="ArrayMesh" uid="uid://dsrhaeruam7bu" path="res://game/house/kit/meshes/gable_exterior_grid_mirrored.tres" id="93_4ss33"]
+[ext_resource type="PackedScene" uid="uid://b5meemrcne5" path="res://game/house/kit/pieces/gable_exterior_grid.tscn" id="94_kcy2h"]
+[ext_resource type="ArrayMesh" uid="uid://dvrssf4l87cxy" path="res://game/house/kit/meshes/gable_exterior_grid.tres" id="95_ny64n"]
+[ext_resource type="PackedScene" uid="uid://b5rc1dt7nq18i" path="res://game/house/kit/pieces/knee_exterior_start_1m.tscn" id="96_bqaeg"]
+[ext_resource type="ArrayMesh" uid="uid://iw4jf0jmvekj" path="res://game/house/kit/meshes/knee_exterior_start_1m.tres" id="97_y7agr"]
+[ext_resource type="PackedScene" uid="uid://c60r28eqm5dwa" path="res://game/house/kit/pieces/knee_exterior_2m.tscn" id="98_vgdvn"]
+[ext_resource type="ArrayMesh" uid="uid://k8qpnpxmeqc" path="res://game/house/kit/meshes/knee_exterior_2m.tres" id="99_m3n55"]
+[ext_resource type="PackedScene" uid="uid://bq832d3ufjwno" path="res://game/house/kit/pieces/knee_exterior_05m.tscn" id="100_ur43v"]
+[ext_resource type="ArrayMesh" uid="uid://6her30rd0gls" path="res://game/house/kit/meshes/knee_exterior_05m.tres" id="101_yea5k"]
+[ext_resource type="PackedScene" uid="uid://brdglyuwddikm" path="res://game/house/kit/pieces/knee_exterior_end_1m.tscn" id="102_tmugk"]
+[ext_resource type="ArrayMesh" uid="uid://bynx6mcdnaot3" path="res://game/house/kit/meshes/knee_exterior_end_1m.tres" id="103_ctxt6"]
+[ext_resource type="PackedScene" uid="uid://bddegtn3c83u6" path="res://game/house/kit/pieces/roof_verge_w.tscn" id="104_hrx6e"]
+[ext_resource type="ArrayMesh" uid="uid://cujr1kigdgnj2" path="res://game/house/kit/meshes/roof_verge_w.tres" id="105_e5cf3"]
+[ext_resource type="PackedScene" uid="uid://bmi80isj78eay" path="res://game/house/kit/pieces/roof_2m.tscn" id="106_fw5td"]
+[ext_resource type="ArrayMesh" uid="uid://bxhhtdyxudrni" path="res://game/house/kit/meshes/roof_2m.tres" id="107_bykf7"]
+[ext_resource type="PackedScene" uid="uid://cb2yq0ymkynjt" path="res://game/house/kit/pieces/roof_05m.tscn" id="108_tf6v6"]
+[ext_resource type="ArrayMesh" uid="uid://ech0dogj37qi" path="res://game/house/kit/meshes/roof_05m.tres" id="109_0hw7h"]
+[ext_resource type="PackedScene" uid="uid://v1c4dvwwwb7l" path="res://game/house/kit/pieces/roof_verge_e.tscn" id="110_tvgpf"]
+[ext_resource type="ArrayMesh" uid="uid://b46b433xuq5g" path="res://game/house/kit/meshes/roof_verge_e.tres" id="111_b3uc7"]
+[ext_resource type="PackedScene" uid="uid://b8vjapnqa8t0n" path="res://game/house/kit/pieces/roof_1m.tscn" id="112_x4c44"]
+[ext_resource type="ArrayMesh" uid="uid://dtpqjxeppaa6i" path="res://game/house/kit/meshes/roof_1m.tres" id="113_wts5l"]
+[ext_resource type="PackedScene" uid="uid://ya2xkhgcsxlc" path="res://game/house/kit/pieces/dormer_grid.tscn" id="114_gpgbo"]
+[ext_resource type="ArrayMesh" uid="uid://b2goyrq4pmgaa" path="res://game/house/kit/meshes/dormer_grid.tres" id="115_1pg3o"]
+[ext_resource type="PackedScene" uid="uid://dn5tdox86tgvw" path="res://game/house/kit/pieces/roof_post.tscn" id="116_ahoer"]
+[ext_resource type="ArrayMesh" uid="uid://cegofkdrn1u3h" path="res://game/house/kit/meshes/roof_post.tres" id="117_42f66"]
+[ext_resource type="PackedScene" uid="uid://bdqbawslcsgg5" path="res://game/house/kit/pieces/stair_newel_top.tscn" id="118_reyw0"]
+[ext_resource type="ArrayMesh" uid="uid://dw0aasuh005nc" path="res://game/house/kit/meshes/stair_newel_top.tres" id="119_03xgn"]
+[ext_resource type="PackedScene" uid="uid://cosceg0qlxff0" path="res://game/house/kit/pieces/stair_balustrade.tscn" id="120_c1ihb"]
+[ext_resource type="ArrayMesh" uid="uid://cyy04mt8nq8as" path="res://game/house/kit/meshes/stair_balustrade.tres" id="121_77s2q"]
+[ext_resource type="Material" uid="uid://dcasbeiojhevk" path="res://game/house/kit/materials/loft_boards.tres" id="122_x4nrw"]
+[ext_resource type="PackedScene" uid="uid://btexjfsb0awle" path="res://game/house/kit/pieces/ceiling_attic_shaft_1m.tscn" id="123_3bjvo"]
+[ext_resource type="ArrayMesh" uid="uid://tp3rukrct2on" path="res://game/house/kit/meshes/ceiling_attic_shaft_1m.tres" id="124_0lu8c"]
+[ext_resource type="PackedScene" uid="uid://bf7gv3k4680qg" path="res://game/house/kit/pieces/ceiling_attic_2m.tscn" id="125_vbxrd"]
+[ext_resource type="ArrayMesh" uid="uid://ceiveo1f3girw" path="res://game/house/kit/meshes/ceiling_attic_2m.tres" id="126_3340e"]
+[ext_resource type="PackedScene" uid="uid://63in7jh4md7y" path="res://game/house/kit/pieces/ceiling_attic_05m.tscn" id="127_c4ux2"]
+[ext_resource type="ArrayMesh" uid="uid://dfme54jv88o2m" path="res://game/house/kit/meshes/ceiling_attic_05m.tres" id="128_wepu4"]
+[ext_resource type="PackedScene" uid="uid://4j1mciwm2gdo" path="res://game/house/kit/pieces/ceiling_attic_1m.tscn" id="129_vosi4"]
+[ext_resource type="ArrayMesh" uid="uid://nftybne1r61e" path="res://game/house/kit/meshes/ceiling_attic_1m.tres" id="130_qexa7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uqdwt"]
+size = Vector3(27, 3.2, 3.6999998)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q3rrp"]
+albedo_color = Color(0.5, 0.68, 0.36, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_8ks3y"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(27, 3.2, 3.6999998)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t1txj"]
+size = Vector3(9.85, 3.2, 4.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kgvsl"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(9.85, 3.2, 4.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fegml"]
+size = Vector3(14.35, 3.2, 5.2000003)
+
+[sub_resource type="BoxMesh" id="BoxMesh_m6h6g"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(14.35, 3.2, 5.2000003)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_matjw"]
+size = Vector3(4, 3.2, 0.9)
+
+[sub_resource type="BoxMesh" id="BoxMesh_kwrtk"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(4, 3.2, 0.9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_61s8u"]
+size = Vector3(4.35, 3.2, 0.9)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xywy7"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(4.35, 3.2, 0.9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xnucq"]
+size = Vector3(2.9, 3.2, 6.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_thg3m"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(2.9, 3.2, 6.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aaptr"]
+size = Vector3(13.400001, 3.2, 3.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_caw7m"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(13.400001, 3.2, 3.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t4xd5"]
+size = Vector3(12.5, 3.2, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0qwi4"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(12.5, 3.2, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0olew"]
+size = Vector3(13.400001, 3.2, 4.0999994)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1ay75"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(13.400001, 3.2, 4.0999994)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yxwqx"]
+size = Vector3(2, 3.2, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_knygn"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(2, 3.2, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jcqrr"]
+size = Vector3(2.9, 3.2, 1.0999994)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0sjhr"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(2.9, 3.2, 1.0999994)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lup6r"]
+size = Vector3(5.5, 3.2, 0.9000006)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7i48w"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(5.5, 3.2, 0.9000006)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rrunh"]
+size = Vector3(20, 3.2, 0.9000006)
+
+[sub_resource type="BoxMesh" id="BoxMesh_n25c7"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(20, 3.2, 0.9000006)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hm8go"]
+size = Vector3(27, 3.2, 14.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rutu8"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector3(27, 3.2, 14.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c42ux"]
+size = Vector3(1.5, 1.75, 0.9)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x44h5"]
+albedo_color = Color(0.6, 0.58, 0.54, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_e21vg"]
+material = SubResource("StandardMaterial3D_x44h5")
+size = Vector3(1.5, 1.75, 0.9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_65u4e"]
+size = Vector3(0.9, 1.75, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_jchwb"]
+material = SubResource("StandardMaterial3D_x44h5")
+size = Vector3(0.9, 1.75, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1ccfq"]
+size = Vector3(1.5, 1.75, 0.9)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pmxot"]
+material = SubResource("StandardMaterial3D_x44h5")
+size = Vector3(1.5, 1.75, 0.9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w0q8i"]
+size = Vector3(0.9, 1.75, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_row2v"]
+material = SubResource("StandardMaterial3D_x44h5")
+size = Vector3(0.9, 1.75, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pwyhw"]
+size = Vector3(2.7999997, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5e0io"]
+albedo_color = Color(0.74, 0.73, 0.7, 1)
+roughness = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_vbj7p"]
+material = SubResource("StandardMaterial3D_5e0io")
+size = Vector3(2.7999997, 0.2, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1ki2d"]
+size = Vector3(2.7999997, 0.3, 5.2430906)
+
+[sub_resource type="BoxMesh" id="BoxMesh_shsto"]
+material = SubResource("StandardMaterial3D_5e0io")
+size = Vector3(2.7999997, 0.3, 5.2430906)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fh5vb"]
+size = Vector3(0.9, 0.12, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_iprjd"]
+material = SubResource("StandardMaterial3D_5e0io")
+size = Vector3(0.9, 0.12, 0.1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_lj84y"]
+material = SubResource("StandardMaterial3D_q3rrp")
+size = Vector2(27, 33)
+
+[node name="OldHouseB" type="Node3D" unique_id=325959792]
+
+[node name="Name" type="Label3D" parent="." unique_id=1618917390]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 11.5, -3)
+billboard = 1
+text = "Old house B: the old house rebuilt from the house kit, its windows rounded to 0.5 m. In at the front door on the north side; the U stair climbs from the basement to the attic."
+autowrap_mode = 3
+width = 900.0
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=870987531]
+
+[node name="Lawn1" type="CollisionShape3D" parent="Ground" unique_id=794560623]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, -1.6, -7.15)
+shape = SubResource("BoxShape3D_uqdwt")
+
+[node name="Lawn1Mesh" type="MeshInstance3D" parent="Ground" unique_id=1917854235]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, -1.6, -7.15)
+mesh = SubResource("BoxMesh_8ks3y")
+
+[node name="Lawn2" type="CollisionShape3D" parent="Ground" unique_id=2072115720]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9250002, -1.6, -3.15)
+shape = SubResource("BoxShape3D_t1txj")
+
+[node name="Lawn2Mesh" type="MeshInstance3D" parent="Ground" unique_id=230340130]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9250002, -1.6, -3.15)
+mesh = SubResource("BoxMesh_kgvsl")
+
+[node name="Lawn3" type="CollisionShape3D" parent="Ground" unique_id=420764784]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.825, -1.6, -2.7)
+shape = SubResource("BoxShape3D_fegml")
+
+[node name="Lawn3Mesh" type="MeshInstance3D" parent="Ground" unique_id=1057604432]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.825, -1.6, -2.7)
+mesh = SubResource("BoxMesh_m6h6g")
+
+[node name="Lawn4" type="CollisionShape3D" parent="Ground" unique_id=1025300016]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -1.6, -0.55)
+shape = SubResource("BoxShape3D_matjw")
+
+[node name="Lawn4Mesh" type="MeshInstance3D" parent="Ground" unique_id=1765495104]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -1.6, -0.55)
+mesh = SubResource("BoxMesh_kwrtk")
+
+[node name="Lawn5" type="CollisionShape3D" parent="Ground" unique_id=1480848003]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.675, -1.6, -0.55)
+shape = SubResource("BoxShape3D_61s8u")
+
+[node name="Lawn5Mesh" type="MeshInstance3D" parent="Ground" unique_id=329709553]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.675, -1.6, -0.55)
+mesh = SubResource("BoxMesh_xywy7")
+
+[node name="Lawn6" type="CollisionShape3D" parent="Ground" unique_id=272011210]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.55, -1.6, 2.95)
+shape = SubResource("BoxShape3D_xnucq")
+
+[node name="Lawn6Mesh" type="MeshInstance3D" parent="Ground" unique_id=1116380567]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.55, -1.6, 2.95)
+mesh = SubResource("BoxMesh_thg3m")
+
+[node name="Lawn7" type="CollisionShape3D" parent="Ground" unique_id=938137173]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.3, -1.6, 1.4499999)
+shape = SubResource("BoxShape3D_aaptr")
+
+[node name="Lawn7Mesh" type="MeshInstance3D" parent="Ground" unique_id=1786863018]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.3, -1.6, 1.4499999)
+mesh = SubResource("BoxMesh_caw7m")
+
+[node name="Lawn8" type="CollisionShape3D" parent="Ground" unique_id=1510328015]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.75, -1.6, 3.75)
+shape = SubResource("BoxShape3D_t4xd5")
+
+[node name="Lawn8Mesh" type="MeshInstance3D" parent="Ground" unique_id=1983848028]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.75, -1.6, 3.75)
+mesh = SubResource("BoxMesh_0qwi4")
+
+[node name="Lawn9" type="CollisionShape3D" parent="Ground" unique_id=130006233]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.3, -1.6, 6.5499997)
+shape = SubResource("BoxShape3D_0olew")
+
+[node name="Lawn9Mesh" type="MeshInstance3D" parent="Ground" unique_id=2047124541]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.3, -1.6, 6.5499997)
+mesh = SubResource("BoxMesh_1ay75")
+
+[node name="Lawn10" type="CollisionShape3D" parent="Ground" unique_id=1941370662]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -1.6, 6.75)
+shape = SubResource("BoxShape3D_yxwqx")
+
+[node name="Lawn10Mesh" type="MeshInstance3D" parent="Ground" unique_id=1150840779]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -1.6, 6.75)
+mesh = SubResource("BoxMesh_knygn")
+
+[node name="Lawn11" type="CollisionShape3D" parent="Ground" unique_id=631558118]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.55, -1.6, 8.049999)
+shape = SubResource("BoxShape3D_jcqrr")
+
+[node name="Lawn11Mesh" type="MeshInstance3D" parent="Ground" unique_id=123193960]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.55, -1.6, 8.049999)
+mesh = SubResource("BoxMesh_0sjhr")
+
+[node name="Lawn12" type="CollisionShape3D" parent="Ground" unique_id=754967433]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -1.6, 9.049999)
+shape = SubResource("BoxShape3D_lup6r")
+
+[node name="Lawn12Mesh" type="MeshInstance3D" parent="Ground" unique_id=1326048275]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, -1.6, 9.049999)
+mesh = SubResource("BoxMesh_7i48w")
+
+[node name="Lawn13" type="CollisionShape3D" parent="Ground" unique_id=1826988499]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -1.6, 9.049999)
+shape = SubResource("BoxShape3D_rrunh")
+
+[node name="Lawn13Mesh" type="MeshInstance3D" parent="Ground" unique_id=1737704699]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -1.6, 9.049999)
+mesh = SubResource("BoxMesh_n25c7")
+
+[node name="Lawn14" type="CollisionShape3D" parent="Ground" unique_id=1876798498]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, -1.6, 16.75)
+shape = SubResource("BoxShape3D_hm8go")
+
+[node name="Lawn14Mesh" type="MeshInstance3D" parent="Ground" unique_id=2087579310]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, -1.6, 16.75)
+mesh = SubResource("BoxMesh_rutu8")
+
+[node name="WellFloor1" type="CollisionShape3D" parent="Ground" unique_id=1029129204]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, -2.325, -0.55)
+shape = SubResource("BoxShape3D_c42ux")
+
+[node name="WellFloor1Mesh" type="MeshInstance3D" parent="Ground" unique_id=2000270945]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, -2.325, -0.55)
+mesh = SubResource("BoxMesh_e21vg")
+
+[node name="WellFloor2" type="CollisionShape3D" parent="Ground" unique_id=696120765]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55, -2.325, 6.75)
+shape = SubResource("BoxShape3D_65u4e")
+
+[node name="WellFloor2Mesh" type="MeshInstance3D" parent="Ground" unique_id=420943198]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55, -2.325, 6.75)
+mesh = SubResource("BoxMesh_jchwb")
+
+[node name="WellFloor3" type="CollisionShape3D" parent="Ground" unique_id=847205327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.25, -2.325, 9.05)
+shape = SubResource("BoxShape3D_1ccfq")
+
+[node name="WellFloor3Mesh" type="MeshInstance3D" parent="Ground" unique_id=1786696796]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.25, -2.325, 9.05)
+mesh = SubResource("BoxMesh_pmxot")
+
+[node name="WellFloor4" type="CollisionShape3D" parent="Ground" unique_id=816138406]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.05, -2.325, 3.75)
+shape = SubResource("BoxShape3D_w0q8i")
+
+[node name="WellFloor4Mesh" type="MeshInstance3D" parent="Ground" unique_id=423278995]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.05, -2.325, 3.75)
+mesh = SubResource("BoxMesh_row2v")
+
+[node name="RampApron" type="CollisionShape3D" parent="Ground" unique_id=363321689]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.25, -3.1, -0.5)
+shape = SubResource("BoxShape3D_pwyhw")
+
+[node name="RampApronMesh" type="MeshInstance3D" parent="Ground" unique_id=750860480]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.25, -3.1, -0.5)
+mesh = SubResource("BoxMesh_vbj7p")
+
+[node name="Ramp" type="CollisionShape3D" parent="Ground" unique_id=1377420696]
+transform = Transform3D(1, 0, 0, 0, 0.820127, -0.5721816, 0, 0.5721816, 0.820127, 8.25, -1.6230191, -3.2358274)
+shape = SubResource("BoxShape3D_1ki2d")
+
+[node name="RampMesh" type="MeshInstance3D" parent="Ground" unique_id=1471275367]
+transform = Transform3D(1, 0, 0, 0, 0.820127, -0.5721816, 0, 0.5721816, 0.820127, 8.25, -1.6230191, -3.2358274)
+mesh = SubResource("BoxMesh_shsto")
+
+[node name="Threshold" type="CollisionShape3D" parent="Ground" unique_id=698422092]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, -0.06, -0.05)
+shape = SubResource("BoxShape3D_fh5vb")
+
+[node name="ThresholdMesh" type="MeshInstance3D" parent="Ground" unique_id=753393265]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, -0.06, -0.05)
+mesh = SubResource("BoxMesh_iprjd")
+
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=1230673785]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, -3.2, 7.5)
+mesh = SubResource("PlaneMesh_lj84y")
+
+[node name="House" type="Node3D" parent="." unique_id=1255893890]
+
+[node name="Basement" type="Node3D" parent="House" unique_id=1966947610]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
+
+[node name="N" type="Node3D" parent="House/Basement" unique_id=1398002919]
+
+[node name="Corner" type="MeshInstance3D" parent="House/Basement/N" unique_id=1001528945 instance=ExtResource("1_b18gn")]
+mesh = ExtResource("2_4fgvh")
+surface_material_override/0 = ExtResource("3_obwga")
+
+[node name="WallExterior05m" type="MeshInstance3D" parent="House/Basement/N" unique_id=2127793409 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("3_obwga")
+
+[node name="W1" type="MeshInstance3D" parent="House/Basement/N" unique_id=825608062 instance=ExtResource("6_hdwvi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+mesh = ExtResource("7_yh6k8")
+surface_material_override/0 = ExtResource("3_obwga")
+
+[node name="WallExterior2m" type="MeshInstance3D" parent="House/Basement/N" unique_id=641236014 instance=ExtResource("8_roxmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("3_obwga")
+
+[node name="WallExterior2m2" type="MeshInstance3D" parent="House/Basement/N" unique_id=697625298 instance=ExtResource("8_roxmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 0)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("10_rosg0")
+
+[node name="WallExterior05m2" type="MeshInstance3D" parent="House/Basement/N" unique_id=409451886 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 0)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("11_1o1lt")
+
+[node name="D12" type="MeshInstance3D" parent="House/Basement/N" unique_id=982703380 instance=ExtResource("12_mdls1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0)
+mesh = ExtResource("13_6uwqy")
+
+[node name="WallExterior05m3" type="MeshInstance3D" parent="House/Basement/N" unique_id=1782426502 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 0)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("11_1o1lt")
+
+[node name="E" type="Node3D" parent="House/Basement" unique_id=530122417]
+
+[node name="Corner" type="MeshInstance3D" parent="House/Basement/E" unique_id=686426562 instance=ExtResource("1_b18gn")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 0)
+mesh = ExtResource("2_4fgvh")
+surface_material_override/0 = ExtResource("11_1o1lt")
+
+[node name="WallExterior2m" type="MeshInstance3D" parent="House/Basement/E" unique_id=871556966 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 0.5)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("11_1o1lt")
+
+[node name="WallExterior05m" type="MeshInstance3D" parent="House/Basement/E" unique_id=113284394 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 2.5)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("11_1o1lt")
+
+[node name="W4" type="MeshInstance3D" parent="House/Basement/E" unique_id=880445132 instance=ExtResource("6_hdwvi")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 3)
+mesh = ExtResource("7_yh6k8")
+surface_material_override/0 = ExtResource("11_1o1lt")
+
+[node name="WallExterior2m2" type="MeshInstance3D" parent="House/Basement/E" unique_id=2122928875 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 4.5)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("11_1o1lt")
+
+[node name="WallExterior1m" type="MeshInstance3D" parent="House/Basement/E" unique_id=660254941 instance=ExtResource("14_ctx3j")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 6.5)
+mesh = ExtResource("15_r70hg")
+surface_material_override/0 = ExtResource("11_1o1lt")
+
+[node name="WallExterior05m2" type="MeshInstance3D" parent="House/Basement/E" unique_id=1158908233 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 7.5)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("11_1o1lt")
+
+[node name="S" type="Node3D" parent="House/Basement" unique_id=207655578]
+
+[node name="Corner" type="MeshInstance3D" parent="House/Basement/S" unique_id=883773449 instance=ExtResource("1_b18gn")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10.5, 0, 8.5)
+mesh = ExtResource("2_4fgvh")
+surface_material_override/0 = ExtResource("11_1o1lt")
+
+[node name="WallExterior2m" type="MeshInstance3D" parent="House/Basement/S" unique_id=168539651 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2.5, 0, 8.5)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="W3" type="MeshInstance3D" parent="House/Basement/S" unique_id=28169587 instance=ExtResource("6_hdwvi")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4, 0, 8.5)
+mesh = ExtResource("7_yh6k8")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="WallExterior2m2" type="MeshInstance3D" parent="House/Basement/S" unique_id=1700480284 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 6, 0, 8.5)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("17_6meqd")
+
+[node name="WallExterior2m3" type="MeshInstance3D" parent="House/Basement/S" unique_id=123498820 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 8, 0, 8.5)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("11_1o1lt")
+
+[node name="WallExterior2m4" type="MeshInstance3D" parent="House/Basement/S" unique_id=1315156562 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10, 0, 8.5)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("11_1o1lt")
+
+[node name="W" type="Node3D" parent="House/Basement" unique_id=1689567907]
+
+[node name="Corner" type="MeshInstance3D" parent="House/Basement/W" unique_id=1403460511 instance=ExtResource("1_b18gn")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 8.5)
+mesh = ExtResource("2_4fgvh")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="WallExterior2m" type="MeshInstance3D" parent="House/Basement/W" unique_id=562721585 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 2.5)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("3_obwga")
+
+[node name="WallExterior2m2" type="MeshInstance3D" parent="House/Basement/W" unique_id=840937839 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 4.5)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="WallExterior1m" type="MeshInstance3D" parent="House/Basement/W" unique_id=568211999 instance=ExtResource("14_ctx3j")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 5.5)
+mesh = ExtResource("15_r70hg")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="WallExterior05m" type="MeshInstance3D" parent="House/Basement/W" unique_id=1235594858 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 6)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="W2" type="MeshInstance3D" parent="House/Basement/W" unique_id=2068940439 instance=ExtResource("6_hdwvi")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 7.5)
+mesh = ExtResource("7_yh6k8")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="WallExterior05m2" type="MeshInstance3D" parent="House/Basement/W" unique_id=540874168 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 8)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="X4" type="Node3D" parent="House/Basement" unique_id=681700098]
+
+[node name="WallPartitionEndExterior2m" type="MeshInstance3D" parent="House/Basement/X4" unique_id=2081604636 instance=ExtResource("18_ew0y3")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, 0)
+mesh = ExtResource("19_xoxfi")
+surface_material_override/0 = ExtResource("3_obwga")
+surface_material_override/1 = ExtResource("10_rosg0")
+
+[node name="DoorPartition15m" type="MeshInstance3D" parent="House/Basement/X4" unique_id=1800448509 instance=ExtResource("20_6kmdh")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, 2)
+mesh = ExtResource("21_5tski")
+surface_material_override/0 = ExtResource("3_obwga")
+surface_material_override/1 = ExtResource("17_6meqd")
+
+[node name="DoorPartitionOffset15m" type="MeshInstance3D" parent="House/Basement/X4" unique_id=428378762 instance=ExtResource("22_1ya0a")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, 3.5)
+mesh = ExtResource("23_3534g")
+surface_material_override/0 = ExtResource("16_kdhrf")
+surface_material_override/1 = ExtResource("17_6meqd")
+
+[node name="WallPartition2m" type="MeshInstance3D" parent="House/Basement/X4" unique_id=903103777 instance=ExtResource("24_ft5ty")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, 5)
+mesh = ExtResource("25_k41oo")
+surface_material_override/0 = ExtResource("16_kdhrf")
+surface_material_override/1 = ExtResource("17_6meqd")
+
+[node name="WallPartition05m" type="MeshInstance3D" parent="House/Basement/X4" unique_id=868020267 instance=ExtResource("26_7q5dg")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, 7)
+mesh = ExtResource("27_tdind")
+surface_material_override/0 = ExtResource("16_kdhrf")
+surface_material_override/1 = ExtResource("17_6meqd")
+
+[node name="WallPartitionEndExterior1m" type="MeshInstance3D" parent="House/Basement/X4" unique_id=577509714 instance=ExtResource("28_urv5b")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4, 0, 8.5)
+mesh = ExtResource("29_7vd0n")
+surface_material_override/0 = ExtResource("17_6meqd")
+surface_material_override/1 = ExtResource("16_kdhrf")
+
+[node name="X6_5" type="Node3D" parent="House/Basement" unique_id=1702023931]
+
+[node name="WallPartitionEndExterior2m" type="MeshInstance3D" parent="House/Basement/X6_5" unique_id=1869459176 instance=ExtResource("18_ew0y3")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 0)
+mesh = ExtResource("19_xoxfi")
+surface_material_override/0 = ExtResource("10_rosg0")
+surface_material_override/1 = ExtResource("11_1o1lt")
+
+[node name="WallPartition2m" type="MeshInstance3D" parent="House/Basement/X6_5" unique_id=255332335 instance=ExtResource("24_ft5ty")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 2)
+mesh = ExtResource("25_k41oo")
+surface_material_override/0 = ExtResource("17_6meqd")
+surface_material_override/1 = ExtResource("11_1o1lt")
+
+[node name="DoorPartition15m" type="MeshInstance3D" parent="House/Basement/X6_5" unique_id=1252655477 instance=ExtResource("20_6kmdh")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 4)
+mesh = ExtResource("21_5tski")
+surface_material_override/0 = ExtResource("17_6meqd")
+surface_material_override/1 = ExtResource("11_1o1lt")
+
+[node name="WallPartition2m2" type="MeshInstance3D" parent="House/Basement/X6_5" unique_id=1787567217 instance=ExtResource("24_ft5ty")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 5.5)
+mesh = ExtResource("25_k41oo")
+surface_material_override/0 = ExtResource("17_6meqd")
+surface_material_override/1 = ExtResource("11_1o1lt")
+
+[node name="WallPartitionEndExterior1m" type="MeshInstance3D" parent="House/Basement/X6_5" unique_id=365848942 instance=ExtResource("28_urv5b")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.5, 0, 8.5)
+mesh = ExtResource("29_7vd0n")
+surface_material_override/0 = ExtResource("11_1o1lt")
+surface_material_override/1 = ExtResource("17_6meqd")
+
+[node name="Z3_5" type="Node3D" parent="House/Basement" unique_id=1184090511]
+
+[node name="WallPartitionEndExterior2m" type="MeshInstance3D" parent="House/Basement/Z3_5" unique_id=1979032148 instance=ExtResource("18_ew0y3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5)
+mesh = ExtResource("19_xoxfi")
+surface_material_override/0 = ExtResource("16_kdhrf")
+surface_material_override/1 = ExtResource("3_obwga")
+
+[node name="WallPartitionEndPartition2m" type="MeshInstance3D" parent="House/Basement/Z3_5" unique_id=1399137056 instance=ExtResource("30_3flea")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4, 0, 3.5)
+mesh = ExtResource("31_sjtxq")
+surface_material_override/0 = ExtResource("3_obwga")
+surface_material_override/1 = ExtResource("16_kdhrf")
+
+[node name="Z2" type="Node3D" parent="House/Basement" unique_id=1586172373]
+
+[node name="WallPartitionEndPartition05m" type="MeshInstance3D" parent="House/Basement/Z2" unique_id=950261920 instance=ExtResource("32_1hhc3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
+mesh = ExtResource("33_8ulg2")
+surface_material_override/0 = ExtResource("17_6meqd")
+surface_material_override/1 = ExtResource("10_rosg0")
+
+[node name="DoorPartition15m" type="MeshInstance3D" parent="House/Basement/Z2" unique_id=630598035 instance=ExtResource("20_6kmdh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 2)
+mesh = ExtResource("21_5tski")
+surface_material_override/0 = ExtResource("17_6meqd")
+surface_material_override/1 = ExtResource("10_rosg0")
+
+[node name="WallPartitionEndPartition05m2" type="MeshInstance3D" parent="House/Basement/Z2" unique_id=248225163 instance=ExtResource("32_1hhc3")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 6.5, 0, 2)
+mesh = ExtResource("33_8ulg2")
+surface_material_override/0 = ExtResource("10_rosg0")
+surface_material_override/1 = ExtResource("17_6meqd")
+
+[node name="Stair" type="Node3D" parent="House/Basement" unique_id=2082909665]
+
+[node name="StairUSolid" type="MeshInstance3D" parent="House/Basement/Stair" unique_id=977372969 instance=ExtResource("34_a4l88")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5.5)
+mesh = ExtResource("35_xy35d")
+
+[node name="Floor" type="Node3D" parent="House/Basement" unique_id=793870128]
+
+[node name="FloorHatch15m" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1016001330 instance=ExtResource("36_fuwtx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1)
+mesh = ExtResource("37_cvstk")
+
+[node name="Floor2m" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=732777008 instance=ExtResource("38_r072j")]
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor1m" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1637538469 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor1m2" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=806312895 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1999463578 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 1)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m2" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1286271126 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 1.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor1m3" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1759368631 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor1m4" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=410916650 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 2)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m3" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=365995795 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 2)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor1m5" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1824815134 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2.5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor1m6" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1563953849 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 2.5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m4" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=956201453 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m5" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1215211790 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m6" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1046548658 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m7" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1963270645 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m2" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1432227509 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m3" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=684529131 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3.5)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m4" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1034984135 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.5)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m5" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=666360347 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 5.5)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor1m7" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1281099526 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor1m8" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1528848003 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor1m9" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=760468850 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor1m10" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1393307485 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m6" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=917970852 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m8" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=126404188 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m9" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1843268717 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m10" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1051836035 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 1)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m11" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1459893876 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 1.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m7" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1163720581 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m12" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=632467611 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m13" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=2027591669 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m14" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1446158818 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m15" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=2054481917 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m8" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1388356874 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m16" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1918091297 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m17" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=554617539 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m18" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=141247703 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m19" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1604241178 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 5.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m9" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=2093145118 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 6)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m20" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1306428386 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m21" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1963708040 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m22" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1194582528 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 7)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m23" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1047999507 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 7.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m24" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=941513395 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m25" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=583565543 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m26" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=466803052 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m27" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=90746696 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m28" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=90544388 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m10" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1777691493 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 0)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m11" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=823640053 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 0)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m12" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1214741754 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 2)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m13" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=403648570 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 2)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m14" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1890638442 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 4)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m15" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1531235695 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 4)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m16" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1033001504 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 6)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor2m17" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=484342583 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 6)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m29" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=424558438 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m30" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=530096793 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m31" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1820877535 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m32" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1255872663 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m33" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=190172633 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m34" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=2029170952 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m35" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1370750072 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Floor05m36" type="MeshInstance3D" parent="House/Basement/Floor" unique_id=1665423601 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("40_nu2qb")
+
+[node name="Ground" type="Node3D" parent="House" unique_id=665075493]
+
+[node name="N" type="Node3D" parent="House/Ground" unique_id=561851093]
+
+[node name="Corner" type="MeshInstance3D" parent="House/Ground/N" unique_id=1726493278 instance=ExtResource("1_b18gn")]
+mesh = ExtResource("2_4fgvh")
+
+[node name="WallExterior2m" type="MeshInstance3D" parent="House/Ground/N" unique_id=623580676 instance=ExtResource("8_roxmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+mesh = ExtResource("9_uytyp")
+
+[node name="W5" type="MeshInstance3D" parent="House/Ground/N" unique_id=433201858 instance=ExtResource("45_jle07")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0)
+mesh = ExtResource("46_0c84q")
+
+[node name="W8" type="MeshInstance3D" parent="House/Ground/N" unique_id=2113171510 instance=ExtResource("47_dy14b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+mesh = ExtResource("48_pewuk")
+surface_material_override/0 = ExtResource("49_y6gpl")
+
+[node name="D11" type="MeshInstance3D" parent="House/Ground/N" unique_id=1819516359 instance=ExtResource("50_tpxhp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
+mesh = ExtResource("51_mgaxe")
+surface_material_override/0 = ExtResource("49_y6gpl")
+
+[node name="WallExterior1m" type="MeshInstance3D" parent="House/Ground/N" unique_id=1042188648 instance=ExtResource("14_ctx3j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 0)
+mesh = ExtResource("15_r70hg")
+
+[node name="W9" type="MeshInstance3D" parent="House/Ground/N" unique_id=1619671684 instance=ExtResource("52_86u0w")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 0)
+mesh = ExtResource("53_yck6p")
+
+[node name="WallExterior1m2" type="MeshInstance3D" parent="House/Ground/N" unique_id=637581073 instance=ExtResource("14_ctx3j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 0)
+mesh = ExtResource("15_r70hg")
+
+[node name="E" type="Node3D" parent="House/Ground" unique_id=1423718987]
+
+[node name="Corner" type="MeshInstance3D" parent="House/Ground/E" unique_id=165145 instance=ExtResource("1_b18gn")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 0)
+mesh = ExtResource("2_4fgvh")
+
+[node name="WallExterior2m" type="MeshInstance3D" parent="House/Ground/E" unique_id=2043915307 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 0.5)
+mesh = ExtResource("9_uytyp")
+
+[node name="WallExterior1m" type="MeshInstance3D" parent="House/Ground/E" unique_id=1917439276 instance=ExtResource("14_ctx3j")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 2.5)
+mesh = ExtResource("15_r70hg")
+
+[node name="W10" type="MeshInstance3D" parent="House/Ground/E" unique_id=804742081 instance=ExtResource("54_rvyni")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 3.5)
+mesh = ExtResource("55_u6iac")
+
+[node name="WallExterior2m2" type="MeshInstance3D" parent="House/Ground/E" unique_id=1503243358 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 6)
+mesh = ExtResource("9_uytyp")
+
+[node name="S" type="Node3D" parent="House/Ground" unique_id=1648718293]
+
+[node name="Corner" type="MeshInstance3D" parent="House/Ground/S" unique_id=1569219226 instance=ExtResource("1_b18gn")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10.5, 0, 8.5)
+mesh = ExtResource("2_4fgvh")
+
+[node name="W7" type="MeshInstance3D" parent="House/Ground/S" unique_id=752848040 instance=ExtResource("56_rp5ss")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 3, 0, 8.5)
+mesh = ExtResource("57_53ta3")
+
+[node name="WallExterior1m" type="MeshInstance3D" parent="House/Ground/S" unique_id=276261587 instance=ExtResource("14_ctx3j")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4, 0, 8.5)
+mesh = ExtResource("15_r70hg")
+
+[node name="W12" type="MeshInstance3D" parent="House/Ground/S" unique_id=124962854 instance=ExtResource("58_3nuvc")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 6.5, 0, 8.5)
+mesh = ExtResource("59_b6h01")
+surface_material_override/0 = ExtResource("49_y6gpl")
+
+[node name="W11" type="MeshInstance3D" parent="House/Ground/S" unique_id=364242085 instance=ExtResource("60_notq6")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10, 0, 8.5)
+mesh = ExtResource("61_k2ul1")
+
+[node name="W" type="Node3D" parent="House/Ground" unique_id=474364348]
+
+[node name="Corner" type="MeshInstance3D" parent="House/Ground/W" unique_id=1118854128 instance=ExtResource("1_b18gn")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 8.5)
+mesh = ExtResource("2_4fgvh")
+
+[node name="WallExterior2m" type="MeshInstance3D" parent="House/Ground/W" unique_id=1849679845 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 2.5)
+mesh = ExtResource("9_uytyp")
+
+[node name="WallExterior2m2" type="MeshInstance3D" parent="House/Ground/W" unique_id=50883511 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 4.5)
+mesh = ExtResource("9_uytyp")
+
+[node name="WallExterior2m3" type="MeshInstance3D" parent="House/Ground/W" unique_id=176860064 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 6.5)
+mesh = ExtResource("9_uytyp")
+
+[node name="W6" type="MeshInstance3D" parent="House/Ground/W" unique_id=1358454428 instance=ExtResource("52_86u0w")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 8)
+mesh = ExtResource("53_yck6p")
+
+[node name="X4" type="Node3D" parent="House/Ground" unique_id=960063052]
+
+[node name="WallPartitionEndExterior2m" type="MeshInstance3D" parent="House/Ground/X4" unique_id=88538236 instance=ExtResource("18_ew0y3")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, 0)
+mesh = ExtResource("19_xoxfi")
+
+[node name="DoorPartition15m" type="MeshInstance3D" parent="House/Ground/X4" unique_id=1190831551 instance=ExtResource("20_6kmdh")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, 2)
+mesh = ExtResource("21_5tski")
+
+[node name="WallPartition2m" type="MeshInstance3D" parent="House/Ground/X4" unique_id=951121969 instance=ExtResource("24_ft5ty")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, 3.5)
+mesh = ExtResource("25_k41oo")
+
+[node name="WallPartition2m2" type="MeshInstance3D" parent="House/Ground/X4" unique_id=99221613 instance=ExtResource("24_ft5ty")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, 5.5)
+mesh = ExtResource("25_k41oo")
+
+[node name="WallPartitionEndExterior1m" type="MeshInstance3D" parent="House/Ground/X4" unique_id=2030056317 instance=ExtResource("28_urv5b")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4, 0, 8.5)
+mesh = ExtResource("29_7vd0n")
+surface_material_override/0 = ExtResource("49_y6gpl")
+surface_material_override/1 = ExtResource("62_m3a7o")
+
+[node name="X6_5" type="Node3D" parent="House/Ground" unique_id=1197614741]
+
+[node name="WallPartitionEndExterior2m" type="MeshInstance3D" parent="House/Ground/X6_5" unique_id=1539177199 instance=ExtResource("18_ew0y3")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 0)
+mesh = ExtResource("19_xoxfi")
+surface_material_override/0 = ExtResource("49_y6gpl")
+surface_material_override/1 = ExtResource("62_m3a7o")
+
+[node name="WallPartition2m" type="MeshInstance3D" parent="House/Ground/X6_5" unique_id=1959844438 instance=ExtResource("24_ft5ty")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 2)
+mesh = ExtResource("25_k41oo")
+surface_material_override/0 = ExtResource("49_y6gpl")
+surface_material_override/1 = ExtResource("62_m3a7o")
+
+[node name="DoorPartition15m" type="MeshInstance3D" parent="House/Ground/X6_5" unique_id=2105914716 instance=ExtResource("20_6kmdh")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 4)
+mesh = ExtResource("21_5tski")
+surface_material_override/0 = ExtResource("49_y6gpl")
+surface_material_override/1 = ExtResource("62_m3a7o")
+
+[node name="WallPartition2m2" type="MeshInstance3D" parent="House/Ground/X6_5" unique_id=2022002208 instance=ExtResource("24_ft5ty")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 5.5)
+mesh = ExtResource("25_k41oo")
+surface_material_override/0 = ExtResource("49_y6gpl")
+surface_material_override/1 = ExtResource("62_m3a7o")
+
+[node name="WallPartitionEndExterior1m" type="MeshInstance3D" parent="House/Ground/X6_5" unique_id=1349781250 instance=ExtResource("28_urv5b")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.5, 0, 8.5)
+mesh = ExtResource("29_7vd0n")
+
+[node name="Stair" type="Node3D" parent="House/Ground" unique_id=652263391]
+
+[node name="StairU" type="MeshInstance3D" parent="House/Ground/Stair" unique_id=542095640 instance=ExtResource("63_yrj5s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5.5)
+mesh = ExtResource("64_hrt8m")
+
+[node name="Floor" type="Node3D" parent="House/Ground" unique_id=453277235]
+
+[node name="FloorShaft1m" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=19728584 instance=ExtResource("65_1xse3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4.5)
+mesh = ExtResource("66_7m83a")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor2m" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=796212423 instance=ExtResource("38_r072j")]
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor2m2" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=846384975 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor2m3" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1860060910 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor2m4" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=494496935 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor2m5" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=857620887 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor1m" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1437152364 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 4)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor05m" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1906022608 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor05m2" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1809383036 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 4)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor1m2" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1426298699 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor1m3" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=186518910 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 5.5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor2m6" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=657693481 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor1m4" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=316776725 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 6)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor1m5" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1770388505 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 6.5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor1m6" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1878643310 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 7)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor1m7" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1375931904 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor05m3" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=674742007 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor05m4" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=306776514 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor05m5" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=208620220 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor05m6" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1473284692 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor05m7" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1239820269 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor05m8" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=539185813 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("67_s68k6")
+
+[node name="Floor2m7" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1756753629 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor05m9" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1539944239 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m10" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=496624436 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0.5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m11" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=2081956984 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 1)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m12" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=529134042 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 1.5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor2m8" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=746104709 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor05m13" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=345692846 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m14" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=945339637 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2.5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m15" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1127799195 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m16" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=2146213950 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3.5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor1m8" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=99518676 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor1m9" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1900143582 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 4)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor05m17" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1330279388 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m18" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1590481513 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4.5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m19" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1390812399 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m20" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1377304772 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m21" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1472548835 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m22" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1268492390 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m23" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=219418096 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor2m9" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=440696020 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 0)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor2m10" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1389497759 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 0)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor2m11" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1433233496 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 2)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor2m12" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1167779217 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 2)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor2m13" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1741789661 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 4)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor2m14" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1649401183 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 4)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor2m15" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=38265032 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 6)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor2m16" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=233504849 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 6)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor05m24" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1880654282 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m25" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=568507605 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 8)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m26" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1400388212 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m27" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1078525906 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 8)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m28" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=629431979 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m29" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1335588772 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 8)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m30" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=627590745 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m31" type="MeshInstance3D" parent="House/Ground/Floor" unique_id=1455986336 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 8)
+mesh = ExtResource("44_qlqid")
+
+[node name="CeilingBelow" type="Node3D" parent="House/Ground" unique_id=625251247]
+
+[node name="CeilingShaft1m" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=293480960 instance=ExtResource("68_nmvoc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4.5)
+mesh = ExtResource("69_i2c74")
+
+[node name="Ceiling2m" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1639117448 instance=ExtResource("70_7j33u")]
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m2" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1688898639 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m3" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=720678746 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m4" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=543829169 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m5" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1409284339 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling1m" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1023297507 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 4)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling05m" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=2037704826 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m2" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1121991644 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 4)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling1m2" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1204624733 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m3" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=2136047957 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 5.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling2m6" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1518064728 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling1m4" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1466504977 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 6)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m5" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=392266837 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 6.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m6" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=148174888 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 7)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m7" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1271294538 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 7.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling05m3" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1837133500 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m4" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1694356478 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m5" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=437746078 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m6" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1236731551 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m7" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=298660832 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m8" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1020209738 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling2m7" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=422734548 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling05m9" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1200535513 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m10" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1907096098 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0.5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m11" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=176169516 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 1)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m12" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=2134684104 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 1.5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling2m8" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=786004113 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling05m13" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=2041635513 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m14" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=603753476 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2.5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m15" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=577245097 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m16" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1534030768 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3.5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling1m8" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=327339145 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m9" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=860524952 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 4)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling05m17" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1039757268 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m18" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=883625761 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4.5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m19" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1129077315 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m20" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1030651956 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m21" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=61694730 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m22" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=739860244 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m23" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1668689774 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling2m9" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=2055699842 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 0)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m10" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1100404680 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 0)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m11" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=297916619 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 2)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m12" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=513976819 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 2)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m13" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=713079952 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 4)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m14" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=452395404 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 4)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m15" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1257164818 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 6)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m16" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=111782676 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 6)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling05m24" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1472326192 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m25" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=356616940 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m26" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1036074939 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m27" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1559611968 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m28" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=2144045860 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m29" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1964270057 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m30" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1753800844 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m31" type="MeshInstance3D" parent="House/Ground/CeilingBelow" unique_id=1781093008 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 8)
+mesh = ExtResource("75_i0mw2")
+
+[node name="First" type="Node3D" parent="House" unique_id=844420364]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+
+[node name="N" type="Node3D" parent="House/First" unique_id=1575769822]
+
+[node name="Corner" type="MeshInstance3D" parent="House/First/N" unique_id=12127883 instance=ExtResource("1_b18gn")]
+mesh = ExtResource("2_4fgvh")
+surface_material_override/0 = ExtResource("76_qpxa8")
+
+[node name="WallExterior05m" type="MeshInstance3D" parent="House/First/N" unique_id=2070781702 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("76_qpxa8")
+
+[node name="W13" type="MeshInstance3D" parent="House/First/N" unique_id=147464630 instance=ExtResource("77_pgcti")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+mesh = ExtResource("78_qtp1e")
+surface_material_override/0 = ExtResource("76_qpxa8")
+
+[node name="WallExterior2m" type="MeshInstance3D" parent="House/First/N" unique_id=1462307675 instance=ExtResource("8_roxmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("76_qpxa8")
+
+[node name="W17" type="MeshInstance3D" parent="House/First/N" unique_id=2072004769 instance=ExtResource("77_pgcti")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 0)
+mesh = ExtResource("78_qtp1e")
+surface_material_override/0 = ExtResource("49_y6gpl")
+
+[node name="WallExterior1m" type="MeshInstance3D" parent="House/First/N" unique_id=54612563 instance=ExtResource("14_ctx3j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+mesh = ExtResource("15_r70hg")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="W18" type="MeshInstance3D" parent="House/First/N" unique_id=1603390732 instance=ExtResource("79_xo2me")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0)
+mesh = ExtResource("80_0f141")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="WallExterior1m2" type="MeshInstance3D" parent="House/First/N" unique_id=2109774139 instance=ExtResource("14_ctx3j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 0)
+mesh = ExtResource("15_r70hg")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="WallExterior05m2" type="MeshInstance3D" parent="House/First/N" unique_id=1183778692 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 0)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="E" type="Node3D" parent="House/First" unique_id=1085370603]
+
+[node name="Corner" type="MeshInstance3D" parent="House/First/E" unique_id=784550320 instance=ExtResource("1_b18gn")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 0)
+mesh = ExtResource("2_4fgvh")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="WallExterior2m" type="MeshInstance3D" parent="House/First/E" unique_id=1735127854 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 0.5)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("16_kdhrf")
+
+[node name="WallExterior2m2" type="MeshInstance3D" parent="House/First/E" unique_id=806048932 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 2.5)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("81_3m4hd")
+
+[node name="WallExterior2m3" type="MeshInstance3D" parent="House/First/E" unique_id=1244851770 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 4.5)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("81_3m4hd")
+
+[node name="WallExterior1m" type="MeshInstance3D" parent="House/First/E" unique_id=895337471 instance=ExtResource("14_ctx3j")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 6.5)
+mesh = ExtResource("15_r70hg")
+surface_material_override/0 = ExtResource("81_3m4hd")
+
+[node name="WallExterior05m" type="MeshInstance3D" parent="House/First/E" unique_id=967133171 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 7.5)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("81_3m4hd")
+
+[node name="S" type="Node3D" parent="House/First" unique_id=1018475271]
+
+[node name="Corner" type="MeshInstance3D" parent="House/First/S" unique_id=590311469 instance=ExtResource("1_b18gn")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10.5, 0, 8.5)
+mesh = ExtResource("2_4fgvh")
+surface_material_override/0 = ExtResource("81_3m4hd")
+
+[node name="WallExterior05m" type="MeshInstance3D" parent="House/First/S" unique_id=1023908481 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1, 0, 8.5)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("82_snnc6")
+
+[node name="W16" type="MeshInstance3D" parent="House/First/S" unique_id=859343469 instance=ExtResource("83_a46om")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 3.5, 0, 8.5)
+mesh = ExtResource("84_bb0ad")
+surface_material_override/0 = ExtResource("82_snnc6")
+
+[node name="WallExterior05m2" type="MeshInstance3D" parent="House/First/S" unique_id=1376375901 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4, 0, 8.5)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("82_snnc6")
+
+[node name="WallExterior05m3" type="MeshInstance3D" parent="House/First/S" unique_id=21347993 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 7, 0, 8.5)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("81_3m4hd")
+
+[node name="W19" type="MeshInstance3D" parent="House/First/S" unique_id=1201883827 instance=ExtResource("85_5s2xa")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 9, 0, 8.5)
+mesh = ExtResource("86_iyr7m")
+surface_material_override/0 = ExtResource("81_3m4hd")
+
+[node name="WallExterior1m" type="MeshInstance3D" parent="House/First/S" unique_id=288322405 instance=ExtResource("14_ctx3j")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10, 0, 8.5)
+mesh = ExtResource("15_r70hg")
+surface_material_override/0 = ExtResource("81_3m4hd")
+
+[node name="W" type="Node3D" parent="House/First" unique_id=830916512]
+
+[node name="Corner" type="MeshInstance3D" parent="House/First/W" unique_id=1444748844 instance=ExtResource("87_7id1p")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 8.5)
+mesh = ExtResource("88_76mp4")
+surface_material_override/0 = ExtResource("82_snnc6")
+
+[node name="WallExterior05m" type="MeshInstance3D" parent="House/First/W" unique_id=1410939895 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 1)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("76_qpxa8")
+
+[node name="W14" type="MeshInstance3D" parent="House/First/W" unique_id=1203114906 instance=ExtResource("77_pgcti")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 2.5)
+mesh = ExtResource("78_qtp1e")
+surface_material_override/0 = ExtResource("76_qpxa8")
+
+[node name="WallExterior2m" type="MeshInstance3D" parent="House/First/W" unique_id=766759046 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 4.5)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("82_snnc6")
+
+[node name="WallExterior2m2" type="MeshInstance3D" parent="House/First/W" unique_id=1918796559 instance=ExtResource("8_roxmx")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 6.5)
+mesh = ExtResource("9_uytyp")
+surface_material_override/0 = ExtResource("82_snnc6")
+
+[node name="WallExterior05m2" type="MeshInstance3D" parent="House/First/W" unique_id=827570631 instance=ExtResource("4_6r7lu")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 7)
+mesh = ExtResource("5_e7lvx")
+surface_material_override/0 = ExtResource("82_snnc6")
+
+[node name="W15" type="MeshInstance3D" parent="House/First/W" unique_id=1386507583 instance=ExtResource("77_pgcti")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 8.5)
+mesh = ExtResource("78_qtp1e")
+surface_material_override/0 = ExtResource("82_snnc6")
+
+[node name="X4" type="Node3D" parent="House/First" unique_id=1936300211]
+
+[node name="WallPartitionEndExterior2m" type="MeshInstance3D" parent="House/First/X4" unique_id=1084728736 instance=ExtResource("18_ew0y3")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, 0)
+mesh = ExtResource("19_xoxfi")
+surface_material_override/0 = ExtResource("76_qpxa8")
+
+[node name="DoorPartition15m" type="MeshInstance3D" parent="House/First/X4" unique_id=1328362868 instance=ExtResource("20_6kmdh")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, 2)
+mesh = ExtResource("21_5tski")
+surface_material_override/0 = ExtResource("76_qpxa8")
+
+[node name="DoorPartitionOffsetHatch2m" type="MeshInstance3D" parent="House/First/X4" unique_id=929419595 instance=ExtResource("89_xrd25")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, 3.5)
+mesh = ExtResource("90_v25d7")
+surface_material_override/0 = ExtResource("82_snnc6")
+
+[node name="WallPartition2m" type="MeshInstance3D" parent="House/First/X4" unique_id=828734614 instance=ExtResource("24_ft5ty")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4, 0, 5.5)
+mesh = ExtResource("25_k41oo")
+surface_material_override/0 = ExtResource("82_snnc6")
+
+[node name="WallPartitionEndExterior1m" type="MeshInstance3D" parent="House/First/X4" unique_id=212500762 instance=ExtResource("28_urv5b")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4, 0, 8.5)
+mesh = ExtResource("29_7vd0n")
+surface_material_override/0 = ExtResource("49_y6gpl")
+surface_material_override/1 = ExtResource("82_snnc6")
+
+[node name="X6_5" type="Node3D" parent="House/First" unique_id=1964862683]
+
+[node name="WallPartitionEndExterior2m" type="MeshInstance3D" parent="House/First/X6_5" unique_id=562188491 instance=ExtResource("18_ew0y3")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 0)
+mesh = ExtResource("19_xoxfi")
+surface_material_override/0 = ExtResource("49_y6gpl")
+surface_material_override/1 = ExtResource("16_kdhrf")
+
+[node name="DoorPartition15m" type="MeshInstance3D" parent="House/First/X6_5" unique_id=53708158 instance=ExtResource("20_6kmdh")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 2)
+mesh = ExtResource("21_5tski")
+surface_material_override/0 = ExtResource("49_y6gpl")
+surface_material_override/1 = ExtResource("16_kdhrf")
+
+[node name="WallPartition05m" type="MeshInstance3D" parent="House/First/X6_5" unique_id=303383712 instance=ExtResource("26_7q5dg")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 3.5)
+mesh = ExtResource("27_tdind")
+surface_material_override/0 = ExtResource("49_y6gpl")
+surface_material_override/1 = ExtResource("81_3m4hd")
+
+[node name="DoorPartition15m2" type="MeshInstance3D" parent="House/First/X6_5" unique_id=770484474 instance=ExtResource("20_6kmdh")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 4)
+mesh = ExtResource("21_5tski")
+surface_material_override/0 = ExtResource("49_y6gpl")
+surface_material_override/1 = ExtResource("81_3m4hd")
+
+[node name="WallPartition2m" type="MeshInstance3D" parent="House/First/X6_5" unique_id=1291344669 instance=ExtResource("24_ft5ty")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.5, 0, 5.5)
+mesh = ExtResource("25_k41oo")
+surface_material_override/0 = ExtResource("49_y6gpl")
+surface_material_override/1 = ExtResource("81_3m4hd")
+
+[node name="WallPartitionEndExterior1m" type="MeshInstance3D" parent="House/First/X6_5" unique_id=814008333 instance=ExtResource("28_urv5b")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 6.5, 0, 8.5)
+mesh = ExtResource("29_7vd0n")
+surface_material_override/0 = ExtResource("81_3m4hd")
+
+[node name="Z3_5W" type="Node3D" parent="House/First" unique_id=1649508269]
+
+[node name="WallPartitionEndExterior2m" type="MeshInstance3D" parent="House/First/Z3_5W" unique_id=923901391 instance=ExtResource("18_ew0y3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5)
+mesh = ExtResource("19_xoxfi")
+surface_material_override/0 = ExtResource("82_snnc6")
+surface_material_override/1 = ExtResource("76_qpxa8")
+
+[node name="WallPartitionEndPartition2m" type="MeshInstance3D" parent="House/First/Z3_5W" unique_id=1516203774 instance=ExtResource("30_3flea")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4, 0, 3.5)
+mesh = ExtResource("31_sjtxq")
+surface_material_override/0 = ExtResource("76_qpxa8")
+surface_material_override/1 = ExtResource("82_snnc6")
+
+[node name="Z3_5E" type="Node3D" parent="House/First" unique_id=1723229948]
+
+[node name="WallPartitionEndPartition2m" type="MeshInstance3D" parent="House/First/Z3_5E" unique_id=175703923 instance=ExtResource("30_3flea")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 3.5)
+mesh = ExtResource("31_sjtxq")
+surface_material_override/0 = ExtResource("81_3m4hd")
+surface_material_override/1 = ExtResource("16_kdhrf")
+
+[node name="WallPartitionEndExterior2m" type="MeshInstance3D" parent="House/First/Z3_5E" unique_id=1014106583 instance=ExtResource("18_ew0y3")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10.5, 0, 3.5)
+mesh = ExtResource("19_xoxfi")
+surface_material_override/0 = ExtResource("16_kdhrf")
+surface_material_override/1 = ExtResource("81_3m4hd")
+
+[node name="Stair" type="Node3D" parent="House/First" unique_id=1856544433]
+
+[node name="StairU" type="MeshInstance3D" parent="House/First/Stair" unique_id=566250224 instance=ExtResource("63_yrj5s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5.5)
+mesh = ExtResource("64_hrt8m")
+
+[node name="Floor" type="Node3D" parent="House/First" unique_id=1317241882]
+
+[node name="FloorShaft1m" type="MeshInstance3D" parent="House/First/Floor" unique_id=30128757 instance=ExtResource("65_1xse3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4.5)
+mesh = ExtResource("66_7m83a")
+
+[node name="Floor2m" type="MeshInstance3D" parent="House/First/Floor" unique_id=1672844186 instance=ExtResource("38_r072j")]
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor2m2" type="MeshInstance3D" parent="House/First/Floor" unique_id=1932331349 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor1m" type="MeshInstance3D" parent="House/First/Floor" unique_id=741749280 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor1m2" type="MeshInstance3D" parent="House/First/Floor" unique_id=651206100 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 2)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor1m3" type="MeshInstance3D" parent="House/First/Floor" unique_id=1600605202 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor1m4" type="MeshInstance3D" parent="House/First/Floor" unique_id=2031836723 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 2)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor05m" type="MeshInstance3D" parent="House/First/Floor" unique_id=2141658109 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m2" type="MeshInstance3D" parent="House/First/Floor" unique_id=1552056326 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 3)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m3" type="MeshInstance3D" parent="House/First/Floor" unique_id=504855865 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m4" type="MeshInstance3D" parent="House/First/Floor" unique_id=2068459758 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 3)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m5" type="MeshInstance3D" parent="House/First/Floor" unique_id=1917300475 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m6" type="MeshInstance3D" parent="House/First/Floor" unique_id=609275587 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 3)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m7" type="MeshInstance3D" parent="House/First/Floor" unique_id=898023833 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 3)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m8" type="MeshInstance3D" parent="House/First/Floor" unique_id=1868454600 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 3)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor2m3" type="MeshInstance3D" parent="House/First/Floor" unique_id=668416513 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor1m5" type="MeshInstance3D" parent="House/First/Floor" unique_id=170024683 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3.5)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor1m6" type="MeshInstance3D" parent="House/First/Floor" unique_id=496922278 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 3.5)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor1m7" type="MeshInstance3D" parent="House/First/Floor" unique_id=1406020962 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 4.5)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor2m4" type="MeshInstance3D" parent="House/First/Floor" unique_id=1331988293 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.5)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor2m5" type="MeshInstance3D" parent="House/First/Floor" unique_id=419794422 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 5.5)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor1m8" type="MeshInstance3D" parent="House/First/Floor" unique_id=137146256 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor1m9" type="MeshInstance3D" parent="House/First/Floor" unique_id=2027571702 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor1m10" type="MeshInstance3D" parent="House/First/Floor" unique_id=1329320182 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor1m11" type="MeshInstance3D" parent="House/First/Floor" unique_id=780337282 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor2m6" type="MeshInstance3D" parent="House/First/Floor" unique_id=1624242585 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor05m9" type="MeshInstance3D" parent="House/First/Floor" unique_id=1750770352 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m10" type="MeshInstance3D" parent="House/First/Floor" unique_id=1544356639 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0.5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m11" type="MeshInstance3D" parent="House/First/Floor" unique_id=1108568752 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 1)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m12" type="MeshInstance3D" parent="House/First/Floor" unique_id=34252596 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 1.5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor2m7" type="MeshInstance3D" parent="House/First/Floor" unique_id=1972159516 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor05m13" type="MeshInstance3D" parent="House/First/Floor" unique_id=1154647998 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m14" type="MeshInstance3D" parent="House/First/Floor" unique_id=632934535 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2.5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m15" type="MeshInstance3D" parent="House/First/Floor" unique_id=893549629 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m16" type="MeshInstance3D" parent="House/First/Floor" unique_id=211868141 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3.5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor1m12" type="MeshInstance3D" parent="House/First/Floor" unique_id=2115059061 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor1m13" type="MeshInstance3D" parent="House/First/Floor" unique_id=1930288215 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 4)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor05m17" type="MeshInstance3D" parent="House/First/Floor" unique_id=100505610 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m18" type="MeshInstance3D" parent="House/First/Floor" unique_id=1348716341 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4.5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m19" type="MeshInstance3D" parent="House/First/Floor" unique_id=1120187597 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m20" type="MeshInstance3D" parent="House/First/Floor" unique_id=122263745 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m21" type="MeshInstance3D" parent="House/First/Floor" unique_id=1975716522 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m22" type="MeshInstance3D" parent="House/First/Floor" unique_id=544938939 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor05m23" type="MeshInstance3D" parent="House/First/Floor" unique_id=998705493 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 5)
+mesh = ExtResource("44_qlqid")
+
+[node name="Floor2m8" type="MeshInstance3D" parent="House/First/Floor" unique_id=370413860 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 0)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor2m9" type="MeshInstance3D" parent="House/First/Floor" unique_id=1553816468 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 0)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor1m14" type="MeshInstance3D" parent="House/First/Floor" unique_id=1278564254 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 2)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor1m15" type="MeshInstance3D" parent="House/First/Floor" unique_id=1858738068 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 2)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor1m16" type="MeshInstance3D" parent="House/First/Floor" unique_id=941539373 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 2)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor1m17" type="MeshInstance3D" parent="House/First/Floor" unique_id=468614793 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 2)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor05m24" type="MeshInstance3D" parent="House/First/Floor" unique_id=1936570644 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor05m25" type="MeshInstance3D" parent="House/First/Floor" unique_id=475570605 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor05m26" type="MeshInstance3D" parent="House/First/Floor" unique_id=913514030 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor05m27" type="MeshInstance3D" parent="House/First/Floor" unique_id=1027584385 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor05m28" type="MeshInstance3D" parent="House/First/Floor" unique_id=26303922 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor05m29" type="MeshInstance3D" parent="House/First/Floor" unique_id=1314212683 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor05m30" type="MeshInstance3D" parent="House/First/Floor" unique_id=1190890391 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor05m31" type="MeshInstance3D" parent="House/First/Floor" unique_id=1378581517 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("91_1bvdt")
+
+[node name="Floor2m10" type="MeshInstance3D" parent="House/First/Floor" unique_id=417755608 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 3.5)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor2m11" type="MeshInstance3D" parent="House/First/Floor" unique_id=1125845929 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 3.5)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor2m12" type="MeshInstance3D" parent="House/First/Floor" unique_id=634626597 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 5.5)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor2m13" type="MeshInstance3D" parent="House/First/Floor" unique_id=1147908245 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 5.5)
+mesh = ExtResource("39_1rtb8")
+
+[node name="Floor1m18" type="MeshInstance3D" parent="House/First/Floor" unique_id=426340965 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor1m19" type="MeshInstance3D" parent="House/First/Floor" unique_id=1877926072 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor1m20" type="MeshInstance3D" parent="House/First/Floor" unique_id=984246450 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+
+[node name="Floor1m21" type="MeshInstance3D" parent="House/First/Floor" unique_id=430257412 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+
+[node name="CeilingBelow" type="Node3D" parent="House/First" unique_id=1634117492]
+
+[node name="CeilingShaft1m" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=255806667 instance=ExtResource("68_nmvoc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4.5)
+mesh = ExtResource("69_i2c74")
+
+[node name="Ceiling2m" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=143675004 instance=ExtResource("70_7j33u")]
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m2" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1194783085 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling1m" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=2115005073 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m2" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=374537180 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 2)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m3" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1492409863 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m4" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=808618464 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 2)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling05m" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=111365935 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m2" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1162145530 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m3" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1586449154 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m4" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=696926277 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m5" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1497770544 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m6" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=236063424 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m7" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=558157941 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m8" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1012716239 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling2m3" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1057016444 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling1m5" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=382361404 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m6" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1772519847 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 3.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m7" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1232786016 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 4.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling2m4" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1579851794 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.5)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m5" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1027025499 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 5.5)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling1m8" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1154239508 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m9" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=783977482 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 7.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m10" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1817460002 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 7.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m11" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1509159967 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 7.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling2m6" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1286365863 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling05m9" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1200509600 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m10" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1495734856 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0.5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m11" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=590777203 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 1)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m12" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1825552033 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 1.5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling2m7" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=238220960 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling05m13" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=2060373083 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m14" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1412290024 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2.5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m15" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=355805549 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m16" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1976772085 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3.5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling1m12" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=838755351 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m13" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=2134317868 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 4)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling05m17" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1522414152 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m18" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=32435931 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4.5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m19" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=126532420 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m20" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=429788301 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m21" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=18795590 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m22" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=780905197 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m23" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=748543899 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 5)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling2m8" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=914018115 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 0)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m9" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=2079488516 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 0)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling1m14" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=479794623 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 2)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m15" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=519061212 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 2)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m16" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=278345975 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 2)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m17" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=790202411 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 2)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling05m24" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=763686603 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m25" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=362711122 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m26" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1113041804 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m27" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=762350217 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m28" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1828244002 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m29" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1846970987 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m30" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1319680061 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling05m31" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1076705082 instance=ExtResource("74_ofj1c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 3)
+mesh = ExtResource("75_i0mw2")
+
+[node name="Ceiling2m10" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1106952423 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 3.5)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m11" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=94505220 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 3.5)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m12" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1455162313 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 5.5)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling2m13" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=252600682 instance=ExtResource("70_7j33u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 5.5)
+mesh = ExtResource("71_o3bxt")
+
+[node name="Ceiling1m18" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=663066536 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 7.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m19" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=1008015166 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 7.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m20" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=955120647 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 7.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Ceiling1m21" type="MeshInstance3D" parent="House/First/CeilingBelow" unique_id=882807930 instance=ExtResource("72_ny4e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 7.5)
+mesh = ExtResource("73_p00ob")
+
+[node name="Attic" type="Node3D" parent="House" unique_id=1290481238]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 0)
+
+[node name="Walls" type="Node3D" parent="House/Attic" unique_id=971007816]
+
+[node name="W20" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=1429977481 instance=ExtResource("92_vmnj2")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 8.5)
+mesh = ExtResource("93_4ss33")
+
+[node name="W21" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=584400763 instance=ExtResource("94_kcy2h")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10.5, 0, 0)
+mesh = ExtResource("95_ny64n")
+
+[node name="KneeExteriorStart1m" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=1752252517 instance=ExtResource("96_bqaeg")]
+mesh = ExtResource("97_y7agr")
+
+[node name="KneeExteriorStart1m2" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=1225798731 instance=ExtResource("96_bqaeg")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10.5, 0, 8.5)
+mesh = ExtResource("97_y7agr")
+
+[node name="KneeExterior2m" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=1225966462 instance=ExtResource("98_vgdvn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+mesh = ExtResource("99_m3n55")
+
+[node name="KneeExterior2m2" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=1581734672 instance=ExtResource("98_vgdvn")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 9.5, 0, 8.5)
+mesh = ExtResource("99_m3n55")
+
+[node name="KneeExterior2m3" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=447135570 instance=ExtResource("98_vgdvn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+mesh = ExtResource("99_m3n55")
+
+[node name="KneeExterior2m4" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=708388440 instance=ExtResource("98_vgdvn")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 7.5, 0, 8.5)
+mesh = ExtResource("99_m3n55")
+
+[node name="KneeExterior2m5" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=959827136 instance=ExtResource("98_vgdvn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
+mesh = ExtResource("99_m3n55")
+
+[node name="KneeExterior2m6" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=558040966 instance=ExtResource("98_vgdvn")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5.5, 0, 8.5)
+mesh = ExtResource("99_m3n55")
+
+[node name="KneeExterior2m7" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=1628291536 instance=ExtResource("98_vgdvn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0)
+mesh = ExtResource("99_m3n55")
+
+[node name="KneeExterior2m8" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=1483705289 instance=ExtResource("98_vgdvn")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 3.5, 0, 8.5)
+mesh = ExtResource("99_m3n55")
+
+[node name="KneeExterior05m" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=175455481 instance=ExtResource("100_ur43v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 0)
+mesh = ExtResource("101_yea5k")
+
+[node name="KneeExterior05m2" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=1719445809 instance=ExtResource("100_ur43v")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1.5, 0, 8.5)
+mesh = ExtResource("101_yea5k")
+
+[node name="KneeExteriorEnd1m" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=1463180317 instance=ExtResource("102_tmugk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 0)
+mesh = ExtResource("103_ctxt6")
+
+[node name="KneeExteriorEnd1m2" type="MeshInstance3D" parent="House/Attic/Walls" unique_id=2146439379 instance=ExtResource("102_tmugk")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1, 0, 8.5)
+mesh = ExtResource("103_ctxt6")
+
+[node name="Roof" type="Node3D" parent="House/Attic" unique_id=296580043]
+
+[node name="RoofVergeW" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=1153412744 instance=ExtResource("104_hrx6e")]
+mesh = ExtResource("105_e5cf3")
+
+[node name="Roof2m" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=1211820930 instance=ExtResource("106_fw5td")]
+mesh = ExtResource("107_bykf7")
+
+[node name="Roof2m2" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=771867388 instance=ExtResource("106_fw5td")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+mesh = ExtResource("107_bykf7")
+
+[node name="Roof2m3" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=713186909 instance=ExtResource("106_fw5td")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+mesh = ExtResource("107_bykf7")
+
+[node name="Roof2m4" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=1763205979 instance=ExtResource("106_fw5td")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+mesh = ExtResource("107_bykf7")
+
+[node name="Roof2m5" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=1733970526 instance=ExtResource("106_fw5td")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
+mesh = ExtResource("107_bykf7")
+
+[node name="Roof05m" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=808714672 instance=ExtResource("108_tf6v6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+mesh = ExtResource("109_0hw7h")
+
+[node name="RoofVergeE" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=1206277599 instance=ExtResource("110_tvgpf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0, 0)
+mesh = ExtResource("111_b3uc7")
+
+[node name="RoofVergeW2" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=32140176 instance=ExtResource("104_hrx6e")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10.5, 0, 8.5)
+mesh = ExtResource("105_e5cf3")
+
+[node name="Roof1m" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=1644648126 instance=ExtResource("112_x4c44")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 10.5, 0, 8.5)
+mesh = ExtResource("113_wts5l")
+
+[node name="Roof05m2" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=806339797 instance=ExtResource("108_tf6v6")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 9.5, 0, 8.5)
+mesh = ExtResource("109_0hw7h")
+
+[node name="W22" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=126262282 instance=ExtResource("114_gpgbo")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 9, 0, 8.5)
+mesh = ExtResource("115_1pg3o")
+
+[node name="Roof2m6" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=696045825 instance=ExtResource("106_fw5td")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 7, 0, 8.5)
+mesh = ExtResource("107_bykf7")
+
+[node name="Roof2m7" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=1332781365 instance=ExtResource("106_fw5td")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5, 0, 8.5)
+mesh = ExtResource("107_bykf7")
+
+[node name="Roof2m8" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=1139780783 instance=ExtResource("106_fw5td")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 3, 0, 8.5)
+mesh = ExtResource("107_bykf7")
+
+[node name="Roof1m2" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=2106809585 instance=ExtResource("112_x4c44")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1, 0, 8.5)
+mesh = ExtResource("113_wts5l")
+
+[node name="RoofVergeE2" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=996447657 instance=ExtResource("110_tvgpf")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 8.5)
+mesh = ExtResource("111_b3uc7")
+
+[node name="RoofPost" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=970831201 instance=ExtResource("116_ahoer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 1.5)
+mesh = ExtResource("117_42f66")
+
+[node name="RoofPost2" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=1700540220 instance=ExtResource("116_ahoer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 1.5)
+mesh = ExtResource("117_42f66")
+
+[node name="RoofPost3" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=1345550848 instance=ExtResource("116_ahoer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 6.5)
+mesh = ExtResource("117_42f66")
+
+[node name="RoofPost4" type="MeshInstance3D" parent="House/Attic/Roof" unique_id=738049808 instance=ExtResource("116_ahoer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 6.5)
+mesh = ExtResource("117_42f66")
+
+[node name="Stair" type="Node3D" parent="House/Attic" unique_id=2046554268]
+
+[node name="StairNewelTop" type="MeshInstance3D" parent="House/Attic/Stair" unique_id=279115149 instance=ExtResource("118_reyw0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5.5)
+mesh = ExtResource("119_03xgn")
+
+[node name="StairBalustrade" type="MeshInstance3D" parent="House/Attic/Stair" unique_id=1407455454 instance=ExtResource("120_c1ihb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5.5)
+mesh = ExtResource("121_77s2q")
+
+[node name="Floor" type="Node3D" parent="House/Attic" unique_id=404778458]
+
+[node name="FloorShaft1m" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=113436730 instance=ExtResource("65_1xse3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4.5)
+mesh = ExtResource("66_7m83a")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=115157136 instance=ExtResource("38_r072j")]
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m2" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=862119490 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m3" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=478076578 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m4" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=604214470 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m5" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=238538565 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1554978098 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m2" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=364224344 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m3" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=790291321 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 1)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m4" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=953283129 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 1.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m6" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=2036680777 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m7" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=140680185 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m8" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1065047972 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m9" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1941018839 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m10" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1210963505 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 2)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m5" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=931895874 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 2)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m6" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1791770952 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 2.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m7" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=391199967 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 3)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m8" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1441615902 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 3.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m11" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1170496673 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor1m" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=341749532 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 4)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m9" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=302868572 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m10" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=415719892 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 4)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor1m2" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=2110388251 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor1m3" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1448534303 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 4)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor1m4" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=494034121 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m12" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=25590888 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 4)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor1m5" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1040064428 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 4)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m11" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1072199619 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 4)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m12" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1474646277 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 4.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor1m6" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1577581110 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m13" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=2093603095 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m14" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1722333883 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m15" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=36215681 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m16" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=467464780 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m17" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1345951855 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m18" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1988939593 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor1m7" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=30819167 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m19" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=788447024 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor1m8" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=115269947 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 5.5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m20" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=495129716 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 5.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m21" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=344688645 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 5.5)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m13" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1231482492 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor1m9" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1566494944 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 6)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m14" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=34282678 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 6)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor2m15" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=563155349 instance=ExtResource("38_r072j")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 6)
+mesh = ExtResource("39_1rtb8")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor1m10" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=945235373 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 6.5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor1m11" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1379013506 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 7)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor1m12" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=511965148 instance=ExtResource("41_qu7xj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 7.5)
+mesh = ExtResource("42_hrdvb")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m22" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1569982015 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m23" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1398831816 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m24" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=331840018 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m25" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1120311380 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m26" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1662958339 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m27" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=475279554 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m28" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=848558163 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m29" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=181570530 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m30" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1996240164 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m31" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=372976490 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m32" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1226280289 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m33" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1090117535 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m34" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=1785515137 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="Floor05m35" type="MeshInstance3D" parent="House/Attic/Floor" unique_id=861397798 instance=ExtResource("43_yq5ut")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 8)
+mesh = ExtResource("44_qlqid")
+surface_material_override/0 = ExtResource("122_x4nrw")
+
+[node name="CeilingBelow" type="Node3D" parent="House/Attic" unique_id=190892150]
+
+[node name="CeilingAtticShaft1m" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1698320555 instance=ExtResource("123_3bjvo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4.5)
+mesh = ExtResource("124_0lu8c")
+
+[node name="CeilingAttic2m" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1309277116 instance=ExtResource("125_vbxrd")]
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic2m2" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=2032754137 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic2m3" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=328725853 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic2m4" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1929627318 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic2m5" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=419247269 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic05m" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1275012858 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m2" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1663157808 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0.5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m3" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=128248167 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 1)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m4" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1917386800 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 1.5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic2m6" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=494599702 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic2m7" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1104644471 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic2m8" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=2052734749 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 2)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic2m9" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=166495415 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic2m10" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=289293060 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 2)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic05m5" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=2062380314 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 2)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m6" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1538383945 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 2.5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m7" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1464405934 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 3)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m8" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=514835419 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 3.5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic2m11" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=217147272 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic1m" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1535459563 instance=ExtResource("129_vosi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 4)
+mesh = ExtResource("130_qexa7")
+
+[node name="CeilingAttic05m9" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1502625553 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m10" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1220853394 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 4)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic1m2" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1480882675 instance=ExtResource("129_vosi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+mesh = ExtResource("130_qexa7")
+
+[node name="CeilingAttic1m3" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=2058447659 instance=ExtResource("129_vosi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 4)
+mesh = ExtResource("130_qexa7")
+
+[node name="CeilingAttic1m4" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1040554764 instance=ExtResource("129_vosi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 4)
+mesh = ExtResource("130_qexa7")
+
+[node name="CeilingAttic2m12" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=870825839 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 4)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic1m5" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=913585475 instance=ExtResource("129_vosi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 4)
+mesh = ExtResource("130_qexa7")
+
+[node name="CeilingAttic05m11" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1464486716 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 4)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m12" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=294509014 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 4.5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic1m6" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=937059813 instance=ExtResource("129_vosi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 5)
+mesh = ExtResource("130_qexa7")
+
+[node name="CeilingAttic05m13" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1368337005 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m14" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=158697967 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m15" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1142515926 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m16" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1772464251 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m17" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=2052870776 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m18" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1599607882 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic1m7" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1650623150 instance=ExtResource("129_vosi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 5)
+mesh = ExtResource("130_qexa7")
+
+[node name="CeilingAttic05m19" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1297355764 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic1m8" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1524274522 instance=ExtResource("129_vosi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 5.5)
+mesh = ExtResource("130_qexa7")
+
+[node name="CeilingAttic05m20" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1796341504 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 5.5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m21" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=911249970 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 5.5)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic2m13" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1614677149 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic1m9" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=394721073 instance=ExtResource("129_vosi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 6)
+mesh = ExtResource("130_qexa7")
+
+[node name="CeilingAttic2m14" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1474694794 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 6)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic2m15" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=328221268 instance=ExtResource("125_vbxrd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 6)
+mesh = ExtResource("126_3340e")
+
+[node name="CeilingAttic1m10" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=220620053 instance=ExtResource("129_vosi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 6.5)
+mesh = ExtResource("130_qexa7")
+
+[node name="CeilingAttic1m11" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=343884877 instance=ExtResource("129_vosi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 7)
+mesh = ExtResource("130_qexa7")
+
+[node name="CeilingAttic1m12" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1494186765 instance=ExtResource("129_vosi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 7.5)
+mesh = ExtResource("130_qexa7")
+
+[node name="CeilingAttic05m22" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1740227839 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m23" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1557109309 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 8)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m24" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=122817491 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 8)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m25" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=534022284 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 8)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m26" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=832571426 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 8)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m27" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=672527906 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 8)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m28" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1051411022 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 8)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m29" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=811324397 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 8)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m30" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1229009774 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 8)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m31" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=457387579 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 8)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m32" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=2031750968 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, 8)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m33" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=131931766 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 8)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m34" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=1046658298 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 8)
+mesh = ExtResource("128_wepu4")
+
+[node name="CeilingAttic05m35" type="MeshInstance3D" parent="House/Attic/CeilingBelow" unique_id=994580847 instance=ExtResource("127_c4ux2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 8)
+mesh = ExtResource("128_wepu4")
