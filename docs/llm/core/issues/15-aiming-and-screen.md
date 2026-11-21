@@ -91,13 +91,13 @@ bars (white or red through `modulate`), one `Message` label and one `Size` label
   Cabinet Drawer", "[E] Cupboard A Drawer"), the Door keeps "Open the Door" / "Shut the Door".
 
 ## Open follow-ups
-- [later] For the designer: the old held readout also followed the held Sock's cloth sway (`held_view.gd:797-815`
+- [closed 2026-11-21] For the designer: the old held readout also followed the held Sock's cloth sway (`held_view.gd:797-815`
   `info_sway()`). Built: it follows the held place and the zoom, not the sway. core/16 P03 lists the sway; it is left
-  to core/16 unless the designer says otherwise.
-- [later] "Sprint" [Shift] (`prompts.gd:105`) is not in the corner: the port has no sprint yet (M4, Upgrades).
-- [later] The zoo switches' words ("Sock Smarts: on" / "off", the station sign) are placeholders of a zoo tool.
-- [later] The refusal message is now at 70 %, 28 pt, in the old red text with the ink outline (it was a red tint over
-  the whole label); its wobble stays with core/16 P01.
+  to core/16 unless the designer says otherwise. — core/27 P03 built the held Size box following the sway (Q2398, Q2402)
+- [moved 2026-11-21] "Sprint" [Shift] (`prompts.gd:105`) is not in the corner: the port has no sprint yet (M4, Upgrades). — to docs/migration/m06-backlog.md
+- [closed 2026-11-21] The zoo switches' words ("Sock Smarts: on" / "off", the station sign) are placeholders of a zoo tool. — the zoo switches' words are zoo-only text (Q2409); nothing in the game depends on them
+- [closed 2026-11-21] The refusal message is now at 70 %, 28 pt, in the old red text with the ink outline (it was a red tint over
+  the whole label); its wobble stays with core/16 P01. — core/15's screen is approved (Q2387); the wobble was built in core/16
 
 ## Built log
 

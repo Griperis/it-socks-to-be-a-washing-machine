@@ -69,14 +69,14 @@ Drafted (agent, 2026-11-20):
 - Q2348 (2026-11-20): nothing pours at start; the first batch waits for a click on More.
 
 ## Open follow-ups
-- [later] The old zoo spawner's other pour modes are not built: a heap where the crosshair aims, rain over every room,
+- [moved 2026-11-21] The old zoo spawner's other pour modes are not built: a heap where the crosshair aims, rain over every room,
   a count set by hand, clear all; also SockPour.stop() resting every falling Sock at POUR_MAX and the `poured` signal
-  with the "Last pour" line. The designer has not chosen yet.
-- [later] Co-op cost: every `add` and `rest` answer carries the Mess's whole arrays (about 4,000 records with 2,000
-  poured): M0.6 should measure it with a Guest.
-- [later] The sign's Moving count is the Host's flights; a Guest shows 0 moving.
-- [later] `count_of()` counts GONE records too (a Design of a respilled heap may count more than two).
-- [later] `game/mess/mess.gd` is 683 lines (grep_rules: over 600): split it when next touched (core/14 also edits it).
+  with the "Last pour" line. The designer has not chosen yet. — to docs/migration/m06-backlog.md
+- [moved 2026-11-21] Co-op cost: every `add` and `rest` answer carries the Mess's whole arrays (about 4,000 records with 2,000
+  poured): M0.6 should measure it with a Guest. — to docs/migration/m06-backlog.md
+- [moved 2026-11-21] The sign's Moving count is the Host's flights; a Guest shows 0 moving. — to docs/migration/m06-backlog.md
+- [moved 2026-11-21] `count_of()` counts GONE records too (a Design of a respilled heap may count more than two). — to docs/migration/m06-backlog.md
+- [moved 2026-11-21] `game/mess/mess.gd` is 683 lines (grep_rules: over 600): split it when next touched (core/14 also edits it). — to docs/migration/m06-backlog.md
 
 ## Built log
 - Model: Opus (lead): physics and the Mess under load.

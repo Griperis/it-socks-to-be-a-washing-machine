@@ -61,7 +61,7 @@ script beside it.
 - The benchmarks run from the game in debug builds, by a command line (Q2416, 2026-11-21).
 
 ## Open follow-ups
-- [later] The export preset (release-export skill) must include/exclude `game/debug/` and the zoo as written in `docs/architecture/mess.md` "Benchmark" (C6); no preset exists yet.
+- [moved 2026-11-21] The export preset (release-export skill) must include/exclude `game/debug/` and the zoo as written in `docs/architecture/mess.md` "Benchmark" (C6); no preset exists yet. — to docs/migration/m06-backlog.md
 
 ## Built log
 - Model: Sonnet: a boot node, a command table and wrappers.

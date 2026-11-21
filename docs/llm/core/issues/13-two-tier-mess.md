@@ -119,18 +119,18 @@ the spawnable changed, so `Session.PROTOCOL` goes to 7.
   Q2305-Q2311 (2026-11-20).
 
 ## Open follow-ups
-- [later] A hit wakes lying Pairs as well as Socks (M08 says "that Sock and up to 8 touching"; the old Q1742 said hitting
-  a resting Pair does nothing). Designer: should a Throw knock a lying Pair loose?
-- [later] M07 (Q2308) overrides core/02's approved M13 "the one on top stays": picking the lower Sock now lets the one
-  on top fall. `handling:m13_tip` was changed to say so. Designer to confirm the M13 line is retired.
-- [later] `HandsTuning.settle_limit`, `wake_reach` and `wake_gap` are no longer read (M06 has no time limit; the
+- [closed 2026-11-21] A hit wakes lying Pairs as well as Socks (M08 says "that Sock and up to 8 touching"; the old Q1742 said hitting
+  a resting Pair does nothing). Designer: should a Throw knock a lying Pair loose? — Q2330: a fast hit never wakes a lying Pair, as the old Q1742
+- [closed 2026-11-21] M07 (Q2308) overrides core/02's approved M13 "the one on top stays": picking the lower Sock now lets the one
+  on top fall. `handling:m13_tip` was changed to say so. Designer to confirm the M13 line is retired. — Q2308 retires the M13 line: a pick wakes up to 40 Socks lying on it, the one on top falls
+- [moved 2026-11-21] `HandsTuning.settle_limit`, `wake_reach` and `wake_gap` are no longer read (M06 has no time limit; the
   column query replaced the Pair-only support check). The lead may remove them from `game/hands/hands_tuning.gd`
-  (not this ticket's file).
-- [later] M0.6: every woken flight is a spawned node (up to 512 over the spawner on a big wake), with no synchronizer
-  yet; Doors and drawers sweep on the Host only.
-- [later] Godot's `TIME_PHYSICS_PROCESS` monitor is not a tick's cost: it reads about 26 ms both before and after
-  (core/12's "39 ms" was this monitor). The numbers below time a tick from its first `_physics_process`.
-- [later] Q2303 ("a sliding Sock can be picked") is not built here; picks still need a lying Sock.
+  (not this ticket's file). — to docs/migration/m06-backlog.md
+- [moved 2026-11-21] M0.6: every woken flight is a spawned node (up to 512 over the spawner on a big wake), with no synchronizer
+  yet; Doors and drawers sweep on the Host only. — to docs/migration/m06-backlog.md
+- [closed 2026-11-21] Godot's `TIME_PHYSICS_PROCESS` monitor is not a tick's cost: it reads about 26 ms both before and after
+  (core/12's "39 ms" was this monitor). The numbers below time a tick from its first `_physics_process`. — a note on a measurement; core/31's benchmark times the tick properly (Q2405)
+- [closed 2026-11-21] Q2303 ("a sliding Sock can be picked") is not built here; picks still need a lying Sock. — Q2339 and Q2303: a moving Sock can be aimed and picked; `hands.gd` accepts a lying or moving Sock
 
 ## Built log
 - Model: Opus (lead): a core rewrite of the Mess's bodies and drawing, physics and performance.

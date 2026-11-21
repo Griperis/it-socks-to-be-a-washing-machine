@@ -44,8 +44,8 @@ in `zoo.tscn` by hand, knowing branches that add stations will meet in that file
 - The stations are instanced by hand in `zoo.tscn`; the folder collector goes (Q2359, 2026-11-21).
 
 ## Open follow-ups
-- [later] The kit's `zoo-design` skill and its templates still describe the folder collector; changing them upstream
-  needs the designer's permission (the lead asks).
+- [moved 2026-11-21] The kit's `zoo-design` skill and its templates still describe the folder collector; changing them upstream
+  needs the designer's permission (the lead asks). — to docs/migration/m06-backlog.md
 
 ## Built log
 - Model: Sonnet (lead): a scene and script change with known tests.

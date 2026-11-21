@@ -94,13 +94,13 @@ Approved (Q2292). The numbers are the old game's.
   numbers in `aim.tres` are placeholders, "stronger for the graybox, recheck on the M1 models" (Q2374, 2026-11-21).
 
 ## Open follow-ups
-- [later] The baseline has no old still of an aimed Sock or Door, only drawers (`cab-simple`, `c-cupboard`).
+- [moved 2026-11-21] The baseline has no old still of an aimed Sock or Door, only drawers (`cab-simple`, `c-cupboard`).
   Old-game stills of those two need the old game's capture tour with new views (not done: it runs in the
-  reference clone).
-- [later] O08: a moving Sock is outlined only while its flight has a Looks (the `flying_cap` nearest the camera,
+  reference clone). — to docs/migration/m06-backlog.md
+- [moved 2026-11-21] O08: a moving Sock is outlined only while its flight has a Looks (the `flying_cap` nearest the camera,
   core/09); a flight drawn by the flying MultiMesh has nothing to outline. Lending an aimed flight a Looks is
-  `game/mess/` (`mess.gd` `give_looks`, `mess_moving.gd`), which core/23 holds now.
-- [later] The outline station has no lying Pair: a SockSpot cannot place one (the O03 case pairs and drops one).
+  `game/mess/` (`mess.gd` `give_looks`, `mess_moving.gd`), which core/23 holds now. — to docs/migration/m06-backlog.md
+- [moved 2026-11-21] The outline station has no lying Pair: a SockSpot cannot place one (the O03 case pairs and drops one). — to docs/migration/m06-backlog.md
 - [later] `full.tres` keeps the old game's shells (only the aim style was made stronger, Q2374): the red tint on a
   full drawer is a little narrower than the warm white. Same shells for both?
 

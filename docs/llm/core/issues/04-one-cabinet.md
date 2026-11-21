@@ -146,10 +146,10 @@ the Cabinet's drawer, see the Pair in its slot and the Coins; throw a second Pai
   replaced by C04 (approved list).
 
 ## Open follow-ups
-- [later] Drawer3 is above the 2 Rows: a click with empty Hands does nothing; with Pairs the search starts at the
-  top Row (the old rule).
-- [later] A shelved Pair's lead is SHELVED and its mate stays IN_PAIR (the design said both SHELVED; IN_PAIR keeps
-  "never drawn on its own" true for the mate).
+- [closed 2026-11-21] Drawer3 is above the 2 Rows: a click with empty Hands does nothing; with Pairs the search starts at the
+  top Row (the old rule). — the old rule stands (the port keeps old rules, Q2153); nothing to change
+- [closed 2026-11-21] A shelved Pair's lead is SHELVED and its mate stays IN_PAIR (the design said both SHELVED; IN_PAIR keeps
+  "never drawn on its own" true for the mate). — IN_PAIR stays for the mate, it keeps "never drawn on its own" true; the design line is amended by this decision
 
 ## Built log
 - Model: Opus (lead): a new entity with Openable drawers and a Part that spans the Mess and Hands.

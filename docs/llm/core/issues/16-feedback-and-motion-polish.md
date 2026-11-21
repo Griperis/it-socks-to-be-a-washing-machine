@@ -98,24 +98,24 @@ the old core that the port lacks is listed here; only the designer drops one (Q2
   P11, P14 and P15 move to their own ticket, core/27 (Q2398, 2026-11-21).
 
 ## Open follow-ups
-- [later] Not built yet (stopped at the stills, the look-work rule): P03 the held Size box following the
+- [closed 2026-11-21] Not built yet (stopped at the stills, the look-work rule): P03 the held Size box following the
   cloth sway; P08 a thrown Sock keeping its held bend (core/23 left the flying Looks straight); P10 a
   shelved ball's squash in its slot; P11 a Pair thrown at a drawer front flying on to its slot; P14 the
-  fold's curl 1.3; P15 the Door's 0.6 s and the cupboard's 0.35 s swings. Each still needs its case.
-- [later] The ball's landing plays on the falling body's first touchdown (the port's Pair falls as a body,
+  fold's curl 1.3; P15 the Door's 0.6 s and the cupboard's 0.35 s swings. Each still needs its case. — Q2398: P03, P08, P10, P11, P14, P15 are core/27, which merged (Q2402)
+- [closed 2026-11-21] The ball's landing plays on the falling body's first touchdown (the port's Pair falls as a body,
   the old one flew a scripted arc): the squash and the 4 cm hop are drawn on the Looks while physics rolls
   the body, so the old "roll 12 cm to its rest" is physics' own roll. A Pair drawn by the MultiMesh (more
-  than `flying_cap` in the air) lands without it.
-- [later] Lost Socks come back lying at once at the return spot (a random turn, within 0.2 m), not falling
-  "like a drop" onto what is there as the old did, so two may overlap (see the still).
-- [later] The pop of a returned Sock is a new catalogue event `lost_pop` (same clips and +3 dB as `pop`,
-  but spatial and no min gap so each of several plays); `pop` itself is flat for the pairing moment.
-- [later] The squash is put on the Body each physics tick from the ball's turn then; a ball still spinning
-  fast (10 rad/s) as it lands is drawn up to about 5 mm off its bottom for a tick.
-- [later] "Paired!" is white on the handling station's cream wall and reads weakly there (the old colour; see
-  paired-full-frame.png).
-- [later] `sound_wiring:w10_gap` printed FLAKY on the `--touched` run (already in the ledger from earlier
-  runs; not touched here).
+  than `flying_cap` in the air) lands without it. — Q2398: the five looks merge as built, this limit known
+- [closed 2026-11-21] Lost Socks come back lying at once at the return spot (a random turn, within 0.2 m), not falling
+  "like a drop" onto what is there as the old did, so two may overlap (see the still). — Q2398: the lost return merges as built
+- [closed 2026-11-21] The pop of a returned Sock is a new catalogue event `lost_pop` (same clips and +3 dB as `pop`,
+  but spatial and no min gap so each of several plays); `pop` itself is flat for the pairing moment. — a spatial `lost_pop` with no min gap is the technique that lets each returned Sock play; same clips and level as `pop`; kept
+- [closed 2026-11-21] The squash is put on the Body each physics tick from the ball's turn then; a ball still spinning
+  fast (10 rad/s) as it lands is drawn up to about 5 mm off its bottom for a tick. — 5 mm for one tick is under what a look can show, and a look number gets no test (Q2421); accepted
+- [closed 2026-11-21] "Paired!" is white on the handling station's cream wall and reads weakly there (the old colour; see
+  paired-full-frame.png). — Q2398: core/16's looks merge as built, the old colour kept (Q2153)
+- [closed 2026-11-21] `sound_wiring:w10_gap` printed FLAKY on the `--touched` run (already in the ledger from earlier
+  runs; not touched here). — core/27 F1 fixed the cause (journal, core/27 merge)
 
 ## Built log
 - Model: Opus.

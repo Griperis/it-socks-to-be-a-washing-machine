@@ -36,8 +36,8 @@ data station built from its data (Q2337) and smaller boxes here.
 - Q2340 (2026-11-20): the still showed overlapping labels and the station sign over the buttons; fix both (column pitch 0.75 m, block moved forward to z 0.9) and merge without another still.
 
 ## Open follow-ups
-- [later] The hand-made `BehindDoor` and `InTheOpen` buttons stay beside the Door (the muffling test's fixtures); looping events (amb_room) get no button, the station's Ambience node plays them. Say if either should change.
-- [later] Layout numbers (0.3 m box, 9 per row, pitches, origin) are placeholders in `game/zoo/sounds_layout.tres`, for the designer's eye on the still.
+- [closed 2026-11-21] The hand-made `BehindDoor` and `InTheOpen` buttons stay beside the Door (the muffling test's fixtures); looping events (amb_room) get no button, the station's Ambience node plays them. Say if either should change. — they stay: the muffling test's fixtures, and the station's Ambience node plays the loops (Q2337)
+- [closed 2026-11-21] Layout numbers (0.3 m box, 9 per row, pitches, origin) are placeholders in `game/zoo/sounds_layout.tres`, for the designer's eye on the still. — Q2340: core/22's still was reviewed, the layout is fixed and it merged
 
 ## Built log
 - Model: Sonnet (lead): a station built from data, like the every-Sock station.

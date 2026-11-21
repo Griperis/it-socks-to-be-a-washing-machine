@@ -75,13 +75,13 @@ Runs after core/28, 29, 31 and 34 because it touches their files (paths as core/
 - [later] T3 `Arc.aimed()`: returning `Vector3.ZERO` whenever it does not converge made a charge-0 lob land 0.38 m
   from the crosshair (`flight_start:t03_lands` failed). The behaviour is kept (the nearest aim found); the comment
   now says what it does. Changing it is a change the player sees, so it is the designer's.
-- [later] T3 `LAYER_HOUSE` in `tools/house_kit_build.gd` and `tools/furniture_build.gd` stays `1`: a `--script` run
+- [moved 2026-11-21] T3 `LAYER_HOUSE` in `tools/house_kit_build.gd` and `tools/furniture_build.gd` stays `1`: a `--script` run
   has no autoloads, and naming `Mess` (whose scripts name `Sounds`) stops the tool compiling (tried). Found on the
   way: `tools/furniture_build.gd` already does not compile in a `--script` run (it preloads `openable.gd`, which
-  names `Sounds`); a tool fault for the lead.
-- [later] T4 `Cabinet.shelved()` and `Cabinet.flights_into()` are kept: the cabinet, drawer-details and zoo suites
-  call them (about 20 places). `Cabinet.FAR` is gone (the refusal is `Hands.FAR`, the same "far").
-- [later] T6 `tools/furniture_from_old.py:14` was already right after core/34 (its line 5 was the stale one).
+  names `Sounds`); a tool fault for the lead. — to docs/migration/m06-backlog.md
+- [closed 2026-11-21] T4 `Cabinet.shelved()` and `Cabinet.flights_into()` are kept: the cabinet, drawer-details and zoo suites
+  call them (about 20 places). `Cabinet.FAR` is gone (the refusal is `Hands.FAR`, the same "far"). — kept: about 20 test calls use them; `Cabinet.FAR` is gone
+- [closed 2026-11-21] T6 `tools/furniture_from_old.py:14` was already right after core/34 (its line 5 was the stale one). — a note: the line was already right after core/34
 
 ## Built log
 

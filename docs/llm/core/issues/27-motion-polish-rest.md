@@ -39,15 +39,15 @@ old code and numbers of each.
 - Split from core/16 (Q2398, 2026-11-21).
 
 ## Open follow-ups
-- [later] For the designer (Q2277, a detail to keep or drop): P08 carries the hand's bend into a Throw only; a
-  drop (Q2367, also from the hand) starts its flying Looks straight as before. Should a drop keep its bend too?
-- [later] P15: the Door kept its core/04 curve (Godot's ease -2, a quadratic in and out) and the cupboard's
+- [closed 2026-11-21] For the designer (Q2277, a detail to keep or drop): P08 carries the hand's bend into a Throw only; a
+  drop (Q2367, also from the hand) starts its flying Looks straight as before. Should a drop keep its bend too? — Q2401: a dropped Sock keeps no bend, only a Throw carries it
+- [closed 2026-11-21] P15: the Door kept its core/04 curve (Godot's ease -2, a quadratic in and out) and the cupboard's
   0.35 s uses the drawer's ease 0.5 (a quadratic out), not the old TRANS_SINE; the sine is a little softer at
-  both. Close by eye on the strip; the designer's call.
-- [later] P03: the held Size box moves as far as the sway moves the Sock's middle, as the old did; walking off,
-  that is up to about 50 px at 1080p (see the sway strip). The old number, not tuned.
-- [later] P14: the curl's direction (sign of `PairMoment.curl`, +1.3) was set to the old number; check on the
-  pairing strip that the Socks roll toward the ball, not away (negative rolls the other way).
+  both. Close by eye on the strip; the designer's call. — Q2403: the ease stays as built, the designer tunes the AnimationPlayer keys
+- [closed 2026-11-21] P03: the held Size box moves as far as the sway moves the Sock's middle, as the old did; walking off,
+  that is up to about 50 px at 1080p (see the sway strip). The old number, not tuned. — the old number, merged with core/27 (Q2402); a feel number is judged by eye (Q2421)
+- [closed 2026-11-21] P14: the curl's direction (sign of `PairMoment.curl`, +1.3) was set to the old number; check on the
+  pairing strip that the Socks roll toward the ball, not away (negative rolls the other way). — core/27 merged after the strips (Q2402)
 
 ## Built log
 - Model: Opus (lead): cloth, flights and the pairing moment's animation.

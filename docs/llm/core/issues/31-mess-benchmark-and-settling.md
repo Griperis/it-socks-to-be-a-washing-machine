@@ -101,30 +101,30 @@ cloth bend vs. the straight lying mesh, LOD or material differences between the 
   core/23 it was 338 of 500, so `turn_weight` 3 did most of it (a trial at 1: 59 of 500). Is that rest good enough
   (then the limit in `game/debug/mess_checks.tres` goes up or the count is accepted), or should `turn_weight` rise
   further (a strip first: it also slows a Throw's spin and the topple flat)?
-- [later] Jitter. Pouring onto Socks that already lie wakes the same Sock three times or more (50 to 62 of 2,000):
+- [closed 2026-11-21] Jitter. Pouring onto Socks that already lie wakes the same Sock three times or more (50 to 62 of 2,000):
   each fast body wakes what it hits and up to `wake_count` round it. The old game's rule; before core/23 the count
-  was the same (51 to 104). Is a pour meant to stir the heap so?
-- [later] A Door or drawer shut onto lying Socks leaves some squeezed: in `sweep` (160 Socks) 3 sunk, 2 inside
+  was the same (51 to 104). Is a pour meant to stir the heap so? — Q2427: a pour stirs the heap as it does now
+- [closed 2026-11-21] A Door or drawer shut onto lying Socks leaves some squeezed: in `sweep` (160 Socks) 3 sunk, 2 inside
   another, 2 lifted by the sunk rule (a 28 cm snap at most), and in some runs 1 to 3 "lost": resting inside the leaf
   they come back at the return spot with a pop, as the lost rule says (T08). Keep that rule for a Door, or push the
-  Sock out of the leaf instead?
-- [later] core/23's two boxes (leg and foot) cost about 15 % of a pouring tick against one box (4.3 against 3.7 ms
+  Sock out of the leaf instead? — Q2428: the Sock is pushed out of the leaf; built as core/39
+- [closed 2026-11-21] core/23's two boxes (leg and foot) cost about 15 % of a pouring tick against one box (4.3 against 3.7 ms
   median, and 480 more nodes); its CCD from 1 m/s and `turn_weight` cost nothing measurable. Not changed: one box
-  brought lost Socks back (3 of 500).
-- [later] `flight.tscn` `max_contacts_reported` stays 4: with 8 the benchmark found no more hits on lying Socks
+  brought lost Socks back (3 of 500). — measured and left: one box brought lost Socks back (3 of 500), so the 15 % stays
+- [closed 2026-11-21] `flight.tscn` `max_contacts_reported` stays 4: with 8 the benchmark found no more hits on lying Socks
   (241 against 245 in `burst_16` and `settle_2000`) and the same wakes a second, though the list is full on 4 of 5
-  fast contacts.
-- [later] The switch still differs by a hair of shading between a flight's Looks and its lying instance (one pixel
-  over 8 levels, 17 at most, in a 26 by 53 pixel patch of a 960 by 540 frame): core/21's.
-- [later] `tools/mess_bench.cmd` was not run on Windows (no Windows here); it runs the editor exe on the project in
-  place. The benchmark's scripts are in `game/debug/` and must stay out of a release export (`release-export`).
-- [later] The lead's suspect, the rest's `Basis.from_euler(rot)` round trip: measured, not the cause. Both sides use
+  fast contacts. — measured and left at 4: with 8 the benchmark found no more hits
+- [closed 2026-11-21] The switch still differs by a hair of shading between a flight's Looks and its lying instance (one pixel
+  over 8 levels, 17 at most, in a 26 by 53 pixel patch of a 960 by 540 frame): core/21's. — Q2415: core/21 is closed, core/31 fixed the cause
+- [moved 2026-11-21] `tools/mess_bench.cmd` was not run on Windows (no Windows here); it runs the editor exe on the project in
+  place. The benchmark's scripts are in `game/debug/` and must stay out of a release export (`release-export`). — to docs/migration/m06-backlog.md
+- [closed 2026-11-21] The lead's suspect, the rest's `Basis.from_euler(rot)` round trip: measured, not the cause. Both sides use
   Godot's default order; over 200,000 poses, half within 1e-9 to 1e-2 rad of edge-on, a basis axis moves 0.0008 rad
-  at most (0.1 mm at a Sock's tip); the scale is put on by the drawing, and the body's origin is the pose's.
-- [later] A Guest's spawned copy of a flight is found by its name (`Flight<id>`); a rest and a wake of one Sock in
-  one tick adds the new body while the old still waits to be freed, and Godot then renames it. For M0.6.
-- [later] Kit: a new script's `.uid` is only made in a tool's mirror; I copied each from the check mirror by hand.
-  A tool that copies them back (or a line in `ticket-agent.md` saying where they come from) would save the search.
+  at most (0.1 mm at a Sock's tip); the scale is put on by the drawing, and the body's origin is the pose's. — measured: the round trip is not the cause (core/31)
+- [moved 2026-11-21] A Guest's spawned copy of a flight is found by its name (`Flight<id>`); a rest and a wake of one Sock in
+  one tick adds the new body while the old still waits to be freed, and Godot then renames it. For M0.6. — to docs/migration/m06-backlog.md
+- [closed 2026-11-21] Kit: a new script's `.uid` is only made in a tool's mirror; I copied each from the check mirror by hand.
+  A tool that copies them back (or a line in `ticket-agent.md` saying where they come from) would save the search. — `kit/agents/ticket-agent.md` says a run makes a missing `.uid` beside the script and `agent_finish.sh` refuses a script without it
 
 ## Built log
 - Model: Fable, on the designer's word (Q2405): hard physics debugging and a new tool.

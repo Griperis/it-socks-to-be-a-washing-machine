@@ -68,25 +68,25 @@ both.
 - A thrown Sock keeps the hand's pose in the air (lands as it flies), not turned flat (Q2383, 2026-11-21).
 
 ## Open follow-ups
-- [later] F1 at the every-Sock station's start: not reproduced. Nothing moves there (2031 Sock records
+- [closed 2026-11-21] F1 at the every-Sock station's start: not reproduced. Nothing moves there (2031 Sock records
   lying, 0 moving over 300 ticks; picks and drops there come to rest with no jump; the strip is still).
-  The lead needs what the designer did there (walked in, picked, dropped, a Pair) for the next repro.
-- [later] `turn_weight` 3 (new, MessTuning): a flying Sock turns as three times its flat box's inertia.
+  The lead needs what the designer did there (walked in, picked, dropped, a Pair) for the next repro. — Q2407 and Q2415: core/31 found and fixed the settle teleport
+- [closed 2026-11-21] `turn_weight` 3 (new, MessTuning): a flying Sock turns as three times its flat box's inertia.
   At 1 (a rigid 50 g board, as before) an edge landing spins it to Jolt's 47 rad/s cap, a flip of 45
   degrees a frame. The designer's number on the strips: higher turns slower still, its throw's spin
-  and its topple flat slower too.
-- [later] A drop (Q2367) needs choices the ticket did not make; as built, each waits for the designer:
+  and its topple flat slower too. — Q2382: core/23 merged on the strips; Q2413: `turn_weight` stays 3
+- [closed 2026-11-21] A drop (Q2367) needs choices the ticket did not make; as built, each waits for the designer:
   the dropped Sock turns from its hanging pose to lying flat (its length across the view) by the time
   it lands, so it lands as the old drop lay (without the turn it landed on its end and toppled off a
   lying Sock); it falls as a woken Sock (no bounce, 0.9 slide, 0.6 / 3.0 drag) and wakes nothing it
   falls on, as the old 3 cm drop did; a dropped Pair drags as a Pair from the start; when its fall from
   the hand would meet something (a shelf inside a cupboard, a table's edge) or drift faster than
   `drop_drift` 3 m/s (new, HandsTuning), it is let go farther along the eye-line instead, so it still
-  lands where aimed. A Pair dropped on a thin Sock may now roll off it (pairing p08 lays it there).
-- [later] The drawn Sock grows from the hand's size (0.6 of its own) to its own over `let_go_grow`
+  lands where aimed. A Pair dropped on a thin Sock may now roll off it (pairing p08 lays it there). — Q2382: core/23 merged on the strips as built; Q2401 sets the bend
+- [closed 2026-11-21] The drawn Sock grows from the hand's size (0.6 of its own) to its own over `let_go_grow`
   0.1 s (new, HandsTuning; it replaces `catch_up`): the body is full size from the hand. Without it the
   Sock pops 1.7 times bigger on release. Its held cloth bend is not carried over: the flying Looks
-  starts straight. The zoom and the turn button are not in the hand's pose the Host uses.
+  starts straight. The zoom and the turn button are not in the hand's pose the Host uses. — Q2382: merged as built; Q2401: a drop keeps no bend, a Throw does (core/27 P08)
 - [later] An aim out of the Throw's reach (the far floor at a light charge) flies along the aim from
   the hand, as before, and lands short of the crosshair.
 

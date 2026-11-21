@@ -197,10 +197,10 @@ the ramp, jumps, crouches under the beam. `zoo_test` and the co-op crate case ke
 - Merge it (Q2239, 2026-11-20).
 
 ## Open follow-ups
-- [later] The pad's X (button 2) is now on `jump` (Q2236, as the old game) and the kit already had it on
-  `interact`: one press does both. Where interact goes on the pad is the designer's (ticket 02 owns the hands).
-- [later] `tests/main_test.gd` runs the kit's placeholder `main/main.tscn` through the new `tests/hooks.gd`
-  `WORLD`, since the main scene is now the zoo. Drop it when the game has a real start.
+- [closed 2026-11-21] The pad's X (button 2) is now on `jump` (Q2236, as the old game) and the kit already had it on
+  `interact`: one press does both. Where interact goes on the pad is the designer's (ticket 02 owns the hands). — Q2245: `jump` lost pad A and `interact` lost pad X (the lead did it after the core/02 merge)
+- [moved 2026-11-21] `tests/main_test.gd` runs the kit's placeholder `main/main.tscn` through the new `tests/hooks.gd`
+  `WORLD`, since the main scene is now the zoo. Drop it when the game has a real start. — to docs/migration/m06-backlog.md
 
 ## Built log
 - 2026-11-20 (lead): handed to a ticket agent on Sonnet (the Models value: sonnet by default; this is no

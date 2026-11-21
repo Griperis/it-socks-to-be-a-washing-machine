@@ -122,7 +122,7 @@ ease-out; `_show` plays `open` or `shut` from the current pose, so a reverse mid
 
 ## Open follow-ups
 - [later] What else looks different about the Throw, asked after the designer plays the cloth (Q2275).
-- [later] `game/sock/looks_contract.json` does not list `Cloth` (the ball shares the folder); the suite checks it.
+- [closed 2026-11-21] `game/sock/looks_contract.json` does not list `Cloth` (the ball shares the folder); the suite checks it. — the contract lists the Looks nodes and animations of a Sock; the ball shares the folder and the suite checks it, so no entry is needed
 
 ## Built log
 - Model: Opus.

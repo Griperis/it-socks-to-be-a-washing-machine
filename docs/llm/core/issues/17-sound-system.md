@@ -88,12 +88,12 @@ seam: "sounds and the HUD may listen"):
 ## Open follow-ups
 - [later] `amb_room`: the old game's room tone was silent (no pick). S08 asks for a quiet ambience, so it plays the
   old first candidate `rubberduck_ambient1` at -12 dB as a placeholder. The designer picks the clip and level.
-- [later] The first autoloads of the game's own are added: `Settings` (copied template, `game/settings/`) and `Sounds`.
-  The Options menu (later) writes `audio/*_volume`. Settings' own Master apply is overridden by `Sounds` (mix times slider).
-- [later] The Sounds station stands at (13, 0, 13) beside the Movement and Cabinet stations, off the grid.
-- [later] Run output prints `ERROR: res://game/sock/pair_moment.tscn ... looks_graybox.tscn non-existent` on this
-  branch's base (not this ticket's); the suites pass.
-- [later] Not built from the old game: see the Built log, "Old details not built".
+- [closed 2026-11-21] The first autoloads of the game's own are added: `Settings` (copied template, `game/settings/`) and `Sounds`.
+  The Options menu (later) writes `audio/*_volume`. Settings' own Master apply is overridden by `Sounds` (mix times slider). — Settings and Sounds are the game's first autoloads by design; the Options menu comes in M4
+- [closed 2026-11-21] The Sounds station stands at (13, 0, 13) beside the Movement and Cabinet stations, off the grid. — stations are placed by hand in the editor (Q2359)
+- [closed 2026-11-21] Run output prints `ERROR: res://game/sock/pair_moment.tscn ... looks_graybox.tscn non-existent` on this
+  branch's base (not this ticket's); the suites pass. — `game/sock/looks_graybox.tscn` is gone and the preload loop was fixed in 9b829af; the error no longer prints with the suites
+- [moved 2026-11-21] Not built from the old game: see the Built log, "Old details not built". — to docs/migration/m06-backlog.md
 
 ## Built log
 - Model: Sonnet (lead): a new system from a known design, data and wiring.

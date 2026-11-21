@@ -78,11 +78,11 @@ Built as follows (agent draft, core/12).
   2026-11-20).
 
 ## Open follow-ups
-- [later] The zoo's frame cost with this station (above): 39 ms a physics tick headless. Needs the Mess's MultiMesh
-  (or a cheaper lying Sock Looks) before the zoo is comfortable; or the station is switched off by default.
-- [later] A label per Sock rather than per Design (see Design).
-- [later] Sock ids of every other station shift (the Cabinet's first, then this station's 2,008, then the rest, file-name
-  order); `Session.PROTOCOL` is not bumped (no Part id, spawnable or shape changed), the lead may want it bumped.
+- [closed 2026-11-21] The zoo's frame cost with this station (above): 39 ms a physics tick headless. Needs the Mess's MultiMesh
+  (or a cheaper lying Sock Looks) before the zoo is comfortable; or the station is switched off by default. — core/13 found the "39 ms" was Godot's TIME_PHYSICS_PROCESS monitor, not a tick's cost; core/31 benchmarks the Mess (Q2405, Q2414)
+- [moved 2026-11-21] A label per Sock rather than per Design (see Design). — to docs/migration/m06-backlog.md
+- [closed 2026-11-21] Sock ids of every other station shift (the Cabinet's first, then this station's 2,008, then the rest, file-name
+  order); `Session.PROTOCOL` is not bumped (no Part id, spawnable or shape changed), the lead may want it bumped. — `Session.PROTOCOL` is 9 now, bumped by later tickets (core/23 and others)
 
 ## Built log
 - Model: Sonnet (lead): layout and data from the catalogue, no new rules.

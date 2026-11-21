@@ -53,9 +53,9 @@ before the fix. No behaviour the designer sees changes, except that the faults g
 - The review's findings are fixed (Q2404, 2026-11-21).
 
 ## Open follow-ups
-- [later] R8(b): `Footsteps` (`game/audio/footsteps.gd:42,50`) plays `land` and `step_*` flat at full level for any
+- [moved 2026-11-21] R8(b): `Footsteps` (`game/audio/footsteps.gd:42,50`) plays `land` and `step_*` flat at full level for any
   body it is put on; today only the own player has one. When Guests get bodies (M0.6) their footsteps must play
-  spatially at the body, not flat. Not changed now.
+  spatially at the body, not flat. Not changed now. — to docs/migration/m06-backlog.md
 
 ## Built log
 

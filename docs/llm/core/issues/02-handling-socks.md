@@ -209,15 +209,15 @@ used by core/03 (Pairs join the Mess and the Hands) and core/04 (shelving).
 - Done by the lead after the merge: `jump` lost pad A and `interact` lost pad X (Q2245 in full).
 - Done by the lead after the merge: the crate and the Carriables station are gone (Q2258).
 - Done by the lead after the merge: PROTOCOL 2 -> 3 (the Flight spawnable scene).
-- [later] M0.6: a Guest's capacity and reach (Hands read the HandsTuning of a player on this machine, else
+- [moved 2026-11-21] M0.6: a Guest's capacity and reach (Hands read the HandsTuning of a player on this machine, else
   their own: a Guest gets capacity 1); a leaver's Hands (`Hands.left()` returns nothing, so a leaver's Socks
-  stay HELD: H24); a Guest sees a falling Sock only as the spawned untinted body.
-- [later] The zoo's cupboard entity is a solid box, so the station hollows its instance with overrides
-  (walls, a shelf, the solid shape off). A hollow cupboard of its own belongs to the furniture port.
-- [later] Looks: the outline is white and 4 mm (a look the designer has not set); the refusal line shows
+  stay HELD: H24); a Guest sees a falling Sock only as the spawned untinted body. — to docs/migration/m06-backlog.md
+- [moved 2026-11-21] The zoo's cupboard entity is a solid box, so the station hollows its instance with overrides
+  (walls, a shelf, the solid shape off). A hollow cupboard of its own belongs to the furniture port. — to docs/migration/m06-backlog.md
+- [closed 2026-11-21] Looks: the outline is white and 4 mm (a look the designer has not set); the refusal line shows
   red with no wobble; held items have no cloth sway and no pick-up flight. Stills for `held-sock.png`
-  were not asked for here.
-- [later] `tests/handling_test.gd` is 640 lines (grep_rules notes over 600): split it when next touched.
+  were not asked for here. — outline: core/11 (Q2374); refusal wobble: core/16; held cloth sway: core/36 (Q2420); pick-up flight: core/09 D09
+- [moved 2026-11-21] `tests/handling_test.gd` is 640 lines (grep_rules notes over 600): split it when next touched. — to docs/migration/m06-backlog.md
 
 ## Built log
 - 2026-11-20 (lead): handed to a ticket agent on Opus: the Mess and Hands Parts are the core data model and a

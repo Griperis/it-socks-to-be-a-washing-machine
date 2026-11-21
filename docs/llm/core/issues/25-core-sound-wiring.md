@@ -96,17 +96,17 @@ code: `reference/it-socks/game/core/game.gd:1445-1470`, `game/hands/hands_rules.
 - core/17's Built log lists the old details it left out; those of the core are here.
 
 ## Open follow-ups
-- [later] W15 (the lost Sock or Pair's pop at the washer's front) is not wired: the washer return is core/16 P12 and is not on
+- [closed 2026-11-21] W15 (the lost Sock or Pair's pop at the washer's front) is not wired: the washer return is core/16 P12 and is not on
   this branch. When it lands, one `Sounds.play_at(&"pop", pos)` per Sock or Pair that comes back. The ticket stays
-  `in-progress` for it; everything else is done and tested.
-- [later] W17 (coins, "done" rumble) is M4; the knock rumble and teammates' sounds are M0.6 (Q2376). Only the throw and pair
-  `RumbleCue`s exist (`game/audio/rumble_*.tres`).
-- [later] Placeholder numbers for the designer to hear: min gaps (bounce 0.05 s as Q2372; pop and shelve 0.05, refuse and
+  `in-progress` for it; everything else is done and tested. — core/16 P12 landed and `game/audio/hearing.gd` plays `lost_pop` per Sock or Pair that comes back
+- [moved 2026-11-21] W17 (coins, "done" rumble) is M4; the knock rumble and teammates' sounds are M0.6 (Q2376). Only the throw and pair
+  `RumbleCue`s exist (`game/audio/rumble_*.tres`). — to docs/migration/m06-backlog.md
+- [moved 2026-11-21] Placeholder numbers for the designer to hear: min gaps (bounce 0.05 s as Q2372; pop and shelve 0.05, refuse and
   the drawer, door and cupboard sounds 0.1 s) in `sound_catalogue.tres`; the bounce's soft end (-15 dB, pitch 0.9 to 1.15)
-  and its hard speed (8 m/s) in `SoundEvent` / `MessTuning` ("Sound" group; hits count from the old 1.5 m/s).
-- [later] The bounce's speed is the body's speed just before the step it touched in, not the part along the surface normal
-  (the old game's "into it"); a glancing slide over 1.5 m/s still bounces. It also plays for a flight hitting a lying Sock.
-- [later] `throw_charge` plays once at the charge start and is not stopped at the release (the old clip was not either).
+  and its hard speed (8 m/s) in `SoundEvent` / `MessTuning` ("Sound" group; hits count from the old 1.5 m/s). — to docs/migration/m06-backlog.md
+- [moved 2026-11-21] The bounce's speed is the body's speed just before the step it touched in, not the part along the surface normal
+  (the old game's "into it"); a glancing slide over 1.5 m/s still bounces. It also plays for a flight hitting a lying Sock. — to docs/migration/m06-backlog.md
+- [closed 2026-11-21] `throw_charge` plays once at the charge start and is not stopped at the release (the old clip was not either). — as the old clip was not stopped either; kept (Q2153)
 
 ## Built log
 - 2026-11-21 Changed: every core sound call and the pad rumble: `Hearing` (the Host's answers become pick, pair, cycle,

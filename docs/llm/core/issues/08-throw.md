@@ -105,8 +105,8 @@ synchronizer with the stamp (coop-structure section 4, option A), a teammate cat
   push wanted?
 - [later] The ring's faint white track hardly shows on a light wall (`builds/review-core-08/throw-ring-close-up.png`).
   Keep the old look, or add an outline?
-- [later] M0.6: a Guest's Throw leaves from `EYES_FALLBACK` (1.5 m) above where it stands, and only the local
-  player's body lets its own thrown Sock through (`Mess._spare_thrower`). Both need the Guest's eyes and avatar.
+- [moved 2026-11-21] M0.6: a Guest's Throw leaves from `EYES_FALLBACK` (1.5 m) above where it stands, and only the local
+  player's body lets its own thrown Sock through (`Mess._spare_thrower`). Both need the Guest's eyes and avatar. — to docs/migration/m06-backlog.md
 
 ## Built log
 - 2026-11-20 (lead): handed to a ticket agent on Opus: a Host-owned physics body with contacts and the wake (the

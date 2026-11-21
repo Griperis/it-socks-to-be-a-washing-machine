@@ -63,8 +63,8 @@ Drafted by the agent (core/10), then built.
 - The return scatter and pop, and a sunk Sock pushed back up, wait for the polish pass (Q2291, 2026-11-20).
 
 ## Open follow-ups
-- [later] The zoo's return spot stands at (1.5, 0, 2.5), beside the spawn (placed by the agent).
-- [later] `docs/architecture.md` (the zoo paragraph) could say the zoo owns the one Mess, Hands and Coins.
+- [closed 2026-11-21] The zoo's return spot stands at (1.5, 0, 2.5), beside the spawn (placed by the agent). — stations and spots are placed by hand in the editor (Q2359); the designer moves it there
+- [moved 2026-11-21] `docs/architecture.md` (the zoo paragraph) could say the zoo owns the one Mess, Hands and Coins. — to docs/migration/m06-backlog.md
 
 ## Built log
 - Model: Opus (lead): it moves ownership of the Mess and Hands across scenes, Part ids and every station's suite.
