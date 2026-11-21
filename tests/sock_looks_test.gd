@@ -305,9 +305,15 @@ func case_s05() -> void:
 	for cuff in SockLook.TABLE.cuffs:
 		models.append("ball_" + String(cuff))
 	for m in models:
-		var root := _keep((load("res://assets/sock/%s.glb" % m) as PackedScene).instantiate())
-		# The mirror the tests run in imports with default settings (no import script): fold here
-		# as the import does.
+		# The import (model_lods_import.gd) has folded the LODs already: one mesh in the imported scene.
+		var imported := _keep((load("res://assets/sock/%s.glb" % m) as PackedScene).instantiate())
+		var meshes := imported.find_children("*", "MeshInstance3D", true, false)
+		_check(meshes.size() == 1, "%s: the import leaves one mesh (%d)" % [m, meshes.size()])
+		# The hand-made levels are read from the raw .glb, and folded here as the import does.
+		var doc := GLTFDocument.new()
+		var state := GLTFState.new()
+		doc.append_from_file(ProjectSettings.globalize_path("res://assets/sock/%s.glb" % m), state)
+		var root := _keep(doc.generate_scene(state))
 		var before := 0
 		var lods := 0
 		for n: MeshInstance3D in root.find_children("*", "MeshInstance3D", true, false):

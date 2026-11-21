@@ -24,8 +24,9 @@ const GROUP := &"held_views"
 ## A held Sock hangs by its cuff, toe down, turned a little to show its side (the old HANG).
 const HANG := Basis(Vector3.UP, 0.35) * Basis(Vector3.UP, -PI / 2.0) * Basis(Vector3.BACK, -PI / 2.0)
 ## The pairing moment (P05): its AnimationPlayer's `pair` plays the fly, line-up, fold, roll and pop
-## in its first PAIR_TIME seconds, at the ball's place and size.
-const MOMENT := preload("res://game/sock/pair_moment.tscn")
+## in its first PAIR_TIME seconds, at the ball's place and size. Loaded when first needed, not preloaded:
+## the scene holds a Sock whose SockCloth checks for a HeldView, and that loop breaks an exported build.
+const MOMENT_PATH := "res://game/sock/pair_moment.tscn"
 const PAIR := &"pair"
 const PAIR_TIME := 0.5
 ## The time of `pair` at which the ball pops (the burst starts): "pop" plays then, flat.
@@ -375,7 +376,7 @@ func _grow(delta: float) -> void:
 ## second Sock flies in from where it lay (D10).
 func _start_moment(sock: int) -> void:
 	_end_moment(sock)
-	var moment := MOMENT.instantiate() as Node3D
+	var moment := (load(MOMENT_PATH) as PackedScene).instantiate() as Node3D
 	moment.name = "Moment%d" % sock
 	var design := hands.mess.design_of(sock)
 	# The scene's stand-in Looks become the Design's own: its shape for the two Socks, its ball.
