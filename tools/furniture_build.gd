@@ -1,6 +1,6 @@
 ## Makes the furniture scenes (assets/04 F02, F04) from the data tools/furniture_from_old.py wrote, step
 ## two of two. Run it from the project folder after that script and an import:
-##   "$(kit/tools/engine.sh --path)" --headless --path . --script res://game/furniture/furniture_build.gd -- [--force] [--pieces a,b]
+##   "$(kit/tools/engine.sh --path)" --headless --path . --script res://tools/furniture_build.gd -- [--force] [--pieces a,b]
 ## A scene that exists is left as it is (the scenes are edited by hand once made, Q2151); --force remakes it.
 ##
 ## Per piece:

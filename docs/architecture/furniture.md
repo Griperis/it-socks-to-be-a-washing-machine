@@ -32,7 +32,7 @@ The old house's 67 pieces, each a scene in `game/furniture/<piece>.tscn` (Q2151)
   after their nodes; `.glb.import` saves each mesh to `assets/furniture/meshes/<piece>_<node>.res` and maps
   each material to the shared library (`docs/architecture/materials.md`).
 - `tools/furniture_from_old.py` (the glbs, imports and a data file), an import, then
-  `game/furniture/furniture_build.gd` (the scenes; it skips a scene that exists unless `--force`), then
+  `tools/furniture_build.gd` (the scenes; it skips a scene that exists unless `--force`), then
   `tools/furniture_from_old.py --uids`. Run once: the scenes are edited by hand from then on.
 
 ## The station

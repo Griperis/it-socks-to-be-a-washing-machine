@@ -1,8 +1,8 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://dcsu6kgbm1dcp" path="res://game/audio/sound_spot.gd" id="1_spot"]
-[ext_resource type="Script" path="res://game/zoo/sounds_station.gd" id="4_station"]
-[ext_resource type="Resource" path="res://game/zoo/sounds_layout.tres" id="5_layout"]
+[ext_resource type="Script" uid="uid://dcsu6kgbm1dcp" path="res://game/zoo/sounds/sound_spot.gd" id="1_spot"]
+[ext_resource type="Script" path="res://game/zoo/sounds/sounds_station.gd" id="4_station"]
+[ext_resource type="Resource" path="res://game/zoo/sounds/sounds_layout.tres" id="5_layout"]
 [ext_resource type="Resource" path="res://game/audio/sound_catalogue.tres" id="6_cat"]
 [ext_resource type="Script" uid="uid://bb32hee1mash0" path="res://game/audio/ambient_loop.gd" id="2_amb"]
 [ext_resource type="PackedScene" uid="uid://ccaa5ngdrkqig" path="res://game/entities/door/door.tscn" id="3_door"]

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SoundsLayout" format=3 uid="uid://c5s2nsndsly1a"]
 
-[ext_resource type="Script" uid="uid://da3cucqwmuu7l" path="res://game/zoo/sounds_layout.gd" id="1_layout"]
+[ext_resource type="Script" uid="uid://da3cucqwmuu7l" path="res://game/zoo/sounds/sounds_layout.gd" id="1_layout"]
 
 ; placeholder: the designer's eye on the first still (core/22)
 [resource]

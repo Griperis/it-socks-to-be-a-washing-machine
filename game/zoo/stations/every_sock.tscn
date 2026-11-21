@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/zoo/every_sock_station.gd" id="1_station"]
-[ext_resource type="Resource" path="res://game/zoo/every_sock_layout.tres" id="2_layout"]
+[ext_resource type="Script" path="res://game/zoo/every_sock/every_sock_station.gd" id="1_station"]
+[ext_resource type="Resource" path="res://game/zoo/every_sock/every_sock_layout.tres" id="2_layout"]
 [ext_resource type="Script" path="res://game/mess/mess.gd" id="3_mess"]
 [ext_resource type="Script" path="res://game/hands/hands.gd" id="4_hands"]
 [ext_resource type="Resource" path="res://game/sock/designs.tres" id="5_designs"]

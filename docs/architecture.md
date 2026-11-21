@@ -45,6 +45,12 @@ How this game is built, unless a decision record says otherwise. They are the ga
   `game/zoo/stations/`, built from the game's own scenes; a new station is its own scene file plus
   one instance under `Stations` in `zoo.tscn`, placed by hand (the zoo suite fails for a file not
   instanced). `ZooStations` only joins each station's Socks to the zoo's (the `zoo-design` skill).
+  Everything only the zoo needs lives under `game/zoo/`, in a folder per station (`game/zoo/sounds/`,
+  `screen/`, `house_kit/`, `heap/`, ...): its helper scripts, layouts and zoo-only props (the Screen
+  station's `UpgradeSwitch` and `zoo_upgrades.tres`, the Sounds station's `SoundSpot`, the kit's sample
+  rooms). The game never refers to `game/zoo/`, so a release build can leave the folder out whole
+  (Q2409; no guard check, Q2410). A Part's crosshair words come from its own `prompt_title()`, so
+  `Prompts` names no zoo class. The two build-time generators are in `tools/`, not `game/`.
 <!-- /opt:zoo -->
 
 ## Subsystems

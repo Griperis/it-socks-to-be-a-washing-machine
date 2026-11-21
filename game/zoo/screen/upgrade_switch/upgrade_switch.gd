@@ -22,7 +22,7 @@ const LABEL := ^"../Looks/Label"
 
 
 ## The prompt and the label: "Sock Smarts: on".
-func title() -> String:
+func prompt_title() -> String:
 	return "%s: %s" % [upgrade_name, "on" if on else "off"]
 
 
@@ -48,7 +48,7 @@ func decide(cmd: Command) -> Dictionary:
 func _show(_now: bool) -> void:
 	var label := get_node_or_null(LABEL) as Label3D
 	if label != null:
-		label.text = title()
+		label.text = prompt_title()
 	if not is_inside_tree():
 		return
 	for node in get_tree().get_nodes_in_group(Hands.PLAYERS):

@@ -1,7 +1,7 @@
 ## Makes the house kit's pieces (pieces/*.tscn) and the two sample rooms (rooms/*.tscn) from
 ## house_kit_sizes.tres, and any missing material of the library (materials/*.tscn) from the old
 ## house's colours (house/01, house/02). Run it after a change to the sizes, from the project folder:
-##   "$(kit/tools/engine.sh --path)" --headless --path . --script res://game/house/kit/house_kit_build.gd
+##   "$(kit/tools/engine.sh --path)" --headless --path . --script res://tools/house_kit_build.gd
 ## A piece is a MeshInstance3D root (one mesh in meshes/, its material slots in a fixed order: see
 ## docs/architecture/house-kit.md "Material slots") with a StaticBody3D "Body" of boxes on the house's
 ## physics layer. A piece file keeps its uid across rebuilds; a material that exists is never
@@ -14,7 +14,7 @@ const PIECES := "res://game/house/kit/pieces"
 const MESHES := "res://game/house/kit/meshes"
 const MATERIALS := "res://game/house/kit/materials"
 const TEXTURES := "res://game/house/kit/textures"
-const ROOMS := "res://game/house/kit/rooms"
+const ROOMS := "res://game/zoo/house_kit/rooms"
 ## The house's physics layer, the Mess's LAYER_HOUSE (game/mess/mess.gd).
 const LAYER_HOUSE := 1
 ## How deep a stair's walking ramp is under its top.

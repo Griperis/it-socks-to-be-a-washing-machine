@@ -34,6 +34,12 @@ func accepts() -> Dictionary[StringName, Dictionary]:
 	return {}
 
 
+## The words of this thing's crosshair prompt when the player aims at it; "" for no prompt of its own
+## (an Openable's prompt is made by Prompts.openable_prompt).
+func prompt_title() -> String:
+	return ""
+
+
 ## What the player's use button does to this thing: it asks (parts.ask), never writes.
 func use(_by: int) -> void:
 	pass

@@ -10,11 +10,11 @@ house/02, Q2343-Q2358).
   `BoxShape3D`s on layer 1 (`Mess.LAYER_HOUSE`), mask 0. No script.
 - `meshes/*.tres`: each piece's mesh. `materials/*.tres`: the library (the old house's colours;
   the textured ones world triplanar). `textures/`: the old house's plank and tile images.
-- `house_kit_sizes.tres` (`HouseKitSizes`): every size. `house_kit_build.gd` makes `pieces/`,
-  `meshes/`, `rooms/` and any missing material from it; run it headless after a size change (its
+- `house_kit_sizes.tres` (`HouseKitSizes`): every size. `tools/house_kit_build.gd` makes `pieces/`,
+  `meshes/`, `game/zoo/house_kit/rooms/` and any missing material from it; run it headless after a size change (its
   header).
-- `rooms/u_room.tscn`, `rooms/attic_corner.tscn`: two sample rooms made of pieces by the build
-  script (the station's room and roof corner). `house_kit_line_up.gd`: the station's line-up, built
+- `game/zoo/house_kit/rooms/u_room.tscn`, `attic_corner.tscn`: two sample rooms made of pieces by the build
+  script (the station's room and roof corner). `game/zoo/house_kit/house_kit_line_up.gd`: the station's line-up, built
   when the station loads from whatever is in `pieces/` (Q2337).
 
 ## The old house on the grid (house/02)

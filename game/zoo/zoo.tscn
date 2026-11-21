@@ -27,7 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://c3oefe5hwybf0" path="res://game/zoo/stations/sock_looks.tscn" id="29_sock_looks"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/icons.tscn" id="30_icons"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/screen.tscn" id="31_screen"]
-[ext_resource type="Resource" path="res://game/player/zoo_upgrades.tres" id="32_upgrades"]
+[ext_resource type="Resource" path="res://game/zoo/screen/zoo_upgrades.tres" id="32_upgrades"]
 [ext_resource type="PackedScene" uid="uid://cxdl2ou7emvsm" path="res://game/zoo/stations/old_house_a.tscn" id="33_old_house_a"]
 [ext_resource type="PackedScene" uid="uid://c47w01e8dt8aq" path="res://game/zoo/stations/old_house_b.tscn" id="34_old_house_b"]
 [ext_resource type="PackedScene" uid="uid://c3p6luowfkhuw" path="res://game/zoo/stations/materials.tscn" id="35_materials"]

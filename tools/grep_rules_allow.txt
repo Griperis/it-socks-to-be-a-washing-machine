@@ -7,6 +7,6 @@ allow free game/sock/sock_look.gd 1
 # assets/04: the furniture build tool (run once, headless, not the game): it reads its own data file from
 # tools/furniture_from_old.py, frees each scene it saved (never in a tree), and makes the Sock spots'
 # Areas with monitoring off before they are saved (never in a tree, no physics callback).
-exempt json_parse game/furniture/furniture_build.gd
-allow free game/furniture/furniture_build.gd 1
-allow deferred game/furniture/furniture_build.gd 2
+exempt json_parse tools/furniture_build.gd
+allow free tools/furniture_build.gd 1
+allow deferred tools/furniture_build.gd 2

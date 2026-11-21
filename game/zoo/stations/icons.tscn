@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://game/zoo/icons_station.gd" id="1_station"]
+[ext_resource type="Script" path="res://game/zoo/icons/icons_station.gd" id="1_station"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.5, 0.42, 0.55, 1)

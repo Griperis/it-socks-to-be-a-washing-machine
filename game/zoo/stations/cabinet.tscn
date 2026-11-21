@@ -8,8 +8,8 @@
 [ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
 [ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="7_coins"]
 [ext_resource type="PackedScene" uid="uid://ccaa5ngdrkqig" path="res://game/entities/door/door.tscn" id="8_door"]
-[ext_resource type="Script" uid="uid://dft6t5j05syl5" path="res://game/zoo/cabinet_gallery.gd" id="9_gallery"]
-[ext_resource type="Resource" uid="uid://wcgv001f35kf" path="res://game/zoo/cabinet_gallery_layout.tres" id="10_layout"]
+[ext_resource type="Script" uid="uid://dft6t5j05syl5" path="res://game/zoo/cabinet_gallery/cabinet_gallery.gd" id="9_gallery"]
+[ext_resource type="Resource" uid="uid://wcgv001f35kf" path="res://game/zoo/cabinet_gallery/cabinet_gallery_layout.tres" id="10_layout"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.3, 0.5, 0.42, 1)

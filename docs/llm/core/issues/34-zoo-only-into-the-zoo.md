@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: tools
 feature: zoo
@@ -60,3 +60,12 @@ release build can leave the folder out whole.
 
 ## Built log
 - Model: Sonnet: mechanical moves and one check.
+
+- 2026-11-21: Changed: zoo-only files moved under `game/zoo/<station>/`, the two generators to `tools/`; `Part.prompt_title()`
+  replaces Prompts' switch on UpgradeSwitch and LoseButton (both override it; their `title()` is renamed). All
+  path references (scenes, layouts, tests, docs, `tools/grep_rules_allow.txt`) rewritten, every `uid=` kept.
+  `tests/zoo_test.gd`'s "game's own scene" check now also allows a station's own folder `game/zoo/<station>/`.
+  Real path: `aim_screen_test` already clicks the moved switch and reads its prompt "[E] Sock Sense: on" and the label.
+  Moves: see the commit's rename list (`git show --stat -M`). Files: game/zoo/**, game/ui/prompts.gd,
+  game/parts/part.gd, tools/*_build.gd, docs/architecture*, docs/human/house-kit.md, tests/zoo_test.gd.
+  Verified: PASS 16634 checks, 375 cases (--touched).

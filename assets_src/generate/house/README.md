@@ -8,7 +8,7 @@ up next to the other sources (ticket `docs/llm/assets/issues/08-model-sources.md
 They are not ported to run, and this project has no `house.glb` to compare a run with:
 
 - This game builds the house in Godot from numbers, not from one Blender model: the kit pieces come from
-  `game/house/kit/house_kit_build.gd` and `game/house/kit/house_kit_sizes.tres` (`docs/human/house-kit.md`).
+  `tools/house_kit_build.gd` and `game/house/kit/house_kit_sizes.tres` (`docs/human/house-kit.md`).
 - Most of what the scripts write is what Q2152 keeps in the Godot scenes: placement (`house_layout.json`), collision
   and lights. A meshes-only port would leave walls and floors with no game file to go to.
 - `make_house.py` also reads the old plan (`docs/art/house/plan.py`) and writes into `assets/house/` and

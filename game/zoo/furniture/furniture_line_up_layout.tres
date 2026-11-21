@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="FurnitureLineUpLayout" format=3 uid="uid://bagumvnvvmy5b"]
 
-[ext_resource type="Script" uid="uid://bw7pthfnlj4df" path="res://game/zoo/furniture_line_up_layout.gd" id="1_layout"]
+[ext_resource type="Script" uid="uid://bw7pthfnlj4df" path="res://game/zoo/furniture/furniture_line_up_layout.gd" id="1_layout"]
 
 ; placeholder: the designer's eye on the second still (assets/04)
 [resource]

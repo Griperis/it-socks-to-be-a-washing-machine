@@ -22,7 +22,7 @@ const LOST_DEPTH := 1000.0
 
 
 ## The words its label and the crosshair's prompt use.
-func title() -> String:
+func prompt_title() -> String:
 	return "Lose Socks" if verb == "lose" else "Sink a Sock"
 
 

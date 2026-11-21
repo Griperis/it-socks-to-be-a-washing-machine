@@ -81,7 +81,7 @@ The 67 pieces and the shared material library (`docs/architecture/furniture.md`)
 
 ## House kit pieces
 
-- **Source:** no Blender. The pieces are made from numbers by `game/house/kit/house_kit_build.gd` using `game/house/kit/house_kit_sizes.tres`. There is no `.glb` for them.
+- **Source:** no Blender. The pieces are made from numbers by `tools/house_kit_build.gd` using `game/house/kit/house_kit_sizes.tres`. There is no `.glb` for them.
 - **Files:** `game/house/kit/pieces/*.tscn` (85 pieces), their meshes in `game/house/kit/meshes/*.tres`, the colour library in `game/house/kit/materials/*.tres`, the plank and tile pictures in `game/house/kit/textures/`.
 - **Never edit a piece, a mesh or a room file by hand.** Change the sizes (or the build script) and rebuild. See `house-kit.md`.
 - **Materials you may edit by hand:** the files in `game/house/kit/materials/`. The build script never overwrites one that exists.
