@@ -82,47 +82,52 @@ All 0.9 x 2.1 m but the garage door (2.4 x 2.1). *Along* is z on an x wall, x on
 | id | name | level | wall | old along | old centre | new centre | new along | move | piece |
 |---|---|---|---|---|---|---|---|---|---|
 | D1 | WorkshopLobby | basement | x 4 | 2.28..3.18 | 2.73 | 2.75 | 2.3..3.2 | +0.02 | 1.5 m (2..3.5) |
-| D2 | LaundryLobby | basement | x 4 | 3.48..4.38 | 3.93 | 4.25 | 3.8..4.7 | +0.32 | 1.5 m (3.5..5) |
+| D2 | LaundryLobby | basement | x 4 | 3.48..4.38 | 3.93 | 4.1 | 3.65..4.55 | +0.17 | 1.5 m (3.5..5), off-centre: the opening 0.15..1.05 along it |
 | D3 | BoilerLobby | basement | z 2 | 4.75..5.65 | 5.2 | 5.25 | 4.8..5.7 | +0.05 | 1.5 m (4.5..6) |
 | D4 | LobbyGarage | basement | x 6.5 | 4.25..5.15 | 4.7 | 4.75 | 4.3..5.2 | +0.05 | 1.5 m (4..5.5) |
 | D5 | KitchenHall | ground | x 4 | 2.28..3.18 | 2.73 | 2.75 | 2.3..3.2 | +0.02 | 1.5 m (2..3.5) |
 | D6 | HallLiving | ground | x 6.5 | 4.25..5.15 | 4.7 | 4.75 | 4.3..5.2 | +0.05 | 1.5 m (4..5.5) |
 | D7 | OfficeLanding | first | x 4 | 2.28..3.18 | 2.73 | 2.75 | 2.3..3.2 | +0.02 | 1.5 m (2..3.5) |
-| D8 | BedroomLanding | first | x 4 | 3.48..4.38 | 3.93 | 4.25 | 3.8..4.7 | +0.32 | 1.5 m (3.5..5) |
+| D8 | BedroomLanding | first | x 4 | 3.48..4.38 | 3.93 | 4.1 | 3.65..4.55 | +0.17 | 1.5 m (3.5..5), off-centre: the opening 0.15..1.05 along it |
 | D9 | BathroomLanding | first | x 6.5 | 2.28..3.18 | 2.73 | 2.75 | 2.3..3.2 | +0.02 | 1.5 m (2..3.5) |
 | D10 | KidsLanding | first | x 6.5 | 4.25..5.15 | 4.7 | 4.75 | 4.3..5.2 | +0.05 | 1.5 m (4..5.5) |
 | D11 | FrontDoor | ground | z 0 | 5.38..6.28 | 5.83 | 5.75 | 5.3..6.2 | -0.08 | 1.5 m (5..6.5) |
 | D12 | GarageDoor | basement | z 0 | 7.15..9.55 | 8.35 | 8.25 | 7.05..9.45 | -0.10 | 2.5 m (7..9.5) |
 
+D2 and D8 keep their old place by the z3.5 partition (Q2351): the old 0.1 m from its face. The old
+place itself (3.48..4.38) would cut into the partition, which moved 0.18 m south.
+
 ## Windows (K06)
 
-Width, sill and head (over the floor) are the old ones. The stair window's are over the half
-landing (old landing 1.45, new 1.5: 0.9..2.0 over it, so 2.4..3.5 over the ground floor).
+Sill and head (over the floor) are the old ones. The stair window's are over the half landing
+(old landing 1.45, new 1.5: 0.9..2.0 over it, so 2.4..3.5 over the ground floor, across the storey
+line). The kit has both sets (Q2355): the old widths, and the widths rounded to 0.5 m steps
+(*grid width*), each centred where the table says; the designer chooses on the comparison still.
 
-| id | name | level | wall | width | sill..head | old along | new along | move | piece |
-|---|---|---|---|---|---|---|---|---|---|
-| W1 | WorkshopWell | basement | N | 1.2 | 1.75..2.45 | 1.26..2.46 | 1.15..2.35 | -0.11 | 1.5 m (1..2.5) |
-| W2 | LaundryWellW | basement | W | 1 | 1.75..2.45 | 6.29..7.29 | 6.25..7.25 | -0.04 | 1.5 m (6..7.5) |
-| W3 | LaundryWellS | basement | S | 1 | 1.75..2.45 | 2.68..3.68 | 2.75..3.75 | +0.07 | 1.5 m (2.5..4) |
-| W4 | GarageWellE | basement | E | 1 | 1.75..2.45 | 3.21..4.21 | 3.25..4.25 | +0.04 | 1.5 m (3..4.5) |
-| W5 | KitchenN | ground | N | 1 | 1.1..2.15 | 2.65..3.65 | 2.75..3.75 | +0.10 | 1.5 m (2.5..4) |
-| W6 | KitchenW | ground | W | 1.1 | 0.9..2.15 | 6.74..7.84 | 6.7..7.8 | -0.04 | 1.5 m (6.5..8) |
-| W7 | KitchenS | ground | S | 2 | 0.9..2.15 | 0.86..2.86 | 0.75..2.75 | -0.11 | 2.5 m (0.5..3) |
-| W8 | HallN | ground | N | 0.5 | 1.3..2 | 4.35..4.85 | 4.25..4.75 | -0.10 | 1 m (4..5) |
-| W9 | LivingN | ground | N | 1.2 | 0.9..2.15 | 7.73..8.93 | 7.65..8.85 | -0.08 | 1.5 m (7.5..9) |
-| W10 | LivingE | ground | E | 1.4 | 0.9..2.15 | 4.11..5.51 | 4.05..5.45 | -0.06 | 1.5 m (4..5.5) |
-| W11 | LivingS | ground | S | 2.4 | 0.9..2.15 | 7.13..9.53 | 7.05..9.45 | -0.08 | 2.5 m (7..9.5) |
-| W12 | StairGround | ground | S | 1.5 | 2.4..3.5 (old 2.35..3.45) | 4.45..5.95 | 4.5..6 | +0.05 | 2.5 m (4..6.5) |
-| W13 | OfficeN | first | N | 1.2 | 0.9..2.1 | 1.26..2.46 | 1.15..2.35 | -0.11 | 1.5 m (1..2.5) |
-| W14 | OfficeW | first | W | 1.1 | 0.9..2.1 | 1.15..2.25 | 1.2..2.3 | +0.05 | 1.5 m (1..2.5) |
-| W15 | BedroomW | first | W | 0.8 | 0.9..2.1 | 7.27..8.07 | 7.35..8.15 | +0.08 | 1.5 m (7..8.5) |
-| W16 | BedroomS | first | S | 1.4 | 0.9..2.1 | 1.49..2.89 | 1.55..2.95 | +0.06 | 1.5 m (1.5..3) |
-| W17 | LandingN | first | N | 1.1 | 0.9..2.1 | 4.65..5.75 | 4.7..5.8 | +0.05 | 1.5 m (4.5..6) |
-| W18 | Bathroom (frosted) | first | N | 1 | 1.3..2 | 7.28..8.28 | 7.25..8.25 | -0.03 | 1.5 m (7..8.5) |
-| W19 | KidsS | first | S | 1.5 | 0.9..2.1 | 7.19..8.69 | 7.25..8.75 | +0.06 | 2 m (7..9) |
-| W20 | GableW | attic | W | 0.7 | 0.8..1.7 | 2.21..2.91 | 2.15..2.85 | -0.06 | 1 m (2..3) |
-| W21 | GableE | attic | E | 0.7 | 0.8..1.7 | 2.21..2.91 | 2.15..2.85 | -0.06 | 1 m (2..3) |
-| W22 | Dormer | attic | S | 1.2 | 0.9..1.95 | 7.29..8.49 | 7.4..8.6 | +0.11 | 2 m (7..9) |
+| id | name | level | wall | width | grid width | sill..head | old along | new along | move | piece (old width; grid width) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| W1 | WorkshopWell | basement | N | 1.2 | 1 | 1.75..2.45 | 1.26..2.46 | 1.15..2.35 | -0.11 | 1.5 m (1..2.5); 1.5 m (1..2.5) |
+| W2 | LaundryWellW | basement | W | 1 | 1 | 1.75..2.45 | 6.29..7.29 | 6.25..7.25 | -0.04 | 1.5 m (6..7.5); 1.5 m (6..7.5) |
+| W3 | LaundryWellS | basement | S | 1 | 1 | 1.75..2.45 | 2.68..3.68 | 2.75..3.75 | +0.07 | 1.5 m (2.5..4); 1.5 m (2.5..4) |
+| W4 | GarageWellE | basement | E | 1 | 1 | 1.75..2.45 | 3.21..4.21 | 3.25..4.25 | +0.04 | 1.5 m (3..4.5); 1.5 m (3..4.5) |
+| W5 | KitchenN | ground | N | 1 | 1 | 1.1..2.15 | 2.65..3.65 | 2.75..3.75 | +0.10 | 1.5 m (2.5..4); 1.5 m (2.5..4) |
+| W6 | KitchenW | ground | W | 1.1 | 1 | 0.9..2.15 | 6.74..7.84 | 6.7..7.8 | -0.04 | 1.5 m (6.5..8); 1.5 m (6.5..8) |
+| W7 | KitchenS | ground | S | 2 | 2 | 0.9..2.15 | 0.86..2.86 | 0.75..2.75 | -0.11 | 2.5 m (0.5..3); 2.5 m (0.5..3) |
+| W8 | HallN | ground | N | 0.5 | 0.5 | 1.3..2 | 4.35..4.85 | 4.25..4.75 | -0.10 | 1 m (4..5); 1 m (4..5) |
+| W9 | LivingN | ground | N | 1.2 | 1 | 0.9..2.15 | 7.73..8.93 | 7.65..8.85 | -0.08 | 1.5 m (7.5..9); 1.5 m (7.5..9) |
+| W10 | LivingE | ground | E | 1.4 | 1.5 | 0.9..2.15 | 4.11..5.51 | 4.05..5.45 | -0.06 | 1.5 m (4..5.5); 2.5 m (3.5..6) |
+| W11 | LivingS | ground | S | 2.4 | 2.5 | 0.9..2.15 | 7.13..9.53 | 7.05..9.45 | -0.08 | 2.5 m (7..9.5); 3.5 m (6.5..10) |
+| W12 | StairGround | ground | S | 1.5 | 1.5 | 2.4..3.5 (old 2.35..3.45) | 4.45..5.95 | 4.5..6 | +0.05 | 2.5 m (4..6.5); 2.5 m (4..6.5) |
+| W13 | OfficeN | first | N | 1.2 | 1 | 0.9..2.1 | 1.26..2.46 | 1.15..2.35 | -0.11 | 1.5 m (1..2.5); 1.5 m (1..2.5) |
+| W14 | OfficeW | first | W | 1.1 | 1 | 0.9..2.1 | 1.15..2.25 | 1.2..2.3 | +0.05 | 1.5 m (1..2.5); 1.5 m (1..2.5) |
+| W15 | BedroomW | first | W | 0.8 | 1 | 0.9..2.1 | 7.27..8.07 | 7.35..8.15 | +0.08 | 1.5 m (7..8.5); 1.5 m (7..8.5) |
+| W16 | BedroomS | first | S | 1.4 | 1.5 | 0.9..2.1 | 1.49..2.89 | 1.55..2.95 | +0.06 | 1.5 m (1.5..3); 2.5 m (1..3.5) |
+| W17 | LandingN | first | N | 1.1 | 1 | 0.9..2.1 | 4.65..5.75 | 4.7..5.8 | +0.05 | 1.5 m (4.5..6); 1.5 m (4.5..6) |
+| W18 | Bathroom (frosted) | first | N | 1 | 1 | 1.3..2 | 7.28..8.28 | 7.25..8.25 | -0.03 | 1.5 m (7..8.5); 1.5 m (7..8.5) |
+| W19 | KidsS | first | S | 1.5 | 1.5 | 0.9..2.1 | 7.19..8.69 | 7.25..8.75 | +0.06 | 2 m (7..9); 2 m (7..9) |
+| W20 | GableW | attic | W | 0.7 | 0.5 | 0.8..1.7 | 2.21..2.91 | 2.15..2.85 | -0.06 | 1 m (2..3); 1 m (2..3) |
+| W21 | GableE | attic | E | 0.7 | 0.5 | 0.8..1.7 | 2.21..2.91 | 2.15..2.85 | -0.06 | 1 m (2..3); 1 m (2..3) |
+| W22 | Dormer | attic | S | 1.2 | 1 | 0.9..1.95 | 7.29..8.49 | 7.4..8.6 | +0.11 | 2 m (7..9); 2 m (7..9) |
 
 The basement windows look into the light wells outside (`make_exterior.py` WELLS: 0.9 m out from
 the wall, 0.25 m wider each side); the wells move with their windows.
@@ -132,21 +137,20 @@ the wall, 0.25 m wider each side); the wells move with their windows.
 | | old | new | move |
 |---|---|---|---|
 | stair well x (between the partitions) | 4.05..6.38 | 4.06..6.44 | +0.01 +0.06 |
-| first riser z, landing z0..z1 | 5.25, 7.34..8.44 | 5.5, 7.3..8.4 | +0.25, -0.04 |
+| first riser z, landing z0..z1 | 5.25, 7.34..8.44 | 5.5, 7.5..8.4 | +0.25, +0.16 |
 | west flight x (up south to the landing) | 4.05..5.16 | 4.06..5.19 | |
 | east flight x (up north to the next floor) | 5.27..6.38 | 5.31..6.44 | |
 | flight width | 1.11 | 1.13 | +0.03 |
 | newel wall centre x, 0.12 thick | 5.21 | 5.25 | +0.04 |
 | risers a storey, rise | 16, 0.1812 | 16, 0.1875 | |
-| goings a flight, going | 7, 0.299 | 7, 0.257 | -0.04 |
-| pitch | 31.3 deg | 36.1 deg | +4.8 deg |
+| goings a flight, going | 7, 0.299 | 7, 0.286 | -0.01 |
+| pitch | 31.3 deg | 33.3 deg | +2.0 deg |
 | half landing height over the floor | 1.45 | 1.5 | +0.05 |
 
-Why the first riser moved south (+0.25), not north (-0.25, which would give a 29.7 deg stair, nearer
-the old 31.3): the elevator shaft's south side lines up with the first riser in the old house, and
-on the first floor the bedroom doorway (D8), the hatch and the attic flight's first step follow
-each other along the x4 partition. With the riser at z 5.0 there would be 0.82 m between the
-z3.5 partition and the hatch for a 0.9 m doorway. The price is a steeper stair (see the follow-ups).
+The first riser moved south (+0.25): the elevator shaft's south side lines up with it as in the old
+house, and on the first floor the bedroom doorway (D8), the hatch and the attic flight's first step
+follow each other along the x4 partition (with the riser at z 5.0 there would be 0.82 m for the
+0.9 m doorway). The half landing is 0.9 m deep, so the flights are 33.3 deg (Q2350).
 
 ## The elevator shaft, the hatches (K09)
 
@@ -156,38 +160,40 @@ z3.5 partition and the hatch for a 0.9 m doorway. The price is a steeper stair (
 | first floor hatch through x4, z (sill 0.8, 0.58 high) | 4.63..5.17 | 4.88..5.42 | +0.25 |
 | the Cellar hatch in the workshop floor, centre (0.75 square) | 2.8, 1.65 | 2.75, 1.75 | -0.05, +0.10 |
 
-The shaft and the Cellar hatch are not on the 0.5 m tile grid (0.7 and 0.75 m): each needs a floor
-and ceiling piece with the hole in it (1 x 1 m) for house/03.
+The shaft and the Cellar hatch are not on the 0.5 m tile grid (0.7 and 0.75 m), so the kit has tiles
+with the hole in them: the shaft's a 1 x 1 m floor and ceiling tile (x 3..4, z 4.5..5.5); the
+Cellar hatch, 0.75 m square round x 2.75 z 1.75, needs a 1.5 x 1.5 m floor tile (x 2..3.5, z 1..2.5)
+with it in the middle, as a 1 m tile cannot hold it there.
 
 ## Roof and attic (K11)
 
 | | old | new | move |
 |---|---|---|---|
 | knee wall over the attic floor | 0.4 | 0.4 | 0 |
-| ridge over the attic floor | 3.59 | 3.59 | 0 |
+| ridge over the attic floor | 3.59 | 3.88 | +0.29 |
 | ridge line z | 4.27 | 4.25 | -0.02 |
-| ridge y | 9.39 | 9.59 | +0.20 |
-| pitch | 37.4 deg | 37.5 deg | +0.1 deg |
+| ridge y | 9.39 | 9.88 | +0.49 |
+| pitch | 37.4 deg | 40.0 deg | +2.6 deg |
 | dormer inside x | 6.99..8.79 | 7.1..8.9 | +0.11 |
 | dormer cheeks' centre lines x (0.2 thick) | 6.89, 8.89 | 7, 9 | +0.11 |
 | dormer flat ceiling over the attic floor | 2.2 | 2.2 | 0 |
-| dormer ceiling meets the roof at z | 6.09 | 6.06 | -0.03 |
+| dormer ceiling meets the roof at z | 6.09 | 6.25 | +0.17 |
 | roof post (0.16 square) at x, z | 3.84, 1.81 | 3.75, 1.75 | -0.09, -0.06 |
 | roof post (0.16 square) at x, z | 8.66, 1.81 | 8.75, 1.75 | +0.09, -0.06 |
 | roof post (0.16 square) at x, z | 2.74, 6.74 | 2.75, 6.75 | +0.01, +0.01 |
 | roof post (0.16 square) at x, z | 9.32, 6.74 | 9.25, 6.75 | -0.07, +0.01 |
 
-The ridge keeps its old height over the attic floor, so the loft is as tall as before and the
-pitch stays near the old house's (37.5 deg, old 37.4; the ticket's 40 deg was the pitch before
-house/37 made the house deeper). The gable windows (W20, W21) are on the 0.25 m lattice, not
-centred on the ridge, as the old ones were not.
+The roof is 40 deg (Q2354): the ridge is 3.88 m over the attic floor, 0.29 m higher than the old
+one, and the dormer reaches further into the roof. The gable windows (W20, W21) are on the 0.25 m
+lattice, not centred on the ridge, as the old ones were not.
 
-## Pieces this plan asks for (for the second stop)
+## The kit's pieces for this plan
 
-- Door pieces (house/01 has the 1 m one):
-  - 0.9 m wide in a 1.5 m piece: D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11
+- Door pieces:
+  - 0.9 m wide in a 1.5 m piece: D1, D3, D4, D5, D6, D7, D9, D10, D11
+  - 0.9 m wide in a off-centre 1.5 m piece: D2, D8
   - 2.4 m wide in a 2.5 m piece: D12
-- Window pieces, one per width, piece length and sill/head:
+- Window pieces, old widths (18):
   - 0.5 m wide, sill..head 1.3..2, in a 1 m piece: W8
   - 0.7 m wide, sill..head 0.8..1.7, in a 1 m piece: W20, W21
   - 0.8 m wide, sill..head 0.9..2.1, in a 1.5 m piece: W15
@@ -196,16 +202,40 @@ centred on the ridge, as the old ones were not.
   - 1 m wide, sill..head 1.75..2.45, in a 1.5 m piece: W2, W3, W4
   - 1.1 m wide, sill..head 0.9..2.1, in a 1.5 m piece: W14, W17
   - 1.1 m wide, sill..head 0.9..2.15, in a 1.5 m piece: W6
+  - 1.2 m wide, sill..head 0.9..1.95, in a 2 m piece: W22
   - 1.2 m wide, sill..head 0.9..2.1, in a 1.5 m piece: W13
   - 1.2 m wide, sill..head 0.9..2.15, in a 1.5 m piece: W9
   - 1.2 m wide, sill..head 1.75..2.45, in a 1.5 m piece: W1
-  - 1.2 m wide, sill..head 0.9..1.95, in a 2 m piece: W22
   - 1.4 m wide, sill..head 0.9..2.1, in a 1.5 m piece: W16
   - 1.4 m wide, sill..head 0.9..2.15, in a 1.5 m piece: W10
   - 1.5 m wide, sill..head 0.9..2.1, in a 2 m piece: W19
-  - 1.5 m wide, sill..head 2.4..3.5, in a 2.5 m piece: W12
+  - 1.5 m wide, sill..head 2.4..3.5, two storeys high, in a 2.5 m piece: W12
   - 2 m wide, sill..head 0.9..2.15, in a 2.5 m piece: W7
   - 2.4 m wide, sill..head 0.9..2.15, in a 2.5 m piece: W11
-  That is 18 window pieces.
-- Floor and ceiling pieces with the shaft hole and with the Cellar hatch (1 x 1 m).
+- Window pieces, widths rounded to 0.5 m (14):
+  - 0.5 m wide, sill..head 0.8..1.7, in a 1 m piece: W20, W21
+  - 0.5 m wide, sill..head 1.3..2, in a 1 m piece: W8
+  - 1 m wide, sill..head 0.9..1.95, in a 2 m piece: W22
+  - 1 m wide, sill..head 0.9..2.1, in a 1.5 m piece: W13, W14, W15, W17
+  - 1 m wide, sill..head 0.9..2.15, in a 1.5 m piece: W6, W9
+  - 1 m wide, sill..head 1.1..2.15, in a 1.5 m piece: W5
+  - 1 m wide, sill..head 1.3..2, frosted, in a 1.5 m piece: W18
+  - 1 m wide, sill..head 1.75..2.45, in a 1.5 m piece: W1, W2, W3, W4
+  - 1.5 m wide, sill..head 0.9..2.1, in a 2 m piece: W19
+  - 1.5 m wide, sill..head 0.9..2.1, in a 2.5 m piece: W16
+  - 1.5 m wide, sill..head 0.9..2.15, in a 2.5 m piece: W10
+  - 1.5 m wide, sill..head 2.4..3.5, two storeys high, in a 2.5 m piece: W12
+  - 2 m wide, sill..head 0.9..2.15, in a 2.5 m piece: W7
+  - 2.5 m wide, sill..head 0.9..2.15, in a 3.5 m piece: W11
+- Floor and ceiling tiles with the shaft's hole (1 m), a floor tile with the Cellar hatch (1.5 m).
 - The U stair per storey (well 2.38 x 2.9 m inside), the attic's balustrade round the void.
+
+## Answers
+
+- The stair: a 0.9 m half landing, 33.3 deg (Q2350).
+- D2 and D8: an off-centre door piece keeps both doorways in their old places (Q2351).
+- The width: outer wall centre lines 10.5 m apart (Q2352).
+- Storeys 3.0 m, the old clear heights 2.7 / 2.7 / 2.6 m kept through thicker ceiling tiles (Q2353).
+- The roof: 40 deg, the ridge 3.88 m over the attic floor (Q2354).
+- Openings: both sets, old widths and widths rounded to 0.5 m; the designer compares (Q2355).
+- The Cellar hatch and the tiles with a hole are in (the designer, 2026-11-21).

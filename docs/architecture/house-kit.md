@@ -1,35 +1,90 @@
 # The house kit
 
-What the house is built from by hand in the editor (house/01, Q2154-Q2157, Q2175, Q2325-Q2328).
+What the house is built from by hand in the editor (house/01, Q2154-Q2157, Q2175, Q2325-Q2328;
+house/02, Q2343-Q2358).
 
 ## What it owns
 
 - `game/house/kit/pieces/*.tscn`: the pieces the designer drags from the file dock. Each is a
-  `MeshInstance3D` root (one mesh, one surface: Surface Material Override 0 on a placed piece is
-  its material) with a `StaticBody3D` "Body" of one to four `BoxShape3D`s on layer 1
-  (`Mess.LAYER_HOUSE`), mask 0. No script.
+  `MeshInstance3D` root (one mesh, its material slots below) with a `StaticBody3D` "Body" of
+  `BoxShape3D`s on layer 1 (`Mess.LAYER_HOUSE`), mask 0. No script.
 - `meshes/*.tres`: each piece's mesh. `materials/*.tres`: the library (the old house's colours;
   the textured ones world triplanar). `textures/`: the old house's plank and tile images.
-- `house_kit_sizes.tres` (`HouseKitSizes`): every size. `house_kit_build.gd` makes `pieces/` and
-  `meshes/` from it and any missing material; run it headless after a size change (its header).
+- `house_kit_sizes.tres` (`HouseKitSizes`): every size. `house_kit_build.gd` makes `pieces/`,
+  `meshes/`, `rooms/` and any missing material from it; run it headless after a size change (its
+  header).
+- `rooms/u_room.tscn`, `rooms/attic_corner.tscn`: two sample rooms made of pieces by the build
+  script (the station's room and roof corner). `house_kit_line_up.gd`: the station's line-up, built
+  when the station loads from whatever is in `pieces/` (Q2337).
 
 ## The old house on the grid (house/02)
 
 `house-kit-plan.md`: the old house re-gridded, every wall, room, opening, the stair, the shaft and the
 roof with its old and new numbers. It is written by `tools/house_plan.py`, which holds the numbers and
-checks the plan's rules; its stills go to `builds/review-house-02/`.
+checks the plan's rules; its stills go to `builds/review-house-02/`. House/03 builds from it.
 
 ## The grid convention
 
 Origins on 0.5 m grid corners, turns in 90 degree steps. Walls centred on grid lines, running +X
-from the origin, a 3.0 m storey high (floor top to the next floor top). Corners (L) and Ts are the
-joins, arms 0.5 m along +X and +Z. Floor tiles run +X +Z, top at the origin, 0.1 m thick; a
-ceiling tile sits right under the floor tile of the same square. Stairs rise towards +Z and
-collide through one ramp box under the step middles plus a flat box on the top step.
+from the origin, a 3.0 m storey high (floor top to the next floor top), their inside (slot 0) on
++Z: placed clockwise round a room seen from above, the inside faces the room. Corners (L) and Ts
+are the joins, arms 0.5 m along +X and +Z. Where a T's arm would cover an opening, the meeting
+partition is a `wall_partition_end_exterior_*` or `_end_partition_*` piece instead: it starts at the
+other wall's face. Knee walls between gables: `knee_exterior_start_1m` and `_end_1m` at the ends.
+Floor tiles run +X +Z, top at the origin, 0.1 m thick; a ceiling tile sits right under the floor
+tile of the same square: `ceiling_*` 0.2 m (clear 2.7 m), `ceiling_attic_*` 0.3 m (clear 2.6 m).
+An opening sits in the middle of its wall piece (one off-centre door piece, Q2351).
+
+The U stair (`stair_u`, `stair_u_solid` for the lowest storey) has its origin on the well's corner:
+x 0 on the west partition's centre line, z 0 on the first riser; the flights collide through two
+ramps a centimetre over the nosings, the landing and the newel through boxes. The attic has
+`stair_newel_top` and `stair_balustrade` at the same origin. Roof pieces have their origin on the
+outer wall's centre line at the attic floor; the far slope is the same piece turned half round,
+its origin on the far wall line; `roof_verge_w` / `_e` end a slope at a gable. The dormer is placed
+like a far-slope piece (turned half round) between its cheeks' centre lines.
+
+## Material slots
+
+- Walls, corners, Ts, doors, windows, knee walls, gables: 0 inside face, 1 outside face (for a
+  partition: its two rooms), 2 trim (skirting, linings, casings, sill, frame bars), 3 glass. Every
+  face that is neither inside nor outside (ends, top, reveals) is split at the wall's middle, each
+  half its side's paint (K03).
+- Tiles: 0. Stairs: 0 oak, 1 the newel (trim). Roof slopes: 0 rafters (under), 1 tiles (over).
+- Dormer: 0 inside, 1 outside, 2 trim, 3 glass, 4 rafters, 5 roof tiles, 6 ceiling.
+
+## No two faces in one plane (K14, Q2358)
+
+Two faces facing the same way in one plane flicker (z-fight). The kit keeps them apart:
+
+- Everything that stands on a floor starts under the floor line, inside the floor tile, and a wall
+  ends the same distance under the next floor line: walls, newels, stair steps and the balustrade
+  run from -0.02 m to the storey less 0.02 m (`sink`). The storey above starts where the one below
+  ends, so their meeting faces face each other, inside the floor tile.
+- Trim sinks less, and each kind differently: skirting -0.01 m (`trim_sink`), door casings -0.0125 m,
+  linings -0.015 m (`lining_sink`), so no two trims share a foot plane.
+- Floor and ceiling tiles keep the grid; the walls run through them, so no tile face lies in a wall
+  face (the walls' faces are at 0.06 or 0.1 m off the grid lines, the tiles' on them).
+- A partition meeting a wall without a T starts at that wall's face, its skirting after that wall's
+  skirting; a piece's own trim (corner, T) butts in the same way.
+- Window sills stand 0.03 m proud of the outside face and never reach a piece's end; window casings
+  sit flush on the inside face (their back faces the wall); a head casing runs between the side
+  casings, never over them.
+- A roof's ridge board sits on the slab's top face; a dormer's cheeks and front wall end inside its
+  flat roof; knee walls and gables end inside the slab.
+- In the zoo the zoo floor is the ground storey's floor: no floor tiles at y 0 (they would lie in
+  the zoo floor's plane), and the line-up lifts tiles half a metre. The station's pad is 5 mm over
+  the zoo floor, its own ground outside it.
+
+Faces may meet face to face (a wall's end against the next wall's end): one of them always faces
+away from any camera. Some faces still meet inside a wall or a tile (a wall piece's end and a floor
+tile's end on one grid line); no camera can see those. `tests/house_kit_test.gd` k14 checks every
+face of the station, its floor and a two-storey test house, and fails on two faces facing one way
+in one plane that overlap where they can be seen (a point just in front of the overlap is inside no
+piece).
 
 ## Gotchas
 
-- Never hand-edit a piece or mesh file: change the sizes or the build script and rebuild. A
-  rebuild keeps file uids but renumbers node `unique_id`s.
-- A floor tile at y 0 in the zoo flickers against the zoo's own floor.
-- Tests: `tests/house_kit_test.gd`.
+- Never hand-edit a piece, mesh or `rooms/` file: change the sizes or the build script and rebuild.
+  A rebuild keeps file uids but renumbers node `unique_id`s.
+- The station has its own ground beyond the zoo floor's west edge (the line-up is 25 x 36 m).
+- Tests: `tests/house_kit_test.gd`. Stills: the `house-kit` shot set.
