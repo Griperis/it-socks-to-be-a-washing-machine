@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PlayerUpgrades" format=3]
+
+[ext_resource type="Script" path="res://game/player/player_upgrades.gd" id="1_upgrades"]
+
+; decided: both on in the zoo (Q2360, A16); M4 wires them to buying
+[resource]
+script = ExtResource("1_upgrades")
+sock_smarts = true
+sock_sense = true

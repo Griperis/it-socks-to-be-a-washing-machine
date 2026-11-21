@@ -1,15 +1,41 @@
 [gd_resource type="Theme" format=3]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_size_box"]
+content_margin_left = 7.0
+content_margin_top = 0.0
+content_margin_right = 7.0
+content_margin_bottom = 0.0
+bg_color = Color(0.16, 0.12, 0.1, 0.75)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.94, 0.82, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
 [resource]
 Heading1/base_type = &"OutlinedLabel"
 Heading1/font_sizes/font_size = 44
 Heading2/base_type = &"OutlinedLabel"
 Heading2/font_sizes/font_size = 30
+HintLabel/base_type = &"OutlinedLabel"
+HintLabel/font_sizes/font_size = 24
 OutlinedLabel/base_type = &"Label"
 OutlinedLabel/colors/font_color = Color(1, 1, 1, 1)
 OutlinedLabel/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
 OutlinedLabel/constants/outline_size = 8
 PlainLabel/base_type = &"OutlinedLabel"
 PlainLabel/constants/outline_size = 0
+PromptLabel/base_type = &"OutlinedLabel"
+PromptLabel/font_sizes/font_size = 32
+RowLabel/base_type = &"OutlinedLabel"
+RowLabel/font_sizes/font_size = 28
+SizeBox/base_type = &"PanelContainer"
+SizeBox/styles/panel = SubResource("StyleBoxFlat_size_box")
+SizeLetter/base_type = &"PlainLabel"
+SizeLetter/font_sizes/font_size = 23
 ThinLabel/base_type = &"OutlinedLabel"
 ThinLabel/constants/outline_size = 6

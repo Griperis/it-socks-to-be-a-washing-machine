@@ -12,6 +12,11 @@ const THICKNESS := 2.0
 @onready var _vertical: ColorRect = %Vertical
 
 
+## The bars' own colour (white at alpha 0.9), before the tint.
+func bar_colour() -> Color:
+	return _horizontal.color
+
+
 ## The two bars' rectangles, relative to the screen centre (a test checks the size and the centring).
 func bars() -> Array[Rect2]:
 	var out: Array[Rect2] = []

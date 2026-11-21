@@ -1,0 +1,7 @@
+# core/15: the screen station. Without the Upgrades (the old game's base): aiming at a Sock, a drawer, the Door, and
+# the corner with a Sock held. With Sock Smarts and Sense (the zoo's default): two held, aiming at the held one's mate.
+sock-base  --size=1280x720 --do='40:screen:plain;60:screen:sock' --shots=70
+drawer  --size=1280x720 --do='40:screen:plain;60:screen:drawer' --shots=70
+door  --size=1280x720 --do='40:screen:plain;60:screen:door' --shots=70
+held-base  --size=1280x720 --do='40:screen:plain;50:screen:floor;55:screen:take' --shots=75
+smarts-sense  --size=1280x720 --do='50:screen:mate;55:screen:take2' --shots=75

@@ -21,6 +21,9 @@ const GROUP := &"openables"
 ## How far from the thing a player may stand to use it, in metres (Parts.near(); checked only once
 ## the game sets Parts.where).
 @export var reach := 4.0
+## What the player's prompt calls it: "Open the <noun>", "Shut the <noun>" (core/15 A03). Empty, it
+## prompts nothing.
+@export var noun := ""
 
 @export_group("State")
 ## Open or shut. Tick it to place the thing open; while playing only the Host's answer changes it.
