@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-triage
+status: ready-for-agent
 kind: build
 area: core
 feature: core
@@ -84,23 +84,16 @@ code: `reference/it-socks/game/core/game.gd:1445-1470`, `game/hands/hands_rules.
 - No still (sound only). The designer listens in a play session; the ticket waits for batch 6.
 
 ## Answers
+- The bounce follows the hit speed: soft hits quiet, hard ones louder and higher (Q2371, 2026-11-21).
+- Each sound event has a minimum gap set in its SoundEvent, e.g. 0.05 s for bounce (Q2372).
+- The shelve sound plays at the click, as the old game (Q2373).
+- Pad rumble always on, a setting `pad/rumble` (default on) for the menu later (Q2375).
+- A teammate's own sounds and the knockdown rumble: M0.6 (Q2376).
+- Every jump lands with "land", as the old game (Q2377).
 - Q2278 (every old sound and rumble, plug-and-play), Q2296 (core sounds and rumble in M0.5), Q2318-Q2321 (catalogue,
   the old picks and volumes, the station, muffling, steps, ambience), Q2302 (pad differences later; the rumble is not one).
 - core/17's Built log lists the old details it left out; those of the core are here.
 
 ## Open follow-ups
-- [blocking] Q-a: the old bounce is one clip at one level, gated at 1.5 m/s. Options: 1) as the old (recommended); 2) the
-  level and pitch follow the impact speed (a soft Sock drop quiet, a hard throw louder), a look change by Q2153.
-- [blocking] Q-b: the old game has no cooldown, so a heap of bouncing Socks fills the 8 voices and cuts the oldest.
-  Options: 1) as the old, no gap; 2) a gap per event (for example 0.05 s for "bounce") set in its `SoundEvent`.
-- [blocking] Q-c: "shelve" plays the instant the Command is answered. The port has the flight to the slot (core/09 D11)
-  that takes 0.45 s. Options: 1) at the click, as the old (recommended); 2) when the Pair lands in its slot.
-- [blocking] Q-d: the old rumble has an Options toggle "Pad rumble"; there is no menu yet (Q2300). Options: 1) always on,
-  a setting `pad/rumble` kept by Settings (default true) for the menu later (recommended); 2) off until the menu.
-- [blocking] Q-e: a teammate's own sounds (pick, throw) played from where they happen (old Q246), and the "knock" rumble
-  (a teammate's Throw knocks you down). Options: 1) M0.6, with the other players (recommended); 2) in this ticket for
-  the local machine only.
-- [blocking] Q-f: "land" after every jump (a 5.5 m/s fall is over the 3 m/s gate), the old way. Options: 1) as the old;
-  2) land only after a fall from higher than a jump (a gate above 5.5 m/s).
 
 ## Built log

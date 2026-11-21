@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-triage
+status: ready-for-agent
 kind: build
 area: core
 feature: core
@@ -83,24 +83,16 @@ the old core that the port lacks is listed here; only the designer drops one (Q2
 - Strips and stills in `builds/review-core-16/`, stopped at the first still for the designer's go.
 
 ## Answers
+- The cloth keeps the spring-bone node, tuned to flap less; P06 and P07 become "tune the node": a steady walk sways
+  little, the ground never crumples it badly; the old springs are not ported (Q2366, 2026-11-21).
+- The drop leaves from the hand (Q2367): P05 and P09 move to core/23 and drop out of this ticket.
+- "Paired!" gets a short pop of the text, with its own still (Q2370, 2026-11-21).
+- The old Door and cupboard timings (Q2368); a station button loses and sinks a Sock (Q2369) (2026-11-21).
 - Q2279-Q2281, Q2286, Q2287, Q2291, Q2296 (2026-11-20). Q2315, Q2316 (a teammate's shelving flight and sparkle burst
   are M0.6). Q2332 (stiff during a catch-up; the catch-up goes with Q2356). Q2277 (every detail listed).
 - The Cabinet's "+N" Coins pop, new Rows dropping in: M4. Pad stick curve: later (Q2235). Teammate's waddle, squash and
   stretch: M0.6 (`avatar.json`).
 
 ## Open follow-ups
-- [blocking] Q-a: the old cloth bend and ground straightening against core/09's spring-bone node (Q2286, Q2287, built
-  by the node). Options: 1) port the old springs and probes as they were (the old look, more code); 2) keep the node and
-  tune it until a steady walk hangs still and the ground never crumples (Godot's own node first); 3) a hybrid: the node
-  with the old acceleration input only (P06) and its own ground (P07 dropped).
-- [blocking] Q-b: P05 and P09 after core/23 (Q2356): the Throw leaves from the hand on an arc, so its catch-up goes. Is
-  the drop's flick kept with its ease and its stiff hold? Options: 1) yes, the flick stays as the old (recommended);
-  2) the drop leaves from the hand on an arc too.
-- [blocking] Q-c: the sunk Sock (P13) and the lost Sock's return (P12) in the zoo. Options: 1) the zoo's pad (Q2261) with
-  the old numbers; 2) as 1 and a button in the station that sinks or loses a Sock to see them.
-- [blocking] Q-d: P15's Door and cupboard timings: the port has the Door 0.4 s (Q2213 names 0.6) and the cupboard 0.4 s
-  linear. Options: 1) the old: Door 0.6 s in-out, cupboard 0.35 s out; 2) keep the port's times and add the ease only.
-- [blocking] Q-e: "Paired!" is a plain white 2 s line in the old game. Options: 1) as the old; 2) a short pop of the text
-  as well (a look change, its own ticket per Q2153).
 
 ## Built log

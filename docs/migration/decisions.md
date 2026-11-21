@@ -1,4 +1,4 @@
-Next free Q number: Q2374 (update this line whenever a round of questions is asked)
+Next free Q number: Q2378 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -286,3 +286,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2371: the bounce sound follows the hit speed: soft hits quiet, hard ones louder and higher (a sound change from the old one level).
 - Q2372: each sound event has a minimum gap (e.g. 0.05 s for bounce), set in its SoundEvent, so a heap does not fill every voice.
 - Q2373: the shelve sound plays at the click, as the old game.
+- Q2374: the outline is made a little stronger for the graybox (inner shells' opacity and width up, old shape kept), rechecked on the M1 models.
+- Q2375: pad rumble always on, kept as a setting (pad/rumble, default on) for the menu later.
+- Q2376: a teammate's own sounds and the knockdown rumble come in M0.6 with co-op.
+- Q2377: every jump lands with the "land" sound, as the old game (the 3 m/s gate stays).
