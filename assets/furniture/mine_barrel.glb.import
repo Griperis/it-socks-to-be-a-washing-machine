@@ -1,0 +1,83 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://bgeolsxogxf03"
+path="res://.godot/imported/mine_barrel.glb-130ff8ece095f68b655d6576c21692ed.scn"
+
+[deps]
+
+source_file="res://assets/furniture/mine_barrel.glb"
+dest_files=["res://.godot/imported/mine_barrel.glb-130ff8ece095f68b655d6576c21692ed.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=false
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"barrel_wood": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/barrel_wood.tres",
+"use_external/path": "uid://c8avb5hfup54e"
+},
+"crate_dark": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/crate_dark.tres",
+"use_external/path": "uid://cuca1igqrsio2"
+},
+"hoop_iron": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/hoop_iron.tres",
+"use_external/path": "uid://covx1el8m0p1p"
+}
+},
+"meshes": {
+"mine_barrel_Body": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/mine_barrel_Body.res",
+"save_to_file/path": "uid://cli5utpw1v6p6"
+},
+"mine_barrel_Lid": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/mine_barrel_Lid.res",
+"save_to_file/path": "uid://bcdrugaqvel6s"
+}
+}
+}
+gltf/naming_version=2
+gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

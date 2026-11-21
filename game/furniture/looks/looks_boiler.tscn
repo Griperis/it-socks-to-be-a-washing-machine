@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cce8lvvltvpgk"]
+
+[ext_resource type="ArrayMesh" uid="uid://biin3l1ka70kc" path="res://assets/furniture/meshes/boiler_Body.res" id="1_fa22g"]
+
+[node name="LooksBoiler" type="Node3D" unique_id=695643864]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=2002035698]
+mesh = ExtResource("1_fa22g")

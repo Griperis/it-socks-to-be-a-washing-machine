@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://c631kucghmg45"]
-
-[resource]
-resource_name = "dark_wood"
-cull_mode = 2
-albedo_color = Color(0.47, 0.29, 0.16, 1)
-roughness = 0.6
-metadata/old_pieces = PackedStringArray("bunk_bed", "dresser", "kids_shelf", "nightstand", "rocking_horse", "trunk", "workbench")

@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://da0le8vshtkk7"]
-
-[resource]
-resource_name = "white"
-cull_mode = 2
-albedo_color = Color(0.95, 0.93, 0.88, 1)
-roughness = 0.6
-metadata/old_pieces = PackedStringArray("coat_nook", "dining_table", "fridge", "kitchen_corner", "kitchen_cupboard", "kitchen_drawers", "kitchen_filler", "kitchen_oven", "kitchen_sink", "kitchen_wall_cupboard", "old_cot", "paint_tins")

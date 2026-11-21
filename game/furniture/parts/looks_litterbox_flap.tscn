@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://davuuyy4ms2hv"]
+
+[ext_resource type="ArrayMesh" uid="uid://df0my7wkvclsi" path="res://assets/furniture/meshes/litterbox_Flap.res" id="1_u55xo"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="2_p6u7p"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gjswf"]
+size = Vector3(0.216, 0.008, 0.25)
+
+[sub_resource type="Animation" id="Animation_ne3qn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Flap:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_f8tsm"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Flap:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(1.4835298, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_3t1dh"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Flap:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(1.4835298, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u3oxl"]
+_data = {
+&"RESET": SubResource("Animation_ne3qn"),
+&"open": SubResource("Animation_f8tsm"),
+&"shut": SubResource("Animation_3t1dh")
+}
+
+[node name="LooksLitterboxFlap" type="Node3D" unique_id=1108696970]
+
+[node name="Flap" type="AnimatableBody3D" parent="." unique_id=1549440357]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.394, 0.214)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Flap" unique_id=724857571]
+mesh = ExtResource("1_u55xo")
+
+[node name="Shape1" type="CollisionShape3D" parent="Flap" unique_id=1494709008]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, -0.112, 0)
+shape = SubResource("BoxShape3D_gjswf")
+
+[node name="Outline" type="Node3D" parent="." unique_id=86386649]
+visible = false
+script = ExtResource("2_p6u7p")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=761718588]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_u3oxl")

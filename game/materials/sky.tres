@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b2g6g5rl8k3ll"]
+
+[resource]
+resource_name = "sky"
+cull_mode = 2
+albedo_color = Color(0.55, 0.72, 0.85, 1)
+roughness = 0.4
+metadata/old_pieces = PackedStringArray("boiler", "bookshelf", "desk", "fridge", "ironing_board", "kids_shelf", "kitchen_corner", "kitchen_cupboard", "kitchen_shelf", "kitchen_wall_cupboard", "laundry_shelf", "litterbox", "nightstand", "old_cot", "old_tree", "paint_tins", "printer", "shelf_rack", "storage_boxes", "tool_shelves", "toy_chest", "vanity", "wall_mirror", "workbench")

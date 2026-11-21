@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://b4vqaqq66vufw"]
+
+[ext_resource type="ArrayMesh" uid="uid://dawc0gm2a4cac" path="res://assets/furniture/meshes/piano_Lid.res" id="1_op01k"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="2_2y1tg"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yw3wq"]
+size = Vector3(0.018, 0.225, 1.218)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ggyeg"]
+points = PackedVector3Array(-0.604, -0.112, 0.22, -0.604, -0.107, 0.225, -0.609, -0.107, 0.22, -0.604, -0.005, 0.225, -0.604, 0, 0.22, -0.609, -0.005, 0.22, -0.604, -0.112, 0.216, -0.609, -0.107, 0.216, -0.604, -0.107, 0.211, -0.604, 0, 0.216, -0.604, -0.005, 0.211, -0.609, -0.005, 0.216, 0.604, -0.112, 0.22, 0.609, -0.107, 0.22, 0.604, -0.107, 0.225, 0.604, 0, 0.22, 0.604, -0.005, 0.225, 0.609, -0.005, 0.22, 0.604, -0.112, 0.216, 0.604, -0.107, 0.211, 0.609, -0.107, 0.216, 0.604, 0, 0.216, 0.609, -0.005, 0.216, 0.604, -0.005, 0.211)
+
+[sub_resource type="Animation" id="Animation_qpoyr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lid:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_55gcj"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lid:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-1.6057029, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_02wef"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lid:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(-1.6057029, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fcva4"]
+_data = {
+&"RESET": SubResource("Animation_qpoyr"),
+&"open": SubResource("Animation_55gcj"),
+&"shut": SubResource("Animation_02wef")
+}
+
+[node name="LooksPianoLid" type="Node3D" unique_id=1760385484]
+
+[node name="Lid" type="AnimatableBody3D" parent="." unique_id=2086292451]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.82, 0.066)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Lid" unique_id=351356535]
+mesh = ExtResource("1_op01k")
+
+[node name="Shape1" type="CollisionShape3D" parent="Lid" unique_id=997758253]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, -0.009, 0.1125)
+shape = SubResource("BoxShape3D_yw3wq")
+
+[node name="Shape2" type="CollisionShape3D" parent="Lid" unique_id=97429136]
+shape = SubResource("ConvexPolygonShape3D_ggyeg")
+
+[node name="Outline" type="Node3D" parent="." unique_id=755833494]
+visible = false
+script = ExtResource("2_2y1tg")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1782222106]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_fcva4")

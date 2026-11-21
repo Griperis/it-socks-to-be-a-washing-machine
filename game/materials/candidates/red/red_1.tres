@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://con8sxd5jj7le"]
-
-[resource]
-resource_name = "red"
-cull_mode = 2
-albedo_color = Color(0.8, 0.34, 0.28, 1)
-roughness = 0.4
-metadata/old_pieces = PackedStringArray("boiler", "bookshelf", "coffee_table", "desk", "kids_shelf", "kitchen_cupboard", "kitchen_drawers", "kitchen_shelf", "toy_chest")

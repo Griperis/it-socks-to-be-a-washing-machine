@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://ce781oqvrar6l"]
-
-[resource]
-resource_name = "sky"
-cull_mode = 2
-albedo_color = Color(0.55, 0.72, 0.85, 1)
-roughness = 0.5
-metadata/old_pieces = PackedStringArray("kids_shelf", "toy_chest")

@@ -1,9 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://ccp5jmes2a2sk"]
-
-[resource]
-resource_name = "brass"
-cull_mode = 2
-albedo_color = Color(0.86, 0.68, 0.36, 1)
-metallic = 0.9
-roughness = 0.35
-metadata/old_pieces = PackedStringArray("boiler", "water_tank")

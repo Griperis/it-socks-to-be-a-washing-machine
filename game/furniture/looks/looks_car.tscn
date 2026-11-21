@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://tpy7lw8wo55m"]
+
+[ext_resource type="ArrayMesh" uid="uid://d2jcdef02kqev" path="res://assets/furniture/meshes/car_Body.res" id="1_51xvc"]
+
+[node name="LooksCar" type="Node3D" unique_id=1159731918]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=669165285]
+mesh = ExtResource("1_51xvc")

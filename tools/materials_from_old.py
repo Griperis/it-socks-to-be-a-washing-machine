@@ -10,7 +10,8 @@ A name the old furniture used with one set of values becomes game/materials/<nam
 with several (oak: 6 sets in 35 pieces) becomes candidates, game/materials/candidates/<name>/<name>_<k>.tres,
 k = 1 the set most pieces used, for the designer to pick the one that stays (Q2177). Where the house
 kit (game/house/kit/materials/) holds a material of the same name with other values, its values are one
-more candidate, <name>_kit.tres (the kit's file stays as it is). Every file carries the old pieces that
+more candidate, <name>_kit.tres (the kit's file stays as it is). Once a group is picked (Q2389) its
+game/materials/<name>.tres stands and no candidates are written again. Every file carries the old pieces that
 used it as metadata `old_pieces`.
 
 Values are what Godot's glTF importer made of them in the old game: base colour and emission from linear
@@ -129,7 +130,8 @@ def main() -> int:
         kit = kit_fields(name)
         if kit is not None and all(tuple(kit) != tuple(e[0]) for e in sets):
             sets.append([kit, ["house kit"]])
-        if len(sets) == 1:
+        if len(sets) == 1 or os.path.exists(os.path.join(OUT, name + ".tres")):
+            # one set, or a group already picked (Q2389): the library file stays as it is
             files["game/materials/%s.tres" % name] = (name, sets[0])
         else:
             for k, e in enumerate(sets, 1):

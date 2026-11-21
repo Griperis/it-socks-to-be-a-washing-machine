@@ -1,0 +1,114 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://cywf5gup537h"
+path="res://.godot/imported/kids_shelf.glb-fd63ab67778077afe791b6778d90e327.scn"
+
+[deps]
+
+source_file="res://assets/furniture/kids_shelf.glb"
+dest_files=["res://.godot/imported/kids_shelf.glb-fd63ab67778077afe791b6778d90e327.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=false
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"cardboard": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/cardboard.tres",
+"use_external/path": "uid://cjt80hk21pykv"
+},
+"dark_wood": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/dark_wood.tres",
+"use_external/path": "uid://cn4jc0hstjrrp"
+},
+"fab_pink": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/fab_pink.tres",
+"use_external/path": "uid://do8e61yk7ebi8"
+},
+"fab_sage": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/fab_sage.tres",
+"use_external/path": "uid://bikch4fettyqs"
+},
+"fab_stripe": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/fab_stripe.tres",
+"use_external/path": "uid://bs04n8tleeaf3"
+},
+"mustard": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/mustard.tres",
+"use_external/path": "uid://b04ece1tl6djg"
+},
+"pad": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/pad.tres",
+"use_external/path": "uid://dctugtiy3tcpf"
+},
+"red": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/red.tres",
+"use_external/path": "uid://wrluywmn0kct"
+},
+"sage": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/sage.tres",
+"use_external/path": "uid://cirew0i4ms4m8"
+},
+"sky": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/sky.tres",
+"use_external/path": "uid://b2g6g5rl8k3ll"
+},
+"white": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/white.tres",
+"use_external/path": "uid://cttoi20gfxus4"
+}
+},
+"meshes": {
+"kids_shelf_Body": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/kids_shelf_Body.res",
+"save_to_file/path": "uid://4i3saucvgwqf"
+}
+}
+}
+gltf/naming_version=2
+gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

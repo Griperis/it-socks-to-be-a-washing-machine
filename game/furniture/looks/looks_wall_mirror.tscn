@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://bxf0jwxlg8jxo"]
+
+[ext_resource type="ArrayMesh" uid="uid://cgo5yxcscm151" path="res://assets/furniture/meshes/wall_mirror_Body.res" id="1_ejsws"]
+[ext_resource type="ArrayMesh" uid="uid://cs8q5t2sfnr2c" path="res://assets/furniture/meshes/wall_mirror_MirrorGlass.res" id="2_1o7x3"]
+
+[node name="LooksWallMirror" type="Node3D" unique_id=1110368121]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1199457399]
+mesh = ExtResource("1_ejsws")
+
+[node name="MirrorGlass" type="MeshInstance3D" parent="." unique_id=608002555]
+mesh = ExtResource("2_1o7x3")

@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cg0k801klwjyp"]
+
+[ext_resource type="ArrayMesh" uid="uid://bjhog1wgps4ac" path="res://assets/furniture/meshes/paint_tins_Body.res" id="1_e4wa6"]
+
+[node name="LooksPaintTins" type="Node3D" unique_id=1509853490]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1177944865]
+mesh = ExtResource("1_e4wa6")

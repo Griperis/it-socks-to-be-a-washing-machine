@@ -1,0 +1,107 @@
+[gd_scene format=3 uid="uid://qei05e2j0cou"]
+
+[ext_resource type="ArrayMesh" uid="uid://cs2txjkftyul2" path="res://assets/furniture/meshes/kitchen_drawers_Drawer_1.res" id="1_tsmr6"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="2_84s02"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yyemr"]
+size = Vector3(0.012, 0.45, 0.53)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gqkoi"]
+size = Vector3(0.15, 0.012, 0.53)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8lbwd"]
+size = Vector3(0.15, 0.45, 0.012)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fhmij"]
+size = Vector3(0.15, 0.45, 0.012)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_i8kht"]
+points = PackedVector3Array(-0.295, 0, 0.022, -0.295, 0.2, 0.022, -0.295, 0, 0, -0.295, 0.2, 0, 0.295, 0, 0.022, 0.295, 0.2, 0.022, 0.295, 0, 0, 0.295, 0.2, 0, -0.08147, 0.1, 0.05986, 0.08147, 0.1, 0.05986)
+
+[sub_resource type="Animation" id="Animation_7j2is"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Drawer_1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.65, 0.2601)]
+}
+
+[sub_resource type="Animation" id="Animation_fnwqx"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Drawer_1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0, 0.65, 0.2601), Vector3(0, 0.65, 0.6401)]
+}
+
+[sub_resource type="Animation" id="Animation_fexsy"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Drawer_1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0, 0.65, 0.6401), Vector3(0, 0.65, 0.2601)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8q5fh"]
+_data = {
+&"RESET": SubResource("Animation_7j2is"),
+&"open": SubResource("Animation_fnwqx"),
+&"shut": SubResource("Animation_fexsy")
+}
+
+[node name="LooksKitchenDrawersDrawer1" type="Node3D" unique_id=186081756]
+
+[node name="Drawer_1" type="AnimatableBody3D" parent="." unique_id=1122336745]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0.2601)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Drawer_1" unique_id=783388848]
+mesh = ExtResource("1_tsmr6")
+
+[node name="Shape1" type="CollisionShape3D" parent="Drawer_1" unique_id=1670101484]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.026, -0.225)
+shape = SubResource("BoxShape3D_yyemr")
+
+[node name="Shape2" type="CollisionShape3D" parent="Drawer_1" unique_id=400076702]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.095, -0.444)
+shape = SubResource("BoxShape3D_gqkoi")
+
+[node name="Shape3" type="CollisionShape3D" parent="Drawer_1" unique_id=72926735]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, -0.259, 0.095, -0.225)
+shape = SubResource("BoxShape3D_8lbwd")
+
+[node name="Shape4" type="CollisionShape3D" parent="Drawer_1" unique_id=126311168]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0.259, 0.095, -0.225)
+shape = SubResource("BoxShape3D_fhmij")
+
+[node name="Shape5" type="CollisionShape3D" parent="Drawer_1" unique_id=634917710]
+shape = SubResource("ConvexPolygonShape3D_i8kht")
+
+[node name="Outline" type="Node3D" parent="." unique_id=775970529]
+visible = false
+script = ExtResource("2_84s02")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1824557539]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_8q5fh")

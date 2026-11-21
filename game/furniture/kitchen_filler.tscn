@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://cplmgulxyn7hu"]
+
+[ext_resource type="PackedScene" uid="uid://c1vfplueh61it" path="res://game/furniture/looks/looks_kitchen_filler.tscn" id="1_11nre"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p6lt5"]
+size = Vector3(0.1, 0.52, 0.42)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jap54"]
+size = Vector3(0.04, 0.62, 0.44)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2q6sl"]
+size = Vector3(0.76, 0.6, 0.44)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a35sn"]
+size = Vector3(0.24, 0.35000002, 0.48)
+
+[node name="KitchenFiller" type="StaticBody3D" unique_id=424484385]
+collision_mask = 0
+metadata/footprint = [0.44, 0.62]
+metadata/height = 0.9
+metadata/rooms = ["Kitchen & dining"]
+metadata/plan_spot = "Counter"
+metadata/note = "A plain worktop block 0.44 wide, no door: it spaces the east run's drawers clear of the sink's door (house/12)."
+
+[node name="Looks" type="Node3D" parent="." unique_id=1440648119 instance=ExtResource("1_11nre")]
+
+[node name="Shape1" type="CollisionShape3D" parent="." unique_id=1624347992]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.05, -0.02)
+shape = SubResource("BoxShape3D_p6lt5")
+
+[node name="Shape2" type="CollisionShape3D" parent="." unique_id=67251660]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.88, 0)
+shape = SubResource("BoxShape3D_jap54")
+
+[node name="Shape3" type="CollisionShape3D" parent="." unique_id=710857385]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.48, -0.01)
+shape = SubResource("BoxShape3D_2q6sl")
+
+[node name="Spots" type="Node3D" parent="." unique_id=1395861554]
+
+[node name="Top1" type="Area3D" parent="Spots" unique_id=1509754301]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.075, 0)
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Box" type="CollisionShape3D" parent="Spots/Top1" unique_id=72958438]
+shape = SubResource("BoxShape3D_a35sn")

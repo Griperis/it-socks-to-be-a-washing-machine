@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dp7as6yao4ox0"]
+
+[ext_resource type="ArrayMesh" uid="uid://camd7fotdqhxg" path="res://assets/furniture/meshes/living_rug_Body.res" id="1_5b1rj"]
+
+[node name="LooksLivingRug" type="Node3D" unique_id=1767319583]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1552841812]
+mesh = ExtResource("1_5b1rj")

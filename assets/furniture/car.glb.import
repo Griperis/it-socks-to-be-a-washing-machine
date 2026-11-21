@@ -1,0 +1,146 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://c63im77tbnc53"
+path="res://.godot/imported/car.glb-f40ba2246dfa4b19f12fe22dd630e4e2.scn"
+
+[deps]
+
+source_file="res://assets/furniture/car.glb"
+dest_files=["res://.godot/imported/car.glb-f40ba2246dfa4b19f12fe22dd630e4e2.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=false
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"charcoal": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/charcoal.tres",
+"use_external/path": "uid://diqg0gfwyhsir"
+},
+"fab_charcoal": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/fab_charcoal.tres",
+"use_external/path": "uid://cp0hccoxk7hxm"
+},
+"fab_sofa": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/fab_sofa.tres",
+"use_external/path": "uid://pwqb04n0eaap"
+},
+"fab_stripe": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/fab_stripe.tres",
+"use_external/path": "uid://bs04n8tleeaf3"
+},
+"glass": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/glass.tres",
+"use_external/path": "uid://qucr88gqsc3f"
+},
+"mustard": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/mustard.tres",
+"use_external/path": "uid://b04ece1tl6djg"
+},
+"paper": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/paper.tres",
+"use_external/path": "uid://dapatpk1o7v0g"
+},
+"red": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/red.tres",
+"use_external/path": "uid://wrluywmn0kct"
+},
+"rubber": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/rubber.tres",
+"use_external/path": "uid://vwrrlxf45y6y"
+},
+"steel": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/steel.tres",
+"use_external/path": "uid://g3mcumu4i3w8"
+},
+"stripe": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/stripe.tres",
+"use_external/path": "uid://dbhive483jlw0"
+},
+"terracotta": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/terracotta.tres",
+"use_external/path": "uid://bv4r6t5cs24vr"
+}
+},
+"meshes": {
+"car_Body": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/car_Body.res",
+"save_to_file/path": "uid://d2jcdef02kqev"
+},
+"car_Boot": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/car_Boot.res",
+"save_to_file/path": "uid://fioklws55ynq"
+},
+"car_Door_L": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/car_Door_L.res",
+"save_to_file/path": "uid://bbeima010x1le"
+},
+"car_Door_R": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/car_Door_R.res",
+"save_to_file/path": "uid://bgtv2k8bapqmp"
+}
+}
+}
+gltf/naming_version=2
+gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://cn73uxvoca7yt"]
-
-[resource]
-resource_name = "sage"
-cull_mode = 2
-albedo_color = Color(0.6, 0.68, 0.52, 1)
-roughness = 0.35
-metadata/old_pieces = PackedStringArray("bathtub", "litterbox", "nightstand", "vanity")

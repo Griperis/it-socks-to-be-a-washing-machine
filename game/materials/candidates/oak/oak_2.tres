@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://bfplvurpjxyuo"]
-
-[resource]
-resource_name = "oak"
-cull_mode = 2
-albedo_color = Color(0.8, 0.57, 0.34, 1)
-roughness = 0.6
-metadata/old_pieces = PackedStringArray("armchair", "coffee_table", "floor_lamp", "paint_tins", "piano", "shelf_rack", "side_table", "sofa", "tool_shelves", "workbench")

@@ -1,0 +1,26 @@
+# assets/04 F03: the Furniture station's line-up: from above, then each row from the front, each beside the same view
+# with the old game's models (old_*), read from the reference (IT_SOCKS_REFERENCE=<main checkout>/reference/it-socks).
+overview  --size=1280x720 --do='30:furniture:overview' --shots=40
+old_overview  --size=1280x720 --do='30:furniture:old_overview' --shots=40
+row0  --size=1280x720 --do='30:furniture:row0' --shots=40
+old_row0  --size=1280x720 --do='30:furniture:old_row0' --shots=40
+row1  --size=1280x720 --do='30:furniture:row1' --shots=40
+old_row1  --size=1280x720 --do='30:furniture:old_row1' --shots=40
+row2  --size=1280x720 --do='30:furniture:row2' --shots=40
+old_row2  --size=1280x720 --do='30:furniture:old_row2' --shots=40
+row3  --size=1280x720 --do='30:furniture:row3' --shots=40
+old_row3  --size=1280x720 --do='30:furniture:old_row3' --shots=40
+row4  --size=1280x720 --do='30:furniture:row4' --shots=40
+old_row4  --size=1280x720 --do='30:furniture:old_row4' --shots=40
+row5  --size=1280x720 --do='30:furniture:row5' --shots=40
+old_row5  --size=1280x720 --do='30:furniture:old_row5' --shots=40
+row6  --size=1280x720 --do='30:furniture:row6' --shots=40
+old_row6  --size=1280x720 --do='30:furniture:old_row6' --shots=40
+row7  --size=1280x720 --do='30:furniture:row7' --shots=40
+old_row7  --size=1280x720 --do='30:furniture:old_row7' --shots=40
+row8  --size=1280x720 --do='30:furniture:row8' --shots=40
+old_row8  --size=1280x720 --do='30:furniture:old_row8' --shots=40
+row9  --size=1280x720 --do='30:furniture:row9' --shots=40
+old_row9  --size=1280x720 --do='30:furniture:old_row9' --shots=40
+row10  --size=1280x720 --do='30:furniture:row10' --shots=40
+old_row10  --size=1280x720 --do='30:furniture:old_row10' --shots=40

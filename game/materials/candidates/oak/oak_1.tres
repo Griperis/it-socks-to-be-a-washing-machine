@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://bjauhkuj5h1ea"]
-
-[resource]
-resource_name = "oak"
-cull_mode = 2
-albedo_color = Color(0.8, 0.57, 0.34, 1)
-roughness = 0.45
-metadata/old_pieces = PackedStringArray("dining_chair", "dining_table", "kitchen_corner", "kitchen_cupboard", "kitchen_drawers", "kitchen_filler", "kitchen_oven", "kitchen_shelf", "kitchen_sink", "kitchen_wall_cupboard")

@@ -1,7 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://b76war5b2j1tb"]
-
-[resource]
-resource_name = "oak"
-albedo_color = Color(0.8, 0.57, 0.34, 1)
-roughness = 0.62
-metadata/old_pieces = PackedStringArray("house kit")

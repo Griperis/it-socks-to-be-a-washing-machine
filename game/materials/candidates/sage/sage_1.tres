@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://cub2pfvchq8u8"]
-
-[resource]
-resource_name = "sage"
-cull_mode = 2
-albedo_color = Color(0.6, 0.68, 0.52, 1)
-roughness = 0.55
-metadata/old_pieces = PackedStringArray("bookshelf", "desk", "filing_cabinet", "kitchen_corner", "kitchen_cupboard", "kitchen_drawers", "kitchen_filler", "kitchen_shelf", "kitchen_sink", "kitchen_wall_cupboard", "printer")

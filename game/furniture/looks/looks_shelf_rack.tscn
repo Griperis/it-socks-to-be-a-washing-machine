@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://0xr0d5jqh165"]
+
+[ext_resource type="ArrayMesh" uid="uid://bnk7qdho3wix5" path="res://assets/furniture/meshes/shelf_rack_Body.res" id="1_y08rf"]
+
+[node name="LooksShelfRack" type="Node3D" unique_id=1004605181]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=354772287]
+mesh = ExtResource("1_y08rf")

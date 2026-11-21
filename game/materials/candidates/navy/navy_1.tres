@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://dsabwqo8tlu7r"]
-
-[resource]
-resource_name = "navy"
-cull_mode = 2
-albedo_color = Color(0.28, 0.35, 0.5, 1)
-roughness = 0.6
-metadata/old_pieces = PackedStringArray("coffee_table", "kitchen_shelf", "nightstand", "telescope", "trunk")

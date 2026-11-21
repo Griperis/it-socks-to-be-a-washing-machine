@@ -1,0 +1,536 @@
+[gd_scene format=3 uid="uid://dy67vow2mgqoa"]
+
+[ext_resource type="ArrayMesh" uid="uid://dg6fc72swege7" path="res://assets/furniture/meshes/piano_Body.res" id="1_d0irn"]
+[ext_resource type="ArrayMesh" uid="uid://dhruek6s22d3q" path="res://assets/furniture/meshes/piano_Key_21.res" id="2_ufdhq"]
+[ext_resource type="ArrayMesh" uid="uid://vu0n8lnc6nsd" path="res://assets/furniture/meshes/piano_Key_22.res" id="3_mfdl4"]
+[ext_resource type="ArrayMesh" uid="uid://dxjay4yevbyfs" path="res://assets/furniture/meshes/piano_Key_23.res" id="4_0j3b5"]
+[ext_resource type="ArrayMesh" uid="uid://b7uko284s5pyn" path="res://assets/furniture/meshes/piano_Key_24.res" id="5_6mmj1"]
+[ext_resource type="ArrayMesh" uid="uid://c543jb71e4sj7" path="res://assets/furniture/meshes/piano_Key_25.res" id="6_5qr48"]
+[ext_resource type="ArrayMesh" uid="uid://d185tgb1f3x3a" path="res://assets/furniture/meshes/piano_Key_26.res" id="7_nbbn6"]
+[ext_resource type="ArrayMesh" uid="uid://bwylhg07l2t04" path="res://assets/furniture/meshes/piano_Key_27.res" id="8_aam5s"]
+[ext_resource type="ArrayMesh" uid="uid://b8gvsyrpg2v5i" path="res://assets/furniture/meshes/piano_Key_28.res" id="9_cxhgi"]
+[ext_resource type="ArrayMesh" uid="uid://btofhlk6706fm" path="res://assets/furniture/meshes/piano_Key_29.res" id="10_4wvve"]
+[ext_resource type="ArrayMesh" uid="uid://eoplkjy6fveo" path="res://assets/furniture/meshes/piano_Key_30.res" id="11_gxd1o"]
+[ext_resource type="ArrayMesh" uid="uid://chblu2dcq158e" path="res://assets/furniture/meshes/piano_Key_31.res" id="12_x3u0v"]
+[ext_resource type="ArrayMesh" uid="uid://cwxrnvroiffbs" path="res://assets/furniture/meshes/piano_Key_32.res" id="13_nsian"]
+[ext_resource type="ArrayMesh" uid="uid://dq13vl7px7dfw" path="res://assets/furniture/meshes/piano_Key_33.res" id="14_64h6i"]
+[ext_resource type="ArrayMesh" uid="uid://evn662pq3n1v" path="res://assets/furniture/meshes/piano_Key_34.res" id="15_5dasd"]
+[ext_resource type="ArrayMesh" uid="uid://bey0oppng5oi1" path="res://assets/furniture/meshes/piano_Key_35.res" id="16_vto56"]
+[ext_resource type="ArrayMesh" uid="uid://dkx5e4l4gjqod" path="res://assets/furniture/meshes/piano_Key_36.res" id="17_5ikbs"]
+[ext_resource type="ArrayMesh" uid="uid://d3q1nb2j4dch" path="res://assets/furniture/meshes/piano_Key_37.res" id="18_g6m0v"]
+[ext_resource type="ArrayMesh" uid="uid://cyxudgydnjjy" path="res://assets/furniture/meshes/piano_Key_38.res" id="19_cbw02"]
+[ext_resource type="ArrayMesh" uid="uid://xonkwd16nire" path="res://assets/furniture/meshes/piano_Key_39.res" id="20_pkvus"]
+[ext_resource type="ArrayMesh" uid="uid://dcjl4hgut3ggt" path="res://assets/furniture/meshes/piano_Key_40.res" id="21_4glp3"]
+[ext_resource type="ArrayMesh" uid="uid://op51vyl3new7" path="res://assets/furniture/meshes/piano_Key_41.res" id="22_spmeq"]
+[ext_resource type="ArrayMesh" uid="uid://b82pbihefpf1u" path="res://assets/furniture/meshes/piano_Key_42.res" id="23_yfnfx"]
+[ext_resource type="ArrayMesh" uid="uid://crjpj4md8jiq6" path="res://assets/furniture/meshes/piano_Key_43.res" id="24_o8y04"]
+[ext_resource type="ArrayMesh" uid="uid://cd8vb6fsfj5yp" path="res://assets/furniture/meshes/piano_Key_44.res" id="25_uoety"]
+[ext_resource type="ArrayMesh" uid="uid://b12rvwiw3f7k1" path="res://assets/furniture/meshes/piano_Key_45.res" id="26_ed4w1"]
+[ext_resource type="ArrayMesh" uid="uid://mereequebndn" path="res://assets/furniture/meshes/piano_Key_46.res" id="27_seusc"]
+[ext_resource type="ArrayMesh" uid="uid://348kd1t2lwp1" path="res://assets/furniture/meshes/piano_Key_47.res" id="28_3o8v2"]
+[ext_resource type="ArrayMesh" uid="uid://kw2ft5bais0" path="res://assets/furniture/meshes/piano_Key_48.res" id="29_kwkms"]
+[ext_resource type="ArrayMesh" uid="uid://dm8nw878xyb00" path="res://assets/furniture/meshes/piano_Key_49.res" id="30_uuite"]
+[ext_resource type="ArrayMesh" uid="uid://mqvg4esg341k" path="res://assets/furniture/meshes/piano_Key_50.res" id="31_clidu"]
+[ext_resource type="ArrayMesh" uid="uid://c81up0lxspix7" path="res://assets/furniture/meshes/piano_Key_51.res" id="32_vml0b"]
+[ext_resource type="ArrayMesh" uid="uid://n4iiewtbgq2p" path="res://assets/furniture/meshes/piano_Key_52.res" id="33_l1unw"]
+[ext_resource type="ArrayMesh" uid="uid://dscm6ea1ymlhb" path="res://assets/furniture/meshes/piano_Key_53.res" id="34_ccrbh"]
+[ext_resource type="ArrayMesh" uid="uid://y04r1l8okgdl" path="res://assets/furniture/meshes/piano_Key_54.res" id="35_t1da2"]
+[ext_resource type="ArrayMesh" uid="uid://bbm3yk7fiagqo" path="res://assets/furniture/meshes/piano_Key_55.res" id="36_bfcbh"]
+[ext_resource type="ArrayMesh" uid="uid://cvsqv1d67aoi" path="res://assets/furniture/meshes/piano_Key_56.res" id="37_bnr6r"]
+[ext_resource type="ArrayMesh" uid="uid://xyksoo54e5lx" path="res://assets/furniture/meshes/piano_Key_57.res" id="38_2vrr3"]
+[ext_resource type="ArrayMesh" uid="uid://blrkjawh83g8e" path="res://assets/furniture/meshes/piano_Key_58.res" id="39_2rkwg"]
+[ext_resource type="ArrayMesh" uid="uid://c0wncg57whkr6" path="res://assets/furniture/meshes/piano_Key_59.res" id="40_x02d5"]
+[ext_resource type="ArrayMesh" uid="uid://cvtgp68qu1eld" path="res://assets/furniture/meshes/piano_Key_60.res" id="41_g0oce"]
+[ext_resource type="ArrayMesh" uid="uid://yf0v8jf2re54" path="res://assets/furniture/meshes/piano_Key_61.res" id="42_rvbrj"]
+[ext_resource type="ArrayMesh" uid="uid://d1rft7sm7sevt" path="res://assets/furniture/meshes/piano_Key_62.res" id="43_66645"]
+[ext_resource type="ArrayMesh" uid="uid://khrfedt82t7j" path="res://assets/furniture/meshes/piano_Key_63.res" id="44_erdd4"]
+[ext_resource type="ArrayMesh" uid="uid://btuj3njgbjdyj" path="res://assets/furniture/meshes/piano_Key_64.res" id="45_c2g7r"]
+[ext_resource type="ArrayMesh" uid="uid://crculux2gv816" path="res://assets/furniture/meshes/piano_Key_65.res" id="46_bclo4"]
+[ext_resource type="ArrayMesh" uid="uid://dfshywtxk1ixn" path="res://assets/furniture/meshes/piano_Key_66.res" id="47_f52bj"]
+[ext_resource type="ArrayMesh" uid="uid://uxd5rwuwq7hd" path="res://assets/furniture/meshes/piano_Key_67.res" id="48_2fwl3"]
+[ext_resource type="ArrayMesh" uid="uid://b34sx6awarvt1" path="res://assets/furniture/meshes/piano_Key_68.res" id="49_8u33k"]
+[ext_resource type="ArrayMesh" uid="uid://cb8oxctufkeuf" path="res://assets/furniture/meshes/piano_Key_69.res" id="50_hy7s1"]
+[ext_resource type="ArrayMesh" uid="uid://duvbgja2uuir4" path="res://assets/furniture/meshes/piano_Key_70.res" id="51_nlbkr"]
+[ext_resource type="ArrayMesh" uid="uid://c8blo6n74r5dc" path="res://assets/furniture/meshes/piano_Key_71.res" id="52_7y0t2"]
+[ext_resource type="ArrayMesh" uid="uid://b4tnjocq1rq64" path="res://assets/furniture/meshes/piano_Key_72.res" id="53_yg6fb"]
+[ext_resource type="ArrayMesh" uid="uid://o4k78ctfbewp" path="res://assets/furniture/meshes/piano_Key_73.res" id="54_2qxgk"]
+[ext_resource type="ArrayMesh" uid="uid://1r0y66p2qqhw" path="res://assets/furniture/meshes/piano_Key_74.res" id="55_vij16"]
+[ext_resource type="ArrayMesh" uid="uid://bpvejgow65bff" path="res://assets/furniture/meshes/piano_Key_75.res" id="56_k00es"]
+[ext_resource type="ArrayMesh" uid="uid://d4d5m8j0bcr2l" path="res://assets/furniture/meshes/piano_Key_76.res" id="57_3760r"]
+[ext_resource type="ArrayMesh" uid="uid://bucupdpbwt0um" path="res://assets/furniture/meshes/piano_Key_77.res" id="58_ljteb"]
+[ext_resource type="ArrayMesh" uid="uid://bde41b53iatwk" path="res://assets/furniture/meshes/piano_Key_78.res" id="59_elcv4"]
+[ext_resource type="ArrayMesh" uid="uid://cagu3hdw1lwfh" path="res://assets/furniture/meshes/piano_Key_79.res" id="60_xhinx"]
+[ext_resource type="ArrayMesh" uid="uid://c0fwrcl6njt6q" path="res://assets/furniture/meshes/piano_Key_80.res" id="61_uo1ag"]
+[ext_resource type="ArrayMesh" uid="uid://cdxf3me51m8pq" path="res://assets/furniture/meshes/piano_Key_81.res" id="62_807nf"]
+[ext_resource type="ArrayMesh" uid="uid://ctmegl0a2lldv" path="res://assets/furniture/meshes/piano_Key_82.res" id="63_h8q1t"]
+[ext_resource type="ArrayMesh" uid="uid://br2fnk434sktj" path="res://assets/furniture/meshes/piano_Key_83.res" id="64_t5b0g"]
+[ext_resource type="ArrayMesh" uid="uid://c3ve1pb5vi5xq" path="res://assets/furniture/meshes/piano_Key_84.res" id="65_j8qt4"]
+[ext_resource type="ArrayMesh" uid="uid://cgrgl0dliy4d2" path="res://assets/furniture/meshes/piano_Key_85.res" id="66_mpf6s"]
+[ext_resource type="ArrayMesh" uid="uid://bk4g8vn2vyw61" path="res://assets/furniture/meshes/piano_Key_86.res" id="67_1eov6"]
+[ext_resource type="ArrayMesh" uid="uid://j8ccs3214tht" path="res://assets/furniture/meshes/piano_Key_87.res" id="68_gcfur"]
+[ext_resource type="ArrayMesh" uid="uid://c7ykwptq6ai7" path="res://assets/furniture/meshes/piano_Key_88.res" id="69_btr75"]
+[ext_resource type="ArrayMesh" uid="uid://bsp64ld8mbe7a" path="res://assets/furniture/meshes/piano_Key_89.res" id="70_o88u7"]
+[ext_resource type="ArrayMesh" uid="uid://cw2mnq6mwv4de" path="res://assets/furniture/meshes/piano_Key_90.res" id="71_ga05b"]
+[ext_resource type="ArrayMesh" uid="uid://bakwommx0to8c" path="res://assets/furniture/meshes/piano_Key_91.res" id="72_sppqw"]
+[ext_resource type="ArrayMesh" uid="uid://clxnuqpgdja61" path="res://assets/furniture/meshes/piano_Key_92.res" id="73_5158i"]
+[ext_resource type="ArrayMesh" uid="uid://bwgjjkll3e6wu" path="res://assets/furniture/meshes/piano_Key_93.res" id="74_dtmvg"]
+[ext_resource type="ArrayMesh" uid="uid://cnp54fesdhxwe" path="res://assets/furniture/meshes/piano_Key_94.res" id="75_stkk6"]
+[ext_resource type="ArrayMesh" uid="uid://dshmvuejvlgba" path="res://assets/furniture/meshes/piano_Key_95.res" id="76_0nvtx"]
+[ext_resource type="ArrayMesh" uid="uid://bui20bp8lf3ba" path="res://assets/furniture/meshes/piano_Key_96.res" id="77_vnc2s"]
+[ext_resource type="ArrayMesh" uid="uid://dg44a4flhmt4d" path="res://assets/furniture/meshes/piano_Key_97.res" id="78_ygf0p"]
+[ext_resource type="ArrayMesh" uid="uid://bd4efq1v6jtrf" path="res://assets/furniture/meshes/piano_Key_98.res" id="79_5amtb"]
+[ext_resource type="ArrayMesh" uid="uid://tqhboykfke3u" path="res://assets/furniture/meshes/piano_Key_99.res" id="80_vlyiw"]
+[ext_resource type="ArrayMesh" uid="uid://b0xe1g8hkui2n" path="res://assets/furniture/meshes/piano_Key_100.res" id="81_2gfj7"]
+[ext_resource type="ArrayMesh" uid="uid://c0oenskyi5s3k" path="res://assets/furniture/meshes/piano_Key_101.res" id="82_7eb5s"]
+[ext_resource type="ArrayMesh" uid="uid://bdxwr1yagg1hj" path="res://assets/furniture/meshes/piano_Key_102.res" id="83_w441j"]
+[ext_resource type="ArrayMesh" uid="uid://bvqyh61k2ml6o" path="res://assets/furniture/meshes/piano_Key_103.res" id="84_lesan"]
+[ext_resource type="ArrayMesh" uid="uid://cr1n3slw71rae" path="res://assets/furniture/meshes/piano_Key_104.res" id="85_ejeti"]
+[ext_resource type="ArrayMesh" uid="uid://bfbhij2uerefh" path="res://assets/furniture/meshes/piano_Key_105.res" id="86_46uvn"]
+[ext_resource type="ArrayMesh" uid="uid://dp0a7cjtqvorg" path="res://assets/furniture/meshes/piano_Key_106.res" id="87_c5ybi"]
+[ext_resource type="ArrayMesh" uid="uid://cwf4ib47hbg80" path="res://assets/furniture/meshes/piano_Key_107.res" id="88_2ifl2"]
+[ext_resource type="ArrayMesh" uid="uid://ha2by5mo7qcd" path="res://assets/furniture/meshes/piano_Key_108.res" id="89_2tkck"]
+
+[node name="LooksPiano" type="Node3D" unique_id=1715956920]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1903520286]
+mesh = ExtResource("1_d0irn")
+
+[node name="Key_21" type="MeshInstance3D" parent="." unique_id=463200620]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.59925, 0.69, 0.066)
+mesh = ExtResource("2_ufdhq")
+metadata/midi = 21.0
+
+[node name="Key_22" type="MeshInstance3D" parent="." unique_id=2089898370]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5875, 0.69, 0.066)
+mesh = ExtResource("3_mfdl4")
+metadata/midi = 22.0
+
+[node name="Key_23" type="MeshInstance3D" parent="." unique_id=420136005]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.57575, 0.69, 0.066)
+mesh = ExtResource("4_0j3b5")
+metadata/midi = 23.0
+
+[node name="Key_24" type="MeshInstance3D" parent="." unique_id=1405872557]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55225, 0.69, 0.066)
+mesh = ExtResource("5_6mmj1")
+metadata/midi = 24.0
+
+[node name="Key_25" type="MeshInstance3D" parent="." unique_id=1526322677]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5405, 0.69, 0.066)
+mesh = ExtResource("6_5qr48")
+metadata/midi = 25.0
+
+[node name="Key_26" type="MeshInstance3D" parent="." unique_id=747962531]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.52875, 0.69, 0.066)
+mesh = ExtResource("7_nbbn6")
+metadata/midi = 26.0
+
+[node name="Key_27" type="MeshInstance3D" parent="." unique_id=1202671954]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.517, 0.69, 0.066)
+mesh = ExtResource("8_aam5s")
+metadata/midi = 27.0
+
+[node name="Key_28" type="MeshInstance3D" parent="." unique_id=1582170799]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.50525, 0.69, 0.066)
+mesh = ExtResource("9_cxhgi")
+metadata/midi = 28.0
+
+[node name="Key_29" type="MeshInstance3D" parent="." unique_id=49505956]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.48175, 0.69, 0.066)
+mesh = ExtResource("10_4wvve")
+metadata/midi = 29.0
+
+[node name="Key_30" type="MeshInstance3D" parent="." unique_id=222922821]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47, 0.69, 0.066)
+mesh = ExtResource("11_gxd1o")
+metadata/midi = 30.0
+
+[node name="Key_31" type="MeshInstance3D" parent="." unique_id=1845539508]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45825, 0.69, 0.066)
+mesh = ExtResource("12_x3u0v")
+metadata/midi = 31.0
+
+[node name="Key_32" type="MeshInstance3D" parent="." unique_id=226550429]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4465, 0.69, 0.066)
+mesh = ExtResource("13_nsian")
+metadata/midi = 32.0
+
+[node name="Key_33" type="MeshInstance3D" parent="." unique_id=1471973579]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43475, 0.69, 0.066)
+mesh = ExtResource("14_64h6i")
+metadata/midi = 33.0
+
+[node name="Key_34" type="MeshInstance3D" parent="." unique_id=1493489007]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.423, 0.69, 0.066)
+mesh = ExtResource("15_5dasd")
+metadata/midi = 34.0
+
+[node name="Key_35" type="MeshInstance3D" parent="." unique_id=1402061416]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.41125, 0.69, 0.066)
+mesh = ExtResource("16_vto56")
+metadata/midi = 35.0
+
+[node name="Key_36" type="MeshInstance3D" parent="." unique_id=977590967]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.38775, 0.69, 0.066)
+mesh = ExtResource("17_5ikbs")
+metadata/midi = 36.0
+
+[node name="Key_37" type="MeshInstance3D" parent="." unique_id=2010369214]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.376, 0.69, 0.066)
+mesh = ExtResource("18_g6m0v")
+metadata/midi = 37.0
+
+[node name="Key_38" type="MeshInstance3D" parent="." unique_id=137011616]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36425, 0.69, 0.066)
+mesh = ExtResource("19_cbw02")
+metadata/midi = 38.0
+
+[node name="Key_39" type="MeshInstance3D" parent="." unique_id=1493786329]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 0.69, 0.066)
+mesh = ExtResource("20_pkvus")
+metadata/midi = 39.0
+
+[node name="Key_40" type="MeshInstance3D" parent="." unique_id=1233616891]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.34075, 0.69, 0.066)
+mesh = ExtResource("21_4glp3")
+metadata/midi = 40.0
+
+[node name="Key_41" type="MeshInstance3D" parent="." unique_id=1686206253]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.31725, 0.69, 0.066)
+mesh = ExtResource("22_spmeq")
+metadata/midi = 41.0
+
+[node name="Key_42" type="MeshInstance3D" parent="." unique_id=969876257]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3055, 0.69, 0.066)
+mesh = ExtResource("23_yfnfx")
+metadata/midi = 42.0
+
+[node name="Key_43" type="MeshInstance3D" parent="." unique_id=1281744240]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29375, 0.69, 0.066)
+mesh = ExtResource("24_o8y04")
+metadata/midi = 43.0
+
+[node name="Key_44" type="MeshInstance3D" parent="." unique_id=1648748460]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.282, 0.69, 0.066)
+mesh = ExtResource("25_uoety")
+metadata/midi = 44.0
+
+[node name="Key_45" type="MeshInstance3D" parent="." unique_id=1386390249]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.27025, 0.69, 0.066)
+mesh = ExtResource("26_ed4w1")
+metadata/midi = 45.0
+
+[node name="Key_46" type="MeshInstance3D" parent="." unique_id=165254482]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2585, 0.69, 0.066)
+mesh = ExtResource("27_seusc")
+metadata/midi = 46.0
+
+[node name="Key_47" type="MeshInstance3D" parent="." unique_id=170003604]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24675, 0.69, 0.066)
+mesh = ExtResource("28_3o8v2")
+metadata/midi = 47.0
+
+[node name="Key_48" type="MeshInstance3D" parent="." unique_id=123918131]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22325, 0.69, 0.066)
+mesh = ExtResource("29_kwkms")
+metadata/midi = 48.0
+
+[node name="Key_49" type="MeshInstance3D" parent="." unique_id=1061600129]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2115, 0.69, 0.066)
+mesh = ExtResource("30_uuite")
+metadata/midi = 49.0
+
+[node name="Key_50" type="MeshInstance3D" parent="." unique_id=1207039092]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.19975, 0.69, 0.066)
+mesh = ExtResource("31_clidu")
+metadata/midi = 50.0
+
+[node name="Key_51" type="MeshInstance3D" parent="." unique_id=2078480366]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.188, 0.69, 0.066)
+mesh = ExtResource("32_vml0b")
+metadata/midi = 51.0
+
+[node name="Key_52" type="MeshInstance3D" parent="." unique_id=1649199105]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17625, 0.69, 0.066)
+mesh = ExtResource("33_l1unw")
+metadata/midi = 52.0
+
+[node name="Key_53" type="MeshInstance3D" parent="." unique_id=1895253512]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15275, 0.69, 0.066)
+mesh = ExtResource("34_ccrbh")
+metadata/midi = 53.0
+
+[node name="Key_54" type="MeshInstance3D" parent="." unique_id=790845928]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.141, 0.69, 0.066)
+mesh = ExtResource("35_t1da2")
+metadata/midi = 54.0
+
+[node name="Key_55" type="MeshInstance3D" parent="." unique_id=1997731222]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12925, 0.69, 0.066)
+mesh = ExtResource("36_bfcbh")
+metadata/midi = 55.0
+
+[node name="Key_56" type="MeshInstance3D" parent="." unique_id=231686665]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1175, 0.69, 0.066)
+mesh = ExtResource("37_bnr6r")
+metadata/midi = 56.0
+
+[node name="Key_57" type="MeshInstance3D" parent="." unique_id=305402323]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10575, 0.69, 0.066)
+mesh = ExtResource("38_2vrr3")
+metadata/midi = 57.0
+
+[node name="Key_58" type="MeshInstance3D" parent="." unique_id=1192651396]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.094, 0.69, 0.066)
+mesh = ExtResource("39_2rkwg")
+metadata/midi = 58.0
+
+[node name="Key_59" type="MeshInstance3D" parent="." unique_id=1399557397]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08225, 0.69, 0.066)
+mesh = ExtResource("40_x02d5")
+metadata/midi = 59.0
+
+[node name="Key_60" type="MeshInstance3D" parent="." unique_id=639144744]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05875, 0.69, 0.066)
+mesh = ExtResource("41_g0oce")
+metadata/midi = 60.0
+
+[node name="Key_61" type="MeshInstance3D" parent="." unique_id=1352095321]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.047, 0.69, 0.066)
+mesh = ExtResource("42_rvbrj")
+metadata/midi = 61.0
+
+[node name="Key_62" type="MeshInstance3D" parent="." unique_id=1614525203]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.03525, 0.69, 0.066)
+mesh = ExtResource("43_66645")
+metadata/midi = 62.0
+
+[node name="Key_63" type="MeshInstance3D" parent="." unique_id=1920039681]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0235, 0.69, 0.066)
+mesh = ExtResource("44_erdd4")
+metadata/midi = 63.0
+
+[node name="Key_64" type="MeshInstance3D" parent="." unique_id=455147727]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01175, 0.69, 0.066)
+mesh = ExtResource("45_c2g7r")
+metadata/midi = 64.0
+
+[node name="Key_65" type="MeshInstance3D" parent="." unique_id=950715440]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01175, 0.69, 0.066)
+mesh = ExtResource("46_bclo4")
+metadata/midi = 65.0
+
+[node name="Key_66" type="MeshInstance3D" parent="." unique_id=1581664181]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0235, 0.69, 0.066)
+mesh = ExtResource("47_f52bj")
+metadata/midi = 66.0
+
+[node name="Key_67" type="MeshInstance3D" parent="." unique_id=671736837]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03525, 0.69, 0.066)
+mesh = ExtResource("48_2fwl3")
+metadata/midi = 67.0
+
+[node name="Key_68" type="MeshInstance3D" parent="." unique_id=1298434975]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.047, 0.69, 0.066)
+mesh = ExtResource("49_8u33k")
+metadata/midi = 68.0
+
+[node name="Key_69" type="MeshInstance3D" parent="." unique_id=1273594140]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05875, 0.69, 0.066)
+mesh = ExtResource("50_hy7s1")
+metadata/midi = 69.0
+
+[node name="Key_70" type="MeshInstance3D" parent="." unique_id=2065315549]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0705, 0.69, 0.066)
+mesh = ExtResource("51_nlbkr")
+metadata/midi = 70.0
+
+[node name="Key_71" type="MeshInstance3D" parent="." unique_id=974909008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08225, 0.69, 0.066)
+mesh = ExtResource("52_7y0t2")
+metadata/midi = 71.0
+
+[node name="Key_72" type="MeshInstance3D" parent="." unique_id=151039995]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10575, 0.69, 0.066)
+mesh = ExtResource("53_yg6fb")
+metadata/midi = 72.0
+
+[node name="Key_73" type="MeshInstance3D" parent="." unique_id=1904496493]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1175, 0.69, 0.066)
+mesh = ExtResource("54_2qxgk")
+metadata/midi = 73.0
+
+[node name="Key_74" type="MeshInstance3D" parent="." unique_id=1627395001]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12925, 0.69, 0.066)
+mesh = ExtResource("55_vij16")
+metadata/midi = 74.0
+
+[node name="Key_75" type="MeshInstance3D" parent="." unique_id=1656268392]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.141, 0.69, 0.066)
+mesh = ExtResource("56_k00es")
+metadata/midi = 75.0
+
+[node name="Key_76" type="MeshInstance3D" parent="." unique_id=825618158]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15275, 0.69, 0.066)
+mesh = ExtResource("57_3760r")
+metadata/midi = 76.0
+
+[node name="Key_77" type="MeshInstance3D" parent="." unique_id=1709136897]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17625, 0.69, 0.066)
+mesh = ExtResource("58_ljteb")
+metadata/midi = 77.0
+
+[node name="Key_78" type="MeshInstance3D" parent="." unique_id=1678426343]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.188, 0.69, 0.066)
+mesh = ExtResource("59_elcv4")
+metadata/midi = 78.0
+
+[node name="Key_79" type="MeshInstance3D" parent="." unique_id=1467509622]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.19975, 0.69, 0.066)
+mesh = ExtResource("60_xhinx")
+metadata/midi = 79.0
+
+[node name="Key_80" type="MeshInstance3D" parent="." unique_id=730204401]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2115, 0.69, 0.066)
+mesh = ExtResource("61_uo1ag")
+metadata/midi = 80.0
+
+[node name="Key_81" type="MeshInstance3D" parent="." unique_id=1964635998]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22325, 0.69, 0.066)
+mesh = ExtResource("62_807nf")
+metadata/midi = 81.0
+
+[node name="Key_82" type="MeshInstance3D" parent="." unique_id=875463519]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.235, 0.69, 0.066)
+mesh = ExtResource("63_h8q1t")
+metadata/midi = 82.0
+
+[node name="Key_83" type="MeshInstance3D" parent="." unique_id=2099894173]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24675, 0.69, 0.066)
+mesh = ExtResource("64_t5b0g")
+metadata/midi = 83.0
+
+[node name="Key_84" type="MeshInstance3D" parent="." unique_id=1630630805]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27025, 0.69, 0.066)
+mesh = ExtResource("65_j8qt4")
+metadata/midi = 84.0
+
+[node name="Key_85" type="MeshInstance3D" parent="." unique_id=1919250822]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.282, 0.69, 0.066)
+mesh = ExtResource("66_mpf6s")
+metadata/midi = 85.0
+
+[node name="Key_86" type="MeshInstance3D" parent="." unique_id=882274432]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.29375, 0.69, 0.066)
+mesh = ExtResource("67_1eov6")
+metadata/midi = 86.0
+
+[node name="Key_87" type="MeshInstance3D" parent="." unique_id=1567868279]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3055, 0.69, 0.066)
+mesh = ExtResource("68_gcfur")
+metadata/midi = 87.0
+
+[node name="Key_88" type="MeshInstance3D" parent="." unique_id=2005175527]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.31725, 0.69, 0.066)
+mesh = ExtResource("69_btr75")
+metadata/midi = 88.0
+
+[node name="Key_89" type="MeshInstance3D" parent="." unique_id=1310518523]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.34075, 0.69, 0.066)
+mesh = ExtResource("70_o88u7")
+metadata/midi = 89.0
+
+[node name="Key_90" type="MeshInstance3D" parent="." unique_id=556342744]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 0.69, 0.066)
+mesh = ExtResource("71_ga05b")
+metadata/midi = 90.0
+
+[node name="Key_91" type="MeshInstance3D" parent="." unique_id=1063602137]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36425, 0.69, 0.066)
+mesh = ExtResource("72_sppqw")
+metadata/midi = 91.0
+
+[node name="Key_92" type="MeshInstance3D" parent="." unique_id=862553220]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.376, 0.69, 0.066)
+mesh = ExtResource("73_5158i")
+metadata/midi = 92.0
+
+[node name="Key_93" type="MeshInstance3D" parent="." unique_id=88464892]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38775, 0.69, 0.066)
+mesh = ExtResource("74_dtmvg")
+metadata/midi = 93.0
+
+[node name="Key_94" type="MeshInstance3D" parent="." unique_id=1737625593]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3995, 0.69, 0.066)
+mesh = ExtResource("75_stkk6")
+metadata/midi = 94.0
+
+[node name="Key_95" type="MeshInstance3D" parent="." unique_id=2054405273]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.41125, 0.69, 0.066)
+mesh = ExtResource("76_0nvtx")
+metadata/midi = 95.0
+
+[node name="Key_96" type="MeshInstance3D" parent="." unique_id=140195904]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.43475, 0.69, 0.066)
+mesh = ExtResource("77_vnc2s")
+metadata/midi = 96.0
+
+[node name="Key_97" type="MeshInstance3D" parent="." unique_id=2104904441]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4465, 0.69, 0.066)
+mesh = ExtResource("78_ygf0p")
+metadata/midi = 97.0
+
+[node name="Key_98" type="MeshInstance3D" parent="." unique_id=765951891]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45825, 0.69, 0.066)
+mesh = ExtResource("79_5amtb")
+metadata/midi = 98.0
+
+[node name="Key_99" type="MeshInstance3D" parent="." unique_id=1386343334]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47, 0.69, 0.066)
+mesh = ExtResource("80_vlyiw")
+metadata/midi = 99.0
+
+[node name="Key_100" type="MeshInstance3D" parent="." unique_id=20734688]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.48175, 0.69, 0.066)
+mesh = ExtResource("81_2gfj7")
+metadata/midi = 100.0
+
+[node name="Key_101" type="MeshInstance3D" parent="." unique_id=258233491]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.50525, 0.69, 0.066)
+mesh = ExtResource("82_7eb5s")
+metadata/midi = 101.0
+
+[node name="Key_102" type="MeshInstance3D" parent="." unique_id=1677919286]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.517, 0.69, 0.066)
+mesh = ExtResource("83_w441j")
+metadata/midi = 102.0
+
+[node name="Key_103" type="MeshInstance3D" parent="." unique_id=652045041]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.52875, 0.69, 0.066)
+mesh = ExtResource("84_lesan")
+metadata/midi = 103.0
+
+[node name="Key_104" type="MeshInstance3D" parent="." unique_id=1180380107]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5405, 0.69, 0.066)
+mesh = ExtResource("85_ejeti")
+metadata/midi = 104.0
+
+[node name="Key_105" type="MeshInstance3D" parent="." unique_id=28209952]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55225, 0.69, 0.066)
+mesh = ExtResource("86_46uvn")
+metadata/midi = 105.0
+
+[node name="Key_106" type="MeshInstance3D" parent="." unique_id=1723920672]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.564, 0.69, 0.066)
+mesh = ExtResource("87_c5ybi")
+metadata/midi = 106.0
+
+[node name="Key_107" type="MeshInstance3D" parent="." unique_id=58893128]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.57575, 0.69, 0.066)
+mesh = ExtResource("88_2ifl2")
+metadata/midi = 107.0
+
+[node name="Key_108" type="MeshInstance3D" parent="." unique_id=1269973743]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.59925, 0.69, 0.066)
+mesh = ExtResource("89_2tkck")
+metadata/midi = 108.0

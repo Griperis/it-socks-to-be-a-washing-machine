@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://gkvwji1i8n7x"]
-
-[resource]
-resource_name = "leaf"
-cull_mode = 2
-albedo_color = Color(0.36, 0.6, 0.36, 1)
-roughness = 0.5
-metadata/old_pieces = PackedStringArray("bookshelf")

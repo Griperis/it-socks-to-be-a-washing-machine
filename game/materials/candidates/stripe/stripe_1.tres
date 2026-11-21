@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://x6271nygacuj"]
-
-[resource]
-resource_name = "stripe"
-cull_mode = 2
-albedo_color = Color(0.98, 0.92, 0.82, 1)
-roughness = 0.7
-metadata/old_pieces = PackedStringArray("plant_big", "plant_cactus", "plant_snake", "plant_trailing")

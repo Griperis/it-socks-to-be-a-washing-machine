@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://csv24r3vsmqx4"]
-
-[resource]
-resource_name = "sky"
-cull_mode = 2
-albedo_color = Color(0.55, 0.72, 0.85, 1)
-roughness = 0.3
-metadata/old_pieces = PackedStringArray("old_tree", "vanity")

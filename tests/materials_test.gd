@@ -10,8 +10,9 @@ const PLAYER := "res://game/player/player.tscn"
 ## The old furniture's material names (54, `tools/materials_from_old.py`): each is one file of the
 ## library or one candidate group.
 const OLD_NAMES := 54
-## A candidate group the old game used in many pieces with 6 sets of values, and the house kit's.
-const OAK := ["oak_1", "oak_2", "oak_3", "oak_4", "oak_5", "oak_6", "oak_kit"]
+## The picks (Q2389): in each group the set the most old pieces used, on a tie the one nearest the
+## group's median roughness: [name, roughness, metallic] of a few (docs/architecture/materials.md).
+const PICKS := [["oak", 0.6, 0.0], ["charcoal", 0.6, 0.0], ["pad", 0.7, 0.0], ["brass", 0.3, 0.8], ["sky", 0.4, 0.0]]
 const TEMP := "user://materials_test"
 
 var _level: Node3D = null
@@ -20,9 +21,9 @@ var _level: Node3D = null
 func cases() -> Array[Dictionary]:
 	return [
 		{"name": "real_path", "method": "case_real_path", "world": false,
-				"title": "real path: in the Materials station the player walks up to the board, is stopped by it and sees the candidates of a group on it, each wearing the library's material"},
+				"title": "real path: in the Materials station the player walks up to the board, is stopped by it and sees a row of materials on it, each wearing the library's file"},
 		{"name": "f01_library", "method": "case_f01_library", "world": false,
-				"title": "F01: every old furniture material is one library file or one candidate group of two or more, each a StandardMaterial3D with its uid, its name and the old pieces that used it"},
+				"title": "F01 (Q2389): every old furniture material is one library file, the picked set where the old game had several, each a StandardMaterial3D with its uid, its name and the old pieces that used it"},
 		{"name": "f01_station", "method": "case_f01_station", "world": false,
 				"title": "F01: the Materials station's board shows every library file once, a named row per candidate group, each swatch labelled with its file and its old pieces, all on the board"},
 		{"name": "f01_from_data", "method": "case_f01_from_data", "world": false,
@@ -64,12 +65,18 @@ func case_real_path() -> void:
 	add_child(_level)
 	await _frames(1)
 	var board := station.get_node("Board") as MaterialBoard
-	# Before the block of rows that holds sage_dark (a low row), facing the board (-Z).
-	var target := board.swatch("sage_dark_1")
-	_check(target != null, "the board has sage_dark_1")
+	# Before a low row, facing the board (-Z).
+	var target := board.swatch("terracotta")
+	_check(target != null, "the board has terracotta")
 	if target == null:
 		return
-	var front := board.to_local(target.global_position)
+	var row_x := 0.0
+	var swatches := 0
+	for s: Node in target.get_parent().get_children():
+		if s is MeshInstance3D:
+			row_x += board.to_local((s as Node3D).global_position).x
+			swatches += 1
+	var front := Vector3(row_x / swatches - 0.5, 0.0, 0.0)   # before the row's middle
 	var player := (load(PLAYER) as PackedScene).instantiate() as Player
 	player.position = board.to_global(Vector3(front.x + 0.5, 0.0, 6.0))
 	player.rotation.y = 0.0
@@ -80,8 +87,8 @@ func case_real_path() -> void:
 	await _until(func() -> bool: return (local.call() as Vector3).z < 2.2, "the player to walk up to the board")
 	_check(board.to_local(player.camera().global_position).z > 1.0, "the player still stands back from the board")
 	var cam := player.camera()
-	_check(cam.is_position_in_frustum(target.global_position), "sage_dark_1 is in the player's view")
-	var row := board.row("sage_dark")
+	_check(cam.is_position_in_frustum(target.global_position), "terracotta is in the player's view")
+	var row := target.get_parent()
 	for s: Node in row.get_children():
 		if s is MeshInstance3D:
 			_check(cam.is_position_in_frustum((s as Node3D).global_position), "%s is in the player's view" % s.name)
@@ -116,8 +123,11 @@ func case_f01_library() -> void:
 		_material(f, n)
 		names.append(n)
 	_check(names.size() == OLD_NAMES, "the library holds every old furniture material (%d of %d)" % [names.size(), OLD_NAMES])
-	for stem: String in OAK:
-		_check(FileAccess.file_exists("%s/%s/oak/%s.tres" % [MaterialBoard.LIBRARY, MaterialBoard.CANDIDATES, stem]), "oak has the candidate %s" % stem)
+	_check(groups.is_empty(), "every group is picked: no candidates are left (%s)" % [groups])
+	for pick: Array in PICKS:
+		var mat := load("%s/%s.tres" % [MaterialBoard.LIBRARY, pick[0]]) as StandardMaterial3D
+		_check(mat != null and is_equal_approx(mat.roughness, pick[1]) and is_equal_approx(mat.metallic, pick[2]),
+				"%s is the picked set (roughness %s, metallic %s)" % [pick[0], pick[1], pick[2]])
 
 
 func _material(path: String, material_name: String) -> void:

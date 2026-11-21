@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://wrluywmn0kct"]
+
+[resource]
+resource_name = "red"
+cull_mode = 2
+albedo_color = Color(0.8, 0.34, 0.28, 1)
+roughness = 0.4
+metadata/old_pieces = PackedStringArray("bikes", "boiler", "bookshelf", "car", "coat_nook", "coffee_table", "collection_board", "desk", "doormat", "kids_shelf", "kitchen_cupboard", "kitchen_drawers", "kitchen_shelf", "laundry_shelf", "old_tree", "rocking_horse", "shelf_rack", "storage_boxes", "tool_shelves", "toy_chest", "workbench")

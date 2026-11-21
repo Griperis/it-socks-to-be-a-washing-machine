@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://ctyvdkiytpx1t"]
+
+[ext_resource type="ArrayMesh" uid="uid://cog5kqvve3rlc" path="res://assets/furniture/meshes/workbench_Body.res" id="1_7o8ol"]
+
+[node name="LooksWorkbench" type="Node3D" unique_id=478442591]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1447912225]
+mesh = ExtResource("1_7o8ol")

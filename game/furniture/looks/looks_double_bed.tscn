@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bllw86ihitgjh"]
+
+[ext_resource type="ArrayMesh" uid="uid://d2yp48wr2dd8c" path="res://assets/furniture/meshes/double_bed_Body.res" id="1_i1nsw"]
+
+[node name="LooksDoubleBed" type="Node3D" unique_id=1993830714]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=995115584]
+mesh = ExtResource("1_i1nsw")

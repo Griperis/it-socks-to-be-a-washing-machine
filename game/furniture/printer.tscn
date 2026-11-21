@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://b2bdth2fk7rpa"]
+
+[ext_resource type="PackedScene" uid="uid://dm8gcv8mm1emx" path="res://game/furniture/looks/looks_printer.tscn" id="1_urojb"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_fesuw"]
+points = PackedVector3Array(-0.15, 0.05, 0.285, -0.15, 0.062, 0.285, -0.15, 0.05, 0.125, 0.15, 0.05, 0.285, 0.15, 0.062, 0.285, 0.15, 0.05, 0.125, -0.155, 0.05, 0.14, -0.16, 0.055, 0.14, -0.155, 0.075, 0.14, -0.16, 0.07, 0.14, -0.155, 0.05, 0.13, -0.16, 0.055, 0.13, -0.155, 0.055, 0.125, -0.155, 0.075, 0.13, -0.155, 0.07, 0.125, -0.16, 0.07, 0.13, 0.155, 0.05, 0.14, 0.16, 0.055, 0.14, 0.155, 0.075, 0.14, 0.16, 0.07, 0.14, 0.155, 0.05, 0.13, 0.155, 0.055, 0.125, 0.16, 0.055, 0.13, 0.155, 0.075, 0.13, 0.16, 0.07, 0.13, 0.155, 0.07, 0.125)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_lsv36"]
+points = PackedVector3Array(-0.238, 0.2, 0.043, -0.24649, 0.19649, 0.043, -0.238, 0.2, -0.263, -0.238, 0.19649, -0.27149, -0.24493, 0.19493, -0.26993, -0.24649, 0.19649, -0.263, 0.118, 0.2, 0.043, 0.118, 0.2, -0.263, 0.118, 0.19649, -0.27149, 0.144, 0.182, 0.111, 0.236, 0.182, 0.111, 0.236, 0.182, 0.059, -0.26, 0, 0.135, -0.26, 0.17, 0.135, -0.26, 0, -0.285, -0.26, 0.17, -0.285, 0.26, 0, 0.135, 0.26, 0.17, 0.135, 0.26, 0, -0.285, 0.26, 0.17, -0.285)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3ii3y"]
+size = Vector3(0.19999999, 0.35000002, 0.16)
+
+[node name="Printer" type="StaticBody3D" unique_id=186565185]
+collision_mask = 0
+metadata/footprint = [0.52, 0.57]
+metadata/height = 0.201
+metadata/rooms = ["Home office"]
+metadata/plan_spot = "Printer"
+metadata/note = "Desktop printer, static: its scanner lid stays shut (house/12)."
+
+[node name="Looks" type="Node3D" parent="." unique_id=162433261 instance=ExtResource("1_urojb")]
+
+[node name="Shape1" type="CollisionShape3D" parent="." unique_id=635436789]
+shape = SubResource("ConvexPolygonShape3D_fesuw")
+
+[node name="Shape2" type="CollisionShape3D" parent="." unique_id=1446373508]
+shape = SubResource("ConvexPolygonShape3D_lsv36")
+
+[node name="Spots" type="Node3D" parent="." unique_id=112655981]
+
+[node name="Top1" type="Area3D" parent="Spots" unique_id=1585217772]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06, 0.375, -0.120000005)
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Box" type="CollisionShape3D" parent="Spots/Top1" unique_id=2101421871]
+shape = SubResource("BoxShape3D_3ii3y")

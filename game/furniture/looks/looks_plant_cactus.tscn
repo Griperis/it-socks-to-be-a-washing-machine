@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bque7lbr1fdkv"]
+
+[ext_resource type="ArrayMesh" uid="uid://cancoxedfalyh" path="res://assets/furniture/meshes/plant_cactus_Body.res" id="1_peuah"]
+
+[node name="LooksPlantCactus" type="Node3D" unique_id=504211783]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1650087614]
+mesh = ExtResource("1_peuah")

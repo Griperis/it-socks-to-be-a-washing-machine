@@ -1,0 +1,116 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://cs0tupdkb8y7m"
+path="res://.godot/imported/dresser.glb-06e60fad260e6a7ec19cdd5c1ee2d3b0.scn"
+
+[deps]
+
+source_file="res://assets/furniture/dresser.glb"
+dest_files=["res://.godot/imported/dresser.glb-06e60fad260e6a7ec19cdd5c1ee2d3b0.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=false
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"brass": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/brass.tres",
+"use_external/path": "uid://1faomtb27dt7"
+},
+"dark_wood": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/dark_wood.tres",
+"use_external/path": "uid://cn4jc0hstjrrp"
+},
+"fab_pink": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/fab_pink.tres",
+"use_external/path": "uid://do8e61yk7ebi8"
+},
+"fab_stripe": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/fab_stripe.tres",
+"use_external/path": "uid://bs04n8tleeaf3"
+},
+"oak": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/oak.tres",
+"use_external/path": "uid://dqeygksrdqxte"
+},
+"pad": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/pad.tres",
+"use_external/path": "uid://dctugtiy3tcpf"
+}
+},
+"meshes": {
+"dresser_Body": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/dresser_Body.res",
+"save_to_file/path": "uid://cl5i585kajhxr"
+},
+"dresser_Drawer_1": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/dresser_Drawer_1.res",
+"save_to_file/path": "uid://bt35slrm8lmp2"
+},
+"dresser_Drawer_2": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/dresser_Drawer_2.res",
+"save_to_file/path": "uid://do52ytbmjearu"
+},
+"dresser_Drawer_3": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/dresser_Drawer_3.res",
+"save_to_file/path": "uid://cn8u0mp2d1nxt"
+}
+}
+}
+gltf/naming_version=2
+gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cxqpef0qggsru"]
+
+[ext_resource type="ArrayMesh" uid="uid://difbmb84tfriv" path="res://assets/furniture/meshes/old_tree_Body.res" id="1_mv38u"]
+
+[node name="LooksOldTree" type="Node3D" unique_id=2093994494]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=565585037]
+mesh = ExtResource("1_mv38u")

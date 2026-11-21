@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dapatpk1o7v0g"]
+
+[resource]
+resource_name = "paper"
+cull_mode = 2
+albedo_color = Color(0.98, 0.97, 0.94, 1)
+roughness = 0.8
+metadata/old_pieces = PackedStringArray("boiler", "car", "collection_board", "desk", "filing_cabinet", "laundry_shelf", "printer", "rocking_horse", "toilet")

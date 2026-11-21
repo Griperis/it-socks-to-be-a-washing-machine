@@ -1,0 +1,113 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://b11d4pcsdl8oj"
+path="res://.godot/imported/collection_board.glb-d2d2f0e71e8092e4d053d204e7abaf03.scn"
+
+[deps]
+
+source_file="res://assets/furniture/collection_board.glb"
+dest_files=["res://.godot/imported/collection_board.glb-d2d2f0e71e8092e4d053d204e7abaf03.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=false
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"charcoal": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/charcoal.tres",
+"use_external/path": "uid://diqg0gfwyhsir"
+},
+"fab_stripe": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/fab_stripe.tres",
+"use_external/path": "uid://bs04n8tleeaf3"
+},
+"navy": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/navy.tres",
+"use_external/path": "uid://drx8lvdevqnv1"
+},
+"paper": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/paper.tres",
+"use_external/path": "uid://dapatpk1o7v0g"
+},
+"red": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/red.tres",
+"use_external/path": "uid://wrluywmn0kct"
+},
+"rubber": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/rubber.tres",
+"use_external/path": "uid://vwrrlxf45y6y"
+},
+"sage_dark": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/sage_dark.tres",
+"use_external/path": "uid://bgx28trmdp0ar"
+},
+"steel": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/steel.tres",
+"use_external/path": "uid://g3mcumu4i3w8"
+},
+"white": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/white.tres",
+"use_external/path": "uid://cttoi20gfxus4"
+}
+},
+"meshes": {
+"collection_board_Board": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/collection_board_Board.res",
+"save_to_file/path": "uid://ccvlyj1bllpvf"
+},
+"collection_board_Body": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/collection_board_Body.res",
+"save_to_file/path": "uid://bocg0n4xthl14"
+}
+}
+}
+gltf/naming_version=2
+gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://vx2kmfy5khg0"]
-
-[resource]
-resource_name = "white"
-cull_mode = 2
-albedo_color = Color(0.95, 0.93, 0.88, 1)
-roughness = 0.5
-metadata/old_pieces = PackedStringArray("collection_board", "drying_rack", "ironing_board", "laundry_shelf")

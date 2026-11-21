@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://diqg0gfwyhsir"]
+
+[resource]
+resource_name = "charcoal"
+cull_mode = 2
+albedo_color = Color(0.2, 0.2, 0.21, 1)
+roughness = 0.6
+metadata/old_pieces = PackedStringArray("bikes", "boiler", "car", "collection_board", "filing_cabinet", "fridge", "kitchen_corner", "kitchen_cupboard", "kitchen_drawers", "kitchen_filler", "kitchen_oven", "kitchen_sink", "office_chair", "old_cot", "old_tree", "paint_tins", "piano", "printer", "rocking_horse", "ski_bag", "water_tank", "workbench")

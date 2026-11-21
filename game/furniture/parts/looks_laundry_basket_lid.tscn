@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://w6r6c0ndm0sx"]
+
+[ext_resource type="ArrayMesh" uid="uid://crvvoughddo7g" path="res://assets/furniture/meshes/laundry_basket_Lid.res" id="1_g26pd"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="2_gcsjo"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_72tbe"]
+points = PackedVector3Array(0.262, -0.035, 0.21, 0.25307, -0.035, 0.15711, 0.2269, -0.035, 0.10782, 0.18526, -0.035, 0.0655, 0.131, -0.035, 0.03302, 0.06781, -0.035, 0.0126, 0, -0.035, 0.00564, -0.06781, -0.035, 0.0126, -0.131, -0.035, 0.03302, -0.18526, -0.035, 0.0655, -0.2269, -0.035, 0.10782, -0.25307, -0.035, 0.15711, -0.262, -0.035, 0.21, -0.25307, -0.035, 0.26289, -0.2269, -0.035, 0.31218, -0.18526, -0.035, 0.3545, -0.131, -0.035, 0.38698, -0.06781, -0.035, 0.4074, 0, -0.035, 0.41436, 0.06781, -0.035, 0.4074, 0.131, -0.035, 0.38698, 0.18526, -0.035, 0.3545, 0.2269, -0.035, 0.31218, 0.25307, -0.035, 0.26289, 0.27, -0.025, 0.21, 0.2608, -0.025, 0.15549, 0.23383, -0.025, 0.1047, 0.19092, -0.025, 0.06108, 0.135, -0.025, 0.02762, 0.06988, -0.025, 0.00658, 0, -0.025, -0.0006, -0.06988, -0.025, 0.00658, -0.135, -0.025, 0.02762, -0.19092, -0.025, 0.06108, -0.23383, -0.025, 0.1047, -0.2608, -0.025, 0.15549, -0.27, -0.025, 0.21, -0.2608, -0.025, 0.26451, -0.23383, -0.025, 0.3153, -0.19092, -0.025, 0.35892, -0.135, -0.025, 0.39238, -0.06988, -0.025, 0.41342, 0, -0.025, 0.4206, 0.06988, -0.025, 0.41342, 0.135, -0.025, 0.39238, 0.19092, -0.025, 0.35892, 0.23383, -0.025, 0.3153, 0.2608, -0.025, 0.26451, 0.262, -0.005, 0.21, 0.25307, -0.005, 0.15711, 0.2269, -0.005, 0.10782, 0.18526, -0.005, 0.0655, 0.131, -0.005, 0.03302, 0.06781, -0.005, 0.0126, 0, -0.005, 0.00564, -0.06781, -0.005, 0.0126, -0.131, -0.005, 0.03302, -0.18526, -0.005, 0.0655, -0.2269, -0.005, 0.10782, -0.25307, -0.005, 0.15711, -0.262, -0.005, 0.21, -0.25307, -0.005, 0.26289, -0.2269, -0.005, 0.31218, -0.18526, -0.005, 0.3545, -0.131, -0.005, 0.38698, -0.06781, -0.005, 0.4074, 0, -0.005, 0.41436, 0.06781, -0.005, 0.4074, 0.131, -0.005, 0.38698, 0.18526, -0.005, 0.3545, 0.2269, -0.005, 0.31218, 0.25307, -0.005, 0.26289, -0.0517, 0.02349, 0.325, -0.0517, 0.02349, 0.335, 0.0517, 0.02349, 0.325, 0.0517, 0.02349, 0.335)
+
+[sub_resource type="Animation" id="Animation_y7lhp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lid:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_jsvqv"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lid:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-1.3962634, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_6ea1u"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lid:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(-1.3962634, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h1xsm"]
+_data = {
+&"RESET": SubResource("Animation_y7lhp"),
+&"open": SubResource("Animation_jsvqv"),
+&"shut": SubResource("Animation_6ea1u")
+}
+
+[node name="LooksLaundryBasketLid" type="Node3D" unique_id=2017208368]
+
+[node name="Lid" type="AnimatableBody3D" parent="." unique_id=1457630150]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.455, -0.21)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Lid" unique_id=1744660872]
+mesh = ExtResource("1_g26pd")
+
+[node name="Shape1" type="CollisionShape3D" parent="Lid" unique_id=1295041818]
+shape = SubResource("ConvexPolygonShape3D_72tbe")
+
+[node name="Outline" type="Node3D" parent="." unique_id=1046957154]
+visible = false
+script = ExtResource("2_gcsjo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1388923936]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_h1xsm")

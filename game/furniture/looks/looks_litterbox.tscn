@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cxc075dkq3ae0"]
+
+[ext_resource type="ArrayMesh" uid="uid://cgfpap70ick5i" path="res://assets/furniture/meshes/litterbox_Body.res" id="1_be1dq"]
+
+[node name="LooksLitterbox" type="Node3D" unique_id=1359826410]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=560731183]
+mesh = ExtResource("1_be1dq")

@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cdqa7ytp6hptt"]
+
+[ext_resource type="ArrayMesh" uid="uid://dy0n8r3km5c2o" path="res://assets/furniture/meshes/laundry_shelf_Body.res" id="1_nyrf6"]
+
+[node name="LooksLaundryShelf" type="Node3D" unique_id=665011952]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=2090225241]
+mesh = ExtResource("1_nyrf6")

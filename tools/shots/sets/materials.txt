@@ -1,28 +1,4 @@
-# assets/04 F01: the Materials station's board: the whole board, then each candidate group alone (one old
-# material name with several sets of values) for the designer to pick the one that stays (Q2177).
+# assets/04 F01: the Materials station's board: the whole board, then each row of the library (after the picks, Q2389).
 overview  --size=1280x720 --do='30:materials:overview' --shots=40
-brass  --size=1280x720 --do='30:materials:brass' --shots=40
-cardboard  --size=1280x720 --do='30:materials:cardboard' --shots=40
-charcoal  --size=1280x720 --do='30:materials:charcoal' --shots=40
-dark_wood  --size=1280x720 --do='30:materials:dark_wood' --shots=40
-glass  --size=1280x720 --do='30:materials:glass' --shots=40
-grey  --size=1280x720 --do='30:materials:grey' --shots=40
-leaf  --size=1280x720 --do='30:materials:leaf' --shots=40
-leaf_dark  --size=1280x720 --do='30:materials:leaf_dark' --shots=40
-mustard  --size=1280x720 --do='30:materials:mustard' --shots=40
-navy  --size=1280x720 --do='30:materials:navy' --shots=40
-oak  --size=1280x720 --do='30:materials:oak' --shots=40
-pad  --size=1280x720 --do='30:materials:pad' --shots=40
-paper  --size=1280x720 --do='30:materials:paper' --shots=40
-pink  --size=1280x720 --do='30:materials:pink' --shots=40
-porcelain  --size=1280x720 --do='30:materials:porcelain' --shots=40
-red  --size=1280x720 --do='30:materials:red' --shots=40
-sage  --size=1280x720 --do='30:materials:sage' --shots=40
-sage_dark  --size=1280x720 --do='30:materials:sage_dark' --shots=40
-sky  --size=1280x720 --do='30:materials:sky' --shots=40
-steel  --size=1280x720 --do='30:materials:steel' --shots=40
-stem  --size=1280x720 --do='30:materials:stem' --shots=40
-stripe  --size=1280x720 --do='30:materials:stripe' --shots=40
-terracotta  --size=1280x720 --do='30:materials:terracotta' --shots=40
-white  --size=1280x720 --do='30:materials:white' --shots=40
 singles_1  --size=1280x720 --do='30:materials:singles_1' --shots=40
+singles_4  --size=1280x720 --do='30:materials:singles_4' --shots=40

@@ -232,6 +232,11 @@ func case_m03() -> void:
 func case_m04() -> void:
 	await _zoo_up()
 	var nodes := int(Performance.get_monitor(Performance.OBJECT_NODE_COUNT))
+	# The Furniture station's 67 pieces (assets/04: their collision, openings and Sock spots, about 3,000
+	# nodes) are not Socks: what is counted is the rest of the zoo.
+	var furniture := _zoo.get_node_or_null("Stations/Furniture")
+	if furniture != null:
+		nodes -= furniture.find_children("*", "", true, false).size() + 1
 	_check(nodes < 8000, "the zoo with every Sock keeps a few thousand nodes (%d; 48,000 with a node a Sock)" % nodes)
 	var station := _zoo.get_node(EVERY)
 	_check(station.find_children("*", "StaticBody3D", true, false).is_empty() and station.find_children("Sock*", "", true, false).is_empty(),
