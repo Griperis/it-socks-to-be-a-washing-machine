@@ -556,3 +556,18 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2409, Q2410 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/31, the Mess benchmark (`tools/mess_bench.sh`/`.cmd`, nine scenarios as data, a fault watch) and the settle teleport: the Mess's MultiMeshes were physics-interpolated, so a settling Sock was undrawn for a tick and flying rows smeared; plus the review's Mess speed-ups; merged (main f33c673) |
+| Planned vs actual | 0 planned (designer's report, Q2405-Q2407), 1 actual |
+| Redo count | 0 |
+| Corrections | the designer pinned the glitch to the settle moment (Q2407); asked how the code grew before the go; sunk Socks left (Q2412), flips accepted (Q2413); core/21 closed (Q2415) |
+| Cost | see `agent_cost.py --by ticket` (Fable) |
+| Time | the agent ran about 40 min, most of it benchmark runs |
+| Surprises | core/21 had found the switch pixel-identical in a still: the fault was a whole missing tick, visible only in motion; the lead's Euler suspect measured harmless |
+| Stop rules | none needed (no look change) |
+| Looks | `builds/review-core-31/` (two strips, the benchmark report) |
+| Decisions | Q2405-Q2407, Q2412-Q2415 |
+
+---
