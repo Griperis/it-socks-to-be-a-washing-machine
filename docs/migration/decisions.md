@@ -1,4 +1,4 @@
-Next free Q number: Q2391 (update this line whenever a round of questions is asked)
+Next free Q number: Q2394 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -303,3 +303,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2388: openable prompts use the old wording: drawers and cupboards show the thing's own name ("[E] Simple Cabinet Drawer"); the Door keeps "Open the Door".
 - Q2389: in the material library, each group keeps the variant the most old pieces used (a tie: nearest the median roughness); any group can be overridden later by name.
 - Q2390: fabrics are ported without the old glTF sheen; a look-change ticket gives them a soft sheen later (assets/06).
+- Q2391: house/03's two rebuilt houses (A, B) are approved and merge; the missing shell pieces and furniture come in later tickets.
+- Q2392: the zoo's node budget test (mess:m04) counts only the Mess's nodes; a house's static pieces may be merged into fewer nodes later if play needs it.
+- Q2393: house/03's two 1 cm kit fixes and its two new pieces (an open exterior corner, an offset door with the elevator hatch) stay in the kit.
