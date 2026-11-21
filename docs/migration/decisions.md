@@ -1,4 +1,4 @@
-Next free Q number: Q2359 (update this line whenever a round of questions is asked)
+Next free Q number: Q2360 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -271,3 +271,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2356: the Throw's real body leaves from the hand on an arc aimed at the crosshair's point; the eye-line start and the hand catch-up go (changes the old Q483 and core/19's F1).
 - Q2357: the flipping Socks are seen in the heap pour, on settling, in drops and throws, and at the every-Sock station (core/23).
 - Q2358: house kit pieces never z-fight: no coplanar overlapping faces between pieces placed by the grid convention (floors against walls on upper floors seen in house/01); a convention and a test (house/02 K14).
+- Q2359: the zoo's stations are instanced by hand in zoo.tscn so the designer moves them in the editor; the folder collector and grid placement go (core/26). Branches adding stations will meet in zoo.tscn (accepted).
