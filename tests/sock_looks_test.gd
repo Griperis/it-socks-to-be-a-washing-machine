@@ -45,6 +45,8 @@ func cases() -> Array[Dictionary]:
 				"title": "S03: a Pair is drawn as its Collection's sock ball, centred on its origin, with the Looks contract"},
 		{"name": "s04", "method": "case_s04", "world": false,
 				"title": "S04: the Mess's instance material is the same shader and fit; the look data is MessDrawing.look_data()"},
+		{"name": "s04_tiers", "method": "case_s04_tiers", "world": false,
+				"title": "S04: a lying Sock's instance and its lent Looks are the same mesh, place and look; a held and a flying Sock's Looks draw the same"},
 		{"name": "s05", "method": "case_s05", "world": false,
 				"title": "S05: the old hand-made LODs fold into one mesh per model, within the old budgets (sock 320, ball 540)"},
 	]
@@ -253,6 +255,47 @@ func case_s04() -> void:
 		_check(single.get_shader_parameter(&"look") == Vector4(lk.r, lk.g, lk.b, lk.a), "Design %d: the look uniform is the instance custom data" % id)
 	var b := cat.design(230)
 	_check(SockLook.instance_material(b.collection, true).get_shader_parameter(&"cloth_size") == SockLook.material(b, true).get_shader_parameter(&"cloth_size"), "a lying Pair's material fits its ball")
+
+
+func case_s04_tiers() -> void:
+	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
+	add_child(_zoo)
+	var mess := _zoo.get_node("Socks/Mess") as Mess
+	await _until(func() -> bool: return mess.count() > 0 and mess._drawing != null and mess._drawing.drawn_count() > 0, "the Socks to lie", 600)
+	var drawing := mess._drawing
+	var shapes := {}
+	var checked := 0
+	for sock: int in drawing._cell_of.keys():
+		var design := mess.design_of(sock)
+		var pair := mess.is_pair(sock)
+		var shape := MessDrawing.shape_of(design, pair)
+		if shapes.has(shape):
+			continue
+		shapes[shape] = true
+		var c: Vector3i = drawing._cell_of[sock]
+		var node := drawing._cells[c]
+		var row := drawing.instance_of(sock)
+		var placed := node.global_transform * (row[0] as Transform3D)
+		_check(node.material_override == SockLook.instance_material(design.collection, pair), "%s: the lying tier draws with the sock shader's instance material" % shape)
+		var looks := mess.looks_of(sock)
+		if looks == null:
+			_check(false, "%s: the Mess lends its Looks" % shape)
+			continue
+		await _frames(1)
+		var body := looks.get_node("Body").find_children("*", "MeshInstance3D", true, false).filter(
+				func(n: Node) -> bool: return not n.is_in_group(Outline.COPY))[0] as MeshInstance3D
+		_check(body.mesh == node.multimesh.mesh, "%s: the instance and the Looks are one mesh" % shape)
+		_check(body.material_override == SockLook.material(design, pair), "%s: the lent Looks draws its Design" % shape)
+		_check(placed.origin.distance_to(body.global_transform.origin) < 0.001 \
+				and placed.basis.x.distance_to(body.global_transform.basis.x) < 0.001, "%s: no change at rest (%s vs %s)" % [shape, placed.origin, body.global_transform.origin])
+		mess.return_looks(sock)
+		checked += 1
+	_check(checked >= 3, "several shapes checked (%d)" % checked)
+	var d := _catalogue().design(300)
+	for state: StringName in [SockDress.HELD, SockDress.LYING]:
+		var l := _keep(SockDress.make(d, state)) as Node3D
+		var mi := l.get_node("Body").find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
+		_check(mi.material_override == SockLook.material(d) and l.scene_file_path == SockLook.scene(d).resource_path, "a %s Sock's Looks is its shape with its Design's material" % state)
 
 
 func case_s05() -> void:

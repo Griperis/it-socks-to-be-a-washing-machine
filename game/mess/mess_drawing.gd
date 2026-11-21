@@ -1,19 +1,21 @@
-## How the Mess's Socks are drawn when no Looks scene is needed (core/13, M02, M03): the lying ones
-## as instances of one MultiMesh per floor cell (MessTuning.cell_size) and shape (its mesh: today the
-## crew stand-in for every Sock and the sock ball for a Pair; M1 adds ankle, tube and chunky), each
-## scaled by its Size, with the Looks' own mesh (its imported automatic LODs) and a visibility range;
-## the flying ones without a Looks in one MultiMesh per shape, refilled each frame. Each instance
-## carries its Design as the old game packed it (sock_drawing.gd, sock_look.gd): the colour as the
-## instance colour and the look data (look_data()) as INSTANCE_CUSTOM, so the old pattern shader
-## drops in later with no change here; today's material reads only the colour. The mesh, its place in the Looks and the tint are the
-## Looks scene's, so a Sock lent its Looks (the aimed one) shows no pop. It decides nothing: the Mess
+## How the Mess's Socks are drawn when no Looks scene is needed (core/13, M02, M03; assets/01): the
+## lying ones as instances of one MultiMesh per floor cell (MessTuning.cell_size) and shape, each
+## scaled by its Size, with the Looks' own mesh (the model's LODs folded in, ModelLods) and a
+## visibility range; the flying ones without a Looks in one MultiMesh per shape, refilled each frame.
+## A shape is a Collection's (its Sock model, or with a Pair its sock ball, and its cloth): one
+## material per shape, SockLook.instance_material(), as the old game had one per Collection. Each
+## instance carries its Design as the old game packed it (sock_drawing.gd, sock_look.gd): the colour
+## as the instance colour and the look data (look_data()) as INSTANCE_CUSTOM, read by the sock shader.
+## The mesh, its place in the Looks and the material are the Looks scene's and SockLook's, so a Sock
+## lent its Looks (the aimed one) shows no pop. It decides nothing: the Mess
 ## says what is drawn where. Looks of this machine only.
 class_name MessDrawing
 extends RefCounted
 
-## The shapes drawn today: the flat Sock (every Collection's stand-in) and a Pair's ball.
-const SOCK := &"crew"
-const BALL := &"ball"
+## A Pair's shape is its Collection's with this in front.
+const BALL_PREFIX := "ball:"
+## The Looks whose lying mesh the Socks' boxes fit (MessBodies; every shape today).
+const BOX_LOOKS := preload("res://game/sock/looks_crew.tscn")
 ## Floats per instance in a MultiMesh's buffer: a 3D transform (12), a colour (4), custom data (4).
 const STRIDE := 20
 ## The old Design's lists the look data numbers (core/design.gd): a pattern, a print's layout, the
@@ -33,8 +35,8 @@ var _tuning: MessTuning
 var _shapes: Array[StringName] = []
 var _mesh: Dictionary[StringName, Mesh] = {}
 var _mesh_at: Dictionary[StringName, Transform3D] = {}
-## The one material of every drawn Sock: the instance colour as the tint (SockDress.tint's look).
-var _material: StandardMaterial3D
+## Each shape's material (the sock shader reading the instance data).
+var _material: Dictionary[StringName, ShaderMaterial] = {}
 ## The cells' MultiMeshInstance3Ds, by (cell x, cell z, shape index), and the Sock in each instance.
 var _cells: Dictionary[Vector3i, MultiMeshInstance3D] = {}
 var _in_cell: Dictionary[Vector3i, PackedInt32Array] = {}
@@ -52,19 +54,12 @@ var _flying: Dictionary[StringName, MultiMeshInstance3D] = {}
 func _init(root: Node3D, tuning: MessTuning) -> void:
 	_root = root
 	_tuning = tuning
-	_material = StandardMaterial3D.new()
-	_material.vertex_color_use_as_albedo = true
-	_material.vertex_color_is_srgb = true
-	_material.roughness = 0.8
-	_material.cull_mode = BaseMaterial3D.CULL_DISABLED
-	_add_shape(SOCK, SockDress.LOOKS)
-	_add_shape(BALL, SockDress.BALL_LOOKS)
 
 
-## The shape a Sock of `design` is drawn as (`pair`: its ball). Every Collection is the crew stand-in
-## until M1 ports the old shapes.
-static func shape_of(_design: SockDesign, pair: bool) -> StringName:
-	return BALL if pair else SOCK
+## The shape a Sock of `design` is drawn as (`pair`: its ball): its Collection's.
+static func shape_of(design: SockDesign, pair: bool) -> StringName:
+	var collection := String(design.collection) if design != null else ""
+	return StringName(BALL_PREFIX + collection if pair else collection)
 
 
 ## A Design's look as the old sock shader reads it (sock_look.gd look_data(), packing documented in the
@@ -91,23 +86,29 @@ static func pack_rgb(c: Color) -> float:
 	return float(c.r8 * 65536 + c.g8 * 256 + c.b8 + 1)
 
 
-func _add_shape(shape: StringName, looks: PackedScene) -> void:
-	var found := body_mesh(looks)
+## Shape `shape` (of a Sock of `design`) is drawn from now on: its mesh, place and material.
+func _add_shape(shape: StringName, design: SockDesign) -> void:
+	if _mesh.has(shape):
+		return
+	var pair := String(shape).begins_with(BALL_PREFIX)
+	var found := body_mesh(SockLook.scene(design, pair))
 	_shapes.append(shape)
 	_mesh[shape] = found[0]
 	_mesh_at[shape] = found[1]
-	var flying := _new_instance(found[0])
-	flying.name = "Flying_%s" % shape
+	_material[shape] = SockLook.instance_material(design.collection if design != null else &"", pair)
+	var flying := _new_instance(found[0], shape)
+	flying.name = "Flying_%s" % String(shape).replace(":", "_")
 	_flying[shape] = flying
 
 
 ## The lying Sock mesh's points in its Looks' space at Size medium (what the Sock's boxes fit).
 func sock_points() -> PackedVector3Array:
 	var out := PackedVector3Array()
-	var mesh := _mesh[SOCK]
+	var found := body_mesh(BOX_LOOKS)
+	var mesh: Mesh = found[0]
 	if mesh == null:
 		return out
-	var at := _mesh_at[SOCK]
+	var at: Transform3D = found[1]
 	for s in mesh.get_surface_count():
 		for p: Vector3 in mesh.surface_get_arrays(s)[Mesh.ARRAY_VERTEX]:
 			out.append(at * p)
@@ -118,10 +119,11 @@ func sock_points() -> PackedVector3Array:
 ## copy of its cell's buffer; flush() hands the changed cells to the renderer).
 func draw(sock: int, pose: Transform3D, shape: StringName, design: SockDesign) -> void:
 	undraw(sock)
+	_add_shape(shape, design)
 	var c := _cell(pose.origin, shape)
 	if not _cells.has(c):
-		var node := _new_instance(_mesh[shape])
-		node.name = "Cell_%d_%d_%s" % [c.x, c.y, shape]
+		var node := _new_instance(_mesh[shape], shape)
+		node.name = "Cell_%d_%d_%s" % [c.x, c.y, String(shape).replace(":", "_")]
 		node.visibility_range_end = _tuning.draw_range
 		_cells[c] = node
 		_in_cell[c] = PackedInt32Array()
@@ -205,6 +207,9 @@ func cell_count() -> int:
 
 ## Every flying Sock without a Looks, drawn this frame: `rows` by shape, each [pose, Design].
 func draw_flying(rows: Dictionary[StringName, Array]) -> void:
+	for shape: StringName in rows:
+		if not _flying.has(shape) and not rows[shape].is_empty():
+			_add_shape(shape, rows[shape][0][1])
 	for shape: StringName in _flying:
 		var list: Array = rows.get(shape, [])
 		var mm := _flying[shape].multimesh
@@ -242,6 +247,10 @@ func clear() -> void:
 	_cell_of.clear()
 	_slot_of.clear()
 	_flying.clear()
+	_shapes.clear()
+	_mesh.clear()
+	_mesh_at.clear()
+	_material.clear()
 
 
 ## Where an instance of `shape` goes for a Sock at `pose`, `scale` times its size: as its Looks is placed.
@@ -259,7 +268,7 @@ func _cell(at: Vector3, shape: StringName) -> Vector3i:
 	return Vector3i(floori(local.x / size), floori(local.z / size), _shapes.find(shape))
 
 
-func _new_instance(mesh: Mesh) -> MultiMeshInstance3D:
+func _new_instance(mesh: Mesh, shape: StringName) -> MultiMeshInstance3D:
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D
 	mm.use_colors = true
@@ -268,7 +277,7 @@ func _new_instance(mesh: Mesh) -> MultiMeshInstance3D:
 	mm.instance_count = 0
 	var node := MultiMeshInstance3D.new()
 	node.multimesh = mm
-	node.material_override = _material
+	node.material_override = _material[shape]
 	_root.add_child(node)
 	return node
 
@@ -308,6 +317,7 @@ static func body_mesh(scene: PackedScene) -> Array:
 	var body := looks.get_node_or_null(^"Body")
 	var found: MeshInstance3D = null
 	if body != null:
+		ModelLods.fold(body)
 		for node in body.find_children("*", "MeshInstance3D", true, false):
 			if (node as MeshInstance3D).visible:
 				found = node

@@ -44,6 +44,13 @@ static func dress(looks: Node3D, design: SockDesign, ball := false) -> void:
 	if design == null:
 		return
 	looks.scale = Vector3.ONE * design.size_scale()
+	paint(looks, design, ball)
+
+
+## Draws the Looks' Body with the Design's material, leaving the scale as it is.
+static func paint(looks: Node3D, design: SockDesign, ball := false) -> void:
+	if design == null:
+		return
 	var body := looks.get_node_or_null(^"Body")
 	if body == null:
 		return
@@ -52,7 +59,13 @@ static func dress(looks: Node3D, design: SockDesign, ball := false) -> void:
 	ModelLods.fold(body)
 	var m := material(design, ball)
 	for node in body.find_children("*", "MeshInstance3D", true, false):
-		(node as MeshInstance3D).material_override = m
+		if not node.is_in_group(Outline.COPY):
+			(node as MeshInstance3D).material_override = m
+
+
+## Whether `looks` is a sock ball's Looks (looks_ball_<cuff>.tscn).
+static func is_ball(looks: Node) -> bool:
+	return looks.scene_file_path.begins_with("res://game/sock/looks_ball_")
 
 
 ## The material of a single mesh showing `design` (the look as uniforms).

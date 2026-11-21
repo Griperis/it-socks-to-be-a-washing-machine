@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: assets
 feature: assets
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: []
 notes: []
 terms: []
@@ -22,7 +22,7 @@ shape, colours, pattern and print (`data/designs.json`, the old sock look code: 
 for the shader and `sock_look`/`dress`), `tools/blender/make_socks.py`.
 
 ## Behaviour list
-- S01 Every Design is drawn as in the old game: its shape (by Size), its colours, its pattern (solid, dots, stripes,
+- S01 Every Design is drawn as in the old game: its shape (by Collection, scaled by Size), its colours, its pattern (solid, dots, stripes,
   ...) and its print from the atlas, through one shader; the every-Sock station shows all of them.
 - S02 The four shape models share one skeleton (Cuff, Leg, Heel, Foot, Toe as the stand-in), so the cloth (core/09)
   and the Looks contract work on every shape.
@@ -51,16 +51,16 @@ shader on their own and in a zoo comparison, then swap in a last commit after me
 
 ## Answers
 - Started beside M0.5 (Q2378, 2026-11-21).
+- The models, balls, shader and prints are approved; the shape follows the Collection, as the old game. Look
+  updates come later in assets/05 (Q2384, 2026-11-21).
 
 ## Open follow-ups
-- [blocking] The swap of the Sock entity's Looks waits for core/23 (not on main when this stopped). After it
-  merges: SockDress.make/dress go through SockLook (shape and ball by Collection), MessDrawing draws one
-  MultiMesh per shape with `SockLook.instance_material()` (the instance custom data is already
-  `look_data()`), the Mess's lying box and ball radius per shape and cuff (`SockLook.ball_radius()`;
-  today one BOX and BALL_RADIUS), and the pairing moment's ball (S03's second half). Then the graybox
-  `game/sock/crew.glb`, `ball_crew_plain.glb`, `looks_graybox.tscn` and `looks_ball.tscn` can go.
-- [later] The behaviour list says "its shape (by Size)"; the old game picks the shape by Collection
-  (data/designs.json `shape`, SockLook.shape()) and only scales by Size. Built as the old game does.
+- [later] The lying bodies (MessBodies) and SockDress.box() still fit the crew model for every shape, so
+  an ankle Sock's box is a little big and a chunky Sock's a little small when Socks stack; the Pair
+  balls use their own radius. Per-shape boxes are a physics change for the Mess's owner.
+- [later] The cloth (core/09) is tuned on the crew Sock: on the small ankle Sock its chain dips 3.9 mm
+  below the floor in flight (d05 allows 3 mm) and lags less when walking. hand_details now takes a
+  small crew Sock (Design 135) for its cases; per-shape cloth numbers are the designer's call.
 - [later] Kit: the test and shot mirror (`kit/tools/_mirror.sh`) leaves out every `*.import`, so tests and
   `shot.sh` import with Godot's defaults: no `model_lods_import.gd` (SockLook.dress folds the LODs at run
   time there too) and `prints.png` VRAM-compressed, so print detail in shot.sh stills is softer than in
@@ -71,6 +71,16 @@ shader on their own and in a zoo comparison, then swap in a last commit after me
 - [later] LOD switch sizes (ModelLods MID_PX 64, FAR_PX 24) are the old game's own placeholders.
 
 ## Built log
+- 2026-11-21 (after the designer's go, Q2384, and core/23's merge)
+  - Changed: the swap. SockDress makes and dresses every Looks through SockLook (shape and ball by
+    Collection, the sock shader), with `swap()` for a scene's stand-in Looks; the pairing moment shows the
+    Design's own Socks and ball; MessDrawing draws one MultiMesh per Collection shape with its instance
+    material (lying and flying tiers), the LODs folded; a Pair's ball radius is its ball's. The graybox
+    crew.glb, ball_crew_plain.glb, looks_graybox.tscn and looks_ball.tscn are gone. Tests: S04's tiers
+    (a lying instance and its lent Looks: one mesh, place and material; held and flying Looks alike).
+  - Files: game/sock/sock_dress.gd, sock_look.gd, pair_moment.tscn; game/mess/mess_drawing.gd;
+    game/hands/held_view.gd; tests/sock_looks_test.gd, pairing_test.gd, hand_details_test.gd;
+    docs/architecture/mess.md.
 - 2026-11-21 (stopped at the first still, look work)
   - Changed: the four shape models and nine sock balls as Looks scenes (Looks contract, cloth on the
     shared Cuff-Leg-Heel-Foot-Toe skeleton, balls centred), the old pattern shader unchanged, the
