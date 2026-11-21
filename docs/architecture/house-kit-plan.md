@@ -229,6 +229,8 @@ lattice, not centred on the ridge, as the old ones were not.
   - 2.5 m wide, sill..head 0.9..2.15, in a 3.5 m piece: W11
 - Floor and ceiling tiles with the shaft's hole (1 m), a floor tile with the Cellar hatch (1.5 m).
 - The U stair per storey (well 2.38 x 2.9 m inside), the attic's balustrade round the void.
+- An outer corner without its +X arm (`corner_exterior_open`): W15's piece runs to the south wall's line, into the first floor's south-west corner (house/03).
+- D8's off-centre doorway and the elevator's hatch in one 2 m partition (`door_partition_offset_hatch_2m`, x 4 from z 3.5 on the first floor): their own pieces would overlap at z 4.5..5 (house/03).
 
 ## Answers
 
@@ -237,5 +239,6 @@ lattice, not centred on the ridge, as the old ones were not.
 - The width: outer wall centre lines 10.5 m apart (Q2352).
 - Storeys 3.0 m, the old clear heights 2.7 / 2.7 / 2.6 m kept through thicker ceiling tiles (Q2353).
 - The roof: 40 deg, the ridge 3.88 m over the attic floor (Q2354).
+- The open corner and the doorway-with-hatch piece stay in the kit, as do house/03's 1 cm K14 fixes (the shaft hole into the x 4 partition, the balustrade's north rail back from the void) (Q2393).
 - Openings: both sets, old widths and widths rounded to 0.5 m; the designer compares (Q2355).
 - The Cellar hatch and the tiles with a hole are in (the designer, 2026-11-21).
