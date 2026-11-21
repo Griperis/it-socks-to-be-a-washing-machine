@@ -1,4 +1,4 @@
-Next free Q number: Q2420 (update this line whenever a round of questions is asked)
+Next free Q number: Q2421 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -332,3 +332,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2417: the held Sock's cloth should swing more: it snaps when the view turns, with no inertia (designer: "Could you figure out settings for the socks in hand that make it look more swinging?"); candidates are shown side by side before any value changes (core/36).
 - Q2418: an experiment: lying Mess Socks get two bends (heel and ankle) decided as they come to rest (draped over what is under them), drawn by the sock shader and followed by their boxes; flights stay one body (core/37, option A of the lead's estimate).
 - Q2419: core/37 is not merged into main: the designer tests it from a review build of the zoo; no strip needed (designer: "give me a review build with zoo scene to test this on (not merge into a main). No need for a strip.").
+- Q2420: the held cloth takes drag 0.25 (stiffness 5, gravity 3 kept): 13 degrees past rest, one swing, settled in 0.13 s after a quick turn; thrown Socks ring a little more too (core/36).
