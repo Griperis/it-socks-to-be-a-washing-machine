@@ -1,4 +1,4 @@
-Next free Q number: Q2394 (update this line whenever a round of questions is asked)
+Next free Q number: Q2398 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -306,3 +306,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2391: house/03's two rebuilt houses (A, B) are approved and merge; the missing shell pieces and furniture come in later tickets.
 - Q2392: the zoo's node budget test (mess:m04) counts only the Mess's nodes; a house's static pieces may be merged into fewer nodes later if play needs it.
 - Q2393: house/03's two 1 cm kit fixes and its two new pieces (an open exterior corner, an offset door with the elevator hatch) stay in the kit.
+- Q2394: the 67 furniture pieces on the shared material library are approved and merge.
+- Q2395: the furniture devices are ported now, in their own ticket (assets/07): opening sounds by container kind, the mirror's reflection, the piano's playable keys, the dust sheet and the Old Tree's shader.
+- Q2396: the zoo's Sock area widens to cover the furniture station and the old houses, so Socks lie on furniture.
+- Q2397: players collide with the old coarse boxes per piece on their own layer; Socks keep the detailed shapes.
