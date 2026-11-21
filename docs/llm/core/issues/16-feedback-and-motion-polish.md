@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: ["[[11-outline]]", "[[23-flights-flip-and-throw-from-hand]]"]
 notes: []
 terms: []
@@ -94,9 +94,10 @@ the old core that the port lacks is listed here; only the designer drops one (Q2
 - The Cabinet's "+N" Coins pop, new Rows dropping in: M4. Pad stick curve: later (Q2235). Teammate's waddle, squash and
   stretch: M0.6 (`avatar.json`).
 
+- The five looks (cloth, refusal wobble, "Paired!" pop, ball landing, lost return) merge as built; P03, P08, P10,
+  P11, P14 and P15 move to their own ticket, core/27 (Q2398, 2026-11-21).
+
 ## Open follow-ups
-- [blocking] The designer's go on the five looks in `builds/review-core-16/` (cloth/, refusal-wobble.png,
-  paired-pop.png, ball-landing.png, lost-return-scatter.png); the numbers are placeholders until then.
 - [later] Not built yet (stopped at the stills, the look-work rule): P03 the held Size box following the
   cloth sway; P08 a thrown Sock keeping its held bend (core/23 left the flying Looks straight); P10 a
   shelved ball's squash in its slot; P11 a Pair thrown at a drawer front flying on to its slot; P14 the

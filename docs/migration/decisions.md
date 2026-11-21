@@ -1,4 +1,4 @@
-Next free Q number: Q2398 (update this line whenever a round of questions is asked)
+Next free Q number: Q2399 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -310,3 +310,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2395: the furniture devices are ported now, in their own ticket (assets/07): opening sounds by container kind, the mirror's reflection, the piano's playable keys, the dust sheet and the Old Tree's shader.
 - Q2396: the zoo's Sock area widens to cover the furniture station and the old houses, so Socks lie on furniture.
 - Q2397: players collide with the old coarse boxes per piece on their own layer; Socks keep the detailed shapes.
+- Q2398: core/16's five looks merge as built; the rest of the motion polish (P03, P08, P10, P11, P14, P15) is its own ticket, core/27.
