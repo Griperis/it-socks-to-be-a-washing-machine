@@ -231,6 +231,7 @@ func _hits() -> void:
 					if not _mess.is_pair(other):
 						woken.append(other)
 				queue_wake(woken, &"wake")
+				_bounce(sock)
 				break
 
 
@@ -364,7 +365,17 @@ func _spare_thrower(body: RigidBody3D, by: int) -> void:
 func _on_contact(other: Node, sock: int) -> void:
 	if _mess.is_pair(sock) and not _damped.has(sock):
 		_damp_pair(sock)
+	_bounce(sock)
 	_mess.flight_touched.emit(sock, other)
+
+
+## The sound of a hit: "bounce" at the body, softer and lower the slower it hit.
+func _bounce(sock: int) -> void:
+	var body: RigidBody3D = _flights.get(sock)
+	var t := _mess.bodies_tuning()
+	var speed := float(_speeds.get(sock, 0.0))
+	if body != null and speed >= t.bounce_speed:
+		Sounds.play_at(&"bounce", body.global_position, inverse_lerp(t.bounce_speed, t.bounce_hard_speed, speed))
 
 
 ## A falling Pair drags as a Pair from now on: it stops within a few cm (P07).

@@ -10,6 +10,8 @@ size = Vector3(1, 2, 0.45)
 
 [node name="Openable" type="Node" parent="."]
 script = ExtResource("1_openable")
+open_sound = &"cupboard_open"
+close_sound = &"cupboard_close"
 
 [node name="Shape" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.025)

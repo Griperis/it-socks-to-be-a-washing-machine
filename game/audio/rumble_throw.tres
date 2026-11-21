@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="RumbleCue" format=3]
+
+[ext_resource type="Script" path="res://game/audio/rumble_cue.gd" id="1_cue"]
+
+[resource]
+script = ExtResource("1_cue")
+weak = 0.3
+strong = 0.7
+seconds = 0.25

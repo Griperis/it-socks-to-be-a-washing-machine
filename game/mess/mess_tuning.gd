@@ -59,3 +59,10 @@ extends Resource
 @export_range(1.0, 64.0, 0.5, "suffix:m") var cell_size := 8.0 # placeholder: the designer's 8 m (Q2310), until play
 ## How far from the camera a cell's lying Socks are still drawn.
 @export_range(5.0, 500.0, 1.0, "suffix:m") var draw_range := 60.0 # placeholder: until play
+
+@export_group("Sound")
+## A hit at least this fast (the body's speed just before the step it touched in) plays "bounce"
+## (the old game's 1.5 m/s into a surface; the speed along the surface's normal is not read).
+@export_range(0.0, 10.0, 0.1, "suffix:m/s") var bounce_speed := 1.5 # placeholder: ported (flight.gd), until the designer listens
+## The hit speed at which "bounce" is at its loudest and highest; a slower hit is softer, lower.
+@export_range(1.0, 30.0, 0.5, "suffix:m/s") var bounce_hard_speed := 8.0 # placeholder: until the designer listens (Q2371)
