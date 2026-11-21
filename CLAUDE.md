@@ -116,7 +116,7 @@ through that feature's own rules object. Otherwise they go through the co-op sha
   every script with its committed `.uid`. When the designer's editor re-saves a file with no real change, the lead
   commits that re-save ("editor format") instead of discarding it.
 - **What Godot should not see carries a `.gdignore`** (designer, Q2242): `docs/`, `reference/`, `assets_src/`,
-  `kit/skills/` today; a new folder of notes, sources or pictures gets one when it is made. Untracked files the
+  `kit/skills/`, `.claude/` (the agents' worktrees) today; a new folder of notes, sources or pictures gets one when it is made. Untracked files the
   editor makes inside `kit/` are ignored by the game's git (`.gitmodules` `ignore = untracked`), never committed
   into the kit.
 - **A zoo station that shows game data is built from that data at load** (designer, Q2337): a new Design, sound
