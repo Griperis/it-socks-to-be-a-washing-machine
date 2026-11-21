@@ -66,6 +66,8 @@ Draft for the designer; the numbers are the old house's, moved to the grid.
 **Every piece**
 - K12 Each piece snaps on the 0.5 m grid (origin on a grid corner, 90 degree turns), has box colliders on the house
   layer and its material slots from the shared library; a new size is a number in `house_kit_sizes.tres` and a rebuild.
+- K14 No two pieces placed by the grid convention z-fight: no coplanar overlapping faces (floors and ceilings
+  against walls on every floor, corners, Ts, skirting, frames), by a written convention and a test (Q2358).
 - K13 The kit station shows every piece, labelled, and a small room built from them that the player walks in, climbs
   the U stair to an upper floor and looks out of a window.
 
