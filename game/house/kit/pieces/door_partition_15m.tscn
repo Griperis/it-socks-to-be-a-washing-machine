@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://wpqf48pm7og3"]
+
+[ext_resource type="ArrayMesh" uid="uid://hwoon0urylo1" path="res://game/house/kit/meshes/door_partition_15m.tres" id="1_vl1dd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2y53a"]
+size = Vector3(0.3, 3, 0.12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e4sau"]
+size = Vector3(0.3, 3, 0.12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tdqul"]
+size = Vector3(0.9, 0.88, 0.12)
+
+[node name="DoorPartition15m" type="MeshInstance3D" unique_id=1800448509]
+mesh = ExtResource("1_vl1dd")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1578484771]
+collision_mask = 0
+
+[node name="Box1" type="CollisionShape3D" parent="Body" unique_id=1206583787]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 1.48, 0)
+shape = SubResource("BoxShape3D_2y53a")
+
+[node name="Box2" type="CollisionShape3D" parent="Body" unique_id=1913924094]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.35, 1.48, 0)
+shape = SubResource("BoxShape3D_e4sau")
+
+[node name="Box3" type="CollisionShape3D" parent="Body" unique_id=678039494]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 2.54, 0)
+shape = SubResource("BoxShape3D_tdqul")

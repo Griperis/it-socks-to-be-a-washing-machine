@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://cosceg0qlxff0"]
+
+[ext_resource type="ArrayMesh" uid="uid://cyy04mt8nq8as" path="res://game/house/kit/meshes/stair_balustrade.tres" id="1_u5swf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2jioh"]
+size = Vector3(0.06, 1.02, 2.9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wh15l"]
+size = Vector3(1.13, 1.02, 0.06)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8qjpd"]
+size = Vector3(0.059999943, 1.02, 2.9)
+
+[node name="StairBalustrade" type="MeshInstance3D" unique_id=1407455454]
+mesh = ExtResource("1_u5swf")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=278874075]
+collision_mask = 0
+
+[node name="Box1" type="CollisionShape3D" parent="Body" unique_id=1295744846]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03, 0.48999998, 1.45)
+shape = SubResource("BoxShape3D_2jioh")
+
+[node name="Box2" type="CollisionShape3D" parent="Body" unique_id=1957000742]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.625, 0.48999998, -0.03)
+shape = SubResource("BoxShape3D_wh15l")
+
+[node name="Box3" type="CollisionShape3D" parent="Body" unique_id=1376372468]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.47, 0.48999998, 1.45)
+shape = SubResource("BoxShape3D_8qjpd")

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://63in7jh4md7y"]
+
+[ext_resource type="ArrayMesh" uid="uid://dfme54jv88o2m" path="res://game/house/kit/meshes/ceiling_attic_05m.tres" id="1_ykved"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sshxi"]
+size = Vector3(0.5, 0.3, 0.5)
+
+[node name="CeilingAttic05m" type="MeshInstance3D" unique_id=1275012858]
+mesh = ExtResource("1_ykved")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=567854514]
+collision_mask = 0
+
+[node name="Box" type="CollisionShape3D" parent="Body" unique_id=1035701349]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, -0.25, 0.25)
+shape = SubResource("BoxShape3D_sshxi")

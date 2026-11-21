@@ -3,14 +3,14 @@
 [ext_resource type="ArrayMesh" uid="uid://dghurmqs6kbd3" path="res://game/house/kit/meshes/ceiling_1m.tres" id="1_3by86"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sknq6"]
-size = Vector3(1, 0.1, 1)
+size = Vector3(1, 0.2, 1)
 
-[node name="Ceiling1m" type="MeshInstance3D" unique_id=1643580997]
+[node name="Ceiling1m" type="MeshInstance3D" unique_id=1023297507]
 mesh = ExtResource("1_3by86")
 
-[node name="Body" type="StaticBody3D" parent="." unique_id=960941269]
+[node name="Body" type="StaticBody3D" parent="." unique_id=176962750]
 collision_mask = 0
 
-[node name="Box" type="CollisionShape3D" parent="Body" unique_id=1182066136]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.15, 0.5)
+[node name="Box" type="CollisionShape3D" parent="Body" unique_id=286837333]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -0.20000002, 0.5)
 shape = SubResource("BoxShape3D_sknq6")

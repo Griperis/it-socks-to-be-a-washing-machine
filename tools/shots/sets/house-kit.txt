@@ -1,7 +1,13 @@
-# house/01: the House kit station: the wall line-up, the tiles and stairs, the small room, a door, a window and the stair from inside.
-lineup  --size=1280x720 --do='30:house_kit:lineup' --shots=40
-floors  --size=1280x720 --do='30:house_kit:floors' --shots=40
-room    --size=1280x720 --do='30:house_kit:room' --shots=40
-door    --size=1280x720 --do='30:house_kit:door' --shots=40
-window  --size=1280x720 --do='30:house_kit:window' --shots=40
-stair   --size=1280x720 --do='30:house_kit:stair' --shots=40
+# house/02: the House kit station: the line-up, its rows, the U room, the front door's and the window's frames, the upper floor's corner, the U stair, the roof corner with the dormer outside and in.
+lineup       --size=1280x720 --do='30:house_kit:lineup' --shots=40
+walls        --size=1280x720 --do='30:house_kit:walls' --shots=40
+openings     --size=1280x720 --do='30:house_kit:openings' --shots=40
+floors       --size=1280x720 --do='30:house_kit:floors' --shots=40
+roof_pieces  --size=1280x720 --do='30:house_kit:roof_pieces' --shots=40
+room         --size=1280x720 --do='30:house_kit:room' --shots=40
+door         --size=1280x720 --do='30:house_kit:door' --shots=40
+window       --size=1280x720 --do='30:house_kit:window' --shots=40
+corner       --size=1280x720 --do='30:house_kit:corner' --shots=40
+stair        --size=1280x720 --do='30:house_kit:stair' --shots=40
+roof         --size=1280x720 --do='30:house_kit:roof' --shots=40
+dormer       --size=1280x720 --do='30:house_kit:dormer' --shots=40
