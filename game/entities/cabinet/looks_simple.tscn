@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://bcuynsur3or1g"]
 
-[ext_resource type="ArrayMesh" uid="uid://cpyckhh1t3sv3" path="res://game/entities/cabinet/simple_base.res" id="1_base"]
-[ext_resource type="ArrayMesh" uid="uid://ioacexbju7cg" path="res://game/entities/cabinet/simple_segment.res" id="2_segment"]
-[ext_resource type="ArrayMesh" uid="uid://k2krki27tpgj" path="res://game/entities/cabinet/simple_top.res" id="3_top"]
+[ext_resource type="ArrayMesh" uid="uid://cpyckhh1t3sv3" path="res://assets/cabinet/simple_base.res" id="1_base"]
+[ext_resource type="ArrayMesh" uid="uid://ioacexbju7cg" path="res://assets/cabinet/simple_segment.res" id="2_segment"]
+[ext_resource type="ArrayMesh" uid="uid://k2krki27tpgj" path="res://assets/cabinet/simple_top.res" id="3_top"]
 
 [node name="LooksSimple" type="Node3D"]
 

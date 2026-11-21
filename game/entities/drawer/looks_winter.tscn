@@ -1,0 +1,156 @@
+[gd_scene format=3 uid="uid://dksl26llqx4xr"]
+
+[ext_resource type="ArrayMesh" uid="uid://dhdr5w02br0ck" path="res://assets/cabinet/winter_drawer.res" id="1_mesh"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="9_outline"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_front"]
+size = Vector3(1.46, 0.28, 0.04)
+
+[sub_resource type="Animation" id="Animation_reset"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slide:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_open"]
+resource_name = "open"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slide:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.4)]
+}
+
+[sub_resource type="Animation" id="Animation_shut"]
+resource_name = "shut"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slide:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0.4), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_looks"]
+_data = {
+&"RESET": SubResource("Animation_reset"),
+&"open": SubResource("Animation_open"),
+&"shut": SubResource("Animation_shut")
+}
+
+[node name="LooksWinter" type="Node3D"]
+
+[node name="Slide" type="AnimatableBody3D" parent="."]
+
+[node name="Mesh" type="MeshInstance3D" parent="Slide"]
+mesh = ExtResource("1_mesh")
+
+[node name="Front" type="CollisionShape3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14, 0.23)
+shape = SubResource("BoxShape3D_front")
+
+[node name="Slot01" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.585, 0.085, -0.15)
+
+[node name="Slot02" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.325, 0.085, -0.15)
+
+[node name="Slot03" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, 0.085, -0.15)
+
+[node name="Slot04" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.195, 0.085, -0.15)
+
+[node name="Slot05" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.455, 0.085, -0.15)
+
+[node name="Slot06" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.455, 0.085, -0.0775)
+
+[node name="Slot07" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.195, 0.085, -0.0775)
+
+[node name="Slot08" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.065, 0.085, -0.0775)
+
+[node name="Slot09" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.325, 0.085, -0.0775)
+
+[node name="Slot10" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.585, 0.085, -0.0775)
+
+[node name="Slot11" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.585, 0.085, -0.005)
+
+[node name="Slot12" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.325, 0.085, -0.005)
+
+[node name="Slot13" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, 0.085, -0.005)
+
+[node name="Slot14" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.195, 0.085, -0.005)
+
+[node name="Slot15" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.455, 0.085, -0.005)
+
+[node name="Slot16" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.455, 0.085, 0.0675)
+
+[node name="Slot17" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.195, 0.085, 0.0675)
+
+[node name="Slot18" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.065, 0.085, 0.0675)
+
+[node name="Slot19" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.325, 0.085, 0.0675)
+
+[node name="Slot20" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.585, 0.085, 0.0675)
+
+[node name="Slot21" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.585, 0.085, 0.14)
+
+[node name="Slot22" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.325, 0.085, 0.14)
+
+[node name="Slot23" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, 0.085, 0.14)
+
+[node name="Slot24" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.195, 0.085, 0.14)
+
+[node name="Slot25" type="Marker3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.455, 0.085, 0.14)
+
+[node name="Outline" type="Node3D" parent="."]
+visible = false
+script = ExtResource("9_outline")
+meshes = Array[NodePath]([NodePath("../Slide/Mesh")])
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_looks")

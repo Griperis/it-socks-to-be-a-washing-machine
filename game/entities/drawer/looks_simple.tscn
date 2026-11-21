@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cpgwgtg7amdc"]
 
-[ext_resource type="ArrayMesh" uid="uid://cyqtop2nmxvax" path="res://game/entities/cabinet/simple_drawer.res" id="1_mesh"]
+[ext_resource type="ArrayMesh" uid="uid://cyqtop2nmxvax" path="res://assets/cabinet/simple_drawer.res" id="1_mesh"]
 [ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="9_outline"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_front"]

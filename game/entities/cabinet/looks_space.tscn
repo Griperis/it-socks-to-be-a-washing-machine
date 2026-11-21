@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://cbyf36tno5c0t"]
+
+[ext_resource type="ArrayMesh" uid="uid://bjw1q5ixl6xh0" path="res://assets/cabinet/space_base.res" id="1_base"]
+[ext_resource type="ArrayMesh" uid="uid://bquyf7cqnqm74" path="res://assets/cabinet/space_segment.res" id="2_segment"]
+[ext_resource type="ArrayMesh" uid="uid://cp7dtkm6eapoo" path="res://assets/cabinet/space_top.res" id="3_top"]
+
+[node name="LooksSpace" type="Node3D"]
+
+[node name="Base" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_base")
+
+[node name="Segment1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = ExtResource("2_segment")
+
+[node name="Segment2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = ExtResource("2_segment")
+
+[node name="Segment3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+mesh = ExtResource("2_segment")
+
+[node name="Top" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = ExtResource("3_top")

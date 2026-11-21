@@ -12,6 +12,10 @@
 ## C05, I.12). A thrown Pair that touches one of its own Cabinet's drawer fronts is shelved by the Host's `thrown_shelve`
 ## (T05); any other touch asks nothing and the body bounces (T06, T07). No icon shows the
 ## Collection: the refusal tells it (C11).
+##
+## Its Looks and its drawers' Looks are its Collection's (assets/02, K01): `looks_<collection>.tscn`
+## in this folder and in the drawer's, swapped in by dress() when the Cabinet is ready and whenever
+## its state shows; a Collection without its own Looks keeps the one in the scene.
 class_name Cabinet
 extends Part
 
@@ -33,6 +37,11 @@ const TRAY_FLOOR_Y := 0.04
 const TURN := 2.39996
 ## The most drawers a shelve may aim at (a Guest's arg bound).
 const DRAWERS_MAX := 64
+
+## Where each Collection's Looks are: the Cabinet's (base, segments, top) and its drawers'.
+const CABINET_LOOKS := "res://game/entities/cabinet/looks_%s.tscn"
+const DRAWER_LOOKS := "res://game/entities/drawer/looks_%s.tscn"
+const LOOKS := &"Looks"
 
 ## Links the wiring check lets stay empty: a Cabinet finds the level's Hands and Coins by group.
 const WIRING_OPTIONAL := ["hands", "coins"]
@@ -65,6 +74,47 @@ func _ready() -> void:
 	var mess := mess_of()
 	if mess != null and not mess.flight_touched.is_connected(_on_flight_touched):
 		mess.flight_touched.connect(_on_flight_touched)
+	# Its siblings (the Looks, the drawers) can be swapped only once the Cabinet's root is ready.
+	var root := get_parent()
+	if root.is_node_ready():
+		dress()
+	elif not root.ready.is_connected(dress):
+		root.ready.connect(dress, CONNECT_ONE_SHOT)
+
+
+## The Looks scene of Collection `of` for the Cabinet (`for_drawer` false) or a drawer, or "" when
+## that Collection has none of its own.
+static func looks_path(of: StringName, for_drawer: bool) -> String:
+	var path := (DRAWER_LOOKS if for_drawer else CABINET_LOOKS) % of
+	return path if ResourceLoader.exists(path) else ""
+
+
+## Puts its Collection's Looks on the Cabinet and on every drawer, in place of the ones there (same
+## name, same place among the siblings). Looks only: a Looks already the Collection's is kept.
+func dress() -> void:
+	var root := get_parent()
+	_put_looks(root, looks_path(collection, false))
+	var drawer_looks := looks_path(collection, true)
+	for i in drawer_count():
+		# A new drawer Looks starts shut: it is put in its drawer's pose at once.
+		if _put_looks(root.get_node(NodePath(DRAWER % (i + 1))), drawer_looks) and drawer(i) != null:
+			drawer(i)._show(true)
+
+
+## Swaps `owner_node`'s Looks for the scene at `path`; true when it did.
+func _put_looks(owner_node: Node, path: String) -> bool:
+	var old := owner_node.get_node_or_null(NodePath(LOOKS)) as Node3D
+	if path.is_empty() or old == null or old.scene_file_path == path:
+		return false
+	var looks := (load(path) as PackedScene).instantiate() as Node3D
+	looks.transform = old.transform
+	var at := old.get_index()
+	owner_node.remove_child(old)
+	old.queue_free()
+	looks.name = LOOKS
+	owner_node.add_child(looks)
+	owner_node.move_child(looks, at)
+	return true
 
 
 ## The Hands this Cabinet takes Pairs from.
@@ -344,6 +394,8 @@ func _is_drawer_front(node: Node) -> bool:
 ## on this machine flies from where they drew it to its slot first, and the drawer shows its new
 ## balls when all its flights have landed (D11).
 func _show(now: bool) -> void:
+	if get_parent().is_node_ready():
+		dress()
 	var mess := mess_of()
 	for i in drawer_count():
 		var looks := get_parent().get_node_or_null(NodePath((DRAWER % (i + 1)) + "/Looks"))

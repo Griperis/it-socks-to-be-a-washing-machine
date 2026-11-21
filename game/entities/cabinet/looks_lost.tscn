@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://dhlm5du0gx6xa"]
+
+[ext_resource type="ArrayMesh" uid="uid://qodsh2fjqhl2" path="res://assets/cabinet/lost_base.res" id="1_base"]
+[ext_resource type="ArrayMesh" uid="uid://c2dv3gmt823qf" path="res://assets/cabinet/lost_segment.res" id="2_segment"]
+[ext_resource type="ArrayMesh" uid="uid://p8vfoid68e57" path="res://assets/cabinet/lost_top.res" id="3_top"]
+
+[node name="LooksLost" type="Node3D"]
+
+[node name="Base" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_base")
+
+[node name="Segment1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = ExtResource("2_segment")
+
+[node name="Segment2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = ExtResource("2_segment")
+
+[node name="Segment3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+mesh = ExtResource("2_segment")
+
+[node name="Top" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = ExtResource("3_top")

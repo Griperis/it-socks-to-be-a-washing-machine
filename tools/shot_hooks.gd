@@ -31,6 +31,27 @@ static func act(world: Node, what: String, arg: String) -> bool:
 				cam.look_at(station.to_global(Vector3(-11.5, 0.0, -0.4)))
 			cam.make_current()
 			return true
+		"cabinet":
+			# assets/02: a camera on the Cabinet station. arg "overview" looks over the line-up of
+			# every Collection's Cabinet; arg <collection> stands before that Collection's Cabinet at
+			# eye height, as the old game's cab-* views did ("simple" is the station's own Cabinet).
+			var station := world.get_node("Stations/Cabinet") as Node3D
+			var gallery := station.get_node("Gallery") as CabinetGallery
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 75.0
+			if arg == "overview":
+				cam.global_position = gallery.to_global(Vector3(-2.4, 6.5, 5.0))
+				cam.look_at(gallery.to_global(Vector3(2.7, 0.0, -3.4)))
+			else:
+				var cabinet := gallery.cabinet_of(StringName(arg))
+				if cabinet == null:
+					cabinet = station.get_node("Cabinet") as Node3D
+				cam.global_position = cabinet.to_global(Vector3(0.0, 1.45, 1.7))
+				cam.look_at(cabinet.to_global(Vector3(0.0, 0.55, 0.0)))
+			cam.reset_physics_interpolation()
+			cam.make_current()
+			return true
 		"house_kit":
 			# A camera on the house kit station (house/01): arg "lineup" (the walls), "floors" (the
 			# tiles and stairs), "room" (the

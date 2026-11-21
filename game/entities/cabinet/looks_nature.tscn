@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://fnrtu3wd5fmo"]
+
+[ext_resource type="ArrayMesh" uid="uid://dt8iuf3qkrt14" path="res://assets/cabinet/nature_base.res" id="1_base"]
+[ext_resource type="ArrayMesh" uid="uid://dtx25j1f32p6k" path="res://assets/cabinet/nature_segment.res" id="2_segment"]
+[ext_resource type="ArrayMesh" uid="uid://bm8bos5dvgb4r" path="res://assets/cabinet/nature_top.res" id="3_top"]
+
+[node name="LooksNature" type="Node3D"]
+
+[node name="Base" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_base")
+
+[node name="Segment1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = ExtResource("2_segment")
+
+[node name="Segment2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = ExtResource("2_segment")
+
+[node name="Segment3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+mesh = ExtResource("2_segment")
+
+[node name="Top" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = ExtResource("3_top")
