@@ -80,7 +80,7 @@ only on the designer's word.
 - Save compatibility starts at: the first outside play-test
 - Co-op: planned. Before the first netcode ticket the `multiplayer-game-dev` skill asks the mode; the templates of the shape below (README there) are the starting code.
 - Co-op shape: scene parts: each thing's state lives on Part nodes in its scene, Parts syncs and saves it, Session is the one RPC node (`kit/skills/multiplayer-game-dev/templates/scene_parts/`).
-- Zoo: used: `game/zoo/zoo.tscn`, one station per feature, each its own scene in `game/zoo/stations/` (the `zoo-design` skill); the example entity is `game/entities/cupboard/`.
+- Zoo: used: `game/zoo/zoo.tscn`, one station per feature, each its own scene in `game/zoo/stations/`, instanced by hand in `zoo.tscn` (Q2359; the `zoo-design` skill); the example entity is `game/entities/cupboard/`.
 - Blender: used.
 - Profily (F3 stats overlay): used: in debug builds F3 shows the stats overlay; release builds ship it switched off (`kit/docs/TESTING.md` 5).
 
