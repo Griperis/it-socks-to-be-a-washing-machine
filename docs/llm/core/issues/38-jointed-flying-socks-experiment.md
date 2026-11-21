@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: wontfix
 kind: build
 area: core
 feature: core
@@ -58,6 +58,57 @@ a pour tick about 3-4 times dearer (a 2,000-Sock pour from about 7 ms to 20+ ms 
 - The full bend sim, as optimised as possible, only on the experiment branch (Q2422, 2026-11-21).
 
 ## Open follow-ups
+- [later] Not met: `mess_settle:real_path` fails on this branch: 4 of the zoo heap's 500 poured Socks rest with a
+  box middle 6 mm or more inside another lying Sock ("inside" 4). core/37 has none there. Seen with the default
+  budget of 128 jointed flights; a fallback to core/37's probe and a box-clear turn-back both made it worse (15
+  and 22). Not understood; a guess is joint drift under load (the lying boxes are rebuilt from the angle only).
+- [later] Added by the agent, the designer's call: a Throw and a drop from the hand fly as one body
+  (`MessTuning.jointed_throws` off). Jointed, core/23's arc (solved for one body) landed off and the hand's carried
+  cloth bend did not show. On, J5's "the held bend may start the joints" is not built.
+- [later] Added by the agent, off by default: hinge stiffness and damping (`jointed_stiffness`,
+  `jointed_damping`, a torque impulse a tick). Stiffness alone made an end flap a Sock along the floor; damping 0.002
+  made about 600 of 2,000 poured Socks spin past `flip_spin` (4 with it off), at no tick cost either way. With
+  plain hinges (the default) a Sock can rest standing on its edge like a folding screen (seen once, in a throw
+  test, before throws went single). - [later] J3: a jointed flight with a cloth Looks has its cloth off and its bones posed from the hinges each frame
+  (`SockBend.pose`), not the cloth on top. Not looked at in a still; the designer judges it in the review build.
+- [later] `mess_bend_test.gd` (core/37's cases) now runs with `jointed_budget` 0: its cases test the probed bend
+  of single-body flights.
+- [later] Jolt's `penetration_slop` 0.005 (project setting, default 0.02) cleared `sunk` in `drape_500` at no
+  measured cost, but did not fix the heap's "inside". Not changed: a project.godot change is the lead's call.
+- [later] Not tried: the RigidBody3D-node and PhysicalBone3D/Skeleton3D routes (the segments are physics-server
+  bodies with no node, which costs no node per segment and no transform sync), per-body solver iterations (Godot's
+  Jolt has none per body), CCD only on the leg.
+- [later] A Guest's copy of a jointed flight is the middle alone, drawn straight (the segments are Host only).
+- [later] The lying instance gets the hinge angle snapped to 0 under `jointed_straight` (0.03 rad: 3 mm at a 10 cm
+  end); about 97% of jointed rests still come out bent (Socks lie over each other's edges).
 
 ## Built log
 - Model: Opus: hard physics and performance work.
+
+### 2026-11-21
+- Changed: up to `MessTuning.jointed_budget` (128) flights are three bodies (J1). The falling body is the middle.
+  The leg and the foot are physics-server bodies (no node, no script; `JointedFlight`) on two Jolt hinges with
+  limits, no motor. The mass is split by length, each part has the whole box's `turn_weight` inertia, and the
+  middle's centre of mass is the whole Sock's. The segments carry the falling body's id, so picks and contacts
+  find the Sock. Contacts are reported only while fast, CCD only with the middle, and materials and shapes are
+  shared (J2). The flying instance is drawn with the hinge angles in its colour alpha. A cloth Looks has its cloth
+  off and its bones posed from the hinges (J3). A rest writes the middle's pose and the angles, with no probe and
+  no drape; a woken bent Sock starts jointed at its bend (J4). Pairs, Throws and drops fly as one body (J5,
+  `jointed_throws`). The bench has `--tune=` and a "jointed at most" column. The report with core/37 vs this
+  branch, the budget sweep and the steps is in `builds/review-core-38/report.md` (J6). Budget 128 is recommended:
+  `pour_2000` p95 about 10 ms vs 7.5-8.9 ms single.
+- Files: `game/mess/jointed_flight.gd` (new), `mess.gd`, `mess_moving.gd`, `mess_drawing.gd`, `mess_tuning.gd`;
+  `game/debug/mess_bench.gd`, `mess_bench_report.gd`; `tests/mess_jointed_test.gd` (new), `tests/mess_bend_test.gd`;
+  `docs/architecture/mess.md`.
+- Verified: `kit/tools/run.sh --touched`: FAIL 1 of 16733 checks, 371 cases (`mess_settle:real_path`: "inside" 4),
+  so the acceptance is not met and this is a WIP commit (Open follow-ups); rules PASS.
+
+### 2026-11-21 (lead): closed
+- The designer played the review build: jointed flights are not worth it (Q2423, 2026-11-21). Never merged; the branch
+  and `builds/review-core-38/` stay for reference. A "really flappy" build followed on the designer's ask
+  (`builds/review-core-38-flappy/`, commit 4ae1dd6: `jointed_flap` 0.05, hinges 2.4 rad, every flight and throws
+  jointed; 21 checks fail, throws mostly; no tests run on it, an experiment).
+- Taken to main: the pair-moment preload loop that broke exported builds (9b829af); the bench's `--tune=` and the
+  flights' shared physics materials (cd3d60d). Jolt penetration slop 0.005 (fewer sunk Socks) was not taken.
+- Learned: spin is what flips a Sock (hinge damping and torque raised flips many times); joints cost about 1.5x a
+  one-body pour, not 3-4x; contact reports are most of a flying body's extra cost.
