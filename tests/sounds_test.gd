@@ -221,6 +221,7 @@ func case_s06() -> void:
 	_stand(player, STATION + IN_THE_OPEN + Vector3(0.0, 0.0, 2.5))
 	await _physics_ticks(3)
 	await _frames(2)
+	Sounds.reset()  # the min gap of bounce (core/25) forgotten
 	Sounds.play_at(&"bounce", STATION + IN_THE_OPEN)
 	_check(_heard.back()["bus"] == &"SFX", "the same sound in the open is on SFX")
 	# The player opens the Door by use, as the game does; the way is then free.
@@ -238,6 +239,7 @@ func case_s06() -> void:
 	await _physics_ticks(3)
 	await _frames(2)
 	_check(not Sounds.is_muffled(behind), "with the Door open the spot behind it is clear")
+	Sounds.reset()  # the min gap of bounce (core/25) forgotten
 	Sounds.play_at(&"bounce", behind)
 	_check(_heard.back()["bus"] == &"SFX", "and plays on SFX")
 

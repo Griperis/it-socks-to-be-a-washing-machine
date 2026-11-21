@@ -21,6 +21,10 @@ const GROUP := &"openables"
 ## How far from the thing a player may stand to use it, in metres (Parts.near(); checked only once
 ## the game sets Parts.where).
 @export var reach := 4.0
+## The sound events it plays from where it stands when it opens or shuts by use ("door_open",
+## "door_close"); empty is silent. A state arriving whole (a load, a late Guest) makes no sound.
+@export var open_sound: StringName = &""
+@export var close_sound: StringName = &""
 
 @export_group("State")
 ## Open or shut. Tick it to place the thing open; while playing only the Host's answer changes it.
@@ -31,6 +35,8 @@ const GROUP := &"openables"
 
 var _looks: Node
 var _animator: AnimationPlayer
+## Whether the state was open when it was last shown: a sound plays only when it turns over.
+var _was_open := false
 
 
 func _enter_tree() -> void:
@@ -81,6 +87,9 @@ func decide(cmd: Command) -> Dictionary:
 ## Plays "open" forwards or backwards from wherever the pose is now, so a toggle mid-swing turns
 ## back smoothly; `now` jumps to the end pose with no animation.
 func _show(now: bool) -> void:
+	if not now and open != _was_open:
+		_make_sound()
+	_was_open = open
 	var player := animator()
 	if player == null:
 		return
@@ -99,6 +108,14 @@ func _show(now: bool) -> void:
 			else length - end
 	player.play(ANIMATION, 0.0, 1.0 if open else -1.0, not open)
 	player.seek(from, true)
+
+
+## The sound of turning over, from the thing's place.
+func _make_sound() -> void:
+	var event := open_sound if open else close_sound
+	var spot := get_parent() as Node3D
+	if event != &"" and spot != null and spot.is_inside_tree():
+		Sounds.play_at(event, spot.global_position)
 
 
 ## With a Looks that has its own "shut" (a drawer easing out both ways, core/09 D12): plays "open"

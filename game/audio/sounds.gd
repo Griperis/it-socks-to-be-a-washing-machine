@@ -43,6 +43,8 @@ var _flat: Array[AudioStreamPlayer] = []
 var _world: Array[AudioStreamPlayer3D] = []
 var _next_flat := 0
 var _next_world := 0
+## When each event last played, on the clock (seconds), for its min_gap.
+var _last_at: Dictionary[StringName, float] = {}
 var _loops: Dictionary[StringName, AudioStreamPlayer] = {}
 var _randomizers: Dictionary[StringName, AudioStream] = {}
 ## The layout file's own level of each bus, in dB: the mix the volume settings are multiplied onto.
@@ -68,6 +70,7 @@ func _ready() -> void:
 		var index := AudioServer.get_bus_index(bus)
 		_mix_db[bus] = float(layout.get("bus/%d/volume_db" % index))
 		Settings.register({VOLUME_KEYS[bus]: 1.0})
+	Settings.register({PadRumble.SETTING: true})
 	Settings.changed.connect(_on_setting)
 	apply_volumes()
 
@@ -79,28 +82,33 @@ func has_event(name: StringName) -> bool:
 ## Plays a flat event: the player's own sounds, the UI.
 func play(name: StringName) -> void:
 	var e := _asked(name, false)
-	if e == null:
+	if e == null or _too_soon(e):
 		return
 	var voice := _flat[_next_flat]
 	_next_flat = (_next_flat + 1) % VOICES
 	voice.stream = _stream_of(e)
 	voice.bus = e.bus
 	voice.volume_db = e.volume_db
+	voice.pitch_scale = 1.0
 	voice.play()
 	last_voice = voice
 	played.emit(name, false, Vector3.ZERO, voice.bus)
 
 
 ## Plays a world event from `where` (a point of the level), muffled when a shut Door is between.
-func play_at(name: StringName, where: Vector3) -> void:
+## `strength` (0 soft to 1 hard, a bounce's hit speed) makes it quieter and lower the softer it is, by
+## the event's soft_db, soft_pitch and hard_pitch; the default 1 plays it as the event says.
+func play_at(name: StringName, where: Vector3, strength := 1.0) -> void:
 	var e := _asked(name, true)
-	if e == null:
+	if e == null or _too_soon(e):
 		return
+	strength = clampf(strength, 0.0, 1.0)
 	var voice := _world[_next_world]
 	_next_world = (_next_world + 1) % VOICES
 	voice.stream = _stream_of(e)
 	voice.bus = MUFFLED + e.bus if is_muffled(where) and AudioServer.get_bus_index(MUFFLED + e.bus) >= 0 else e.bus
-	voice.volume_db = e.volume_db
+	voice.volume_db = e.volume_db + lerpf(e.soft_db, 0.0, strength)
+	voice.pitch_scale = lerpf(e.soft_pitch, e.hard_pitch, strength)
 	voice.global_position = where
 	voice.play()
 	last_voice = voice
@@ -180,6 +188,16 @@ func reset() -> void:
 	_next_flat = 0
 	_next_world = 0
 	last_voice = null
+	_last_at.clear()
+
+
+## Whether `e` played less than its min_gap ago (then this play is dropped); else notes this one.
+func _too_soon(e: SoundEvent) -> bool:
+	var now := Time.get_ticks_msec() / 1000.0
+	if e.min_gap > 0.0 and now - float(_last_at.get(e.event, -INF)) < e.min_gap:
+		return true
+	_last_at[e.event] = now
+	return false
 
 
 func _on_setting(key: String) -> void:

@@ -20,3 +20,13 @@ extends Resource
 @export var loop := false
 ## Where the clips came from and what is left to decide, for the person editing.
 @export_multiline var note := ""
+## The least time between two plays of this event, in seconds: a play sooner than this after the last
+## is dropped (a bounce heard 20 times in one tick is one bounce). 0 plays every one.
+@export_range(0.0, 2.0, 0.01, "suffix:s") var min_gap := 0.0
+@export_group("By strength")
+## For a play asked with a strength (a bounce's hit speed, 0 soft to 1 hard): how much quieter than
+## `volume_db` the softest is, and the pitch scale of the softest and of the hardest. All at their
+## defaults, the strength changes nothing.
+@export_range(-40.0, 0.0, 0.5, "suffix:dB") var soft_db := 0.0
+@export_range(0.25, 4.0, 0.01) var soft_pitch := 1.0
+@export_range(0.25, 4.0, 0.01) var hard_pitch := 1.0

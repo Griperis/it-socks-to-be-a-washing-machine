@@ -318,6 +318,8 @@ func _acting() -> bool:
 
 ## T01: starts a charge (the ring shows, empty) or ends one (the ring hides).
 func _set_charge(on: bool) -> void:
+	if on and not charging:
+		Sounds.play(&"throw_charge")
 	charging = on
 	charge = 0.0
 	_ring.value = 0.0
@@ -396,6 +398,7 @@ func drop_spot() -> Dictionary:
 
 ## Shows a refusal on the HUD for a moment.
 func say(text: String) -> void:
+	Sounds.play(&"refuse")
 	_message.text = text
 	_message_left = hands_tuning.refusal_time
 	_message.visible = true
@@ -472,6 +475,8 @@ func _aims_full_drawer() -> bool:
 
 ## A refusal the Host answered to this player shows on the HUD.
 func _on_applied(ev: Dictionary) -> void:
+	if _hands != null:
+		Hearing.applied(ev, player_id(), _hands.parts)
 	if ev.get("ok", false) or int(ev.get("by", 0)) != player_id() or _hands == null:
 		return
 	var to := _hands.parts.of(StringName(ev.get("to", &""))) if _hands.parts != null else null
