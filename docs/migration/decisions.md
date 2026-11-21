@@ -1,4 +1,4 @@
-Next free Q number: Q2354 (update this line whenever a round of questions is asked)
+Next free Q number: Q2356 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -266,3 +266,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2351: house plan: the laundry and bedroom doorways keep their old places through an off-centre door piece.
 - Q2352: house plan: outer wall centre lines 10.5 m apart (inside 10.3 m, 0.2 m wider than the old house).
 - Q2353: house plan: storeys 3.0 m with the old clear heights kept (2.7, 2.7, 2.6 m) through thicker ceiling tiles.
+- Q2354: house plan: the roof at 40 degrees (ridge 3.88 m over the attic floor; the old house was 37.4).
+- Q2355: house plan: openings, "We can try multiple things here": the kit gets both the old-width window pieces and grid-rounded ones, compared side by side on a still before one is chosen (the lead's reading).
