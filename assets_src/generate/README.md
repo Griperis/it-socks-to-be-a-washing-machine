@@ -41,7 +41,8 @@ Plain Python. Compares node names, parents and transforms, each mesh's materials
 every vertex position (0.1 mm tolerance), the skins' bones, and the embedded pictures pixel by pixel. Collision-only
 nodes are skipped. Prints `MESH-SAME` or `MESH-DIFF` per glb and `PASS glb_compare` or `FAIL glb_compare`.
 
-Last run (2026-11-21, bpy 5.3.0), both from the scripts and from the `.blend` files:
+Last run (2026-11-21, bpy 5.3.0), both from the scripts and from the `.blend` files; from the scripts again with the
+pinned Blender binary 5.3.0 (`kit/tools/blender.sh`): 97/97 the same.
 
 | Family | From the script | From the `.blend` |
 |---|---|---|
