@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: in-progress
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: ["[[11-outline]]", "[[23-flights-flip-and-throw-from-hand]]"]
 notes: []
 terms: []
@@ -84,6 +84,7 @@ code: `reference/it-socks/game/core/game.gd:1445-1470`, `game/hands/hands_rules.
 - No still (sound only). The designer listens in a play session; the ticket waits for batch 6.
 
 ## Answers
+- W15 (the pop of a returned lost Sock) moves to core/16 with the return motion it plays on (the lead, 2026-11-21).
 - The bounce follows the hit speed: soft hits quiet, hard ones louder and higher (Q2371, 2026-11-21).
 - Each sound event has a minimum gap set in its SoundEvent, e.g. 0.05 s for bounce (Q2372).
 - The shelve sound plays at the click, as the old game (Q2373).
