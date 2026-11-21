@@ -69,6 +69,8 @@ func cases() -> Array[Dictionary]:
 				"title": "A15: with Sock Sense (and Smarts) the aimed loose Sock shows the readout it would have once picked, a Pair when it would fuse"},
 		{"name": "a16_zoo_switches", "method": "case_a16", "world": false,
 				"title": "A16: both flags are on in the zoo, and a station switch toggles each by the use key"},
+		{"name": "r3_wheel_cap", "method": "case_r3", "world": false,
+				"title": "R3: the held readout's wheel keycap follows a switch from keyboard to pad at once"},
 		{"name": "pad_keys", "method": "case_pad_keys", "world": false,
 				"title": "the keycaps follow the last input: a pad press shows the pad's glyphs, a key press the keyboard's"},
 	]
@@ -390,6 +392,21 @@ func case_a16() -> void:
 	await _until(func() -> bool: return not _player.upgrades.sock_sense, "E turns Sock Sense off")
 	_check((_station.get_node("SenseSwitch/Looks/Label") as Label3D).text == "Sock Sense: off", "its label says off")
 
+
+func case_r3() -> void:
+	await _build()
+	var d := _mess.design_of(SOCK)
+	_hud.pad = false
+	_hud.show_held(d, false, "1/3", true, true)
+	var keyboard := _hud.hands_text()
+	_hud.pad = true
+	_hud.show_held(d, false, "1/3", true, true)
+	_check(_hud.hands_text() != keyboard, "the readout redraws for the pad (%s | %s)" % [keyboard, _hud.hands_text()])
+	_hud.show_sense(d, false, "1/3", true)
+	var sense := _hud.sense_text()
+	_hud.pad = false
+	_hud.show_sense(d, false, "1/3", true)
+	_check(_hud.sense_text() != sense, "the sense readout too")
 
 func case_pad_keys() -> void:
 	await _build()

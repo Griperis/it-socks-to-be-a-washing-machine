@@ -36,6 +36,9 @@ const VOLUME_KEYS := {
 const MUFFLE_HOPS := 6
 ## How far past a thing the next look starts.
 const HOP_STEP := 0.02
+## A hit this close to the sound's own place is the thing that makes it (a Door's close sound is at
+## the shut Door): it does not muffle it.
+const OWN_HIT := 0.08
 
 var catalogue: SoundCatalogue = CATALOGUE
 
@@ -154,7 +157,7 @@ func is_muffled(where: Vector3) -> bool:
 	var from := camera.global_position
 	for hop in MUFFLE_HOPS:
 		var hit := PhysicsQueries.ray(self, from, where, Mess.LAYER_HOUSE)
-		if hit.is_empty():
+		if hit.is_empty() or (hit["position"] as Vector3).distance_to(where) < OWN_HIT:
 			return false
 		var part := Parts.part_of(hit["collider"] as Node)
 		if part is Openable and not (part as Openable).open and catalogue.muffling_scenes.has(part.get_parent().scene_file_path):

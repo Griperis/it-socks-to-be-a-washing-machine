@@ -36,6 +36,9 @@ var highest := 0.0
 ## The Body's own transform, round and at rest (what the squash and hop are put on).
 var rest := Transform3D.IDENTITY
 
+## The landing Animation of each set of tuning numbers, made once ({numbers: Animation}).
+static var _made: Dictionary[String, Animation] = {}
+
 var _player: AnimationPlayer
 var _last_vy := 0.0
 var _body: Node3D
@@ -52,11 +55,21 @@ func _ready() -> void:
 	add_child(_player)
 	_player.root_node = ^".."
 	var library := AnimationLibrary.new()
-	library.add_animation(LAND, landing(tuning))
+	library.add_animation(LAND, landing_of(tuning))
 	_player.add_animation_library(&"", library)
 	_player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS
 	var body := _falling()
 	_last_vy = body.linear_velocity.y if body != null else 0.0
+	# With no falling body (a Cabinet flier moved by a tween) there is nothing to watch.
+	set_physics_process(body != null)
+
+
+## The landing Animation of `t`, made once per set of numbers.
+static func landing_of(t: BallLandingTuning) -> Animation:
+	var key := "%s|%s|%s|%s" % [t.bounce_time, t.squash_time, t.squash, t.bounce_height]
+	if not _made.has(key):
+		_made[key] = landing(t)
+	return _made[key]
 
 
 ## The landing's animation from `t`: the first squash and the hop from its start, the second squash
@@ -88,6 +101,8 @@ func land() -> void:
 	landings += 1
 	_player.stop()
 	_player.play(LAND)
+	# One landing a flight: nothing more to watch for in the physics step.
+	set_physics_process(false)
 
 
 func _physics_process(_delta: float) -> void:

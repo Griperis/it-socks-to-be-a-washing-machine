@@ -70,6 +70,11 @@ var _mess: Mess
 ## drawer index (D11).
 var _pending: Dictionary[int, int] = {}
 var _waiting: Dictionary[int, Array] = {}
+## The drawers' Openables (bottom first) and each drawer's slot points, found once by dress() and
+## again whenever it swaps a Looks.
+var _drawers: Array[Openable] = []
+var _slots: Array[Array] = []
+var _found := false
 
 
 func _ready() -> void:
@@ -97,10 +102,55 @@ func dress() -> void:
 	var root := get_parent()
 	_put_looks(root, looks_path(collection, false))
 	var drawer_looks := looks_path(collection, true)
-	for i in drawer_count():
+	_find_drawers()
+	for i in _drawers.size():
 		# A new drawer Looks starts shut: it is put in its drawer's pose at once.
-		if _put_looks(root.get_node(NodePath(DRAWER % (i + 1))), drawer_looks) and drawer(i) != null:
-			drawer(i)._show(true)
+		if _put_looks(root.get_node(NodePath(DRAWER % (i + 1))), drawer_looks):
+			_drawers[i]._show(true)
+	_find_slots()
+
+
+## Finds the drawers once (Drawer1..N, each with its Openable; the first gap ends the row).
+func _find_drawers() -> void:
+	_drawers.clear()
+	var root := get_parent()
+	if root == null:
+		return
+	var n := 1
+	while root.has_node(NodePath(DRAWER % n)):
+		_drawers.append(root.get_node_or_null(NodePath((DRAWER % n) + "/Openable")) as Openable)
+		n += 1
+	_found = true
+
+
+## Finds each drawer's slot points (Slot01..) in its Looks once.
+func _find_slots() -> void:
+	_slots.clear()
+	var root := get_parent()
+	for i in _drawers.size():
+		var found: Array[Node3D] = []
+		var looks := root.get_node_or_null(NodePath((DRAWER % (i + 1)) + "/" + String(LOOKS)))
+		if looks != null:
+			var j := 1
+			var slot := looks.find_child(SLOT % j, true, false) as Node3D
+			while slot != null:
+				found.append(slot)
+				j += 1
+				slot = looks.find_child(SLOT % j, true, false) as Node3D
+		_slots.append(found)
+
+
+## The answer that sets the lock and the Rows in use: this Cabinet's state and each drawer's `locked`
+## (a drawer is shut to every player while the Cabinet is locked or the drawer is above its Rows: the
+## Host refuses an `open` straight at the drawer, R1). Pass it to Parts.load_snapshot or grant it.
+func lock_patch(now_locked: bool, now_rows: int) -> Dictionary:
+	var changes := {id: {"locked": now_locked, "rows": now_rows}}
+	var in_use := clampi(now_rows, 0, drawer_count())
+	for i in drawer_count():
+		var d := drawer(i)
+		if d != null:
+			changes[d.id] = {"locked": now_locked or i >= in_use}
+	return changes
 
 
 ## Swaps `owner_node`'s Looks for the scene at `path`; true when it did.
@@ -158,17 +208,18 @@ static func of(part: Part) -> Cabinet:
 
 ## How many drawers it has (its Drawer1..N).
 func drawer_count() -> int:
-	var n := 0
-	while get_parent() != null and get_parent().has_node(NodePath(DRAWER % (n + 1))):
-		n += 1
-	return n
+	if not _found:
+		_find_drawers()
+	return _drawers.size()
 
 
 ## Drawer `index`'s Openable (0 is the bottom drawer), or null.
 func drawer(index: int) -> Openable:
-	if index < 0 or get_parent() == null:
+	if not _found:
+		_find_drawers()
+	if index < 0 or index >= _drawers.size():
 		return null
-	return get_parent().get_node_or_null(NodePath((DRAWER % (index + 1)) + "/Openable")) as Openable
+	return _drawers[index]
 
 
 ## The index of the drawer whose Openable `openable` is, or -1.
@@ -385,7 +436,7 @@ func _is_drawer_front(node: Node) -> bool:
 	if root == null:
 		return false
 	for i in rows_in_use():
-		var d := root.get_node_or_null(NodePath(DRAWER % (i + 1)))
+		var d := drawer(i).get_parent() if drawer(i) != null else null
 		if d != null and (node == d or d.is_ancestor_of(node)):
 			return true
 	return false
@@ -399,15 +450,13 @@ func _show(now: bool) -> void:
 	if get_parent().is_node_ready():
 		dress()
 	var mess := mess_of()
-	for i in drawer_count():
-		var looks := get_parent().get_node_or_null(NodePath((DRAWER % (i + 1)) + "/Looks"))
-		if looks == null:
-			continue
+	if _slots.size() != drawer_count():
+		_find_slots()
+	for i in _slots.size():
 		var held := contents(i)
 		var j := 0
-		while true:
-			var slot := looks.find_child(SLOT % (j + 1), true, false) as Node3D
-			if slot == null:
+		for slot: Node3D in _slots[i]:
+			if not is_instance_valid(slot):
 				break
 			var want := held[j] if j < held.size() else -1
 			var ball := slot.get_node_or_null(NodePath(BALL)) as Node3D

@@ -28,3 +28,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41, 0)
 
 [node name="Drawer3" parent="." instance=ExtResource("4_drawer")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.71, 0)
+
+[node name="Openable" parent="Drawer3" index="0"]
+locked = true

@@ -105,7 +105,7 @@ func show_aimed(letter: String, key: String) -> void:
 ## Sock Sense (A15): the aimed loose Sock as the Hands would show it once picked (`pair` when it
 ## would fuse with a held mate), `count` "held/capacity" then; a null `design` clears it.
 func show_sense(design: SockDesign, pair := false, count := "", wheel := false) -> void:
-	var sig := "" if design == null else "%d|%s|%s|%s" % [design.id, pair, count, wheel]
+	var sig := "" if design == null else "%d|%s|%s|%s|%s" % [design.id, pair, count, wheel, pad]
 	if not _changed("sense", sig):
 		return
 	_clear(_sense)
@@ -115,7 +115,7 @@ func show_sense(design: SockDesign, pair := false, count := "", wheel := false) 
 ## The held readout (A14 and the base): with nothing held (`design` null) nothing; without Sock
 ## Smarts only the boxed Size; with it the full readout.
 func show_held(design: SockDesign, pair := false, count := "", wheel := false, smarts := false) -> void:
-	var sig := "" if design == null else "%d|%s|%s|%s|%s" % [design.id, pair, count, wheel, smarts]
+	var sig := "" if design == null else "%d|%s|%s|%s|%s|%s" % [design.id, pair, count, wheel, smarts, pad]
 	if not _changed("held", sig):
 		return
 	_clear(_held)

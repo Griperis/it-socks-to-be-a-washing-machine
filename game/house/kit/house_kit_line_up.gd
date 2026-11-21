@@ -64,7 +64,7 @@ func build() -> void:
 			label.text = file.get_basename()
 			label.pixel_size = 0.004
 			label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-			label.position = piece.position + Vector3(box.get_center().x, lift + box.end.y + 0.3, box.get_center().z)
+			label.position = piece.position + Vector3(box.get_center().x, box.end.y + 0.3, box.get_center().z)
 			add_child(label)
 			x += _snap_up(box.end.x - _snap_down(box.position.x)) + step
 			depth = maxf(depth, box.end.z - _snap_down(box.position.z))

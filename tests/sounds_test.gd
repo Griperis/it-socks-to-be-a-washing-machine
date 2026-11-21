@@ -40,6 +40,10 @@ func cases() -> Array[Dictionary]:
 				"title": "S05: a world sound plays from where it happens (unit size 3 m, max 20 m), a flat one plays flat"},
 		{"name": "s05_wrong_kind", "method": "case_s05_kind", "world": false,
 				"title": "S05: asking a world event flat, a flat one from a spot, or an unknown name is an error and plays nothing"},
+		{"name": "r7_catalogue_index", "method": "case_r7", "world": false,
+				"title": "R7: the catalogue indexes its events once; a duplicate name or a null entry is one error, not one a play"},
+		{"name": "r8_door_own_sound", "method": "case_r8_door", "world": false,
+				"title": "R8: the Door's own close sound, played at the shut Door's place, is not muffled by that Door"},
 		{"name": "s06_muffle", "method": "case_s06", "world": false,
 				"title": "S06, real path: in the zoo a sound behind a shut Door goes to the muffled bus (-9 dB, 900 Hz), in the open it does not, and once the player opens the Door by use it does not"},
 		{"name": "s07_steps", "method": "case_s07", "world": false,
@@ -242,6 +246,35 @@ func case_s06() -> void:
 	Sounds.reset()  # the min gap of bounce (core/25) forgotten
 	Sounds.play_at(&"bounce", behind)
 	_check(_heard.back()["bus"] == &"SFX", "and plays on SFX")
+
+
+func case_r7() -> void:
+	var cat := SoundCatalogue.new()
+	var a := SoundEvent.new()
+	a.event = &"one"
+	var b := SoundEvent.new()
+	b.event = &"one"
+	var list: Array[SoundEvent] = [a, null, b]
+	cat.events = list
+	_expect_error("twice")
+	_expect_error("null entry")
+	_check(cat.find(&"one") == a, "the first of a repeated name is kept")
+	for i in 5:
+		cat.find(&"one")
+		cat.find(&"missing")
+	_check(cat.names() == [&"one", &"one"], "names skips the null entry")
+
+
+func case_r8_door() -> void:
+	await _zoo_up()
+	var player := _zoo.get_node("Player") as Player
+	_stand(player, STATION + DOOR + Vector3(0.0, 0.0, 2.5))
+	await _physics_ticks(3)
+	await _frames(2)
+	var door := _zoo.get_node("Stations/Sounds/Door") as Node3D
+	_check(not (door.get_node("Openable") as Openable).open, "the Door is shut")
+	_check(not Sounds.is_muffled(door.global_position), "a sound at the shut Door's own place is not muffled by it")
+	_check(Sounds.is_muffled(STATION + BEHIND_DOOR), "a spot behind it still is")
 
 
 ## Whether the way from the player's eyes to `spot` meets the Door (a case's own check of the answer).

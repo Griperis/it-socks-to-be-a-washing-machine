@@ -25,6 +25,8 @@ func cases() -> Array[Dictionary]:
 				"title": "a snapshot taken open, written as text and loaded into a fresh level gives the open pose"},
 		{"name": "locked", "method": "case_locked", "world": false,
 				"title": "a locked cupboard refuses to open and its door stays shut"},
+		{"name": "r2_same_open", "method": "case_r2", "world": false,
+				"title": "R2: a patch that leaves `open` as it is (a lock) on a resting cupboard replays no swing"},
 		{"name": "push", "method": "case_push", "world": false,
 				"title": "the opening door pushes a box that stands in its way"},
 	]
@@ -148,6 +150,16 @@ func case_locked() -> void:
 	_check(not openable.open and heard == ["locked"], "it refuses: locked")
 	await _frames(5)
 	_check(_shows_shut(openable), "its door stays shut")
+
+
+func case_r2() -> void:
+	var openable := _build(looks_paths()[0])
+	openable.use(Parts.HOST)
+	await _until(func() -> bool: return not openable.is_moving() and openable.open, "the cupboard to rest open")
+	openable.parts.apply({"ok": true, "changes": {OPENABLE: {"locked": true}}})
+	_check(openable.locked and not openable.is_moving(), "a lock patch on the open cupboard starts no swing")
+	openable.parts.apply({"ok": true, "changes": {OPENABLE: {"locked": false, "open": false}}})
+	_check(openable.is_moving(), "a patch that shuts it still swings")
 
 
 func case_push() -> void:

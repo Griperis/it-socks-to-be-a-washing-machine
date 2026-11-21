@@ -88,10 +88,15 @@ func _queue_batch() -> void:
 	if cat == null or cat.size() == 0:
 		return
 	var batch := PackedInt32Array()
+	var misses := 0
 	while batch.size() < tuning.batch:
 		var design := cat.design(_next_design % cat.size())
 		_next_design += 1
 		if design == null:
+			# No Design comes back: stop after one lap of the catalogue, never spin.
+			misses += 1
+			if misses >= cat.size():
+				break
 			continue
 		batch.append(design.id)
 		batch.append(design.id)

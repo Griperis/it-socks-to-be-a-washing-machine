@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: []
 notes: []
 terms: []
@@ -53,5 +53,25 @@ before the fix. No behaviour the designer sees changes, except that the faults g
 - The review's findings are fixed (Q2404, 2026-11-21).
 
 ## Open follow-ups
+- [later] R8(b): `Footsteps` (`game/audio/footsteps.gd:42,50`) plays `land` and `step_*` flat at full level for any
+  body it is put on; today only the own player has one. When Guests get bodies (M0.6) their footsteps must play
+  spatially at the body, not flat. Not changed now.
 
 ## Built log
+
+### 2026-11-21
+Changed: R1 `Cabinet.lock_patch(locked, rows)` builds the answer that sets lock and Rows and each drawer's
+`locked`; `cabinet.tscn` Drawer3 ticked locked (Rows 2); the Host refuses a Guest's direct `open`. R2 `Openable._show`
+returns when `open` is unchanged and not `now` (no swing, no sound). R3 `pad` in the held and sense signatures.
+R4 `HeapSpout._queue_batch` stops after one lap of misses. R5 line-up label no longer adds `lift` twice.
+R6 `BallLanding` stops its physics step after landing and with no RigidBody parent; the landing Animation is built
+once per set of numbers (`landing_of`). R7 `SoundCatalogue` indexes once per list size, `push_error` for a null or
+repeated name. R8(a) was real (reproduced): `Sounds.is_muffled` ignores a hit within 8 cm of the sound's place;
+R8(b) is a `[later]` above. R9 `Outline._enter_tree` restarts `_process` (reproduced with a blend-shaped mesh).
+R10 `Cabinet` caches drawers and slot points in `dress()`. Existing cabinet cases that grow Rows use `lock_patch`.
+Files: game/entities/cabinet/cabinet.gd, cabinet.tscn, game/parts/openable.gd, game/ui/hud.gd,
+game/zoo/heap/heap_spout.gd, game/house/kit/house_kit_line_up.gd, game/sock/ball_landing.gd,
+game/audio/sound_catalogue.gd, game/audio/sounds.gd, game/outline/outline.gd, tests (cabinet, cupboard, aim_screen,
+heap, house_kit, feedback_polish, sounds, outline).
+Verified: PASS 16279 checks, 372 cases. Failing before the fix was seen for R8(a) and R9; the co-op R1 case uses the
+Host's `answer` for a Guest's id, not a real ENet peer.
