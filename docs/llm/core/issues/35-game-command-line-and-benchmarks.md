@@ -6,7 +6,7 @@ area: tools
 feature: core
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: []
 notes: []
 terms: []
@@ -71,3 +71,4 @@ script beside it.
   Verified: PASS 16766 checks, 393 cases; `bash tools/mess_bench.sh --only=idle_500` PASS (tick 0.009/0.015 ms). The zoo (main scene) still loads for one frame before a `--bench`/`--scene` start replaces it (Godot reads main_scene before autoloads); the get_node() ERROR it caused (the zoo's deferred start ran after the swap) is gone because the swap now waits a frame.
 - 2026-11-21 (lead's fixes): Changed: the swap waits one frame, so the zoo's deferred start no longer hits a freed zoo (ERROR gone); the zoo itself still loads one frame (Godot reads main_scene before autoloads; only a boot scene as main scene or a re-exec would avoid it, both touch what the tools read as the main scene). Pacing: the engine hides its own flags from `OS.get_cmdline_args()`, and `Engine.time_scale` scales the physics delta (sim broken: lost 471) while `max_fps=10` is real time (hours), so nothing sets six ticks a frame at run time; `MessBench` counts its first frames' ticks and, under two a frame, prints one `FAIL mess bench: needs --fixed-fps 10 ...` line, exit 2. Exe form: `"It Socks.exe" --fixed-fps 10 -- --bench=mess`.
   Numbers (tick med/p95/worst ms): idle_500 exe 0.014/0.054/0.075, script 0.009/0.020/0.095; pour_500 exe 4.952/7.979/15.363, script 4.847/7.952/8.730 (both: flips 5, the counted-not-held fault of core/31, so pour_500 reads FAIL either way).
+- Merged: 9a31f751 (2026-11-21, branch core/35-game-command-line-and-benchmarks)

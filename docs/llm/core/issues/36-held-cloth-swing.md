@@ -6,7 +6,7 @@ area: core
 feature: core
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: []
 notes: []
 terms: []
@@ -72,3 +72,4 @@ lag. Look work: find candidates, show them, change nothing until the designer pi
   override, `turn_view:quick`). Verified: see the commit.
 - Model: Sonnet: tuning trials, measurement and strips.
 - 2026-11-21 (S5). Changed: drag 0.25 in sock_cloth_tuning.tres (and the .gd default and its comment), in the four looks_*.tscn; hand_details_test now expects 0.25; real-path case in held_cloth_swing_test. Verified: see the commit.
+- Merged: 7e66c2a2 (2026-11-21, branch core/36-held-cloth-swing)

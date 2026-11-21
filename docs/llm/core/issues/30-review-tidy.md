@@ -97,3 +97,4 @@ Runs after core/28, 29, 31 and 34 because it touches their files (paths as core/
   tools/old_house_build.gd, tests/sounds_test.gd (new case core30_button_scene), tools/shots/sets/review-tidy.txt
 - Verified: `PASS 16722 checks, 363 cases` (--touched); `builds/review-core-30/` (33 shots, before at c8ac0f5):
   28 identical to the pixel, 5 differ only in the heap counter's live "Tick ms" digits.
+- Merged: 73f26271 (2026-11-21, branch core/30-review-tidy)
