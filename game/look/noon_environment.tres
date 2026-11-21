@@ -1,11 +1,16 @@
-[gd_resource type="Environment" format=3]
+[gd_resource type="Environment" format=3 uid="uid://ducjspjkhsl37"]
 
 [ext_resource type="Shader" uid="uid://6quf0gcvup7v" path="res://game/look/day_sky.gdshader" id="1_shader"]
 [ext_resource type="Texture2D" uid="uid://dantickggu07x" path="res://assets/sky/suburban_garden_2k.hdr" id="2_day"]
 
-; The old game's picture at a fixed noon (core/18): the day HDRI sky with ambient light and reflections from it, AgX at
-; exposure 1.1, the old SSAO and glow. Numbers are the old game's (room.gd _polish and _build_light, day_cycle.gd noon);
-; Picture applies the colour grade and the graphics preset on top.
+[sub_resource type="Gradient" id="Gradient_noon"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0, 0.012, 0.045, 1, 0.5, 0.5, 0.49, 1, 1, 0.975, 0.93, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_noon"]
+gradient = SubResource("Gradient_noon")
+width = 64
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sky"]
 shader = ExtResource("1_shader")
 shader_parameter/day_panorama = ExtResource("2_day")
@@ -20,14 +25,6 @@ shader_parameter/horizon_haze = 0.35
 
 [sub_resource type="Sky" id="Sky_noon"]
 sky_material = SubResource("ShaderMaterial_sky")
-
-[sub_resource type="Gradient" id="Gradient_noon"]
-offsets = PackedFloat32Array(0, 0.5, 1)
-colors = PackedColorArray(0, 0.012, 0.045, 1, 0.5, 0.5, 0.49, 1, 1, 0.975, 0.93, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_noon"]
-gradient = SubResource("Gradient_noon")
-width = 64
 
 [resource]
 background_mode = 2
