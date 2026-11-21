@@ -223,6 +223,37 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			if not spot.is_empty():
 				hands.drop(player.player_id(), spot["point"], spot["normal"])
 			return true
+		"landing_cam":
+			# core/16 P04: a camera low beside where the crosshair points on the floor, looking at it
+			# (a dropped Pair's landing seen from the side).
+			var player := world.get_node("Player") as Player
+			var spot := player.drop_spot()
+			if spot.is_empty():
+				return false
+			var at := spot["point"] as Vector3
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 40.0
+			cam.global_position = at + Vector3(0.55, 0.12, 0.35)
+			cam.look_at(at + Vector3(0.0, 0.05, 0.0))
+			cam.make_current()
+			return true
+		"lose_socks":
+			# core/16 P12: the handling station's Lose button is used: its Socks come back at the zoo's
+			# return spot, scattered; a camera looks down on the spot.
+			var player := world.get_node("Player") as Player
+			var station := world.get_node("Stations/Handling") as Node3D
+			player.global_position = station.to_global(Vector3(-1.4, 0.0, 1.4))
+			player.reset_physics_interpolation()
+			var spot := world.get_node("ReturnSpot") as Marker3D
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 45.0
+			cam.global_position = spot.global_position + Vector3(0.0, 1.1, 0.9)
+			cam.look_at(spot.global_position)
+			cam.make_current()
+			(station.get_node("Lose/LoseButton") as LoseButton).use(player.player_id())
+			return true
 		"throw_lob":
 			# The held Sock is thrown ahead with a light charge, landing in view.
 			var player := world.get_node("Player") as Player

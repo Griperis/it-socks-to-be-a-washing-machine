@@ -8,7 +8,8 @@
 ##   pose the Mess draws, so nothing pops when it comes to rest (D04); a Sock switched on blends in
 ##   from flat, which also hides the node's first tick after a switch;
 ## - the ground: its Ground plane is put on the surface under a flying Sock each tick (D05, the
-##   node's own collision: the joints slide and may crumple at the contact, Q2287).
+##   node's own collision, Q2287); within `ground_room` of it the whole bend straightens, all of it
+##   at the surface, so the chain never crumples against it (core/16 P07, Q2366).
 ## Looks of this machine only: it reads where the Sock is, never the Mess or the Hands.
 class_name SockCloth
 extends SpringBoneSimulator3D
@@ -31,6 +32,8 @@ var role := Role.RIGID
 var speed := 0.0
 ## Whether it may bend now (held, or a flying one ranked in); off, `active` is off.
 var ranked := false
+## How far over the surface under it a flying Sock is, in m (INF when held or nothing is under it).
+var ground_gap := INF
 
 ## The physics frame the ranking last ran on, shared by every Sock.
 static var _ranked_on := -1
@@ -86,9 +89,11 @@ func _physics_process(delta: float) -> void:
 	var skeleton := get_skeleton()
 	var size := skeleton.global_transform.basis.get_scale().x if skeleton != null else 1.0
 	set_gravity(0, tuning.gravity * size)
+	_place_ground(at)
 	var want := 0.0 if role == Role.FLYING and speed < tuning.flat_speed else 1.0
 	influence = move_toward(influence, want, delta / maxf(tuning.blend_time, 0.01))
-	_place_ground(at)
+	# Near the ground the whole bend straightens at once (no blend: it must not dip in first).
+	influence = minf(influence, ground_room_share(size))
 
 
 ## Switches the cloth of every Sock in `tree`'s GROUP: every held one, and the `flying_cap` flying
@@ -134,11 +139,18 @@ func _role() -> Role:
 	return Role.RIGID
 
 
-## Puts the Ground plane on the first surface under a flying Sock, facing up from it; far away when
-## held or when nothing is under it.
+## How much of the bend the room over the ground leaves (P07): 1 at `ground_room` (scaled by the
+## drawn `size`) or more, down to 0 at the surface.
+func ground_room_share(size: float) -> float:
+	if ground_gap == INF:
+		return 1.0
+	return clampf(ground_gap / maxf(tuning.ground_room * size, 0.001), 0.0, 1.0)
+
+
+## Puts the Ground plane on the first surface under a flying Sock, facing up from it, and notes how
+## far over it the Sock is; far away when held or when nothing is under it.
 func _place_ground(at: Vector3) -> void:
-	if _ground == null:
-		return
+	ground_gap = INF
 	var place := Transform3D(Basis.IDENTITY, FAR)
 	if role == Role.FLYING:
 		var hit := PhysicsQueries.ray(self, at + Vector3.UP * 0.1, at + Vector3.DOWN * tuning.ground_probe, GROUND_MASK)
@@ -146,4 +158,6 @@ func _place_ground(at: Vector3) -> void:
 			var up := (hit["normal"] as Vector3).normalized()
 			var side := up.cross(Vector3.FORWARD if absf(up.z) < 0.9 else Vector3.RIGHT).normalized()
 			place = Transform3D(Basis(side, up, side.cross(up)), hit["position"])
-	_ground.global_transform = place
+			ground_gap = maxf((at - (hit["position"] as Vector3)).dot(up), 0.0)
+	if _ground != null:
+		_ground.global_transform = place

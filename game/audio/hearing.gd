@@ -11,6 +11,11 @@ extends RefCounted
 static func applied(ev: Dictionary, me: int, parts: Parts) -> void:
 	if not ev.get("ok", false):
 		return
+	# core/16 P12b (core/25 W15): a lost Sock or Pair came back; everyone hears a pop at each.
+	var popped: Variant = ev.get(Mess.POPPED)
+	if popped is PackedVector3Array:
+		for at: Vector3 in popped:
+			Sounds.play_at(&"lost_pop", at)
 	var own := int(ev.get("by", 0)) == me
 	match StringName(ev.get("kind", &"")):
 		&"pick":

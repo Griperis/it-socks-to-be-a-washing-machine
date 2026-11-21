@@ -35,7 +35,7 @@ extends Resource
 @export_range(1.0, 20.0, 0.5, "suffix:s") var settle_limit := 6.0 # placeholder: the designer's number (today's value from the old game)
 
 ## How long a refusal ("Hands full", "Can't drop there") stays on screen.
-@export_range(0.2, 5.0, 0.1, "suffix:s") var refusal_time := 1.5 # placeholder: the designer's number (the old HUD's wobble and fade are a look ticket)
+@export_range(0.2, 5.0, 0.1, "suffix:s") var refusal_time := 2.0 # placeholder: the old HUD's 2 s (core/16 P01, P02; hud.gd _message_timer)
 
 @export_group("Throw")
 ## How long a charge takes to fill the ring, from the hold to full (T01).

@@ -331,7 +331,7 @@ func case_z04() -> void:
 	hands.throw(1, player.aim_dir(), 1.0)
 	await _until(func() -> bool: return mess.state_of(sock) == Mess.State.FLYING, "the Sock to fly")
 	await _until(func() -> bool: return mess.state_of(sock) == Mess.State.LYING, "the Sock to come down")
-	_near(mess.pose_of(sock).origin.distance_to(spot.global_position), 0.0, 0.001, "it lies at the zoo's return spot")
+	_check(mess.pose_of(sock).origin.distance_to(spot.global_position) <= mess.bodies_tuning().return_scatter + 0.001, "it lies at the zoo's return spot, scattered within its radius (core/16 P12)")
 	var looks := mess.looks_of(sock)
 	_check(looks != null and looks.get_parent() == _zoo.get_node("Lying"), "drawn in the zoo's Lying")
 

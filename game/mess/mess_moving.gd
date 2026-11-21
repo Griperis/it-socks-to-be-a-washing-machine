@@ -116,7 +116,7 @@ func tick(delta: float) -> void:
 		_speeds[sock] = body.linear_velocity.length()
 		_switch_ccd(body)
 		if not _mess.in_bounds(body.global_position):
-			_rest(sock, _return_pose(body))
+			_rest(sock, _mess.return_pose(sock), true)
 			continue
 		var pair := _mess.is_pair(sock)
 		var slow := body.linear_velocity.length() < (t.pair_rest_speed if pair else t.rest_speed) \
@@ -135,17 +135,20 @@ func tick(delta: float) -> void:
 	_start_waiting()
 
 
-## A flight that has come to rest lies where it is, or at the return spot when it would lie inside
-## a wall (T08).
+## A flight that has come to rest lies where it is, pushed up onto a floor it sank into, or at the
+## return spot when it would lie inside a wall (T08; core/16 P12, P13: Mess.put_down()).
 func _settle(sock: int) -> void:
 	var body := _flights[sock]
-	var t := body.global_transform.orthonormalized()
-	var centre := t * _middle(body)
-	_rest(sock, _return_pose(body) if PhysicsQueries.inside(_mess, centre, Mess.LAYER_HOUSE) else t)
+	var down := _mess.put_down(sock, body.global_transform.orthonormalized())
+	_rest(sock, down["pose"], down["returned"])
 
 
-func _rest(sock: int, t: Transform3D) -> void:
-	_mess.parts.ask(Command.new(&"rest", Parts.HOST, _mess.id, {"sock": sock, "at": t.origin, "rot": t.basis.get_euler()}))
+## Asks the Mess to write `sock` lying at `t`; `returned`: it was lost and came back (a pop plays).
+func _rest(sock: int, t: Transform3D, returned := false) -> void:
+	var args := {"sock": sock, "at": t.origin, "rot": t.basis.get_euler()}
+	if returned:
+		args["returned"] = true
+	_mess.parts.ask(Command.new(&"rest", Parts.HOST, _mess.id, args))
 
 
 ## Under pressure (Socks waiting, the general share of the budget full), up to `most` slow flights
@@ -284,18 +287,6 @@ static func _nearest(players: PackedVector3Array, at: Vector3) -> float:
 	for p in players:
 		best = minf(best, p.distance_to(at))
 	return 0.0 if best == INF else best
-
-
-## Where a Sock is put down when it cannot lie where its body is: the return spot, or straight under
-## the body with no spot set (a Pair's ball a radius over the spot).
-func _return_pose(body: RigidBody3D) -> Transform3D:
-	var sock := int(body.get_meta(Mess.SOCK_META, -1))
-	var lift := Vector3.UP * SockDress.ball_radius(_mess.design_of(sock)) if _mess.is_pair(sock) else Vector3.ZERO
-	var spot := _mess.return_spot
-	if spot != null and spot.is_inside_tree():
-		var t := spot.global_transform.orthonormalized()
-		return Transform3D(t.basis, t.origin + lift)
-	return Transform3D(Basis.IDENTITY, body.global_position)
 
 
 ## Lets a Sock go: one physical body from its pose, falling, or flying with its launch. A woken one
@@ -442,18 +433,6 @@ static func turn_inertia(mass: float, box: Vector3, weight: float) -> Vector3:
 	var y2 := box.y * box.y
 	var z2 := box.z * box.z
 	return mass / 12.0 * weight * Vector3(y2 + z2, x2 + z2, x2 + y2)
-
-
-## The middle of a falling body's shapes, in its own space.
-static func _middle(body: Node3D) -> Vector3:
-	var sum := Vector3.ZERO
-	var n := 0
-	for child in body.get_children():
-		var shape := child as CollisionShape3D
-		if shape != null:
-			sum += shape.position
-			n += 1
-	return sum / maxf(n, 1)
 
 
 ## A copy of a box or ball shape, `margin` bigger all round (any other shape as it is).

@@ -7,7 +7,8 @@ extends Resource
 
 @export_group("Bend")
 ## How hard each bone pulls back to its rest direction, per second (the node's own stiffness).
-@export_range(0.0, 20.0, 0.05) var stiffness := 2.0 # placeholder: tuned by eye to the old droop and lag (the designer's go on the cloth strip)
+## Raised from core/09's 2 so it flaps less and a steady walk sways little (core/16 P06, Q2366).
+@export_range(0.0, 20.0, 0.05) var stiffness := 5.0 # placeholder: tuned by eye to flap less (the designer's go on the core/16 cloth strip)
 ## How fast the chain droops, in m/s at a Sock's medium Size (the node's gravity is a speed, not an
 ## acceleration); a held Sock, drawn smaller, droops by the same share of its length.
 @export_range(0.0, 20.0, 0.05, "suffix:m/s") var gravity := 3.0 # placeholder: tuned by eye to the old droop and lag (the designer's go on the cloth strip)
@@ -23,5 +24,9 @@ extends Resource
 @export_range(0.01, 2.0, 0.01, "suffix:s") var blend_time := 0.3 # placeholder: the old cloth.json settle_time
 ## How many flying Socks bend at once, the nearest to the camera (D07).
 @export_range(0, 32, 1) var flying_cap := 4 # placeholder: the old cloth.json
+## Within this height over the ground (at a Sock's medium Size) a flying Sock's whole bend
+## straightens, to none at the surface, so no part dips under it (core/16 P07; the old
+## `_ground_room()` halved it until no probe point was under the floor).
+@export_range(0.0, 1.0, 0.01, "suffix:m") var ground_room := 0.15 # placeholder: about half a Sock's length, by eye (the designer's go on the cloth strip)
 ## How far under a flying Sock the ground it may land on is looked for.
 @export_range(0.1, 10.0, 0.1, "suffix:m") var ground_probe := 3.0 # placeholder: not felt in play
