@@ -1,10 +1,10 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: core
 feature: core
-priority: later
+priority: now
 created: 2026-11-20
 done:
 blocked_by: ["[[09-hand-details]]"]
@@ -91,5 +91,31 @@ Approved (Q2292). The numbers are the old game's.
 - O08, a moving Sock under the crosshair is outlined, added (Q2341, 2026-11-20).
 
 ## Open follow-ups
+- [blocking] The first still (`builds/review-core-11/outline-lineup.png`, close-ups in `outline-closeups.png`):
+  is this the old game's outline? It is the old numbers unchanged (warm white, shells 0.003/0.006/0.0095 at
+  0.9/0.45/0.2, the same 75 degree view), and it keeps one width near and far. On the zoo's bright cream graybox
+  (the drawers, the Door) the warm white reads fainter than on the old game's darker lit Cabinet; the red "full"
+  reads clearly. Go as it is, or change the colour, width or opacity for these Looks?
+- [later] The baseline has no old still of an aimed Sock or Door, only drawers (`cab-simple`, `c-cupboard`).
+  Old-game stills of those two need the old game's capture tour with new views (not done: it runs in the
+  reference clone).
+- [later] O08: a moving Sock is outlined only while its flight has a Looks (the `flying_cap` nearest the camera,
+  core/09); a flight drawn by the flying MultiMesh has nothing to outline. Lending an aimed flight a Looks is
+  `game/mess/` (`mess.gd` `give_looks`, `mess_moving.gd`), which core/23 holds now.
+- [later] The outline station has no lying Pair: a SockSpot cannot place one. The Pair's Looks
+  (`looks_ball.tscn`) has the component; O03's Pair case can pair two Socks in the test.
+- Left after the go: the tests (one per O line, the real path through the player's aim in the outline
+  station) and `status: done`.
 
 ## Built log
+### 2026-11-21
+- Changed: one `Outline` component (`game/outline/outline.gd`) with an `OutlineStyle` Resource (`aim.tres` warm
+  white, `full.tres` red, placeholder shade) and the old stencil mask and shell shaders, ported as they were.
+  Copies are made on first show, keep skin and blend shapes, normals averaged. `Outline.of(collider)` lets the
+  player's aim show the outline of any thing that has one (O03); an aimed drawer above the Rows or full, with a
+  Pair held, takes the red tint (`Cabinet.has_room`). The Sock and Pair Looks lose their hard grown copy for the
+  component (`aimed` sets `Outline:shown`). The drawer (its front only), the Door and both cupboard Looks have
+  one. A zoo station `outline.tscn`; the shot set `outline`. Stopped at the first still (look work).
+- Files: game/outline/, game/player/player.gd, game/sock/looks_*.tscn, game/entities/{drawer,door,cupboard}/,
+  game/entities/cabinet/cabinet.gd, game/zoo/stations/outline.tscn, tools/shot_hooks.gd, tools/shots/sets/outline.txt
+- Verified: `kit/tools/run.sh --touched`: PASS 7217 checks, 208 cases; stills in `builds/review-core-11/`.

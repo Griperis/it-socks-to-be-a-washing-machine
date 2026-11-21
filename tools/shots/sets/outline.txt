@@ -1,0 +1,11 @@
+# core/11 O01, O04: the zoo's player aims at a thing of the outline station, near and far; its own aim shows the
+# outline. "full": holding a Pair at the top drawer, above the Rows (no room): the red tint.
+sock-near  --size=1280x720 --do='60:outline:sock_near' --shots=70
+sock-far  --size=1280x720 --do='60:outline:sock_far' --shots=70
+drawer-near  --size=1280x720 --do='60:outline:drawer_near' --shots=70
+drawer-far  --size=1280x720 --do='60:outline:drawer_far' --shots=70
+door-near  --size=1280x720 --do='60:outline:door_near' --shots=70
+door-far  --size=1280x720 --do='60:outline:door_far' --shots=70
+box-near  --size=1280x720 --do='60:outline:box_near' --shots=70
+cupboard-near  --size=1280x720 --do='60:outline:cupboard_near' --shots=70
+full  --size=1280x720 --do='40:outline:pair;60:outline:top_near' --shots=75

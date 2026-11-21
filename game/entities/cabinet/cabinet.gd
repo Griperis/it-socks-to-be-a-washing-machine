@@ -170,6 +170,11 @@ func room() -> int:
 	return left
 
 
+## Whether drawer `index` takes another Pair: a Row in use, not full (the old game's has_room).
+func has_room(index: int) -> bool:
+	return index >= 0 and index < rows_in_use() and contents(index).size() < tuning_of().drawer_capacity
+
+
 ## Whether the Pair led by `sock` is of this Cabinet's Collection.
 func takes(sock: int) -> bool:
 	var mess := mess_of()

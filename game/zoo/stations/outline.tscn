@@ -1,0 +1,120 @@
+[gd_scene format=3 uid="uid://dvh4amgapflsc"]
+
+[ext_resource type="PackedScene" uid="uid://h3610c6dred6" path="res://game/entities/cabinet/cabinet.tscn" id="1_cabinet"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="2_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="3_hands"]
+[ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="4_spot"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="5_designs"]
+[ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
+[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="7_coins"]
+[ext_resource type="PackedScene" uid="uid://ccaa5ngdrkqig" path="res://game/entities/door/door.tscn" id="8_door"]
+[ext_resource type="PackedScene" path="res://game/entities/cupboard/cupboard.tscn" id="9_cupboard"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="10_outline"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.3, 0.5, 0.42, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_pad")
+size = Vector2(5.8, 4.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_box"]
+albedo_color = Color(0.72, 0.62, 0.5, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_box"]
+material = SubResource("StandardMaterial3D_box")
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_box"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="Outline" type="Node3D"]
+
+[node name="Pad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, -2.3)
+pixel_size = 0.0025
+billboard = 1
+autowrap_mode = 3
+width = 1400.0
+text = "The outline: aim at a Sock, the box, a drawer, the Door or the cupboard, near and far, to see its soft warm-white outline. Hold a Pair at a drawer with no room: it turns red"
+
+[node name="Box" type="StaticBody3D" parent="."]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -2.4, 0.25, -1.1)
+
+[node name="Mesh" type="MeshInstance3D" parent="Box"]
+mesh = SubResource("BoxMesh_box")
+
+[node name="Shape" type="CollisionShape3D" parent="Box"]
+shape = SubResource("BoxShape3D_box")
+
+[node name="Outline" type="Node3D" parent="Box"]
+visible = false
+script = ExtResource("10_outline")
+
+[node name="Cabinet" parent="." instance=ExtResource("1_cabinet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, -2)
+
+[node name="Cabinet" parent="Cabinet" index="0" node_paths=PackedStringArray("hands", "coins")]
+hands = NodePath("../../Socks/Hands")
+coins = NodePath("../../Socks/Coins")
+
+[node name="Door" parent="." instance=ExtResource("8_door")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 0, -1.6)
+
+[node name="Cupboard" parent="." instance=ExtResource("9_cupboard")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0, -1.6)
+
+[node name="Spots" type="Node3D" parent="."]
+
+[node name="Sock" type="Marker3D" parent="Spots"]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -1.5, 0, -0.2)
+script = ExtResource("4_spot")
+
+[node name="Mate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 1.6)
+script = ExtResource("4_spot")
+
+[node name="Other" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0, 1.6)
+script = ExtResource("4_spot")
+design = 1
+
+[node name="OtherMate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 0, 1.6)
+script = ExtResource("4_spot")
+design = 1
+
+[node name="ReturnSpot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.8)
+
+[node name="Lying" type="Node3D" parent="."]
+
+[node name="Flights" type="Node3D" parent="."]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://game/sock/flight.tscn", "res://game/sock/ball_flight.tscn")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="."]
+
+[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+script = ExtResource("2_mess")
+catalogue = ExtResource("5_designs")
+tuning = ExtResource("6_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+bounds = AABB(-3, -2, -2.5, 6, 8, 5)
+return_spot = NodePath("../../ReturnSpot")
+
+[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess")]
+script = ExtResource("3_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("6_tuning")
+
+[node name="Coins" type="Node" parent="Socks"]
+script = ExtResource("7_coins")

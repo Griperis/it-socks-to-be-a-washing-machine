@@ -35,6 +35,8 @@ const CANT_DROP := "Can't drop there"
 ## The crosshair where a drop may go (and always with empty Hands), and where it may not.
 const CROSSHAIR_OK := Color.WHITE
 const CROSSHAIR_NO := Color(0.95, 0.25, 0.2)
+## The outline's "full" tint, on an aimed drawer with no room for the held Pairs (Q221).
+const FULL_OUTLINE := preload("res://game/outline/full.tres")
 
 @export var tuning: MoveTuning
 ## How its Hands pick, hold and drop; its capacity is here (the zoo's player holds 3, Q2244).
@@ -64,6 +66,8 @@ var crouching := false
 ## The lying Sock the crosshair rests on, or -1; the one drawn outlined.
 var aimed_sock := -1
 var _outlined := -1
+## The Outline of the thing (not a Sock) the crosshair rests on, or null; the one shown (core/11).
+var aimed_outline: Outline = null
 ## Whether a drop would be refused where the crosshair is now (the crosshair is red).
 var drop_refused := false
 ## The Hands it last bound to, and the Parts whose answers it listens to.
@@ -263,8 +267,10 @@ func _update_hands(delta: float) -> void:
 	if h == null:
 		return
 	var me := player_id()
-	aimed_sock = aim_found(h)["sock"]
+	var found := aim_found(h)
+	aimed_sock = found["sock"]
 	_outline(h.mess, aimed_sock)
+	_outline_thing(_aimed_outline(h.mess, aimed_sock, found["lying"]))
 	var holding := h.active_of(me) >= 0
 	drop_refused = holding and drop_refusal(h) != ""
 	_crosshair.modulate = CROSSHAIR_NO if drop_refused else CROSSHAIR_OK
@@ -431,6 +437,37 @@ func _outline(mess: Mess, sock: int) -> void:
 	var looks := mess.looks_of(sock) if sock >= 0 else null
 	if looks != null and SockDress.state_of(looks) != SockDress.AIMED:
 		SockDress.play(looks, SockDress.AIMED)
+
+
+## The Outline the crosshair shows besides a lying Sock's: a moving Sock's flight Looks' (O08; a
+## flight drawn without a Looks has none), else the aimed thing's (O03), else null.
+func _aimed_outline(mess: Mess, sock: int, lying: bool) -> Outline:
+	if sock >= 0:
+		return Outline.of(mess.flight_of(sock)) if not lying and mess != null else null
+	return Outline.of(_aim.get_collider() as Node)
+
+
+## O01-O04: the thing the crosshair rests on shows its Outline and the one aimed before hides its own.
+## An aimed drawer with no room for the held Pairs takes the "full" tint (Q221).
+func _outline_thing(outline: Outline) -> void:
+	if aimed_outline != outline and is_instance_valid(aimed_outline):
+		aimed_outline.shown = false
+		aimed_outline.tint = null
+	aimed_outline = outline
+	if outline == null:
+		return
+	outline.tint = FULL_OUTLINE if _aims_full_drawer() else null
+	if not outline.shown:
+		outline.shown = true
+
+
+## Whether the crosshair is on a Cabinet's drawer with no room while this player holds a Pair.
+func _aims_full_drawer() -> bool:
+	var part := part_of(_aim.get_collider() as Node)
+	var cabinet := Cabinet.of(part)
+	if cabinet == null or cabinet == part:
+		return false
+	return cabinet.holds_pair(player_id()) and not cabinet.has_room(cabinet.index_of(part))
 
 
 ## A refusal the Host answered to this player shows on the HUD.
