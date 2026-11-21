@@ -1,0 +1,66 @@
+---
+type: ticket
+status: ready-for-agent
+kind: build
+area: tools
+feature: core
+priority: now
+created: 2026-11-21
+done:
+blocked_by: []
+notes: []
+terms: []
+---
+
+# The game's command line, and the benchmarks in debug builds
+
+The designer (Q2416, 2026-11-21): "could we have the benchmarks in the game debug builds? So it's easy to run it
+anywhere - have a CLI for the game?" Today core/31's Mess benchmark is a scene that only `tools/mess_bench.sh` and
+`.cmd` start, with the editor exe on the project folder. Afterwards the game itself takes a command line: the same
+exe the designer plays (an editor run or any debug export) runs a benchmark and quits, with no project folder and no
+script beside it.
+
+## Behaviour list
+- C1 One small boot node (an autoload, or the existing `ProfilerBoot` grown into it; one file, one class) reads the
+  user arguments after `--` (`OS.get_cmdline_user_args()`) once at start. With none, the game starts as today.
+  In a release build (`not OS.is_debug_build()`) every debug command is refused with one printed line and the game
+  starts as today (the benchmarks never run there; Profily's rule, `CLAUDE.md` project values).
+- C2 Commands, each a small entry (a Resource or a const table: name, scene, one-line help), so the next benchmark
+  (the old game's graphics bench, a sound bench) is one more entry:
+  - `--help` prints the commands and their options and quits;
+  - `--bench=mess` runs core/31's Mess benchmark, with its existing options (`--only=`, `--list`, `--label=`,
+    `--commit=`, `--out=`), then quits with exit code 0 on PASS and 1 on FAIL;
+  - `--scene=<res path or station name>` starts that scene or zoo station instead of the main scene (the zoo
+    stations by their file name: `--scene=heap`), for quick looks and repro.
+  Unknown flags print the help and quit with code 2.
+- C3 Where results go: by default `user://bench/<bench>/` (the report and results JSON), and the absolute folder is
+  printed as the last line (`BENCH saved <path>`) so the player can find it; `--out=` overrides. On Windows that is
+  `%APPDATA%\Godot\app_userdata\It Socks\bench\...` (or the project's user dir name), said in the help.
+- C4 Run drawn or headless: drawn by default (a window: real frame times and draw calls on that machine's graphics
+  card, which the designer's "laggy" needs); `--headless` (Godot's own) still works and the report says which.
+  The worker-thread cap that `tools/mess_bench.sh` sets with an `override.cfg` is either applied from the command line
+  (`--threads=4`, if Godot allows setting it at start) or written in the report as "uncapped" — say which.
+- C5 `tools/mess_bench.sh` and `.cmd` become thin wrappers that start the game with `-- --bench=mess ...` (the mirror
+  and the comparison of commits stay in the `.sh`); `docs/human/mess-benchmark.md` says first how to run it from the
+  game exe: `"It Socks.exe" -- --bench=mess` (or the editor exe with `--path`), then the scripts.
+- C6 Export: the benchmark's scenes and scripts in `game/debug/` are kept in a debug export and left out of a release
+  export. No export preset exists yet (`export_presets.cfg` is the release-export skill's); write what a preset must
+  include/exclude into `docs/architecture/mess.md` "Benchmark" so the preset ticket picks it up, and add it as a
+  `[later]` follow-up here.
+
+## Acceptance
+- Real-path case: the game started with `-- --bench=mess --only=idle_500 --headless` (the suite's or a tool's own
+  launch of the project) prints the `BENCH` line, the verdict and `BENCH saved <path>`, writes the report there and
+  exits with code 0.
+- Cases: no arguments start the main scene as before; `--help` lists `bench` and `scene`; an unknown flag exits 2;
+  in a release-build stand-in (a static knob the test sets) `--bench` is refused and the game starts.
+- `--scene=heap` starts the heap station.
+- `tools/mess_bench.sh --only=idle_500` still works and gives the same numbers as before (within noise).
+
+## Answers
+- The benchmarks run from the game in debug builds, by a command line (Q2416, 2026-11-21).
+
+## Open follow-ups
+
+## Built log
+- Model: Sonnet: a boot node, a command table and wrappers.

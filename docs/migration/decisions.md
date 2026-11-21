@@ -1,4 +1,4 @@
-Next free Q number: Q2416 (update this line whenever a round of questions is asked)
+Next free Q number: Q2417 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -328,3 +328,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2413: the few Socks that still spin over 25 rad/s on an edge-first hit (7 of 500 poured) are accepted for now; turn_weight stays 3 and the benchmark keeps counting them.
 - Q2414: core/31 merges as built (the settle teleport fixed by turning physics interpolation off on the Mess's MultiMeshes, the review's Mess speed-ups, the benchmark), after its complexity report.
 - Q2415: core/21 (the rest blip) is closed: core/31 found and fixed the cause.
+- Q2416: the benchmarks run from the game itself in debug builds, by a command line (designer: "could we have the benchmarks in the game debug builds? So it's easy to run it anywhere - have a CLI for the game?"; core/35).
