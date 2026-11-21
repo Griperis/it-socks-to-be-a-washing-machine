@@ -61,6 +61,7 @@ the old core that the port lacks is listed here; only the designer drops one (Q2
 - P11 When a Pair is thrown into a drawer front, then its flight goes on to its slot (Q2316).
 - P12 When a Sock or Pair is lost, then it returns in front of the washer (the zoo's return spot, Q2261) scattered
   within 0.2 m, and a "pop" plays at each (`lost.json`, `hands_rules.gd:497, 508`; sound: core/25).
+- P12b When P12 brings a lost Sock or Pair back, then "pop" plays in 3D at each (moved from core/25 W15).
 - P13 When a Sock is sunk 0.02 m or more into a floor slab, then it is pushed up onto that floor without the pop
   (`flat_layout.gd:280-297`, Q2291).
 - P14 When two Socks fuse, then they curl along their cloth bones, curl 1.3, in the fold (`paired.json`, Q2281).

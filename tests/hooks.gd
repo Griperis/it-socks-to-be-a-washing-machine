@@ -11,3 +11,4 @@ static func scrub(_tree: SceneTree) -> void:
 	Settings.autosave = false
 	Settings.reset_to_defaults()
 	Sounds.reset()
+	PadRumble.reset()

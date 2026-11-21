@@ -42,7 +42,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "a02_row_empties", "method": "case_a02", "world": false,
 				"title": "A02: when the crosshair leaves it the aimed row empties at once"},
 		{"name": "a03_openables", "method": "case_a03", "world": false,
-				"title": "A03: a drawer, the Door and a cupboard show \"Open the X\" with the use key, \"Shut the X\" once open"},
+				"title": "A03: a Cabinet drawer shows its Cabinet's name and the Collection icon (\"Simple Cabinet Drawer\"), a cupboard its own name, the Door \"Open the Door\" and \"Shut the Door\" once open, each with the use key (Q2388)"},
 		{"name": "a04_drop_throw", "method": "case_a04", "world": false,
 				"title": "A04: with something in the Hands the corner shows \"Drop / hold: Throw\" [RMB]"},
 		{"name": "a05_zoom_turn", "method": "case_a05", "world": false,
@@ -94,7 +94,7 @@ func case_real_path() -> void:
 	_check(_hud.crosshair_tint() == Hud.CROSSHAIR_OK, "the crosshair is white")
 	_stand(BY_CABINET)
 	await _aim(_drawer_front(1))
-	await _until(func() -> bool: return _hud.prompt_text() == "[E] Open the Drawer", "the drawer's prompt (%s)" % _hud.prompt_text())
+	await _until(func() -> bool: return _hud.prompt_text() == "[E] Simple Cabinet Drawer", "the drawer's prompt (%s)" % _hud.prompt_text())
 	_check(_hud.aimed_text() == "", "the Sock's row went")
 	_stand(BY_DOOR)
 	await _aim(_door_point())
@@ -156,24 +156,36 @@ func case_a03() -> void:
 	await _build()
 	_stand(BY_CABINET)
 	await _aim(_drawer_front(1))
-	await _until(func() -> bool: return _hud.prompt_text() == "[E] Open the Drawer", "the drawer's prompt (%s)" % _hud.prompt_text())
-	var drawer := _station.get_node("Cabinet/Drawer2/Openable") as Openable
-	drawer.use(1)
-	await _until(func() -> bool: return drawer.open and _hud.prompt_text() == "[E] Shut the Drawer", "the open drawer's prompt (%s)" % _hud.prompt_text())
-	var holder := _hud.get_node("PromptRow") as Control
-	_check(is_equal_approx(holder.anchor_top, 0.58), "the prompt row at 58 % of the height")
+	await _until(func() -> bool: return _hud.prompt_text() == "[E] Simple Cabinet Drawer", "the drawer's prompt (%s)" % _hud.prompt_text())
 	var line := _hud.row("prompt").get_child(0) as HBoxContainer
 	_check(line != null and line.get_child(0).name == "Icon_key_e", "the E keycap picture")
 	_check(line != null and is_equal_approx((line.get_child(0) as TextureRect).custom_minimum_size.x, 48.0), "48 px: 1.5 times 32 pt")
-	_check(line != null and (line.get_child(1) as Label).get_theme_font_size(&"font_size") == 32, "the words at 32 pt")
+	_check(line != null and line.get_child(1).name == "Icon_simple", "then the Collection's icon")
+	_check(line != null and is_equal_approx((line.get_child(1) as TextureRect).custom_minimum_size.x, 32.0 * 1.3), "1.3 times 32 pt")
+	_check(line != null and (line.get_child(2) as Label).get_theme_font_size(&"font_size") == 32, "the words at 32 pt")
+	var holder := _hud.get_node("PromptRow") as Control
+	_check(is_equal_approx(holder.anchor_top, 0.58), "the prompt row at 58 % of the height")
+	var drawer := _station.get_node("Cabinet/Drawer2/Openable") as Openable
+	drawer.use(1)
+	await _until(func() -> bool: return drawer.open, "the drawer to open")
+	await _physics_ticks(2)
+	_check(_hud.prompt_text() == "[E] Simple Cabinet Drawer", "an open drawer keeps its name (%s)" % _hud.prompt_text())
+	var cabinet := _station.get_node("Cabinet/Cabinet") as Cabinet
+	cabinet.collection = &"lost"
+	_check(Prompt.joined(Prompts.target(drawer), " ") == "[E] Lost Socks Cabinet Drawer", "another Collection's Cabinet by the old names")
+	cabinet.collection = &"simple"
 	_stand(BY_DOOR)
 	await _aim(_door_point())
 	await _until(func() -> bool: return _hud.prompt_text() == "[E] Open the Door", "the Door's prompt (%s)" % _hud.prompt_text())
+	(_station.get_node("Door/Openable") as Openable).use(1)
+	await _until(func() -> bool: return _hud.prompt_text() == "[E] Shut the Door", "the open Door's prompt (%s)" % _hud.prompt_text())
 	var cupboard := (load(CUPBOARD) as PackedScene).instantiate()
 	var openable := cupboard.get_node("Openable") as Openable
-	_check(Prompt.joined(Prompts.target(openable), " ") == "[E] Open the Cupboard", "a cupboard reads \"Open the Cupboard\"")
+	_check(Prompt.joined(Prompts.target(openable), " ") == "[E] Cupboard", "a cupboard reads its own name (%s)" % Prompt.joined(Prompts.target(openable), " "))
 	openable.open = true
-	_check(Prompt.joined(Prompts.target(openable), " ") == "[E] Shut the Cupboard", "and \"Shut the Cupboard\" open")
+	_check(Prompt.joined(Prompts.target(openable), " ") == "[E] Cupboard", "the same open")
+	openable.title = "Cupboard A Drawer"
+	_check(Prompt.joined(Prompts.target(openable), " ") == "[E] Cupboard A Drawer", "a title names it (the old layout name)")
 	cupboard.free()
 
 

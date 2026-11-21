@@ -25,17 +25,34 @@ static func keys(action: StringName, pad := false) -> Array[String]:
 	return out
 
 
-## The crosshair's prompts for `player` aiming at Part `part` (null for none), in drawing order: an
-## openable reads "Open the X" or "Shut the X" by its state, with the use key (A03, Q2364).
+## The crosshair's prompts for the player aiming at Part `part` (null for none), in drawing order,
+## each with the use key (A03, Q2364, Q2388): the Door reads "Open the Door" or "Shut the Door" by its
+## state (its `noun`); a Cabinet's drawer its Cabinet's name and "drawer" with the Collection's icon
+## ("Simple Cabinet Drawer", the old cabinet.gd); any other openable its own name ("Cupboard A
+## Drawer": its `title`, else the name of the thing it is on, as the old room.gd named it).
 static func target(part: Part, pad := false) -> Array[Prompt]:
 	var out: Array[Prompt] = []
 	if part is Openable:
-		var openable := part as Openable
-		if openable.noun != "":
-			out.append(Prompt.of(verb_title(openable.open, openable.noun), keys(Player.INTERACT, pad)))
+		out.append(openable_prompt(part as Openable, pad))
 	elif part is UpgradeSwitch:
 		out.append(Prompt.of((part as UpgradeSwitch).title(), keys(Player.INTERACT, pad)))
 	return out
+
+
+## An openable's prompt (target()).
+static func openable_prompt(openable: Openable, pad := false) -> Prompt:
+	var use := keys(Player.INTERACT, pad)
+	if openable.noun != "":
+		return Prompt.of(verb_title(openable.open, openable.noun), use)
+	var cabinet := Cabinet.of(openable)
+	if cabinet != null and cabinet != openable:
+		var catalogue := cabinet.hands.mess.catalogue if cabinet.hands != null and cabinet.hands.mess != null else null
+		var cabinet_name := catalogue.cabinet_name(cabinet.collection) if catalogue != null else String(cabinet.collection)
+		return Prompt.of(("%s drawer" % cabinet_name).capitalize(), use, String(cabinet.collection))
+	var own := openable.title
+	if own == "" and openable.get_parent() != null:
+		own = String(openable.get_parent().name).capitalize()
+	return Prompt.of(own, use)
 
 
 ## The prompt of a part that opens or shuts, by the noun it goes by ("Open the Door").

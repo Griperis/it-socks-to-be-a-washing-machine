@@ -8,5 +8,7 @@
 [node name="Openable" type="Node" parent="."]
 script = ExtResource("1_openable")
 noun = "Door"
+open_sound = &"door_open"
+close_sound = &"door_close"
 
 [node name="Looks" parent="." instance=ExtResource("2_looks")]

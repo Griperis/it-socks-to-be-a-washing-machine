@@ -391,3 +391,18 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2378, Q2385 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/25, every core sound and rumble wired (bounce by hit speed, a min gap per sound, shelve at the click, rumble a setting, land after every jump); merged (main 68f93d8) |
+| Planned vs actual | 1 planned, 1 actual (W15 moved to core/16) |
+| Redo count | 0 |
+| Corrections | bounce follows the hit speed (Q2371); a gap per sound (Q2372); shelve at the click (Q2373) |
+| Cost | core/25 1 7,621,525 58 9m34s (Sonnet) |
+| Time | the agent ran about 10 min |
+| Surprises | a missing git blob at the agent's finish again (rewritten) |
+| Stop rules | none fired |
+| Looks | none (sound) |
+| Decisions | Q2371-Q2377 |
+
+---

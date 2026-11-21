@@ -11297,3 +11297,22 @@ collection_colours = Dictionary[StringName, Color]({
 &"vegetables": Color(0.549, 0.7765, 0.2471, 1),
 &"winter": Color(0.498, 0.7059, 0.8706, 1)
 })
+cabinet_names = Dictionary[StringName, String]({
+&"animals": "Animals cabinet",
+&"drinks": "Drinks cabinet",
+&"food": "Food cabinet",
+&"fruit": "Fruit cabinet",
+&"lost": "Lost Socks cabinet",
+&"machinery": "Machinery cabinet",
+&"math": "Math cabinet",
+&"nature": "Nature cabinet",
+&"patterns": "Patterns cabinet",
+&"simple": "Simple cabinet",
+&"space": "Space cabinet",
+&"sport": "Sport cabinet",
+&"superhero": "Superhero cabinet",
+&"tech": "Tech cabinet",
+&"transport": "Transport cabinet",
+&"vegetables": "Vegetables cabinet",
+&"winter": "Winter cabinet"
+})

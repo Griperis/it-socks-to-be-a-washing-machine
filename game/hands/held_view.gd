@@ -27,6 +27,8 @@ const HANG := Basis(Vector3.UP, 0.35) * Basis(Vector3.UP, -PI / 2.0) * Basis(Vec
 const MOMENT := preload("res://game/sock/pair_moment.tscn")
 const PAIR := &"pair"
 const PAIR_TIME := 0.5
+## The time of `pair` at which the ball pops (the burst starts): "pop" plays then, flat.
+const POP_AT := 0.455
 ## The moment's second Sock reaches its line-up place at this time of `pair`: its fly-in ends (D10).
 const FLY_IN_END := 0.2
 ## What that Sock flies under: Mate/FlyIn holds its Looks.
@@ -348,11 +350,18 @@ func _start_moment(sock: int) -> void:
 	player.speed_scale = PAIR_TIME / maxf(tuning.moment if tuning != null else PAIR_TIME, 0.01)
 	player.animation_finished.connect(func(_name: StringName) -> void: _end_moment(sock), CONNECT_ONE_SHOT)
 	player.play(PAIR)
+	get_tree().create_timer(POP_AT / maxf(player.speed_scale, 0.01)).timeout.connect(_pop.bind(moment))
 	_moments[sock] = moment
 	moments_played += 1
 	var mate := hands.mess.mate_of(sock)
 	if _seen and mate >= 0:
 		_fly_in[sock] = _lay_pose(mate) * (moment.get_node(^"Mate/FlyIn/Looks") as Node3D).transform.affine_inverse()
+
+
+## The ball of `moment` pops: its sound, unless the moment ended first.
+func _pop(moment: Variant) -> void:
+	if is_instance_valid(moment) and (moment as Node3D).is_inside_tree():
+		Sounds.play(&"pop")
 
 
 ## Ends Pair `sock`'s pairing moment, if one plays: its ball shows as it is.
