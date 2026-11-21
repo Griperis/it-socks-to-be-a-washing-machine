@@ -421,3 +421,18 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2360-Q2365, Q2387, Q2388 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | house/03, the old house rebuilt twice from the kit (A old-width windows, B rounded), beside the zoo, walkable front door to attic; approved and merged (main eb0cfce) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | "A, but also do B for the building ... Goal is to rebuild the old house with this technique" (Q2381); beside the zoo (Q2386) |
+| Cost | house/03 1 35,514,822 147 44m02s (Opus) |
+| Time | the agent ran about 45 min |
+| Surprises | each house is about 2,050 nodes, over the zoo's node budget; the test now counts only the Mess (Q2392); two kit pieces added and two 1 cm fixes (Q2393); missing blobs again at commit |
+| Stop rules | stopped at its stills |
+| Looks | `builds/review-house-03/` |
+| Decisions | Q2345, Q2381, Q2386, Q2391-Q2393 |
+
+---
