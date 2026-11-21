@@ -316,3 +316,78 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2292-Q2293, Q2341, Q2374 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/23, Socks no longer flip (rigid-board spin fixed: turn_weight 3, pours fall as woken Socks, flights use the lying boxes, CCD as the old); the Throw and the drop leave from the hand; approved and merged (main bcdab10) |
+| Planned vs actual | 1 planned, 1 actual (widened by the drop, Q2367) |
+| Redo count | 0 |
+| Corrections | "Real body from the hand" (Q2356); "Drop from the hand too" (Q2367); the thrown Sock keeps the hand's pose (Q2383) |
+| Cost | core/23 1 46,243,751 202 44m47s (Opus) |
+| Time | see cost |
+| Surprises | the flips were physics, not the rest switch (core/21 had cleared it); the every-Sock flip was not reproduced |
+| Stop rules | stopped at its strips |
+| Looks | `builds/review-core-23/` |
+| Decisions | Q2356, Q2357, Q2367, Q2382, Q2383 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | house/02, the kit for the old house: the re-gridded plan, two-face walls, skirting, every window (both sets), door frames, the U stair, roof, dormer, attic, no z-fighting; approved and merged (main bcdab10) |
+| Planned vs actual | 1 planned, 1 actual (two stops) |
+| Redo count | 0 |
+| Corrections | re-grid the old house (Q2343); a 0.9 m landing, off-centre doors, 10.5 m, old clear heights, roof 40 (Q2350-Q2354); "try multiple things" for windows (Q2355, Q2381); no z-fighting (Q2358) |
+| Cost | house/02 1 48,669,950 190 16h46m (Opus; the wall time includes the waits for the designer) |
+| Time | see cost |
+| Surprises | the old house is off any grid (10.1 x 8.34 m, 13 window sizes); the ticket's 40 degree roof was the lead's misreading (old 37.4), kept on the designer's word |
+| Stop rules | stopped at the plan and at the pieces |
+| Looks | `builds/review-house-02/` |
+| Decisions | Q2343-Q2346, Q2350-Q2358, Q2380, Q2381 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | assets/01, the Sock models, balls, pattern shader and prints; the Sock entity, flights and the lying tier swapped to them; approved and merged (main 89a8449) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | "Go, we will figure the updates to socks looks afterwards" (Q2384); the wool look is assets/05 |
+| Cost | assets/01 1 45,805,928 232 1h27m (Opus) |
+| Time | see cost |
+| Surprises | the shape follows the Collection, not the Size (the ticket's premise); the cloth on the ankle shape dips 3.9 mm |
+| Stop rules | stopped at its first still |
+| Looks | `builds/review-assets-01/` |
+| Decisions | Q2378, Q2384 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | assets/02, the 17 Collection Cabinets as Looks of the one Cabinet, all at the Cabinet station; approved and merged (main 89a8449) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | 3 drawers now, growing by Stage in M4 (Q2385) |
+| Cost | assets/02 1 17,846,338 137 1h22m (Opus) |
+| Time | see cost |
+| Surprises | its grown pad overlapped the Sock looks station at the merge (moved); asset_lint cannot read inherited scenes (kit) |
+| Stop rules | stopped at its first still |
+| Looks | `builds/review-assets-02/` |
+| Decisions | Q2378, Q2385 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | assets/03, the 111 old icons and the keycap lookup, an icons station; approved and merged (main 89a8449) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | none |
+| Cost | assets/03 1 5,906,121 59 1h22m (Sonnet) |
+| Time | see cost |
+| Surprises | the .uid and .import files needed a headless --import; zoo.tscn conflicted with assets/01 (both added a station) |
+| Stop rules | stopped at its first still |
+| Looks | `builds/review-ui-art/` |
+| Decisions | Q2378, Q2385 |
+
+---
