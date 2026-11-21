@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: needs-info
 kind: build
 area: core
 feature: core
@@ -85,6 +85,57 @@ cloth bend vs. the straight lying mesh, LOD or material differences between the 
 - The benchmark is modelled on the old game's stress test, kept well structured (Q2406, 2026-11-21).
 
 ## Open follow-ups
+- [blocking] Sunk Socks. 3 to 5 of 500 poured Socks (3 of 2,000 on the benchmark's floor, 5 of 500 at the zoo's heap
+  station) rest pressed up to 20 mm into the floor, a Sock being 26 mm thick. Cause: Jolt lets bodies overlap by its
+  `penetration_slop`, 20 mm by default, and a Sock under the heap is written lying while pressed in. Trial
+  (`BENCH_OVERRIDE`, `settle_500`): with the slop at 5 mm none sinks, the tick costs the same and the heap settles in
+  4.0 s instead of 4.8. Which: (a) lower `physics/jolt_physics_3d/simulation/penetration_slop` to 5 mm in
+  `project.godot` (every body of the game then settles tighter; a strip of the heap first), (b) the rest rule lifts a
+  sunk Sock onto the floor as it comes to rest (a snap of up to 2 cm), (c) leave it? Until then the real-path case
+  counts sunk Socks and does not hold them at none.
+- [blocking] Flips. A Sock landing on its edge still turns faster than 25 rad/s for a tick or two: 7 of 500 poured
+  from the spout's 2.6 m (fastest 31 rad/s), 10 of 16 thrown at 7 m/s into a heap (47 rad/s, Jolt's cap). Before
+  core/23 it was 338 of 500, so `turn_weight` 3 did most of it (a trial at 1: 59 of 500). Is that rest good enough
+  (then the limit in `game/debug/mess_checks.tres` goes up or the count is accepted), or should `turn_weight` rise
+  further (a strip first: it also slows a Throw's spin and the topple flat)?
+- [later] Jitter. Pouring onto Socks that already lie wakes the same Sock three times or more (50 to 62 of 2,000):
+  each fast body wakes what it hits and up to `wake_count` round it. The old game's rule; before core/23 the count
+  was the same (51 to 104). Is a pour meant to stir the heap so?
+- [later] A Door or drawer shut onto lying Socks leaves some squeezed: in `sweep` (160 Socks) 3 sunk, 2 inside
+  another, 2 lifted by the sunk rule (a 28 cm snap at most), and in some runs 1 to 3 "lost": resting inside the leaf
+  they come back at the return spot with a pop, as the lost rule says (T08). Keep that rule for a Door, or push the
+  Sock out of the leaf instead?
+- [later] core/23's two boxes (leg and foot) cost about 15 % of a pouring tick against one box (4.3 against 3.7 ms
+  median, and 480 more nodes); its CCD from 1 m/s and `turn_weight` cost nothing measurable. Not changed: one box
+  brought lost Socks back (3 of 500).
+- [later] `flight.tscn` `max_contacts_reported` stays 4: with 8 the benchmark found no more hits on lying Socks
+  (241 against 245 in `burst_16` and `settle_2000`) and the same wakes a second, though the list is full on 4 of 5
+  fast contacts.
+- [later] The switch still differs by a hair of shading between a flight's Looks and its lying instance (one pixel
+  over 8 levels, 17 at most, in a 26 by 53 pixel patch of a 960 by 540 frame): core/21's.
+- [later] `tools/mess_bench.cmd` was not run on Windows (no Windows here); it runs the editor exe on the project in
+  place. The benchmark's scripts are in `game/debug/` and must stay out of a release export (`release-export`).
+- [later] The lead's suspect, the rest's `Basis.from_euler(rot)` round trip: measured, not the cause. Both sides use
+  Godot's default order; over 200,000 poses, half within 1e-9 to 1e-2 rad of edge-on, a basis axis moves 0.0008 rad
+  at most (0.1 mm at a Sock's tip); the scale is put on by the drawing, and the body's origin is the pose's.
+- [later] A Guest's spawned copy of a flight is found by its name (`Flight<id>`); a rest and a wake of one Sock in
+  one tick adds the new body while the old still waits to be freed, and Godot then renames it. For M0.6.
+- [later] Kit: a new script's `.uid` is only made in a tool's mirror; I copied each from the check mirror by hand.
+  A tool that copies them back (or a line in `ticket-agent.md` saying where they come from) would save the search.
 
 ## Built log
 - Model: Fable, on the designer's word (Q2405): hard physics debugging and a new tool.
+
+### 2026-11-21
+- Changed: the Mess benchmark (`tools/mess_bench.sh`, `.cmd`): nine scenarios as data, one runner, one report with
+  runs side by side. The designer's glitch reproduced in motion and fixed: the Mess's MultiMeshes were
+  physics-interpolated, so a Sock coming to rest was not drawn for a whole tick and the flying rows smeared between
+  Socks' places at every rest; they no longer are. Cost removed: no upload with nothing flying, a flight found by Sock
+  id, `give_looks` once per change, the Host's tick and the flying rows trimmed. `pour_500` tick median: 3.89 ms
+  before core/23, 4.52 on `main`, 3.41 here; a frame's scripts 1.20, 1.17, 0.83 ms. Not fixed, counted, waiting
+  for the designer: sunk Socks, flips (Open follow-ups).
+- Files: `game/mess/mess.gd`, `mess_drawing.gd`, `mess_moving.gd`; `game/debug/mess_bench*`, `mess_watch.gd`,
+  `mess_checks.*`; `tools/mess_bench.sh`, `.cmd`; `tests/mess_settle_test.gd`; `docs/architecture/mess.md`,
+  `docs/human/mess-benchmark.md`.
+- Verified: `kit/tools/run.sh --touched`: PASS 16271 checks, 375 cases; rules PASS; `builds/review-core-31/rest-blink-thrown-sock-240fps.png`, `heap-rest-smear-120fps.png`,
+  `mess-bench/report.md`.

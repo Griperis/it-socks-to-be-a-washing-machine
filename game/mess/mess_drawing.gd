@@ -49,6 +49,10 @@ var _cell_of: Dictionary[int, Vector3i] = {}
 var _slot_of: Dictionary[int, int] = {}
 ## The flying Socks' MultiMeshInstance3Ds, by shape.
 var _flying: Dictionary[StringName, MultiMeshInstance3D] = {}
+## Each Design's look data, once worked out.
+var _look: Dictionary[SockDesign, Color] = {}
+## This machine's copy of each flying MultiMesh's buffer, written again each frame something flies.
+var _flying_buf: Dictionary[StringName, PackedFloat32Array] = {}
 
 
 func _init(root: Node3D, tuning: MessTuning) -> void:
@@ -205,23 +209,38 @@ func cell_count() -> int:
 	return _cells.size()
 
 
-## Every flying Sock without a Looks, drawn this frame: `rows` by shape, each [pose, Design].
-func draw_flying(rows: Dictionary[StringName, Array]) -> void:
-	for shape: StringName in rows:
-		if not _flying.has(shape) and not rows[shape].is_empty():
-			_add_shape(shape, rows[shape][0][1])
+## Every flying Sock without a Looks, drawn this frame: by shape, the `poses` and the `designs` of
+## its Socks (two lists as long as each other). A shape with no Sock now and none the frame before
+## is left alone, and each shape's buffer is kept and written again, so a level where nothing flies
+## uploads nothing (core/31).
+func draw_flying(poses: Dictionary[StringName, Array], designs: Dictionary[StringName, Array]) -> void:
+	for shape: StringName in poses:
+		if not _flying.has(shape) and not poses[shape].is_empty():
+			_add_shape(shape, designs[shape][0])
 	for shape: StringName in _flying:
-		var list: Array = rows.get(shape, [])
+		var list: Array = poses.get(shape, [])
 		var mm := _flying[shape].multimesh
+		if list.is_empty():
+			if mm.visible_instance_count != 0:
+				mm.visible_instance_count = 0
+			continue
+		var of: Array = designs[shape]
 		if list.size() > mm.instance_count:
 			mm.instance_count = maxi(FIRST_ROOM, nearest_po2(list.size()))
-		var buf := PackedFloat32Array()
-		buf.resize(mm.instance_count * STRIDE)
+		# Taken out of the Dictionary while written, so the array is written in place, not copied.
+		var buf: PackedFloat32Array = _flying_buf.get(shape, PackedFloat32Array())
+		_flying_buf.erase(shape)
+		if buf.size() != mm.instance_count * STRIDE:
+			buf.resize(mm.instance_count * STRIDE)
+		var size := _size(of[0])
 		var o := 0
-		for row: Array in list:
-			var design: SockDesign = row[1]
-			_write_row(buf, o, _placed(row[0], shape, _size(design)), design)
+		for i in list.size():
+			var design: SockDesign = of[i]
+			if i > 0:
+				size = _size(design)
+			_write_row(buf, o, _placed(list[i], shape, size), design)
 			o += STRIDE
+		_flying_buf[shape] = buf
 		mm.buffer = buf
 		mm.visible_instance_count = list.size()
 
@@ -247,6 +266,8 @@ func clear() -> void:
 	_cell_of.clear()
 	_slot_of.clear()
 	_flying.clear()
+	_flying_buf.clear()
+	_look.clear()
 	_shapes.clear()
 	_mesh.clear()
 	_mesh_at.clear()
@@ -278,15 +299,26 @@ func _new_instance(mesh: Mesh, shape: StringName) -> MultiMeshInstance3D:
 	var node := MultiMeshInstance3D.new()
 	node.multimesh = mm
 	node.material_override = _material[shape]
+	# Never physics-interpolated (core/31, Q2407): the engine would draw each instance between the
+	# buffer of the tick before and this one, so a Sock just come to rest was not drawn for a tick
+	# (its row was all zeros before) and every row that changed its Sock (a rest, a wake, the
+	# flying rows closing up) was drawn for a tick smeared between two Socks' places. A lying Sock
+	# does not move, and the flying rows are written every frame from poses already interpolated.
+	node.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	_root.add_child(node)
 	return node
 
 
 ## One instance's floats at `o` in `buf`: the transform (rows of its basis, then the origin), the
-## Design's colour and its look data.
-static func _write_row(buf: PackedFloat32Array, o: int, t: Transform3D, design: SockDesign) -> void:
+## Design's colour and its look data (worked out once per Design: the flying rows are written every frame).
+func _write_row(buf: PackedFloat32Array, o: int, t: Transform3D, design: SockDesign) -> void:
 	var colour := design.colour if design != null else Color.WHITE
-	var look := look_data(design)
+	var look: Color
+	if _look.has(design):
+		look = _look[design]
+	else:
+		look = look_data(design)
+		_look[design] = look
 	var b := t.basis
 	buf[o] = b.x.x
 	buf[o + 1] = b.y.x

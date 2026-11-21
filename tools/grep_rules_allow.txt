@@ -10,3 +10,5 @@ allow free game/sock/sock_look.gd 1
 exempt json_parse game/furniture/furniture_build.gd
 allow free game/furniture/furniture_build.gd 1
 allow deferred game/furniture/furniture_build.gd 2
+# core/31: the Mess benchmark reads back its own results files (plain numbers and strings, read with JSON.parse_string, which builds no object).
+exempt json_parse game/debug/mess_bench_report.gd

@@ -8,6 +8,7 @@ These pages are for you, working in the Godot editor and Blender. Each says what
 | `models-pipeline.md` | Bring a new model in from Blender to a Looks scene on an entity, and show it in a zoo station. |
 | `sounds-pipeline.md` | Add or swap a sound: the catalogue, buses, flat or 3D, minimum gap, strength, footsteps, the Sounds station. |
 | `house-kit.md` | Build or change rooms from the house kit in the editor, and rebuild the pieces from their sizes. |
+| `mess-benchmark.md` | Run the Mess benchmark on your PC: what the Socks cost and whether a heap settles cleanly, with a report to send back. |
 
 ## Two things that hold for every page
 

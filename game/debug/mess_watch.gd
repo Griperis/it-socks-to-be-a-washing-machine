@@ -1,0 +1,253 @@
+## Counts what a Mess's Socks do wrong while they move and come to rest (core/31, B3), for the Mess
+## benchmark and the suite: put it in the tree beside a Mess (the Host's) and read result(). Each
+## physics tick, after the Mess, it looks only at the falling bodies (never at every record), so it
+## costs the same with 500 lying Socks as with 10,000; own_usec says what the last tick's look cost.
+## It changes nothing and reads only what the Mess shows everyone (its records, its falling bodies).
+##
+## The counts, against MessChecks:
+## - rests, and of them: lost (written lying far from where its body was: it came back at the
+##   return spot), jumped (snapped farther than `jump`), hot (written lying while still turning or
+##   moving fast);
+## - wakes (a lying Sock that moves again), and Socks that jitter (woken `jitter_wakes` times or more);
+## - Socks that flip (turning faster than `flip_spin` while moving);
+## - survey(), once the heap rests: lying Socks sunk under the floor or with their middle inside
+##   another lying Sock.
+class_name MessWatch
+extends Node
+
+## A rest farther than this from the body's last place is a return to the return spot, not a snap
+## (the rest rule lifts a sunk Sock by at most MessTuning.sunk_depth, 0.3 m).
+const LOST_OVER := 0.35
+## The survey's grid: lying Socks are compared with those in the cells round their own.
+const CELL := 0.45
+## How often the moving count is noted for the report's line over time.
+const SERIES_EVERY := 0.5
+
+@export var mess: Mess
+@export var checks: MessChecks = preload("res://game/debug/mess_checks.tres")
+## Only records from this one on are surveyed (a station's own Socks in the zoo); every flight counts.
+@export var first := 0
+## The floor's height a sunk Sock is judged by.
+@export var floor_y := 0.0
+
+var rests := 0
+var lost := 0
+var jumped := 0
+var hot := 0
+var wakes := 0
+var peak_moving := 0
+## The longest snap of a rest that was not a return, in m.
+var worst_jump := 0.0
+## The fastest turn any moving Sock had, in rad/s.
+var worst_spin := 0.0
+## The moving count every SERIES_EVERY seconds.
+var series := PackedInt32Array()
+## Seconds watched, and for how long nothing has moved or waited.
+var watched := 0.0
+var quiet_for := 0.0
+## What this node's own look cost in the last tick, in microseconds (the benchmark's clock takes it
+## off the tick it measures).
+var own_usec := 0
+
+var _flying: Dictionary[int, bool] = {}
+var _at: Dictionary[int, Vector3] = {}
+var _speed: Dictionary[int, float] = {}
+var _spin: Dictionary[int, float] = {}
+## The Socks that lay at some time while watched (a body starting for one of them is a wake).
+var _lay: Dictionary[int, bool] = {}
+var _woken: Dictionary[int, int] = {}
+var _flipped: Dictionary[int, bool] = {}
+var _since_series := 0.0
+var _started := false
+
+
+func _ready() -> void:
+	process_physics_priority = 1000
+	_note_lying()
+
+
+## The Socks lying now are known as lying (once: when it starts with a Mess that has its records).
+func _note_lying() -> void:
+	if _started or mess == null or mess.count() == 0:
+		return
+	_started = true
+	for sock in mess.count():
+		if mess.states[sock] == Mess.State.LYING:
+			_lay[sock] = true
+
+
+## Counts again from nothing.
+func restart() -> void:
+	rests = 0
+	lost = 0
+	jumped = 0
+	hot = 0
+	wakes = 0
+	peak_moving = 0
+	worst_jump = 0.0
+	worst_spin = 0.0
+	series = PackedInt32Array()
+	watched = 0.0
+	quiet_for = 0.0
+	_woken.clear()
+	_flipped.clear()
+	_since_series = 0.0
+
+
+## Whether nothing has moved or waited for MessChecks.quiet.
+func settled() -> bool:
+	return quiet_for >= checks.quiet
+
+
+## How many Socks were woken `jitter_wakes` times or more, and how many flipped.
+func jittering() -> int:
+	var n := 0
+	for sock: int in _woken:
+		if _woken[sock] >= checks.jitter_wakes:
+			n += 1
+	return n
+
+
+func flipped() -> int:
+	return _flipped.size()
+
+
+func _physics_process(delta: float) -> void:
+	var from := Time.get_ticks_usec()
+	if mess == null:
+		return
+	_note_lying()
+	var now: Dictionary[int, bool] = {}
+	for child in mess.flight_holder().get_children():
+		var body := child as RigidBody3D
+		if body == null or body.is_queued_for_deletion() or not body.has_meta(Mess.SOCK_META):
+			continue
+		var sock := int(body.get_meta(Mess.SOCK_META))
+		now[sock] = true
+		if not _flying.has(sock) and _lay.has(sock):
+			wakes += 1
+			_woken[sock] = int(_woken.get(sock, 0)) + 1
+		var spin := body.angular_velocity.length()
+		_at[sock] = body.global_position
+		_speed[sock] = body.linear_velocity.length()
+		_spin[sock] = spin
+		worst_spin = maxf(worst_spin, spin)
+		if spin > checks.flip_spin:
+			_flipped[sock] = true
+	for sock: int in _flying:
+		if now.has(sock):
+			continue
+		if sock < mess.count() and mess.states[sock] == Mess.State.LYING:
+			_rested(sock)
+		_at.erase(sock)
+		_speed.erase(sock)
+		_spin.erase(sock)
+	_flying = now
+	peak_moving = maxi(peak_moving, now.size())
+	watched += delta
+	quiet_for = quiet_for + delta if now.is_empty() and mess.waiting_count() == 0 else 0.0
+	_since_series += delta
+	if _since_series >= SERIES_EVERY:
+		_since_series -= SERIES_EVERY
+		series.append(now.size())
+	own_usec = Time.get_ticks_usec() - from
+
+
+func _rested(sock: int) -> void:
+	rests += 1
+	_lay[sock] = true
+	var snap := mess.pose_of(sock).origin.distance_to(_at[sock])
+	if snap > LOST_OVER:
+		lost += 1
+	else:
+		worst_jump = maxf(worst_jump, snap)
+		if snap > checks.jump:
+			jumped += 1
+	if _spin[sock] > checks.hot_spin or _speed[sock] > checks.hot_speed:
+		hot += 1
+
+
+## The heap as it lies now: {"sunk": lying Socks whose lowest point is under the floor, "sunk_worst":
+## how far under the deepest one is, in m, "inside": lying Socks with the middle of their leg or foot
+## inside another lying Sock's leg or foot}. Judged
+## by the boxes a Sock lies on (its leg and its foot), not its outline's box, so a Sock leaning on
+## its heel is not sunk. Pairs are left out (a ball rests in the dip between Socks). Not for every
+## tick: it walks every lying record from `first` on.
+func survey() -> Dictionary:
+	var out := {"sunk": 0, "sunk_worst": 0.0, "inside": 0}
+	if mess == null:
+		return out
+	var cells: Dictionary[Vector3i, PackedInt32Array] = {}
+	var socks := PackedInt32Array()
+	for sock in range(first, mess.count()):
+		if mess.states[sock] != Mess.State.LYING or mess.is_pair(sock):
+			continue
+		socks.append(sock)
+		var c := _cell(mess.pose_of(sock).origin)
+		var list: PackedInt32Array = cells.get(c, PackedInt32Array())
+		list.append(sock)
+		cells[c] = list
+	for sock in socks:
+		var pose := mess.pose_of(sock)
+		var low := INF
+		var middles := PackedVector3Array()
+		for part: Array in _parts(sock):
+			var size: Vector3 = part[0]
+			var centre: Vector3 = part[1]
+			middles.append(pose * centre)
+			for x: float in [-0.5, 0.5]:
+				for y: float in [-0.5, 0.5]:
+					for z: float in [-0.5, 0.5]:
+						low = minf(low, (pose * (centre + Vector3(x * size.x, y * size.y, z * size.z))).y)
+		if low < floor_y - checks.sunk:
+			out["sunk"] += 1
+			out["sunk_worst"] = maxf(out["sunk_worst"], floor_y - low)
+		var c := _cell(pose.origin)
+		var found := false
+		for dx in range(-1, 2):
+			for dy in range(-1, 2):
+				for dz in range(-1, 2):
+					for other: int in cells.get(c + Vector3i(dx, dy, dz), PackedInt32Array()):
+						if other != sock and not found:
+							for middle in middles:
+								if _within(other, middle):
+									found = true
+		if found:
+			out["inside"] += 1
+	return out
+
+
+## Everything counted, as one Dictionary (what the benchmark reports and the suite checks).
+func result() -> Dictionary:
+	return {"rests": rests, "lost": lost, "jumped": jumped, "hot": hot, "wakes": wakes, "jitter": jittering(),
+			"flips": flipped(), "peak_moving": peak_moving, "worst_jump": worst_jump, "worst_spin": worst_spin,
+			"moving": _flying.size(), "waiting": mess.waiting_count() if mess != null else 0, "series": series}
+
+
+## The boxes lying Sock `sock` lies on, in its own space: [[size, centre], ...] (its leg and foot as
+## the Mess fitted them, at its Size; its outline's one box before any Mess has).
+func _parts(sock: int) -> Array:
+	var design := mess.design_of(sock)
+	var scale := design.size_scale() if design != null else 1.0
+	var fitted: Array = MessBodies._fitted
+	if fitted.is_empty():
+		fitted = [[SockDress.BOX, Vector3(0.0, SockDress.BOX.y * 0.5, 0.0)]]
+	var out: Array = []
+	for part: Array in fitted:
+		out.append([(part[0] as Vector3) * scale, (part[1] as Vector3) * scale])
+	return out
+
+
+static func _cell(at: Vector3) -> Vector3i:
+	return Vector3i(floori(at.x / CELL), floori(at.y / CELL), floori(at.z / CELL))
+
+
+## Whether `point` is at least MessChecks.inside deep inside one of lying Sock `sock`'s boxes.
+func _within(sock: int, point: Vector3) -> bool:
+	var local := mess.pose_of(sock).affine_inverse() * point
+	for part: Array in _parts(sock):
+		var room := (part[0] as Vector3) * 0.5 - Vector3.ONE * checks.inside
+		var from := local - (part[1] as Vector3)
+		if absf(from.x) < room.x and absf(from.y) < room.y and absf(from.z) < room.z:
+			return true
+	return false
