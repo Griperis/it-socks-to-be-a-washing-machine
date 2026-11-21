@@ -62,6 +62,16 @@ var _fly_in: Dictionary[int, Transform3D] = {}
 var _growing: Dictionary[int, Dictionary] = {}
 ## Each held Sock's bones as its cloth last drew them, in its skeleton's space (P03, P08), by Sock id.
 var _bent: Dictionary[int, Array] = {}
+## Each held Sock's SockCloth (null for a Pair's ball), found once when its Looks is made, and the bone
+## nearest its Looks' middle, found once when it first sways, by Sock id.
+var _cloths: Dictionary[int, SockCloth] = {}
+var _nearest: Dictionary[int, int] = {}
+## Which held Socks have been the active one: only their bones are noted as the skeleton is drawn.
+var _was_active: Dictionary[int, bool] = {}
+## How many times a skeleton was drawn and its bones noted (a timing case counts these).
+var bends_noted := 0
+## How many recursive searches for a SockCloth the held view has made.
+var cloth_searches := 0
 ## Whether the Hands have been drawn once: what they hold from the start does not fly up.
 var _seen := false
 
@@ -87,10 +97,7 @@ func refresh(delta := 0.0) -> void:
 		if _looks.has(sock) and pair and not _balls.has(sock):
 			# A held Sock became a Pair here: its ball, under the moment, in the ball's place at once.
 			_looks[sock].queue_free()
-			_looks.erase(sock)
-			_bent.erase(sock)
-			_drawn.erase(sock)
-			_flying.erase(sock)
+			_forget(sock)
 			_start_moment(sock)
 		if not _looks.has(sock):
 			var looks := SockDress.make(hands.mess.design_of(sock), SockDress.HELD, pair)
@@ -100,11 +107,14 @@ func refresh(delta := 0.0) -> void:
 			if pair:
 				_balls[sock] = true
 			else:
+				_cloths[sock] = _find_cloth(looks)
 				_watch_bend(sock, looks)
 			if _seen and not _moments.has(sock) and tuning != null:
 				_flying[sock] = {"from": _lay_pose(sock), "t": 0.0}
 	_seen = hands != null
 	var active := hands.active_index(me) if hands != null else -1
+	if active >= 0 and active < items.size():
+		_was_active[items[active]] = true
 	if turning and active >= 0 and tuning != null:
 		var sock := items[active]
 		_spin[sock] = wrapf(_spin.get(sock, 0.0) + TAU / maxf(tuning.turn_time, 0.05) * delta, -PI, PI)
@@ -287,18 +297,34 @@ func _place_fly_in(sock: int, moment: Node3D) -> void:
 	fly_in.global_transform = at
 
 
-## A Sock left the Hands: let go (dropped or thrown), its body is where it hung and its body's Looks
-## takes over at the hand's size, growing to its own; otherwise (a pairing, a shelve) it simply goes.
-func _let_go(sock: int) -> void:
-	var looks := _looks[sock]
-	var pair := _balls.has(sock)
-	var bend := bend_of(sock)
+## Drops everything the held view keeps of held Sock `sock`'s drawn Looks (the moment, the fly-in and
+## the growth are another's: they outlive it).
+func _forget(sock: int) -> void:
 	_looks.erase(sock)
 	_bent.erase(sock)
 	_spin.erase(sock)
 	_balls.erase(sock)
 	_drawn.erase(sock)
 	_flying.erase(sock)
+	_cloths.erase(sock)
+	_nearest.erase(sock)
+	_was_active.erase(sock)
+
+
+## The SockCloth under `looks`, or null.
+func _find_cloth(looks: Node3D) -> SockCloth:
+	cloth_searches += 1
+	var found := looks.find_children("*", "SockCloth", true, false)
+	return found[0] as SockCloth if not found.is_empty() else null
+
+
+## A Sock left the Hands: let go (dropped or thrown), its body is where it hung and its body's Looks
+## takes over at the hand's size, growing to its own; otherwise (a pairing, a shelve) it simply goes.
+func _let_go(sock: int) -> void:
+	var looks := _looks[sock]
+	var pair := _balls.has(sock)
+	var bend := bend_of(sock)
+	_forget(sock)
 	_end_moment(sock)
 	looks.queue_free()
 	var mess := hands.mess if hands != null else null
@@ -411,8 +437,9 @@ func _watch_bend(sock: int, looks: Node3D) -> void:
 	if skeleton == null:
 		return
 	skeleton.skeleton_updated.connect(func() -> void:
-		if _looks.get(sock) != looks:
+		if _looks.get(sock) != looks or not _was_active.has(sock):
 			return
+		bends_noted += 1
 		var poses: Array[Transform3D] = []
 		for b in skeleton.get_bone_count():
 			poses.append(skeleton.get_bone_global_pose(b))
@@ -425,13 +452,11 @@ func bend_of(sock: int) -> Dictionary[int, Quaternion]:
 	var out: Dictionary[int, Quaternion] = {}
 	var looks: Node3D = _looks.get(sock)
 	var poses: Array = _bent.get(sock, [])
-	var cloth: Array[Node] = []
-	if looks != null:
-		cloth = looks.find_children("*", "SockCloth", true, false)
-	if poses.is_empty() or cloth.is_empty():
+	var cloth: SockCloth = _cloths.get(sock)
+	if looks == null or poses.is_empty() or cloth == null:
 		return out
-	var skeleton := (cloth[0] as SockCloth).get_skeleton()
-	for b in (cloth[0] as SockCloth).chain():
+	var skeleton := cloth.get_skeleton()
+	for b in cloth.chain():
 		var parent := skeleton.get_bone_parent(b)
 		var above: Transform3D = poses[parent] if parent >= 0 else Transform3D.IDENTITY
 		out[b] = (above.affine_inverse() * (poses[b] as Transform3D)).basis.get_rotation_quaternion()
@@ -465,19 +490,20 @@ func sway() -> Vector2:
 func sway_offset(sock: int) -> Vector3:
 	var looks: Node3D = _looks.get(sock)
 	var poses: Array = _bent.get(sock, [])
-	var cloth: Array[Node] = []
-	if looks != null:
-		cloth = looks.find_children("*", "SockCloth", true, false)
-	if poses.is_empty() or cloth.is_empty() or not looks.is_inside_tree():
+	var cloth: SockCloth = _cloths.get(sock)
+	if looks == null or poses.is_empty() or cloth == null or not looks.is_inside_tree():
 		return Vector3.ZERO
-	var skeleton := (cloth[0] as SockCloth).get_skeleton()
+	var skeleton := cloth.get_skeleton()
 	var skel := skeleton.global_transform
 	var at := skel.affine_inverse() * looks.global_position
-	var near := -1
-	for b in (cloth[0] as SockCloth).chain():
-		if near < 0 or skeleton.get_bone_global_rest(b).origin.distance_to(at) \
-				< skeleton.get_bone_global_rest(near).origin.distance_to(at):
-			near = b
+	if not _nearest.has(sock):
+		var near := -1
+		for b in cloth.chain():
+			if near < 0 or skeleton.get_bone_global_rest(b).origin.distance_to(at) \
+					< skeleton.get_bone_global_rest(near).origin.distance_to(at):
+				near = b
+		_nearest[sock] = near
+	var near := _nearest[sock]
 	if near < 0:
 		return Vector3.ZERO
 	var bent := (poses[near] as Transform3D) * skeleton.get_bone_global_rest(near).affine_inverse()

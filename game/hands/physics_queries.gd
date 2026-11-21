@@ -4,16 +4,21 @@
 class_name PhysicsQueries
 extends RefCounted
 
+## The probe ball of ball_hit, reused (its radius is set per query).
+static var _ball := SphereShape3D.new()
+## How many physics queries ball_hit has made (a timing case counts them, not wall time).
+static var ball_queries := 0
+
 
 ## Where a ball `gap` wide, moved from `from` along `motion`, first rests against something of
 ## `mask`: {"point", "normal"} in the level, or {} when it meets nothing (the crosshair's drop spot:
 ## it sees no spot through a gap narrower than the ball).
 static func ball_hit(node: Node3D, from: Vector3, motion: Vector3, gap: float, mask: int, exclude: Array[RID]) -> Dictionary:
 	var space := node.get_world_3d().direct_space_state
-	var ball := SphereShape3D.new()
-	ball.radius = gap * 0.5
+	ball_queries += 1
+	_ball.radius = gap * 0.5
 	var query := PhysicsShapeQueryParameters3D.new()
-	query.shape = ball
+	query.shape = _ball
 	query.transform = Transform3D(Basis.IDENTITY, from)
 	query.motion = motion
 	query.collision_mask = mask

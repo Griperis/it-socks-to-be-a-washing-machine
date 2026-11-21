@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: core
@@ -43,3 +43,16 @@ changing what the player sees or how anything feels. (The Mess's own per-frame f
 ## Open follow-ups
 
 ## Built log
+
+- 2026-11-21
+  - Changed: F1 one `AimFinder.find` per held tick (`drop_spot(found)`, the tick keeps `_tick_spot` and
+    `_tick_refusal`, a drop click uses them); F2 probe spheres reused; F3 `SockCloth` found once per held Sock,
+    nearest bone once, bends noted only for Socks that have been active; F4 `_forget(sock)` for both paths (the
+    ball pairing path now clears `_spin`); F5 `PairMoment` caches its cloths; F6 `UiIcons` caches a miss.
+    Before/after per held tick: aim lookups 2 -> 1 (a drop click: 3 -> 0 more), drop-spot queries 1 -> 1 (click: +1 -> 0),
+    `find_children` per frame 1 -> 0, sphere shapes made per tick 1 -> 0.
+  - Files: game/player/player.gd, game/hands/{hands,held_view,physics_queries}.gd, game/sock/pair_moment.gd,
+    game/ui/ui_icons.gd, tests/handling_test.gd.
+  - Added counters for the timing case (`Player.aim_finds`, `PhysicsQueries.ball_queries`, `HeldView.cloth_searches`,
+    `HeldView.bends_noted`, `PairMoment.cloth_searches`).
+  - Verified: PASS 16116 checks, 339 cases (--touched); PASS rules.

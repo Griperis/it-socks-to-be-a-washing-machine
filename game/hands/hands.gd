@@ -28,6 +28,8 @@ const NOTHING := "nothing"
 const NO_SPOT := "no_spot"
 ## How far over and under a drop's spot the Host looks for the top it would rest on.
 const SPOT_PROBE := 0.05
+## The probe of _on_lying, made once.
+var _probe := _make_probe()
 ## A Sock let go (a Throw or a drop) leaves from the hand (Q2356, Q2367); when a wall is nearer than
 ## the hand's place plus THROW_CLEAR, or the hand is inside one, it leaves from the eye-line instead,
 ## THROW_CLEAR body depths short of the wall (the old game's _start_point).
@@ -397,12 +399,16 @@ static func _gravity() -> float:
 
 ## Whether `point` is on a lying Sock or Pair (within SPOT_PROBE of its body): a drop there is allowed
 ## anywhere on it, with no slope test (R05, the old rig_drop.gd).
+func _make_probe() -> SphereShape3D:
+	var probe := SphereShape3D.new()
+	probe.radius = SPOT_PROBE
+	return probe
+
+
 func _on_lying(point: Vector3) -> bool:
 	if mess == null or not is_inside_tree():
 		return false
-	var probe := SphereShape3D.new()
-	probe.radius = SPOT_PROBE
-	for rid in PhysicsQueries.overlap_rids(self, probe, Transform3D(Basis.IDENTITY, point), Mess.LAYER_LYING, 8):
+	for rid in PhysicsQueries.overlap_rids(self, _probe, Transform3D(Basis.IDENTITY, point), Mess.LAYER_LYING, 8):
 		if mess.sock_at(rid) >= 0:
 			return true
 	return false
