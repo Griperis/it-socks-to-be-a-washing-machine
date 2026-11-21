@@ -1,4 +1,4 @@
-Next free Q number: Q2422 (update this line whenever a round of questions is asked)
+Next free Q number: Q2423 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -334,3 +334,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2419: core/37 is not merged into main: the designer tests it from a review build of the zoo; no strip needed (designer: "give me a review build with zoo scene to test this on (not merge into a main). No need for a strip.").
 - Q2420: the held cloth takes drag 0.25 (stiffness 5, gravity 3 kept): 13 degrees past rest, one swing, settled in 0.13 s after a quick turn; thrown Socks ring a little more too (core/36).
 - Q2421: a visual tweak (a look or feel number: cloth, ease, colour, timing) gets no test; its stills or strip and the designer's eye judge it (designer: "I think it doesn't make sense to do tests just for visual tweaks like this."). core/36's swing test is removed.
+- Q2422: on top of the core/37 experiment, try the full bend simulation: flying Socks as jointed bodies (three segments, two hinges), as optimised as possible; only on the experiment branch, never main (designer: "For 37 could we try the full bend sim? Ideally super optimized. But only for 37."; core/38).
