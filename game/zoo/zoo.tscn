@@ -15,6 +15,14 @@
 [ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="14_tuning"]
 [ext_resource type="Environment" path="res://game/look/noon_environment.tres" id="15_env"]
 [ext_resource type="PackedScene" path="res://game/look/picture.tscn" id="16_picture"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/cabinet.tscn" id="20_cabinet"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/every_sock.tscn" id="21_every_sock"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/handling.tscn" id="22_handling"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/heap.tscn" id="23_heap"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/house_kit.tscn" id="24_house_kit"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/movement.tscn" id="25_movement"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/openables.tscn" id="26_openables"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/sounds.tscn" id="27_sounds"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.42, 0.44, 0.46, 1)
@@ -65,7 +73,7 @@ transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.01, 6)
 pixel_size = 0.004
 text = "Everything here sits on a 0.5 m grid: in the editor, Transform > Configure Snap, Translate Snap 0.5, then snap with the magnet button.
 Each station is a pad with a name, one scene file in game/zoo/stations/: entities on it are instances of the game's own scenes.
-A new feature adds its own file there; this scene is not edited for it."
+A new station is its own file there plus one instance under Stations in this scene; drag it to place it."
 
 [node name="Spawn" type="Marker3D" parent="." unique_id=1377517963]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
@@ -77,6 +85,24 @@ hands_tuning = SubResource("Resource_zoo_hands")
 [node name="Stations" type="Node3D" parent="." unique_id=1917466477 node_paths=PackedStringArray("socks")]
 script = ExtResource("3_stations")
 socks = NodePath("../Socks")
+
+[node name="Cabinet" parent="Stations" unique_id=1700008019 instance=ExtResource("20_cabinet")]
+
+[node name="EverySock" parent="Stations" unique_id=1700015938 instance=ExtResource("21_every_sock")]
+
+[node name="Handling" parent="Stations" unique_id=1700023857 instance=ExtResource("22_handling")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, -1)
+
+[node name="Heap" parent="Stations" unique_id=1700031776 instance=ExtResource("23_heap")]
+
+[node name="HouseKit" parent="Stations" unique_id=1700039695 instance=ExtResource("24_house_kit")]
+
+[node name="Movement" parent="Stations" unique_id=1700047614 instance=ExtResource("25_movement")]
+
+[node name="Openables" parent="Stations" unique_id=1700055533 instance=ExtResource("26_openables")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -1)
+
+[node name="Sounds" parent="Stations" unique_id=1700063452 instance=ExtResource("27_sounds")]
 
 [node name="Spots" type="Node3D" parent="." unique_id=1540973286]
 

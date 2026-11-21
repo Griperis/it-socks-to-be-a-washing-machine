@@ -42,8 +42,9 @@ How this game is built, unless a decision record says otherwise. They are the ga
   frame).
 <!-- opt:zoo -->
 - **The zoo** (`game/zoo/zoo.tscn`) has one station per feature, each its own scene in
-  `game/zoo/stations/`, built from the game's own scenes; a new feature adds its station file
-  first (the `zoo-design` skill).
+  `game/zoo/stations/`, built from the game's own scenes; a new station is its own scene file plus
+  one instance under `Stations` in `zoo.tscn`, placed by hand (the zoo suite fails for a file not
+  instanced). `ZooStations` only joins each station's Socks to the zoo's (the `zoo-design` skill).
 <!-- /opt:zoo -->
 
 ## Subsystems

@@ -16,6 +16,7 @@ const THROW_FROM := Vector3(-1.0, 0.0, 0.6)
 const CABINET_AIM := Vector3(-1.0, 1.6, -2.0)
 ## Scenes that may only appear in the zoo: everything else on a station comes from the game.
 const ZOO_FOLDER := "res://game/zoo/"
+const STATIONS_FOLDER := "res://game/zoo/stations"
 
 ## Network waits give real time, which a busy machine stretches.
 const NET_WAIT_S := 20.0
@@ -77,16 +78,29 @@ func case_runs() -> void:
 	_zoo = null
 
 
+## The station scenes in the folder, sorted by name.
+func _station_files() -> PackedStringArray:
+	var out := PackedStringArray()
+	for f in ResourceLoader.list_directory(STATIONS_FOLDER):
+		if f.ends_with(".tscn"):
+			out.append(STATIONS_FOLDER.path_join(f))
+	out.sort()
+	return out
+
+
 func case_stations() -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
-	var files := ZooStations.scenes()
+	var files := _station_files()
 	var stations := _zoo.get_node("Stations").get_children()
 	_check(not stations.is_empty(), "the zoo has stations")
-	_check(stations.size() == files.size(), "every scene in %s is a station (%d files, %d stations)" % [ZooStations.FOLDER, files.size(), stations.size()])
+	for path in files:
+		_check(stations.any(func(n: Node) -> bool: return n.scene_file_path == path), "%s is instanced under Stations in zoo.tscn" % path)
+	_check(stations.size() == files.size(), "every scene in %s is a station (%d files, %d stations)" % [STATIONS_FOLDER, files.size(), stations.size()])
 	var places: Array[Vector3] = []
 	var pads: Array[Array] = []   # [station name, its pad on the floor]
 	for station: Node3D in stations:
+		_check(station.position.snappedf(0.5) == station.position, "station %s sits on the 0.5 m grid (%s)" % [station.name, station.position])
 		_check(files.has(station.scene_file_path), "station %s comes from its own scene file (%s)" % [station.name, station.scene_file_path])
 		var label := station.get_node_or_null("Name") as Label3D
 		_check(label != null and not label.text.is_empty(), "station %s has a name" % station.name)
@@ -105,14 +119,12 @@ func case_stations() -> void:
 				continue
 			_check(not child.scene_file_path.begins_with(ZOO_FOLDER),
 					"%s on %s is the game's own scene (%s)" % [child.name, station.name, child.scene_file_path])
-	_check(ZooStations.place(0) != ZooStations.place(1) and ZooStations.place(0).z > ZooStations.place(ZooStations.COLUMNS).z,
-			"the grid gives each station its own place, a full row starting the next one further away")
 	_zoo.free()
 	_zoo = null
 
 
 func case_alone() -> void:
-	for path in ZooStations.scenes():
+	for path in _station_files():
 		var scene := load(path) as PackedScene
 		_check(scene != null, "%s loads" % path)
 		if scene == null:
@@ -121,8 +133,6 @@ func case_alone() -> void:
 		_check(station != null, "the root of %s is a Node3D" % path)
 		if station == null:
 			continue
-		_check(station.position.is_zero_approx() or station.position.snappedf(0.5) == station.position,
-				"%s leaves its place to the zoo's grid, or sits on the 0.5 m grid" % path)
 		add_child(station)
 		await _frames(2)
 		station.free()
@@ -280,7 +290,7 @@ func case_z02() -> void:
 
 func case_z03() -> void:
 	var with_socks := 0
-	for path in ZooStations.scenes():
+	for path in _station_files():
 		var station := (load(path) as PackedScene).instantiate() as Node3D
 		add_child(station)
 		await _frames(1)

@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: zoo
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: []
 notes: []
 terms: []
@@ -49,3 +49,10 @@ in `zoo.tscn` by hand, knowing branches that add stations will meet in that file
 
 ## Built log
 - Model: Sonnet (lead): a scene and script change with known tests.
+- 2026-11-21 Sonnet: Changed: the eight stations are instances under `Stations` in `zoo.tscn` (Handling at -12,0,-1 and
+  Openables at -6,0,-1, the places the grid gave them; the rest keep their roots' own places); `ZooStations` lost
+  `scenes()`, `place()`, the grid constants and `_enter_tree` placement, and now only joins socks of the instances under it.
+  The zoo suite lists the folder itself and fails for a file not instanced (Z08) and a station off the 0.5 m grid.
+  Removed the "no place of the grid" check from `tests/every_sock_test.gd` (case_e05), as the grid is gone.
+  Files: game/zoo/zoo.tscn, game/zoo/stations.gd, tests/zoo_test.gd, tests/every_sock_test.gd, docs/architecture.md.
+  Verified: PASS 6012 checks, 103 cases. No top-down shot taken.
