@@ -40,6 +40,8 @@ func cases() -> Array[Dictionary]:
 				"title": "O04: every target has the same outline; a drawer with no room for the held Pair has the red full tint, one with room or empty Hands does not"},
 		{"name": "o05_moving_shape", "method": "case_o05", "world": false,
 				"title": "O05: a skinned Sock's outline bends with its bones, and a sliding drawer's outline slides with it"},
+		{"name": "r9_reenter", "method": "case_r9", "world": false,
+				"title": "R9: a shown, blend-shaped outline that leaves the tree and comes back goes on following its source's blend shapes"},
 		{"name": "o06_no_gaps", "method": "case_o06", "world": false,
 				"title": "O06: a box's outline mesh has one normal at each corner, so its shells have no gaps"},
 		{"name": "o07_left_out", "method": "case_o07", "world": false,
@@ -229,6 +231,36 @@ func case_o05() -> void:
 	(_station.get_node("Cabinet/Cabinet") as Cabinet).drawer(0).use(1)
 	await _until(func() -> bool: return mesh.global_position.distance_to(shut_at) > 0.3, "the drawer to slide open")
 	_near(drawer_copy.global_position.distance_to(mesh.global_position), 0.0, 0.0001, "the outline slid with the drawer")
+
+
+func case_r9() -> void:
+	# A mesh with one blend shape, outlined by an Outline child that is shown.
+	var base := BoxMesh.new()
+	var arrays := base.get_mesh_arrays()
+	var mesh := ArrayMesh.new()
+	mesh.add_blend_shape(&"squash")
+	var shape: Array = []
+	shape.resize(Mesh.ARRAY_MAX)
+	for k: int in [Mesh.ARRAY_VERTEX, Mesh.ARRAY_NORMAL, Mesh.ARRAY_TANGENT]:
+		shape[k] = arrays[k]
+	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays, [shape])
+	var holder := Node3D.new()
+	add_child(holder)
+	var source := MeshInstance3D.new()
+	source.mesh = mesh
+	holder.add_child(source)
+	var outline := Outline.new()
+	outline.meshes = [^".."]
+	outline.shown = true
+	source.add_child(outline)
+	await _frames(2)
+	_check(outline.outlined_count() == 1 and source.get_blend_shape_count() == 1, "the blend-shaped mesh is outlined")
+	_check(outline.is_processing(), "a shown outline of a blend-shaped mesh is processing")
+	source.remove_child(outline)
+	_check(not outline.is_processing(), "out of the tree it is not")
+	source.add_child(outline)
+	_check(outline.is_processing(), "back in the tree it processes again")
+	holder.free()
 
 
 func case_o06() -> void:

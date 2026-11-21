@@ -68,6 +68,8 @@ func cases() -> Array[Dictionary]:
 				"title": "K12: every piece's origin is a grid corner; it collides through boxes on the house layer; its slots are the library's; every placed piece sits on the grid in 90 degree turns"},
 		{"name": "k13_station", "method": "case_k13_station", "world": false,
 				"title": "K13: the station shows every piece, labelled, a roof corner with the dormer, and the room with its door, U stair and window"},
+		{"name": "r5_label_height", "method": "case_r5", "world": false,
+				"title": "R5: each line-up label hangs 0.3 m over its piece's top, lifted floors and ceilings included"},
 		{"name": "k14_no_z_fight", "method": "case_k14_no_z_fight", "world": false,
 				"title": "K14: pieces placed by the grid convention on two floors, the station and its floor have no two faces facing the same way in one plane and overlapping"},
 		{"name": "real_path_u_room", "method": "case_real_path_u_room", "world": false,
@@ -539,6 +541,23 @@ func _station_level(with_player: bool) -> Player:
 		await _physics_ticks(2)
 	return player
 
+
+func case_r5() -> void:
+	await _station_level(false)
+	var line_up := _level.get_node("HouseKit/LineUp")
+	var checked := 0
+	var lifted := 0
+	for node: Node in line_up.get_children():
+		var label := node as Label3D
+		if label == null:
+			continue
+		var piece := line_up.get_node_or_null(NodePath(label.name.trim_suffix("Label"))) as MeshInstance3D
+		if piece == null:
+			continue
+		checked += 1
+		lifted += 1 if piece.position.y > 0.0 else 0
+		_near(label.position.y - piece.position.y, piece.mesh.get_aabb().end.y + 0.3, 0.0001, "%s hangs 0.3 m over its piece" % label.text)
+	_check(checked > 10 and lifted > 0, "labels were checked, lifted pieces among them (%d, %d)" % [checked, lifted])
 
 func case_k13_station() -> void:
 	await _station_level(false)

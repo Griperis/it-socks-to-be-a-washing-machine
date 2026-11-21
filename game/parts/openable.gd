@@ -92,7 +92,10 @@ func decide(cmd: Command) -> Dictionary:
 ## Plays "open" forwards or backwards from wherever the pose is now, so a toggle mid-swing turns
 ## back smoothly; `now` jumps to the end pose with no animation.
 func _show(now: bool) -> void:
-	if not now and open != _was_open:
+	# A patch that leaves `open` as it was (a lock, say) replays no swing and no sound.
+	if not now and open == _was_open:
+		return
+	if not now:
 		_make_sound()
 	_was_open = open
 	var player := animator()

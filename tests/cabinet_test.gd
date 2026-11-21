@@ -43,6 +43,8 @@ func cases() -> Array[Dictionary]:
 	return [
 		{"name": "real_path", "method": "case_real_path", "world": false,
 				"title": "real path: in the station the real actions pair two Socks, click a drawer and see the Pair in its slot and the Coins; a second Pair thrown at the Cabinet shelves itself"},
+		{"name": "r1_locked_drawers", "method": "case_r1", "world": false,
+				"title": "R1: a drawer above the Rows in use, or any drawer of a locked Cabinet, stays shut for a click and for a Guest's direct open: the Host refuses it"},
 		{"name": "c01_click", "method": "case_c01", "world": false,
 				"title": "C01: a click on a drawer shelves every held Pair of its Collection into it in the order held; another Collection's Pair stays; the drawer slides open"},
 		{"name": "c02_wrong", "method": "case_c02", "world": false,
@@ -141,6 +143,28 @@ func case_real_path() -> void:
 
 # --- Shelving by click ---------------------------------------------------------------------------
 
+func case_r1() -> void:
+	await _build()
+	# The real path: a click on the top drawer (above the two Rows) with empty Hands.
+	await _click_drawer(2)
+	await _physics_ticks(10)
+	_check(not _cabinet.drawer(2).open, "a click on a drawer above the Rows leaves it shut")
+	# Co-op: a Guest's `open` straight at the drawer's Openable is refused by the Host.
+	var top := _cabinet.drawer(2)
+	_check(top.locked, "the drawer above the Rows is ticked locked")
+	var ask := Command.new(&"open", 2, top.id, {"open": true})
+	var answer := _parts.answer(ask)
+	_check(not answer["ok"] and answer["reason"] == "locked", "the Host refuses the Guest: locked (%s)" % [answer])
+	_check(not top.open, "the drawer stays shut on the Host")
+	# Locking the whole Cabinet locks every drawer; growing the Rows unlocks the next one.
+	_parts.apply({"ok": true, "changes": _cabinet.lock_patch(true, 2)})
+	for i in 3:
+		var a := _parts.answer(Command.new(&"open", 2, _cabinet.drawer(i).id, {"open": true}))
+		_check(not a["ok"] and a["reason"] == "locked", "drawer %d of a locked Cabinet refuses a Guest (%s)" % [i, a])
+	_parts.apply({"ok": true, "changes": _cabinet.lock_patch(false, 3)})
+	_check(not top.locked and _parts.answer(ask)["ok"], "with three Rows the top drawer opens for a Guest")
+
+
 func case_c01() -> void:
 	await _build()
 	_capacity(4)
@@ -175,7 +199,7 @@ func case_c03() -> void:
 	await _build()
 	_capacity(4)
 	_tune_capacity(1)
-	_parts.load_snapshot({_cabinet.id: {"rows": 3}})
+	_parts.load_snapshot(_cabinet.lock_patch(false, 3))
 	await _pair(S0, S0_MATE)
 	await _pair(S1, S1_MATE)
 	await _pair(S4, S4_MATE)
@@ -211,7 +235,7 @@ func case_c05() -> void:
 	await _build()
 	_capacity(4)
 	_tune_capacity(1)
-	_parts.load_snapshot({_cabinet.id: {"rows": 3}})
+	_parts.load_snapshot(_cabinet.lock_patch(false, 3))
 	await _pair(S0, S0_MATE)
 	await _pair(UNCOMMON, UNCOMMON_MATE)
 	await _pair(RARE, RARE_MATE)
@@ -455,7 +479,7 @@ func case_i5() -> void:
 	_check(not direct["ok"], "the Host's thrown_shelve never takes a loose Sock")
 	var guest := _parts.answer(Command.new(&"thrown_shelve", 2, _cabinet.id, {"sock": S4, "thrower": 2}))
 	_check(not guest["ok"], "nobody but the Host may ask thrown_shelve")
-	_parts.load_snapshot({_cabinet.id: {"locked": true, "rows": 3}})
+	_parts.load_snapshot(_cabinet.lock_patch(true, 3))
 	await _physics_ticks(25)
 	await _click_drawer(2)
 	await _physics_ticks(4)

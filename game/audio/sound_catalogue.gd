@@ -15,15 +15,28 @@ extends Resource
 @export var muffling_scenes: Array[String] = []
 
 var _by_name: Dictionary[StringName, SoundEvent] = {}
+## How many events the index was built from (a changed list builds it again).
+var _indexed := -1
 
 
 ## The event of this name, or null.
 func find(name: StringName) -> SoundEvent:
-	if _by_name.size() != events.size():
-		_by_name.clear()
-		for e in events:
-			_by_name[e.event] = e
+	if _indexed != events.size():
+		_build_index()
 	return _by_name.get(name)
+
+
+## Indexes the events by name, once per list; a null entry or a repeated name is a fault, said once.
+func _build_index() -> void:
+	_by_name.clear()
+	_indexed = events.size()
+	for e in events:
+		if e == null:
+			push_error("SoundCatalogue: a null entry in events")
+		elif _by_name.has(e.event):
+			push_error("SoundCatalogue: the event '%s' is in the catalogue twice" % e.event)
+		else:
+			_by_name[e.event] = e
 
 
 func has(name: StringName) -> bool:
@@ -34,5 +47,6 @@ func has(name: StringName) -> bool:
 func names() -> Array[StringName]:
 	var out: Array[StringName] = []
 	for e in events:
-		out.append(e.event)
+		if e != null:
+			out.append(e.event)
 	return out

@@ -46,6 +46,8 @@ func cases() -> Array[Dictionary]:
 				"title": "P06 (Q2366): a held Sock sways little at a steady walk, tuned stiffer than core/09"},
 		{"name": "p07_ground", "method": "case_p07", "world": false,
 				"title": "P07 (Q2366): near the ground a flying Sock's whole bend straightens, none at the surface"},
+		{"name": "r6_landing_idle", "method": "case_r6", "world": false,
+				"title": "R6: a ball's BallLanding watches the physics step only while it falls and has not landed, and its Animation is built once per tuning"},
 		{"name": "p12_lost", "method": "case_p12", "world": false,
 				"title": "P12, P12b: lost Socks come back at the return spot scattered within 0.2 m, a pop in 3D at each"},
 		{"name": "p12_flight_lost", "method": "case_p12_flight", "world": false,
@@ -302,6 +304,32 @@ func case_p12() -> void:
 		if h["event"] == &"lost_pop":
 			_check(h["spatial"] and places.any(func(p: Vector3) -> bool: return p.distance_to(h["at"]) < 0.001), "the pop is in 3D where one came back")
 	_near(_mess.bodies_tuning().return_scatter, 0.2, 0.0001, "the scatter is the old 0.2 m")
+
+
+func case_r6() -> void:
+	var t := BallLandingTuning.new()
+	var make := func(parent: Node) -> BallLanding:
+		var looks := Node3D.new()
+		var landing := BallLanding.new()
+		landing.tuning = t
+		landing.name = "BallLanding"
+		looks.add_child(landing)
+		parent.add_child(looks)
+		return landing
+	var holder := Node3D.new()
+	add_child(holder)
+	var free_flier := make.call(holder) as BallLanding
+	_check(not free_flier.is_physics_processing(), "with no RigidBody parent it never watches the physics step")
+	var body := RigidBody3D.new()
+	holder.add_child(body)
+	var on_body := make.call(body) as BallLanding
+	_check(on_body.is_physics_processing(), "on a falling body it watches")
+	on_body.land()
+	_check(not on_body.is_physics_processing(), "after its one landing it stops")
+	var second := make.call(body) as BallLanding
+	_check(second._player.get_animation(BallLanding.LAND) == on_body._player.get_animation(BallLanding.LAND),
+			"two balls of one tuning share one landing Animation")
+	holder.free()
 
 
 func case_p12_flight() -> void:

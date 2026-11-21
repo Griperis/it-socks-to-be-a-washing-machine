@@ -25,6 +25,8 @@ func cases() -> Array[Dictionary]:
 				"title": "H04: the counter sign shows moving, waiting and resting Socks and the physics tick"},
 		{"name": "h05", "method": "case_h05", "world": false,
 				"title": "H05: low walls round the pad keep the heap on it; a slope and a table stand in it"},
+		{"name": "r4_no_designs", "method": "case_r4", "world": false,
+				"title": "R4: when the catalogue gives no Design, queuing a batch gives up instead of spinning"},
 		{"name": "h07", "method": "case_h07", "world": false,
 				"title": "H07: new Socks come only through the Mess's Host-only add; a late joiner's snapshot holds the same heap; nothing is saved"},
 		{"name": "ticks", "method": "case_ticks", "world": false, "stress": true,
@@ -194,6 +196,16 @@ func case_h05() -> void:
 			outside += 1
 	_check(outside == 0, "every poured Sock lies inside the walls (%d outside)" % outside)
 
+
+func case_r4() -> void:
+	await _zoo_up()
+	var spout := _small()
+	var cat := DesignCatalogue.new()
+	var none: Array[SockDesign] = [null, null, null]
+	cat.designs = none
+	spout.mess.catalogue = cat
+	spout._queue_batch()
+	_check(spout._queue.is_empty(), "no Design came back: the queue stays empty and the call returns")
 
 func case_h07() -> void:
 	await _zoo_up()

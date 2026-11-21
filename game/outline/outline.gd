@@ -77,6 +77,13 @@ func _ready() -> void:
 	_apply()
 
 
+func _enter_tree() -> void:
+	# Back in the tree (not the first time: _ready does that): a shown, blend-shaped outline follows
+	# its source's blend shapes again.
+	if is_node_ready():
+		set_process(shown and _has_blends())
+
+
 func _exit_tree() -> void:
 	set_process(false)
 
