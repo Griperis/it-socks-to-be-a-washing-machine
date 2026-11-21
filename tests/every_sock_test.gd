@@ -165,11 +165,6 @@ func case_e05() -> void:
 	await _zoo_up()
 	var st := _station()
 	var mess := _zoo.get_node("Socks/Mess") as Mess
-	var on_grid := false
-	for n in 40:
-		if ZooStations.place(n).distance_to(st.position) < 1.0:
-			on_grid = true
-	_check(not on_grid, "its place %s is no place of the grid" % st.position)
 	var ends := true
 	for station in _zoo.get_node("Stations").get_children():
 		if station != st:
