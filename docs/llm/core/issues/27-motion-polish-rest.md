@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: ["[[16-feedback-and-motion-polish]]"]
 notes: []
 terms: []
@@ -33,6 +33,9 @@ old code and numbers of each.
 - A review sheet of P03, P08, P10, P11, P14 and P15 in `builds/review-core-27/`, stopped at it for the designer's go.
 
 ## Answers
+- Merged on the designer's go after a complexity report; the designer reviews the code once M0.5 is complete (Q2402, 2026-11-21).
+- A drop keeps no bend; only the Throw carries it (Q2401, 2026-11-21).
+- The swing ease stays as built; the designer tunes the AnimationPlayer keys' curve in the editor (Q2403, 2026-11-21).
 - Split from core/16 (Q2398, 2026-11-21).
 
 ## Open follow-ups
