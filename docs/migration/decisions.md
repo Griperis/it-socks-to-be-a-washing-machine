@@ -1,4 +1,4 @@
-Next free Q number: Q2389 (update this line whenever a round of questions is asked)
+Next free Q number: Q2391 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -301,3 +301,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2386: the two rebuilt houses (A, old-width windows; B, rounded) stand beside the zoo, walked into from the zoo floor, as stations.
 - Q2387: core/15's screen (prompts, hints, keycaps, readouts at the old places) is approved.
 - Q2388: openable prompts use the old wording: drawers and cupboards show the thing's own name ("[E] Simple Cabinet Drawer"); the Door keeps "Open the Door".
+- Q2389: in the material library, each group keeps the variant the most old pieces used (a tie: nearest the median roughness); any group can be overridden later by name.
+- Q2390: fabrics are ported without the old glTF sheen; a look-change ticket gives them a soft sheen later (assets/06).
