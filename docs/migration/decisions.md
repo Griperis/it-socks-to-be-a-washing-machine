@@ -1,4 +1,4 @@
-Next free Q number: Q2366 (update this line whenever a round of questions is asked)
+Next free Q number: Q2374 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -278,3 +278,11 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2363: the prompt rows at the old places and sizes (58 %, 63 %, 70 % of the height; 32, 28, 24 pt).
 - Q2364: an openable's prompt shows the old key (E, or LMB for a click-only one).
 - Q2365: "Drop / hold: Throw" always shows: the old game never gated it by an Upgrade (the draft's premise was wrong).
+- Q2366: the Sock cloth keeps Godot's spring-bone node, tuned so it does not flap so much (the old springs felt "kinda sticky"); the old ports of Q2286/Q2287 are dropped.
+- Q2367: the drop also leaves from the hand: the body is let go at the hand and falls to the spot; the drawn flick and the 3 cm hold go (core/23; changes core/08 H10's flick).
+- Q2368: the Door swings 0.6 s eased in and out, the cupboard 0.35 s eased out (the old timings).
+- Q2369: lost and sunk Socks: the old numbers at the zoo's return spot, plus a station button that loses and sinks a Sock.
+- Q2370: "Paired!" gets a short pop of the text (a look change; built in core/16 with its own still).
+- Q2371: the bounce sound follows the hit speed: soft hits quiet, hard ones louder and higher (a sound change from the old one level).
+- Q2372: each sound event has a minimum gap (e.g. 0.05 s for bounce), set in its SoundEvent, so a heap does not fill every voice.
+- Q2373: the shelve sound plays at the click, as the old game.
