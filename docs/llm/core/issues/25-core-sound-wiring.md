@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: ["[[11-outline]]", "[[23-flights-flip-and-throw-from-hand]]"]
 notes: []
 terms: []
@@ -84,6 +84,7 @@ code: `reference/it-socks/game/core/game.gd:1445-1470`, `game/hands/hands_rules.
 - No still (sound only). The designer listens in a play session; the ticket waits for batch 6.
 
 ## Answers
+- W15 (the pop of a returned lost Sock) moves to core/16 with the return motion it plays on (the lead, 2026-11-21).
 - The bounce follows the hit speed: soft hits quiet, hard ones louder and higher (Q2371, 2026-11-21).
 - Each sound event has a minimum gap set in its SoundEvent, e.g. 0.05 s for bounce (Q2372).
 - The shelve sound plays at the click, as the old game (Q2373).
@@ -95,5 +96,27 @@ code: `reference/it-socks/game/core/game.gd:1445-1470`, `game/hands/hands_rules.
 - core/17's Built log lists the old details it left out; those of the core are here.
 
 ## Open follow-ups
+- [later] W15 (the lost Sock or Pair's pop at the washer's front) is not wired: the washer return is core/16 P12 and is not on
+  this branch. When it lands, one `Sounds.play_at(&"pop", pos)` per Sock or Pair that comes back. The ticket stays
+  `in-progress` for it; everything else is done and tested.
+- [later] W17 (coins, "done" rumble) is M4; the knock rumble and teammates' sounds are M0.6 (Q2376). Only the throw and pair
+  `RumbleCue`s exist (`game/audio/rumble_*.tres`).
+- [later] Placeholder numbers for the designer to hear: min gaps (bounce 0.05 s as Q2372; pop and shelve 0.05, refuse and
+  the drawer, door and cupboard sounds 0.1 s) in `sound_catalogue.tres`; the bounce's soft end (-15 dB, pitch 0.9 to 1.15)
+  and its hard speed (8 m/s) in `SoundEvent` / `MessTuning` ("Sound" group; hits count from the old 1.5 m/s).
+- [later] The bounce's speed is the body's speed just before the step it touched in, not the part along the surface normal
+  (the old game's "into it"); a glancing slide over 1.5 m/s still bounces. It also plays for a flight hitting a lying Sock.
+- [later] `throw_charge` plays once at the charge start and is not stopped at the release (the old clip was not either).
 
 ## Built log
+- 2026-11-21 Changed: every core sound call and the pad rumble: `Hearing` (the Host's answers become pick, pair, cycle,
+  drop, throw and shelve sounds), `Player.say` plays refuse, `_set_charge` plays throw_charge, `HeldView` plays pop at the
+  ball's pop, `Openable` plays its `open_sound`/`close_sound` when it turns over by use (set on the Door, cupboard and
+  drawer scenes; a state arriving whole is silent), `MessMoving` plays bounce at the contact with the hit speed as
+  strength (`play_at(name, where, strength)`); `SoundEvent.min_gap` and the by-strength fields; `PadRumble` and
+  `RumbleCue` (throw, pair), setting `pad/rumble` (default on). Landing and steps (core/17) read by tests.
+  Files: `game/audio/{hearing,pad_rumble,rumble_cue}.gd`, `rumble_*.tres`, `sounds.gd`, `sound_event.gd`,
+  `sound_catalogue.tres`, `game/parts/openable.gd`, three entity scenes, `game/player/player.gd` (three one-line
+  calls), `game/hands/held_view.gd`, `game/mess/mess_moving.gd`, `mess_tuning.gd`, `tests/sound_wiring_test.gd`,
+  `tests/hooks.gd`, `tests/sounds_test.gd` (a reset before two bounce plays).
+  Verified: `PASS 10931 checks, 306 cases` (`--touched`), `PASS rules`, `PASS asset_lint`.
