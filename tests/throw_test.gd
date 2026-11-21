@@ -254,7 +254,7 @@ func case_t08() -> void:
 	body.sleeping = true
 	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "the walled-in Sock to be put down")
 	var spot := _station.get_node("ReturnSpot") as Marker3D
-	_near(_mess.pose_of(ON_FLOOR).origin.distance_to(spot.global_position), 0.0, 0.001, "a Sock that would end inside a wall lies at the return spot")
+	_check(_mess.pose_of(ON_FLOOR).origin.distance_to(spot.global_position) <= _mess.bodies_tuning().return_scatter + 0.001, "a Sock that would end inside a wall lies at the return spot, scattered within its radius (core/16 P12)")
 
 
 func case_t11() -> void:
@@ -366,7 +366,7 @@ func case_t14() -> void:
 		past = maxf(past, body.global_position.z)
 		await _physics_ticks(1)
 	_check(past < 3.0 + 0.2, "it comes down as soon as it leaves (got to z %.2f)" % past)
-	_near(_mess.pose_of(ON_FLOOR).origin.distance_to(spot.global_position), 0.0, 0.001, "it lies at the return spot")
+	_check(_mess.pose_of(ON_FLOOR).origin.distance_to(spot.global_position) <= _mess.bodies_tuning().return_scatter + 0.001, "it lies at the return spot, scattered within its radius (core/16 P12)")
 	_places("after leaving by the side")
 	# Above the ceiling: a ceiling at 2.5 m.
 	_mess.bounds = AABB(Vector3(-8.0, -2.0, -8.0), Vector3(16.0, 4.5, 16.0))
@@ -381,7 +381,7 @@ func case_t14() -> void:
 		top = maxf(top, body.global_position.y)
 		await _physics_ticks(1)
 	_check(top < 2.5 + 0.2, "it comes down at once above the ceiling (got to %.2f m)" % top)
-	_near(_mess.pose_of(ON_FLOOR).origin.distance_to(spot.global_position), 0.0, 0.001, "it lies at the return spot")
+	_check(_mess.pose_of(ON_FLOOR).origin.distance_to(spot.global_position) <= _mess.bodies_tuning().return_scatter + 0.001, "it lies at the return spot, scattered within its radius (core/16 P12)")
 	_places("after going above the ceiling")
 
 

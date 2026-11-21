@@ -24,6 +24,9 @@ const SIZE_LETTER := &"SizeLetter"
 ## alpha 0.9, A10).
 const CROSSHAIR_OK := Color.WHITE
 const CROSSHAIR_NO := Color(0.95, 0.25, 0.2)
+## The message's colours: a refusal in the old REFUSE red, anything else white (the old _show_line).
+const MESSAGE_REFUSAL := Color(0.95, 0.25, 0.2)
+const MESSAGE_PLAIN := Color.WHITE
 
 @export var tuning: HudTuning
 
@@ -43,11 +46,16 @@ var hands_tuning: HandsTuning
 @onready var _sense: HBoxContainer = $AimedRow/Row/Sense
 @onready var _hints: HBoxContainer = $Hints
 @onready var _held: HBoxContainer = $HeldInfo
+@onready var _message_row: Control = $MessageRow
+@onready var _message: Label = $MessageRow/Message
 
 var _sig: Dictionary[String, String] = {"prompt": "", "aimed": "", "sense": "", "held": "", "hints": ""}
 var _text: Dictionary[String, String] = {"prompt": "", "aimed": "", "sense": "", "held": "", "hints": ""}
 var _held_size := ""
 var _blocked := false
+var _message_tween: Tween = null
+var _wobbling := false
+var _refusal := false
 
 
 func _ready() -> void:
@@ -132,6 +140,89 @@ func show_hints(prompts: Array[Prompt]) -> void:
 	_text["hints"] = Prompt.joined(prompts, "  ")
 	for p in prompts:
 		_hints.add_child(_prompt_row(p, HINT_FONT, HINT_LABEL))
+
+
+## The message row says `text` (the player keeps it up for its time and hides it): a `refusal` in
+## red, turning to and fro about its middle and dying down (core/16 P01); anything else white,
+## popping in (P02, Q2370).
+func say(text: String, refusal: bool) -> void:
+	_message.text = text
+	_message.add_theme_color_override(&"font_color", MESSAGE_REFUSAL if refusal else MESSAGE_PLAIN)
+	_message.visible = true
+	_refusal = refusal
+	if _message_tween != null:
+		_message_tween.kill()
+	_message_row.rotation = 0.0
+	_message_row.scale = Vector2.ONE
+	_wobbling = refusal
+	_message_tween = create_tween()
+	if refusal:
+		_message_tween.tween_method(_wobble_at, 0.0, tuning.wobble_time, tuning.wobble_time)
+	else:
+		_message_row.scale = Vector2.ONE * tuning.pop_from
+		_message_tween.tween_method(_pop_at, tuning.pop_from, tuning.pop_peak, tuning.pop_rise) \
+				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		_message_tween.tween_method(_pop_at, tuning.pop_peak, 1.0, tuning.pop_settle) \
+				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_message_tween.tween_callback(_still)
+
+
+## The message's turn `t` seconds into a refusal: `sin(t * TAU * rate) * turn`, dying down linearly
+## (the old hud.gd _wobble()), about the row's middle.
+func _wobble_at(t: float) -> void:
+	_centre_pivot()
+	var left := clampf(1.0 - t / maxf(tuning.wobble_time, 0.001), 0.0, 1.0)
+	_message_row.rotation = sin(t * TAU * tuning.wobble_rate) * tuning.wobble_turn * left
+
+
+func _pop_at(size: float) -> void:
+	_centre_pivot()
+	_message_row.scale = Vector2.ONE * size
+
+
+func _still() -> void:
+	_message_row.rotation = 0.0
+	_message_row.scale = Vector2.ONE
+	_wobbling = false
+
+
+func _centre_pivot() -> void:
+	_message_row.pivot_offset = _message_row.size * 0.5
+
+
+## Hides the message row (its time is up).
+func hide_message() -> void:
+	_message.visible = false
+
+
+## What the message row says now, or "" when hidden.
+func message_text() -> String:
+	return _message.text if _message.visible else ""
+
+
+## What the message row says now when it is a refusal, or "" (none, or "Paired!").
+func refusal_text() -> String:
+	return message_text() if _refusal else ""
+
+
+## The message's colour (MESSAGE_REFUSAL or MESSAGE_PLAIN).
+func message_colour() -> Color:
+	return _message.get_theme_color(&"font_color")
+
+
+## How far the message row is turned now, in radians (a refusal's wobble).
+func message_turn() -> float:
+	return _message_row.rotation
+
+
+## How big the message row is drawn now (1 at rest; "Paired!" pops).
+func message_size() -> float:
+	return _message_row.scale.x
+
+
+## Whether a refusal is still wobbling.
+func wobbling() -> bool:
+	return _wobbling
 
 
 ## The crosshair turns red while a drop would be refused where it points, and white again (A09).

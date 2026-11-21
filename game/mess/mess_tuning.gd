@@ -41,6 +41,16 @@ extends Resource
 @export_range(0.0, 2.0, 0.01, "suffix:m/s") var pair_rest_speed := 0.25 # placeholder: ported (SockFlights.PAIR_REST_SPEED)
 @export_range(0.0, 20.0, 0.1, "suffix:rad/s") var pair_rest_spin := 3.0 # placeholder: ported (SockFlights.PAIR_REST_SPIN)
 
+@export_group("Lost")
+## A lost Sock or Pair (out of bounds, or resting inside a wall) comes back at the return spot,
+## scattered within this radius round it (core/16 P12, the old lost.json scatter).
+@export_range(0.0, 2.0, 0.01, "suffix:m") var return_scatter := 0.2 # placeholder: the old lost.json scatter
+## One whose middle (a Pair's bottom) rests at least this far under a floor's top, and no deeper than
+## `sunk_depth`, is pushed up onto that floor where it is, with no pop (P13, the old lost.json sunk).
+@export_range(0.0, 0.5, 0.005, "suffix:m") var sunk := 0.02 # placeholder: the old lost.json sunk
+## Deeper than this under a floor's top it is lost and comes back at the return spot.
+@export_range(0.0, 2.0, 0.01, "suffix:m") var sunk_depth := 0.3 # placeholder: the old lost.json below
+
 @export_group("Bodies")
 ## A woken Sock's slide and drag (M10).
 @export_range(0.0, 2.0, 0.01) var woken_friction := 0.9 # placeholder: ported (mess.json friction)

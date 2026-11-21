@@ -32,6 +32,8 @@ const HANDS_PREV := &"hands_prev"
 ## What a refusal says (the old game's words).
 const HANDS_FULL := "Hands full"
 const CANT_DROP := "Can't drop there"
+## What the message row says when a pick completes a Pair (the old game.gd, core/16 P02).
+const PAIRED := "Paired!"
 ## The crosshair where a drop may go (and always with empty Hands), and where it may not (the Hud's).
 const CROSSHAIR_OK := Hud.CROSSHAIR_OK
 const CROSSHAIR_NO := Hud.CROSSHAIR_NO
@@ -52,7 +54,6 @@ const FULL_OUTLINE := preload("res://game/outline/full.tres")
 @onready var _aim: RayCast3D = %Aim
 @onready var _held_view: HeldView = %HeldView
 @onready var _hud: Hud = %Hud
-@onready var _message: Label = %Message
 @onready var _ring: PowerRing = %Ring
 
 ## True while a menu has the player's input (set_input_blocked()).
@@ -102,7 +103,7 @@ func _ready() -> void:
 	_aim.collision_mask = Mess.AIM_MASK
 	_held_view.tuning = hands_tuning
 	_held_view.base_fov = tuning.fov
-	_message.visible = false
+	_hud.hide_message()
 	upgrades = upgrades.duplicate() as PlayerUpgrades if upgrades != null else PlayerUpgrades.new()
 	_hud.camera = _camera
 	_hud.held_view = _held_view
@@ -268,7 +269,8 @@ func zoom_slow() -> float:
 func _update_hands(delta: float) -> void:
 	var h := hands()
 	_message_left = maxf(_message_left - delta, 0.0)
-	_message.visible = _message_left > 0.0
+	if _message_left <= 0.0:
+		_hud.hide_message()
 	if h == null:
 		_update_screen(null)
 		return
@@ -399,17 +401,22 @@ func drop_spot() -> Dictionary:
 			hands_tuning.drop_gap, Mess.AIM_MASK, [get_rid()])
 
 
-## Shows a refusal on the HUD for a moment.
+## Shows a refusal on the HUD for a moment: the red line wobbles (core/16 P01).
 func say(text: String) -> void:
 	Sounds.play(&"refuse")
-	_message.text = text
+	_hud.say(text, true)
 	_message_left = hands_tuning.refusal_time
-	_message.visible = true
 
 
-## What the HUD's refusal says now ("" when none shows).
+## Shows "Paired!" on the HUD for a moment, white, popping in (core/16 P02).
+func say_paired() -> void:
+	_hud.say(PAIRED, false)
+	_message_left = hands_tuning.refusal_time
+
+
+## What the HUD's refusal says now ("" when none shows; "Paired!" is read from the Hud).
 func message() -> String:
-	return _message.text if _message.visible else ""
+	return _hud.refusal_text()
 
 
 ## What the HUD shows for the held Sock's Size ("" with none).
@@ -519,6 +526,9 @@ func _aims_full_drawer() -> bool:
 func _on_applied(ev: Dictionary) -> void:
 	if _hands != null:
 		Hearing.applied(ev, player_id(), _hands.parts)
+	if ev.get("ok", false) and int(ev.get("by", 0)) == player_id() and ev.has("paired") \
+			and StringName(ev.get("kind", &"")) == &"pick":
+		say_paired()
 	if ev.get("ok", false) or int(ev.get("by", 0)) != player_id() or _hands == null:
 		return
 	var to := _hands.parts.of(StringName(ev.get("to", &""))) if _hands.parts != null else null

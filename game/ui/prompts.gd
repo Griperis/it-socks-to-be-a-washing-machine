@@ -36,6 +36,8 @@ static func target(part: Part, pad := false) -> Array[Prompt]:
 		out.append(openable_prompt(part as Openable, pad))
 	elif part is UpgradeSwitch:
 		out.append(Prompt.of((part as UpgradeSwitch).title(), keys(Player.INTERACT, pad)))
+	elif part is LoseButton:
+		out.append(Prompt.of((part as LoseButton).title(), keys(Player.INTERACT, pad)))
 	return out
 
 

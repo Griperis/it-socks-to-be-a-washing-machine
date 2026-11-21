@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://game/mess/sock_spot.gd" id="4_spot"]
 [ext_resource type="Resource" path="res://game/sock/designs.tres" id="5_designs"]
 [ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
+[ext_resource type="Script" uid="uid://bijzj4p250y1i" path="res://game/zoo/lose_button.gd" id="7_lose"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.3, 0.5, 0.42, 1)
@@ -85,6 +86,16 @@ size = Vector3(0.94, 0.03, 0.42)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_inner_shelf"]
 size = Vector3(0.94, 0.03, 0.42)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lose"]
+albedo_color = Color(0.8, 0.45, 0.3, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lose"]
+material = SubResource("StandardMaterial3D_lose")
+size = Vector3(0.3, 0.6, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lose"]
+size = Vector3(0.3, 0.6, 0.3)
 
 [node name="Handling" type="Node3D"]
 
@@ -249,6 +260,51 @@ script = ExtResource("4_spot")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
 script = ExtResource("4_spot")
 design = 1
+
+[node name="Lose" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0, 0.9)
+
+[node name="LoseButton" type="Node" parent="Lose" node_paths=PackedStringArray("mess", "spots")]
+script = ExtResource("7_lose")
+mess = NodePath("../../Socks/Mess")
+spots = [NodePath("../../Spots/OnTable"), NodePath("../../Spots/BehindWall"), NodePath("../../Spots/InCupboard")]
+
+[node name="Mesh" type="MeshInstance3D" parent="Lose"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("BoxMesh_lose")
+
+[node name="Shape" type="CollisionShape3D" parent="Lose"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+shape = SubResource("BoxShape3D_lose")
+
+[node name="Label" type="Label3D" parent="Lose"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+pixel_size = 0.003
+billboard = 1
+text = "Lose Socks"
+
+[node name="Sink" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0, 0.3)
+
+[node name="LoseButton" type="Node" parent="Sink" node_paths=PackedStringArray("mess", "spots")]
+script = ExtResource("7_lose")
+verb = "sink"
+mess = NodePath("../../Socks/Mess")
+spots = [NodePath("../../Spots/MateUnder")]
+
+[node name="Mesh" type="MeshInstance3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("BoxMesh_lose")
+
+[node name="Shape" type="CollisionShape3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+shape = SubResource("BoxShape3D_lose")
+
+[node name="Label" type="Label3D" parent="Sink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+pixel_size = 0.003
+billboard = 1
+text = "Sink a Sock"
 
 [node name="ReturnSpot" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5)

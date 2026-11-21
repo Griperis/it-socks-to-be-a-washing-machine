@@ -59,9 +59,12 @@ const FLIGHT_NAME := "Flight%d"
 const LOOKS := ^"Looks"
 ## The thrower of a poured Sock's launch (`add`): no player, so no body lets it through.
 const NOBODY := -1
+## An answer's list of places where a lost Sock or Pair came back (a "pop" plays at each, core/16).
+const POPPED := "popped"
 
 const FLIGHT_SCENE := MessMoving.FLIGHT_SCENE
 const CLOTH_TUNING := preload("res://game/sock/sock_cloth_tuning.tres")
+const BALL_LANDING := preload("res://game/sock/ball_landing_tuning.tres")
 
 ## The Designs a Sock's record names.
 @export var catalogue: DesignCatalogue
@@ -106,6 +109,8 @@ var _shown_poses := PackedFloat32Array()
 var _lent: Dictionary[int, Node3D] = {}
 ## The Host's moving Socks: the falling bodies, the budget and the wakes.
 var _moving := MessMoving.new(self)
+## The Host's dice for a lost Sock's return scatter (return_pose()).
+var _scatter := RandomNumberGenerator.new()
 ## More nodes of SockSpots, handed over before this Mess is ready by a scene that joins the level
 ## (a zoo station, whose own Mess steps aside for the zoo's: ZooStations): read after `spots`, in order.
 var more_spots: Array[Node3D] = []
@@ -331,6 +336,70 @@ func thrown_patch(sock: int, pose: Transform3D, vel: Vector3, spin: Vector3, by:
 	return {"states": s, "poses": _with_pose(sock, pose), "throws": t}
 
 
+## The Host's rule for where Sock `sock` let down at `t` lies (core/16 P12, P13; the old
+## hands_rules.gd:490-510): out of bounds, or inside a wall, it is lost and comes back at the return
+## spot scattered within `return_scatter` ("returned": true, a pop plays); its middle (a Pair's
+## bottom) sunk `sunk` to `sunk_depth` under a floor's top, it is pushed up onto that floor where
+## it is ("returned": false); else it lies at `t`. Returns {"pose": Transform3D, "returned": bool}.
+func put_down(sock: int, t: Transform3D) -> Dictionary:
+	var pair := is_pair(sock)
+	var design := design_of(sock)
+	var radius := SockDress.ball_radius(design) if pair else 0.0
+	if not in_bounds(t.origin):
+		return {"pose": return_pose(sock), "returned": true}
+	var centre := t.origin if pair else t * _sock_middle(design)
+	if not PhysicsQueries.inside(self, centre, LAYER_HOUSE):
+		return {"pose": t, "returned": false}
+	var b := bodies_tuning()
+	var low := centre.y - radius
+	var hit := PhysicsQueries.ray(self, centre + Vector3.UP * (b.sunk_depth + radius), centre, LAYER_HOUSE)
+	if not hit.is_empty() and (hit["normal"] as Vector3).y > 0.7:
+		var top := (hit["position"] as Vector3).y
+		var depth := top - low
+		if depth >= b.sunk - 0.0001 and depth <= b.sunk_depth:
+			var lift := depth if pair else top - t.origin.y
+			return {"pose": Transform3D(t.basis, t.origin + Vector3.UP * lift), "returned": false}
+	return {"pose": return_pose(sock), "returned": true}
+
+
+## Where a lost Sock comes back (P12): at the return spot, turned and scattered at random within
+## `return_scatter` round it (a Pair's ball a radius over it); with no spot, at the origin.
+func return_pose(sock: int) -> Transform3D:
+	var lift := Vector3.UP * SockDress.ball_radius(design_of(sock)) if is_pair(sock) else Vector3.ZERO
+	var base := Transform3D.IDENTITY
+	if return_spot != null and return_spot.is_inside_tree():
+		base = return_spot.global_transform.orthonormalized()
+	var r := bodies_tuning().return_scatter * sqrt(_scatter.randf())
+	var a := _scatter.randf() * TAU
+	var turn := Basis(Vector3.UP, _scatter.randf() * TAU)
+	return Transform3D(turn * base.basis, base.origin + Vector3(cos(a), 0.0, sin(a)) * r + lift)
+
+
+## The middle of a lying Sock of `design`, in its own pose's space (its leg and foot boxes).
+static func _sock_middle(design: SockDesign) -> Vector3:
+	var sum := Vector3.ZERO
+	var parts := MessBodies.parts_at(_scale(design))
+	for part: Array in parts:
+		sum += part[1] as Vector3
+	return sum / maxf(parts.size(), 1)
+
+
+## The change that puts lying or flying Sock `sock` down at `pose`, lying (a zoo button's answer,
+## core/16 Q2369; the Host's `rest` does the same for a flight), made on `from_states`,
+## `from_poses` and `from_throws` (the records, or a patch already made for other Socks).
+func lying_patch(sock: int, pose: Transform3D, from_states: PackedByteArray, from_poses: PackedFloat32Array,
+		from_throws: Dictionary) -> Dictionary:
+	var s := from_states.duplicate()
+	s[sock] = State.LYING
+	var p := from_poses.duplicate()
+	var row := pack(pose)
+	for i in POSE:
+		p[sock * POSE + i] = row[i]
+	var t := from_throws.duplicate()
+	t.erase(sock)
+	return {"states": s, "poses": p, "throws": t}
+
+
 ## The change that puts held or flying Pairs (their leads `leads`) into a Cabinet's drawer (part
 ## of the Cabinet's shelve answer): each lead goes SHELVED, its mate stays IN_PAIR, a throw is over.
 func shelved_patch(leads: PackedInt32Array) -> Dictionary:
@@ -358,8 +427,12 @@ func decide(cmd: Command) -> Dictionary:
 				return refuse("wrong")
 			var s := states.duplicate()
 			s[sock] = State.LYING
-			return grant({"states": s, "poses": _with_pose(sock, Transform3D(Basis.from_euler(rot), at)),
+			var ev := grant({"states": s, "poses": _with_pose(sock, Transform3D(Basis.from_euler(rot), at)),
 					"throws": _without_throw(sock)})
+			if bool(cmd.args.get("returned", false)):
+				# core/16 P12b: a lost Sock came back; every machine hears a pop there (Hearing).
+				ev[POPPED] = PackedVector3Array([at])
+			return ev
 		&"wake", &"fall":
 			var socks := PackedInt32Array()
 			var one: Variant = cmd.args.get("sock")
@@ -638,6 +711,13 @@ func give_looks() -> void:
 		var sock := _sock_of_flight(body)
 		var looks := SockDress.make(design_of(sock), SockDress.LYING, is_pair(sock))
 		looks.name = String(LOOKS)
+		if is_pair(sock):
+			# core/16 P04: a falling Pair's drawn ball squashes, hops and squashes as it touches down.
+			var landing := BallLanding.new()
+			landing.name = "BallLanding"
+			landing.tuning = BALL_LANDING
+			landing.radius = SockDress.ball_radius(design_of(sock))
+			looks.add_child(landing)
 		body.add_child(looks)
 
 
