@@ -496,3 +496,33 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2281, Q2315, Q2316, Q2368, Q2398, Q2401-Q2403 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/28, the code review's correctness fixes: drawer locks held by the Host, no swing replay, the pad keycap, the heap pour cannot hang, line-up labels, the ball's physics stops, the catalogue index, the Cabinet caches, the shut Door's own sound, the outline re-enter; merged (main ac9c629) |
+| Planned vs actual | 0 planned (from the M0.5 code review, Q2404), 1 actual |
+| Redo count | 0 |
+| Corrections | none; R8(b) (other bodies' footsteps) left for M0.6 |
+| Cost | see `agent_cost.py --by ticket` (Sonnet) |
+| Time | the agent ran about 11 min |
+| Surprises | the commit came out damaged again; repaired with git_repair.sh |
+| Stop rules | none needed |
+| Looks | none |
+| Decisions | Q2404 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | core/29, the code review's per-frame cost outside the Mess: one aim search per held tick, reused probe shapes, the sway's cloth found once, HeldView's one `_forget`, PairMoment's cache, missing icons cached; merged (main ac9c629) |
+| Planned vs actual | 0 planned (from the M0.5 code review, Q2404), 1 actual |
+| Redo count | 0 |
+| Corrections | none |
+| Cost | see `agent_cost.py --by ticket` (Sonnet) |
+| Time | the agent ran about 4 min |
+| Surprises | none |
+| Stop rules | none needed |
+| Looks | none |
+| Decisions | Q2404 |
+
+---
