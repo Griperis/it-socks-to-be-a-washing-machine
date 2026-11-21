@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dnt0b3x18g3sa"]
+
+[resource]
+resource_name = "leaf"
+cull_mode = 2
+albedo_color = Color(0.36, 0.6, 0.36, 1)
+roughness = 0.55
+metadata/old_pieces = PackedStringArray("plant_big", "plant_snake", "plant_trailing")

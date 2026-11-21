@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://h0uypq7lru35"]
+
+[resource]
+resource_name = "charcoal"
+cull_mode = 2
+albedo_color = Color(0.2, 0.2, 0.21, 1)
+roughness = 0.6
+metadata/old_pieces = PackedStringArray("bikes", "boiler", "car", "collection_board", "old_tree", "ski_bag", "water_tank")

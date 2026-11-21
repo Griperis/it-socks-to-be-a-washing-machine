@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bllihofmfu2e6"]
+
+[resource]
+resource_name = "brass"
+cull_mode = 2
+albedo_color = Color(0.86, 0.68, 0.36, 1)
+metallic = 0.85
+roughness = 0.3
+metadata/old_pieces = PackedStringArray("telescope", "trunk")

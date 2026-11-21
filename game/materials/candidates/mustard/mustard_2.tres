@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://r487fk2xttf4"]
+
+[resource]
+resource_name = "mustard"
+cull_mode = 2
+albedo_color = Color(0.95, 0.7, 0.35, 1)
+roughness = 0.4
+metadata/old_pieces = PackedStringArray("boiler", "bookshelf", "desk", "filing_cabinet", "laundry_shelf")

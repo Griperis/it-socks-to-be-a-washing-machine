@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b0tk0quxvybd2"]
+
+[resource]
+resource_name = "sage_dark"
+cull_mode = 2
+albedo_color = Color(0.45, 0.54, 0.4, 1)
+roughness = 0.4
+metadata/old_pieces = PackedStringArray("workbench")

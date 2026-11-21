@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="MaterialBoardLayout" format=3 uid="uid://ngmshnv16svv"]
+
+[ext_resource type="Script" uid="uid://v7t1hux7egrm" path="res://game/zoo/material_board_layout.gd" id="1_layout"]
+
+; placeholder: the designer's eye on the first still (assets/04)
+[resource]
+script = ExtResource("1_layout")

@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cnf8lerworwbo"]
+
+[resource]
+resource_name = "charcoal"
+cull_mode = 2
+albedo_color = Color(0.2, 0.2, 0.21, 1)
+roughness = 0.35
+metadata/old_pieces = PackedStringArray("piano")

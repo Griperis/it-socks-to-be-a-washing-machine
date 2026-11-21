@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cd3ss05j2dfdo"]
+
+[resource]
+resource_name = "steel"
+cull_mode = 2
+albedo_color = Color(0.74, 0.74, 0.72, 1)
+metallic = 0.85
+roughness = 0.25
+metadata/old_pieces = PackedStringArray("fridge", "kitchen_oven", "kitchen_sink")

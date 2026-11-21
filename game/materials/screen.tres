@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://djw67oqo0qgjk"]
+
+[resource]
+resource_name = "screen"
+cull_mode = 2
+albedo_color = Color(0.05, 0.07, 0.07, 1)
+roughness = 0.1
+metadata/old_pieces = PackedStringArray("kitchen_oven")

@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://ck44cu0nwy41w"]
+
+[resource]
+resource_name = "fab_lavender"
+cull_mode = 2
+albedo_color = Color(0.72, 0.66, 0.82, 1)
+roughness = 0.9
+metadata/old_pieces = PackedStringArray("bunk_bed", "old_cot", "play_rug")

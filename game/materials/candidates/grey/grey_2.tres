@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://ma6acbn2yc3g"]
+
+[resource]
+resource_name = "grey"
+cull_mode = 2
+albedo_color = Color(0.58, 0.6, 0.6, 1)
+metallic = 0.5
+roughness = 0.35
+metadata/old_pieces = PackedStringArray("desk", "filing_cabinet")

@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b1ab07agmwq5m"]
+
+[resource]
+resource_name = "mustard"
+cull_mode = 2
+albedo_color = Color(0.95, 0.7, 0.35, 1)
+metallic = 0.5
+roughness = 0.2
+metadata/old_pieces = PackedStringArray("old_cot")

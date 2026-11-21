@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cl3vf6kl7kvy7"]
+
+[resource]
+resource_name = "fab_linen"
+cull_mode = 2
+albedo_color = Color(0.97, 0.94, 0.88, 1)
+roughness = 0.9
+metadata/old_pieces = PackedStringArray("bunk_bed", "double_bed", "old_cot")

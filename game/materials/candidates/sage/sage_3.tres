@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://vx1eq3hg736v"]
+
+[resource]
+resource_name = "sage"
+cull_mode = 2
+albedo_color = Color(0.6, 0.68, 0.52, 1)
+roughness = 0.4
+metadata/old_pieces = PackedStringArray("bikes", "laundry_shelf", "paint_tins", "tool_shelves")

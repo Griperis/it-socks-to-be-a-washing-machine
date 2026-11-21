@@ -52,6 +52,32 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.reset_physics_interpolation()
 			cam.make_current()
 			return true
+		"materials":
+			# assets/04 F01: a camera on the Materials station's board. arg "overview" looks at the
+			# whole board; arg <row> ("oak", "singles_1") hides every other row and stands before that
+			# one, so a candidate group is seen alone for the designer's pick. The other stations are hidden.
+			var board := world.get_node("Stations/Materials/Board") as MaterialBoard
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			var target := board.row(arg)
+			# Other stations' things stand between the camera and the board: they are hidden.
+			for s in world.get_node("Stations").get_children():
+				(s as Node3D).visible = s == board.get_parent()
+			if target == null:
+				cam.fov = 50.0
+				cam.global_position = board.to_global(Vector3(7.75, 3.4, 11.0))
+				cam.look_at(board.to_global(Vector3(7.75, 3.4, 0.0)))
+			else:
+				for r in board.get_children():
+					(r as Node3D).visible = r == target
+				var swatches := target.get_child_count() - 1
+				var mid := target.position + Vector3((board.layout.name_width + (swatches - 1) * board.layout.pitch) / 2.0, -0.15, 0.0)
+				cam.fov = 50.0
+				cam.global_position = board.to_global(mid + Vector3(0.0, 0.0, 3.6))
+				cam.look_at(board.to_global(mid))
+			cam.reset_physics_interpolation()
+			cam.make_current()
+			return true
 		"house_kit":
 			# A camera on the house kit station (house/02): "lineup" (every piece from above), "walls",
 			# "openings", "floors", "roof_pieces" (rows of the line-up), "room" (the U room from

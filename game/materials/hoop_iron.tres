@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://covx1el8m0p1p"]
+
+[resource]
+resource_name = "hoop_iron"
+cull_mode = 2
+albedo_color = Color(0.16, 0.16, 0.17, 1)
+metallic = 0.6
+roughness = 0.45
+metadata/old_pieces = PackedStringArray("mine_barrel", "mine_crate")

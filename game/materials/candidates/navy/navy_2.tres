@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bcn6ujwvvrjqy"]
+
+[resource]
+resource_name = "navy"
+cull_mode = 2
+albedo_color = Color(0.28, 0.35, 0.5, 1)
+roughness = 0.4
+metadata/old_pieces = PackedStringArray("bookshelf", "desk", "tool_shelves")

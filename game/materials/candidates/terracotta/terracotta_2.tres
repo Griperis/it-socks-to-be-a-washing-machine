@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://boy0wa8ipo77t"]
+
+[resource]
+resource_name = "terracotta"
+cull_mode = 2
+albedo_color = Color(0.8, 0.45, 0.3, 1)
+roughness = 0.2
+metadata/old_pieces = PackedStringArray("car")

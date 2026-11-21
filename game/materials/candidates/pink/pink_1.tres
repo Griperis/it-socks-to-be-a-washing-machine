@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://fjn1xx3yxeb3"]
+
+[resource]
+resource_name = "pink"
+cull_mode = 2
+albedo_color = Color(0.92, 0.6, 0.55, 1)
+roughness = 0.4
+metadata/old_pieces = PackedStringArray("bookshelf", "desk", "dining_table", "filing_cabinet", "kitchen_wall_cupboard", "laundry_shelf", "old_cot", "toy_chest")

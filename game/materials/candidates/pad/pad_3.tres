@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://igxuxu6xwifi"]
+
+[resource]
+resource_name = "pad"
+cull_mode = 2
+albedo_color = Color(0.93, 0.84, 0.66, 1)
+roughness = 0.75
+metadata/old_pieces = PackedStringArray("plant_trailing")
