@@ -31,6 +31,8 @@ var _dropped: Dictionary[int, bool] = {}
 var _waiting: Dictionary[int, StringName] = {}
 var _order := PackedInt32Array()
 var _sorted := true
+## The flights' physics materials, shared: one per friction and bounce (two while the tuning holds still).
+var _materials: Dictionary[Vector2, PhysicsMaterial] = {}
 
 
 func _init(mess: Mess) -> void:
@@ -308,10 +310,8 @@ func _launch(sock: int, woken: bool) -> void:
 	body.name = Mess.FLIGHT_NAME % sock
 	body.set_meta(Mess.SOCK_META, sock)
 	_fit(body, _mess.design_of(sock))
-	var material := PhysicsMaterial.new()
-	material.friction = t.woken_friction if woken else t.released_friction
-	material.bounce = 0.0 if woken else t.released_bounce
-	body.physics_material_override = material
+	body.physics_material_override = _material(t.woken_friction, 0.0) if woken \
+			else _material(t.released_friction, t.released_bounce)
 	body.linear_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
 	body.angular_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
 	if woken:
@@ -431,6 +431,18 @@ static func turn_inertia(mass: float, box: Vector3, weight: float) -> Vector3:
 	var y2 := box.y * box.y
 	var z2 := box.z * box.z
 	return mass / 12.0 * weight * Vector3(y2 + z2, x2 + z2, x2 + y2)
+
+
+## The shared material with this friction and bounce (made the first time it is asked for).
+func _material(friction: float, bounce: float) -> PhysicsMaterial:
+	var key := Vector2(friction, bounce)
+	var material: PhysicsMaterial = _materials.get(key)
+	if material == null:
+		material = PhysicsMaterial.new()
+		material.friction = friction
+		material.bounce = bounce
+		_materials[key] = material
+	return material
 
 
 ## A copy of a box or ball shape, `margin` bigger all round (any other shape as it is).

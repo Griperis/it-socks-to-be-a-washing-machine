@@ -10,6 +10,8 @@
 ##   --label=main            the run's name in the report (a commit, "this branch")
 ##   --commit=<hash>         the commit it ran on, for the report
 ##   --list                  prints the scenarios and quits
+##   --tune=moving_budget=64,woken_friction=0.4  MessTuning numbers changed for this run, to try a
+##                           number without editing the .tres (an unknown name stops the run)
 ## Normally started through GameCli (`-- --bench=mess`), which owns the command line.
 class_name MessBench
 extends Node
@@ -21,6 +23,8 @@ var _only := PackedStringArray()
 var _out := "user://bench/mess"
 var _label := "run"
 var _commit := ""
+## MessTuning properties and their values for this run (--tune=).
+var _tune: Dictionary[String, Variant] = {}
 
 
 func _ready() -> void:
@@ -33,6 +37,15 @@ func _ready() -> void:
 			_label = arg.trim_prefix("--label=")
 		elif arg.begins_with("--commit="):
 			_commit = arg.trim_prefix("--commit=")
+		elif arg.begins_with("--tune="):
+			for pair in arg.trim_prefix("--tune=").split(",", false):
+				var kv := pair.split("=", false, 1)
+				if kv.size() != 2 or not kv[0] in MessTuning.new():
+					print("FAIL mess bench: --tune= takes name=value pairs of MessTuning properties, not \"%s\"" % pair)
+					get_tree().quit(2)
+					return
+				_tune[kv[0]] = _value_of(kv[1])
+			print("tuned for this run: %s" % _tune)
 		elif arg == "--list":
 			for s in PLAN.scenarios:
 				print("%s  %s" % [s.id, s.title])
@@ -90,6 +103,11 @@ func _run_all() -> void:
 func _run(s: MessBenchScenario) -> Dictionary:
 	var level := LEVEL.instantiate() as MessBenchLevel
 	level.prepare(s, PLAN.dice)
+	if not _tune.is_empty():
+		var tuning := level.mess.bodies_tuning().duplicate() as MessTuning
+		for key: String in _tune:
+			tuning.set(key, _tune[key])
+		level.mess.bodies = tuning
 	add_child(level)
 	for i in PLAN.warm_ticks:
 		await get_tree().physics_frame
@@ -165,6 +183,15 @@ func _judge(s: MessBenchScenario, r: Dictionary) -> void:
 			why.append("%s %d" % [key, r[key]])
 	r["ok"] = why.is_empty()
 	r["why"] = ", ".join(why)
+
+
+## A --tune= value as a bool, a whole number or a number.
+static func _value_of(text: String) -> Variant:
+	if text == "true" or text == "false":
+		return text == "true"
+	if text.is_valid_int():
+		return text.to_int()
+	return text.to_float()
 
 
 ## A result as its `BENCH` line.

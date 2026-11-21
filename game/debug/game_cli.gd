@@ -12,7 +12,7 @@ extends Node
 const BENCHES: Array[Dictionary] = [
 	{"name": "mess", "scene": "res://game/debug/mess_bench.tscn",
 			"help": "the Mess benchmark (core/31); exit code 0 on PASS, 1 on FAIL",
-			"options": ["--only=<ids>", "--list", "--label=<name>", "--commit=<hash>", "--out=<folder>"]},
+			"options": ["--only=<ids>", "--list", "--label=<name>", "--commit=<hash>", "--out=<folder>", "--tune=<name>=<value>,..."]},
 ]
 ## Where the zoo's stations are, for `--scene=<name>`.
 const STATIONS := "res://game/zoo/stations/%s.tscn"
