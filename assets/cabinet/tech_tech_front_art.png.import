@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://o7ef4c2oi51i"
-path="res://.godot/imported/tech_tech_front_art.png-a7c0a7206e331b5140be68898a1e275f.ctex"
+path.s3tc="res://.godot/imported/tech_tech_front_art.png-a7c0a7206e331b5140be68898a1e275f.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "b5a5fecd741252e6023195a262b41c2d"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/cabinet/tech_tech_front_art.png"
-dest_files=["res://.godot/imported/tech_tech_front_art.png-a7c0a7206e331b5140be68898a1e275f.ctex"]
+dest_files=["res://.godot/imported/tech_tech_front_art.png-a7c0a7206e331b5140be68898a1e275f.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

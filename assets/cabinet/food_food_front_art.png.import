@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://hiwudntty54b"
-path="res://.godot/imported/food_food_front_art.png-6970286c1c7e39dc5a88c6d2561066aa.ctex"
+path.s3tc="res://.godot/imported/food_food_front_art.png-6970286c1c7e39dc5a88c6d2561066aa.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "416f0d4168fd54257b817533c3910a0b"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/cabinet/food_food_front_art.png"
-dest_files=["res://.godot/imported/food_food_front_art.png-6970286c1c7e39dc5a88c6d2561066aa.ctex"]
+dest_files=["res://.godot/imported/food_food_front_art.png-6970286c1c7e39dc5a88c6d2561066aa.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

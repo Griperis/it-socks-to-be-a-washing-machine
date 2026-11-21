@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bk0sbuda746jj"
-path="res://.godot/imported/sport_sport_front_art.png-f3fabf7e84507ec8c782955995aa5686.ctex"
+path.s3tc="res://.godot/imported/sport_sport_front_art.png-f3fabf7e84507ec8c782955995aa5686.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "f496f23c6884a45f1b70d4c9161a3a87"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/cabinet/sport_sport_front_art.png"
-dest_files=["res://.godot/imported/sport_sport_front_art.png-f3fabf7e84507ec8c782955995aa5686.ctex"]
+dest_files=["res://.godot/imported/sport_sport_front_art.png-f3fabf7e84507ec8c782955995aa5686.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0
