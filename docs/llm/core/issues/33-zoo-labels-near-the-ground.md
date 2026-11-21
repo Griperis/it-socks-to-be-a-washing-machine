@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: core
 feature: zoo
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: []
 notes: []
 terms: [station]
@@ -41,6 +41,7 @@ read them easily." Today each station's `Name` Label3D floats 2.2 to 13.5 m up (
 
 ## Answers
 - Station names near the ground, easy to read (Q2408, 2026-11-21).
+- Approved from the stills in `builds/review-core-33/` (Q2411, 2026-11-21).
 
 ## Open follow-ups
 - [later] Placement choices for the designer to look at in the stills: each label stands on the pad edge that faces the start spot (south edge for stations north of z=4, north edge for those south of it; old houses on the north side, 2 m left of the front door; house kit and Cabinet at their north edge), bottom at 1.2 m (`vertical_alignment` bottom), `pixel_size` 0.004, `width` 700, font 32 / outline 12 (Label3D defaults). Billboard is Y-only (`billboard = 2`) and reads well in the stills, so no fixed facing. The Cabinet label (long text) overlaps the gallery's boxes seen from 3 m.
