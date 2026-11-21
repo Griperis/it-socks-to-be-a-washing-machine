@@ -12,8 +12,8 @@ extends Resource
 ## How fast the chain droops, in m/s at a Sock's medium Size (the node's gravity is a speed, not an
 ## acceleration); a held Sock, drawn smaller, droops by the same share of its length.
 @export_range(0.0, 20.0, 0.05, "suffix:m/s") var gravity := 3.0 # placeholder: tuned by eye to the old droop and lag (the designer's go on the cloth strip)
-## How much of each tick's swing is thrown away: 1 never swings past its balance point (D01).
-@export_range(0.0, 1.0, 0.01) var drag := 1.0 # placeholder: the old game's "fully damped" (D01)
+## How much of each tick's swing is thrown away: 1 never swings past its balance point (D01); 0.25 lets the held cloth swing past and settle.
+@export_range(0.0, 1.0, 0.01) var drag := 0.25 # placeholder: the designer's pick from the core/36 sheet (Q2420), until the feel is settled
 ## How thick each joint is against the ground (the Sock's half thickness).
 @export_range(0.0, 0.05, 0.001, "suffix:m") var radius := 0.012 # placeholder: tuned by eye (the Sock's half thickness)
 

@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: core
 feature: core
@@ -48,10 +48,11 @@ lag. Look work: find candidates, show them, change nothing until the designer pi
   (the measured overshoot above a placeholder threshold).
 
 ## Answers
+- The designer picked drag 0.25, stiffness 5, gravity 3 (Q2420, 2026-11-21).
 - The held cloth should swing more; candidates first (Q2417, 2026-11-21).
 
 ## Open follow-ups
-- [blocking] The designer's pick among the candidates (`builds/review-core-36/`: `sheet-turn.png`, `sheet-walk.png`,
+- [answered, Q2420] The designer's pick among the candidates (`builds/review-core-36/`: `sheet-turn.png`, `sheet-walk.png`,
   `table.txt`). S5 (values into the `.tres`, the four Looks scenes, the overshoot case) waits for it.
 
 ## Built log
@@ -69,3 +70,4 @@ lag. Look work: find candidates, show them, change nothing until the designer pi
   Files: tests/held_cloth_swing_test.gd (measurement case; restores the tuning), tools/shot_hooks.gd (`cloth:drag/stiffness/gravity`
   override, `turn_view:quick`). Verified: see the commit.
 - Model: Sonnet: tuning trials, measurement and strips.
+- 2026-11-21 (S5). Changed: drag 0.25 in sock_cloth_tuning.tres (and the .gd default and its comment), in the four looks_*.tscn; hand_details_test now expects 0.25; real-path case in held_cloth_swing_test. Verified: see the commit.

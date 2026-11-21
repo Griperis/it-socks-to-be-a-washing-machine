@@ -35,6 +35,8 @@ var _rows: PackedStringArray = []
 
 func cases() -> Array[Dictionary]:
 	return [
+		{"name": "real_path", "method": "case_real_path", "world": false,
+				"title": "real path: the player picks a Sock with the pick action and turns the view quickly; the held toe swings past its rest and settles (core/36, Q2420)"},
 		{"name": "measure", "method": "case_measure", "world": false,
 				"title": "core/36 S2: today's drag 1 never swings the held toe past its rest; a lower drag does, after a 90 degree turn in 0.15 s (a table of every candidate, turn and walk stop, is printed)"},
 	]
@@ -204,3 +206,16 @@ func case_measure() -> void:
 	var low: float = results["d0.4"]["turn"]["over"]
 	_check(today < 0.01, "today's drag 1 does not swing past rest (%.3f rad)" % today)
 	_check(low > today + 0.01, "drag 0.4 swings past rest after the turn (%.3f rad)" % low)
+
+
+## The real path: the committed tuning (drag 0.25), the real pick, a 90 degree turn in 0.15 s.
+func case_real_path() -> void:
+	_check(is_equal_approx(_tuning().drag, 0.25), "the tuning is the designer's pick, drag 0.25")
+	await _build()
+	var held := await _pick_and_settle()
+	var length := _chain_length(held)
+	var turn := _swing(await _record(_turn_moves), length, 9)
+	# placeholder threshold: 4 degrees past rest (measured about 13)
+	_check(turn["over"] > deg_to_rad(4.0), "the held toe swings past its rest after the turn (%.1f deg)" % rad_to_deg(turn["over"]))
+	_check(turn["settle"] < 0.6, "and settles (%.2f s)" % turn["settle"])
+	_free_level()

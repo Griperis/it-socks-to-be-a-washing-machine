@@ -32,6 +32,7 @@ var _parts: Parts = null
 ## Each watched Looks' bend (how far its Toe is from its rest place, in the skeleton's space) and the
 ## lowest of its chain's joints in the level, as last drawn, by the Looks' instance id.
 var _bends: Dictionary[int, float] = {}
+var _toes: Dictionary[int, Vector3] = {}
 var _lows: Dictionary[int, float] = {}
 
 
@@ -80,6 +81,7 @@ func _before_case() -> void:
 		_level.free()
 		_level = null
 	_bends.clear()
+	_toes.clear()
 	_lows.clear()
 
 
@@ -143,7 +145,7 @@ func case_d01() -> void:
 	_watch(held)
 	var cloth := held.find_child("Cloth", true, false) as SockCloth
 	_check(cloth.role == SockCloth.Role.HELD and cloth.ranked, "a held Sock's cloth is on")
-	_near(cloth.get_drag(0), 1.0, 0.0001, "fully damped: each tick's swing is thrown away")
+	_near(cloth.get_drag(0), 0.25, 0.0001, "drag 0.25: the held cloth swings past its balance point (core/36, Q2420)")
 	await _until(view.settled, "the fly-up to end")
 	await _physics_ticks(30)
 	var a := _bend(held)
@@ -179,20 +181,20 @@ func case_d03() -> void:
 	_watch(held)
 	await _until(view.settled, "the fly-up to end")
 	await _physics_ticks(40)
-	var still := _bend(held)
+	var still := _toe_of(held)
 	var most := 0.0
 	for i in 15:
 		_player.rotation.y += 0.07
 		await _physics_ticks(1)
-		most = maxf(most, absf(_bend(held) - still))
+		most = maxf(most, _toe_of(held).distance_to(still))
 	_check(most > 0.003, "turning the view drags it (%.4f)" % most)
 	await _physics_ticks(60)
-	_near(_bend(held), still, 0.002, "the turn over, it settles")
+	_near(_toe_of(held).distance_to(still), 0.0, 0.002, "the turn over, it settles")
 	Input.action_press(&"turn")
 	most = 0.0
 	for i in 20:
 		await _physics_ticks(1)
-		most = maxf(most, absf(_bend(held) - still))
+		most = maxf(most, _toe_of(held).distance_to(still))
 	Input.action_release(&"turn")
 	_check(most > 0.003, "turning the item with R drags it (%.4f)" % most)
 
@@ -510,11 +512,17 @@ func _watch(looks: Node3D) -> void:
 	var key := looks.get_instance_id()
 	skeleton.skeleton_updated.connect(func() -> void:
 		_bends[key] = skeleton.get_bone_global_pose(TOE).origin.distance_to(skeleton.get_bone_global_rest(TOE).origin)
+		_toes[key] = skeleton.get_bone_global_pose(TOE).origin
 		var low := INF
 		for bone in BONES:
 			var pose := skeleton.global_transform * skeleton.get_bone_global_pose(bone)
 			low = minf(low, pose.origin.y)
 		_lows[key] = low)
+
+
+## Where `looks`' toe was last drawn, in its skeleton's space (a sideways swing keeps `_bend` the same).
+func _toe_of(looks: Node3D) -> Vector3:
+	return _toes.get(looks.get_instance_id(), Vector3.ZERO)
 
 
 ## `looks`' bend as last drawn (0 before it is drawn).
