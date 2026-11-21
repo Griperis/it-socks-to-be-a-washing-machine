@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: core
 feature: core
@@ -51,6 +51,21 @@ lag. Look work: find candidates, show them, change nothing until the designer pi
 - The held cloth should swing more; candidates first (Q2417, 2026-11-21).
 
 ## Open follow-ups
+- [blocking] The designer's pick among the candidates (`builds/review-core-36/`: `sheet-turn.png`, `sheet-walk.png`,
+  `table.txt`). S5 (values into the `.tres`, the four Looks scenes, the overshoot case) waits for it.
 
 ## Built log
+- 2026-11-21 (look work, stopped at the sheet). Changed: no game value. Godot 4.7 per step:
+  `next = tail + (tail - prev) * (1 - drag) + stiffness*dt*rest_dir + gravity*dt*down`; drag 1 keeps no speed, so
+  no overshoot (measured: today 0 deg). The centre is the world origin, so the camera's turn does move the bones and
+  a lower drag gives a swing: S4's alternative (the held layout lagging the camera's yaw) is not needed.
+  Turn, deg (peak / overshoot / swings / settle s): today 35.5/0/0/0.10; d0.6 27.7/2.0/0/0.08; d0.4 25.1/7.5/1/0.08;
+  d0.4s3 32.0/8.2/1/0.10; d0.25s2g4 33.0/16.0/2/0.18; d0.25s5 24.4/12.9/1/0.13; d0.15s3 29.0/18.6/2/0.22;
+  d0.1s2 33.4/23.7/2/0.27; d0.1s1g4 36.4/26.4/3/0.30; walk stop is the same order, a little larger (table.txt).
+  Throws: the same numbers drive flying Socks, so lower drag makes the flop ring; lower stiffness and higher gravity
+  droop and flop more. Recommendation: d0.25s5 (drag 0.25, stiffness 5, gravity 3): one clear swing past rest
+  (13 deg) settling in 0.13 s, stiffness and gravity unchanged so the droop and a throw's bend keep their size;
+  d0.25s2g4 for a longer, floppier swing. Only 60 Hz measured (drag acts per physics step).
+  Files: tests/held_cloth_swing_test.gd (measurement case; restores the tuning), tools/shot_hooks.gd (`cloth:drag/stiffness/gravity`
+  override, `turn_view:quick`). Verified: see the commit.
 - Model: Sonnet: tuning trials, measurement and strips.
