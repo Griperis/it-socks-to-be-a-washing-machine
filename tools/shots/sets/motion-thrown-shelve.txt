@@ -1,0 +1,14 @@
+# core/27 P11: a Pair made at 60/85 at the Cabinet station, thrown at the second drawer's front at 150, seen from where the player stands: it is shelved on the touch and flies on into its slot, landing there (60 frames a second).
+f160  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;150:shelve_throw' --shots=160
+f170  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;150:shelve_throw' --shots=170
+f178  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;150:shelve_throw' --shots=178
+f182  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;150:shelve_throw' --shots=182
+f186  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;150:shelve_throw' --shots=186
+f190  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;150:shelve_throw' --shots=190
+f194  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;150:shelve_throw' --shots=194
+f198  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;150:shelve_throw' --shots=198
+f202  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;150:shelve_throw' --shots=202
+f206  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;150:shelve_throw' --shots=206
+f212  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;150:shelve_throw' --shots=212
+f220  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;150:shelve_throw' --shots=220
+f230  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;150:shelve_throw' --shots=230

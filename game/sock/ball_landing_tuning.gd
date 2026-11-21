@@ -16,6 +16,10 @@ extends Resource
 @export_range(0.0, 0.5, 0.005, "suffix:m") var bounce_height := 0.04 # placeholder: the old ball.json bounce_height
 ## How long the hop lasts.
 @export_range(0.01, 1.0, 0.01, "suffix:s") var bounce_time := 0.2 # placeholder: the old ball.json bounce_time
+## How far a ball that flies to a set rest (a shelved one, core/27 P10) lands short of it and rolls
+## on to it during the hop, in m; less than half the flight's length when that is short. A falling
+## body rolls by physics instead.
+@export_range(0.0, 0.5, 0.005, "suffix:m") var roll_distance := 0.12 # placeholder: the old ball.json roll_distance
 
 @export_group("Touch")
 ## A falling ball counts as touching down when, falling at least `touch_speed`, its fall is checked

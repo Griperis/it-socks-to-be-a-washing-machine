@@ -71,6 +71,10 @@ func _before_case() -> void:
 	if _zoo != null:
 		_zoo.free()
 		_zoo = null
+	# The runner's scrub reset the sounds a frame before this, while the last case's level was still
+	# alive: a Sock of it still bouncing then noted a bounce for its min_gap (w10_gap's flake). With that
+	# level gone, the sounds start over here.
+	Sounds.reset()
 	_heard.clear()
 	PadRumble.reset()
 	if not Sounds.played.is_connected(_on_played):

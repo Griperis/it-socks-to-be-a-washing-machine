@@ -279,6 +279,52 @@ static func act(world: Node, what: String, arg: String) -> bool:
 				_:
 					(station.get_node("Cabinet/Cabinet") as Cabinet).click(player.player_id(), 0)
 			return true
+		"shelve_throw":
+			# core/27 P11: the zoo's player, holding the Cabinet station's Pair (shelve_pair, shelve_mate),
+			# steps back and throws it at the second drawer's front with a firm charge; arg "cam" puts a
+			# camera beside the drawers instead, looking along their fronts.
+			var player := world.get_node("Player") as Player
+			var station := world.get_node("Stations/Cabinet") as Node3D
+			var cab := station.get_node("Cabinet") as Node3D
+			var front := (cab.get_node("Drawer2/Looks/Slide/Front") as Node3D).global_position
+			if arg == "cam":
+				var cam := Camera3D.new()
+				world.add_child(cam)
+				cam.fov = 50.0
+				cam.global_position = front + cab.global_transform.basis * Vector3(1.4, 0.5, 1.3)
+				cam.look_at(front + Vector3(0.0, -0.1, 0.0))
+				cam.make_current()
+				return true
+			player.global_position = station.to_global(Vector3(-1.0, 0.0, 0.8))
+			var to := front - player.global_position
+			player.rotation.y = atan2(-to.x, -to.z)
+			(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-25.0)
+			player.reset_physics_interpolation()
+			var dir := (front - player.eyes()).normalized()
+			(world.get_node("Socks/Hands") as Hands).throw(player.player_id(), dir, 0.5)
+			return true
+		"swing_view", "swing_use":
+			# core/27 P15: arg "door" (the Cabinet station's Door) or "cupboard" (the openables station's
+			# first cupboard): `swing_view` puts a camera to its side, `swing_use` opens or shuts it as
+			# the player's use does.
+			var path := "Stations/Cabinet/Door" if arg == "door" else "Stations/Openables/Cupboard"
+			var thing := world.get_node(path) as Node3D
+			var openable := thing.get_node("Openable") as Openable
+			if what == "swing_use":
+				openable.use((world.get_node("Player") as Player).player_id())
+				return true
+			# The player stands in front of it, in reach of the use.
+			var player := world.get_node("Player") as Player
+			player.global_position = thing.global_transform * Vector3(0.0, 0.0, 1.6)
+			player.reset_physics_interpolation()
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 55.0
+			var back := Vector3(1.6, 2.6, 2.6) if arg == "door" else Vector3(1.2, 1.9, 2.0)
+			cam.global_position = thing.global_transform * back
+			cam.look_at(thing.global_transform * Vector3(0.0, 0.9, 0.0))
+			cam.make_current()
+			return true
 		"drawer_view", "drawer_use":
 			# core/09 D12: the zoo's player looks at the Cabinet station's bottom drawer from the
 			# side; `drawer_use` opens or shuts it, as a click with empty Hands does.

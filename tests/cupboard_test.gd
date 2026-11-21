@@ -99,12 +99,18 @@ func case_reverse() -> void:
 	openable.use(Parts.HOST)
 	await _until(func() -> bool: return player.current_animation_position > 0.25 * player.current_animation_length,
 			"the door to be part way open")
-	var mid := player.current_animation_position
+	# The swing is read on the pivot: a Looks with its own "shut" (core/27 P15) plays that from the
+	# pose it has now instead of "open" backwards.
+	await _settle()
+	var pivot := openable.get_node("../Looks/DoorPivot") as Node3D
+	var mid := absf(pivot.rotation.y)
 	openable.use(Parts.HOST)
 	_check(not openable.open, "the second press shuts it")
-	_near(player.current_animation_position, mid, 1.0 / 30.0, "it turns back from where it was")
-	await _frames(2)
-	_check(player.current_animation_position < mid, "and goes on towards shut")
+	await _settle()
+	_near(absf(pivot.rotation.y), mid, 0.2, "it turns back from where it was")
+	await _frames(4)
+	await _settle()
+	_check(absf(pivot.rotation.y) < mid, "and goes on towards shut")
 	await _until(func() -> bool: return not player.is_playing(), "the swing back to end")
 	await _settle()
 	_check(_shows_shut(openable), "it ends shut")

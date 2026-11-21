@@ -10,6 +10,9 @@
 ## - the ground: its Ground plane is put on the surface under a flying Sock each tick (D05, the
 ##   node's own collision, Q2287); within `ground_room` of it the whole bend straightens, all of it
 ##   at the surface, so the chain never crumples against it (core/16 P07, Q2366).
+## - a thrown Sock leaves with the bend it had in the hand (core/27 P08, Q2315): carry() puts the held
+##   bend on its bones' pose, and it eases back to the rest pose over `blend_time` while the node's own
+##   bend blends in, so the throw's first frames show the hand's bend.
 ## Looks of this machine only: it reads where the Sock is, never the Mess or the Hands.
 class_name SockCloth
 extends SpringBoneSimulator3D
@@ -39,6 +42,11 @@ var ground_gap := INF
 static var _ranked_on := -1
 
 var _last := Vector3.INF
+## A carried bend (P08): each chain bone's pose rotation from the hand, its own rest rotation, and the
+## seconds since it was put on (negative: none).
+var _carried: Dictionary[int, Quaternion] = {}
+var _unbent: Dictionary[int, Quaternion] = {}
+var _carry_t := -1.0
 @onready var _ground: SpringBoneCollisionPlane3D = get_node_or_null(^"Ground")
 
 
@@ -75,6 +83,7 @@ func _physics_process(delta: float) -> void:
 	if _ranked_on != Engine.get_physics_frames():
 		_ranked_on = Engine.get_physics_frames()
 		rank(get_tree())
+	_ease_carried(delta)
 	var at := _at()
 	speed = 0.0 if _last == Vector3.INF or delta <= 0.0 else at.distance_to(_last) / delta
 	_last = at
@@ -161,3 +170,57 @@ func _place_ground(at: Vector3) -> void:
 			ground_gap = maxf((at - (hit["position"] as Vector3)).dot(up), 0.0)
 	if _ground != null:
 		_ground.global_transform = place
+
+
+## The cloth's chain of bones, from its root (the leg) to its end (the toe).
+func chain() -> PackedInt32Array:
+	var out := PackedInt32Array()
+	var skeleton := get_skeleton()
+	if skeleton == null or get_setting_count() == 0:
+		return out
+	var b := get_end_bone(0)
+	var root := get_root_bone(0)
+	while b >= 0:
+		out.insert(0, b)
+		if b == root:
+			break
+		b = skeleton.get_bone_parent(b)
+	return out
+
+
+## Starts this Sock with `bend` (each chain bone's pose rotation, from the hand's cloth): drawn so at
+## once, easing back to its rest pose over `blend_time` (P08).
+func carry(bend: Dictionary[int, Quaternion]) -> void:
+	var skeleton := get_skeleton()
+	if skeleton == null or bend.is_empty():
+		return
+	if _carry_t < 0.0:
+		_unbent.clear()
+		for b: int in bend:
+			_unbent[b] = skeleton.get_bone_pose_rotation(b)
+	_carried = bend.duplicate()
+	_carry_t = 0.0
+	_ease_carried(0.0)
+
+
+## Whether a carried bend is still easing out.
+func carrying() -> bool:
+	return _carry_t >= 0.0
+
+
+## Eases a carried bend toward the rest pose by `delta` seconds; at the end the rest pose is back.
+func _ease_carried(delta: float) -> void:
+	if _carry_t < 0.0:
+		return
+	var skeleton := get_skeleton()
+	if skeleton == null:
+		_carry_t = -1.0
+		return
+	_carry_t += delta
+	var u := clampf(_carry_t / maxf(tuning.blend_time if tuning != null else 0.3, 0.01), 0.0, 1.0)
+	var e := smoothstep(0.0, 1.0, u)
+	for b: int in _carried:
+		skeleton.set_bone_pose_rotation(b, _carried[b].slerp(_unbent[b], e))
+	if u >= 1.0:
+		_carry_t = -1.0
+		_carried.clear()

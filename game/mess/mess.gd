@@ -230,6 +230,23 @@ func moving_body(sock: int) -> RigidBody3D:
 	return null
 
 
+## Where Sock `sock`'s falling body is drawn on this machine now, its Size included, or null: its
+## Looks while it has one, else its body. A body already let go this frame still counts (a thrown Pair
+## shelved by a Cabinet flies on from where it was: core/27 P11).
+func drawn_flight_of(sock: int) -> Variant:
+	var holder := _container(flights)
+	for child in holder.get_children():
+		var body := child as RigidBody3D
+		if body == null or not String(body.name).begins_with("Flight") or _sock_of_flight(body) != sock \
+				or not body.is_inside_tree():
+			continue
+		var looks := body.get_node_or_null(NodePath(LOOKS)) as Node3D
+		if looks != null:
+			return looks.global_transform
+		return body.global_transform.scaled_local(Vector3.ONE * _scale(design_of(sock)))
+	return null
+
+
 ## Where Sock `sock` is now: its falling body's place while it moves, else where its record puts it.
 func where_of(sock: int) -> Vector3:
 	var body := moving_body(sock) if state_of(sock) == State.FLYING else null

@@ -1,0 +1,11 @@
+# core/27 P03: a Sock held (60), the view turned to the open floor (90), a walk from 100 to 130: the held Size box beside it moves with the cloth's sway (60 frames a second).
+f99  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;130:stop' --shots=99
+f102  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;130:stop' --shots=102
+f105  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;130:stop' --shots=105
+f108  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;130:stop' --shots=108
+f112  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;130:stop' --shots=112
+f130  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;130:stop' --shots=130
+f133  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;130:stop' --shots=133
+f136  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;130:stop' --shots=136
+f140  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;130:stop' --shots=140
+f148  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;130:stop' --shots=148
