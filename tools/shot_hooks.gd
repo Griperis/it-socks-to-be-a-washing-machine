@@ -32,18 +32,26 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.make_current()
 			return true
 		"house_kit":
-			# A camera on the house kit station (house/01): arg "lineup" (the walls), "floors" (the
-			# tiles and stairs), "room" (the
-			# small room from above the door side), "door" and "window" (close-ups from inside),
-			# "stair" (up the stair from the door).
+			# A camera on the house kit station (house/02): "lineup" (every piece from above), "walls",
+			# "openings", "floors", "roof_pieces" (rows of the line-up), "room" (the U room from
+			# above), "door" (the front door's frame from inside), "window" (the landing's window and
+			# frame from inside), "corner" (the upper floor's corner: a floor meets two walls, K14),
+			# "stair" (the U stair from the hall), "roof" (the roof corner with the dormer from outside),
+			# "dormer" (the dormer from inside the attic corner).
 			var station := world.get_node("Stations/HouseKit") as Node3D
 			var views := {
-				"lineup": [Vector3(-0.5, 11.0, -11.5), Vector3(-0.5, 0.0, -3.0)],
-				"floors": [Vector3(-10.5, 6.5, 3.5), Vector3(-3.0, 0.5, 3.5)],
-				"room": [Vector3(10.0, 9.0, -5.0), Vector3(3.5, 1.0, 3.0)],
-				"door": [Vector3(4.6, 1.5, 2.6), Vector3(3.5, 1.1, 0.0)],
-				"window": [Vector3(3.2, 1.6, 2.5), Vector3(6.0, 1.5, 2.5)],
-				"stair": [Vector3(4.6, 1.6, 0.6), Vector3(1.5, 2.2, 3.5)],
+				"lineup": [Vector3(-20.0, 34.0, 50.0), Vector3(-20.0, 0.0, 24.0)],
+				"walls": [Vector3(-23.0, 7.0, 15.0), Vector3(-23.0, 0.5, 8.0)],
+				"openings": [Vector3(-23.0, 7.0, 18.0), Vector3(-23.0, 0.5, 11.0)],
+				"floors": [Vector3(-23.0, 7.0, 21.0), Vector3(-23.0, 0.5, 14.0)],
+				"roof_pieces": [Vector3(-21.0, 9.0, 33.0), Vector3(-21.0, 1.0, 21.0)],
+				"room": [Vector3(7.5, 10.0, -8.5), Vector3(2.0, 2.0, 1.0)],
+				"door": [Vector3(2.0, 1.5, -0.6), Vector3(2.75, 1.0, -3.0)],
+				"window": [Vector3(2.4, 4.6, -1.0), Vector3(2.25, 4.4, -3.0)],
+				"corner": [Vector3(2.4, 4.4, -1.6), Vector3(1.05, 3.0, -2.95)],
+				"stair": [Vector3(3.2, 1.7, -0.5), Vector3(1.9, 0.9, 3.5)],
+				"roof": [Vector3(-12.0, 4.5, 10.0), Vector3(-5.5, 1.8, 2.5)],
+				"dormer": [Vector3(-6.5, 1.5, 0.8), Vector3(-5.0, 1.4, 4.7)],
 			}
 			var view: Array = views.get(arg, views["lineup"])
 			var cam := Camera3D.new()

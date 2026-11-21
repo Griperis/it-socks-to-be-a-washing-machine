@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://dn5tdox86tgvw"]
+
+[ext_resource type="ArrayMesh" uid="uid://cegofkdrn1u3h" path="res://game/house/kit/meshes/roof_post.tres" id="1_6hlmq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vwlmn"]
+size = Vector3(0.16, 1.8045144, 0.16)
+
+[node name="RoofPost" type="MeshInstance3D" unique_id=970831201]
+mesh = ExtResource("1_6hlmq")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=2014455579]
+collision_mask = 0
+
+[node name="Box" type="CollisionShape3D" parent="Body" unique_id=1640324136]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.8822572, 0.25)
+shape = SubResource("BoxShape3D_vwlmn")

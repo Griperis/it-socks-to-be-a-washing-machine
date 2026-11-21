@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://c60r28eqm5dwa"]
+
+[ext_resource type="ArrayMesh" uid="uid://k8qpnpxmeqc" path="res://game/house/kit/meshes/knee_exterior_2m.tres" id="1_40idw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vrtnt"]
+size = Vector3(2, 0.52, 0.2)
+
+[node name="KneeExterior2m" type="MeshInstance3D" unique_id=1225966462]
+mesh = ExtResource("1_40idw")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=412354199]
+collision_mask = 0
+
+[node name="Box" type="CollisionShape3D" parent="Body" unique_id=1475790649]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.24, 0)
+shape = SubResource("BoxShape3D_vrtnt")

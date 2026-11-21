@@ -5,12 +5,12 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_xxoi8"]
 size = Vector3(0.5, 3, 0.12)
 
-[node name="WallPartition05m" type="MeshInstance3D" unique_id=1813491889]
+[node name="WallPartition05m" type="MeshInstance3D" unique_id=868020267]
 mesh = ExtResource("1_vb1cw")
 
-[node name="Body" type="StaticBody3D" parent="." unique_id=378949005]
+[node name="Body" type="StaticBody3D" parent="." unique_id=640329577]
 collision_mask = 0
 
-[node name="Box" type="CollisionShape3D" parent="Body" unique_id=338830412]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.5, 0)
+[node name="Box" type="CollisionShape3D" parent="Body" unique_id=1493793353]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.48, 0)
 shape = SubResource("BoxShape3D_xxoi8")

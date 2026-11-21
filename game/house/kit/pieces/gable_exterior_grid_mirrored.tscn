@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://c40kon6x2utql"]
+
+[ext_resource type="ArrayMesh" uid="uid://dsrhaeruam7bu" path="res://game/house/kit/meshes/gable_exterior_grid_mirrored.tres" id="1_y3ec7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f7bup"]
+size = Vector3(4.35, 0.35218006, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lasi8"]
+size = Vector3(1.5, 2.743614, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cvvcw"]
+size = Vector3(0.5, 0.82, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mof28"]
+size = Vector3(0.5, 0.60406417, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4r3gg"]
+size = Vector3(2.35, 0.35218006, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vmifp"]
+size = Vector3(0.4000001, 0.7650001, 0.045)
+
+[node name="GableExteriorGridMirrored" type="MeshInstance3D" unique_id=1429977481]
+mesh = ExtResource("1_y3ec7")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=2099738552]
+collision_mask = 0
+
+[node name="Box1" type="CollisionShape3D" parent="Body" unique_id=29151575]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.075, 0.15609004, 0)
+shape = SubResource("BoxShape3D_f7bup")
+
+[node name="Box2" type="CollisionShape3D" parent="Body" unique_id=1685238280]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1.351807, 0)
+shape = SubResource("BoxShape3D_lasi8")
+
+[node name="Box3" type="CollisionShape3D" parent="Body" unique_id=241356892]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.39, 0)
+shape = SubResource("BoxShape3D_cvvcw")
+
+[node name="Box4" type="CollisionShape3D" parent="Body" unique_id=969169480]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 2.002032, 0)
+shape = SubResource("BoxShape3D_mof28")
+
+[node name="Box5" type="CollisionShape3D" parent="Body" unique_id=1924374053]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.425, 0.15609004, 0)
+shape = SubResource("BoxShape3D_4r3gg")
+
+[node name="Box6" type="CollisionShape3D" parent="Body" unique_id=956574995]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1.2675, -0.017499998)
+shape = SubResource("BoxShape3D_vmifp")

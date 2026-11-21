@@ -72,7 +72,7 @@ IN_N, IN_S = face(Z0, True, 1), face(Z1, True, -1)
 OLD_STAIR = (3.95, 5.15, 6.28, 8.34)            # x0, z0 (the first riser), x1, z1
 OLD_LANDING_D = 1.1
 NEW_STAIR_Z0 = 5.5                              # the first riser, on a grid line
-NEW_LANDING_D = 1.1
+NEW_LANDING_D = 0.9                             # Q2350: 33.3 deg
 STEPS = 16                                      # risers a storey, 7 goings a flight + the landing
 OLD_SHAFT = (3.13, 4.45, 3.83, 5.15)
 NEW_SHAFT = (face(X4, False, -1) - 0.7, NEW_STAIR_Z0 - 0.7, face(X4, False, -1), NEW_STAIR_Z0)
@@ -86,19 +86,23 @@ NEW_GROTTO_CENTRE = (2.75, 1.75)
 DOOR_W, DOOR_H = 0.9, 2.1
 DOORS = [
     ("D1", "WorkshopLobby", "basement", "x", X4, 2.18, 3.08, 2.75),
-    ("D2", "LaundryLobby", "basement", "x", X4, 3.38, 4.28, 4.25),
+    ("D2", "LaundryLobby", "basement", "x", X4, 3.38, 4.28, 4.1),
     ("D3", "BoilerLobby", "basement", "z", Z2, 4.65, 5.55, 5.25),
     ("D4", "LobbyGarage", "basement", "x", X65, 4.15, 5.05, 4.75),
     ("D5", "KitchenHall", "ground", "x", X4, 2.18, 3.08, 2.75),
     ("D6", "HallLiving", "ground", "x", X65, 4.15, 5.05, 4.75),
     ("D7", "OfficeLanding", "first", "x", X4, 2.18, 3.08, 2.75),
-    ("D8", "BedroomLanding", "first", "x", X4, 3.38, 4.28, 4.25),
+    ("D8", "BedroomLanding", "first", "x", X4, 3.38, 4.28, 4.1),
     ("D9", "BathroomLanding", "first", "x", X65, 2.18, 3.08, 2.75),
     ("D10", "KidsLanding", "first", "x", X65, 4.15, 5.05, 4.75),
     # The outer doors: width from the old numbers.
     ("D11", "FrontDoor", "ground", "z", Z0, 5.28, 6.18, 5.75),
     ("D12", "GarageDoor", "basement", "z", Z0, 7.05, 9.45, 8.25),
 ]
+# Off the 0.25 m lattice, in an off-centre door piece (Q2351). The old place itself (3.48..4.38)
+# would cut into the z3.5 partition, which moved 0.18 m south; the doorway keeps its old 0.1 m from
+# the partition's face. id: the 1.5 m piece's start along its wall.
+OFF_CENTRE = {"D2": 3.5, "D8": 3.5}
 
 # --- Windows (K06): id, name, side, old s0, s1, sill, head over its floor, frosted, new centre -----
 # The width is the old one; the stair window's heights are over the half landing.
@@ -153,9 +157,9 @@ ROOMS = [
 # --- Roof and attic (K11) --------------------------------------------------------------------
 KNEE = 0.4
 OLD_RIDGE_H = KNEE + 3.8 * math.tan(math.radians(40.0))   # over the attic floor (house/37)
-NEW_RIDGE_H = OLD_RIDGE_H                                   # kept: the loft keeps its height
 OLD_HALF = 8.34 / 2
 NEW_HALF = (IN_S - IN_N) / 2
+NEW_RIDGE_H = KNEE + NEW_HALF * math.tan(math.radians(40.0))   # Q2354: 40 deg
 OLD_PITCH = math.degrees(math.atan((OLD_RIDGE_H - KNEE) / OLD_HALF))
 NEW_PITCH = math.degrees(math.atan((NEW_RIDGE_H - KNEE) / NEW_HALF))
 DORMER_H = 2.2
@@ -230,8 +234,13 @@ def check() -> list:
     for i, n, lv, side, s0, s1, _, _, _, c in WINDOWS:
         a, l = SIDE_LINE[side]
         openings.append((i, n, lv, a, l, (s0 + s1) / 2, s1 - s0, c))
+        openings.append((i + " (grid width)", n, lv, a, l, (s0 + s1) / 2, rounded(s1 - s0), c))
     for i, n, lv, a, l, old_c, w, c in openings:
-        if not on(c, LATTICE):
+        if i in OFF_CENTRE:
+            start = OFF_CENTRE[i]
+            if not on(start, 0.5) or c - w / 2 < start + 0.05 or c + w / 2 > start + 1.5 - 0.05:
+                bad.append("%s %s: not inside its off-centre piece from %.2f" % (i, n, start))
+        elif not on(c, LATTICE):
             bad.append("%s %s: centre %.2f is off the %.2f m lattice" % (i, n, c, LATTICE))
         for pos, half in crossing(lv, a, l):
             gap = abs(c - pos) - w / 2 - half
@@ -343,25 +352,35 @@ def write_md(path: str) -> None:
     w("|---|---|---|---|---|---|---|---|---|---|")
     for i, n, lv, a, l, s0, s1, c in DOORS:
         wd = s1 - s0
+        if i not in OFF_CENTRE:
+            piece = piece_len(c, wd)
+        else:
+            st = OFF_CENTRE[i]
+            piece = "1.5 m (%s..%s), off-centre: the opening %s..%s along it" % (m(st), m(st + 1.5), m(c - wd / 2 - st), m(c + wd / 2 - st))
         w("| %s | %s | %s | %s %s | %s..%s | %s | %s | %s..%s | %s | %s |"
           % (i, n, lv, a, m(l), m(fr(s0)), m(fr(s1)), m(fr((s0 + s1) / 2)), m(c), m(c - wd / 2), m(c + wd / 2),
-             mv(c - fr((s0 + s1) / 2)), piece_len(c, wd)))
+             mv(c - fr((s0 + s1) / 2)), piece))
+    w("")
+    w("D2 and D8 keep their old place by the z3.5 partition (Q2351): the old 0.1 m from its face. The old")
+    w("place itself (3.48..4.38) would cut into the partition, which moved 0.18 m south.")
     w("")
     w("## Windows (K06)")
     w("")
-    w("Width, sill and head (over the floor) are the old ones. The stair window's are over the half")
-    w("landing (old landing 1.45, new 1.5: 0.9..2.0 over it, so 2.4..3.5 over the ground floor).")
+    w("Sill and head (over the floor) are the old ones. The stair window's are over the half landing")
+    w("(old landing 1.45, new 1.5: 0.9..2.0 over it, so 2.4..3.5 over the ground floor, across the storey")
+    w("line). The kit has both sets (Q2355): the old widths, and the widths rounded to 0.5 m steps")
+    w("(*grid width*), each centred where the table says; the designer chooses on the comparison still.")
     w("")
-    w("| id | name | level | wall | width | sill..head | old along | new along | move | piece |")
-    w("|---|---|---|---|---|---|---|---|---|---|")
+    w("| id | name | level | wall | width | grid width | sill..head | old along | new along | move | piece (old width; grid width) |")
+    w("|---|---|---|---|---|---|---|---|---|---|---|")
     for i, n, lv, side, s0, s1, sill, head, frosted, c in WINDOWS:
         wd = s1 - s0
         sh = "%s..%s" % (m(sill), m(head))
         if n == "StairGround":
             sh = "2.4..3.5 (old 2.35..3.45)"
-        w("| %s | %s%s | %s | %s | %s | %s | %s..%s | %s..%s | %s | %s |"
-          % (i, n, " (frosted)" if frosted else "", lv, side, m(wd), sh, m(fr(s0)), m(fr(s1)),
-             m(c - wd / 2), m(c + wd / 2), mv(c - fr((s0 + s1) / 2)), piece_len(c, wd)))
+        w("| %s | %s%s | %s | %s | %s | %s | %s | %s..%s | %s..%s | %s | %s; %s |"
+          % (i, n, " (frosted)" if frosted else "", lv, side, m(wd), m(rounded(wd)), sh, m(fr(s0)), m(fr(s1)),
+             m(c - wd / 2), m(c + wd / 2), mv(c - fr((s0 + s1) / 2)), piece_len(c, wd), piece_len(c, rounded(wd))))
     w("")
     w("The basement windows look into the light wells outside (`make_exterior.py` WELLS: 0.9 m out from")
     w("the wall, 0.25 m wider each side); the wells move with their windows.")
@@ -385,11 +404,10 @@ def write_md(path: str) -> None:
     w("| pitch | %.1f deg | %.1f deg | %+.1f deg |" % (os_["pitch"], ns["pitch"], ns["pitch"] - os_["pitch"]))
     w("| half landing height over the floor | %s | %s | %s |" % (m(OLD_STOREY / 2), m(NEW_STOREY / 2), mv((NEW_STOREY - OLD_STOREY) / 2)))
     w("")
-    w("Why the first riser moved south (+0.25), not north (-0.25, which would give a 29.7 deg stair, nearer")
-    w("the old 31.3): the elevator shaft's south side lines up with the first riser in the old house, and")
-    w("on the first floor the bedroom doorway (D8), the hatch and the attic flight's first step follow")
-    w("each other along the x4 partition. With the riser at z 5.0 there would be 0.82 m between the")
-    w("z3.5 partition and the hatch for a 0.9 m doorway. The price is a steeper stair (see the follow-ups).")
+    w("The first riser moved south (+0.25): the elevator shaft's south side lines up with it as in the old")
+    w("house, and on the first floor the bedroom doorway (D8), the hatch and the attic flight's first step")
+    w("follow each other along the x4 partition (with the riser at z 5.0 there would be 0.82 m for the")
+    w("0.9 m doorway). The half landing is 0.9 m deep, so the flights are 33.3 deg (Q2350).")
     w("")
     w("## The elevator shaft, the hatches (K09)")
     w("")
@@ -406,8 +424,10 @@ def write_md(path: str) -> None:
       % (m(fr(gc[0])), m(fr(gc[1])), m(NEW_GROTTO_CENTRE[0]), m(NEW_GROTTO_CENTRE[1]),
          mv(NEW_GROTTO_CENTRE[0] - fr(gc[0])), mv(NEW_GROTTO_CENTRE[1] - fr(gc[1]))))
     w("")
-    w("The shaft and the Cellar hatch are not on the 0.5 m tile grid (0.7 and 0.75 m): each needs a floor")
-    w("and ceiling piece with the hole in it (1 x 1 m) for house/03.")
+    w("The shaft and the Cellar hatch are not on the 0.5 m tile grid (0.7 and 0.75 m), so the kit has tiles")
+    w("with the hole in them: the shaft's a 1 x 1 m floor and ceiling tile (x 3..4, z 4.5..5.5); the")
+    w("Cellar hatch, 0.75 m square round x 2.75 z 1.75, needs a 1.5 x 1.5 m floor tile (x 2..3.5, z 1..2.5)")
+    w("with it in the middle, as a 1 m tile cannot hold it there.")
     w("")
     w("## Roof and attic (K11)")
     w("")
@@ -416,9 +436,9 @@ def write_md(path: str) -> None:
     w("| | old | new | move |")
     w("|---|---|---|---|")
     w("| knee wall over the attic floor | 0.4 | 0.4 | 0 |")
-    w("| ridge over the attic floor | %.2f | %.2f | 0 |" % (OLD_RIDGE_H, NEW_RIDGE_H))
+    w("| ridge over the attic floor | %.2f | %.2f | %+.2f |" % (OLD_RIDGE_H, NEW_RIDGE_H, NEW_RIDGE_H - OLD_RIDGE_H))
     w("| ridge line z | %s | %s | %s |" % (m(fr(OLD_HALF)), m(IN_N + NEW_HALF), mv(IN_N + NEW_HALF - fr(OLD_HALF))))
-    w("| ridge y | %.2f | %.2f | +0.20 |" % (5.8 + OLD_RIDGE_H, 6.0 + NEW_RIDGE_H))
+    w("| ridge y | %.2f | %.2f | %+.2f |" % (5.8 + OLD_RIDGE_H, 6.0 + NEW_RIDGE_H, 0.2 + NEW_RIDGE_H - OLD_RIDGE_H))
     w("| pitch | %.1f deg | %.1f deg | %+.1f deg |" % (OLD_PITCH, NEW_PITCH, NEW_PITCH - OLD_PITCH))
     w("| dormer inside x | %s..%s | %s..%s | %s |" % (m(fr(OLD_DORMER[0])), m(fr(OLD_DORMER[1])), m(NEW_DORMER[0]), m(NEW_DORMER[1]), mv(NEW_DORMER[0] - fr(OLD_DORMER[0]))))
     w("| dormer cheeks' centre lines x (0.2 thick) | %s, %s | %s, %s | %s |" % (m(fr(OLD_DORMER[0]) - 0.1), m(fr(OLD_DORMER[1]) + 0.1),
@@ -428,45 +448,74 @@ def write_md(path: str) -> None:
     for (ox, oz), (nx, nz) in zip(OLD_POSTS, NEW_POSTS):
         w("| roof post (0.16 square) at x, z | %s, %s | %s, %s | %s, %s |" % (m(fr(ox)), m(fr(oz)), m(nx), m(nz), mv(nx - fr(ox)), mv(nz - fr(oz))))
     w("")
-    w("The ridge keeps its old height over the attic floor, so the loft is as tall as before and the")
-    w("pitch stays near the old house's (%.1f deg, old %.1f; the ticket's 40 deg was the pitch before" % (NEW_PITCH, OLD_PITCH))
-    w("house/37 made the house deeper). The gable windows (W20, W21) are on the 0.25 m lattice, not")
-    w("centred on the ridge, as the old ones were not.")
+    w("The roof is 40 deg (Q2354): the ridge is %.2f m over the attic floor, %.2f m higher than the old" % (NEW_RIDGE_H, NEW_RIDGE_H - OLD_RIDGE_H))
+    w("one, and the dormer reaches further into the roof. The gable windows (W20, W21) are on the 0.25 m")
+    w("lattice, not centred on the ridge, as the old ones were not.")
     w("")
-    w("## Pieces this plan asks for (for the second stop)")
+    w("## The kit's pieces for this plan")
     w("")
     doors = {}
     for i, n, lv, a, l, s0, s1, c in DOORS:
-        doors.setdefault((round(s1 - s0, 2), piece_len(c, s1 - s0).split(" (")[0]), []).append(i)
-    w("- Door pieces (house/01 has the 1 m one):")
+        key = "off-centre 1.5 m" if i in OFF_CENTRE else piece_len(c, s1 - s0).split(" (")[0]
+        doors.setdefault((round(s1 - s0, 2), key), []).append(i)
+    w("- Door pieces:")
     for (wd, pl), ids in sorted(doors.items()):
         w("  - %s m wide in a %s piece: %s" % (m(wd), pl, ", ".join(ids)))
-    w("- Window pieces, one per width, piece length and sill/head:")
-    seen = {}
-    for i, n, lv, side, s0, s1, sill, head, frosted, c in WINDOWS:
-        key = (round(s1 - s0, 2), piece_len(c, s1 - s0).split(" (")[0], sill, head, frosted, n == "StairGround")
-        seen.setdefault(key, []).append(i)
-    for (wd, pl, sill, head, frosted, stair), ids in sorted(seen.items()):
-        sh = "2.4..3.5" if stair else "%s..%s" % (m(sill), m(head))
-        w("  - %s m wide, sill..head %s%s, in a %s piece: %s" % (m(wd), sh, ", frosted" if frosted else "", pl, ", ".join(ids)))
-    w("  That is %d window pieces." % len(seen))
-    w("- Floor and ceiling pieces with the shaft hole and with the Cellar hatch (1 x 1 m).")
+    sets = window_sets()
+    for kind, title in (("old", "old widths"), ("grid", "widths rounded to 0.5 m")):
+        rows = [r for r in sets if r[0] == kind]
+        w("- Window pieces, %s (%d):" % (title, len(rows)))
+        for _, wd, sill, head, frosted, stair, pl, ids in rows:
+            w("  - %s m wide, sill..head %s..%s%s%s, in a %s m piece: %s"
+              % (m(wd), m(sill), m(head), ", frosted" if frosted else "", ", two storeys high" if stair else "", m(pl), ", ".join(ids)))
+    w("- Floor and ceiling tiles with the shaft's hole (1 m), a floor tile with the Cellar hatch (1.5 m).")
     w("- The U stair per storey (well 2.38 x 2.9 m inside), the attic's balustrade round the void.")
+    w("")
+    w("## Answers")
+    w("")
+    w("- The stair: a 0.9 m half landing, 33.3 deg (Q2350).")
+    w("- D2 and D8: an off-centre door piece keeps both doorways in their old places (Q2351).")
+    w("- The width: outer wall centre lines 10.5 m apart (Q2352).")
+    w("- Storeys 3.0 m, the old clear heights 2.7 / 2.7 / 2.6 m kept through thicker ceiling tiles (Q2353).")
+    w("- The roof: 40 deg, the ridge 3.88 m over the attic floor (Q2354).")
+    w("- Openings: both sets, old widths and widths rounded to 0.5 m; the designer compares (Q2355).")
+    w("- The Cellar hatch and the tiles with a hole are in (the designer, 2026-11-21).")
     w("")
     with open(path, "w", encoding="utf-8") as f:
         f.write("\n".join(L))
+
+
+def rounded(width: float) -> float:
+    """A window's width rounded to 0.5 m steps (the second set, Q2355)."""
+    return max(0.5, round(width / 0.5) * 0.5)
+
+
+def window_sets() -> list:
+    """Both window sets as the kit builds them: (set, width, sill, head, frosted, stair, piece length,
+    the ids). The stair window spans two storeys."""
+    out = {}
+    for kind in ("old", "grid"):
+        for i, n, lv, side, s0, s1, sill, head, frosted, c in WINDOWS:
+            wd = round(s1 - s0, 2) if kind == "old" else rounded(s1 - s0)
+            stair = n == "StairGround"
+            if stair:
+                sill, head = 2.4, 3.5
+            pl = float(piece_len(c, wd).split(" ")[0])
+            out.setdefault((kind, wd, sill, head, frosted, stair, pl), []).append(i)
+    return [k + (v,) for k, v in sorted(out.items())]
 
 
 def piece_len(c: float, width: float) -> str:
     """The shortest wall piece of 0.5 m steps that holds the opening centred, with 0.05 m jambs, and
     whose ends land on the grid."""
     n = 1
-    while True:
+    while n < 40:
         length = n * 0.5
         start = c - length / 2
         if length >= width + 0.1 - 1e-6 and abs(start / 0.5 - round(start / 0.5)) < 1e-6:
             return "%s m (%s..%s)" % (m(length), m(start), m(start + length))
         n += 1
+    raise ValueError("no grid piece holds an opening %.2f wide centred on %.2f" % (width, c))
 
 
 # --- The stills ------------------------------------------------------------------------------
@@ -773,10 +822,68 @@ def draw_section(path: str) -> None:
     pl.img.save(path)
 
 
+def draw_openings(path: str) -> None:
+    """Two walls, each once with each window set, the old windows in red over each (Q2355): the
+    ground floor's south wall (seen from outside, west left) and the first floor's north wall (the
+    one that changes most; seen from inside, west left)."""
+    S2 = 100
+    panel_h = int(4.6 * S2)
+    walls = (("ground", "S", "Ground floor, south wall, from outside"), ("first", "N", "First floor, north wall, from inside"))
+    panels = [(lv, side, t, kind, kt) for lv, side, t in walls
+              for kind, kt in (("old", "A: old widths"), ("grid", "B: widths rounded to 0.5 m"))]
+    img = Image.new("RGB", (int(11.0 * S2) + 2 * MARGIN, 90 + len(panels) * panel_h + 90), "white")
+    d = ImageDraw.Draw(img)
+    d.text((MARGIN, 24), "The two window sets on two walls: old (red) over new", fill=TEXT, font=font(30))
+    for k, (lv, side, wall_title, kind, title) in enumerate(panels):
+        top = 90 + k * panel_h
+
+        def P(x, y):
+            return (MARGIN + (x + 0.25) * S2, top + 36 + (3.9 - y) * S2)
+
+        d.text((MARGIN, top), "%s. %s" % (wall_title, title), fill=TEXT, font=font(22))
+        d.rectangle([P(0, 3.8), P(10.5, 0)], fill=(240, 228, 200))
+        g = 0.0
+        while g <= 10.5 + 1e-6:
+            d.line([P(g, 0), P(g, 3.8)], fill=GRID_C, width=1)
+            d.text(P(g, -0.08), m(g), fill=(150, 150, 150), font=font(13), anchor="mt")
+            g += 0.5
+        ny = LEVELS[lv][3]
+        d.rectangle([P(0, 3.0), P(10.5, ny)], fill=(200, 200, 204))        # the slab over the storey
+        for x in (X4, X65):
+            d.rectangle([P(x - PART / 2, 3.8), P(x + PART / 2, 0)], fill=NEW_WALL)
+        if side == "S":
+            d.rectangle([P(P4E, 3.8), P(P65W, 0)], fill=(236, 226, 206))   # the stair well: no slab
+        for i, n, wl, ws, s0, s1, sill, head, frosted, c in WINDOWS:
+            if wl != lv or ws != side:
+                continue
+            wd = round(s1 - s0, 2) if kind == "old" else rounded(s1 - s0)
+            if n == "StairGround":
+                sill, head = 2.4, 3.5
+            fill = (225, 232, 234) if frosted else (200, 236, 230)
+            d.rectangle([P(c - wd / 2, head), P(c + wd / 2, sill)], fill=fill, outline=WIN_C, width=3)
+            if wd > 1.0:
+                d.line([P(c, head), P(c, sill)], fill=WIN_C, width=2)
+            pl = float(piece_len(c, wd).split(" ")[0])
+            d.line([P(c - pl / 2, 0.05), P(c + pl / 2, 0.05)], fill=WIN_C, width=4)
+            label = "%s %s m" % (i, m(wd)) + ("" if abs(wd - (s1 - s0)) < 1e-6 else " (old %s)" % m(s1 - s0))
+            d.text(P(c, head + 0.1), label, fill=WIN_C, font=font(16), anchor="mb")
+            osill, ohead = (2.35, 3.45) if n == "StairGround" else (sill, head)
+            d.rectangle([P(fr(s0), ohead), P(fr(s1), osill)], outline=OLD_C, width=2)
+        d.text(P(0.1, 3.7), "west", fill=(90, 90, 90), font=font(15))
+        d.text(P(10.4, 3.7), "east", fill=(90, 90, 90), font=font(15), anchor="ra")
+    y = 90 + len(panels) * panel_h + 4
+    d.text((MARGIN, y), "Teal: the new window (a middle bar over 1.0 m), its wall piece as a bar on the floor line. Red: the old window,",
+           fill=TEXT, font=font(17))
+    d.text((MARGIN, y + 26), "shifted +0.1 m. Grey: partitions and the slab (none over the stair well). Metres over the storey's floor.",
+           fill=TEXT, font=font(17))
+    img.save(path)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--md", help="write the plan table here")
     ap.add_argument("--out", help="write the plan stills into this folder")
+    ap.add_argument("--windows", action="store_true", help="print both window sets as the kit builds them")
     args = ap.parse_args()
     bad = check()
     for b in bad:
@@ -788,6 +895,10 @@ def main() -> None:
         for k, lv in enumerate(LEVELS):
             draw_floor(lv, os.path.join(args.out, "plan_%d_%s.png" % (k + 1, lv)))
         draw_section(os.path.join(args.out, "plan_5_section.png"))
+        draw_openings(os.path.join(args.out, "openings_two_sets.png"))
+    if args.windows:
+        for row in window_sets():
+            print(row)
     print("house_plan: %s, %d rules broken" % ("FAIL" if bad else "PASS", len(bad)))
     raise SystemExit(1 if bad else 0)
 
