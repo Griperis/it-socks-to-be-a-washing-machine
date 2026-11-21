@@ -541,3 +541,18 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2408, Q2411 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/34, what only the zoo needs into `game/zoo/`, per station (upgrade switch, sound buttons, kit line-up and sample rooms, zoo flags); the two generators to `tools/`; prompts ask `Part.prompt_title()`; merged (main 62df606) |
+| Planned vs actual | 0 planned (designer's note, Q2409; no guard check, Q2410), 1 actual |
+| Redo count | 0 |
+| Corrections | the designer dropped the guard check (Q2410) |
+| Cost | see `agent_cost.py --by ticket` (Sonnet) |
+| Time | the agent ran about 6 min |
+| Surprises | a staged blob went missing again; rewritten with `git hash-object -w` |
+| Stop rules | none needed |
+| Looks | none |
+| Decisions | Q2409, Q2410 |
+
+---
