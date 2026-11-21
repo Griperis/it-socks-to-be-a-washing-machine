@@ -1,4 +1,4 @@
-Next free Q number: Q2425 (update this line whenever a round of questions is asked)
+Next free Q number: Q2431 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -337,3 +337,9 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2422: on top of the core/37 experiment, try the full bend simulation: flying Socks as jointed bodies (three segments, two hinges), as optimised as possible; only on the experiment branch, never main (designer: "For 37 could we try the full bend sim? Ideally super optimized. But only for 37."; core/38).
 - Q2423: jointed flying Socks (core/38) are not worth it: not merged (designer: "No it's not worth it"); taken to main from it: the bench's `--tune=` and shared flight materials (designer: "1, 2, yes"); Jolt penetration slop left as is.
 - Q2424: core/38 also gets a "really flappy" review build on its branch, with no tests run on it (designer: "just make the socks really flappy", "No need for running tests, this is just experiment").
+- Q2425: M0.5 close-out: the lead triages the core `[later]` follow-ups and does the paperwork; no walkthrough page; the designer does the full zoo run alone; the code map is updated and a system-by-system baseline is made for the designer's code review (designer, 2026-11-21).
+- Q2426: core/37 (bent lying Socks) is parked: not merged, its branch and review build kept (designer: "core/37 park").
+- Q2427: a pour stirs the heap as it does now, jitter included; no change (designer: "it's ok as is").
+- Q2428: a Sock left inside a Door or drawer leaf when it shuts is pushed out of the leaf, not sent to the return spot with a pop (designer: "pushed out").
+- Q2429: tests that only check a look or feel number go, the old cloth tests hand_details d02 and d03 first (Q2421; designer: "yes").
+- Q2430: the old features with no milestone (stacking, hand-off, hint arrows and pings, the F1 debug menu, the studio intro) are tracked as tickets, not planned yet (designer: "track them").
