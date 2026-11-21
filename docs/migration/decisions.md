@@ -1,4 +1,4 @@
-Next free Q number: Q2378 (update this line whenever a round of questions is asked)
+Next free Q number: Q2380 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -290,3 +290,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2375: pad rumble always on, kept as a setting (pad/rumble, default on) for the menu later.
 - Q2376: a teammate's own sounds and the knockdown rumble come in M0.6 with co-op.
 - Q2377: every jump lands with the "land" sound, as the old game (the 3 m/s gate stays).
+- Q2378: four M1 asset families start now beside M0.5: the Sock models and prints, the 17 Cabinets, the UI art and keycaps, the house furniture with the shared material library (assets/01-04).
+- Q2379: after the old Sock look is ported, Socks get a wool look (knit texture and normal mapping); a follow-up ticket (assets/05, priority later).

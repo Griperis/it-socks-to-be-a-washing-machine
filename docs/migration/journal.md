@@ -286,3 +286,33 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2334-Q2336, Q2347, Q2348 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/26, the stations instanced by hand in zoo.tscn (the folder collector and grid placement gone); merged (main d6db35d) |
+| Planned vs actual | 0 planned (the designer's ask, Q2359), 1 actual |
+| Redo count | 0 |
+| Corrections | "why the stations are placed by code and not directly in the scene, so I can move them around?" (Q2359) |
+| Cost | core/26 1 536,695 8 1m59s (Sonnet) |
+| Time | the agent ran about 2 min |
+| Surprises | a kit rule reversed for this game; the kit's zoo-design skill still describes the folder collector |
+| Stop rules | none fired |
+| Looks | none |
+| Decisions | Q2359 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | core/11, the reusable outline (Outline component, OutlineStyle, the old stencil shells) on Socks, drawers, the Door and the cupboard, red full; approved and merged (main 71f47f3) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 1 (made stronger for the graybox, Q2374) |
+| Corrections | "Stronger for now" (Q2374) |
+| Cost | core/11 1 19,300,891 131 26m35s (Opus) |
+| Time | the agent ran about 25 min |
+| Surprises | the old numbers barely read on the bright graybox; the outline station had to be placed in zoo.tscn at the merge (core/26); a damaged commit at the merge (git_repair) |
+| Stop rules | stopped at its first still |
+| Looks | `builds/review-core-11/` |
+| Decisions | Q2292-Q2293, Q2341, Q2374 |
+
+---
