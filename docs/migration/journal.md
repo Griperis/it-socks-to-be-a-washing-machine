@@ -481,3 +481,18 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2152, Q2400 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/27, the rest of the motion polish: the held box rides the sway, the throw keeps its hand bend, the shelved ball's landing, a thrown shelve flies on to its slot, the fold's curl, the Door and cupboard swings; the FLAKY w10_gap fixed; merged (main 775aa59) |
+| Planned vs actual | 0 planned (split from core/16, Q2398), 1 actual |
+| Redo count | 0 |
+| Corrections | the designer asked for a complexity report before the merge ("I would like to have a report of how much complexity this added"); a drop keeps no bend (Q2401); the swing ease is the designer's to tune in the editor (Q2403) |
+| Cost | core/27 1 28,528,469 165 42m28s (Opus) |
+| Time | the agent ran about 40 min |
+| Surprises | w10_gap's race: the runner reset sounds while the last case's Sock still bounced |
+| Stop rules | stopped at its review sheet |
+| Looks | `builds/review-core-27/` |
+| Decisions | Q2281, Q2315, Q2316, Q2368, Q2398, Q2401-Q2403 |
+
+---
