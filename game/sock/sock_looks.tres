@@ -1,0 +1,101 @@
+[gd_resource type="Resource" script_class="SockLookTable" format=3 uid="uid://b4gp70o4p875d"]
+
+[ext_resource type="Script" uid="uid://ch0ck8lgi5uyb" path="res://game/sock/sock_look_table.gd" id="1_table"]
+[ext_resource type="Script" uid="uid://cdxluqc7uwl5q" path="res://game/sock/sock_cloth_fit.gd" id="2_fit"]
+
+[sub_resource type="Resource" id="Fit_ball"]
+script = ExtResource("2_fit")
+print_aspect = 0.4
+cloth_size = Vector2(0.26, 0.38)
+calf_body = Vector2(0.14, 0.82)
+patch_split = Vector2(0.5, 0.5)
+
+[sub_resource type="Resource" id="Fit_ankle"]
+script = ExtResource("2_fit")
+print_aspect = 0.33
+cloth_size = Vector2(0.206, 0.15)
+calf_body = Vector2(0.0503, 0.1078)
+patch_split = Vector2(0.0862, 0.6211)
+
+[sub_resource type="Resource" id="Fit_crew"]
+script = ExtResource("2_fit")
+
+[sub_resource type="Resource" id="Fit_tube"]
+script = ExtResource("2_fit")
+print_aspect = 0.31
+cloth_size = Vector2(0.314, 0.21)
+calf_body = Vector2(0.1595, 0.4558)
+patch_split = Vector2(0.1595, 0.7767)
+
+[sub_resource type="Resource" id="Fit_chunky"]
+script = ExtResource("2_fit")
+print_aspect = 0.27
+cloth_size = Vector2(0.393, 0.27)
+calf_body = Vector2(0.1571, 0.4713)
+patch_split = Vector2(0.1571, 0.7736)
+
+[resource]
+script = ExtResource("1_table")
+cuffs = Array[StringName]([&"ankle", &"chunky_fold", &"crew_cape", &"crew_ears", &"crew_plain", &"crew_rolled", &"crew_scallop", &"crew_stripe", &"tube_rib"])
+collection_shapes = Dictionary[StringName, StringName]({
+&"animals": &"crew",
+&"dirty": &"crew",
+&"drinks": &"tube",
+&"food": &"crew",
+&"fruit": &"crew",
+&"lost": &"crew",
+&"machinery": &"chunky",
+&"math": &"crew",
+&"nature": &"crew",
+&"patterns": &"crew",
+&"simple": &"ankle",
+&"space": &"crew",
+&"sport": &"tube",
+&"superhero": &"crew",
+&"tech": &"tube",
+&"transport": &"crew",
+&"vegetables": &"ankle",
+&"winter": &"chunky"
+})
+collection_fabrics = Dictionary[StringName, StringName]({
+&"animals": &"fuzzy",
+&"dirty": &"cotton",
+&"drinks": &"cotton",
+&"food": &"cotton",
+&"fruit": &"cotton",
+&"lost": &"cotton",
+&"machinery": &"wool",
+&"math": &"cotton",
+&"nature": &"cotton",
+&"patterns": &"cotton",
+&"simple": &"cotton",
+&"space": &"cotton",
+&"sport": &"cotton",
+&"superhero": &"cotton",
+&"tech": &"cotton",
+&"transport": &"cotton",
+&"vegetables": &"cotton",
+&"winter": &"wool"
+})
+collection_cuffs = Dictionary[StringName, StringName]({
+&"animals": &"crew_ears",
+&"drinks": &"tube_rib",
+&"food": &"crew_scallop",
+&"machinery": &"chunky_fold",
+&"math": &"crew_stripe",
+&"patterns": &"crew_stripe",
+&"simple": &"ankle",
+&"space": &"crew_rolled",
+&"sport": &"tube_rib",
+&"superhero": &"crew_cape",
+&"transport": &"crew_stripe",
+&"vegetables": &"ankle",
+&"winter": &"chunky_fold"
+})
+fits = Dictionary[StringName, ExtResource("2_fit")]({
+&"ankle": SubResource("Fit_ankle"),
+&"chunky": SubResource("Fit_chunky"),
+&"crew": SubResource("Fit_crew"),
+&"tube": SubResource("Fit_tube")
+})
+ball_fit = SubResource("Fit_ball")

@@ -325,7 +325,7 @@ func _grow(delta: float) -> void:
 		own.scale = Vector3.ONE * size * lerpf(float(g["from"]), 1.0, e)
 
 
-## Starts the pairing moment over Pair `sock`'s place: the two Socks and the ball tinted as its
+## Starts the pairing moment over Pair `sock`'s place: the two Socks and the ball drawn as its
 ## Design, the sparkles and the ring in its Collection's colour, drawn at the tuning's length. Its
 ## second Sock flies in from where it lay (D10).
 func _start_moment(sock: int) -> void:
@@ -333,10 +333,9 @@ func _start_moment(sock: int) -> void:
 	var moment := MOMENT.instantiate() as Node3D
 	moment.name = "Moment%d" % sock
 	var design := hands.mess.design_of(sock)
+	# The scene's stand-in Looks become the Design's own: its shape for the two Socks, its ball.
 	for path: NodePath in [^"Held/Looks", ^"Mate/FlyIn/Looks", ^"Ball"]:
-		var looks := moment.get_node(path) as Node3D
-		SockDress.tint(looks, design)
-		SockDress.play(looks, SockDress.HELD)
+		SockDress.swap(moment.get_node(path) as Node3D, design, SockDress.HELD, path == ^"Ball")
 	var colour := Color(1.0, 0.8, 0.4)
 	if design != null and hands.mess.catalogue != null:
 		colour = hands.mess.catalogue.collection_colour(design.collection)

@@ -24,6 +24,7 @@
 [ext_resource type="PackedScene" path="res://game/zoo/stations/openables.tscn" id="26_openables"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/sounds.tscn" id="27_sounds"]
 [ext_resource type="PackedScene" uid="uid://dvh4amgapflsc" path="res://game/zoo/stations/outline.tscn" id="28_outline"]
+[ext_resource type="PackedScene" uid="uid://c3oefe5hwybf0" path="res://game/zoo/stations/sock_looks.tscn" id="29_sock_looks"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.42, 0.44, 0.46, 1)
@@ -107,6 +108,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
 [node name="Sounds" parent="Stations" unique_id=1700063452 instance=ExtResource("27_sounds")]
+
+[node name="SockLooks" parent="Stations" unique_id=1700079290 instance=ExtResource("29_sock_looks")]
 
 [node name="Spots" type="Node3D" parent="." unique_id=1540973286]
 

@@ -11,6 +11,8 @@ const PLAYER := "res://game/player/player.tscn"
 const ACTIONS: Array[StringName] = [&"pick", &"drop_throw", &"turn", &"move_forward", &"hands_next", &"hands_prev"]
 ## The station's Socks, by id (the order of its SockSpots).
 const ON_FLOOR := 0
+## A small crew Sock's Design (patterns).
+const CREW_DESIGN := 135
 const UNDER := 1
 const OVER := 2
 const MATE_FLOOR := 6
@@ -18,8 +20,6 @@ const SOCKS := 8
 ## Where the player stands for most cases: in front of the Socks on the floor, facing -Z.
 const FRONT := Vector3(0.0, 0.0, 1.5)
 ## The Sock Looks' skeleton and the bones its cloth bends.
-const SKELETON := ^"Body/sock_crew/crew_rig/Skeleton3D"
-const CLOTH := ^"Body/sock_crew/crew_rig/Skeleton3D/Cloth"
 const BONES: Array[int] = [1, 2, 3, 4]
 const TOE := 4
 
@@ -116,7 +116,7 @@ func case_real_path() -> void:
 	var flight := _mess.flight_of(ON_FLOOR)
 	var looks := flight.get_node(^"Looks") as Node3D
 	_watch(looks)
-	var cloth := looks.get_node(CLOTH) as SockCloth
+	var cloth := looks.find_child("Cloth", true, false) as SockCloth
 	var flopped := 0.0
 	var last := 1.0
 	var last_influence := 1.0
@@ -141,7 +141,7 @@ func case_d01() -> void:
 	var view := _player.held_view()
 	var held := view.looks_of(ON_FLOOR)
 	_watch(held)
-	var cloth := held.get_node(CLOTH) as SockCloth
+	var cloth := held.find_child("Cloth", true, false) as SockCloth
 	_check(cloth.role == SockCloth.Role.HELD and cloth.ranked, "a held Sock's cloth is on")
 	_near(cloth.get_drag(0), 1.0, 0.0001, "fully damped: each tick's swing is thrown away")
 	await _until(view.settled, "the fly-up to end")
@@ -205,7 +205,7 @@ func case_d04() -> void:
 	await _until(func() -> bool: return _mess.flight_of(ON_FLOOR) != null, "the thrown Sock to fly")
 	var body := _mess.flight_of(ON_FLOOR)
 	var looks := body.get_node(^"Looks") as Node3D
-	var cloth := looks.get_node(CLOTH) as SockCloth
+	var cloth := looks.find_child("Cloth", true, false) as SockCloth
 	_watch(looks)
 	_check(cloth.role == SockCloth.Role.FLYING, "a thrown Sock's cloth flies")
 	var bent_fast := false
@@ -226,7 +226,7 @@ func case_d04() -> void:
 	_near(last, 0.0, 0.001, "it reaches the floor flat (%.4f)" % last)
 	await _physics_ticks(2)
 	var lying := _mess.looks_of(ON_FLOOR)
-	_check(lying != null and not (lying.get_node(CLOTH) as SockCloth).active, "lying, it is the Mess's rigid flat Sock")
+	_check(lying != null and not (lying.find_child("Cloth", true, false) as SockCloth).active, "lying, it is the Mess's rigid flat Sock")
 
 
 func case_d05() -> void:
@@ -273,17 +273,17 @@ func case_d07() -> void:
 	await _physics_ticks(3)
 	var on: Array[int] = []
 	for i in flights.size():
-		if ((flights[i].get_node(^"Looks") as Node3D).get_node(CLOTH) as SockCloth).active:
+		if ((flights[i].get_node(^"Looks") as Node3D).find_child("Cloth", true, false) as SockCloth).active:
 			on.append(i)
 	_check(on == [0, 1, 2, 3], "the 4 nearest of 6 flying Socks bend (%s)" % [on])
-	var held := (_player.held_view().looks_of(ON_FLOOR).get_node(CLOTH) as SockCloth)
+	var held := (_player.held_view().looks_of(ON_FLOOR).find_child("Cloth", true, false) as SockCloth)
 	_check(held.active, "the held one bends too")
-	var lying := (_mess.looks_of(OVER).get_node(CLOTH) as SockCloth)
+	var lying := (_mess.looks_of(OVER).find_child("Cloth", true, false) as SockCloth)
 	_check(lying.role == SockCloth.Role.RIGID and not lying.active and not lying.is_physics_processing(), "a lying Sock is rigid and costs nothing")
 	flights[0].global_position += Vector3(0.0, 0.0, -20.0)
 	await _physics_ticks(2)
-	_check(not ((flights[0].get_node(^"Looks") as Node3D).get_node(CLOTH) as SockCloth).active
-			and ((flights[4].get_node(^"Looks") as Node3D).get_node(CLOTH) as SockCloth).active, "one flying off makes room for the next nearest")
+	_check(not ((flights[0].get_node(^"Looks") as Node3D).find_child("Cloth", true, false) as SockCloth).active
+			and ((flights[4].get_node(^"Looks") as Node3D).find_child("Cloth", true, false) as SockCloth).active, "one flying off makes room for the next nearest")
 
 
 # --- Switching and picking -----------------------------------------------------------------------
@@ -469,10 +469,10 @@ func case_f3_sign() -> void:
 func case_looks() -> void:
 	var looks := SockDress.make(null)
 	add_child(looks)
-	var cloth := looks.get_node_or_null(CLOTH) as SockCloth
+	var cloth := looks.find_child("Cloth", true, false) as SockCloth
 	_check(cloth != null, "the Looks has its Cloth under the skeleton")
 	if cloth != null:
-		var skeleton := looks.get_node(SKELETON) as Skeleton3D
+		var skeleton := looks.find_child("Skeleton3D", true, false) as Skeleton3D
 		_check(skeleton.get_bone_name(cloth.get_root_bone(0)) == "Leg" and skeleton.get_bone_name(cloth.get_end_bone(0)) == "Toe",
 				"its chain runs from the leg to the toe")
 		_check(cloth.get_node_or_null(^"Ground") is SpringBoneCollisionPlane3D, "with its Ground plane")
@@ -496,6 +496,10 @@ func _build() -> void:
 	floor_body.add_child(shape)
 	_level.add_child(floor_body)
 	_station = (load(STATION) as PackedScene).instantiate() as Node3D
+	# The cloth's numbers (core/09) were tuned on the crew Sock; the station's Simple Socks are ankle
+	# Socks since assets/01, so the Sock these cases take and its mate are small crew ones (Burgundy dots).
+	(_station.get_node("Spots/Floor") as SockSpot).design = CREW_DESIGN
+	(_station.get_node("Spots/MateFloor") as SockSpot).design = CREW_DESIGN
 	_level.add_child(_station)
 	_player = (load(PLAYER) as PackedScene).instantiate() as Player
 	_player.position = FRONT
@@ -512,7 +516,7 @@ func _build() -> void:
 
 ## Reads `looks`' bend and its chain's lowest point each time its skeleton is drawn.
 func _watch(looks: Node3D) -> void:
-	var skeleton := looks.get_node(SKELETON) as Skeleton3D
+	var skeleton := looks.find_child("Skeleton3D", true, false) as Skeleton3D
 	var key := looks.get_instance_id()
 	skeleton.skeleton_updated.connect(func() -> void:
 		_bends[key] = skeleton.get_bone_global_pose(TOE).origin.distance_to(skeleton.get_bone_global_rest(TOE).origin)

@@ -251,9 +251,9 @@ func case_p06() -> void:
 	var view := _player.held_view()
 	var looks := view.looks_of(ON_FLOOR)
 	_check(_is_ball(looks), "the held Pair is one sock ball")
-	var mesh := looks.get_node("Body/ball_crew_plain/crew_plain_ball") as MeshInstance3D
+	var mesh := looks.get_node("Body").find_children("*", "MeshInstance3D", true, false)[0] as MeshInstance3D
 	var design := _mess.design_of(ON_FLOOR)
-	_check((mesh.material_override as StandardMaterial3D).albedo_color == design.colour, "tinted as its Sock")
+	_check(mesh.material_override == SockLook.material(design, true), "drawn as its Sock's Design")
 	var t := _player.hands_tuning
 	var sock := design.size_scale() * t.active_scale * t.depth
 	_near(looks.scale.x / sock, 1.6, 0.01, "1.6 times a Sock's size (%.3f)" % (looks.scale.x / sock))
@@ -660,7 +660,7 @@ func _gap_to_box(sock: int, point: Vector3) -> float:
 
 ## Whether `looks` is a sock ball's Looks.
 func _is_ball(looks: Node3D) -> bool:
-	return looks != null and looks.has_node("Body/ball_crew_plain")
+	return looks != null and SockLook.is_ball(looks)
 
 
 func _counts() -> Dictionary:

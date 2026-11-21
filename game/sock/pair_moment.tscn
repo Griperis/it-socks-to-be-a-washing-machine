@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d30ref6s3w1xt"]
 
-[ext_resource type="PackedScene" path="res://game/sock/looks_graybox.tscn" id="1_b6aa3"]
-[ext_resource type="PackedScene" uid="uid://nnbih1vyjajy" path="res://game/sock/looks_ball.tscn" id="2_12w58"]
+[ext_resource type="PackedScene" uid="uid://bkyk44qfj4fem" path="res://game/sock/looks_crew.tscn" id="1_b6aa3"]
+[ext_resource type="PackedScene" uid="uid://uk4gtry7soji" path="res://game/sock/looks_ball_crew_plain.tscn" id="2_12w58"]
 
 [sub_resource type="Gradient" id="Gradient_vnmgs"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)

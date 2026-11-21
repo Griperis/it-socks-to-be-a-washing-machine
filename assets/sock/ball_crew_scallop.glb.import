@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dypxanfxgexoa"
-path="res://.godot/imported/crew.glb-b472130ea0d8328b1208361c8bb3dfff.scn"
+uid="uid://clk4tx07wvw38"
+path="res://.godot/imported/ball_crew_scallop.glb-44f1e451e138c4995a873273b50f78a5.scn"
 
 [deps]
 
-source_file="res://game/sock/crew.glb"
-dest_files=["res://.godot/imported/crew.glb-b472130ea0d8328b1208361c8bb3dfff.scn"]
+source_file="res://assets/sock/ball_crew_scallop.glb"
+dest_files=["res://.godot/imported/ball_crew_scallop.glb-44f1e451e138c4995a873273b50f78a5.scn"]
 
 [params]
 
@@ -24,7 +24,7 @@ nodes/import_as_skeleton_bones=false
 nodes/use_name_suffixes=true
 nodes/use_node_type_suffixes=true
 meshes/ensure_tangents=true
-meshes/generate_lods=true
+meshes/generate_lods=false
 meshes/create_shadow_meshes=true
 meshes/light_baking=1
 meshes/lightmap_texel_size=0.2
@@ -35,7 +35,7 @@ animation/fps=30
 animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
-import_script/path=""
+import_script/path="res://game/sock/model_lods_import.gd"
 materials/extract=0
 materials/extract_format=0
 materials/extract_path=""

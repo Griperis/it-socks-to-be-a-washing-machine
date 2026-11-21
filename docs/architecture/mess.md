@@ -44,6 +44,9 @@ Socks lie, are drawn, move or wake.
 
 - Packed arrays in a Dictionary are values: take one out before writing it in place (`MessDrawing`).
 - The instance buffer layout (transform rows, colour, custom) is the old game's; the custom data is
-  `MessDrawing.look_data()`, the old pattern shader's input (M1).
+  `MessDrawing.look_data()`, read by the sock shader (`game/sock/sock_pattern.gdshader`, assets/01).
+- A MultiMesh's shape is a Collection's (`shape_of()`: its model, or `ball:<collection>` for its sock
+  ball), with that Collection's `SockLook.instance_material()`; shapes are added as first drawn. The
+  lying boxes still fit the crew model for every shape (`BOX_LOOKS`).
 - Godot's `TIME_PHYSICS_PROCESS` monitor is not a tick's cost (it stayed about 26 ms both before and
   after this rewrite while 124 ticks ran in 2 s); time a tick from its first `_physics_process`.
