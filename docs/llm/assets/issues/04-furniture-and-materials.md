@@ -42,19 +42,32 @@ for all models; where variants differ (oak: 9 in 39 models) the designer picks t
 
 ## Answers
 - Started beside M0.5 (Q2378, 2026-11-21).
+- Materials: in each group the variant the most old pieces used stays; on a tie the one nearest the group's
+  median roughness; named `game/materials/<group>.tres`, the winner and its piece count recorded in
+  `docs/architecture/materials.md` so any group can be overridden by name; the other files dropped (Q2389,
+  2026-11-21).
+- The fab_* sheen: ported without sheen for now, as the old game looked (Q2390, 2026-11-21).
 
 ## Open follow-ups
-- [blocking] F01: which candidate stays in each of the 24 groups (strips in `builds/review-furniture/`,
-  `materials-<group>.png`; `materials-strip.png` all of them; `materials-overview.png` the board). Most groups
-  differ only in roughness (oak: one colour, roughness 0.4 to 0.8; the house kit's `oak_kit` 0.62 and not
-  double-sided). The chosen file becomes `game/materials/<name>.tres` and its group folder goes.
-- [blocking] F01: the old fab_* cloths carried glTF sheen (KHR_materials_sheen), which StandardMaterial3D has
-  no field for and the old Godot import dropped too: keep them without it (as the old game looked), or a
-  look change ticket?
-- [later] F01: every old furniture material was double-sided (culling off); the library keeps it, as the old
-  import did. Single-sided is cheaper; it can be tried per piece when the models are ported (F02).
-- [later] The Materials station is its own station (one per feature) at the zoo's north edge, (-5.5, 17.5);
-  the furniture station (F03) is still to come.
+- [later] Q2390: a look-change ticket to give the fabrics (fab_*) a soft sheen: the designer wants it; the lead
+  files it.
+- [later] Small details of pieces that are devices, not assets, each still to be asked and ported in its own
+  piece (all in the old game): the piano's 88 keys play a note and dip 3 degrees when played (house/28; the keys
+  are named and carry their MIDI note, nothing moves them); the wall mirror's reflection (`mirror.gd`, its
+  `MirrorGlass` mesh is kept); the sheeted sofa's dust sheet (`dust_sheet.gd`); the Old Tree's own shader
+  (`old_tree.gdshader`; its lamp is ported); each opening's sound by its old container kind (`kind` metadata on
+  each Openable, the old cue table in `game/house/openable.gd`).
+- [later] Player collision: the old game gave players the manifest's coarser `colliders` (or one box over the
+  footprint from `crawl_gap` up) and Socks the fine collision nodes; here both meet the fine collision, on the one
+  house layer. A player layer of its own would need game/player (not this ticket's).
+- [later] Blender: the 67 glbs are the old exports (collision nodes taken out, meshes renamed by
+  `tools/furniture_from_old.py`); `house_furniture/*.py` is not ported to `tools/blender/` (no Blender here).
+- [later] The Furniture station stands off the zoo floor's east edge on its own ground; the zoo's Mess bounds end
+  at the floor, so a Sock thrown onto it goes back to the return spot.
+- [later] Every old furniture material was double-sided (culling off); the library keeps it, as the old import
+  did. Single-sided is cheaper; it can be tried per piece.
+- [later] `tests/mess_test.gd` m04 (the zoo keeps a few thousand nodes with every Sock) now leaves out the
+  Furniture station's own nodes (about 3,000: collision, openings, spots); the Sock rule it checks is unchanged.
 
 ## Built log
 
@@ -69,4 +82,19 @@ for all models; where variants differ (oak: 9 in 39 models) the designer picks t
   `tools/shot_hooks.gd`, `tools/shots/sets/materials.txt`, `tests/materials_test.gd`.
 - Verified: `run.sh --touched` PASS 8430 checks, 122 cases (materials_test: real path, f01_library, f01_station,
   f01_from_data); grep_rules PASS; stills `builds/review-furniture/materials-*.png`, `materials-strip.png`.
+
+### 2026-11-21 (the picks, F02-F04, second still)
+- Changed: the 24 groups picked by Q2389 into `game/materials/<group>.tres` (table in
+  `docs/architecture/materials.md`), candidates dropped. The 67 old pieces as scenes in `game/furniture/`:
+  their old collision on the house layer, their still Looks, 28 openings the cupboard way (Openable, a Looks of
+  AnimatableBody3Ds named as in the old model, "open"/"shut" as the old 0.35 s swing, the interior as Inside),
+  584 Sock spot rects, the Old Tree's lamp; glbs cleaned and mapped to the library. The Furniture station lines
+  them up from the folder; the shot set `furniture` puts each view beside the old models.
+- Files: `assets/furniture/`, `game/furniture/`, `tools/furniture_from_old.py`, `game/zoo/furniture_line_up*.gd`,
+  `game/zoo/furniture_line_up_layout.tres`, `game/zoo/stations/furniture.tscn`, `game/zoo/zoo.tscn`,
+  `game/materials/`, `tools/shot_hooks.gd`, `tools/shots/sets/furniture.txt`, `tests/furniture_test.gd`,
+  `tests/materials_test.gd`, `tests/mess_test.gd`, `docs/architecture/furniture.md`, `materials.md`.
+- Verified: `run.sh --touched` PASS 14609 checks, 163 cases (furniture_test 9 cases incl. the real path); asset_lint
+  PASS (97 glb, 145 look scenes); grep_rules PASS; stills `builds/review-furniture/furniture-beside-old.png` (each
+  view old beside new), `furniture-*.png`, `materials-overview.png`.
 
