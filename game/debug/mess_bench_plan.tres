@@ -1,0 +1,80 @@
+[gd_resource type="Resource" script_class="MessBenchPlan" format=3]
+
+[ext_resource type="Script" path="res://game/debug/mess_bench_plan.gd" id="1_plan"]
+[ext_resource type="Script" path="res://game/debug/mess_bench_scenario.gd" id="2_scenario"]
+[ext_resource type="Resource" path="res://game/debug/mess_checks.tres" id="3_checks"]
+
+[sub_resource type="Resource" id="Resource_idle_500"]
+script = ExtResource("2_scenario")
+id = &"idle_500"
+title = "500 Socks lying, nothing moving"
+lying = 500
+
+[sub_resource type="Resource" id="Resource_idle_2000"]
+script = ExtResource("2_scenario")
+id = &"idle_2000"
+title = "2,000 Socks lying, nothing moving"
+lying = 2000
+
+[sub_resource type="Resource" id="Resource_idle_10000"]
+script = ExtResource("2_scenario")
+id = &"idle_10000"
+title = "10,000 Socks lying, nothing moving"
+lying = 10000
+old_game = "S1 (10,000 in Heaps, 4 walkers, 60 Hz, the designer's PC, 2026-11-04): step p99 0.09 ms, Mess script p99 0.01 ms"
+
+[sub_resource type="Resource" id="Resource_pour_500"]
+script = ExtResource("2_scenario")
+id = &"pour_500"
+title = "The spout pours 500 Socks onto the floor (timed while it pours)"
+kind = 1
+phase = 1
+count = 500
+
+[sub_resource type="Resource" id="Resource_settle_500"]
+script = ExtResource("2_scenario")
+id = &"settle_500"
+title = "The same pour of 500, timed from its last wave until every Sock lies"
+kind = 1
+phase = 2
+count = 500
+old_game = "S3 (500 dropped on a pile, 60 Hz, the designer's PC, 2026-11-04): step p99 1.65 ms, Mess script p99 3.27 ms; 164 sunk over 5 mm into another Sock, 132 fallen through"
+
+[sub_resource type="Resource" id="Resource_pour_2000"]
+script = ExtResource("2_scenario")
+id = &"pour_2000"
+title = "The spout pours 2,000 Socks onto the floor (timed while it pours)"
+kind = 1
+phase = 1
+count = 2000
+limit = 180.0
+
+[sub_resource type="Resource" id="Resource_settle_2000"]
+script = ExtResource("2_scenario")
+id = &"settle_2000"
+title = "The same pour of 2,000, timed from its last wave until every Sock lies"
+kind = 1
+phase = 2
+count = 2000
+limit = 180.0
+
+[sub_resource type="Resource" id="Resource_burst_16"]
+script = ExtResource("2_scenario")
+id = &"burst_16"
+title = "16 Socks thrown at once into a heap of 500 lying Socks"
+kind = 2
+lying = 500
+count = 16
+old_game = "S4 (4 players throwing into Heaps, 1 a second each, 60 Hz, the designer's PC, 2026-11-04): step p99 0.86 ms, Mess script p99 15.15 ms"
+
+[sub_resource type="Resource" id="Resource_sweep"]
+script = ExtResource("2_scenario")
+id = &"sweep"
+title = "A Door and a drawer open and shut through 160 lying Socks"
+kind = 3
+lying = 160
+
+[resource]
+script = ExtResource("1_plan")
+scenarios = Array[ExtResource("2_scenario")]([SubResource("Resource_idle_500"), SubResource("Resource_idle_2000"), SubResource("Resource_idle_10000"), SubResource("Resource_pour_500"), SubResource("Resource_settle_500"), SubResource("Resource_pour_2000"), SubResource("Resource_settle_2000"), SubResource("Resource_burst_16"), SubResource("Resource_sweep")])
+checks = ExtResource("3_checks")

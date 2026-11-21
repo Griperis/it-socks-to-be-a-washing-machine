@@ -110,20 +110,31 @@ func tick(delta: float) -> void:
 		queue_wake(_mess.resting_on(place), &"fall")
 	_sweep_movers()
 	var ready: Array[int] = []
-	for sock: int in _flights.keys():
+	var out: Array[int] = []
+	# Read once a tick, not once a body (core/31): the bounds in the level's own space.
+	var bounded := _mess.bounds.has_volume()
+	var to_local := _mess.lying.global_transform.affine_inverse() if bounded and _mess.lying != null else Transform3D.IDENTITY
+	for sock: int in _flights:
 		var body := _flights[sock]
+		var speed := body.linear_velocity.length()
 		_airborne[sock] += delta
-		_speeds[sock] = body.linear_velocity.length()
-		_switch_ccd(body)
-		if not _mess.in_bounds(body.global_position):
-			_rest(sock, _mess.return_pose(sock), true)
+		_speeds[sock] = speed
+		if speed >= CCD_ON:
+			body.continuous_cd = true
+		elif speed < CCD_OFF:
+			body.continuous_cd = false
+		if bounded and not _mess.bounds.has_point(to_local * body.global_position):
+			out.append(sock)
 			continue
-		var pair := _mess.is_pair(sock)
-		var slow := body.linear_velocity.length() < (t.pair_rest_speed if pair else t.rest_speed) \
+		var pair := _mess.mate_of(sock) >= 0
+		var slow := speed < (t.pair_rest_speed if pair else t.rest_speed) \
 				and body.angular_velocity.length() < (t.pair_rest_spin if pair else t.rest_spin)
-		_still[sock] = float(_still.get(sock, 0.0)) + delta if slow else 0.0
-		if _still[sock] >= t.rest_time or (body.sleeping and _airborne[sock] > 0.1):
+		var still := _still[sock] + delta if slow else 0.0
+		_still[sock] = still
+		if still >= t.rest_time or (body.sleeping and _airborne[sock] > 0.1):
 			ready.append(sock)
+	for sock in out:
+		_rest(sock, _mess.return_pose(sock), true)
 	var stops := t.stop_cap
 	for sock in ready:
 		if stops == 0:
@@ -339,7 +350,6 @@ func _launch(sock: int, woken: bool) -> void:
 	_airborne[sock] = 0.0
 	_still[sock] = 0.0
 	_speeds[sock] = body.linear_velocity.length()
-	_mess.give_looks()
 
 
 ## The thrower's own body (alone: the local player) lets their thrown Sock through: it leaves from

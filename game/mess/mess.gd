@@ -109,6 +109,14 @@ var _shown_poses := PackedFloat32Array()
 var _lent: Dictionary[int, Node3D] = {}
 ## The Host's moving Socks: the falling bodies, the budget and the wakes.
 var _moving := MessMoving.new(self)
+## The falling bodies on this machine by Sock id (the Host's own, or a Guest's spawned copies), kept
+## as they enter and leave `flights` (core/31: no walk over every child for one Sock's body), the
+## ones that have a Looks, and each one's shape once drawn as an instance.
+var _flight_by_sock: Dictionary[int, RigidBody3D] = {}
+var _flight_looks: Dictionary[RigidBody3D, bool] = {}
+var _flight_shape: Dictionary[int, StringName] = {}
+## Whether the last frame drew any flying Sock as an instance (the next one must clear it).
+var _flying_drawn := false
 ## The Host's dice for a lost Sock's return scatter (return_pose()).
 var _scatter := RandomNumberGenerator.new()
 ## More nodes of SockSpots, handed over before this Mess is ready by a scene that joins the level
@@ -224,10 +232,8 @@ func is_moving(sock: int) -> bool:
 
 ## The falling body of Sock `sock` on this machine (the Host's own, or a Guest's spawned copy), or null.
 func moving_body(sock: int) -> RigidBody3D:
-	for body in _flight_nodes():
-		if _sock_of_flight(body) == sock:
-			return body
-	return null
+	var body: RigidBody3D = _flight_by_sock.get(sock)
+	return body if body != null and not body.is_queued_for_deletion() else null
 
 
 ## Where Sock `sock`'s falling body is drawn on this machine now, its Size included, or null: its
@@ -587,6 +593,7 @@ func _show(now: bool) -> void:
 	if _lying_bodies == null:
 		_drawing = MessDrawing.new(_container(lying) as Node3D, bodies_tuning())
 		_lying_bodies = MessBodies.new(self, _drawing.sock_points())
+		_watch_flights()
 		now = true
 	var changed: PackedInt32Array
 	if now:
@@ -628,6 +635,7 @@ func _show(now: bool) -> void:
 			_drawing.undraw(sock)
 			_lying_bodies.remove(sock)
 		_moving.forget(sock)
+	var started := false
 	for sock in changed:
 		match state_of(sock):
 			State.LYING:
@@ -635,6 +643,11 @@ func _show(now: bool) -> void:
 			State.FLYING:
 				if _is_host():
 					_moving.start(sock, woken.has(sock), now)
+					started = true
+	if started:
+		# Once for every body this change started (a thrown one has its Looks at once: its cloth
+		# carries the hand's bend).
+		give_looks()
 	_shown_states = states.duplicate()
 	_shown_poses = poses.duplicate()
 	_drawing.flush()
@@ -663,22 +676,32 @@ func _physics_process(delta: float) -> void:
 		_moving.tick(delta)
 
 
-## Every machine, each frame: the flights with no Looks are drawn as instances where their bodies are.
+## Every machine, each frame: the flights with no Looks are drawn as instances where their bodies
+## are. Nothing is built or uploaded while no Sock is drawn so (core/31).
 func _process(_delta: float) -> void:
 	if _drawing == null:
 		return
 	_drawing.flush()
-	var rows: Dictionary[StringName, Array] = {}
-	for body in _flight_nodes():
-		if body.has_node(LOOKS):
+	if _flight_by_sock.size() == _flight_looks.size() and not _flying_drawn:
+		return
+	var poses: Dictionary[StringName, Array] = {}
+	var of: Dictionary[StringName, Array] = {}
+	for sock: int in _flight_by_sock:
+		var body := _flight_by_sock[sock]
+		if _flight_looks.has(body) or body.is_queued_for_deletion():
 			continue
-		var sock := _sock_of_flight(body)
 		var design := design_of(sock)
-		var shape := MessDrawing.shape_of(design, is_pair(sock))
-		if not rows.has(shape):
-			rows[shape] = []
-		rows[shape].append([body.get_global_transform_interpolated().orthonormalized(), design])
-	_drawing.draw_flying(rows)
+		var shape: StringName = _flight_shape.get(sock, &"")
+		if shape == &"":
+			shape = MessDrawing.shape_of(design, is_pair(sock))
+			_flight_shape[sock] = shape
+		if not poses.has(shape):
+			poses[shape] = []
+			of[shape] = []
+		poses[shape].append(body.get_global_transform_interpolated().orthonormalized())
+		of[shape].append(design)
+	_drawing.draw_flying(poses, of)
+	_flying_drawn = not poses.is_empty()
 
 
 func _is_host() -> bool:
@@ -709,14 +732,17 @@ func _draw_lying(sock: int) -> void:
 ## nearest the camera without one gets it; none is taken from a flight that has one (no pop).
 func give_looks() -> void:
 	var cap := CLOTH_TUNING.flying_cap if CLOTH_TUNING != null else 4
-	var without: Array[RigidBody3D] = []
 	var have := 0
-	for body in _flight_nodes():
-		if body.has_node(LOOKS):
+	for body: RigidBody3D in _flight_looks:
+		if not body.is_queued_for_deletion():
 			have += 1
-		else:
+	if have >= cap or _flight_by_sock.size() == _flight_looks.size():
+		return
+	var without: Array[RigidBody3D] = []
+	for body in _flight_nodes():
+		if not _flight_looks.has(body):
 			without.append(body)
-	if have >= cap or without.is_empty():
+	if without.is_empty():
 		return
 	var camera := get_viewport().get_camera_3d() if is_inside_tree() else null
 	if camera != null and without.size() > cap - have:
@@ -736,6 +762,7 @@ func give_looks() -> void:
 			landing.radius = SockDress.ball_radius(design_of(sock))
 			looks.add_child(landing)
 		body.add_child(looks)
+		_flight_looks[body] = true
 
 
 ## Where the falling bodies go (the spawner's path in co-op).
@@ -751,12 +778,49 @@ func lying_overlapping(shape: Shape3D, xform: Transform3D, most: int) -> PackedI
 ## The falling bodies under `flights` on this machine (the Host's own, or a Guest's spawned copies).
 func _flight_nodes() -> Array[RigidBody3D]:
 	var out: Array[RigidBody3D] = []
-	var holder := _container(flights)
-	for child in holder.get_children():
-		var body := child as RigidBody3D
-		if body != null and not body.is_queued_for_deletion() and String(body.name).begins_with("Flight"):
+	for body: RigidBody3D in _flight_by_sock.values():
+		if not body.is_queued_for_deletion():
 			out.append(body)
 	return out
+
+
+## From now on the falling bodies are known as they enter and leave `flights` (those there already too).
+func _watch_flights() -> void:
+	var holder := _container(flights)
+	if not holder.child_entered_tree.is_connected(_on_flight_in):
+		holder.child_entered_tree.connect(_on_flight_in)
+		holder.child_exiting_tree.connect(_on_flight_out)
+	_flight_by_sock.clear()
+	_flight_looks.clear()
+	_flight_shape.clear()
+	for child in holder.get_children():
+		_on_flight_in(child)
+
+
+func _on_flight_in(node: Node) -> void:
+	var body := node as RigidBody3D
+	if body == null or not String(body.name).begins_with("Flight"):
+		return
+	var sock := _sock_of_flight(body)
+	if sock < 0:
+		return
+	_flight_by_sock[sock] = body
+	_flight_shape.erase(sock)
+	if body.has_node(LOOKS):
+		_flight_looks[body] = true
+
+
+## A body that leaves: forgotten, unless a new body of the same Sock took its place already (a rest
+## and a wake in one tick).
+func _on_flight_out(node: Node) -> void:
+	var body := node as RigidBody3D
+	if body == null:
+		return
+	_flight_looks.erase(body)
+	var sock := _sock_of_flight(body)
+	if _flight_by_sock.get(sock) == body:
+		_flight_by_sock.erase(sock)
+		_flight_shape.erase(sock)
 
 
 ## The Sock a falling body is: its metadata (the Host's), else its name (a spawned copy).
