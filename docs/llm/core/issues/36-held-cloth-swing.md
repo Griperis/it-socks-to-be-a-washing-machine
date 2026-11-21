@@ -48,6 +48,7 @@ lag. Look work: find candidates, show them, change nothing until the designer pi
   (the measured overshoot above a placeholder threshold).
 
 ## Answers
+- No test for a visual tweak: the swing test is removed; the sheet and the designer's eye judge it (Q2421, 2026-11-21).
 - The designer picked drag 0.25, stiffness 5, gravity 3 (Q2420, 2026-11-21).
 - The held cloth should swing more; candidates first (Q2417, 2026-11-21).
 
