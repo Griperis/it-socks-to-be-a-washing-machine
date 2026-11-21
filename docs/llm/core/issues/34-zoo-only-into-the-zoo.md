@@ -39,17 +39,14 @@ release build can leave the folder out whole.
   `game/furniture/furniture_build.gd` move to `tools/` beside `tools/old_house_build.gd`; their `--script` runs,
   docs (`docs/architecture/house-kit.md`, `furniture.md`, `docs/human/house-kit.md`, `models-*.md`) and any tool
   that names them follow.
-- Z4 A check (in the zoo suite or `tools/grep_rules.py`'s project rules, whichever the kit allows without a kit
-  change; a kit change is the lead's) fails when a file under `game/` outside `game/zoo/` refers to a path under
-  `game/zoo/` or to a `class_name` defined there. Today `game/ui/prompts.gd` switches on `UpgradeSwitch` and
-  `LoseButton`; replace that with a `prompt_title()` on `Part` that both override (this is core/30's T5, done
-  here instead).
+- Z4 `game/ui/prompts.gd` switches on `UpgradeSwitch` and `LoseButton`; replace that with a `prompt_title()` on
+  `Part` that both override (core/30's T5, done here instead). No guard check for zoo references (the designer:
+  "We don't need the guard check for this", Q2410).
 - Z5 `docs/architecture.md` (and the `zoo-design` notes in `docs/`) say where zoo-only things live.
 
 ## Acceptance
 - `check` and the full suite pass; no `uid` or path reference is broken (`asset_lint` and the editor's load of
   `zoo.tscn` clean).
-- The Z4 check fails on a planted reference (a case) and passes on the tree.
 - Real-path case: in the zoo's Screen station the player clicks the upgrade switch and the Sock Sense readout
   appears (the moved switch, through the new `prompt_title()`).
 - A list in the report of every file moved, old path to new.
@@ -57,6 +54,7 @@ release build can leave the folder out whole.
 ## Answers
 - Zoo-only things live under `game/zoo/`, per station; the game never refers to them; generators go to `tools/`
   (Q2409, 2026-11-21).
+- No guard check for references into `game/zoo/` (Q2410, 2026-11-21).
 
 ## Open follow-ups
 
