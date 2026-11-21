@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://1faomtb27dt7"]
+
+[resource]
+resource_name = "brass"
+cull_mode = 2
+albedo_color = Color(0.86, 0.68, 0.36, 1)
+metallic = 0.8
+roughness = 0.3
+metadata/old_pieces = PackedStringArray("bathtub", "boiler", "coat_nook", "desk", "dresser", "filing_cabinet", "floor_lamp", "hand_basin", "kitchen_cupboard", "kitchen_drawers", "kitchen_sink", "kitchen_wall_cupboard", "nightstand", "piano", "telescope", "toilet", "towel_rail", "trunk", "vanity", "water_tank")

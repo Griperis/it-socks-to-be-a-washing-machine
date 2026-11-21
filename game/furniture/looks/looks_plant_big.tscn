@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://d4f4bc1ii8frh"]
+
+[ext_resource type="ArrayMesh" uid="uid://cp4flfplwww1x" path="res://assets/furniture/meshes/plant_big_Body.res" id="1_sbgyq"]
+
+[node name="LooksPlantBig" type="Node3D" unique_id=1692026473]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=42387642]
+mesh = ExtResource("1_sbgyq")

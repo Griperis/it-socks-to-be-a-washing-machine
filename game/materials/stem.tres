@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://niildyflpel5"]
+
+[resource]
+resource_name = "stem"
+cull_mode = 2
+albedo_color = Color(0.4, 0.48, 0.26, 1)
+roughness = 0.7
+metadata/old_pieces = PackedStringArray("dining_table", "plant_big", "plant_trailing")

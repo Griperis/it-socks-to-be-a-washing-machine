@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://c3p6luowfkhuw"]
+
+[ext_resource type="Script" uid="uid://m5ejnky0kupw" path="res://game/zoo/material_board.gd" id="1_board"]
+[ext_resource type="Resource" uid="uid://ngmshnv16svv" path="res://game/zoo/material_board_layout.tres" id="2_layout"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.62, 0.58, 0.5, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_pad")
+size = Vector2(16.5, 2.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_back"]
+albedo_color = Color(0.3, 0.3, 0.3, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_back"]
+material = SubResource("StandardMaterial3D_back")
+size = Vector3(16.5, 6.8, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_back"]
+size = Vector3(16.5, 6.8, 0.1)
+
+[node name="Materials" type="Node3D"]
+
+[node name="Pad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.75, 0.005, 0.85)
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.75, 7.2, 0)
+pixel_size = 0.0025
+autowrap_mode = 3
+width = 4000.0
+text = "Materials: every material of the shared library (game/materials, built from the folder). A named row would hold the candidates of one name"
+
+[node name="Back" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.75, 3.4, -0.3)
+
+[node name="Mesh" type="MeshInstance3D" parent="Back"]
+mesh = SubResource("BoxMesh_back")
+
+[node name="Shape" type="CollisionShape3D" parent="Back"]
+shape = SubResource("BoxShape3D_back")
+
+[node name="Board" type="Node3D" parent="."]
+script = ExtResource("1_board")
+layout = ExtResource("2_layout")

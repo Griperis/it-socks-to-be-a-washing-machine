@@ -1,0 +1,4 @@
+# assets/04 F01: the Materials station's board: the whole board, then each row of the library (after the picks, Q2389).
+overview  --size=1280x720 --do='30:materials:overview' --shots=40
+singles_1  --size=1280x720 --do='30:materials:singles_1' --shots=40
+singles_4  --size=1280x720 --do='30:materials:singles_4' --shots=40

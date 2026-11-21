@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dnbx1kd4s6dgj"]
+
+[ext_resource type="ArrayMesh" uid="uid://ha5exwpjt72v" path="res://assets/furniture/meshes/fridge_Body.res" id="1_mxro7"]
+
+[node name="LooksFridge" type="Node3D" unique_id=1047130844]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1876687837]
+mesh = ExtResource("1_mxro7")

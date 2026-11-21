@@ -11,6 +11,9 @@ class_name Player
 extends CharacterBody3D
 
 ## The input actions it reads (project.godot [input]), named once: a misspelt one is one line to fix.
+## The physics layer only players meet (assets/04, Q2397): furniture's coarse player boxes, which Socks
+## pass through to the pieces' own shapes. The player's mask is the house layer and this.
+const BLOCK_LAYER := 8
 const MOVE_LEFT := &"move_left"
 const MOVE_RIGHT := &"move_right"
 const MOVE_FORWARD := &"move_forward"

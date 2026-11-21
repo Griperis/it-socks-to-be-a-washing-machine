@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://n60sodbn6lef"]
+
+[ext_resource type="ArrayMesh" uid="uid://bpa3gw2c5081j" path="res://assets/furniture/meshes/play_rug_Body.res" id="1_8vl2o"]
+
+[node name="LooksPlayRug" type="Node3D" unique_id=1264645731]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=38914715]
+mesh = ExtResource("1_8vl2o")

@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://d1n0xvxcyh0ri"]
+
+[ext_resource type="ArrayMesh" uid="uid://de5pe4gc7tmv6" path="res://assets/furniture/meshes/armchair_Body.res" id="1_le7u5"]
+
+[node name="LooksArmchair" type="Node3D" unique_id=221968281]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1498180032]
+mesh = ExtResource("1_le7u5")

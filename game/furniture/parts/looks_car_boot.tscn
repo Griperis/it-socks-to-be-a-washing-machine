@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://cj78c1mjphb5"]
+
+[ext_resource type="ArrayMesh" uid="uid://fioklws55ynq" path="res://assets/furniture/meshes/car_Boot.res" id="1_geywt"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="2_vsepm"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_1ut7x"]
+points = PackedVector3Array(-0.7, -0.50186, -0.19536, 0.7, -0.50186, -0.19536, 0.56, -0.00186, 0.00464, -0.56, -0.00186, 0.00464, -0.7, -0.49814, -0.20464, 0.7, -0.49814, -0.20464, 0.56, 0.00186, -0.00464, -0.56, 0.00186, -0.00464)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_7pek2"]
+points = PackedVector3Array(-0.73362, -0.63047, -0.27774, -0.66, -0.55638, -0.27774, -0.73131, -0.55896, -0.26108, -0.78774, -0.63101, -0.22362, -0.77107, -0.55918, -0.22131, 0.78996, -0.63102, -0.2249, 0.77049, -0.55885, -0.22173, 0.66, -0.55483, -0.27996, 0.7349, -0.63047, -0.27996, 0.73173, -0.55846, -0.26049, -0.66, -0.50863, -0.23, -0.73129, -0.52781, -0.23, -0.74, -0.52788, -0.22131, 0.74, -0.52805, -0.22173, 0.66, -0.50487, -0.23, 0.73173, -0.52797, -0.23, -0.77605, -0.55856, -0.2, -0.7827, -0.58079, -0.2, -0.79488, -0.63116, -0.2, -0.74, -0.52222, -0.2, 0.77639, -0.55802, -0.2, 0.74, -0.52127, -0.2, 0.79662, -0.63117, -0.2, -0.70681, -0.88, -0.28748, -0.66, -0.88, -0.3, -0.73442, -0.88, -0.27913, -0.78913, -0.88, -0.22442, -0.79566, -0.88, -0.2, 0.79662, -0.88, -0.2, 0.78996, -0.88, -0.2249, 0.7349, -0.88, -0.27996, 0.66, -0.88, -0.3, -0.192, -0.792, -0.315, 0.192, -0.792, -0.315, -0.08, -0.64, -0.325, -0.08, -0.63, -0.325, 0.08, -0.64, -0.325, 0.08, -0.63, -0.325, 0.64, -0.76, -0.315, 0.64, -0.6, -0.315, 0.65155, -0.58845, -0.30655, 0.65414, -0.6, -0.30914, 0.64, -0.58586, -0.30914, -0.64, -0.76, -0.315, -0.64, -0.6, -0.315, -0.64, -0.58586, -0.30914, -0.65155, -0.58845, -0.30655, -0.65414, -0.6, -0.30914)
+
+[sub_resource type="Animation" id="Animation_65ryh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Boot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_nmm34"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Boot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(1.4835298, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_xrhid"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Boot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(1.4835298, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_60h8n"]
+_data = {
+&"RESET": SubResource("Animation_65ryh"),
+&"open": SubResource("Animation_nmm34"),
+&"shut": SubResource("Animation_xrhid")
+}
+
+[node name="LooksCarBoot" type="Node3D" unique_id=1998357380]
+
+[node name="Boot" type="AnimatableBody3D" parent="." unique_id=2047557753]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, -1.45)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Boot" unique_id=1024213540]
+mesh = ExtResource("1_geywt")
+
+[node name="Shape1" type="CollisionShape3D" parent="Boot" unique_id=1199313383]
+shape = SubResource("ConvexPolygonShape3D_1ut7x")
+
+[node name="Shape2" type="CollisionShape3D" parent="Boot" unique_id=1840960278]
+shape = SubResource("ConvexPolygonShape3D_7pek2")
+
+[node name="Outline" type="Node3D" parent="." unique_id=995665031]
+visible = false
+script = ExtResource("2_vsepm")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1736158348]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_60h8n")

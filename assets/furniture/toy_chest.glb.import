@@ -1,0 +1,98 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://cm0r7q00jq5il"
+path="res://.godot/imported/toy_chest.glb-6ad8c0a1bc3680fecefc41e67f6fd0e0.scn"
+
+[deps]
+
+source_file="res://assets/furniture/toy_chest.glb"
+dest_files=["res://.godot/imported/toy_chest.glb-6ad8c0a1bc3680fecefc41e67f6fd0e0.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=false
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"mustard": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/mustard.tres",
+"use_external/path": "uid://b04ece1tl6djg"
+},
+"oak": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/oak.tres",
+"use_external/path": "uid://dqeygksrdqxte"
+},
+"pink": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/pink.tres",
+"use_external/path": "uid://c7rgy4e1el4ld"
+},
+"red": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/red.tres",
+"use_external/path": "uid://wrluywmn0kct"
+},
+"sky": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/sky.tres",
+"use_external/path": "uid://b2g6g5rl8k3ll"
+},
+"stripe": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/stripe.tres",
+"use_external/path": "uid://dbhive483jlw0"
+}
+},
+"meshes": {
+"toy_chest_Body": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/toy_chest_Body.res",
+"save_to_file/path": "uid://d1j8la8df2hmu"
+},
+"toy_chest_Lid": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/toy_chest_Lid.res",
+"save_to_file/path": "uid://bojfdgm00j1sv"
+}
+}
+}
+gltf/naming_version=2
+gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

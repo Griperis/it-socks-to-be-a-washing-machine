@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://b63rvqnjb5218"]
+
+[ext_resource type="ArrayMesh" uid="uid://ee50snbqihuw" path="res://assets/furniture/meshes/towel_rail_Body.res" id="1_hxw02"]
+
+[node name="LooksTowelRail" type="Node3D" unique_id=883314660]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1363025727]
+mesh = ExtResource("1_hxw02")

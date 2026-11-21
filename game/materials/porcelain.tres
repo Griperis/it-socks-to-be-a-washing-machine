@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://uxwb1qc00qu"]
+
+[resource]
+resource_name = "porcelain"
+cull_mode = 2
+albedo_color = Color(0.97, 0.97, 0.95, 1)
+roughness = 0.15
+metadata/old_pieces = PackedStringArray("bathtub", "dining_table", "hand_basin", "kitchen_corner", "kitchen_sink", "toilet", "vanity")

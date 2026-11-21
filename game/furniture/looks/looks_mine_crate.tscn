@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://c5mgu5m07yemo"]
+
+[ext_resource type="ArrayMesh" uid="uid://dx8jqxgxtt3xv" path="res://assets/furniture/meshes/mine_crate_Body.res" id="1_kg5mu"]
+
+[node name="LooksMineCrate" type="Node3D" unique_id=2527031]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=683805759]
+mesh = ExtResource("1_kg5mu")

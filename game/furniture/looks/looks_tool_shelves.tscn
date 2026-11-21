@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bmxxa6x3ql0eg"]
+
+[ext_resource type="ArrayMesh" uid="uid://dwbt051uht6g5" path="res://assets/furniture/meshes/tool_shelves_Body.res" id="1_e3d4r"]
+
+[node name="LooksToolShelves" type="Node3D" unique_id=1544732115]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1864921637]
+mesh = ExtResource("1_e3d4r")

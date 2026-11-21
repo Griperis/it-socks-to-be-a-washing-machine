@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://b43xwougcm6sn"]
+
+[ext_resource type="PackedScene" uid="uid://cga2siktraspj" path="res://game/furniture/looks/looks_mine_barrel.tscn" id="1_e0vrl"]
+[ext_resource type="Script" uid="uid://bilshnr7wp5ir" path="res://game/parts/openable.gd" id="2_wo7qj"]
+[ext_resource type="PackedScene" uid="uid://lhf4l1c2r5lm" path="res://game/furniture/parts/looks_mine_barrel_lid.tscn" id="3_8y2d7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_47vqo"]
+size = Vector3(0.72, 0.1026, 0.54)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8cgac"]
+size = Vector3(0.72, 0.1026, 0.54)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p7t1v"]
+size = Vector3(0.72, 0.54, 0.1026)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ajeud"]
+size = Vector3(0.72, 0.54, 0.1026)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kjdao"]
+size = Vector3(0.025, 0.54, 0.54)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wrlpx"]
+size = Vector3(0.54, 0.025, 0.54)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0t2x8"]
+size = Vector3(0.54, 0.72, 0.10260001)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lweua"]
+size = Vector3(0.54, 0.72, 0.10260001)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1a8hc"]
+size = Vector3(0.10260001, 0.72, 0.54)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f3mpf"]
+size = Vector3(0.10260001, 0.72, 0.54)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_olmvb"]
+size = Vector3(0.3348, 0.69500005, 0.3348)
+
+[node name="MineBarrel" type="StaticBody3D" unique_id=2135279414]
+collision_mask = 0
+metadata/footprint = [0.547, 0.538]
+metadata/height = 0.764
+metadata/rooms = ["Grotto"]
+metadata/plan_spot = "Mine barrel"
+metadata/note = "An iron-hooped barrel; its round Lid hinges at the back (Q1058)."
+
+[node name="Looks" type="Node3D" parent="." unique_id=24909845 instance=ExtResource("1_e0vrl")]
+
+[node name="Shape1" type="CollisionShape3D" parent="." unique_id=1024818166]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.36, 0.2187)
+shape = SubResource("BoxShape3D_47vqo")
+
+[node name="Shape2" type="CollisionShape3D" parent="." unique_id=953836372]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.36, -0.2187)
+shape = SubResource("BoxShape3D_8cgac")
+
+[node name="Shape3" type="CollisionShape3D" parent="." unique_id=1977926443]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, -0.2187, 0.36, 0)
+shape = SubResource("BoxShape3D_p7t1v")
+
+[node name="Shape4" type="CollisionShape3D" parent="." unique_id=968555166]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0.2187, 0.36, 0)
+shape = SubResource("BoxShape3D_ajeud")
+
+[node name="Shape5" type="CollisionShape3D" parent="." unique_id=1006214495]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.0125, 0)
+shape = SubResource("BoxShape3D_kjdao")
+
+[node name="PlayerBody" type="StaticBody3D" parent="." unique_id=1055655770]
+collision_layer = 8
+collision_mask = 0
+
+[node name="Box1" type="CollisionShape3D" parent="PlayerBody" unique_id=1038202908]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0125, 0)
+shape = SubResource("BoxShape3D_wrlpx")
+
+[node name="Box2" type="CollisionShape3D" parent="PlayerBody" unique_id=811048384]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36, 0.2187)
+shape = SubResource("BoxShape3D_0t2x8")
+
+[node name="Box3" type="CollisionShape3D" parent="PlayerBody" unique_id=1447672145]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36, -0.2187)
+shape = SubResource("BoxShape3D_lweua")
+
+[node name="Box4" type="CollisionShape3D" parent="PlayerBody" unique_id=1723444228]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2187, 0.36, 0)
+shape = SubResource("BoxShape3D_1a8hc")
+
+[node name="Box5" type="CollisionShape3D" parent="PlayerBody" unique_id=113486290]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2187, 0.36, 0)
+shape = SubResource("BoxShape3D_f3mpf")
+
+[node name="Lid" type="Node3D" parent="." unique_id=191894616]
+
+[node name="Openable" type="Node" parent="Lid" unique_id=845943159]
+script = ExtResource("2_wo7qj")
+metadata/kind = "cupboard"
+
+[node name="Looks" type="Node3D" parent="Lid" unique_id=2000325885 instance=ExtResource("3_8y2d7")]
+
+[node name="Inside" type="Area3D" parent="Lid" unique_id=1583833598]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3725, 0)
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+metadata/shelves_y = []
+
+[node name="Box" type="CollisionShape3D" parent="Lid/Inside" unique_id=1870497188]
+shape = SubResource("BoxShape3D_olmvb")

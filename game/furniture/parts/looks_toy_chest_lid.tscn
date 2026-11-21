@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://b8ceeius6xon3"]
+
+[ext_resource type="ArrayMesh" uid="uid://bojfdgm00j1sv" path="res://assets/furniture/meshes/toy_chest_Lid.res" id="1_ixajc"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="2_65kma"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_2ltld"]
+points = PackedVector3Array(0.093, 0.0129, 0.232, -0.465, -0.07, 0.58, -0.465, 0, 0, 0.465, -0.07, 0.58, 0.465, -0.07, 0, -0.093, -0.014, 0.58535, -0.093, -0.056, -0.00535, -0.279, 0.0086, 0.348, 0.47071, -0.014, 0.232, -0.47071, -0.056, 0.232, 0.279, -0.0786, 0.348, 0.093, 0.0086, 0.464, -0.093, -0.0829, 0.232, 0.279, -0.028, 0.58535, 0.279, -0.028, -0.00535, -0.279, -0.028, -0.00535, -0.279, -0.042, 0.58535, 0.093, -0.042, -0.00802, -0.093, 0.0129, 0.348, 0.093, -0.0829, 0.348, 0.279, 0.0086, 0.232, -0.279, -0.0786, 0.232, -0.093, 0.0086, 0.116, 0.093, -0.056, 0.58535, -0.093, -0.0786, 0.464, 0.093, -0.0786, 0.116, 0.47071, -0.028, 0.464, -0.47071, -0.028, 0.464, 0.47071, -0.056, 0.348, -0.47071, -0.028, 0.116, 0.47071, -0.042, 0.116, -0.47357, -0.042, 0.348, 0.093, 0.0129, 0.348, -0.093, 0.0129, 0.232, -0.093, -0.0829, 0.348, 0.093, -0.0829, 0.232, 0.279, 0.0086, 0.348, 0.093, 0.0086, 0.116, -0.093, 0.0086, 0.464, -0.279, 0.0086, 0.232, -0.279, -0.0786, 0.348, -0.093, -0.0786, 0.116, 0.093, -0.0786, 0.464, 0.279, -0.0786, 0.232, -0.465, 0, 0.58, -0.465, -0.07, 0, 0.465, 0, 0.58, 0.465, 0, 0)
+
+[sub_resource type="Animation" id="Animation_qf0nc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lid:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_y1pmv"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lid:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-1.5707964, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_adyss"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Lid:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(-1.5707964, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tkd5t"]
+_data = {
+&"RESET": SubResource("Animation_qf0nc"),
+&"open": SubResource("Animation_y1pmv"),
+&"shut": SubResource("Animation_adyss")
+}
+
+[node name="LooksToyChestLid" type="Node3D" unique_id=2132020584]
+
+[node name="Lid" type="AnimatableBody3D" parent="." unique_id=2144655125]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -0.29)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Lid" unique_id=44169072]
+mesh = ExtResource("1_ixajc")
+
+[node name="Shape1" type="CollisionShape3D" parent="Lid" unique_id=1004001456]
+shape = SubResource("ConvexPolygonShape3D_2ltld")
+
+[node name="Outline" type="Node3D" parent="." unique_id=1905877345]
+visible = false
+script = ExtResource("2_65kma")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=233413536]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_tkd5t")

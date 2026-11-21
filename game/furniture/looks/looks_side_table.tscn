@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cw61j0u4oqm22"]
+
+[ext_resource type="ArrayMesh" uid="uid://d3td27tcgqhtc" path="res://assets/furniture/meshes/side_table_Body.res" id="1_qh8qg"]
+
+[node name="LooksSideTable" type="Node3D" unique_id=989086660]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=89441153]
+mesh = ExtResource("1_qh8qg")

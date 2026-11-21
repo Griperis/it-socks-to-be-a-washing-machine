@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://dss544j0qvega"]
+
+[ext_resource type="ArrayMesh" uid="uid://8pgbciqq7lp6" path="res://assets/furniture/meshes/desk_Drawer_1.res" id="1_2v4c4"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="2_cwgc4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pkq6j"]
+size = Vector3(0.012, 0.4, 0.34)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_3ai7y"]
+points = PackedVector3Array(-0.192, 0.11, 0.014, 0.2, 0.008, 0.008, -0.192, 0, 0.008, 0.192, 0.11, 0.014, -0.192, 0.008, 0.022, -0.192, 0.102, 0, 0.192, 0.008, 0.022, 0.192, 0.102, 0, 0.2, 0.102, 0.014, 0.192, 0, 0.008, -0.2, 0.102, 0.014, -0.2, 0.008, 0.008, 0.192, 0.102, 0.022, 0.192, 0.008, 0, -0.192, 0.102, 0.022, -0.192, 0.008, 0, 0.19766, 0.00234, 0.014, -0.19766, 0.10766, 0.008, -0.19766, 0.00234, 0.014, 0.19766, 0.10766, 0.008, 0.19662, 0.00338, 0.00338, -0.19662, 0.00338, 0.00338, 0.19662, 0.10662, 0.01862, -0.19662, 0.10662, 0.01862, -0.192, 0.10766, 0.00234, 0.192, 0.10766, 0.00234, -0.19766, 0.102, 0.00234, -0.19766, 0.008, 0.01966, 0.19766, 0.102, 0.00234, -0.192, 0.00234, 0.01966, 0.19766, 0.008, 0.01966, 0.192, 0.00234, 0.01966)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ibm65"]
+points = PackedVector3Array(-0.166, 0.02, -0.004, -0.166, 0.024, 0, -0.17, 0.024, -0.004, -0.166, 0.076, 0, -0.166, 0.08, -0.004, -0.17, 0.076, -0.004, -0.166, 0.02, -0.396, -0.17, 0.024, -0.396, -0.166, 0.024, -0.4, -0.166, 0.08, -0.396, -0.166, 0.076, -0.4, -0.17, 0.076, -0.396, -0.162, 0.02, -0.004, -0.158, 0.024, -0.004, -0.162, 0.024, 0, -0.162, 0.08, -0.004, -0.162, 0.076, 0, -0.158, 0.076, -0.004, -0.162, 0.02, -0.396, -0.162, 0.024, -0.4, -0.158, 0.024, -0.396, -0.162, 0.08, -0.396, -0.158, 0.076, -0.396, -0.162, 0.076, -0.4)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_62pq1"]
+points = PackedVector3Array(0.162, 0.02, -0.004, 0.162, 0.024, 0, 0.158, 0.024, -0.004, 0.162, 0.076, 0, 0.162, 0.08, -0.004, 0.158, 0.076, -0.004, 0.162, 0.02, -0.396, 0.158, 0.024, -0.396, 0.162, 0.024, -0.4, 0.162, 0.08, -0.396, 0.162, 0.076, -0.4, 0.158, 0.076, -0.396, 0.166, 0.02, -0.004, 0.17, 0.024, -0.004, 0.166, 0.024, 0, 0.166, 0.08, -0.004, 0.166, 0.076, 0, 0.17, 0.076, -0.004, 0.166, 0.02, -0.396, 0.166, 0.024, -0.4, 0.17, 0.024, -0.396, 0.166, 0.08, -0.396, 0.17, 0.076, -0.396, 0.166, 0.076, -0.4)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_cnvwa"]
+points = PackedVector3Array(-0.166, 0.02, -0.392, -0.166, 0.024, -0.388, -0.17, 0.024, -0.392, -0.166, 0.076, -0.388, -0.166, 0.08, -0.392, -0.17, 0.076, -0.392, -0.166, 0.02, -0.396, -0.17, 0.024, -0.396, -0.166, 0.024, -0.4, -0.166, 0.08, -0.396, -0.166, 0.076, -0.4, -0.17, 0.076, -0.396, 0.166, 0.02, -0.392, 0.17, 0.024, -0.392, 0.166, 0.024, -0.388, 0.166, 0.08, -0.392, 0.166, 0.076, -0.388, 0.17, 0.076, -0.392, 0.166, 0.02, -0.396, 0.166, 0.024, -0.4, 0.17, 0.024, -0.396, 0.166, 0.08, -0.396, 0.17, 0.076, -0.396, 0.166, 0.076, -0.4)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_me0ob"]
+points = PackedVector3Array(-0.088, 0.055, 0.022, -0.084, 0.04807, 0.022, -0.084, 0.06193, 0.022, -0.08147, 0.055, 0.05986, -0.08074, 0.04807, 0.05593, -0.08074, 0.06193, 0.05593, 0.08147, 0.055, 0.05986, 0.08074, 0.04807, 0.05593, 0.08074, 0.06193, 0.05593, 0.088, 0.055, 0.022, 0.084, 0.04807, 0.022, 0.084, 0.06193, 0.022)
+
+[sub_resource type="Animation" id="Animation_w52vw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Drawer_1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.42, 0.595, 0.29)]
+}
+
+[sub_resource type="Animation" id="Animation_7uj6y"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Drawer_1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0.42, 0.595, 0.29), Vector3(0.42, 0.595, 0.59000003)]
+}
+
+[sub_resource type="Animation" id="Animation_xkk58"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Drawer_1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0.42, 0.595, 0.59000003), Vector3(0.42, 0.595, 0.29)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jd2i5"]
+_data = {
+&"RESET": SubResource("Animation_w52vw"),
+&"open": SubResource("Animation_7uj6y"),
+&"shut": SubResource("Animation_xkk58")
+}
+
+[node name="LooksDeskDrawer1" type="Node3D" unique_id=606379631]
+
+[node name="Drawer_1" type="AnimatableBody3D" parent="." unique_id=301494965]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 0.595, 0.29)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Drawer_1" unique_id=1848886061]
+mesh = ExtResource("1_2v4c4")
+
+[node name="Shape1" type="CollisionShape3D" parent="Drawer_1" unique_id=2074597382]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.026, -0.2)
+shape = SubResource("BoxShape3D_pkq6j")
+
+[node name="Shape2" type="CollisionShape3D" parent="Drawer_1" unique_id=1189519487]
+shape = SubResource("ConvexPolygonShape3D_3ai7y")
+
+[node name="Shape3" type="CollisionShape3D" parent="Drawer_1" unique_id=247457785]
+shape = SubResource("ConvexPolygonShape3D_ibm65")
+
+[node name="Shape4" type="CollisionShape3D" parent="Drawer_1" unique_id=1096312022]
+shape = SubResource("ConvexPolygonShape3D_62pq1")
+
+[node name="Shape5" type="CollisionShape3D" parent="Drawer_1" unique_id=2143208969]
+shape = SubResource("ConvexPolygonShape3D_cnvwa")
+
+[node name="Shape6" type="CollisionShape3D" parent="Drawer_1" unique_id=483549133]
+shape = SubResource("ConvexPolygonShape3D_me0ob")
+
+[node name="Outline" type="Node3D" parent="." unique_id=420921883]
+visible = false
+script = ExtResource("2_cwgc4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=614953330]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_jd2i5")

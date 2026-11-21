@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dj6c12l2kan1n"]
+
+[ext_resource type="ArrayMesh" uid="uid://bcmlrnd72wknm" path="res://assets/furniture/meshes/bookshelf_Body.res" id="1_vt0tf"]
+
+[node name="LooksBookshelf" type="Node3D" unique_id=868430237]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=2113004922]
+mesh = ExtResource("1_vt0tf")

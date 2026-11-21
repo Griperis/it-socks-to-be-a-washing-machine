@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://ch6i03kv120l8"]
+
+[ext_resource type="ArrayMesh" uid="uid://bn0e4o7c2nbfi" path="res://assets/furniture/meshes/telescope_Body.res" id="1_lp33t"]
+
+[node name="LooksTelescope" type="Node3D" unique_id=436109284]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=16968782]
+mesh = ExtResource("1_lp33t")

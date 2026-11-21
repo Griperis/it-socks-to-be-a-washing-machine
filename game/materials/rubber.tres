@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://vwrrlxf45y6y"]
+
+[resource]
+resource_name = "rubber"
+cull_mode = 2
+albedo_color = Color(0.15, 0.15, 0.15, 1)
+roughness = 0.9
+metadata/old_pieces = PackedStringArray("bikes", "car", "collection_board", "drying_rack", "ironing_board")

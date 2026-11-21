@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://beq4o45ktps5b"]
+
+[ext_resource type="ArrayMesh" uid="uid://1a15caxt51ta" path="res://assets/furniture/meshes/rocking_horse_Body.res" id="1_5wwqg"]
+
+[node name="LooksRockingHorse" type="Node3D" unique_id=978189969]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=718054410]
+mesh = ExtResource("1_5wwqg")

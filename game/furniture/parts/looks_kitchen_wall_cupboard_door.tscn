@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://861fb6dtchyf"]
+
+[ext_resource type="ArrayMesh" uid="uid://dsv0e4uv608p4" path="res://assets/furniture/meshes/kitchen_wall_cupboard_Door.res" id="1_6mb5h"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="2_1kdo4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6x3l2"]
+size = Vector3(0.69, 0.022, 0.59)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_62bsb"]
+points = PackedVector3Array(0.54, 0.628, 0.024, 0.54, 0.592, 0.024, 0.54, 0.61, 0.042, 0.55712, 0.61, 0.01844, 0.52288, 0.61, 0.01844, 0.54, 0.61, 0.006, 0.55483, 0.619, 0.02882, 0.55483, 0.601, 0.02882, 0.53084, 0.619, 0.03661, 0.53084, 0.601, 0.03661, 0.54916, 0.619, 0.01139, 0.54916, 0.601, 0.01139, 0.53084, 0.619, 0.01139, 0.53084, 0.601, 0.01139, 0.52288, 0.61, 0.02956, 0.55058, 0.61, 0.03856, 0.55483, 0.619, 0.01918, 0.55483, 0.601, 0.01918, 0.55712, 0.61, 0.02956, 0.52942, 0.61, 0.03856, 0.54, 0.619, 0.00841, 0.54, 0.601, 0.00841, 0.54, 0.62559, 0.033, 0.54, 0.601, 0.03959, 0.52517, 0.619, 0.02882, 0.52517, 0.601, 0.02882, 0.52517, 0.619, 0.01918, 0.52517, 0.601, 0.01918, 0.54, 0.619, 0.03959, 0.54, 0.59441, 0.033, 0.53144, 0.62559, 0.02678, 0.53144, 0.59441, 0.02678)
+
+[sub_resource type="Animation" id="Animation_x4rap"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Door:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_gegq3"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Door:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -1.8325957, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_3f6a0"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Door:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0, -1.8325957, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h8a3l"]
+_data = {
+&"RESET": SubResource("Animation_x4rap"),
+&"open": SubResource("Animation_gegq3"),
+&"shut": SubResource("Animation_3f6a0")
+}
+
+[node name="LooksKitchenWallCupboardDoor" type="Node3D" unique_id=1737179340]
+
+[node name="Door" type="AnimatableBody3D" parent="." unique_id=1830242593]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.295, 0.005, 0.1495)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Door" unique_id=1326890062]
+mesh = ExtResource("1_6mb5h")
+
+[node name="Shape1" type="CollisionShape3D" parent="Door" unique_id=596708584]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0.295, 0.345, 0)
+shape = SubResource("BoxShape3D_6x3l2")
+
+[node name="Shape2" type="CollisionShape3D" parent="Door" unique_id=606354333]
+shape = SubResource("ConvexPolygonShape3D_62bsb")
+
+[node name="Outline" type="Node3D" parent="." unique_id=1763983996]
+visible = false
+script = ExtResource("2_1kdo4")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=337121581]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_h8a3l")

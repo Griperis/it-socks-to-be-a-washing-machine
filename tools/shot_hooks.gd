@@ -52,6 +52,39 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.reset_physics_interpolation()
 			cam.make_current()
 			return true
+		"materials":
+			# assets/04 F01: a camera on the Materials station's board. arg "overview" looks at the
+			# whole board; arg <row> ("oak", "singles_1") hides every other row and stands before that
+			# one, so a candidate group is seen alone for the designer's pick. The other stations are hidden.
+			var board := world.get_node("Stations/Materials/Board") as MaterialBoard
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			var target := board.row(arg)
+			# Other stations' things stand between the camera and the board: they are hidden.
+			for s in world.get_node("Stations").get_children():
+				(s as Node3D).visible = s == board.get_parent()
+			if target == null:
+				cam.fov = 50.0
+				cam.global_position = board.to_global(Vector3(7.75, 3.4, 11.0))
+				cam.look_at(board.to_global(Vector3(7.75, 3.4, 0.0)))
+			else:
+				for r in board.get_children():
+					(r as Node3D).visible = r == target
+				var swatches := target.get_child_count() - 1
+				var mid := target.position + Vector3((board.layout.name_width + (swatches - 1) * board.layout.pitch) / 2.0, -0.15, 0.0)
+				cam.fov = 50.0
+				cam.global_position = board.to_global(mid + Vector3(0.0, 0.0, 3.6))
+				cam.look_at(board.to_global(mid))
+			cam.reset_physics_interpolation()
+			cam.make_current()
+			return true
+		"furniture":
+			# assets/04 F03: a camera on the Furniture station's line-up, the other stations hidden. arg
+			# "overview" looks down over it all; "row<n>" stands before row n (0 the front one). With
+			# "old_" first ("old_row2") each piece shows the old game's model instead, read at run time
+			# from the reference's glb with its own materials (IT_SOCKS_REFERENCE, else res://reference/it-socks).
+			_furniture_shot(world, arg)
+			return true
 		"house_kit":
 			# A camera on the house kit station (house/02): "lineup" (every piece from above), "walls",
 			# "openings", "floors", "roof_pieces" (rows of the line-up), "room" (the U room from
@@ -446,3 +479,63 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.position = Vector3(6.2, top - (rows - 1) * station.row_pitch * 0.5 - 0.15, 12.0)
 			return true
 	return false
+
+
+## The furniture camera (assets/04): see "furniture" in act().
+static func _furniture_shot(world: Node, arg: String) -> void:
+	var station := world.get_node("Stations/Furniture") as Node3D
+	var line_up := station.get_node("LineUp") as FurnitureLineUp
+	for s in world.get_node("Stations").get_children():
+		(s as Node3D).visible = s == station
+	(station.get_node("Name") as Node3D).visible = false
+	var old := arg.begins_with("old_")
+	var view := arg.trim_prefix("old_")
+	if old:
+		_show_old_furniture(line_up)
+	var cam := Camera3D.new()
+	world.add_child(cam)
+	cam.fov = 50.0
+	if view.begins_with("row"):
+		var row := line_up.row_of(view.trim_prefix("row").to_int())
+		for p: Node in line_up.get_children():
+			(p as Node3D).visible = row.has(p)
+		var lo := INF
+		var hi := -INF
+		var front := -INF
+		for p in row:
+			var fp: Array = p.get_meta(&"footprint", [1.0, 1.0])
+			lo = minf(lo, p.position.x - float(fp[0]) / 2.0)
+			hi = maxf(hi, p.position.x + float(fp[0]) / 2.0)
+			front = maxf(front, p.position.z + float(fp[1]) / 2.0)
+		# Far enough for the row's width (and a margin) in the view's width, from in front and above.
+		var half_h := tan(deg_to_rad(cam.fov) / 2.0) * 16.0 / 9.0
+		var dist := (maxf(hi - lo, 5.0) / 2.0 + 0.3) / half_h
+		var mid := Vector3((lo + hi) / 2.0, 0.75, front - 1.0)
+		cam.global_position = line_up.to_global(mid + Vector3(0.0, dist * 0.3, dist))
+		cam.look_at(line_up.to_global(mid))
+	else:
+		cam.global_position = line_up.to_global(Vector3(6.0, 24.0, 10.0))
+		cam.look_at(line_up.to_global(Vector3(6.0, 0.0, -13.0)))
+	cam.reset_physics_interpolation()
+	cam.make_current()
+
+
+## Puts the old game's model of every piece in the line-up in place of its Looks (a review still).
+static func _show_old_furniture(line_up: FurnitureLineUp) -> void:
+	var root := OS.get_environment("IT_SOCKS_REFERENCE")
+	if root.is_empty():
+		root = ProjectSettings.globalize_path("res://reference/it-socks")
+	for p: Node in line_up.get_children():
+		for looks: Node in p.find_children("Looks", "", true, false):
+			(looks as Node3D).visible = false
+		var file := root.path_join("assets/house/furniture/%s.glb" % String(p.name).to_snake_case())
+		var doc := GLTFDocument.new()
+		var state := GLTFState.new()
+		if doc.append_from_file(file, state) != OK:
+			push_warning("furniture shot: no old model at %s" % file)
+			continue
+		var model := doc.generate_scene(state) as Node3D
+		for n: Node in model.find_children("*", "", true, false):
+			if String(n.name).contains("-col") or String(n.name).contains("-convcol"):
+				(n as Node3D).visible = false
+		p.add_child(model)

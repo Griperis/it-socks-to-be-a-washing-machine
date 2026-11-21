@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dfl8ylva3per1"]
+
+[ext_resource type="ArrayMesh" uid="uid://bg7if3ouyp8i4" path="res://assets/furniture/meshes/dining_table_Body.res" id="1_db4r8"]
+
+[node name="LooksDiningTable" type="Node3D" unique_id=1996717659]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1171100608]
+mesh = ExtResource("1_db4r8")

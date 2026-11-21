@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://biqguax2xkwa1"]
+
+[ext_resource type="ArrayMesh" uid="uid://cdxtcmy1flq5i" path="res://assets/furniture/meshes/ski_bag_Body.res" id="1_p6lef"]
+
+[node name="LooksSkiBag" type="Node3D" unique_id=1342456256]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=55545242]
+mesh = ExtResource("1_p6lef")

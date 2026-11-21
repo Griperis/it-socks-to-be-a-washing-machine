@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cpxdhcfv3r83i"]
+
+[ext_resource type="ArrayMesh" uid="uid://ce0njufhr1r28" path="res://assets/furniture/meshes/sheeted_sofa_Body.res" id="1_4mi63"]
+
+[node name="LooksSheetedSofa" type="Node3D" unique_id=14021507]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1603242105]
+mesh = ExtResource("1_4mi63")

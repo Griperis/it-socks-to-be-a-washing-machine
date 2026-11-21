@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dgw4ye7wf00ob"]
+
+[ext_resource type="ArrayMesh" uid="uid://bju7kihyaaahc" path="res://assets/furniture/meshes/kitchen_wall_cupboard_Body.res" id="1_oqinw"]
+
+[node name="LooksKitchenWallCupboard" type="Node3D" unique_id=309134757]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1112362152]
+mesh = ExtResource("1_oqinw")

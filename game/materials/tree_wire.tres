@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://6pg8afb3k5gu"]
+
+[resource]
+resource_name = "tree_wire"
+cull_mode = 2
+albedo_color = Color(0.12, 0.22, 0.14, 1)
+roughness = 0.6
+metadata/old_pieces = PackedStringArray("old_tree")

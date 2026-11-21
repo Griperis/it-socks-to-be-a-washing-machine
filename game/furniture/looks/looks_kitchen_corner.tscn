@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://do88aiouer6b3"]
+
+[ext_resource type="ArrayMesh" uid="uid://ctvf5t1a7bcdj" path="res://assets/furniture/meshes/kitchen_corner_Body.res" id="1_myf07"]
+
+[node name="LooksKitchenCorner" type="Node3D" unique_id=286990075]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=603064134]
+mesh = ExtResource("1_myf07")

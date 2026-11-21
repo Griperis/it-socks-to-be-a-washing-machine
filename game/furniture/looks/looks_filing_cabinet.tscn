@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cp6tv5i7jymha"]
+
+[ext_resource type="ArrayMesh" uid="uid://ilmnglv372ds" path="res://assets/furniture/meshes/filing_cabinet_Body.res" id="1_e2lvd"]
+
+[node name="LooksFilingCabinet" type="Node3D" unique_id=174232295]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1890151795]
+mesh = ExtResource("1_e2lvd")

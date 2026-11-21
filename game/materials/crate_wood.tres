@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://hki2klvkcr2f"]
+
+[resource]
+resource_name = "crate_wood"
+cull_mode = 2
+albedo_color = Color(0.42, 0.3, 0.18, 1)
+roughness = 0.85
+metadata/old_pieces = PackedStringArray("mine_crate")

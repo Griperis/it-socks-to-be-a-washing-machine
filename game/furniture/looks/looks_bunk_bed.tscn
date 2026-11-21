@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bvaaidwp845mx"]
+
+[ext_resource type="ArrayMesh" uid="uid://bb5pq8fjijxk0" path="res://assets/furniture/meshes/bunk_bed_Body.res" id="1_ldrxi"]
+
+[node name="LooksBunkBed" type="Node3D" unique_id=35993435]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1868400560]
+mesh = ExtResource("1_ldrxi")

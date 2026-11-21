@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://x4h6fhjof15w"]
+
+[ext_resource type="ArrayMesh" uid="uid://cl5i585kajhxr" path="res://assets/furniture/meshes/dresser_Body.res" id="1_q7fap"]
+
+[node name="LooksDresser" type="Node3D" unique_id=462516250]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1700298118]
+mesh = ExtResource("1_q7fap")

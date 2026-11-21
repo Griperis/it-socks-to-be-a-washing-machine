@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://3eov3t5oeffc"]
+
+[ext_resource type="ArrayMesh" uid="uid://s5d63skskdpn" path="res://assets/furniture/meshes/kitchen_oven_Body.res" id="1_vtrdo"]
+
+[node name="LooksKitchenOven" type="Node3D" unique_id=1217152050]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=58216785]
+mesh = ExtResource("1_vtrdo")

@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bwddmk4nwlvl2"]
+
+[ext_resource type="ArrayMesh" uid="uid://es0d1w8a68rn" path="res://assets/furniture/meshes/hand_basin_Body.res" id="1_3h5ko"]
+
+[node name="LooksHandBasin" type="Node3D" unique_id=214946567]
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1162191671]
+mesh = ExtResource("1_3h5ko")

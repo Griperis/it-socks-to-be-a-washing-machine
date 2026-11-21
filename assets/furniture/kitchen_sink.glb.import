@@ -1,0 +1,127 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://dd48phwh7xo2r"
+path="res://.godot/imported/kitchen_sink.glb-e1e4059d890e883a49bdf55158440c25.scn"
+
+[deps]
+
+source_file="res://assets/furniture/kitchen_sink.glb"
+dest_files=["res://.godot/imported/kitchen_sink.glb-e1e4059d890e883a49bdf55158440c25.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/root_script=null
+mesh_library/use_node_names_as_mesh_names=false
+array_mesh/deduplicate_surfaces=true
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=false
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"brass": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/brass.tres",
+"use_external/path": "uid://1faomtb27dt7"
+},
+"charcoal": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/charcoal.tres",
+"use_external/path": "uid://diqg0gfwyhsir"
+},
+"fab_sky": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/fab_sky.tres",
+"use_external/path": "uid://ivgb2tene2nx"
+},
+"fab_stripe": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/fab_stripe.tres",
+"use_external/path": "uid://bs04n8tleeaf3"
+},
+"oak": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/oak.tres",
+"use_external/path": "uid://dqeygksrdqxte"
+},
+"porcelain": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/porcelain.tres",
+"use_external/path": "uid://uxwb1qc00qu"
+},
+"sage": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/sage.tres",
+"use_external/path": "uid://cirew0i4ms4m8"
+},
+"sage_dark": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/sage_dark.tres",
+"use_external/path": "uid://bgx28trmdp0ar"
+},
+"steel": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/steel.tres",
+"use_external/path": "uid://g3mcumu4i3w8"
+},
+"white": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://game/materials/white.tres",
+"use_external/path": "uid://cttoi20gfxus4"
+}
+},
+"meshes": {
+"kitchen_sink_Body": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/kitchen_sink_Body.res",
+"save_to_file/path": "uid://b45dx6ybcibpc"
+},
+"kitchen_sink_Door_L": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/kitchen_sink_Door_L.res",
+"save_to_file/path": "uid://b1k7wd2tmtodi"
+},
+"kitchen_sink_Door_R": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://assets/furniture/meshes/kitchen_sink_Door_R.res",
+"save_to_file/path": "uid://cq5syyjpiiqt8"
+}
+}
+}
+gltf/naming_version=2
+gltf/embedded_image_handling=1
+gltf/texture_map_mode=0

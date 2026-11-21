@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://uvsuepx84vow"]
+
+[ext_resource type="ArrayMesh" uid="uid://c6l0u6fwbb031" path="res://assets/furniture/meshes/vanity_Door_L.res" id="1_1sigk"]
+[ext_resource type="ArrayMesh" uid="uid://chxpqj6codqm2" path="res://assets/furniture/meshes/vanity_Door_R.res" id="2_2dvsb"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="3_rqhld"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wx8je"]
+size = Vector3(0.64, 0.022, 0.3925)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ewdfx"]
+points = PackedVector3Array(0.3425, 0.578, 0.024, 0.3425, 0.542, 0.024, 0.3425, 0.56, 0.042, 0.35962, 0.56, 0.01844, 0.32538, 0.56, 0.01844, 0.3425, 0.56, 0.006, 0.35166, 0.569, 0.03661, 0.35166, 0.551, 0.03661, 0.33334, 0.569, 0.03661, 0.33334, 0.551, 0.03661, 0.35166, 0.569, 0.01139, 0.35166, 0.551, 0.01139, 0.33334, 0.569, 0.01139, 0.33334, 0.551, 0.01139, 0.35962, 0.56, 0.02956, 0.32538, 0.56, 0.02956, 0.35733, 0.569, 0.01918, 0.35733, 0.551, 0.01918, 0.35733, 0.569, 0.02882, 0.35733, 0.551, 0.02882, 0.3425, 0.569, 0.00841, 0.3425, 0.551, 0.00841, 0.3425, 0.57559, 0.033, 0.3425, 0.551, 0.03959, 0.35308, 0.56, 0.00944, 0.35308, 0.56, 0.03856, 0.33192, 0.56, 0.03856, 0.32767, 0.569, 0.02882, 0.32767, 0.551, 0.02882, 0.32767, 0.569, 0.01918, 0.32767, 0.551, 0.01918, 0.33192, 0.56, 0.00944)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3ukjq"]
+size = Vector3(0.64, 0.022, 0.3925)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_40j3m"]
+points = PackedVector3Array(-0.3425, 0.578, 0.024, -0.3425, 0.542, 0.024, -0.3425, 0.56, 0.042, -0.32538, 0.56, 0.01844, -0.35962, 0.56, 0.01844, -0.3425, 0.56, 0.006, -0.33334, 0.569, 0.03661, -0.33334, 0.551, 0.03661, -0.35166, 0.569, 0.03661, -0.35166, 0.551, 0.03661, -0.33334, 0.569, 0.01139, -0.33334, 0.551, 0.01139, -0.35166, 0.569, 0.01139, -0.35166, 0.551, 0.01139, -0.32538, 0.56, 0.02956, -0.35962, 0.56, 0.02956, -0.35733, 0.569, 0.02882, -0.35733, 0.551, 0.02882, -0.3425, 0.57559, 0.033, -0.3425, 0.54441, 0.033, -0.3425, 0.569, 0.00841, -0.3425, 0.551, 0.00841, -0.33192, 0.56, 0.00944, -0.35308, 0.56, 0.03856, -0.32767, 0.569, 0.01918, -0.32767, 0.551, 0.01918, -0.32767, 0.569, 0.02882, -0.32767, 0.551, 0.02882, -0.35733, 0.569, 0.01918, -0.35733, 0.551, 0.01918, -0.33192, 0.56, 0.03856, -0.35308, 0.56, 0.00944)
+
+[sub_resource type="Animation" id="Animation_lgl8d"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Door_L:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Door_R:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_auicb"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Door_L:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -1.7453293, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Door_R:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.7453293, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_aa02t"]
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Door_L:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0, -1.7453293, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Door_R:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.56, 1),
+"update": 0,
+"values": [Vector3(0, 1.7453293, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4hfjv"]
+_data = {
+&"RESET": SubResource("Animation_lgl8d"),
+&"open": SubResource("Animation_auicb"),
+&"shut": SubResource("Animation_aa02t")
+}
+
+[node name="LooksVanityDoors" type="Node3D" unique_id=916486689]
+
+[node name="Door_L" type="AnimatableBody3D" parent="." unique_id=1075972239]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.395, 0.13, 0.2195)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Door_L" unique_id=1579863455]
+mesh = ExtResource("1_1sigk")
+
+[node name="Shape1" type="CollisionShape3D" parent="Door_L" unique_id=1530278006]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0.19625, 0.32, 0)
+shape = SubResource("BoxShape3D_wx8je")
+
+[node name="Shape2" type="CollisionShape3D" parent="Door_L" unique_id=1852431896]
+shape = SubResource("ConvexPolygonShape3D_ewdfx")
+
+[node name="Door_R" type="AnimatableBody3D" parent="." unique_id=1395253397]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.395, 0.13, 0.2195)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Door_R" unique_id=114351579]
+mesh = ExtResource("2_2dvsb")
+
+[node name="Shape1" type="CollisionShape3D" parent="Door_R" unique_id=390045575]
+transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, -0.19625, 0.32, 0)
+shape = SubResource("BoxShape3D_3ukjq")
+
+[node name="Shape2" type="CollisionShape3D" parent="Door_R" unique_id=1438631798]
+shape = SubResource("ConvexPolygonShape3D_40j3m")
+
+[node name="Outline" type="Node3D" parent="." unique_id=388393132]
+visible = false
+script = ExtResource("3_rqhld")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1240779791]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_4hfjv")
