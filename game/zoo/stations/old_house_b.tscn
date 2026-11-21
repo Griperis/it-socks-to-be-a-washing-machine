@@ -297,11 +297,13 @@ size = Vector2(27, 33)
 [node name="OldHouseB" type="Node3D" unique_id=325959792]
 
 [node name="Name" type="Label3D" parent="." unique_id=1618917390]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 11.5, -3)
-billboard = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 1.2, -2)
+pixel_size = 0.004
+billboard = 2
+vertical_alignment = 2
 text = "Old house B: the old house rebuilt from the house kit, its windows rounded to 0.5 m. In at the front door on the north side; the U stair climbs from the basement to the attic."
 autowrap_mode = 3
-width = 900.0
+width = 700.0
 
 [node name="Ground" type="StaticBody3D" parent="." unique_id=870987531]
 

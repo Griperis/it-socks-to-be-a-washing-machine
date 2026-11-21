@@ -27,11 +27,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.75, 0.005, 0.85)
 mesh = SubResource("PlaneMesh_pad")
 
 [node name="Name" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.75, 7.2, 0)
-pixel_size = 0.0025
-autowrap_mode = 3
-width = 4000.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.75, 1.2, 0.1)
+pixel_size = 0.004
+billboard = 2
+vertical_alignment = 2
 text = "Materials: every material of the shared library (game/materials, built from the folder). A named row would hold the candidates of one name"
+autowrap_mode = 3
+width = 700.0
 
 [node name="Back" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.75, 3.4, -0.3)
