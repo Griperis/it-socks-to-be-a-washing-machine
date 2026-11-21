@@ -571,3 +571,48 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2405-Q2407, Q2412-Q2415 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/30, the code review's tidy-up: felt numbers into tuning Resources and the Theme, zoo labels/buttons/swatches as scenes, duplication and unused code out; merged (main 8909c25) |
+| Planned vs actual | 0 planned (from the M0.5 code review, Q2404), 1 actual |
+| Redo count | 0 |
+| Corrections | three items kept as they were (Arc's fallback, LAYER_HOUSE in the generators, two Cabinet helpers the tests use) |
+| Cost | see `agent_cost.py --by ticket` (Opus) |
+| Time | the agent ran about 37 min |
+| Surprises | the net saving was small (about 50 game lines): much had gone in core/28-34, and the replacements (label scenes, theme entries, asserts) cost lines |
+| Stop rules | before/after stills of every station: 28 of 33 identical, 5 differ only in the heap counter's live digits |
+| Looks | `builds/review-core-30/` |
+| Decisions | Q2404 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | core/35, the game's command line (`--help`, `--bench=mess`, `--scene=`) in debug builds; the bench scripts as thin wrappers; merged (main 8909c25) |
+| Planned vs actual | 0 planned (designer's request, Q2416), 1 actual |
+| Redo count | 1 (sent back for the zoo-first ERROR and the pacing) |
+| Corrections | an exe run needs the engine flag `--fixed-fps 10` before `--` (Godot cannot fix its step at runtime); the bench refuses to run without it |
+| Cost | see `agent_cost.py --by ticket` (Sonnet) |
+| Time | the agent ran about 1 h 45 min, 83 min of it one unpaced run the lead stopped |
+| Surprises | a headless run without a fixed step paces in real time and runs for hours |
+| Stop rules | none needed |
+| Looks | none |
+| Decisions | Q2416 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | core/36, the held Sock's cloth swings: drag 0.25 in the tuning and the four Looks scenes; merged (main 8909c25) |
+| Planned vs actual | 0 planned (designer's report, Q2417), 1 actual |
+| Redo count | 0 |
+| Corrections | the designer picked drag 0.25 from the sheet (Q2420); the swing test was removed: no tests for visual tweaks (Q2421) |
+| Cost | see `agent_cost.py --by ticket` (Sonnet) |
+| Time | the agent ran about 18 min |
+| Surprises | drag 1.0 was the old game's "fully damped": no momentum at all |
+| Stop rules | stopped at its sheet for the designer's pick |
+| Looks | `builds/review-core-36/` |
+| Decisions | Q2417, Q2420, Q2421 |
+
+---
