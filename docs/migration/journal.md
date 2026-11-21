@@ -451,3 +451,18 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2366-Q2370, Q2398 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | assets/04, the shared material library (24 groups, most-used variant kept) and the 67 furniture pieces as scenes with opening parts, Sock spots, collision and the old coarse player boxes; the Sock area widened over the furniture and houses; approved and merged (main d352f2b) |
+| Planned vs actual | 1 planned, 1 actual (device details split into assets/07; sheen into assets/06) |
+| Redo count | 0 |
+| Corrections | most-used per group (Q2389); fabrics without sheen for now (Q2390); Socks on furniture (Q2396); old player boxes (Q2397) |
+| Cost | assets/04 1 58,511,473 256 1h03m (Opus) |
+| Time | the agent ran about 1 h |
+| Surprises | ids in zoo.tscn clashed with other branches twice; the Furniture station had to move east of house B |
+| Stop rules | stopped at the material strips and the furniture line-up |
+| Looks | `builds/review-furniture/` |
+| Decisions | Q2177, Q2378, Q2389, Q2390, Q2394-Q2397 |
+
+---
