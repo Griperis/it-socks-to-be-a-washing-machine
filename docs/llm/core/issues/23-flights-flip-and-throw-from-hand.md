@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: []
 notes: []
 terms: []
@@ -64,8 +64,10 @@ both.
 - A drop leaves from the hand as well: let go at the hand's drawn place, it falls on its own to the aimed spot;
   no flick, no 3 cm hold; the drop-target check and refusals stay; never through a wall (Q2367, 2026-11-21).
 
+- Merged on the designer's go, to be tried in play; numbers such as turn_weight are tuned from that (Q2382, 2026-11-21).
+- A thrown Sock keeps the hand's pose in the air (lands as it flies), not turned flat (Q2383, 2026-11-21).
+
 ## Open follow-ups
-- [blocking] The before/after strips in `builds/review-core-23/` wait for the designer's go (look work).
 - [later] F1 at the every-Sock station's start: not reproduced. Nothing moves there (2031 Sock records
   lying, 0 moving over 300 ticks; picks and drops there come to rest with no jump; the strip is still).
   The lead needs what the designer did there (walked in, picked, dropped, a Pair) for the next repro.
@@ -73,9 +75,6 @@ both.
   At 1 (a rigid 50 g board, as before) an edge landing spins it to Jolt's 47 rad/s cap, a flip of 45
   degrees a frame. The designer's number on the strips: higher turns slower still, its throw's spin
   and its topple flat slower too.
-- [later] A thrown Sock leaves the hand hanging as it was held (toe down) and so often lands on its
-  end or edge and tumbles before it lies; the old Throw left flat. Keep the hand's pose, or turn it
-  flat in the air as the drop now does?
 - [later] A drop (Q2367) needs choices the ticket did not make; as built, each waits for the designer:
   the dropped Sock turns from its hanging pose to lying flat (its length across the view) by the time
   it lands, so it lands as the old drop lay (without the turn it landed on its end and toppled off a
