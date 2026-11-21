@@ -42,7 +42,7 @@ echo [threading]
 echo worker_pool/max_threads=4
 ) > override.cfg
 if not exist builds\mess-bench mkdir builds\mess-bench
-"%GODOT%" --path . --fixed-fps 10 --resolution 1280x720 res://game/debug/mess_bench.tscn -- --out=builds/mess-bench %LABEL% %COMMIT% %*
+"%GODOT%" --path . --fixed-fps 10 --resolution 1280x720 -- --bench=mess --out=builds/mess-bench %LABEL% %COMMIT% %*
 set "CODE=%ERRORLEVEL%"
 del override.cfg
 echo.

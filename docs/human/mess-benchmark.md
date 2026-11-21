@@ -4,7 +4,22 @@
 
 The Mess benchmark measures what the Socks cost and whether a heap settles cleanly: Socks lying still (500, 2,000, 10,000), a pour from the spout, the heap coming to rest, 16 Throws into a heap, a Door and a drawer pushed through lying Socks. The numbers from the sandbox are a slow CPU with nothing drawn. Your PC is the reference: it has the real graphics card, so only your run says what a frame costs.
 
-## Run it
+## Run it from the game
+
+The game itself runs the benchmark in a debug build (the editor, or a debug export), with the same exe you play and no project folder:
+
+```
+"It Socks.exe" -- --bench=mess
+"It Socks.exe" -- --bench=mess --only=idle_500,sweep --label=my-pc
+"It Socks.exe" -- --help
+```
+
+(With the editor exe: `Godot_v4.7.x-stable_win64.exe --path <project folder> -- --bench=mess`.) The window shows the run and the frame times and draw calls are your graphics card's. When it ends, the last line is `BENCH saved <folder>`: the report (`report.md`) and the results are there, by default in `%APPDATA%\Godot\app_userdata\It Socks\bench\mess\`. `--out=<folder>` puts them elsewhere. A run this way takes as long as the game seconds it simulates (it is paced at 10 frames a second), and Godot's worker threads are not capped (the report says "uncapped"). A release build refuses the command and starts the game.
+
+## Run it with the script
+
+These scripts start the same command with the engine's own `--fixed-fps 10` (faster) and cap the threads at 4:
+
 
 1. You need the Godot 4.7 editor for Windows as two files: `Godot_v4.7.x-stable_win64.exe` and `Godot_v4.7.x-stable_win64_console.exe`. Put both in the project's `extras\` folder. Or set the environment variable `GODOT` to the console exe's path.
 2. Shut the Godot editor if this project is open in it.

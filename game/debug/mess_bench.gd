@@ -10,6 +10,7 @@
 ##   --label=main            the run's name in the report (a commit, "this branch")
 ##   --commit=<hash>         the commit it ran on, for the report
 ##   --list                  prints the scenarios and quits
+## Normally started through GameCli (`-- --bench=mess`), which owns the command line.
 class_name MessBench
 extends Node
 
@@ -17,7 +18,7 @@ const PLAN: MessBenchPlan = preload("res://game/debug/mess_bench_plan.tres")
 const LEVEL := preload("res://game/debug/mess_bench_level.tscn")
 
 var _only := PackedStringArray()
-var _out := "user://mess-bench"
+var _out := "user://bench/mess"
 var _label := "run"
 var _commit := ""
 
@@ -38,6 +39,11 @@ func _ready() -> void:
 			get_tree().quit()
 			return
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	# A tick is timed between two ticks of one frame (MessBenchClock): tools/mess_bench.sh gives the
+	# engine --fixed-fps 10 for that; started any other way the run is paced at 10 frames a second
+	# (six ticks a frame, in real time).
+	if not OS.get_cmdline_args().has("--fixed-fps"):
+		Engine.max_fps = 10
 	_run_all.call_deferred()
 
 
@@ -64,6 +70,7 @@ func _run_all() -> void:
 	if report != "":
 		print("Report: %s" % report)
 	print(verdict)
+	print("BENCH saved %s" % ProjectSettings.globalize_path(_out))
 	get_tree().quit(0 if verdict.begins_with("PASS") else 1)
 
 
@@ -164,7 +171,14 @@ static func line_of(r: Dictionary) -> String:
 static func machine() -> String:
 	return "%s, %d threads (worker pool %s), %s, %s; Godot %s, %s, %d ticks a second, %s" % [
 			OS.get_processor_name(), OS.get_processor_count(),
-			str(ProjectSettings.get_setting("threading/worker_pool/max_threads")),
+			_threads(),
 			RenderingServer.get_video_adapter_name() if DisplayServer.get_name() != "headless" else "headless (nothing drawn)",
 			OS.get_name(), Engine.get_version_info()["string"], ProjectSettings.get_setting("physics/3d/physics_engine"),
-			Engine.physics_ticks_per_second, "debug build" if OS.is_debug_build() else "release build"]
+			Engine.physics_ticks_per_second, "debug build" if OS.is_debug_build() else "release build"] + (", paced at 10 frames a second" if Engine.max_fps == 10 else ", fixed 10 frames a second")
+
+
+## The worker pool's cap, or "uncapped": an engine setting read at start (the override.cfg that
+## tools/mess_bench.sh writes beside project.godot); the command line cannot set it.
+static func _threads() -> String:
+	var cap := int(ProjectSettings.get_setting("threading/worker_pool/max_threads", -1))
+	return "capped at %d" % cap if cap > 0 else "uncapped"

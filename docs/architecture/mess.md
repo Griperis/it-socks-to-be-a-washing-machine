@@ -78,6 +78,41 @@ tools/mess_bench.sh --window                # under Xvfb: draw calls are counted
 BENCH_OVERRIDE=$'[physics]\njolt_physics_3d/simulation/penetration_slop=0.005\n' tools/mess_bench.sh --only=settle_500
 ```
 
+### From the game's command line (core/35, Q2416)
+
+The benchmark is part of the game in debug builds: the `GameCli` autoload (`game/debug/game_cli.gd`, one const
+table `BENCHES`, so the next benchmark is one more entry) reads the user arguments after `--` and starts it. The
+same exe the designer plays runs it, with no project folder and no script beside it:
+
+```
+"It Socks.exe" -- --bench=mess --only=idle_500        # a debug export, or
+godot --path <project> -- --bench=mess                # the editor exe
+... -- --help                                         # the commands; unknown flag: help and exit code 2
+... -- --scene=heap                                   # start a zoo station (or a res:// scene) instead of the main scene
+```
+
+- Release build (`not OS.is_debug_build()`): every command is refused with one printed line and the game starts.
+- Results go to `user://bench/mess/` (Windows `%APPDATA%\Godot\app_userdata\It Socks\bench\mess\`); the last
+  line printed is `BENCH saved <absolute folder>`; `--out=` overrides. Exit code 0 on PASS, 1 on FAIL.
+- Drawn by default (real frame times and draw calls on that card); the engine's `--headless` before the `--` still
+  works, and the report's machine line says which.
+- Pacing: a tick is timed between two ticks of one frame, so the run needs several ticks a frame. `tools/mess_bench.sh`
+  and `.cmd` pass the engine's `--fixed-fps 10` (as fast as the CPU goes). Started without it, `MessBench` sets
+  `Engine.max_fps = 10` (six ticks a frame, in real time, so a run takes as long as its game seconds); the report says
+  "paced at 10 frames a second" or "fixed 10 frames a second".
+- Worker threads: the cap is an engine setting read at start and the command line cannot set it. The wrappers write an
+  `override.cfg` (4 threads); started from the game exe the report says "worker pool uncapped".
+- `tools/mess_bench.sh` and `.cmd` are thin wrappers over `-- --bench=mess` (the mirror, `--at=<commit>`, which starts
+  an older commit's copied scene by its path because that commit has no `GameCli`, and the side-by-side report stay in
+  the `.sh`).
+
+**A debug export must keep, a release export must leave out** (for the release-export ticket's preset, which does not
+exist yet): `res://game/debug/*` (`GameCli`, the benchmark's scenes, scripts and `.tres` plans, `mess_checks.tres`,
+`mess_watch.gd`) and the zoo stations `--scene=` names (`res://game/zoo/*`). In a release preset exclude both folders
+and remove the `GameCli` and `ProfilerBoot` autoloads (or keep `GameCli` alone, since it refuses in release; then the
+`BENCHES` scenes it names must still load or its table must be emptied). `GameCli.plan()` already refuses in a release
+build, so the exclusion is for size and for not shipping the benchmark, not for safety.
+
 | File (`game/debug/`) | Owns |
 |---|---|
 | `mess_bench_plan.tres` (`MessBenchPlan`, `MessBenchScenario`) | The scenarios as data, the seed, the tick budgets. A new scenario is a new entry, no code |

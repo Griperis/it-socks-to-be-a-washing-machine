@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: tools
 feature: core
@@ -61,6 +61,12 @@ script beside it.
 - The benchmarks run from the game in debug builds, by a command line (Q2416, 2026-11-21).
 
 ## Open follow-ups
+- [later] The export preset (release-export skill) must include/exclude `game/debug/` and the zoo as written in `docs/architecture/mess.md` "Benchmark" (C6); no preset exists yet.
+- [later] A run from the game exe without `--fixed-fps` is paced at 10 frames a second in real time; a full run may take much longer than the script's. If that is too slow, the designer may want a faster pacing or the script's `--fixed-fps` in the Windows shortcut.
 
 ## Built log
 - Model: Sonnet: a boot node, a command table and wrappers.
+
+- 2026-11-21: Changed: `GameCli` autoload (`GameCliBoot`; class and autoload names may not match) with a const `BENCHES` table, `--help`, `--bench=mess`, `--scene=`, exit 2 on an unknown flag, release refusal; it stays out of the way when the engine is given a scene or script (test runner, shots). `MessBench` default out `user://bench/mess`, prints `BENCH saved <path>`, paces itself at `Engine.max_fps = 10` unless `--fixed-fps` is given, report says paced/fixed and threads capped/uncapped (the cap cannot be set from the command line). `tools/mess_bench.sh`/`.cmd` start `-- --bench=mess` (`--at=` starts the old commit's scene by path). Docs and export notes written.
+  Files: game/debug/game_cli.gd, game/debug/mess_bench.gd, project.godot, tools/mess_bench.sh, tools/mess_bench.cmd, tests/game_cli_test.gd, docs/architecture/mess.md, docs/human/mess-benchmark.md.
+  Verified: PASS 16766 checks, 393 cases; `bash tools/mess_bench.sh --only=idle_500` PASS (tick 0.009/0.015 ms). Seen once, not chased: "get_node() with absolute paths from outside the active scene tree" ERROR in the wrapper run (the main-scene zoo is loaded then replaced).

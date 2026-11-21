@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# The Mess benchmark (core/31; game/debug/mess_bench.gd, docs/architecture/mess.md "Benchmark"),
+# The Mess benchmark (core/31, core/35: a thin wrapper over the game's own `-- --bench=mess`; game/debug/mess_bench.gd, docs/architecture/mess.md "Benchmark"),
 # headless in a mirror of its own, with Godot's worker pool capped at 4 threads (an override.cfg in
 # the mirror only, as the old game's tools/stress.sh did). Prints one BENCH line per scenario and
 # the verdict line last; the report goes to builds/mess-bench/report.md (or OUT=<folder>), and
@@ -88,10 +88,14 @@ private_user_data "$MIRROR-user"
 printf '[threading]\nworker_pool/max_threads=%s\n\n%s' "${BENCH_THREADS:-4}" "${BENCH_OVERRIDE:-}" > "$MIRROR/override.cfg"
 
 LOG="$OUT/log-$LABEL.txt"
+# The game's own command line starts it (`-- --bench=mess`, GameCli); an older commit has no such
+# autoload, so its copy of the benchmark scene is started by its path.
+START=(); BENCH_ARG=(--bench=mess)
+if [ -n "$AT" ]; then START=(res://game/debug/mess_bench.tscn); BENCH_ARG=(); fi
 # Six physics ticks a frame (--fixed-fps 10 at 60 ticks a second): a tick is timed between two
 # ticks of one frame, with no drawing and no wait in it (MessBenchClock).
-RUN=("$GODOT" --audio-driver Dummy --path "$MIRROR" --fixed-fps 10 res://game/debug/mess_bench.tscn --
-	--out="$OUT" --label="$LABEL" --commit="$COMMIT" "${ARGS[@]+"${ARGS[@]}"}")
+RUN=("$GODOT" --audio-driver Dummy --path "$MIRROR" --fixed-fps 10 ${START[@]+"${START[@]}"} --
+	${BENCH_ARG[@]+"${BENCH_ARG[@]}"} --out="$OUT" --label="$LABEL" --commit="$COMMIT" "${ARGS[@]+"${ARGS[@]}"}")
 if [ "$WINDOW" = 1 ]; then
 	command -v xvfb-run >/dev/null || { echo "--window needs xvfb-run" >&2; exit 2; }
 	timeout "${LIMIT:-3600}" xvfb-run -a -s "-screen 0 1280x720x24" "${RUN[@]:0:1}" \
