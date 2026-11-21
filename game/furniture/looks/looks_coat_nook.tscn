@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://bgusqwmmid4ut" path="res://assets/furniture/meshes/coat_nook_Body.res" id="1_1hbod"]
 
-[node name="LooksCoatNook" type="Node3D" unique_id=1301598532]
+[node name="LooksCoatNook" type="Node3D" unique_id=2008588810]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=1178006328]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=719148028]
 mesh = ExtResource("1_1hbod")

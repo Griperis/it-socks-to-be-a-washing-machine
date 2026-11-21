@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://cfhnpes6r5tqx" path="res://assets/furniture/meshes/bath_mat_Body.res" id="1_rvuvg"]
 
-[node name="LooksBathMat" type="Node3D" unique_id=1592494557]
+[node name="LooksBathMat" type="Node3D" unique_id=1229169819]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=1571583520]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=895935582]
 mesh = ExtResource("1_rvuvg")

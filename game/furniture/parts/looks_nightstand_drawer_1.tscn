@@ -70,35 +70,35 @@ _data = {
 &"shut": SubResource("Animation_3lp7p")
 }
 
-[node name="LooksNightstandDrawer1" type="Node3D" unique_id=1222339858]
+[node name="LooksNightstandDrawer1" type="Node3D" unique_id=1755066305]
 
-[node name="Drawer_1" type="AnimatableBody3D" parent="." unique_id=1294847068]
+[node name="Drawer_1" type="AnimatableBody3D" parent="." unique_id=366659051]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0.1676)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Drawer_1" unique_id=1505964946]
+[node name="Mesh" type="MeshInstance3D" parent="Drawer_1" unique_id=100908923]
 mesh = ExtResource("1_4xd7e")
 
-[node name="Shape1" type="CollisionShape3D" parent="Drawer_1" unique_id=1183159386]
+[node name="Shape1" type="CollisionShape3D" parent="Drawer_1" unique_id=261106165]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.026, -0.15)
 shape = SubResource("BoxShape3D_lr34t")
 
-[node name="Shape2" type="CollisionShape3D" parent="Drawer_1" unique_id=1586350230]
+[node name="Shape2" type="CollisionShape3D" parent="Drawer_1" unique_id=1820915243]
 shape = SubResource("ConvexPolygonShape3D_8a5n4")
 
-[node name="Shape3" type="CollisionShape3D" parent="Drawer_1" unique_id=1915889948]
+[node name="Shape3" type="CollisionShape3D" parent="Drawer_1" unique_id=390401051]
 shape = SubResource("ConvexPolygonShape3D_6hf5q")
 
-[node name="Shape4" type="CollisionShape3D" parent="Drawer_1" unique_id=1338132620]
+[node name="Shape4" type="CollisionShape3D" parent="Drawer_1" unique_id=814902261]
 shape = SubResource("ConvexPolygonShape3D_tb8v8")
 
-[node name="Shape5" type="CollisionShape3D" parent="Drawer_1" unique_id=1585853468]
+[node name="Shape5" type="CollisionShape3D" parent="Drawer_1" unique_id=1905654734]
 shape = SubResource("ConvexPolygonShape3D_3egfb")
 
-[node name="Outline" type="Node3D" parent="." unique_id=808233353]
+[node name="Outline" type="Node3D" parent="." unique_id=1486129484]
 visible = false
 script = ExtResource("2_vyfm8")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=136241517]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1089962359]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_5evjc")

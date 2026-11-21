@@ -16,6 +16,8 @@
 ##   Area3D on no layer; `shelves_y`), the Sock spots as Spots/Top<n> (an Area3D box on no layer: the
 ##   rect a Sock may rest on, from its floor to the headroom over it), and the old Lamp where it had one.
 ##   The rest of the old manifest entry rides as metadata (footprint, height, crawl, hide, rooms, note).
+##   PlayerBody: the old player collision (the manifest's colliders, else the footprint from the crawl gap
+##   up) on Player.BLOCK_LAYER, which only players meet (Q2397); none on a rug (metadata `rug`).
 extends SceneTree
 
 const DATA := "res://.godot/furniture_from_old.json"
@@ -32,6 +34,8 @@ const SWING_TIME := 0.35
 const EASE_OUT := 0.56
 ## Metadata copied from the old manifest entry onto the piece's root, as they were.
 const META := ["footprint", "height", "crawl_gap", "crawl_box", "hide", "rooms", "plan_spot", "note"]
+## The pieces the old house placed as rugs (house_layout.json `rug`): walked over, no player box.
+const RUGS := ["bath_mat", "doormat", "living_rug", "play_rug"]
 
 var _force := false
 var _only: PackedStringArray = []
@@ -98,6 +102,10 @@ func _build(piece: String, d: Dictionary) -> void:
 		for c: Dictionary in d.get("colliders", []):
 			n += 1
 			_own(root, _box_shape(c, "Shape%d" % n))
+	if RUGS.has(piece):
+		root.set_meta("rug", true)
+	else:
+		_player_body(root, d)
 	for o in openings(d):
 		_opening(root, piece, d, o)
 	if not (d["spots"] as Array).is_empty():
@@ -120,6 +128,25 @@ func _build(piece: String, d: Dictionary) -> void:
 		lamp.shadow_enabled = false
 		_own(root, lamp)
 	_save(root, FOLDER.path_join(piece + ".tscn"))
+
+
+## The old player collision (Q2397): the manifest's coarse colliders, else one box over the footprint
+## from the crawl gap up, on the layer only players meet; Socks meet the piece's own shapes.
+func _player_body(root: StaticBody3D, d: Dictionary) -> void:
+	var body := StaticBody3D.new()
+	body.name = "PlayerBody"
+	body.collision_layer = Player.BLOCK_LAYER
+	body.collision_mask = 0
+	_own(root, body)
+	var boxes: Array = d.get("colliders", [])
+	if boxes.is_empty():
+		var fp: Array = d["footprint"]
+		var gap := float(d["crawl_gap"]) if d.get("crawl_gap") != null else 0.0
+		boxes = [{"min": [-float(fp[0]) / 2.0, gap, -float(fp[1]) / 2.0], "max": [float(fp[0]) / 2.0, float(d["height"]), float(fp[1]) / 2.0]}]
+	var n := 0
+	for b: Dictionary in boxes:
+		n += 1
+		_own(body, _box_shape(b, "Box%d" % n))
 
 
 ## The piece's still Looks: every mesh no opening moves.

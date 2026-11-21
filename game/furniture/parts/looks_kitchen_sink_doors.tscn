@@ -104,40 +104,40 @@ _data = {
 &"shut": SubResource("Animation_vhsot")
 }
 
-[node name="LooksKitchenSinkDoors" type="Node3D" unique_id=1276991658]
+[node name="LooksKitchenSinkDoors" type="Node3D" unique_id=1559370779]
 
-[node name="Door_L" type="AnimatableBody3D" parent="." unique_id=2125700347]
+[node name="Door_L" type="AnimatableBody3D" parent="." unique_id=1037092666]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.395, 0.105, 0.274)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Door_L" unique_id=1982129026]
+[node name="Mesh" type="MeshInstance3D" parent="Door_L" unique_id=1299662334]
 mesh = ExtResource("1_0stek")
 
-[node name="Shape1" type="CollisionShape3D" parent="Door_L" unique_id=1764908316]
+[node name="Shape1" type="CollisionShape3D" parent="Door_L" unique_id=299022656]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0.19625, 0.3675, 0)
 shape = SubResource("BoxShape3D_j4yhf")
 
-[node name="Shape2" type="CollisionShape3D" parent="Door_L" unique_id=1851832692]
+[node name="Shape2" type="CollisionShape3D" parent="Door_L" unique_id=1755355922]
 shape = SubResource("ConvexPolygonShape3D_w0yus")
 
-[node name="Door_R" type="AnimatableBody3D" parent="." unique_id=1483729937]
+[node name="Door_R" type="AnimatableBody3D" parent="." unique_id=1321928301]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.395, 0.105, 0.274)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Door_R" unique_id=1199798407]
+[node name="Mesh" type="MeshInstance3D" parent="Door_R" unique_id=2105475096]
 mesh = ExtResource("2_7pt0x")
 
-[node name="Shape1" type="CollisionShape3D" parent="Door_R" unique_id=561619953]
+[node name="Shape1" type="CollisionShape3D" parent="Door_R" unique_id=2534466]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, -0.19625, 0.3675, 0)
 shape = SubResource("BoxShape3D_84rxw")
 
-[node name="Shape2" type="CollisionShape3D" parent="Door_R" unique_id=1349251621]
+[node name="Shape2" type="CollisionShape3D" parent="Door_R" unique_id=1501348547]
 shape = SubResource("ConvexPolygonShape3D_ipl6m")
 
-[node name="Outline" type="Node3D" parent="." unique_id=270940224]
+[node name="Outline" type="Node3D" parent="." unique_id=87064619]
 visible = false
 script = ExtResource("3_s4kdt")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1435600431]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1084142856]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_yrpp0")

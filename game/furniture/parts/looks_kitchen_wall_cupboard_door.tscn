@@ -61,26 +61,26 @@ _data = {
 &"shut": SubResource("Animation_3f6a0")
 }
 
-[node name="LooksKitchenWallCupboardDoor" type="Node3D" unique_id=524560552]
+[node name="LooksKitchenWallCupboardDoor" type="Node3D" unique_id=1737179340]
 
-[node name="Door" type="AnimatableBody3D" parent="." unique_id=1064537366]
+[node name="Door" type="AnimatableBody3D" parent="." unique_id=1830242593]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.295, 0.005, 0.1495)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Door" unique_id=240966701]
+[node name="Mesh" type="MeshInstance3D" parent="Door" unique_id=1326890062]
 mesh = ExtResource("1_6mb5h")
 
-[node name="Shape1" type="CollisionShape3D" parent="Door" unique_id=625598020]
+[node name="Shape1" type="CollisionShape3D" parent="Door" unique_id=596708584]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0.295, 0.345, 0)
 shape = SubResource("BoxShape3D_6x3l2")
 
-[node name="Shape2" type="CollisionShape3D" parent="Door" unique_id=955947038]
+[node name="Shape2" type="CollisionShape3D" parent="Door" unique_id=606354333]
 shape = SubResource("ConvexPolygonShape3D_62bsb")
 
-[node name="Outline" type="Node3D" parent="." unique_id=13079552]
+[node name="Outline" type="Node3D" parent="." unique_id=1763983996]
 visible = false
 script = ExtResource("2_1kdo4")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1439152796]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=337121581]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_h8a3l")

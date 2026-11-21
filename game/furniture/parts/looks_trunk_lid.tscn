@@ -67,31 +67,31 @@ _data = {
 &"shut": SubResource("Animation_2tq2e")
 }
 
-[node name="LooksTrunkLid" type="Node3D" unique_id=1594587120]
+[node name="LooksTrunkLid" type="Node3D" unique_id=330096233]
 
-[node name="Lid" type="AnimatableBody3D" parent="." unique_id=688719886]
+[node name="Lid" type="AnimatableBody3D" parent="." unique_id=1911772087]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36, -0.2529)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Lid" unique_id=754472339]
+[node name="Mesh" type="MeshInstance3D" parent="Lid" unique_id=1310811031]
 mesh = ExtResource("1_ql1md")
 
-[node name="Shape1" type="CollisionShape3D" parent="Lid" unique_id=2065222670]
+[node name="Shape1" type="CollisionShape3D" parent="Lid" unique_id=811797238]
 shape = SubResource("ConvexPolygonShape3D_2467q")
 
-[node name="Shape2" type="CollisionShape3D" parent="Lid" unique_id=1074116802]
+[node name="Shape2" type="CollisionShape3D" parent="Lid" unique_id=483570878]
 shape = SubResource("ConvexPolygonShape3D_aqp7y")
 
-[node name="Shape3" type="CollisionShape3D" parent="Lid" unique_id=197160460]
+[node name="Shape3" type="CollisionShape3D" parent="Lid" unique_id=1685153751]
 shape = SubResource("ConvexPolygonShape3D_iut60")
 
-[node name="Shape4" type="CollisionShape3D" parent="Lid" unique_id=1142751420]
+[node name="Shape4" type="CollisionShape3D" parent="Lid" unique_id=148451951]
 shape = SubResource("ConvexPolygonShape3D_35ulg")
 
-[node name="Outline" type="Node3D" parent="." unique_id=1480538696]
+[node name="Outline" type="Node3D" parent="." unique_id=1421518731]
 visible = false
 script = ExtResource("2_r7t4r")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=377579603]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1076304050]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_te57n")

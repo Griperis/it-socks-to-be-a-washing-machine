@@ -7,6 +7,9 @@ The old house's 67 pieces, each a scene in `game/furniture/<piece>.tscn` (Q2151)
   corners (the old HouseParts rule), else the hull's points; the 4 `-colonly` trimeshes are met from both
   sides. Metadata from the old manifest: `footprint`, `height`, `crawl_gap`, `crawl_box`, `hide`, `rooms`,
   `plan_spot`, `note`.
+- **PlayerBody:** the old player collision (Q2397): the manifest's coarse `colliders`, else one box over the
+  footprint from the crawl gap up, on `Player.BLOCK_LAYER` (8), which only the player's mask meets. Socks
+  (masks of the house layer) pass it and meet the root's shapes. The 4 rugs (metadata `rug`) have none.
 - **Looks:** `looks/looks_<piece>.tscn`, the still meshes (Body; Board, MirrorGlass; the piano's
   `Key_<midi>` with metadata `midi`). Contract `looks/looks_contract.json`.
 - **Openings:** one Node3D per old container (named as it: `Door`, `Drawer_1`, `Cabin`, `Boot`, `Lid`...)
@@ -34,6 +37,7 @@ The old house's 67 pieces, each a scene in `game/furniture/<piece>.tscn` (Q2151)
 
 ## The station
 
-`game/zoo/stations/furniture.tscn`, off the zoo's east edge on its own ground: `FurnitureLineUp` puts
+`game/zoo/stations/furniture.tscn`, at (75.5, 0, 9.5) east of the two old houses on its own ground, inside the
+zoo's Mess bounds (Q2396): `FurnitureLineUp` puts
 every scene of `game/furniture/` in rows by name, built from the folder at load (Q2337). Shots: the set
 `furniture`; `furniture:old_<view>` shows the old models in place, read from the reference at run time.

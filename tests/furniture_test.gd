@@ -36,6 +36,8 @@ func cases() -> Array[Dictionary]:
 				"title": "F02: the openings are the old containers with their named moving parts (Door, Drawer_n, Lid, ...), each with collision; the piano keeps its 88 keys"},
 		{"name": "f02_swing", "method": "case_f02_swing", "world": false,
 				"title": "F02: open turns a hinge by its old angle about its old axis and slides a drawer its old distance, in the old 0.35 s; shut brings it back"},
+		{"name": "f02_player_boxes", "method": "case_f02_player_boxes", "world": false,
+				"title": "F02 (Q2397): the player meets the old coarse player boxes and walks past a chair without snagging; a Sock passes them and lands on the seat"},
 		{"name": "f02_spots", "method": "case_f02_spots", "world": false,
 				"title": "F02: the Sock spots are rects on the piece's tops, inside its footprint and under its headroom, on no physics layer"},
 		{"name": "f02_materials", "method": "case_f02_materials", "world": false,
@@ -212,6 +214,72 @@ func case_f02_swing() -> void:
 		await _physics_ticks(1)
 		var half := (body.get(c[2]) as Vector3 - shut_at).length() / (c[3] as Vector3 - shut_at).length()
 		_check(half > 0.65 and half < 0.75, "%s eases out (%.2f of the way at half time)" % [c[0], half])
+
+
+func case_f02_player_boxes() -> void:
+	# Every piece but a rug has its player boxes on the layer only players meet.
+	for path in FurnitureLineUp.pieces():
+		var piece := _scene(path)
+		var body := piece.get_node_or_null("PlayerBody") as StaticBody3D
+		if piece.get_meta(&"rug", false):
+			_check(body == null, "%s, a rug, is walked over" % piece.name)
+		else:
+			_check(body != null and body.collision_layer == Player.BLOCK_LAYER and body.get_child_count() > 0, "%s has its player boxes" % piece.name)
+		piece.free()
+	_level = Node3D.new()
+	_level.name = "Level"
+	var ground := StaticBody3D.new()
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(10, 0.2, 10)
+	shape.shape = box
+	shape.position = Vector3(0, -0.1, 0)
+	ground.add_child(shape)
+	_level.add_child(ground)
+	var chair := _scene(FOLDER.path_join("dining_chair.tscn"))
+	_level.add_child(chair)
+	var parts := Parts.new()
+	parts.name = "Parts"
+	_level.add_child(parts)
+	var player := (load(PLAYER) as PackedScene).instantiate() as Player
+	player.position = Vector3(-0.6, 0.0, 0.9)
+	player.rotation.y = 0.0
+	_level.add_child(player)
+	add_child(_level)
+	_check(player.collision_mask & Player.BLOCK_LAYER != 0 and player.collision_mask & Mess.LAYER_HOUSE != 0, "the player meets the house and the player boxes")
+	await _until(func() -> bool: return player.is_on_floor(), "the player to stand")
+	# Forward and right: into the chair's front at a slant, along it and past it.
+	Input.action_press(&"move_forward")
+	Input.action_press(&"move_right")
+	var touched := [false]
+	var passed := await _until(func() -> bool:
+		for i in player.get_slide_collision_count():
+			if player.get_slide_collision(i).get_collider() == chair.get_node("PlayerBody"):
+				touched[0] = true
+		return player.global_position.x > 0.9, "the player to slide past the chair", 300)
+	Input.action_release(&"move_forward")
+	Input.action_release(&"move_right")
+	_check(passed and touched[0], "the player met the chair's player boxes and slid on past it (%s, met %s)" % [player.global_position, touched[0]])
+	_check(player.global_position.y < 0.05, "on the floor, not up on the chair (%s)" % player.global_position)
+	# A Sock-sized body on the Socks' layers falls through the player boxes onto the seat.
+	var flight := (load("res://game/sock/flight.tscn") as PackedScene).instantiate() as RigidBody3D
+	var mask := flight.collision_mask
+	flight.free()
+	var sock := RigidBody3D.new()
+	sock.collision_layer = Mess.LAYER_FLIGHT
+	sock.collision_mask = mask
+	var cs := CollisionShape3D.new()
+	var sb := BoxShape3D.new()
+	sb.size = Vector3(0.25, 0.03, 0.1)
+	cs.shape = sb
+	sock.add_child(cs)
+	sock.position = Vector3(0.0, 1.4, 0.05)
+	_level.add_child(sock)
+	await _physics_ticks(5)
+	await _until(func() -> bool: return sock.linear_velocity.length() < 0.01, "the Sock to come to rest", 400)
+	var seat := (chair.get_node("Spots").get_child(0) as Node3D)
+	var seat_y := seat.position.y - ((seat.get_node("Box") as CollisionShape3D).shape as BoxShape3D).size.y / 2.0
+	_near(sock.position.y, seat_y + 0.015, 0.03, "the Sock lies on the seat (seat top %.3f)" % seat_y)
 
 
 func case_f02_spots() -> void:

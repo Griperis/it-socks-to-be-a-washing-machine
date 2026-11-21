@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://cancoxedfalyh" path="res://assets/furniture/meshes/plant_cactus_Body.res" id="1_peuah"]
 
-[node name="LooksPlantCactus" type="Node3D" unique_id=504211783]
+[node name="LooksPlantCactus" type="Node3D" unique_id=387549716]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=1650087614]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=886517006]
 mesh = ExtResource("1_peuah")

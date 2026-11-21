@@ -58,22 +58,22 @@ _data = {
 &"shut": SubResource("Animation_6ea1u")
 }
 
-[node name="LooksLaundryBasketLid" type="Node3D" unique_id=2017208368]
+[node name="LooksLaundryBasketLid" type="Node3D" unique_id=693533782]
 
-[node name="Lid" type="AnimatableBody3D" parent="." unique_id=1457630150]
+[node name="Lid" type="AnimatableBody3D" parent="." unique_id=2109814472]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.455, -0.21)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Lid" unique_id=1744660872]
+[node name="Mesh" type="MeshInstance3D" parent="Lid" unique_id=1435549888]
 mesh = ExtResource("1_g26pd")
 
-[node name="Shape1" type="CollisionShape3D" parent="Lid" unique_id=1295041818]
+[node name="Shape1" type="CollisionShape3D" parent="Lid" unique_id=778829299]
 shape = SubResource("ConvexPolygonShape3D_72tbe")
 
-[node name="Outline" type="Node3D" parent="." unique_id=1046957154]
+[node name="Outline" type="Node3D" parent="." unique_id=1287496786]
 visible = false
 script = ExtResource("2_gcsjo")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1388923936]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=440623025]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_h1xsm")

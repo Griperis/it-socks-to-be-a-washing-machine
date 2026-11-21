@@ -116,50 +116,50 @@ _data = {
 &"shut": SubResource("Animation_uj6ov")
 }
 
-[node name="LooksCarCabin" type="Node3D" unique_id=1991579809]
+[node name="LooksCarCabin" type="Node3D" unique_id=276610007]
 
-[node name="Door_L" type="AnimatableBody3D" parent="." unique_id=385482355]
+[node name="Door_L" type="AnimatableBody3D" parent="." unique_id=850905696]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.81, 0.32, 0.76)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Door_L" unique_id=4128590]
+[node name="Mesh" type="MeshInstance3D" parent="Door_L" unique_id=1063046058]
 mesh = ExtResource("1_pfioo")
 
-[node name="Shape1" type="CollisionShape3D" parent="Door_L" unique_id=1974354345]
+[node name="Shape1" type="CollisionShape3D" parent="Door_L" unique_id=506196963]
 shape = SubResource("ConvexPolygonShape3D_aqkcv")
 
-[node name="Shape2" type="CollisionShape3D" parent="Door_L" unique_id=1833734397]
+[node name="Shape2" type="CollisionShape3D" parent="Door_L" unique_id=1982088157]
 shape = SubResource("ConvexPolygonShape3D_ocqp8")
 
-[node name="Shape3" type="CollisionShape3D" parent="Door_L" unique_id=986102991]
+[node name="Shape3" type="CollisionShape3D" parent="Door_L" unique_id=1208547704]
 shape = SubResource("ConvexPolygonShape3D_3ak0d")
 
-[node name="Shape4" type="CollisionShape3D" parent="Door_L" unique_id=1783467558]
+[node name="Shape4" type="CollisionShape3D" parent="Door_L" unique_id=1342092349]
 shape = SubResource("ConvexPolygonShape3D_4pe5r")
 
-[node name="Door_R" type="AnimatableBody3D" parent="." unique_id=1993699341]
+[node name="Door_R" type="AnimatableBody3D" parent="." unique_id=1548877817]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.81, 0.32, 0.76)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Door_R" unique_id=893511201]
+[node name="Mesh" type="MeshInstance3D" parent="Door_R" unique_id=1581589956]
 mesh = ExtResource("2_fvmwb")
 
-[node name="Shape1" type="CollisionShape3D" parent="Door_R" unique_id=1545733378]
+[node name="Shape1" type="CollisionShape3D" parent="Door_R" unique_id=267637669]
 shape = SubResource("ConvexPolygonShape3D_1ysbx")
 
-[node name="Shape2" type="CollisionShape3D" parent="Door_R" unique_id=419532484]
+[node name="Shape2" type="CollisionShape3D" parent="Door_R" unique_id=1317612355]
 shape = SubResource("ConvexPolygonShape3D_o72i7")
 
-[node name="Shape3" type="CollisionShape3D" parent="Door_R" unique_id=1303516559]
+[node name="Shape3" type="CollisionShape3D" parent="Door_R" unique_id=1066740147]
 shape = SubResource("ConvexPolygonShape3D_xlkkv")
 
-[node name="Shape4" type="CollisionShape3D" parent="Door_R" unique_id=49030205]
+[node name="Shape4" type="CollisionShape3D" parent="Door_R" unique_id=1567008146]
 shape = SubResource("ConvexPolygonShape3D_5s2fb")
 
-[node name="Outline" type="Node3D" parent="." unique_id=221452796]
+[node name="Outline" type="Node3D" parent="." unique_id=1326760766]
 visible = false
 script = ExtResource("3_tih7s")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=687365938]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1415219931]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_x37q1")

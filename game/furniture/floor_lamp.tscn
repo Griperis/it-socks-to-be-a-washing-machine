@@ -14,23 +14,34 @@ points = PackedVector3Array(-0.24249, 0.00174, 0.1659, -0.25609, 0.00529, 0.1735
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_kmke0"]
 points = PackedVector3Array(0.24249, 0.00174, 0.1659, 0.22889, 0, 0.17415, 0.22889, 0.00181, 0.19005, 0.24249, 0.00535, 0.1977, 0.25609, 0.00709, 0.18945, 0.25609, 0.00529, 0.17355, 0.02598, 1.10174, 0.0409, 0.01238, 1.10181, 0.06505, 0.03958, 1.10529, 0.04855, 0.0099, 1.05355, 0.0319, 0, 1.05355, 0.0278, -0.0099, 1.05355, 0.0319, -0.014, 1.05355, 0.0418, -0.0099, 1.05355, 0.0517, 0.014, 1.55355, 0.0418, 0.0099, 1.55355, 0.0319, 0, 1.55355, 0.0278, -0.0099, 1.55355, 0.0319, -0.014, 1.55355, 0.0418, -0.0099, 1.55355, 0.0517, 0, 1.55355, 0.0558, 0.0099, 1.55355, 0.0517)
 
-[node name="FloorLamp" type="StaticBody3D" unique_id=1503056598]
+[sub_resource type="BoxShape3D" id="BoxShape3D_1teh2"]
+size = Vector3(0.512, 1.634, 0.508)
+
+[node name="FloorLamp" type="StaticBody3D" unique_id=514431114]
 collision_mask = 0
 metadata/footprint = [0.512, 0.508]
 metadata/height = 1.634
 metadata/rooms = ["Living room"]
 metadata/plan_spot = "Floor lamp (new; by the sofa or armchair)"
 
-[node name="Looks" type="Node3D" parent="." unique_id=9121323 instance=ExtResource("1_i0ukk")]
+[node name="Looks" type="Node3D" parent="." unique_id=190372453 instance=ExtResource("1_i0ukk")]
 
-[node name="Shape1" type="CollisionShape3D" parent="." unique_id=967894137]
+[node name="Shape1" type="CollisionShape3D" parent="." unique_id=1469461810]
 shape = SubResource("ConvexPolygonShape3D_51c8j")
 
-[node name="Shape2" type="CollisionShape3D" parent="." unique_id=1959538271]
+[node name="Shape2" type="CollisionShape3D" parent="." unique_id=225357111]
 shape = SubResource("ConvexPolygonShape3D_cedvc")
 
-[node name="Shape3" type="CollisionShape3D" parent="." unique_id=2125614881]
+[node name="Shape3" type="CollisionShape3D" parent="." unique_id=1860230124]
 shape = SubResource("ConvexPolygonShape3D_65muh")
 
-[node name="Shape4" type="CollisionShape3D" parent="." unique_id=1849720148]
+[node name="Shape4" type="CollisionShape3D" parent="." unique_id=504354350]
 shape = SubResource("ConvexPolygonShape3D_kmke0")
+
+[node name="PlayerBody" type="StaticBody3D" parent="." unique_id=341863918]
+collision_layer = 8
+collision_mask = 0
+
+[node name="Box1" type="CollisionShape3D" parent="PlayerBody" unique_id=1860254913]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.817, 0)
+shape = SubResource("BoxShape3D_1teh2")

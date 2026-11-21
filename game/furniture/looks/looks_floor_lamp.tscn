@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://djju70yr5fedw" path="res://assets/furniture/meshes/floor_lamp_Body.res" id="1_lamfx"]
 
-[node name="LooksFloorLamp" type="Node3D" unique_id=9121323]
+[node name="LooksFloorLamp" type="Node3D" unique_id=190372453]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=2040527794]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1594073846]
 mesh = ExtResource("1_lamfx")

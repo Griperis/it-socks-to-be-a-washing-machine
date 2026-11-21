@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: assets
 feature: assets
@@ -47,27 +47,25 @@ for all models; where variants differ (oak: 9 in 39 models) the designer picks t
   `docs/architecture/materials.md` so any group can be overridden by name; the other files dropped (Q2389,
   2026-11-21).
 - The fab_* sheen: ported without sheen for now, as the old game looked (Q2390, 2026-11-21).
+- The furniture is approved as on the second still (Q2394, 2026-11-21).
+- Sock area: the zoo's Mess bounds cover the Furniture station and both old houses, so Socks lie on shelves
+  and in drawers there; the return spot keeps working (Q2396, 2026-11-21).
+- Player boxes: the old player collision is ported (the manifest's coarse colliders, else one box over the
+  footprint from the crawl gap up) on a player-only layer; Socks keep the detailed shapes; the player's mask
+  meets it (Q2397, 2026-11-21).
 
 ## Open follow-ups
 - [later] Q2390: a look-change ticket to give the fabrics (fab_*) a soft sheen: the designer wants it; the lead
   files it.
-- [later] Small details of pieces that are devices, not assets, each still to be asked and ported in its own
-  piece (all in the old game): the piano's 88 keys play a note and dip 3 degrees when played (house/28; the keys
+- [later] Small details of pieces that are devices, not assets (their own ticket, assets/07; all in the old game): the piano's 88 keys play a note and dip 3 degrees when played (house/28; the keys
   are named and carry their MIDI note, nothing moves them); the wall mirror's reflection (`mirror.gd`, its
   `MirrorGlass` mesh is kept); the sheeted sofa's dust sheet (`dust_sheet.gd`); the Old Tree's own shader
   (`old_tree.gdshader`; its lamp is ported); each opening's sound by its old container kind (`kind` metadata on
   each Openable, the old cue table in `game/house/openable.gd`).
-- [later] Player collision: the old game gave players the manifest's coarser `colliders` (or one box over the
-  footprint from `crawl_gap` up) and Socks the fine collision nodes; here both meet the fine collision, on the one
-  house layer. A player layer of its own would need game/player (not this ticket's).
 - [later] Blender: the 67 glbs are the old exports (collision nodes taken out, meshes renamed by
   `tools/furniture_from_old.py`); `house_furniture/*.py` is not ported to `tools/blender/` (no Blender here).
-- [later] The Furniture station stands off the zoo floor's east edge on its own ground; the zoo's Mess bounds end
-  at the floor, so a Sock thrown onto it goes back to the return spot.
 - [later] Every old furniture material was double-sided (culling off); the library keeps it, as the old import
   did. Single-sided is cheaper; it can be tried per piece.
-- [later] `tests/mess_test.gd` m04 (the zoo keeps a few thousand nodes with every Sock) now leaves out the
-  Furniture station's own nodes (about 3,000: collision, openings, spots); the Sock rule it checks is unchanged.
 
 ## Built log
 
@@ -97,4 +95,15 @@ for all models; where variants differ (oak: 9 in 39 models) the designer picks t
 - Verified: `run.sh --touched` PASS 14609 checks, 163 cases (furniture_test 9 cases incl. the real path); asset_lint
   PASS (97 glb, 145 look scenes); grep_rules PASS; stills `builds/review-furniture/furniture-beside-old.png` (each
   view old beside new), `furniture-*.png`, `materials-overview.png`.
+
+### 2026-11-21 (after the go: Q2396, Q2397)
+- Changed: every piece but the 4 rugs has a PlayerBody of the old player boxes on `Player.BLOCK_LAYER` (8), which
+  the player's mask now meets beside the house layer; Socks pass it and meet the pieces' own shapes. The zoo's
+  Mess bounds reach x 89 and y -6..14 (the Furniture station, now at (75.5, 0, 9.5) east of main's two old
+  houses, and the houses). `tests/mess_test.gd` is main's again. The zoo's new ids clear main's.
+- Files: `game/furniture/` (rebuilt), `game/furniture/furniture_build.gd`, `game/player/player.gd` (the layer
+  constant), `game/player/player.tscn` (the mask), `game/zoo/zoo.tscn`, `tests/furniture_test.gd`,
+  `tests/mess_test.gd`, `docs/architecture/furniture.md`.
+- Verified: `run.sh --touched` PASS 15430 checks, 279 cases (furniture f02_player_boxes: past a chair, a Sock on
+  its seat); asset_lint PASS; grep_rules PASS.
 

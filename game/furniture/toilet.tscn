@@ -19,12 +19,15 @@ data = PackedVector3Array(0.17, 0.39, 0.06625, 0.16168, 0.39, 0.00058, 0.19021, 
 backface_collision = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_34yoj"]
-size = Vector3(0.16, 0.35000002, 0.2)
+size = Vector3(0.44, 0.92, 0.633)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ecdw4"]
+size = Vector3(0.16, 0.35000002, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5mfx1"]
 size = Vector3(0.12, 0.34999996, 0.03999999)
 
-[node name="Toilet" type="StaticBody3D" unique_id=734665403]
+[node name="Toilet" type="StaticBody3D" unique_id=1675623942]
 collision_mask = 0
 metadata/footprint = [0.44, 0.633]
 metadata/height = 0.92
@@ -32,41 +35,49 @@ metadata/rooms = ["WC", "Bathroom"]
 metadata/plan_spot = "WC"
 metadata/note = "Close-coupled; the back is the wall side."
 
-[node name="Looks" type="Node3D" parent="." unique_id=473977737 instance=ExtResource("1_vs3kr")]
+[node name="Looks" type="Node3D" parent="." unique_id=1366422937 instance=ExtResource("1_vs3kr")]
 
-[node name="Shape1" type="CollisionShape3D" parent="." unique_id=278852445]
+[node name="Shape1" type="CollisionShape3D" parent="." unique_id=365951378]
 shape = SubResource("ConvexPolygonShape3D_cpv6m")
 
-[node name="Shape2" type="CollisionShape3D" parent="." unique_id=911831247]
+[node name="Shape2" type="CollisionShape3D" parent="." unique_id=1351796126]
 shape = SubResource("ConvexPolygonShape3D_vxls4")
 
-[node name="Shape3" type="CollisionShape3D" parent="." unique_id=966840662]
+[node name="Shape3" type="CollisionShape3D" parent="." unique_id=1813485167]
 shape = SubResource("ConvexPolygonShape3D_2e2k0")
 
-[node name="Shape4" type="CollisionShape3D" parent="." unique_id=1934786845]
+[node name="Shape4" type="CollisionShape3D" parent="." unique_id=779231645]
 shape = SubResource("ConvexPolygonShape3D_5qpk4")
 
-[node name="Shape5" type="CollisionShape3D" parent="." unique_id=1241270303]
+[node name="Shape5" type="CollisionShape3D" parent="." unique_id=1078265465]
 shape = SubResource("ConcavePolygonShape3D_7gutt")
 
-[node name="Spots" type="Node3D" parent="." unique_id=128946131]
+[node name="PlayerBody" type="StaticBody3D" parent="." unique_id=2075972854]
+collision_layer = 8
+collision_mask = 0
 
-[node name="Top1" type="Area3D" parent="Spots" unique_id=1658613147]
+[node name="Box1" type="CollisionShape3D" parent="PlayerBody" unique_id=1071287201]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.46, 0)
+shape = SubResource("BoxShape3D_34yoj")
+
+[node name="Spots" type="Node3D" parent="." unique_id=1831344732]
+
+[node name="Top1" type="Area3D" parent="Spots" unique_id=281997472]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.565, 0.1)
 collision_layer = 0
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Box" type="CollisionShape3D" parent="Spots/Top1" unique_id=2010092246]
-shape = SubResource("BoxShape3D_34yoj")
+[node name="Box" type="CollisionShape3D" parent="Spots/Top1" unique_id=1605506145]
+shape = SubResource("BoxShape3D_ecdw4")
 
-[node name="Top2" type="Area3D" parent="Spots" unique_id=1243851315]
+[node name="Top2" type="Area3D" parent="Spots" unique_id=2139442442]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.06, 0.995, -0.22)
 collision_layer = 0
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Box" type="CollisionShape3D" parent="Spots/Top2" unique_id=438698654]
-shape = SubResource("BoxShape3D_ecdw4")
+[node name="Box" type="CollisionShape3D" parent="Spots/Top2" unique_id=1733680533]
+shape = SubResource("BoxShape3D_5mfx1")

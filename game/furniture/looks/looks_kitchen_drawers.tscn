@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://h7envq6lrglq" path="res://assets/furniture/meshes/kitchen_drawers_Body.res" id="1_muljn"]
 
-[node name="LooksKitchenDrawers" type="Node3D" unique_id=1336921371]
+[node name="LooksKitchenDrawers" type="Node3D" unique_id=260968296]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=222428792]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=403833881]
 mesh = ExtResource("1_muljn")

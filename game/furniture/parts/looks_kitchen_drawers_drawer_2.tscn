@@ -70,38 +70,38 @@ _data = {
 &"shut": SubResource("Animation_sfek2")
 }
 
-[node name="LooksKitchenDrawersDrawer2" type="Node3D" unique_id=1866110696]
+[node name="LooksKitchenDrawersDrawer2" type="Node3D" unique_id=197251085]
 
-[node name="Drawer_2" type="AnimatableBody3D" parent="." unique_id=104973484]
+[node name="Drawer_2" type="AnimatableBody3D" parent="." unique_id=2095071948]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0.2601)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Drawer_2" unique_id=60586525]
+[node name="Mesh" type="MeshInstance3D" parent="Drawer_2" unique_id=930323381]
 mesh = ExtResource("1_3axrj")
 
-[node name="Shape1" type="CollisionShape3D" parent="Drawer_2" unique_id=1240959566]
+[node name="Shape1" type="CollisionShape3D" parent="Drawer_2" unique_id=518509159]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.026, -0.225)
 shape = SubResource("BoxShape3D_3uj01")
 
-[node name="Shape2" type="CollisionShape3D" parent="Drawer_2" unique_id=2112391538]
+[node name="Shape2" type="CollisionShape3D" parent="Drawer_2" unique_id=593247933]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.1175, -0.444)
 shape = SubResource("BoxShape3D_i10tt")
 
-[node name="Shape3" type="CollisionShape3D" parent="Drawer_2" unique_id=790904518]
+[node name="Shape3" type="CollisionShape3D" parent="Drawer_2" unique_id=1273836124]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, -0.259, 0.1175, -0.225)
 shape = SubResource("BoxShape3D_lgq3r")
 
-[node name="Shape4" type="CollisionShape3D" parent="Drawer_2" unique_id=905033905]
+[node name="Shape4" type="CollisionShape3D" parent="Drawer_2" unique_id=670867741]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0.259, 0.1175, -0.225)
 shape = SubResource("BoxShape3D_coy8x")
 
-[node name="Shape5" type="CollisionShape3D" parent="Drawer_2" unique_id=987727908]
+[node name="Shape5" type="CollisionShape3D" parent="Drawer_2" unique_id=1523820038]
 shape = SubResource("ConvexPolygonShape3D_ro5ly")
 
-[node name="Outline" type="Node3D" parent="." unique_id=226560105]
+[node name="Outline" type="Node3D" parent="." unique_id=1616798622]
 visible = false
 script = ExtResource("2_agsmn")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2020023776]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=963131713]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_hb37u")

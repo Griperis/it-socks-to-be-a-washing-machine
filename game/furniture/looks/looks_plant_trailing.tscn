@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://bh2y5uks0fiq0" path="res://assets/furniture/meshes/plant_trailing_Body.res" id="1_0dmxj"]
 
-[node name="LooksPlantTrailing" type="Node3D" unique_id=464712419]
+[node name="LooksPlantTrailing" type="Node3D" unique_id=380157842]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=422145303]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=359558873]
 mesh = ExtResource("1_0dmxj")

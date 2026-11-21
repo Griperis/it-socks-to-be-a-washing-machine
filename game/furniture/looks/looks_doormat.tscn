@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://vmcqo2imrf6q" path="res://assets/furniture/meshes/doormat_Body.res" id="1_slufs"]
 
-[node name="LooksDoormat" type="Node3D" unique_id=1574686669]
+[node name="LooksDoormat" type="Node3D" unique_id=670263593]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=151725466]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1807956616]
 mesh = ExtResource("1_slufs")

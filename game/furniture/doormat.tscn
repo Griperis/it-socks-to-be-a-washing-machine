@@ -5,15 +5,16 @@
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_asiir"]
 points = PackedVector3Array(0, 0.022, 0, -0.4, 0.001, 0.25, -0.4, 0.001, -0.25, 0.4, 0.001, 0.25, 0.4, 0.001, -0.25, 0, 0.011, 0.2525, 0, 0.011, -0.2525, 0.403, 0.016, 0, -0.403, 0.016, 0, -0.2, 0.00044, -0.125, -0.2, 0.00044, 0.125, 0.2, 0.00044, -0.125, 0.2, 0.00044, 0.125, 0.2, 0.016, 0.25141, -0.2, 0.016, 0.25141, -0.2, 0.016, -0.25141, 0.2, 0.016, -0.25141, 0, 0.00025, -0.125, 0, 0.00025, 0.125, 0.2, 0.02175, 0, -0.2, 0.02175, 0, 0.40225, 0.006, -0.125, 0.40225, 0.006, 0.125, -0.40225, 0.006, 0.125, -0.40225, 0.006, -0.125, 0, 0, 0, 0, 0.02175, -0.125, 0, 0.02175, 0.125, -0.2, 0.00025, 0, 0.2, 0.00025, 0, 0.2, 0.02156, -0.125, 0.2, 0.02156, 0.125, -0.2, 0.02156, -0.125, -0.2, 0.02156, 0.125, -0.4, 0.021, 0.25, -0.4, 0.021, -0.25, 0.4, 0.021, 0.25, 0.4, 0.021, -0.25, 0.2, 0.006, 0.25141, -0.2, 0.006, 0.25141, 0.403, 0.006, 0, 0.40225, 0.016, -0.125, 0.40225, 0.016, 0.125, -0.2, 0.006, -0.25141, 0.2, 0.006, -0.25141, -0.403, 0.006, 0, -0.40225, 0.016, 0.125, -0.40225, 0.016, -0.125)
 
-[node name="Doormat" type="StaticBody3D" unique_id=396867986]
+[node name="Doormat" type="StaticBody3D" unique_id=964854184]
 collision_mask = 0
 metadata/footprint = [0.808, 0.505]
 metadata/height = 0.023
 metadata/rooms = ["Hall"]
 metadata/plan_spot = "Doormat"
 metadata/note = "Flat (2 cm): no collider needed."
+metadata/rug = true
 
-[node name="Looks" type="Node3D" parent="." unique_id=1574686669 instance=ExtResource("1_a8cob")]
+[node name="Looks" type="Node3D" parent="." unique_id=670263593 instance=ExtResource("1_a8cob")]
 
-[node name="Shape1" type="CollisionShape3D" parent="." unique_id=1097913559]
+[node name="Shape1" type="CollisionShape3D" parent="." unique_id=737728639]
 shape = SubResource("ConvexPolygonShape3D_asiir")

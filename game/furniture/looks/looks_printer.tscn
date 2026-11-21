@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://b3tjxxvrpu2d6" path="res://assets/furniture/meshes/printer_Body.res" id="1_tcc8e"]
 
-[node name="LooksPrinter" type="Node3D" unique_id=162433261]
+[node name="LooksPrinter" type="Node3D" unique_id=153314206]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=605803416]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1861295418]
 mesh = ExtResource("1_tcc8e")

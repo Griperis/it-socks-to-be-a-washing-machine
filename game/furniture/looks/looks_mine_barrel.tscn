@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://cli5utpw1v6p6" path="res://assets/furniture/meshes/mine_barrel_Body.res" id="1_whhn5"]
 
-[node name="LooksMineBarrel" type="Node3D" unique_id=168983979]
+[node name="LooksMineBarrel" type="Node3D" unique_id=24909845]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=511421985]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1837724028]
 mesh = ExtResource("1_whhn5")

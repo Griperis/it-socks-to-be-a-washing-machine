@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://ilmnglv372ds" path="res://assets/furniture/meshes/filing_cabinet_Body.res" id="1_e2lvd"]
 
-[node name="LooksFilingCabinet" type="Node3D" unique_id=247606530]
+[node name="LooksFilingCabinet" type="Node3D" unique_id=174232295]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=1841258568]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1890151795]
 mesh = ExtResource("1_e2lvd")

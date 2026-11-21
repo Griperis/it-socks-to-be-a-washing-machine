@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://dnhhgxwgatpud" path="res://assets/furniture/meshes/storage_boxes_Body.res" id="1_udlqg"]
 
-[node name="LooksStorageBoxes" type="Node3D" unique_id=277628160]
+[node name="LooksStorageBoxes" type="Node3D" unique_id=280377158]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=340975466]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1052974433]
 mesh = ExtResource("1_udlqg")

@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://dbaue262qe6fc" path="res://assets/furniture/meshes/drying_rack_Body.res" id="1_xu0he"]
 
-[node name="LooksDryingRack" type="Node3D" unique_id=599759439]
+[node name="LooksDryingRack" type="Node3D" unique_id=103748823]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=1655944554]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=179037665]
 mesh = ExtResource("1_xu0he")

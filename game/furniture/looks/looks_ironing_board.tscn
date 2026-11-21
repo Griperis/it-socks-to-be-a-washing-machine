@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://dc07ibcr8cs5m" path="res://assets/furniture/meshes/ironing_board_Body.res" id="1_p8x0c"]
 
-[node name="LooksIroningBoard" type="Node3D" unique_id=1223797295]
+[node name="LooksIroningBoard" type="Node3D" unique_id=828441048]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=1766871298]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=97510824]
 mesh = ExtResource("1_p8x0c")

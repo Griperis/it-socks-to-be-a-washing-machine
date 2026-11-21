@@ -70,38 +70,38 @@ _data = {
 &"shut": SubResource("Animation_4ixds")
 }
 
-[node name="LooksDresserDrawer1" type="Node3D" unique_id=1349770957]
+[node name="LooksDresserDrawer1" type="Node3D" unique_id=252355685]
 
-[node name="Drawer_1" type="AnimatableBody3D" parent="." unique_id=1170895372]
+[node name="Drawer_1" type="AnimatableBody3D" parent="." unique_id=1991740044]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.62, 0.2151)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Drawer_1" unique_id=1392035622]
+[node name="Mesh" type="MeshInstance3D" parent="Drawer_1" unique_id=407443884]
 mesh = ExtResource("1_8oibx")
 
-[node name="Shape1" type="CollisionShape3D" parent="Drawer_1" unique_id=1962475393]
+[node name="Shape1" type="CollisionShape3D" parent="Drawer_1" unique_id=715816270]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.026, -0.19)
 shape = SubResource("BoxShape3D_exjxd")
 
-[node name="Shape2" type="CollisionShape3D" parent="Drawer_1" unique_id=79997285]
+[node name="Shape2" type="CollisionShape3D" parent="Drawer_1" unique_id=286088251]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.085, -0.374)
 shape = SubResource("BoxShape3D_vpitw")
 
-[node name="Shape3" type="CollisionShape3D" parent="Drawer_1" unique_id=262824781]
+[node name="Shape3" type="CollisionShape3D" parent="Drawer_1" unique_id=1796593484]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, -0.424, 0.085, -0.19)
 shape = SubResource("BoxShape3D_jadxr")
 
-[node name="Shape4" type="CollisionShape3D" parent="Drawer_1" unique_id=2103280982]
+[node name="Shape4" type="CollisionShape3D" parent="Drawer_1" unique_id=590517283]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0.424, 0.085, -0.19)
 shape = SubResource("BoxShape3D_lffl4")
 
-[node name="Shape5" type="CollisionShape3D" parent="Drawer_1" unique_id=1820566009]
+[node name="Shape5" type="CollisionShape3D" parent="Drawer_1" unique_id=1938484311]
 shape = SubResource("ConvexPolygonShape3D_0qo54")
 
-[node name="Outline" type="Node3D" parent="." unique_id=1187979482]
+[node name="Outline" type="Node3D" parent="." unique_id=733057497]
 visible = false
 script = ExtResource("2_871cl")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1087785380]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=110902585]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_cxsvg")

@@ -41,9 +41,24 @@ points = PackedVector3Array(-0.44463, 0.36, 0.06927, -0.45111, 0.35051, 0.07274,
 points = PackedVector3Array(-0.45, 0.05, 0.275, -0.45, 0.48, 0.275, -0.45, 0.05, 0.24, -0.45, 0.48, 0.24, 0.45, 0.05, 0.275, 0.45, 0.48, 0.275, 0.45, 0.05, 0.24, 0.45, 0.48, 0.24, 0.25, 0.34, 0.285, -0.25, 0.34, 0.285)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_0syho"]
+size = Vector3(0.9, 0.09, 0.55)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g43ly"]
+size = Vector3(0.9, 0.42999998, 0.040000007)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h47ki"]
+size = Vector3(0.9, 0.42999998, 0.040000007)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1ms1k"]
+size = Vector3(0.03999999, 0.42999998, 0.55)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dn1ra"]
+size = Vector3(0.03999999, 0.42999998, 0.55)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p6vsb"]
 size = Vector3(0.83, 0.39, 0.48)
 
-[node name="ToyChest" type="StaticBody3D" unique_id=62109571]
+[node name="ToyChest" type="StaticBody3D" unique_id=1355795411]
 collision_mask = 0
 metadata/footprint = [1.003, 0.596]
 metadata/height = 0.563
@@ -51,55 +66,79 @@ metadata/rooms = ["Kids' room"]
 metadata/plan_spot = "Toy chest"
 metadata/note = "Openable lid hinged at the back edge."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1639447308 instance=ExtResource("1_fmhrt")]
+[node name="Looks" type="Node3D" parent="." unique_id=961151360 instance=ExtResource("1_fmhrt")]
 
-[node name="Shape1" type="CollisionShape3D" parent="." unique_id=295199198]
+[node name="Shape1" type="CollisionShape3D" parent="." unique_id=255322060]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.07, 0)
 shape = SubResource("BoxShape3D_6scsu")
 
-[node name="Shape2" type="CollisionShape3D" parent="." unique_id=3590164]
+[node name="Shape2" type="CollisionShape3D" parent="." unique_id=403679098]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.265, -0.2575)
 shape = SubResource("BoxShape3D_0r4mj")
 
-[node name="Shape3" type="CollisionShape3D" parent="." unique_id=327956575]
+[node name="Shape3" type="CollisionShape3D" parent="." unique_id=1283848172]
 shape = SubResource("ConvexPolygonShape3D_dpgh1")
 
-[node name="Shape4" type="CollisionShape3D" parent="." unique_id=119274327]
+[node name="Shape4" type="CollisionShape3D" parent="." unique_id=2133718229]
 shape = SubResource("ConvexPolygonShape3D_r6yqr")
 
-[node name="Shape5" type="CollisionShape3D" parent="." unique_id=1442911998]
+[node name="Shape5" type="CollisionShape3D" parent="." unique_id=1850080193]
 shape = SubResource("ConvexPolygonShape3D_fq2jc")
 
-[node name="Shape6" type="CollisionShape3D" parent="." unique_id=864345871]
+[node name="Shape6" type="CollisionShape3D" parent="." unique_id=1697334574]
 shape = SubResource("ConvexPolygonShape3D_7fx88")
 
-[node name="Shape7" type="CollisionShape3D" parent="." unique_id=1861414687]
+[node name="Shape7" type="CollisionShape3D" parent="." unique_id=1507944010]
 shape = SubResource("ConvexPolygonShape3D_vmw5b")
 
-[node name="Shape8" type="CollisionShape3D" parent="." unique_id=609577537]
+[node name="Shape8" type="CollisionShape3D" parent="." unique_id=591027677]
 shape = SubResource("ConvexPolygonShape3D_yhxe0")
 
-[node name="Shape9" type="CollisionShape3D" parent="." unique_id=1854747977]
+[node name="Shape9" type="CollisionShape3D" parent="." unique_id=1144975475]
 shape = SubResource("ConvexPolygonShape3D_7idyt")
 
-[node name="Shape10" type="CollisionShape3D" parent="." unique_id=5260007]
+[node name="Shape10" type="CollisionShape3D" parent="." unique_id=249345771]
 shape = SubResource("ConvexPolygonShape3D_bbiwe")
 
-[node name="Shape11" type="CollisionShape3D" parent="." unique_id=1277663862]
+[node name="Shape11" type="CollisionShape3D" parent="." unique_id=1123250891]
 shape = SubResource("ConvexPolygonShape3D_2qoq5")
 
-[node name="Shape12" type="CollisionShape3D" parent="." unique_id=1123026016]
+[node name="Shape12" type="CollisionShape3D" parent="." unique_id=2140407118]
 shape = SubResource("ConvexPolygonShape3D_kh6s8")
 
-[node name="Lid" type="Node3D" parent="." unique_id=1006700065]
+[node name="PlayerBody" type="StaticBody3D" parent="." unique_id=2067619668]
+collision_layer = 8
+collision_mask = 0
 
-[node name="Openable" type="Node" parent="Lid" unique_id=385367120]
+[node name="Box1" type="CollisionShape3D" parent="PlayerBody" unique_id=1849089257]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.045, 0)
+shape = SubResource("BoxShape3D_0syho")
+
+[node name="Box2" type="CollisionShape3D" parent="PlayerBody" unique_id=951955524]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.265, 0.255)
+shape = SubResource("BoxShape3D_g43ly")
+
+[node name="Box3" type="CollisionShape3D" parent="PlayerBody" unique_id=214938852]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.265, -0.255)
+shape = SubResource("BoxShape3D_h47ki")
+
+[node name="Box4" type="CollisionShape3D" parent="PlayerBody" unique_id=1957047144]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43, 0.265, 0)
+shape = SubResource("BoxShape3D_1ms1k")
+
+[node name="Box5" type="CollisionShape3D" parent="PlayerBody" unique_id=286247063]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.43, 0.265, 0)
+shape = SubResource("BoxShape3D_dn1ra")
+
+[node name="Lid" type="Node3D" parent="." unique_id=28375248]
+
+[node name="Openable" type="Node" parent="Lid" unique_id=1219842439]
 script = ExtResource("2_t7jvg")
 metadata/kind = "cupboard"
 
-[node name="Looks" type="Node3D" parent="Lid" unique_id=1054000716 instance=ExtResource("3_a1mfd")]
+[node name="Looks" type="Node3D" parent="Lid" unique_id=2132020584 instance=ExtResource("3_a1mfd")]
 
-[node name="Inside" type="Area3D" parent="Lid" unique_id=334205966]
+[node name="Inside" type="Area3D" parent="Lid" unique_id=258003008]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.285, 0)
 collision_layer = 0
 collision_mask = 0
@@ -107,5 +146,5 @@ monitoring = false
 monitorable = false
 metadata/shelves_y = []
 
-[node name="Box" type="CollisionShape3D" parent="Lid/Inside" unique_id=249693313]
-shape = SubResource("BoxShape3D_0syho")
+[node name="Box" type="CollisionShape3D" parent="Lid/Inside" unique_id=320491956]
+shape = SubResource("BoxShape3D_p6vsb")

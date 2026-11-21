@@ -58,23 +58,23 @@ _data = {
 &"shut": SubResource("Animation_pil1e")
 }
 
-[node name="LooksMineCrateLid" type="Node3D" unique_id=1020211101]
+[node name="LooksMineCrateLid" type="Node3D" unique_id=234023315]
 
-[node name="Lid" type="AnimatableBody3D" parent="." unique_id=1390841480]
+[node name="Lid" type="AnimatableBody3D" parent="." unique_id=67518872]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44, -0.2463)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Lid" unique_id=1945809488]
+[node name="Mesh" type="MeshInstance3D" parent="Lid" unique_id=1346161208]
 mesh = ExtResource("1_swffv")
 
-[node name="Shape1" type="CollisionShape3D" parent="Lid" unique_id=1476005190]
+[node name="Shape1" type="CollisionShape3D" parent="Lid" unique_id=1576637882]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.015, 0.24)
 shape = SubResource("BoxShape3D_1a7jl")
 
-[node name="Outline" type="Node3D" parent="." unique_id=1525008316]
+[node name="Outline" type="Node3D" parent="." unique_id=472334144]
 visible = false
 script = ExtResource("2_m48fm")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1171317083]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=884783135]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_v77bm")

@@ -45,9 +45,12 @@ points = PackedVector3Array(0.0068, 0.1, 0.06991, 0.0016, 0.08104, 0.06003, -0.0
 points = PackedVector3Array(0.00778, 0.08104, 0.04099, 0.0178, 0.1, 0.03605, 0.01001, 0.11896, 0.04405, -0.00778, 0.11896, 0.05699, 0.15854, 0.07, 0.30462, 0.16632, 0.05104, 0.29662, 0.18412, 0.05104, 0.28369, 0.19413, 0.07, 0.27876, 0.18635, 0.08896, 0.28676, 0.16855, 0.08896, 0.29969, -0.0178, 0.1, 0.03605, -0.00778, 0.08104, 0.04099, 0.00778, 0.11896, 0.05699, -0.01001, 0.11896, 0.04405, -0.19413, 0.07, 0.27876, -0.18412, 0.05104, 0.28369, -0.16632, 0.05104, 0.29662, -0.15854, 0.07, 0.30462, -0.16855, 0.08896, 0.29969, -0.18635, 0.08896, 0.28676)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_idg7y"]
+size = Vector3(0.637, 0.68799996, 0.65)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2irch"]
 size = Vector3(0.32, 0.339, 0.32)
 
-[node name="OfficeChair" type="StaticBody3D" unique_id=1514823887]
+[node name="OfficeChair" type="StaticBody3D" unique_id=1968482412]
 collision_mask = 0
 metadata/footprint = [0.637, 0.65]
 metadata/height = 1.068
@@ -56,58 +59,66 @@ metadata/hide = "under the seat"
 metadata/rooms = ["Home office"]
 metadata/plan_spot = "Office chair"
 
-[node name="Looks" type="Node3D" parent="." unique_id=2034742600 instance=ExtResource("1_a7pp7")]
+[node name="Looks" type="Node3D" parent="." unique_id=1221407051 instance=ExtResource("1_a7pp7")]
 
-[node name="Shape1" type="CollisionShape3D" parent="." unique_id=1095271621]
+[node name="Shape1" type="CollisionShape3D" parent="." unique_id=245961731]
 shape = SubResource("ConvexPolygonShape3D_sb770")
 
-[node name="Shape2" type="CollisionShape3D" parent="." unique_id=568988157]
+[node name="Shape2" type="CollisionShape3D" parent="." unique_id=312755539]
 shape = SubResource("ConvexPolygonShape3D_dh1bg")
 
-[node name="Shape3" type="CollisionShape3D" parent="." unique_id=1588873170]
+[node name="Shape3" type="CollisionShape3D" parent="." unique_id=378564830]
 shape = SubResource("ConvexPolygonShape3D_kla5w")
 
-[node name="Shape4" type="CollisionShape3D" parent="." unique_id=1871058029]
+[node name="Shape4" type="CollisionShape3D" parent="." unique_id=1827915670]
 shape = SubResource("ConvexPolygonShape3D_dpr1q")
 
-[node name="Shape5" type="CollisionShape3D" parent="." unique_id=1529784598]
+[node name="Shape5" type="CollisionShape3D" parent="." unique_id=43517964]
 shape = SubResource("ConvexPolygonShape3D_tv3wu")
 
-[node name="Shape6" type="CollisionShape3D" parent="." unique_id=1100909695]
+[node name="Shape6" type="CollisionShape3D" parent="." unique_id=1161823063]
 shape = SubResource("ConvexPolygonShape3D_56s4g")
 
-[node name="Shape7" type="CollisionShape3D" parent="." unique_id=1376979972]
+[node name="Shape7" type="CollisionShape3D" parent="." unique_id=1449366167]
 shape = SubResource("ConvexPolygonShape3D_83i6i")
 
-[node name="Shape8" type="CollisionShape3D" parent="." unique_id=347844825]
+[node name="Shape8" type="CollisionShape3D" parent="." unique_id=1575950780]
 shape = SubResource("ConvexPolygonShape3D_xmhth")
 
-[node name="Shape9" type="CollisionShape3D" parent="." unique_id=1928632380]
+[node name="Shape9" type="CollisionShape3D" parent="." unique_id=1450208596]
 shape = SubResource("ConvexPolygonShape3D_q4kf6")
 
-[node name="Shape10" type="CollisionShape3D" parent="." unique_id=1917017126]
+[node name="Shape10" type="CollisionShape3D" parent="." unique_id=134217816]
 shape = SubResource("ConvexPolygonShape3D_6hju5")
 
-[node name="Shape11" type="CollisionShape3D" parent="." unique_id=284236977]
+[node name="Shape11" type="CollisionShape3D" parent="." unique_id=2090664358]
 shape = SubResource("ConvexPolygonShape3D_8pxwh")
 
-[node name="Shape12" type="CollisionShape3D" parent="." unique_id=47542149]
+[node name="Shape12" type="CollisionShape3D" parent="." unique_id=179339122]
 shape = SubResource("ConvexPolygonShape3D_5hwuw")
 
-[node name="Shape13" type="CollisionShape3D" parent="." unique_id=2125018333]
+[node name="Shape13" type="CollisionShape3D" parent="." unique_id=1647402285]
 shape = SubResource("ConvexPolygonShape3D_md0kn")
 
-[node name="Shape14" type="CollisionShape3D" parent="." unique_id=858282184]
+[node name="Shape14" type="CollisionShape3D" parent="." unique_id=962651048]
 shape = SubResource("ConvexPolygonShape3D_3r2s0")
 
-[node name="Spots" type="Node3D" parent="." unique_id=130345373]
+[node name="PlayerBody" type="StaticBody3D" parent="." unique_id=1150524837]
+collision_layer = 8
+collision_mask = 0
 
-[node name="Top1" type="Area3D" parent="Spots" unique_id=1836571223]
+[node name="Box1" type="CollisionShape3D" parent="PlayerBody" unique_id=1778993337]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.724, 0)
+shape = SubResource("BoxShape3D_idg7y")
+
+[node name="Spots" type="Node3D" parent="." unique_id=913887849]
+
+[node name="Top1" type="Area3D" parent="Spots" unique_id=621084633]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6985, 0.040000003)
 collision_layer = 0
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Box" type="CollisionShape3D" parent="Spots/Top1" unique_id=1205422538]
-shape = SubResource("BoxShape3D_idg7y")
+[node name="Box" type="CollisionShape3D" parent="Spots/Top1" unique_id=1103778519]
+shape = SubResource("BoxShape3D_2irch")

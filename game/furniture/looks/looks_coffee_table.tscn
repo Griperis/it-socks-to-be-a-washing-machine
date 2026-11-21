@@ -2,7 +2,7 @@
 
 [ext_resource type="ArrayMesh" uid="uid://ba0oed5oj3mr3" path="res://assets/furniture/meshes/coffee_table_Body.res" id="1_bodkq"]
 
-[node name="LooksCoffeeTable" type="Node3D" unique_id=2032687985]
+[node name="LooksCoffeeTable" type="Node3D" unique_id=143206549]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=1251758229]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=2122719126]
 mesh = ExtResource("1_bodkq")

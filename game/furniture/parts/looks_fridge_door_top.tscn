@@ -61,26 +61,26 @@ _data = {
 &"shut": SubResource("Animation_otlx2")
 }
 
-[node name="LooksFridgeDoorTop" type="Node3D" unique_id=1884011040]
+[node name="LooksFridgeDoorTop" type="Node3D" unique_id=69230489]
 
-[node name="Door_Top" type="AnimatableBody3D" parent="." unique_id=1769039154]
+[node name="Door_Top" type="AnimatableBody3D" parent="." unique_id=1106231828]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.335, 0.63, 0.2931)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Door_Top" unique_id=2084946887]
+[node name="Mesh" type="MeshInstance3D" parent="Door_Top" unique_id=674660943]
 mesh = ExtResource("1_xc16t")
 
-[node name="Shape1" type="CollisionShape3D" parent="Door_Top" unique_id=1952593400]
+[node name="Shape1" type="CollisionShape3D" parent="Door_Top" unique_id=1674444811]
 shape = SubResource("ConvexPolygonShape3D_khxuu")
 
-[node name="Shape2" type="CollisionShape3D" parent="Door_Top" unique_id=809579898]
+[node name="Shape2" type="CollisionShape3D" parent="Door_Top" unique_id=1607925993]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0.335, 0.6, -0.006)
 shape = SubResource("BoxShape3D_lieff")
 
-[node name="Outline" type="Node3D" parent="." unique_id=231751193]
+[node name="Outline" type="Node3D" parent="." unique_id=96967797]
 visible = false
 script = ExtResource("2_w0dkd")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=474590157]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1014346834]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_bxr2u")

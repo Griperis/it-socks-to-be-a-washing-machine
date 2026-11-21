@@ -90,447 +90,447 @@
 [ext_resource type="ArrayMesh" uid="uid://cwf4ib47hbg80" path="res://assets/furniture/meshes/piano_Key_107.res" id="88_2ifl2"]
 [ext_resource type="ArrayMesh" uid="uid://ha2by5mo7qcd" path="res://assets/furniture/meshes/piano_Key_108.res" id="89_2tkck"]
 
-[node name="LooksPiano" type="Node3D" unique_id=1715956920]
+[node name="LooksPiano" type="Node3D" unique_id=1654584615]
 
-[node name="Body" type="MeshInstance3D" parent="." unique_id=1903520286]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=1766945782]
 mesh = ExtResource("1_d0irn")
 
-[node name="Key_21" type="MeshInstance3D" parent="." unique_id=463200620]
+[node name="Key_21" type="MeshInstance3D" parent="." unique_id=211877649]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.59925, 0.69, 0.066)
 mesh = ExtResource("2_ufdhq")
 metadata/midi = 21.0
 
-[node name="Key_22" type="MeshInstance3D" parent="." unique_id=2089898370]
+[node name="Key_22" type="MeshInstance3D" parent="." unique_id=1738606234]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5875, 0.69, 0.066)
 mesh = ExtResource("3_mfdl4")
 metadata/midi = 22.0
 
-[node name="Key_23" type="MeshInstance3D" parent="." unique_id=420136005]
+[node name="Key_23" type="MeshInstance3D" parent="." unique_id=135846629]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.57575, 0.69, 0.066)
 mesh = ExtResource("4_0j3b5")
 metadata/midi = 23.0
 
-[node name="Key_24" type="MeshInstance3D" parent="." unique_id=1405872557]
+[node name="Key_24" type="MeshInstance3D" parent="." unique_id=1709554174]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55225, 0.69, 0.066)
 mesh = ExtResource("5_6mmj1")
 metadata/midi = 24.0
 
-[node name="Key_25" type="MeshInstance3D" parent="." unique_id=1526322677]
+[node name="Key_25" type="MeshInstance3D" parent="." unique_id=1855318971]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5405, 0.69, 0.066)
 mesh = ExtResource("6_5qr48")
 metadata/midi = 25.0
 
-[node name="Key_26" type="MeshInstance3D" parent="." unique_id=747962531]
+[node name="Key_26" type="MeshInstance3D" parent="." unique_id=2023136431]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.52875, 0.69, 0.066)
 mesh = ExtResource("7_nbbn6")
 metadata/midi = 26.0
 
-[node name="Key_27" type="MeshInstance3D" parent="." unique_id=1202671954]
+[node name="Key_27" type="MeshInstance3D" parent="." unique_id=46765386]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.517, 0.69, 0.066)
 mesh = ExtResource("8_aam5s")
 metadata/midi = 27.0
 
-[node name="Key_28" type="MeshInstance3D" parent="." unique_id=1582170799]
+[node name="Key_28" type="MeshInstance3D" parent="." unique_id=145360929]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.50525, 0.69, 0.066)
 mesh = ExtResource("9_cxhgi")
 metadata/midi = 28.0
 
-[node name="Key_29" type="MeshInstance3D" parent="." unique_id=49505956]
+[node name="Key_29" type="MeshInstance3D" parent="." unique_id=484745380]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.48175, 0.69, 0.066)
 mesh = ExtResource("10_4wvve")
 metadata/midi = 29.0
 
-[node name="Key_30" type="MeshInstance3D" parent="." unique_id=222922821]
+[node name="Key_30" type="MeshInstance3D" parent="." unique_id=212428263]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47, 0.69, 0.066)
 mesh = ExtResource("11_gxd1o")
 metadata/midi = 30.0
 
-[node name="Key_31" type="MeshInstance3D" parent="." unique_id=1845539508]
+[node name="Key_31" type="MeshInstance3D" parent="." unique_id=1181907443]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45825, 0.69, 0.066)
 mesh = ExtResource("12_x3u0v")
 metadata/midi = 31.0
 
-[node name="Key_32" type="MeshInstance3D" parent="." unique_id=226550429]
+[node name="Key_32" type="MeshInstance3D" parent="." unique_id=181327243]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4465, 0.69, 0.066)
 mesh = ExtResource("13_nsian")
 metadata/midi = 32.0
 
-[node name="Key_33" type="MeshInstance3D" parent="." unique_id=1471973579]
+[node name="Key_33" type="MeshInstance3D" parent="." unique_id=600511631]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.43475, 0.69, 0.066)
 mesh = ExtResource("14_64h6i")
 metadata/midi = 33.0
 
-[node name="Key_34" type="MeshInstance3D" parent="." unique_id=1493489007]
+[node name="Key_34" type="MeshInstance3D" parent="." unique_id=1004813745]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.423, 0.69, 0.066)
 mesh = ExtResource("15_5dasd")
 metadata/midi = 34.0
 
-[node name="Key_35" type="MeshInstance3D" parent="." unique_id=1402061416]
+[node name="Key_35" type="MeshInstance3D" parent="." unique_id=595106036]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.41125, 0.69, 0.066)
 mesh = ExtResource("16_vto56")
 metadata/midi = 35.0
 
-[node name="Key_36" type="MeshInstance3D" parent="." unique_id=977590967]
+[node name="Key_36" type="MeshInstance3D" parent="." unique_id=1840018846]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.38775, 0.69, 0.066)
 mesh = ExtResource("17_5ikbs")
 metadata/midi = 36.0
 
-[node name="Key_37" type="MeshInstance3D" parent="." unique_id=2010369214]
+[node name="Key_37" type="MeshInstance3D" parent="." unique_id=432172575]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.376, 0.69, 0.066)
 mesh = ExtResource("18_g6m0v")
 metadata/midi = 37.0
 
-[node name="Key_38" type="MeshInstance3D" parent="." unique_id=137011616]
+[node name="Key_38" type="MeshInstance3D" parent="." unique_id=953060866]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36425, 0.69, 0.066)
 mesh = ExtResource("19_cbw02")
 metadata/midi = 38.0
 
-[node name="Key_39" type="MeshInstance3D" parent="." unique_id=1493786329]
+[node name="Key_39" type="MeshInstance3D" parent="." unique_id=500338593]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 0.69, 0.066)
 mesh = ExtResource("20_pkvus")
 metadata/midi = 39.0
 
-[node name="Key_40" type="MeshInstance3D" parent="." unique_id=1233616891]
+[node name="Key_40" type="MeshInstance3D" parent="." unique_id=1215429778]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.34075, 0.69, 0.066)
 mesh = ExtResource("21_4glp3")
 metadata/midi = 40.0
 
-[node name="Key_41" type="MeshInstance3D" parent="." unique_id=1686206253]
+[node name="Key_41" type="MeshInstance3D" parent="." unique_id=610795669]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.31725, 0.69, 0.066)
 mesh = ExtResource("22_spmeq")
 metadata/midi = 41.0
 
-[node name="Key_42" type="MeshInstance3D" parent="." unique_id=969876257]
+[node name="Key_42" type="MeshInstance3D" parent="." unique_id=569505228]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3055, 0.69, 0.066)
 mesh = ExtResource("23_yfnfx")
 metadata/midi = 42.0
 
-[node name="Key_43" type="MeshInstance3D" parent="." unique_id=1281744240]
+[node name="Key_43" type="MeshInstance3D" parent="." unique_id=1702060759]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29375, 0.69, 0.066)
 mesh = ExtResource("24_o8y04")
 metadata/midi = 43.0
 
-[node name="Key_44" type="MeshInstance3D" parent="." unique_id=1648748460]
+[node name="Key_44" type="MeshInstance3D" parent="." unique_id=524152201]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.282, 0.69, 0.066)
 mesh = ExtResource("25_uoety")
 metadata/midi = 44.0
 
-[node name="Key_45" type="MeshInstance3D" parent="." unique_id=1386390249]
+[node name="Key_45" type="MeshInstance3D" parent="." unique_id=632285993]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.27025, 0.69, 0.066)
 mesh = ExtResource("26_ed4w1")
 metadata/midi = 45.0
 
-[node name="Key_46" type="MeshInstance3D" parent="." unique_id=165254482]
+[node name="Key_46" type="MeshInstance3D" parent="." unique_id=2115616406]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2585, 0.69, 0.066)
 mesh = ExtResource("27_seusc")
 metadata/midi = 46.0
 
-[node name="Key_47" type="MeshInstance3D" parent="." unique_id=170003604]
+[node name="Key_47" type="MeshInstance3D" parent="." unique_id=1650836574]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24675, 0.69, 0.066)
 mesh = ExtResource("28_3o8v2")
 metadata/midi = 47.0
 
-[node name="Key_48" type="MeshInstance3D" parent="." unique_id=123918131]
+[node name="Key_48" type="MeshInstance3D" parent="." unique_id=1976166897]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22325, 0.69, 0.066)
 mesh = ExtResource("29_kwkms")
 metadata/midi = 48.0
 
-[node name="Key_49" type="MeshInstance3D" parent="." unique_id=1061600129]
+[node name="Key_49" type="MeshInstance3D" parent="." unique_id=1144581324]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2115, 0.69, 0.066)
 mesh = ExtResource("30_uuite")
 metadata/midi = 49.0
 
-[node name="Key_50" type="MeshInstance3D" parent="." unique_id=1207039092]
+[node name="Key_50" type="MeshInstance3D" parent="." unique_id=768182513]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.19975, 0.69, 0.066)
 mesh = ExtResource("31_clidu")
 metadata/midi = 50.0
 
-[node name="Key_51" type="MeshInstance3D" parent="." unique_id=2078480366]
+[node name="Key_51" type="MeshInstance3D" parent="." unique_id=307725988]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.188, 0.69, 0.066)
 mesh = ExtResource("32_vml0b")
 metadata/midi = 51.0
 
-[node name="Key_52" type="MeshInstance3D" parent="." unique_id=1649199105]
+[node name="Key_52" type="MeshInstance3D" parent="." unique_id=1853329192]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17625, 0.69, 0.066)
 mesh = ExtResource("33_l1unw")
 metadata/midi = 52.0
 
-[node name="Key_53" type="MeshInstance3D" parent="." unique_id=1895253512]
+[node name="Key_53" type="MeshInstance3D" parent="." unique_id=922549924]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15275, 0.69, 0.066)
 mesh = ExtResource("34_ccrbh")
 metadata/midi = 53.0
 
-[node name="Key_54" type="MeshInstance3D" parent="." unique_id=790845928]
+[node name="Key_54" type="MeshInstance3D" parent="." unique_id=1499708280]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.141, 0.69, 0.066)
 mesh = ExtResource("35_t1da2")
 metadata/midi = 54.0
 
-[node name="Key_55" type="MeshInstance3D" parent="." unique_id=1997731222]
+[node name="Key_55" type="MeshInstance3D" parent="." unique_id=377278907]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12925, 0.69, 0.066)
 mesh = ExtResource("36_bfcbh")
 metadata/midi = 55.0
 
-[node name="Key_56" type="MeshInstance3D" parent="." unique_id=231686665]
+[node name="Key_56" type="MeshInstance3D" parent="." unique_id=1959009607]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1175, 0.69, 0.066)
 mesh = ExtResource("37_bnr6r")
 metadata/midi = 56.0
 
-[node name="Key_57" type="MeshInstance3D" parent="." unique_id=305402323]
+[node name="Key_57" type="MeshInstance3D" parent="." unique_id=1706243130]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10575, 0.69, 0.066)
 mesh = ExtResource("38_2vrr3")
 metadata/midi = 57.0
 
-[node name="Key_58" type="MeshInstance3D" parent="." unique_id=1192651396]
+[node name="Key_58" type="MeshInstance3D" parent="." unique_id=2049710404]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.094, 0.69, 0.066)
 mesh = ExtResource("39_2rkwg")
 metadata/midi = 58.0
 
-[node name="Key_59" type="MeshInstance3D" parent="." unique_id=1399557397]
+[node name="Key_59" type="MeshInstance3D" parent="." unique_id=1496233958]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08225, 0.69, 0.066)
 mesh = ExtResource("40_x02d5")
 metadata/midi = 59.0
 
-[node name="Key_60" type="MeshInstance3D" parent="." unique_id=639144744]
+[node name="Key_60" type="MeshInstance3D" parent="." unique_id=1436669179]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05875, 0.69, 0.066)
 mesh = ExtResource("41_g0oce")
 metadata/midi = 60.0
 
-[node name="Key_61" type="MeshInstance3D" parent="." unique_id=1352095321]
+[node name="Key_61" type="MeshInstance3D" parent="." unique_id=733961619]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.047, 0.69, 0.066)
 mesh = ExtResource("42_rvbrj")
 metadata/midi = 61.0
 
-[node name="Key_62" type="MeshInstance3D" parent="." unique_id=1614525203]
+[node name="Key_62" type="MeshInstance3D" parent="." unique_id=1329373328]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.03525, 0.69, 0.066)
 mesh = ExtResource("43_66645")
 metadata/midi = 62.0
 
-[node name="Key_63" type="MeshInstance3D" parent="." unique_id=1920039681]
+[node name="Key_63" type="MeshInstance3D" parent="." unique_id=1643986332]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0235, 0.69, 0.066)
 mesh = ExtResource("44_erdd4")
 metadata/midi = 63.0
 
-[node name="Key_64" type="MeshInstance3D" parent="." unique_id=455147727]
+[node name="Key_64" type="MeshInstance3D" parent="." unique_id=2003489431]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01175, 0.69, 0.066)
 mesh = ExtResource("45_c2g7r")
 metadata/midi = 64.0
 
-[node name="Key_65" type="MeshInstance3D" parent="." unique_id=950715440]
+[node name="Key_65" type="MeshInstance3D" parent="." unique_id=1002061353]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01175, 0.69, 0.066)
 mesh = ExtResource("46_bclo4")
 metadata/midi = 65.0
 
-[node name="Key_66" type="MeshInstance3D" parent="." unique_id=1581664181]
+[node name="Key_66" type="MeshInstance3D" parent="." unique_id=725613293]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0235, 0.69, 0.066)
 mesh = ExtResource("47_f52bj")
 metadata/midi = 66.0
 
-[node name="Key_67" type="MeshInstance3D" parent="." unique_id=671736837]
+[node name="Key_67" type="MeshInstance3D" parent="." unique_id=1228180754]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03525, 0.69, 0.066)
 mesh = ExtResource("48_2fwl3")
 metadata/midi = 67.0
 
-[node name="Key_68" type="MeshInstance3D" parent="." unique_id=1298434975]
+[node name="Key_68" type="MeshInstance3D" parent="." unique_id=1121490157]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.047, 0.69, 0.066)
 mesh = ExtResource("49_8u33k")
 metadata/midi = 68.0
 
-[node name="Key_69" type="MeshInstance3D" parent="." unique_id=1273594140]
+[node name="Key_69" type="MeshInstance3D" parent="." unique_id=1239160901]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05875, 0.69, 0.066)
 mesh = ExtResource("50_hy7s1")
 metadata/midi = 69.0
 
-[node name="Key_70" type="MeshInstance3D" parent="." unique_id=2065315549]
+[node name="Key_70" type="MeshInstance3D" parent="." unique_id=1805233063]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0705, 0.69, 0.066)
 mesh = ExtResource("51_nlbkr")
 metadata/midi = 70.0
 
-[node name="Key_71" type="MeshInstance3D" parent="." unique_id=974909008]
+[node name="Key_71" type="MeshInstance3D" parent="." unique_id=129322853]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08225, 0.69, 0.066)
 mesh = ExtResource("52_7y0t2")
 metadata/midi = 71.0
 
-[node name="Key_72" type="MeshInstance3D" parent="." unique_id=151039995]
+[node name="Key_72" type="MeshInstance3D" parent="." unique_id=662501514]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10575, 0.69, 0.066)
 mesh = ExtResource("53_yg6fb")
 metadata/midi = 72.0
 
-[node name="Key_73" type="MeshInstance3D" parent="." unique_id=1904496493]
+[node name="Key_73" type="MeshInstance3D" parent="." unique_id=848218100]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1175, 0.69, 0.066)
 mesh = ExtResource("54_2qxgk")
 metadata/midi = 73.0
 
-[node name="Key_74" type="MeshInstance3D" parent="." unique_id=1627395001]
+[node name="Key_74" type="MeshInstance3D" parent="." unique_id=726591432]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12925, 0.69, 0.066)
 mesh = ExtResource("55_vij16")
 metadata/midi = 74.0
 
-[node name="Key_75" type="MeshInstance3D" parent="." unique_id=1656268392]
+[node name="Key_75" type="MeshInstance3D" parent="." unique_id=1302793096]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.141, 0.69, 0.066)
 mesh = ExtResource("56_k00es")
 metadata/midi = 75.0
 
-[node name="Key_76" type="MeshInstance3D" parent="." unique_id=825618158]
+[node name="Key_76" type="MeshInstance3D" parent="." unique_id=248827607]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15275, 0.69, 0.066)
 mesh = ExtResource("57_3760r")
 metadata/midi = 76.0
 
-[node name="Key_77" type="MeshInstance3D" parent="." unique_id=1709136897]
+[node name="Key_77" type="MeshInstance3D" parent="." unique_id=2114095966]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17625, 0.69, 0.066)
 mesh = ExtResource("58_ljteb")
 metadata/midi = 77.0
 
-[node name="Key_78" type="MeshInstance3D" parent="." unique_id=1678426343]
+[node name="Key_78" type="MeshInstance3D" parent="." unique_id=1943986618]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.188, 0.69, 0.066)
 mesh = ExtResource("59_elcv4")
 metadata/midi = 78.0
 
-[node name="Key_79" type="MeshInstance3D" parent="." unique_id=1467509622]
+[node name="Key_79" type="MeshInstance3D" parent="." unique_id=180720120]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.19975, 0.69, 0.066)
 mesh = ExtResource("60_xhinx")
 metadata/midi = 79.0
 
-[node name="Key_80" type="MeshInstance3D" parent="." unique_id=730204401]
+[node name="Key_80" type="MeshInstance3D" parent="." unique_id=1499553281]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2115, 0.69, 0.066)
 mesh = ExtResource("61_uo1ag")
 metadata/midi = 80.0
 
-[node name="Key_81" type="MeshInstance3D" parent="." unique_id=1964635998]
+[node name="Key_81" type="MeshInstance3D" parent="." unique_id=1140116495]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22325, 0.69, 0.066)
 mesh = ExtResource("62_807nf")
 metadata/midi = 81.0
 
-[node name="Key_82" type="MeshInstance3D" parent="." unique_id=875463519]
+[node name="Key_82" type="MeshInstance3D" parent="." unique_id=49520603]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.235, 0.69, 0.066)
 mesh = ExtResource("63_h8q1t")
 metadata/midi = 82.0
 
-[node name="Key_83" type="MeshInstance3D" parent="." unique_id=2099894173]
+[node name="Key_83" type="MeshInstance3D" parent="." unique_id=1226006916]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24675, 0.69, 0.066)
 mesh = ExtResource("64_t5b0g")
 metadata/midi = 83.0
 
-[node name="Key_84" type="MeshInstance3D" parent="." unique_id=1630630805]
+[node name="Key_84" type="MeshInstance3D" parent="." unique_id=1075088327]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27025, 0.69, 0.066)
 mesh = ExtResource("65_j8qt4")
 metadata/midi = 84.0
 
-[node name="Key_85" type="MeshInstance3D" parent="." unique_id=1919250822]
+[node name="Key_85" type="MeshInstance3D" parent="." unique_id=587404079]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.282, 0.69, 0.066)
 mesh = ExtResource("66_mpf6s")
 metadata/midi = 85.0
 
-[node name="Key_86" type="MeshInstance3D" parent="." unique_id=882274432]
+[node name="Key_86" type="MeshInstance3D" parent="." unique_id=697193298]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.29375, 0.69, 0.066)
 mesh = ExtResource("67_1eov6")
 metadata/midi = 86.0
 
-[node name="Key_87" type="MeshInstance3D" parent="." unique_id=1567868279]
+[node name="Key_87" type="MeshInstance3D" parent="." unique_id=692608914]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3055, 0.69, 0.066)
 mesh = ExtResource("68_gcfur")
 metadata/midi = 87.0
 
-[node name="Key_88" type="MeshInstance3D" parent="." unique_id=2005175527]
+[node name="Key_88" type="MeshInstance3D" parent="." unique_id=2130083074]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.31725, 0.69, 0.066)
 mesh = ExtResource("69_btr75")
 metadata/midi = 88.0
 
-[node name="Key_89" type="MeshInstance3D" parent="." unique_id=1310518523]
+[node name="Key_89" type="MeshInstance3D" parent="." unique_id=549861355]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.34075, 0.69, 0.066)
 mesh = ExtResource("70_o88u7")
 metadata/midi = 89.0
 
-[node name="Key_90" type="MeshInstance3D" parent="." unique_id=556342744]
+[node name="Key_90" type="MeshInstance3D" parent="." unique_id=1089133018]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 0.69, 0.066)
 mesh = ExtResource("71_ga05b")
 metadata/midi = 90.0
 
-[node name="Key_91" type="MeshInstance3D" parent="." unique_id=1063602137]
+[node name="Key_91" type="MeshInstance3D" parent="." unique_id=141890319]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.36425, 0.69, 0.066)
 mesh = ExtResource("72_sppqw")
 metadata/midi = 91.0
 
-[node name="Key_92" type="MeshInstance3D" parent="." unique_id=862553220]
+[node name="Key_92" type="MeshInstance3D" parent="." unique_id=1274169785]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.376, 0.69, 0.066)
 mesh = ExtResource("73_5158i")
 metadata/midi = 92.0
 
-[node name="Key_93" type="MeshInstance3D" parent="." unique_id=88464892]
+[node name="Key_93" type="MeshInstance3D" parent="." unique_id=2137394096]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38775, 0.69, 0.066)
 mesh = ExtResource("74_dtmvg")
 metadata/midi = 93.0
 
-[node name="Key_94" type="MeshInstance3D" parent="." unique_id=1737625593]
+[node name="Key_94" type="MeshInstance3D" parent="." unique_id=1546293209]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3995, 0.69, 0.066)
 mesh = ExtResource("75_stkk6")
 metadata/midi = 94.0
 
-[node name="Key_95" type="MeshInstance3D" parent="." unique_id=2054405273]
+[node name="Key_95" type="MeshInstance3D" parent="." unique_id=1530458542]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.41125, 0.69, 0.066)
 mesh = ExtResource("76_0nvtx")
 metadata/midi = 95.0
 
-[node name="Key_96" type="MeshInstance3D" parent="." unique_id=140195904]
+[node name="Key_96" type="MeshInstance3D" parent="." unique_id=1774067074]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.43475, 0.69, 0.066)
 mesh = ExtResource("77_vnc2s")
 metadata/midi = 96.0
 
-[node name="Key_97" type="MeshInstance3D" parent="." unique_id=2104904441]
+[node name="Key_97" type="MeshInstance3D" parent="." unique_id=1624970357]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4465, 0.69, 0.066)
 mesh = ExtResource("78_ygf0p")
 metadata/midi = 97.0
 
-[node name="Key_98" type="MeshInstance3D" parent="." unique_id=765951891]
+[node name="Key_98" type="MeshInstance3D" parent="." unique_id=765642558]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45825, 0.69, 0.066)
 mesh = ExtResource("79_5amtb")
 metadata/midi = 98.0
 
-[node name="Key_99" type="MeshInstance3D" parent="." unique_id=1386343334]
+[node name="Key_99" type="MeshInstance3D" parent="." unique_id=36421604]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47, 0.69, 0.066)
 mesh = ExtResource("80_vlyiw")
 metadata/midi = 99.0
 
-[node name="Key_100" type="MeshInstance3D" parent="." unique_id=20734688]
+[node name="Key_100" type="MeshInstance3D" parent="." unique_id=1281983697]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.48175, 0.69, 0.066)
 mesh = ExtResource("81_2gfj7")
 metadata/midi = 100.0
 
-[node name="Key_101" type="MeshInstance3D" parent="." unique_id=258233491]
+[node name="Key_101" type="MeshInstance3D" parent="." unique_id=1412704336]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.50525, 0.69, 0.066)
 mesh = ExtResource("82_7eb5s")
 metadata/midi = 101.0
 
-[node name="Key_102" type="MeshInstance3D" parent="." unique_id=1677919286]
+[node name="Key_102" type="MeshInstance3D" parent="." unique_id=355560443]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.517, 0.69, 0.066)
 mesh = ExtResource("83_w441j")
 metadata/midi = 102.0
 
-[node name="Key_103" type="MeshInstance3D" parent="." unique_id=652045041]
+[node name="Key_103" type="MeshInstance3D" parent="." unique_id=443468584]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.52875, 0.69, 0.066)
 mesh = ExtResource("84_lesan")
 metadata/midi = 103.0
 
-[node name="Key_104" type="MeshInstance3D" parent="." unique_id=1180380107]
+[node name="Key_104" type="MeshInstance3D" parent="." unique_id=412524069]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5405, 0.69, 0.066)
 mesh = ExtResource("85_ejeti")
 metadata/midi = 104.0
 
-[node name="Key_105" type="MeshInstance3D" parent="." unique_id=28209952]
+[node name="Key_105" type="MeshInstance3D" parent="." unique_id=1062840442]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55225, 0.69, 0.066)
 mesh = ExtResource("86_46uvn")
 metadata/midi = 105.0
 
-[node name="Key_106" type="MeshInstance3D" parent="." unique_id=1723920672]
+[node name="Key_106" type="MeshInstance3D" parent="." unique_id=476187443]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.564, 0.69, 0.066)
 mesh = ExtResource("87_c5ybi")
 metadata/midi = 106.0
 
-[node name="Key_107" type="MeshInstance3D" parent="." unique_id=58893128]
+[node name="Key_107" type="MeshInstance3D" parent="." unique_id=1824145341]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.57575, 0.69, 0.066)
 mesh = ExtResource("88_2ifl2")
 metadata/midi = 107.0
 
-[node name="Key_108" type="MeshInstance3D" parent="." unique_id=1269973743]
+[node name="Key_108" type="MeshInstance3D" parent="." unique_id=392787482]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.59925, 0.69, 0.066)
 mesh = ExtResource("89_2tkck")
 metadata/midi = 108.0
