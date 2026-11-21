@@ -72,3 +72,4 @@ House/02's plan (`docs/architecture/house-kit-plan.md`) and kit are approved (Q2
   `tools/house_plan.py`'s list and the plan (Q2393); answers and follow-ups in. Files: tests/mess_test.gd,
   tools/house_plan.py, docs/architecture/house-kit-plan.md, this ticket. Verified: PASS 8752 checks, 146 cases (--touched).
 - Model: Opus (lead): a large hand-built scene from many pieces, on the approved plan.
+- Merged: a452c29d (2026-11-21, branch house/03-old-house-from-the-kit)
