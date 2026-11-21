@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: wontfix
 kind: build
 area: core
 feature: core
@@ -37,6 +37,7 @@ The same check for a Pair's ball coming to rest, and for the aimed Sock lending 
   a before and after strip in `builds/review-core-21/`; the ticket goes ready-for-human.
 
 ## Answers
+- Closed: core/31 found the cause (the Mess's MultiMeshes were physics-interpolated) and fixed it (Q2415, 2026-11-21).
 
 ## Open follow-ups
 

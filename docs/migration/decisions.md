@@ -1,4 +1,4 @@
-Next free Q number: Q2412 (update this line whenever a round of questions is asked)
+Next free Q number: Q2416 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -324,3 +324,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2409: what only the zoo needs (switches, sound buttons, line-ups, sample rooms, zoo-only data) lives under game/zoo/, grouped per station; the game never refers to game/zoo/; the build-time generators move to tools/ (designer: "the switches, texts, ... that are used in the zoo should only be in the zoo"; core/34). Real entities that only the zoo uses today (the Cabinet, the cupboard, the Player, the kit pieces) stay in game/: they are the game's.
 - Q2410: core/34 adds no guard check for references into game/zoo/ (designer: "We don't need the guard check for this.").
 - Q2411: core/33's station names near the ground are approved from the stills and merge (designer: "OK, stations looking good.").
+- Q2412: Socks resting up to 20 mm into the floor (Jolt's penetration slop) are left as they are (designer: "Leave it").
+- Q2413: the few Socks that still spin over 25 rad/s on an edge-first hit (7 of 500 poured) are accepted for now; turn_weight stays 3 and the benchmark keeps counting them.
+- Q2414: core/31 merges as built (the settle teleport fixed by turning physics interpolation off on the Mess's MultiMeshes, the review's Mess speed-ups, the benchmark), after its complexity report.
+- Q2415: core/21 (the rest blip) is closed: core/31 found and fixed the cause.
