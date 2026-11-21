@@ -1,0 +1,18 @@
+# core/33: every station's Name label seen from eye height 3 m in front of it, and the zoo from the start spot.
+wide  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:wide' --shots=50
+cabinet  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Cabinet:north' --shots=50
+everysock  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:EverySock' --shots=50
+handling  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Handling' --shots=50
+heap  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Heap' --shots=50
+housekit  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:HouseKit:north' --shots=50
+movement  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Movement' --shots=50
+openables  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Openables' --shots=50
+outline  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Outline' --shots=50
+icons  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Icons' --shots=50
+sounds  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Sounds' --shots=50
+socklooks  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:SockLooks' --shots=50
+screen  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Screen' --shots=50
+oldhousea  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:OldHouseA:north' --shots=50
+oldhouseb  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:OldHouseB:north' --shots=50
+materials  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Materials' --shots=50
+furniture  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Furniture' --shots=50

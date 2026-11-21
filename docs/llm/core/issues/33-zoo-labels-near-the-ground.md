@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: core
 feature: zoo
@@ -43,6 +43,10 @@ read them easily." Today each station's `Name` Label3D floats 2.2 to 13.5 m up (
 - Station names near the ground, easy to read (Q2408, 2026-11-21).
 
 ## Open follow-ups
+- [later] Placement choices for the designer to look at in the stills: each label stands on the pad edge that faces the start spot (south edge for stations north of z=4, north edge for those south of it; old houses on the north side, 2 m left of the front door; house kit and Cabinet at their north edge), bottom at 1.2 m (`vertical_alignment` bottom), `pixel_size` 0.004, `width` 700, font 32 / outline 12 (Label3D defaults). Billboard is Y-only (`billboard = 2`) and reads well in the stills, so no fixed facing. The Cabinet label (long text) overlaps the gallery's boxes seen from 3 m.
 
 ## Built log
+- 2026-11-21 Changed: every station's `Name` label moved to its pad's front edge at 1.2 m, one shared look (pixel_size 0.004, width 700, bottom-aligned, Y-billboard, default font and outline). Zoo test cases `labels` (height 0.8-2.2 m, outside other pads, shared look) and `labels_walk` (real path: walk from the start spot to old house A's door, its name whole in view). Shot hook `sign` and set `zoo-labels`.
+  Also: tests/hand_details_test.gd `f3_sign_clear` (core/19 F3: the sign must not cover the view's centre from the pad) cannot hold for a sign at eye height at the front edge; it now checks the sign is behind the player on the pad (the handling label stands 0.4 m outside its pad's front edge for that). The lead should confirm.
+  Files: game/zoo/stations/*.tscn (Name nodes only), tests/zoo_test.gd, tests/hand_details_test.gd, tools/shot_hooks.gd, tools/shots/sets/zoo-labels.txt. Stills: builds/review-core-33/. Verified: suite PASS (see report); waiting for the designer's go on the stills.
 - Model: Sonnet: scene edits and stills.

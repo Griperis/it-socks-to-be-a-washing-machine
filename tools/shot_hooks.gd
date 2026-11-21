@@ -524,6 +524,25 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.size = rows * station.row_pitch + 0.9
 			cam.position = Vector3(6.2, top - (rows - 1) * station.row_pitch * 0.5 - 0.15, 12.0)
 			return true
+		"sign":
+			# core/33: arg "<Station>" stands 3 m in front of that station's Name label at eye height
+			# and looks at it ("<Station>:north" stands on its north side, as the old houses' sign faces
+			# the door); arg "wide" looks over the zoo from the start spot.
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 75.0
+			if arg == "wide":
+				cam.global_position = (world.get_node("Spawn") as Node3D).global_position + Vector3(0.0, 1.6, 0.0)
+				cam.look_at(cam.global_position + Vector3(0.0, -0.1, -10.0))
+			else:
+				var parts := arg.split(":")
+				var label := world.get_node("Stations/%s/Name" % parts[0]) as Label3D
+				var side := -1.0 if parts.size() > 1 else 1.0
+				cam.global_position = label.global_position + Vector3(0.0, 0.4, 3.0 * side)
+				cam.look_at(label.global_position + Vector3(0.0, 0.4, 0.0))
+			cam.reset_physics_interpolation()
+			cam.make_current()
+			return true
 	return false
 
 

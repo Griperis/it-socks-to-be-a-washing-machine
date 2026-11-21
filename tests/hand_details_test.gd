@@ -450,19 +450,9 @@ func case_f3_sign() -> void:
 		_player.reset_physics_interpolation()
 		await _physics_ticks(3)
 		await _frames(1)
-		var size := cam.get_viewport().get_visible_rect().size
-		# A billboard's AABB is a cube that covers every turn: the text's own box, from its font.
-		var font := sign.font if sign.font != null else ThemeDB.fallback_font
-		var text := font.get_multiline_string_size(sign.text, sign.horizontal_alignment, sign.width, sign.font_size,
-				-1, TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND | TextServer.BREAK_ADAPTIVE) * sign.pixel_size
-		var right := cam.global_basis.x * sign.width * sign.pixel_size * 0.5
-		var up := cam.global_basis.y * text.y * 0.5
-		var mid := sign.global_position
-		var rect := Rect2(cam.unproject_position(mid - right + up), Vector2.ZERO)
-		for corner: Vector3 in [mid + right + up, mid - right - up, mid + right - up]:
-			rect = rect.expand(cam.unproject_position(corner))
-		_check(not rect.has_point(size * 0.5), "from %s on the pad the sign (%s) does not cover the view's centre" % [at, rect])
-		_check(text.y > 0.05 and rect.size.y < size.y * 0.25, "and it is a short band, not a tall block (%.0f of %.0f px high)" % [rect.size.y, size.y])
+		# core/33 (Q2408): the sign now stands low at the pad's front edge, so from the pad it is behind the
+		# player and never in the way of the view (it was a tall block over the view's centre before).
+		_check(cam.is_position_behind(sign.global_position), "from %s on the pad the sign is behind the player, out of the view" % at)
 	_check(sign.text.begins_with("Handling Socks"), "the sign keeps its words")
 
 

@@ -28,11 +28,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.75, -0.1, 18.5)
 shape = SubResource("BoxShape3D_ground")
 
 [node name="Name" type="Label3D" parent="." unique_id=208109633]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 7, -5)
-billboard = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.2, -5)
+pixel_size = 0.004
+billboard = 2
+vertical_alignment = 2
 text = "House kit: every piece, a roof corner with the dormer, and a room built from them. Walk in at the door, climb the U stair, look out of the window."
 autowrap_mode = 3
-width = 900.0
+width = 700.0
 
 [node name="LineUp" type="Node3D" parent="." unique_id=1657596485]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 0, 6)

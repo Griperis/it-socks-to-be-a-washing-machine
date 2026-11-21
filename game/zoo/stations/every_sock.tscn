@@ -27,12 +27,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, -18)
 mesh = SubResource("PlaneMesh_pad")
 
 [node name="Name" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 1.5)
-pixel_size = 0.0025
-billboard = 1
-autowrap_mode = 3
-width = 1000.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 2.5)
+pixel_size = 0.004
+billboard = 2
+vertical_alignment = 2
 text = "Every Sock: both Socks of every Design, in rows by Collection, each beside its mate; its info lies in front. Pick, pair, throw and shelve them like any Sock"
+autowrap_mode = 3
+width = 700.0
 
 [node name="Labels" type="Node3D" parent="."]
 

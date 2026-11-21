@@ -32,6 +32,10 @@ func cases() -> Array[Dictionary]:
 				"title": "the zoo loads, binds its parts and runs 30 frames with the player standing on the floor"},
 		{"name": "stations", "method": "case_stations", "world": false,
 				"title": "every scene in game/zoo/stations/ is a station of the zoo, named and placed apart, built from the game's own scenes"},
+		{"name": "labels", "method": "case_labels", "world": false,
+				"title": "core/33: every station's Name label hangs between 0.8 and 2.2 m, outside every other station's pad, and all share one look"},
+		{"name": "labels_walk", "method": "case_labels_walk", "world": false,
+				"title": "core/33, real path: the player walks from the start spot round to old house A's front door and the house's name is on screen, upright and whole, on the way"},
 		{"name": "alone", "method": "case_alone", "world": false,
 				"title": "each station scene runs on its own, and two zoos hold the same stations in the same order"},
 		{"name": "coop", "method": "case_coop", "world": false,
@@ -120,6 +124,100 @@ func case_stations() -> void:
 					"%s on %s is the game's own scene (%s)" % [child.name, station.name, child.scene_file_path])
 	_zoo.free()
 	_zoo = null
+
+
+## The look every Name label shares and where it may hang (core/33; placeholders for the designer).
+const LABEL_LOW := 0.8
+const LABEL_HIGH := 2.2
+const LABEL_PIXEL_SIZE := 0.004
+const LABEL_WIDTH := 700.0
+
+
+func case_labels() -> void:
+	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
+	add_child(_zoo)
+	await _frames(2)
+	var rects: Array[Array] = []
+	for station: Node3D in _zoo.get_node("Stations").get_children():
+		var pad := station.get_node("Pad") as MeshInstance3D
+		var box := pad.global_transform * pad.get_aabb()
+		rects.append([station.name, Rect2(box.position.x, box.position.z, box.size.x, box.size.z)])
+	var first: Label3D = null
+	for station: Node3D in _zoo.get_node("Stations").get_children():
+		var label := station.get_node("Name") as Label3D
+		var at := label.global_position
+		_check(at.y >= LABEL_LOW and at.y <= LABEL_HIGH, "%s's name hangs between %.1f and %.1f m (%.2f)" % [station.name, LABEL_LOW, LABEL_HIGH, at.y])
+		for r: Array in rects:
+			if r[0] != station.name:
+				_check(not (r[1] as Rect2).has_point(Vector2(at.x, at.z)), "%s's name stays outside %s's pad (%s)" % [station.name, r[0], at])
+		_check(label.billboard == BaseMaterial3D.BILLBOARD_FIXED_Y, "%s's name turns about the up axis only" % station.name)
+		_check(is_equal_approx(label.pixel_size, LABEL_PIXEL_SIZE) and is_equal_approx(label.width, LABEL_WIDTH),
+				"%s's name has the shared pixel size and wrap width" % station.name)
+		if first == null:
+			first = label
+		_check(label.font_size == first.font_size and label.outline_size == first.outline_size and label.autowrap_mode == first.autowrap_mode,
+				"%s's name has the shared font size, outline and wrap" % station.name)
+	_zoo.free()
+	_zoo = null
+
+
+## Walks the zoo's player to `target` on the ground by the move key, turning it as the mouse would;
+## `each` runs every physics tick.
+func _walk_to(target: Vector3, each: Callable = Callable()) -> void:
+	var player := _zoo.get_node("Player") as Player
+	Input.action_press(&"move_forward")
+	var ticks := 0
+	while ticks < 1500:
+		var to := target - player.global_position
+		to.y = 0.0
+		if to.length() < 0.4:
+			break
+		player.rotation.y = atan2(-to.x, -to.z)
+		await _physics_ticks(1)
+		ticks += 1
+		if each.is_valid():
+			each.call()
+	Input.action_release(&"move_forward")
+	_check(ticks < 1500, "the player reached %s (stopped at %s)" % [target, player.global_position])
+
+
+## Whether all of `label` shows in `camera`'s view: its four corners in front of the camera and
+## inside the viewport. The label faces the camera about the up axis, as its billboard does.
+func _label_whole(camera: Camera3D, label: Label3D) -> bool:
+	var size := label.get_aabb().size
+	var away := camera.global_position - label.global_position
+	away.y = 0.0
+	var right := Vector3.UP.cross(away.normalized())
+	var view := camera.get_viewport().get_visible_rect()
+	for dx: float in [-0.5, 0.5]:
+		for y: float in [0.0, 1.0]:
+			var corner: Vector3 = label.global_position + right * size.x * dx + Vector3.UP * size.y * y
+			if camera.is_position_behind(corner) or not view.has_point(camera.unproject_position(corner)):
+				return false
+	return true
+
+
+func case_labels_walk() -> void:
+	await _zoo_up()
+	var player := _zoo.get_node("Player") as Player
+	var camera := player.camera()
+	var house := _zoo.get_node("Stations/OldHouseA") as Node3D
+	var label := house.get_node("Name") as Label3D
+	player.capture_mouse()
+	var seen: Array[int] = [0]
+	var near_label := func() -> void:
+		if player.global_position.distance_to(label.global_position) < 6.0:
+			_check(_label_whole(camera, label), "on the way %s sees the house's name whole" % player.global_position)
+			seen[0] += 1
+	# From the start spot north past the stations, round the house's west end, then to stand square before the name on its north side.
+	await _walk_to(Vector3(4.0, 0.0, 1.0))
+	await _walk_to(Vector3(18.0, 0.0, -2.5))
+	await _walk_to(Vector3(18.5, 0.0, -17.0))
+	await _walk_to(house.to_global(Vector3(2.5, 0.0, -8.0)))
+	await _walk_to(house.to_global(Vector3(2.5, 0.0, -5.0)), near_label)
+	_check(seen[0] > 0, "the name was checked on the way")
+	_check(_label_whole(camera, label), "3 m in front of it the name is whole in view")
+	_check(label.billboard == BaseMaterial3D.BILLBOARD_FIXED_Y, "and upright")
 
 
 func case_alone() -> void:
