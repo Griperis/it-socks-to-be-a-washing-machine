@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: core
 feature: core
@@ -95,5 +95,43 @@ the old core that the port lacks is listed here; only the designer drops one (Q2
   stretch: M0.6 (`avatar.json`).
 
 ## Open follow-ups
+- [blocking] The designer's go on the five looks in `builds/review-core-16/` (cloth/, refusal-wobble.png,
+  paired-pop.png, ball-landing.png, lost-return-scatter.png); the numbers are placeholders until then.
+- [later] Not built yet (stopped at the stills, the look-work rule): P03 the held Size box following the
+  cloth sway; P08 a thrown Sock keeping its held bend (core/23 left the flying Looks straight); P10 a
+  shelved ball's squash in its slot; P11 a Pair thrown at a drawer front flying on to its slot; P14 the
+  fold's curl 1.3; P15 the Door's 0.6 s and the cupboard's 0.35 s swings. Each still needs its case.
+- [later] The ball's landing plays on the falling body's first touchdown (the port's Pair falls as a body,
+  the old one flew a scripted arc): the squash and the 4 cm hop are drawn on the Looks while physics rolls
+  the body, so the old "roll 12 cm to its rest" is physics' own roll. A Pair drawn by the MultiMesh (more
+  than `flying_cap` in the air) lands without it.
+- [later] Lost Socks come back lying at once at the return spot (a random turn, within 0.2 m), not falling
+  "like a drop" onto what is there as the old did, so two may overlap (see the still).
+- [later] The pop of a returned Sock is a new catalogue event `lost_pop` (same clips and +3 dB as `pop`,
+  but spatial and no min gap so each of several plays); `pop` itself is flat for the pairing moment.
+- [later] The squash is put on the Body each physics tick from the ball's turn then; a ball still spinning
+  fast (10 rad/s) as it lands is drawn up to about 5 mm off its bottom for a tick.
+- [later] "Paired!" is white on the handling station's cream wall and reads weakly there (the old colour; see
+  paired-full-frame.png).
+- [later] `sound_wiring:w10_gap` printed FLAKY on the `--touched` run (already in the ledger from earlier
+  runs; not touched here).
 
 ## Built log
+- Model: Opus.
+- 2026-11-21 (stopped at the first stills, look work). Changed: the cloth stiffer (stiffness 2 to 5, so a
+  steady walk sways little) and its whole bend straightening within `ground_room` 0.15 m of the ground
+  (`SockCloth.ground_gap`, Q2366); the Hud's message row says a refusal in red with the old wobble
+  (0.45 s, 5/s, 0.07 rad, dying down) and "Paired!" in white with a pop (0.6 to 1.25 to 1, Q2370),
+  2 s (`refusal_time` 1.5 to 2, the old); `Player.say_paired()` on a pick that pairs; `BallLanding` on a
+  falling Pair's Looks (an AnimationPlayer built from `BallLandingTuning`: squash 0.28 / 0.16 s, hop
+  0.04 / 0.2 s, second squash) on its first touchdown; the Host's `Mess.put_down()` (lost: back at the
+  return spot scattered within `return_scatter` 0.2 with a `lost_pop` in 3D at each; sunk 0.02 to 0.3 m
+  in a floor: pushed up, no pop) used by every rest; the handling station's Lose and Sink buttons
+  (`LoseButton`, Q2369). throw_test and zoo_test read the return spot within the scatter.
+  Files: game/sock/sock_cloth.gd, sock_cloth_tuning.gd, looks_{ankle,crew,chunky,tube}.tscn,
+  ball_landing.gd, ball_landing_tuning.gd/.tres (+ .uid), game/ui/hud.gd, hud_tuning.gd,
+  game/player/player.gd, game/hands/hands_tuning.gd, game/mess/mess.gd, mess_moving.gd, mess_tuning.gd,
+  game/audio/hearing.gd, sound_catalogue.tres, game/ui/prompts.gd, game/zoo/lose_button.gd (+ .uid),
+  game/zoo/stations/handling.tscn, tests/feedback_polish_test.gd (+ .uid), tests/throw_test.gd,
+  tests/zoo_test.gd, tools/shot_hooks.gd (landing_cam, lose_socks).
+  Verified: see the commit's suite line. Stills: builds/review-core-16/.
