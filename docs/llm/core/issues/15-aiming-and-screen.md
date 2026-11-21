@@ -7,7 +7,7 @@ feature: core
 priority: now
 created: 2026-11-21
 done:
-blocked_by: []
+blocked_by: ["[[11-outline]]"]
 notes: []
 terms: []
 ---
