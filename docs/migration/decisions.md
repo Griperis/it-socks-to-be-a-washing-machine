@@ -1,4 +1,4 @@
-Next free Q number: Q2407 (update this line whenever a round of questions is asked)
+Next free Q number: Q2408 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -319,3 +319,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2404: the code review's findings are fixed (designer: "Yes. Fix those."): correctness (core/28), per-frame cost outside the Mess (core/29), tidy-up with felt numbers moved into tuning Resources and the zoo's labels, buttons and swatches as small scenes (core/30); the whole-array Mess patches become sparse in M0.6 (core/32).
 - Q2405: the Mess still settles wrongly, some Socks glitch out and it is laggier than before: one Fable agent reproduces it and builds a Mess performance benchmark (core/31).
 - Q2406: the benchmark takes the old game's way (tools/stress.sh, game/debug/physics_stress.gd, docs/perf/tools.md) as its model, kept well structured (designer: "Inspire from the old game, how it's done. But try to keep the code well structured.").
+- Q2407: the Mess glitch is at the moment Socks settle: "they teleport and there is a visible glitch" (designer, 2026-11-21); core/31 starts from it (it reopens core/21's rest blip, which a still had found pixel-identical).

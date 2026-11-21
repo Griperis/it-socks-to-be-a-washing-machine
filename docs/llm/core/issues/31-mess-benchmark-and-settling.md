@@ -25,6 +25,18 @@ correctly, some socks glitch out and it's much laggier than before". Two jobs, i
    runner, one report writer; no copy of the old file's shape where a cleaner one does.
 2. **Reproduce, then diagnose and fix** the settling faults, the glitching Socks and the lag, using the benchmark.
 
+**The designer pinned the glitch down (Q2407): "when socks settle - they teleport and there is a visible glitch".**
+That is the switch from a moving Sock (RigidBody flight) to a lying Sock (server static body plus a MultiMesh
+instance) in `mess_moving.gd` `_settle`/`_rest`, `mess.gd` `put_down`/`return_pose`/`_lie`/`_draw_lying`, and the
+lying draw in `mess_drawing.gd`. core/21 (`21-rest-blip.md`, ready-for-human) studied this before and found the
+switch pixel-identical in a still; the designer still sees it in play, so measure it in motion: record the drawn
+transform of one Sock every frame across its rest (flight Looks, then MultiMesh row) and show any jump in position,
+turn, scale, Design/look data or a frame where it is drawn twice or not at all, in a strip at full frame rate.
+Suspects to rule in or out: `put_down` snapping the pose (`return_pose`, a lost-rule ray moving it), the size scale
+written three ways (`Mess._scale`, `MessDrawing._size`, `mess_moving.gd:416`), a cell MultiMesh flushed a frame
+after the flight is freed (or before), the flight's physics interpolation vs. the MultiMesh's none, the flight's
+cloth bend vs. the straight lying mesh, LOD or material differences between the two tiers.
+
 ## Behaviour list
 - B1 `tools/mess_bench.sh` (and `tools/mess_bench.cmd` for the designer's Windows PC) runs named scenarios on the
   real Mess in a scene of its own, headless, and prints one `BENCH` line per scenario and a verdict line; the
