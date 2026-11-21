@@ -85,8 +85,8 @@ table `BENCHES`, so the next benchmark is one more entry) reads the user argumen
 same exe the designer plays runs it, with no project folder and no script beside it:
 
 ```
-"It Socks.exe" -- --bench=mess --only=idle_500        # a debug export, or
-godot --path <project> -- --bench=mess                # the editor exe
+"It Socks.exe" --fixed-fps 10 -- --bench=mess --only=idle_500   # a debug export, or
+godot --path <project> --fixed-fps 10 -- --bench=mess          # the editor exe
 ... -- --help                                         # the commands; unknown flag: help and exit code 2
 ... -- --scene=heap                                   # start a zoo station (or a res:// scene) instead of the main scene
 ```
@@ -96,10 +96,14 @@ godot --path <project> -- --bench=mess                # the editor exe
   line printed is `BENCH saved <absolute folder>`; `--out=` overrides. Exit code 0 on PASS, 1 on FAIL.
 - Drawn by default (real frame times and draw calls on that card); the engine's `--headless` before the `--` still
   works, and the report's machine line says which.
-- Pacing: a tick is timed between two ticks of one frame, so the run needs several ticks a frame. `tools/mess_bench.sh`
-  and `.cmd` pass the engine's `--fixed-fps 10` (as fast as the CPU goes). Started without it, `MessBench` sets
-  `Engine.max_fps = 10` (six ticks a frame, in real time, so a run takes as long as its game seconds); the report says
-  "paced at 10 frames a second" or "fixed 10 frames a second".
+- Pacing: a tick is timed between two ticks of one frame, so the run needs several ticks a frame, which only the
+  engine's own `--fixed-fps 10` gives (six ticks a frame, as fast as the CPU goes). Nothing sets that at run time:
+  `Engine.time_scale` also scales the physics delta (the sim breaks), and `Engine.max_fps = 10` runs in real time
+  (hours). The engine hides its own flags from the script, so `MessBench` counts the ticks of its first frames and, with fewer than two a frame, prints one `FAIL mess bench` line that names the flag and quits with 2. The scripts pass it:
+  `"It Socks.exe" --fixed-fps 10 -- --bench=mess`. 
+- The zoo (the project's main scene) is instanced before an autoload can swap the main scene (Godot reads
+  `application/run/main_scene` before the autoloads), so a `--bench` or `--scene` start loads it for one frame, then
+  `GameCli` replaces it (after that frame, so the zoo's own deferred start-up has run).
 - Worker threads: the cap is an engine setting read at start and the command line cannot set it. The wrappers write an
   `override.cfg` (4 threads); started from the game exe the report says "worker pool uncapped".
 - `tools/mess_bench.sh` and `.cmd` are thin wrappers over `-- --bench=mess` (the mirror, `--at=<commit>`, which starts

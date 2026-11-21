@@ -37,10 +37,13 @@ func _ready() -> void:
 			get_tree().quit(int(what["code"]))
 		"scene":
 			print("GameCli: scene %s" % what["scene"])
-			_change.call_deferred(String(what["scene"]))
+			_change(String(what["scene"]))
 
 
+## The project's own main scene (the zoo) is instanced before any autoload can swap it, so it is
+## there for a frame: the change waits for its deferred start-up to finish, then replaces it.
 func _change(scene: String) -> void:
+	await get_tree().process_frame
 	var err := get_tree().change_scene_to_file(scene)
 	if err != OK:
 		printerr("GameCli: cannot start %s (error %d)" % [scene, err])
@@ -105,6 +108,7 @@ static func help_text() -> String:
 			"  --scene=<scene>        start a scene (res:// path) or a zoo station by its file name (--scene=heap)"])
 	for b in BENCHES:
 		lines.append("  --bench=%-14s %s" % [b["name"], b["help"]])
+		lines.append("      needs the engine flag --fixed-fps 10 before the `--`, e.g. \"It Socks.exe\" --fixed-fps 10 -- --bench=%s" % b["name"])
 		lines.append("      options: %s" % " ".join(PackedStringArray(b["options"])))
 	lines.append("Results go to user://bench/<bench>/ (Windows: %APPDATA%\\Godot\\app_userdata\\It Socks\\bench\\<bench>\\);")
 	lines.append("the last line printed is `BENCH saved <folder>`. --out=<folder> overrides.")

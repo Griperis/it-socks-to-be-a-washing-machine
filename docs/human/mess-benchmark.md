@@ -9,12 +9,12 @@ The Mess benchmark measures what the Socks cost and whether a heap settles clean
 The game itself runs the benchmark in a debug build (the editor, or a debug export), with the same exe you play and no project folder:
 
 ```
-"It Socks.exe" -- --bench=mess
-"It Socks.exe" -- --bench=mess --only=idle_500,sweep --label=my-pc
+"It Socks.exe" --fixed-fps 10 -- --bench=mess
+"It Socks.exe" --fixed-fps 10 -- --bench=mess --only=idle_500,sweep --label=my-pc
 "It Socks.exe" -- --help
 ```
 
-(With the editor exe: `Godot_v4.7.x-stable_win64.exe --path <project folder> -- --bench=mess`.) The window shows the run and the frame times and draw calls are your graphics card's. When it ends, the last line is `BENCH saved <folder>`: the report (`report.md`) and the results are there, by default in `%APPDATA%\Godot\app_userdata\It Socks\bench\mess\`. `--out=<folder>` puts them elsewhere. A run this way takes as long as the game seconds it simulates (it is paced at 10 frames a second), and Godot's worker threads are not capped (the report says "uncapped"). A release build refuses the command and starts the game.
+(With the editor exe: `Godot_v4.7.x-stable_win64.exe --path <project folder> --fixed-fps 10 -- --bench=mess`.) The window shows the run and the frame times and draw calls are your graphics card's. When it ends, the last line is `BENCH saved <folder>`: the report (`report.md`) and the results are there, by default in `%APPDATA%\Godot\app_userdata\It Socks\bench\mess\`. `--out=<folder>` puts them elsewhere. `--fixed-fps 10` (before the `--`) is needed: it gives the benchmark six physics ticks a frame, which it times; without it the game says so and quits. Godot's worker threads are not capped (the report says "uncapped"). A release build refuses the command and starts the game.
 
 ## Run it with the script
 

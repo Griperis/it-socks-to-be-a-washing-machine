@@ -33,7 +33,7 @@ func _game(engine: PackedStringArray, args: PackedStringArray) -> Dictionary:
 
 
 func case_real_path() -> void:
-	var r := _game(PackedStringArray(["--headless", "--audio-driver", "Dummy"]),
+	var r := _game(PackedStringArray(["--headless", "--audio-driver", "Dummy", "--fixed-fps", "10"]),
 			PackedStringArray(["--bench=mess", "--only=idle_500", "--headless", "--label=cli_test"]))
 	var text: String = r["text"]
 	_check(r["code"] == 0, "exit code 0 (got %s)" % r["code"])

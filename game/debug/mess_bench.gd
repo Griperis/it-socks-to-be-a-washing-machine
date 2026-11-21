@@ -39,12 +39,24 @@ func _ready() -> void:
 			get_tree().quit()
 			return
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-	# A tick is timed between two ticks of one frame (MessBenchClock): tools/mess_bench.sh gives the
-	# engine --fixed-fps 10 for that; started any other way the run is paced at 10 frames a second
-	# (six ticks a frame, in real time).
-	if not OS.get_cmdline_args().has("--fixed-fps"):
-		Engine.max_fps = 10
-	_run_all.call_deferred()
+	_start.call_deferred()
+
+
+## A tick is timed between two ticks of one frame (MessBenchClock), so the run needs several ticks a
+## frame: the engine's own `--fixed-fps 10` gives six. Nothing sets that at run time (Engine.time_scale
+## also scales the physics delta; max_fps 10 runs in real time, hours) and the engine hides its own
+## flags from OS.get_cmdline_args(), so the ticks of a few frames are counted: with fewer than two a
+## frame the run says which flag is missing and quits with 2.
+func _start() -> void:
+	var ticks := Engine.get_physics_frames()
+	var frames := Engine.get_process_frames()
+	for i in 5:
+		await get_tree().process_frame
+	if float(Engine.get_physics_frames() - ticks) / maxf(Engine.get_process_frames() - frames, 1) < 2.0:
+		print("FAIL mess bench: needs the engine flag --fixed-fps 10 before the `--` (a tick is timed between two ticks of one frame): \"It Socks.exe\" --fixed-fps 10 -- --bench=mess")
+		get_tree().quit(2)
+		return
+	_run_all()
 
 
 func _run_all() -> void:
@@ -174,7 +186,7 @@ static func machine() -> String:
 			_threads(),
 			RenderingServer.get_video_adapter_name() if DisplayServer.get_name() != "headless" else "headless (nothing drawn)",
 			OS.get_name(), Engine.get_version_info()["string"], ProjectSettings.get_setting("physics/3d/physics_engine"),
-			Engine.physics_ticks_per_second, "debug build" if OS.is_debug_build() else "release build"] + (", paced at 10 frames a second" if Engine.max_fps == 10 else ", fixed 10 frames a second")
+			Engine.physics_ticks_per_second, "debug build" if OS.is_debug_build() else "release build"] + ", --fixed-fps 10 (six ticks a frame)"
 
 
 ## The worker pool's cap, or "uncapped": an engine setting read at start (the override.cfg that
