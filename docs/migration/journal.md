@@ -526,3 +526,18 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2404 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/33, the zoo's station names near the ground: at each station's front edge, eye height, one shared look, wrapped, Y-billboard; merged (main 5c9188d) |
+| Planned vs actual | 0 planned (designer's note, Q2408), 1 actual |
+| Redo count | 0 |
+| Corrections | none; the Cabinet's long name overlaps its gallery from 3 m (noted) |
+| Cost | see `agent_cost.py --by ticket` (Sonnet) |
+| Time | the agent ran about 15 min |
+| Surprises | two commit attempts lost a git object; finished with `--no-test` after a passing `--touched` run |
+| Stop rules | stopped at its stills for the designer's go |
+| Looks | `builds/review-core-33/` |
+| Decisions | Q2408, Q2411 |
+
+---
