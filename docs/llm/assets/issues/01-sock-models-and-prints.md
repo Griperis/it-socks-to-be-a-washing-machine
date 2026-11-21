@@ -96,3 +96,4 @@ shader on their own and in a zoo comparison, then swap in a last commit after me
     top-diff.png): the old render is the old v0.1.1 code, models, prints and shader in a scratch project,
     same places, sky, sun and camera; the only differences are edge anti-aliasing.
   - Verified: PASS 6444 checks, 110 cases; PASS rules; PASS asset_lint
+- Merged: 3929fe64 (2026-11-21, branch assets/01-sock-models-and-prints)
