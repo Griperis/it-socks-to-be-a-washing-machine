@@ -82,6 +82,46 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.look_at(station.to_global(view[1]))
 			cam.make_current()
 			return true
+		"old_house":
+			# house/03: the zoo's player in house A or B as the old game's looks-baseline tour stood
+			# (docs/migration/baseline/views_baseline.json), for stills old beside new. arg "a,<view>"
+			# or "b,<view>". The old numbers are moved +0.1 m on x and z (the plan's frame) and the
+			# old floors (-2.9, 0, 2.9, 5.8) become the new (-3, 0, 3, 6); every other station hides.
+			var station := world.get_node("Stations/OldHouse" + arg.get_slice(",", 0).to_upper()) as Node3D
+			var house := station.get_node("House") as Node3D
+			for other: Node in world.get_node("Stations").get_children():
+				(other as Node3D).visible = other == station
+			var player := world.get_node("Player") as Player
+			var head := player.get_node("%Head") as Node3D
+			var view := arg.get_slice(",", 1)
+			var outside := {"exterior-front": [Vector3(5.0, 3.0, 22.0), Vector3(5.0, 3.5, 4.0)],
+					"exterior-high": [Vector3(22.0, 9.0, 18.0), Vector3(5.0, 2.0, 4.0)]}
+			# name: x, z, yaw, the old floor (the old views' pitch is 0.12 down).
+			var rooms := {"workshop": [0.60, 0.60, -2.241, -2.9], "laundry": [0.60, 3.88, -2.515, -2.9],
+					"boiler": [4.55, 0.60, -2.244, -2.9], "stair_lobby": [4.55, 2.70, -2.527, -2.9],
+					"garage": [7.00, 0.60, -2.761, -2.9], "stairs_basement": [4.55, 5.75, -2.553, -2.9],
+					"kitchen": [0.60, 0.60, -2.746, 0.0], "hall": [4.55, 0.60, -2.778, 0.0], "living": [7.00, 0.60, -2.761, 0.0],
+					"stairs_ground": [4.55, 5.75, -2.553, 0.0], "office": [0.60, 0.60, -2.241, 2.9],
+					"bedroom": [0.60, 3.88, -2.515, 2.9], "landing": [4.55, 0.60, -2.778, 2.9],
+					"bathroom": [7.00, 0.60, -2.261, 2.9], "kids": [7.00, 3.88, -2.534, 2.9],
+					"stairs_first": [4.55, 5.75, -2.553, 2.9], "loft": [0.60, 0.60, -2.254, 5.8],
+					"kitchen-b": [3.23, 7.74, 0.395, 0.0], "living-b": [9.50, 7.74, 0.381, 0.0]}
+			var shift := Vector3(0.1, 0.0, 0.1)
+			if outside.has(view):
+				var o: Array = outside[view]
+				player.global_position = house.to_global((o[0] as Vector3) + shift)
+				player.rotation = Vector3.ZERO
+				var dir := (house.to_global((o[1] as Vector3) + shift) - head.global_position).normalized()
+				player.rotation = Vector3(0.0, atan2(-dir.x, -dir.z), 0.0)
+				head.rotation.x = asin(dir.y)
+			else:
+				var r: Array = rooms[view.trim_prefix("room-")]
+				var floor_y: float = roundf(float(r[3]) / 2.9) * 3.0
+				player.global_position = house.to_global(Vector3(float(r[0]), floor_y + 0.05, float(r[1])) + shift)
+				player.rotation = Vector3(0.0, float(r[2]), 0.0)
+				head.rotation.x = -0.12
+			player.reset_physics_interpolation()
+			return true
 		"sounds":
 			# A camera over the Sounds station's buttons (core/22): arg "overview" looks down on the
 			# whole station, "block" from above the button block.

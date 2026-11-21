@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://cpmtxy0gie1th"]
+
+[ext_resource type="ArrayMesh" uid="uid://bhxbrvw4ddnk7" path="res://game/house/kit/meshes/door_partition_offset_hatch_2m.tres" id="1_srpln"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2mqjf"]
+size = Vector3(0.15, 3, 0.12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hf7t3"]
+size = Vector3(0.32999998, 3, 0.12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v2ndd"]
+size = Vector3(0.9, 0.88, 0.12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gm04m"]
+size = Vector3(0.07999992, 3, 0.12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7uhu5"]
+size = Vector3(0.5400001, 0.82, 0.12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_43hj7"]
+size = Vector3(0.5400001, 1.6, 0.12)
+
+[node name="DoorPartitionOffsetHatch2m" type="MeshInstance3D" unique_id=560017185]
+mesh = ExtResource("1_srpln")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=954598577]
+collision_mask = 0
+
+[node name="Box1" type="CollisionShape3D" parent="Body" unique_id=1311578106]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.075, 1.48, 0)
+shape = SubResource("BoxShape3D_2mqjf")
+
+[node name="Box2" type="CollisionShape3D" parent="Body" unique_id=596616227]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2149999, 1.48, 0)
+shape = SubResource("BoxShape3D_hf7t3")
+
+[node name="Box3" type="CollisionShape3D" parent="Body" unique_id=2006101187]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 2.54, 0)
+shape = SubResource("BoxShape3D_v2ndd")
+
+[node name="Box4" type="CollisionShape3D" parent="Body" unique_id=246191340]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.96, 1.48, 0)
+shape = SubResource("BoxShape3D_gm04m")
+
+[node name="Box5" type="CollisionShape3D" parent="Body" unique_id=164645386]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6500001, 0.39, 0)
+shape = SubResource("BoxShape3D_7uhu5")
+
+[node name="Box6" type="CollisionShape3D" parent="Body" unique_id=1901144697]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6500001, 2.18, 0)
+shape = SubResource("BoxShape3D_43hj7")

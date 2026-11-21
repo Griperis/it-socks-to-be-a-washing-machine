@@ -101,6 +101,7 @@ func _walls() -> void:
 	_straight("knee_exterior_end_1m", 1.0, e, ["wall_loft", "wall_outside", "trim"], false, 0.0, e / 2, s.knee + 0.1)
 	_corner("corner_exterior", e, EXTERIOR_PAINTS, false)
 	_corner("corner_partition", p, PARTITION_PAINTS, true)
+	_corner_open("corner_exterior_open", e, EXTERIOR_PAINTS)
 	_t("t_exterior", e, e, EXTERIOR_PAINTS, false)
 	_t("t_partition", p, p, PARTITION_PAINTS, true)
 	_t("t_exterior_partition", e, p, EXTERIOR_PAINTS, false)
@@ -151,6 +152,30 @@ func _corner(file: String, t: float, paints: Array[String], outer_skirting: bool
 	_save(file)
 
 
+## A corner without its +X arm (house/03): a wall piece runs along +X from the join line in its
+## place, for an opening that reaches the corner (the bedroom's west window, W15, runs to the south
+## wall's line). The join square's outer half and the +Z arm; its skirting starts after that wall
+## piece's, which runs on inside the arm.
+func _corner_open(file: String, t: float, paints: Array[String]) -> void:
+	var s := _sizes
+	var a: float = s.arm
+	var y0: float = -s.sink
+	var y1: float = s.storey - s.sink
+	_begin(paints)
+	var outer := _aabb(-t / 2, 0.0, y0, y1, -t / 2, a)
+	var inner := _aabb(0.0, t / 2, y0, y1, t / 2, a)
+	var pick := func(c: Vector3, n: Vector3) -> int:
+		if (n.z < -0.5 and absf(c.z + t / 2) < 1e-4) or (n.x < -0.5 and absf(c.x + t / 2) < 1e-4):
+			return B
+		return A
+	_box(outer, pick)
+	_box(inner, pick)
+	_skirting(Vector3(t / 2, 0, t / 2 + s.skirting_depth), Vector3.BACK, Vector3.RIGHT, a - t / 2 - s.skirting_depth)
+	_col(outer)
+	_col(inner)
+	_save(file)
+
+
 ## A T: the through wall along X both ways from the join (its -Z face slot B), the stem along +Z.
 func _t(file: String, through: float, stem: float, paints: Array[String], b_skirting: bool) -> void:
 	var s := _sizes
@@ -185,14 +210,22 @@ func _doors() -> void:
 		_door("door_partition" + tag, length, a, s.door_width, s.door_height, s.partition, PARTITION_PAINTS, true)
 	_door("door_partition_offset_" + _tag(s.door_offset.x), s.door_offset.x, s.door_offset.y, s.door_width,
 			s.door_height, s.partition, PARTITION_PAINTS, true)
+	# The off-centre doorway and the elevator's hatch in one partition (the first floor's x 4, house/03).
+	var oh := s.door_offset_hatch
+	var eh := s.elevator_hatch
+	_door("door_partition_offset_hatch_" + _tag(oh.x), oh.x, s.door_offset.y, s.door_width, s.door_height,
+			s.partition, PARTITION_PAINTS, true, Vector4(oh.y + eh.x, oh.y + eh.y, eh.z, eh.w))
 	var g := s.garage_door
 	_door("door_garage", g.z, (g.z - g.x) / 2, g.x, g.y, s.exterior, ["wall_garage", "wall_outside", "trim"], false)
 	_hatch()
 
 
 ## A wall `length` long with a doorway from `a`, `w` wide and `dh` high: the old jamb linings in its
-## reveal and casings round it, on the inside face (both faces of a partition) (K08).
-func _door(file: String, length: float, a: float, w: float, dh: float, t: float, paints: Array[String], both: bool) -> void:
+## reveal and casings round it, on the inside face (both faces of a partition) (K08). `hatch`, when
+## given (from, to along the piece, sill, head), is the elevator's hatch through the wall after the
+## doorway, bare as in wall_partition_hatch_1m.
+func _door(file: String, length: float, a: float, w: float, dh: float, t: float, paints: Array[String], both: bool,
+		hatch := Vector4()) -> void:
 	var s := _sizes
 	var b := a + w
 	var y0: float = -s.sink
@@ -202,6 +235,10 @@ func _door(file: String, length: float, a: float, w: float, dh: float, t: float,
 	_begin(paints)
 	var walls: Array[AABB] = [_aabb(0, a, y0, y1, -t / 2, t / 2), _aabb(b, length, y0, y1, -t / 2, t / 2),
 			_aabb(a, b, dh, y1, -t / 2, t / 2)]
+	if hatch.y > 0.0:
+		walls[1] = _aabb(b, hatch.x, y0, y1, -t / 2, t / 2)
+		walls.append_array([_aabb(hatch.y, length, y0, y1, -t / 2, t / 2), _aabb(hatch.x, hatch.y, y0, hatch.z, -t / 2, t / 2),
+				_aabb(hatch.x, hatch.y, hatch.w, y1, -t / 2, t / 2)])
 	for box in walls:
 		_box(box, _wall_pick, true)
 		_col(box)
@@ -450,7 +487,9 @@ func _balustrade() -> void:
 	var f: float = info["f"]
 	var back: float = info["back"]
 	var w: float = s.stair_well.x
-	var rails: Array[AABB] = [_aabb(f - 0.06, f, 0, 1, 0, back), _aabb(f, info["mid"] - s.newel / 2, 0, 1, -0.06, 0),
+	# The north rail stands 0.01 m back from the void's edge: its foot, under the floor line, would
+	# otherwise lie in the floor tile's edge face (K14, house/03).
+	var rails: Array[AABB] = [_aabb(f - 0.06, f, 0, 1, 0, back), _aabb(f, info["mid"] - s.newel / 2, 0, 1, -0.07, -0.01),
 			_aabb(w - f, w - f + 0.06, 0, 1, 0, back)]
 	_begin(["oak"])
 	for r in rails:

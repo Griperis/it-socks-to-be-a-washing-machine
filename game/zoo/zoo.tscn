@@ -26,6 +26,8 @@
 [ext_resource type="PackedScene" uid="uid://dvh4amgapflsc" path="res://game/zoo/stations/outline.tscn" id="28_outline"]
 [ext_resource type="PackedScene" uid="uid://c3oefe5hwybf0" path="res://game/zoo/stations/sock_looks.tscn" id="29_sock_looks"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/icons.tscn" id="30_icons"]
+[ext_resource type="PackedScene" uid="uid://cxdl2ou7emvsm" path="res://game/zoo/stations/old_house_a.tscn" id="31_old_house_a"]
+[ext_resource type="PackedScene" uid="uid://c47w01e8dt8aq" path="res://game/zoo/stations/old_house_b.tscn" id="32_old_house_b"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.42, 0.44, 0.46, 1)
@@ -115,6 +117,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -8)
 
 [node name="SockLooks" parent="Stations" unique_id=1700087209 instance=ExtResource("29_sock_looks")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -6)
+
+[node name="OldHouseA" parent="Stations" unique_id=1700095128 instance=ExtResource("31_old_house_a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 0, -10)
+
+[node name="OldHouseB" parent="Stations" unique_id=1700103047 instance=ExtResource("32_old_house_b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, -10)
 
 [node name="Spots" type="Node3D" parent="." unique_id=1540973286]
 
