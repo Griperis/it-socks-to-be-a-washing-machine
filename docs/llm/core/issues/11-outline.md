@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-20
-done:
+done: 2026-11-21
 blocked_by: ["[[09-hand-details]]"]
 notes: []
 terms: []
@@ -89,23 +89,20 @@ Approved (Q2292). The numbers are the old game's.
 - The behaviour list and design are approved (Q2292, 2026-11-20).
 - Built in the polish pass, not in M0.5 (Q2293, 2026-11-20); it starts when the designer calls the polish pass.
 - O08, a moving Sock under the crosshair is outlined, added (Q2341, 2026-11-20).
+- The first still: make it stronger for now. The old shape stays (warm white, three shells fading outward, one
+  width near and far), the inner shells a little wider and more opaque so it reads on the bright graybox; the
+  numbers in `aim.tres` are placeholders, "stronger for the graybox, recheck on the M1 models" (Q2374, 2026-11-21).
 
 ## Open follow-ups
-- [blocking] The first still (`builds/review-core-11/outline-lineup.png`, close-ups in `outline-closeups.png`):
-  is this the old game's outline? It is the old numbers unchanged (warm white, shells 0.003/0.006/0.0095 at
-  0.9/0.45/0.2, the same 75 degree view), and it keeps one width near and far. On the zoo's bright cream graybox
-  (the drawers, the Door) the warm white reads fainter than on the old game's darker lit Cabinet; the red "full"
-  reads clearly. Go as it is, or change the colour, width or opacity for these Looks?
 - [later] The baseline has no old still of an aimed Sock or Door, only drawers (`cab-simple`, `c-cupboard`).
   Old-game stills of those two need the old game's capture tour with new views (not done: it runs in the
   reference clone).
 - [later] O08: a moving Sock is outlined only while its flight has a Looks (the `flying_cap` nearest the camera,
   core/09); a flight drawn by the flying MultiMesh has nothing to outline. Lending an aimed flight a Looks is
   `game/mess/` (`mess.gd` `give_looks`, `mess_moving.gd`), which core/23 holds now.
-- [later] The outline station has no lying Pair: a SockSpot cannot place one. The Pair's Looks
-  (`looks_ball.tscn`) has the component; O03's Pair case can pair two Socks in the test.
-- Left after the go: the tests (one per O line, the real path through the player's aim in the outline
-  station) and `status: done`.
+- [later] The outline station has no lying Pair: a SockSpot cannot place one (the O03 case pairs and drops one).
+- [later] `full.tres` keeps the old game's shells (only the aim style was made stronger, Q2374): the red tint on a
+  full drawer is a little narrower than the warm white. Same shells for both?
 
 ## Built log
 ### 2026-11-21
@@ -119,3 +116,10 @@ Approved (Q2292). The numbers are the old game's.
 - Files: game/outline/, game/player/player.gd, game/sock/looks_*.tscn, game/entities/{drawer,door,cupboard}/,
   game/entities/cabinet/cabinet.gd, game/zoo/stations/outline.tscn, tools/shot_hooks.gd, tools/shots/sets/outline.txt
 - Verified: `kit/tools/run.sh --touched`: PASS 7217 checks, 208 cases; stills in `builds/review-core-11/`.
+### 2026-11-21 (Q2374)
+- Changed: the aim style's shells are stronger for the graybox (0.005/0.009/0.013 at 1.0/0.75/0.35, placeholders
+  marked Q2374); `tests/outline_test.gd`: one case per O line and the real path (the player's aim in the outline
+  station shows a lying Sock's, a drawer's and the Door's outline in turn).
+- Files: game/outline/aim.tres, tests/outline_test.gd, this ticket
+- Verified: `kit/tools/run.sh --touched` (verdict in the commit report); `--only=outline` PASS 48 checks, 9 cases,
+  also `--reverse`; before/after `builds/review-core-11/outline-stronger-before-after.png`.
