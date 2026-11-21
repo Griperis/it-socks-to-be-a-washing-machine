@@ -56,3 +56,4 @@ in `zoo.tscn` by hand, knowing branches that add stations will meet in that file
   Removed the "no place of the grid" check from `tests/every_sock_test.gd` (case_e05), as the grid is gone.
   Files: game/zoo/zoo.tscn, game/zoo/stations.gd, tests/zoo_test.gd, tests/every_sock_test.gd, docs/architecture.md.
   Verified: PASS 6012 checks, 103 cases. No top-down shot taken.
+- Merged: 20370fbf (2026-11-21, branch core/26-stations-in-the-zoo-scene)
