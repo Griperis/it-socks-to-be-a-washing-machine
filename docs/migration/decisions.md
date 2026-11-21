@@ -1,4 +1,4 @@
-Next free Q number: Q2356 (update this line whenever a round of questions is asked)
+Next free Q number: Q2358 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -268,3 +268,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2353: house plan: storeys 3.0 m with the old clear heights kept (2.7, 2.7, 2.6 m) through thicker ceiling tiles.
 - Q2354: house plan: the roof at 40 degrees (ridge 3.88 m over the attic floor; the old house was 37.4).
 - Q2355: house plan: openings, "We can try multiple things here": the kit gets both the old-width window pieces and grid-rounded ones, compared side by side on a still before one is chosen (the lead's reading).
+- Q2356: the Throw's real body leaves from the hand on an arc aimed at the crosshair's point; the eye-line start and the hand catch-up go (changes the old Q483 and core/19's F1).
+- Q2357: the flipping Socks are seen in the heap pour, on settling, in drops and throws, and at the every-Sock station (core/23).
