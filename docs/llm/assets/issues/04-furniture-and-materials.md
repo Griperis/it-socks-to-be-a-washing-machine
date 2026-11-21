@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: assets
 feature: assets
@@ -44,5 +44,29 @@ for all models; where variants differ (oak: 9 in 39 models) the designer picks t
 - Started beside M0.5 (Q2378, 2026-11-21).
 
 ## Open follow-ups
+- [blocking] F01: which candidate stays in each of the 24 groups (strips in `builds/review-furniture/`,
+  `materials-<group>.png`; `materials-strip.png` all of them; `materials-overview.png` the board). Most groups
+  differ only in roughness (oak: one colour, roughness 0.4 to 0.8; the house kit's `oak_kit` 0.62 and not
+  double-sided). The chosen file becomes `game/materials/<name>.tres` and its group folder goes.
+- [blocking] F01: the old fab_* cloths carried glTF sheen (KHR_materials_sheen), which StandardMaterial3D has
+  no field for and the old Godot import dropped too: keep them without it (as the old game looked), or a
+  look change ticket?
+- [later] F01: every old furniture material was double-sided (culling off); the library keeps it, as the old
+  import did. Single-sided is cheaper; it can be tried per piece when the models are ported (F02).
+- [later] The Materials station is its own station (one per feature) at the zoo's north edge, (-5.5, 17.5);
+  the furniture station (F03) is still to come.
 
 ## Built log
+
+### 2026-11-21 (first stop: F01 strips)
+- Changed: the shared material library `game/materials/`: the 54 old furniture materials, 30 as one `.tres`
+  each, 24 names the old game used with several sets of values as candidates (`candidates/<name>/<name>_<k>.tres`,
+  k = 1 the set most pieces used, `_kit` the house kit's), each with its old pieces as metadata; written once
+  by `tools/materials_from_old.py`. The zoo's Materials station: a board built from the folder at load
+  (`MaterialBoard`); the shot set `materials`. No furniture built (waits for the go).
+- Files: `game/materials/`, `tools/materials_from_old.py`, `game/zoo/material_board*.gd`,
+  `game/zoo/material_board_layout.tres`, `game/zoo/stations/materials.tscn`, `game/zoo/zoo.tscn`,
+  `tools/shot_hooks.gd`, `tools/shots/sets/materials.txt`, `tests/materials_test.gd`.
+- Verified: `run.sh --touched` PASS 8430 checks, 122 cases (materials_test: real path, f01_library, f01_station,
+  f01_from_data); grep_rules PASS; stills `builds/review-furniture/materials-*.png`, `materials-strip.png`.
+
