@@ -11,7 +11,8 @@
 ## When the active item changes (the wheel, a pick, a drop, a pairing) every held item glides to its
 ## new place (D08); the turn and the zoom go on top, unglided. A picked item flies up from where it
 ## lay on a small hop (D09), and the pairing moment's second Sock flies in from where it lay the same
-## way (D10). A held Sock's cloth bends by itself (SockCloth, D01-D03).
+## way (D10). A held Sock's cloth bends by itself (SockCloth, D01-D03); a thrown one leaves with the
+## bend it had here (core/27 P08), and the held readout follows the active Sock's sway (P03, sway()).
 ##
 ## Looks of this machine only: it reads the Hands and the Mess, never writes them. Ported from the
 ## old game's held_view.gd (its layout numbers, its depth trick, its zoom, its glide and fly-up).
@@ -59,6 +60,8 @@ var _fly_in: Dictionary[int, Transform3D] = {}
 ## Each Sock let go whose body's Looks grows from the hand's size to its own, by Sock id: {"from":
 ## the share of its own size it starts at; "t": seconds gone}.
 var _growing: Dictionary[int, Dictionary] = {}
+## Each held Sock's bones as its cloth last drew them, in its skeleton's space (P03, P08), by Sock id.
+var _bent: Dictionary[int, Array] = {}
 ## Whether the Hands have been drawn once: what they hold from the start does not fly up.
 var _seen := false
 
@@ -85,6 +88,7 @@ func refresh(delta := 0.0) -> void:
 			# A held Sock became a Pair here: its ball, under the moment, in the ball's place at once.
 			_looks[sock].queue_free()
 			_looks.erase(sock)
+			_bent.erase(sock)
 			_drawn.erase(sock)
 			_flying.erase(sock)
 			_start_moment(sock)
@@ -95,6 +99,8 @@ func refresh(delta := 0.0) -> void:
 			_looks[sock] = looks
 			if pair:
 				_balls[sock] = true
+			else:
+				_watch_bend(sock, looks)
 			if _seen and not _moments.has(sock) and tuning != null:
 				_flying[sock] = {"from": _lay_pose(sock), "t": 0.0}
 	_seen = hands != null
@@ -286,7 +292,9 @@ func _place_fly_in(sock: int, moment: Node3D) -> void:
 func _let_go(sock: int) -> void:
 	var looks := _looks[sock]
 	var pair := _balls.has(sock)
+	var bend := bend_of(sock)
 	_looks.erase(sock)
+	_bent.erase(sock)
 	_spin.erase(sock)
 	_balls.erase(sock)
 	_drawn.erase(sock)
@@ -297,6 +305,9 @@ func _let_go(sock: int) -> void:
 	if mess == null or mess.state_of(sock) != Mess.State.FLYING or tuning == null or tuning.let_go_grow <= 0.0:
 		return
 	_growing[sock] = {"from": tuning.active_scale * (tuning.ball_scale if pair else 1.0), "t": 0.0}
+	var throw: Dictionary = mess.throws.get(sock, {})
+	if not pair and not bend.is_empty() and not throw.is_empty() and not throw.get("drop", false):
+		_growing[sock]["bend"] = bend
 	_grow(0.0)
 
 
@@ -317,6 +328,12 @@ func _grow(delta: float) -> void:
 		var design := mess.design_of(sock) if mess != null else null
 		var size := design.size_scale() if design != null else 1.0
 		var u := clampf(float(g["t"]) / tuning.let_go_grow, 0.0, 1.0) if tuning != null and tuning.let_go_grow > 0.0 else 1.0
+		if own != null and g.has("bend"):
+			# P08: the thrown Sock's own cloth starts from the bend it had in the hand, once.
+			var cloth := own.find_children("*", "SockCloth", true, false)
+			if not cloth.is_empty():
+				(cloth[0] as SockCloth).carry(g["bend"])
+			g.erase("bend")
 		if own == null or u >= 1.0:
 			if own != null:
 				own.scale = Vector3.ONE * size
@@ -386,3 +403,82 @@ static func _close(a: Transform3D, b: Transform3D) -> bool:
 ## projected size and place when the field of view changes by `k`.
 static func _zoomed(t: Transform3D, k: float) -> Transform3D:
 	return Transform3D(t.basis.scaled(Vector3.ONE * k), Vector3(t.origin.x * k, t.origin.y * k, t.origin.z))
+
+
+## Notes held Sock `sock`'s bones each time its skeleton is drawn: the cloth's bend shows only then.
+func _watch_bend(sock: int, looks: Node3D) -> void:
+	var skeleton := looks.find_child("Skeleton3D", true, false) as Skeleton3D
+	if skeleton == null:
+		return
+	skeleton.skeleton_updated.connect(func() -> void:
+		if _looks.get(sock) != looks:
+			return
+		var poses: Array[Transform3D] = []
+		for b in skeleton.get_bone_count():
+			poses.append(skeleton.get_bone_global_pose(b))
+		_bent[sock] = poses)
+
+
+## Held Sock `sock`'s cloth bend as it was last drawn: each chain bone's pose rotation (its parent's
+## frame), by bone; empty when it has not been drawn bent yet, or is a Pair.
+func bend_of(sock: int) -> Dictionary[int, Quaternion]:
+	var out: Dictionary[int, Quaternion] = {}
+	var looks: Node3D = _looks.get(sock)
+	var poses: Array = _bent.get(sock, [])
+	var cloth: Array[Node] = []
+	if looks != null:
+		cloth = looks.find_children("*", "SockCloth", true, false)
+	if poses.is_empty() or cloth.is_empty():
+		return out
+	var skeleton := (cloth[0] as SockCloth).get_skeleton()
+	for b in (cloth[0] as SockCloth).chain():
+		var parent := skeleton.get_bone_parent(b)
+		var above: Transform3D = poses[parent] if parent >= 0 else Transform3D.IDENTITY
+		out[b] = (above.affine_inverse() * (poses[b] as Transform3D)).basis.get_rotation_quaternion()
+	return out
+
+
+## How far the active held Sock's sway has moved its middle on screen, as a shift in view direction
+## (x right, y up, over the depth): the held readout moves with it (P03, the old info_sway()). Zero
+## for a Pair, empty Hands, or a Sock not drawn bent yet.
+func sway() -> Vector2:
+	var camera := get_parent() as Camera3D
+	if hands == null or camera == null:
+		return Vector2.ZERO
+	var items := hands.items_of(me)
+	var active := hands.active_index(me)
+	if active < 0 or active >= items.size():
+		return Vector2.ZERO
+	var off := sway_offset(items[active])
+	if off == Vector3.ZERO:
+		return Vector2.ZERO
+	var looks: Node3D = _looks[items[active]]
+	var still := camera.to_local(looks.global_position)
+	var swung := camera.to_local(looks.global_position + off)
+	if still.z > -0.0001 or swung.z > -0.0001:
+		return Vector2.ZERO
+	return Vector2(swung.x, swung.y) / -swung.z - Vector2(still.x, still.y) / -still.z
+
+
+## How far the cloth's bend has moved held Sock `sock`'s middle (its Looks' origin), in the level:
+## the bone nearest it carries it from its rest place to where the bend has it (the old sway_offset()).
+func sway_offset(sock: int) -> Vector3:
+	var looks: Node3D = _looks.get(sock)
+	var poses: Array = _bent.get(sock, [])
+	var cloth: Array[Node] = []
+	if looks != null:
+		cloth = looks.find_children("*", "SockCloth", true, false)
+	if poses.is_empty() or cloth.is_empty() or not looks.is_inside_tree():
+		return Vector3.ZERO
+	var skeleton := (cloth[0] as SockCloth).get_skeleton()
+	var skel := skeleton.global_transform
+	var at := skel.affine_inverse() * looks.global_position
+	var near := -1
+	for b in (cloth[0] as SockCloth).chain():
+		if near < 0 or skeleton.get_bone_global_rest(b).origin.distance_to(at) \
+				< skeleton.get_bone_global_rest(near).origin.distance_to(at):
+			near = b
+	if near < 0:
+		return Vector3.ZERO
+	var bent := (poses[near] as Transform3D) * skeleton.get_bone_global_rest(near).affine_inverse()
+	return skel * (bent * at) - looks.global_position

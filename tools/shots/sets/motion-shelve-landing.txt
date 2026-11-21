@@ -1,0 +1,12 @@
+# core/27 P10: a Pair made at 60/85 at the Cabinet station, shelved by a click on the bottom drawer at 160: the ball flies 0.45 s to land short of its slot, squashes, hops while rolling to its rest and squashes again (60 frames a second).
+f184  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=184
+f186  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=186
+f188  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=188
+f190  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=190
+f192  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=192
+f194  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=194
+f196  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=196
+f198  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=198
+f200  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=200
+f204  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=204
+f210  --size=1280x720 --do='60:shelve_pair;85:shelve_mate;160:shelve_click' --shots=210

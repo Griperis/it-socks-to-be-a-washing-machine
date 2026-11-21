@@ -1,0 +1,9 @@
+# core/27 P08: a Sock held (60), the view turned (90), walking from 100 so the cloth bends, thrown at 112: it leaves with the bend it had in the hand, easing out (60 frames a second).
+f111  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;112:throw_lob;113:stop' --shots=111
+f113  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;112:throw_lob;113:stop' --shots=113
+f114  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;112:throw_lob;113:stop' --shots=114
+f115  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;112:throw_lob;113:stop' --shots=115
+f117  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;112:throw_lob;113:stop' --shots=117
+f120  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;112:throw_lob;113:stop' --shots=120
+f124  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;112:throw_lob;113:stop' --shots=124
+f130  --size=1280x720 --do='60:pick_floor;90:look_up;100:walk;112:throw_lob;113:stop' --shots=130

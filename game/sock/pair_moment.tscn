@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://d30ref6s3w1xt"]
 
+[ext_resource type="Script" uid="uid://h8x0e3bpl2qw7" path="res://game/sock/pair_moment.gd" id="3_pmgd"]
 [ext_resource type="PackedScene" uid="uid://bkyk44qfj4fem" path="res://game/sock/looks_crew.tscn" id="1_b6aa3"]
 [ext_resource type="PackedScene" uid="uid://uk4gtry7soji" path="res://game/sock/looks_ball_crew_plain.tscn" id="2_12w58"]
 
@@ -271,6 +272,18 @@ tracks/14/keys = {
 "update": 0,
 "values": [0.0, 0.0, 1.0]
 }
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath(".:fold")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.35, 0.43),
+"transitions": PackedFloat32Array(1, -2, -2, 1),
+"update": 0,
+"values": [0.0, 0.0, 0.5, 1.0]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ao8vk"]
 _data = {
@@ -278,6 +291,7 @@ _data = {
 }
 
 [node name="PairMoment" type="Node3D" unique_id=1138301750]
+script = ExtResource("3_pmgd")
 
 [node name="Held" type="Node3D" parent="." unique_id=1146266808]
 

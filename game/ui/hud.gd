@@ -369,7 +369,8 @@ func _clear(box: Control) -> void:
 
 
 ## The held readout's left edge, vertically centred, at the screen point of the place right of the
-## active item (pulled in by the zoom like the item), pulled left when it would leave the screen.
+## active item (pulled in by the zoom like the item, moved by its cloth sway: core/27 P03), pulled
+## left when it would leave the screen.
 func _place_held() -> void:
 	if camera == null or held_view == null or hands_tuning == null or _held.get_child_count() == 0:
 		return
@@ -379,7 +380,10 @@ func _place_held() -> void:
 	if z > 0.0:
 		rest = rest.lerp((hands_tuning.zoom_pos + tuning.zoom_info_offset) * depth, z)
 	var k := held_view.zoom_factor()
-	var point := camera.unproject_position(camera.global_transform * Vector3(rest.x * k, rest.y * k, rest.z))
+	# The active Sock's cloth sway carries it as far on screen as it swung the Sock's middle (P03).
+	var sway := held_view.sway()
+	var p := Vector3(rest.x * k + sway.x * -rest.z, rest.y * k + sway.y * -rest.z, rest.z)
+	var point := camera.unproject_position(camera.global_transform * p)
 	var at := point - Vector2(0.0, _held.size.y * 0.5)
 	at.x = minf(at.x, _held.get_viewport_rect().size.x - _held.size.x - tuning.edge_margin)
 	_held.position = at.round()

@@ -59,7 +59,8 @@ func case_d11() -> void:
 	await _physics_ticks(10)
 	_check(flier.global_position.distance_to(ball.global_position) < start.distance_to(ball.global_position), "it flies towards its slot")
 	_check(flier.global_position.y > ball.global_position.y, "on an arc above it")
-	var frames := int(_cabinet.tuning_of().flight_time * 60.0)
+	# The flight, then its landing in the slot (core/27 P10: the hop and the second squash).
+	var frames := int((_cabinet.tuning_of().flight_time + Cabinet.BALL_LANDING.bounce_time + Cabinet.BALL_LANDING.squash_time) * 60.0)
 	await _until(func() -> bool: return _cabinet.flights_into(0) == 0, "the ball to land", frames + 6)
 	_check(ball.visible, "landed, the drawer shows its ball")
 	_check(not is_instance_valid(flier) or flier.is_queued_for_deletion(), "and the flying one is gone")

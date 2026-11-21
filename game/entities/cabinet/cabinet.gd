@@ -42,6 +42,8 @@ const DRAWERS_MAX := 64
 const CABINET_LOOKS := "res://game/entities/cabinet/looks_%s.tscn"
 const DRAWER_LOOKS := "res://game/entities/drawer/looks_%s.tscn"
 const LOOKS := &"Looks"
+## How a shelving flight lands in its slot: the falling Pair's squash, hop and roll (core/27 P10).
+const BALL_LANDING := preload("res://game/sock/ball_landing_tuning.tres")
 
 ## Links the wiring check lets stay empty: a Cabinet finds the level's Hands and Coins by group.
 const WIRING_OPTIONAL := ["hands", "coins"]
@@ -420,7 +422,7 @@ func _show(now: bool) -> void:
 				slot.add_child(ball)
 				ball.position = Vector3(0.0, TRAY_FLOOR_Y + SockDress.ball_radius(mess.design_of(want)) - slot.position.y, 0.0)
 				ball.rotation.y = fposmod(j * TURN, TAU)
-				var from: Variant = null if now else _drawn_in_hands(want)
+				var from: Variant = null if now else _drawn_from(want)
 				if from is Transform3D:
 					_fly(i, j, ball, from)
 			j += 1
@@ -431,26 +433,36 @@ func flights_into(index: int) -> int:
 	return _pending.get(index, 0)
 
 
-## Where Hands on this machine draw Pair `sock` now, or null.
-func _drawn_in_hands(sock: int) -> Variant:
+## Where Pair `sock` is drawn on this machine now, or null: in Hands here (D11), or flying as a
+## thrown body that touched a drawer front (core/27 P11, Q2316: its flight goes on to its slot).
+func _drawn_from(sock: int) -> Variant:
 	if not is_inside_tree():
 		return null
 	for node in get_tree().get_nodes_in_group(HeldView.GROUP):
 		var at: Variant = (node as HeldView).drawn_of(sock)
 		if at is Transform3D:
 			return at
-	return null
+	var mess := mess_of()
+	return mess.drawn_flight_of(sock) if mess != null else null
 
 
 ## Flies a copy of shelved `ball` (slot `slot` of drawer `index`) from `from` to it, on an arc, in
 ## `flight_time` plus `flight_step` for each slot before it; the ball itself shows when every
-## flight into that drawer has landed (D11). It lands where the ball is then, the drawer sliding.
+## flight into that drawer has landed (D11). It lands where the ball is then, the drawer sliding:
+## `roll_distance` short of it, squashing, then hops and rolls on to it and squashes again
+## (core/27 P10, the old sock_ball.gd launch()).
 func _fly(index: int, slot: int, ball: Node3D, from: Transform3D) -> void:
 	var t := tuning_of()
 	var mess := mess_of()
-	var flier := SockDress.make(mess.design_of(int(ball.get_meta(Mess.SOCK_META))), SockDress.LYING, true)
+	var design := mess.design_of(int(ball.get_meta(Mess.SOCK_META)))
+	var flier := SockDress.make(design, SockDress.LYING, true)
 	flier.name = "Flight%d" % int(ball.get_meta(Mess.SOCK_META))
 	flier.top_level = true
+	var landing := BallLanding.new()
+	landing.name = "BallLanding"
+	landing.tuning = BALL_LANDING
+	landing.radius = SockDress.ball_radius(design)
+	flier.add_child(landing)
 	get_parent().add_child(flier)
 	flier.global_transform = from
 	ball.visible = false
@@ -458,16 +470,40 @@ func _fly(index: int, slot: int, ball: Node3D, from: Transform3D) -> void:
 	waiting.append(ball)
 	_waiting[index] = waiting
 	_pending[index] = int(_pending.get(index, 0)) + 1
+	var lt := landing.tuning
 	var step := func(u: float) -> void:
 		if not is_instance_valid(ball) or not ball.is_inside_tree():
 			return
-		var to := ball.global_transform
+		var to := _short_of(ball.global_transform, from, lt.roll_distance)
 		var at := from.interpolate_with(to, u)
 		at.origin = from.origin.lerp(to.origin, u) + Vector3.UP * (4.0 * t.flight_arc * u * (1.0 - u))
 		flier.global_transform = at
+	var roll := func(u: float) -> void:
+		if not is_instance_valid(ball) or not ball.is_inside_tree():
+			return
+		var to := ball.global_transform
+		var short := _short_of(to, from, lt.roll_distance)
+		var way := to.origin - short.origin
+		var axis := Vector3.UP.cross(way).normalized() if way.length() > 0.0001 else Vector3.ZERO
+		var size := to.basis.get_scale().x
+		var angle := way.length() / maxf(landing.radius * size, 0.001)
+		var spin := Basis(axis, angle * (u - 1.0)) if axis != Vector3.ZERO else Basis.IDENTITY
+		var turn := to.basis.orthonormalized()
+		flier.global_transform = Transform3D((spin * turn).scaled(Vector3.ONE * size), short.origin.lerp(to.origin, u))
 	var tween := flier.create_tween()
 	tween.tween_method(step, 0.0, 1.0, t.flight_time + t.flight_step * slot)
+	tween.tween_callback(landing.land)
+	tween.tween_method(roll, 0.0, 1.0, lt.bounce_time)
+	tween.tween_interval(lt.squash_time)
 	tween.tween_callback(_landed.bind(index, flier))
+
+
+## Where a ball flying from `from` to rest at `to` lands: `roll` short of it along the flight's flat
+## way, less than half that way when it is short; turned and sized as at rest.
+static func _short_of(to: Transform3D, from: Transform3D, roll: float) -> Transform3D:
+	var flat := Vector3(to.origin.x - from.origin.x, 0.0, to.origin.z - from.origin.z)
+	var dir := flat.normalized() if flat.length() > 0.001 else Vector3.ZERO
+	return Transform3D(to.basis, to.origin - dir * minf(roll, flat.length() * 0.5))
 
 
 ## A shelving flight into drawer `index` landed: once none is left, its waiting balls show.
