@@ -466,3 +466,18 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2177, Q2378, Q2389, Q2390, Q2394-Q2397 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | assets/08, the model sources: .blend files in assets_src/blender/, the Blender scripts in assets_src/generate/, both rebuilding all 97 ported .glb exactly; docs/human updated; merged (main 0720fa5) |
+| Planned vs actual | 0 planned (found writing docs/human), 1 actual |
+| Redo count | 0 |
+| Corrections | "assets_src/blender and the tools also into assets_src/generate if possible" (Q2400) |
+| Cost | assets/08 1 12,820,822 116 14m37s (Opus) |
+| Time | the agent ran about 15 min |
+| Surprises | the pinned Blender download was blocked by the sandbox firewall (pip bpy 5.3.0 used instead); kit export.sh reads its manifest inside kit/ and lacks sock budgets (kit faults) |
+| Stop rules | none fired |
+| Looks | none (sources) |
+| Decisions | Q2152, Q2400 |
+
+---
