@@ -6,7 +6,7 @@ area: tools
 feature: zoo
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: ["[[28-review-correctness-fixes]]", "[[33-zoo-labels-near-the-ground]]"]
 notes: []
 terms: [station]
@@ -69,3 +69,4 @@ release build can leave the folder out whole.
   Moves: see the commit's rename list (`git show --stat -M`). Files: game/zoo/**, game/ui/prompts.gd,
   game/parts/part.gd, tools/*_build.gd, docs/architecture*, docs/human/house-kit.md, tests/zoo_test.gd.
   Verified: PASS 16634 checks, 375 cases (--touched).
+- Merged: e1d88de2 (2026-11-21, branch core/34-zoo-only-into-the-zoo)
