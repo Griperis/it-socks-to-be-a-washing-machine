@@ -1,0 +1,20 @@
+# assets/02: every Collection's Cabinet in the Cabinet station: the line-up, then each one front on at eye height
+# (the old game's cab-* views stood the player before the Cabinet the same way).
+overview  --size=1280x720 --do='30:cabinet:overview' --shots=40
+simple  --size=1280x720 --do='30:cabinet:simple' --shots=40
+animals  --size=1280x720 --do='30:cabinet:animals' --shots=40
+drinks  --size=1280x720 --do='30:cabinet:drinks' --shots=40
+food  --size=1280x720 --do='30:cabinet:food' --shots=40
+fruit  --size=1280x720 --do='30:cabinet:fruit' --shots=40
+lost  --size=1280x720 --do='30:cabinet:lost' --shots=40
+machinery  --size=1280x720 --do='30:cabinet:machinery' --shots=40
+math  --size=1280x720 --do='30:cabinet:math' --shots=40
+nature  --size=1280x720 --do='30:cabinet:nature' --shots=40
+patterns  --size=1280x720 --do='30:cabinet:patterns' --shots=40
+space  --size=1280x720 --do='30:cabinet:space' --shots=40
+sport  --size=1280x720 --do='30:cabinet:sport' --shots=40
+superhero  --size=1280x720 --do='30:cabinet:superhero' --shots=40
+tech  --size=1280x720 --do='30:cabinet:tech' --shots=40
+transport  --size=1280x720 --do='30:cabinet:transport' --shots=40
+vegetables  --size=1280x720 --do='30:cabinet:vegetables' --shots=40
+winter  --size=1280x720 --do='30:cabinet:winter' --shots=40

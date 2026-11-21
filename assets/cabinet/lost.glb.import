@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bu5i51keh7xwv"
-path="res://.godot/imported/simple.glb-eeb0647226b79e098ea5d84509c9de59.scn"
+uid="uid://cgesnsfx7uyvn"
+path="res://.godot/imported/lost.glb-c5a5cd17d091bec8708f20bba0b7bfff.scn"
 
 [deps]
 
-source_file="res://game/entities/cabinet/simple.glb"
-dest_files=["res://.godot/imported/simple.glb-eeb0647226b79e098ea5d84509c9de59.scn"]
+source_file="res://assets/cabinet/lost.glb"
+dest_files=["res://.godot/imported/lost.glb-c5a5cd17d091bec8708f20bba0b7bfff.scn"]
 
 [params]
 
@@ -41,41 +41,41 @@ materials/extract_format=0
 materials/extract_path=""
 _subresources={
 "meshes": {
-"simple_base": {
+"lost_base": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://game/entities/cabinet/simple_base.res",
-"save_to_file/path": "uid://cpyckhh1t3sv3"
+"save_to_file/fallback_path": "res://assets/cabinet/lost_base.res",
+"save_to_file/path": "uid://qodsh2fjqhl2"
 },
-"simple_drawer": {
+"lost_drawer": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://game/entities/cabinet/simple_drawer.res",
-"save_to_file/path": "uid://cyqtop2nmxvax"
+"save_to_file/fallback_path": "res://assets/cabinet/lost_drawer.res",
+"save_to_file/path": "uid://bw7uenyslurmf"
 },
-"simple_segment": {
+"lost_segment": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://game/entities/cabinet/simple_segment.res",
-"save_to_file/path": "uid://ioacexbju7cg"
+"save_to_file/fallback_path": "res://assets/cabinet/lost_segment.res",
+"save_to_file/path": "uid://c2dv3gmt823qf"
 },
-"simple_top": {
+"lost_top": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://game/entities/cabinet/simple_top.res",
-"save_to_file/path": "uid://k2krki27tpgj"
+"save_to_file/fallback_path": "res://assets/cabinet/lost_top.res",
+"save_to_file/path": "uid://p8vfoid68e57"
 }
 }
 }
