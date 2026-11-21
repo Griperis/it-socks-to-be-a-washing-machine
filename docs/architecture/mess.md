@@ -36,6 +36,12 @@ Socks lie, are drawn, move or wake.
 
 ## Gotchas
 
+- A flight flies as the same leg and foot boxes it lies on (`MessBodies.parts_at`), with
+  `MessTuning.turn_weight` times its flat box's inertia (a 50 g board's own spins to Jolt's cap on an
+  edge landing), and sweeps (CCD) only from 1 m/s (core/23). Poured and dropped Socks fly as woken ones.
+- A drop and a Throw leave from the hand (`Hands.start_of`, Q2356, Q2367) on an arc solved by `Arc`;
+  a drop's launch is in `throws` with `"drop": true` (never shelved, wakes nothing).
+
 - Packed arrays in a Dictionary are values: take one out before writing it in place (`MessDrawing`).
 - The instance buffer layout (transform rows, colour, custom) is the old game's; the custom data is
   `MessDrawing.look_data()`, the old pattern shader's input (M1).

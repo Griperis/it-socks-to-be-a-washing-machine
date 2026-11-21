@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://dkwgb8yvwdqn4"]
+
+[ext_resource type="ArrayMesh" uid="uid://dgmwn6n2ttgga" path="res://game/house/kit/meshes/door_garage.tres" id="1_hyfru"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_icf3d"]
+size = Vector3(0.049999952, 3, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xvlee"]
+size = Vector3(0.049999952, 3, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6yaw2"]
+size = Vector3(2.4, 0.8800001, 0.2)
+
+[node name="DoorGarage" type="MeshInstance3D" unique_id=982703380]
+mesh = ExtResource("1_hyfru")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1392302535]
+collision_mask = 0
+
+[node name="Box1" type="CollisionShape3D" parent="Body" unique_id=1979083521]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.024999976, 1.48, 0)
+shape = SubResource("BoxShape3D_icf3d")
+
+[node name="Box2" type="CollisionShape3D" parent="Body" unique_id=1762485254]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.475, 1.48, 0)
+shape = SubResource("BoxShape3D_xvlee")
+
+[node name="Box3" type="CollisionShape3D" parent="Body" unique_id=503642406]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 2.54, 0)
+shape = SubResource("BoxShape3D_6yaw2")

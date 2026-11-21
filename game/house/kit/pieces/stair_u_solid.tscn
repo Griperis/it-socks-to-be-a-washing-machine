@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://bmmm2c3s76ud"]
+
+[ext_resource type="ArrayMesh" uid="uid://bnr5h0l3tgk2o" path="res://game/house/kit/meshes/stair_u_solid.tres" id="1_avrlq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gtiqh"]
+size = Vector3(1.1300001, 0.3, 2.7339513)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jf3nq"]
+size = Vector3(1.1300001, 0.3, 2.7339513)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_trlfi"]
+size = Vector3(2.38, 1.52, 0.9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ff3j3"]
+size = Vector3(0.12, 3, 2)
+
+[node name="StairUSolid" type="MeshInstance3D" unique_id=977372969]
+mesh = ExtResource("1_avrlq")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=84442231]
+collision_mask = 0
+
+[node name="Box1" type="CollisionShape3D" parent="Body" unique_id=1599784327]
+transform = Transform3D(1, 0, 0, 0, 0.8360479, 0.54865646, 0, -0.54865646, 0.83604795, 0.625, 0.6345928, 0.9394413)
+shape = SubResource("BoxShape3D_gtiqh")
+
+[node name="Box2" type="CollisionShape3D" parent="Body" unique_id=1369887316]
+transform = Transform3D(-1, 0, 0, 0, 0.8360479, 0.54865646, 0, 0.54865646, -0.83604795, 1.875, 2.1345928, 1.0605587)
+shape = SubResource("BoxShape3D_jf3nq")
+
+[node name="Box3" type="CollisionShape3D" parent="Body" unique_id=700041793]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 0.74, 2.45)
+shape = SubResource("BoxShape3D_trlfi")
+
+[node name="Box4" type="CollisionShape3D" parent="Body" unique_id=401653652]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 1.48, 1)
+shape = SubResource("BoxShape3D_ff3j3")

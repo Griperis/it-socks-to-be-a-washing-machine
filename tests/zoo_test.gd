@@ -13,7 +13,6 @@ const BY_HANDLING := Vector3(0.0, 0.0, 1.5)
 const BY_DRAWERS := Vector3(-1.0, 0.0, -0.4)
 const THROW_FROM := Vector3(-1.0, 0.0, 0.6)
 ## Where a Throw at the Cabinet station's Cabinet is aimed, in the station's space.
-const CABINET_AIM := Vector3(-1.0, 1.6, -2.0)
 ## Scenes that may only appear in the zoo: everything else on a station comes from the game.
 const ZOO_FOLDER := "res://game/zoo/"
 const STATIONS_FOLDER := "res://game/zoo/stations"
@@ -240,7 +239,7 @@ func case_z01_throw() -> void:
 	await _physics_ticks(1)
 	_check(mess.is_pair(sock), "the two handling Socks fused into a Pair")
 	_stand(station, THROW_FROM)
-	await _aim(station.to_global(CABINET_AIM))
+	await _aim(_drawer_front(cabinet, 1))  # core/23: a Throw lands where the crosshair is
 	_check(player.hands() == hands and hands.active_of(1) == sock, "at the Cabinet station the Pair is still the active item")
 	Input.action_press(&"drop_throw")
 	await _until(func() -> bool: return player.charging and player.charge >= 1.0, "the ring to fill", 200)

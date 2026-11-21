@@ -1,0 +1,18 @@
+[gd_resource type="ArrayMesh" format=4 uid="uid://cegofkdrn1u3h"]
+
+[ext_resource type="Material" uid="uid://bf1cit4rvdh8p" path="res://game/house/kit/materials/rafter.tres" id="1_memcl"]
+
+[resource]
+resource_name = "roof_post"
+_surfaces = [{
+"aabb": AABB(0.17, -0.02, 0.17, 0.15999998, 1.8545144, 0.15999998),
+"attribute_data": PackedByteArray("exQuPnsULj7C9ag+wvWoPsL1qD57FC4+exQuPsL1qD57FC4+wvWoPsL1qD57FC4+wvWoPsL1qD57FC4+wvWoPnsULj57FC4+wvWoPnsULj57FC4+XtHqv8L1qD4K16M8wvWoPl7R6r97FC4+CtejPHsULj5e0eq/wvWoPgrXozzC9ag+XtHqv3sULj5e0eq/exQuPgrXozzC9ag+CtejPML1qD5e0eq/exQuPgrXozx7FC4+XtHqv8L1qD4K16M8wvWoPl7R6r97FC4+CtejPHsULj5e0eq/wvWoPl7R6r/C9ag+CtejPHsULj4K16M8"),
+"format": 34359742487,
+"index_count": 36,
+"index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABwAIAAkACgALAAwACgANAAsADgAPABAAEQASABMAFAAVABYAFAAXABUAGAAZABoAGwAcAB0A"),
+"material": ExtResource("1_memcl"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 30,
+"vertex_data": PackedByteArray("exQuPgrXo7x7FC4+wvWoPgrXo7zC9ag+wvWoPgrXo7x7FC4+exQuPgrXo7zC9ag+exQuPl7R6j/C9ag+wvWoPl7R6j97FC4+wvWoPl7R6j/C9ag+exQuPl7R6j/C9ag+exQuPl7R6j97FC4+wvWoPl7R6j97FC4+exQuPl7R6j97FC4+wvWoPgrXo7x7FC4+wvWoPl7R6j97FC4+exQuPgrXo7x7FC4+wvWoPl7R6j97FC4+wvWoPgrXo7zC9ag+wvWoPl7R6j/C9ag+wvWoPl7R6j97FC4+wvWoPgrXo7x7FC4+wvWoPgrXo7zC9ag+wvWoPl7R6j/C9ag+exQuPgrXo7zC9ag+exQuPl7R6j/C9ag+wvWoPgrXo7zC9ag+exQuPl7R6j/C9ag+exQuPgrXo7x7FC4+exQuPl7R6j97FC4+exQuPl7R6j/C9ag+exQuPgrXo7zC9ag+exQuPgrXo7x7FC4+/38AAAAA/7//fwAAAAD/v/9/AAAAAP+//38AAAAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7///////38AgP//////fwCA//////9/AID//////38AgP///3//f/+/////f/9//7////9//3//v////3//f/+/////f/9//7////9//3//v/9//3//fwCA/3//f/9/AID/f/9//38AgP9//3//fwCAAAD/f/9//78AAP9//3//vwAA/3//f/+/AAD/f/9//78AAP9//3//vwAA/3//f/+/")
+}]

@@ -28,11 +28,16 @@ const NOTHING := "nothing"
 const NO_SPOT := "no_spot"
 ## How far over and under a drop's spot the Host looks for the top it would rest on.
 const SPOT_PROBE := 0.05
-## Where a thrown Sock leaves: this far ahead of the eyes along the aim and this far below them
-## (the old game's _start_point), pulled back by THROW_CLEAR body depths when a wall is nearer.
-const THROW_AHEAD := 0.35
-const THROW_LOW := 0.08
+## A Sock let go (a Throw or a drop) leaves from the hand (Q2356, Q2367); when a wall is nearer than
+## the hand's place plus THROW_CLEAR, or the hand is inside one, it leaves from the eye-line instead,
+## THROW_CLEAR body depths short of the wall (the old game's _start_point).
 const THROW_CLEAR := 0.09
+## How far along the aim a Throw looks for the point the crosshair is on.
+const AIM_FAR := 200.0
+## A drop whose fall from the hand meets something is let go farther along the eye-line instead,
+## tried at this many places, the last this far short of its spot (its fall's last stretch).
+const DROP_TRIES := 12
+const DROP_CLOSEST := 0.15
 ## How far above a player's feet their eyes are when the Host has no body of theirs to ask (a
 ## Guest's, until M0.6 reads the Guest's eyes).
 const EYES_FALLBACK := 1.5
@@ -219,8 +224,9 @@ func decide(cmd: Command) -> Dictionary:
 			var sock := active_of(cmd.by)
 			var items := items_of(cmd.by).duplicate()
 			items.remove_at(active_index(cmd.by))
-			return {"ok": true, "changes": {
-				mess.id: mess.flying_patch(sock, _let_go(cmd.by, point)),
+			var drop := drop_of(cmd.by, point)
+			return {"ok": true, "launch": drop, "changes": {
+				mess.id: mess.dropped_patch(sock, drop["from"], drop["vel"], drop["spin"], cmd.by),
 				id: _patch(cmd.by, items, items.size() - 1)}}
 		&"throw":
 			var dir: Variant = cmd.args.get("dir")
@@ -251,20 +257,115 @@ func taken_patch(by: int, socks: PackedInt32Array) -> Dictionary:
 
 
 ## Where and how a Throw by player `by` along `dir` with `charge` leaves: {"from": the pose it leaves
-## at (just in front of the eyes, never through a wall, its length across the view), "vel", "spin"}.
-## Below the tap charge it is the lob (T02); above, faster the fuller the charge (T03).
+## at (the hand's, never through a wall), "vel", "spin"}. Below the tap charge it is the lob (T02);
+## above, faster the fuller the charge (T03). Its speed is the charge's, its direction the arc from
+## where it leaves to the point the crosshair is on (Q2356), the low or the high one, whichever is
+## nearer the old aim (along `dir`, the lob lifted); an aim at nothing, or out of the arc's reach,
+## flies along that old aim.
 func launch_of(by: int, dir: Vector3, charge: float) -> Dictionary:
 	var t := tuning_of(by)
 	var vel := dir * lerpf(t.min_speed, t.max_speed, charge)
 	if charge < t.tap_charge:
 		vel = dir * t.lob_speed + Vector3.UP * t.lob_lift
 	var eyes := eyes_of(by)
-	var at := eyes + dir * THROW_AHEAD + Vector3.DOWN * THROW_LOW
-	var hit := PhysicsQueries.ray(self, eyes, at + dir * THROW_CLEAR, Mess.LAYER_HOUSE)
+	var from := start_of(by, dir)
+	var hit := PhysicsQueries.ray(self, eyes, eyes + dir * AIM_FAR, Mess.AIM_MASK, _body_of(by))
+	if not hit.is_empty():
+		var aimed := Arc.aimed(from.origin, hit["position"], vel.length(), _gravity(), t.thrown_linear_damp, vel)
+		if aimed != Vector3.ZERO:
+			vel = aimed
+	return {"from": from, "vel": vel, "spin": t.spin}
+
+
+## Where and how a drop by player `by` on `point` leaves (Q2367): {"from": the pose it is let go at
+## (the hand's, never through a wall), "vel": the drift that lets it fall on its own onto `point`,
+## "spin": the turn that lays it flat by then, its length across the view, as the old drop lay}.
+## A Pair's ball lands with its bottom on the point. When its fall from the hand would meet something
+## first (a shelf seen through a cupboard's door, a table's edge) or drift faster than `drop_drift`,
+## it is let go farther along the eye-line, at the first place whose fall is clear and slow enough,
+## so it still lands where it was aimed.
+func drop_of(by: int, point: Vector3) -> Dictionary:
+	var eyes := eyes_of(by)
+	var to := point
+	var sock := active_of(by)
+	if mess != null and mess.is_pair(sock):
+		to += Vector3.UP * SockDress.ball_radius(mess.design_of(sock))
+	var dir := (point - eyes).normalized() if not point.is_equal_approx(eyes) else Vector3.FORWARD
+	var from := start_of(by, dir)
+	var damp := mess.bodies_tuning().woken_linear_damp if mess != null else 0.6
+	if mess != null and mess.is_pair(sock):
+		damp = tuning_of(by).pair_linear_damp
+	var vel := Arc.dropped(from.origin, to, _gravity(), damp)
+	var near := eyes.distance_to(from.origin)
+	var far := eyes.distance_to(point) - DROP_CLOSEST
+	var step := 1
+	var drift := tuning_of(by).drop_drift
+	while (Vector2(vel.x, vel.z).length() > drift or not _falls_clear(by, from.origin, vel, to, damp)) \
+			and step <= DROP_TRIES and far > near:
+		var at := eyes + dir * lerpf(near, far, float(step) / DROP_TRIES)
+		from = Transform3D(from.basis, at)
+		vel = Arc.dropped(at, to, _gravity(), damp)
+		step += 1
+	var spin := Vector3.ZERO
+	if mess == null or not mess.is_pair(sock):
+		var turn_damp := mess.bodies_tuning().woken_angular_damp if mess != null else 3.0
+		var ticks := Arc.path(from.origin, vel, to.y, _gravity(), damp).size() - 1
+		spin = Arc.turn_to(from.basis, Basis(Vector3.UP, atan2(-dir.x, -dir.z)), ticks, turn_damp)
+	return {"from": from, "vel": vel, "spin": spin}
+
+
+## Whether a body let go at `from` with `vel` falls to `to` meeting nothing on the way (its middle
+## and its hanging lower end), the last DROP_CLOSEST before it lands not counted.
+func _falls_clear(by: int, from: Vector3, vel: Vector3, to: Vector3, damp: float) -> bool:
+	var me := _body_of(by)
+	var low := Vector3.DOWN * SockDress.BOX.x * 0.5
+	var points := Arc.path(from, vel, to.y, _gravity(), damp)
+	for i in range(1, points.size()):
+		var a := points[i - 1]
+		var b := points[i]
+		if b.distance_to(to) < DROP_CLOSEST:
+			return true
+		for off: Vector3 in [Vector3.ZERO, low]:
+			if (b + off).y < to.y + 0.01:
+				continue  # its lower end reaches the spot's level: that is its landing
+			if not PhysicsQueries.ray(self, a + off, b + off, Mess.AIM_MASK, me).is_empty():
+				return false
+	return true
+
+
+## Where player `by`'s active item leaves their Hands, looking along `dir`: the hand's pose (hand_of),
+## or, when a wall is between the eyes and the hand or the hand is inside one (T04), on the
+## eye-line THROW_CLEAR body depths short of the wall, turned as in the hand.
+func start_of(by: int, dir: Vector3) -> Transform3D:
+	var eyes := eyes_of(by)
+	var hand := hand_of(by, dir)
+	var out := hand.origin - eyes
+	var me := _body_of(by)
+	var blocked := PhysicsQueries.ray(self, eyes, eyes + out.normalized() * (out.length() + THROW_CLEAR), Mess.LAYER_HOUSE, me)
+	if blocked.is_empty() and not PhysicsQueries.inside(self, hand.origin, Mess.LAYER_HOUSE, me):
+		return hand
+	var at := eyes + dir * out.length()
+	var hit := PhysicsQueries.ray(self, eyes, at + dir * THROW_CLEAR, Mess.LAYER_HOUSE, me)
 	if not hit.is_empty():
 		at = eyes + dir * maxf(0.0, eyes.distance_to(hit["position"]) - THROW_CLEAR * 1.5)
-	var yaw := atan2(-dir.x, -dir.z)
-	return {"from": Transform3D(Basis(Vector3.UP, yaw), at), "vel": vel, "spin": t.spin}
+	return Transform3D(hand.basis, at)
+
+
+## Where player `by`'s active item hangs as they see it, looking along `dir` from their eyes: the
+## HeldView's active place at its full apparent distance (the drawn one is `depth` nearer and as
+## much smaller, so it looks the same), turned as it hangs, unscaled: the pose its body takes.
+## The zoom and the turn button are looks only and not in it.
+func hand_of(by: int, dir: Vector3) -> Transform3D:
+	var t := tuning_of(by)
+	var up := Vector3.UP if absf(dir.normalized().y) < 0.999 else Vector3.BACK
+	var view := Basis.looking_at(dir, up)
+	var eyes := eyes_of(by)
+	var sock := active_of(by)
+	if mess != null and mess.is_pair(sock):
+		return Transform3D(view, eyes + view * t.active_pos)
+	var design := mess.design_of(sock) if mess != null else null
+	var half := SockDress.BOX.x * 0.5 * (design.size_scale() if design != null else 1.0) * t.active_scale
+	return Transform3D(view * HeldView.HANG, eyes + view * (t.active_pos + (Vector3.UP + HeldView.HANG.x) * half))
 
 
 ## Where player `by`'s eyes are: their player's when it is on this machine (alone, always), else
@@ -279,17 +380,19 @@ func eyes_of(by: int) -> Vector3:
 	return (at as Vector3 if at is Vector3 else Vector3.ZERO) + Vector3.UP * EYES_FALLBACK
 
 
-## The pose a dropped Sock is let go at: flat, `drop_lift` over its spot, its length across the
-## dropper's view.
-func _let_go(by: int, point: Vector3) -> Transform3D:
-	var t := tuning_of(by)
-	var yaw := 0.0
-	if parts.where.is_valid():
-		var at: Variant = parts.where.call(by)
-		if at is Vector3:
-			var to := point - (at as Vector3)
-			yaw = atan2(-to.x, -to.z)
-	return Transform3D(Basis(Vector3.UP, yaw), point + Vector3.UP * t.drop_lift)
+## Player `by`'s own body when it is on this machine (what their let-go Sock leaves through), else none.
+func _body_of(by: int) -> Array[RID]:
+	var out: Array[RID] = []
+	if is_inside_tree():
+		for node in get_tree().get_nodes_in_group(PLAYERS):
+			var player := node as Player
+			if player != null and player.player_id() == by:
+				out.append(player.get_rid())
+	return out
+
+
+static func _gravity() -> float:
+	return float(ProjectSettings.get_setting("physics/3d/default_gravity", 9.8))
 
 
 ## Whether `point` is on a lying Sock or Pair (within SPOT_PROBE of its body): a drop there is allowed

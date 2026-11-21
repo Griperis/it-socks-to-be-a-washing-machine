@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://v1c4dvwwwb7l"]
+
+[ext_resource type="ArrayMesh" uid="uid://b46b433xuq5g" path="res://game/house/kit/meshes/roof_verge_e.tres" id="1_u8txt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_okr2j"]
+size = Vector3(0.35, 0.22, 6.0048738)
+
+[node name="RoofVergeE" type="MeshInstance3D" unique_id=1206277599]
+mesh = ExtResource("1_u8txt")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1640016828]
+collision_mask = 0
+
+[node name="Box" type="CollisionShape3D" parent="Body" unique_id=1174763411]
+transform = Transform3D(1, 0, 0, 0, 0.76604444, 0.64278764, 0, -0.64278764, 0.76604444, 0.175, 2.0959291, 1.95)
+shape = SubResource("BoxShape3D_okr2j")

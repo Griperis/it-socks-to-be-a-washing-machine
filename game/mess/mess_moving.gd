@@ -10,13 +10,14 @@ extends RefCounted
 
 const FLIGHT_SCENE := preload("res://game/sock/flight.tscn")
 const BALL_FLIGHT_SCENE := preload("res://game/sock/ball_flight.tscn")
+## A body this fast (m/s) sweeps its way; under CCD_OFF it no longer does (the old SockWorld's).
+const CCD_ON := 1.0
+const CCD_OFF := 0.5
 
 var _mess: Mess
 ## The falling bodies, by Sock id.
 var _flights: Dictionary[int, RigidBody3D] = {}
-## A dropped Sock's flick time left before its body is let go, a body's time in the air and its time
-## still (under the rest speed and spin).
-var _flicking: Dictionary[int, float] = {}
+## A body's time in the air and its time still (under the rest speed and spin).
 var _airborne: Dictionary[int, float] = {}
 var _still: Dictionary[int, float] = {}
 ## Each body's speed before this physics step (what its hits are judged by).
@@ -26,6 +27,8 @@ var _speeds: Dictionary[int, float] = {}
 var _taken: Array[AABB] = []
 ## The falling Pairs that drag as Pairs do (P07).
 var _damped: Dictionary[int, bool] = {}
+## The dropped bodies: let go, they wake nothing they fall on (as before Q2367, when a drop fell 3 cm).
+var _dropped: Dictionary[int, bool] = {}
 ## The lying Socks waiting to move, with the Command that starts them (&"wake" or &"fall"), and
 ## their order (nearest the players first), sorted again when one is added.
 var _waiting: Dictionary[int, StringName] = {}
@@ -77,33 +80,26 @@ func forget(sock: int) -> void:
 		_waiting.erase(sock)
 	if _flights.has(sock) and _mess.state_of(sock) != Mess.State.FLYING:
 		_drop_flight(sock)
-	if _flicking.has(sock) and _mess.state_of(sock) != Mess.State.FLYING:
-		_flicking.erase(sock)
 
 
-## The Mess shows Sock `sock` FLYING with no body yet: it starts now (`now`, woken, thrown, or no
-## flick), or after the flick.
-func start(sock: int, woken: bool, now: bool) -> void:
-	if _flights.has(sock) or _flicking.has(sock):
+## The Mess shows Sock `sock` FLYING with no body yet: it starts now (woken, dropped or thrown:
+## Q2367 took the drop's flick away).
+func start(sock: int, woken: bool, _now: bool) -> void:
+	if _flights.has(sock):
 		return
-	var t := _mess.tuning
-	if now or woken or _mess.throws.has(sock) or t == null or t.flick <= 0.0:
-		_launch(sock, woken)
-	else:
-		_flicking[sock] = t.flick
+	_launch(sock, woken)
 
 
 ## Every body freed (a whole new state, or the Mess leaves).
 func clear() -> void:
 	for sock: int in _flights.keys():
 		_drop_flight(sock)
-	_flicking.clear()
 	_waiting.clear()
 	_order = PackedInt32Array()
 	_taken.clear()
 
 
-## Once a physics tick: hits and picks and movers wake, flicked Socks go, still flights rest (at most
+## Once a physics tick: hits and picks and movers wake, still flights rest (at most
 ## the stop cap), pressure frees room, and the waiting start.
 func tick(delta: float) -> void:
 	var t := _mess.bodies_tuning()
@@ -113,16 +109,12 @@ func tick(delta: float) -> void:
 	for place in taken:
 		queue_wake(_mess.resting_on(place), &"fall")
 	_sweep_movers()
-	for sock: int in _flicking.keys():
-		_flicking[sock] -= delta
-		if _flicking[sock] <= 0.0:
-			_flicking.erase(sock)
-			_launch(sock, false)
 	var ready: Array[int] = []
 	for sock: int in _flights.keys():
 		var body := _flights[sock]
 		_airborne[sock] += delta
 		_speeds[sock] = body.linear_velocity.length()
+		_switch_ccd(body)
 		if not _mess.in_bounds(body.global_position):
 			_rest(sock, _return_pose(body))
 			continue
@@ -148,7 +140,7 @@ func tick(delta: float) -> void:
 func _settle(sock: int) -> void:
 	var body := _flights[sock]
 	var t := body.global_transform.orthonormalized()
-	var centre := t * (body.get_node(^"Shape") as CollisionShape3D).position
+	var centre := t * _middle(body)
 	_rest(sock, _return_pose(body) if PhysicsQueries.inside(_mess, centre, Mess.LAYER_HOUSE) else t)
 
 
@@ -225,7 +217,7 @@ func _start_waiting() -> void:
 func _hits() -> void:
 	var fast := _mess.tuning.wake_speed if _mess.tuning != null else 1.5
 	for sock: int in _flights.keys():
-		if float(_speeds.get(sock, 0.0)) < fast:
+		if float(_speeds.get(sock, 0.0)) < fast or _dropped.has(sock):
 			continue
 		var state := PhysicsServer3D.body_get_direct_state(_flights[sock].get_rid())
 		if state == null:
@@ -305,14 +297,20 @@ func _return_pose(body: RigidBody3D) -> Transform3D:
 	return Transform3D(Basis.IDENTITY, body.global_position)
 
 
-## Lets a Sock go: one physical body from its pose, falling, or flying with its throw's launch. A
-## woken one (`woken`) slides and drags as a woken Sock; a dropped or thrown one bounces and drags as
-## a Throw (M10), its thrower's own body letting it through. A Pair is its ball's body; it drags as a
-## Pair from its first touch (P07), a dropped or fallen one from the start.
+## Lets a Sock go: one physical body from its pose, falling, or flying with its launch. A woken one
+## (`woken`), a poured one (an `add`'s push, by Mess.NOBODY: the old SockPour let its Socks fall as
+## Moving Socks) and a dropped one (let go from the hand, Q2367: it falls, no bounce) slide and drag
+## as a woken Sock; a thrown one bounces and drags as a Throw (M10). A dropped or thrown one's own
+## player's body lets it through. A Pair is its ball's body; it drags as a Pair from its first touch
+## (P07), a fallen or dropped one from the start.
 func _launch(sock: int, woken: bool) -> void:
 	var t := _mess.bodies_tuning()
 	var hands := _mess.tuning
 	var pair := _mess.is_pair(sock)
+	var launch: Dictionary = _mess.throws.get(sock, {})
+	var dropped := bool(launch.get("drop", false))
+	if not launch.is_empty() and (int(launch.get("by", 0)) == Mess.NOBODY or dropped):
+		woken = true
 	var body := (BALL_FLIGHT_SCENE if pair else FLIGHT_SCENE).instantiate() as RigidBody3D
 	body.name = Mess.FLIGHT_NAME % sock
 	body.set_meta(Mess.SOCK_META, sock)
@@ -329,10 +327,12 @@ func _launch(sock: int, woken: bool) -> void:
 	else:
 		body.linear_damp = hands.thrown_linear_damp if hands != null else 0.05
 		body.angular_damp = hands.thrown_angular_damp if hands != null else 0.8
-	var launch: Dictionary = _mess.throws.get(sock, {})
 	if not launch.is_empty():
 		body.linear_velocity = launch["vel"]
 		body.angular_velocity = launch["spin"]
+	_switch_ccd(body)
+	if not pair:
+		body.inertia = turn_inertia(body.mass, SockDress.box(_mess.design_of(sock)), t.turn_weight)
 	_mess.flight_holder().add_child(body, true)
 	body.global_transform = _mess.pose_of(sock)
 	body.reset_physics_interpolation()
@@ -340,8 +340,10 @@ func _launch(sock: int, woken: bool) -> void:
 		_spare_thrower(body, int(launch["by"]))
 	body.body_entered.connect(_on_contact.bind(sock))
 	_flights[sock] = body
-	if pair and launch.is_empty():
+	if pair and (launch.is_empty() or dropped):
 		_damp_pair(sock)
+	if dropped:
+		_dropped[sock] = true
 	_airborne[sock] = 0.0
 	_still[sock] = 0.0
 	_speeds[sock] = body.linear_velocity.length()
@@ -385,9 +387,23 @@ func _drop_flight(sock: int) -> void:
 	_still.erase(sock)
 	_speeds.erase(sock)
 	_damped.erase(sock)
+	_dropped.erase(sock)
 
 
-## A falling body's box (a Pair's ball) fitted to its Design's Size.
+## A fast body sweeps its way (continuous collision) from CCD_ON m/s and stops sweeping under
+## CCD_OFF, as the old game's (SockWorld.CCD_ON, CCD_OFF): a 2 cm Sock moving most of its thickness a
+## tick could pass through a thin part, and a slow one swept into its contacts is kicked into a spin.
+func _switch_ccd(body: RigidBody3D) -> void:
+	var speed := body.linear_velocity.length()
+	if speed >= CCD_ON:
+		body.continuous_cd = true
+	elif speed < CCD_OFF:
+		body.continuous_cd = false
+
+
+## A falling body's shapes (a Pair's ball) fitted to its Design's Size: a Sock's are the leg and foot
+## boxes it lies on (MessBodies.parts_at), so it flies, lands and lies as the same shape, as the old
+## game's one set of shapes for both tiers.
 static func _fit(body: CollisionObject3D, design: SockDesign) -> void:
 	var shape := body.get_node(^"Shape") as CollisionShape3D
 	if shape.shape is SphereShape3D:
@@ -395,10 +411,38 @@ static func _fit(body: CollisionObject3D, design: SockDesign) -> void:
 		ball.radius = SockDress.ball_radius(design)
 		shape.shape = ball
 		return
-	var box := (shape.shape as BoxShape3D).duplicate() as BoxShape3D
-	box.size = SockDress.box(design)
-	shape.shape = box
-	shape.position.y = box.size.y * 0.5
+	var parts := MessBodies.parts_at(design.size_scale() if design != null else 1.0)
+	for i in parts.size():
+		var part := shape
+		if i > 0:
+			part = CollisionShape3D.new()
+			part.name = "Shape%d" % (i + 1)
+			body.add_child(part)
+		var box := BoxShape3D.new()
+		box.size = parts[i][0]
+		part.shape = box
+		part.position = parts[i][1]
+
+
+## A Sock's turning inertia: its whole flat box's, of `mass`, `weight` times over (a 50 g board's own
+## is so small that an off-centre touch spins it up to Jolt's limit in one tick).
+static func turn_inertia(mass: float, box: Vector3, weight: float) -> Vector3:
+	var x2 := box.x * box.x
+	var y2 := box.y * box.y
+	var z2 := box.z * box.z
+	return mass / 12.0 * weight * Vector3(y2 + z2, x2 + z2, x2 + y2)
+
+
+## The middle of a falling body's shapes, in its own space.
+static func _middle(body: Node3D) -> Vector3:
+	var sum := Vector3.ZERO
+	var n := 0
+	for child in body.get_children():
+		var shape := child as CollisionShape3D
+		if shape != null:
+			sum += shape.position
+			n += 1
+	return sum / maxf(n, 1)
 
 
 ## A copy of a box or ball shape, `margin` bigger all round (any other shape as it is).

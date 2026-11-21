@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: house
 feature: house
 priority: now
 created: 2026-11-20
-done:
+done: 2026-11-21
 blocked_by: ["[[01-house-kit]]"]
 notes: []
 terms: []
@@ -66,10 +66,11 @@ Draft for the designer; the numbers are the old house's, moved to the grid.
 **Every piece**
 - K12 Each piece snaps on the 0.5 m grid (origin on a grid corner, 90 degree turns), has box colliders on the house
   layer and its material slots from the shared library; a new size is a number in `house_kit_sizes.tres` and a rebuild.
-- K14 No two pieces placed by the grid convention z-fight: no coplanar overlapping faces (floors and ceilings
-  against walls on every floor, corners, Ts, skirting, frames), by a written convention and a test (Q2358).
 - K13 The kit station shows every piece, labelled, and a small room built from them that the player walks in, climbs
   the U stair to an upper floor and looks out of a window.
+- K14 No two pieces placed by the grid convention have faces facing the same way in one plane that overlap where they
+  can be seen: floor and ceiling tiles against walls on every floor, walls at corners and Ts, skirting, frames and
+  sills, the station's own floor (Q2358). The convention is in `docs/architecture/house-kit.md`.
 
 ## Design
 The agent drafts it from house/01's build script and sizes before building: how the two-face walls and skirting are
@@ -82,7 +83,11 @@ The plan (first stop, drafted): its own file, `docs/architecture/house-kit-plan.
 `tools/house_plan.py`, which holds the old numbers beside the new ones and checks the plan's rules (centre lines on
 grid lines; an opening centred in a wall piece of 0.5 m steps, so on a 0.25 m lattice, old widths kept; an
 opening's edge a casing clear of a meeting wall; heights over a floor kept). House/03 reads the new numbers there.
-The pieces' design follows the designer's go on the plan.
+The pieces (built after the go): one generated mesh per piece with fixed material slots (0 inside, 1 outside, 2
+trim, 3 glass for walls; see `docs/architecture/house-kit.md` "Material slots"); skirting, door frames and window
+frames are part of their wall pieces (trim slot); one window piece per width, sill/head and piece length, in both
+sets; the U stair one piece a storey; roof slopes by length, verges, a dormer piece, gables wall line to wall line;
+two sample rooms (`rooms/`) and a line-up built at load from the pieces folder.
 
 ## Acceptance
 - One test per behaviour line (`tests/house_kit_test.gd`); the real-path case: in the kit station the player walks in
@@ -94,35 +99,36 @@ The pieces' design follows the designer's go on the plan.
 - `asset_lint` passes; house/01's cases still pass.
 
 ## Answers
+- The pieces are approved and merge (Q2380, 2026-11-21).
+- Both window sets stay in the kit: the old widths (A) for the house, and the house is also built with the rounded set (B) to compare; the goal is the old house rebuilt with this kit (Q2381, 2026-11-21).
 - The kit builds the old house nearly identically; the old house is re-gridded to 0.5 m (Q2343, 2026-11-20).
 - It covers windows and door frames, skirting and railings, roof and attic, openings for entities (Q2344, 2026-11-20).
 - The proof, the whole house rebuilt, is house/03 (Q2345, 2026-11-20).
 - house/01 merged as a first step; its open follow-ups are carried here (Q2346, 2026-11-20).
+- The stair: a 0.9 m half landing, 33.3 degrees (Q2350, 2026-11-21).
+- D2 and D8: an off-centre door piece keeps both doorways in their old places (Q2351, 2026-11-21). Built as the old
+  0.1 m from the z3.5 partition's face (z 3.65..4.55): the old place itself would cut into the partition, which moved
+  0.18 m south.
+- The width: outer wall centre lines 10.5 m apart (Q2352, 2026-11-21).
+- K02: storeys 3.0 m, the old clear heights 2.7 / 2.7 / 2.6 m kept through thicker ceiling tiles (Q2353, 2026-11-21).
+- The roof: 40 degrees, the ridge 3.88 m over the attic floor (Q2354, 2026-11-21).
+- Openings: both sets are built, old widths and widths rounded to 0.5 m; the designer compares (Q2355, 2026-11-21).
+- The Cellar hatch and the tiles with a hole are in (the designer, 2026-11-21). The Cellar hatch's tile is 1.5 m:
+  a 1 m tile cannot hold the 0.75 m hatch at its planned place.
+- No z-fighting: a kit rule, tested (K14, Q2358, 2026-11-21).
+- The corner question (house/01, K04): no inner corner or filler piece is needed; a partition that cannot meet a wall
+  through a T is an end piece that starts at the wall's face (2026-11-21, with K14).
 
 ## Open follow-ups
-The plan's choices, for the designer's go on the first stop (stills in `builds/review-house-02/`):
-- [blocking] The stair: the first riser had to move south to z 5.5 (+0.25), so the U stair is 36.1 degrees (old
-  31.3; 7 goings of 0.257 m, rise 0.1875, landing 1.1 m). Moving it north instead (29.7 degrees) leaves 0.82 m for
-  the 0.9 m bedroom doorway between the partition and the elevator hatch. Keep 36.1, or a 0.9 m landing (33.3
-  degrees, landing shallower than the 1.13 m flight)?
-- [blocking] The laundry and bedroom doorways (D2, D8) move 0.32 m south: centred at z 4.0 the partition's face
-  would stand 1 cm in the opening. Keep that, or an off-centre door piece for these two (0.12 m)?
-- [blocking] The width: outer wall centre lines 10.5 m apart (inside 10.3 m, +0.2; the east rooms 3.84 m wide,
-  old 3.7) rather than the ticket's "about 10" (10.0 would make them 3.34 m)?
-- [blocking] K02: storeys 3.0 m with the old clear heights kept exactly (2.7, 2.7, 2.6) through thicker ceiling
-  tiles (0.2, 0.2, 0.3 m), rather than house/01's 0.1 m tile (2.8 m on every floor)?
-- [blocking] The roof keeps the old ridge height (3.59 m over the attic floor), so 37.5 degrees as the old house
-  (37.4) rather than the ticket's 40 (ridge 3.88 m).
-- [blocking] Openings keep their old widths (18 window pieces, 2 door pieces) rather than widths rounded to the
-  grid (fewer pieces, a look change).
-- [later] The plan includes the Cellar hatch in the workshop floor (not in the ticket's list), the shaft's and the
-  hatch's floor holes need 1 x 1 m tile pieces with the hole.
-
-Carried from house/01:
-- [later] The corner question (K04): one L piece is both the outer and the inner corner; an inner corner or filler
-  piece only if the plan needs one.
-- [later] The station room's ground floor has no floor tiles (they flicker against the zoo floor at y 0).
-- [later] A rebuild renumbers the nodes' `unique_id` lines in every piece file (cosmetic diff).
+For the designer at the second stop (stills in `builds/review-house-02/`):
+- [later] The roof's rafters stand one a metre in each 1 and 2 m slope piece (the old ones every 0.9 m); a 0.5 m
+  piece has none.
+- [later] house/01's straight flights (`stair_full`, `stair_half`, `landing`) keep the agent's numbers; the house
+  uses the U stair.
+- [later] A rebuild renumbers the nodes' `unique_id` lines in every piece file (cosmetic diff); the rooms' files
+  repeat each piece's mesh as an override (harmless).
+- [later] The House kit station moved its line-up beyond the zoo floor's west edge on its own ground (the line-up is
+  25 x 36 m); the zoo floor is 40 x 80 m and full.
 
 ## Built log
 - Model: Opus (lead): many pieces, a build script, geometry from the old Blender script.
@@ -134,3 +140,17 @@ Carried from house/01:
 - Files: `tools/house_plan.py`, `docs/architecture/house-kit-plan.md`, `docs/architecture/house-kit.md`;
   stills `builds/review-house-02/plan_1_basement.png` to `plan_5_section.png`.
 - Verified: `house_plan: PASS, 0 rules broken`; `PASS rules: 9 rules, no new hit`.
+
+### 2026-11-21
+- Changed: the plan to the answers (Q2350-Q2355), with a still of both window sets. The kit grew to the old house:
+  two-faced walls with skirting, partition end pieces, knee walls, door pieces with linings and casings (1.5 m,
+  off-centre, garage), the elevator hatch partition, window pieces of both sets with the old frame and a pane that
+  stops Socks, the two-storey stair window, ceiling tiles for 2.7 / 2.6 m, tiles with the shaft's and the Cellar
+  hatch's holes, the U stair with newel cap and balustrade, roof slopes and verges at 40 degrees, the dormer, the
+  gables, a roof post. The no-z-fight rule (K14). The station: a line-up built at load, the U room (door, U stair,
+  window) and a roof corner with the dormer. Second stop: line-up and close-ups beside the old house.
+- Files: `game/house/kit/house_kit_build.gd`, `house_kit_sizes.gd`, `house_kit_line_up.gd`, `rooms/`, `pieces/`,
+  `meshes/`, `game/zoo/stations/house_kit.tscn`, `tests/house_kit_test.gd`, `tools/house_plan.py`,
+  `tools/shot_hooks.gd`, `docs/architecture/house-kit.md`, `house-kit-plan.md`; stills in `builds/review-house-02/`.
+- Verified: `PASS 1670 checks, 19 cases` (house_kit); `PASS asset_lint`; `PASS rules: 9 rules, no new hit`.
+- Merged: 4bb9c93b (2026-11-21, branch house/02-kit-for-the-old-house)

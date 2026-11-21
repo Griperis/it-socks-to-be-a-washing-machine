@@ -32,18 +32,26 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.make_current()
 			return true
 		"house_kit":
-			# A camera on the house kit station (house/01): arg "lineup" (the walls), "floors" (the
-			# tiles and stairs), "room" (the
-			# small room from above the door side), "door" and "window" (close-ups from inside),
-			# "stair" (up the stair from the door).
+			# A camera on the house kit station (house/02): "lineup" (every piece from above), "walls",
+			# "openings", "floors", "roof_pieces" (rows of the line-up), "room" (the U room from
+			# above), "door" (the front door's frame from inside), "window" (the landing's window and
+			# frame from inside), "corner" (the upper floor's corner: a floor meets two walls, K14),
+			# "stair" (the U stair from the hall), "roof" (the roof corner with the dormer from outside),
+			# "dormer" (the dormer from inside the attic corner).
 			var station := world.get_node("Stations/HouseKit") as Node3D
 			var views := {
-				"lineup": [Vector3(-0.5, 11.0, -11.5), Vector3(-0.5, 0.0, -3.0)],
-				"floors": [Vector3(-10.5, 6.5, 3.5), Vector3(-3.0, 0.5, 3.5)],
-				"room": [Vector3(10.0, 9.0, -5.0), Vector3(3.5, 1.0, 3.0)],
-				"door": [Vector3(4.6, 1.5, 2.6), Vector3(3.5, 1.1, 0.0)],
-				"window": [Vector3(3.2, 1.6, 2.5), Vector3(6.0, 1.5, 2.5)],
-				"stair": [Vector3(4.6, 1.6, 0.6), Vector3(1.5, 2.2, 3.5)],
+				"lineup": [Vector3(-20.0, 34.0, 50.0), Vector3(-20.0, 0.0, 24.0)],
+				"walls": [Vector3(-23.0, 7.0, 15.0), Vector3(-23.0, 0.5, 8.0)],
+				"openings": [Vector3(-23.0, 7.0, 18.0), Vector3(-23.0, 0.5, 11.0)],
+				"floors": [Vector3(-23.0, 7.0, 21.0), Vector3(-23.0, 0.5, 14.0)],
+				"roof_pieces": [Vector3(-21.0, 9.0, 33.0), Vector3(-21.0, 1.0, 21.0)],
+				"room": [Vector3(7.5, 10.0, -8.5), Vector3(2.0, 2.0, 1.0)],
+				"door": [Vector3(2.0, 1.5, -0.6), Vector3(2.75, 1.0, -3.0)],
+				"window": [Vector3(2.4, 4.6, -1.0), Vector3(2.25, 4.4, -3.0)],
+				"corner": [Vector3(2.4, 4.4, -1.6), Vector3(1.05, 3.0, -2.95)],
+				"stair": [Vector3(3.2, 1.7, -0.5), Vector3(1.9, 0.9, 3.5)],
+				"roof": [Vector3(-12.0, 4.5, 10.0), Vector3(-5.5, 1.8, 2.5)],
+				"dormer": [Vector3(-6.5, 1.5, 0.8), Vector3(-5.0, 1.4, 4.7)],
 			}
 			var view: Array = views.get(arg, views["lineup"])
 			var cam := Camera3D.new()
@@ -141,6 +149,19 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			var player := world.get_node("Player") as Player
 			player.create_tween().tween_property(player, ^"rotation:y", player.rotation.y + 1.2, 0.4)
 			return true
+		"drop_aimed":
+			# core/23: arg "look" tilts the head 45 degrees down at the open floor; without one, the held
+			# Sock is dropped where the crosshair is, as a tap of the drop button does.
+			var player := world.get_node("Player") as Player
+			if arg == "look":
+				(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-45.0)
+				player.reset_physics_interpolation()
+				return true
+			var hands := world.get_node("Socks/Hands") as Hands
+			var spot := player.drop_spot()
+			if not spot.is_empty():
+				hands.drop(player.player_id(), spot["point"], spot["normal"])
+			return true
 		"throw_lob":
 			# The held Sock is thrown ahead with a light charge, landing in view.
 			var player := world.get_node("Player") as Player
@@ -182,6 +203,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 		"heap_more":
 			# core/20: a camera over the heap station's front (its buttons, its counter sign, the pad),
 			# and the zoo's player, standing at the buttons, presses More: the spout pours one batch.
+			# Arg "close": the camera close on the landing under the spout (core/23).
 			var station := world.get_node("Stations/Heap") as Node3D
 			var player := world.get_node("Player") as Player
 			player.global_position = station.to_global(Vector3(2.5, 0.0, -4.6))
@@ -189,8 +211,13 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			var cam := Camera3D.new()
 			world.add_child(cam)
 			cam.fov = 60.0
-			cam.global_position = station.to_global(Vector3(-2.8, 3.4, -6.4))
-			cam.look_at(station.to_global(Vector3(0.0, 0.4, 0.2)))
+			if arg == "close":
+				# core/23: close on the heap's landing, under the spout.
+				cam.global_position = station.to_global(Vector3(-1.1, 0.9, -1.5))
+				cam.look_at(station.to_global(Vector3(0.0, 0.1, 0.0)))
+			else:
+				cam.global_position = station.to_global(Vector3(-2.8, 3.4, -6.4))
+				cam.look_at(station.to_global(Vector3(0.0, 0.4, 0.2)))
 			cam.make_current()
 			(station.get_node("More/HeapButton") as HeapButton).use(player.player_id())
 			return true

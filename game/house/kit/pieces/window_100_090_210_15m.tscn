@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://c4xow8531e2kn"]
+
+[ext_resource type="ArrayMesh" uid="uid://c24rgjyu0tpjl" path="res://game/house/kit/meshes/window_100_090_210_15m.tres" id="1_xbo7t"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bkn1a"]
+size = Vector3(0.25, 3, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nwnbn"]
+size = Vector3(0.25, 3, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t8x02"]
+size = Vector3(1, 0.91999996, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uddqq"]
+size = Vector3(1, 0.8800001, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vdunf"]
+size = Vector3(0.90000004, 1.065, 0.045)
+
+[node name="Window10009021015m" type="MeshInstance3D" unique_id=147464630]
+mesh = ExtResource("1_xbo7t")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=267250657]
+collision_mask = 0
+
+[node name="Box1" type="CollisionShape3D" parent="Body" unique_id=1284601975]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.125, 1.48, 0)
+shape = SubResource("BoxShape3D_bkn1a")
+
+[node name="Box2" type="CollisionShape3D" parent="Body" unique_id=1924233007]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.375, 1.48, 0)
+shape = SubResource("BoxShape3D_nwnbn")
+
+[node name="Box3" type="CollisionShape3D" parent="Body" unique_id=465753434]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 0.43999997, 0)
+shape = SubResource("BoxShape3D_t8x02")
+
+[node name="Box4" type="CollisionShape3D" parent="Body" unique_id=921425192]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 2.54, 0)
+shape = SubResource("BoxShape3D_uddqq")
+
+[node name="Box5" type="CollisionShape3D" parent="Body" unique_id=1045553511]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 1.5174999, -0.017499998)
+shape = SubResource("BoxShape3D_vdunf")

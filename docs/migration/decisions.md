@@ -1,4 +1,4 @@
-Next free Q number: Q2380 (update this line whenever a round of questions is asked)
+Next free Q number: Q2386 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -292,3 +292,9 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2377: every jump lands with the "land" sound, as the old game (the 3 m/s gate stays).
 - Q2378: four M1 asset families start now beside M0.5: the Sock models and prints, the 17 Cabinets, the UI art and keycaps, the house furniture with the shared material library (assets/01-04).
 - Q2379: after the old Sock look is ported, Socks get a wool look (knit texture and normal mapping); a follow-up ticket (assets/05, priority later).
+- Q2380: house/02's kit pieces are approved and merge.
+- Q2381: both window sets stay: the old widths (A) and the rounded ones (B); house/03 builds the house with each to compare; the goal is the old house rebuilt with this kit.
+- Q2382: core/23 merges on the strips; the designer tries it in play and its numbers (turn_weight) are tuned from that.
+- Q2383: a thrown Sock keeps the hand's pose in the air (it lands as it flies, often on its end), not turned flat as the drop.
+- Q2384: the ported Sock models, balls, pattern shader and prints are approved; the shape follows the Collection as the old game; look updates come later (assets/05).
+- Q2385: the 17 Cabinets and the 111 icons are approved; Cabinets keep 3 drawers now, growing by Stage comes with Stages (M4).

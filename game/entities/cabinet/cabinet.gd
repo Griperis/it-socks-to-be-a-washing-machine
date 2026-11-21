@@ -320,7 +320,7 @@ func _on_flight_touched(sock: int, other: Node) -> void:
 	if parts == null or not parts.is_host() or other == null or not _is_drawer_front(other):
 		return
 	var mess := mess_of()
-	if not mess.throws.has(sock) or not _shelves_thrown(sock):
+	if not mess.throws.has(sock) or (mess.throws[sock] as Dictionary).get("drop", false) or not _shelves_thrown(sock):
 		return
 	var thrower := int((mess.throws[sock] as Dictionary).get("by", Parts.HOST))
 	parts.ask.call_deferred(Command.new(&"thrown_shelve", Parts.HOST, id, {"sock": sock, "thrower": thrower}))
