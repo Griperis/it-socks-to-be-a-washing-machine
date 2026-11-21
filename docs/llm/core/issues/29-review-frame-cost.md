@@ -6,7 +6,7 @@ area: core
 feature: core
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: []
 notes: []
 terms: []
@@ -56,3 +56,4 @@ changing what the player sees or how anything feels. (The Mess's own per-frame f
   - Added counters for the timing case (`Player.aim_finds`, `PhysicsQueries.ball_queries`, `HeldView.cloth_searches`,
     `HeldView.bends_noted`, `PairMoment.cloth_searches`).
   - Verified: PASS 16116 checks, 339 cases (--touched); PASS rules.
+- Merged: 1c82fd8d (2026-11-21, branch core/29-review-frame-cost)

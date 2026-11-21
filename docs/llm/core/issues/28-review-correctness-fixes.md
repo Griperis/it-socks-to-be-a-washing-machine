@@ -75,3 +75,4 @@ game/audio/sound_catalogue.gd, game/audio/sounds.gd, game/outline/outline.gd, te
 heap, house_kit, feedback_polish, sounds, outline).
 Verified: PASS 16279 checks, 372 cases. Failing before the fix was seen for R8(a) and R9; the co-op R1 case uses the
 Host's `answer` for a Guest's id, not a real ENet peer.
+- Merged: 57a6a791 (2026-11-21, branch core/28-review-correctness-fixes)
