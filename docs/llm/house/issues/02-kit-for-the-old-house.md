@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: house
 feature: house
 priority: now
 created: 2026-11-20
-done:
+done: 2026-11-21
 blocked_by: ["[[01-house-kit]]"]
 notes: []
 terms: []
@@ -99,6 +99,8 @@ two sample rooms (`rooms/`) and a line-up built at load from the pieces folder.
 - `asset_lint` passes; house/01's cases still pass.
 
 ## Answers
+- The pieces are approved and merge (Q2380, 2026-11-21).
+- Both window sets stay in the kit: the old widths (A) for the house, and the house is also built with the rounded set (B) to compare; the goal is the old house rebuilt with this kit (Q2381, 2026-11-21).
 - The kit builds the old house nearly identically; the old house is re-gridded to 0.5 m (Q2343, 2026-11-20).
 - It covers windows and door frames, skirting and railings, roof and attic, openings for entities (Q2344, 2026-11-20).
 - The proof, the whole house rebuilt, is house/03 (Q2345, 2026-11-20).
@@ -119,8 +121,6 @@ two sample rooms (`rooms/`) and a line-up built at load from the pieces folder.
 
 ## Open follow-ups
 For the designer at the second stop (stills in `builds/review-house-02/`):
-- [blocking] Which window set: the old widths or the widths rounded to 0.5 m (Q2355)? `openings_two_sets.png`
-  shows both on two walls; both sets are in the kit and the station's line-up.
 - [later] The roof's rafters stand one a metre in each 1 and 2 m slope piece (the old ones every 0.9 m); a 0.5 m
   piece has none.
 - [later] house/01's straight flights (`stair_full`, `stair_half`, `landing`) keep the agent's numbers; the house

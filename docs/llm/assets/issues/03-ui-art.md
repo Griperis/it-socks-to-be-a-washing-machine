@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: assets
 feature: assets
@@ -41,5 +41,18 @@ old HUD drew a key (`UiBits.icon`, 1.5x the font).
 - Started beside M0.5 (Q2378, 2026-11-21).
 
 ## Open follow-ups
+- [later] The station file is `game/zoo/pending/icons.tscn`, not in `game/zoo/stations/`: the zoo suite fails on a station
+  that zoo.tscn does not instance, and zoo.tscn was not mine. Lead: `git mv` it into `stations/` and instance it in zoo.tscn.
+- [later] Icons are imported at the old svg scale 1.0 (64 px; cursor 36). If the Upgrade menu draws them larger than 64 px
+  they blur; a higher `svg/scale` is a technical choice for the designer's go.
+- [later] The old `Icons.texture` swapped a key for the pad glyph while the pad was the last input (`Controls.pad_icon`).
+  `UiIcons.keys_for_action(action, pad)` gives the glyph per action; the keyboard/pad switch belongs to core/15.
 
 ## Built log
+
+- 2026-11-21 (stopped at the first still, designer's go awaited). Changed: the 111 old svgs copied byte-identical into
+  `assets/ui/` (checked with cmp against v0.1.1); `UiIcons` (texture, aliases, all_keys from the folder, keys_for_action
+  for keyboard and pad); `IconsStation` built from the folder; `tools/icons_still.tscn` and a `icons` action in
+  shot_hooks. Files: assets/ui/*.svg, game/ui/ui_icons.gd, game/zoo/icons_station.gd, game/zoo/pending/icons.tscn,
+  tests/ui_icons_test.gd, tools/icons_still.tscn, tools/shot_hooks.gd. Still: builds/review-ui-art/icons-all.png (new left, old right
+  of each pair). Verified: PASS 4628 checks, 46 cases (--touched).
