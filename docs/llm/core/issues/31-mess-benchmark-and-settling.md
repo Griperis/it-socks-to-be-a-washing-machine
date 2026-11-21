@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: needs-info
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: []
 notes: []
 terms: []
@@ -80,12 +80,15 @@ cloth bend vs. the straight lying mesh, LOD or material differences between the 
   `docs/human/` gains a short page on running it on the designer's PC.
 
 ## Answers
+- Sunk Socks are left as they are (Q2412, 2026-11-21).
+- Flips on edge-first hits accepted for now; turn_weight stays 3 (Q2413, 2026-11-21).
+- Merges as built after its complexity report (Q2414, 2026-11-21).
 - The Mess settles wrongly, glitches and lags; one Fable agent reproduces it and builds the benchmark
   (Q2405, 2026-11-21).
 - The benchmark is modelled on the old game's stress test, kept well structured (Q2406, 2026-11-21).
 
 ## Open follow-ups
-- [blocking] Sunk Socks. 3 to 5 of 500 poured Socks (3 of 2,000 on the benchmark's floor, 5 of 500 at the zoo's heap
+- [answered, Q2412: leave it] Sunk Socks. 3 to 5 of 500 poured Socks (3 of 2,000 on the benchmark's floor, 5 of 500 at the zoo's heap
   station) rest pressed up to 20 mm into the floor, a Sock being 26 mm thick. Cause: Jolt lets bodies overlap by its
   `penetration_slop`, 20 mm by default, and a Sock under the heap is written lying while pressed in. Trial
   (`BENCH_OVERRIDE`, `settle_500`): with the slop at 5 mm none sinks, the tick costs the same and the heap settles in
@@ -93,7 +96,7 @@ cloth bend vs. the straight lying mesh, LOD or material differences between the 
   `project.godot` (every body of the game then settles tighter; a strip of the heap first), (b) the rest rule lifts a
   sunk Sock onto the floor as it comes to rest (a snap of up to 2 cm), (c) leave it? Until then the real-path case
   counts sunk Socks and does not hold them at none.
-- [blocking] Flips. A Sock landing on its edge still turns faster than 25 rad/s for a tick or two: 7 of 500 poured
+- [answered, Q2413: accepted for now, turn_weight stays 3] Flips. A Sock landing on its edge still turns faster than 25 rad/s for a tick or two: 7 of 500 poured
   from the spout's 2.6 m (fastest 31 rad/s), 10 of 16 thrown at 7 m/s into a heap (47 rad/s, Jolt's cap). Before
   core/23 it was 338 of 500, so `turn_weight` 3 did most of it (a trial at 1: 59 of 500). Is that rest good enough
   (then the limit in `game/debug/mess_checks.tres` goes up or the count is accepted), or should `turn_weight` rise
