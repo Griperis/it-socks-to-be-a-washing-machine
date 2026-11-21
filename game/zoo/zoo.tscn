@@ -113,7 +113,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -8)
 
 [node name="Sounds" parent="Stations" unique_id=1700063452 instance=ExtResource("27_sounds")]
 
-[node name="SockLooks" parent="Stations" unique_id=1700079290 instance=ExtResource("29_sock_looks")]
+[node name="SockLooks" parent="Stations" unique_id=1700087209 instance=ExtResource("29_sock_looks")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -6)
 
 [node name="Spots" type="Node3D" parent="." unique_id=1540973286]
 
