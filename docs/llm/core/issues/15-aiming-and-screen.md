@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: core
 feature: core
@@ -86,5 +86,32 @@ bars (white or red through `modulate`), one `Message` label and one `Size` label
   no ESC menu), Q2331 (default font, no Patrick Hand), Q2298 (drawers outlined; core/11), Q2339 (moving Sock aimable).
 
 ## Open follow-ups
+- [later] For the designer, from the first still: the old game's drawer and cupboard prompts were not "Open the X". The
+  baseline shows "[E] (Collection icon) Simple Cabinet Drawer" (`cab-simple`, the old `cabinet.gd:72` title with the
+  Collection icon) and "[E] Cupboard A Drawer" (`c-cupboard`, `room.gd:708`); only the room Door read "Open the Door"
+  (`room_door.gd:73`). Built as A03 says ("Open the Drawer", "Open the Cupboard", "Shut ..." once open). Keep A03, or
+  the old titles?
+- [later] For the designer: the old held readout also followed the held Sock's cloth sway (`held_view.gd:797-815`
+  `info_sway()`). Built: it follows the held place and the zoom, not the sway. core/16 P03 lists the sway; it is left
+  to core/16 unless the designer says otherwise.
+- [later] "Sprint" [Shift] (`prompts.gd:105`) is not in the corner: the port has no sprint yet (M4, Upgrades).
+- [later] The zoo switches' words ("Sock Smarts: on" / "off", the station sign) are placeholders of a zoo tool.
+- [later] The refusal message is now at 70 %, 28 pt, in the old red text with the ink outline (it was a red tint over
+  the whole label); its wobble stays with core/16 P01.
 
 ## Built log
+
+- 2026-11-21 (stopped at the first still, designer's go awaited). Changed: a `Hud` on player.tscn's Hud layer (rows at
+  58/63/70 %, 32/28/24 pt; hints bottom right 24 px in, 22 apart; the held readout beside the held item, following the
+  zoom); `Prompt` and `Prompts` (the crosshair's prompt and the corner's hints, keycaps from `UiIcons.keys_for_action`,
+  pad glyphs after a pad press); `Openable.noun` (Drawer, Door, Cupboard set in their entity scenes); `SizeBox`,
+  `SizeLetter`, `PromptLabel`, `RowLabel`, `HintLabel` in the theme; `PlayerUpgrades` (Sock Smarts, Sock Sense; on in
+  the zoo via `zoo_upgrades.tres`); an `UpgradeSwitch` entity; the zoo station `screen.tscn` at (-6, 0, 4); the
+  `screen` shot action and set. look_test's two HUD paths follow the Message's new place. Files: game/ui/hud.gd,
+  game/ui/hud_tuning.gd, game/ui/hud_tuning.tres, game/ui/prompt.gd, game/ui/prompts.gd, game/player/player.gd,
+  game/player/player.tscn, game/player/player_upgrades.gd, game/player/zoo_upgrades.tres, game/look/crosshair.gd,
+  game/look/theme.tres, game/parts/openable.gd, game/entities/{door,drawer,cupboard}/*.tscn,
+  game/entities/upgrade_switch/*, game/zoo/stations/screen.tscn, game/zoo/zoo.tscn, tests/aim_screen_test.gd,
+  tests/look_test.gd, tools/shot_hooks.gd, tools/shots/sets/screen.txt (and the .uid files). Still:
+  builds/review-core-15/screen-old-beside-new.png (old left, port right) and the five screen-*.png. Verified: see the
+  commit's suite line.
