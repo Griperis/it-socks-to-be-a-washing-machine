@@ -23,6 +23,22 @@ house/02, Q2343-Q2358).
 roof with its old and new numbers. It is written by `tools/house_plan.py`, which holds the numbers and
 checks the plan's rules; its stills go to `builds/review-house-02/`. House/03 builds from it.
 
+## The old house from the kit (house/03)
+
+`game/zoo/stations/old_house_a.tscn` (old window widths) and `old_house_b.tscn` (widths rounded to
+0.5 m, Q2381): the whole old house from the plan's new column, kit pieces only, under `House/<storey>/`
+(`Basement`, `Ground`, `First`, `Attic` at y -3, 0, 3, 6; groups `N` `E` `S` `W` for the outer walls,
+`X4`, `X6_5`, `Z3_5`, `Z2` for the partitions, `Floor`, `CeilingBelow`, `Stair`, `Roof`; openings named
+by their plan id, W1-W22, D11, D12). Each stands on its own ground east of the zoo floor (a lawn of boxes
+round the basement, the light wells and the garage ramp; its `Pad` is the footprint at the boxes'
+foot). Both are written by `tools/old_house_build.gd` (its header says how to run it): change the
+plan's numbers there, never the scenes by hand. Tests: `tests/old_house_test.gd`; stills: the
+`old-house` shot set (the old looks-baseline views, `tools/shot_hooks.gd` `old_house`).
+
+Two pieces were added for it: `corner_exterior_open` (a corner without its +X arm, where W15 runs to
+the south wall's line) and `door_partition_offset_hatch_2m` (D8's off-centre doorway and the
+elevator's hatch in one partition: their own pieces would overlap).
+
 ## The grid convention
 
 Origins on 0.5 m grid corners, turns in 90 degree steps. Walls centred on grid lines, running +X
