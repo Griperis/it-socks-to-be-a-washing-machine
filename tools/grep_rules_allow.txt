@@ -1,2 +1,6 @@
 # The game's one physics-query helper (the space is read there only).
 exempt space_query game/hands/physics_queries.gd
+# assets/01: a model's LOD node already taken out of its scene (also at import, where no frame ends).
+allow free game/sock/model_lods.gd 1
+# assets/01: a ball Looks instanced only to measure it, never in the tree.
+allow free game/sock/sock_look.gd 1

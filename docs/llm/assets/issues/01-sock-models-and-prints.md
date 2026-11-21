@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: assets
 feature: assets
@@ -53,5 +53,36 @@ shader on their own and in a zoo comparison, then swap in a last commit after me
 - Started beside M0.5 (Q2378, 2026-11-21).
 
 ## Open follow-ups
+- [blocking] The swap of the Sock entity's Looks waits for core/23 (not on main when this stopped). After it
+  merges: SockDress.make/dress go through SockLook (shape and ball by Collection), MessDrawing draws one
+  MultiMesh per shape with `SockLook.instance_material()` (the instance custom data is already
+  `look_data()`), the Mess's lying box and ball radius per shape and cuff (`SockLook.ball_radius()`;
+  today one BOX and BALL_RADIUS), and the pairing moment's ball (S03's second half). Then the graybox
+  `game/sock/crew.glb`, `ball_crew_plain.glb`, `looks_graybox.tscn` and `looks_ball.tscn` can go.
+- [later] The behaviour list says "its shape (by Size)"; the old game picks the shape by Collection
+  (data/designs.json `shape`, SockLook.shape()) and only scales by Size. Built as the old game does.
+- [later] Kit: the test and shot mirror (`kit/tools/_mirror.sh`) leaves out every `*.import`, so tests and
+  `shot.sh` import with Godot's defaults: no `model_lods_import.gd` (SockLook.dress folds the LODs at run
+  time there too) and `prints.png` VRAM-compressed, so print detail in shot.sh stills is softer than in
+  the game. The review stills were rendered straight from the worktree for that reason.
+- [later] The old Blender scripts (`make_socks.py`, `make_sock_balls.py`) are not ported; the 13 .glb and
+  `prints.png` are the old files, unchanged. `prints.json` (motif names) was not copied: the Designs
+  already hold atlas cells and the grid is in `sock_looks.tres`.
+- [later] LOD switch sizes (ModelLods MID_PX 64, FAR_PX 24) are the old game's own placeholders.
 
 ## Built log
+- 2026-11-21 (stopped at the first still, look work)
+  - Changed: the four shape models and nine sock balls as Looks scenes (Looks contract, cloth on the
+    shared Cuff-Leg-Heel-Foot-Toe skeleton, balls centred), the old pattern shader unchanged, the
+    Design-to-look table (shape, cloth, ball per Collection; the shader's fit per model), SockLook
+    (material, instance material, make/dress), the old hand-made LODs folded at import (ModelLods), the
+    Sock looks station in the zoo built from the data, a `sock_looks` shot action.
+  - Files: assets/sock/ (13 .glb, prints.png, imports), game/sock/sock_look.gd, sock_look_table.gd,
+    sock_cloth_fit.gd, sock_looks.tres, sock_pattern.gdshader, model_lods.gd, model_lods_import.gd,
+    looks_<shape>.tscn x4, looks_ball_<cuff>.tscn x9; game/zoo/sock_looks_station.gd, sock_looks_layout.*,
+    stations/sock_looks.tscn, zoo.tscn; tools/shot_hooks.gd, tools/grep_rules_allow.txt;
+    tests/sock_looks_test.gd.
+  - Still: builds/review-assets-01/ (lineup-old-new.png, collections-, patterns-, balls-old-new.png,
+    top-diff.png): the old render is the old v0.1.1 code, models, prints and shader in a scratch project,
+    same places, sky, sun and camera; the only differences are edge anti-aliasing.
+  - Verified: PASS 6444 checks, 110 cases; PASS rules; PASS asset_lint

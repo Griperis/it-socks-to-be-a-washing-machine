@@ -240,4 +240,33 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			head.rotation.x = atan2(target.y - eye, flat)
 			player.reset_physics_interpolation()
 			return true
+		"sock_looks":
+			# assets/01: a camera over the Sock looks station, in the zoo or played alone (then with the
+			# zoo's noon sky and sun, no grade, so it compares with the old game's render of the same
+			# line-up). arg "lineup" from the front and above, "top" straight down.
+			var station := (world if world is SockLooksStation else world.get_node("Stations/SockLooks")) as Node3D
+			if world is SockLooksStation:
+				var env := WorldEnvironment.new()
+				env.environment = load("res://game/look/noon_environment.tres") as Environment
+				world.add_child(env)
+				var sun := DirectionalLight3D.new()
+				sun.transform = Transform3D(Basis(Vector3(0.900969, 0.0, -0.433884), Vector3(-0.198987, 0.888633, -0.413201),
+						Vector3(0.385564, 0.458618, 0.800631)), Vector3(0.0, 6.0, 0.0))
+				sun.light_color = Color(1, 0.93, 0.82)
+				sun.light_energy = 2.4
+				sun.shadow_enabled = true
+				sun.shadow_blur = 1.5
+				sun.directional_shadow_max_distance = 18.0
+				world.add_child(sun)
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 50.0
+			if arg == "top":
+				cam.global_position = station.to_global(Vector3(0.0, 3.3, -0.95))
+				cam.look_at(station.to_global(Vector3(0.0, 0.0, -0.95)), Vector3.FORWARD)
+			else:
+				cam.global_position = station.to_global(Vector3(0.0, 2.3, 1.2))
+				cam.look_at(station.to_global(Vector3(0.0, 0.0, -1.0)))
+			cam.make_current()
+			return true
 	return false
