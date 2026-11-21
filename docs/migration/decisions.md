@@ -1,4 +1,4 @@
-Next free Q number: Q2418 (update this line whenever a round of questions is asked)
+Next free Q number: Q2420 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -330,3 +330,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2415: core/21 (the rest blip) is closed: core/31 found and fixed the cause.
 - Q2416: the benchmarks run from the game itself in debug builds, by a command line (designer: "could we have the benchmarks in the game debug builds? So it's easy to run it anywhere - have a CLI for the game?"; core/35).
 - Q2417: the held Sock's cloth should swing more: it snaps when the view turns, with no inertia (designer: "Could you figure out settings for the socks in hand that make it look more swinging?"); candidates are shown side by side before any value changes (core/36).
+- Q2418: an experiment: lying Mess Socks get two bends (heel and ankle) decided as they come to rest (draped over what is under them), drawn by the sock shader and followed by their boxes; flights stay one body (core/37, option A of the lead's estimate).
+- Q2419: core/37 is not merged into main: the designer tests it from a review build of the zoo; no strip needed (designer: "give me a review build with zoo scene to test this on (not merge into a main). No need for a strip.").
