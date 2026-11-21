@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: ["[[11-outline]]", "[[assets/03-ui-art]]"]
 notes: []
 terms: []
@@ -43,8 +43,10 @@ bars (white or red through `modulate`), one `Message` label and one `Size` label
 - A01 When the crosshair rests on a lying Sock or Pair in reach, then the pick key and the Size letter in its box show
   at 63 % of the height (`hud.gd:239-243`, `sock_label.gd:20-31`).
 - A02 When it leaves, then the row empties at once (`hud.gd:241`).
-- A03 When the crosshair rests on a drawer, the Door or a cupboard, then "Open the Drawer" / "Open the Door" / "Open the
-  Cupboard" shows with its key, and "Shut ..." once open (`openable.gd:53-56`, `room_door.gd:73`; audit section 2).
+- A03 (changed by Q2388) When the crosshair rests on a Cabinet's drawer, then its Cabinet's name and "drawer" show
+  with the Collection's icon and the use key ("[E] Simple Cabinet Drawer", `cabinet.gd:72`); on a cupboard its own name
+  ("[E] Cupboard A Drawer", `room.gd:708`); on the Door "Open the Door", and "Shut the Door" once open
+  (`room_door.gd:73`).
 - A04 When the Hands hold something, then the corner shows "Drop / hold: Throw" `[RMB]` (`prompts.gd:96-98`).
 - A05 When the held item is a Sock or Pair, then the corner also shows "Zoom" `[G]` and "Turn" `[R]` (`prompts.gd:99-102`).
 - A06 When the Hands hold 2 or more items, then the corner shows "Cycle" `[Wheel]` (`prompts.gd:103-104`).
@@ -84,13 +86,11 @@ bars (white or red through `modulate`), one `Message` label and one `Size` label
   openable's old key (Q2364); the Throw hint always shown, never gated (Q2365) (2026-11-21).
 - Q2279 (screen text ported in a polish pass), Q2296 (into M0.5), Q2300 (the old crosshair, no Coins or Pairs counter,
   no ESC menu), Q2331 (default font, no Patrick Hand), Q2298 (drawers outlined; core/11), Q2339 (moving Sock aimable).
+- Q2387 (2026-11-21): the designer's go on the first still (prompts, hints and readouts beside the old game's).
+- Q2388 (2026-11-21): openables use the old wording: a drawer and a cupboard show the thing's own name ("[E] Simple
+  Cabinet Drawer", "[E] Cupboard A Drawer"), the Door keeps "Open the Door" / "Shut the Door".
 
 ## Open follow-ups
-- [later] For the designer, from the first still: the old game's drawer and cupboard prompts were not "Open the X". The
-  baseline shows "[E] (Collection icon) Simple Cabinet Drawer" (`cab-simple`, the old `cabinet.gd:72` title with the
-  Collection icon) and "[E] Cupboard A Drawer" (`c-cupboard`, `room.gd:708`); only the room Door read "Open the Door"
-  (`room_door.gd:73`). Built as A03 says ("Open the Drawer", "Open the Cupboard", "Shut ..." once open). Keep A03, or
-  the old titles?
 - [later] For the designer: the old held readout also followed the held Sock's cloth sway (`held_view.gd:797-815`
   `info_sway()`). Built: it follows the held place and the zoom, not the sway. core/16 P03 lists the sway; it is left
   to core/16 unless the designer says otherwise.
@@ -115,3 +115,11 @@ bars (white or red through `modulate`), one `Message` label and one `Size` label
   tests/look_test.gd, tools/shot_hooks.gd, tools/shots/sets/screen.txt (and the .uid files). Still:
   builds/review-core-15/screen-old-beside-new.png (old left, port right) and the five screen-*.png. Verified: see the
   commit's suite line.
+
+- 2026-11-21 (after Q2387, Q2388). Changed: main merged in (core/25's sounds on Openable and the entity scenes kept);
+  openable prompts by the old names: `Openable.title` (empty: the name of its thing, capitalised, as the old room.gd
+  named it from the layout), the Door keeps `noun` "Door"; a Cabinet's drawer reads "<Cabinet name> drawer" with the
+  Collection's icon, the Cabinet names ported from the old data/designs.json into `designs.tres` (`cabinet_names`,
+  `DesignCatalogue.cabinet_name()`). A03's case and the real path read the new words. Files: game/parts/openable.gd,
+  game/ui/prompts.gd, game/sock/design_catalogue.gd, game/sock/designs.tres, game/entities/{drawer,cupboard}/*.tscn,
+  tests/aim_screen_test.gd, this ticket. Verified: see the commit's suite line.
