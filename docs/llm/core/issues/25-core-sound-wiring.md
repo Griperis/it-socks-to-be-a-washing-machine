@@ -120,3 +120,4 @@ code: `reference/it-socks/game/core/game.gd:1445-1470`, `game/hands/hands_rules.
   calls), `game/hands/held_view.gd`, `game/mess/mess_moving.gd`, `mess_tuning.gd`, `tests/sound_wiring_test.gd`,
   `tests/hooks.gd`, `tests/sounds_test.gd` (a reset before two bounce plays).
   Verified: `PASS 10931 checks, 306 cases` (`--touched`), `PASS rules`, `PASS asset_lint`.
+- Merged: 256d0aa5 (2026-11-21, branch core/25-core-sound-wiring)
