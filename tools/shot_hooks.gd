@@ -240,4 +240,19 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			head.rotation.x = atan2(target.y - eye, flat)
 			player.reset_physics_interpolation()
 			return true
+		"icons":
+			# assets/03: the Icons still (tools/icons_still.tscn): arg "<group>" frames that group's block;
+			# the old game's files (env ICONS_OLD_DIR) stand beside each icon.
+			var station := world.get_node("Icons") as IconsStation
+			var old_dir := OS.get_environment("ICONS_OLD_DIR")
+			if old_dir != "":
+				station.show_old_beside(old_dir)
+			var keys := station.keys_of(arg)
+			var cam := world.get_node("Camera") as Camera3D
+			var rows := ceili(keys.size() / float(station.per_row))
+			var top := station.cell_position(keys[0]).y
+			# The view is 15 m wide: the window is 15 * 130 px wide and the group's rows plus a margin high.
+			cam.size = rows * station.row_pitch + 0.9
+			cam.position = Vector3(6.2, top - (rows - 1) * station.row_pitch * 0.5 - 0.15, 12.0)
+			return true
 	return false
