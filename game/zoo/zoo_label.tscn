@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cdaqfj4hve4ul"]
+
+[node name="ZooLabel" type="Label3D"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+double_sided = false
+modulate = Color(0.1, 0.1, 0.12, 1)
+text = "label"

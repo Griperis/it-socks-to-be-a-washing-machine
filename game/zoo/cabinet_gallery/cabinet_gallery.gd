@@ -8,6 +8,7 @@ class_name CabinetGallery
 extends Node3D
 
 const CABINET := preload("res://game/entities/cabinet/cabinet.tscn")
+const LABEL := preload("res://game/zoo/zoo_label.tscn")
 const PART := ^"Cabinet"
 
 ## The Designs whose Collections are lined up.
@@ -23,15 +24,6 @@ func _enter_tree() -> void:
 	_built = true
 	build()
 
-
-## The Collections in the order their first Design (by id) appears.
-func collections() -> Array[StringName]:
-	var out: Array[StringName] = []
-	for id in catalogue.size():
-		var d := catalogue.design(id)
-		if d != null and not out.has(d.collection):
-			out.append(d.collection)
-	return out
 
 
 ## The Collections whose Cabinets already stand in the station (its own children, not the line-up's).
@@ -55,7 +47,7 @@ func cabinet_of(collection: StringName) -> Node3D:
 func build() -> void:
 	var skip := placed()
 	var k := 0
-	for c in collections():
+	for c in catalogue.collections():
 		if skip.has(c):
 			continue
 		var cabinet := CABINET.instantiate() as Node3D
@@ -64,13 +56,13 @@ func build() -> void:
 		@warning_ignore("integer_division")
 		cabinet.position = Vector3((k % layout.per_row) * layout.spacing, 0.0, -(k / layout.per_row) * layout.row_pitch)
 		add_child(cabinet)
-		var title := Label3D.new()
+		var title := LABEL.instantiate() as Label3D
 		title.name = "Name"
 		title.text = String(c).capitalize()
 		title.pixel_size = layout.name_pixel_size
-		title.modulate = Color(0.1, 0.1, 0.12)
 		title.outline_size = 0
-		title.shaded = false
-		title.position = Vector3(0.0, layout.name_height, 0.0)
+		# Standing over its Cabinet, read from the front.
+		title.transform = Transform3D(Basis.IDENTITY, Vector3(0.0, layout.name_height, 0.0))
+		title.double_sided = true
 		cabinet.add_child(title)
 		k += 1

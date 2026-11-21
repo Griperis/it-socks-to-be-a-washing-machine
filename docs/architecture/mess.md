@@ -42,6 +42,9 @@ Socks lie, are drawn, move or wake.
 - A drop and a Throw leave from the hand (`Hands.start_of`, Q2356, Q2367) on an arc solved by `Arc`;
   a drop's launch is in `throws` with `"drop": true` (never shelved, wakes nothing).
 
+- A Mess needs its `tuning` (HandsTuning: a Throw's drag, the hit's wake) set in its scene; `_ready` asserts it
+  (core/30). Every number of the tiers is in `MessTuning`, none in code (the sweep's CCD speeds, the touch margin,
+  the boxes' least thickness, read once a run by the first Mess).
 - Packed arrays in a Dictionary are values: take one out before writing it in place (`MessDrawing`).
 - The instance buffer layout (transform rows, colour, custom) is the old game's; the custom data is
   `MessDrawing.look_data()`, read by the sock shader (`game/sock/sock_pattern.gdshader`, assets/01).

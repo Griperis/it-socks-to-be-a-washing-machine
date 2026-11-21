@@ -10,9 +10,6 @@ extends RefCounted
 
 const FLIGHT_SCENE := preload("res://game/sock/flight.tscn")
 const BALL_FLIGHT_SCENE := preload("res://game/sock/ball_flight.tscn")
-## A body this fast (m/s) sweeps its way; under CCD_OFF it no longer does (the old SockWorld's).
-const CCD_ON := 1.0
-const CCD_OFF := 0.5
 
 var _mess: Mess
 ## The falling bodies, by Sock id.
@@ -54,10 +51,6 @@ func waiting_count() -> int:
 	return _waiting.size()
 
 
-func is_waiting(sock: int) -> bool:
-	return _waiting.has(sock)
-
-
 ## Lying Socks `socks` wait their turn to move, started by Command `kind` (&"wake" or &"fall"),
 ## nearest the players first.
 func queue_wake(socks: PackedInt32Array, kind: StringName) -> void:
@@ -84,7 +77,7 @@ func forget(sock: int) -> void:
 
 ## The Mess shows Sock `sock` FLYING with no body yet: it starts now (woken, dropped or thrown:
 ## Q2367 took the drop's flick away).
-func start(sock: int, woken: bool, _now: bool) -> void:
+func start(sock: int, woken: bool) -> void:
 	if _flights.has(sock):
 		return
 	_launch(sock, woken)
@@ -119,10 +112,7 @@ func tick(delta: float) -> void:
 		var speed := body.linear_velocity.length()
 		_airborne[sock] += delta
 		_speeds[sock] = speed
-		if speed >= CCD_ON:
-			body.continuous_cd = true
-		elif speed < CCD_OFF:
-			body.continuous_cd = false
+		_switch_ccd(body, speed, t)
 		if bounded and not _mess.bounds.has_point(to_local * body.global_position):
 			out.append(sock)
 			continue
@@ -131,7 +121,7 @@ func tick(delta: float) -> void:
 				and body.angular_velocity.length() < (t.pair_rest_spin if pair else t.rest_spin)
 		var still := _still[sock] + delta if slow else 0.0
 		_still[sock] = still
-		if still >= t.rest_time or (body.sleeping and _airborne[sock] > 0.1):
+		if still >= t.rest_time or (body.sleeping and _airborne[sock] > t.asleep_rest_after):
 			ready.append(sock)
 	for sock in out:
 		_rest(sock, _mess.return_pose(sock), true)
@@ -176,7 +166,7 @@ func _relieve(most: int) -> void:
 		var speed := body.linear_velocity.length()
 		if _airborne[sock] < t.rest_time or speed >= t.pressure_speed:
 			continue
-		keyed.append(Vector3(floorf(speed / t.pressure_speed * 15.0), -_nearest(players, body.global_position), sock))
+		keyed.append(Vector3(floorf(speed / t.pressure_speed * t.pressure_bands), -_nearest(players, body.global_position), sock))
 	keyed.sort()
 	for i in mini(keyed.size(), mini(most, _waiting.size())):
 		_settle(int(keyed[i].z))
@@ -229,7 +219,7 @@ func _start_waiting() -> void:
 ## to wake_count Socks touching it (T11, M08), one hit a flight a tick; lying Pairs stay (Q2330). The lying bodies have no node, so
 ## the contacts are read from the flight's body state.
 func _hits() -> void:
-	var fast := _mess.tuning.wake_speed if _mess.tuning != null else 1.5
+	var fast := _mess.tuning.wake_speed
 	for sock: int in _flights.keys():
 		if float(_speeds.get(sock, 0.0)) < fast or _dropped.has(sock):
 			continue
@@ -328,12 +318,12 @@ func _launch(sock: int, woken: bool) -> void:
 		body.linear_damp = t.woken_linear_damp
 		body.angular_damp = t.woken_angular_damp
 	else:
-		body.linear_damp = hands.thrown_linear_damp if hands != null else 0.05
-		body.angular_damp = hands.thrown_angular_damp if hands != null else 0.8
+		body.linear_damp = hands.thrown_linear_damp
+		body.angular_damp = hands.thrown_angular_damp
 	if not launch.is_empty():
 		body.linear_velocity = launch["vel"]
 		body.angular_velocity = launch["spin"]
-	_switch_ccd(body)
+	_switch_ccd(body, body.linear_velocity.length(), t)
 	if not pair:
 		body.inertia = turn_inertia(body.mass, SockDress.box(_mess.design_of(sock)), t.turn_weight)
 	_mess.flight_holder().add_child(body, true)
@@ -388,8 +378,8 @@ func _damp_pair(sock: int) -> void:
 	_damped[sock] = true
 	body.linear_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
 	body.angular_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
-	body.linear_damp = hands.pair_linear_damp if hands != null else 2.5
-	body.angular_damp = hands.pair_angular_damp if hands != null else 8.0
+	body.linear_damp = hands.pair_linear_damp
+	body.angular_damp = hands.pair_angular_damp
 
 
 func _drop_flight(sock: int) -> void:
@@ -402,14 +392,12 @@ func _drop_flight(sock: int) -> void:
 	_dropped.erase(sock)
 
 
-## A fast body sweeps its way (continuous collision) from CCD_ON m/s and stops sweeping under
-## CCD_OFF, as the old game's (SockWorld.CCD_ON, CCD_OFF): a 2 cm Sock moving most of its thickness a
-## tick could pass through a thin part, and a slow one swept into its contacts is kicked into a spin.
-func _switch_ccd(body: RigidBody3D) -> void:
-	var speed := body.linear_velocity.length()
-	if speed >= CCD_ON:
+## A body at `speed` sweeps its way (continuous collision) from the tuning's `ccd_on` and stops
+## sweeping under its `ccd_off`.
+static func _switch_ccd(body: RigidBody3D, speed: float, t: MessTuning) -> void:
+	if speed >= t.ccd_on:
 		body.continuous_cd = true
-	elif speed < CCD_OFF:
+	elif speed < t.ccd_off:
 		body.continuous_cd = false
 
 
@@ -423,7 +411,7 @@ static func _fit(body: CollisionObject3D, design: SockDesign) -> void:
 		ball.radius = SockDress.ball_radius(design)
 		shape.shape = ball
 		return
-	var parts := MessBodies.parts_at(design.size_scale() if design != null else 1.0)
+	var parts := MessBodies.parts_at(SockDress.scale_of(design))
 	for i in parts.size():
 		var part := shape
 		if i > 0:

@@ -289,7 +289,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0, 0.3)
 
 [node name="LoseButton" type="Node" parent="Sink" node_paths=PackedStringArray("mess", "spots")]
 script = ExtResource("7_lose")
-verb = "sink"
+verb = &"sink"
 mess = NodePath("../../Socks/Mess")
 spots = [NodePath("../../Spots/MateUnder")]
 

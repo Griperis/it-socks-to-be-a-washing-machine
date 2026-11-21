@@ -16,6 +16,9 @@ extends Resource
 @export_range(1, 256, 1) var stop_cap := 8 # placeholder: ported (SockWorld.DEMOTE_CAP), until a stress test
 ## Under pressure (Socks waiting, the budget full) a moving Sock slower than this may be made to rest.
 @export_range(0.0, 5.0, 0.01, "suffix:m/s") var pressure_speed := 0.3 # placeholder: ported (SockBodies.PRESSURE_SPEED)
+## Those are made to rest in bands of speed (up to `pressure_speed` in this many), the slowest band
+## first and the farthest from the players first within a band.
+@export_range(1, 100, 1) var pressure_bands := 15 # placeholder: ported (SockBodies' 15 bands)
 
 @export_group("Waking")
 ## How many lying Socks and Pairs over a picked one wake at most (M07).
@@ -31,6 +34,8 @@ extends Resource
 @export_range(1, 512, 1) var sweep_cap := 32 # placeholder: ported (SockWorld.SWEEP_CAP)
 ## How far round a moving Door's or drawer's shapes a lying Sock counts as in its way or on it.
 @export_range(0.0, 0.2, 0.005, "suffix:m") var sweep_margin := 0.02 # placeholder: until play
+## How near another lying Sock must be to count as touching one a fast body hit (T11).
+@export_range(0.0, 0.1, 0.001, "suffix:m") var touch_margin := 0.01 # placeholder: ported (SockBodies' touch margin)
 
 @export_group("Rest")
 ## A moving Sock rests after it has stayed under this speed and turn for `rest_time`.
@@ -40,6 +45,9 @@ extends Resource
 ## A Pair's ball rests under these instead (a damped ball still creeps on a soft slope).
 @export_range(0.0, 2.0, 0.01, "suffix:m/s") var pair_rest_speed := 0.25 # placeholder: ported (SockFlights.PAIR_REST_SPEED)
 @export_range(0.0, 20.0, 0.1, "suffix:rad/s") var pair_rest_spin := 3.0 # placeholder: ported (SockFlights.PAIR_REST_SPIN)
+## A body the physics has put to sleep rests at once, once it has moved for this long (a body just
+## launched may start asleep for a tick).
+@export_range(0.0, 1.0, 0.01, "suffix:s") var asleep_rest_after := 0.1 # placeholder: until play
 
 @export_group("Lost")
 ## A lost Sock or Pair (out of bounds, or resting inside a wall) comes back at the return spot,
@@ -50,6 +58,8 @@ extends Resource
 @export_range(0.0, 0.5, 0.005, "suffix:m") var sunk := 0.02 # placeholder: the old lost.json sunk
 ## Deeper than this under a floor's top it is lost and comes back at the return spot.
 @export_range(0.0, 2.0, 0.01, "suffix:m") var sunk_depth := 0.3 # placeholder: the old lost.json below
+## What counts as a floor's top for that: its up at least this (the cosine of its steepest slope).
+@export_range(0.0, 1.0, 0.01) var floor_up := 0.7 # placeholder: ported (hands_rules.gd's floor test)
 
 @export_group("Bodies")
 ## A woken Sock's slide and drag (M10).
@@ -63,6 +73,14 @@ extends Resource
 ## board, which an edge landing or a touch off its middle spins up to 40 rad/s or more (a flip a
 ## frame); more turns it as a soft thing would, its throw's spin and its topple flat slower too.
 @export_range(1.0, 20.0, 0.1) var turn_weight := 3.0 # placeholder: until the designer's go on the core/23 strips
+## A flying body this fast sweeps its way (continuous collision); under `ccd_off` it no longer does
+## (the old SockWorld.CCD_ON, CCD_OFF): a 2 cm Sock moving most of its thickness a tick could pass
+## through a thin part, and a slow one swept into its contacts is kicked into a spin.
+@export_range(0.0, 10.0, 0.05, "suffix:m/s") var ccd_on := 1.0 # placeholder: ported (SockWorld.CCD_ON)
+@export_range(0.0, 10.0, 0.05, "suffix:m/s") var ccd_off := 0.5 # placeholder: ported (SockWorld.CCD_OFF)
+## A Sock's leg and foot boxes are at least this thick from its bottom up (the old SockWorld.MIN_THICK);
+## read once a run, when the first Mess fits them.
+@export_range(0.005, 0.1, 0.001, "suffix:m") var min_thick := 0.024 # placeholder: ported (SockWorld.MIN_THICK)
 
 @export_group("Drawing")
 ## The floor grid lying Socks are drawn in, one MultiMesh per cell and kind (M02, Q2310).

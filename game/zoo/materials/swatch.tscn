@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://ca13v0f23tb4j"]
+
+[ext_resource type="PackedScene" path="res://game/zoo/zoo_label.tscn" id="1_label"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_swatch"]
+radius = 0.16
+height = 0.32
+
+[node name="Swatch" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_swatch")
+
+[node name="Label" parent="." instance=ExtResource("1_label")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.192, 0)
+pixel_size = 0.0009
+double_sided = true
+modulate = Color(0.96, 0.96, 0.94, 1)
+text = "material"
+font_size = 64
+outline_size = 0
+vertical_alignment = 0

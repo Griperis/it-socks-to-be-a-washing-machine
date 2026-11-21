@@ -8,8 +8,8 @@
 class_name Avatar
 extends Node3D
 
-## How fast another player's copy glides toward the newest pose, per second.
-const GLIDE := 15.0
+## How fast another player's copy glides toward the newest pose, per second (an exponential follow).
+@export_range(0.0, 60.0, 0.5, "suffix:/s") var glide := 15.0 # placeholder: until co-op play (M0.6)
 
 @export_group("Pose")
 ## Where its player stands, as the owner sent it (under Players, which sits at the origin).
@@ -47,7 +47,7 @@ func _process(delta: float) -> void:
 		return
 	# Smoothing: the place a game replaces (buffered interpolation, animation from measured speed).
 	# This one only glides toward the newest pose; it does not predict.
-	var weight := 1.0 - exp(-GLIDE * delta)
+	var weight := 1.0 - exp(-glide * delta)
 	position = position.lerp(pose_position, weight)
 	rotation.y = lerp_angle(rotation.y, pose_yaw, weight)
 

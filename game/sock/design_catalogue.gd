@@ -34,6 +34,22 @@ func size() -> int:
 	return designs.size()
 
 
+## The Collections in the order their first Design (by id) appears.
+func collections() -> Array[StringName]:
+	var out: Array[StringName] = []
+	for id in size():
+		var d := design(id)
+		if d != null and not out.has(d.collection):
+			out.append(d.collection)
+	return out
+
+
+## How many rows of `per_row` the zoo's line-ups lay `count` things out in.
+static func rows_of(count: int, per_row: int) -> int:
+	@warning_ignore("integer_division")
+	return (count + per_row - 1) / per_row
+
+
 func _find(id: int) -> SockDesign:
 	for d in designs:
 		if d != null and d.id == id:

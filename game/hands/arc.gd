@@ -15,8 +15,11 @@ const STEPS := 900
 
 
 ## The velocity of `speed` that carries a body from `from` to `to` (gravity `gravity` down, linear
-## drag `damp`), on the arc whose direction is nearest `like` (the low or the high one). Vector3.ZERO
-## when no arc of that speed reaches it.
+## drag `damp`), on the arc whose direction is nearest `like` (the low or the high one), aimed again
+## by how far its drag made it miss, up to PASSES times. Vector3.ZERO only when no arc of that speed
+## reaches it at the first aim; when a later aim finds none (the drag asks for more than the speed
+## gives) or never gets that far, the aim before it, the nearest found, is kept (core/30: a ZERO there
+## made a charge-0 lob land 0.38 m from the crosshair).
 static func aimed(from: Vector3, to: Vector3, speed: float, gravity: float, damp: float, like: Vector3) -> Vector3:
 	var flat := Vector2(to.x - from.x, to.z - from.z)
 	var d := flat.length()
@@ -45,7 +48,7 @@ static func aimed(from: Vector3, to: Vector3, speed: float, gravity: float, damp
 
 ## The velocity a body let go at `from` drifts with to land on `to` (gravity `gravity`, drag `damp`):
 ## level, only as fast across as its fall needs, when `to` is below; a spot level with it or higher
-## needs a lift, the slowest arc that reaches it.
+## needs a lift, the slowest arc that reaches it (Vector3.ZERO when aimed() finds none).
 static func dropped(from: Vector3, to: Vector3, gravity: float, damp: float) -> Vector3:
 	var flat := Vector2(to.x - from.x, to.z - from.z)
 	var d := flat.length()
@@ -69,13 +72,12 @@ static func dropped(from: Vector3, to: Vector3, gravity: float, damp: float) -> 
 ## How high (m) a body leaving `from` at `vel` is when it has gone `across` metres along the floor,
 ## or NAN when it never gets that far.
 static func height_at(from: Vector3, vel: Vector3, across: float, gravity: float, damp: float) -> float:
-	var dt := 1.0 / float(Engine.physics_ticks_per_second)
+	var dt := _dt()
 	var at := from
 	var v := vel
 	var gone := 0.0
 	for i in STEPS:
-		v += Vector3.DOWN * gravity * dt
-		v *= maxf(0.0, 1.0 - damp * dt)
+		v = _stepped(v, gravity, damp, dt)
 		var next := at + v * dt
 		var step := Vector2(next.x - at.x, next.z - at.z).length()
 		if step <= 0.0:
@@ -90,13 +92,12 @@ static func height_at(from: Vector3, vel: Vector3, across: float, gravity: float
 ## How far along the floor (m) a body leaving `from` at `vel` has gone when it falls to height `y`,
 ## or -1 when it does not within STEPS.
 static func reach_at(from: Vector3, vel: Vector3, y: float, gravity: float, damp: float) -> float:
-	var dt := 1.0 / float(Engine.physics_ticks_per_second)
+	var dt := _dt()
 	var at := from
 	var v := vel
 	var gone := 0.0
 	for i in STEPS:
-		v += Vector3.DOWN * gravity * dt
-		v *= maxf(0.0, 1.0 - damp * dt)
+		v = _stepped(v, gravity, damp, dt)
 		var next := at + v * dt
 		var step := Vector2(next.x - at.x, next.z - at.z).length()
 		if next.y <= y and v.y < 0.0:
@@ -109,13 +110,12 @@ static func reach_at(from: Vector3, vel: Vector3, y: float, gravity: float, damp
 ## The places a body leaving `from` at `vel` passes, one a physics step, until it falls below `y`
 ## (that last place included), at most STEPS.
 static func path(from: Vector3, vel: Vector3, y: float, gravity: float, damp: float) -> PackedVector3Array:
-	var dt := 1.0 / float(Engine.physics_ticks_per_second)
+	var dt := _dt()
 	var out := PackedVector3Array([from])
 	var at := from
 	var v := vel
 	for i in STEPS:
-		v += Vector3.DOWN * gravity * dt
-		v *= maxf(0.0, 1.0 - damp * dt)
+		v = _stepped(v, gravity, damp, dt)
 		at += v * dt
 		out.append(at)
 		if at.y < y and v.y < 0.0:
@@ -128,7 +128,7 @@ static func path(from: Vector3, vel: Vector3, y: float, gravity: float, damp: fl
 static func turn_to(from: Basis, to: Basis, ticks: int, damp: float) -> Vector3:
 	if ticks <= 0:
 		return Vector3.ZERO
-	var dt := 1.0 / float(Engine.physics_ticks_per_second)
+	var dt := _dt()
 	var q := (to.orthonormalized() * from.orthonormalized().inverse()).get_rotation_quaternion()
 	var angle := q.get_angle()
 	if angle < 0.0001:
@@ -150,6 +150,16 @@ static func _angles(d: float, rise: float, v: float, g: float) -> PackedFloat32A
 		return PackedFloat32Array()
 	var root := sqrt(disc)
 	return PackedFloat32Array([atan((v2 - root) / (g * d)), atan((v2 + root) / (g * d))])
+
+
+## One physics step's length (s).
+static func _dt() -> float:
+	return 1.0 / float(Engine.physics_ticks_per_second)
+
+
+## A body's velocity `v` one physics step `dt` later, as the physics steps it: gravity, then the drag.
+static func _stepped(v: Vector3, gravity: float, damp: float, dt: float) -> Vector3:
+	return (v + Vector3.DOWN * gravity * dt) * maxf(0.0, 1.0 - damp * dt)
 
 
 static func _dir(across: Vector3, angle: float) -> Vector3:

@@ -12,10 +12,8 @@ const WINDOW := 30
 @export var mess: Mess
 @export var spout: HeapSpout
 
-## The physics ticks timed so far, the average over the last WINDOW frames and the worst since
-## reset_timing(), in ms.
+## The physics ticks timed so far, the average over the last WINDOW frames, in ms.
 var tick_ms := 0.0
-var worst_ms := 0.0
 ## The last frame's tick time, in ms (0 before the first).
 var last_ms := 0.0
 var _from := -1
@@ -27,11 +25,6 @@ var _frames := 0
 func _ready() -> void:
 	process_physics_priority = -1000
 	process_priority = -1000
-
-
-## The worst tick is counted again from now.
-func reset_timing() -> void:
-	worst_ms = 0.0
 
 
 ## The heap's Socks lying now (every record from the spout's first on).
@@ -56,7 +49,6 @@ func _process(_delta: float) -> void:
 	if _from >= 0 and _ticks > 0:
 		var each := float(Time.get_ticks_usec() - _from) / 1000.0 / _ticks
 		last_ms = each
-		worst_ms = maxf(worst_ms, each)
 		_sum += each
 		_frames += 1
 		if _frames >= WINDOW:

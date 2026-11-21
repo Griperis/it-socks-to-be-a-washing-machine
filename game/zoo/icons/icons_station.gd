@@ -6,6 +6,9 @@
 class_name IconsStation
 extends Node3D
 
+const CELL := preload("res://game/zoo/icons/icon_cell.tscn")
+const LABEL := preload("res://game/zoo/zoo_label.tscn")
+
 ## Icons per row.
 @export var per_row := 12
 ## Distance between two cells, sideways and down, in metres.
@@ -14,6 +17,12 @@ extends Node3D
 ## The side of an icon's picture, metres, and the pixel size of the names under them.
 @export var icon_size := 0.5
 @export var label_pixel_size := 0.0028
+## A name longer than `label_fit` letters is drawn that much smaller, so it fits under its icon; its
+## top `label_drop` icon sizes under the icon's middle.
+@export var label_fit := 20.0
+@export var label_drop := 0.7
+## The pixel size of a group's name, at the left of its block.
+@export var group_pixel_size := 0.006
 ## The gap between two groups, in rows.
 @export var group_gap_rows := 0.6
 ## Where the icons and the names go.
@@ -61,8 +70,16 @@ func build() -> void:
 		var list := keys_of(g)
 		if list.is_empty():
 			continue
-		var title := _label(g.to_upper(), Vector3(-column_pitch * 0.9, y, 0.0), 0.006)
+		var title := LABEL.instantiate() as Label3D
 		title.name = "Group_%s" % g
+		title.text = g.to_upper()
+		# Standing on the wall as the cells' names do (icon_cell.tscn's Label).
+		title.transform = Transform3D(Basis.IDENTITY, Vector3(-column_pitch * 0.9, y, 0.0))
+		title.double_sided = true
+		title.modulate = Color.WHITE
+		title.font_size = 48
+		title.outline_size = 8
+		title.pixel_size = group_pixel_size
 		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		wall.add_child(title)
 		for i in list.size():
@@ -74,30 +91,19 @@ func build() -> void:
 		y -= ((list.size() + per_row - 1) / per_row + group_gap_rows) * row_pitch
 
 
+## An icon's cell (icon_cell.tscn): its picture, and its name under it.
 func _cell(key: String, at: Vector3) -> Node3D:
-	var root := Node3D.new()
+	var root := CELL.instantiate() as Node3D
 	root.name = key
 	root.position = at
-	var sprite := Sprite3D.new()
-	sprite.name = "Icon"
+	var sprite := root.get_node(^"Icon") as Sprite3D
 	sprite.texture = UiIcons.texture(key)
 	sprite.pixel_size = icon_size / 64.0
-	sprite.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
-	root.add_child(sprite)
-	var label := _label(key, Vector3(0.0, -icon_size * 0.7, 0.0), label_pixel_size * minf(1.0, 20.0 / key.length()))
-	label.name = "Label"
-	root.add_child(label)
+	var label := root.get_node(^"Label") as Label3D
+	label.text = key
+	label.position = Vector3(0.0, -icon_size * label_drop, 0.0)
+	label.pixel_size = label_pixel_size * minf(1.0, label_fit / key.length())
 	return root
-
-
-func _label(text: String, at: Vector3, pixel_size: float) -> Label3D:
-	var l := Label3D.new()
-	l.text = text
-	l.pixel_size = pixel_size
-	l.font_size = 48
-	l.outline_size = 8
-	l.position = at
-	return l
 
 
 ## Puts the same file of the folder `dir` (a directory path on disk) beside each icon, one icon width to the
@@ -114,7 +120,6 @@ func show_old_beside(dir: String) -> int:
 		sprite.texture = ImageTexture.create_from_image(image)
 		sprite.pixel_size = icon_size / 64.0
 		sprite.position = Vector3(icon_size * 1.05, 0.0, 0.0)
-		sprite.texture_filter = BaseMaterial3D.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 		wall.get_node(key).add_child(sprite)
 		made += 1
 	return made

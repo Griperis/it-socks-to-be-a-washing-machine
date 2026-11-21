@@ -18,17 +18,9 @@ const BOX := Vector3(0.3, 0.026, 0.18)
 
 ## A new Looks dressed as `design`, playing `state`: a Sock's, or with `ball` a Pair's sock ball.
 static func make(design: SockDesign, state: StringName = LYING, ball := false) -> Node3D:
-	return SockLook.make(design, state, ball)
-
-
-## Draws the Looks as the Design and scales it by its Size.
-static func dress(looks: Node3D, design: SockDesign) -> void:
-	SockLook.dress(looks, design, SockLook.is_ball(looks))
-
-
-## Draws the Looks as the Design, leaving the scale as it is.
-static func tint(looks: Node3D, design: SockDesign) -> void:
-	SockLook.paint(looks, design, SockLook.is_ball(looks))
+	var looks := SockLook.make(design, ball)
+	play(looks, state)
+	return looks
 
 
 ## `looks` replaced, in its parent and place, by a new Looks of `design` playing `state` (a Sock's,
@@ -63,9 +55,14 @@ static func state_of(looks: Node) -> StringName:
 
 ## A Pair's ball radius at its Design's Size (its Collection's ball, half its height).
 static func ball_radius(design: SockDesign) -> float:
-	return SockLook.ball_radius(SockLook.TABLE.cuff_of(design)) * (design.size_scale() if design != null else 1.0)
+	return SockLook.ball_radius(SockLook.TABLE.cuff_of(SockLook.collection_of(design))) * scale_of(design)
 
 
 ## The Sock's collision box at its Design's Size.
 static func box(design: SockDesign) -> Vector3:
-	return BOX * (design.size_scale() if design != null else 1.0)
+	return BOX * scale_of(design)
+
+
+## How big a Sock of `design` is drawn and simulated: its Size (1 with no Design).
+static func scale_of(design: SockDesign) -> float:
+	return design.size_scale() if design != null else 1.0

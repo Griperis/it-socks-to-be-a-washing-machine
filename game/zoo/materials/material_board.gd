@@ -12,6 +12,8 @@ const LIBRARY := "res://game/materials"
 const CANDIDATES := "candidates"
 ## The row name of the single materials' rows: "singles_<n>".
 const SINGLES := "singles"
+const SWATCH := preload("res://game/zoo/materials/swatch.tscn")
+const LABEL := preload("res://game/zoo/zoo_label.tscn")
 
 @export var layout: MaterialBoardLayout
 ## The folder shown: the library (another only in a test).
@@ -90,19 +92,27 @@ func _row(row_name: String, files: Array, at: Vector3) -> Node3D:
 	var r := Node3D.new()
 	r.name = "Row_%s" % row_name
 	r.position = at
-	var title := _label(row_name.replace("_", " ") if not row_name.begins_with(SINGLES) else "", layout.name_pixel_size)
+	var title := LABEL.instantiate() as Label3D
 	title.name = "Name"
+	title.text = row_name.replace("_", " ") if not row_name.begins_with(SINGLES) else ""
+	# Standing on the board as the swatches' names do (swatch.tscn's Label).
+	title.transform = Transform3D(Basis.IDENTITY, Vector3(layout.name_width - layout.pitch, 0.0, 0.0))
+	title.double_sided = true
+	title.modulate = Color(0.96, 0.96, 0.94)
+	title.font_size = 64
+	title.outline_size = 0
+	title.pixel_size = layout.name_pixel_size
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	title.position = Vector3(layout.name_width - layout.pitch, 0.0, 0.0)
 	r.add_child(title)
 	for k in files.size():
 		r.add_child(_swatch(files[k], Vector3(layout.name_width + k * layout.pitch, 0.0, 0.0)))
 	return r
 
 
+## A material's swatch (swatch.tscn): its sphere, and its name and numbers under it.
 func _swatch(path: String, at: Vector3) -> MeshInstance3D:
 	var mat := load(path) as StandardMaterial3D
-	var s := MeshInstance3D.new()
+	var s := SWATCH.instantiate() as MeshInstance3D
 	s.name = path.get_file().get_basename()
 	s.position = at
 	var sphere := SphereMesh.new()
@@ -117,20 +127,8 @@ func _swatch(path: String, at: Vector3) -> MeshInstance3D:
 		lines.append("%d piece%s" % [pieces.size(), "" if pieces.size() == 1 else "s"] if pieces != PackedStringArray(["house kit"]) else "house kit")
 		lines.append("rough %.2f" % mat.roughness)
 		lines.append("metal %.2f" % mat.metallic)
-	var label := _label("\n".join(lines), layout.label_pixel_size)
-	label.name = "Label"
-	label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+	var label := s.get_node(^"Label") as Label3D
+	label.text = "\n".join(lines)
+	label.pixel_size = layout.label_pixel_size
 	label.position = Vector3(0.0, -layout.swatch_size * 0.6, 0.0)
-	s.add_child(label)
 	return s
-
-
-func _label(text: String, pixel_size: float) -> Label3D:
-	var l := Label3D.new()
-	l.text = text
-	l.pixel_size = pixel_size
-	l.font_size = 64
-	l.outline_size = 0
-	l.modulate = Color(0.96, 0.96, 0.94)
-	l.shaded = false
-	return l
