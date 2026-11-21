@@ -141,7 +141,7 @@ func draw(sock: int, pose: Transform3D, shape: StringName, design: SockDesign) -
 	_buf.erase(c)
 	if (slot + 1) * STRIDE > buf.size():
 		buf.resize(maxi(FIRST_ROOM, buf.size() / STRIDE * 2) * STRIDE)
-	_write_row(buf, slot * STRIDE, _placed(pose, shape, _size(design)), design)
+	_write_row(buf, slot * STRIDE, _placed(pose, shape, SockDress.scale_of(design)), design)
 	_buf[c] = buf
 	_dirty[c] = true
 	_cell_of[sock] = c
@@ -232,25 +232,17 @@ func draw_flying(poses: Dictionary[StringName, Array], designs: Dictionary[Strin
 		_flying_buf.erase(shape)
 		if buf.size() != mm.instance_count * STRIDE:
 			buf.resize(mm.instance_count * STRIDE)
-		var size := _size(of[0])
+		var size := SockDress.scale_of(of[0])
 		var o := 0
 		for i in list.size():
 			var design: SockDesign = of[i]
 			if i > 0:
-				size = _size(design)
+				size = SockDress.scale_of(design)
 			_write_row(buf, o, _placed(list[i], shape, size), design)
 			o += STRIDE
 		_flying_buf[shape] = buf
 		mm.buffer = buf
 		mm.visible_instance_count = list.size()
-
-
-## How many flying Socks were drawn as instances the last frame.
-func flying_count() -> int:
-	var n := 0
-	for node: MultiMeshInstance3D in _flying.values():
-		n += node.multimesh.visible_instance_count
-	return n
 
 
 ## Every MultiMesh freed (the Mess leaves the tree).
@@ -277,10 +269,6 @@ func clear() -> void:
 ## Where an instance of `shape` goes for a Sock at `pose`, `scale` times its size: as its Looks is placed.
 func _placed(pose: Transform3D, shape: StringName, scale: float) -> Transform3D:
 	return pose * Transform3D(Basis.from_scale(Vector3.ONE * scale)) * _mesh_at[shape]
-
-
-static func _size(design: SockDesign) -> float:
-	return design.size_scale() if design != null else 1.0
 
 
 func _cell(at: Vector3, shape: StringName) -> Vector3i:

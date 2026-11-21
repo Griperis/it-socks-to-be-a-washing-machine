@@ -5,14 +5,6 @@
 class_name Picture
 extends Node
 
-## The old grade at noon without the lookup table (room.gd _polish), used when the preset has no grade.
-const PLAIN_CONTRAST := 1.06
-const PLAIN_SATURATION := 1.12
-## The grade with the table (ambient.gd _grade).
-const GRADE_CONTRAST := 1.1
-const GRADE_SATURATION := 1.2
-## The old soft shadow edge of the sun (room.gd SUN_SHADOW_BLUR).
-const SUN_BLUR := 1.5
 
 @export var world_environment: WorldEnvironment
 @export var sun: DirectionalLight3D
@@ -20,6 +12,14 @@ const SUN_BLUR := 1.5
 @export var vignette: CanvasLayer
 ## A preset to use instead of the project setting's (a test, a station).
 @export var preset: GraphicsPreset
+## The old grade at noon without the lookup table (room.gd _polish), used when the preset has no grade.
+@export_range(0.5, 2.0, 0.01) var plain_contrast := 1.06 # placeholder: the old room.gd _polish
+@export_range(0.0, 2.0, 0.01) var plain_saturation := 1.12 # placeholder: the old room.gd _polish
+## The grade with the table (ambient.gd _grade).
+@export_range(0.5, 2.0, 0.01) var grade_contrast := 1.1 # placeholder: the old ambient.gd _grade
+@export_range(0.0, 2.0, 0.01) var grade_saturation := 1.2 # placeholder: the old ambient.gd _grade
+## The old soft shadow edge of the sun (room.gd SUN_SHADOW_BLUR), when the preset's sun is soft.
+@export_range(0.0, 5.0, 0.05) var sun_blur := 1.5 # placeholder: the old room.gd SUN_SHADOW_BLUR
 
 ## The preset in force now.
 var applied: GraphicsPreset = null
@@ -50,8 +50,8 @@ func apply(p: GraphicsPreset) -> void:
 					Sky.RADIANCE_SIZE_2048) as Sky.RadianceSize
 		env.adjustment_enabled = true
 		env.adjustment_color_correction = _grade_table if p.grade else null
-		env.adjustment_contrast = GRADE_CONTRAST if p.grade else PLAIN_CONTRAST
-		env.adjustment_saturation = GRADE_SATURATION if p.grade else PLAIN_SATURATION
+		env.adjustment_contrast = grade_contrast if p.grade else plain_contrast
+		env.adjustment_saturation = grade_saturation if p.grade else plain_saturation
 	if sun != null:
 		match p.sun_splits:
 			4:
@@ -60,7 +60,7 @@ func apply(p: GraphicsPreset) -> void:
 				sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 			_:
 				sun.directional_shadow_mode = DirectionalLight3D.SHADOW_PARALLEL_2_SPLITS
-		sun.shadow_blur = SUN_BLUR if p.sun_soft else 0.0
+		sun.shadow_blur = sun_blur if p.sun_soft else 0.0
 		sun.directional_shadow_max_distance = p.sun_distance
 	if vignette != null:
 		vignette.visible = p.grade

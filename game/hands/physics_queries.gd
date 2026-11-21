@@ -14,7 +14,9 @@ static var ball_queries := 0
 ## `mask`: {"point", "normal"} in the level, or {} when it meets nothing (the crosshair's drop spot:
 ## it sees no spot through a gap narrower than the ball).
 static func ball_hit(node: Node3D, from: Vector3, motion: Vector3, gap: float, mask: int, exclude: Array[RID]) -> Dictionary:
-	var space := node.get_world_3d().direct_space_state
+	var space := _space(node)
+	if space == null:
+		return {}
 	ball_queries += 1
 	_ball.radius = gap * 0.5
 	var query := PhysicsShapeQueryParameters3D.new()
@@ -38,62 +40,46 @@ static func ball_hit(node: Node3D, from: Vector3, motion: Vector3, gap: float, m
 ## or {} for none (or when `node` has no world yet). A body of the physics server with no node has a
 ## "rid" and no "collider". `exclude`: bodies the line passes through.
 static func ray(node: Node, from: Vector3, to: Vector3, mask: int, exclude: Array[RID] = []) -> Dictionary:
-	if not node.is_inside_tree():
-		return {}
-	var world := node.get_viewport().find_world_3d()
-	if world == null:
+	var space := _space(node)
+	if space == null:
 		return {}
 	var query := PhysicsRayQueryParameters3D.create(from, to, mask)
 	query.exclude = exclude
-	return world.direct_space_state.intersect_ray(query)
-
-
-## The things of `mask` that `shape` at `xform` overlaps, at most `most`: their colliders (a lying
-## Sock's touching neighbours, T11). Empty when `node` has no world yet.
-static func overlaps(node: Node, shape: Shape3D, xform: Transform3D, mask: int, most: int) -> Array[Object]:
-	var out: Array[Object] = []
-	if not node.is_inside_tree() or most <= 0:
-		return out
-	var world := node.get_viewport().find_world_3d()
-	if world == null:
-		return out
-	var query := PhysicsShapeQueryParameters3D.new()
-	query.shape = shape
-	query.transform = xform
-	query.collision_mask = mask
-	for hit: Dictionary in world.direct_space_state.intersect_shape(query, most):
-		out.append(hit["collider"])
-	return out
+	return space.intersect_ray(query)
 
 
 ## Whether `point` is inside something solid of `mask` (a Sock that would end inside a wall, T08),
 ## `exclude` not counted.
 static func inside(node: Node, point: Vector3, mask: int, exclude: Array[RID] = []) -> bool:
-	if not node.is_inside_tree():
-		return false
-	var world := node.get_viewport().find_world_3d()
-	if world == null:
+	var space := _space(node)
+	if space == null:
 		return false
 	var query := PhysicsPointQueryParameters3D.new()
 	query.position = point
 	query.collision_mask = mask
 	query.exclude = exclude
-	return not world.direct_space_state.intersect_point(query, 1).is_empty()
+	return not space.intersect_point(query, 1).is_empty()
 
 
 ## The bodies of `mask` that `shape` at `xform` overlaps, at most `most`: their RIDs (the Mess's
 ## lying Socks are bodies of the physics server with no node, core/13). Empty when `node` has no world yet.
 static func overlap_rids(node: Node, shape: Shape3D, xform: Transform3D, mask: int, most: int) -> Array[RID]:
 	var out: Array[RID] = []
-	if not node.is_inside_tree() or most <= 0:
-		return out
-	var world := node.get_viewport().find_world_3d()
-	if world == null:
+	var space := _space(node) if most > 0 else null
+	if space == null:
 		return out
 	var query := PhysicsShapeQueryParameters3D.new()
 	query.shape = shape
 	query.transform = xform
 	query.collision_mask = mask
-	for hit: Dictionary in world.direct_space_state.intersect_shape(query, most):
+	for hit: Dictionary in space.intersect_shape(query, most):
 		out.append(hit["rid"])
 	return out
+
+
+## The physics space `node` is in, or null while it has no world.
+static func _space(node: Node) -> PhysicsDirectSpaceState3D:
+	if not node.is_inside_tree():
+		return null
+	var world := node.get_viewport().find_world_3d()
+	return world.direct_space_state if world != null else null

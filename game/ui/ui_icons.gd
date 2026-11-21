@@ -64,11 +64,6 @@ static func path_of(key: String) -> String:
 	return DIR + ALIASES.get(key, key) + ".svg"
 
 
-## The icon key of an Upgrade row ("upgrade_speed", ...).
-static func upgrade(upgrade_name: String) -> String:
-	return "upgrade_" + upgrade_name
-
-
 ## Every icon key of the folder, sorted, read from the folder itself (an exported build lists the
 ## `.import` or `.remap` of each file, so those endings count).
 static func all_keys() -> Array[String]:

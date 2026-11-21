@@ -1,5 +1,5 @@
 ## Makes the house kit's pieces (pieces/*.tscn) and the two sample rooms (rooms/*.tscn) from
-## house_kit_sizes.tres, and any missing material of the library (materials/*.tscn) from the old
+## house_kit_sizes.tres, and any missing material of the library (materials/*.tres) from the old
 ## house's colours (house/01, house/02). Run it after a change to the sizes, from the project folder:
 ##   "$(kit/tools/engine.sh --path)" --headless --path . --script res://tools/house_kit_build.gd
 ## A piece is a MeshInstance3D root (one mesh in meshes/, its material slots in a fixed order: see
@@ -15,7 +15,8 @@ const MESHES := "res://game/house/kit/meshes"
 const MATERIALS := "res://game/house/kit/materials"
 const TEXTURES := "res://game/house/kit/textures"
 const ROOMS := "res://game/zoo/house_kit/rooms"
-## The house's physics layer, the Mess's LAYER_HOUSE (game/mess/mess.gd).
+## The house's physics layer, the Mess's LAYER_HOUSE (game/mess/mess.gd): a script run (--script) has no autoloads,
+## so naming Mess here, which needs them, would stop the tool compiling.
 const LAYER_HOUSE := 1
 ## How deep a stair's walking ramp is under its top.
 const RAMP_DEPTH := 0.3
@@ -63,6 +64,8 @@ var _st: Array[SurfaceTool] = []
 var _paints: Array[String] = []
 var _shapes: Array[Transform3D] = []
 var _shape_sizes: Array[Vector3] = []
+## Slots counted from `base` (the dormer's slab is a roof slab whose slots 0 and 1 are its 4 and 5).
+var _offset := 0
 
 
 func _init() -> void:
@@ -136,10 +139,7 @@ func _corner(file: String, t: float, paints: Array[String], outer_skirting: bool
 	_begin(paints)
 	var arm_x := _aabb(-t / 2, a, y0, y1, -t / 2, t / 2)
 	var arm_z := _aabb(-t / 2, t / 2, y0, y1, t / 2, a)
-	var pick := func(c: Vector3, n: Vector3) -> int:
-		if (n.z < -0.5 and absf(c.z + t / 2) < 1e-4) or (n.x < -0.5 and absf(c.x + t / 2) < 1e-4):
-			return B
-		return A
+	var pick := _corner_pick(t)
 	_box(arm_x, pick)
 	_box(arm_z, pick)
 	_skirting(Vector3(t / 2, 0, t / 2), Vector3.RIGHT, Vector3.BACK, a - t / 2)
@@ -164,16 +164,21 @@ func _corner_open(file: String, t: float, paints: Array[String]) -> void:
 	_begin(paints)
 	var outer := _aabb(-t / 2, 0.0, y0, y1, -t / 2, a)
 	var inner := _aabb(0.0, t / 2, y0, y1, t / 2, a)
-	var pick := func(c: Vector3, n: Vector3) -> int:
-		if (n.z < -0.5 and absf(c.z + t / 2) < 1e-4) or (n.x < -0.5 and absf(c.x + t / 2) < 1e-4):
-			return B
-		return A
+	var pick := _corner_pick(t)
 	_box(outer, pick)
 	_box(inner, pick)
 	_skirting(Vector3(t / 2, 0, t / 2 + s.skirting_depth), Vector3.BACK, Vector3.RIGHT, a - t / 2 - s.skirting_depth)
 	_col(outer)
 	_col(inner)
 	_save(file)
+
+
+## A corner's slots (`t` thick): its two outer faces (-Z and -X, at the join's outer edge) B, the rest A.
+static func _corner_pick(t: float) -> Callable:
+	return func(c: Vector3, n: Vector3) -> int:
+		if (n.z < -0.5 and absf(c.z + t / 2) < 1e-4) or (n.x < -0.5 and absf(c.x + t / 2) < 1e-4):
+			return B
+		return A
 
 
 ## A T: the through wall along X both ways from the join (its -Z face slot B), the stem along +Z.
@@ -559,7 +564,7 @@ func _slab(x0: float, x1: float, za: float, zb: float) -> void:
 	for c in corners:
 		tops.append(c + Vector3(0, up, 0))
 	var tile_n := Vector3(0, cos(deg_to_rad(s.pitch)), -sin(deg_to_rad(s.pitch)))
-	_hexa(corners, tops, func(_c: Vector3, n: Vector3) -> int: return 1 if n.dot(tile_n) > 0.99 else 0)
+	_prism(corners, tops, func(_c: Vector3, n: Vector3) -> int: return 1 if n.dot(tile_n) > 0.99 else 0)
 
 
 func _slab_col(x0: float, x1: float, za: float, zb: float) -> void:
@@ -600,7 +605,7 @@ func _rafter(x: float) -> void:
 	var highs: Array[Vector3] = []
 	for c in lows:
 		highs.append(c + Vector3(0, 0.13, 0))
-	_hexa(lows, highs, 0)
+	_prism(lows, highs, 0)
 
 
 ## The dormer (K11): cheeks, its front wall over the knee with the window, a flat roof and ceiling,
@@ -677,7 +682,7 @@ func _gable(file: String, ww: float, c: float) -> void:
 		var lows: Array[Vector3] = [Vector3(x0, y_low, -t / 2), Vector3(x1, y_low, -t / 2), Vector3(x1, y_low, t / 2), Vector3(x0, y_low, t / 2)]
 		var highs: Array[Vector3] = [Vector3(x0, top.call(x0), -t / 2), Vector3(x1, top.call(x1), -t / 2),
 				Vector3(x1, top.call(x1), t / 2), Vector3(x0, top.call(x0), t / 2)]
-		_hexa(lows, highs, _wall_pick, true)
+		_prism(lows, highs, _wall_pick, true)
 	_frame(a, b, sill, head, t)
 	_skirting(Vector3(t / 2, 0, t / 2), Vector3.RIGHT, Vector3.BACK, g - t)
 	_save(file)
@@ -709,7 +714,8 @@ func _rooms() -> void:
 func _u_room() -> void:
 	var s := _sizes
 	var h: float = s.storey
-	var room := _room_root("URoom")
+	var room := Node3D.new()
+	room.name = "URoom"
 	var hall := load(MATERIALS.path_join("wall_hall.tres")) as Material
 	for y: float in [0.0, h]:
 		# The north wall, west to east, inside +Z; stubs either side where the house runs on.
@@ -755,7 +761,8 @@ func _attic_corner() -> void:
 	var s := _sizes
 	var d: float = s.gable_length
 	var w := 6.0
-	var room := _room_root("AtticCorner")
+	var room := Node3D.new()
+	room.name = "AtticCorner"
 	_put(room, "gable_exterior_mirrored", Vector3(0, 0, d), 90)
 	_put(room, "gable_exterior", Vector3(w, 0, 0), -90)
 	# The north knee wall, west to east, gable face to gable face.
@@ -782,11 +789,6 @@ func _attic_corner() -> void:
 	_save_room(room, "attic_corner")
 
 
-func _room_root(name: String) -> Node3D:
-	var room := Node3D.new()
-	room.name = name
-	return room
-
 
 ## A piece in a room at `at`, turned `deg` about the vertical, with material overrides {slot: material}.
 func _put(room: Node3D, file: String, at: Vector3, deg: float, paints := {}) -> void:
@@ -808,7 +810,7 @@ func _save_room(room: Node3D, file: String) -> void:
 	if ResourceSaver.save(packed, path) != OK:
 		push_error("house_kit_build: cannot save %s" % path)
 	else:
-		_keep_uid(path, uid)
+		keep_uid(path, uid)
 	room.queue_free()   # never in the tree; gone at the frame end
 
 
@@ -845,10 +847,6 @@ func _begin(paints: Array[String]) -> void:
 	_shapes.clear()
 	_shape_sizes.clear()
 	_offset = 0
-
-
-## Slots counted from `base` (the dormer's slab is a roof slab whose slots 0 and 1 are its 4 and 5).
-var _offset := 0
 
 
 func _begin_offset(base: int) -> void:
@@ -923,11 +921,6 @@ func _box(b: AABB, pick: Variant, split := false) -> void:
 	var e := b.end
 	var lows: Array[Vector3] = [Vector3(p.x, p.y, p.z), Vector3(e.x, p.y, p.z), Vector3(e.x, p.y, e.z), Vector3(p.x, p.y, e.z)]
 	var highs: Array[Vector3] = [Vector3(p.x, e.y, p.z), Vector3(e.x, e.y, p.z), Vector3(e.x, e.y, e.z), Vector3(p.x, e.y, e.z)]
-	_hexa(lows, highs, pick, split)
-
-
-## A solid of a bottom quad and a top quad over it (corner i over corner i): six convex faces.
-func _hexa(lows: Array[Vector3], highs: Array[Vector3], pick: Variant, split := false) -> void:
 	_prism(lows, highs, pick, split)
 
 
@@ -991,7 +984,7 @@ func _save(file: String) -> void:
 	if ResourceSaver.save(mesh, mesh_path) != OK:
 		push_error("house_kit_build: cannot save %s" % mesh_path)
 		return
-	_keep_uid(mesh_path, mesh_uid)
+	keep_uid(mesh_path, mesh_uid)
 	var root := MeshInstance3D.new()
 	root.name = file.to_pascal_case()
 	root.mesh = load(mesh_path)
@@ -1018,12 +1011,13 @@ func _save(file: String) -> void:
 	if err != OK:
 		push_error("house_kit_build: cannot save %s (%s)" % [path, error_string(err)])
 	else:
-		_keep_uid(path, uid)
+		keep_uid(path, uid)
 	root.queue_free()   # never in the tree; gone at the frame end
 
 
-## The editor's format (Q2268): the file carries a uid, the same one as before a rebuild.
-static func _keep_uid(path: String, uid: int) -> void:
+## The editor's format (Q2268): the file carries a uid, the same one as before a rebuild, and each
+## reference its target's uid (old_house_build.gd uses it too).
+static func keep_uid(path: String, uid: int) -> void:
 	if uid == ResourceUID.INVALID_ID:
 		uid = ResourceUID.create_id()
 	ResourceSaver.set_uid(path, uid)
@@ -1042,6 +1036,9 @@ static func _keep_uid(path: String, uid: int) -> void:
 				line = line.replace(" path=\"", " uid=\"%s\" path=\"" % ResourceUID.id_to_text(id))
 		out.append(line)
 	var file := FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		push_error("keep_uid: cannot write %s (%s)" % [path, error_string(FileAccess.get_open_error())])
+		return
 	file.store_string("\n".join(out))
 
 
@@ -1068,5 +1065,5 @@ func _material(name: String) -> Material:
 	if err != OK:
 		push_error("house_kit_build: cannot save %s (%s)" % [path, error_string(err)])
 	else:
-		_keep_uid(path, ResourceUID.INVALID_ID)
+		keep_uid(path, ResourceUID.INVALID_ID)
 	return load(path)

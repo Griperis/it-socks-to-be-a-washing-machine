@@ -6,6 +6,7 @@ class_name HouseKitLineUp
 extends Node3D
 
 const PIECES := "res://game/house/kit/pieces"
+const LABEL := preload("res://game/zoo/zoo_label.tscn")
 ## The families, a row (or more) each, in this order; a piece goes in the first family it starts with.
 const FAMILIES: Array[String] = ["wall_", "corner_", "t_", "knee_", "door_", "window_", "floor_", "ceiling_",
 		"stair", "landing", "roof_", "dormer", "gable_"]
@@ -22,11 +23,8 @@ func _ready() -> void:
 	build()
 
 
-## Fills the line-up; again after a rebuild of the kit.
+## Fills the line-up.
 func build() -> void:
-	for child in get_children():
-		remove_child(child)
-		child.queue_free()
 	var files := Array(ResourceLoader.list_directory(PIECES)).filter(func(f: String) -> bool: return f.ends_with(".tscn"))
 	files.sort()
 	var by_family := {}
@@ -59,12 +57,16 @@ func build() -> void:
 			piece.position = Vector3(x - _snap_down(box.position.x), lift, z - _snap_down(box.position.z))
 			piece.name = file.get_basename().to_pascal_case()
 			add_child(piece)
-			var label := Label3D.new()
+			var label := LABEL.instantiate() as Label3D
 			label.name = piece.name + "Label"
 			label.text = file.get_basename()
 			label.pixel_size = 0.004
+			# Over its piece, turned to the camera.
 			label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-			label.position = piece.position + Vector3(box.get_center().x, box.end.y + 0.3, box.get_center().z)
+			label.transform = Transform3D(Basis.IDENTITY,
+					piece.position + Vector3(box.get_center().x, box.end.y + 0.3, box.get_center().z))
+			label.double_sided = true
+			label.modulate = Color.WHITE
 			add_child(label)
 			x += _snap_up(box.end.x - _snap_down(box.position.x)) + step
 			depth = maxf(depth, box.end.z - _snap_down(box.position.z))

@@ -70,12 +70,7 @@ func _on_ended(text: String) -> void:
 	_say("Alone: %s" % text)
 
 
-## Shows it in the corner and keeps it: in the game's log when it has one (the autoload `Log` of
-## the log template, asked for by name so the zoo loads without it), else printed.
+## Shows it in the corner and prints it.
 func _say(text: String) -> void:
 	_mode.text = text
-	var game_log := get_node_or_null(^"/root/Log")
-	if game_log != null and game_log.has_method(&"write"):
-		game_log.call(&"info", "zoo", text)
-	else:
-		print("zoo: ", text)
+	print("zoo: ", text)

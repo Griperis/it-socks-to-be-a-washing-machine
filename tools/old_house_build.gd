@@ -15,6 +15,8 @@ extends SceneTree
 const PIECES := "res://game/house/kit/pieces"
 const MATERIALS := "res://game/house/kit/materials"
 const STATIONS := "res://game/zoo/stations"
+## The kit's builder: its keep_uid keeps a saved file in the editor's format (Q2268).
+const KIT_BUILD := preload("res://tools/house_kit_build.gd")
 const STOREY := 3.0
 ## The outer walls' centre lines.
 const X1 := 10.5
@@ -633,29 +635,7 @@ func _save(root: Node3D, path: String) -> void:
 	if err != OK:
 		push_error("old_house_build: cannot save %s (%s)" % [path, error_string(err)])
 	else:
-		_keep_uid(path, uid)
+		KIT_BUILD.keep_uid(path, uid)
 		print("old_house_build: %s" % path)
 	root.free()
 
-
-## The editor's format (Q2268): the file carries a uid, the same one as before a rebuild, and each
-## reference its target's uid (house_kit_build.gd's _keep_uid).
-static func _keep_uid(path: String, uid: int) -> void:
-	if uid == ResourceUID.INVALID_ID:
-		uid = ResourceUID.create_id()
-	ResourceSaver.set_uid(path, uid)
-	if ResourceUID.has_id(uid):
-		ResourceUID.set_id(uid, path)
-	else:
-		ResourceUID.add_id(uid, path)
-	var text := FileAccess.get_file_as_string(path)
-	var out := PackedStringArray()
-	for line in text.split("\n"):
-		if line.begins_with("[ext_resource ") and not line.contains(" uid=\""):
-			var target := line.get_slice("path=\"", 1).get_slice("\"", 0)
-			var id := ResourceLoader.get_resource_uid(target)
-			if id != ResourceUID.INVALID_ID:
-				line = line.replace(" path=\"", " uid=\"%s\" path=\"" % ResourceUID.id_to_text(id))
-		out.append(line)
-	var file := FileAccess.open(path, FileAccess.WRITE)
-	file.store_string("\n".join(out))

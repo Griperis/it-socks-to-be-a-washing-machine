@@ -1,0 +1,35 @@
+# core/30: every zoo station before and after the tidy-up (they must match): each station from its sign, then the
+# stations whose label, button and swatch trees became scenes, and the HUD (its numbers now read from the theme).
+sounds-overview  --size=1280x720 --do='10:sounds:overview' --shots=60
+sounds-block  --size=1280x720 --do='10:sounds:block' --shots=60
+icons-other  --size=1950x900 --scene=res://tools/icons_still.tscn --do='5:icons:other' --shots=20
+icons-key  --size=1950x900 --scene=res://tools/icons_still.tscn --do='5:icons:key' --shots=20
+materials  --size=1280x720 --do='30:materials:overview' --shots=40
+everysock-overview  --size=1280x720 --do='10:every_sock:overview' --shots=60
+everysock-row  --size=1280x720 --do='10:every_sock:row' --shots=60
+socklooks  --size=1280x720 --do='30:sock_looks:lineup' --shots=40
+furniture  --size=1280x720 --do='30:furniture:overview' --shots=40
+cabinet  --size=1280x720 --do='30:cabinet:overview' --shots=40
+housekit  --size=1280x720 --do='30:house_kit:lineup' --shots=40
+screen-sock  --size=1280x720 --do='40:screen:plain;60:screen:sock' --shots=70
+screen-held  --size=1280x720 --do='40:screen:plain;50:screen:floor;55:screen:take' --shots=75
+screen-smarts  --size=1280x720 --do='50:screen:mate;55:screen:take2' --shots=75
+refusal  --size=1280x720 --do='60:refuse' --shots=75
+handling  --size=1280x720 --do='60:pick_floor' --shots=100
+sign-wide  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:wide' --shots=50
+sign-cabinet  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Cabinet:north' --shots=50
+sign-everysock  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:EverySock' --shots=50
+sign-handling  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Handling' --shots=50
+sign-heap  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Heap' --shots=50
+sign-housekit  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:HouseKit:north' --shots=50
+sign-movement  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Movement' --shots=50
+sign-openables  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Openables' --shots=50
+sign-outline  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Outline' --shots=50
+sign-icons  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Icons' --shots=50
+sign-sounds  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Sounds' --shots=50
+sign-socklooks  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:SockLooks' --shots=50
+sign-screen  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Screen' --shots=50
+sign-oldhousea  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:OldHouseA:north' --shots=50
+sign-oldhouseb  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:OldHouseB:north' --shots=50
+sign-materials  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Materials' --shots=50
+sign-furniture  --size=1280x720 --scene=res://game/zoo/zoo.tscn --do='40:sign:Furniture' --shots=50

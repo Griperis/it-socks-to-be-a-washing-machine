@@ -19,8 +19,7 @@
 class_name Cabinet
 extends Part
 
-## Why a shelve is refused, and what the player's HUD says for it.
-const FAR := "far"
+## Why a shelve is refused (too far is the Hands' own Hands.FAR), and what the player's HUD says for it.
 const LOCKED := "locked"
 const WRONG := "wrong"
 const FULL := "full"
@@ -192,8 +191,7 @@ func mess_of() -> Mess:
 
 
 func tuning_of() -> CabinetTuning:
-	if tuning == null:
-		tuning = CabinetTuning.new()
+	assert(tuning != null, "Cabinet: its CabinetTuning (`tuning`) is not set")
 	return tuning
 
 
@@ -334,13 +332,14 @@ func accepts() -> Dictionary[StringName, Dictionary]:
 func shelve_refusal(by: int) -> String:
 	var t := tuning_of()
 	if parts != null and not parts.near(by, get_parent(), t.reach + t.reach_slack):
-		return FAR
+		return Hands.FAR
 	# The old game's order (Q2285): Pairs held but none of this Collection say so before a lock.
-	if held_pairs(by).is_empty() and holds_pair(by):
+	var none_of_mine := held_pairs(by).is_empty()
+	if none_of_mine and holds_pair(by):
 		return WRONG
 	if locked:
 		return LOCKED
-	if held_pairs(by).is_empty():
+	if none_of_mine:
 		return WRONG
 	if room() <= 0:
 		return FULL
@@ -505,7 +504,7 @@ func _fly(index: int, slot: int, ball: Node3D, from: Transform3D) -> void:
 	var mess := mess_of()
 	var design := mess.design_of(int(ball.get_meta(Mess.SOCK_META)))
 	var flier := SockDress.make(design, SockDress.LYING, true)
-	flier.name = "Flight%d" % int(ball.get_meta(Mess.SOCK_META))
+	flier.name = Mess.FLIGHT_NAME % int(ball.get_meta(Mess.SOCK_META))
 	flier.top_level = true
 	var landing := BallLanding.new()
 	landing.name = "BallLanding"

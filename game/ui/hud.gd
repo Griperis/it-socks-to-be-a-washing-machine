@@ -8,25 +8,29 @@
 class_name Hud
 extends CanvasLayer
 
-## The text sizes (the old HUD's): prompts, rows, hints. Keys are drawn 1.5 times the text, icons 1.3.
-const PROMPT_FONT := 32
-const ROW_FONT := 28
-const HINT_FONT := 24
+## The game's one Theme (the project's): the texts' sizes and the HUD's colours and spacing are read
+## from it.
+const THEME := preload("res://game/look/theme.tres")
+## Keys are drawn 1.5 times their text's size, icons 1.3.
 const KEY_SCALE := 1.5
 const ICON_SCALE := 1.3
-## The theme variations of each text (game/look/theme.tres).
+## The theme variations of each text (game/look/theme.tres): prompts, rows, hints (the old HUD's 32,
+## 28 and 24 pt).
 const PROMPT_LABEL := &"PromptLabel"
 const ROW_LABEL := &"RowLabel"
 const HINT_LABEL := &"HintLabel"
 const SIZE_BOX := &"SizeBox"
 const SIZE_LETTER := &"SizeLetter"
-## The crosshair where a drop may go, and where it may not (the old REFUSE red; the bars carry the
-## alpha 0.9, A10).
-const CROSSHAIR_OK := Color.WHITE
-const CROSSHAIR_NO := Color(0.95, 0.25, 0.2)
+## The theme type holding the HUD's colours and the gap between a prompt's key, icon and name.
+const HUD_TYPE := &"Hud"
+
+## The crosshair where a drop may go, and where it may not (the theme's Hud `plain` and `refusal`:
+## the old REFUSE red; the bars carry the alpha 0.9, A10).
+static var CROSSHAIR_OK := THEME.get_color(&"plain", HUD_TYPE)
+static var CROSSHAIR_NO := THEME.get_color(&"refusal", HUD_TYPE)
 ## The message's colours: a refusal in the old REFUSE red, anything else white (the old _show_line).
-const MESSAGE_REFUSAL := Color(0.95, 0.25, 0.2)
-const MESSAGE_PLAIN := Color.WHITE
+static var MESSAGE_REFUSAL := THEME.get_color(&"refusal", HUD_TYPE)
+static var MESSAGE_PLAIN := THEME.get_color(&"plain", HUD_TYPE)
 
 @export var tuning: HudTuning
 
@@ -85,7 +89,7 @@ func show_target(prompts: Array[Prompt]) -> void:
 	_clear(_prompts)
 	_text["prompt"] = Prompt.joined(prompts, "   ")
 	for p in prompts:
-		_prompts.add_child(_prompt_row(p, PROMPT_FONT, PROMPT_LABEL))
+		_prompts.add_child(_prompt_row(p, PROMPT_LABEL))
 
 
 ## The aimed Sock or Pair: the pick key `key` and Size `letter` in its box; "" shows nothing (A01, A02).
@@ -97,7 +101,7 @@ func show_aimed(letter: String, key: String) -> void:
 	if letter == "":
 		return
 	if key != "":
-		_aimed.add_child(_icon(key, ROW_FONT * KEY_SCALE))
+		_aimed.add_child(_icon(key, _font(ROW_LABEL) * KEY_SCALE))
 	_aimed.add_child(_size_box(letter))
 	_text["aimed"] = ("%s " % Prompt.cap_text(key) if key != "" else "") + "[%s]" % letter
 
@@ -139,7 +143,7 @@ func show_hints(prompts: Array[Prompt]) -> void:
 	_clear(_hints)
 	_text["hints"] = Prompt.joined(prompts, "  ")
 	for p in prompts:
-		_hints.add_child(_prompt_row(p, HINT_FONT, HINT_LABEL))
+		_hints.add_child(_prompt_row(p, HINT_LABEL))
 
 
 ## The message row says `text` (the player keeps it up for its time and hides it): a `refusal` in
@@ -302,26 +306,32 @@ func _fill_readout(box: HBoxContainer, design: SockDesign, pair: bool, count: St
 	var letter := design.size_letter()
 	if with_size:
 		box.add_child(_size_box(letter))
-	box.add_child(_icon(UiIcons.or_simple(String(design.collection)), ROW_FONT * ICON_SCALE))
+	box.add_child(_icon(UiIcons.or_simple(String(design.collection)), _font(ROW_LABEL) * ICON_SCALE))
 	box.add_child(_label(design.name, ROW_LABEL))
-	box.add_child(_icon("ball" if pair else "sock", ROW_FONT * ICON_SCALE))
+	box.add_child(_icon("ball" if pair else "sock", _font(ROW_LABEL) * ICON_SCALE))
 	box.add_child(_label(count, ROW_LABEL))
 	var text := "[%s] %s %s %s (%s)" % [letter, "Pair" if pair else "Sock", count, design.name, design.collection]
 	if wheel:
 		var wheel_keys := Prompts.keys(Player.HANDS_NEXT, pad)
 		if not wheel_keys.is_empty():
-			box.add_child(_icon(wheel_keys[0], ROW_FONT * KEY_SCALE))
+			box.add_child(_icon(wheel_keys[0], _font(ROW_LABEL) * KEY_SCALE))
 			text += " " + Prompt.cap_text(wheel_keys[0])
 	return text
 
 
-## One Prompt as KEY, ICON, Name; a Prompt with no keys and no icon is the bare name.
-func _prompt_row(p: Prompt, font: int, variation: StringName) -> Control:
+## The font size of text variation `variation` in the theme.
+static func _font(variation: StringName) -> int:
+	return THEME.get_font_size(&"font_size", variation)
+
+
+## One Prompt as KEY, ICON, Name in text `variation`; a Prompt with no keys and no icon is the bare name.
+func _prompt_row(p: Prompt, variation: StringName) -> Control:
 	if p.keys.is_empty() and p.icon == "":
 		return _label(p.title, variation)
+	var font := _font(variation)
 	var line := HBoxContainer.new()
 	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	line.add_theme_constant_override(&"separation", 6)
+	line.add_theme_constant_override(&"separation", THEME.get_constant(&"separation", HUD_TYPE))
 	for k in p.keys:
 		line.add_child(_icon(k, font * KEY_SCALE))
 	if p.icon != "":

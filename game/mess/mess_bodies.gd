@@ -7,8 +7,6 @@
 class_name MessBodies
 extends RefCounted
 
-## The old game's thinnest Sock box (SockWorld.MIN_THICK), from the Sock's bottom up.
-const MIN_THICK := 0.024
 ## How many places along a Sock's length the leg-and-foot split is tried at.
 const SPLIT_STEPS := 40
 
@@ -31,11 +29,12 @@ static var _fitted: Array = []
 
 
 ## `from`: the Mess. `points`: the lying Sock mesh's points in its Looks' space at Size medium (where
-## the leg and foot boxes are fitted to); none gives one box, SockDress.BOX.
-func _init(from: Node, points: PackedVector3Array) -> void:
+## the leg and foot boxes are fitted to, at least `min_thick` thick: MessTuning, read by the first Mess
+## of the run); none gives one box, SockDress.BOX.
+func _init(from: Node, points: PackedVector3Array, min_thick: float) -> void:
 	_from = from
 	if _fitted.is_empty():
-		_fitted = leg_and_foot(points)
+		_fitted = leg_and_foot(points, min_thick)
 	_leg_foot = _fitted
 
 
@@ -102,11 +101,6 @@ func size() -> int:
 ## The Sock whose lying body `rid` is, or -1.
 func sock_of(rid: RID) -> int:
 	return _sock.get(rid, -1)
-
-
-## The body of Sock `sock` (an invalid RID when it has none).
-func body_of(sock: int) -> RID:
-	return _body.get(sock, RID())
 
 
 ## The box Sock `sock`'s body takes in the level (an AABB round its turned shapes), or an empty one.
@@ -199,9 +193,9 @@ func _parts_of(key: String, ball: bool, scale: float, radius: float) -> Array:
 
 ## A lying Sock's leg and foot boxes from its mesh's points (its bottom at y = 0): the points split
 ## across its long side where the two boxes cover the least floor, each box round its half, at
-## least MIN_THICK thick from the bottom up: [[size, centre], [size, centre]]. With no points, one
+## least `min_thick` thick from the bottom up: [[size, centre], [size, centre]]. With no points, one
 ## box, SockDress.BOX.
-static func leg_and_foot(points: PackedVector3Array) -> Array:
+static func leg_and_foot(points: PackedVector3Array, min_thick: float) -> Array:
 	var whole := SockDress.BOX
 	if points.size() < 4:
 		return [[whole, Vector3(0.0, whole.y * 0.5, 0.0)]]
@@ -243,7 +237,7 @@ static func leg_and_foot(points: PackedVector3Array) -> Array:
 		return [[whole, Vector3(0.0, whole.y * 0.5, 0.0)]]
 	var out: Array = []
 	for box: AABB in best:
-		var height := maxf(box.end.y, MIN_THICK)
+		var height := maxf(box.end.y, min_thick)
 		var size := Vector3(box.size.x, height, box.size.z)
 		out.append([size, Vector3(box.get_center().x, height * 0.5, box.get_center().z)])
 	return out

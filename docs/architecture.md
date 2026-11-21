@@ -51,6 +51,10 @@ How this game is built, unless a decision record says otherwise. They are the ga
   rooms). The game never refers to `game/zoo/`, so a release build can leave the folder out whole
   (Q2409; no guard check, Q2410). A Part's crosshair words come from its own `prompt_title()`, so
   `Prompts` names no zoo class. The two build-time generators are in `tools/`, not `game/`.
+  A station built from data at load (Q2337) instances small scenes and fills them, never a tree of
+  `.new()` nodes: every name or info text is `game/zoo/zoo_label.tscn` (lying on the ground, dark;
+  a standing one overrides its turn and colour), a Sounds button `sounds/sound_button.tscn`, an icon
+  `icons/icon_cell.tscn`, a material `materials/swatch.tscn` (core/30).
 <!-- /opt:zoo -->
 
 ## Subsystems

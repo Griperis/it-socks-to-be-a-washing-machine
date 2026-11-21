@@ -83,7 +83,7 @@ func case_s01() -> void:
 		var m := SockLook.material(d)
 		var lk := MessDrawing.look_data(d)
 		var fit := SockLook.TABLE.fit(shape)
-		var ok: bool = SockLook.TABLE.shape_of(d) == shape \
+		var ok: bool = SockLook.TABLE.shape_of(d.collection) == shape \
 				and SockLook.scene(d).resource_path == "res://game/sock/looks_%s.tscn" % shape \
 				and m.shader == SockLook.SHADER \
 				and m.get_shader_parameter(&"base_color") == d.colour \
@@ -220,10 +220,10 @@ func case_s03() -> void:
 	for c: StringName in OLD_CUFFS:
 		var probe := SockDesign.new()
 		probe.collection = c
-		_check(SockLook.TABLE.cuff_of(probe) == OLD_CUFFS[c], "Collection %s rolls into the %s ball" % [c, OLD_CUFFS[c]])
+		_check(SockLook.TABLE.cuff_of(probe.collection) == OLD_CUFFS[c], "Collection %s rolls into the %s ball" % [c, OLD_CUFFS[c]])
 	var plain := SockDesign.new()
 	plain.collection = &"lost"
-	_check(SockLook.TABLE.cuff_of(plain) == &"crew_plain", "a Collection without its own ball rolls into the plain crew ball")
+	_check(SockLook.TABLE.cuff_of(plain.collection) == &"crew_plain", "a Collection without its own ball rolls into the plain crew ball")
 	for cuff in SockLook.TABLE.cuffs:
 		var looks := _keep((load("res://game/sock/looks_ball_%s.tscn" % cuff) as PackedScene).instantiate()) as Node3D
 		_contract(looks, "ball " + String(cuff))
@@ -232,7 +232,7 @@ func case_s03() -> void:
 		_check(box.get_center().length() < 0.002, "ball %s is centred on its origin (%s)" % [cuff, box.get_center()])
 		_near(SockLook.ball_radius(cuff), box.size.y * 0.5, 0.0005, "ball %s's radius is half its height" % cuff)
 	var d := cat.design(230)
-	var ball := _keep(SockLook.make(d, SockDress.LYING, true)) as Node3D
+	var ball := _keep(SockLook.make(d, true)) as Node3D
 	_check(ball.scene_file_path == "res://game/sock/looks_ball_tube_rib.tscn", "a Sport Pair is the tube rib ball")
 	var bm := SockLook.material(d, true)
 	_check(bm != SockLook.material(d), "the ball has its own material")

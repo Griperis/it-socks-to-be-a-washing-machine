@@ -22,7 +22,7 @@ const GROUP := &"sock_cloth"
 ## What it is doing: rigid (lying, in a moment, no parent it knows), held in Hands, or flying.
 enum Role { RIGID, HELD, FLYING }
 ## What the ground ray meets: the house and lying Socks (Mess.AIM_MASK), never the falling bodies.
-const GROUND_MASK := 1 | 4
+const GROUND_MASK := Mess.AIM_MASK
 ## Where the Ground plane waits when nothing is under the Sock.
 const FAR := Vector3(0.0, -10000.0, 0.0)
 

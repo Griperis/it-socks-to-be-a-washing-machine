@@ -7,6 +7,11 @@
 class_name SoundsStation
 extends Node3D
 
+const BUTTON := preload("res://game/zoo/sounds/sound_button.tscn")
+const LABEL := preload("res://game/zoo/zoo_label.tscn")
+## The light text of the group names, as the buttons' (sound_button.tscn's Label).
+const LIGHT := Color(0.97, 0.97, 0.92)
+
 ## The events to make buttons for.
 @export var catalogue: SoundCatalogue
 @export var layout: SoundsLayout
@@ -67,9 +72,12 @@ func build() -> void:
 	var z := layout.origin.z
 	for g in groups():
 		var list := events_of(g)
-		var title := _label(g.to_upper(), layout.group_pixel_size,
-				Vector3(layout.origin.x - layout.group_offset, 0.01, z))
+		var title := LABEL.instantiate() as Label3D
 		title.name = "Group_%s" % g
+		title.text = g.to_upper()
+		title.pixel_size = layout.group_pixel_size
+		title.modulate = LIGHT
+		title.position = Vector3(layout.origin.x - layout.group_offset, 0.01, z)
 		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		buttons.add_child(title)
 		for i in list.size():
@@ -83,31 +91,23 @@ func build() -> void:
 		z -= ((list.size() + layout.per_row - 1) / layout.per_row) * layout.row_pitch + layout.group_gap
 
 
+## A button (sound_button.tscn) for event `e` at `at`, sized by the layout.
 func _button(e: SoundEvent, at: Vector3, mesh: BoxMesh, shape: BoxShape3D, material: Material) -> Node3D:
-	var root := Node3D.new()
+	var root := BUTTON.instantiate() as Node3D
 	root.name = String(e.event)
 	root.position = at
-	var body := StaticBody3D.new()
-	body.name = "Body"
-	root.add_child(body)
-	var box := MeshInstance3D.new()
-	box.name = "Mesh"
+	var box := root.get_node(^"Body/Mesh") as MeshInstance3D
 	box.mesh = mesh
 	box.material_override = material
 	box.position.y = layout.button_size * 0.5
-	body.add_child(box)
-	var collider := CollisionShape3D.new()
-	collider.name = "Shape"
+	var collider := root.get_node(^"Body/Shape") as CollisionShape3D
 	collider.shape = shape
 	collider.position.y = layout.button_size * 0.5
-	body.add_child(collider)
-	var spot := SoundSpot.new()
-	spot.name = "Spot"
-	spot.event = e.event
-	root.add_child(spot)
-	var label := _label(String(e.event), layout.label_pixel_size, Vector3(0.0, 0.01, layout.label_offset))
-	label.name = "Label"
-	root.add_child(label)
+	(root.get_node(^"Spot") as SoundSpot).event = e.event
+	var label := root.get_node(^"Label") as Label3D
+	label.text = String(e.event)
+	label.pixel_size = layout.label_pixel_size
+	label.position = Vector3(0.0, 0.01, layout.label_offset)
 	return root
 
 
@@ -115,15 +115,3 @@ func _material(colour: Color) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
 	m.albedo_color = colour
 	return m
-
-
-## A name lying on the ground, to be read from above and from the front.
-func _label(text: String, pixel_size: float, at: Vector3) -> Label3D:
-	var label := Label3D.new()
-	label.text = text
-	label.pixel_size = pixel_size
-	label.modulate = Color(0.97, 0.97, 0.92)
-	label.shaded = false
-	label.double_sided = false
-	label.transform = Transform3D(Basis(Vector3.RIGHT, -PI * 0.5), at)
-	return label

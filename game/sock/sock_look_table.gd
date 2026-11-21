@@ -27,25 +27,19 @@ const DEFAULT_CUFF := &"crew_plain"
 const FABRICS: Array[StringName] = [&"cotton", &"wool", &"fuzzy"]
 
 
-## The shape model a Design's Sock is drawn with.
-func shape_of(design: SockDesign) -> StringName:
-	if design == null:
-		return DEFAULT_SHAPE
-	return collection_shapes.get(design.collection, DEFAULT_SHAPE)
+## The shape model Collection `collection`'s Socks are drawn with.
+func shape_of(collection: StringName) -> StringName:
+	return collection_shapes.get(collection, DEFAULT_SHAPE)
 
 
-## The sock ball a Design's Pair is drawn as.
-func cuff_of(design: SockDesign) -> StringName:
-	if design == null:
-		return DEFAULT_CUFF
-	return collection_cuffs.get(design.collection, DEFAULT_CUFF)
+## The sock ball Collection `collection`'s Pairs are drawn as.
+func cuff_of(collection: StringName) -> StringName:
+	return collection_cuffs.get(collection, DEFAULT_CUFF)
 
 
-## The sock shader's `fabric` number of a Design's cloth.
-func fabric_of(design: SockDesign) -> int:
-	if design == null:
-		return 0
-	return maxi(FABRICS.find(collection_fabrics.get(design.collection, &"cotton")), 0)
+## The sock shader's `fabric` number of Collection `collection`'s cloth.
+func fabric_of(collection: StringName) -> int:
+	return maxi(FABRICS.find(collection_fabrics.get(collection, &"cotton")), 0)
 
 
 ## The fit of a shape, or the crew's for one without.

@@ -28,23 +28,10 @@ const NOTHING := "nothing"
 const NO_SPOT := "no_spot"
 ## How far over and under a drop's spot the Host looks for the top it would rest on.
 const SPOT_PROBE := 0.05
-## The probe of _on_lying, made once.
-var _probe := _make_probe()
-## A Sock let go (a Throw or a drop) leaves from the hand (Q2356, Q2367); when a wall is nearer than
-## the hand's place plus THROW_CLEAR, or the hand is inside one, it leaves from the eye-line instead,
-## THROW_CLEAR body depths short of the wall (the old game's _start_point).
-const THROW_CLEAR := 0.09
 ## How far along the aim a Throw looks for the point the crosshair is on.
 const AIM_FAR := 200.0
-## A drop whose fall from the hand meets something is let go farther along the eye-line instead,
-## tried at this many places, the last this far short of its spot (its fall's last stretch).
-const DROP_TRIES := 12
-const DROP_CLOSEST := 0.15
-## How far above a player's feet their eyes are when the Host has no body of theirs to ask (a
-## Guest's, until M0.6 reads the Guest's eyes).
-const EYES_FALLBACK := 1.5
-## The most throws a Guest may send in a second (each needs a held button past the tap).
-const THROW_RATE := 5
+## The probe of _on_lying, made once.
+var _probe := _make_probe()
 
 ## The level's loose Socks.
 @export var mess: Mess
@@ -95,12 +82,17 @@ func active_index(by: int) -> int:
 ## The numbers that hold for player `by`: their player's HandsTuning when it is on this machine
 ## (alone, always), else these Hands' own.
 func tuning_of(by: int) -> HandsTuning:
-	if is_inside_tree():
-		for node in get_tree().get_nodes_in_group(PLAYERS):
-			var player := node as Player
-			if player != null and player.player_id() == by and player.hands_tuning != null:
-				return player.hands_tuning
-	return tuning if tuning != null else HandsTuning.new()
+	var player := _player_of(by)
+	if player != null and player.hands_tuning != null:
+		return player.hands_tuning
+	return _own_tuning()
+
+
+## These Hands' own numbers (a default when none is set).
+func _own_tuning() -> HandsTuning:
+	if tuning == null:
+		tuning = HandsTuning.new()
+	return tuning
 
 
 ## The player asks to pick Sock `sock`.
@@ -126,14 +118,14 @@ func throw(by: int, dir: Vector3, charge: float) -> void:
 
 
 ## What a Guest may send: a Sock id, a step, a spot, a direction and a charge. A pick at most 10 a
-## second, a throw at most THROW_RATE.
+## second, a throw at most the tuning's `throw_rate`.
 func accepts() -> Dictionary[StringName, Dictionary]:
 	return {
 		&"pick": {"args": {"sock": {"type": TYPE_INT, "min": 0, "max": 1 << 30}}},
 		&"cycle": {"args": {"step": {"type": TYPE_INT, "min": -1, "max": 1}}},
 		&"drop": {"args": {"point": TYPE_VECTOR3, "normal": {"type": TYPE_VECTOR3, "min": -1.01, "max": 1.01}}},
 		&"throw": {"args": {"dir": {"type": TYPE_VECTOR3, "min": -1.01, "max": 1.01},
-				"charge": {"type": TYPE_FLOAT, "min": 0.0, "max": 1.0}}, "rate": THROW_RATE},
+				"charge": {"type": TYPE_FLOAT, "min": 0.0, "max": 1.0}}, "rate": _own_tuning().throw_rate},
 	}
 
 
@@ -223,13 +215,7 @@ func decide(cmd: Command) -> Dictionary:
 			var why := drop_refusal(cmd.by, point, normal)
 			if why != "":
 				return refuse(why)
-			var sock := active_of(cmd.by)
-			var items := items_of(cmd.by).duplicate()
-			items.remove_at(active_index(cmd.by))
-			var drop := drop_of(cmd.by, point)
-			return {"ok": true, "launch": drop, "changes": {
-				mess.id: mess.dropped_patch(sock, drop["from"], drop["vel"], drop["spin"], cmd.by),
-				id: _patch(cmd.by, items, items.size() - 1)}}
+			return _let_go(cmd.by, drop_of(cmd.by, point), true)
 		&"throw":
 			var dir: Variant = cmd.args.get("dir")
 			var charge: Variant = cmd.args.get("charge")
@@ -238,14 +224,19 @@ func decide(cmd: Command) -> Dictionary:
 				return refuse("wrong")
 			if active_of(cmd.by) < 0:
 				return refuse(NOTHING)
-			var sock := active_of(cmd.by)
-			var items := items_of(cmd.by).duplicate()
-			items.remove_at(active_index(cmd.by))
-			var launch := launch_of(cmd.by, (dir as Vector3).normalized(), charge)
-			return {"ok": true, "launch": launch, "changes": {
-				mess.id: mess.thrown_patch(sock, launch["from"], launch["vel"], launch["spin"], cmd.by),
-				id: _patch(cmd.by, items, items.size() - 1)}}
+			return _let_go(cmd.by, launch_of(cmd.by, (dir as Vector3).normalized(), charge), false)
 	return refuse("wrong")
+
+
+## The answer that lets player `by`'s active item go with `launch` (launch_of() or drop_of()): it flies
+## in the Mess, the others stay in the Hands and the newest is active. `drop`: a drop, not a Throw.
+func _let_go(by: int, launch: Dictionary, drop: bool) -> Dictionary:
+	var sock := active_of(by)
+	var items := items_of(by).duplicate()
+	items.remove_at(active_index(by))
+	return {"ok": true, "launch": launch, "changes": {
+		mess.id: mess.thrown_patch(sock, launch["from"], launch["vel"], launch["spin"], by, drop),
+		id: _patch(by, items, items.size() - 1)}}
 
 
 ## The change that takes Socks `socks` out of player `by`'s Hands, the others kept in their order and
@@ -290,42 +281,42 @@ func drop_of(by: int, point: Vector3) -> Dictionary:
 	var eyes := eyes_of(by)
 	var to := point
 	var sock := active_of(by)
-	if mess != null and mess.is_pair(sock):
+	var pair := mess.is_pair(sock)
+	var t := tuning_of(by)
+	if pair:
 		to += Vector3.UP * SockDress.ball_radius(mess.design_of(sock))
 	var dir := (point - eyes).normalized() if not point.is_equal_approx(eyes) else Vector3.FORWARD
 	var from := start_of(by, dir)
-	var damp := mess.bodies_tuning().woken_linear_damp if mess != null else 0.6
-	if mess != null and mess.is_pair(sock):
-		damp = tuning_of(by).pair_linear_damp
+	var damp := t.pair_linear_damp if pair else mess.bodies_tuning().woken_linear_damp
 	var vel := Arc.dropped(from.origin, to, _gravity(), damp)
 	var near := eyes.distance_to(from.origin)
-	var far := eyes.distance_to(point) - DROP_CLOSEST
+	var far := eyes.distance_to(point) - t.drop_closest
 	var step := 1
-	var drift := tuning_of(by).drop_drift
-	while (Vector2(vel.x, vel.z).length() > drift or not _falls_clear(by, from.origin, vel, to, damp)) \
-			and step <= DROP_TRIES and far > near:
-		var at := eyes + dir * lerpf(near, far, float(step) / DROP_TRIES)
+	while (Vector2(vel.x, vel.z).length() > t.drop_drift or not _falls_clear(by, from.origin, vel, to, damp)) \
+			and step <= t.drop_tries and far > near:
+		var at := eyes + dir * lerpf(near, far, float(step) / t.drop_tries)
 		from = Transform3D(from.basis, at)
 		vel = Arc.dropped(at, to, _gravity(), damp)
 		step += 1
 	var spin := Vector3.ZERO
-	if mess == null or not mess.is_pair(sock):
-		var turn_damp := mess.bodies_tuning().woken_angular_damp if mess != null else 3.0
+	if not pair:
 		var ticks := Arc.path(from.origin, vel, to.y, _gravity(), damp).size() - 1
-		spin = Arc.turn_to(from.basis, Basis(Vector3.UP, atan2(-dir.x, -dir.z)), ticks, turn_damp)
+		spin = Arc.turn_to(from.basis, Basis(Vector3.UP, atan2(-dir.x, -dir.z)), ticks,
+				mess.bodies_tuning().woken_angular_damp)
 	return {"from": from, "vel": vel, "spin": spin}
 
 
 ## Whether a body let go at `from` with `vel` falls to `to` meeting nothing on the way (its middle
-## and its hanging lower end), the last DROP_CLOSEST before it lands not counted.
+## and its hanging lower end), the last `drop_closest` before it lands not counted.
 func _falls_clear(by: int, from: Vector3, vel: Vector3, to: Vector3, damp: float) -> bool:
 	var me := _body_of(by)
+	var closest := tuning_of(by).drop_closest
 	var low := Vector3.DOWN * SockDress.BOX.x * 0.5
 	var points := Arc.path(from, vel, to.y, _gravity(), damp)
 	for i in range(1, points.size()):
 		var a := points[i - 1]
 		var b := points[i]
-		if b.distance_to(to) < DROP_CLOSEST:
+		if b.distance_to(to) < closest:
 			return true
 		for off: Vector3 in [Vector3.ZERO, low]:
 			if (b + off).y < to.y + 0.01:
@@ -337,19 +328,20 @@ func _falls_clear(by: int, from: Vector3, vel: Vector3, to: Vector3, damp: float
 
 ## Where player `by`'s active item leaves their Hands, looking along `dir`: the hand's pose (hand_of),
 ## or, when a wall is between the eyes and the hand or the hand is inside one (T04), on the
-## eye-line THROW_CLEAR body depths short of the wall, turned as in the hand.
+## eye-line `throw_clear` body depths short of the wall, turned as in the hand.
 func start_of(by: int, dir: Vector3) -> Transform3D:
 	var eyes := eyes_of(by)
 	var hand := hand_of(by, dir)
 	var out := hand.origin - eyes
 	var me := _body_of(by)
-	var blocked := PhysicsQueries.ray(self, eyes, eyes + out.normalized() * (out.length() + THROW_CLEAR), Mess.LAYER_HOUSE, me)
+	var clear := tuning_of(by).throw_clear
+	var blocked := PhysicsQueries.ray(self, eyes, eyes + out.normalized() * (out.length() + clear), Mess.LAYER_HOUSE, me)
 	if blocked.is_empty() and not PhysicsQueries.inside(self, hand.origin, Mess.LAYER_HOUSE, me):
 		return hand
 	var at := eyes + dir * out.length()
-	var hit := PhysicsQueries.ray(self, eyes, at + dir * THROW_CLEAR, Mess.LAYER_HOUSE, me)
+	var hit := PhysicsQueries.ray(self, eyes, at + dir * clear, Mess.LAYER_HOUSE, me)
 	if not hit.is_empty():
-		at = eyes + dir * maxf(0.0, eyes.distance_to(hit["position"]) - THROW_CLEAR * 1.5)
+		at = eyes + dir * maxf(0.0, eyes.distance_to(hit["position"]) - clear * 1.5)
 	return Transform3D(hand.basis, at)
 
 
@@ -363,34 +355,40 @@ func hand_of(by: int, dir: Vector3) -> Transform3D:
 	var view := Basis.looking_at(dir, up)
 	var eyes := eyes_of(by)
 	var sock := active_of(by)
-	if mess != null and mess.is_pair(sock):
+	if mess.is_pair(sock):
 		return Transform3D(view, eyes + view * t.active_pos)
-	var design := mess.design_of(sock) if mess != null else null
+	var design := mess.design_of(sock)
 	var half := SockDress.BOX.x * 0.5 * (design.size_scale() if design != null else 1.0) * t.active_scale
 	return Transform3D(view * HeldView.HANG, eyes + view * (t.active_pos + (Vector3.UP + HeldView.HANG.x) * half))
 
 
 ## Where player `by`'s eyes are: their player's when it is on this machine (alone, always), else
-## EYES_FALLBACK above where they stand.
+## the tuning's `eyes_fallback` above where they stand.
 func eyes_of(by: int) -> Vector3:
-	if is_inside_tree():
-		for node in get_tree().get_nodes_in_group(PLAYERS):
-			var player := node as Player
-			if player != null and player.player_id() == by:
-				return player.eyes()
+	var player := _player_of(by)
+	if player != null:
+		return player.eyes()
 	var at: Variant = parts.where.call(by) if parts != null and parts.where.is_valid() else null
-	return (at as Vector3 if at is Vector3 else Vector3.ZERO) + Vector3.UP * EYES_FALLBACK
+	return (at as Vector3 if at is Vector3 else Vector3.ZERO) + Vector3.UP * tuning_of(by).eyes_fallback
 
 
 ## Player `by`'s own body when it is on this machine (what their let-go Sock leaves through), else none.
 func _body_of(by: int) -> Array[RID]:
+	var player := _player_of(by)
 	var out: Array[RID] = []
+	if player != null:
+		out.append(player.get_rid())
+	return out
+
+
+## Player `by` when they play on this machine (alone, always), else null.
+func _player_of(by: int) -> Player:
 	if is_inside_tree():
 		for node in get_tree().get_nodes_in_group(PLAYERS):
 			var player := node as Player
 			if player != null and player.player_id() == by:
-				out.append(player.get_rid())
-	return out
+				return player
+	return null
 
 
 static func _gravity() -> float:

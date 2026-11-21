@@ -8,6 +8,8 @@
 class_name EverySockStation
 extends Node3D
 
+const LABEL := preload("res://game/zoo/zoo_label.tscn")
+
 ## The Designs to lay out.
 @export var catalogue: DesignCatalogue
 @export var layout: EverySockLayout
@@ -23,16 +25,6 @@ func _enter_tree() -> void:
 		return
 	_built = true
 	build()
-
-
-## The Collections in the order their first Design (by id) appears.
-func collections() -> Array[StringName]:
-	var out: Array[StringName] = []
-	for id in catalogue.size():
-		var d := catalogue.design(id)
-		if d != null and not out.has(d.collection):
-			out.append(d.collection)
-	return out
 
 
 ## The Designs' ids of a Collection, in id order.
@@ -54,17 +46,13 @@ func _cell(column: int, z: float) -> Array[Vector3]:
 ## Lays out the whole catalogue: one pass, each Collection a block of rows.
 func build() -> void:
 	var z := 0.0
-	for c in collections():
+	for c in catalogue.collections():
 		var ids := designs_of(c)
-		var title := Label3D.new()
+		var title := LABEL.instantiate() as Label3D
 		title.name = "Name_%s" % c
 		title.text = String(c).capitalize()
 		title.pixel_size = layout.name_pixel_size
-		title.modulate = Color(0.1, 0.1, 0.12)
-		title.shaded = false
-		title.double_sided = false
-		title.transform = Transform3D(Basis(Vector3.RIGHT, -PI * 0.5),
-				Vector3(-(layout.per_row - 1) * 0.5 * layout.cell_width - layout.name_offset, 0.01, z))
+		title.position = Vector3(-(layout.per_row - 1) * 0.5 * layout.cell_width - layout.name_offset, 0.01, z)
 		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		labels.add_child(title)
 		for i in ids.size():
@@ -78,8 +66,7 @@ func build() -> void:
 				spot.position = place[m]
 				spots.add_child(spot)
 			labels.add_child(_label(catalogue.design(id), place[2]))
-		@warning_ignore("integer_division")
-		z -= ((ids.size() + layout.per_row - 1) / layout.per_row) * layout.row_pitch + layout.collection_gap
+		z -= DesignCatalogue.rows_of(ids.size(), layout.per_row) * layout.row_pitch + layout.collection_gap
 
 
 ## A Design's info, as it lies in front of its Socks.
@@ -89,12 +76,9 @@ static func info(d: SockDesign) -> String:
 
 
 func _label(d: SockDesign, at: Vector3) -> Label3D:
-	var label := Label3D.new()
+	var label := LABEL.instantiate() as Label3D
 	label.name = "d%d" % d.id
 	label.text = info(d)
 	label.pixel_size = layout.label_pixel_size
-	label.modulate = Color(0.1, 0.1, 0.12)
-	label.shaded = false
-	label.double_sided = false
-	label.transform = Transform3D(Basis(Vector3.RIGHT, -PI * 0.5), at + Vector3(0.0, 0.01, 0.0))
+	label.position = at + Vector3(0.0, 0.01, 0.0)
 	return label

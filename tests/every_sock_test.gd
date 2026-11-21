@@ -46,7 +46,7 @@ func case_e01() -> void:
 	var cat := st.catalogue
 	var layout := st.layout
 	_check(st.spots.get_child_count() == cat.size() * 2, "two SockSpots for each of the %d Designs (%d)" % [cat.size(), st.spots.get_child_count()])
-	var order := st.collections()
+	var order := st.catalogue.collections()
 	var last_z := 1.0
 	var seen := 0
 	for c in order:
@@ -201,7 +201,7 @@ func case_e06() -> void:
 	st.catalogue = cat
 	add_child(_alone)
 	await _frames(2)
-	_check(st.collections()[-1] == &"newcomers", "the new Design's Collection is a block of its own")
+	_check(st.catalogue.collections()[-1] == &"newcomers", "the new Design's Collection is a block of its own")
 	_check(st.spots.get_node_or_null("d%d_a" % extra.id) != null and st.spots.get_node_or_null("d%d_b" % extra.id) != null,
 			"both Socks of the new Design lie there")
 	_check((st.labels.get_node("d%d" % extra.id) as Label3D).text.contains("Zebra"), "its info lies in front")

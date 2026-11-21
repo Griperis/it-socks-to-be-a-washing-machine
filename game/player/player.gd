@@ -38,8 +38,8 @@ const CANT_DROP := "Can't drop there"
 ## What the message row says when a pick completes a Pair (the old game.gd, core/16 P02).
 const PAIRED := "Paired!"
 ## The crosshair where a drop may go (and always with empty Hands), and where it may not (the Hud's).
-const CROSSHAIR_OK := Hud.CROSSHAIR_OK
-const CROSSHAIR_NO := Hud.CROSSHAIR_NO
+static var CROSSHAIR_OK := Hud.CROSSHAIR_OK
+static var CROSSHAIR_NO := Hud.CROSSHAIR_NO
 ## The outline's "full" tint, on an aimed drawer with no room for the held Pairs (Q221).
 const FULL_OUTLINE := preload("res://game/outline/full.tres")
 

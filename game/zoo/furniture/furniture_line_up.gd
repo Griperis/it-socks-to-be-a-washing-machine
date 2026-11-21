@@ -7,6 +7,7 @@ class_name FurnitureLineUp
 extends Node3D
 
 const FOLDER := "res://game/furniture"
+const LABEL := preload("res://game/zoo/zoo_label.tscn")
 
 @export var layout: FurnitureLineUpLayout
 ## The folder lined up: the furniture (another only in a test).
@@ -83,14 +84,12 @@ func build() -> void:
 			row += 1
 		scene.set_meta(&"row", row)
 		add_child(scene)
-		var title := Label3D.new()
+		var title := LABEL.instantiate() as Label3D
 		title.name = "Name"
 		title.text = scene.name
 		title.pixel_size = layout.name_pixel_size
 		title.font_size = 64
 		title.outline_size = 0
-		title.modulate = Color(0.1, 0.1, 0.12)
-		title.shaded = false
+		title.double_sided = true
 		title.position = Vector3(0.0, 0.08, (footprints[i] as Vector2).y / 2.0 + layout.name_ahead)
-		title.rotation.x = -PI / 2.0
 		scene.add_child(title)

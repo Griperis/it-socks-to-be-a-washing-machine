@@ -5,10 +5,6 @@
 class_name Footsteps
 extends Node
 
-## A step was taken: the surface it was heard on.
-signal stepped(surface: StringName)
-## The body landed after a fall at this speed (m/s, positive).
-signal landed(speed: float)
 
 ## The metadata name of a floor's surface.
 const SURFACE_META := &"surface"
@@ -38,7 +34,7 @@ func _physics_process(delta: float) -> void:
 	if on_floor and not _was_on_floor:
 		_stride = 0.0
 		if _fall_speed >= tuning.land_speed:
-			landed.emit(_fall_speed)
+
 			Sounds.play(&"land")
 	if on_floor:
 		var real := _body.get_real_velocity()
@@ -46,7 +42,7 @@ func _physics_process(delta: float) -> void:
 		if _stride >= tuning.step_distance:
 			_stride = fmod(_stride, tuning.step_distance)
 			var surface := surface_under()
-			stepped.emit(surface)
+
 			Sounds.play(StringName("step_" + surface))
 	_was_on_floor = on_floor
 	_fall_speed = 0.0 if on_floor else maxf(-_body.velocity.y, 0.0)

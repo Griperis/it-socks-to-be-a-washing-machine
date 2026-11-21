@@ -31,6 +31,15 @@ extends Resource
 ## floor to its spot; a spot it would need more for (far off, or barely below the hand) has it let go
 ## farther along the eye-line instead.
 @export_range(0.2, 10.0, 0.1, "suffix:m/s") var drop_drift := 3.0 # placeholder: until the designer's go on the core/23 strips
+## A drop whose fall from the hand meets something is let go farther along the eye-line instead,
+## tried at this many places, the last `drop_closest` short of its spot (its fall's last stretch,
+## where meeting something is its landing).
+@export_range(1, 40, 1) var drop_tries := 12 # placeholder: until the designer's go on the core/23 strips
+@export_range(0.0, 1.0, 0.01, "suffix:m") var drop_closest := 0.15 # placeholder: until the designer's go on the core/23 strips
+## A Sock let go (a Throw or a drop) leaves from the hand (Q2356, Q2367); when a wall is nearer than
+## the hand's place plus this, or the hand is inside one, it leaves from the eye-line instead, this
+## far short of the wall (one and a half times; the old game's _start_point).
+@export_range(0.0, 0.5, 0.01, "suffix:m") var throw_clear := 0.09 # placeholder: the old game's _start_point
 ## A falling Sock that has not come to rest after this long is put down where it is (T13).
 @export_range(1.0, 20.0, 0.5, "suffix:s") var settle_limit := 6.0 # placeholder: the designer's number (today's value from the old game)
 
@@ -56,6 +65,13 @@ extends Resource
 ## A falling body faster than this wakes the lying Sock it hits and up to `wake_count` touching it (T11).
 @export_range(0.0, 10.0, 0.1, "suffix:m/s") var wake_speed := 1.5 # placeholder: the designer's number (today's value from the old game)
 @export_range(0, 32, 1) var wake_count := 8 # placeholder: the designer's number (today's value from the old game)
+## The most Throws a Guest may send in a second (each needs a held button past the tap).
+@export_range(1, 30, 1, "suffix:/s") var throw_rate := 5 # placeholder: the Host's allowance, not felt in play
+
+@export_group("Host")
+## How far above a player's feet their eyes are when the Host has no body of theirs to ask (a
+## Guest's, until M0.6 reads the Guest's eyes).
+@export_range(0.5, 2.5, 0.05, "suffix:m") var eyes_fallback := 1.5 # placeholder: until M0.6 reads a Guest's eyes
 
 @export_group("Holding")
 ## Where the active item hangs, in the camera's space (x right, y up, -z ahead), before `depth`.

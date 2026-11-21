@@ -60,6 +60,8 @@ func cases() -> Array[Dictionary]:
 				"title": "core/22 D02: the buttons are 0.3 m boxes in rows that fit the station's pad"},
 		{"name": "d04_alone", "method": "case_d04", "world": false,
 				"title": "core/22 D04: the station runs alone with its buttons, its ambience and its tile patch"},
+		{"name": "core30_button_scene", "method": "case_core30_button_scene", "world": false,
+				"title": "core/30, real path: every Sounds button is sound_button.tscn with its name a zoo_label.tscn, and the player's walk up and use on one plays its sound"},
 	]
 
 
@@ -361,6 +363,24 @@ func case_s10() -> void:
 		_check(h["spatial"] == true, "from a spot")
 		var foot := station.global_position + station.button_position(world)
 		_check((h["at"] as Vector3).distance_to(foot) < 0.01, "where the button stands (%s)" % h["at"])
+
+
+func case_core30_button_scene() -> void:
+	await _zoo_up()
+	var station := _zoo.get_node("Stations/Sounds") as SoundsStation
+	for e in station.events():
+		var button := station.buttons.get_node_or_null(String(e.event))
+		_check(button != null and button.scene_file_path == "res://game/zoo/sounds/sound_button.tscn",
+				"the %s button is the button scene" % e.event)
+		var label := button.get_node_or_null(^"Label") as Label3D if button != null else null
+		_check(label != null and label.text == String(e.event)
+				and label.scene_file_path == "res://game/zoo/zoo_label.tscn", "its name is a zoo label")
+	var title := station.buttons.get_node_or_null("Group_%s" % station.groups()[0])
+	_check(title != null and title.scene_file_path == "res://game/zoo/zoo_label.tscn", "a group's name is a zoo label")
+	var player := _zoo.get_node("Player") as Player
+	var flat := _front_row(station, false)
+	await _press_button(player, station, flat)
+	_check(_count(flat) == 1, "the player's use on the %s button plays it (%d)" % [flat, _count(flat)])
 
 
 ## The first event of the front row that is a world one (or a flat one).

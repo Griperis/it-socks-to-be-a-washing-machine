@@ -1,8 +1,8 @@
 ## How a Design looks (assets/01, S01-S04): its Sock is its Collection's shape model
 ## (looks_<shape>.tscn), its Pair its Collection's sock ball (looks_ball_<cuff>.tscn), both drawn by
 ## the one sock shader (sock_pattern.gdshader) with the Design's colour, pattern, print and cloth.
-## Every Looks has the contract of looks_contract.json; the states play in its AnimationPlayer
-## (SockDress.play). The old game's SockLook and SockBall.setup, ported.
+## Every Looks has the contract of looks_contract.json; its states are played by SockDress, which
+## uses this class (never the other way). The old game's SockLook and SockBall.setup, ported.
 class_name SockLook
 extends RefCounted
 
@@ -22,8 +22,8 @@ static var _radii: Dictionary[StringName, float] = {}
 
 ## The Looks scene of a Design's Sock, or with `ball` its Pair's sock ball.
 static func scene(design: SockDesign, ball := false) -> PackedScene:
-	var path := ("res://game/sock/looks_ball_%s.tscn" % TABLE.cuff_of(design)) if ball \
-			else ("res://game/sock/looks_%s.tscn" % TABLE.shape_of(design))
+	var path := ("res://game/sock/looks_ball_%s.tscn" % TABLE.cuff_of(collection_of(design))) if ball \
+			else ("res://game/sock/looks_%s.tscn" % TABLE.shape_of(collection_of(design)))
 	var found: PackedScene = _scenes.get(path)
 	if found == null:
 		found = load(path) as PackedScene
@@ -31,12 +31,16 @@ static func scene(design: SockDesign, ball := false) -> PackedScene:
 	return found
 
 
-## A new Looks dressed as `design`, playing `state`: a Sock's, or with `ball` a Pair's sock ball.
-static func make(design: SockDesign, state: StringName = SockDress.LYING, ball := false) -> Node3D:
+## A new Looks dressed as `design` (SockDress.make plays its state): a Sock's, or with `ball` a Pair's sock ball.
+static func make(design: SockDesign, ball := false) -> Node3D:
 	var looks := scene(design, ball).instantiate() as Node3D
 	dress(looks, design, ball)
-	SockDress.play(looks, state)
 	return looks
+
+
+## The Collection of `design` (none with no Design: the table's defaults).
+static func collection_of(design: SockDesign) -> StringName:
+	return design.collection if design != null else &""
 
 
 ## Scales the Looks by the Design's Size and draws its Body with the Design's material.
@@ -82,7 +86,7 @@ static func material(design: SockDesign, ball := false) -> ShaderMaterial:
 	var lk := MessDrawing.look_data(design)
 	m.set_shader_parameter(&"look", Vector4(lk.r, lk.g, lk.b, lk.a))
 	if ball:
-		_fit_ball(m, TABLE.cuff_of(design))
+		_fit_ball(m, TABLE.cuff_of(design.collection))
 	cache[design] = m
 	return m
 
@@ -95,9 +99,7 @@ static func instance_material(collection: StringName, ball := false) -> ShaderMa
 		m = _new_material(collection, ball)
 		m.set_shader_parameter(&"use_instance", true)
 		if ball:
-			var probe := SockDesign.new()
-			probe.collection = collection
-			_fit_ball(m, TABLE.cuff_of(probe))
+			_fit_ball(m, TABLE.cuff_of(collection))
 		_instance_materials[key] = m
 	return m
 
@@ -128,14 +130,12 @@ static func ball_radius(cuff: StringName) -> float:
 
 ## The shared part of every sock material: the shader, the prints, the cloth and the shape's fit.
 static func _new_material(collection: StringName, ball: bool) -> ShaderMaterial:
-	var probe := SockDesign.new()
-	probe.collection = collection
 	var m := ShaderMaterial.new()
 	m.shader = SHADER
 	m.set_shader_parameter(&"prints", PRINTS)
 	m.set_shader_parameter(&"prints_grid", TABLE.prints_grid)
-	m.set_shader_parameter(&"fabric", float(TABLE.fabric_of(probe)))
-	var f := TABLE.ball_fit if ball else TABLE.fit(TABLE.shape_of(probe))
+	m.set_shader_parameter(&"fabric", float(TABLE.fabric_of(collection)))
+	var f := TABLE.ball_fit if ball else TABLE.fit(TABLE.shape_of(collection))
 	m.set_shader_parameter(&"print_aspect", f.print_aspect)
 	m.set_shader_parameter(&"cloth_size", f.cloth_size)
 	m.set_shader_parameter(&"calf_body", f.calf_body)

@@ -32,16 +32,11 @@ var _material: ShaderMaterial = null
 
 
 ## The mask pass with the shells chained after it, one material shared by every copy of this style.
-## Built on first use; a change to the style afterwards needs rebuild().
+## Built on first use; a change to the style afterwards is not seen by copies made before.
 func material() -> ShaderMaterial:
 	if _material == null:
 		_material = _build()
 	return _material
-
-
-## Builds the material again on its next use, after a change to the style.
-func rebuild() -> void:
-	_material = null
 
 
 ## The shell passes of the material, inner to outer.

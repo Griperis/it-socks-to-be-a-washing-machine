@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: core
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-21
 blocked_by: ["[[28-review-correctness-fixes]]", "[[29-review-frame-cost]]", "[[31-mess-benchmark-and-settling]]", "[[34-zoo-only-into-the-zoo]]"]
 notes: []
 terms: []
@@ -72,5 +72,28 @@ Runs after core/28, 29, 31 and 34 because it touches their files (paths as core/
 - The review's findings are fixed, felt numbers into Resources and zoo labels as scenes included (Q2404, 2026-11-21).
 
 ## Open follow-ups
+- [later] T3 `Arc.aimed()`: returning `Vector3.ZERO` whenever it does not converge made a charge-0 lob land 0.38 m
+  from the crosshair (`flight_start:t03_lands` failed). The behaviour is kept (the nearest aim found); the comment
+  now says what it does. Changing it is a change the player sees, so it is the designer's.
+- [later] T3 `LAYER_HOUSE` in `tools/house_kit_build.gd` and `tools/furniture_build.gd` stays `1`: a `--script` run
+  has no autoloads, and naming `Mess` (whose scripts name `Sounds`) stops the tool compiling (tried). Found on the
+  way: `tools/furniture_build.gd` already does not compile in a `--script` run (it preloads `openable.gd`, which
+  names `Sounds`); a tool fault for the lead.
+- [later] T4 `Cabinet.shelved()` and `Cabinet.flights_into()` are kept: the cabinet, drawer-details and zoo suites
+  call them (about 20 places). `Cabinet.FAR` is gone (the refusal is `Hands.FAR`, the same "far").
+- [later] T6 `tools/furniture_from_old.py:14` was already right after core/34 (its line 5 was the stale one).
 
 ## Built log
+
+### 2026-11-21
+- Changed: nothing the player sees. Felt numbers moved into HandsTuning, MessTuning, the theme (`Hud` colours and
+  spacing; text sizes read from the variations) and exports (Avatar glide, PowerRing, Picture, IconsStation); the
+  Mess and the Cabinet assert their tuning. Zoo stations instance `zoo_label.tscn`, `sound_button.tscn`,
+  `icon_cell.tscn`, `swatch.tscn`. Duplication removed (`Hands._player_of`, `_let_go`, `thrown_patch(.., drop)`,
+  `Mess._take_down`, `_pose_into`, `SockDress.scale_of`, `Arc._stepped`, `PhysicsQueries._space`,
+  `DesignCatalogue.collections()`/`rows_of`, `keep_uid` shared by the house builders); unused code removed. Tests
+  changed where they named a changed function: `sock_looks_test` (4 lines), `every_sock_test` (2 lines).
+- Files: game/hands, game/mess, game/sock, game/ui/hud.gd, game/look/theme.tres, game/zoo/*, tools/house_kit_build.gd,
+  tools/old_house_build.gd, tests/sounds_test.gd (new case core30_button_scene), tools/shots/sets/review-tidy.txt
+- Verified: `PASS 16722 checks, 363 cases` (--touched); `builds/review-core-30/` (33 shots, before at c8ac0f5):
+  28 identical to the pixel, 5 differ only in the heap counter's live "Tick ms" digits.
