@@ -126,7 +126,7 @@ func case_real_path() -> void:
 	await _press(&"pick")
 	await _until(func() -> bool: return _mess.is_pair(S1), "the second Pair to fuse")
 	_stand(THROW_FROM)
-	await _aim(_player, _station.to_global(Vector3(-1.0, 1.6, -2.0)))
+	await _aim(_player, _drawer_front(1))  # core/23: a Throw lands where the crosshair is
 	Input.action_press(&"drop_throw")
 	await _until(func() -> bool: return _player.charging and _player.charge >= 1.0, "the ring to fill", 200)
 	Input.action_release(&"drop_throw")
@@ -589,7 +589,7 @@ func _click_door() -> void:
 ## Throws the active item at the Cabinet's front with a full charge, by the Hands' Command.
 func _throw_at_cabinet() -> void:
 	_stand(THROW_FROM)
-	await _aim(_player, _station.to_global(Vector3(-1.0, 1.6, -2.0)))
+	await _aim(_player, _drawer_front(1))  # core/23: a Throw lands where the crosshair is
 	_hands.throw(1, _player.aim_dir(), 1.0)
 	await _physics_ticks(1)
 

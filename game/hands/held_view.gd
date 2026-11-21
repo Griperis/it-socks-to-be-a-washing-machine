@@ -2,7 +2,8 @@
 ## hangs big right of centre, the others tucked small to the left (H06). While zoomed (H21) the
 ## tucked items keep their screen size and place and the active one comes close and large; while
 ## turning (H22) the active item spins about its long axis and keeps its angle when let go. A
-## dropped Sock flicks from the hand to its spot (H10) before the Mess lets its body fall. A held
+## dropped or thrown Sock's body leaves from where it hung (Q2356, Q2367): its drawn Looks takes over
+## there, growing from the hand's size to its own over `let_go_grow`. A held
 ## Pair is one sock ball, `ball_scale` times a Sock's size (P06); a Sock that becomes a Pair in
 ## these Hands plays the pairing moment (pair_moment.tscn, P05) at the ball's place, over a hidden
 ## ball, once; a whole Pair picked up plays none, and a Pair let go ends its moment.
@@ -53,10 +54,9 @@ var _drawn: Dictionary[int, Transform3D] = {}
 var _flying: Dictionary[int, Dictionary] = {}
 ## Each pairing moment's second Sock flying in: its pose where it lay, in the level (D10), by Pair id.
 var _fly_in: Dictionary[int, Transform3D] = {}
-## Each thrown Sock's Looks catching up with its body (the old catch-up), by Sock id: {"looks": the
-## Looks that hung in the hand, now top level; "hand": where it hung, in the level; "lead": how far
-## the hand was from the body's Looks at the throw; "t": seconds gone}.
-var _catching: Dictionary[int, Dictionary] = {}
+## Each Sock let go whose body's Looks grows from the hand's size to its own, by Sock id: {"from":
+## the share of its own size it starts at; "t": seconds gone}.
+var _growing: Dictionary[int, Dictionary] = {}
 ## Whether the Hands have been drawn once: what they hold from the start does not fly up.
 var _seen := false
 
@@ -66,7 +66,7 @@ func _enter_tree() -> void:
 
 
 func _process(delta: float) -> void:
-	_catch_up(delta)  # first: a Sock thrown in this refresh is drawn in the hand on its first frame
+	_grow(delta)  # first: a Sock let go in this refresh is drawn at the hand's size on its first frame
 	refresh(delta)
 
 
@@ -279,78 +279,50 @@ func _place_fly_in(sock: int, moment: Node3D) -> void:
 	fly_in.global_transform = at
 
 
-## A Sock left the Hands: dropped, it flicks to where it is let go and vanishes as its body
-## appears there; otherwise it simply goes.
+## A Sock left the Hands: let go (dropped or thrown), its body is where it hung and its body's Looks
+## takes over at the hand's size, growing to its own; otherwise (a pairing, a shelve) it simply goes.
 func _let_go(sock: int) -> void:
 	var looks := _looks[sock]
+	var pair := _balls.has(sock)
 	_looks.erase(sock)
 	_spin.erase(sock)
 	_balls.erase(sock)
 	_drawn.erase(sock)
 	_flying.erase(sock)
 	_end_moment(sock)
-	looks.visible = true
+	looks.queue_free()
 	var mess := hands.mess if hands != null else null
-	if mess == null or mess.state_of(sock) != Mess.State.FLYING or tuning == null or tuning.flick <= 0.0:
-		looks.queue_free()
+	if mess == null or mess.state_of(sock) != Mess.State.FLYING or tuning == null or tuning.let_go_grow <= 0.0:
 		return
-	var from := looks.global_transform
-	looks.top_level = true
-	looks.global_transform = from
-	if mess.throws.has(sock):
-		# Thrown: its body flies from the eyes at once; what the player sees leaves the hand.
-		_catching[sock] = {"looks": looks, "hand": from, "lead": Vector3.INF, "t": 0.0}
-		_catch_up(0.0)
-		return
-	var design := mess.design_of(sock)
-	var to := mess.pose_of(sock).scaled_local(Vector3.ONE * (design.size_scale() if design != null else 1.0))
-	var tween := looks.create_tween()
-	tween.tween_property(looks, ^"global_transform", to, tuning.flick)
-	tween.tween_callback(looks.queue_free)
+	_growing[sock] = {"from": tuning.active_scale * (tuning.ball_scale if pair else 1.0), "t": 0.0}
+	_grow(0.0)
 
 
-## Whether thrown Sock `sock` is still drawn from the hand, joining its body (the catch-up).
-func catching_up(sock: int) -> bool:
-	return _catching.has(sock)
+## Whether Sock `sock`, let go, is still drawn growing from the hand's size.
+func growing(sock: int) -> bool:
+	return _growing.has(sock)
 
 
-## How far thrown Sock `sock` is drawn off its body now (zero once it has joined it).
-func catch_up_offset(sock: int) -> float:
-	return float(_catching[sock].get("off", 0.0)) if _catching.has(sock) else 0.0
-
-
-## Moves each thrown Sock's Looks from where it hung in the hand onto its body over `catch_up`,
-## position, turn and size, easing onto the flight; the body's own Looks hides meanwhile and shows
-## when they meet. Only the look moves: the body (and what it hits) is the true one.
-func _catch_up(delta: float) -> void:
-	for sock: int in _catching.keys():
-		var c := _catching[sock]
-		var looks := c["looks"] as Node3D
-		var body := hands.mess.flight_of(sock) if hands != null and hands.mess != null else null
+## Grows each let-go Sock's body Looks from the hand's size to its own over `let_go_grow`, about its
+## body's origin; a body drawn without a Looks (past the flying cap) is drawn at its own size.
+func _grow(delta: float) -> void:
+	for sock: int in _growing.keys():
+		var g := _growing[sock]
+		g["t"] = float(g["t"]) + delta
+		var mess := hands.mess if hands != null else null
+		var body := mess.moving_body(sock) if mess != null else null
 		var own := body.get_node_or_null(^"Looks") as Node3D if body != null else null
-		var time := tuning.catch_up if tuning != null else 0.0
-		c["t"] = float(c["t"]) + delta
-		var u := clampf(float(c["t"]) / time, 0.0, 1.0) if time > 0.0 else 1.0
-		if own == null and u < 1.0 and is_instance_valid(looks) and hands.mess.state_of(sock) == Mess.State.FLYING:
-			continue  # its body is not out yet: the Looks waits where it hung
-		if own == null or not is_instance_valid(looks) or u >= 1.0:
+		var design := mess.design_of(sock) if mess != null else null
+		var size := design.size_scale() if design != null else 1.0
+		var u := clampf(float(g["t"]) / tuning.let_go_grow, 0.0, 1.0) if tuning != null and tuning.let_go_grow > 0.0 else 1.0
+		if own == null or u >= 1.0:
 			if own != null:
-				own.visible = true
-			if is_instance_valid(looks):
-				looks.queue_free()
-			_catching.erase(sock)
+				own.scale = Vector3.ONE * size
+			if own != null or u >= 1.0:
+				_growing.erase(sock)
 			continue
-		own.visible = false
-		var to := own.get_global_transform_interpolated()
-		var hand: Transform3D = c["hand"]
-		if c["lead"] == Vector3.INF:
-			c["lead"] = hand.origin - to.origin
 		var e := 1.0 - (1.0 - u) * (1.0 - u)
-		var turn := hand.basis.orthonormalized().get_rotation_quaternion().slerp(
-				to.basis.orthonormalized().get_rotation_quaternion(), e)
-		var size := hand.basis.get_scale().lerp(to.basis.get_scale(), e)
-		c["off"] = (c["lead"] as Vector3).length() * (1.0 - e)
-		looks.global_transform = Transform3D(Basis(turn).scaled(size), to.origin + (c["lead"] as Vector3) * (1.0 - e))
+		own.scale = Vector3.ONE * size * lerpf(float(g["from"]), 1.0, e)
 
 
 ## Starts the pairing moment over Pair `sock`'s place: the two Socks and the ball tinted as its

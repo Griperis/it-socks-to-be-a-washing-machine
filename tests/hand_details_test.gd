@@ -60,9 +60,9 @@ func cases() -> Array[Dictionary]:
 		{"name": "d10_fly_in", "method": "case_d10", "world": false,
 				"title": "D10: the pairing moment's second Sock flies in from where it lay"},
 		{"name": "f1_throw_from_hand", "method": "case_f1_throw", "world": false,
-				"title": "core/19 F1: a Sock thrown with the real button is drawn leaving from where it hung in the hand and joins its body (which flies from the eyes) over catch_up 0.1 s"},
+				"title": "core/23 T02 (Q2356): a Sock thrown with the real button: its body leaves from where it hung, its Looks drawn there at the hand's size on the first frame, growing to its own over let_go_grow"},
 		{"name": "f1_drop_from_hand", "method": "case_f1_drop", "world": false,
-				"title": "core/19 F1: a dropped Sock is drawn leaving from the hand too: it flicks to its spot before its body falls"},
+				"title": "core/23 T05 (Q2367): a dropped Sock the same: its body leaves from the hand at once, drawn there at the hand's size, growing to its own"},
 		{"name": "f2_ring_round_ball", "method": "case_f2_ring", "world": false,
 				"title": "core/19 F2: the pairing moment's ring and sparkles keep its scale: the ring grows round the ball, at the ball's size, not round the view"},
 		{"name": "f3_sign_clear", "method": "case_f3_sign", "world": false,
@@ -353,43 +353,10 @@ func case_f1_throw() -> void:
 	await _pick(ON_FLOOR)
 	var view := _player.held_view()
 	await _until(view.settled, "the fly-up to end")
-	await _aim(_player, _player.global_position + Vector3(0.0, 1.6, -3.0))
-	await _frames(2)
-	var held := view.looks_of(ON_FLOOR)
-	var cam := _player.camera()
+	await _aim(_player, _player.global_position + Vector3(0.0, 0.0, -2.5))
 	Input.action_press(&"drop_throw")
-	await _until(func() -> bool: return _player.charging and _player.charge >= 1.0, "the ring to fill", 200)
-	var hand := held.global_transform
-	var hand_px := cam.unproject_position(hand.origin)
-	# What is drawn, each frame (read as the next frame starts, after every _process): where on screen, how big.
-	var drawn: Array[Array] = []
-	var held_id := held.get_instance_id()
-	var record := func() -> void:
-		var looks := instance_from_id(held_id) as Node3D
-		if looks != null and view.catching_up(ON_FLOOR):
-			drawn.append([cam.unproject_position(looks.global_position), looks.global_transform.basis.get_scale().x,
-					view.catch_up_offset(ON_FLOOR)])
-	get_tree().process_frame.connect(record)
-	Input.action_release(&"drop_throw")
-	await _until(func() -> bool: return not drawn.is_empty(), "the throw's catch-up to be drawn", 10)
-	var body_looks := _mess.flight_of(ON_FLOOR).get_node(^"Looks") as Node3D
-	_check(is_instance_valid(held) and held.visible, "the Looks that hung in the hand is still what is drawn")
-	if not drawn.is_empty():
-		var first_px: Vector2 = drawn[0][0]
-		_check(first_px.distance_to(hand_px) < 40.0,
-				"its first frame is at the hand on screen (%.0f px from it), not at the eyes" % first_px.distance_to(hand_px))
-		_check(float(drawn[0][1]) < hand.basis.get_scale().x * 1.5, "and about its size in the hand (%.2f, held %.2f)" % [drawn[0][1], hand.basis.get_scale().x])
-	_check(not body_looks.visible, "the body's own Looks is hidden while it catches up")
-	await _until(func() -> bool: return not view.catching_up(ON_FLOOR), "the catch-up to end", 30)
-	get_tree().process_frame.disconnect(record)
-	_check(drawn.size() >= 3, "the catch-up is drawn over several frames (%d)" % drawn.size())
-	if drawn.size() >= 2:
-		var gap: float = drawn[-1][2]
-		_check(float(drawn[0][2]) > 0.05 and gap < float(drawn[0][2]) * 0.1,
-				"it starts off its body and on its last frame has nearly joined it (%.3f m off, from %.3f)" % [gap, drawn[0][2]])
-	await _frames(1)
-	_check(body_looks.visible, "then the body's Looks is drawn")
-	_check(not is_instance_valid(held) or held.is_queued_for_deletion(), "and the hand's Looks is gone")
+	await _until(func() -> bool: return _player.charging and _player.charge >= 0.5, "the ring to fill halfway", 200)
+	await _let_go_drawn(view, func() -> void: Input.action_release(&"drop_throw"), "thrown")
 
 
 func case_f1_drop() -> void:
@@ -398,22 +365,48 @@ func case_f1_drop() -> void:
 	var view := _player.held_view()
 	await _until(view.settled, "the fly-up to end")
 	await _aim(_player, _player.global_position + Vector3(0.0, 0.0, -1.0))
+	await _let_go_drawn(view, _tap_drop, "dropped")
+
+
+func _tap_drop() -> void:
+	Input.action_press(&"drop_throw")
+	await _physics_ticks(2)
+	Input.action_release(&"drop_throw")
+
+
+## core/23 (Q2356, Q2367): lets the held Sock go by `release` and checks what is drawn: on its first
+## frame out of the Hands its body's own Looks is at the hand on screen at the hand's size, and it
+## grows to its own size over let_go_grow; the hand's Looks is gone.
+func _let_go_drawn(view: HeldView, release: Callable, how: String) -> void:
 	var held := view.looks_of(ON_FLOOR)
-	var hand := held.global_position
-	var drawn: Array[Vector3] = []
-	var held_id := held.get_instance_id()
+	var cam := _player.camera()
+	await _frames(1)
+	var hand_px := cam.unproject_position(held.global_position)
+	var drawn: Array[Array] = []
 	var record := func() -> void:
-		var looks := instance_from_id(held_id) as Node3D
-		if looks != null and _hands.items_of(1).is_empty() and _mess.flight_of(ON_FLOOR) == null:
-			drawn.append(looks.global_position)
+		var body := _mess.flight_of(ON_FLOOR)
+		var own := body.get_node_or_null(^"Looks") as Node3D if body != null else null
+		# Read as a frame starts: what the frame before drew, once the HeldView has let it go.
+		if own != null and (view.growing(ON_FLOOR) or not drawn.is_empty()):
+			drawn.append([cam.unproject_position(own.get_global_transform_interpolated().origin), own.scale.x])
 	get_tree().process_frame.connect(record)
-	await _press(&"drop_throw")
-	await _until(func() -> bool: return _mess.flight_of(ON_FLOOR) != null or _mess.state_of(ON_FLOOR) == Mess.State.LYING, "the body to fall", 60)
+	await release.call()
+	await _until(func() -> bool: return drawn.size() >= 12, "the %s Sock's Looks to be drawn a while" % how, 60)
 	get_tree().process_frame.disconnect(record)
-	_check(drawn.size() >= 3, "the dropped Sock is drawn from the hand over several frames before its body falls (%d)" % drawn.size())
-	if not drawn.is_empty():
-		_check(drawn[0].distance_to(hand) < 0.1, "its first frame is near the hand (%.3f m off)" % drawn[0].distance_to(hand))
-	_check(not view.catching_up(ON_FLOOR), "a drop flicks: no catch-up")
+	var size := _mess.design_of(ON_FLOOR).size_scale()
+	var t := _player.hands_tuning
+	if drawn.is_empty():
+		return
+	var first_px: Vector2 = drawn[0][0]
+	_check(first_px.distance_to(hand_px) < 40.0,
+			"the %s Sock's first frame is at the hand on screen (%.0f px from it), not at the eyes" % [how, first_px.distance_to(hand_px)])
+	_check(float(drawn[0][1]) < size * (t.active_scale + 0.15), "at about the hand's size (%.2f, the hand's %.2f)" % [drawn[0][1], size * t.active_scale])
+	_near(float(drawn[-1][1]), size, 0.001, "then at its own size")
+	var grows := true
+	for i in range(1, drawn.size()):
+		grows = grows and float(drawn[i][1]) >= float(drawn[i - 1][1]) - 0.0001
+	_check(grows, "growing a little each frame, never shrinking")
+	_check(not is_instance_valid(held) or held.is_queued_for_deletion(), "the hand's Looks is gone")
 
 
 func case_f2_ring() -> void:

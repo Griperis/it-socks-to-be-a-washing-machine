@@ -320,6 +320,14 @@ func case_p08() -> void:
 	await _physics_ticks(2)
 	await _drop_at(top, ON_FLOOR, "the Sock")
 	var r := SockDress.ball_radius(_mess.design_of(ON_FLOOR))
+	# core/23: a Pair dropped from the hand may roll off a thin Sock; this case is about what lies on
+	# it, so its record is laid there.
+	var poses := _mess.poses.duplicate()
+	var row := Mess.pack(Transform3D(Basis.IDENTITY, top + Vector3.UP * r))
+	for i in Mess.POSE:
+		poses[ON_FLOOR * Mess.POSE + i] = row[i]
+	_mess.write({"poses": poses}, true)
+	await _physics_ticks(2)
 	var lying := _mess.pose_of(ON_FLOOR).origin
 	_check(lying.y > top.y + r - 0.01, "the Pair rests on the Sock (%s)" % lying)
 	_capacity(2)

@@ -54,7 +54,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "m09_drawer", "method": "case_m09_drawer", "world": false,
 				"title": "M09: a Sock lying in a drawer wakes as it slides and rides out with it"},
 		{"name": "m10_bodies", "method": "case_m10", "world": false,
-				"title": "M10: a dropped Sock bounces 0.35, slides 0.6 and drags 0.05 / 0.8; a woken one slides 0.9 and drags 0.6 / 3.0"},
+				"title": "M10: a thrown Sock bounces 0.35, slides 0.6 and drags 0.05 / 0.8; a woken or dropped one (Q2367) slides 0.9 and drags 0.6 / 3.0"},
 	]
 
 
@@ -356,8 +356,17 @@ func case_m10() -> void:
 	await _until(func() -> bool: return _mess.flight_of(ON_FLOOR) != null, "the body to be let go")
 	var dropped := _mess.flight_of(ON_FLOOR)
 	var m := dropped.physics_material_override
-	_check(m != null and is_equal_approx(m.bounce, 0.35) and is_equal_approx(m.friction, 0.6), "a dropped Sock bounces 0.35 and slides 0.6")
-	_check(is_equal_approx(dropped.linear_damp, 0.05) and is_equal_approx(dropped.angular_damp, 0.8), "and drags 0.05 / 0.8")
+	_check(m != null and is_equal_approx(m.bounce, 0.0) and is_equal_approx(m.friction, 0.9), "a dropped Sock falls as a woken one (Q2367): slides 0.9, no bounce")
+	_check(is_equal_approx(dropped.linear_damp, 0.6) and is_equal_approx(dropped.angular_damp, 3.0), "and drags 0.6 / 3.0")
+	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "it to lie")
+	await _physics_ticks(25)
+	await _pick(ON_FLOOR)
+	_hands.throw(1, _player.aim_dir(), 0.5)
+	await _until(func() -> bool: return _mess.flight_of(ON_FLOOR) != null, "the thrown body to fly")
+	var thrown := _mess.flight_of(ON_FLOOR)
+	m = thrown.physics_material_override
+	_check(m != null and is_equal_approx(m.bounce, 0.35) and is_equal_approx(m.friction, 0.6), "a thrown Sock bounces 0.35 and slides 0.6")
+	_check(is_equal_approx(thrown.linear_damp, 0.05) and is_equal_approx(thrown.angular_damp, 0.8), "and drags 0.05 / 0.8")
 	_mess.queue_wake(PackedInt32Array([BEHIND_WALL]), &"wake")
 	await _until(func() -> bool: return _mess.flight_of(BEHIND_WALL) != null, "the woken Sock to move", 10)
 	var woken := _mess.flight_of(BEHIND_WALL)

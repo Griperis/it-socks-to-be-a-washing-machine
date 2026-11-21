@@ -23,13 +23,14 @@ extends Resource
 @export_range(0.0, 60.0, 1.0, "suffix:°") var drop_slope := 25.0 # placeholder: the designer's number (today's value from the old game)
 ## The narrowest gap the crosshair sees a drop spot through.
 @export_range(0.0, 0.3, 0.01, "suffix:m") var drop_gap := 0.08 # placeholder: the designer's number (today's value from the old game)
-## How high over its spot a dropped Sock is let go.
-@export_range(0.0, 0.2, 0.01, "suffix:m") var drop_lift := 0.03 # placeholder: the designer's number (today's value from the old game)
-## How long a dropped Sock flicks from the hand to its spot before it falls.
-@export_range(0.0, 0.5, 0.01, "suffix:s") var flick := 0.1 # placeholder: the designer's number (today's value from the old game)
-## How long a thrown Sock's drawn Looks takes from where it hung in the hand to its body, which
-## flies from the eyes (the old catch_up, Q1209).
-@export_range(0.0, 0.5, 0.01, "suffix:s") var catch_up := 0.1 # placeholder: the designer's number (the old release.json)
+## A thrown or dropped Sock's body leaves from the hand at its full size, where the Hands drew it
+## `active_scale` as big: its drawn Looks grows from the hand's size to its own over this long
+## (core/23; the old catch_up's size, Q1209, without its move).
+@export_range(0.0, 0.5, 0.01, "suffix:s") var let_go_grow := 0.1 # placeholder: until the designer's go on the core/23 strips
+## A dropped Sock falls on its own from the hand (Q2367), drifting at most this fast across the
+## floor to its spot; a spot it would need more for (far off, or barely below the hand) has it let go
+## farther along the eye-line instead.
+@export_range(0.2, 10.0, 0.1, "suffix:m/s") var drop_drift := 3.0 # placeholder: until the designer's go on the core/23 strips
 ## A falling Sock that has not come to rest after this long is put down where it is (T13).
 @export_range(1.0, 20.0, 0.5, "suffix:s") var settle_limit := 6.0 # placeholder: the designer's number (today's value from the old game)
 

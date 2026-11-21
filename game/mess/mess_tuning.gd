@@ -49,6 +49,10 @@ extends Resource
 ## A dropped or thrown Sock's or Pair's bounce and slide (M10; its drag is the Throw's, HandsTuning).
 @export_range(0.0, 1.0, 0.01) var released_bounce := 0.35 # placeholder: ported (Flight.restitution)
 @export_range(0.0, 2.0, 0.01) var released_friction := 0.6 # placeholder: ported (Flight.friction)
+## How many times its flat box's own turning inertia a flying Sock has (core/23 F1): 1 is a rigid
+## board, which an edge landing or a touch off its middle spins up to 40 rad/s or more (a flip a
+## frame); more turns it as a soft thing would, its throw's spin and its topple flat slower too.
+@export_range(1.0, 20.0, 0.1) var turn_weight := 3.0 # placeholder: until the designer's go on the core/23 strips
 
 @export_group("Drawing")
 ## The floor grid lying Socks are drawn in, one MultiMesh per cell and kind (M02, Q2310).

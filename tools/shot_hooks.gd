@@ -141,6 +141,19 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			var player := world.get_node("Player") as Player
 			player.create_tween().tween_property(player, ^"rotation:y", player.rotation.y + 1.2, 0.4)
 			return true
+		"drop_aimed":
+			# core/23: arg "look" tilts the head 45 degrees down at the open floor; without one, the held
+			# Sock is dropped where the crosshair is, as a tap of the drop button does.
+			var player := world.get_node("Player") as Player
+			if arg == "look":
+				(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-45.0)
+				player.reset_physics_interpolation()
+				return true
+			var hands := world.get_node("Socks/Hands") as Hands
+			var spot := player.drop_spot()
+			if not spot.is_empty():
+				hands.drop(player.player_id(), spot["point"], spot["normal"])
+			return true
 		"throw_lob":
 			# The held Sock is thrown ahead with a light charge, landing in view.
 			var player := world.get_node("Player") as Player
@@ -182,6 +195,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 		"heap_more":
 			# core/20: a camera over the heap station's front (its buttons, its counter sign, the pad),
 			# and the zoo's player, standing at the buttons, presses More: the spout pours one batch.
+			# Arg "close": the camera close on the landing under the spout (core/23).
 			var station := world.get_node("Stations/Heap") as Node3D
 			var player := world.get_node("Player") as Player
 			player.global_position = station.to_global(Vector3(2.5, 0.0, -4.6))
@@ -189,8 +203,13 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			var cam := Camera3D.new()
 			world.add_child(cam)
 			cam.fov = 60.0
-			cam.global_position = station.to_global(Vector3(-2.8, 3.4, -6.4))
-			cam.look_at(station.to_global(Vector3(0.0, 0.4, 0.2)))
+			if arg == "close":
+				# core/23: close on the heap's landing, under the spout.
+				cam.global_position = station.to_global(Vector3(-1.1, 0.9, -1.5))
+				cam.look_at(station.to_global(Vector3(0.0, 0.1, 0.0)))
+			else:
+				cam.global_position = station.to_global(Vector3(-2.8, 3.4, -6.4))
+				cam.look_at(station.to_global(Vector3(0.0, 0.4, 0.2)))
 			cam.make_current()
 			(station.get_node("More/HeapButton") as HeapButton).use(player.player_id())
 			return true

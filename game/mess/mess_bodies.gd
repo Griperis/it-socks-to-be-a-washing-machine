@@ -39,6 +39,17 @@ func _init(from: Node, points: PackedVector3Array) -> void:
 	_leg_foot = _fitted
 
 
+## A Sock's leg and foot boxes at Size `scale`: [[size, centre], ...] in its own space (its bottom at
+## y = 0), the shapes it lies on and flies with (MessMoving). One box, SockDress.BOX, before any Mess
+## has fitted them.
+static func parts_at(scale: float) -> Array:
+	var fitted := _fitted if not _fitted.is_empty() else [[SockDress.BOX, Vector3(0.0, SockDress.BOX.y * 0.5, 0.0)]]
+	var out: Array = []
+	for part: Array in fitted:
+		out.append([(part[0] as Vector3) * scale, (part[1] as Vector3) * scale])
+	return out
+
+
 ## Sock `sock` lies at `pose`: its body made, or moved there. `ball`: a Pair's sphere of `radius`;
 ## else the Sock's leg and foot at Size `scale`.
 func place(sock: int, pose: Transform3D, ball: bool, scale: float, radius: float) -> void:
