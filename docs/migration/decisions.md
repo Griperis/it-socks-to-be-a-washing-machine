@@ -1,4 +1,4 @@
-Next free Q number: Q2386 (update this line whenever a round of questions is asked)
+Next free Q number: Q2387 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -298,3 +298,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2383: a thrown Sock keeps the hand's pose in the air (it lands as it flies, often on its end), not turned flat as the drop.
 - Q2384: the ported Sock models, balls, pattern shader and prints are approved; the shape follows the Collection as the old game; look updates come later (assets/05).
 - Q2385: the 17 Cabinets and the 111 icons are approved; Cabinets keep 3 drawers now, growing by Stage comes with Stages (M4).
+- Q2386: the two rebuilt houses (A, old-width windows; B, rounded) stand beside the zoo, walked into from the zoo floor, as stations.
