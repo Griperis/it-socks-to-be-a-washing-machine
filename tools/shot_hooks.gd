@@ -288,6 +288,48 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			head.rotation.x = atan2(target.y - eye, flat)
 			player.reset_physics_interpolation()
 			return true
+		"screen":
+			# core/15: the zoo's player at the screen station. arg "plain" turns Sock Smarts and Sock
+			# Sense off; "sock", "mate", "drawer", "door" stand before that thing and aim at it; "take"
+			# takes the station's first Sock, "take2" also the Apricot; "floor" aims at the floor ahead.
+			var station := world.get_node("Stations/Screen") as Node3D
+			var player := world.get_node("Player") as Player
+			var hands := world.get_node("Socks/Hands") as Hands
+			var mess := world.get_node("Socks/Mess") as Mess
+			var head := player.get_node("Head") as Node3D
+			var spot := Vector3.ZERO
+			var target := Vector3.ZERO
+			match arg:
+				"plain":
+					player.upgrades.sock_smarts = false
+					player.upgrades.sock_sense = false
+					return true
+				"take", "take2":
+					hands.clock += 10.0
+					hands.pick(player.player_id(), (station.get_node("Spots/Sock") as SockSpot).sock)
+					if arg == "take2":
+						hands.clock += 10.0
+						hands.pick(player.player_id(), (station.get_node("Spots/Other") as SockSpot).sock)
+					return true
+				"sock", "mate", "floor":
+					spot = Vector3(-0.7, 0.0, 2.4)
+					var name := "Spots/Mate" if arg == "mate" else "Spots/Sock"
+					target = mess.box_of((station.get_node(name) as SockSpot).sock).get_center() if arg != "floor" \
+							else station.to_global(Vector3(-0.7, 0.0, 1.2))
+				"drawer":
+					spot = Vector3(-1.4, 0.0, -0.1)
+					target = (station.get_node("Cabinet/Drawer2/Looks/Slide") as Node3D).global_transform * Vector3(0.0, 0.14, 0.25)
+				"door":
+					spot = Vector3(1.3, 0.0, -0.1)
+					target = (station.get_node("Door/Looks/Hinge") as Node3D).global_transform * Vector3(0.45, 1.3, 0.025)
+			player.global_position = station.to_global(spot)
+			player.velocity = Vector3.ZERO
+			var to := target - player.global_position
+			player.rotation.y = atan2(-to.x, -to.z)
+			var up := target - head.global_position
+			head.rotation.x = atan2(up.y, Vector2(up.x, up.z).length())
+			player.reset_physics_interpolation()
+			return true
 		"sock_looks":
 			# assets/01: a camera over the Sock looks station, in the zoo or played alone (then with the
 			# zoo's noon sky and sun, no grade, so it compares with the old game's render of the same

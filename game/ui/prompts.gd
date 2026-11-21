@@ -1,0 +1,75 @@
+## What one player's screen prompts (core/15, the old prompts.gd): target() is the crosshair's row
+## (the thing aimed at, with its key), hints() the corner's (what each key would do right now). Both
+## are plain functions of the player's aim and Hands, so they are always current; the player asks
+## every frame and the Hud redraws only on a change (A08). The words live here and in the Parts that
+## own them (an Openable's noun), never in the player or the Hud.
+class_name Prompts
+extends RefCounted
+
+## The corner's words (the old game's).
+const DROP_THROW := "Drop / hold: Throw"
+const ZOOM := "Zoom"
+const TURN := "Turn"
+const CYCLE := "Cycle"
+const JUMP := "Jump"
+const CROUCH := "Crouch"
+
+
+## The keycap of input action `action` (its first keyboard or mouse key, or its first pad glyph when
+## `pad`), as a one-item list; empty when it has none.
+static func keys(action: StringName, pad := false) -> Array[String]:
+	var all := UiIcons.keys_for_action(action, pad)
+	var out: Array[String] = []
+	if not all.is_empty():
+		out.append(all[0])
+	return out
+
+
+## The crosshair's prompts for the player aiming at Part `part` (null for none), in drawing order,
+## each with the use key (A03, Q2364, Q2388): the Door reads "Open the Door" or "Shut the Door" by its
+## state (its `noun`); a Cabinet's drawer its Cabinet's name and "drawer" with the Collection's icon
+## ("Simple Cabinet Drawer", the old cabinet.gd); any other openable its own name ("Cupboard A
+## Drawer": its `title`, else the name of the thing it is on, as the old room.gd named it).
+static func target(part: Part, pad := false) -> Array[Prompt]:
+	var out: Array[Prompt] = []
+	if part is Openable:
+		out.append(openable_prompt(part as Openable, pad))
+	elif part is UpgradeSwitch:
+		out.append(Prompt.of((part as UpgradeSwitch).title(), keys(Player.INTERACT, pad)))
+	return out
+
+
+## An openable's prompt (target()).
+static func openable_prompt(openable: Openable, pad := false) -> Prompt:
+	var use := keys(Player.INTERACT, pad)
+	if openable.noun != "":
+		return Prompt.of(verb_title(openable.open, openable.noun), use)
+	var cabinet := Cabinet.of(openable)
+	if cabinet != null and cabinet != openable:
+		var catalogue := cabinet.hands.mess.catalogue if cabinet.hands != null and cabinet.hands.mess != null else null
+		var cabinet_name := catalogue.cabinet_name(cabinet.collection) if catalogue != null else String(cabinet.collection)
+		return Prompt.of(("%s drawer" % cabinet_name).capitalize(), use, String(cabinet.collection))
+	var own := openable.title
+	if own == "" and openable.get_parent() != null:
+		own = String(openable.get_parent().name).capitalize()
+	return Prompt.of(own, use)
+
+
+## The prompt of a part that opens or shuts, by the noun it goes by ("Open the Door").
+static func verb_title(open: bool, noun: String) -> String:
+	return "%s the %s" % ["Shut" if open else "Open", noun]
+
+
+## The corner's key hints: what each key does now (A04-A07, Q2361, Q2365). `held` is how many items
+## the Hands hold; a held item is always a Sock or a Pair today, so it can zoom and turn.
+static func hints(held: int, pad := false) -> Array[Prompt]:
+	var out: Array[Prompt] = []
+	if held > 0:
+		out.append(Prompt.of(DROP_THROW, keys(Player.DROP_THROW, pad)))
+		out.append(Prompt.of(ZOOM, keys(Player.ZOOM, pad)))
+		out.append(Prompt.of(TURN, keys(Player.TURN, pad)))
+	if held > 1:
+		out.append(Prompt.of(CYCLE, keys(Player.HANDS_NEXT, pad)))
+	out.append(Prompt.of(JUMP, keys(Player.JUMP, pad)))
+	out.append(Prompt.of(CROUCH, keys(Player.CROUCH, pad)))
+	return out

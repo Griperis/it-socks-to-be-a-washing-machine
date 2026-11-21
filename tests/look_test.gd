@@ -165,10 +165,10 @@ func case_v05() -> void:
 		texts += 1
 		_check(l.get_theme_font("font") == plain, "the HUD's %s keeps the default font" % l.name)
 	_check(texts >= 2, "the HUD has its labels (%d)" % texts)
-	for name_: String in ["Message", "Size"]:
-		var l := player.get_node("Hud/" + name_) as Label
-		_check(l.theme_type_variation == &"OutlinedLabel" and l.get_theme_color("font_outline_color").is_equal_approx(Color(0.1, 0.07, 0.05))
-				and l.get_theme_constant("outline_size") == 8, "%s is white text with the ink outline" % name_)
+	# The message row (core/15 moved it to 70 % at 28 pt; the Size readout is the Hud's, aim_screen A01).
+	var l := player.get_node("Hud/MessageRow/Message") as Label
+	_check(l.theme_type_variation == &"RowLabel" and l.get_theme_color("font_outline_color").is_equal_approx(Color(0.1, 0.07, 0.05))
+			and l.get_theme_constant("outline_size") == 8, "Message is text with the ink outline")
 	var signs := _zoo.find_children("*", "Label3D", true, false)
 	_check(not signs.is_empty(), "the zoo has 3D signs")
 	for s: Node in signs:
@@ -220,7 +220,7 @@ func case_real_path() -> void:
 	await _press(&"drop_throw")
 	await _physics_ticks(3)
 	_check(player.message() == Player.CANT_DROP, "the refusal shows in the old words (%s)" % player.message())
-	var message := player.get_node("Hud/Message") as Label
+	var message := player.get_node("Hud/MessageRow/Message") as Label
 	_check(message.visible and message.get_theme_font("font") == ThemeDB.fallback_font, "the message is on screen in the default font")
 	await _aim(player, aim_at)
 	await _until(func() -> bool: return cross.modulate == Player.CROSSHAIR_OK, "the crosshair to turn white again where a drop is allowed")

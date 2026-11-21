@@ -25,6 +25,11 @@ const GROUP := &"openables"
 ## "door_close"); empty is silent. A state arriving whole (a load, a late Guest) makes no sound.
 @export var open_sound: StringName = &""
 @export var close_sound: StringName = &""
+## What the player's prompt calls it while it is shut or open: "Open the <noun>", "Shut the <noun>"
+## (the old room Door, core/15 A03). Empty, the prompt is its title.
+@export var noun := ""
+## Its own name on the prompt ("Cupboard A Drawer", Q2388); empty, the name of the thing it is on.
+@export var title := ""
 
 @export_group("State")
 ## Open or shut. Tick it to place the thing open; while playing only the Host's answer changes it.

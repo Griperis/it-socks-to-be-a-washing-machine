@@ -32,15 +32,18 @@ const HANDS_PREV := &"hands_prev"
 ## What a refusal says (the old game's words).
 const HANDS_FULL := "Hands full"
 const CANT_DROP := "Can't drop there"
-## The crosshair where a drop may go (and always with empty Hands), and where it may not.
-const CROSSHAIR_OK := Color.WHITE
-const CROSSHAIR_NO := Color(0.95, 0.25, 0.2)
+## The crosshair where a drop may go (and always with empty Hands), and where it may not (the Hud's).
+const CROSSHAIR_OK := Hud.CROSSHAIR_OK
+const CROSSHAIR_NO := Hud.CROSSHAIR_NO
 ## The outline's "full" tint, on an aimed drawer with no room for the held Pairs (Q221).
 const FULL_OUTLINE := preload("res://game/outline/full.tres")
 
 @export var tuning: MoveTuning
 ## How its Hands pick, hold and drop; its capacity is here (the zoo's player holds 3, Q2244).
 @export var hands_tuning: HandsTuning
+## The Upgrades that change what its screen shows (Sock Smarts, Sock Sense; core/15). Each player
+## keeps its own copy.
+@export var upgrades: PlayerUpgrades
 
 @onready var _head: Node3D = %Head
 @onready var _camera: Camera3D = %Camera
@@ -48,9 +51,8 @@ const FULL_OUTLINE := preload("res://game/outline/full.tres")
 @onready var _mesh: MeshInstance3D = %Mesh
 @onready var _aim: RayCast3D = %Aim
 @onready var _held_view: HeldView = %HeldView
-@onready var _crosshair: Crosshair = %Crosshair
+@onready var _hud: Hud = %Hud
 @onready var _message: Label = %Message
-@onready var _size: Label = %Size
 @onready var _ring: PowerRing = %Ring
 
 ## True while a menu has the player's input (set_input_blocked()).
@@ -101,7 +103,10 @@ func _ready() -> void:
 	_held_view.tuning = hands_tuning
 	_held_view.base_fov = tuning.fov
 	_message.visible = false
-	_size.visible = false
+	upgrades = upgrades.duplicate() as PlayerUpgrades if upgrades != null else PlayerUpgrades.new()
+	_hud.camera = _camera
+	_hud.held_view = _held_view
+	_hud.hands_tuning = hands_tuning
 
 
 ## A menu over the game (the pause template tells the group `local_input`): while blocked the
@@ -265,6 +270,7 @@ func _update_hands(delta: float) -> void:
 	_message_left = maxf(_message_left - delta, 0.0)
 	_message.visible = _message_left > 0.0
 	if h == null:
+		_update_screen(null)
 		return
 	var me := player_id()
 	var found := aim_found(h)
@@ -273,12 +279,9 @@ func _update_hands(delta: float) -> void:
 	_outline_thing(_aimed_outline(h.mess, aimed_sock, found["lying"]))
 	var holding := h.active_of(me) >= 0
 	drop_refused = holding and drop_refusal(h) != ""
-	_crosshair.modulate = CROSSHAIR_NO if drop_refused else CROSSHAIR_OK
 	_held_view.me = me
 	_held_view.turning = _acting() and Input.is_action_pressed(TURN)
-	var design := h.mess.design_of(h.active_of(me)) if holding and h.mess != null else null
-	_size.visible = design != null
-	_size.text = design.size_letter() if design != null else ""
+	_update_screen(h)
 	if not _acting():
 		# A menu opening or the mouse let go mid-charge drops the charge without a throw.
 		_drop_down_at = -1.0
@@ -411,12 +414,51 @@ func message() -> String:
 
 ## What the HUD shows for the held Sock's Size ("" with none).
 func size_shown() -> String:
-	return _size.text if _size.visible else ""
+	return _hud.held_size()
 
 
-## The crosshair's colour now.
+## The crosshair's tint now (CROSSHAIR_OK or CROSSHAIR_NO).
 func crosshair_colour() -> Color:
-	return _crosshair.modulate
+	return _hud.crosshair_tint()
+
+
+## The screen: the prompts, the hints, the readouts and the crosshair.
+func hud() -> Hud:
+	return _hud
+
+
+## A01-A16: tells the Hud what the aim and the Hands mean for the screen now; the Hud redraws a row
+## only when it changed. `h` is null where there are no Hands (the movement station).
+func _update_screen(h: Hands) -> void:
+	var me := player_id()
+	var mess := h.mess if h != null else null
+	_hud.show_blocked(drop_refused)
+	var sock := aimed_sock if mess != null else -1
+	var aimed := mess.design_of(sock) if sock >= 0 else null
+	_hud.show_aimed(aimed.size_letter() if aimed != null else "", _first(Prompts.keys(PICK, _hud.pad)))
+	var part: Part = null
+	if sock < 0:
+		_aim.force_raycast_update()
+		part = part_of(_aim.get_collider() as Node)
+	_hud.show_target(Prompts.target(part, _hud.pad))
+	var items := h.items_of(me) if h != null else PackedInt32Array()
+	var capacity := h.tuning_of(me).capacity if h != null else 0
+	_hud.show_hints(Prompts.hints(items.size(), _hud.pad))
+	# A15: what picking the aimed loose Sock would make the Hands show.
+	if aimed != null and upgrades.sense() and not mess.is_pair(sock):
+		var pairs := h.mate_held(me, sock) >= 0
+		var n := items.size() + (0 if pairs or items.size() >= capacity else 1)
+		_hud.show_sense(aimed, pairs, "%d/%d" % [n, capacity], n > 1)
+	else:
+		_hud.show_sense(null)
+	var active := h.active_of(me) if h != null else -1
+	var held := mess.design_of(active) if active >= 0 and mess != null else null
+	_hud.show_held(held, held != null and mess.is_pair(active), "%d/%d" % [items.size(), capacity],
+			items.size() > 1, upgrades.smarts())
+
+
+static func _first(list: Array[String]) -> String:
+	return list[0] if not list.is_empty() else ""
 
 
 ## The HeldView (what the Hands show on this machine).

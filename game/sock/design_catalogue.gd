@@ -7,6 +7,9 @@ extends Resource
 ## Each Collection's colour, by its id (the old game's data/designs.json): the pairing moment's
 ## sparkles and ring (P05).
 @export var collection_colours: Dictionary[StringName, Color] = {}
+## Each Collection's Cabinet's name, by its id (the old game's data/designs.json "cabinet"): an aimed
+## drawer's prompt reads "<name> drawer" (core/15, Q2388).
+@export var cabinet_names: Dictionary[StringName, String] = {}
 
 
 ## The Design with this id, or null.
@@ -20,6 +23,11 @@ func design(id: int) -> SockDesign:
 ## The colour of Collection `collection`, or the old warm gold for one without.
 func collection_colour(collection: StringName) -> Color:
 	return collection_colours.get(collection, Color(1.0, 0.8, 0.4))
+
+
+## The name of Collection `collection`'s Cabinet ("Simple cabinet"), or the Collection's id.
+func cabinet_name(collection: StringName) -> String:
+	return cabinet_names.get(collection, String(collection))
 
 
 func size() -> int:
