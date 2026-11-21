@@ -1,4 +1,4 @@
-Next free Q number: Q2360 (update this line whenever a round of questions is asked)
+Next free Q number: Q2366 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -272,3 +272,9 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2357: the flipping Socks are seen in the heap pour, on settling, in drops and throws, and at the every-Sock station (core/23).
 - Q2358: house kit pieces never z-fight: no coplanar overlapping faces between pieces placed by the grid convention (floors against walls on upper floors seen in house/01); a convention and a test (house/02 K14).
 - Q2359: the zoo's stations are instanced by hand in zoo.tscn so the designer moves them in the editor; the folder collector and grid placement go (core/26). Branches adding stations will meet in zoo.tscn (accepted).
+- Q2360: the Sock prompt as the old by upgrade: the base (pick key and boxed Size; the held Size letter), Sock Smarts' held readout and Sock Sense's aimed readout are all built in core/15, each upgrade a flag the player has, both on in the zoo with a toggle at a station; M4 wires buying.
+- Q2361: the corner shows all the old hints: Jump and Crouch always, Drop/Throw, Zoom, Turn, Cycle when they apply.
+- Q2362: the prompt keys are the old keycap pictures (1.5x the font), the art ported.
+- Q2363: the prompt rows at the old places and sizes (58 %, 63 %, 70 % of the height; 32, 28, 24 pt).
+- Q2364: an openable's prompt shows the old key (E, or LMB for a click-only one).
+- Q2365: "Drop / hold: Throw" always shows: the old game never gated it by an Upgrade (the draft's premise was wrong).
