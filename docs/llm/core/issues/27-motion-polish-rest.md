@@ -69,3 +69,4 @@ old code and numbers of each.
   tests/sound_wiring_test.gd, tests/cupboard_test.gd (reverse read on the pivot), tests/drawer_details_test.gd
   (the landing's time), tools/shot_hooks.gd, tools/shots/sets/motion-{sway,throw-bend,shelve-landing,thrown-shelve,swings}.txt.
   Verified: PASS 11390 checks, 320 cases (--touched). Review sheet: builds/review-core-27/sheet.png.
+- Merged: ba96046d (2026-11-21, branch core/27-motion-polish-rest)
