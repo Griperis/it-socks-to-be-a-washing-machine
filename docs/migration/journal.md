@@ -436,3 +436,18 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2345, Q2381, Q2386, Q2391-Q2393 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/16, feedback and motion polish part 1: the cloth tuned to flap less, the refusal wobble, the "Paired!" pop, the ball's squash, hop and roll, the lost Sock's return scatter and pop; merged (main 6feb5a3) |
+| Planned vs actual | 1 planned, 2 actual (the rest split into core/27, Q2398) |
+| Redo count | 0 |
+| Corrections | "Keep the node, tune it, so it doesn't flap as so much" (Q2366); "Rest can come as a separate ticket, merge this now" (Q2398) |
+| Cost | core/16 1 27,878,079 139 28m59s (Opus) |
+| Time | the agent ran about 30 min |
+| Surprises | FLAKY sound_wiring:w10_gap again at the merge (core/27 F1 fixes it) |
+| Stop rules | stopped at its review sheet |
+| Looks | `builds/review-core-16/` |
+| Decisions | Q2366-Q2370, Q2398 |
+
+---
