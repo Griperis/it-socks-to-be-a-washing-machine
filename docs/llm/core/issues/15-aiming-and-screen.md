@@ -123,4 +123,4 @@ bars (white or red through `modulate`), one `Message` label and one `Size` label
   `DesignCatalogue.cabinet_name()`). A03's case and the real path read the new words. Files: game/parts/openable.gd,
   game/ui/prompts.gd, game/sock/design_catalogue.gd, game/sock/designs.tres, game/entities/{drawer,cupboard}/*.tscn,
   tests/aim_screen_test.gd, this ticket. Verified: see the commit's suite line.
-- Merged: 0dab92db (2026-11-21, branch core/15-aiming-and-screen)
+- Merged: c250768e (2026-11-21, branch core/15-aiming-and-screen)

@@ -234,4 +234,4 @@ used by core/03 (Pairs join the Mess and the Hands) and core/04 (shelving).
     tests/handling_test.gd, tests/player_test.gd, tests/zoo_test.gd (co-op case opens a cupboard instead of the
     crate hand-over), tools/grep_rules_allow.txt, project.godot (actions added).
   - Verified: `kit/tools/run.sh --touched`: PASS 510 checks, 112 cases; grep_rules PASS; asset_lint PASS.
-- Merged: 92ce9378 (2026-11-20, branch core/02-handling-socks)
+- Merged: 548ef244 (2026-11-20, branch core/02-handling-socks)

@@ -51,4 +51,4 @@ read them easily." Today each station's `Name` Label3D floats 2.2 to 13.5 m up (
   Also: tests/hand_details_test.gd `f3_sign_clear` (core/19 F3: the sign must not cover the view's centre from the pad) cannot hold for a sign at eye height at the front edge; it now checks the sign is behind the player on the pad (the handling label stands 0.4 m outside its pad's front edge for that). The lead should confirm.
   Files: game/zoo/stations/*.tscn (Name nodes only), tests/zoo_test.gd, tests/hand_details_test.gd, tools/shot_hooks.gd, tools/shots/sets/zoo-labels.txt. Stills: builds/review-core-33/. Verified: suite PASS (see report); waiting for the designer's go on the stills.
 - Model: Sonnet: scene edits and stills.
-- Merged: 4e56268f (2026-11-21, branch core/33-zoo-labels-near-the-ground)
+- Merged: 9cc484f3 (2026-11-21, branch core/33-zoo-labels-near-the-ground)

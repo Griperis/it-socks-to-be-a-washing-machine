@@ -125,4 +125,4 @@ synchronizer with the stamp (coop-structure section 4, option A), a teammate cat
   tests/handling_test.gd, tools/shot_hooks.gd, tools/shots/sets/throw-ring.txt
 - Verified: `run.sh --touched` PASS 366 checks, 74 cases; grep_rules PASS; stills
   builds/review-core-08/throw-ring-mid-charge.png, throw-ring-close-up.png
-- Merged: fe2cbd18 (2026-11-20, branch core/08-throw)
+- Merged: 53cd387a (2026-11-20, branch core/08-throw)

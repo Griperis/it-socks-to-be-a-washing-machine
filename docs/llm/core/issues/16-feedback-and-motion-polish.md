@@ -136,4 +136,4 @@ the old core that the port lacks is listed here; only the designer drops one (Q2
   game/zoo/stations/handling.tscn, tests/feedback_polish_test.gd (+ .uid), tests/throw_test.gd,
   tests/zoo_test.gd, tools/shot_hooks.gd (landing_cam, lose_socks).
   Verified: see the commit's suite line. Stills: builds/review-core-16/.
-- Merged: 2b4fddcf (2026-11-21, branch core/16-feedback-and-motion-polish)
+- Merged: 76568076 (2026-11-21, branch core/16-feedback-and-motion-polish)

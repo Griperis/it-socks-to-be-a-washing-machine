@@ -142,4 +142,4 @@ cloth bend vs. the straight lying mesh, LOD or material differences between the 
   `docs/human/mess-benchmark.md`.
 - Verified: `kit/tools/run.sh --touched`: PASS 16271 checks, 375 cases; rules PASS; `builds/review-core-31/rest-blink-thrown-sock-240fps.png`, `heap-rest-smear-120fps.png`,
   `mess-bench/report.md`.
-- Merged: 16ee9aae (2026-11-21, branch core/31-mess-benchmark-and-settling)
+- Merged: cb0c54a2 (2026-11-21, branch core/31-mess-benchmark-and-settling)

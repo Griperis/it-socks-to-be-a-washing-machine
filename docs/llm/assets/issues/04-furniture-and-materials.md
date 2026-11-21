@@ -106,4 +106,4 @@ for all models; where variants differ (oak: 9 in 39 models) the designer picks t
   `tests/mess_test.gd`, `docs/architecture/furniture.md`.
 - Verified: `run.sh --touched` PASS 15430 checks, 279 cases (furniture f02_player_boxes: past a chair, a Sock on
   its seat); asset_lint PASS; grep_rules PASS.
-- Merged: 07e2d6e7 (2026-11-21, branch assets/04-furniture-and-materials)
+- Merged: 64d171b0 (2026-11-21, branch assets/04-furniture-and-materials)

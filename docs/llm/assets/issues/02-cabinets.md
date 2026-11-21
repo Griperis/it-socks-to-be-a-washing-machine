@@ -70,4 +70,4 @@ one Cabinet per Collection with its own front art: `assets/cabinet/<collection>.
   no other).
 - Files: `tests/cabinet_looks_test.gd`, `game/zoo/stations/cabinet.tscn`, this ticket.
 - Verified: PASS 8988 checks, 265 cases (--touched, every suite ran); PASS asset_lint; PASS rules.
-- Merged: 191858b8 (2026-11-21, branch assets/02-cabinets)
+- Merged: cdcab1cb (2026-11-21, branch assets/02-cabinets)

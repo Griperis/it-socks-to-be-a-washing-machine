@@ -97,4 +97,4 @@ Drafted (agent, 2026-11-20):
   and of sounds:s07's walk; the suite takes the mouse as the player's (core/14 R01) before clicking.
   - Files: game/zoo/stations/heap.tscn, tests/heap_test.gd, this ticket.
   - Verified: suite: PASS 7279 checks, 218 cases (`--touched`, 18 suites).
-- Merged: 8be4082a (2026-11-20, branch core/20-heap-station)
+- Merged: 54cc706e (2026-11-20, branch core/20-heap-station)

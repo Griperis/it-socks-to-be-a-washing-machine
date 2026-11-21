@@ -92,4 +92,4 @@ Built as follows (agent draft, core/12).
   Files: game/zoo/every_sock_station.gd, every_sock_layout.gd, every_sock_layout.tres, stations/every_sock.tscn, zoo.tscn,
   tools/shot_hooks.gd, tests/every_sock_test.gd. Stills: builds/review-core-12/overview.png, row.png.
   Verified: see the commit.
-- Merged: f90e8af1 (2026-11-20, branch core/12-every-sock-station)
+- Merged: 19bcc2e3 (2026-11-20, branch core/12-every-sock-station)

@@ -68,7 +68,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 ## core/01 zoo movement (M0.5), merged 2026-11-20
 | Field | Content |
 |---|---|
-| Ticket | core/01, the game's Player and the movement station, M0.5, approved and merged (dd134fc) |
+| Ticket | core/01, the game's Player and the movement station, M0.5, approved and merged (4a1444f) |
 | Planned vs actual | 1 ticket planned, 1 actual |
 | Redo count | 0 after the designer's review; 1 lead review round before it (camera interpolation, placeholder marks, header) |
 | Corrections | none to the behaviour list or the design; scope moved: sprint to M4 (Q2233), zoom to core/02 (Q2234), pad look tuning later (Q2235) |
@@ -82,7 +82,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 ## core/02 handling Socks (M0.5), merged 2026-11-20
 | Field | Content |
 |---|---|
-| Ticket | core/02, the Mess and Hands Parts, pick, hold, drop, zoom, turn; M0.5; approved and merged (e035aa2) |
+| Ticket | core/02, the Mess and Hands Parts, pick, hold, drop, zoom, turn; M0.5; approved and merged (9e18ccf) |
 | Planned vs actual | 1 planned; the Throw split off into core/08 before building (Q2250) |
 | Redo count | 0 |
 | Corrections | behaviour list unchanged; design choices Q2244-Q2249; the crate retired after (Q2258) |
@@ -96,7 +96,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 ## core/08 the Throw (M0.5), merged 2026-11-20
 | Field | Content |
 |---|---|
-| Ticket | core/08, charge, ring, lob, Throw speeds, the wake, out of bounds; M0.5; approved and merged (49f22f4) |
+| Ticket | core/08, charge, ring, lob, Throw speeds, the wake, out of bounds; M0.5; approved and merged (99f7ed3) |
 | Planned vs actual | 1 (split from core/02, Q2250) |
 | Redo count | 0 |
 | Corrections | none; one approved test retired with the designer's OK (Q2267) |
@@ -110,7 +110,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 ## core/03 pairing (M0.5), merged 2026-11-20
 | Field | Content |
 |---|---|
-| Ticket | core/03, two mates fuse in the Hands into a Pair (sock ball), the pairing moment, falling Pairs; M0.5; approved and merged (55ead41, main a60e724) |
+| Ticket | core/03, two mates fuse in the Hands into a Pair (sock ball), the pairing moment, falling Pairs; M0.5; approved and merged (a786dc9, main fa4dab1) |
 | Planned vs actual | 1 planned, 1 actual |
 | Redo count | 0 |
 | Cost | core/03 1 15,803,409 96 16m54s (Opus) |
@@ -123,7 +123,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 ## core/04 one Cabinet (M0.5), merged 2026-11-20
 | Field | Content |
 |---|---|
-| Ticket | core/04, the Cabinet with Drawers and a Door, shelving by click and by Throw; M0.5; approved and merged (dc4a350, main 703620a) |
+| Ticket | core/04, the Cabinet with Drawers and a Door, shelving by click and by Throw; M0.5; approved and merged (15b469e, main 7a563a8) |
 | Planned vs actual | 1 planned, 1 actual; follow-ups core/09 (D11, D12) and core/10 (one Mess for the zoo) |
 | Redo count | 0 |
 | Cost | core/04 1 20,736,753 126 19m23s (Opus) |
@@ -136,7 +136,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 ## core/10 one Mess for the zoo (M0.5), merged 2026-11-20
 | Field | Content |
 |---|---|
-| Ticket | core/10, the zoo owns one Mess, Hands and Coins; stations join it and still run alone; M0.5; approved and merged (6f07aa6, main c42ca7d) |
+| Ticket | core/10, the zoo owns one Mess, Hands and Coins; stations join it and still run alone; M0.5; approved and merged (0a93587, main 11b5cf6) |
 | Planned vs actual | 0 planned (came from core/04's review, Q2284), 1 actual |
 | Redo count | 0 |
 | Cost | see `agent_cost.py --by ticket` core/10 (Opus), about 8 min |
@@ -148,7 +148,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 ## core/12 every-Sock station (M0.5), merged 2026-11-20
 | Field | Content |
 |---|---|
-| Ticket | core/12, both Socks of every Design laid out by Collection with their info, real Mess Socks; M0.5; approved and merged (8c30aaa, main 9a6e58c) |
+| Ticket | core/12, both Socks of every Design laid out by Collection with their info, real Mess Socks; M0.5; approved and merged (d2eb6d3, main 0632b04) |
 | Planned vs actual | 1 planned, 1 actual; follow-up: the two-tier Mess (Q2301) |
 | Redo count | 0 |
 | Cost | core/12 1 6,427,237 62 9m13s (Sonnet) |
@@ -161,7 +161,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 ## core/09 hand details (M0.5, batch 1), merged 2026-11-20
 | Field | Content |
 |---|---|
-| Ticket | core/09, cloth (spring bones), glide, pick fly-up, pairing fly-in, shelving flight, drawer shut; M0.5; approved and merged (31e8061, main d961c2c) |
+| Ticket | core/09, cloth (spring bones), glide, pick fly-up, pairing fly-in, shelving flight, drawer shut; M0.5; approved and merged (173a44e, main cab8f01) |
 | Planned vs actual | 1 planned, 1 actual |
 | Redo count | 0 |
 | Cost | core/09 2 25,136,212 162 34m32s (Opus) |
@@ -174,7 +174,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 ## core/13 two-tier Mess (M0.5, batch 2), merged 2026-11-20
 | Field | Content |
 |---|---|
-| Ticket | core/13, lying Socks as server bodies and MultiMesh instances, the moving budget, wakes and pushes, the old physics numbers; M0.5; approved and merged (753ab66, main c111ee1) |
+| Ticket | core/13, lying Socks as server bodies and MultiMesh instances, the moving budget, wakes and pushes, the old physics numbers; M0.5; approved and merged (94a445c, main c97c54c) |
 | Planned vs actual | 0 planned (came from core/12's cost, Q2301), 1 actual |
 | Redo count | 0 |
 | Cost | core/13 1 36,370,272 165 39m29s (Opus) |
@@ -187,7 +187,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 ## core/19 batch 1 fixes (M0.5), merged 2026-11-20
 | Field | Content |
 |---|---|
-| Ticket | core/19, the Throw leaves from the hand, the pairing ring around the ball, readable station signs; approved and merged (976f3aa, main c111ee1) |
+| Ticket | core/19, the Throw leaves from the hand, the pairing ring around the ball, readable station signs; approved and merged (735996b, main c97c54c) |
 | Planned vs actual | 0 planned (from the designer's play of batch 1), 1 actual |
 | Redo count | 1 (core/09's throw and ring came back after play) |
 | Cost | core/19 1 9,173,197 95 15m18s (Opus) |
@@ -199,7 +199,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/14, the rules back to the old game (free mouse, nearer aim, woken pick, Pair last, drop on a Pair, drawer-front shelve, mid-air pick); approved and merged (c747e6a, main af34977) |
+| Ticket | core/14, the rules back to the old game (free mouse, nearer aim, woken pick, Pair last, drop on a Pair, drawer-front shelve, mid-air pick); approved and merged (557a5e3, main f1a126c) |
 | Planned vs actual | 1 planned, 1 actual (widened once, Q2339) |
 | Redo count | 0 |
 | Corrections | the designer chose the old mid-air pick: "As the old game" (Q2339) |
@@ -214,7 +214,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/17, the sound system (SoundEvent Resources, the old buses and mix, footsteps by surface, muffle, ambience, Settings and Sounds); built ahead of batch 6 and merged (f79dfa2) |
+| Ticket | core/17, the sound system (SoundEvent Resources, the old buses and mix, footsteps by surface, muffle, ambience, Settings and Sounds); built ahead of batch 6 and merged (99dec60) |
 | Planned vs actual | 1 planned, 1 actual; the call sites wait for batch 6 |
 | Redo count | 0 |
 | Corrections | "Sound a different M1.X milestone, sounds made nicely plug-and-play" (Q2278); then built early as long parallel work (Q2317) |
@@ -229,7 +229,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/18, the picture and theme (old noon HDRI, AgX, grade, vignette, SSAO, glow, AA, presets, old crosshair); built ahead of batch 7, approved and merged (f9dadaf) |
+| Ticket | core/18, the picture and theme (old noon HDRI, AgX, grade, vignette, SSAO, glow, AA, presets, old crosshair); built ahead of batch 7, approved and merged (1d94605) |
 | Planned vs actual | 1 planned, 1 actual |
 | Redo count | 0 |
 | Corrections | the HUD keeps the default font: Patrick Hand was only on the old whiteboard (Q2331; the lead's premise in Q2324 was wrong); noon ambient 0.75, not the ticket's 0.7 |
@@ -244,7 +244,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | house/01, the house kit (walls, corners, Ts, floor and ceiling tiles, door and window walls, a straight stair with a landing, the kit station); merged as a first step (76e771d, main 75f0b47) |
+| Ticket | house/01, the house kit (walls, corners, Ts, floor and ceiling tiles, door and window walls, a straight stair with a landing, the kit station); merged as a first step (ef17dba, main 1269185) |
 | Planned vs actual | 1 planned, 1 actual; widened by house/02 and house/03 |
 | Redo count | 0 |
 | Corrections | the designer wants the kit to build the old house nearly identically, the old house re-gridded to 0.5 m (Q2343-Q2346); the agent had nudged 2.9 m storeys to 3.0 m and left out windows, frames, skirting, railings, roof |
@@ -259,7 +259,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/22, the Sounds station built from the sound catalogue with small buttons; approved and merged (f0f6e33) |
+| Ticket | core/22, the Sounds station built from the sound catalogue with small buttons; approved and merged (c06911e) |
 | Planned vs actual | 1 planned, 1 actual |
 | Redo count | 1 (overlapping labels and the sign over the buttons, Q2340) |
 | Corrections | "Fix both, then merge" (Q2340) |
@@ -274,7 +274,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/20, the heap station (a spout pours real Socks in waves, More and Respill, counters, walls, a table and a slope); approved and merged (main 73bc87e) |
+| Ticket | core/20, the heap station (a spout pours real Socks in waves, More and Respill, counters, walls, a table and a slope); approved and merged (main 52fd2f5) |
 | Planned vs actual | 1 planned, 1 actual |
 | Redo count | 1 (moved off the house kit station's spot, Q2347) |
 | Corrections | "Move it, then merge"; nothing pours at start (Q2347, Q2348) |
@@ -289,7 +289,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/26, the stations instanced by hand in zoo.tscn (the folder collector and grid placement gone); merged (main d6db35d) |
+| Ticket | core/26, the stations instanced by hand in zoo.tscn (the folder collector and grid placement gone); merged (main ee21292) |
 | Planned vs actual | 0 planned (the designer's ask, Q2359), 1 actual |
 | Redo count | 0 |
 | Corrections | "why the stations are placed by code and not directly in the scene, so I can move them around?" (Q2359) |
@@ -304,7 +304,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/11, the reusable outline (Outline component, OutlineStyle, the old stencil shells) on Socks, drawers, the Door and the cupboard, red full; approved and merged (main 71f47f3) |
+| Ticket | core/11, the reusable outline (Outline component, OutlineStyle, the old stencil shells) on Socks, drawers, the Door and the cupboard, red full; approved and merged (main 59bf018) |
 | Planned vs actual | 1 planned, 1 actual |
 | Redo count | 1 (made stronger for the graybox, Q2374) |
 | Corrections | "Stronger for now" (Q2374) |
@@ -319,7 +319,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/23, Socks no longer flip (rigid-board spin fixed: turn_weight 3, pours fall as woken Socks, flights use the lying boxes, CCD as the old); the Throw and the drop leave from the hand; approved and merged (main bcdab10) |
+| Ticket | core/23, Socks no longer flip (rigid-board spin fixed: turn_weight 3, pours fall as woken Socks, flights use the lying boxes, CCD as the old); the Throw and the drop leave from the hand; approved and merged (main 92ab47e) |
 | Planned vs actual | 1 planned, 1 actual (widened by the drop, Q2367) |
 | Redo count | 0 |
 | Corrections | "Real body from the hand" (Q2356); "Drop from the hand too" (Q2367); the thrown Sock keeps the hand's pose (Q2383) |
@@ -334,7 +334,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | house/02, the kit for the old house: the re-gridded plan, two-face walls, skirting, every window (both sets), door frames, the U stair, roof, dormer, attic, no z-fighting; approved and merged (main bcdab10) |
+| Ticket | house/02, the kit for the old house: the re-gridded plan, two-face walls, skirting, every window (both sets), door frames, the U stair, roof, dormer, attic, no z-fighting; approved and merged (main 92ab47e) |
 | Planned vs actual | 1 planned, 1 actual (two stops) |
 | Redo count | 0 |
 | Corrections | re-grid the old house (Q2343); a 0.9 m landing, off-centre doors, 10.5 m, old clear heights, roof 40 (Q2350-Q2354); "try multiple things" for windows (Q2355, Q2381); no z-fighting (Q2358) |
@@ -349,7 +349,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | assets/01, the Sock models, balls, pattern shader and prints; the Sock entity, flights and the lying tier swapped to them; approved and merged (main 89a8449) |
+| Ticket | assets/01, the Sock models, balls, pattern shader and prints; the Sock entity, flights and the lying tier swapped to them; approved and merged (main e2ce243) |
 | Planned vs actual | 1 planned, 1 actual |
 | Redo count | 0 |
 | Corrections | "Go, we will figure the updates to socks looks afterwards" (Q2384); the wool look is assets/05 |
@@ -364,7 +364,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | assets/02, the 17 Collection Cabinets as Looks of the one Cabinet, all at the Cabinet station; approved and merged (main 89a8449) |
+| Ticket | assets/02, the 17 Collection Cabinets as Looks of the one Cabinet, all at the Cabinet station; approved and merged (main e2ce243) |
 | Planned vs actual | 1 planned, 1 actual |
 | Redo count | 0 |
 | Corrections | 3 drawers now, growing by Stage in M4 (Q2385) |
@@ -379,7 +379,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | assets/03, the 111 old icons and the keycap lookup, an icons station; approved and merged (main 89a8449) |
+| Ticket | assets/03, the 111 old icons and the keycap lookup, an icons station; approved and merged (main e2ce243) |
 | Planned vs actual | 1 planned, 1 actual |
 | Redo count | 0 |
 | Corrections | none |
@@ -394,7 +394,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/25, every core sound and rumble wired (bounce by hit speed, a min gap per sound, shelve at the click, rumble a setting, land after every jump); merged (main 68f93d8) |
+| Ticket | core/25, every core sound and rumble wired (bounce by hit speed, a min gap per sound, shelve at the click, rumble a setting, land after every jump); merged (main c68636d) |
 | Planned vs actual | 1 planned, 1 actual (W15 moved to core/16) |
 | Redo count | 0 |
 | Corrections | bounce follows the hit speed (Q2371); a gap per sound (Q2372); shelve at the click (Q2373) |
@@ -409,7 +409,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/15, aiming and screen: the old prompts, corner hints, keycaps, the aimed and held readouts with Sock Smarts and Sense flags, the old openable names; approved and merged (main 5c324b8) |
+| Ticket | core/15, aiming and screen: the old prompts, corner hints, keycaps, the aimed and held readouts with Sock Smarts and Sense flags, the old openable names; approved and merged (main c8aa2fd) |
 | Planned vs actual | 1 planned, 1 actual |
 | Redo count | 1 (the openable wording back to the old names, Q2388) |
 | Corrections | "This worked different by upgrades. Explore more." (Q2360); the Throw hint was never gated (Q2365, the draft's premise was wrong); old names on openables (Q2388) |
@@ -424,7 +424,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | house/03, the old house rebuilt twice from the kit (A old-width windows, B rounded), beside the zoo, walkable front door to attic; approved and merged (main eb0cfce) |
+| Ticket | house/03, the old house rebuilt twice from the kit (A old-width windows, B rounded), beside the zoo, walkable front door to attic; approved and merged (main 6d88764) |
 | Planned vs actual | 1 planned, 1 actual |
 | Redo count | 0 |
 | Corrections | "A, but also do B for the building ... Goal is to rebuild the old house with this technique" (Q2381); beside the zoo (Q2386) |
@@ -439,7 +439,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/16, feedback and motion polish part 1: the cloth tuned to flap less, the refusal wobble, the "Paired!" pop, the ball's squash, hop and roll, the lost Sock's return scatter and pop; merged (main 6feb5a3) |
+| Ticket | core/16, feedback and motion polish part 1: the cloth tuned to flap less, the refusal wobble, the "Paired!" pop, the ball's squash, hop and roll, the lost Sock's return scatter and pop; merged (main b58290b) |
 | Planned vs actual | 1 planned, 2 actual (the rest split into core/27, Q2398) |
 | Redo count | 0 |
 | Corrections | "Keep the node, tune it, so it doesn't flap as so much" (Q2366); "Rest can come as a separate ticket, merge this now" (Q2398) |
@@ -454,7 +454,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | assets/04, the shared material library (24 groups, most-used variant kept) and the 67 furniture pieces as scenes with opening parts, Sock spots, collision and the old coarse player boxes; the Sock area widened over the furniture and houses; approved and merged (main d352f2b) |
+| Ticket | assets/04, the shared material library (24 groups, most-used variant kept) and the 67 furniture pieces as scenes with opening parts, Sock spots, collision and the old coarse player boxes; the Sock area widened over the furniture and houses; approved and merged (main ecf16e6) |
 | Planned vs actual | 1 planned, 1 actual (device details split into assets/07; sheen into assets/06) |
 | Redo count | 0 |
 | Corrections | most-used per group (Q2389); fabrics without sheen for now (Q2390); Socks on furniture (Q2396); old player boxes (Q2397) |
@@ -469,7 +469,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | assets/08, the model sources: .blend files in assets_src/blender/, the Blender scripts in assets_src/generate/, both rebuilding all 97 ported .glb exactly; docs/human updated; merged (main 0720fa5) |
+| Ticket | assets/08, the model sources: .blend files in assets_src/blender/, the Blender scripts in assets_src/generate/, both rebuilding all 97 ported .glb exactly; docs/human updated; merged (main 5b44d4f) |
 | Planned vs actual | 0 planned (found writing docs/human), 1 actual |
 | Redo count | 0 |
 | Corrections | "assets_src/blender and the tools also into assets_src/generate if possible" (Q2400) |
@@ -484,7 +484,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/27, the rest of the motion polish: the held box rides the sway, the throw keeps its hand bend, the shelved ball's landing, a thrown shelve flies on to its slot, the fold's curl, the Door and cupboard swings; the FLAKY w10_gap fixed; merged (main 775aa59) |
+| Ticket | core/27, the rest of the motion polish: the held box rides the sway, the throw keeps its hand bend, the shelved ball's landing, a thrown shelve flies on to its slot, the fold's curl, the Door and cupboard swings; the FLAKY w10_gap fixed; merged (main 45a6890) |
 | Planned vs actual | 0 planned (split from core/16, Q2398), 1 actual |
 | Redo count | 0 |
 | Corrections | the designer asked for a complexity report before the merge ("I would like to have a report of how much complexity this added"); a drop keeps no bend (Q2401); the swing ease is the designer's to tune in the editor (Q2403) |
@@ -499,7 +499,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/28, the code review's correctness fixes: drawer locks held by the Host, no swing replay, the pad keycap, the heap pour cannot hang, line-up labels, the ball's physics stops, the catalogue index, the Cabinet caches, the shut Door's own sound, the outline re-enter; merged (main ac9c629) |
+| Ticket | core/28, the code review's correctness fixes: drawer locks held by the Host, no swing replay, the pad keycap, the heap pour cannot hang, line-up labels, the ball's physics stops, the catalogue index, the Cabinet caches, the shut Door's own sound, the outline re-enter; merged (main 955ce95) |
 | Planned vs actual | 0 planned (from the M0.5 code review, Q2404), 1 actual |
 | Redo count | 0 |
 | Corrections | none; R8(b) (other bodies' footsteps) left for M0.6 |
@@ -514,7 +514,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/29, the code review's per-frame cost outside the Mess: one aim search per held tick, reused probe shapes, the sway's cloth found once, HeldView's one `_forget`, PairMoment's cache, missing icons cached; merged (main ac9c629) |
+| Ticket | core/29, the code review's per-frame cost outside the Mess: one aim search per held tick, reused probe shapes, the sway's cloth found once, HeldView's one `_forget`, PairMoment's cache, missing icons cached; merged (main 955ce95) |
 | Planned vs actual | 0 planned (from the M0.5 code review, Q2404), 1 actual |
 | Redo count | 0 |
 | Corrections | none |
@@ -529,7 +529,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/33, the zoo's station names near the ground: at each station's front edge, eye height, one shared look, wrapped, Y-billboard; merged (main 5c9188d) |
+| Ticket | core/33, the zoo's station names near the ground: at each station's front edge, eye height, one shared look, wrapped, Y-billboard; merged (main 4c48e54) |
 | Planned vs actual | 0 planned (designer's note, Q2408), 1 actual |
 | Redo count | 0 |
 | Corrections | none; the Cabinet's long name overlaps its gallery from 3 m (noted) |
@@ -544,7 +544,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/34, what only the zoo needs into `game/zoo/`, per station (upgrade switch, sound buttons, kit line-up and sample rooms, zoo flags); the two generators to `tools/`; prompts ask `Part.prompt_title()`; merged (main 62df606) |
+| Ticket | core/34, what only the zoo needs into `game/zoo/`, per station (upgrade switch, sound buttons, kit line-up and sample rooms, zoo flags); the two generators to `tools/`; prompts ask `Part.prompt_title()`; merged (main 486431f) |
 | Planned vs actual | 0 planned (designer's note, Q2409; no guard check, Q2410), 1 actual |
 | Redo count | 0 |
 | Corrections | the designer dropped the guard check (Q2410) |
@@ -559,7 +559,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 
 | Field | Content |
 |---|---|
-| Ticket | core/31, the Mess benchmark (`tools/mess_bench.sh`/`.cmd`, nine scenarios as data, a fault watch) and the settle teleport: the Mess's MultiMeshes were physics-interpolated, so a settling Sock was undrawn for a tick and flying rows smeared; plus the review's Mess speed-ups; merged (main f33c673) |
+| Ticket | core/31, the Mess benchmark (`tools/mess_bench.sh`/`.cmd`, nine scenarios as data, a fault watch) and the settle teleport: the Mess's MultiMeshes were physics-interpolated, so a settling Sock was undrawn for a tick and flying rows smeared; plus the review's Mess speed-ups; merged (main e89ce65) |
 | Planned vs actual | 0 planned (designer's report, Q2405-Q2407), 1 actual |
 | Redo count | 0 |
 | Corrections | the designer pinned the glitch to the settle moment (Q2407); asked how the code grew before the go; sunk Socks left (Q2412), flips accepted (Q2413); core/21 closed (Q2415) |

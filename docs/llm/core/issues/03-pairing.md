@@ -132,4 +132,4 @@ it again.
   game/sock/ball_crew_plain.glb, game/zoo/stations/handling.tscn, tests/pairing_test.gd,
   tests/{handling,throw}_test.gd (Sock count 8), tools/shot_hooks.gd, tools/shots/sets/pair-moment.txt.
   Verified: PASS 491 checks, 86 cases (run.sh --touched); PASS rules; PASS asset_lint.
-- Merged: 1961bfcc (2026-11-20, branch core/03-pairing)
+- Merged: 4284beee (2026-11-20, branch core/03-pairing)

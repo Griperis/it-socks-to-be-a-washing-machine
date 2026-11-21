@@ -59,4 +59,4 @@ old HUD drew a key (`UiBits.icon`, 1.5x the font).
 - 2026-11-21 (after Q2385). Changed: the station moved to `game/zoo/stations/icons.tscn` with a Pad and the wall raised,
   instanced in zoo.tscn as Icons at (-18, 0, -8); the editor import wrote the .uid and .import files. Files: game/zoo/stations/icons.tscn,
   game/zoo/zoo.tscn, tests/ui_icons_test.gd, tools/icons_still.tscn, the .uid and assets/ui/*.import files. Verified: see the commit's suite line.
-- Merged: ee78f3dc (2026-11-21, branch assets/03-ui-art)
+- Merged: 0148a8d6 (2026-11-21, branch assets/03-ui-art)

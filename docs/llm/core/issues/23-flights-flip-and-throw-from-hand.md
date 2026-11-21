@@ -118,4 +118,4 @@ both.
   f2-drop-first-frames, f1-throw-landing, f1-drop-landing, f1-heap-pour, f1-every-sock-start
   (each -before-after.png; frames in before/ and after/). The strips' lob (charge 0.3 at a far
   crosshair) is out of the arc's reach, so it lands short in both.
-- Merged: cb52404c (2026-11-21, branch core/23-flights-flip-and-throw-from-hand)
+- Merged: 53ae1fd8 (2026-11-21, branch core/23-flights-flip-and-throw-from-hand)

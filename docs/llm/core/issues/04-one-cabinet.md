@@ -167,4 +167,4 @@ the Cabinet's drawer, see the Pair in its slot and the Coins; throw a second Pai
   game/zoo/stations/cabinet.tscn, game/mess/mess.gd, game/hands/hands.gd, game/player/player.gd,
   game/parts/session.gd, tests/cabinet_test.gd, tests/handling_test.gd, tools/shot_hooks.gd
   Verified: PASS 833 checks, 127 cases (--touched); PASS rules; PASS asset_lint
-- Merged: 83849868 (2026-11-20, branch core/04-one-cabinet)
+- Merged: 70c275ed (2026-11-20, branch core/04-one-cabinet)

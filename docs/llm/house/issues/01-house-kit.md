@@ -102,4 +102,4 @@ Carried into house/02 (Q2346).
     tools/shots/sets/house-kit.txt, docs/architecture/house-kit.md
   - Verified: `PASS 4982 checks, 62 cases` (--touched: every_sock, handling, house_kit, runner, wiring, zoo); `PASS rules`; `PASS asset_lint`. Stills: builds/review-house-01/house-kit-*.png
 - Model: Opus (lead): Blender and modular meshes on a grid (Models: opus for Blender).
-- Merged: 76e771d5 (2026-11-20, branch house/01-house-kit)
+- Merged: ef17dba2 (2026-11-20, branch house/01-house-kit)

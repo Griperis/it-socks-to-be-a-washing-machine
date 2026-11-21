@@ -65,4 +65,4 @@ where possible. Old: `reference/it-socks/assets_src/blender/` (151 `.blend`), `r
 - Verified: script to glb and `.blend` to glb, each against the game's glb: socks `PASS glb_compare: 13/13`,
   cabinets `17/17` (front art pixels too), furniture `67/67` (0.1 mm); `PASS 45 checks, 9 cases`
   (`run.sh --touched`); `PASS rules`; `PASS asset_lint`.
-- Merged: fc7dd433 (2026-11-21, branch assets/08-model-sources)
+- Merged: 5a415272 (2026-11-21, branch assets/08-model-sources)

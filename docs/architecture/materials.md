@@ -47,5 +47,5 @@ used stays; on a tie, the one nearest the group's median roughness. To override 
 | terracotta | `terracotta_1` | 2 | most pieces | 0.75 | 0.00 | 4 of 3 |
 | white | `white_1` | 12 | most pieces | 0.60 | 0.00 | 20 of 4 |
 
-The candidates' values and their pieces are in git history (commit a372eddd,
+The candidates' values and their pieces are in git history (commit d95d0844,
 `game/materials/candidates/`) and on the strips in `builds/review-furniture/`.

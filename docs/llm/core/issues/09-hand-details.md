@@ -139,4 +139,4 @@ ease-out; `_show` plays `open` or `shut` from the current pose, so a reverse mid
   tests/hand_details_test.gd, tests/drawer_details_test.gd, tests/handling_test.gd (h21 waits for the
   glide), tests/pairing_test.gd (p05 reads the fly-in), tools/shot_hooks.gd, tools/shots/sets/.
   Verified: PASS 963 checks, 147 cases (`--touched`); rules PASS; asset_lint PASS.
-- Merged: 26171513 (2026-11-20, branch core/09-hand-details)
+- Merged: 30c0ce2a (2026-11-20, branch core/09-hand-details)

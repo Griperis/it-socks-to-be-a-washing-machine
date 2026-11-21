@@ -153,4 +153,4 @@ For the designer at the second stop (stills in `builds/review-house-02/`):
   `meshes/`, `game/zoo/stations/house_kit.tscn`, `tests/house_kit_test.gd`, `tools/house_plan.py`,
   `tools/shot_hooks.gd`, `docs/architecture/house-kit.md`, `house-kit-plan.md`; stills in `builds/review-house-02/`.
 - Verified: `PASS 1670 checks, 19 cases` (house_kit); `PASS asset_lint`; `PASS rules: 9 rules, no new hit`.
-- Merged: 4bb9c93b (2026-11-21, branch house/02-kit-for-the-old-house)
+- Merged: 311c1d1e (2026-11-21, branch house/02-kit-for-the-old-house)

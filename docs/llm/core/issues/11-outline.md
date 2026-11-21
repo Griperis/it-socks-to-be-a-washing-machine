@@ -123,4 +123,4 @@ Approved (Q2292). The numbers are the old game's.
 - Files: game/outline/aim.tres, tests/outline_test.gd, this ticket
 - Verified: `kit/tools/run.sh --touched` (verdict in the commit report); `--only=outline` PASS 48 checks, 9 cases,
   also `--reverse`; before/after `builds/review-core-11/outline-stronger-before-after.png`.
-- Merged: 4c3b41f8 (2026-11-21, branch core/11-outline)
+- Merged: 6e350f94 (2026-11-21, branch core/11-outline)
