@@ -814,7 +814,7 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Planned vs actual | 1 planned, 1 actual |
 | Redo count | 0 |
 | Corrections | the commit came back damaged and was repaired; `agent_finish.sh` took the second `-m` as the subject, so the branch commit's first line is its body (left as is; the merge commit names it) |
-| Cost | 262,732 tokens in the agent's own context, 100 tool calls, 29m39s (Opus) |
+| Cost | 18,662,509 tokens, 100 tool calls, 29m38s (Opus) |
 | Time | the agent ran about 30 min |
 | Surprises | join of the zoo's 2,039 Socks 132 KB to 19.7 KB; mid-pour 256 KB to 90 KB; a rested 4,039-Sock join 110 KB (over the 100 KB placeholder); pour bytes kept at about 60 KB/s; game code +257 −36 |
 | Stop rules | none hit |
