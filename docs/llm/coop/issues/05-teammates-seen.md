@@ -109,3 +109,4 @@ Teammate's Throw leaves the hand at once (Q2439).
   game/hands/{hands,held_view,mate_sparkle}.gd, game/hands/mate_sparkle.tscn, game/parts/avatar/avatar.tscn,
   game/zoo/avatar/teammate_stand_in.gd, game/zoo/zoo.tscn, tests/teammates_test.gd, docs/architecture.md.
   Verified: PASS 15790 checks, 415 cases (--touched); PASS rules; PASS asset_lint.
+- Merged: 5b290a35 (2026-11-22, branch coop/05-teammates-seen)
