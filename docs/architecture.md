@@ -70,4 +70,27 @@ A ticket that adds a subsystem adds its row here and its file.
 
 ## Key flows
 
-<Boot, a frame, a save, a join: one short list each, naming files, once they exist.>
+**Boot.** `project.godot` loads five autoloads in order: `ProfilerBoot` (F3, debug builds), `GameCliBoot`
+(`game/debug/game_cli.gd`: reads the arguments after `--`; a bench or `--scene=` swaps the scene after one frame),
+`Profily`, `Settings` (`game/settings/settings.gd`, `user://settings.json`) and `Sounds` (`game/audio/sounds.gd`).
+The main scene is the zoo (`game/zoo/zoo.tscn`): `ZooStations` joins every station's Socks to the zoo's one Mess
+before anything binds, `Parts.bind` registers every Part by its node path, and `ZooNet` hosts or joins on
+`--host` / `--join=`.
+
+**A frame.** `player.gd` moves the body, looks the aim up once (`AimFinder`), feeds the outline, the prompts and the
+HUD, then reads the buttons. On the Host, `MessMoving.tick` checks hits, picks' columns, Door and drawer sweeps and
+rests, then starts woken flights within the budget. `MessDrawing` flushes the dirty cell buffers; `HeldView` lays out
+the held Socks; `SockCloth` ranks and bends the held and nearest flying Socks. Nothing else runs per frame.
+
+**A change (pick, drop, Throw, shelve, open).** The asker builds a `Command` and calls `Parts.ask`. On the Host (or
+alone) `Parts.answer` runs the target Part's `decide()`, which reads only and returns patches for one or more Parts or
+a refusal; `Parts.apply` writes them (`Part.write`, then `_show`) and emits `applied`. A Guest's `ask` goes up through
+`Session` (packet guards, rate), and the Host's `Session` sends each applied answer to every Guest, who applies it the
+same way. The Player passes each answer to the HUD's words and `Hearing` (sound, rumble).
+
+**A join.** `Session.join` connects; the Host's gate checks the protocol (`PROTOCOL`), admits the Guest and sends one
+snapshot (`Parts.snapshot()`: every Part's State group by id), which the Guest writes with `Parts.load_snapshot`.
+Avatars come through a MultiplayerSpawner and synchronizer, falling Socks through the zoo's `FlightSpawner`.
+
+**A save.** Not built yet: saving starts at the first outside play-test. The seam is the same snapshot
+(`Parts.snapshot` / `load_snapshot`); settings are saved on their own by `Settings`.

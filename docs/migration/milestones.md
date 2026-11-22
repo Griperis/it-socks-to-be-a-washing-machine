@@ -7,7 +7,7 @@ M1 and M2 run beside M0.5 and M0.6, not after them.
 | | Milestone | Done when | State |
 |---|---|---|---|
 | M0 | Setup | The repository is set up from starter kit 8.0 (was 7.1) with the port pack on top; the checks pass; the reference clone at `v0.1.1` is in place; the first commit is pushed | done 2026-11-20 (pushed to origin by the designer) |
-| M0.5 | The core in a single-player zoo | In a flat graybox zoo scene (edited in the editor, one station per feature, the game's real entities): movement, handling Socks, pairing, one Cabinet. A true vertical slice of the core (Q2296): the core's sounds and rumble and its polish details are in it, as the old game has them. One player, but every change already goes through the shared-state path: the player is a Host of one (Q2207, Q2208, Q2211, Q2212) | planned |
+| M0.5 | The core in a single-player zoo | In a flat graybox zoo scene (edited in the editor, one station per feature, the game's real entities): movement, handling Socks, pairing, one Cabinet. A true vertical slice of the core (Q2296): the core's sounds and rumble and its polish details are in it, as the old game has them. One player, but every change already goes through the shared-state path: the player is a Host of one (Q2207, Q2208, Q2211, Q2212) | built 2026-11-22; closing (Q2425): the designer's zoo run and code review are left |
 | M0.6 | The co-op zoo base | The same zoo with a Host, a Guest and a late joiner: avatars seen by the others every frame (Q2223), a Guest's pick and Throw as decided (Q2220-Q2222, Q2226), a long random player id in the profile (Q2224), and the full knockdown with Godot's own physical-bone ragdoll (Q2225) | planned |
 | M1 | Assets | Models and UI art ported by the port rules; the core's models and the avatar rig first; a shared material library; things built by code become models or scenes. Approved in family batches, each with a before and after strip (Q2151-Q2153, Q2177, Q2178, Q2216) | planned, beside the zoo |
 | M1.1 | Sound | The sound system is built in M0.5 for the core (Q2296); M1.1 ports every other old sound and pad rumble, ported with the old clips and numbers, made plug-and-play: a sound is added or swapped by dropping in a file and naming it, with no code change. The list from the four merged pieces is in `old-details-backlog.md` (Q2278) | planned |
@@ -30,7 +30,10 @@ designer's go. Order: what the later batches show on comes first.
 | 5 | Feedback and motion polish | core/16 | the refusal wobble, "Paired!", the boxed held Size, the ball's squash, hop and roll, the flick ease, the old cloth bend and ground, the lost Sock's scatter and pop |
 | 6 | Sound | core/17 | the plug-and-play sound system and every core sound and rumble |
 | 7 | The picture | core/18 | the old light at noon (AgX, grade, vignette, SSAO, glow, MSAA and FXAA, HDRI sky, the sun) and the old font and theme |
-| 8 | Close-out | walkthrough | the walkthrough page; you play every station in one zoo run |
+| 8 | Close-out | triage, paperwork, code review (Q2425) | the `[later]` follow-ups triaged (2026-11-21: 38 closed, 13 decided by the lead, 29 to `m06-backlog.md`, 7 asked); no walkthrough page; you play every station in one zoo run and review the code from the review guide and the code map |
+
+What M0.5 left for later is in `m06-backlog.md`, by system; the old features with no milestone yet are tracked
+as core/41-45 (Q2430). Parked experiments: core/37 bent lying Socks (Q2426); closed: core/38 jointed flights (Q2423).
 
 Later, not in M0.5: the pad differences (Q2302), the Coins and Pairs counter and the ESC menu (Q2300), the 20-minute
 day (Q2299).

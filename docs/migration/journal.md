@@ -616,3 +616,48 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2417, Q2420, Q2421 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/39, a Sock caught by a shutting Door or drawer is pushed out to the open side, no pop; merged (main 9033b77) |
+| Planned vs actual | 0 planned (core/31 follow-up, Q2428), 1 actual |
+| Redo count | 0 |
+| Corrections | the agent also kept a Sock pressed a few mm into a floor where it lies, as the old `flat_layout.gd` `sunk_floor()` (9 of 10 pops after a Door shut on main were that, not the leaf) |
+| Cost | see `agent_cost.py --by ticket` (Opus) |
+| Time | the agent ran about 16 min |
+| Surprises | the bench never showed `lost` on this machine, on main either; the station's own pops were the floor rule |
+| Stop rules | none needed |
+| Looks | none |
+| Decisions | Q2428 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | core/40, the tests that only check a look or feel number are removed (23 cases, about 900 lines); merged (main 9033b77) |
+| Planned vs actual | 0 planned (Q2421, Q2429), 1 actual |
+| Redo count | 0 |
+| Corrections | 19 doubtful cases kept and listed in its Built log; the look-only cases in the Cabinet and Mess suites were left for a later sweep (core/39 owned those files) |
+| Cost | see `agent_cost.py --by ticket` (Sonnet) |
+| Time | the agent ran about 4 min |
+| Surprises | none |
+| Stop rules | none needed |
+| Looks | none |
+| Decisions | Q2421, Q2429 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | core/38, jointed flying Socks (three bodies, two hinges): an experiment on core/37's branch, never merged; closed wontfix (Q2423) |
+| Planned vs actual | 0 planned (Q2422), 1 actual, plus a "really flappy" build (Q2424) |
+| Redo count | 0 |
+| Corrections | the lead stopped its long budget sweep; the first review build would not load: a preload loop through SockCloth and HeldView, also on main, fixed there (9b829af) |
+| Cost | see `agent_cost.py --by ticket` (Opus) |
+| Time | the agent ran about 1 h 30 min, most of it benchmark runs |
+| Surprises | joints cost about 1.5x a one-body pour, not 3-4x; spin, not joints, flips Socks; taken to main: `--tune=` and shared flight materials (cd3d60d); the contact switch tried after it made main slower and was taken back |
+| Stop rules | the lead's wrap-up message |
+| Looks | `builds/review-core-38/`, `builds/review-core-38-flappy/` |
+| Decisions | Q2422, Q2423, Q2424 |
+
+---
