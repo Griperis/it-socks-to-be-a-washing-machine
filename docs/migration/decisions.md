@@ -1,4 +1,4 @@
-Next free Q number: Q2469 (update this line whenever a round of questions is asked)
+Next free Q number: Q2470 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -383,3 +383,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2466: the player's own body in first person is ported as the old game in M0.6, as its own ticket after coop/05 (coop/06): the belly of the new avatar below the cut, set back, outside only, edge closed, no eyes, name, hat or clothes, no shadow, the feet; it bends and crouches with the player; the capsule goes (old Q310, Q329; a gap the M0.6 lists left out, raised 2026-11-22).
 - Q2467: "camera clipping of the body" means only that: looking down shows the belly under you, never the inside of your own body (the old cut and closed edge, maintenance/37).
 - Q2468: the avatar gets a zoo station in coop/05: the real Avatar standing, and a stand-in Teammate walking a loop, crouching, looking up and down and holding a Sock, driven only through the pose properties a real Teammate sends, so it shows when playing alone (designer, 2026-11-22).
+- Q2469: the Teammates strip of coop/05 is approved (how a Teammate moves, is coloured, tagged and holds); the sounds, the Throw from the hand and the Pair sparkle are finished on the branch before the merge (designer, 2026-11-22).
