@@ -61,6 +61,16 @@ extends Resource
 ## What counts as a floor's top for that: its up at least this (the cosine of its steepest slope).
 @export_range(0.0, 1.0, 0.01) var floor_up := 0.7 # placeholder: ported (hands_rules.gd's floor test)
 
+@export_group("Pushed out of a leaf")
+## A Sock or Pair that would rest with its middle inside a Door's or drawer's leaf is pushed out of
+## it to the side the leaf swept from (core/39, Q2428): all of it ends this far clear of the leaf's face.
+@export_range(0.0, 0.5, 0.005, "suffix:m") var leaf_clearance := 0.02 # placeholder: until the designer plays it (core/39)
+## How it moves out: it flies on from just past the face at this speed, away from the leaf, and
+## rests where it comes to rest; 0 puts it down past the face at once.
+@export_range(0.0, 5.0, 0.05, "suffix:m/s") var leaf_push_speed := 0.4 # placeholder: until the designer plays it (core/39)
+## How many times one flight is pushed out so; after that it is put down past the face at once.
+@export_range(1, 10, 1) var leaf_push_tries := 3 # placeholder: until the designer plays it (core/39)
+
 @export_group("Bodies")
 ## A woken Sock's slide and drag (M10).
 @export_range(0.0, 2.0, 0.01) var woken_friction := 0.9 # placeholder: ported (mess.json friction)

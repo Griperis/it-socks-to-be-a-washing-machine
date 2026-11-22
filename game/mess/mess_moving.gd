@@ -33,6 +33,17 @@ var _order := PackedInt32Array()
 var _sorted := true
 ## The flights' physics materials, shared: one per friction and bounce (two while the tuning holds still).
 var _materials: Dictionary[Vector2, PhysicsMaterial] = {}
+## The Door and drawer leaves seen moving (core/39), by body RID: the body, and its place before its
+## last step and now (which side a Sock left inside it is pushed out to).
+var _leaf_body: Dictionary[RID, AnimatableBody3D] = {}
+var _leaf_was: Dictionary[RID, Transform3D] = {}
+var _leaf_now: Dictionary[RID, Transform3D] = {}
+## How many times each flight has been pushed out of a leaf (`MessTuning.leaf_push_tries`).
+var _pushes: Dictionary[int, int] = {}
+## A leaf shape's box in its own space (a box's size, a convex shape's points' bounds), by shape.
+var _shape_boxes: Dictionary[Shape3D, AABB] = {}
+## The point that finds which leaf a Sock's middle is in.
+var _probe := SphereShape3D.new()
 
 
 func _init(mess: Mess) -> void:
@@ -92,6 +103,9 @@ func clear() -> void:
 	_waiting.clear()
 	_order = PackedInt32Array()
 	_taken.clear()
+	_leaf_body.clear()
+	_leaf_was.clear()
+	_leaf_now.clear()
 
 
 ## Once a physics tick: hits and picks and movers wake, still flights rest (at most
@@ -140,9 +154,22 @@ func tick(delta: float) -> void:
 
 ## A flight that has come to rest lies where it is, pushed up onto a floor it sank into, or at the
 ## return spot when it would lie inside a wall (T08; core/16 P12, P13: Mess.put_down()).
+## One whose middle is in a Door's or drawer's leaf is pushed out of it instead (core/39): it flies
+## on from past the leaf's face, or is put down there (MessTuning "Pushed out of a leaf").
 func _settle(sock: int) -> void:
 	var body := _flights[sock]
 	var down := _mess.put_down(sock, body.global_transform.orthonormalized())
+	var t := _mess.bodies_tuning()
+	if down.has("pushed") and t.leaf_push_speed > 0.0 and _pushes.get(sock, 0) < t.leaf_push_tries:
+		_pushes[sock] = _pushes.get(sock, 0) + 1
+		body.global_transform = down["pose"]
+		body.reset_physics_interpolation()
+		body.linear_velocity = (down["pushed"] as Vector3) * t.leaf_push_speed
+		body.angular_velocity = Vector3.ZERO
+		body.sleeping = false
+		_still[sock] = 0.0
+		_airborne[sock] = 0.0
+		return
 	_rest(sock, down["pose"], down["returned"])
 
 
@@ -251,6 +278,7 @@ func _sweep_movers() -> void:
 		if openable == null or not openable.is_moving():
 			continue
 		for body in openable.movers():
+			_note_leaf(body)
 			for child in body.get_children():
 				var shape := child as CollisionShape3D
 				if shape == null or shape.disabled or shape.shape == null:
@@ -272,6 +300,100 @@ func _sweep_movers() -> void:
 	if not now.is_empty():
 		_mess.parts.ask(Command.new(&"wake", Parts.HOST, _mess.id, {"socks": now}))
 	queue_wake(late, &"wake")
+
+
+## Leaf `body` is moving: its place now, and before its last step.
+func _note_leaf(body: AnimatableBody3D) -> void:
+	var rid := body.get_rid()
+	var now := body.global_transform
+	if not _leaf_body.has(rid):
+		_leaf_body[rid] = body
+		_leaf_was[rid] = now
+	elif not _leaf_now[rid].is_equal_approx(now):
+		_leaf_was[rid] = _leaf_now[rid]
+	_leaf_now[rid] = now
+
+
+## The way out of a Door's or drawer's leaf seen moving for a Sock whose middle is `centre` inside it
+## (core/39, Q2428): {"dir": flat, to the side the leaf swept from (with no step seen, through the
+## nearer face), "exit": how far along it the middle leaves the leaf, in m}; {} when it is in none.
+func out_of_leaf(centre: Vector3) -> Dictionary:
+	if _leaf_body.is_empty():
+		return {}
+	_probe.radius = 0.001
+	for rid in PhysicsQueries.overlap_rids(_mess, _probe, Transform3D(Basis.IDENTITY, centre), Mess.LAYER_HOUSE, 8):
+		var found: Variant = _leaf_body.get(rid)
+		if not is_instance_valid(found):
+			continue
+		var body := found as AnimatableBody3D
+		if not body.is_inside_tree():
+			continue
+		var back := _leaf_was[rid] * (body.global_transform.affine_inverse() * centre) - centre
+		back.y = 0.0
+		for child in body.get_children():
+			var shape := child as CollisionShape3D
+			if shape == null or shape.disabled or shape.shape == null:
+				continue
+			var box := _shape_box(shape.shape)
+			var to_shape := shape.global_transform.affine_inverse()
+			var q := to_shape * centre
+			if not box.has_volume() or not box.grow(0.0005).has_point(q):
+				continue
+			var dir := back.normalized() if back.length() > 0.0001 else _nearest_face(shape.global_transform, box, q)
+			var d := to_shape.basis * dir
+			var out := _exit(box, q, d)
+			if dir == Vector3.ZERO or out == INF:
+				continue
+			return {"dir": dir, "exit": (shape.global_transform * (q + d * out)).distance_to(centre)}
+	return {}
+
+
+## A leaf shape's box in its own space: a box's size, a convex shape's points' bounds; else none.
+func _shape_box(shape: Shape3D) -> AABB:
+	if _shape_boxes.has(shape):
+		return _shape_boxes[shape]
+	var box := AABB()
+	if shape is BoxShape3D:
+		var size := (shape as BoxShape3D).size
+		box = AABB(-size * 0.5, size)
+	elif shape is ConvexPolygonShape3D:
+		var points := (shape as ConvexPolygonShape3D).points
+		if not points.is_empty():
+			box = AABB(points[0], Vector3.ZERO)
+			for p in points:
+				box = box.expand(p)
+	_shape_boxes[shape] = box
+	return box
+
+
+## How far along `dir` (in the box's space) point `q` inside `box` leaves it; INF for no way out.
+static func _exit(box: AABB, q: Vector3, dir: Vector3) -> float:
+	var best := INF
+	for i in 3:
+		if absf(dir[i]) < 0.000001:
+			continue
+		var wall := box.end[i] if dir[i] > 0.0 else box.position[i]
+		best = minf(best, maxf((wall - q[i]) / dir[i], 0.0))
+	return best
+
+
+## The flat way out of `box` (at `xform`) nearest to `q`: through its nearer side face.
+static func _nearest_face(xform: Transform3D, box: AABB, q: Vector3) -> Vector3:
+	var best := Vector3.ZERO
+	var gap := INF
+	for i in 3:
+		for side: float in [-1.0, 1.0]:
+			var axis := Vector3.ZERO
+			axis[i] = side
+			var world := xform.basis * axis
+			world.y = 0.0
+			if world.length() < 0.5:
+				continue
+			var d := (box.end[i] - q[i]) if side > 0.0 else (q[i] - box.position[i])
+			if d < gap:
+				gap = d
+				best = world.normalized()
+	return best
 
 
 ## Where the players of this machine stand (the budget's "nearest the players").
@@ -390,6 +512,7 @@ func _drop_flight(sock: int) -> void:
 	_speeds.erase(sock)
 	_damped.erase(sock)
 	_dropped.erase(sock)
+	_pushes.erase(sock)
 
 
 ## A body at `speed` sweeps its way (continuous collision) from the tuning's `ccd_on` and stops

@@ -352,27 +352,61 @@ func thrown_patch(sock: int, pose: Transform3D, vel: Vector3, spin: Vector3, by:
 ## The Host's rule for where Sock `sock` let down at `t` lies (core/16 P12, P13; the old
 ## hands_rules.gd:490-510): out of bounds, or inside a wall, it is lost and comes back at the return
 ## spot scattered within `return_scatter` ("returned": true, a pop plays); its middle (a Pair's
-## bottom) sunk `sunk` to `sunk_depth` under a floor's top, it is pushed up onto that floor where
-## it is ("returned": false); else it lies at `t`. Returns {"pose": Transform3D, "returned": bool}.
+## bottom) under a floor's top by less than `sunk`, it lies as it is (the old flat_layout.gd
+## sunk_floor(): still in the room); `sunk` to `sunk_depth` under, it is pushed up onto that floor
+## where it is ("returned": false); its middle inside a Door's or drawer's leaf seen moving, it is
+## pushed out of the leaf to the side the leaf swept from, all of it `leaf_clearance` clear of the
+## leaf's face, and put down there by the same rules (core/39, Q2428: "returned": false, "pushed":
+## the flat way out), unless that is lost too; else it lies at `t`.
+## Returns {"pose": Transform3D, "returned": bool} (and "pushed": Vector3).
 func put_down(sock: int, t: Transform3D) -> Dictionary:
 	var pair := is_pair(sock)
-	var design := design_of(sock)
-	var radius := SockDress.ball_radius(design) if pair else 0.0
+	var radius := SockDress.ball_radius(design_of(sock)) if pair else 0.0
 	if not in_bounds(t.origin):
 		return {"pose": return_pose(sock), "returned": true}
-	var centre := t.origin if pair else t * _sock_middle(design)
+	var centre := t.origin if pair else t * _sock_middle(design_of(sock))
+	if not PhysicsQueries.inside(self, centre, LAYER_HOUSE):
+		return {"pose": t, "returned": false}
+	var leaf := _moving.out_of_leaf(centre)
+	if not leaf.is_empty():
+		var dir := leaf["dir"] as Vector3
+		var by := dir * (float(leaf["exit"]) + _reach(sock, t.basis, dir) + bodies_tuning().leaf_clearance)
+		var out := _on_floor(t.translated(by), centre + by, radius, pair) if in_bounds(t.origin + by) else {}
+		if not out.is_empty():
+			out["pushed"] = leaf["dir"]
+			return out
+	var down := _on_floor(t, centre, radius, pair)
+	return down if not down.is_empty() else {"pose": return_pose(sock), "returned": true}
+
+
+## How far Sock `sock` turned by `basis` reaches from its middle along flat `dir`: a Pair its ball's
+## radius, a loose Sock half its box measured along `dir`.
+func _reach(sock: int, basis: Basis, dir: Vector3) -> float:
+	if is_pair(sock):
+		return SockDress.ball_radius(design_of(sock))
+	var box := SockDress.box(design_of(sock)) * 0.5
+	var b := basis.orthonormalized()
+	return absf(b.x.dot(dir)) * box.x + absf(b.y.dot(dir)) * box.y + absf(b.z.dot(dir)) * box.z
+
+
+## Put down at `t` with its middle (a Pair's ball centre, `radius`) at `centre`: as it is, out of
+## everything; as it is, or pushed up onto the floor, sunk into a floor's top (P13); {} inside a wall.
+func _on_floor(t: Transform3D, centre: Vector3, radius: float, pair: bool) -> Dictionary:
 	if not PhysicsQueries.inside(self, centre, LAYER_HOUSE):
 		return {"pose": t, "returned": false}
 	var b := bodies_tuning()
 	var low := centre.y - radius
 	var hit := PhysicsQueries.ray(self, centre + Vector3.UP * (b.sunk_depth + radius), centre, LAYER_HOUSE)
-	if not hit.is_empty() and (hit["normal"] as Vector3).y > b.floor_up:
-		var top := (hit["position"] as Vector3).y
-		var depth := top - low
-		if depth >= b.sunk - 0.0001 and depth <= b.sunk_depth:
-			var lift := depth if pair else top - t.origin.y
-			return {"pose": Transform3D(t.basis, t.origin + Vector3.UP * lift), "returned": false}
-	return {"pose": return_pose(sock), "returned": true}
+	if hit.is_empty() or (hit["normal"] as Vector3).y <= b.floor_up:
+		return {}
+	var top := (hit["position"] as Vector3).y
+	var depth := top - low
+	if depth >= -0.0001 and depth < b.sunk - 0.0001:
+		return {"pose": t, "returned": false}
+	if depth >= b.sunk - 0.0001 and depth <= b.sunk_depth:
+		var lift := depth if pair else top - t.origin.y
+		return {"pose": Transform3D(t.basis, t.origin + Vector3.UP * lift), "returned": false}
+	return {}
 
 
 ## Where a lost Sock comes back (P12): at the return spot, turned and scattered at random within

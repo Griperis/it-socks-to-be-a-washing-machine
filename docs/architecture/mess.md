@@ -32,7 +32,13 @@ Socks lie, are drawn, move or wake.
 - A Door or drawer: every `Openable` is in the group `openables`; while it animates, the Host sweeps
   its AnimatableBody3D shapes over the lying bodies and wakes those at once.
 - A rest: still for `rest_time` (or Jolt asleep) asks `rest`; out of bounds or inside a wall, at the
-  return spot.
+  return spot (`Mess.put_down`). Its middle under a floor's top by less than `sunk`, it lies as it is (the
+  old `sunk_floor`); deeper, up to `sunk_depth`, pushed up onto the floor.
+- Pushed out of a leaf (core/39, Q2428): `MessMoving` remembers each Door and drawer leaf it sweeps (its
+  place before its last step and now). A resting Sock whose middle is in such a leaf is moved, flat, to the
+  side the leaf swept from, wholly `leaf_clearance` past its face (`out_of_leaf`, `Mess._reach`); a flight
+  then flies on from there at `leaf_push_speed` (at most `leaf_push_tries` times, then it is put down at
+  once). No pop. A spot past the face that is in a wall is lost as before.
 
 ## Gotchas
 
