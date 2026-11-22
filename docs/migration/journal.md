@@ -661,3 +661,48 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2422, Q2423, Q2424 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | core/46, a Throw wakes the lying Socks it is about to hit, so it shoves them (the old look-ahead); merged (main e9a3f94) |
+| Planned vs actual | 0 planned (core/08 T11 follow-up, Q2431), 1 actual |
+| Redo count | 0 |
+| Corrections | the agent stopped at needs-info: burst_16 p95 1.0 to 1.8 ms, moving peak 52 to 124; the designer accepted it (Q2435) |
+| Cost | see `agent_cost.py --by ticket` (Opus) |
+| Time | the agent ran about 12 min |
+| Surprises | the shove shows little: a Throw lands steeply on flat Socks and friction stops them within mm |
+| Stop rules | stopped at the cost question |
+| Looks | none |
+| Decisions | Q2431, Q2435 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | core/47, the room is silent: `amb_room` has no clip, an event with no clip plays nothing and logs nothing; merged (main e9a3f94) |
+| Planned vs actual | 0 planned (Q2432), 1 actual |
+| Redo count | 0 |
+| Corrections | clashed with core/48 in `Sounds._asked`; the lead kept core/47's silent rule |
+| Cost | see `agent_cost.py --by ticket` (Sonnet) |
+| Time | the agent ran about 3 min |
+| Surprises | none |
+| Stop rules | none needed |
+| Looks | none |
+| Decisions | Q2432 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | core/48, the game's one log: the kit's `log` template as the autoload `Log`, first; a file per run under `user://logs/` starting with the build; the game's warnings and errors moved onto it; merged (main e9a3f94) |
+| Planned vs actual | 0 planned (the designer asked, 2026-11-22), 1 actual |
+| Redo count | 0 |
+| Corrections | went wider than named (Parts, Avatars, ZooNet, the heap spout, the bench report onto Log); the Settings and Sounds tests now read the log line, since `Log.error` raises no engine error |
+| Cost | see `agent_cost.py --by ticket` (Sonnet) |
+| Time | the agent ran about 6 min |
+| Surprises | the kit's rule had been skipped since M0.5 began |
+| Stop rules | none needed |
+| Looks | none |
+| Decisions | none |
+
+---
