@@ -61,6 +61,7 @@ Teammate's Throw leaves the hand at once (Q2439).
 - A forged out-of-bounds or non-finite pose is dropped on the Host.
 - Numbers: the easing, snap, step and fade values are typed Resource values (decided by Q2450-Q2453); the
   old motion numbers carry over as decided (Q2461).
+- An avatar zoo station `game/zoo/stations/avatar.tscn` (Q2468): the Avatar standing and a stand-in Teammate walking a loop, crouching, looking up and down and holding a Sock, driven only through the pose properties.
 - A strip of two players side by side (walk, crouch, look up and down, hold) for the designer; no test of
   the look itself (Q2421).
 
