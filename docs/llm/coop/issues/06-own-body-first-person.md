@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: core
 feature: coop
@@ -54,6 +54,7 @@ local player. The capsule `Mesh` in `player.tscn` goes (the collision capsule st
 - The local player's network Avatar stays hidden on its own machine (no double body).
 
 ## Answers
+- The two stills approved; merge (Q2471, 2026-11-22).
 - Q2466, Q2467 (2026-11-22).
 
 ## Open follow-ups
