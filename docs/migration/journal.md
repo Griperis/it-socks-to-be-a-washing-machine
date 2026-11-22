@@ -766,3 +766,18 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2438, Q2465 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | coop/05, Teammates seen and heard (pose every frame with pitch and crouch, 12/s follow and 1 m snap, every old motion in AvatarLooks, colour, "Player" tag, worn held view, 3D Teammate sounds and steps, Throw from their hand, Pair sparkle, the avatar zoo station), M0.6 batch 2; strip approved (Q2469); merged (main 7387b32) |
+| Planned vs actual | 1 planned, 1 actual (stopped at its first strip, then finished) |
+| Redo count | 0 |
+| Corrections | the avatar station was added mid-ticket (Q2468); its stand-in walks only when the camera is near, or other stations' tests waited for its held Sock; the last commit came back damaged and the lead repaired it (git_repair.sh) |
+| Cost | 44,333,070 tokens, 192 tool calls, 55m01s (Opus) |
+| Time | the agent ran about 54 min in two parts |
+| Surprises | a Guest's pick capacity on the Host comes from the Hands' own tuning, not the Guest's Upgrade |
+| Stop rules | the look round stopped it at the first strip, as meant |
+| Looks | the Teammates strip in builds/review-teammates/ |
+| Decisions | Q2439, Q2450-Q2455, Q2461-Q2464, Q2468, Q2469 |
+
+---

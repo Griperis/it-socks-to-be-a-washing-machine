@@ -52,3 +52,4 @@ catalogue or `milestones.md` names one. Nothing here is decided as play; a play 
 - Hold ENet's packet throttle at full in `Session` (`throttle_configure(5000, 32, 0)` on each peer); left alone it drops 31 of 32 unreliable packets at 60 fps, avatars included. Source: coop/01. Milestone: M0.6 batch 1 (the Session seam).
 - Mess patches carry the whole `states`/`poses` arrays (about 100 KB an answer at 2,038 Socks) and back up the reliable channel; send changed records only. Source: coop/01. Milestone: M0.6 batch 3.
 - `MessMoving._launch` sets a flight's pose after `add_child`, so a spawned copy starts at the origin for one packet; set it before. Source: coop/01. Milestone: M0.6 batch 3.
+- A Guest's pick capacity on the Host comes from the Hands' own tuning, not the Guest's Upgrade (with the Hands keyed by player id). Source: coop/05, coop/03. Milestone: M0.6 batch 3.
