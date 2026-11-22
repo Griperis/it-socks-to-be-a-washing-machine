@@ -100,9 +100,9 @@ synchronizer with the stamp (coop-structure section 4, option A), a teammate cat
 - Merge it; core/02's "a long press does not drop" check is removed, a long press throws (Q2267, 2026-11-20).
 
 ## Open follow-ups
-- [later] T11: the wake is judged on the Flight's first contact, so the hit Socks are woken one step after the
+- [moved 2026-11-22] T11: the wake is judged on the Flight's first contact, so the hit Socks are woken one step after the
   bounce and fall where they lie; the old game woke them just before contact so the thrown item pushed them. Is a
-  push wanted?
+  push wanted? — Q2431: wake before contact, as the old game (core/46).
 - [later] The ring's faint white track hardly shows on a light wall (`builds/review-core-08/throw-ring-close-up.png`).
   Keep the old look, or add an outline?
 - [moved 2026-11-21] M0.6: a Guest's Throw leaves from `EYES_FALLBACK` (1.5 m) above where it stands, and only the local

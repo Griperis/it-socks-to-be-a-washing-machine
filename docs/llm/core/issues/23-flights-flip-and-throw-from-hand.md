@@ -87,8 +87,8 @@ both.
   0.1 s (new, HandsTuning; it replaces `catch_up`): the body is full size from the hand. Without it the
   Sock pops 1.7 times bigger on release. Its held cloth bend is not carried over: the flying Looks
   starts straight. The zoom and the turn button are not in the hand's pose the Host uses. — Q2382: merged as built; Q2401: a drop keeps no bend, a Throw does (core/27 P08)
-- [later] An aim out of the Throw's reach (the far floor at a light charge) flies along the aim from
-  the hand, as before, and lands short of the crosshair.
+- [closed 2026-11-22] An aim out of the Throw's reach (the far floor at a light charge) flies along the aim from
+  the hand, as before, and lands short of the crosshair. — Q2433: lands short, as the old game.
 
 ## Built log
 - Model: Opus (lead): debugging physics and a flight's start across the Mess and the Hands.

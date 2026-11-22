@@ -1,4 +1,4 @@
-Next free Q number: Q2431 (update this line whenever a round of questions is asked)
+Next free Q number: Q2435 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -343,3 +343,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2428: a Sock left inside a Door or drawer leaf when it shuts is pushed out of the leaf, not sent to the return spot with a pop (designer: "pushed out").
 - Q2429: tests that only check a look or feel number go, the old cloth tests hand_details d02 and d03 first (Q2421; designer: "yes").
 - Q2430: the old features with no milestone (stacking, hand-off, hint arrows and pings, the F1 debug menu, the studio intro) are tracked as tickets, not planned yet (designer: "track them").
+- Q2431: a Throw wakes the lying Socks it is about to hit just before contact, as the old game, so the thrown Sock shoves them (core/08 T11 follow-up; core/46).
+- Q2432: the room ambience `amb_room` is silent, as the old game (the placeholder clip goes; core/47).
+- Q2433: a Throw that cannot reach the crosshair (a light charge to the far floor, a charge-0 lob) lands short, as the old game; no change.
+- Q2434: the old sound events and modes left out of core/17 all stay for M1.1 (which ports every old sound); none dropped.

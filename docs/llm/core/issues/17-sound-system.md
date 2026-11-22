@@ -86,8 +86,8 @@ seam: "sounds and the HUD may listen"):
 - Q2278, Q2317-Q2321 (2026-11-20).
 
 ## Open follow-ups
-- [later] `amb_room`: the old game's room tone was silent (no pick). S08 asks for a quiet ambience, so it plays the
-  old first candidate `rubberduck_ambient1` at -12 dB as a placeholder. The designer picks the clip and level.
+- [moved 2026-11-22] `amb_room`: the old game's room tone was silent (no pick). S08 asks for a quiet ambience, so it plays the
+  old first candidate `rubberduck_ambient1` at -12 dB as a placeholder. The designer picks the clip and level. — Q2432: silent, as the old game (core/47).
 - [closed 2026-11-21] The first autoloads of the game's own are added: `Settings` (copied template, `game/settings/`) and `Sounds`.
   The Options menu (later) writes `audio/*_volume`. Settings' own Master apply is overridden by `Sounds` (mix times slider). — Settings and Sounds are the game's first autoloads by design; the Options menu comes in M4
 - [closed 2026-11-21] The Sounds station stands at (13, 0, 13) beside the Movement and Cabinet stations, off the grid. — stations are placed by hand in the editor (Q2359)

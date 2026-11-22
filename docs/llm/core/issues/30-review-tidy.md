@@ -72,9 +72,9 @@ Runs after core/28, 29, 31 and 34 because it touches their files (paths as core/
 - The review's findings are fixed, felt numbers into Resources and zoo labels as scenes included (Q2404, 2026-11-21).
 
 ## Open follow-ups
-- [later] T3 `Arc.aimed()`: returning `Vector3.ZERO` whenever it does not converge made a charge-0 lob land 0.38 m
+- [closed 2026-11-22] T3 `Arc.aimed()`: returning `Vector3.ZERO` whenever it does not converge made a charge-0 lob land 0.38 m
   from the crosshair (`flight_start:t03_lands` failed). The behaviour is kept (the nearest aim found); the comment
-  now says what it does. Changing it is a change the player sees, so it is the designer's.
+  now says what it does. Changing it is a change the player sees, so it is the designer's. — Q2433: lands short, as the old game.
 - [moved 2026-11-21] T3 `LAYER_HOUSE` in `tools/house_kit_build.gd` and `tools/furniture_build.gd` stays `1`: a `--script` run
   has no autoloads, and naming `Mess` (whose scripts name `Sounds`) stops the tool compiling (tried). Found on the
   way: `tools/furniture_build.gd` already does not compile in a `--script` run (it preloads `openable.gd`, which
