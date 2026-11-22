@@ -8,7 +8,7 @@ M1 and M2 run beside M0.5 and M0.6, not after them.
 |---|---|---|---|
 | M0 | Setup | The repository is set up from starter kit 8.0 (was 7.1) with the port pack on top; the checks pass; the reference clone at `v0.1.1` is in place; the first commit is pushed | done 2026-11-20 (pushed to origin by the designer) |
 | M0.5 | The core in a single-player zoo | In a flat graybox zoo scene (edited in the editor, one station per feature, the game's real entities): movement, handling Socks, pairing, one Cabinet. A true vertical slice of the core (Q2296): the core's sounds and rumble and its polish details are in it, as the old game has them. One player, but every change already goes through the shared-state path: the player is a Host of one (Q2207, Q2208, Q2211, Q2212) | built 2026-11-22; closing (Q2425): the designer's zoo run and code review are left |
-| M0.6 | The co-op zoo base | The same zoo with a Host, a Guest and a late joiner: avatars seen by the others every frame (Q2223), a Guest's pick and Throw as decided (Q2220-Q2222, Q2226), a long random player id in the profile (Q2224), and the full knockdown with Godot's own physical-bone ragdoll (Q2225) | planned |
+| M0.6 | The co-op zoo base | The same zoo with a Host, a Guest and a late joiner: avatars seen by the others every frame (Q2223), a Guest's pick and Throw as decided (Q2220-Q2222, Q2226), a long random player id in the profile (Q2224), and the full knockdown with Godot's own physical-bone ragdoll (Q2225) | started 2026-11-22: behaviour lists being drafted; batches below, proposed |
 | M1 | Assets | Models and UI art ported by the port rules; the core's models and the avatar rig first; a shared material library; things built by code become models or scenes. Approved in family batches, each with a before and after strip (Q2151-Q2153, Q2177, Q2178, Q2216) | planned, beside the zoo |
 | M1.1 | Sound | The sound system is built in M0.5 for the core (Q2296); M1.1 ports every other old sound and pad rumble, ported with the old clips and numbers, made plug-and-play: a sound is added or swapped by dropping in a file and naming it, with no code change. The list from the four merged pieces is in `old-details-backlog.md` (Q2278) | planned |
 | Polish | The polish pass | The core's polish details are done in M0.5 (Q2296); this pass holds those of later pieces | planned |
@@ -37,6 +37,22 @@ as core/41-45 (Q2430). Parked experiments: core/37 bent lying Socks (Q2426); clo
 
 Later, not in M0.5: the pad differences (Q2302), the Coins and Pairs counter and the ESC menu (Q2300), the 20-minute
 day (Q2299).
+
+## M0.6 batches (proposed 2026-11-22, for the designer's go)
+The same shape as M0.5: each batch one theme, tested at one or two stations with a second window as the Guest,
+ending with a short co-op play session and the designer's go. Each piece starts with its behaviour list from the
+old game (drafts: the four co-op lists of 2026-11-22), approved by the designer before any design or code.
+
+| Batch | What | You test |
+|---|---|---|
+| 0 | Two spikes, no game change: Jolt flight bodies on a synchronizer (the Throw's Option A, `coop-structure-for-the-port.md` 4), and a PhysicalBoneSimulator3D pose reaching a Guest (Q2225) | nothing to play; a short report decides the Throw path and the ragdoll's sync |
+| 1 | Host, join and roster: the gate with the long player id in the profile (Q2224; the token waits for the lobby, M4), the Roster Part (max players, colours, names, refusals), join and leave messages, a leaver's Hands dropped where they stood, the Host quitting | host in one window, join from another; join a full or a wrong build; leave and rejoin |
+| 2 | The avatar model (asset piece: `avatar.glb` and feet, its rig, HoldPoint and HatPoint) and Teammates seen: the pose every frame with light easing (Q2223), head look, crouch, waddle and squash, the held item at the HoldPoint, colour, name tag, a teammate's sounds and footsteps at their body (Q2376) | walk, crouch, look, pick and hold beside each other and watch the other window |
+| 3 | The Mess, Hands and Throw in co-op: the late joiner's Mess, the settle stream, a Guest's Mess read-only, woken flights and sweeping Doors seen by a Guest, a Guest's pick (Q2220), drop, refusal, Throw ghost with its blend (Q2221), a Teammate's Throw with its pause (Q2226), catch, pairing, shelving and Coins from a Guest, two players on one Sock; the seven co-op lines of `m06-backlog.md` | the heap and cabinet stations as a Guest, a late joiner mid-pour, both players grabbing one Sock |
+| 4 | Knockdown with Godot's own ragdoll (Q2225): what knocks a player down, the ragdoll, the knocked view, getting up, the knock sound and rumble; drag and wash only as the designer scopes them | throw a full charge at the other player; get up; watch it from the third window |
+| 5 | Close-out: tests at 0 and 50 ms one way, guard tests (bad shape, rate, a forged avatar write), the co-op cost measured with a Guest at 2,000 Socks, the zoo run in co-op, code map and review guide | one co-op zoo run of every station |
+
+Batches 1 and 2 can run side by side (different files); 3 needs 1; 4 needs 2 and the ragdoll spike.
 
 ## What changed from the first plan
 - M0.5 is a true vertical slice of the core: its sounds, rumble and polish details move into it from M1.1 and the polish pass (Q2296).
