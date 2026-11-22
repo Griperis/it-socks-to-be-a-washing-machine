@@ -835,3 +835,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2473-Q2482 |
 
 ---
+
+| Ticket | coop/10, knockdown and drag with Godot's own ragdoll: full-charge Sock and Pair Throws knock down, the 4-bone PhysicalBone3D ragdoll on the Host with a stamped pose eased at 12/s elsewhere, the Hands dropped as a leaver's, the head camera with the vignette and the own body, getting up, drag and struggle, the body outline, message, sound and rumble, a knockdown station; PROTOCOL 13; M0.6 batch 4 (Q2437, Q2483-Q2498); merged (main f618311) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 1 (the outline, Q2498, and a clearer drag still) |
+| Corrections | stopped by the weekly usage limit mid-build and resumed; each commit came back damaged on the mounted drive and was repaired |
+| Cost | 50,972,998 tokens, 175 tool calls, 2h20m (Opus) |
+| Time | about 2 h 20 min over three rounds |
+| Surprises | a latent Mess-settle fault (two Socks resting inside each other with 1 or 3 extra Socks in the zoo): core/49; pose stream about 2.0 kB/s per knocked player; game code about +1,770 |
+| Stop rules | stopped at the vignette's first still (approved Q2497) |
+| Looks | builds/review-knockdown/ |
+| Decisions | Q2483-Q2498 |
+
+---
