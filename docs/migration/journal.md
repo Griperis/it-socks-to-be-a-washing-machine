@@ -861,3 +861,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2499 |
 
 ---
+
+| Ticket | core/50, a heap Sock sank 116 mm under the floor: Jolt's position solve pushed a Sock touching the 0.2 m floor past its middle in one step; a falling Sock moved farther than its motion explains into a floor or wall is put back 1 cm higher with its fall stopped; a pressure rest never moves a Sock; a new `under` watch fault; merged (main bcacadf) |
+| Planned vs actual | 0 planned (found by core/49), 1 actual |
+| Redo count | 0 |
+| Corrections | the mounted-drive repair folded the agent's first commit onto main's tip in its worktree; the agent reset its own branch and recommitted; main was untouched. The designer's uncommitted editor edits blocked the merge and were discarded on the designer's word |
+| Cost | 36,713,733 tokens, 180 tool calls, 1h22m (Opus) |
+| Time | about 1 h 22 min |
+| Surprises | never seen with floors 0.4 m thick or with Jolt's speculative contacts off; game code +100 −9 |
+| Stop rules | none hit |
+| Looks | none |
+| Decisions | none |
+
+---
