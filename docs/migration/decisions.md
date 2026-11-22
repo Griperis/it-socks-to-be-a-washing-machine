@@ -1,4 +1,4 @@
-Next free Q number: Q2472 (update this line whenever a round of questions is asked)
+Next free Q number: Q2473 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -386,3 +386,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2469: the Teammates strip of coop/05 is approved (how a Teammate moves, is coloured, tagged and holds); the sounds, the Throw from the hand and the Pair sparkle are finished on the branch before the merge (designer, 2026-11-22).
 - Q2470: a Teammate's shelve sound plays at the drawer, as the old game (refines Q2453, which grouped it with the cues over their feet).
 - Q2471: coop/06's own body in first person is approved from its two stills and merges; judged further in the zoo (designer, 2026-11-22).
+- Q2472: the Mess in co-op is to be well optimised, inspired by the old game, differences flagged, then improved (designer, 2026-11-22). The plan: `coop-mess-sync.md` (changed records only; one rest batch a tick; woken, falling, poured and swept Socks simulated on every machine and snapped at rest, Q2222; Throws alone on a stamped stream; Doors and drawers swept on every machine; a compact compressed join). Sections A to C of `m06-lists/03-mess-throw-coop.md` are approved with it; a Sock mid-flight at a join flies on from where it is (list question 8, as the old game).
