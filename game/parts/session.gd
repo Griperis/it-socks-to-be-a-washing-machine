@@ -35,7 +35,7 @@ signal ended(text: String)
 ## synchronized property, a spawnable scene or the shape of a Command, an event, a snapshot or the
 ## gate's word changes. The word's first 4 bytes (the PROTOCOL) never move, so any two builds can
 ## tell they differ.
-const PROTOCOL := 10  # 10: coop/03, the gate's word carries the layout and the player id; the Roster
+const PROTOCOL := 11  # 11: coop/07, a Mess answer carries only the records it changed (rows)
 ## The gate's answers: one byte, and after REFUSED one byte saying why.
 const ACCEPTED := 1
 const REFUSED := 0

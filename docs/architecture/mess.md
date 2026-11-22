@@ -34,7 +34,9 @@ Socks lie, are drawn, move or wake.
   before the contact and it pushes them (Jolt alone, no extra force, Q1215).
 - A Door or drawer: every `Openable` is in the group `openables`; while it animates, the Host sweeps
   its AnimatableBody3D shapes over the lying bodies and wakes those at once.
-- A rest: still for `rest_time` (or Jolt asleep) asks `rest`; out of bounds or inside a wall, at the
+- A rest: still for `rest_time` (or Jolt asleep) is noted, and at the tick's end every flight noted is
+  asked as one `rest` (coop/07: one answer, one reliable message a tick, none when nothing rested, as the
+  old game's settle stream); out of bounds or inside a wall, at the
   return spot (`Mess.put_down`). Its middle under a floor's top by less than `sunk`, it lies as it is (the
   old `sunk_floor`); deeper, up to `sunk_depth`, pushed up onto the floor.
 - Pushed out of a leaf (core/39, Q2428): `MessMoving` remembers each Door and drawer leaf it sweeps (its
@@ -45,6 +47,17 @@ Socks lie, are drawn, move or wake.
 
 ## Gotchas
 
+- **An answer carries only the records it changed** (coop/07, `docs/migration/coop-mess-sync.md`): a rows
+  patch (`Mess.ROWS` and the `ROW_*` keys: each changed Sock's whole record in packed arrays, the new count
+  when records are added or cut off, the launches of the rows that fly). Make one with the `*_patch`
+  functions, chaining several Socks through their `onto` argument (`lose_button.gd`, `Hands.left`); never
+  hand-build `states`/`poses` arrays into an answer. `Mess.write` applies a rows patch the same on every
+  machine; a snapshot (a late Guest, a save) is still the whole fields by name. A listener reads a patch with
+  `Mess.row_states()`.
+- A Guest's spawned flight copy is frozen (kinematic) as it arrives (`_on_flight_in`): it has no
+  synchronizer yet and comes in at the holder's origin; left live, a pour's copies piled there and
+  overflowed Jolt's buffers on the Guest (coop/07). coop/08 and coop/09 give the Guest its own bodies and
+  the Throw stream.
 - A flight flies as the same leg and foot boxes it lies on (`MessBodies.parts_at`), with
   `MessTuning.turn_weight` times its flat box's inertia (a 50 g board's own spins to Jolt's cap on an
   edge landing), and sweeps (CCD) only from 1 m/s (core/23). Poured and dropped Socks fly as woken ones.

@@ -43,9 +43,7 @@ func decide(cmd: Command) -> Dictionary:
 		return refuse("wrong")
 	if not parts.near(cmd.by, get_parent(), reach):
 		return refuse("far")
-	var states := mess.states
-	var poses := mess.poses
-	var throws := mess.throws
+	var patch := {}
 	var popped := PackedVector3Array()
 	var any := false
 	for spot in spots:
@@ -57,16 +55,13 @@ func decide(cmd: Command) -> Dictionary:
 			pose = mess.flight_of(sock).global_transform.orthonormalized()
 		pose.origin += Vector3.DOWN * (LOST_DEPTH if verb == &"lose" else sink_depth)
 		var down := mess.put_down(sock, pose)
-		var patch := mess.lying_patch(sock, down["pose"], states, poses, throws)
-		states = patch["states"]
-		poses = patch["poses"]
-		throws = patch["throws"]
+		patch = mess.lying_patch(sock, down["pose"], patch)
 		if down["returned"]:
 			popped.append((down["pose"] as Transform3D).origin)
 		any = true
 	if not any:
 		return refuse("gone")
-	var ev := {"ok": true, "changes": {mess.id: {"states": states, "poses": poses, "throws": throws}}}
+	var ev := {"ok": true, "changes": {mess.id: patch}}
 	if not popped.is_empty():
 		ev[Mess.POPPED] = popped
 	return ev

@@ -207,8 +207,8 @@ func case_survey() -> void:
 	var clean := _watch.survey()
 	_check(int(clean["sunk"]) == 0 and int(clean["inside"]) == 0, "a stack of 40 has no sunk Sock and none inside another (%s)" % str(clean))
 	# Sock 0 is put under the floor, Sock 3 exactly where Sock 2 (its Design's other Sock) lies.
-	var patch := mess.lying_patch(0, Transform3D(Basis.IDENTITY, mess.pose_of(0).origin + Vector3.DOWN * 0.05), mess.states, mess.poses, mess.throws)
-	patch = mess.lying_patch(3, mess.pose_of(2), patch["states"], patch["poses"], patch["throws"])
+	var patch := mess.lying_patch(0, Transform3D(Basis.IDENTITY, mess.pose_of(0).origin + Vector3.DOWN * 0.05))
+	patch = mess.lying_patch(3, mess.pose_of(2), patch)
 	_level.parts.apply({"ok": true, "kind": &"put", "by": 1, "to": mess.id, "changes": {mess.id: patch}})
 	await _physics_ticks(1)
 	var found := _watch.survey()
