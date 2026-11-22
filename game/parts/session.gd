@@ -197,7 +197,7 @@ func close() -> void:
 ## The hash of the sorted Part ids `p` binds: what both machines' scenes must declare alike.
 static func layout_of(p: Parts) -> String:
 	var ids := PackedStringArray()
-	for k: Variant in p.snapshot():
+	for k in p.ids():
 		ids.append(String(k))
 	ids.sort()
 	return "\n".join(ids).sha256_text()

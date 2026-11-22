@@ -118,9 +118,8 @@ func _physics_process(delta: float) -> void:
 		return
 	_note_lying()
 	var now: Dictionary[int, bool] = {}
-	for child in mess.flight_holder().get_children():
-		var body := child as RigidBody3D
-		if body == null or body.is_queued_for_deletion() or not body.has_meta(Mess.SOCK_META):
+	for body in mess.flight_bodies():
+		if not body.has_meta(Mess.SOCK_META):
 			continue
 		var sock := int(body.get_meta(Mess.SOCK_META))
 		now[sock] = true

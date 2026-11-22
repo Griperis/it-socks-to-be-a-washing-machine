@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: coop
 priority: now
 created: 2026-11-22
-done:
+done: 2026-11-22
 blocked_by: []
 notes: ["M0.6 batch 3, the Mess half (Q2472); plan: docs/migration/coop-mess-sync.md"]
 terms: [Host, Guest, Mess, Flight]
@@ -58,6 +58,38 @@ Doors sweeping on the Host only, the co-op cost of whole arrays, the heap sign's
 - Q2222, Q2407, Q2428, Q2472 (2026-11-22).
 
 ## Open follow-ups
+- [later] A Guest that leaves mid-pour becomes a Host of one with its looks bodies still on `LAYER_LOOKS`
+  (they rest by the Host's rules, but do not touch its new bodies until then). Technical; no case yet.
+- [later] The join after a 2,000 pour at rest (4,039 Socks) is 110 KB, over the plan's 100 KB if that budget is
+  read per record: a poured Sock's exact pose is 48 bytes of floats that do not compress. Smaller needs the Host
+  to keep rested poses quantized (a choice for the lead and the designer: it moves every rest by under a mm).
+- [later] "The Guest's frame time" is measured as the Mess's scripts a tick on each machine with the same bodies;
+  both machines' physics worlds step in one process in the test, so a two-process measure of whole frames
+  (net_shot or two exports) is left.
 
 ## Built log
 - 2026-11-22 lead: model opus (netcode and physics, CLAUDE.md "Models").
+- 2026-11-22 agent (coop/08): Changed: every machine starts its own body for a Sock the Host's answer makes
+  FLYING by a wake, fall, pour, sweep or drop (`MessMoving.start`, under the Mess's own `Bodies` holder, no
+  spawner); a Guest's is looks only on `Mess.LAYER_LOOKS`, never asks anything, and the Host's rest batch snaps
+  it. Only a Throw's body is under `flights` (the spawner; a Guest's copy still frozen until coop/09). A Guest's
+  moving Doors and drawers sweep its own lying Socks (`tick_looks`, `Mess.lift`); one the Host never woke goes
+  back where it lay once still (`Mess.lie_again`, B06). The pose is set before `add_child` (backlog). The heap
+  sign's Moving count reads this machine's bodies. `Part.whole_state()` (new; `Parts.snapshot()` uses it): the
+  Mess's packed and zstd-compressed, exact, with each flying body's place and motion (half floats), read back
+  by `Mess.unpacked()`; `Session.layout_of` reads `Parts.ids()`.
+  Files: game/mess/mess.gd, game/mess/mess_moving.gd, game/parts/part.gd, game/parts/parts.gd,
+  game/parts/session.gd, game/debug/mess_watch.gd, tests/coop_mess_test.gd (new), tests/throw_test.gd,
+  tests/pairing_test.gd, docs/architecture/mess.md, docs/migration/coop-mess-sync.md.
+  Measured (`MESS`, `RESPILL` lines; before = main 6c469d60):
+  - Reliable bytes during a 2,000-Sock pour: 983 KB in 16.2 s, 60.8 KB/s, worst second 91 KB (0 ms); 991 KB,
+    59.4 KB/s, worst second 90 KB (50 ms). coop/07 had 58 to 60 KB/s, worst 87 to 91 KB. From a late welcome on:
+    50 to 56 KB/s, worst second 81 to 85 KB (before: 55 KB/s, worst 80 KB).
+  - Join: the zoo's 2,039 Socks 19.7 KB (before 132 KB; the Mess alone about 4 KB, the rest is other Parts);
+    mid-pour 3,059 Socks with 474 flying 90 KB at 0 ms, 96 KB at 50 ms (before 256 KB, the spawner's copies
+    included); a 500 pour mid-way 46 KB; after the 2,000 pour at rest (4,039 Socks) 110 KB.
+  - A late joiner's bodies start at the Host's place (farthest 0.000 m from the Host's path).
+  - The Mess's scripts a tick during a 2,000 pour: Host mean 1.36 ms (95th 2.50), Guest 0.48 ms (95th 0.76) at
+    0 ms; Host 1.25 (2.33), Guest 0.45 (0.77) at 50 ms; the Guest holds as many bodies as the Host (200 of 200 in
+    the real-path pour).
+  Verified: `PASS 15735 checks, 380 cases` (run.sh --touched); coop_mess and coop_respill with --stress PASS; coop_flight --stress PASS.

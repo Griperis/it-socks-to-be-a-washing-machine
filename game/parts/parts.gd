@@ -145,12 +145,18 @@ func left(by: int) -> void:
 			apply(ev)
 
 
-## Every part's state by id: what a late Guest receives and what a save keeps.
+## Every part's state by id, as it is sent whole (Part.whole_state()): what a late Guest receives and
+## what a save keeps.
 func snapshot() -> Dictionary:
 	var d := {}
 	for id: StringName in _by_id:
-		d[id] = _by_id[id].state()
+		d[id] = _by_id[id].whole_state()
 	return d
+
+
+## Every part's id.
+func ids() -> Array[StringName]:
+	return _by_id.keys()
 
 
 ## A late Guest, or a save loaded: every part takes its state whole, shown at once.

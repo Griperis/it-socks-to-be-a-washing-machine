@@ -478,7 +478,7 @@ func case_commands() -> void:
 	_check(_mess.flight_of(ON_FLOOR).get_parent() == _station.get_node("Flights"), "the flying Sock is the Host's body, under the spawn path")
 	var snap := _parts.snapshot()
 	var back := _roundtrip(snap)
-	_same(back[String(_mess.id)]["throws"], snap[_mess.id]["throws"], "a thrown Sock's launch survives a save")
+	_same(Mess.unpacked(back[String(_mess.id)])["throws"], _mess.throws, "a thrown Sock's launch survives a save")
 	_places("in the air")
 	await _until(func() -> bool: return _mess.state_of(ON_FLOOR) == Mess.State.LYING, "it to lie")
 	_check(_mess.throws.is_empty(), "a Sock at rest keeps no launch")
