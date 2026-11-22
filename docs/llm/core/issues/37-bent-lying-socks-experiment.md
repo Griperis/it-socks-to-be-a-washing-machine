@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: blocked
 kind: build
 area: core
 feature: core
@@ -62,6 +62,56 @@ build of the zoo (Q2419). No strip.**
 - Not merged; a review build of the zoo, no strip (Q2419, 2026-11-21).
 
 ## Open follow-ups
+- [later] Added by the agent, the designer's call: a Sock that rests bent sinks from flat into its bend over
+  `MessTuning.drape_time` (0.25 s; its lying boxes are bent at once). Without it the flat flight snaps bent in one
+  frame. 0 gives the ticket's literal "starts bent exactly as decided". Keep the sink, or snap?
+- [later] E3 hand-off from a cloth Looks: not built as a read of the chain. At every rest the cloth is already flat:
+  it blends flat below `flat_speed` over `blend_time` (0.3 s, the same as `rest_time`) and within `ground_room` of
+  the ground (D04, P07). So there is no bend to hand over, and the bend found by the rays applies (eased in, above).
+- [later] E6: a woken bent Sock eases flat over the cloth's `blend_time` when its flight is given a cloth Looks (the
+  `flying_cap` nearest the camera, given the tick it starts). As an instance it is drawn flat at once.
+- [later] How many bend: about 45% of a heap poured on a flat floor rests bent (226 of 500 in `settle_500`), because
+  Socks lie over each other's edges. Should only the house's edges bend a Sock (the rays would then see only
+  `LAYER_HOUSE`), or other Socks' edges too, as now?
+- [later] Hinges come from the bones, so on the `ankle` shape the leg past its ankle hinge is only 2 cm (the Heel
+  bone's head sits near its cuff), and its "ankle bend" folds just the cuff rim.
+- [later] A bent Sock's three boxes are the crew box model split at its own shape's hinges, like the flat boxes that
+  fit the crew for every shape. So a `chunky` Sock's drawn ends reach past its boxes, as they do when it lies flat.
+  Fitting them to each shape's own mesh caused overlaps in the heap: the flight's boxes are crew-sized.
+- [later] Two hinges can only drape where the edge falls within about a quarter of an end's length of a hinge. Ends
+  bend less than cloth would elsewhere, and the box check halves a bend that would cut into the edge.
+- [later] The zoo's Lose button (`game/zoo/handling/lose_button.gd`, outside this ticket) still puts a Sock down
+  with no bend.
+- [later] `tools/shot_hooks.gd` is 705 lines (grep_rules notes over 600): `bend_row` and `bend_drop` added here.
+- [later] Kit: the new scripts' `.uid` were made with `ResourceUID.create_id()` in the test mirror (none was left
+  in the check mirror).
 
 ## Built log
 - Model: Opus: a cross-cutting Mess change with a shader and physics; hard to get pop-free.
+
+### 2026-11-21
+- Changed: the pose record is 14 floats, the last two the heel's and ankle's bend (E1). A rest finds them with
+  three rays down along each end and then one box query per end (up to four if each try overlaps), turning the end
+  down to the surface under it. The turn stops at the limit or at straight down, and halves when the turned end
+  would overlap anything (E2, `SockBend`). Nothing is added per tick; a rest costs about 80 us. The sock shader
+  bends vertices, normals and tangents about each shape's two hinges (from the Heel and Foot bones), with the
+  angles packed in the instance colour's alpha, so the buffer does not grow (E4). A lent Looks is bent by its
+  bones and matches the shader (stills). The lying body is three boxes turned with the ends (E5). A woken Sock
+  flies flat (E6). The heap station has three steps under the spout and its table moved under the pour's edge.
+  The benchmark has `drape_500`, and the `main` vs branch table is in `builds/review-core-37/report.md` (E7).
+  Numbers are in `MessTuning` "Bend" (E8).
+- Bench, branch vs `main` (one run each, a loaded machine, noisy): idle ticks unchanged (10,000 lying: 0.008 vs
+  0.011 ms median). Pouring ticks within noise (`pour_500` 4.41 vs 4.43 ms median, p95 7.7 vs 6.5). Per rest 80-90
+  us (`bend_us`). Per frame: scripts' frame 0.20 vs 0.12 ms in `settle_500`, from rows rewritten while draping; the
+  shader's GPU cost was not measured headless. Faults: the same 7 scenarios fail on both, on flips (Q2413), sunk
+  and the tick budget. `drape_500`: 267 of 500 rest bent. Branch: jumped 1, sunk 2. `main`: lost 1, sunk 2.
+- Files: `game/mess/sock_bend.gd` (new), `mess.gd`, `mess_bodies.gd`, `mess_drawing.gd`, `mess_moving.gd`,
+  `mess_tuning.gd`; `game/sock/sock_pattern.gdshader`, `sock_cloth.gd` (carry with places);
+  `game/debug/mess_bench*`, `mess_watch.gd`; `game/zoo/stations/heap.tscn`; `tools/shot_hooks.gd`;
+  `tests/mess_bend_test.gd` (new); `docs/architecture/mess.md`.
+- Verified: `kit/tools/run.sh --touched`: PASS 16708 checks, 366 cases; rules PASS; asset_lint PASS. Stills
+  `builds/review-core-37/bend-*.png` (the shader's and the bones' bend differ by 798 pixels over 16 levels in a
+  1280x720 frame).
+
+### 2026-11-22 (lead): parked
+- Parked by the designer (Q2426): not merged; the branch and `builds/review-core-37/` stay. The shader bend may come back for the held Sock (the lead's note, not planned).
