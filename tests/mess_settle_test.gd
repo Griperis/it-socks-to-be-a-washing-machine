@@ -11,13 +11,18 @@ const PLAN: MessBenchPlan = preload("res://game/debug/mess_bench_plan.tres")
 const HEAP := "Stations/Heap"
 ## A small heap for the rule cases (the shipped 500 is the real path's).
 const SMALL := 60
+## Where the real path's extra Sock records lie (core/49): free floor on the Knockdown station's pad.
+const EXTRA_AT := Vector3(-18.3, 0.0, 2.5)
 ## The faults a heap at rest must not have (MessWatch.result() and survey()). Two more are counted
 ## and reported but not yet held at none, because their cure changes how Socks move or rest and
 ## waits for the designer (core/31 Open follow-ups): "flips" (a Sock landing on its edge from the
 ## spout's height still turns faster than the limit for a tick or two) and "sunk" (a few Socks of a
 ## big heap rest pressed part-way into the floor).
-const FAULTS: Array[String] = ["lost", "hot", "jumped", "jitter", "inside"]
-const COUNTED: Array[String] = ["flips", "sunk"]
+## A Sock made inside another (by a pour's wave: "made_inside", core/49) is a fault. Socks a heap's
+## weight presses into each other are allowed and counted (Q2499, Jolt's 20 mm slop): "pressed", and
+## "inside" for the few the sharp boxes measure deeper (a slanted edge: Jolt's boxes have rounded edges).
+const FAULTS: Array[String] = ["lost", "hot", "jumped", "jitter", "made_inside"]
+const COUNTED: Array[String] = ["flips", "sunk", "pressed", "inside"]
 
 var _zoo: Node3D = null
 var _level: MessBenchLevel = null
@@ -28,6 +33,16 @@ func cases() -> Array[Dictionary]:
 	return [
 		{"name": "real_path", "method": "case_real_path", "world": false,
 				"title": "Real path, B3: the player clicks More at the heap station; the heap pours and settles to no moving Sock within the benchmark's limit, none lost or glitching"},
+		{"name": "real_path_1", "method": "case_real_path_1", "world": false,
+				"title": "core/49: the same real path with 1 more Sock record in the zoo before the heap's (the ids and the physics shift): no Sock is made inside another"},
+		{"name": "real_path_2", "method": "case_real_path_2", "world": false,
+				"title": "core/49: the same real path with 2 more Sock records in the zoo: no Sock is made inside another"},
+		{"name": "real_path_3", "method": "case_real_path_3", "world": false,
+				"title": "core/49: the same real path with 3 more Sock records in the zoo: no Sock is made inside another"},
+		{"name": "real_path_4", "method": "case_real_path_4", "world": false,
+				"title": "core/49: the same real path with 4 more Sock records in the zoo: no Sock is made inside another"},
+		{"name": "wave_places", "method": "case_wave_places", "world": false,
+				"title": "core/49: two Sock boxes crossed or stacked into each other meet, apart or side by side they do not; the spout never picks a place that meets another of its wave"},
 		{"name": "switch", "method": "case_switch", "world": false,
 				"title": "Q2407: a Sock that comes to rest is drawn the same tick as a lying instance; no MultiMesh of the Mess is physics-interpolated"},
 		{"name": "small_heap", "method": "case_small_heap", "world": false,
@@ -39,7 +54,9 @@ func cases() -> Array[Dictionary]:
 		{"name": "jitter", "method": "case_jitter", "world": false,
 				"title": "B3: a Sock woken again and again is counted as jittering; each wake is counted"},
 		{"name": "survey", "method": "case_survey", "world": false,
-				"title": "B3: a lying Sock under the floor is counted sunk, one with its middle inside another is counted inside it; a clean stack has neither"},
+				"title": "B3: a lying Sock under the floor is counted sunk, one overlapping another deeper than Jolt's slop is counted inside it, one within the slop pressed (Q2499); a clean stack has none"},
+		{"name": "made_inside", "method": "case_made_inside", "world": false,
+				"title": "core/49: two new Socks made overlapping are each counted made inside (a fault); one made apart is not"},
 		{"name": "burst", "method": "case_burst", "world": false,
 				"title": "B1: a burst of Throws into a stacked heap wakes lying Socks and all come to rest again"},
 		{"name": "sweep", "method": "case_sweep", "world": false,
@@ -67,7 +84,35 @@ func _before_case() -> void:
 # --- The real path -------------------------------------------------------------------------------
 
 func case_real_path() -> void:
+	await _real_path(0)
+
+
+func case_real_path_1() -> void:
+	await _real_path(1)
+
+
+func case_real_path_2() -> void:
+	await _real_path(2)
+
+
+func case_real_path_3() -> void:
+	await _real_path(3)
+
+
+func case_real_path_4() -> void:
+	await _real_path(4)
+
+
+## The player clicks More at the heap station, with `extra` more Sock records lying in the zoo before
+## the heap's (core/49: their count once decided whether two poured Socks rested inside each other).
+func _real_path(extra: int) -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
+	var spots := _zoo.get_node("Spots") as Node3D
+	for k in extra:
+		var spot := SockSpot.new()
+		spot.design = 4 + k
+		spot.position = EXTRA_AT + Vector3(0.4 * k, 0.0, 0.0)
+		spots.add_child(spot)
 	add_child(_zoo)
 	var mess := _zoo.get_node("Socks/Mess") as Mess
 	var player := _zoo.get_node("Player") as Player
@@ -106,6 +151,34 @@ func case_real_path() -> void:
 	_check(int(r["moving"]) == 0 and int(r["waiting"]) == 0, "no Sock moves or waits (%d, %d)" % [r["moving"], r["waiting"]])
 	_no_faults(r)
 	_check(_interpolated(_zoo.get_node("Lying")) == 0, "no MultiMesh of the Mess is physics-interpolated (%d)" % _interpolated(_zoo.get_node("Lying")))
+
+
+# --- core/49: a wave's places --------------------------------------------------------------------
+
+func case_wave_places() -> void:
+	var box := SockDress.BOX
+	var at := Transform3D(Basis.IDENTITY, Vector3(0.0, 1.0, 0.0))
+	var crossed := Transform3D(Basis(Vector3.UP, PI * 0.5), at.origin + Vector3(0.0, box.y * 0.3, 0.0))
+	_check(MessBodies.boxes_meet(box, at, box, crossed), "two flat Socks crossed at nearly one height meet")
+	_check(MessBodies.boxes_meet(box, at, box, Transform3D(Basis.IDENTITY, at.origin + Vector3(box.x * 0.6, 0.0, 0.0))),
+			"two Socks overlapping end to end meet")
+	_check(not MessBodies.boxes_meet(box, at, box, Transform3D(Basis.IDENTITY, at.origin + Vector3(0.0, box.y * 1.05, 0.0))),
+			"one lying just over the other does not")
+	_check(not MessBodies.boxes_meet(box, at, box, Transform3D(Basis.IDENTITY, at.origin + Vector3(0.0, 0.0, box.z * 1.05))),
+			"side by side they do not")
+	# Turned 45 degrees on the first one's diagonal: their bounding boxes overlap at both distances; the
+	# boxes themselves meet only at the nearer one (a turned axis separates them at the farther).
+	var turn := Basis(Vector3.UP, -PI * 0.25)
+	var near := Transform3D(turn, at.origin + Vector3(0.2, 0.0, 0.2))
+	var far := Transform3D(turn, at.origin + Vector3(0.25, 0.0, 0.25))
+	_check(MessBodies.boxes_meet(box, at, box, near), "turned on the diagonal, near, they meet")
+	_check(not MessBodies.boxes_meet(box, at, box, far), "turned on the diagonal, a little farther, they do not")
+	_check(MessBodies.boxes_meet(box, near, box, at) and not MessBodies.boxes_meet(box, far, box, at), "the test does not depend on the order")
+	# The spout's own pick: a wave's place that meets one of its others is refused.
+	var taken: Array[Array] = [[box, at]]
+	_check(HeapSpout._meets(taken, box, crossed), "the spout refuses a place inside one of its wave's")
+	_check(not HeapSpout._meets(taken, box, Transform3D(Basis.IDENTITY, at.origin + Vector3(0.0, 0.0, box.z * 1.05))),
+			"and takes one beside it")
 
 
 # --- The rest's switch ---------------------------------------------------------------------------
@@ -205,16 +278,44 @@ func case_survey() -> void:
 	await _level_up(MessBenchScenario.Kind.IDLE, 40, 0)
 	var mess := _level.mess
 	var clean := _watch.survey()
-	_check(int(clean["sunk"]) == 0 and int(clean["inside"]) == 0, "a stack of 40 has no sunk Sock and none inside another (%s)" % str(clean))
-	# Sock 0 is put under the floor, Sock 3 exactly where Sock 2 (its Design's other Sock) lies.
+	_check(int(clean["sunk"]) == 0 and int(clean["inside"]) == 0 and int(clean["pressed"]) == 0,
+			"a stack of 40 has no sunk Sock and none pressed into or inside another (%s)" % str(clean))
+	# Sock 0 is put under the floor, Sock 3 exactly where Sock 2 (its Design's other Sock) lies, Sock 7
+	# on Sock 6 (the same Design) pressed 12 mm into it: within Jolt's slop (Q2499).
+	var thick: float = (_watch._parts(6)[0][0] as Vector3).y
+	var under := mess.pose_of(6).translated(Vector3.UP)
+	var on := under
+	on.origin += on.basis.y.normalized() * (thick - 0.012)
 	var patch := mess.lying_patch(0, Transform3D(Basis.IDENTITY, mess.pose_of(0).origin + Vector3.DOWN * 0.05))
 	patch = mess.lying_patch(3, mess.pose_of(2), patch)
+	patch = mess.lying_patch(6, under, patch)
+	patch = mess.lying_patch(7, on, patch)
 	_level.parts.apply({"ok": true, "kind": &"put", "by": 1, "to": mess.id, "changes": {mess.id: patch}})
 	await _physics_ticks(1)
 	var found := _watch.survey()
 	_check(int(found["sunk"]) == 1, "the Sock 5 cm under the floor is counted sunk (%d)" % found["sunk"])
 	_near(float(found["sunk_worst"]), 0.05, 0.002, "and how deep")
 	_check(int(found["inside"]) == 2, "the two Socks in one place are each counted inside the other (%d)" % found["inside"])
+	_check(int(found["pressed"]) == 2, "the two Socks 12 mm into each other are each counted pressed, not inside (%d)" % found["pressed"])
+	_near(float(found["pressed_worst"]), 0.012, 0.001, "and how deep")
+
+
+## core/49: two new Socks made overlapping are counted made inside; one made apart is not.
+func case_made_inside() -> void:
+	await _level_up(MessBenchScenario.Kind.IDLE, 4, 0)
+	var mess := _level.mess
+	var design := mess.design_of(0).id
+	var at := Transform3D(Basis.IDENTITY, Vector3(0.0, 1.5, 0.0))
+	var poses := PackedFloat32Array()
+	for pose: Transform3D in [at, at.translated(Vector3(0.05, 0.005, 0.0)), at.translated(Vector3(0.0, 0.0, 1.0))]:
+		poses.append_array(Mess.pack(pose))
+	var zero := PackedVector3Array([Vector3.ZERO, Vector3.ZERO, Vector3.ZERO])
+	_level.parts.ask(Command.new(&"add", Parts.HOST, mess.id,
+			{"designs": PackedInt32Array([design, design, design]), "poses": poses, "vels": zero, "spins": zero}))
+	await _until(func() -> bool: return mess.moving_count() == 3, "the three new Socks to fall")
+	await _physics_ticks(1)
+	_check(_watch.made_inside == 2, "the two made 5 cm apart, one through the other, are each counted made inside; the third is not (%d)" % _watch.made_inside)
+	_check(int(_watch.result()["made_inside"]) == _watch.made_inside, "the count is in the result")
 
 
 # --- B1: the level's acts ------------------------------------------------------------------------
@@ -327,8 +428,9 @@ func _no_faults(r: Dictionary) -> void:
 		_check(int(r[key]) == 0, "no Sock %s (%d)" % [key, r[key]])
 	for key in COUNTED:
 		_check(r.has(key), "Socks that %s are counted" % key)
-	print("mess_settle: %d Socks rested; counted and not yet held at none: flips %d (fastest turn %.1f rad/s), sunk %d (deepest %.0f mm)"
-			% [r["rests"], r["flips"], r["worst_spin"], r["sunk"], float(r["sunk_worst"]) * 1000.0])
+	print("mess_settle: %d Socks rested; counted and not yet held at none: flips %d (fastest turn %.1f rad/s), sunk %d (deepest %.0f mm), pressed %d (deepest %.1f mm), inside %d (deepest %.1f mm)"
+			% [r["rests"], r["flips"], r["worst_spin"], r["sunk"], float(r["sunk_worst"]) * 1000.0, r["pressed"], float(r["pressed_worst"]) * 1000.0,
+			r["inside"], float(r["inside_worst"]) * 1000.0])
 
 
 ## How many MultiMeshInstance3Ds under `root` the engine would physics-interpolate.

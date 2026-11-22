@@ -83,6 +83,13 @@ Socks lie, are drawn, move or wake.
 - A Mess needs its `tuning` (HandsTuning: a Throw's drag, the hit's wake) set in its scene; `_ready` asserts it
   (core/30). Every number of the tiers is in `MessTuning`, none in code (the sweep's CCD speeds, the touch margin,
   the boxes' least thickness, read once a run by the first Mess).
+- **A new body must not be made inside another** (core/49): two Socks made overlapping fall and rest stuck
+  together (Jolt keeps the contact and never parts them). A physics query sees only bodies already made, so a
+  caller that picks several places for one `add` (the heap's spout) also tries each against its own earlier
+  picks (`MessBodies.boxes_meet`); `MessWatch` counts a new Sock made inside a moving one as `made_inside`, a fault.
+  Jolt's `penetration_slop` (20 mm) is close to a Sock's 26 mm, so a heap's weight presses Socks up to 20 mm into
+  each other: accepted and only counted (Q2499; the floor's the same, Q2412): `pressed`, and `inside` for the few
+  the sharp boxes measure deeper at a slanted edge.
 - Packed arrays in a Dictionary are values: take one out before writing it in place (`MessDrawing`).
 - The instance buffer layout (transform rows, colour, custom) is the old game's; the custom data is
   `MessDrawing.look_data()`, read by the sock shader (`game/sock/sock_pattern.gdshader`, assets/01).
@@ -177,5 +184,6 @@ build, so the exclusion is for size and for not shipping the benchmark, not for 
 
 Faults (`MessWatch`): never (still moving at the limit), lost (came back at the return spot), hot (written lying
 while turning or moving fast), jumped (snapped at its rest), flips (turned faster than `flip_spin`), jitter (woken
-`jitter_wakes` times or more), sunk (lowest point under the floor), inside (its leg's or foot's middle in another
-Sock). A scenario with one, or with its 95th-percentile tick over the budget, fails the run.
+`jitter_wakes` times or more), sunk (lowest point under the floor), inside (its leg or foot overlapping another
+Sock's deeper than `inside`, 22 mm; from `pressed`, 6 mm, it is counted as pressed, Q2499), made_inside (a new Sock
+made overlapping a moving one, core/49). A scenario with one, or with its 95th-percentile tick over the budget, fails the run.

@@ -10,8 +10,10 @@
 ##   moving fast);
 ## - wakes (a lying Sock that moves again), and Socks that jitter (woken `jitter_wakes` times or more);
 ## - Socks that flip (turning faster than `flip_spin` while moving);
-## - survey(), once the heap rests: lying Socks sunk under the floor or with their middle inside
-##   another lying Sock.
+## - made inside: a new Sock (a record that never lay) whose boxes overlap a moving Sock's from the
+##   tick it is first seen (core/49: two Socks of one pour made inside each other rest stuck together);
+## - survey(), once the heap rests: lying Socks sunk under the floor, pressed into another lying Sock
+##   (allowed and counted, Q2499: Jolt's slop) or inside it (deeper than the slop).
 class_name MessWatch
 extends Node
 
@@ -20,6 +22,8 @@ extends Node
 const LOST_OVER := 0.35
 ## The survey's grid: lying Socks are compared with those in the cells round their own.
 const CELL := 0.45
+## Two Socks whose middles are farther apart than this cannot overlap (a Sock is under 0.45 m long).
+const NEAR := 0.45
 ## How often the moving count is noted for the report's line over time.
 const SERIES_EVERY := 0.5
 
@@ -34,6 +38,7 @@ var rests := 0
 var lost := 0
 var jumped := 0
 var hot := 0
+var made_inside := 0
 var wakes := 0
 var peak_moving := 0
 ## The longest snap of a rest that was not a return, in m.
@@ -57,6 +62,8 @@ var _spin: Dictionary[int, float] = {}
 var _lay: Dictionary[int, bool] = {}
 var _woken: Dictionary[int, int] = {}
 var _flipped: Dictionary[int, bool] = {}
+## The Socks seen moving at some time while watched (a body first seen for a record not among them is new).
+var _seen: Dictionary[int, bool] = {}
 var _since_series := 0.0
 var _started := false
 
@@ -82,6 +89,7 @@ func restart() -> void:
 	lost = 0
 	jumped = 0
 	hot = 0
+	made_inside = 0
 	wakes = 0
 	peak_moving = 0
 	worst_jump = 0.0
@@ -118,11 +126,17 @@ func _physics_process(delta: float) -> void:
 		return
 	_note_lying()
 	var now: Dictionary[int, bool] = {}
+	var made: Array[int] = []
+	var poses: Dictionary[int, Transform3D] = {}
 	for body in mess.flight_bodies():
 		if not body.has_meta(Mess.SOCK_META):
 			continue
 		var sock := int(body.get_meta(Mess.SOCK_META))
 		now[sock] = true
+		poses[sock] = body.global_transform
+		if not _flying.has(sock) and not _lay.has(sock) and not _seen.has(sock):
+			_seen[sock] = true
+			made.append(sock)
 		if not _flying.has(sock) and _lay.has(sock):
 			wakes += 1
 			_woken[sock] = int(_woken.get(sock, 0)) + 1
@@ -133,6 +147,9 @@ func _physics_process(delta: float) -> void:
 		worst_spin = maxf(worst_spin, spin)
 		if spin > checks.flip_spin:
 			_flipped[sock] = true
+	for sock in made:
+		if _made_inside(sock, poses):
+			made_inside += 1
 	for sock: int in _flying:
 		if now.has(sock):
 			continue
@@ -152,6 +169,28 @@ func _physics_process(delta: float) -> void:
 	own_usec = Time.get_ticks_usec() - from
 
 
+## Whether new Sock `sock` overlaps another moving Sock deeper than MessChecks.made_inside.
+func _made_inside(sock: int, poses: Dictionary[int, Transform3D]) -> bool:
+	var at := poses[sock]
+	for other: int in poses:
+		if other != sock and poses[other].origin.distance_to(at.origin) < NEAR \
+				and _depth(sock, at, other, poses[other]) > checks.made_inside:
+			return true
+	return false
+
+
+## How deep Socks `a` and `b` overlap at poses `at_a` and `at_b`, in m (the deepest of their leg and
+## foot boxes' overlaps; 0 or less: apart).
+func _depth(a: int, at_a: Transform3D, b: int, at_b: Transform3D) -> float:
+	var deepest := -INF
+	for pa: Array in _parts(a):
+		var ta := Transform3D(at_a.basis.orthonormalized(), at_a * (pa[1] as Vector3))
+		for pb: Array in _parts(b):
+			var tb := Transform3D(at_b.basis.orthonormalized(), at_b * (pb[1] as Vector3))
+			deepest = maxf(deepest, MessBodies.overlap_depth(pa[0], ta, pb[0], tb))
+	return deepest
+
+
 func _rested(sock: int) -> void:
 	rests += 1
 	_lay[sock] = true
@@ -167,13 +206,14 @@ func _rested(sock: int) -> void:
 
 
 ## The heap as it lies now: {"sunk": lying Socks whose lowest point is under the floor, "sunk_worst":
-## how far under the deepest one is, in m, "inside": lying Socks with the middle of their leg or foot
-## inside another lying Sock's leg or foot}. Judged
+## how far under the deepest one is, in m, "pressed": lying Socks whose leg or foot overlaps another
+## lying Sock's deeper than MessChecks.pressed and no deeper than MessChecks.inside (Q2499: allowed,
+## counted), "pressed_worst": the deepest of them, in m, "inside": those overlapping deeper, "inside_worst"}. Judged
 ## by the boxes a Sock lies on (its leg and its foot), not its outline's box, so a Sock leaning on
 ## its heel is not sunk. Pairs are left out (a ball rests in the dip between Socks). Not for every
 ## tick: it walks every lying record from `first` on.
 func survey() -> Dictionary:
-	var out := {"sunk": 0, "sunk_worst": 0.0, "inside": 0}
+	var out := {"sunk": 0, "sunk_worst": 0.0, "pressed": 0, "pressed_worst": 0.0, "inside": 0, "inside_worst": 0.0}
 	if mess == null:
 		return out
 	var cells: Dictionary[Vector3i, PackedInt32Array] = {}
@@ -189,11 +229,9 @@ func survey() -> Dictionary:
 	for sock in socks:
 		var pose := mess.pose_of(sock)
 		var low := INF
-		var middles := PackedVector3Array()
 		for part: Array in _parts(sock):
 			var size: Vector3 = part[0]
 			var centre: Vector3 = part[1]
-			middles.append(pose * centre)
 			for x: float in [-0.5, 0.5]:
 				for y: float in [-0.5, 0.5]:
 					for z: float in [-0.5, 0.5]:
@@ -202,23 +240,25 @@ func survey() -> Dictionary:
 			out["sunk"] += 1
 			out["sunk_worst"] = maxf(out["sunk_worst"], floor_y - low)
 		var c := _cell(pose.origin)
-		var found := false
+		var deepest := 0.0
 		for dx in range(-1, 2):
 			for dy in range(-1, 2):
 				for dz in range(-1, 2):
 					for other: int in cells.get(c + Vector3i(dx, dy, dz), PackedInt32Array()):
-						if other != sock and not found:
-							for middle in middles:
-								if _within(other, middle):
-									found = true
-		if found:
+						if other != sock:
+							deepest = maxf(deepest, _depth(sock, pose, other, mess.pose_of(other)))
+		if deepest > checks.inside:
 			out["inside"] += 1
+			out["inside_worst"] = maxf(out["inside_worst"], deepest)
+		elif deepest > checks.pressed:
+			out["pressed"] += 1
+			out["pressed_worst"] = maxf(out["pressed_worst"], deepest)
 	return out
 
 
 ## Everything counted, as one Dictionary (what the benchmark reports and the suite checks).
 func result() -> Dictionary:
-	return {"rests": rests, "lost": lost, "jumped": jumped, "hot": hot, "wakes": wakes, "jitter": jittering(),
+	return {"rests": rests, "lost": lost, "jumped": jumped, "hot": hot, "made_inside": made_inside, "wakes": wakes, "jitter": jittering(),
 			"flips": flipped(), "peak_moving": peak_moving, "worst_jump": worst_jump, "worst_spin": worst_spin,
 			"moving": _flying.size(), "waiting": mess.waiting_count() if mess != null else 0, "series": series}
 
@@ -239,14 +279,3 @@ func _parts(sock: int) -> Array:
 
 static func _cell(at: Vector3) -> Vector3i:
 	return Vector3i(floori(at.x / CELL), floori(at.y / CELL), floori(at.z / CELL))
-
-
-## Whether `point` is at least MessChecks.inside deep inside one of lying Sock `sock`'s boxes.
-func _within(sock: int, point: Vector3) -> bool:
-	var local := mess.pose_of(sock).affine_inverse() * point
-	for part: Array in _parts(sock):
-		var room := (part[0] as Vector3) * 0.5 - Vector3.ONE * checks.inside
-		var from := local - (part[1] as Vector3)
-		if absf(from.x) < room.x and absf(from.y) < room.y and absf(from.z) < room.z:
-			return true
-	return false
