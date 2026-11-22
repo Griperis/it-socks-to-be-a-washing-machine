@@ -6,7 +6,7 @@ area: core
 feature: coop
 priority: next
 created: 2026-11-22
-done:
+done: 2026-11-22
 blocked_by: ["[[05-teammates-seen]]"]
 notes: ["M0.6 batch 2 (Q2466); a gap the M0.6 behaviour lists left out"]
 terms: [Avatar]
@@ -75,3 +75,4 @@ local player. The capsule `Mesh` in `player.tscn` goes (the collision capsule st
   Files: game/parts/avatar/{avatar_looks,avatar_tuning,avatars,belly_mesh}.gd, game/player/{player.gd,player.tscn},
   tests/own_body_test.gd, tools/shot_hooks.gd, tools/shots/sets/own-body.txt.
   Verified: PASS 15680 checks, 375 cases (--touched); stills builds/review-own-body/own-body-{down,crouch}.png.
+- Merged: f806c2ab (2026-11-22, branch coop/06-own-body-first-person)
