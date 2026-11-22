@@ -32,6 +32,8 @@
 [ext_resource type="PackedScene" uid="uid://c47w01e8dt8aq" path="res://game/zoo/stations/old_house_b.tscn" id="34_old_house_b"]
 [ext_resource type="PackedScene" uid="uid://c3p6luowfkhuw" path="res://game/zoo/stations/materials.tscn" id="35_materials"]
 [ext_resource type="PackedScene" uid="uid://sv5wba3wf252" path="res://game/zoo/stations/furniture.tscn" id="36_furniture"]
+[ext_resource type="Script" uid="uid://cabdnviw3m0oh" path="res://game/net/roster.gd" id="37_roster"]
+[ext_resource type="Resource" uid="uid://b0moa0fsavwjb" path="res://game/net/coop_tuning.tres" id="38_coop"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.42, 0.44, 0.46, 1)
@@ -175,15 +177,22 @@ script = ExtResource("1_parts")
 
 [node name="Players" type="Node3D" parent="." unique_id=625099761]
 
-[node name="Avatars" type="MultiplayerSpawner" parent="." unique_id=614340951 node_paths=PackedStringArray("local_body")]
+[node name="Avatars" type="MultiplayerSpawner" parent="." unique_id=614340951 node_paths=PackedStringArray("local_body", "roster")]
 spawn_path = NodePath("../Players")
 script = ExtResource("6_avatars")
 avatar_scene = ExtResource("7_avatar")
 local_body = NodePath("../Player")
+roster = NodePath("../Session/Roster")
 
-[node name="Session" type="Node" parent="." unique_id=1091206714 node_paths=PackedStringArray("parts")]
+[node name="Session" type="Node" parent="." unique_id=1091206714 node_paths=PackedStringArray("parts", "roster")]
 script = ExtResource("5_session")
 parts = NodePath("../Parts")
+roster = NodePath("Roster")
+tuning = ExtResource("38_coop")
+
+[node name="Roster" type="Node" parent="Session" unique_id=1388205514]
+script = ExtResource("37_roster")
+tuning = ExtResource("38_coop")
 
 [node name="Net" type="Node" parent="." unique_id=2061444600 node_paths=PackedStringArray("session", "avatars")]
 script = ExtResource("8_net")

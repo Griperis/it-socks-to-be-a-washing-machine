@@ -63,6 +63,7 @@ func case_none() -> void:
 	_same(GameCli.plan(PackedStringArray(["--headless"]), true)["action"], "none", "--headless alone: nothing to do")
 	_same(GameCli.plan(PackedStringArray(["--host"]), true)["action"], "none", "--host passes through to the session")
 	_same(GameCli.plan(PackedStringArray(["--join=127.0.0.1"]), true)["action"], "none", "--join= passes through to the session")
+	_same(GameCli.plan(PackedStringArray(["--join=127.0.0.1", "--profile=two"]), true)["action"], "none", "--profile= passes through to the session")
 	_check(GameCli.other_scene_asked(PackedStringArray(["--path", ".", "res://tests/runner.tscn", "--", "--only=x"])),
 			"an engine run of another scene keeps its own arguments")
 	_check(not GameCli.other_scene_asked(PackedStringArray(["--path", ".", "--", "res://x.tscn"])), "a .tscn after -- is not the engine's")

@@ -112,11 +112,11 @@ func case_alone() -> void:
 
 
 func case_shapes() -> void:
-	_check(Session.split_address("10.0.0.2", 24565) == ["10.0.0.2", 24565], "an address without a port takes the default")
-	_check(Session.split_address("example.org:7000", 24565) == ["example.org", 7000], "host:port")
-	_check(Session.split_address("::1", 24565) == ["::1", 24565], "a bare IPv6 address is not cut at its colons")
-	_check(Session.split_address("[fe80::2]:7000", 24565) == ["fe80::2", 7000], "an IPv6 address in brackets with a port")
-	_check(Session.split_address("[::1]", 24565) == ["::1", 24565], "brackets without a port")
+	_check(EnetTransport.split_address("10.0.0.2", 24565) == ["10.0.0.2", 24565], "an address without a port takes the default")
+	_check(EnetTransport.split_address("example.org:7000", 24565) == ["example.org", 7000], "host:port")
+	_check(EnetTransport.split_address("::1", 24565) == ["::1", 24565], "a bare IPv6 address is not cut at its colons")
+	_check(EnetTransport.split_address("[fe80::2]:7000", 24565) == ["fe80::2", 7000], "an IPv6 address in brackets with a port")
+	_check(EnetTransport.split_address("[::1]", 24565) == ["::1", 24565], "brackets without a port")
 	_check(Command.shape_error(["open", "Room/Door/Openable", {"open": true}]) == "", "a Command is fine")
 	_check(Command.shape_error(["drop", "Room/Box/Carriable", {"at": Vector3(1, 0, 2), "yaw": 0.5}]) == "",
 			"a Vector3 and a float are fine")
@@ -439,7 +439,7 @@ func case_gate() -> void:
 	word.resize(4)
 	word.encode_u32(0, Session.PROTOCOL + 1)
 	os.port = hs.port
-	_check(os.join("127.0.0.1") == OK, "the other build starts joining")
+	_check(os.join("127.0.0.1:%d" % hs.port) == OK, "the other build starts joining")
 	os.multiplayer.peer_authenticating.disconnect(os._on_authenticating)
 	var say_other := func(_peer: int) -> void: (os.multiplayer as SceneMultiplayer).send_auth(1, word)
 	os.multiplayer.peer_authenticating.connect(say_other, CONNECT_ONE_SHOT)
@@ -814,7 +814,7 @@ func _guest(label: String, lag_ms := 0, loss := 0.0) -> Dictionary:
 	var welcomed: Array[bool] = []
 	s.welcomed.connect(func() -> void: welcomed.append(true))
 	s.port = (_machines[0]["session"] as Session).port
-	_check(s.join("127.0.0.1") == OK, "%s starts joining" % label)
+	_check(s.join("127.0.0.1:%d" % s.port) == OK, "%s starts joining" % label)
 	_lag(m, lag_ms, loss)
 	await _until(func() -> bool: return not welcomed.is_empty(), "%s to be welcomed" % label)
 	return m

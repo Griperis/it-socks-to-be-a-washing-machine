@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: coop
 priority: now
 created: 2026-11-22
-done:
+done: 2026-11-22
 blocked_by: []
 notes: ["M0.6 batch 1 (Q2436); ready for Steam (Q2456-Q2458)"]
 terms: [Host, Guest, Session, Teammate, Player colour]
@@ -77,6 +77,33 @@ built; the ESC "End session" menu is not built (no ESC menu yet, Q2300).
 - Q2440-Q2449, Q2456-Q2460 (2026-11-22), as in the Behaviour list above.
 
 ## Open follow-ups
+- [later] The Hands (and every other per-player Part state) are still keyed by the live peer id, as
+  before; only the Roster is keyed by the player id. Keying the Players state by player id is the
+  "per-player state" item of the co-op order, not this ticket.
+- [later] A leaver's drop is heard as the flat "drop" on every machine; coop/05 (teammates' sounds in
+  3D) may place it at their feet. `HandsTuning.leave_height` (1.0 m) is a placeholder for the play session.
+- [later] The avatar is not tinted by the Roster colour yet (coop/04 adds the tint; `Roster.colour_of(peer)`
+  gives it).
 
 ## Built log
 - 2026-11-22 lead: model opus (netcode, CLAUDE.md "Models").
+- 2026-11-22 agent (coop/03-host-join-roster):
+  Changed: a transport seam (`NetTransport`, `EnetTransport`: the only file naming ENet or reading an
+  address; holds ENet's throttle at full on every peer, both ends); `PlayerProfile` (32-hex player id,
+  "Player", `user://profile[_<tag>].json`); the gate's word carries protocol, scene layout hash, player id
+  and name, refused as "Another version of the game", "The game is full (4 players)", "You are already in
+  this game" (PROTOCOL 10); the `Roster` Part (keyed by player id: peer, name, colour, place; next free
+  colour; new joiner 0.6 m beside the Host facing its way, alternating sides; a returning id where it left,
+  its colour if free); `Avatars` spawns by the Roster with the place in the spawn data; `Hands.left` drops
+  a leaver's items where they stood in one answer (falling as a drop, spread round the feet as the old
+  Landings.around) and `Hearing` plays "drop" once per machine; toasts "Player joined"/"Player left" (name
+  in colour) and "Joined Player's zoo" via `Hud.say_named`/`Player.announce`; a join with no welcome
+  gives up after 10 s with "Could not reach <where>"; `--profile=` through `ZooNet` and `GameCli`;
+  `CoopTuning` (.tres) holds the 8 colours, 0.6 m, 4, 10 s, 2 s and the auth timeout (placeholder, 8 s).
+  Files: game/net/{net_transport,enet_transport,player_profile,roster,coop_tuning}.gd, coop_tuning.tres,
+  game/parts/session.gd, game/parts/avatar/avatars.gd, game/zoo/zoo_net.gd, game/zoo/zoo.tscn,
+  game/ui/hud.gd, game/player/player.gd, game/hands/hands.gd, game/hands/hands_tuning.gd,
+  game/audio/hearing.gd, game/debug/game_cli.gd, tests/coop_join_test.gd (new), tests/zoo_test.gd,
+  tests/scene_parts_test.gd, tests/coop_flight_test.gd, tests/game_cli_test.gd, tools/grep_rules_allow.txt,
+  docs/architecture.md.
+  Verified: PASS 15589 checks, 402 cases (`run.sh --touched` ran every suite); coop_join 173 checks, 6 cases.

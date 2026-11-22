@@ -76,6 +76,11 @@ extends Resource
 ## How far above a player's feet their eyes are when the Host has no body of theirs to ask (a
 ## Guest's, until M0.6 reads the Guest's eyes).
 @export_range(0.5, 2.5, 0.05, "suffix:m") var eyes_fallback := 1.5 # placeholder: until M0.6 reads a Guest's eyes
+## A leaver's held items fall from this high over where they last stood (coop/03, Q2446: each flies
+## down from their Hands, as the old spill),
+@export_range(0.0, 2.0, 0.05, "suffix:m") var leave_height := 1.0 # placeholder: by eye in a co-op play session (the old drew them from the HoldPoint)
+## the first right there, each next one this far round their feet (the old Game.LEAVE_SPREAD).
+@export_range(0.0, 1.0, 0.01, "suffix:m") var leave_spread := 0.25 # placeholder: the old Game.LEAVE_SPREAD
 
 @export_group("Holding")
 ## Where the active item hangs, in the camera's space (x right, y up, -z ahead), before `depth`.

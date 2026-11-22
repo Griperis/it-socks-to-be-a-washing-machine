@@ -239,6 +239,35 @@ func _let_go(by: int, launch: Dictionary, drop: bool) -> Dictionary:
 		id: _patch(by, items, items.size() - 1)}}
 
 
+## The Host: player `by` left (coop/03, Q2446). Everything in their Hands drops where they last
+## stood, for everyone, in this one answer: each item is let go `leave_height` over their feet, the
+## first right there and each next `leave_spread` round them (the old Landings.around), and falls as a
+## drop does; their Hands are emptied. The answer carries "dropped_at" (their feet), where every
+## machine hears the drop once (Hearing).
+func left(by: int) -> Dictionary:
+	var items := items_of(by)
+	if items.is_empty():
+		return {}
+	var at: Variant = parts.where.call(by) if parts != null and parts.where.is_valid() else null
+	var feet: Vector3 = at if at is Vector3 else Vector3.ZERO
+	var t := tuning_of(by)
+	var states := mess.states.duplicate()
+	var poses := mess.poses.duplicate()
+	var throws := mess.throws.duplicate()
+	for i in items.size():
+		var sock := items[i]
+		var round_feet := Vector3(cos(i * 2.4), 0.0, sin(i * 2.4)) * (t.leave_spread if i > 0 else 0.0)
+		var pose := Transform3D(Basis(Vector3.UP, i * 2.4), feet + round_feet + Vector3.UP * t.leave_height)
+		states[sock] = Mess.State.FLYING
+		var row := Mess.pack(pose)
+		for k in Mess.POSE:
+			poses[sock * Mess.POSE + k] = row[k]
+		throws[sock] = {"vel": Vector3.ZERO, "spin": Vector3.ZERO, "by": by, "drop": true}
+	return {"ok": true, "dropped_at": feet, "changes": {
+		mess.id: {"states": states, "poses": poses, "throws": throws},
+		id: _patch(by, PackedInt32Array(), -1)}}
+
+
 ## The change that takes Socks `socks` out of player `by`'s Hands, the others kept in their order and
 ## the newest active (part of a Cabinet's shelve answer, core/04).
 func taken_patch(by: int, socks: PackedInt32Array) -> Dictionary:
