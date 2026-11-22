@@ -34,9 +34,9 @@ the follow, the motion-derived Looks animation, the worn held view, the 3D teamm
 
 ## Answers
 - Q2439, Q2450-Q2455, Q2460 (2026-11-22).
+- Look and feel (rule 10): every old motion with the old numbers (Q2461); name tag "Player" in their colour at the cuff top (Q2462); a far or hidden Teammate unmarked (Q2463); held things as old (Q2464). Additions nobody asked for (wind-up cue, release squash, blink, wave) are not built (list question 8: report only).
 
 ## Open follow-ups
-- [blocking] The look-and-feel round (rule 10) before hand-out; and the three list questions still open:
-  name tag height (6), additions for a report (8), a far or hidden Teammate (9).
+- [blocking] The lead writes the Design and Acceptance once coop/03 and coop/04 are merged.
 
 ## Built log

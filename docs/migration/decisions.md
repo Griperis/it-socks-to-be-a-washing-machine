@@ -1,4 +1,4 @@
-Next free Q number: Q2461 (update this line whenever a round of questions is asked)
+Next free Q number: Q2465 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -375,3 +375,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2458: the player id is one field: the Steam ID on Steam, proven by Steam's auth ticket (which replaces the proving token planned for M4); off Steam (LAN, IP) the long random id of Q2224. Saves are keyed by that one field.
 - Q2459: the add-ons YARD (1.3.2, resource registries with a table view in the editor; switched on) and GodotSteam (4.24 GDExtension, Windows and Linux x86_64 only; its updater plugin switched off) are added now so the build continues with them in the editor (designer, 2026-11-22). Steam is not initialised until the lobby (Q2457).
 - Q2460: the behaviour lists for M0.6 batches 1 and 2 (`m06-lists/01-host-join-roster.md`, `02-teammates-seen.md`) are approved as drafted, with Q2437-Q2458 applied (designer, 2026-11-22: "Yes, let's go").
+- Q2461: a Teammate's body moves as the old game, every motion with the old numbers (waddle, bob, sway, the look bend, jump and land squash, feet rocking, crouch to 1 m), derived from their motion on each machine; judged on a strip of two players (coop/05).
+- Q2462: a Teammate's name tag shows "Player" in their colour at the cuff top, as the old game; the lift over a tall hat comes with the Wardrobe.
+- Q2463: a far or hidden Teammate is not marked, as the old game, until Mate Radar and the X-ray (M4).
+- Q2464: a Teammate's held things as the old game: at their HoldPoint at true size, several clustered in small steps, a held Pair as the ball.
