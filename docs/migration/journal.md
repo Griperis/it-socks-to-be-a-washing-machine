@@ -796,3 +796,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2466, Q2467, Q2471 |
 
 ---
+
+| Ticket | coop/07, the Guest's respill disconnect (a bug): Mess answers carry only changed rows; rests batched a tick; a Guest's spawned flight copy frozen (stops the Jolt overflow); PROTOCOL 11; M0.6 batch 3, plan `coop-mess-sync.md` (Q2472); merged (main 61ccc8e) |
+| Planned vs actual | 1 planned, 1 actual (redirected mid-run to the plan's record format) |
+| Redo count | 0 |
+| Corrections | the disconnect itself never reproduced in one process; the reproduced faults were the Guest falling minutes behind and Jolt overflow from heaped flight copies |
+| Cost | 20,245,190 tokens, 133 tool calls, 52m47s (Opus) |
+| Time | the agent ran about 53 min |
+| Surprises | reliable bytes in a 2,000-Sock pour: 1.33 MB/s average (16 MB worst second) before, about 59 KB/s (90 KB worst) after; game code +256 −121 |
+| Stop rules | the frozen flight copies changed a Guest's looks against the ticket; flagged `[later]`, told to the designer as a stopgap until coop/08 |
+| Looks | none |
+| Decisions | Q2472 |
+
+---

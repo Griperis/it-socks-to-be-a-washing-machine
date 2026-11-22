@@ -7,7 +7,7 @@ feature: coop
 priority: now
 created: 2026-11-22
 done:
-blocked_by: ["[[07-coop-respill-disconnect]]"]
+blocked_by: []
 notes: ["M0.6 batch 3, the Mess half (Q2472); plan: docs/migration/coop-mess-sync.md"]
 terms: [Host, Guest, Mess, Flight]
 ---
