@@ -1,4 +1,4 @@
-Next free Q number: Q2473 (update this line whenever a round of questions is asked)
+Next free Q number: Q2481 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -387,3 +387,11 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2470: a Teammate's shelve sound plays at the drawer, as the old game (refines Q2453, which grouped it with the cues over their feet).
 - Q2471: coop/06's own body in first person is approved from its two stills and merges; judged further in the zoo (designer, 2026-11-22).
 - Q2472: the Mess in co-op is to be well optimised, inspired by the old game, differences flagged, then improved (designer, 2026-11-22). The plan: `coop-mess-sync.md` (changed records only; one rest batch a tick; woken, falling, poured and swept Socks simulated on every machine and snapped at rest, Q2222; Throws alone on a stamped stream; Doors and drawers swept on every machine; a compact compressed join). Sections A to C of `m06-lists/03-mess-throw-coop.md` are approved with it; a Sock mid-flight at a join flies on from where it is (list question 8, as the old game).
+- Q2473: a Guest's drop falls at once on a looks-only body that blends to the Host's result, as the Throw (Q2221) and the old game (list 03 question 1; designer, 2026-11-22).
+- Q2474: a Guest's second pick before the first is answered waits until the first is answered; no second ghost (list 03 question 2; designer, 2026-11-22).
+- Q2475: a Guest's wheel turns at once and is turned back silently on a refusal, as the old game (list 03 question 3; designer, 2026-11-22).
+- Q2476: a refused Guest Throw or drop removes the ghost and puts the item back in the Hands at once, as the old game; no fly-back (list 03 question 4; designer, 2026-11-22).
+- Q2477: a Guest's pick, drop or Throw with no answer after 2 s goes back to the Hands with the refusal look and sound (list 03 question 5; designer, 2026-11-22).
+- Q2478: a Guest hears its own pick at the click, with the ghost (list 03 question 7; changes the old game, which played it at the answer; designer, 2026-11-22).
+- Q2479: a Guest's pairing moment starts only on the Host's answer, never at the click; no Pair splits back (list 03 question 9; designer, 2026-11-22).
+- Q2480: sections D to M of `m06-lists/03-mess-throw-coop.md`, with Q2473-Q2479 folded in, are approved; coop/09 is built from them (designer, 2026-11-22).
