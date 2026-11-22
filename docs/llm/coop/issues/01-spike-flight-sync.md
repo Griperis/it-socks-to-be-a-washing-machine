@@ -54,3 +54,4 @@ packet against the Host's reliable answer. Option C (keep a custom stamped strea
   `tests/support/lag_peer.gd` (byte counters).
 - Verified: `kit/tools/run.sh --touched`: PASS 296 checks, 28 cases; `--only=coop_flight` three times in a row
   PASS; the two stress cases PASS (numbers only).
+- Merged: 12e922ad (2026-11-22, branch coop/01-spike-flight-sync)

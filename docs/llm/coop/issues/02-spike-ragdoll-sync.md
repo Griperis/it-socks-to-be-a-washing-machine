@@ -51,3 +51,4 @@ four stacked capsules of 0.3 m radius, cone joints 45 degrees swing and 22.5 twi
   Guest's skeleton. Files: tests/ragdoll_spike_test.gd, tests/support/ragdoll_spike/ragdoll_spike.gd,
   tests/support/ragdoll_spike/ragdoll_spike.tscn, docs/research/coop-ragdoll-sync.md. Verified: PASS 28
   checks, 5 cases (4 runs of --only=ragdoll_spike).
+- Merged: 93fc82ad (2026-11-22, branch coop/02-spike-ragdoll-sync)
