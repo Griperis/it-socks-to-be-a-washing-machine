@@ -167,4 +167,3 @@ func _walk(node: Node, into: Array[Part]) -> Array[Part]:
 	for child in node.get_children():
 		_walk(child, into)
 	return into
-
