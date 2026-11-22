@@ -99,6 +99,7 @@ func _make(data: Variant) -> Node:
 	avatar.name = str(peer)
 	avatar.pose_position = at
 	avatar.pose_yaw = yaw
+	avatar.roster = roster
 	if int(peer) == multiplayer.get_unique_id():
 		avatar.follow = local_body
 		avatar.visible = false

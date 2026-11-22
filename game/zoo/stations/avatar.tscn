@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://b7tq2avatarst"]
+
+[ext_resource type="PackedScene" uid="uid://d2u50k5e57ccb" path="res://game/parts/avatar/avatar.tscn" id="1_avatar"]
+[ext_resource type="Script" uid="uid://coa5i1103hoee" path="res://game/zoo/avatar/teammate_stand_in.gd" id="2_stand_in"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="3_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="4_hands"]
+[ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="5_spot"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="6_designs"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="7_tuning"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.42, 0.4, 0.52, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_pad")
+size = Vector2(6, 2.8)
+
+[node name="Avatar" type="Node3D" unique_id=1478235906]
+
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=902617344]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Name" type="Label3D" parent="." unique_id=1365870218]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 2.1, 0)
+pixel_size = 0.004
+billboard = 2
+text = "Avatar: a Teammate's body as others see it. The still one stands; the other walks a loop, crouches, looks up and down, hops and holds a Sock, moved only by its pose, as the network moves a real Teammate"
+vertical_alignment = 2
+autowrap_mode = 3
+width = 700.0
+
+[node name="Teammates" type="Node3D" parent="." unique_id=1721305468 node_paths=PackedStringArray("still", "walker", "sock_spot")]
+script = ExtResource("2_stand_in")
+still = NodePath("2")
+walker = NodePath("3")
+centre = Vector3(1, 0, 0)
+sock_spot = NodePath("../Spots/Sock")
+
+[node name="2" parent="Teammates" unique_id=1183927604 instance=ExtResource("1_avatar")]
+pose_position = Vector3(-1.8, 0, 0)
+
+[node name="3" parent="Teammates" unique_id=310846252 instance=ExtResource("1_avatar")]
+pose_position = Vector3(2.2, 0, 0)
+
+[node name="Spots" type="Node3D" parent="." unique_id=1650388721]
+
+[node name="Sock" type="Marker3D" parent="Spots" unique_id=1937501162]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+script = ExtResource("5_spot")
+design = 3
+
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=1288145530]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1)
+
+[node name="Lying" type="Node3D" parent="." unique_id=1006284719]
+
+[node name="Flights" type="Node3D" parent="." unique_id=1855710432]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=640328117]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="." unique_id=2003618425]
+
+[node name="Mess" type="Node" parent="Socks" unique_id=1590224318 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+script = ExtResource("3_mess")
+catalogue = ExtResource("6_designs")
+tuning = ExtResource("7_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+bounds = AABB(-8, -2, -8, 16, 8, 16)
+return_spot = NodePath("../../ReturnSpot")
+
+[node name="Hands" type="Node" parent="Socks" unique_id=1095443860 node_paths=PackedStringArray("mess")]
+script = ExtResource("4_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("7_tuning")

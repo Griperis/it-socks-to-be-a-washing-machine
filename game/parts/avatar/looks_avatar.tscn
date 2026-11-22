@@ -2,8 +2,20 @@
 
 [ext_resource type="Script" uid="uid://c5i2jlrgmcseh" path="res://game/parts/avatar/avatar_looks.gd" id="1_looks"]
 [ext_resource type="PackedScene" uid="uid://ociuf17dwty7" path="res://assets/avatar/avatar.glb" id="2_model"]
+[ext_resource type="Resource" uid="uid://i4jw6ewnf4chb" path="res://game/parts/avatar/avatar_tuning.tres" id="3_tuning"]
 
 [node name="AvatarLooks" type="Node3D" unique_id=7225576]
 script = ExtResource("1_looks")
+tuning = ExtResource("3_tuning")
 
 [node name="Body" parent="." unique_id=1060176876 instance=ExtResource("2_model")]
+
+[node name="NameTag" type="Label3D" parent="Body/Head" unique_id=1846203317]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+visible = false
+pixel_size = 0.004
+billboard = 1
+modulate = Color(1, 1, 1, 1)
+outline_modulate = Color(0.1, 0.07, 0.05, 1)
+font_size = 40
+outline_size = 10

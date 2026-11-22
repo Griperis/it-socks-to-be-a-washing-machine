@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bsi70osoh5p8s" path="res://game/parts/avatar/avatar.gd" id="1_avatar"]
 [ext_resource type="PackedScene" uid="uid://c6ggi6fh377si" path="res://game/parts/avatar/looks_avatar.tscn" id="2_looks"]
+[ext_resource type="Resource" uid="uid://i4jw6ewnf4chb" path="res://game/parts/avatar/avatar_tuning.tres" id="3_tuning"]
+[ext_resource type="Script" uid="uid://bnt2xg5i6167r" path="res://game/hands/held_view.gd" id="4_held"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="5_hands_tuning"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_pose"]
 properties/0/path = NodePath(".:pose_position")
@@ -10,12 +13,24 @@ properties/0/replication_mode = 1
 properties/1/path = NodePath(".:pose_yaw")
 properties/1/spawn = true
 properties/1/replication_mode = 1
+properties/2/path = NodePath(".:pose_pitch")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:pose_crouch")
+properties/3/spawn = true
+properties/3/replication_mode = 1
 
 [node name="Avatar" type="Node3D" unique_id=1939724661]
+physics_interpolation_mode = 2
 script = ExtResource("1_avatar")
+tuning = ExtResource("3_tuning")
 
 [node name="Looks" parent="." unique_id=2108870745 instance=ExtResource("2_looks")]
 
+[node name="Held" type="Node3D" parent="." unique_id=1203948571]
+script = ExtResource("4_held")
+worn = true
+tuning = ExtResource("5_hands_tuning")
+
 [node name="Sync" type="MultiplayerSynchronizer" parent="." unique_id=1692978382]
-replication_interval = 0.05
 replication_config = SubResource("SceneReplicationConfig_pose")

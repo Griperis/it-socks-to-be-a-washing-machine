@@ -555,6 +555,9 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.reset_physics_interpolation()
 			cam.make_current()
 			return true
+		"teammates":
+			ShotTeammates.act(world, arg)
+			return true
 	return false
 
 
@@ -616,3 +619,4 @@ static func _show_old_furniture(line_up: FurnitureLineUp) -> void:
 			if String(n.name).contains("-col") or String(n.name).contains("-convcol"):
 				(n as Node3D).visible = false
 		p.add_child(model)
+

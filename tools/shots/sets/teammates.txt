@@ -1,0 +1,15 @@
+# coop/05: two Teammates side by side (coral and teal), moved only through their poses as the network moves them: standing (38), a 1 m walk toward the camera at 3 m/s (40-60), stopped, crouched (90), standing (130), looking up (150), down (180), level (210), each picking a Sock (220), a second each (250), seen close from their right (280). 60 frames a second.
+stand     --size=1280x720 --do='30:teammates:setup' --shots=38
+walk1     --size=1280x720 --do='30:teammates:setup;40:teammates:walk' --shots=44
+walk2     --size=1280x720 --do='30:teammates:setup;40:teammates:walk' --shots=48
+walk3     --size=1280x720 --do='30:teammates:setup;40:teammates:walk' --shots=52
+walk4     --size=1280x720 --do='30:teammates:setup;40:teammates:walk' --shots=56
+stopped   --size=1280x720 --do='30:teammates:setup;40:teammates:walk' --shots=88
+crouch1   --size=1280x720 --do='30:teammates:setup;40:teammates:walk;90:teammates:crouch' --shots=98
+crouched  --size=1280x720 --do='30:teammates:setup;40:teammates:walk;90:teammates:crouch' --shots=128
+look_up   --size=1280x720 --do='30:teammates:setup;40:teammates:walk;150:teammates:look_up' --shots=178
+look_down --size=1280x720 --do='30:teammates:setup;40:teammates:walk;150:teammates:look_up;180:teammates:look_down' --shots=208
+pick_fly  --size=1280x720 --do='30:teammates:setup;40:teammates:walk;220:teammates:hold' --shots=229
+held1     --size=1280x720 --do='30:teammates:setup;40:teammates:walk;220:teammates:hold' --shots=248
+held2     --size=1280x720 --do='30:teammates:setup;40:teammates:walk;220:teammates:hold;250:teammates:hold_more' --shots=290
+held_close --size=1280x720 --do='30:teammates:setup;40:teammates:walk;220:teammates:hold;250:teammates:hold_more;280:teammates:close' --shots=290
