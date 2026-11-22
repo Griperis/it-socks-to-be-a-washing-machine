@@ -21,7 +21,9 @@ const EXTRA_AT := Vector3(-18.3, 0.0, 2.5)
 ## A Sock made inside another (by a pour's wave: "made_inside", core/49) is a fault. Socks a heap's
 ## weight presses into each other are allowed and counted (Q2499, Jolt's 20 mm slop): "pressed", and
 ## "inside" for the few the sharp boxes measure deeper (a slanted edge: Jolt's boxes have rounded edges).
-const FAULTS: Array[String] = ["lost", "hot", "jumped", "jitter", "made_inside"]
+## A moving Sock under the floor ("under", core/50: Jolt's position solve pushed one through the zoo's
+## 0.2 m floor, and the rest rule then lifted it) is a fault.
+const FAULTS: Array[String] = ["lost", "hot", "jumped", "jitter", "made_inside", "under"]
 const COUNTED: Array[String] = ["flips", "sunk", "pressed", "inside"]
 
 var _zoo: Node3D = null
@@ -41,6 +43,10 @@ func cases() -> Array[Dictionary]:
 				"title": "core/49: the same real path with 3 more Sock records in the zoo: no Sock is made inside another"},
 		{"name": "real_path_4", "method": "case_real_path_4", "world": false,
 				"title": "core/49: the same real path with 4 more Sock records in the zoo: no Sock is made inside another"},
+		{"name": "real_path_thin_floor", "method": "case_real_path_thin_floor", "world": false,
+				"title": "core/50: the same real path with the zoo floor's collision margin at 1 mm (there Jolt pushes a poured Sock through the floor in every pour): no Sock goes under the floor, none is lifted at its rest or rests moving"},
+		{"name": "pushed_in", "method": "case_pushed_in", "world": false,
+				"title": "core/50: a falling Sock that one step moves down into the floor, more than its motion explains, is put back over the floor at once and rests on it, not lifted; one that moves only as it flies is left alone"},
 		{"name": "wave_places", "method": "case_wave_places", "world": false,
 				"title": "core/49: two Sock boxes crossed or stacked into each other meet, apart or side by side they do not; the spout never picks a place that meets another of its wave"},
 		{"name": "switch", "method": "case_switch", "world": false,
@@ -103,10 +109,21 @@ func case_real_path_4() -> void:
 	await _real_path(4)
 
 
+## core/50: a floor margin of 1 mm makes Jolt's wrong push happen in every pour (with the zoo's own
+## margin it came in about one pour of 30); the floor's shape is a copy, the scene file is untouched.
+func case_real_path_thin_floor() -> void:
+	await _real_path(0, 0.001)
+
+
 ## The player clicks More at the heap station, with `extra` more Sock records lying in the zoo before
 ## the heap's (core/49: their count once decided whether two poured Socks rested inside each other).
-func _real_path(extra: int) -> void:
+func _real_path(extra: int, floor_margin := -1.0) -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
+	if floor_margin >= 0.0:
+		var floor_shape := _zoo.get_node("Floor/Shape") as CollisionShape3D
+		var thin := floor_shape.shape.duplicate() as BoxShape3D
+		thin.margin = floor_margin
+		floor_shape.shape = thin
 	var spots := _zoo.get_node("Spots") as Node3D
 	for k in extra:
 		var spot := SockSpot.new()
@@ -151,6 +168,35 @@ func _real_path(extra: int) -> void:
 	_check(int(r["moving"]) == 0 and int(r["waiting"]) == 0, "no Sock moves or waits (%d, %d)" % [r["moving"], r["waiting"]])
 	_no_faults(r)
 	_check(_interpolated(_zoo.get_node("Lying")) == 0, "no MultiMesh of the Mess is physics-interpolated (%d)" % _interpolated(_zoo.get_node("Lying")))
+
+
+# --- core/50: pushed into the floor --------------------------------------------------------------
+
+## A Sock falls flat onto the benchmark level's floor (0.2 m thick, its top at 0). Just before it
+## lands, its body is moved down to 0.12 m inside the floor, as Jolt's position solve moved one in the
+## heap (core/50); the Mess's next tick puts it back over the floor, and it rests on the floor where it
+## lands, written as it lay (no lift). A body that only flies, however fast, is never put back.
+func case_pushed_in() -> void:
+	await _level_up(MessBenchScenario.Kind.IDLE, 4, 0)
+	var mess := _level.mess
+	var fast := mess.thrown_patch(1, Transform3D(Basis.IDENTITY, Vector3(5.0, 1.2, 4.0)), Vector3(0.0, -8.0, 0.0), Vector3.ZERO, 1)
+	_level.parts.apply({"ok": true, "kind": &"throw", "by": 1, "to": mess.id, "changes": {mess.id:
+			mess.thrown_patch(0, Transform3D(Basis.IDENTITY, Vector3(4.0, 0.4, 4.0)), Vector3.ZERO, Vector3.ZERO, 1, false, fast)}})
+	await _until(func() -> bool: return mess.moving_body(0) != null and mess.moving_body(1) != null, "the two Socks to fly")
+	await _until(func() -> bool: return mess.moving_body(0).global_position.y < 0.2, "the slow one to fall to 0.2 m")
+	var body := mess.moving_body(0)
+	var before := body.global_transform
+	body.global_transform = Transform3D(before.basis, Vector3(before.origin.x, -0.12, before.origin.z))
+	# The test wakes on a frame; the Mess's tick of the next one sees the move (its second tick ends after it).
+	await _physics_ticks(2)
+	_check(mess._moving.pushed_in == 1, "the step into the floor was undone once (%d)" % mess._moving.pushed_in)
+	_check(body.global_position.y > before.origin.y - 0.05, "the body is back where it was, not in the floor (%.3f m, was %.3f m)" % [body.global_position.y, before.origin.y])
+	await _settled()
+	_check(mess.state_of(0) == Mess.State.LYING and mess.state_of(1) == Mess.State.LYING, "both lie")
+	_check(_watch.under == 0, "no Sock was seen under the floor (%d, deepest %.3f m)" % [_watch.under, _watch.worst_under])
+	_check(_watch.jumped == 0 and _watch.hot == 0, "neither was lifted at its rest nor rested moving (jumped %d, hot %d)" % [_watch.jumped, _watch.hot])
+	_near(mess.pose_of(0).origin.y, 0.0, 0.025, "the Sock lies on the floor's top")
+	_check(mess._moving.pushed_in == 1, "the Sock thrown down at 8 m/s was never put back (%d)" % mess._moving.pushed_in)
 
 
 # --- core/49: a wave's places --------------------------------------------------------------------

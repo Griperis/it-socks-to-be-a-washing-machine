@@ -7,7 +7,7 @@ extends RefCounted
 const REPORT := "report.md"
 const RESULTS := "results-%s.json"
 ## The faults a scenario is judged by, in the report's order (MessWatch, MessBench).
-const FAULTS: Array[String] = ["never", "lost", "hot", "jumped", "flips", "jitter", "sunk", "inside", "made_inside"]
+const FAULTS: Array[String] = ["never", "lost", "hot", "jumped", "flips", "jitter", "sunk", "inside", "made_inside", "under"]
 
 
 ## Keeps `run` in `folder` and writes the report there. Returns the report's path, "" on a failure.
@@ -122,6 +122,7 @@ static func text(runs: Array[Dictionary], plan: MessBenchPlan) -> String:
 	lines.append("- sunk: a lying Sock whose lowest point is more than %.0f mm under the floor." % (c.sunk * 1000.0))
 	lines.append("- inside another: a lying Sock whose leg or foot overlaps another lying Sock's more than %.0f mm deep (from %.0f mm it is pressed: allowed, Q2499)." % [c.inside * 1000.0, c.pressed * 1000.0])
 	lines.append("- made_inside: a new Sock made overlapping a moving one more than %.0f mm deep." % (c.made_inside * 1000.0))
+	lines.append("- under: a moving Sock with the middle of its leg or foot more than %.0f mm under the floor." % (c.under * 1000.0))
 	lines.append("- tick budget: 95th percentile over %.1f ms (nothing moving: %.2f ms)." % [plan.tick_budget, plan.idle_tick_budget])
 	lines.append("")
 	return "\n".join(lines)

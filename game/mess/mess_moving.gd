@@ -22,8 +22,13 @@ var _flights: Dictionary[int, RigidBody3D] = {}
 ## A body's time in the air and its time still (under the rest speed and spin).
 var _airborne: Dictionary[int, float] = {}
 var _still: Dictionary[int, float] = {}
-## Each body's speed before this physics step (what its hits are judged by).
+## Each body's speed before this physics step (what its hits are judged by), and the step before.
 var _speeds: Dictionary[int, float] = {}
+var _speeds_before: Dictionary[int, float] = {}
+## Each body's place after the last physics step (core/50: a step that pushed it into the house is undone).
+var _was: Dictionary[int, Transform3D] = {}
+## How many steps were undone so since the Mess started (the suite and the benchmark read it).
+var pushed_in := 0
 ## The boxes lying things were taken from by a pick, looked over at the next tick for what rested on
 ## them (M07).
 var _taken: Array[AABB] = []
@@ -140,8 +145,11 @@ func tick(delta: float) -> void:
 	var to_local := _mess.lying.global_transform.affine_inverse() if bounded and _mess.lying != null else Transform3D.IDENTITY
 	for sock: int in _flights:
 		var body := _flights[sock]
+		if _pushed_in(sock, body, delta, t):
+			continue
 		var speed := body.linear_velocity.length()
 		_airborne[sock] += delta
+		_speeds_before[sock] = float(_speeds.get(sock, speed))
 		_speeds[sock] = speed
 		_switch_ccd(body, speed, t)
 		if bounded and not _mess.bounds.has_point(to_local * body.global_position):
@@ -180,6 +188,8 @@ func tick_looks(delta: float) -> void:
 	var to_local := _mess.lying.global_transform.affine_inverse() if bounded and _mess.lying != null else Transform3D.IDENTITY
 	for sock: int in _flights:
 		var body := _flights[sock]
+		if _pushed_in(sock, body, delta, t):
+			continue
 		var speed := body.linear_velocity.length()
 		_airborne[sock] += delta
 		_speeds[sock] = speed
@@ -198,18 +208,61 @@ func tick_looks(delta: float) -> void:
 		_mess.lie_again(sock)
 
 
+## Whether the last physics step pushed flight `sock` into the house (core/50); if so it is undone.
+## A step that moved it farther than its speed (before and after the step) and its turn explain, by
+## more than `MessTuning.push_slack`, and left the middle of its leg or foot (a Pair's ball) inside the
+## house, was Jolt's position solve, not a flight: a Sock touching the zoo's 0.2 m floor was so pushed
+## 0.17 m to 0.24 m down in one step, past the floor's middle, and from there the floor's bottom face
+## held it under the floor. The body goes back to its place before the step, `push_lift` higher (at
+## the same place Jolt pushes it again), with its fall and turn stopped; nothing else is judged of it
+## this tick. It costs one point query only for such a step.
+func _pushed_in(sock: int, body: RigidBody3D, delta: float, t: MessTuning) -> bool:
+	var now := body.global_transform
+	var was: Transform3D = _was.get(sock, now)
+	_was[sock] = now
+	var motion := float(_speeds.get(sock, 0.0)) + body.linear_velocity.length() + body.angular_velocity.length() * t.push_reach
+	if now.origin.distance_to(was.origin) <= motion * delta + t.push_slack or not _in_house(body):
+		return false
+	var back := was.translated(Vector3.UP * t.push_lift)
+	body.global_transform = back
+	body.reset_physics_interpolation()
+	var v := body.linear_velocity
+	body.linear_velocity = Vector3(v.x, maxf(v.y, 0.0), v.z)
+	body.angular_velocity = Vector3.ZERO
+	_was[sock] = back
+	_still[sock] = 0.0
+	pushed_in += 1
+	return true
+
+
+## Whether the middle of one of `body`'s shapes (a leg, a foot, a Pair's ball) is inside the house.
+func _in_house(body: RigidBody3D) -> bool:
+	for child in body.get_children():
+		var shape := child as CollisionShape3D
+		if shape != null and PhysicsQueries.inside(_mess, shape.global_position, Mess.LAYER_HOUSE):
+			return true
+	return false
+
+
 ## A flight that has come to rest lies where it is, pushed up onto a floor it sank into, or at the
 ## return spot when it would lie inside a wall (T08; core/16 P12, P13: Mess.put_down()).
 ## One whose middle is in a Door's or drawer's leaf is pushed out of it instead (core/39): it flies
 ## on from past the leaf's face, or is put down there (MessTuning "Pushed out of a leaf").
-func _settle(sock: int) -> void:
+## `pressed` (made to rest under pressure, still moving, M05): it rests only where it is, never moved
+## by the rule (core/50: a Sock lifted at its rest while still moving was written hot and jumped);
+## else it flies on and is asked again.
+func _settle(sock: int, pressed := false) -> void:
 	var body := _flights[sock]
-	var down := _mess.put_down(sock, body.global_transform.orthonormalized())
+	var at := body.global_transform.orthonormalized()
+	var down := _mess.put_down(sock, at)
+	if pressed and not down["returned"] and not (down["pose"] as Transform3D).origin.is_equal_approx(at.origin):
+		return
 	var t := _mess.bodies_tuning()
 	if down.has("pushed") and t.leaf_push_speed > 0.0 and _pushes.get(sock, 0) < t.leaf_push_tries:
 		_pushes[sock] = _pushes.get(sock, 0) + 1
 		body.global_transform = down["pose"]
 		body.reset_physics_interpolation()
+		_was[sock] = body.global_transform
 		body.linear_velocity = (down["pushed"] as Vector3) * t.leaf_push_speed
 		body.angular_velocity = Vector3.ZERO
 		body.sleeping = false
@@ -246,7 +299,8 @@ func _ask_rests() -> void:
 
 ## Under pressure (Socks waiting, the general share of the budget full), up to `most` slow flights
 ## farthest from the players rest now, the slowest first; never one moving for less than the rest
-## time or faster than the pressure speed (M05).
+## time or faster than the pressure speed (M05), now or the step before (core/50: one just stopped
+## by a hit is still moving).
 func _relieve(most: int) -> void:
 	var t := _mess.bodies_tuning()
 	if _waiting.is_empty() or _flights.size() - _resting.size() < t.moving_budget - t.throw_reserve:
@@ -258,12 +312,12 @@ func _relieve(most: int) -> void:
 			continue
 		var body := _flights[sock]
 		var speed := body.linear_velocity.length()
-		if _airborne[sock] < t.rest_time or speed >= t.pressure_speed:
+		if _airborne[sock] < t.rest_time or speed >= t.pressure_speed or float(_speeds_before.get(sock, 0.0)) >= t.pressure_speed:
 			continue
 		keyed.append(Vector3(floorf(speed / t.pressure_speed * t.pressure_bands), -_nearest(players, body.global_position), sock))
 	keyed.sort()
 	for i in mini(keyed.size(), mini(most, _waiting.size())):
-		_settle(int(keyed[i].z))
+		_settle(int(keyed[i].z), true)
 
 
 ## The waiting Socks start, nearest the players first, at most the start cap a tick and while the
@@ -634,6 +688,8 @@ func _damp_pair(sock: int) -> void:
 func _drop_flight(sock: int) -> void:
 	_flights[sock].queue_free()
 	_flights.erase(sock)
+	_was.erase(sock)
+	_speeds_before.erase(sock)
 	_airborne.erase(sock)
 	_still.erase(sock)
 	_speeds.erase(sock)

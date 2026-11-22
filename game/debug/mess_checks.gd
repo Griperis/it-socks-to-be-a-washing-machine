@@ -19,6 +19,11 @@ extends Resource
 ## A Sock woken this many times or more in one run jitters between lying and moving.
 @export_range(2, 50, 1) var jitter_wakes := 3 # placeholder: until the designer has seen the benchmark's report
 
+## A moving Sock with the middle of its leg or foot more than this under the floor went under it
+## (core/50: Jolt pushed a Sock 0.2 m into the zoo's 0.2 m floor in one step): a fault. Less deep is a
+## heap's weight pressing it in within Jolt's 20 mm slop (allowed, Q2412): a Sock is 26 to 32 mm thick.
+@export_range(0.0, 0.2, 0.001, "suffix:m") var under := 0.05 # placeholder: a Sock's thickness and Jolt's slop, until the designer has seen the benchmark's report
+
 @export_group("A heap at rest")
 ## A lying Sock whose lowest point is this far under the floor has sunk.
 @export_range(0.0, 0.5, 0.001, "suffix:m") var sunk := 0.015 # placeholder: until the designer has seen the benchmark's report

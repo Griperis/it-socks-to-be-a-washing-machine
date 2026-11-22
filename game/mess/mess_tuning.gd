@@ -71,6 +71,18 @@ extends Resource
 ## How many times one flight is pushed out so; after that it is put down past the face at once.
 @export_range(1, 10, 1) var leaf_push_tries := 3 # placeholder: until the designer plays it (core/39)
 
+@export_group("Pushed into the floor")
+## A flight that one physics step moves farther than its own speed and turn explain, by more than this,
+## leaving the middle of its leg or foot inside the house, was pushed there by Jolt's position solve, not
+## flown (core/50: a Sock was so pushed 0.17 m to 0.24 m into the zoo's 0.2 m floor in one step, and
+## then held under it by the floor's bottom face).
+@export_range(0.0, 0.5, 0.005, "suffix:m") var push_slack := 0.05 # placeholder: core/50, until the designer plays it
+## How far from its middle a turning Sock's ends move per radian, for that (about half its leg).
+@export_range(0.0, 1.0, 0.01, "suffix:m") var push_reach := 0.2 # placeholder: core/50, half a Sock's 0.35 m leg rounded up
+## Such a flight goes back where it was the step before, this much higher, its fall and turn stopped:
+## at exactly the same place Jolt pushes it in again the next step.
+@export_range(0.0, 0.1, 0.001, "suffix:m") var push_lift := 0.01 # placeholder: core/50, the least that broke the repeat in the replay
+
 @export_group("Bodies")
 ## A woken Sock's slide and drag (M10).
 @export_range(0.0, 2.0, 0.01) var woken_friction := 0.9 # placeholder: ported (mess.json friction)

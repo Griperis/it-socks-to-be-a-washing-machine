@@ -45,6 +45,14 @@ Socks lie, are drawn, move or wake.
   old game's settle stream); out of bounds or inside a wall, at the
   return spot (`Mess.put_down`). Its middle under a floor's top by less than `sunk`, it lies as it is (the
   old `sunk_floor`); deeper, up to `sunk_depth`, pushed up onto the floor.
+- Pushed into the floor (core/50): Jolt's position solve can move a falling Sock 0.17 m to 0.24 m into
+  a 0.2 m floor in one step (no velocity explains it; on a 0.4 m or 2 m floor it did not happen in the trials);
+  past the floor's middle its bottom face then holds the Sock under it. Each tick, before anything else
+  is judged of a flight, `MessMoving._pushed_in` compares its place with the tick before: moved farther
+  than its speed and turn explain by more than `push_slack`, with the middle of its leg or foot inside
+  the house, it goes back there `push_lift` higher (at the very same place Jolt pushes it again), its
+  fall and turn stopped. A pressure rest (`_relieve`) never moves a Sock: one that `put_down` would lift
+  or push flies on, and one moving at the pressure speed the step before is not taken.
 - Pushed out of a leaf (core/39, Q2428): `MessMoving` remembers each Door and drawer leaf it sweeps (its
   place before its last step and now). A resting Sock whose middle is in such a leaf is moved, flat, to the
   side the leaf swept from, wholly `leaf_clearance` past its face (`out_of_leaf`, `Mess._reach`); a flight
@@ -186,4 +194,5 @@ Faults (`MessWatch`): never (still moving at the limit), lost (came back at the 
 while turning or moving fast), jumped (snapped at its rest), flips (turned faster than `flip_spin`), jitter (woken
 `jitter_wakes` times or more), sunk (lowest point under the floor), inside (its leg or foot overlapping another
 Sock's deeper than `inside`, 22 mm; from `pressed`, 6 mm, it is counted as pressed, Q2499), made_inside (a new Sock
-made overlapping a moving one, core/49). A scenario with one, or with its 95th-percentile tick over the budget, fails the run.
+made overlapping a moving one, core/49), under (a moving Sock's leg or foot middle more than `under`, 50 mm,
+under the floor, core/50). A scenario with one, or with its 95th-percentile tick over the budget, fails the run.
