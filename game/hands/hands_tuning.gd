@@ -73,9 +73,9 @@ extends Resource
 @export_range(1, 30, 1, "suffix:/s") var throw_rate := 5 # placeholder: the Host's allowance, not felt in play
 
 @export_group("Host")
-## How far above a player's feet their eyes are when the Host has no body of theirs to ask (a
-## Guest's, until M0.6 reads the Guest's eyes).
-@export_range(0.5, 2.5, 0.05, "suffix:m") var eyes_fallback := 1.5 # placeholder: until M0.6 reads a Guest's eyes
+## How far above a player's feet their eyes are when this machine has neither their body nor their
+## avatar to ask (coop/09 reads a Guest's eyes off its avatar).
+@export_range(0.5, 2.5, 0.05, "suffix:m") var eyes_fallback := 1.5 # placeholder: used only with no avatar
 ## A leaver's held items fall from this high over where they last stood (coop/03, Q2446: each flies
 ## down from their Hands, as the old spill),
 @export_range(0.0, 2.0, 0.05, "suffix:m") var leave_height := 1.0 # placeholder: by eye in a co-op play session (the old drew them from the HoldPoint)
@@ -123,3 +123,37 @@ extends Resource
 @export_range(0.0, 0.2, 0.005, "suffix:m") var wake_reach := 0.03 # placeholder: the old release.json
 ## How far under a lying Pair's ball something must lie to still hold it up, else it falls (P08).
 @export_range(0.0, 0.05, 0.001, "suffix:m") var wake_gap := 0.006 # placeholder: the old release.json
+
+@export_group("Upgrades (the Host's check)")
+## The numbers an Upgrade changes go from each player's machine to the Host at their join (D13); the
+## Host keeps each within what the Upgrades can make it: capacity from 1 to `capacity_most`, reach from
+## `reach` to `reach_most`, the charge from `charge_time_least` to `charge_time`, the full Throw's speed
+## from `max_speed` to `max_speed_most` (these Hands' own numbers are the floor or the ceiling).
+@export_range(1, 12, 1) var capacity_most := 3 # placeholder: the zoo player's 3 (Q2244) until Upgrades (M4)
+@export_range(0.5, 6.0, 0.1, "suffix:m") var reach_most := 2.5 # placeholder: until Upgrades (M4)
+@export_range(0.1, 5.0, 0.05, "suffix:s") var charge_time_least := 1.2 # placeholder: until Quick Charge (M4)
+@export_range(0.0, 30.0, 0.1, "suffix:m/s") var max_speed_most := 5.0 # placeholder: until Long Arm (M4)
+
+
+## The numbers an Upgrade changes, as a player's machine sends them to the Host (D13).
+func to_sent() -> Dictionary:
+	return {"capacity": capacity, "reach": reach, "charge_time": charge_time, "max_speed": max_speed}
+
+
+## These numbers with a Teammate's `sent` ones (to_sent()) put in, each clamped to what the Upgrades can
+## make it; anything missing, of the wrong type or not finite keeps this tuning's value.
+func clamped(sent: Dictionary) -> HandsTuning:
+	var out := duplicate() as HandsTuning
+	var c: Variant = sent.get("capacity")
+	if c is int:
+		out.capacity = clampi(c, 1, maxi(capacity_most, 1))
+	out.reach = _between(sent.get("reach"), reach, maxf(reach, reach_most), reach)
+	out.charge_time = _between(sent.get("charge_time"), minf(charge_time_least, charge_time), charge_time, charge_time)
+	out.max_speed = _between(sent.get("max_speed"), max_speed, maxf(max_speed, max_speed_most), max_speed)
+	return out
+
+
+static func _between(v: Variant, low: float, high: float, fallback: float) -> float:
+	if not (v is float or v is int) or not is_finite(float(v)):
+		return fallback
+	return clampf(float(v), low, high)

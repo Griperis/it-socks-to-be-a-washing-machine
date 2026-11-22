@@ -26,6 +26,8 @@ var relay: Callable
 ## reach check in decide() (near()). Unset, every player is near everything.
 var where: Callable
 var _by_id: Dictionary[StringName, Part] = {}
+## The last seq this machine gave a Command (next_seq()).
+var _seq := 0
 
 
 ## Binds once the level is ready, so every part's looks are in place for the first _show(true).
@@ -107,7 +109,7 @@ func is_host() -> bool:
 
 
 ## A player asks for a change. The Host (or a Host of one) answers it here; a Guest sends it up and
-## waits for the answer. Prediction, if a game adds it, is looks only: it never writes state.
+## waits for the answer. Prediction (GuestGhosts, coop/09) is looks only: it never writes state.
 func ask(cmd: Command) -> void:
 	if relay.is_valid():
 		relay.call(cmd)
@@ -115,11 +117,19 @@ func ask(cmd: Command) -> void:
 		apply(answer(cmd))
 
 
-## The Host's answer to `cmd`. Changes nothing.
+## A new number for a Command this machine asks and waits on (Command.seq, coop/09).
+func next_seq() -> int:
+	_seq = _seq % Command.SEQ_MAX + 1
+	return _seq
+
+
+## The Host's answer to `cmd`. Changes nothing. A Command with a seq has it echoed as "seq".
 func answer(cmd: Command) -> Dictionary:
 	var part := of(cmd.to)
 	var ev := part.decide(cmd) if part != null else {"ok": false, "reason": "wrong"}
 	ev.merge({"kind": cmd.kind, "by": cmd.by, "to": cmd.to})
+	if cmd.seq > 0:
+		ev["seq"] = cmd.seq
 	return ev
 
 

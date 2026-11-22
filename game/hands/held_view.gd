@@ -21,10 +21,18 @@
 ## and a pairing there plays no moment: the ball flies in from where the picked mate lay and, as it
 ## reaches the hand, a small sparkle burst and ring play there (MateSparkle, behaviour 60).
 ##
+## A Guest's guesses (coop/09, GuestGhosts asks them): a pick's ghost flies up from where the Sock lay
+## to the active place (or to its held mate) at once and becomes the held item on the Host's answer
+## with no pop, or flies back (F01-F03); a Throw's or a drop's item is hidden at once and shown again
+## if refused (Q2476); the wheel's turn shows at once and goes back if refused (Q2475).
+##
 ## Looks of this machine only: it reads the Hands and the Mess, never writes them. Ported from the
 ## old game's held_view.gd (its layout numbers, its depth trick, its zoom, its glide and fly-up).
 class_name HeldView
 extends Node3D
+
+## A refused pick's ghost has flown back and is gone: the Sock may be drawn where it is again.
+signal ghost_returned(sock: int)
 
 ## The group every HeldView is in: a Cabinet finds there where a shelved Pair was drawn (D11).
 const GROUP := &"held_views"
@@ -100,6 +108,16 @@ var bends_noted := 0
 var cloth_searches := 0
 ## Whether the Hands have been drawn once: what they hold from the start does not fly up.
 var _seen := false
+## A Guest's pick ghosts not answered yet, by Sock id: their Looks (flying up as `_flying` says).
+var _ghosts: Dictionary[int, Node3D] = {}
+## Refused pick ghosts flying back: {"looks", "from": where it was, "t": 0 to 1, "time", "arc"}.
+var _backs: Dictionary[int, Dictionary] = {}
+## Where a picked mate's ghost was when its Pair's moment started: its fly-in starts there (D08).
+var _fly_in_from: Dictionary[int, Transform3D] = {}
+## Held items let go by a Guest's Throw or drop not answered yet: not drawn (G01, E01).
+var _hidden: Dictionary[int, bool] = {}
+## A Guest's turn of the wheel not answered yet: the active index shown, or -1 (E06).
+var _guess_active := -1
 
 
 func _enter_tree() -> void:
@@ -157,6 +175,8 @@ func refresh(delta := 0.0) -> void:
 				_flying[sock] = {"from": _lay_pose(sock), "t": 0.0}
 	_seen = hands != null
 	var active := hands.active_index(me) if hands != null else -1
+	if _guess_active >= 0 and _guess_active < items.size():
+		active = _guess_active
 	if active >= 0 and active < items.size():
 		_was_active[items[active]] = true
 	if turning and not worn and active >= 0 and tuning != null:
@@ -176,15 +196,16 @@ func refresh(delta := 0.0) -> void:
 		if _flying.has(sock):
 			_fly_up(sock, looks, delta)
 		var moment: Node3D = _moments.get(sock)
-		looks.visible = moment == null
+		looks.visible = moment == null and not _hidden.has(sock)
 		if moment != null:
 			moment.transform = looks.transform
 			_place_fly_in(sock, moment)
+	_place_ghosts(items, delta)
 
 
 ## Whether every held item is at its place: no glide or flight under way.
 func settled() -> bool:
-	if not _flying.is_empty() or not _fly_in.is_empty():
+	if not _flying.is_empty() or not _fly_in.is_empty() or not _ghosts.is_empty() or not _backs.is_empty():
 		return false
 	if hands == null:
 		return true
@@ -407,6 +428,7 @@ func _find_cloth(looks: Node3D) -> SockCloth:
 ## A Sock left the Hands: let go (dropped or thrown), its body is where it hung and its body's Looks
 ## takes over at the hand's size, growing to its own; otherwise (a pairing, a shelve) it simply goes.
 func _let_go(sock: int) -> void:
+	_hidden.erase(sock)
 	var looks := _looks[sock]
 	var pair := _balls.has(sock)
 	var bend := bend_of(sock)
@@ -485,7 +507,9 @@ func _start_moment(sock: int) -> void:
 	moments_played += 1
 	var mate := hands.mess.mate_of(sock)
 	if _seen and mate >= 0:
-		_fly_in[sock] = _lay_pose(mate) * (moment.get_node(^"Mate/FlyIn/Looks") as Node3D).transform.affine_inverse()
+		var from: Transform3D = _fly_in_from.get(mate, _lay_pose(mate))
+		_fly_in_from.erase(mate)
+		_fly_in[sock] = from * (moment.get_node(^"Mate/FlyIn/Looks") as Node3D).transform.affine_inverse()
 
 
 ## The ball of `moment` pops: its sound, unless the moment ended first.
@@ -595,3 +619,180 @@ func sway_offset(sock: int) -> Vector3:
 		return Vector3.ZERO
 	var bent := (poses[near] as Transform3D) * skeleton.get_bone_global_rest(near).affine_inverse()
 	return skel * (bent * at) - looks.global_position
+
+
+# --- A Guest's guesses (coop/09) -----------------------------------------------------------------
+
+## A Guest picked Sock `sock`: its ghost flies up at once from where it is drawn now (lying, or its
+## moving body: D10) to the active place, or to the held loose mate it would pair with (D08), on the
+## pick's time and hop (D02). Nothing in the Hands changes until the answer (D03).
+func ghost_pick(sock: int) -> void:
+	if hands == null or _ghosts.has(sock) or tuning == null:
+		return
+	_end_back(sock)
+	var looks := SockDress.make(hands.mess.design_of(sock), SockDress.HELD, hands.mess.is_pair(sock))
+	looks.name = "Ghost%d" % sock
+	add_child(looks)
+	_ghosts[sock] = looks
+	var from: Variant = hands.mess.drawn_flight_of(sock)
+	_flying[sock] = {"from": from if from is Transform3D else _lay_pose(sock), "t": 0.0}
+	_place_ghosts(hands.items_of(me), 0.0)
+
+
+## Whether a pick ghost of Sock `sock` waits on its answer.
+func has_ghost(sock: int) -> bool:
+	return _ghosts.has(sock)
+
+
+## The Host granted the pick of `sock`: its ghost becomes the held item where it is now, its fly-up
+## carrying on (no pop, D04); a picked mate's ghost becomes the start of its Pair's fly-in (D08).
+func adopt_pick(sock: int) -> void:
+	var looks: Node3D = _ghosts.get(sock)
+	if looks == null:
+		return
+	_ghosts.erase(sock)
+	if not hands.items_of(me).has(sock) or _looks.has(sock):
+		# Paired into a held Sock: the moment's fly-in starts where the ghost is.
+		if looks.is_inside_tree():
+			_fly_in_from[sock] = looks.global_transform
+		_flying.erase(sock)
+		looks.queue_free()
+		return
+	_looks[sock] = looks
+	looks.name = "Held%d" % sock
+	if hands.mess.is_pair(sock):
+		_balls[sock] = true
+	else:
+		_cloths[sock] = _find_cloth(looks)
+		_watch_bend(sock, looks)
+
+
+## The Host refused the pick of `sock` (or never answered): its ghost flies back to where the Sock
+## lies or moves, or into the Teammate's Hands that won it (F01, F03), in `time` on an arc of `arc`
+## (F02), then goes and ghost_returned is said.
+func ghost_back(sock: int, time: float, arc: float) -> void:
+	var looks: Node3D = _ghosts.get(sock)
+	_ghosts.erase(sock)
+	_flying.erase(sock)
+	if looks == null or not looks.is_inside_tree():
+		if looks != null:
+			looks.queue_free()
+		ghost_returned.emit(sock)
+		return
+	_backs[sock] = {"looks": looks, "from": looks.global_transform, "t": 0.0, "time": time, "arc": arc}
+
+
+## Whether a refused pick ghost of Sock `sock` is flying back.
+func flying_back(sock: int) -> bool:
+	return _backs.has(sock)
+
+
+## Where pick ghost (or flying-back ghost) `sock` is drawn now, in the level, or null.
+func ghost_pose(sock: int) -> Variant:
+	var looks: Node3D = _ghosts.get(sock)
+	if looks == null and _backs.has(sock):
+		looks = _backs[sock]["looks"]
+	return looks.global_transform if looks != null and looks.is_inside_tree() else null
+
+
+## Every guess dropped at once (the session ended): ghosts gone, hidden items shown, the turn undone.
+func clear_guesses() -> void:
+	for sock: int in _ghosts.keys():
+		_ghosts[sock].queue_free()
+		_flying.erase(sock)
+		ghost_returned.emit(sock)
+	_ghosts.clear()
+	for sock: int in _backs.keys():
+		_end_back(sock)
+	_hidden.clear()
+	_guess_active = -1
+
+
+## A Guest let held item `sock` go (a Throw or a drop): hidden at once until the answer (G01, E01).
+func hide_item(sock: int) -> void:
+	_hidden[sock] = true
+	var looks: Node3D = _looks.get(sock)
+	if looks != null:
+		looks.visible = false
+
+
+## A refused (or unanswered) let-go: the item shows in its place again at once (Q2476).
+func show_item(sock: int) -> void:
+	_hidden.erase(sock)
+	var looks: Node3D = _looks.get(sock)
+	if looks != null:
+		looks.visible = not _moments.has(sock)
+
+
+## Whether held item `sock` is hidden by a let-go not answered yet.
+func is_hidden(sock: int) -> bool:
+	return _hidden.has(sock)
+
+
+## A Guest turned the wheel by `step`: the active item shown changes at once (E06, Q2475).
+func guess_cycle(step: int) -> void:
+	var items := hands.items_of(me) if hands != null else PackedInt32Array()
+	if items.size() < 2:
+		return
+	_guess_active = wrapi(shown_active() + step, 0, items.size())
+
+
+## The wheel's answer came (granted: the Hands say so now; refused: back, silently).
+func clear_guess() -> void:
+	_guess_active = -1
+
+
+## The active index shown now, a guess included.
+func shown_active() -> int:
+	if _guess_active >= 0:
+		return _guess_active
+	return hands.active_index(me) if hands != null else -1
+
+
+## Places the pick ghosts on their way up and the refused ones flying back.
+func _place_ghosts(items: PackedInt32Array, delta: float) -> void:
+	for sock: int in _ghosts:
+		var looks := _ghosts[sock]
+		var mate := hands.mate_held(me, sock) if hands != null else -1
+		if mate >= 0 and _looks.has(mate):
+			looks.transform = _looks[mate].transform
+		else:
+			looks.transform = _finish(_layout(items.size(), items.size(), sock), true, sock)
+		if _flying.has(sock):
+			_fly_up(sock, looks, delta)
+	for sock: int in _backs.keys():
+		var back := _backs[sock]
+		var looks: Node3D = back["looks"]
+		var u := minf(1.0, float(back["t"]) + delta / maxf(float(back["time"]), 0.01))
+		back["t"] = u
+		if u >= 1.0 or not looks.is_inside_tree():
+			_end_back(sock)
+			continue
+		var to := _back_target(sock)
+		var from: Transform3D = back["from"]
+		var at := from.interpolate_with(to, u)
+		at.origin = from.origin.lerp(to.origin, u) + Vector3.UP * (float(back["arc"]) * 4.0 * u * (1.0 - u))
+		looks.global_transform = at
+
+
+## Where a refused pick ghost of `sock` flies back to now: into the Hands of the Teammate holding it
+## (their worn view on this machine, F03), else where it lies or moves (F01).
+func _back_target(sock: int) -> Transform3D:
+	for node in get_tree().get_nodes_in_group(GROUP):
+		var view := node as HeldView
+		if view == null or view == self or not view.worn or view.hands != hands:
+			continue
+		var at: Variant = view.drawn_of(sock)
+		if at is Transform3D:
+			return at
+	var moving: Variant = hands.mess.drawn_flight_of(sock)
+	return moving if moving is Transform3D else _lay_pose(sock)
+
+
+func _end_back(sock: int) -> void:
+	var back: Dictionary = _backs.get(sock, {})
+	_backs.erase(sock)
+	if back.is_empty():
+		return
+	(back["looks"] as Node3D).queue_free()
+	ghost_returned.emit(sock)

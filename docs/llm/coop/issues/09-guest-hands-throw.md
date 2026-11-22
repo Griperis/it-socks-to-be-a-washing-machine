@@ -1,6 +1,7 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
+done: 2026-11-22
 kind: build
 area: core
 feature: coop
@@ -56,7 +57,40 @@ and the invariants, with questions 1-9 answered (Q2439, Q2472-Q2479). One test p
 
 ## Answers
 - Q2220, Q2221, Q2226, Q2439, Q2453, Q2470, Q2472-Q2480 (2026-11-22).
+- The thrower's ghost leaves the first-person hand and eases onto the Host's body (started at the avatar's hand)
+  over 0.2 s, as built (Q2481, 2026-11-22).
+- A guess with no answer in 2 s plays "refuse" only, with no text (Q2482, 2026-11-22).
 
 ## Open follow-ups
+- [later] Z7 (a spawned flight found by its id, not its name) not changed: only Throws are spawned now, and a
+  thrown Sock cannot rest and be thrown again in one tick, so the rename cannot happen.
 
 ## Built log
+- 2026-11-22 agent (coop/09): Changed: a Throw's body streams to every Guest as stamped rows (`FlightRow`:
+  position, turn, velocity, spin, the Host's tick; one MultiplayerSynchronizer a body, spawned with its first
+  row), played 0.1 s behind; coop/07's frozen copy is gone. A Guest's own pick, drop, Throw and wheel show at
+  once as looks-only guesses (`GuestGhosts`, `ThrowGhost` on `Mess.LAYER_GHOST`, the HeldView's pick ghost),
+  matched to the Host's answer by a Command `seq`; refusals fly back or return at once; 2 s with no answer goes
+  back with "refuse". "pick" plays at the click, "throw" at release, "pair" on the answer. A Guest's Throw
+  leaves from its avatar's eyes; a Guest hears a streamed Throw's bounces; refusals go to the asker alone.
+- Measured (bytes from the Host, unreliable, per flying Throw): 0 ms one 5.58 KB/s, four 22.2 KB/s (5.54 a
+  body), sixteen 5.57 a body; 50 ms one 5.56 KB/s, four 22.1 KB/s, sixteen 5.57 a body (coop/01's spike: 4.8;
+  the row now carries the spin). Copy lag 0.100 s at 0 ms, 0.150 s at 50 ms; largest step a frame equals the
+  Host body's. The Guest's ghost: largest change of step over its body's own 0.022 m.
+- Files: `game/sock/flight_row.gd`, `game/hands/guest_ghosts.gd`, `game/hands/throw_ghost.gd`,
+  `game/hands/ghost_tuning.gd`/`.tres`, `game/hands/held_view.gd`, `game/mess/mess.gd`, `game/parts/command.gd`,
+  `game/parts/session.gd`, `tests/coop_hands_test.gd`, `tests/coop_flight_test.gd`.
+- Verified: `run.sh --touched` re-run by agent_finish; coop_hands PASS 101 checks, 6 cases; coop_flight PASS 144 checks; coop_join PASS 183; stress coop_mess:pour_2000_50ms PASS, reliable 49.7 KB/s, worst second 83 KB (coop/08: 59.4, 90).
+- 2026-11-22 agent (coop/09, the lead's three gaps): Changed: the Hands keep each player's items, active item
+  and last grab under their player id from the Roster (Z1; the peer number only while no Roster names them, and
+  remembered after a Roster clears), so a rejoin and a late joiner see the right Hands. A player's Hands numbers an
+  Upgrade changes (capacity, reach, charge, full speed) go up in the gate word; the Host clamps them to the
+  Upgrades' bounds (new `HandsTuning` "Upgrades" group, placeholders until M4), writes them into the Roster entry,
+  and reads each Guest's own (D13; the interim "Host player's tuning" is gone). A Throw or drop ghost's Looks is
+  a falling body's: its cloth bends in flight, lies flat when slow (G09), lies flat before the Mess draws the Sock
+  (at most 1.5 s) and stays 3 frames over it (G08).
+- Files: `game/hands/hands.gd`, `game/hands/hands_tuning.gd`, `game/net/roster.gd`, `game/parts/session.gd`,
+  `game/hands/throw_ghost.gd`, `game/hands/ghost_tuning.gd`, `tests/coop_join_test.gd`, `tests/coop_hands_test.gd`.
+- Verified: coop_join PASS 188 checks (leave_and_return: Z1 keys, the late joiner's and the rejoined A's Hands, D13
+  read and clamp); coop_hands PASS 103 checks (G08 flat at hand-over, Looks kept); stress
+  coop_mess:pour_2000_50ms PASS, reliable 54.9 KB/s, worst second 91 KB; `--touched` by agent_finish below.

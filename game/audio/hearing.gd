@@ -12,8 +12,10 @@ extends RefCounted
 const CUE_HEIGHT := 1.2
 
 
-## An answer `ev` of `parts` reached this machine, whose own player is `me`.
-static func applied(ev: Dictionary, me: int, parts: Parts) -> void:
+## An answer `ev` of `parts` reached this machine, whose own player is `me`. `guessed`: a Guest's
+## ghost already played this moment's sound at the click (a pick's "pick", a Throw's "throw" and its
+## rumble: Q2478, G01); the answer then plays only what it adds (a Pair's "pair", Q2479).
+static func applied(ev: Dictionary, me: int, parts: Parts, guessed := false) -> void:
 	if not ev.get("ok", false):
 		return
 	# core/16 P12b (core/25 W15): a lost Sock or Pair came back; everyone hears a pop at each.
@@ -29,7 +31,8 @@ static func applied(ev: Dictionary, me: int, parts: Parts) -> void:
 				Sounds.play(&"pair")
 				PadRumble.play(PadRumble.PAIR)
 			elif own:
-				Sounds.play(&"pick")
+				if not guessed:
+					Sounds.play(&"pick")
 			else:
 				_teammate(&"pair" if ev.has("paired") else &"pick", by, parts)
 		&"cycle":
@@ -42,8 +45,9 @@ static func applied(ev: Dictionary, me: int, parts: Parts) -> void:
 				_teammate(&"drop", by, parts)
 		&"throw":
 			if own:
-				Sounds.play(&"throw")
-				PadRumble.play(PadRumble.THROW)
+				if not guessed:
+					Sounds.play(&"throw")
+					PadRumble.play(PadRumble.THROW)
 			else:
 				_teammate(&"throw", by, parts)
 		&"shelve", &"thrown_shelve":

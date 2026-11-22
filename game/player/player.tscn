@@ -11,6 +11,8 @@
 [ext_resource type="Script" uid="uid://bqxru467300ek" path="res://game/ui/hud.gd" id="8_hud"]
 [ext_resource type="Resource" path="res://game/ui/hud_tuning.tres" id="9_hud_tuning"]
 [ext_resource type="PackedScene" uid="uid://c6ggi6fh377si" path="res://game/parts/avatar/looks_avatar.tscn" id="10_own_body"]
+[ext_resource type="Script" uid="uid://o2nt8eeij1by" path="res://game/hands/guest_ghosts.gd" id="11_ghosts"]
+[ext_resource type="Resource" uid="uid://5buhkrgy1c5z" path="res://game/hands/ghost_tuning.tres" id="12_ghost_tuning"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -153,3 +155,8 @@ script = ExtResource("5_ring")
 [node name="Footsteps" type="Node" parent="." unique_id=1954666980]
 script = ExtResource("6_steps")
 tuning = ExtResource("7_steps_tuning")
+
+[node name="Ghosts" type="Node" parent="." unique_id=1730582941]
+unique_name_in_owner = true
+script = ExtResource("11_ghosts")
+tuning = ExtResource("12_ghost_tuning")

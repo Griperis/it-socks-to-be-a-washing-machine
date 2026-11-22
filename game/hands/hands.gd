@@ -39,13 +39,25 @@ var _probe := _make_probe()
 @export var tuning: HandsTuning
 
 @export_group("State")
-## Each player's held Sock ids, newest last: {player id: PackedInt32Array}.
+## Each player's held Sock ids, newest last: {key: PackedInt32Array}. The key is the player id from the
+## Roster (Z1: the same on every machine, a rejoin and a late joiner included), or the peer number
+## while nobody's Roster names them (alone).
 @export var held := {}
-## Each player's active item, an index into their held ids: {player id: int}.
+## Each player's active item, an index into their held ids: {key: int}.
 @export var active := {}
-## When each player's last pick was granted, on the Host's clock: {player id: float}.
+## When each player's last pick was granted, on the Host's clock: {key: float}.
 @export var grabbed_at := {}
 @export_group("")
+
+## The level's Roster, found once (null alone, or with none).
+var _roster: Roster
+var _roster_looked := false
+## The last player id seen on each peer: the key still holds once the Roster is cleared.
+var _ids: Dictionary[int, String] = {}
+## A Teammate's numbers built from the Roster (D13), by player id, and what they were built from.
+var _teammate_tuning: Dictionary[String, HandsTuning] = {}
+var _teammate_sent: Dictionary[String, Dictionary] = {}
+var _teammate_base: HandsTuning
 
 ## The Host's clock in seconds (physics time since the level started): what the grab interval is
 ## measured on. Only the Host reads it.
@@ -60,31 +72,74 @@ func _physics_process(delta: float) -> void:
 	clock += delta
 
 
+## The key player `by` (a peer number) is kept under in the State: their player id once a Roster
+## names them, else the peer number (Z1).
+func key_of(by: int) -> Variant:
+	var r := _roster_of()
+	var pid := r.id_of(by) if r != null else ""
+	if pid != "":
+		_ids[by] = pid
+		return pid
+	if _ids.has(by):
+		return _ids[by]
+	return by
+
+
 ## Player `by`'s held Sock ids, newest last.
 func items_of(by: int) -> PackedInt32Array:
+	var key: Variant = key_of(by)
+	if held.has(key):
+		return held[key]
 	return held.get(by, PackedInt32Array())
 
 
 ## Player `by`'s active Sock, or -1 with empty Hands.
 func active_of(by: int) -> int:
 	var items := items_of(by)
-	var i := int(active.get(by, items.size() - 1))
+	var i := int(active.get(key_of(by), active.get(by, items.size() - 1)))
 	return items[i] if i >= 0 and i < items.size() else -1
 
 
 ## The index of player `by`'s active item in items_of(), or -1.
 func active_index(by: int) -> int:
 	var items := items_of(by)
-	var i := int(active.get(by, items.size() - 1))
+	var i := int(active.get(key_of(by), active.get(by, items.size() - 1)))
 	return i if i >= 0 and i < items.size() else -1
 
 
 ## The numbers that hold for player `by`: their player's HandsTuning when it is on this machine
-## (alone, always), else these Hands' own.
+## (alone, always); a Teammate's own, as they sent it at their join and the Host wrote it into the
+## Roster (D13), clamped to what Upgrades can make them (HandsTuning.clamped()); else these Hands' own.
 func tuning_of(by: int) -> HandsTuning:
 	var player := _player_of(by)
 	if player != null and player.hands_tuning != null:
 		return player.hands_tuning
+	var r := _roster_of()
+	var pid := r.id_of(by) if r != null else ""
+	var sent: Variant = r.entry_of(by).get("hands") if pid != "" else null
+	if sent is Dictionary:
+		if not _teammate_tuning.has(pid) or _teammate_sent.get(pid) != sent or _teammate_base != _own_tuning():
+			_teammate_base = _own_tuning()
+			_teammate_tuning[pid] = _teammate_base.clamped(sent)
+			_teammate_sent[pid] = (sent as Dictionary).duplicate()
+		return _teammate_tuning[pid]
+	return _own_tuning()
+
+
+## The level's Roster (found once among the Parts), or null.
+func _roster_of() -> Roster:
+	if _roster != null and is_instance_valid(_roster):
+		return _roster
+	if parts == null:
+		return null
+	if not _roster_looked or _roster == null:
+		_roster_looked = true
+		_roster = parts.find(func(part: Part) -> bool: return part is Roster) as Roster
+	return _roster
+
+
+## These Hands' own numbers: the floor and ceiling of a Teammate's (HandsTuning.clamped()).
+func own_tuning() -> HandsTuning:
 	return _own_tuning()
 
 
@@ -95,26 +150,32 @@ func _own_tuning() -> HandsTuning:
 	return tuning
 
 
-## The player asks to pick Sock `sock`.
-func pick(by: int, sock: int) -> void:
-	parts.ask(Command.new(&"pick", by, id, {"sock": sock}))
+## The player asks to pick Sock `sock`. `seq` (Parts.next_seq()): a Guest's ghost waits on the
+## answer that echoes it (coop/09); every ask below takes one the same way.
+func pick(by: int, sock: int, seq := 0) -> void:
+	_ask(Command.new(&"pick", by, id, {"sock": sock}), seq)
 
 
 ## The player asks to make the next (`step` 1) or the previous (-1) item active.
-func cycle(by: int, step: int) -> void:
-	parts.ask(Command.new(&"cycle", by, id, {"step": step}))
+func cycle(by: int, step: int, seq := 0) -> void:
+	_ask(Command.new(&"cycle", by, id, {"step": step}), seq)
 
 
 ## The player asks to drop the active item where the crosshair meets a top at `point` (`normal` its
 ## up), both in the level.
-func drop(by: int, point: Vector3, normal: Vector3) -> void:
-	parts.ask(Command.new(&"drop", by, id, {"point": point, "normal": normal}))
+func drop(by: int, point: Vector3, normal: Vector3, seq := 0) -> void:
+	_ask(Command.new(&"drop", by, id, {"point": point, "normal": normal}), seq)
 
 
 ## The player asks to throw the active item along `dir` (a unit vector, the aim) with `charge` (0
 ## to 1, how full the ring was). The Host decides where it leaves and how fast.
-func throw(by: int, dir: Vector3, charge: float) -> void:
-	parts.ask(Command.new(&"throw", by, id, {"dir": dir, "charge": charge}))
+func throw(by: int, dir: Vector3, charge: float, seq := 0) -> void:
+	_ask(Command.new(&"throw", by, id, {"dir": dir, "charge": charge}), seq)
+
+
+func _ask(cmd: Command, seq: int) -> void:
+	cmd.seq = seq
+	parts.ask(cmd)
 
 
 ## What a Guest may send: a Sock id, a step, a spot, a direction and a charge. A pick at most 10 a
@@ -135,7 +196,7 @@ func pick_refusal(by: int, sock: int) -> String:
 			or not (mess.state_of(sock) == Mess.State.LYING or mess.is_moving(sock)):
 		return GONE
 	var t := tuning_of(by)
-	var since := clock - float(grabbed_at.get(by, -INF))
+	var since := clock - float(grabbed_at.get(key_of(by), grabbed_at.get(by, -INF)))
 	if since >= 0.0 and since < t.grab_interval:
 		return SOON
 	if not parts.near_point(by, mess.where_of(sock), t.reach + t.reach_slack):
@@ -184,7 +245,7 @@ func decide(cmd: Command) -> Dictionary:
 			var why := pick_refusal(cmd.by, sock)
 			if why != "":
 				return refuse(why)
-			var stamp := {"grabbed_at": _with(grabbed_at, cmd.by, clock)}
+			var stamp := {"grabbed_at": _with(_without(grabbed_at, cmd.by), key_of(cmd.by), clock)}
 			var lead := mate_held(cmd.by, sock)
 			if lead >= 0:
 				# R04: the Pair goes to the end of the Hands and is the active item.
@@ -206,7 +267,7 @@ func decide(cmd: Command) -> Dictionary:
 			var items := items_of(cmd.by)
 			if items.size() < 2:
 				return refuse("one")
-			return grant({"active": _with(active, cmd.by, wrapi(active_index(cmd.by) + int(step), 0, items.size()))})
+			return grant({"active": _with(_without(active, cmd.by), key_of(cmd.by), wrapi(active_index(cmd.by) + int(step), 0, items.size()))})
 		&"drop":
 			var point: Variant = cmd.args.get("point")
 			var normal: Variant = cmd.args.get("normal")
@@ -405,11 +466,15 @@ func worn_hand_of(by: int) -> Variant:
 
 
 ## Where player `by`'s eyes are: their player's when it is on this machine (alone, always), else
-## the tuning's `eyes_fallback` above where they stand.
+## their avatar's here (a Guest's on the Host, a Teammate's on a Guest: G15, Z2), else the tuning's
+## `eyes_fallback` above where they stand.
 func eyes_of(by: int) -> Vector3:
 	var player := _player_of(by)
 	if player != null:
 		return player.eyes()
+	var avatar := _avatar_of(by)
+	if avatar != null:
+		return avatar.eyes()
 	var at: Variant = parts.where.call(by) if parts != null and parts.where.is_valid() else null
 	return (at as Vector3 if at is Vector3 else Vector3.ZERO) + Vector3.UP * tuning_of(by).eyes_fallback
 
@@ -423,12 +488,25 @@ func _body_of(by: int) -> Array[RID]:
 	return out
 
 
-## Player `by` when they play on this machine (alone, always), else null.
+## Player `by`'s avatar in this Hands' own level on this machine, or null (alone, none).
+func _avatar_of(by: int) -> Avatar:
+	if not is_inside_tree():
+		return null
+	for node in get_tree().get_nodes_in_group(Avatar.GROUP):
+		var avatar := node as Avatar
+		if avatar != null and avatar.peer() == by and not avatar.is_queued_for_deletion() \
+				and (owner == null or owner.is_ancestor_of(avatar)):
+			return avatar
+	return null
+
+
+## Player `by` when they play on this machine (alone, always), else null. With two zoos in one tree
+## (a co-op test), each its own machine with its own MultiplayerAPI, a player of the other is not one.
 func _player_of(by: int) -> Player:
 	if is_inside_tree():
 		for node in get_tree().get_nodes_in_group(PLAYERS):
 			var player := node as Player
-			if player != null and player.player_id() == by:
+			if player != null and player.player_id() == by and player.multiplayer == multiplayer:
 				return player
 	return null
 
@@ -475,17 +553,25 @@ func _top_at(point: Vector3, slope: float) -> bool:
 
 ## The change to player `by`'s Hands: their items and active index, and any `more` fields.
 func _patch(by: int, items: PackedInt32Array, index: int, more := {}) -> Dictionary:
-	var h := held.duplicate()
-	var a := active.duplicate()
+	var key: Variant = key_of(by)
+	var h := _without(held, by)
+	var a := _without(active, by)
 	if items.is_empty():
-		h.erase(by)
-		a.erase(by)
+		h.erase(key)
+		a.erase(key)
 	else:
-		h[by] = items
-		a[by] = index
+		h[key] = items
+		a[key] = index
 	var patch := {"held": h, "active": a}
 	patch.merge(more)
 	return patch
+
+
+## `d` without the peer-number key `by` (a key from before a Roster named them).
+static func _without(d: Dictionary, by: int) -> Dictionary:
+	var out := d.duplicate()
+	out.erase(by)
+	return out
 
 
 static func _with(d: Dictionary, key: Variant, value: Variant) -> Dictionary:

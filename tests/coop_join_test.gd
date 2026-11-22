@@ -220,6 +220,15 @@ func case_leave_and_return() -> void:
 		a_hands.pick(a_peer, sock)
 		await _until(func() -> bool: return h_hands.items_of(a_peer).has(sock), "A to hold the %s Sock" % spot)
 		await _physics_ticks(25)  # the grab interval
+	# Z1: the Hands keep A's Socks under A's player id; D13: the Host holds A to A's own numbers (the
+	# zoo player's 3, sent at the join), clamped to what the Upgrades can make them.
+	_check(h_hands.held.has(a_profile.id) and not h_hands.held.has(a_peer), "Z1: the Host's Hands key A by its player id")
+	_check(h_hands.tuning_of(a_peer).capacity == _player(a).hands_tuning.capacity, "D13: the Host reads A's own capacity (%d)" % h_hands.tuning_of(a_peer).capacity)
+	var forged := h_hands.own_tuning().clamped({"capacity": 99, "reach": 40.0, "charge_time": 0.0, "max_speed": INF})
+	var own := h_hands.own_tuning()
+	_check(forged.capacity == own.capacity_most and forged.reach == maxf(own.reach, own.reach_most) \
+			and forged.charge_time == minf(own.charge_time_least, own.charge_time) and forged.max_speed == own.max_speed,
+			"D13: a forged tuning is clamped to the Upgrades' values")
 	# B joins late: it sees the Host and A where they stand, in their colours.
 	_session(b).profile = PlayerProfile.fresh()
 	_net(b).start(["--join=127.0.0.1:%d" % hs.port])
@@ -235,6 +244,9 @@ func case_leave_and_return() -> void:
 	var bm := b.get_node("Socks/Mess") as Mess
 	_check(bm.state_of(socks[0]) == Mess.State.HELD and bm.state_of(socks[1]) == Mess.State.HELD,
 			"B's Mess has A's Socks held")
+	var b_hands := b.get_node("Socks/Hands") as Hands
+	_check(b_hands.items_of(a_peer) == PackedInt32Array(socks), "Z1: the late joiner B sees A's Hands")
+	await _until(func() -> bool: return ba.of(a_peer).held.looks_of(socks[1]) != null, "Z1: B draws A's Socks at A's hand")
 	# A leaves, holding them.
 	var drops: Array[int] = [0]
 	var heard := func(name: StringName, _spatial: bool, _at: Vector3, _bus: StringName) -> void:
@@ -280,6 +292,16 @@ func case_leave_and_return() -> void:
 			"A stands where it left (%s, left at %s)" % [ap.global_position, a_at])
 	_check(_roster(host).colour_index_of(a_again) == 1, "and keeps its colour")
 	_check(_roster(host).id_of(a_again) == a_profile.id, "as the same player id")
+	# Z1: back on a new peer, A picks again; every machine sees A's Hands by its player id.
+	var again := (handling.get_node("Spots/Under") as SockSpot).sock
+	await _until(func() -> bool: return ha.of(a_again) != null and ha.of(a_again).pose_position.distance_to(a_at) < 0.1,
+			"the Host to see A back at the Handling station")
+	(a.get_node("Socks/Hands") as Hands).pick(a_again, again)
+	await _until(func() -> bool: return h_hands.items_of(a_again) == PackedInt32Array([again]) \
+			and b_hands.items_of(a_again) == PackedInt32Array([again]), "Z1: the Host and B to see A's Hands after the rejoin")
+	_check(h_hands.held.has(a_profile.id) and not h_hands.held.has(a_again), "Z1: still under A's player id")
+	await _until(func() -> bool: return ba.of(a_again) != null and ba.of(a_again).held.looks_of(again) != null,
+			"Z1: B draws the Sock at the returned A's hand")
 
 
 func case_nobody_there() -> void:

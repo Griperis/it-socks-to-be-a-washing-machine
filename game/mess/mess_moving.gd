@@ -525,7 +525,8 @@ static func _nearest(players: PackedVector3Array, at: Vector3) -> float:
 ## (P07), a fallen or dropped one from the start.
 ##
 ## On a Guest the body is looks only (coop/08): on Mess.LAYER_LOOKS, sparing no thrower (it touches
-## no player's body but through the house layer). Only a Throw's body goes under the spawner's path.
+## no player's body but through the house layer). Only a Throw's body goes under the spawner's path,
+## with its stamped row (FlightRow, coop/09).
 func _launch(sock: int, woken: bool, motion: Array = []) -> void:
 	var t := _mess.bodies_tuning()
 	var hands := _mess.tuning
@@ -537,7 +538,7 @@ func _launch(sock: int, woken: bool, motion: Array = []) -> void:
 	var body := (BALL_FLIGHT_SCENE if pair else FLIGHT_SCENE).instantiate() as RigidBody3D
 	body.name = Mess.FLIGHT_NAME % sock
 	body.set_meta(Mess.SOCK_META, sock)
-	_fit(body, _mess.design_of(sock))
+	fit(body, _mess.design_of(sock))
 	body.physics_material_override = _material(t.woken_friction, 0.0) if woken \
 			else _material(t.released_friction, t.released_bounce)
 	body.linear_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
@@ -563,10 +564,15 @@ func _launch(sock: int, woken: bool, motion: Array = []) -> void:
 		body.inertia = turn_inertia(body.mass, SockDress.box(_mess.design_of(sock)), t.turn_weight)
 	# The pose is set before the body enters the tree (m06 backlog: it was set after add_child, so a
 	# spawner's copy was made at the holder's origin), in the holder's space.
-	var holder := _mess.flight_holder() if _mess.is_throw(sock) else _mess.bodies_holder()
+	var thrown := _mess.is_throw(sock)
+	var holder := _mess.flight_holder() if thrown else _mess.bodies_holder()
 	var pose: Transform3D = motion[0] if motion.size() == 3 else _mess.pose_of(sock)
 	var space := holder as Node3D
 	body.transform = space.global_transform.affine_inverse() * pose if space != null and space.is_inside_tree() else pose
+	if thrown:
+		# coop/09: a Throw's body streams its stamped row to every Guest; the Row and its Sync are there
+		# before it enters the tree, so the spawn packet carries the first row.
+		FlightRow.attach(body, _mess, true)
 	holder.add_child(body, true)
 	body.reset_physics_interpolation()
 	if not launch.is_empty() and here:
@@ -648,8 +654,8 @@ static func _switch_ccd(body: RigidBody3D, speed: float, t: MessTuning) -> void:
 
 ## A falling body's shapes (a Pair's ball) fitted to its Design's Size: a Sock's are the leg and foot
 ## boxes it lies on (MessBodies.parts_at), so it flies, lands and lies as the same shape, as the old
-## game's one set of shapes for both tiers.
-static func _fit(body: CollisionObject3D, design: SockDesign) -> void:
+## game's one set of shapes for both tiers (a Guest's ghost body too, ThrowGhost).
+static func fit(body: CollisionObject3D, design: SockDesign) -> void:
 	var shape := body.get_node(^"Shape") as CollisionShape3D
 	if shape.shape is SphereShape3D:
 		var ball := (shape.shape as SphereShape3D).duplicate() as SphereShape3D

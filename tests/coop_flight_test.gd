@@ -2,8 +2,8 @@
 ## Socks carried from the Host to a Guest by Godot's own nodes. Two zoos in one process, each in a
 ## machine of its own (a Node with its own MultiplayerAPI and a SubViewport with its own 3D world, as
 ## tests/zoo_test.gd case_coop). The zoo's FlightSpawner spawns the Host's falling bodies on the
-## Guest; the test adds to every body one stamped row (tests/support/flight_row.gd) and one
-## MultiplayerSynchronizer that carries it, which is what flight.tscn would hold under Option A.
+## Guest; since coop/09 the game gives every thrown body its stamped row (game/sock/flight_row.gd) and
+## the MultiplayerSynchronizer that carries it (Option A, chosen).
 ## One Throw through the Hands, then 16 Throws in one tick; at 0 ms and at 50 ms each way, paced at
 ## 60 frames a second of real time. The two everyday cases use a small zoo (only the stations whose
 ## Socks are placed by hand, about 30 Socks), so the Mess's answers are small and what is measured is
@@ -13,7 +13,6 @@
 extends TestSuite
 
 const LagPeer := preload("res://tests/support/lag_peer.gd")
-const FlightRow := preload("res://tests/support/flight_row.gd")
 const ZOO := "res://game/zoo/zoo.tscn"
 const NET_WAIT_S := 20.0
 const FPS := 60
@@ -69,7 +68,6 @@ func cases() -> Array[Dictionary]:
 
 func _before_case() -> void:
 	wait_floor_s = NET_WAIT_S
-	FlightRow.offset = INF
 	_spawned.clear()
 	_drop_branches()
 
@@ -142,12 +140,24 @@ func _flight_round(lag_ms: int, small := true, unthrottled := true) -> void:
 	hands.throw(1, (Vector3(0.0, 0.3, 1.0)).normalized(), 0.7)
 	await _watch(host, guest, PackedInt32Array([one]), tag + " one", peer, idle, small and unthrottled)
 
-	# 16 Throws in one tick, as the Host's answers (the benchmark's burst, Mess.thrown_patch).
+	# Four Throws in one tick (coop/09's measure), then 16 (the benchmark's burst), as the Host's
+	# answers (Mess.thrown_patch).
+	await _burst(host, guest, 4, [one], tag + " four", peer, idle, small and unthrottled)
+	await _burst(host, guest, 16, [one], tag + " sixteen", peer, idle, small and unthrottled)
+	var errors := _errors.lines.duplicate()
+	_check(errors.is_empty(), "no engine error on either machine: %s" % ", ".join(errors.slice(0, 3)))
+	_drop_branches()
+
+
+## `n` Throws in one tick from a 4-wide grid over the open floor, of lying loose Socks not in `skip`;
+## followed by _watch().
+func _burst(host: Node3D, guest: Node3D, n: int, skip: Array, label: String, peer: LagPeer, idle: float, strict: bool) -> void:
+	var hm := host.get_node("Socks/Mess") as Mess
 	var socks := PackedInt32Array()
 	for sock in hm.count():
-		if socks.size() == 16:
+		if socks.size() == n:
 			break
-		if sock != one and hm.state_of(sock) == Mess.State.LYING and not hm.is_pair(sock):
+		if not skip.has(sock) and hm.state_of(sock) == Mess.State.LYING and not hm.is_pair(sock):
 			socks.append(sock)
 	var parts := host.get_node("Parts") as Parts
 	var rng := RandomNumberGenerator.new()
@@ -158,10 +168,7 @@ func _flight_round(lag_ms: int, small := true, unthrottled := true) -> void:
 		var spin := Vector3(rng.randf_range(-3.0, 3.0), rng.randf_range(-3.0, 3.0), rng.randf_range(-3.0, 3.0))
 		parts.apply({"ok": true, "kind": &"throw", "by": 1, "to": hm.id,
 				"changes": {hm.id: hm.thrown_patch(socks[i], Transform3D(Basis.from_euler(Vector3(0.0, rng.randf() * TAU, 0.0)), from), vel, spin, 1)}})
-	await _watch(host, guest, socks, tag + " sixteen", peer, idle, small and unthrottled)
-	var errors := _errors.lines.duplicate()
-	_check(errors.is_empty(), "no engine error on either machine: %s" % ", ".join(errors.slice(0, 3)))
-	_drop_branches()
+	await _watch(host, guest, socks, label, peer, idle, strict)
 
 
 ## Follows `socks` from their Throw until every one lies on both machines, every frame: what the
@@ -307,10 +314,11 @@ static func _lag_of(hist: Array, pos: Vector3, now: int) -> float:
 	return float(now - at) / FPS
 
 
-## Every Flight body that enters this machine's `Flights` gets a Row and a synchronizer carrying it
-## (the Host's spawn packet then holds the first row); on the Guest the body is frozen, kinematic,
-## and noted: when it came, and whether the Host's answer naming it was already there.
+## On the Guest every Flight body that enters `Flights` is noted: when it came, and whether the
+## Host's answer naming it was already there. The game streams it (FlightRow, coop/09).
 func _hook(zoo: Node3D, host_side: bool) -> void:
+	if host_side:
+		return
 	var flights := zoo.get_node("Flights") as Node3D
 	var mess := zoo.get_node("Socks/Mess") as Mess
 	flights.child_entered_tree.connect(func(node: Node) -> void:
@@ -318,27 +326,7 @@ func _hook(zoo: Node3D, host_side: bool) -> void:
 		if body == null or not String(body.name).begins_with(Mess.FLIGHT_PREFIX):
 			return
 		var sock := int(String(body.name).trim_prefix(Mess.FLIGHT_PREFIX))
-		if host_side:
-			# The spawn packet (with the first row) is made when the body is ready, inside add_child;
-			# MessMoving._launch sets the pose only after add_child. Under Option A it sets it before.
-			body.global_transform = mess.pose_of(sock)
-		if not host_side:
-			_spawned[sock] = {"frame": Engine.get_process_frames(), "answer_first": mess.state_of(sock) == Mess.State.FLYING}
-			body.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
-			body.freeze = true
-		var row := FlightRow.new()
-		row.name = "Row"
-		row.host_side = host_side
-		body.add_child(row)
-		var sync := MultiplayerSynchronizer.new()
-		sync.name = "Sync"
-		var config := SceneReplicationConfig.new()
-		config.add_property(^"Row:row")
-		config.property_set_spawn(^"Row:row", true)
-		config.property_set_replication_mode(^"Row:row", SceneReplicationConfig.REPLICATION_MODE_ALWAYS)
-		sync.replication_config = config
-		sync.replication_interval = 0.0
-		body.add_child(sync))
+		_spawned[sock] = {"frame": Engine.get_process_frames(), "answer_first": mess.state_of(sock) == Mess.State.FLYING})
 
 
 ## One frame, then a wait until the next 1/60 s of wall time: the engine runs frames as fast as it

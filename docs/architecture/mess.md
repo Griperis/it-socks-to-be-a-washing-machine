@@ -62,8 +62,18 @@ Socks lie, are drawn, move or wake.
   zstd-compressed (`PACKED`), exact, with each body in flight's place and motion (`MOTION` bytes, half floats:
   looks only), read back by `Mess.unpacked()` (a test reads a saved field through it). A listener reads a patch
   with `Mess.row_states()`.
-- A Guest's spawned Throw copy (no `SOCK_META`) is frozen (kinematic) as it arrives (`_on_flight_in`): it has
-  no synchronizer yet (coop/09 gives it the stamped stream). Only Throws come over the spawner now.
+- A Throw's body streams (coop/09, coop/01 Option A): `MessMoving._launch` gives it a `FlightRow` ("Row") and a
+  `MultiplayerSynchronizer` ("Sync") before it enters the tree, so the spawn carries the first row
+  `[position, rotation, velocity, spin, the Host's tick]`; then one row a network frame, unreliable, about
+  5.6 KB/s a body. A Guest's spawned copy (no `SOCK_META`) is frozen (kinematic, on the looks layer) and gets
+  its Row as it enters (`_on_flight_in`); the Row plays it `GhostTuning.stream_lag` (0.1 s) behind the Host's
+  clock, mapped by the smallest delay seen (`Mess.stream_offset`). Only Throws come over the spawner.
+- A Guest's own pick, drop, Throw and wheel are looks-only guesses (`GuestGhosts`, a child of the Player,
+  `ThrowGhost` on `Mess.LAYER_GHOST` touching the house only, the HeldView's pick ghost): every Command carries a
+  `seq` the answer echoes; while a ghost draws a Sock, `Mess.hold_back(sock, true)` keeps the Mess from drawing
+  it (lying or flying, body and record as they are). A Throw or drop ghost follows the Host's body at the same
+  moment of the flight (`FlightRow.flight_time`), easing the difference in over `predict_blend`, and eases onto
+  the Host's rest.
 - A flight flies as the same leg and foot boxes it lies on (`MessBodies.parts_at`), with
   `MessTuning.turn_weight` times its flat box's inertia (a 50 g board's own spins to Jolt's cap on an
   edge landing), and sweeps (CCD) only from 1 m/s (core/23). Poured and dropped Socks fly as woken ones.
