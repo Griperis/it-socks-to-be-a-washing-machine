@@ -89,3 +89,4 @@ the zoo) and run `mess_settle` with `--only real_path`.
     `tests/mess_settle_test.gd`, `docs/architecture/mess.md`.
   - Verified: see the commit's `suite:` line. `mess_settle` alone: `PASS 172 checks, 18 cases` in order; reversed,
     the same with one FLAKY (`real_path_2`: hot 1, jumped 1, Open follow-ups).
+- Merged: 897167c1 (2026-11-22, branch core/49-pour-leaves-socks-inside-each-other)
