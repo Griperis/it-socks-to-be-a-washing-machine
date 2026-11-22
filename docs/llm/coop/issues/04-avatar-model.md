@@ -68,3 +68,4 @@ the four bones, rest poses kept; the glTF extras (`crouch_drop`, `crouch_offset`
     forward and the Guest sees the sock creature there). Strip: `builds/review-avatar/avatar-before-after.png`
     (old beside new, 6 views incl. crouched; no differing pixel).
   - Verified: PASS 8339 checks, 212 cases (`run.sh --touched`); PASS asset_lint; PASS rules.
+- Merged: 86b7447e (2026-11-22, branch coop/04-avatar-model)

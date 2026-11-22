@@ -107,3 +107,4 @@ built; the ESC "End session" menu is not built (no ESC menu yet, Q2300).
   tests/scene_parts_test.gd, tests/coop_flight_test.gd, tests/game_cli_test.gd, tools/grep_rules_allow.txt,
   docs/architecture.md.
   Verified: PASS 15589 checks, 402 cases (`run.sh --touched` ran every suite); coop_join 173 checks, 6 cases.
+- Merged: 00aada56 (2026-11-22, branch coop/03-host-join-roster)
