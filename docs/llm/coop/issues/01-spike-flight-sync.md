@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: research
 area: core
 feature: coop
 priority: now
 created: 2026-11-22
-done:
+done: 2026-11-22
 blocked_by: []
 notes: ["M0.6 batch 0 (Q2436): a spike; only its report merges"]
 terms: [Host, Guest, Flight, Throw]
@@ -35,6 +35,22 @@ packet against the Host's reliable answer. Option C (keep a custom stamped strea
 - A Teammate's Throw leaves the hand at once with only the network's 0.1 s delay (Q2439).
 
 ## Open follow-ups
+- [later] Technical, for the Throw ticket (batch 3) whichever option: hold ENet's packet throttle at full in
+  `Session` (`throttle_configure(5000, 32, 0)` on each peer); left alone it drops 31 of 32 unreliable
+  packets at 60 fps, avatars included (`docs/research/coop-flight-sync.md`, condition 1).
+- [later] Technical, before co-op play with a full level: Mess patches carry the whole `states`/`poses`
+  arrays (about 100 KB an answer with 2,038 Socks); they back up the reliable channel. Patches of changed
+  records only (condition 3).
 
 ## Built log
 - 2026-11-22 lead: model opus (hard netcode and physics, CLAUDE.md "Models").
+
+### 2026-11-22
+- Changed: nothing in the game. A spike: Host and Guest zoos in one process; thrown Socks spawned by
+  `FlightSpawner` with one synchronizer per body carrying a stamped row, played 0.1 s behind. A works:
+  no jump, lag 0.1 s + one-way, 0.4 mm at rest, spawn always before its answer, about 4.8 KB/s a body;
+  needs the throttle held at full, the pose set before `add_child`, sparse Mess patches. Recommendation A.
+- Files: `docs/research/coop-flight-sync.md`, `tests/coop_flight_test.gd`, `tests/support/flight_row.gd`,
+  `tests/support/lag_peer.gd` (byte counters).
+- Verified: `kit/tools/run.sh --touched`: PASS 296 checks, 28 cases; `--only=coop_flight` three times in a row
+  PASS; the two stress cases PASS (numbers only).

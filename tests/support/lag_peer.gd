@@ -12,6 +12,10 @@ var lag_ms := 50
 var loss := 0.0
 ## How many it dropped so far.
 var lost := 0
+## What this machine sent, by transfer mode (MultiplayerPeer.TransferMode): payload bytes and packets,
+## before ENet's and UDP's own headers.
+var sent_bytes: Dictionary[int, int] = {}
+var sent_packets: Dictionary[int, int] = {}
 var _rng := RandomNumberGenerator.new()
 ## Held packets, oldest first: [due in ms, bytes, from, mode, channel].
 var _held: Array[Array] = []
@@ -68,6 +72,9 @@ func _get_packet_channel() -> int:
 
 
 func _put_packet_script(bytes: PackedByteArray) -> Error:
+	var mode := int(inner.transfer_mode)
+	sent_bytes[mode] = sent_bytes.get(mode, 0) + bytes.size()
+	sent_packets[mode] = sent_packets.get(mode, 0) + 1
 	return inner.put_packet(bytes)
 
 
