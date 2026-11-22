@@ -1,5 +1,5 @@
 ## The outline (core/11): one Outline component on anything you can use, shown by the player's aim.
-## One case per line of the approved behaviour list (O01-O08) and the real path. Every case plays the
+## One case per line of the approved behaviour list (O02-O08) and the real path. Every case plays the
 ## station scene game/zoo/stations/outline.tscn on a floor, with the game's player and a Parts (a Host
 ## of one), as the zoo does. The pixels are the shot set `outline`'s (headless draws nothing).
 extends TestSuite
@@ -30,8 +30,6 @@ func cases() -> Array[Dictionary]:
 	return [
 		{"name": "real_path", "method": "case_real_path", "world": false,
 				"title": "real path: in the station the player turns the crosshair onto a lying Sock, a drawer and the Door: each shows its outline as it is aimed, and the one before goes"},
-		{"name": "o01_soft_outline", "method": "case_o01", "world": false,
-				"title": "O01: the aimed thing's outline is warm white, a stencil mask then three shells fading outward, drawn outside its shape, grown by the distance to the camera (one width near and far)"},
 		{"name": "o02_goes_at_once", "method": "case_o02", "world": false,
 				"title": "O02: when the crosshair leaves the thing, or it goes out of reach, the outline goes at once"},
 		{"name": "o03_every_interactable", "method": "case_o03", "world": false,
@@ -85,34 +83,6 @@ func case_real_path() -> void:
 
 
 # --- The behaviour lines -------------------------------------------------------------------------
-
-func case_o01() -> void:
-	await _build()
-	_stand(BY_DOOR)
-	await _aim(_door_point())
-	var door := _outline_of("Door/Looks/Outline")
-	await _until(func() -> bool: return door.outlined_count() == 1, "the Door to be outlined")
-	var style := door.current_style()
-	_check(style == Outline.AIM, "it draws in the aim style")
-	_check(style.colour.is_equal_approx(Color(1.0, 0.94, 0.82)), "warm white (%s)" % style.colour)
-	var copy := door.copies()[0]
-	var mask := copy.material_override as ShaderMaterial
-	_check(mask != null and mask.shader == OutlineStyle.MASK_SHADER, "the first pass is the stencil mask")
-	_check(mask.shader.code.contains("stencil_mode write"), "the mask writes the shape into the stencil")
-	var shells := style.shell_materials()
-	_check(shells.size() == 3, "three shells (%d)" % shells.size())
-	var grows: Array[float] = []
-	var alphas: Array[float] = []
-	for s in shells:
-		grows.append(float(s.get_shader_parameter(&"grow")))
-		alphas.append(float(s.get_shader_parameter(&"strength")))
-		_check(Color(s.get_shader_parameter(&"colour")).is_equal_approx(style.colour), "each shell is warm white")
-	_check(grows[0] < grows[1] and grows[1] < grows[2], "each shell is wider than the one inside it (%s)" % [grows])
-	_check(alphas[0] > alphas[1] and alphas[1] > alphas[2], "each shell is fainter than the one inside it (%s)" % [alphas])
-	var code := OutlineStyle.SHELL_SHADER.code
-	_check(code.contains("stencil_mode read, compare_not_equal"), "the shells draw only outside the shape")
-	_check(code.contains("max(-v.z"), "the growth is times the distance to the camera: one width on screen near and far")
-
 
 func case_o02() -> void:
 	await _build()

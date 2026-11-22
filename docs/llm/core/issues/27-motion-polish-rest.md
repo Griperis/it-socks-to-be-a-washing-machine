@@ -70,3 +70,4 @@ old code and numbers of each.
   (the landing's time), tools/shot_hooks.gd, tools/shots/sets/motion-{sway,throw-bend,shelve-landing,thrown-shelve,swings}.txt.
   Verified: PASS 11390 checks, 320 cases (--touched). Review sheet: builds/review-core-27/sheet.png.
 - Merged: 8944a073 (2026-11-21, branch core/27-motion-polish-rest)
+- 2026-11-21 (core/40): cases P03, P08, P10, P14, P15 of `motion_polish_rest` removed (Q2429).

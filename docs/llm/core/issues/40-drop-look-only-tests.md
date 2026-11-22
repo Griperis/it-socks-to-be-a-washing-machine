@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: chore
 area: tools
 feature: core
@@ -33,3 +33,8 @@ existing tests of that kind go, the old cloth tests `hand_details` d02 (walk) an
 ## Open follow-ups
 
 ## Built log
+- 2026-11-21 (agent): Changed: removed the look-only cases (list in the report); the `hand_details`,
+  `feedback_polish` and `motion_polish_rest` real paths kept on behaviour only (pick, pair, shelve, throw, rest,
+  lost Socks). Files: `tests/{hand_details,feedback_polish,motion_polish_rest,drawer_details,look,outline,player}_test.gd`
+  and the Built logs of tickets 01, 09, 11, 16, 18, 27. Verified: `kit/tools/run.sh --touched`: PASS 277 checks,
+  60 cases; `grep_rules.py`: PASS. The full suite is the lead's.
