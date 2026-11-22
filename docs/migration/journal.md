@@ -809,3 +809,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2472 |
 
 ---
+
+| Ticket | coop/08, the Mess's local bodies: every machine starts its own body for a woken, falling, poured, swept or dropped Sock, a Guest's looks only and snapped to the rest batch; Doors and drawers sweep on every machine; the join packed and compressed with flying Socks' motion; only Throws on the spawner; M0.6 batch 3, plan `coop-mess-sync.md` (Q2472); merged (main 4bc92fc) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | the commit came back damaged and was repaired; `agent_finish.sh` took the second `-m` as the subject, so the branch commit's first line is its body (left as is; the merge commit names it) |
+| Cost | 262,732 tokens in the agent's own context, 100 tool calls, 29m39s (Opus) |
+| Time | the agent ran about 30 min |
+| Surprises | join of the zoo's 2,039 Socks 132 KB to 19.7 KB; mid-pour 256 KB to 90 KB; a rested 4,039-Sock join 110 KB (over the 100 KB placeholder); pour bytes kept at about 60 KB/s; game code +257 −36 |
+| Stop rules | none hit |
+| Looks | none (a Guest now sees moving Socks, as the plan says) |
+| Decisions | Q2472 |
+
+---
