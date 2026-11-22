@@ -781,3 +781,18 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2439, Q2450-Q2455, Q2461-Q2464, Q2468, Q2469 |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | coop/06, the own body in first person (the avatar's belly cut at 0.8 m and closed, set back 0.22 m, outside only, no eyes or shadow, the feet; the capsule mesh gone), M0.6 batch 2, a gap the lists left out (Q2466); stills approved (Q2471); merged (main 92e1676) |
+| Planned vs actual | 0 planned (raised by the designer), 1 actual |
+| Redo count | 0 |
+| Corrections | the lead's done commit came back damaged and was repaired; the designer's editor had reassigned the uid of avatar_tuning.tres with no clash found: put back (the designer's call) |
+| Cost | 5,492,913 tokens, 51 tool calls, 9m04s (Opus) |
+| Time | the agent ran about 9 min |
+| Surprises | no old picture exists of the first-person views to compare with |
+| Stop rules | stopped at its first stills, as meant |
+| Looks | builds/review-own-body/ |
+| Decisions | Q2466, Q2467, Q2471 |
+
+---
