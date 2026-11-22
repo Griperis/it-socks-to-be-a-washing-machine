@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.7", "Forward Plus")
 
 [autoload]
 
+Log="*res://game/log/log.gd"
 ProfilerBoot="*res://game/debug/profiler_boot.gd"
 GameCliBoot="*res://game/debug/game_cli.gd"
 Profily="*res://addons/profily/profily.tscn"

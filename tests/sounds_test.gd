@@ -204,12 +204,12 @@ func case_s05() -> void:
 
 
 func case_s05_kind() -> void:
-	_expect_error("a world sound")
 	Sounds.play(&"drawer_open")
-	_expect_error("a flat sound")
+	_check(_logged("a world sound"), "a world sound played flat is in the log")
 	Sounds.play_at(&"pick", Vector3.ZERO)
-	_expect_error("no event named")
+	_check(_logged("a flat sound"), "a flat sound played from a spot is in the log")
 	Sounds.play(&"no_such_sound")
+	_check(_logged("no event named"), "an unknown name is in the log")
 	_check(_heard.is_empty(), "none of the three played")
 
 
@@ -258,9 +258,9 @@ func case_r7() -> void:
 	b.event = &"one"
 	var list: Array[SoundEvent] = [a, null, b]
 	cat.events = list
-	_expect_error("twice")
-	_expect_error("null entry")
 	_check(cat.find(&"one") == a, "the first of a repeated name is kept")
+	_check(_logged("twice"), "the repeated name is in the log")
+	_check(_logged("null entry"), "the null entry is in the log")
 	for i in 5:
 		cat.find(&"one")
 		cat.find(&"missing")
@@ -527,3 +527,12 @@ static func _files(folder: String, endings: Array[String]) -> PackedStringArray:
 	for d in DirAccess.get_directories_at(folder):
 		out.append_array(_files(folder.path_join(d), endings))
 	return out
+
+
+## True when one of the last few log lines is an ERROR holding `part` (the game reports a refusal through
+## Log, which raises no engine error).
+func _logged(part: String) -> bool:
+	for line: String in Log.recent(6):
+		if "ERROR" in line and part in line:
+			return true
+	return false

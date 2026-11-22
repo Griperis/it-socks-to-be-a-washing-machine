@@ -73,4 +73,4 @@ func _on_ended(text: String) -> void:
 ## Shows it in the corner and prints it.
 func _say(text: String) -> void:
 	_mode.text = text
-	print("zoo: ", text)
+	Log.info("zoo", text)

@@ -12,3 +12,7 @@ allow free tools/furniture_build.gd 1
 allow deferred tools/furniture_build.gd 2
 # core/31: the Mess benchmark reads back its own results files (plain numbers and strings, read with JSON.parse_string, which builds no object).
 exempt json_parse game/debug/mess_bench_report.gd
+# core/48: the command line's and the benchmark's terminal output (help, BENCH lines, the verdict, BENCH saved) is output for
+# the terminal and the tools that read it, not a log line.
+exempt print game/debug/game_cli.gd
+exempt print game/debug/mess_bench.gd

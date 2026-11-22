@@ -56,7 +56,7 @@ func _remove(id: int) -> void:
 ## Runs on every machine with the Host's data: a player id. Anything else makes nothing.
 func _make(data: Variant) -> Node:
 	if not (data is int) or int(data) < 1:
-		push_error("avatars: refused spawn data %s" % str(data).left(40))
+		Log.error("avatars", "refused spawn data %s" % str(data).left(40))
 		return null
 	var avatar := avatar_scene.instantiate() as Avatar
 	avatar.name = str(data)

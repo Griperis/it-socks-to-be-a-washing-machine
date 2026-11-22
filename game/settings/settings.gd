@@ -57,7 +57,7 @@ func _ready() -> void:
 func register(defaults: Dictionary) -> void:
 	for key: String in defaults:
 		if not _valid_key(key) or not is_plain(defaults[key]):
-			push_error("Settings.register: '%s' is not a section/name key with a plain default" % key)
+			Log.error("settings", "register: '%s' is not a section/name key with a plain default" % key)
 			continue
 		_defaults[key] = defaults[key]
 
@@ -89,14 +89,14 @@ func get_string(key: String) -> String:
 ## Applies it when the engine owns it, emits `changed`, and saves when `autosave`.
 func set_value(key: String, value: Variant) -> bool:
 	if not _valid_key(key):
-		push_error("Settings.set_value: '%s' is not a section/name key" % key)
+		Log.error("settings", "set_value: '%s' is not a section/name key" % key)
 		return false
 	if not is_plain(value):
-		push_error("Settings.set_value: '%s' must be plain data, not an Object" % key)
+		Log.error("settings", "set_value: '%s' must be plain data, not an Object" % key)
 		return false
 	var fixed: Variant = _fit(key, value)
 	if fixed == null:
-		push_error("Settings.set_value: '%s' has the wrong type (%s)" % [key, type_string(typeof(value))])
+		Log.error("settings", "set_value: '%s' has the wrong type (%s)" % [key, type_string(typeof(value))])
 		return false
 	if get_value(key) == fixed and typeof(get_value(key)) == typeof(fixed):
 		return true

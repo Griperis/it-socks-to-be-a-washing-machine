@@ -96,13 +96,13 @@ func case_changed() -> void:
 func case_plain_only() -> void:
 	var s := _make()
 	s.register({"game/thing": 1})
-	_expect_error("must be plain data")
 	_check(not s.set_value("game/thing", InputEventKey.new()), "an InputEvent is refused")
-	_expect_error("must be plain data")
+	_check(_logged("must be plain data"), "the refusal is in the log")
 	_check(not s.set_value("game/thing", [1, {"deep": Node.new()}]), "an Object hidden in an Array is refused too")
+	_check(_logged("must be plain data"), "the second refusal is in the log")
 	_check(s.get_int("game/thing") == 1, "the old value stays")
-	_expect_error("wrong type")
 	_check(not s.set_value("game/thing", "text"), "a String for an int key is refused")
+	_check(_logged("wrong type"), "the wrong type is in the log")
 	_check(SettingsScript.is_plain({"a": [1, 2.5, "x", Vector2.ONE, Color.RED]}), "plain data is plain")
 	s.queue_free()
 
@@ -217,7 +217,16 @@ func case_game_keys() -> void:
 	_check(s.get_int("game/difficulty") == 1 and s.get_bool("game/subtitles"), "the game's defaults read typed")
 	s.set_value("game/difficulty", 2)
 	_check(s.get_int("game/difficulty") == 2, "a game key can be set")
-	_expect_error("section/name key")
 	_check(not s.set_value("nodash", 1), "a key without a section is refused")
+	_check(_logged("section/name key"), "the bad key is in the log")
 	_check(s.keys_under("game/") == ["game/difficulty"], "keys_under lists what is set under a prefix")
 	s.queue_free()
+
+
+## True when one of the last few log lines is an ERROR holding `part` (the game reports a refusal through
+## Log, which raises no engine error).
+func _logged(part: String) -> bool:
+	for line: String in Log.recent(6):
+		if "ERROR" in line and part in line:
+			return true
+	return false

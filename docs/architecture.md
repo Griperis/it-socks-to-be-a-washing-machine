@@ -70,9 +70,15 @@ A ticket that adds a subsystem adds its row here and its file.
 
 ## Key flows
 
-**Boot.** `project.godot` loads five autoloads in order: `ProfilerBoot` (F3, debug builds), `GameCliBoot`
+**Boot.** `project.godot` loads six autoloads in order: `Log`, `ProfilerBoot` (F3, debug builds), `GameCliBoot`
 (`game/debug/game_cli.gd`: reads the arguments after `--`; a bench or `--scene=` swaps the scene after one frame),
 `Profily`, `Settings` (`game/settings/settings.gd`, `user://settings.json`) and `Sounds` (`game/audio/sounds.gd`).
+**The log.** `Log` (`game/log/log.gd`, the kit's log template) is the one stream: the game's lines
+(`Log.info/warn/error(area, text)`) and every engine or script error with its script calls, in `user://logs/game.log`
+(this run; `game.1.log` the run before, five kept). The file starts with the build line (name, version, Godot,
+debug or release). The game's refusals go through `Log` with an area; only the command line's and the benchmark's
+terminal output stays a plain `print()`.
+
 The main scene is the zoo (`game/zoo/zoo.tscn`): `ZooStations` joins every station's Socks to the zoo's one Mess
 before anything binds, `Parts.bind` registers every Part by its node path, and `ZooNet` hosts or joins on
 `--host` / `--join=`.
