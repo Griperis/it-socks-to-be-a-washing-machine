@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: blocked
+status: ready-for-human
 kind: build
 area: core
 feature: core
