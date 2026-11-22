@@ -36,6 +36,10 @@ static func applied(ev: Dictionary, me: int, parts: Parts) -> void:
 				PadRumble.play(PadRumble.THROW)
 		&"shelve", &"thrown_shelve":
 			_shelved(ev, parts)
+		&"left":
+			# coop/03: a leaver's Hands dropped where they stood; everyone still here hears it once.
+			if ev.get("dropped_at") is Vector3:
+				Sounds.play(&"drop")
 
 
 ## A Pair went into a drawer: "shelve" at the first drawer it went into.

@@ -257,8 +257,10 @@ func case_coop() -> void:
 	await _frames(2)
 	var hs := host.get_node("Session") as Session
 	hs.port = 0
+	hs.profile = PlayerProfile.fresh()
 	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
 	var gs := guest.get_node("Session") as Session
+	gs.profile = PlayerProfile.fresh()
 	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
 	await _until(func() -> bool: return (guest.get_node("Net") as ZooNet).mode_text().begins_with("Joined"), "the guest zoo to be welcomed")
 	var g_id := gs.me()

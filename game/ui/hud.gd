@@ -60,6 +60,10 @@ var _blocked := false
 var _message_tween: Tween = null
 var _wobbling := false
 var _refusal := false
+## A teammate's line: their name in their colour, then the rest in white (made at its first use).
+var _named: HBoxContainer = null
+var _named_name: Label = null
+var _named_rest: Label = null
 
 
 func _ready() -> void:
@@ -150,6 +154,8 @@ func show_hints(prompts: Array[Prompt]) -> void:
 ## red, turning to and fro about its middle and dying down (core/16 P01); anything else white,
 ## popping in (P02, Q2370).
 func say(text: String, refusal: bool) -> void:
+	if _named != null:
+		_named.visible = false
 	_message.text = text
 	_message.add_theme_color_override(&"font_color", MESSAGE_REFUSAL if refusal else MESSAGE_PLAIN)
 	_message.visible = true
@@ -169,6 +175,29 @@ func say(text: String, refusal: bool) -> void:
 		_message_tween.tween_method(_pop_at, tuning.pop_peak, 1.0, tuning.pop_settle) \
 				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	_message_tween.tween_callback(_still)
+
+
+## The message row says a teammate's line (coop/03, Q2442, the old show_named): `who` in their
+## `colour`, then `rest` in white ("Player joined", "Player left"), popping in as a plain line does;
+## it replaces whatever the row said.
+func say_named(who: String, colour: Color, rest: String) -> void:
+	say(rest, false)
+	_message.visible = false
+	if _named == null:
+		_named = HBoxContainer.new()
+		_named.name = "Named"
+		_named.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_named.add_theme_constant_override(&"separation", THEME.get_constant(&"separation", HUD_TYPE))
+		_named_name = _label("", ROW_LABEL)
+		_named_rest = _label("", ROW_LABEL)
+		_named_rest.add_theme_color_override(&"font_color", MESSAGE_PLAIN)
+		_named.add_child(_named_name)
+		_named.add_child(_named_rest)
+		_message_row.add_child(_named)
+	_named_name.text = who
+	_named_name.add_theme_color_override(&"font_color", colour)
+	_named_rest.text = rest
+	_named.visible = true
 
 
 ## The message's turn `t` seconds into a refusal: `sin(t * TAU * rate) * turn`, dying down linearly
@@ -197,11 +226,22 @@ func _centre_pivot() -> void:
 ## Hides the message row (its time is up).
 func hide_message() -> void:
 	_message.visible = false
+	if _named != null:
+		_named.visible = false
 
 
 ## What the message row says now, or "" when hidden.
 func message_text() -> String:
+	if _named != null and _named.visible:
+		return "%s %s" % [_named_name.text, _named_rest.text]
 	return _message.text if _message.visible else ""
+
+
+## The colour of a teammate's name on the message row, or transparent when no teammate's line shows.
+func message_name_colour() -> Color:
+	if _named == null or not _named.visible:
+		return Color.TRANSPARENT
+	return _named_name.get_theme_color(&"font_color")
 
 
 ## What the message row says now when it is a refusal, or "" (none, or "Paired!").

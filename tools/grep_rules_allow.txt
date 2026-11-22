@@ -16,3 +16,5 @@ exempt json_parse game/debug/mess_bench_report.gd
 # the terminal and the tools that read it, not a log line.
 exempt print game/debug/game_cli.gd
 exempt print game/debug/mess_bench.gd
+# coop/03: the player profile reads back its own file (an id and a name, read with JSON.parse_string, which builds no object; both checked).
+exempt json_parse game/net/player_profile.gd

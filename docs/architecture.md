@@ -94,9 +94,15 @@ a refusal; `Parts.apply` writes them (`Part.write`, then `_show`) and emits `app
 `Session` (packet guards, rate), and the Host's `Session` sends each applied answer to every Guest, who applies it the
 same way. The Player passes each answer to the HUD's words and `Hearing` (sound, rumble).
 
-**A join.** `Session.join` connects; the Host's gate checks the protocol (`PROTOCOL`), admits the Guest and sends one
-snapshot (`Parts.snapshot()`: every Part's State group by id), which the Guest writes with `Parts.load_snapshot`.
-Avatars come through a MultiplayerSpawner and synchronizer, falling Socks through the zoo's `FlightSpawner`.
+**A join.** `Session.join(where)` connects through its `NetTransport` (`game/net/`: `EnetTransport` is the only
+file that names ENet or reads an address; Steam comes in as another transport at M4). The Guest's gate word carries
+the protocol (`PROTOCOL`), the scene layout hash (the sorted Part ids) and its player id (`PlayerProfile`,
+`user://profile[_<tag>].json`); the Host refuses another version, a full game (4) or an id already playing, else
+admits it, writes it into the `Roster` Part (keyed by player id: peer, name, colour, place; the next free colour,
+0.6 m beside the Host or where it left) and sends one snapshot (`Parts.snapshot()`: every Part's State group by id),
+which the Guest writes with `Parts.load_snapshot`. `Avatars` spawns by the Roster on the Host; falling Socks come
+through the zoo's `FlightSpawner`. A leaver: `Parts.left` drops their Hands where they stood (`Hands.left`) and the
+Roster keeps that place. `ZooNet` reads `--host`, `--join=`, `--profile=` and puts the toasts on the HUD.
 
 **A save.** Not built yet: saving starts at the first outside play-test. The seam is the same snapshot
 (`Parts.snapshot` / `load_snapshot`); settings are saved on their own by `Settings`.

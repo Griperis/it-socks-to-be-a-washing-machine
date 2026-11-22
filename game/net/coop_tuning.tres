@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="CoopTuning" format=3 uid="uid://b0moa0fsavwjb"]
+
+[ext_resource type="Script" uid="uid://bg468fh6i7rov" path="res://game/net/coop_tuning.gd" id="1_coop"]
+
+[resource]
+script = ExtResource("1_coop")

@@ -433,6 +433,18 @@ func say_paired() -> void:
 	_message_left = hands_tuning.refusal_time
 
 
+## Shows a teammate's line on the HUD for `seconds` (coop/03): `who` in `colour`, then `rest`.
+func announce(who: String, colour: Color, rest: String, seconds: float) -> void:
+	_hud.say_named(who, colour, rest)
+	_message_left = seconds
+
+
+## Shows a plain white line on the HUD for `seconds` ("Joined Player's zoo", why a session ended).
+func notice(text: String, seconds: float) -> void:
+	_hud.say(text, false)
+	_message_left = seconds
+
+
 ## What the HUD's refusal says now ("" when none shows; "Paired!" is read from the Hud).
 func message() -> String:
 	return _hud.refusal_text()

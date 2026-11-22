@@ -90,8 +90,8 @@ func case_flight_full_50ms() -> void:
 	await _flight_round(50, false)
 
 
-## With `unthrottled`, ENet's packet throttle is held at full on both ends once the Guest is in
-## (what Session would do under either option): left alone, it sinks to 0 at 60 frames a second and
+## With `unthrottled`, ENet's packet throttle is held at full on both ends as each peer connects
+## (what the Session's EnetTransport does, coop/03); without, it is left alone: it sinks to 0 at 60 frames a second and
 ## then drops 31 of every 32 unreliable packets.
 func _flight_round(lag_ms: int, small := true, unthrottled := true) -> void:
 	var host := _branch("Host", small)
@@ -101,6 +101,12 @@ func _flight_round(lag_ms: int, small := true, unthrottled := true) -> void:
 	_hook(guest, false)
 	var hs := host.get_node("Session") as Session
 	hs.port = 0
+	# Two players (a profile each, in memory); the throttle as the case asks (the transport holds it
+	# at full unless told not to).
+	for zoo: Node3D in [host, guest]:
+		var s := zoo.get_node("Session") as Session
+		s.profile = PlayerProfile.fresh()
+		(s.transport as EnetTransport).full_throttle = unthrottled
 	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
 	_lag(host, lag_ms)
 	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
@@ -110,10 +116,6 @@ func _flight_round(lag_ms: int, small := true, unthrottled := true) -> void:
 	await _until(func() -> bool: return (guest.get_node("Net") as ZooNet).mode_text().begins_with("Joined") \
 			and gm.count() == hm.count() and gm.looks_of(0) != null, "the guest zoo to be welcomed with the Host's Mess")
 	_errors.lines.clear()
-	if unthrottled:
-		for zoo: Node3D in [host, guest]:
-			for c: ENetPacketPeer in (zoo.multiplayer.multiplayer_peer as LagPeer).inner.host.get_peers():
-				c.throttle_configure(5000, ENetPacketPeer.PACKET_THROTTLE_SCALE, 0)
 	var peer := host.multiplayer.multiplayer_peer as LagPeer
 	# What the Host sends unreliably with nothing flying (the avatars' poses): taken off below.
 	var b0 := int(peer.sent_bytes.get(MultiplayerPeer.TRANSFER_MODE_UNRELIABLE, 0))
