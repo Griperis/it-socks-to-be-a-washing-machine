@@ -26,6 +26,11 @@ var _taken: Array[AABB] = []
 var _damped: Dictionary[int, bool] = {}
 ## The dropped bodies: let go, they wake nothing they fall on (as before Q2367, when a drop fell 3 cm).
 var _dropped: Dictionary[int, bool] = {}
+## The thrown bodies (a Throw's launch, not dropped, poured or woken): they wake what they are about to
+## hit before they touch it (core/46, Q2431).
+var _thrown: Dictionary[int, bool] = {}
+## The sphere a Throw's look-ahead finds the lying Socks it is about to hit with (`HandsTuning.hit_reach`).
+var _ahead := SphereShape3D.new()
 ## The lying Socks waiting to move, with the Command that starts them (&"wake" or &"fall"), and
 ## their order (nearest the players first), sorted again when one is added.
 var _waiting: Dictionary[int, StringName] = {}
@@ -112,7 +117,7 @@ func clear() -> void:
 ## the stop cap), pressure frees room, and the waiting start.
 func tick(delta: float) -> void:
 	var t := _mess.bodies_tuning()
-	_hits()
+	_hits(delta)
 	var taken := _taken
 	_taken = []
 	for place in taken:
@@ -246,26 +251,56 @@ func _start_waiting() -> void:
 
 ## A flight faster than the wake speed before this step that touches a lying Sock wakes it and up
 ## to wake_count Socks touching it (T11, M08), one hit a flight a tick; lying Pairs stay (Q2330). The lying bodies have no node, so
-## the contacts are read from the flight's body state.
-func _hits() -> void:
+## the contacts are read from the flight's body state. A thrown flight first looks ahead along its
+## motion and wakes what it is about to hit before the contact, so it shoves them (`_ahead_hit`).
+func _hits(delta: float) -> void:
 	var fast := _mess.tuning.wake_speed
 	for sock: int in _flights.keys():
-		if float(_speeds.get(sock, 0.0)) < fast or _dropped.has(sock):
+		if _dropped.has(sock):
+			continue
+		if _thrown.has(sock) and _ahead_hit(sock, delta):
+			continue
+		if float(_speeds.get(sock, 0.0)) < fast:
 			continue
 		var state := PhysicsServer3D.body_get_direct_state(_flights[sock].get_rid())
 		if state == null:
 			continue
 		for c in state.get_contact_count():
 			var hit := _mess.sock_at(state.get_contact_collider(c))
-			# A resting Pair is never moved by a hit, as in the old game (Q2330, old Q1742).
-			if hit >= 0 and not _mess.is_pair(hit) and not _waiting.has(hit):
-				var woken := PackedInt32Array([hit])
-				for other: int in _mess.touching(hit):
-					if not _mess.is_pair(other):
-						woken.append(other)
-				queue_wake(woken, &"wake")
+			if _wake_hit(hit):
 				_bounce(sock)
 				break
+
+
+## A thrown flight at the wake speed or more wakes the lying Socks it is about to meet, and up to
+## wake_count touching them: one query of a `hit_reach` sphere `hit_lead_ticks` ticks ahead along its
+## motion, so they move before it arrives and its mass and speed push them (the old
+## SockFlights._impact_wakes, Q1215; core/46, Q2431). Whether it woke any.
+func _ahead_hit(sock: int, delta: float) -> bool:
+	var hands := _mess.tuning
+	var body := _flights[sock]
+	var v := body.linear_velocity
+	if v.length() < hands.wake_speed or hands.hit_reach <= 0.0:
+		return false
+	_ahead.radius = hands.hit_reach
+	var at := Transform3D(Basis(), body.global_position + v * delta * float(hands.hit_lead_ticks))
+	for hit in _mess.lying_overlapping(_ahead, at, maxi(1, hands.wake_count)):
+		if _wake_hit(hit):
+			return true
+	return false
+
+
+## Lying Sock `hit` (or -1) was hit: it and up to wake_count touching it wait to wake. A resting Pair is
+## never moved by a hit, as in the old game (Q2330, old Q1742). Whether it was a hit.
+func _wake_hit(hit: int) -> bool:
+	if hit < 0 or _mess.is_pair(hit) or _waiting.has(hit) or _mess.state_of(hit) != Mess.State.LYING:
+		return false
+	var woken := PackedInt32Array([hit])
+	for other: int in _mess.touching(hit):
+		if not _mess.is_pair(other):
+			woken.append(other)
+	queue_wake(woken, &"wake")
+	return true
 
 
 ## Every Door and drawer moving now wakes the lying Socks in its way or on it at once (at most the
@@ -459,6 +494,8 @@ func _launch(sock: int, woken: bool) -> void:
 		_damp_pair(sock)
 	if dropped:
 		_dropped[sock] = true
+	elif not woken:
+		_thrown[sock] = true
 	_airborne[sock] = 0.0
 	_still[sock] = 0.0
 	_speeds[sock] = body.linear_velocity.length()
@@ -512,6 +549,7 @@ func _drop_flight(sock: int) -> void:
 	_speeds.erase(sock)
 	_damped.erase(sock)
 	_dropped.erase(sock)
+	_thrown.erase(sock)
 	_pushes.erase(sock)
 
 

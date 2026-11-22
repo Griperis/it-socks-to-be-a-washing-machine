@@ -46,6 +46,8 @@ func cases() -> Array[Dictionary]:
 				"title": "T08: a Sock thrown at a wall from up close never ends inside it and always lies loose"},
 		{"name": "t11_wake", "method": "case_t11", "world": false,
 				"title": "T11: a Throw faster than 1.5 m/s wakes the lying Sock it hits and those touching it (at most 8); a slow drop wakes none"},
+		{"name": "t11_shove", "method": "case_t11_shove", "world": false,
+				"title": "core/46, Q2431: a Throw wakes the lying Socks it is about to hit before the contact, so it shoves them away in the hit's direction"},
 		{"name": "t11_pair_stays", "method": "case_t11_pair", "world": false,
 				"title": "T11, Q2330: a full Throw into a lying Pair does not wake it, as in the old game (Q1742)"},
 		{"name": "t13_rest", "method": "case_t13", "world": false,
@@ -293,6 +295,75 @@ func case_t11() -> void:
 	await _aim(_player, _centre(UNDER))
 	var near := _mess.touching(UNDER)
 	_check(near.size() <= 1, "the wake takes at most wake_count touching Socks (%s)" % near)
+
+
+func case_t11_shove() -> void:
+	# The Heap (UNDER with OVER on it) and the Sock on the table, each thrown at with the look-ahead
+	# off (they wake on the contact, as before core/46) and on.
+	for target: int in [UNDER, ON_TABLE]:
+		var off := await _shove(0.0, target)
+		var on := await _shove(-1.0, target)
+		print("t11_shove %d: look-ahead off %s, on %s" % [target, off, on])
+		_check(on["woken"].has(target), "the Throw wakes Sock %d it is about to hit (%s)" % [target, on["woken"]])
+		_check(on["fastest"] >= 0.2,
+				"the hit pushes Sock %d's woken Socks along its motion at %.2f m/s (at least 0.2 m/s)" % [target, on["fastest"]])
+		_check(off["fastest"] < 0.05,
+				"woken only on the contact, they get no push along it (%.3f m/s): the look-ahead makes the shove" % off["fastest"])
+		_check(on["farthest"] >= -0.001, "they end no nearer the thrower than they lay (%.4f m along the hit)" % on["farthest"])
+
+
+## Throws ON_FLOOR with the Throw input from 0.8 m at lying Sock `target`, the look-ahead's reach
+## `reach` (0: it wakes on the contact only, as before core/46; below 0: the tuning's own). Returns the
+## Socks the hit woke, their fastest flat speed along the thrown Sock's flat motion at the wake, and how
+## far the farthest of them went that way once all rest.
+func _shove(reach: float, target: int) -> Dictionary:
+	if _level != null:
+		_level.free()
+		_level = null
+	await _build()
+	_mess.tuning = _mess.tuning.duplicate() as HandsTuning
+	if reach >= 0.0:
+		_mess.tuning.hit_reach = reach
+	var was: Array[Vector3] = []
+	for sock in _mess.count():
+		was.append(_centre(sock))
+	await _pick(ON_FLOOR)
+	var seen := {"dir": Vector3.ZERO, "woken": PackedInt32Array()}
+	_parts.applied.connect(func(ev: Dictionary) -> void:
+		if ev.get("ok", false) and StringName(ev.get("kind", &"")) == &"wake" and seen["dir"] == Vector3.ZERO:
+			var body := _mess.flight_of(ON_FLOOR)
+			if body == null:
+				return
+			var v := body.linear_velocity
+			seen["dir"] = Vector3(v.x, 0.0, v.z).normalized()
+			var states: PackedByteArray = ev["changes"][_mess.id]["states"]
+			var woken := PackedInt32Array()
+			for sock in states.size():
+				if states[sock] == Mess.State.FLYING and sock != ON_FLOOR:
+					woken.append(sock)
+			seen["woken"] = woken)
+	var at := was[target]
+	_player.global_position = Vector3(at.x, 0.0, at.z + 0.8)
+	await _physics_ticks(2)
+	await _aim(_player, at + Vector3(0.0, 0.0, -0.2))
+	await _throw_full()
+	await _until(func() -> bool: return seen["dir"] != Vector3.ZERO, "the hit to wake a Sock", 120)
+	var dir: Vector3 = seen["dir"]
+	var fastest := 0.0
+	for i in 900:
+		var flying := _mess.state_of(ON_FLOOR) == Mess.State.FLYING
+		for sock: int in seen["woken"]:
+			var body := _mess.flight_of(sock)
+			if body != null:
+				fastest = maxf(fastest, body.linear_velocity.dot(dir))
+			flying = flying or _mess.state_of(sock) == Mess.State.FLYING
+		if not flying:
+			break
+		await _physics_ticks(1)
+	var farthest := -INF
+	for sock: int in seen["woken"]:
+		farthest = maxf(farthest, (_centre(sock) - was[sock]).dot(dir))
+	return {"woken": seen["woken"], "fastest": fastest, "farthest": farthest}
 
 
 func case_t11_pair() -> void:
