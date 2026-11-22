@@ -424,12 +424,14 @@ func _update_hands(delta: float) -> void:
 		return
 	var me := player_id()
 	var found := aim_found(h)
-	aimed_sock = found["sock"]
-	_outline(h.mess, aimed_sock)
-	_outline_thing(_aimed_outline(h.mess, aimed_sock, found["lying"]))
 	var holding := h.active_of(me) >= 0
 	var kd := knockdowns()
 	aimed_body = kd.aimed_body(eyes(), aim_dir(), me) if kd != null and not holding and _acting() else -1
+	# H91, Q2498: a lying body under the crosshair wins over a Sock or a thing, and shows its Outline.
+	aimed_sock = found["sock"] if aimed_body < 0 else -1
+	_outline(h.mess, aimed_sock)
+	var body := kd.avatar_of(aimed_body) if aimed_body >= 0 else null
+	_outline_thing(Outline.of(body) if body != null else _aimed_outline(h.mess, aimed_sock, found["lying"]))
 	_tick_spot = {}
 	_tick_refusal = ""
 	if holding:

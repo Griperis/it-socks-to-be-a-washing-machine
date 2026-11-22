@@ -1,6 +1,7 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
+done: 2026-11-22
 kind: build
 area: core
 feature: coop
@@ -63,13 +64,12 @@ out. One test per remaining line, named after it.
 
 ## Answers
 - Q2225, Q2437, Q2438, Q2483-Q2496 (2026-11-22).
+- The vignette is approved as the first still shows (`knockdown-view.png`): keep the numbers, `vignette_dark` 0.7,
+  `vignette_start` 0.45 (Q2497, 2026-11-22).
+- H91: build the outline on the lying body under the crosshair in this ticket, with core/11's Outline and the same
+  rule as other usable things (Q2498, 2026-11-22).
 
 ## Open follow-ups
-- [blocking] The vignette (Q2490) waits for the designer's go on its first still,
-  `builds/review-knockdown/knockdown-view.png` (and `knockdown-own-body.png`): black edges, `vignette_dark`
-  0.7 from `vignette_start` 0.45 (middle 0, corner 1), in `game/knockdown/knockdown_tuning.tres`. Keep, change the numbers, or another look?
-- [blocking] H91 says the lying body is outlined (highlighted) under the crosshair; only the "Hold: Drag" prompt is
-  built. The avatar has no Outline yet. Build the outline here, or later in its own ticket?
 - [later] Looks for the designer to judge from the stills: a dragged body is pulled through the dragger to
   `hold_behind` 0.6 m behind them (the old numbers) and, let go, lies round their legs (it still lets them through
   until it stands, so it is not flung out of them); the knocked view in `knockdown-view.png` looks at the sky after a
@@ -100,3 +100,12 @@ out. One test per remaining line, named after it.
   1,950-2,029 B/s at 50 ms; 16.7-17.3 poses a second reach the Guest.
 - Verified: suite: PASS 16128 checks, 401 cases (--touched, 45 suites); grep_rules PASS; asset_lint PASS; stills in
   builds/review-knockdown/ (view, own-body, lying, dragged).
+
+### 2026-11-22 (Q2497, Q2498)
+- Changed: a lying Teammate under the crosshair with empty Hands shows its Outline (core/11's, a child of the
+  avatar's Looks), shown and hidden by the aim as any usable thing's; the vignette kept as approved. Stills retaken:
+  the drag from the side with the feet pulled to the dragger, and the Outline with Hold: Drag.
+- Files: game/parts/avatar/avatar.tscn, game/player/player.gd, tests/knockdown_test.gd, tools/shot_hooks.gd,
+  tools/shots/sets/knockdown.txt
+- Verified: knockdown PASS 45 checks, 5 cases; the full --touched verdict is in the commit's `suite:` line; stills
+  builds/review-knockdown/knockdown-dragged.png, knockdown-outline.png.

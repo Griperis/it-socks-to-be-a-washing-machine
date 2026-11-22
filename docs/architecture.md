@@ -115,7 +115,8 @@ Host its multiplayer authority) is simulated on the Host and streams one stamped
 elsewhere its bones are kinematic and ease to that pose; every machine plays the rise itself. The avatar's Looks
 copies it (`AvatarLooks.copy_ragdoll`), and its `Mate` capsule (what a falling ragdoll bumps) is off while it lies.
 The knocked `Player` freezes its input, stays at its ragdoll's feet, puts the camera on the ragdoll's head and shows
-the vignette (`game/knockdown/vignette.tscn`); a lying body under the crosshair wins the left button for a drag.
+the vignette (`game/knockdown/vignette.tscn`); a lying body under the crosshair shows its Outline (a child of the
+avatar's Looks) and wins the left button for a drag.
 
 **A save.** Not built yet: saving starts at the first outside play-test. The seam is the same snapshot
 (`Parts.snapshot` / `load_snapshot`); settings are saved on their own by `Settings`.

@@ -26,7 +26,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "weak_throw", "method": "case_weak_throw", "world": false,
 				"title": "coop/10 A1: a Throw under the full ring hits the stand-in and knocks nobody down"},
 		{"name": "drag_alone", "method": "case_drag_alone", "world": false,
-				"title": "coop/10 H91-H96, H99, H103, H104: aim at the lying stand-in with empty Hands: Hold: Drag; the held left button drags it by the feet at 0.6 of the pace, scraping; let go it lies; a drag ends as it rises"},
+				"title": "coop/10 H91-H96 (the Outline, Q2498), H99, H103, H104: aim at the lying stand-in with empty Hands: Hold: Drag; the held left button drags it by the feet at 0.6 of the pace, scraping; let go it lies; a drag ends as it rises"},
 		{"name": "commands", "method": "case_commands", "world": false,
 				"title": "coop/10 B16, B17, B26, H94, H112: the Host refuses a knock of the thrower, of a body already down, of nobody; a grab with full Hands, of a standing body, twice; a struggle of nobody dragged"},
 		{"name": "mate_capsule", "method": "case_mate_capsule", "world": false,
@@ -130,6 +130,10 @@ func case_drag_alone() -> void:
 	await _until(func() -> bool: return player.aimed_body == MATE, "H92: the lying body is the aimed one", 20)
 	await _physics_ticks(2)
 	_check(player.hud().prompt_text().contains(Prompts.DRAG), "H91: the crosshair says Hold: Drag (%s)" % player.hud().prompt_text())
+	var outline := Outline.of(mate)
+	_check(outline != null and outline.shown and outline.outlined_count() > 0 and player.aimed_outline == outline,
+			"H91, Q2498: the aimed lying body shows its Outline")
+	_check(player.aimed_sock == -1, "H93: no Sock is aimed through it")
 	Input.action_press(&"pick")
 	await _until(func() -> bool: return kd.dragger_of(MATE) == 1, "H93, H95: the left button grabs the body", 10)
 	await _physics_ticks(3)
@@ -139,6 +143,9 @@ func case_drag_alone() -> void:
 	Input.action_press(&"move_back")
 	await _physics_ticks(60)
 	Input.action_release(&"move_back")
+	(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(60.0)
+	await _physics_ticks(2)
+	_check(not outline.shown, "H91: aimed away, the Outline goes")
 	var walked := from.distance_to(player.global_position)
 	_near(walked, player.tuning.walk_speed * kd.tuning.drag_speed * 1.0, 0.35, "H95: the dragger walks at 0.6 of the pace (%.2f m in 1 s)" % walked)
 	var hold: Vector3 = kd.hold_of(1)

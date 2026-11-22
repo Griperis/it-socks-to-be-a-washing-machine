@@ -637,7 +637,8 @@ static func _show_old_furniture(line_up: FurnitureLineUp) -> void:
 ## coop/10: the Knockdown station. Arg "host": the zoo hosts (so this player has its own avatar and
 ## ragdoll), stood on the pad; "self" or "self_down": this player is knocked down (by the stand-in), the
 ## look level or pitched down at its own body; "mate": the stand-in is knocked down, seen from aside;
-## "drag": this player grabs the lying stand-in by the feet and walks back, seen from aside.
+## "drag": this player grabs the lying stand-in by the feet and walks back, seen from aside; "aim": this
+## player's own view on the lying stand-in (its Outline, Hold: Drag).
 static func _knockdown(world: Node, arg: String) -> bool:
 	var player := world.get_node("Player") as Player
 	var kd := world.get_node("Socks/Knockdowns") as Knockdowns
@@ -669,13 +670,32 @@ static func _knockdown(world: Node, arg: String) -> bool:
 			cam.look_at(mate.global_position + Vector3(0.6, 0.4, 0.8))
 			cam.make_current()
 		"drag":
-			var mid := mate.ragdoll.point_at(0.8)
-			player.global_position = Vector3(mid.x - 1.2, 0.0, mid.z)
-			player.look_at(Vector3(mid.x, 0.0, mid.z), Vector3.UP)
+			var feet := mate.ragdoll.feet()
+			player.global_position = Vector3(feet.x - 0.9, 0.0, feet.z)
+			player.look_at(Vector3(feet.x, 0.0, feet.z), Vector3.UP)
 			player.reset_physics_interpolation()
 			player.capture_mouse()
 			player.set("_grab_held", true)
 			Input.action_press(Player.PICK)
 			kd.grab(player.player_id(), mate.peer())
 			Input.action_press(Player.MOVE_BACK)
+			# From the side of the way it is dragged (-x), over where the pull will be.
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 55.0
+			cam.global_position = feet + Vector3(-1.8, 1.6, 3.6)
+			cam.look_at(feet + Vector3(-1.8, 0.35, 0.0))
+			cam.make_current()
+		"aim":
+			# The player's own view on the lying stand-in, empty Hands: its Outline and Hold: Drag.
+			var mid := mate.ragdoll.point_at(0.8)
+			player.global_position = Vector3(mid.x - 1.5, 0.0, mid.z + 0.4)
+			player.look_at(Vector3(mid.x, 0.0, mid.z), Vector3.UP)
+			player.rotation.x = 0.0
+			var head := player.get_node("Head") as Node3D
+			var up := mid - (player.global_position + Vector3.UP * head.position.y)
+			head.rotation.x = atan2(up.y, Vector2(up.x, up.z).length())
+			player.reset_physics_interpolation()
+			player.capture_mouse()
+			player.camera().make_current()
 	return true

@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://w6hh0j4gcx6q" path="res://game/audio/teammate_steps.gd" id="6_steps"]
 [ext_resource type="Resource" uid="uid://bbid103w4jrbx" path="res://game/audio/footstep_tuning.tres" id="7_footsteps"]
 [ext_resource type="PackedScene" uid="uid://c7yuua4327oud" path="res://game/parts/avatar/ragdoll.tscn" id="8_ragdoll"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="9_outline"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mate"]
 radius = 0.3
@@ -33,6 +34,10 @@ script = ExtResource("1_avatar")
 tuning = ExtResource("3_tuning")
 
 [node name="Looks" parent="." unique_id=2108870745 instance=ExtResource("2_looks")]
+
+[node name="Outline" type="Node3D" parent="Looks" unique_id=1460311753]
+visible = false
+script = ExtResource("9_outline")
 
 [node name="Held" type="Node3D" parent="." unique_id=1203948571]
 script = ExtResource("4_held")
