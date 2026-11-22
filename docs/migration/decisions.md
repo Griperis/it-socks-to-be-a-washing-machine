@@ -1,4 +1,4 @@
-Next free Q number: Q2497 (update this line whenever a round of questions is asked)
+Next free Q number: Q2499 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -411,3 +411,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2494: the knocked player sees "<Name> knocked you down", as the old game (list 04 question 13; designer, 2026-11-22).
 - Q2495: the knocked player sees their own body in the ragdoll pose under the head camera, as the old game (list 04 question 14; designer, 2026-11-22).
 - Q2496: list 04 (`m06-lists/04-knockdown.md`) is approved with Q2437, Q2438 and Q2483-Q2495 folded in; batch 4 is built from it (designer, 2026-11-22).
+- Q2497: coop/10's knockdown vignette is approved as its first still shows (black edges, `vignette_dark` 0.7 from `vignette_start` 0.45); judged further in the zoo (designer, 2026-11-22).
+- Q2498: a knocked body under the crosshair gets the outline (list 04 H91) in coop/10, before the merge (designer, 2026-11-22).
