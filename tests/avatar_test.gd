@@ -116,6 +116,9 @@ func case_seen() -> void:
 	await _frames(2)
 	var hs := host.get_node("Session") as Session
 	hs.port = 0
+	# Two players, two profiles: the gate refuses one player id twice (coop/03).
+	hs.profile = PlayerProfile.fresh()
+	(guest.get_node("Session") as Session).profile = PlayerProfile.fresh()
 	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
 	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
 	var ga := guest.get_node("Avatars") as Avatars
