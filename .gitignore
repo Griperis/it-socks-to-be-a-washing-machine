@@ -46,3 +46,6 @@ tests/flaky/
 
 # The port pack zip stays out of git
 /it-socks-port-pack.zip
+
+# The Windows editor keeps a temporary copy of each GDExtension library it loads (hot reload).
+addons/**/~*.dll
