@@ -706,3 +706,33 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | none |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | coop/01, spike: thrown Socks carried to a Guest by Godot's spawner and one synchronizer per body (the Throw's Option A), M0.6 batch 0; merged (main 953eaf7) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | none; the test suite stays (small-zoo cases stable three runs; two stress cases record numbers only) |
+| Cost | 6,132,717 tokens, 50 tool calls, 17m43s (Opus) |
+| Time | the agent ran about 18 min |
+| Surprises | ENet's packet throttle drops 31 of 32 unreliable packets at 60 fps (any stream, avatars too); Mess answers carry the whole poses array (about 100 KB at 2,038 Socks) and back up the reliable channel; `MessMoving._launch` sets the pose after `add_child` |
+| Stop rules | none needed |
+| Looks | none |
+| Decisions | Option A with three conditions (`docs/research/coop-flight-sync.md`) |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | coop/02, spike: Godot's PhysicalBone3D ragdoll on Jolt for the 4-bone avatar and its pose reaching a Guest, M0.6 batch 0; merged (main 953eaf7) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | none; the spike suite stays until the knockdown's own tests replace it |
+| Cost | 2,977,019 tokens, 33 tool calls, 9m56s (Opus) |
+| Time | the agent ran about 10 min |
+| Surprises | a synchronizer on bone poses works with no code but steps 4 to 6 times the Host's motion; a direct `--import` rewrites about 300 `assets/*.res` files |
+| Stop rules | none needed |
+| Looks | none |
+| Decisions | the stamped pose eased at 12/s (`docs/research/coop-ragdoll-sync.md`); the lag (100 to 155 ms) is judged at the knockdown |
+
+---
