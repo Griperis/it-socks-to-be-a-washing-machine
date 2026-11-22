@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: research
 area: core
 feature: coop
 priority: now
 created: 2026-11-22
-done:
+done: 2026-11-22
 blocked_by: []
 notes: ["M0.6 batch 0 (Q2436): a spike; only its report merges"]
 terms: [Host, Guest, knockdown]
@@ -35,6 +35,19 @@ four stacked capsules of 0.3 m radius, cone joints 45 degrees swing and 22.5 twi
 - Godot's own physical-bone ragdoll (Q2225); 4 bones as the old avatar (Q2438); drag in M0.6, wash later (Q2437).
 
 ## Open follow-ups
+- [later] The recommended sync (stamped, eased at 12/s) shows a Teammate's fall about 100 ms late at 0 ms
+  and 155 ms at 50 ms one way. Whether that reads well is the designer's eye at the knockdown walkthrough;
+  the fallback (interpolating the two newest poses) is in the report.
+- [later] Keep or drop `tests/ragdoll_spike_test.gd` and `tests/support/ragdoll_spike/` at merge: stable in
+  4 runs (about 10 s), a guard for PhysicalBone3D on Jolt at an engine bump; retire them when the knockdown's
+  own suite lands.
 
 ## Built log
 - 2026-11-22 lead: model opus (hard netcode and physics, CLAUDE.md "Models").
+- 2026-11-22 agent: Changed: a 4-bone stand-in ragdoll (PhysicalBoneSimulator3D, 4 PhysicalBone3D,
+  cone joints) on Jolt, a shown copy skeleton, and two syncs measured Host to Guest over real ENet at 0
+  and 50 ms one way; report with numbers and what the avatar must provide. No game file touched. No
+  player-input real path exists yet (no avatar or hit): the cases drive the Host's knock and read the
+  Guest's skeleton. Files: tests/ragdoll_spike_test.gd, tests/support/ragdoll_spike/ragdoll_spike.gd,
+  tests/support/ragdoll_spike/ragdoll_spike.tscn, docs/research/coop-ragdoll-sync.md. Verified: PASS 28
+  checks, 5 cases (4 runs of --only=ragdoll_spike).
