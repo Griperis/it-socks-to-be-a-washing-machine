@@ -94,3 +94,4 @@ and the invariants, with questions 1-9 answered (Q2439, Q2472-Q2479). One test p
 - Verified: coop_join PASS 188 checks (leave_and_return: Z1 keys, the late joiner's and the rejoined A's Hands, D13
   read and clamp); coop_hands PASS 103 checks (G08 flat at hand-over, Looks kept); stress
   coop_mess:pour_2000_50ms PASS, reliable 54.9 KB/s, worst second 91 KB; `--touched` by agent_finish below.
+- Merged: e1c31b44 (2026-11-22, branch coop/09-guest-hands-throw)
