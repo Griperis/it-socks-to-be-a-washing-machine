@@ -178,7 +178,7 @@ func _judge(s: MessBenchScenario, r: Dictionary) -> void:
 	var budget := PLAN.idle_tick_budget if s.kind == MessBenchScenario.Kind.IDLE else PLAN.tick_budget
 	if float(r["tick_p95"]) > budget:
 		why.append("tick p95 %.2f ms over %.2f" % [r["tick_p95"], budget])
-	for key: String in ["never", "lost", "hot", "jumped", "flips", "jitter", "sunk", "inside", "made_inside"]:
+	for key: String in ["never", "lost", "hot", "jumped", "flips", "jitter", "sunk", "inside", "made_inside", "under"]:
 		if int(r.get(key, 0)) > 0:
 			why.append("%s %d" % [key, r[key]])
 	r["ok"] = why.is_empty()

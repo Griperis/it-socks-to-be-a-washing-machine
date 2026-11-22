@@ -10,6 +10,8 @@
 ##   moving fast);
 ## - wakes (a lying Sock that moves again), and Socks that jitter (woken `jitter_wakes` times or more);
 ## - Socks that flip (turning faster than `flip_spin` while moving);
+## - Socks under the floor: the middle of a moving Sock's leg or foot (a Pair's ball) more than `under`
+##   under `floor_y` (core/50: Jolt's position solve pushed one through the zoo's 0.2 m floor);
 ## - made inside: a new Sock (a record that never lay) whose boxes overlap a moving Sock's from the
 ##   tick it is first seen (core/49: two Socks of one pour made inside each other rest stuck together);
 ## - survey(), once the heap rests: lying Socks sunk under the floor, pressed into another lying Sock
@@ -39,6 +41,8 @@ var lost := 0
 var jumped := 0
 var hot := 0
 var made_inside := 0
+## How many Socks went under the floor while moving (each once).
+var under := 0
 var wakes := 0
 var peak_moving := 0
 ## The longest snap of a rest that was not a return, in m.
@@ -62,6 +66,9 @@ var _spin: Dictionary[int, float] = {}
 var _lay: Dictionary[int, bool] = {}
 var _woken: Dictionary[int, int] = {}
 var _flipped: Dictionary[int, bool] = {}
+var _under: Dictionary[int, bool] = {}
+## The deepest a moving Sock's leg or foot middle went under the floor, in m.
+var worst_under := 0.0
 ## The Socks seen moving at some time while watched (a body first seen for a record not among them is new).
 var _seen: Dictionary[int, bool] = {}
 var _since_series := 0.0
@@ -90,6 +97,9 @@ func restart() -> void:
 	jumped = 0
 	hot = 0
 	made_inside = 0
+	under = 0
+	worst_under = 0.0
+	_under.clear()
 	wakes = 0
 	peak_moving = 0
 	worst_jump = 0.0
@@ -147,6 +157,13 @@ func _physics_process(delta: float) -> void:
 		worst_spin = maxf(worst_spin, spin)
 		if spin > checks.flip_spin:
 			_flipped[sock] = true
+		for child in body.get_children():
+			var part := child as CollisionShape3D
+			if part != null and part.global_position.y < floor_y - checks.under:
+				worst_under = maxf(worst_under, floor_y - part.global_position.y)
+				if not _under.has(sock):
+					_under[sock] = true
+					under += 1
 	for sock in made:
 		if _made_inside(sock, poses):
 			made_inside += 1
@@ -258,7 +275,7 @@ func survey() -> Dictionary:
 
 ## Everything counted, as one Dictionary (what the benchmark reports and the suite checks).
 func result() -> Dictionary:
-	return {"rests": rests, "lost": lost, "jumped": jumped, "hot": hot, "made_inside": made_inside, "wakes": wakes, "jitter": jittering(),
+	return {"rests": rests, "lost": lost, "jumped": jumped, "hot": hot, "made_inside": made_inside, "under": under, "worst_under": worst_under, "wakes": wakes, "jitter": jittering(),
 			"flips": flipped(), "peak_moving": peak_moving, "worst_jump": worst_jump, "worst_spin": worst_spin,
 			"moving": _flying.size(), "waiting": mess.waiting_count() if mess != null else 0, "series": series}
 
