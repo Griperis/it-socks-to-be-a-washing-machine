@@ -228,6 +228,8 @@ static func act(world: Node, what: String, arg: String) -> bool:
 				Input.action_press(Player.CROUCH)
 			player.reset_physics_interpolation()
 			return true
+		"knockdown":
+			return _knockdown(world, arg)
 		"wheel":
 			# The next held item becomes active, as a wheel step does.
 			var player := world.get_node("Player") as Player
@@ -630,3 +632,50 @@ static func _show_old_furniture(line_up: FurnitureLineUp) -> void:
 				(n as Node3D).visible = false
 		p.add_child(model)
 
+
+
+## coop/10: the Knockdown station. Arg "host": the zoo hosts (so this player has its own avatar and
+## ragdoll), stood on the pad; "self" or "self_down": this player is knocked down (by the stand-in), the
+## look level or pitched down at its own body; "mate": the stand-in is knocked down, seen from aside;
+## "drag": this player grabs the lying stand-in by the feet and walks back, seen from aside.
+static func _knockdown(world: Node, arg: String) -> bool:
+	var player := world.get_node("Player") as Player
+	var kd := world.get_node("Socks/Knockdowns") as Knockdowns
+	var parts := world.get_node("Parts") as Parts
+	var station := world.get_node("Stations/Knockdown") as Node3D
+	var mate := station.get_node("Teammate/5") as Avatar
+	match arg:
+		"host":
+			(world.get_node("Net") as ZooNet).start(["--host"])
+			player.global_position = station.to_global(Vector3(-1.2, 0.0, 0.6))
+			player.rotation.y = deg_to_rad(-60.0)
+			player.reset_physics_interpolation()
+		"self", "self_down":
+			(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-70.0 if arg == "self_down" else 0.0)
+			parts.ask(Command.new(Knockdowns.KNOCK, Parts.HOST, kd.id, {"target": player.player_id(), "thrower": mate.peer(),
+					"push": player.global_basis.z * -1.0 if arg == "self" else player.global_basis.z, "high": 0.8, "side": 0.3,
+					"at": player.global_position + Vector3.UP * 1.3}))
+		"mate":
+			player.global_position = station.to_global(Vector3(-1.5, 0.0, 1.5))
+			player.look_at(mate.global_position, Vector3.UP)
+			player.rotation.x = 0.0
+			player.reset_physics_interpolation()
+			parts.ask(Command.new(Knockdowns.KNOCK, Parts.HOST, kd.id, {"target": mate.peer(), "thrower": player.player_id(),
+					"push": Vector3(0.6, 0.0, 0.8).normalized(), "high": 0.85, "side": 0.4, "at": mate.global_position + Vector3.UP * 1.4}))
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 55.0
+			cam.global_position = station.to_global(Vector3(-3.5, 2.4, 4.5))
+			cam.look_at(mate.global_position + Vector3(0.6, 0.4, 0.8))
+			cam.make_current()
+		"drag":
+			var mid := mate.ragdoll.point_at(0.8)
+			player.global_position = Vector3(mid.x - 1.2, 0.0, mid.z)
+			player.look_at(Vector3(mid.x, 0.0, mid.z), Vector3.UP)
+			player.reset_physics_interpolation()
+			player.capture_mouse()
+			player.set("_grab_held", true)
+			Input.action_press(Player.PICK)
+			kd.grab(player.player_id(), mate.peer())
+			Input.action_press(Player.MOVE_BACK)
+	return true

@@ -105,5 +105,17 @@ through the zoo's `FlightSpawner`, each with its stamped row (`FlightRow`); a Gu
 as looks-only guesses (`GuestGhosts`) until the Host's answer, matched by the Command's `seq`. A leaver: `Parts.left` drops their Hands where they stood (`Hands.left`) and the
 Roster keeps that place. `ZooNet` reads `--host`, `--join=`, `--profile=` and puts the toasts on the HUD.
 
+**A knockdown (coop/10).** `Knockdowns` (`game/knockdown/`, one Part under `Socks`, keyed by peer) holds who is down
+(their fall, a serial), who drags whom and the struggle presses. On the Host it tests every full-charge Throw in the
+air (the launch carries its `charge`) against each player's body every tick and asks `knock`, a Host-only verb whose
+answer also drops the knocked player's Hands through `Hands.left`; `grab`, `let_go` and `struggle` are players'.
+`down` counts on each machine's own clock. Each `Avatar` follows it every frame: its `Ragdoll` child
+(`game/parts/avatar/ragdoll.tscn`: a Skeleton3D, a PhysicalBoneSimulator3D and four PhysicalBone3D, never drawn, the
+Host its multiplayer authority) is simulated on the Host and streams one stamped 84-byte pose on its own Sync;
+elsewhere its bones are kinematic and ease to that pose; every machine plays the rise itself. The avatar's Looks
+copies it (`AvatarLooks.copy_ragdoll`), and its `Mate` capsule (what a falling ragdoll bumps) is off while it lies.
+The knocked `Player` freezes its input, stays at its ragdoll's feet, puts the camera on the ragdoll's head and shows
+the vignette (`game/knockdown/vignette.tscn`); a lying body under the crosshair wins the left button for a drag.
+
 **A save.** Not built yet: saving starts at the first outside play-test. The seam is the same snapshot
 (`Parts.snapshot` / `load_snapshot`); settings are saved on their own by `Settings`.

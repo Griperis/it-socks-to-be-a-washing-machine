@@ -7,6 +7,11 @@
 [ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="5_hands_tuning"]
 [ext_resource type="Script" uid="uid://w6hh0j4gcx6q" path="res://game/audio/teammate_steps.gd" id="6_steps"]
 [ext_resource type="Resource" uid="uid://bbid103w4jrbx" path="res://game/audio/footstep_tuning.tres" id="7_footsteps"]
+[ext_resource type="PackedScene" uid="uid://c7yuua4327oud" path="res://game/parts/avatar/ragdoll.tscn" id="8_ragdoll"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mate"]
+radius = 0.3
+height = 1.7
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_pose"]
 properties/0/path = NodePath(".:pose_position")
@@ -37,6 +42,17 @@ tuning = ExtResource("5_hands_tuning")
 [node name="Steps" type="Node" parent="." unique_id=1650932217]
 script = ExtResource("6_steps")
 tuning = ExtResource("7_footsteps")
+
+[node name="Ragdoll" parent="." unique_id=1460311750 instance=ExtResource("8_ragdoll")]
+
+[node name="Mate" type="AnimatableBody3D" parent="." unique_id=1460311751]
+collision_layer = 128
+collision_mask = 0
+sync_to_physics = false
+
+[node name="Shape" type="CollisionShape3D" parent="Mate" unique_id=1460311752]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+shape = SubResource("CapsuleShape3D_mate")
 
 [node name="Sync" type="MultiplayerSynchronizer" parent="." unique_id=1692978382]
 replication_config = SubResource("SceneReplicationConfig_pose")

@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="KnockdownTuning" format=3 uid="uid://cmnf4rl43ha3a"]
+
+[ext_resource type="Script" uid="uid://kklghu7ualra" path="res://game/knockdown/knockdown_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")

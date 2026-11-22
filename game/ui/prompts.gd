@@ -13,6 +13,9 @@ const TURN := "Turn"
 const CYCLE := "Cycle"
 const JUMP := "Jump"
 const CROUCH := "Crouch"
+## A lying Teammate under the crosshair, and a dragged player's one hint (coop/10, the old prompts.gd, Q2489).
+const DRAG := "Hold: Drag"
+const STRUGGLE := "Mash: Struggle"
 
 
 ## The keycap of input action `action` (its first keyboard or mouse key, or its first pad glyph when
@@ -73,3 +76,13 @@ static func hints(held: int, pad := false) -> Array[Prompt]:
 	out.append(Prompt.of(JUMP, keys(Player.JUMP, pad)))
 	out.append(Prompt.of(CROUCH, keys(Player.CROUCH, pad)))
 	return out
+
+
+## The crosshair's prompt on a lying Teammate with empty Hands: "Hold: Drag" with the left button (H91).
+static func drag_prompt(pad := false) -> Prompt:
+	return Prompt.of(DRAG, keys(Player.PICK, pad))
+
+
+## A dragged player's corner hint: "Mash: Struggle" with the jump key, no count (H105, Q2489).
+static func struggle_hint(pad := false) -> Prompt:
+	return Prompt.of(STRUGGLE, keys(Player.JUMP, pad))

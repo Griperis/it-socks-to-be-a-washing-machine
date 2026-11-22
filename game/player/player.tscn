@@ -13,13 +13,14 @@
 [ext_resource type="PackedScene" uid="uid://c6ggi6fh377si" path="res://game/parts/avatar/looks_avatar.tscn" id="10_own_body"]
 [ext_resource type="Script" uid="uid://o2nt8eeij1by" path="res://game/hands/guest_ghosts.gd" id="11_ghosts"]
 [ext_resource type="Resource" uid="uid://5buhkrgy1c5z" path="res://game/hands/ghost_tuning.tres" id="12_ghost_tuning"]
+[ext_resource type="PackedScene" uid="uid://cn3a05m85kv70" path="res://game/knockdown/vignette.tscn" id="13_vignette"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
 height = 1.7
 
 [node name="Player" type="CharacterBody3D" unique_id=2071597669]
-collision_mask = 9
+collision_mask = 73
 floor_constant_speed = true
 script = ExtResource("1_player")
 tuning = ExtResource("2_tuning")
@@ -57,6 +58,9 @@ target_position = Vector3(0, 0, -2.5)
 unique_name_in_owner = true
 script = ExtResource("8_hud")
 tuning = ExtResource("9_hud_tuning")
+
+[node name="Vignette" parent="Hud" unique_id=1460311761 instance=ExtResource("13_vignette")]
+unique_name_in_owner = true
 
 [node name="Crosshair" parent="Hud" unique_id=1667869579 instance=ExtResource("6_cross")]
 unique_name_in_owner = true

@@ -7,6 +7,7 @@ The old game's picks for the core events (ported, Q2319). CC0 or public domain, 
 | pick__owlish_cloth5.ogg | cc0/owlish_cloth5 | OwlishMedia | CC0 | https://opengameart.org/content/202-more-sound-effects |
 | drop__kenney_drop_leather.ogg | cc0/kenney_drop_leather | Kenney | CC0 | https://opengameart.org/content/50-rpg-sound-effects |
 | cycle__a.ogg | synth/cycle_a | tools/gen_sounds.py | synth | synthesised by the old tools/gen_sounds.py (no samples) |
+| knockdown__a.ogg | synth/knockdown_a | tools/gen_sounds.py | synth | synthesised by the old tools/gen_sounds.py (no samples); the first of three candidates, none picked (coop/10) |
 | pair__owlish_cloth4.ogg | cc0/owlish_cloth4 | OwlishMedia | CC0 | https://opengameart.org/content/202-more-sound-effects |
 | pop__wubitog_pop1.ogg | cc0/wubitog_pop1 | wubitog | CC0 | https://opengameart.org/content/3-pop-sounds |
 | pop__cogitollc_pop1.ogg | cc0/cogitollc_pop1 | cogitollc | CC0 | https://opengameart.org/content/pop-sounds |

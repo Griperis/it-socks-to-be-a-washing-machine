@@ -22,6 +22,7 @@
 [ext_resource type="AudioStream" uid="uid://cx4pf1qrjtf5c" path="res://assets/audio/step_tile__owlish_hard1.ogg" id="20_bd74q"]
 [ext_resource type="AudioStream" uid="uid://cyqixh0hpku02" path="res://assets/audio/land__qubodup_jumpland.ogg" id="21_7fcml"]
 [ext_resource type="Script" uid="uid://dla4npa6bg5ot" path="res://game/audio/sound_catalogue.gd" id="23_7apgx"]
+[ext_resource type="AudioStream" uid="uid://bcpoohpp2d6b5" path="res://assets/audio/knockdown__a.ogg" id="24_knock"]
 
 [sub_resource type="Resource" id="Resource_5vpok"]
 script = ExtResource("1_76itk")
@@ -174,7 +175,22 @@ bus = "Ambient"
 loop = true
 note = "Silent, as the old game (no pick, Q2432). A pick can come back in M1.1: add a clip here."
 
+[sub_resource type="Resource" id="Resource_knockdown"]
+script = ExtResource("1_76itk")
+event = &"knockdown"
+clips = Array[AudioStream]([ExtResource("24_knock")])
+spatial = true
+note = "PLACEHOLDER (coop/10, Q2491): the old game's first of three synthesised candidates (synth/knockdown_a), none picked; heard at the hit point by everyone."
+
+[sub_resource type="Resource" id="Resource_dragscrape"]
+script = ExtResource("1_76itk")
+event = &"drag_scrape"
+clips = Array[AudioStream]([ExtResource("2_wjh0y")])
+volume_db = -4.0
+spatial = true
+note = "PLACEHOLDER (coop/10): the old game's placeholder pick, the pick-up rustle cc0/owlish_cloth5, until a scrape is made; at a dragged body's feet."
+
 [resource]
 script = ExtResource("23_7apgx")
-events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_rksdm")])
+events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape")])
 muffling_scenes = Array[String](["res://game/entities/door/door.tscn"])

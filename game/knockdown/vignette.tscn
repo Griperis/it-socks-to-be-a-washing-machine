@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cn3a05m85kv70"]
+
+[ext_resource type="Shader" uid="uid://bu284rqileeyp" path="res://game/knockdown/vignette.gdshader" id="1_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vignette"]
+shader = ExtResource("1_shader")
+shader_parameter/dark = 0.7
+shader_parameter/start = 0.45
+
+[node name="Vignette" type="ColorRect" unique_id=1460311760]
+visible = false
+material = SubResource("ShaderMaterial_vignette")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

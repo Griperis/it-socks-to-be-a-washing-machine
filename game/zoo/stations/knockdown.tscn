@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://chiexs1bn5bo5"]
+
+[ext_resource type="PackedScene" uid="uid://d2u50k5e57ccb" path="res://game/parts/avatar/avatar.tscn" id="1_avatar"]
+[ext_resource type="Script" uid="uid://vyt71ycvtfyk" path="res://game/zoo/knockdown/knock_stand_in.gd" id="2_stand_in"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="3_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="4_hands"]
+[ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="5_spot"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="6_designs"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="7_tuning"]
+[ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="8_knockdowns"]
+[ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="9_knock_tuning"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.5, 0.4, 0.42, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_pad")
+size = Vector2(4.5, 4)
+
+[node name="Knockdown" type="Node3D" unique_id=1460311770]
+
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=1460311771]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Name" type="Label3D" parent="." unique_id=1460311772]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 2.1, -1.6)
+pixel_size = 0.004
+billboard = 2
+text = "Knockdown: a Throw at full charge (hold until the ring is full) knocks the Teammate down; with empty Hands, hold the left button on the lying body to drag it by the feet. The Teammate is moved only as the network moves a real one"
+vertical_alignment = 2
+autowrap_mode = 3
+width = 700.0
+
+[node name="Teammate" type="Node3D" parent="." unique_id=1460311773 node_paths=PackedStringArray("avatar")]
+script = ExtResource("2_stand_in")
+avatar = NodePath("5")
+
+[node name="5" parent="Teammate" unique_id=1460311774 instance=ExtResource("1_avatar")]
+pose_position = Vector3(1.2, 0, -0.8)
+
+[node name="Spots" type="Node3D" parent="." unique_id=1460311775]
+
+[node name="SockA" type="Marker3D" parent="Spots" unique_id=1460311776]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0, 1.2)
+script = ExtResource("5_spot")
+design = 4
+
+[node name="SockB" type="Marker3D" parent="Spots" unique_id=1460311777]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0, 1.4)
+script = ExtResource("5_spot")
+design = 5
+
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=1460311779]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1.5)
+
+[node name="Lying" type="Node3D" parent="." unique_id=1460311780]
+
+[node name="Flights" type="Node3D" parent="." unique_id=1460311781]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=1460311782]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="." unique_id=1460311783]
+
+[node name="Mess" type="Node" parent="Socks" unique_id=1460311784 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+script = ExtResource("3_mess")
+catalogue = ExtResource("6_designs")
+tuning = ExtResource("7_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+bounds = AABB(-8, -2, -8, 16, 8, 16)
+return_spot = NodePath("../../ReturnSpot")
+
+[node name="Hands" type="Node" parent="Socks" unique_id=1460311785 node_paths=PackedStringArray("mess")]
+script = ExtResource("4_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("7_tuning")
+
+[node name="Knockdowns" type="Node" parent="Socks" unique_id=1460311786 node_paths=PackedStringArray("hands")]
+script = ExtResource("8_knockdowns")
+tuning = ExtResource("9_knock_tuning")
+hands = NodePath("../Hands")

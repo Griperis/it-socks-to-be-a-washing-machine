@@ -399,8 +399,9 @@ func paired_patch(lead: int, picked: int, onto := {}) -> Dictionary:
 ## The change that throws a held Sock (part of the Hands' throw answer): it leaves `pose` at once,
 ## no flick, with velocity `vel` and turn `spin`, thrown by player `by` (their body lets it through).
 ## A Pair's pose is its ball's centre. `drop` (the Hands' drop answer, Q2367): let go, it falls on its
-## own to its spot with drift `vel`, and is never shelved by a Cabinet's front.
-func thrown_patch(sock: int, pose: Transform3D, vel: Vector3, spin: Vector3, by: int, drop := false, onto := {}) -> Dictionary:
+## own to its spot with drift `vel`, and is never shelved by a Cabinet's front. A Throw's `charge` (0 to
+## 1; -1 for none) rides in its launch: a full one can knock a Teammate down (Knockdowns, coop/10).
+func thrown_patch(sock: int, pose: Transform3D, vel: Vector3, spin: Vector3, by: int, drop := false, onto := {}, charge := -1.0) -> Dictionary:
 	var p := _rows_onto(onto)
 	var i := _row(p, sock)
 	_set_state(p, i, State.FLYING)
@@ -408,6 +409,8 @@ func thrown_patch(sock: int, pose: Transform3D, vel: Vector3, spin: Vector3, by:
 	var launch := {"vel": vel, "spin": spin, "by": by}
 	if drop:
 		launch["drop"] = true
+	if charge >= 0.0:
+		launch["charge"] = charge
 	(p[LAUNCHES] as Dictionary)[sock] = launch
 	return p
 

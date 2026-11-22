@@ -8,6 +8,8 @@ extends RefCounted
 const SETTING := "pad/rumble"
 const THROW := preload("res://game/audio/rumble_throw.tres")
 const PAIR := preload("res://game/audio/rumble_pair.tres")
+## A knockdown, and being grabbed to be dragged (coop/10): the knocked or dragged player's pad only.
+const KNOCK := preload("res://game/audio/rumble_knock.tres")
 
 ## The cue last asked for, for a test (a headless run has no pad to shake).
 static var last: RumbleCue = null
