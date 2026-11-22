@@ -191,6 +191,41 @@ func _parts_of(key: String, ball: bool, scale: float, radius: float) -> Array:
 	return parts
 
 
+## Whether two boxes (full sizes, each round its transform's origin, the bases turns only) overlap. A
+## place picked for a new Sock is tried with it against the other places of the same `add` (core/49):
+## those bodies are not in the physics space yet, so a query cannot see them, and two Socks made inside
+## each other fall and rest stuck together.
+static func boxes_meet(a_size: Vector3, a_at: Transform3D, b_size: Vector3, b_at: Transform3D) -> bool:
+	return overlap_depth(a_size, a_at, b_size, b_at) > 0.0
+
+
+## How deep two boxes (as boxes_meet) overlap, in m: the least overlap over the separating axis test's 15
+## axes (what would push them apart); 0 or less when they do not overlap.
+static func overlap_depth(a_size: Vector3, a_at: Transform3D, b_size: Vector3, b_at: Transform3D) -> float:
+	var ha := a_size * 0.5
+	var hb := b_size * 0.5
+	var ua: Array[Vector3] = [a_at.basis.x.normalized(), a_at.basis.y.normalized(), a_at.basis.z.normalized()]
+	var ub: Array[Vector3] = [b_at.basis.x.normalized(), b_at.basis.y.normalized(), b_at.basis.z.normalized()]
+	var axes: Array[Vector3] = []
+	axes.append_array(ua)
+	axes.append_array(ub)
+	for i in 3:
+		for j in 3:
+			var c := ua[i].cross(ub[j])
+			if c.length_squared() > 1e-10:
+				axes.append(c.normalized())
+	var d := b_at.origin - a_at.origin
+	var least := INF
+	for axis in axes:
+		var ra := ha.x * absf(ua[0].dot(axis)) + ha.y * absf(ua[1].dot(axis)) + ha.z * absf(ua[2].dot(axis))
+		var rb := hb.x * absf(ub[0].dot(axis)) + hb.y * absf(ub[1].dot(axis)) + hb.z * absf(ub[2].dot(axis))
+		var over := ra + rb - absf(d.dot(axis))
+		if over <= 0.0:
+			return over
+		least = minf(least, over)
+	return least
+
+
 ## A lying Sock's leg and foot boxes from its mesh's points (its bottom at y = 0): the points split
 ## across its long side where the two boxes cover the least floor, each box round its half, at
 ## least `min_thick` thick from the bottom up: [[size, centre], [size, centre]]. With no points, one

@@ -22,7 +22,13 @@ extends Resource
 @export_group("A heap at rest")
 ## A lying Sock whose lowest point is this far under the floor has sunk.
 @export_range(0.0, 0.5, 0.001, "suffix:m") var sunk := 0.015 # placeholder: until the designer has seen the benchmark's report
-## A lying Sock whose middle is this deep inside another lying Sock's box is inside it.
-@export_range(0.0, 0.05, 0.001, "suffix:m") var inside := 0.006 # placeholder: until the designer has seen the benchmark's report
+## A lying Sock whose leg or foot overlaps another lying Sock's deeper than this is pressed into it:
+## allowed and counted (Q2499: Jolt's penetration slop, 20 mm, lets a heap's weight press Socks so).
+@export_range(0.0, 0.05, 0.001, "suffix:m") var pressed := 0.006 # placeholder: until the designer has seen the benchmark's report
+## ...deeper than this, past what the slop allows, it is inside it (counted in the suite, Q2499; a fault of
+## the benchmark). The sharp boxes measure a slanted edge deeper than Jolt's rounded ones meet.
+@export_range(0.0, 0.05, 0.001, "suffix:m") var inside := 0.022 # placeholder: Jolt's 20 mm penetration slop (Q2499) and 2 mm
+## A new Sock made overlapping a moving one deeper than this was made inside it (core/49): a fault.
+@export_range(0.0, 0.05, 0.001, "suffix:m") var made_inside := 0.003 # placeholder: until the designer has seen the benchmark's report
 ## The heap counts as settled once nothing has moved or waited for this long.
 @export_range(0.1, 5.0, 0.1, "suffix:s") var quiet := 0.5 # placeholder: until the designer has seen the benchmark's report

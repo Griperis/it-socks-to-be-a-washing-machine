@@ -124,6 +124,8 @@ func _physics_process(delta: float) -> void:
 	var spins := PackedVector3Array()
 	var tries := room * tuning.tries
 	var column := (get_parent() as Node3D).global_transform
+	# This wave's places so far (a box's size and middle): not in the physics space before the `add`.
+	var taken: Array[Array] = []
 	while designs.size() < room and tries > 0 and not _queue.is_empty():
 		tries -= 1
 		var id := _queue[_queue.size() - 1]
@@ -132,8 +134,10 @@ func _physics_process(delta: float) -> void:
 		var centre := column * (a.position + Vector3(_rng.randf(), _rng.randf(), _rng.randf()) * a.size)
 		var turn := Basis.from_euler(Vector3(_rng.randf() * TAU, _rng.randf() * TAU, _rng.randf() * TAU))
 		_box.size = size
-		if not PhysicsQueries.overlap_rids(self, _box, Transform3D(turn, centre), ROOM_MASK, 1).is_empty():
+		if not PhysicsQueries.overlap_rids(self, _box, Transform3D(turn, centre), ROOM_MASK, 1).is_empty() \
+				or _meets(taken, size, Transform3D(turn, centre)):
 			continue
+		taken.append([size, Transform3D(turn, centre)])
 		_queue.resize(_queue.size() - 1)
 		designs.append(id)
 		# A record's pose is its box's bottom middle.
@@ -148,6 +152,15 @@ func _physics_process(delta: float) -> void:
 		return
 	_stuck = 0.0
 	parts.ask(Command.new(&"add", Parts.HOST, mess.id, {"designs": designs, "poses": poses, "vels": vels, "spins": spins}))
+
+
+## Whether a box at `at` overlaps one of this wave's places (core/49: the physics query sees only the
+## bodies already made, so two Socks of one wave could be made inside each other).
+static func _meets(taken: Array[Array], size: Vector3, at: Transform3D) -> bool:
+	for place: Array in taken:
+		if MessBodies.boxes_meet(place[0], place[1], size, at):
+			return true
+	return false
 
 
 ## The heap's Socks (every record from `first` on) leave the Mess.
