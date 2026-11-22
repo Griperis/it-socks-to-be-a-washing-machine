@@ -1,4 +1,4 @@
-Next free Q number: Q2465 (update this line whenever a round of questions is asked)
+Next free Q number: Q2466 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -379,3 +379,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2462: a Teammate's name tag shows "Player" in their colour at the cuff top, as the old game; the lift over a tall hat comes with the Wardrobe.
 - Q2463: a far or hidden Teammate is not marked, as the old game, until Mate Radar and the X-ray (M4).
 - Q2464: a Teammate's held things as the old game: at their HoldPoint at true size, several clustered in small steps, a held Pair as the ball.
+- Q2465: the avatar family (coop/04) is approved: the port's import matches the old game in all six views (designer, 2026-11-22).
