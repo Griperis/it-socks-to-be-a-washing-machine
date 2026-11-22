@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://c6ggi6fh377si"]
+
+[ext_resource type="Script" uid="uid://c5i2jlrgmcseh" path="res://game/parts/avatar/avatar_looks.gd" id="1_looks"]
+[ext_resource type="PackedScene" uid="uid://ociuf17dwty7" path="res://assets/avatar/avatar.glb" id="2_model"]
+
+[node name="AvatarLooks" type="Node3D" unique_id=7225576]
+script = ExtResource("1_looks")
+
+[node name="Body" parent="." unique_id=1060176876 instance=ExtResource("2_model")]
