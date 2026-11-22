@@ -1,31 +1,19 @@
-## The picture and the theme (core/18, V01-V07): the zoo is lit as the old game at noon, the old post-processing and
-## anti-aliasing are in force at the high preset, the three presets are chosen by a project setting, every 2D text takes
-## the old Theme (default font, ink outline) and the crosshair is the old two bars. One real-path case: a player holds a Sock at the
+## The picture settings (core/18, V03-V04, V06): the anti-aliasing is in force at the high preset and the three presets
+## are chosen by a project setting. The look-only light, grade, Theme and crosshair-shape cases are gone (Q2429). One real-path case: a player holds a Sock at the
 ## handling station and aims where it cannot drop, and the crosshair on screen turns red.
 extends TestSuite
 
 const ZOO := "res://game/zoo/zoo.tscn"
-const THEME := "res://game/look/theme.tres"
-## The old picture's numbers (room.gd, day_cycle.gd, ambient.gd).
-const SUN_COLOUR := Color(1.0, 0.93, 0.82)
 
 var _zoo: Node3D = null
 
 
 func cases() -> Array[Dictionary]:
 	return [
-		{"name": "v01_light", "method": "case_v01", "world": false,
-				"title": "V01: the zoo's sky is the day HDRI, it gives ambient light 0.75 and the reflections, and the sun is warm, 2.4, soft, 4 cascades to 18 m"},
-		{"name": "v02_post", "method": "case_v02", "world": false,
-				"title": "V02: AgX at exposure 1.1, the old grade, the vignette, SSAO and glow as the old game set them"},
 		{"name": "v03_aa", "method": "case_v03", "world": false,
 				"title": "V03: the window renders with MSAA 4x and FXAA at the high preset, and the project settings say so"},
 		{"name": "v04_presets", "method": "case_v04", "world": false,
 				"title": "V04: low, medium and high are the old presets; the project setting names one, high by default, and each applies its numbers"},
-		{"name": "v05_theme", "method": "case_v05", "world": false,
-				"title": "V05 (Q2331): the project's one Theme keeps the default font everywhere, the HUD's Message and Size are outlined, a 3D sign keeps the plain font"},
-		{"name": "v06_crosshair", "method": "case_v06", "world": false,
-				"title": "V06: the crosshair is two bars 18 by 2 px around the screen centre, white at alpha 0.9"},
 		{"name": "v06_real_path", "method": "case_real_path", "world": false,
 				"title": "V06, real path: the player picks a Sock by the pick action, aims where it cannot drop, and the crosshair on screen turns the old red; aimed at the table it is white"},
 	]
@@ -45,58 +33,6 @@ func _zoo_up() -> Picture:
 	add_child(_zoo)
 	await _frames(2)
 	return _zoo.get_node("Picture") as Picture
-
-
-func case_v01() -> void:
-	var picture := await _zoo_up()
-	var env := (_zoo.get_node("Environment") as WorldEnvironment).environment
-	_check(env.background_mode == Environment.BG_SKY, "the sky is the background")
-	var material := env.sky.sky_material as ShaderMaterial
-	_check(material != null and (material.get_shader_parameter("day_panorama") as Texture2D) != null
-			and (material.get_shader_parameter("day_panorama") as Texture2D).resource_path.ends_with("suburban_garden_2k.hdr"),
-			"the sky shows the old day HDRI")
-	_check(env.ambient_light_source == Environment.AMBIENT_SOURCE_SKY, "ambient light comes from the sky")
-	_near(env.ambient_light_energy, 0.75, 0.0001, "ambient energy 0.75")
-	_check(env.reflected_light_source == Environment.REFLECTION_SOURCE_SKY, "reflections come from the sky")
-	var sun := _zoo.get_node("Sun") as DirectionalLight3D
-	_check(sun.light_color.is_equal_approx(SUN_COLOUR), "the sun is warm (1.0, 0.93, 0.82)")
-	_near(sun.light_energy, 2.4, 0.0001, "sun energy 2.4")
-	_check(sun.shadow_enabled, "the sun casts shadows")
-	_near(sun.shadow_blur, 1.5, 0.0001, "shadows are soft (blur 1.5)")
-	_check(sun.directional_shadow_mode == DirectionalLight3D.SHADOW_PARALLEL_4_SPLITS, "4 cascades")
-	_near(sun.directional_shadow_max_distance, 18.0, 0.0001, "shadows reach 18 m")
-	_check(sun.sky_mode == DirectionalLight3D.SKY_MODE_LIGHT_ONLY, "the sun lights only, it is not drawn in the sky")
-	var elevation := rad_to_deg(asin(sun.global_basis.z.y))
-	_near(elevation, 27.3, 0.2, "the sun stands at the old noon's elevation")
-	_check(picture.applied != null, "the picture applied a preset")
-
-
-func case_v02() -> void:
-	var picture := await _zoo_up()
-	var env := (_zoo.get_node("Environment") as WorldEnvironment).environment
-	_check(env.tonemap_mode == Environment.TONE_MAPPER_AGX, "AgX tonemap")
-	_near(env.tonemap_exposure, 1.1, 0.0001, "exposure 1.1")
-	_check(env.adjustment_enabled and env.adjustment_color_correction != null, "the colour grade is on, with its table")
-	_near(env.adjustment_contrast, 1.1, 0.0001, "grade contrast 1.1")
-	_near(env.adjustment_saturation, 1.2, 0.0001, "grade saturation 1.2")
-	var table := (env.adjustment_color_correction as GradientTexture1D).gradient
-	_check(table.colors.size() == 3 and table.colors[1].is_equal_approx(Color(0.5, 0.5, 0.49)) and table.colors[2].is_equal_approx(Color(1.0, 0.975, 0.93)),
-			"the noon table is the old one")
-	_check(env.ssao_enabled, "SSAO on")
-	_near(env.ssao_radius, 0.5, 0.0001, "SSAO radius 0.5")
-	_near(env.ssao_intensity, 1.6, 0.0001, "SSAO intensity 1.6")
-	_near(env.ssao_power, 1.4, 0.0001, "SSAO power 1.4")
-	_check(env.glow_enabled, "glow on")
-	_near(env.glow_intensity, 0.35, 0.0001, "glow intensity 0.35")
-	_near(env.glow_bloom, 0.04, 0.0001, "glow bloom 0.04")
-	_near(env.glow_hdr_threshold, 1.1, 0.0001, "glow HDR threshold 1.1")
-	_check(env.glow_blend_mode == Environment.GLOW_BLEND_MODE_SOFTLIGHT, "soft-light glow")
-	var rect := picture.get_node("Vignette/Rect") as ColorRect
-	var material := rect.material as ShaderMaterial
-	_check(picture.vignette.visible and picture.vignette.layer == -10, "the vignette shows, under the HUD")
-	_near(float(material.get_shader_parameter("amount")), 0.5, 0.0001, "vignette amount 0.5")
-	_check((material.get_shader_parameter("tint") as Vector3).is_equal_approx(Vector3(0.05, 0.03, 0.06)), "vignette tint (0.05, 0.03, 0.06)")
-	_check(rect.mouse_filter == Control.MOUSE_FILTER_IGNORE, "the vignette lets the mouse through")
 
 
 func case_v03() -> void:
@@ -148,53 +84,6 @@ func case_v04() -> void:
 	picture.apply(high)
 
 
-func case_v05() -> void:
-	await _zoo_up()
-	_check(String(ProjectSettings.get_setting("gui/theme/custom")) == THEME, "the project's Theme is %s" % THEME)
-	var theme := load(THEME) as Theme
-	var plain := ThemeDB.fallback_font
-	_check(not theme.has_default_font() and not theme.has_font("font", "Label"), "the Theme sets no font (Q2331: Patrick Hand waits for the whiteboard)")
-	var label := Label.new()
-	add_child(label)
-	_check(label.get_theme_font("font") == plain, "a plain Label keeps Godot's default font")
-	label.free()
-	var player := _zoo.get_node("Player") as Player
-	var texts := 0
-	for node: Node in player.find_children("*", "Label", true, false):
-		var l := node as Label
-		texts += 1
-		_check(l.get_theme_font("font") == plain, "the HUD's %s keeps the default font" % l.name)
-	_check(texts >= 2, "the HUD has its labels (%d)" % texts)
-	# The message row (core/15 moved it to 70 % at 28 pt; the Size readout is the Hud's, aim_screen A01).
-	var l := player.get_node("Hud/MessageRow/Message") as Label
-	_check(l.theme_type_variation == &"RowLabel" and l.get_theme_color("font_outline_color").is_equal_approx(Color(0.1, 0.07, 0.05))
-			and l.get_theme_constant("outline_size") == 8, "Message is text with the ink outline")
-	var signs := _zoo.find_children("*", "Label3D", true, false)
-	_check(not signs.is_empty(), "the zoo has 3D signs")
-	for s: Node in signs:
-		var sign := s as Label3D
-		_check(sign.font == null, "the sign %s keeps the plain font (no theme font is forced on it)" % sign.name)
-
-
-func case_v06() -> void:
-	await _zoo_up()
-	var cross := (_zoo.get_node("Player") as Player).get_node("Hud/Crosshair") as Crosshair
-	_check(cross != null, "the HUD's crosshair is the Crosshair scene")
-	if cross == null:
-		return
-	var bars := cross.bars()
-	_check(bars.size() == 2, "two bars")
-	_check(bars[0].size == Vector2(Crosshair.LENGTH, Crosshair.THICKNESS) and bars[1].size == Vector2(Crosshair.THICKNESS, Crosshair.LENGTH),
-			"18 by 2 px (%s, %s)" % [bars[0].size, bars[1].size])
-	_check(bars[0].get_center() == Vector2.ZERO and bars[1].get_center() == Vector2.ZERO, "both bars centre on the control, which sits on the screen centre")
-	var vp_size := Vector2(get_viewport().get_visible_rect().size)
-	_check(cross.get_global_rect().position.is_equal_approx(vp_size * 0.5), "the crosshair control sits at the exact centre of the screen")
-	for bar: ColorRect in [cross.get_node("%Horizontal"), cross.get_node("%Vertical")]:
-		_check(bar.color.is_equal_approx(Color(1, 1, 1, 0.9)), "%s is white at alpha 0.9" % bar.name)
-		_check(bar.mouse_filter == Control.MOUSE_FILTER_IGNORE, "%s lets the mouse through" % bar.name)
-	_check(Player.CROSSHAIR_NO.is_equal_approx(Color(0.95, 0.25, 0.2)), "the blocked red is the old (0.95, 0.25, 0.2)")
-
-
 func case_real_path() -> void:
 	await _zoo_up()
 	var player := _zoo.get_node("Player") as Player
@@ -216,12 +105,9 @@ func case_real_path() -> void:
 	# Aim at the wall of the sky: far away, where a drop is refused.
 	await _aim(player, player.global_position + Vector3(0.0, 1.6, -30.0))
 	await _until(func() -> bool: return cross.modulate == Player.CROSSHAIR_NO, "the crosshair on screen to turn red")
-	_check(cross.modulate.is_equal_approx(Color(0.95, 0.25, 0.2)), "it is the old red")
 	await _press(&"drop_throw")
 	await _physics_ticks(3)
 	_check(player.message() == Player.CANT_DROP, "the refusal shows in the old words (%s)" % player.message())
-	var message := player.get_node("Hud/MessageRow/Message") as Label
-	_check(message.visible and message.get_theme_font("font") == ThemeDB.fallback_font, "the message is on screen in the default font")
 	await _aim(player, aim_at)
 	await _until(func() -> bool: return cross.modulate == Player.CROSSHAIR_OK, "the crosshair to turn white again where a drop is allowed")
 

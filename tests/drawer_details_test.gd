@@ -1,5 +1,5 @@
-## The Cabinet's small motions (core/09): a Pair shelved by a click flies into its slot (D11), and a
-## drawer eases out both ways (D12). Every case plays the station scene
+## The Cabinet's small motions (core/09): a Pair shelved by a click flies into its slot (D11). The
+## look-only drawer slide case is gone (Q2429). Every case plays the station scene
 ## game/zoo/stations/cabinet.tscn on a floor, with the game's player and a Parts (a Host of one), as
 ## the zoo does; the shelve and the open are the real click on a drawer.
 extends TestSuite
@@ -27,8 +27,6 @@ func cases() -> Array[Dictionary]:
 	return [
 		{"name": "d11_shelving_flight", "method": "case_d11", "world": false,
 				"title": "D11: a Pair shelved by a click flies from the Hands into its slot in 0.45 s, and the drawer shows its ball when it has landed"},
-		{"name": "d12_drawer_slide", "method": "case_d12", "world": false,
-				"title": "D12: a drawer eases out both ways, and turning back mid-slide stays smooth"},
 	]
 
 
@@ -64,40 +62,6 @@ func case_d11() -> void:
 	await _until(func() -> bool: return _cabinet.flights_into(0) == 0, "the ball to land", frames + 6)
 	_check(ball.visible, "landed, the drawer shows its ball")
 	_check(not is_instance_valid(flier) or flier.is_queued_for_deletion(), "and the flying one is gone")
-
-
-func case_d12() -> void:
-	await _build()
-	var drawer := _cabinet.drawer(0)
-	var slide := _cabinet.get_parent().get_node("Drawer1/Looks/Slide") as Node3D
-	var player := drawer.animator()
-	await _click_drawer(0)
-	await _until(func() -> bool: return drawer.open, "the drawer to open")
-	await _until(func() -> bool: return not player.is_playing(), "the slide to end", 60)
-	var steps: Array[float] = []
-	drawer.use(1)
-	await _until(func() -> bool: return not drawer.open, "the drawer to shut")
-	_check(player.current_animation == Openable.SHUT, "shutting plays its own \"shut\"")
-	var last := slide.position.z
-	while player.is_playing():
-		await _physics_ticks(1)
-		if last - slide.position.z > 0.0001:
-			steps.append(last - slide.position.z)
-		last = slide.position.z
-	_check(steps.size() > 4 and steps[0] > steps[-1] * 2.0, "it eases out as it shuts (first step %.4f, last %.4f)" % [steps[0] if steps.size() > 0 else 0.0, steps[-1] if steps.size() > 0 else 0.0])
-	_near(slide.position.z, 0.0, 0.001, "and ends shut")
-	drawer.use(1)
-	await _until(func() -> bool: return drawer.open, "the drawer to open again")
-	await _physics_ticks(6)
-	var most := 0.0
-	last = slide.position.z
-	drawer.use(1)
-	for i in 8:
-		await _physics_ticks(1)
-		most = maxf(most, absf(slide.position.z - last))
-		last = slide.position.z
-	_check(most < 0.06, "turned back mid-slide it moves on smoothly (largest step %.4f m)" % most)
-	_check(slide.position.z < 0.4 and slide.position.z >= -0.001, "on its way shut")
 
 
 # --- Helpers -------------------------------------------------------------------------------------

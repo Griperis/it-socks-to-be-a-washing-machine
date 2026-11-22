@@ -124,3 +124,4 @@ Approved (Q2292). The numbers are the old game's.
 - Verified: `kit/tools/run.sh --touched` (verdict in the commit report); `--only=outline` PASS 48 checks, 9 cases,
   also `--reverse`; before/after `builds/review-core-11/outline-stronger-before-after.png`.
 - Merged: 6e350f94 (2026-11-21, branch core/11-outline)
+- 2026-11-21 (core/40): case O01 of `outline` removed (Q2429).

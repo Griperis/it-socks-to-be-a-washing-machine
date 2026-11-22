@@ -214,3 +214,4 @@ the ramp, jumps, crouches under the beam. `zoo_test` and the co-op crate case ke
   Files: game/player/*, game/zoo/stations/movement.tscn, game/zoo/zoo.tscn, project.godot, tests/player_test.gd,
   tests/zoo_test.gd, tests/hooks.gd. Verified: PASS 370 checks, 91 cases.
 - Merged: 07bd5b75 (2026-11-20, branch core/01-zoo-movement)
+- 2026-11-21 (core/40): case L05 (fov 75) of `player` removed (Q2429).

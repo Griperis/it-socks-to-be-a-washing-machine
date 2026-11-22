@@ -137,3 +137,4 @@ the old core that the port lacks is listed here; only the designer drops one (Q2
   tests/zoo_test.gd, tools/shot_hooks.gd (landing_cam, lose_socks).
   Verified: see the commit's suite line. Stills: builds/review-core-16/.
 - Merged: 76568076 (2026-11-21, branch core/16-feedback-and-motion-polish)
+- 2026-11-21 (core/40): cases P01, P04, P06, P07 of `feedback_polish` removed (Q2429).

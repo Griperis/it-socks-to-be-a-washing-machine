@@ -29,8 +29,6 @@ func cases() -> Array[Dictionary]:
 				"title": "L03: a click captures the mouse and Esc frees it"},
 		{"name": "l04_camera", "method": "case_l04_camera", "world": false,
 				"title": "L04: physics interpolation is on and a mouse turn shows in the camera on the next frame"},
-		{"name": "l05_fov", "method": "case_l05_fov", "world": false,
-				"title": "L05: the field of view is 75 degrees"},
 		{"name": "p01_pad", "method": "case_p01_pad", "world": false,
 				"title": "P01: the pad bindings are in the InputMap and the right stick turns the view"},
 		{"name": "w01_walk", "method": "case_w01_walk", "world": false,
@@ -192,11 +190,6 @@ func case_l04_camera() -> void:
 	await _frames(1)
 	var forward := -camera.global_basis.z
 	_near(forward.x, sin(0.5), 0.01, "the camera shows the turn on the next frame")
-
-
-func case_l05_fov() -> void:
-	var player := await _build()
-	_near((player.get_node("Head/Camera") as Camera3D).fov, 75.0, 0.001, "fov is 75")
 
 
 func case_p01_pad() -> void:
