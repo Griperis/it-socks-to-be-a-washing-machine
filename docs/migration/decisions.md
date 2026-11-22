@@ -1,4 +1,4 @@
-Next free Q number: Q2466 (update this line whenever a round of questions is asked)
+Next free Q number: Q2468 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -380,3 +380,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2463: a far or hidden Teammate is not marked, as the old game, until Mate Radar and the X-ray (M4).
 - Q2464: a Teammate's held things as the old game: at their HoldPoint at true size, several clustered in small steps, a held Pair as the ball.
 - Q2465: the avatar family (coop/04) is approved: the port's import matches the old game in all six views (designer, 2026-11-22).
+- Q2466: the player's own body in first person is ported as the old game in M0.6, as its own ticket after coop/05 (coop/06): the belly of the new avatar below the cut, set back, outside only, edge closed, no eyes, name, hat or clothes, no shadow, the feet; it bends and crouches with the player; the capsule goes (old Q310, Q329; a gap the M0.6 lists left out, raised 2026-11-22).
+- Q2467: "camera clipping of the body" means only that: looking down shows the belly under you, never the inside of your own body (the old cut and closed edge, maintenance/37).
