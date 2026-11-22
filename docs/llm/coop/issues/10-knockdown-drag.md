@@ -98,4 +98,5 @@ out. One test per remaining line, named after it.
   game/zoo/stations/knockdown.tscn, tests/knockdown_test.gd, tests/coop_knockdown_test.gd
 - Bytes a second per knocked player (Host's ENet total, falling, minus standing): 1,943-2,023 B/s at 0 ms,
   1,950-2,029 B/s at 50 ms; 16.7-17.3 poses a second reach the Guest.
-- Verified: see the commit's `suite:` line; stills in builds/review-knockdown/ (view, own-body, lying, dragged).
+- Verified: suite: PASS 16128 checks, 401 cases (--touched, 45 suites); grep_rules PASS; asset_lint PASS; stills in
+  builds/review-knockdown/ (view, own-body, lying, dragged).
