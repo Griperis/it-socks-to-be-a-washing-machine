@@ -1,4 +1,4 @@
-Next free Q number: Q2471 (update this line whenever a round of questions is asked)
+Next free Q number: Q2472 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -385,3 +385,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2468: the avatar gets a zoo station in coop/05: the real Avatar standing, and a stand-in Teammate walking a loop, crouching, looking up and down and holding a Sock, driven only through the pose properties a real Teammate sends, so it shows when playing alone (designer, 2026-11-22).
 - Q2469: the Teammates strip of coop/05 is approved (how a Teammate moves, is coloured, tagged and holds); the sounds, the Throw from the hand and the Pair sparkle are finished on the branch before the merge (designer, 2026-11-22).
 - Q2470: a Teammate's shelve sound plays at the drawer, as the old game (refines Q2453, which grouped it with the cues over their feet).
+- Q2471: coop/06's own body in first person is approved from its two stills and merges; judged further in the zoo (designer, 2026-11-22).
