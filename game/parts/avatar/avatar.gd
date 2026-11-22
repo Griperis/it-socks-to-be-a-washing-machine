@@ -18,6 +18,9 @@
 class_name Avatar
 extends Node3D
 
+## The group every avatar is in: the Hands find a Guest's eyes there (coop/09, G15).
+const GROUP := &"avatars"
+
 @export var tuning: AvatarTuning
 
 @export_group("Pose")
@@ -64,6 +67,7 @@ var _jumped := false
 
 
 func _enter_tree() -> void:
+	add_to_group(GROUP)
 	set_multiplayer_authority(String(name).to_int())
 
 

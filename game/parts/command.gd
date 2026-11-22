@@ -7,6 +7,8 @@ extends RefCounted
 ## The most args one Command may carry, and the longest String on the wire.
 const ARGS_MAX := 16
 const TEXT_MAX := 256
+## The largest seq a Command may carry.
+const SEQ_MAX := (1 << 30)
 ## The arg types a part may declare (Part.accepts()); none of them can carry an Object.
 const ARG_TYPES: Array[int] = [TYPE_BOOL, TYPE_INT, TYPE_FLOAT, TYPE_STRING, TYPE_STRING_NAME, TYPE_VECTOR2, TYPE_VECTOR3]
 
@@ -18,6 +20,9 @@ var by: int
 var to: StringName
 ## Plain values only (plain_value()), by name.
 var args: Dictionary
+## The asker's own number for it (coop/09), echoed in the Host's answer as "seq" so a Guest's ghost
+## knows its answer; 0 when nobody waits on it. Never read for a rule of play.
+var seq := 0
 
 
 func _init(p_kind: StringName, p_by: int, p_to: StringName, p_args: Dictionary = {}) -> void:
@@ -29,7 +34,7 @@ func _init(p_kind: StringName, p_by: int, p_to: StringName, p_args: Dictionary =
 
 ## What travels up to the Host. `by` is left out: the Host knows who sent it.
 func to_wire() -> Array:
-	return [String(kind), String(to), args]
+	return [String(kind), String(to), args, seq]
 
 
 ## The Host's reading of a Guest's wire form, or null when it is malformed (shape_error()).
@@ -37,16 +42,21 @@ static func from_wire(wire: Variant, sender: int) -> Command:
 	if shape_error(wire) != "":
 		return null
 	var w: Array = wire
-	return Command.new(StringName(w[0]), sender, StringName(w[1]), w[2])
+	var cmd := Command.new(StringName(w[0]), sender, StringName(w[1]), w[2])
+	if w.size() == 4:
+		cmd.seq = int(w[3])
+	return cmd
 
 
-## Why `wire` is not a Command's wire form, or "": [kind, to, args] with short Strings and at most
-## ARGS_MAX plain values in args. Rules of play (is that kind known, may this player do it) are
-## the target part's decide(), not this.
+## Why `wire` is not a Command's wire form, or "": [kind, to, args] or [kind, to, args, seq] with
+## short Strings, at most ARGS_MAX plain values in args and a seq from 0 to SEQ_MAX. Rules of play (is
+## that kind known, may this player do it) are the target part's decide(), not this.
 static func shape_error(wire: Variant) -> String:
-	if not (wire is Array) or (wire as Array).size() != 3:
-		return "not [kind, to, args]"
+	if not (wire is Array) or (wire as Array).size() < 3 or (wire as Array).size() > 4:
+		return "not [kind, to, args, seq]"
 	var w: Array = wire
+	if w.size() == 4 and (not (w[3] is int) or int(w[3]) < 0 or int(w[3]) > SEQ_MAX):
+		return "seq is not an int from 0 to %d" % SEQ_MAX
 	for i in 2:
 		if not (w[i] is String) or (w[i] as String).is_empty() or (w[i] as String).length() > TEXT_MAX:
 			return "member %d is not a short String" % i

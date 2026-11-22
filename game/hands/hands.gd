@@ -80,12 +80,25 @@ func active_index(by: int) -> int:
 
 
 ## The numbers that hold for player `by`: their player's HandsTuning when it is on this machine
-## (alone, always), else these Hands' own.
+## (alone, always); for a Teammate, this machine's own player's (every player has the same numbers
+## until Upgrades, M4; D13 reads a Guest's own then); else these Hands' own.
 func tuning_of(by: int) -> HandsTuning:
 	var player := _player_of(by)
+	if player == null:
+		player = _local_player()
 	if player != null and player.hands_tuning != null:
 		return player.hands_tuning
 	return _own_tuning()
+
+
+## This machine's own player in this Hands' level, or null.
+func _local_player() -> Player:
+	if is_inside_tree():
+		for node in get_tree().get_nodes_in_group(PLAYERS):
+			var player := node as Player
+			if player != null and player.multiplayer == multiplayer:
+				return player
+	return null
 
 
 ## These Hands' own numbers (a default when none is set).
@@ -95,26 +108,32 @@ func _own_tuning() -> HandsTuning:
 	return tuning
 
 
-## The player asks to pick Sock `sock`.
-func pick(by: int, sock: int) -> void:
-	parts.ask(Command.new(&"pick", by, id, {"sock": sock}))
+## The player asks to pick Sock `sock`. `seq` (Parts.next_seq()): a Guest's ghost waits on the
+## answer that echoes it (coop/09); every ask below takes one the same way.
+func pick(by: int, sock: int, seq := 0) -> void:
+	_ask(Command.new(&"pick", by, id, {"sock": sock}), seq)
 
 
 ## The player asks to make the next (`step` 1) or the previous (-1) item active.
-func cycle(by: int, step: int) -> void:
-	parts.ask(Command.new(&"cycle", by, id, {"step": step}))
+func cycle(by: int, step: int, seq := 0) -> void:
+	_ask(Command.new(&"cycle", by, id, {"step": step}), seq)
 
 
 ## The player asks to drop the active item where the crosshair meets a top at `point` (`normal` its
 ## up), both in the level.
-func drop(by: int, point: Vector3, normal: Vector3) -> void:
-	parts.ask(Command.new(&"drop", by, id, {"point": point, "normal": normal}))
+func drop(by: int, point: Vector3, normal: Vector3, seq := 0) -> void:
+	_ask(Command.new(&"drop", by, id, {"point": point, "normal": normal}), seq)
 
 
 ## The player asks to throw the active item along `dir` (a unit vector, the aim) with `charge` (0
 ## to 1, how full the ring was). The Host decides where it leaves and how fast.
-func throw(by: int, dir: Vector3, charge: float) -> void:
-	parts.ask(Command.new(&"throw", by, id, {"dir": dir, "charge": charge}))
+func throw(by: int, dir: Vector3, charge: float, seq := 0) -> void:
+	_ask(Command.new(&"throw", by, id, {"dir": dir, "charge": charge}), seq)
+
+
+func _ask(cmd: Command, seq: int) -> void:
+	cmd.seq = seq
+	parts.ask(cmd)
 
 
 ## What a Guest may send: a Sock id, a step, a spot, a direction and a charge. A pick at most 10 a
@@ -405,11 +424,15 @@ func worn_hand_of(by: int) -> Variant:
 
 
 ## Where player `by`'s eyes are: their player's when it is on this machine (alone, always), else
-## the tuning's `eyes_fallback` above where they stand.
+## their avatar's here (a Guest's on the Host, a Teammate's on a Guest: G15, Z2), else the tuning's
+## `eyes_fallback` above where they stand.
 func eyes_of(by: int) -> Vector3:
 	var player := _player_of(by)
 	if player != null:
 		return player.eyes()
+	var avatar := _avatar_of(by)
+	if avatar != null:
+		return avatar.eyes()
 	var at: Variant = parts.where.call(by) if parts != null and parts.where.is_valid() else null
 	return (at as Vector3 if at is Vector3 else Vector3.ZERO) + Vector3.UP * tuning_of(by).eyes_fallback
 
@@ -423,12 +446,25 @@ func _body_of(by: int) -> Array[RID]:
 	return out
 
 
-## Player `by` when they play on this machine (alone, always), else null.
+## Player `by`'s avatar in this Hands' own level on this machine, or null (alone, none).
+func _avatar_of(by: int) -> Avatar:
+	if not is_inside_tree():
+		return null
+	for node in get_tree().get_nodes_in_group(Avatar.GROUP):
+		var avatar := node as Avatar
+		if avatar != null and avatar.peer() == by and not avatar.is_queued_for_deletion() \
+				and (owner == null or owner.is_ancestor_of(avatar)):
+			return avatar
+	return null
+
+
+## Player `by` when they play on this machine (alone, always), else null. With two zoos in one tree
+## (a co-op test), each its own machine with its own MultiplayerAPI, a player of the other is not one.
 func _player_of(by: int) -> Player:
 	if is_inside_tree():
 		for node in get_tree().get_nodes_in_group(PLAYERS):
 			var player := node as Player
-			if player != null and player.player_id() == by:
+			if player != null and player.player_id() == by and player.multiplayer == multiplayer:
 				return player
 	return null
 

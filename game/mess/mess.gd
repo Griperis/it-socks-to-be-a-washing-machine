@@ -40,7 +40,8 @@
 ## record turns FLYING by a wake, a fall, a pour, a sweep or a drop, each machine starts its own body
 ## from the record (the Host's decides; a Guest's is looks only, on LAYER_LOOKS, and never wakes,
 ## rests or writes anything shared), and the Host's rest batch snaps it. Only a Throw's body is the
-## Host's alone, under `flights` (the spawner's path; coop/09 streams it); every other body is under
+## Host's alone, under `flights` (the spawner's path), streamed to every Guest as stamped rows played
+## 0.1 s behind (FlightRow, coop/09); every other body is under
 ## this Mess's own holder (bodies_holder()), which no spawner sees. Every machine sweeps its own lying
 ## Socks with its moving Doors and drawers; a Guest's swept Sock the Host never moved goes back.
 class_name Mess
@@ -62,6 +63,8 @@ const LAYER_LYING := 4
 ## looks-only bodies, never a Throw's copy.
 const LAYER_LOOKS := 16
 const LOOKS_MASK := LAYER_HOUSE | LAYER_LYING | LAYER_LOOKS
+## A Guest's own Throw or drop ghost (coop/09, ThrowGhost, I3): it touches the static house only.
+const LAYER_GHOST := 32
 const AIM_MASK := LAYER_HOUSE | LAYER_LYING
 ## What the crosshair looks for a Sock in: a lying one or a moving one (a woken or thrown body, as the
 ## old game's SOCK_LIVE; a Guest's own body too), never a wall (R03).
@@ -109,6 +112,8 @@ const BALL_LANDING := preload("res://game/sock/ball_landing_tuning.tres")
 @export var tuning: HandsTuning
 ## The two tiers' numbers: the moving budget, the wakes, the rest rule, the bodies, the drawing.
 @export var bodies: MessTuning = preload("res://game/mess/mess_tuning.tres")
+## A Throw's stream and a Guest's ghosts (coop/09).
+@export var ghosts: GhostTuning = preload("res://game/hands/ghost_tuning.tres")
 ## Where the SockSpots placed in the editor are (their children); they become the starting Socks.
 @export var spots: Node3D
 ## Where lying Socks are drawn, and where the Host adds falling ones (a MultiplayerSpawner's
@@ -154,6 +159,12 @@ var _flight_looks: Dictionary[RigidBody3D, bool] = {}
 var _flight_shape: Dictionary[int, StringName] = {}
 ## Whether the last frame drew any flying Sock as an instance (the next one must clear it).
 var _flying_drawn := false
+## A Guest: the smallest (this machine's tick - the Host's stamp) seen in any Throw's row: the one-way
+## delay estimate every streamed body plays by (FlightRow); a whole state written sets it back.
+var stream_offset := INF
+## The Socks this machine's ghosts draw themselves (GuestGhosts): the Mess does not draw them, lying or
+## flying, until let go (hold_back()).
+var _held_back: Dictionary[int, bool] = {}
 ## The holder of every body but a Throw's (made in _ready, a child of this Mess: no spawner's path).
 var _bodies: Node3D
 ## A whole state's bodies in flight as it was written (a late Guest, a load): {Sock id: [pose,
@@ -569,6 +580,7 @@ func write(patch: Dictionary, now: bool) -> void:
 	if patch.has(PACKED):
 		patch = _unpacked(patch)
 	if not patch.has(ROWS):
+		stream_offset = INF
 		super.write(patch, now)
 		_motion.clear()
 		return
@@ -948,7 +960,7 @@ func _process(_delta: float) -> void:
 	var of: Dictionary[StringName, Array] = {}
 	for sock: int in _flight_by_sock:
 		var body := _flight_by_sock[sock]
-		if _flight_looks.has(body) or body.is_queued_for_deletion():
+		if _flight_looks.has(body) or body.is_queued_for_deletion() or _held_back.has(sock):
 			continue
 		var design := design_of(sock)
 		var shape: StringName = _flight_shape.get(sock, &"")
@@ -994,6 +1006,44 @@ func lie_again(sock: int) -> void:
 		_lie(sock)
 
 
+## The stream's and the ghosts' numbers (a default when none is set).
+func ghost_tuning() -> GhostTuning:
+	if ghosts == null:
+		ghosts = GhostTuning.new()
+	return ghosts
+
+
+## Looks only (a Guest's ghost, coop/09): while `on`, Sock `sock` is not drawn by the Mess, lying or
+## flying (its body and record are as they are: it is aimed, picked and rested as ever), because a
+## ghost draws it; let go, it is drawn as its record says, at once.
+func hold_back(sock: int, on: bool) -> void:
+	if on == _held_back.has(sock):
+		return
+	if on:
+		_held_back[sock] = true
+		if _drawing != null:
+			_drawing.undraw(sock)
+			_drawing.flush()
+		if _lent.has(sock):
+			_lent[sock].visible = false
+	else:
+		_held_back.erase(sock)
+		if _lent.has(sock):
+			_lent[sock].visible = true
+		elif _drawing != null and state_of(sock) == State.LYING and _lying_bodies != null and _lying_bodies.has(sock):
+			_draw_lying(sock)
+			_drawing.flush()
+	var body := moving_body(sock)
+	var looks := body.get_node_or_null(LOOKS) as Node3D if body != null else null
+	if looks != null:
+		looks.visible = not on
+
+
+## Whether Sock `sock` is held back from the Mess's drawing now (hold_back()).
+func is_held_back(sock: int) -> bool:
+	return _held_back.has(sock)
+
+
 ## The two tiers' numbers (a default when none is set).
 func bodies_tuning() -> MessTuning:
 	if bodies == null:
@@ -1010,6 +1060,8 @@ func _lie(sock: int) -> void:
 
 
 func _draw_lying(sock: int) -> void:
+	if _held_back.has(sock):
+		return
 	var design := design_of(sock)
 	_drawing.draw(sock, pose_of(sock), MessDrawing.shape_of(design, is_pair(sock)), design)
 
@@ -1047,6 +1099,7 @@ func give_looks() -> void:
 			landing.tuning = BALL_LANDING
 			landing.radius = SockDress.ball_radius(design_of(sock))
 			looks.add_child(landing)
+		looks.visible = not _held_back.has(sock)
 		body.add_child(looks)
 		_flight_looks[body] = true
 
@@ -1105,10 +1158,14 @@ func _on_flight_in(node: Node) -> void:
 	if sock < 0:
 		return
 	if not _is_host() and not body.has_meta(SOCK_META):
-		# coop/07: a Guest's spawned Throw copy never simulates. It arrives at the holder's origin with
-		# no synchronizer (coop/09 gives it the stamped stream); left live, copies piled into one spot.
+		# coop/09: a Guest's spawned Throw copy never simulates (frozen, kinematic, on the looks layer);
+		# its Row plays the Host's stamped rows 0.1 s behind. The Row and its Sync are added here, as
+		# it enters and before it is ready, so the spawn's first row reaches it.
 		body.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
 		body.freeze = true
+		body.collision_layer = LAYER_LOOKS
+		body.collision_mask = 0
+		FlightRow.attach(body, self, false)
 	_flight_by_sock[sock] = body
 	_flight_shape.erase(sock)
 	if body.has_node(LOOKS):

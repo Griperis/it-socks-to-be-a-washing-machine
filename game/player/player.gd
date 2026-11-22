@@ -59,6 +59,8 @@ const FULL_OUTLINE := preload("res://game/outline/full.tres")
 @onready var _held_view: HeldView = %HeldView
 @onready var _hud: Hud = %Hud
 @onready var _ring: PowerRing = %Ring
+## A Guest's looks-only guesses of its own pick, drop, Throw and wheel (coop/09).
+@onready var _ghosts: GuestGhosts = %Ghosts
 
 ## True while a menu has the player's input (set_input_blocked()).
 var _input_blocked := false
@@ -170,7 +172,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	if _captured and (event.is_action_pressed(HANDS_NEXT) or event.is_action_pressed(HANDS_PREV)):
 		var h := hands()
 		if h != null and h.items_of(player_id()).size() > 1:
-			h.cycle(player_id(), 1 if event.is_action_pressed(HANDS_NEXT) else -1)
+			var step := 1 if event.is_action_pressed(HANDS_NEXT) else -1
+			if _ghosts.active():
+				_ghosts.cycle(step)
+			else:
+				h.cycle(player_id(), step)
 
 
 ## This player takes the mouse (a click does it; the pause menu and tests too): from now on the look
@@ -357,7 +363,9 @@ func _set_charge(on: bool) -> void:
 func _throw(h: Hands) -> void:
 	var power := charge
 	_set_charge(false)
-	if h.active_of(player_id()) >= 0:
+	if _ghosts.active():
+		_ghosts.throw(aim_dir(), power)
+	elif h.active_of(player_id()) >= 0:
 		h.throw(player_id(), aim_dir(), power)
 
 
@@ -380,8 +388,12 @@ func ring() -> PowerRing:
 ## click sooner than the grab interval does nothing, with no message).
 func _pick(h: Hands, sock: int) -> void:
 	var why := h.pick_refusal(player_id(), sock)
+	if _ghosts.active() and why == Hands.SOON:
+		why = ""  # a Guest's copy has the Host's clock wrong; its ghosts keep the interval (D06)
 	if why == Hands.FULL:
 		say(HANDS_FULL)
+	elif why == "" and _ghosts.active():
+		_ghosts.pick(sock)
 	elif why == "":
 		h.pick(player_id(), sock)
 
@@ -394,7 +406,10 @@ func _drop(h: Hands) -> void:
 	if spot.is_empty() or _tick_refusal != "":
 		say(CANT_DROP)
 		return
-	h.drop(player_id(), spot["point"], spot["normal"])
+	if _ghosts.active():
+		_ghosts.drop(spot["point"], spot["normal"])
+	else:
+		h.drop(player_id(), spot["point"], spot["normal"])
 
 
 ## Why a drop where the crosshair is would be refused now, or "" (the Host's own check).
@@ -507,6 +522,11 @@ static func _first(list: Array[String]) -> String:
 	return list[0] if not list.is_empty() else ""
 
 
+## A Guest's guesses of its own actions (coop/09).
+func ghosts() -> GuestGhosts:
+	return _ghosts
+
+
 ## The HeldView (what the Hands show on this machine).
 func held_view() -> HeldView:
 	return _held_view
@@ -564,7 +584,7 @@ func _aims_full_drawer() -> bool:
 ## A refusal the Host answered to this player shows on the HUD.
 func _on_applied(ev: Dictionary) -> void:
 	if _hands != null:
-		Hearing.applied(ev, player_id(), _hands.parts)
+		Hearing.applied(ev, player_id(), _hands.parts, _ghosts.answered(ev))
 	if ev.get("ok", false) and int(ev.get("by", 0)) == player_id() and ev.has("paired") \
 			and StringName(ev.get("kind", &"")) == &"pick":
 		say_paired()

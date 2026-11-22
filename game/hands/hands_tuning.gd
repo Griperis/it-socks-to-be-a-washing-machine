@@ -73,9 +73,9 @@ extends Resource
 @export_range(1, 30, 1, "suffix:/s") var throw_rate := 5 # placeholder: the Host's allowance, not felt in play
 
 @export_group("Host")
-## How far above a player's feet their eyes are when the Host has no body of theirs to ask (a
-## Guest's, until M0.6 reads the Guest's eyes).
-@export_range(0.5, 2.5, 0.05, "suffix:m") var eyes_fallback := 1.5 # placeholder: until M0.6 reads a Guest's eyes
+## How far above a player's feet their eyes are when this machine has neither their body nor their
+## avatar to ask (coop/09 reads a Guest's eyes off its avatar).
+@export_range(0.5, 2.5, 0.05, "suffix:m") var eyes_fallback := 1.5 # placeholder: used only with no avatar
 ## A leaver's held items fall from this high over where they last stood (coop/03, Q2446: each flies
 ## down from their Hands, as the old spill),
 @export_range(0.0, 2.0, 0.05, "suffix:m") var leave_height := 1.0 # placeholder: by eye in a co-op play session (the old drew them from the HoldPoint)

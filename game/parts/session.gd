@@ -35,7 +35,7 @@ signal ended(text: String)
 ## synchronized property, a spawnable scene or the shape of a Command, an event, a snapshot or the
 ## gate's word changes. The word's first 4 bytes (the PROTOCOL) never move, so any two builds can
 ## tell they differ.
-const PROTOCOL := 11  # 11: coop/07, a Mess answer carries only the records it changed (rows)
+const PROTOCOL := 12  # 12: coop/09, a Throw's stamped row (FlightRow) and a Command's seq
 ## The gate's answers: one byte, and after REFUSED one byte saying why.
 const ACCEPTED := 1
 const REFUSED := 0
@@ -340,8 +340,15 @@ func _command(wire: Variant) -> void:
 	parts.apply(parts.answer(cmd))
 
 
+## The Host's answer goes to every Guest; a refusal changes nothing, so it goes to the asker alone
+## (I13, F07), and to nobody when the asker is the Host.
 func _on_applied(ev: Dictionary) -> void:
 	if not multiplayer.is_server():
+		return
+	if not ev.get("ok", false):
+		var asker := int(ev.get("by", 0))
+		if _guests.has(asker):
+			_event.rpc_id(asker, ev)
 		return
 	for peer: int in _guests:
 		_event.rpc_id(peer, ev)
