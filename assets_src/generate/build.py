@@ -2,7 +2,7 @@
 
     blender -b -P assets_src/generate/build.py -- <family> [--only a,b] [--out <dir>] [--save] [--no-export]
 
-  <family>     sock | cabinet | furniture
+  <family>     sock | cabinet | furniture | avatar
   --only       only these: Sock shapes (ankle, crew ...) and balls (ball_crew_plain ...), Collections
                (food, space ...) or furniture pieces (sofa, piano ...)
   --out        write the glbs under <dir> (same relative paths as in the game) instead of over the
@@ -143,11 +143,34 @@ def furniture(a, manifest, lines):
         finish([pid], a, {pid: {"glb": f"assets/furniture/{pid}.glb"}}, lines)
 
 
+def avatar(a, manifest, lines):
+    """The player avatar: avatar.glb and feet.glb from one scene, with the old script's own export
+    (no root object, glTF extras and the Crouch shape key kept; coop/04), not export_root()."""
+    sys.path.insert(0, os.path.join(HERE, "avatar"))
+    import make_avatar
+    empty_scene()
+    nodes = make_avatar.build()
+    print("avatar:", {n: make_avatar.tris(o) for n, o in nodes.items() if o.type == "MESH"}, "triangles")
+    if a["save"]:
+        os.makedirs(os.path.join(SRC, "avatar"), exist_ok=True)
+        bpy.ops.wm.save_as_mainfile(filepath=os.path.join(SRC, "avatar", "avatar.blend"), compress=True)
+    for name, objs in (("avatar", list(nodes.values())), ("feet", [nodes["FootL"], nodes["FootR"]])):
+        if a["only"] and name not in a["only"]:
+            continue
+        if a["export"]:
+            out = os.path.join(a["out"], "assets", "avatar", name + ".glb")
+            make_avatar.export(objs, out)
+            lines.append(f"EXPORT-OK {name} -> {out}")
+        else:
+            lines.append(f"BUILT {name}")
+        print(lines[-1])
+
+
 def main():
     a = args()
-    fn = {"sock": sock, "cabinet": cabinet, "furniture": furniture}.get(a["family"])
+    fn = {"sock": sock, "cabinet": cabinet, "furniture": furniture, "avatar": avatar}.get(a["family"])
     if fn is None:
-        raise SystemExit("FAIL build: name a family: sock | cabinet | furniture")
+        raise SystemExit("FAIL build: name a family: sock | cabinet | furniture | avatar")
     manifest = json.load(open(os.path.join(REPO, "assets", "blender_assets.json"), encoding="utf-8"))["assets"]
     lines = []
     fn(a, manifest, lines)
