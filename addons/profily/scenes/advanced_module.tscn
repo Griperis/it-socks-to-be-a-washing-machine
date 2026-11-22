@@ -1,15 +1,15 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://dnld5uruswiht"]
 
-[ext_resource type="Script" path="res://addons/profily/scripts/advanced/advanced_module.gd" id="1_module"]
-[ext_resource type="StyleBoxFlat" path="res://addons/profily/styles/background_stylebox.tres" id="2_bg"]
-[ext_resource type="FontFile" path="res://addons/profily/fonts/Roboto-Regular.ttf" id="3_roboto"]
+[ext_resource type="Script" uid="uid://dkb2d0d3qmqmy" path="res://addons/profily/scripts/advanced/advanced_module.gd" id="1_module"]
+[ext_resource type="StyleBox" path="res://addons/profily/styles/background_stylebox.tres" id="2_bg"]
+[ext_resource type="FontFile" uid="uid://dfrm2sykl2xby" path="res://addons/profily/fonts/Roboto-Regular.ttf" id="3_roboto"]
 
-[node name="AdvancedModule" type="PanelContainer"]
+[node name="AdvancedModule" type="PanelContainer" unique_id=1817813191]
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("2_bg")
 script = ExtResource("1_module")
 
-[node name="Margin" type="MarginContainer" parent="."]
+[node name="Margin" type="MarginContainer" parent="." unique_id=561413653]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 25
@@ -17,78 +17,78 @@ theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 12
 
-[node name="Lines" type="VBoxContainer" parent="Margin"]
+[node name="Lines" type="VBoxContainer" parent="Margin" unique_id=1729696938]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 2
 
-[node name="CpuLabel" type="Label" parent="Margin/Lines"]
+[node name="CpuLabel" type="Label" parent="Margin/Lines" unique_id=123938626]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_roboto")
 theme_override_font_sizes/font_size = 25
 text = "CPU:"
 
-[node name="RamLabel" type="Label" parent="Margin/Lines"]
+[node name="RamLabel" type="Label" parent="Margin/Lines" unique_id=257736207]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_roboto")
 theme_override_font_sizes/font_size = 25
 text = "RAM:"
 
-[node name="GpuLabel" type="Label" parent="Margin/Lines"]
+[node name="GpuLabel" type="Label" parent="Margin/Lines" unique_id=1544409133]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_roboto")
 theme_override_font_sizes/font_size = 25
 text = "GPU:"
 
-[node name="ApiLabel" type="Label" parent="Margin/Lines"]
+[node name="ApiLabel" type="Label" parent="Margin/Lines" unique_id=876279985]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_roboto")
 theme_override_font_sizes/font_size = 25
 text = "Graphics API:"
 
-[node name="VramLabel" type="Label" parent="Margin/Lines"]
+[node name="VramLabel" type="Label" parent="Margin/Lines" unique_id=606256899]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_roboto")
 theme_override_font_sizes/font_size = 25
 text = "VRAM used:"
 
-[node name="ScreenLabel" type="Label" parent="Margin/Lines"]
+[node name="ScreenLabel" type="Label" parent="Margin/Lines" unique_id=1360735756]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_roboto")
 theme_override_font_sizes/font_size = 25
 text = "Screen:"
 
-[node name="WindowLabel" type="Label" parent="Margin/Lines"]
+[node name="WindowLabel" type="Label" parent="Margin/Lines" unique_id=442360265]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_roboto")
 theme_override_font_sizes/font_size = 25
 text = "Window:"
 
-[node name="OsLabel" type="Label" parent="Margin/Lines"]
+[node name="OsLabel" type="Label" parent="Margin/Lines" unique_id=1680438962]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_roboto")
 theme_override_font_sizes/font_size = 25
 text = "OS:"
 
-[node name="GodotLabel" type="Label" parent="Margin/Lines"]
+[node name="GodotLabel" type="Label" parent="Margin/Lines" unique_id=662018289]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_roboto")
 theme_override_font_sizes/font_size = 25
 text = "Godot:"
 
-[node name="XrLabel" type="Label" parent="Margin/Lines"]
+[node name="XrLabel" type="Label" parent="Margin/Lines" unique_id=2078915231]
 unique_name_in_owner = true
-layout_mode = 2
 visible = false
+layout_mode = 2
 theme_override_fonts/font = ExtResource("3_roboto")
 theme_override_font_sizes/font_size = 25
 text = "XR:"

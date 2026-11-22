@@ -60,97 +60,97 @@ _data = {
 &"shut": SubResource("Animation_shut")
 }
 
-[node name="LooksSimple" type="Node3D"]
+[node name="LooksSimple" type="Node3D" unique_id=111539478]
 
-[node name="Slide" type="AnimatableBody3D" parent="."]
+[node name="Slide" type="AnimatableBody3D" parent="." unique_id=1886715078]
 
-[node name="Mesh" type="MeshInstance3D" parent="Slide"]
+[node name="Mesh" type="MeshInstance3D" parent="Slide" unique_id=1011926464]
 mesh = ExtResource("1_mesh")
 
-[node name="Front" type="CollisionShape3D" parent="Slide"]
+[node name="Front" type="CollisionShape3D" parent="Slide" unique_id=1080823941]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14, 0.23)
 shape = SubResource("BoxShape3D_front")
 
-[node name="Slot01" type="Marker3D" parent="Slide"]
+[node name="Slot01" type="Marker3D" parent="Slide" unique_id=1692137940]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.585, 0.085, -0.15)
 
-[node name="Slot02" type="Marker3D" parent="Slide"]
+[node name="Slot02" type="Marker3D" parent="Slide" unique_id=428944952]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.325, 0.085, -0.15)
 
-[node name="Slot03" type="Marker3D" parent="Slide"]
+[node name="Slot03" type="Marker3D" parent="Slide" unique_id=1709527491]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, 0.085, -0.15)
 
-[node name="Slot04" type="Marker3D" parent="Slide"]
+[node name="Slot04" type="Marker3D" parent="Slide" unique_id=862541750]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.195, 0.085, -0.15)
 
-[node name="Slot05" type="Marker3D" parent="Slide"]
+[node name="Slot05" type="Marker3D" parent="Slide" unique_id=1095837507]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.455, 0.085, -0.15)
 
-[node name="Slot06" type="Marker3D" parent="Slide"]
+[node name="Slot06" type="Marker3D" parent="Slide" unique_id=539487889]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.455, 0.085, -0.0775)
 
-[node name="Slot07" type="Marker3D" parent="Slide"]
+[node name="Slot07" type="Marker3D" parent="Slide" unique_id=724853080]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.195, 0.085, -0.0775)
 
-[node name="Slot08" type="Marker3D" parent="Slide"]
+[node name="Slot08" type="Marker3D" parent="Slide" unique_id=2121234505]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.065, 0.085, -0.0775)
 
-[node name="Slot09" type="Marker3D" parent="Slide"]
+[node name="Slot09" type="Marker3D" parent="Slide" unique_id=1427800586]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.325, 0.085, -0.0775)
 
-[node name="Slot10" type="Marker3D" parent="Slide"]
+[node name="Slot10" type="Marker3D" parent="Slide" unique_id=190773990]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.585, 0.085, -0.0775)
 
-[node name="Slot11" type="Marker3D" parent="Slide"]
+[node name="Slot11" type="Marker3D" parent="Slide" unique_id=155713811]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.585, 0.085, -0.005)
 
-[node name="Slot12" type="Marker3D" parent="Slide"]
+[node name="Slot12" type="Marker3D" parent="Slide" unique_id=1692564998]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.325, 0.085, -0.005)
 
-[node name="Slot13" type="Marker3D" parent="Slide"]
+[node name="Slot13" type="Marker3D" parent="Slide" unique_id=15453175]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, 0.085, -0.005)
 
-[node name="Slot14" type="Marker3D" parent="Slide"]
+[node name="Slot14" type="Marker3D" parent="Slide" unique_id=1862117563]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.195, 0.085, -0.005)
 
-[node name="Slot15" type="Marker3D" parent="Slide"]
+[node name="Slot15" type="Marker3D" parent="Slide" unique_id=220282328]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.455, 0.085, -0.005)
 
-[node name="Slot16" type="Marker3D" parent="Slide"]
+[node name="Slot16" type="Marker3D" parent="Slide" unique_id=70462311]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.455, 0.085, 0.0675)
 
-[node name="Slot17" type="Marker3D" parent="Slide"]
+[node name="Slot17" type="Marker3D" parent="Slide" unique_id=71750117]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.195, 0.085, 0.0675)
 
-[node name="Slot18" type="Marker3D" parent="Slide"]
+[node name="Slot18" type="Marker3D" parent="Slide" unique_id=1882090435]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.065, 0.085, 0.0675)
 
-[node name="Slot19" type="Marker3D" parent="Slide"]
+[node name="Slot19" type="Marker3D" parent="Slide" unique_id=69971039]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.325, 0.085, 0.0675)
 
-[node name="Slot20" type="Marker3D" parent="Slide"]
+[node name="Slot20" type="Marker3D" parent="Slide" unique_id=1743284990]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.585, 0.085, 0.0675)
 
-[node name="Slot21" type="Marker3D" parent="Slide"]
+[node name="Slot21" type="Marker3D" parent="Slide" unique_id=801249513]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.585, 0.085, 0.14)
 
-[node name="Slot22" type="Marker3D" parent="Slide"]
+[node name="Slot22" type="Marker3D" parent="Slide" unique_id=1357946542]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.325, 0.085, 0.14)
 
-[node name="Slot23" type="Marker3D" parent="Slide"]
+[node name="Slot23" type="Marker3D" parent="Slide" unique_id=963108850]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, 0.085, 0.14)
 
-[node name="Slot24" type="Marker3D" parent="Slide"]
+[node name="Slot24" type="Marker3D" parent="Slide" unique_id=810716154]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.195, 0.085, 0.14)
 
-[node name="Slot25" type="Marker3D" parent="Slide"]
+[node name="Slot25" type="Marker3D" parent="Slide" unique_id=83012383]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.455, 0.085, 0.14)
 
-[node name="Outline" type="Node3D" parent="."]
+[node name="Outline" type="Node3D" parent="." unique_id=408737707]
 visible = false
 script = ExtResource("9_outline")
 meshes = Array[NodePath]([NodePath("../Slide/Mesh")])
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1839329332]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_looks")

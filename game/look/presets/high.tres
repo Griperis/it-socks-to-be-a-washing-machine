@@ -1,7 +1,6 @@
-[gd_resource type="Resource" script_class="GraphicsPreset" format=3]
+[gd_resource type="Resource" script_class="GraphicsPreset" format=3 uid="uid://t3yjh5rn3l8o"]
 
-[ext_resource type="Script" path="res://game/look/graphics_preset.gd" id="1_preset"]
+[ext_resource type="Script" uid="uid://besrhdhjalvog" path="res://game/look/graphics_preset.gd" id="1_preset"]
 
-; placeholder: the designer's numbers (the old game's high preset, core/18)
 [resource]
 script = ExtResource("1_preset")

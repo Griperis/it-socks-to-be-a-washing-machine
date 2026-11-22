@@ -35,7 +35,7 @@ metadata/rooms = ["WC", "Bathroom"]
 metadata/plan_spot = "WC"
 metadata/note = "Close-coupled; the back is the wall side."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1366422937 instance=ExtResource("1_vs3kr")]
+[node name="Looks" parent="." unique_id=1366422937 instance=ExtResource("1_vs3kr")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=365951378]
 shape = SubResource("ConvexPolygonShape3D_cpv6m")

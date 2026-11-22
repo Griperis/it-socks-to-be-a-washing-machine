@@ -14,7 +14,7 @@ metadata/plan_spot = "Doormat"
 metadata/note = "Flat (2 cm): no collider needed."
 metadata/rug = true
 
-[node name="Looks" type="Node3D" parent="." unique_id=670263593 instance=ExtResource("1_a8cob")]
+[node name="Looks" parent="." unique_id=670263593 instance=ExtResource("1_a8cob")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=737728639]
 shape = SubResource("ConvexPolygonShape3D_asiir")

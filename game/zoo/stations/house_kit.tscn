@@ -31,8 +31,8 @@ shape = SubResource("BoxShape3D_ground")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.2, -5)
 pixel_size = 0.004
 billboard = 2
-vertical_alignment = 2
 text = "House kit: every piece, a roof corner with the dormer, and a room built from them. Walk in at the door, climb the U stair, look out of the window."
+vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 

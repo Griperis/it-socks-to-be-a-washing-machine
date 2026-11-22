@@ -4,23 +4,23 @@
 [ext_resource type="ArrayMesh" uid="uid://4ruprswq4g7y" path="res://assets/cabinet/tech_segment.res" id="2_segment"]
 [ext_resource type="ArrayMesh" uid="uid://di4tuaey1twp8" path="res://assets/cabinet/tech_top.res" id="3_top"]
 
-[node name="LooksTech" type="Node3D"]
+[node name="LooksTech" type="Node3D" unique_id=98988541]
 
-[node name="Base" type="MeshInstance3D" parent="."]
+[node name="Base" type="MeshInstance3D" parent="." unique_id=451539228]
 mesh = ExtResource("1_base")
 
-[node name="Segment1" type="MeshInstance3D" parent="."]
+[node name="Segment1" type="MeshInstance3D" parent="." unique_id=2037698337]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 mesh = ExtResource("2_segment")
 
-[node name="Segment2" type="MeshInstance3D" parent="."]
+[node name="Segment2" type="MeshInstance3D" parent="." unique_id=2108542950]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 mesh = ExtResource("2_segment")
 
-[node name="Segment3" type="MeshInstance3D" parent="."]
+[node name="Segment3" type="MeshInstance3D" parent="." unique_id=1569429165]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 mesh = ExtResource("2_segment")
 
-[node name="Top" type="MeshInstance3D" parent="."]
+[node name="Top" type="MeshInstance3D" parent="." unique_id=516079133]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = ExtResource("3_top")

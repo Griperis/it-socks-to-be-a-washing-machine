@@ -24,7 +24,7 @@ metadata/height = 1.634
 metadata/rooms = ["Living room"]
 metadata/plan_spot = "Floor lamp (new; by the sofa or armchair)"
 
-[node name="Looks" type="Node3D" parent="." unique_id=190372453 instance=ExtResource("1_i0ukk")]
+[node name="Looks" parent="." unique_id=190372453 instance=ExtResource("1_i0ukk")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1469461810]
 shape = SubResource("ConvexPolygonShape3D_51c8j")

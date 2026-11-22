@@ -119,7 +119,7 @@ metadata/hide = "under the coffee table"
 metadata/rooms = ["Living room"]
 metadata/plan_spot = "Coffee table"
 
-[node name="Looks" type="Node3D" parent="." unique_id=143206549 instance=ExtResource("1_yrnkf")]
+[node name="Looks" parent="." unique_id=143206549 instance=ExtResource("1_yrnkf")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=531098120]
 shape = SubResource("ConvexPolygonShape3D_8kx5p")

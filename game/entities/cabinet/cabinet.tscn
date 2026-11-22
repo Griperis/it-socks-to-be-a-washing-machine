@@ -8,26 +8,26 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_shell"]
 size = Vector3(1.5, 1.05, 0.46)
 
-[node name="Cabinet" type="StaticBody3D"]
+[node name="Cabinet" type="StaticBody3D" unique_id=618814056]
 
-[node name="Cabinet" type="Node" parent="."]
+[node name="Cabinet" type="Node" parent="." unique_id=786621039]
 script = ExtResource("1_cabinet")
 tuning = ExtResource("2_tuning")
 
-[node name="Shape" type="CollisionShape3D" parent="."]
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=71747830]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.525, -0.02)
 shape = SubResource("BoxShape3D_shell")
 
-[node name="Looks" parent="." instance=ExtResource("3_looks")]
+[node name="Looks" parent="." unique_id=876505922 instance=ExtResource("3_looks")]
 
-[node name="Drawer1" parent="." instance=ExtResource("4_drawer")]
+[node name="Drawer1" parent="." unique_id=1062697383 instance=ExtResource("4_drawer")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.11, 0)
 
-[node name="Drawer2" parent="." instance=ExtResource("4_drawer")]
+[node name="Drawer2" parent="." unique_id=1581397335 instance=ExtResource("4_drawer")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41, 0)
 
-[node name="Drawer3" parent="." instance=ExtResource("4_drawer")]
+[node name="Drawer3" parent="." unique_id=1947667389 instance=ExtResource("4_drawer")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.71, 0)
 
-[node name="Openable" parent="Drawer3" index="0"]
+[node name="Openable" parent="Drawer3" parent_id_path=PackedInt32Array(1947667389) index="0" unique_id=779168564]
 locked = true

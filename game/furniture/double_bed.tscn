@@ -234,7 +234,7 @@ metadata/rooms = ["Parents' bedroom"]
 metadata/plan_spot = "Bed"
 metadata/note = "The trial's stylised bed (Q404) with the subdivision dropped (Q405); dusty pink duvet (Q406). The head is the back (+y Blender, -z Godot): put it against the wall."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1289993637 instance=ExtResource("1_38r3q")]
+[node name="Looks" parent="." unique_id=1289993637 instance=ExtResource("1_38r3q")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1601473962]
 shape = SubResource("ConvexPolygonShape3D_riwo8")

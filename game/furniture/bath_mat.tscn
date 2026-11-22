@@ -14,7 +14,7 @@ metadata/plan_spot = "Bath mat (new)"
 metadata/note = "Flat: no collider needed."
 metadata/rug = true
 
-[node name="Looks" type="Node3D" parent="." unique_id=1229169819 instance=ExtResource("1_gag86")]
+[node name="Looks" parent="." unique_id=1229169819 instance=ExtResource("1_gag86")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1137669530]
 shape = SubResource("ConvexPolygonShape3D_bqxt6")

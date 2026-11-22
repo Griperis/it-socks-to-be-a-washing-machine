@@ -22,7 +22,7 @@ metadata/rooms = ["Home office"]
 metadata/plan_spot = "Printer"
 metadata/note = "Desktop printer, static: its scanner lid stays shut (house/12)."
 
-[node name="Looks" type="Node3D" parent="." unique_id=153314206 instance=ExtResource("1_urojb")]
+[node name="Looks" parent="." unique_id=153314206 instance=ExtResource("1_urojb")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1965873468]
 shape = SubResource("ConvexPolygonShape3D_fesuw")

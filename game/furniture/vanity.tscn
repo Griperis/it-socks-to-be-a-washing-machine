@@ -98,7 +98,7 @@ metadata/rooms = ["Bathroom"]
 metadata/plan_spot = "Vanity"
 metadata/note = "Basin on a two-door cupboard; a round mirror goes on the wall above (the game's mirror spot)."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1136428862 instance=ExtResource("1_6m7g3")]
+[node name="Looks" parent="." unique_id=1136428862 instance=ExtResource("1_6m7g3")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=936988894]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.45, -0.2425)
@@ -175,7 +175,7 @@ shape = SubResource("BoxShape3D_e4m3d")
 script = ExtResource("2_hsfky")
 metadata/kind = "cupboard"
 
-[node name="Looks" type="Node3D" parent="Doors" unique_id=916486689 instance=ExtResource("3_v5di1")]
+[node name="Looks" parent="Doors" unique_id=916486689 instance=ExtResource("3_v5di1")]
 
 [node name="Inside" type="Area3D" parent="Doors" unique_id=1180692142]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45000002, -0.015000001)

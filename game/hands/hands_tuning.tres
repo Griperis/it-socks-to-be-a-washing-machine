@@ -1,7 +1,6 @@
-[gd_resource type="Resource" script_class="HandsTuning" format=3]
+[gd_resource type="Resource" script_class="HandsTuning" format=3 uid="uid://cfr70wnwduvgy"]
 
-[ext_resource type="Script" path="res://game/hands/hands_tuning.gd" id="1_tuning"]
+[ext_resource type="Script" uid="uid://bmngmh2k1ssr6" path="res://game/hands/hands_tuning.gd" id="1_tuning"]
 
-; placeholder: the designer's numbers (today's values from the old game, core/02)
 [resource]
 script = ExtResource("1_tuning")

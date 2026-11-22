@@ -1,7 +1,6 @@
-[gd_resource type="Resource" script_class="HouseKitSizes" format=3]
+[gd_resource type="Resource" script_class="HouseKitSizes" format=3 uid="uid://dm0k5sbrj7kdl"]
 
-[ext_resource type="Script" path="res://game/house/kit/house_kit_sizes.gd" id="1_sizes"]
+[ext_resource type="Script" uid="uid://chkchbt5321yq" path="res://game/house/kit/house_kit_sizes.gd" id="1_sizes"]
 
-; placeholder: the window sets wait for the designer's choice (Q2355); house/01's straight flight is the agent's
 [resource]
 script = ExtResource("1_sizes")

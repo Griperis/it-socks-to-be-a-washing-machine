@@ -98,7 +98,7 @@ metadata/rooms = ["Garage"]
 metadata/plan_spot = "The Old Tree (house/45: the Upgrade station, a garage corner)"
 metadata/note = "The Old Tree (Q1516): a forgotten artificial X-mas tree pulled half out of its torn box, the decorations box beside it, a tangled light string with a few bulbs still glowing warm (Q1509, Q1517; the material 'bulb_warm' is emissive). The same look all game (Q1510). Its back (-z) goes to a wall: the tree's box at -x, the decorations box at +x. lamp: the piece-local point of the one small warm light the game hangs by the lit bulbs."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1317015923 instance=ExtResource("1_5pto0")]
+[node name="Looks" parent="." unique_id=1317015923 instance=ExtResource("1_5pto0")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=2035270177]
 shape = SubResource("ConvexPolygonShape3D_m8l2f")

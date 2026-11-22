@@ -1,8 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://btvcn1t085d2p"]
 
-[ext_resource type="Script" path="res://game/look/picture.gd" id="1_picture"]
+[ext_resource type="Script" uid="uid://dyag4lhyx6va8" path="res://game/look/picture.gd" id="1_picture"]
 
-; The old game's vignette (ambient.gd _grade) at noon: amount 0.5, tint (0.05, 0.03, 0.06), under the HUD.
 [sub_resource type="Shader" id="Shader_vignette"]
 code = "shader_type canvas_item;
 uniform float amount = 0.5;
@@ -19,14 +18,14 @@ shader = SubResource("Shader_vignette")
 shader_parameter/amount = 0.5
 shader_parameter/tint = Vector3(0.05, 0.03, 0.06)
 
-[node name="Picture" type="Node" node_paths=PackedStringArray("vignette")]
+[node name="Picture" type="Node" unique_id=1698617871 node_paths=PackedStringArray("vignette")]
 script = ExtResource("1_picture")
 vignette = NodePath("Vignette")
 
-[node name="Vignette" type="CanvasLayer" parent="."]
+[node name="Vignette" type="CanvasLayer" parent="." unique_id=309289276]
 layer = -10
 
-[node name="Rect" type="ColorRect" parent="Vignette"]
+[node name="Rect" type="ColorRect" parent="Vignette" unique_id=865304427]
 material = SubResource("ShaderMaterial_vignette")
 anchors_preset = 15
 anchor_right = 1.0

@@ -28,7 +28,7 @@ metadata/rooms = ["Kitchen & dining"]
 metadata/plan_spot = "Radio on shelf"
 metadata/note = "Wall shelf; origin = its own bottom, hang at about 1.4 m. Leave the middle 0.3 m free: the Radio's spot."
 
-[node name="Looks" type="Node3D" parent="." unique_id=11054011 instance=ExtResource("1_umydd")]
+[node name="Looks" parent="." unique_id=11054011 instance=ExtResource("1_umydd")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1877457269]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.1375, 0)

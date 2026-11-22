@@ -52,7 +52,7 @@ metadata/rooms = ["Kitchen & dining"]
 metadata/plan_spot = "Counter"
 metadata/note = "The plain worktop block for the L's corner (0.62 square), no door."
 
-[node name="Looks" type="Node3D" parent="." unique_id=286990075 instance=ExtResource("1_knsmr")]
+[node name="Looks" parent="." unique_id=286990075 instance=ExtResource("1_knsmr")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1805266121]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.05, -0.02)

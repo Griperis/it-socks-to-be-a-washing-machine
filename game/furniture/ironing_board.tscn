@@ -56,7 +56,7 @@ metadata/hide = "under the board, between the X legs"
 metadata/rooms = ["Laundry"]
 metadata/plan_spot = "Ironing board (new)"
 
-[node name="Looks" type="Node3D" parent="." unique_id=828441048 instance=ExtResource("1_lm5hr")]
+[node name="Looks" parent="." unique_id=828441048 instance=ExtResource("1_lm5hr")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=948139375]
 shape = SubResource("ConvexPolygonShape3D_iisr4")

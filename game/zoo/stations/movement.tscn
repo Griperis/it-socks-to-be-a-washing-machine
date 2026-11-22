@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://sa08efw687oe"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.5, 0.45, 0.3, 1)
@@ -45,63 +45,63 @@ size = Vector3(0.5, 0.5, 0.5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_box"]
 size = Vector3(0.5, 0.5, 0.5)
 
-[node name="Movement" type="Node3D"]
+[node name="Movement" type="Node3D" unique_id=1146066467]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11)
 
-[node name="Pad" type="MeshInstance3D" parent="."]
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=1709837091]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
 mesh = SubResource("PlaneMesh_pad")
 
-[node name="Name" type="Label3D" parent="."]
+[node name="Name" type="Label3D" parent="." unique_id=1252348454]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -3.5)
 pixel_size = 0.004
 billboard = 2
-vertical_alignment = 2
 text = "Movement: wall, ramp, ledge, low beam, 0.5 m box"
+vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="Wall" type="StaticBody3D" parent="."]
+[node name="Wall" type="StaticBody3D" parent="." unique_id=1633983525]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 0)
 
-[node name="Mesh" type="MeshInstance3D" parent="Wall"]
+[node name="Mesh" type="MeshInstance3D" parent="Wall" unique_id=1688107339]
 mesh = SubResource("BoxMesh_wall")
 
-[node name="Shape" type="CollisionShape3D" parent="Wall"]
+[node name="Shape" type="CollisionShape3D" parent="Wall" unique_id=758057384]
 shape = SubResource("BoxShape3D_wall")
 
-[node name="Ramp" type="StaticBody3D" parent="."]
+[node name="Ramp" type="StaticBody3D" parent="." unique_id=1350938757]
 transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, -1, 0.42, -1)
 
-[node name="Mesh" type="MeshInstance3D" parent="Ramp"]
+[node name="Mesh" type="MeshInstance3D" parent="Ramp" unique_id=1406134298]
 mesh = SubResource("BoxMesh_ramp")
 
-[node name="Shape" type="CollisionShape3D" parent="Ramp"]
+[node name="Shape" type="CollisionShape3D" parent="Ramp" unique_id=1189944846]
 shape = SubResource("BoxShape3D_ramp")
 
-[node name="Ledge" type="StaticBody3D" parent="."]
+[node name="Ledge" type="StaticBody3D" parent="." unique_id=2054614474]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.5, 1.95)
 
-[node name="Mesh" type="MeshInstance3D" parent="Ledge"]
+[node name="Mesh" type="MeshInstance3D" parent="Ledge" unique_id=222223994]
 mesh = SubResource("BoxMesh_ledge")
 
-[node name="Shape" type="CollisionShape3D" parent="Ledge"]
+[node name="Shape" type="CollisionShape3D" parent="Ledge" unique_id=1815968674]
 shape = SubResource("BoxShape3D_ledge")
 
-[node name="Beam" type="StaticBody3D" parent="."]
+[node name="Beam" type="StaticBody3D" parent="." unique_id=108535091]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 1.4, 0)
 
-[node name="Mesh" type="MeshInstance3D" parent="Beam"]
+[node name="Mesh" type="MeshInstance3D" parent="Beam" unique_id=611837583]
 mesh = SubResource("BoxMesh_beam")
 
-[node name="Shape" type="CollisionShape3D" parent="Beam"]
+[node name="Shape" type="CollisionShape3D" parent="Beam" unique_id=1870824317]
 shape = SubResource("BoxShape3D_beam")
 
-[node name="Box" type="StaticBody3D" parent="."]
+[node name="Box" type="StaticBody3D" parent="." unique_id=1240691984]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.25, 2.5)
 
-[node name="Mesh" type="MeshInstance3D" parent="Box"]
+[node name="Mesh" type="MeshInstance3D" parent="Box" unique_id=1452707333]
 mesh = SubResource("BoxMesh_box")
 
-[node name="Shape" type="CollisionShape3D" parent="Box"]
+[node name="Shape" type="CollisionShape3D" parent="Box" unique_id=27761886]
 shape = SubResource("BoxShape3D_box")

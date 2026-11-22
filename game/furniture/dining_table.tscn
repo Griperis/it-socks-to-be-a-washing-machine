@@ -107,7 +107,7 @@ metadata/hide = "under the table (the runner does not hang down)"
 metadata/rooms = ["Kitchen & dining"]
 metadata/plan_spot = "Dining table"
 
-[node name="Looks" type="Node3D" parent="." unique_id=1996717659 instance=ExtResource("1_032iy")]
+[node name="Looks" parent="." unique_id=1996717659 instance=ExtResource("1_032iy")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1678288923]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.66, 0)

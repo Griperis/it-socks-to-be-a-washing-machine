@@ -52,8 +52,8 @@ script = ExtResource("1_76itk")
 event = &"pop"
 clips = Array[AudioStream]([ExtResource("6_gx20l"), ExtResource("7_qhhf7")])
 volume_db = 3.0
-min_gap = 0.05
 note = "Old picks wubitog_pop1 and cogitollc_pop1, +3 dB for the bigger pop (Q541)."
+min_gap = 0.05
 
 [sub_resource type="Resource" id="Resource_lostpop"]
 script = ExtResource("1_76itk")
@@ -79,75 +79,75 @@ note = "Old pick cc0/artisticdude_swish1."
 script = ExtResource("1_76itk")
 event = &"refuse"
 clips = Array[AudioStream]([ExtResource("10_ofhh1")])
-min_gap = 0.1
 note = "Old pick cc0/kenney_error6."
+min_gap = 0.1
 
 [sub_resource type="Resource" id="Resource_ss5n6"]
 script = ExtResource("1_76itk")
 event = &"bounce"
 clips = Array[AudioStream]([ExtResource("11_nn5js")])
 spatial = true
+note = "Old pick cc0/owlish_fruit2."
 min_gap = 0.05
 soft_db = -15.0
 soft_pitch = 0.9
 hard_pitch = 1.15
-note = "Old pick cc0/owlish_fruit2."
 
 [sub_resource type="Resource" id="Resource_4jl0v"]
 script = ExtResource("1_76itk")
 event = &"drawer_open"
 clips = Array[AudioStream]([ExtResource("12_o8a3p")])
 spatial = true
-min_gap = 0.1
 note = "Old pick cc0/laleksic_drawer_open."
+min_gap = 0.1
 
 [sub_resource type="Resource" id="Resource_ojnwv"]
 script = ExtResource("1_76itk")
 event = &"drawer_close"
 clips = Array[AudioStream]([ExtResource("13_nr0n5")])
 spatial = true
-min_gap = 0.1
 note = "Old pick cc0/laleksic_drawer_close."
+min_gap = 0.1
 
 [sub_resource type="Resource" id="Resource_p8q3v"]
 script = ExtResource("1_76itk")
 event = &"door_open"
 clips = Array[AudioStream]([ExtResource("14_hlpqd")])
 spatial = true
-min_gap = 0.1
 note = "Old placeholder pick cc0/oiboo_door_open (the old game borrowed the wardrobe's clips)."
+min_gap = 0.1
 
 [sub_resource type="Resource" id="Resource_dxuwf"]
 script = ExtResource("1_76itk")
 event = &"door_close"
 clips = Array[AudioStream]([ExtResource("15_uxhm0")])
 spatial = true
-min_gap = 0.1
 note = "Old placeholder pick cc0/starninjas_door2."
+min_gap = 0.1
 
 [sub_resource type="Resource" id="Resource_ubdnb"]
 script = ExtResource("1_76itk")
 event = &"cupboard_open"
 clips = Array[AudioStream]([ExtResource("16_palt6")])
 spatial = true
-min_gap = 0.1
 note = "Old pick cc0/qubodup_door_open1."
+min_gap = 0.1
 
 [sub_resource type="Resource" id="Resource_32gqa"]
 script = ExtResource("1_76itk")
 event = &"cupboard_close"
 clips = Array[AudioStream]([ExtResource("17_jwn0n")])
 spatial = true
-min_gap = 0.1
 note = "Old pick cc0/qubodup_door_close1."
+min_gap = 0.1
 
 [sub_resource type="Resource" id="Resource_ogaco"]
 script = ExtResource("1_76itk")
 event = &"shelve"
 clips = Array[AudioStream]([ExtResource("18_uka3b")])
 spatial = true
-min_gap = 0.05
 note = "Old pick cc0/kenney_book_place1."
+min_gap = 0.05
 
 [sub_resource type="Resource" id="Resource_mf1m7"]
 script = ExtResource("1_76itk")

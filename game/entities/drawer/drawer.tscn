@@ -3,11 +3,11 @@
 [ext_resource type="Script" uid="uid://bilshnr7wp5ir" path="res://game/parts/openable.gd" id="1_openable"]
 [ext_resource type="PackedScene" uid="uid://cpgwgtg7amdc" path="res://game/entities/drawer/looks_simple.tscn" id="2_looks"]
 
-[node name="Drawer" type="Node3D"]
+[node name="Drawer" type="Node3D" unique_id=156270748]
 
-[node name="Openable" type="Node" parent="."]
+[node name="Openable" type="Node" parent="." unique_id=779168564]
 script = ExtResource("1_openable")
 open_sound = &"drawer_open"
 close_sound = &"drawer_close"
 
-[node name="Looks" parent="." instance=ExtResource("2_looks")]
+[node name="Looks" parent="." unique_id=1268191231 instance=ExtResource("2_looks")]

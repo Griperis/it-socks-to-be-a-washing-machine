@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BallLandingTuning" format=3 uid="uid://dmkd1moj3gu4w"]
 
-[ext_resource type="Script" uid="uid://cz6i5tgc5pbk6" path="res://game/sock/ball_landing_tuning.gd" id="1_tuning"]
+[ext_resource type="Script" uid="uid://c06i5tgc5pbk6" path="res://game/sock/ball_landing_tuning.gd" id="1_tuning"]
 
 [resource]
 script = ExtResource("1_tuning")

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="HeapTuning" format=3]
+[gd_resource type="Resource" script_class="HeapTuning" format=3 uid="uid://cjwbg7sifq8p5"]
 
 [ext_resource type="Script" uid="uid://g6afdgtwhqqn" path="res://game/zoo/heap/heap_tuning.gd" id="1_tuning"]
 

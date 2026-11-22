@@ -14,7 +14,7 @@ metadata/plan_spot = "Play rug"
 metadata/note = "Flat (2 cm): no collider needed."
 metadata/rug = true
 
-[node name="Looks" type="Node3D" parent="." unique_id=1264645731 instance=ExtResource("1_thyib")]
+[node name="Looks" parent="." unique_id=1264645731 instance=ExtResource("1_thyib")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=42238971]
 shape = SubResource("ConvexPolygonShape3D_cgw0a")

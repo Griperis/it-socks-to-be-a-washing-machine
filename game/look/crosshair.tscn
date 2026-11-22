@@ -1,8 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cefefw80y6uea"]
 
-[ext_resource type="Script" path="res://game/look/crosshair.gd" id="1_crosshair"]
+[ext_resource type="Script" uid="uid://b5arrgp7bukiu" path="res://game/look/crosshair.gd" id="1_crosshair"]
 
-[node name="Crosshair" type="Control"]
+[node name="Crosshair" type="Control" unique_id=354056201]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -14,7 +14,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_crosshair")
 
-[node name="Horizontal" type="ColorRect" parent="."]
+[node name="Horizontal" type="ColorRect" parent="." unique_id=931443396]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -9.0
@@ -24,7 +24,7 @@ offset_bottom = 1.0
 mouse_filter = 2
 color = Color(1, 1, 1, 0.9)
 
-[node name="Vertical" type="ColorRect" parent="."]
+[node name="Vertical" type="ColorRect" parent="." unique_id=196856126]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = -1.0

@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://r0m0lygbro5w"]
 
 [ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="9_outline"]
 
@@ -72,31 +72,31 @@ _data = {
 &"shut": SubResource("Animation_shut")
 }
 
-[node name="LooksAlt" type="Node3D"]
+[node name="LooksAlt" type="Node3D" unique_id=657218405]
 
-[node name="Plinth" type="MeshInstance3D" parent="."]
+[node name="Plinth" type="MeshInstance3D" parent="." unique_id=1897833956]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, -0.025)
 mesh = SubResource("BoxMesh_plinth")
 
-[node name="Body" type="MeshInstance3D" parent="."]
+[node name="Body" type="MeshInstance3D" parent="." unique_id=930854321]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, -0.025)
 mesh = SubResource("BoxMesh_body")
 
-[node name="DoorPivot" type="AnimatableBody3D" parent="."]
+[node name="DoorPivot" type="AnimatableBody3D" parent="." unique_id=628459892]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.48, 0.15, 0.22)
 
-[node name="Door" type="MeshInstance3D" parent="DoorPivot"]
+[node name="Door" type="MeshInstance3D" parent="DoorPivot" unique_id=1155672566]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.48, 0.7, 0)
 mesh = SubResource("BoxMesh_door")
 
-[node name="DoorShape" type="CollisionShape3D" parent="DoorPivot"]
+[node name="DoorShape" type="CollisionShape3D" parent="DoorPivot" unique_id=1352711263]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.48, 0.7, 0)
 shape = SubResource("BoxShape3D_door")
 
-[node name="Outline" type="Node3D" parent="."]
+[node name="Outline" type="Node3D" parent="." unique_id=793804144]
 visible = false
 script = ExtResource("9_outline")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=153596664]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_looks")

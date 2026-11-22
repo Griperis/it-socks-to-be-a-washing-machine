@@ -105,7 +105,7 @@ metadata/rooms = ["Kitchen & dining"]
 metadata/plan_spot = "Counter"
 metadata/note = "Base unit 0.8 wide: the sink over two doors."
 
-[node name="Looks" type="Node3D" parent="." unique_id=777102521 instance=ExtResource("1_cggb1")]
+[node name="Looks" parent="." unique_id=777102521 instance=ExtResource("1_cggb1")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1297567317]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.05, -0.027)
@@ -227,7 +227,7 @@ shape = SubResource("BoxShape3D_vca5s")
 script = ExtResource("2_4t81w")
 metadata/kind = "cupboard"
 
-[node name="Looks" type="Node3D" parent="Doors" unique_id=1559370779 instance=ExtResource("3_pakmu")]
+[node name="Looks" parent="Doors" unique_id=1559370779 instance=ExtResource("3_pakmu")]
 
 [node name="Inside" type="Area3D" parent="Doors" unique_id=702737598]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.399, -0.020500004)

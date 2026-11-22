@@ -82,7 +82,7 @@ metadata/rooms = ["Plants", "Living room", "Hall", "Parents' bedroom", "Home off
 metadata/plan_spot = "Plant"
 metadata/note = "The trial's floor plant: a chunky terracotta pot, round leaves on arcing stems."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1692026473 instance=ExtResource("1_kwp0a")]
+[node name="Looks" parent="." unique_id=1692026473 instance=ExtResource("1_kwp0a")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=555500442]
 shape = SubResource("ConvexPolygonShape3D_3xu1c")

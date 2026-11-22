@@ -8,7 +8,7 @@
 [ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
 [ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="7_coins"]
 [ext_resource type="PackedScene" uid="uid://ccaa5ngdrkqig" path="res://game/entities/door/door.tscn" id="8_door"]
-[ext_resource type="PackedScene" path="res://game/entities/cupboard/cupboard.tscn" id="9_cupboard"]
+[ext_resource type="PackedScene" uid="uid://cetnblb56hc5v" path="res://game/entities/cupboard/cupboard.tscn" id="9_cupboard"]
 [ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="10_outline"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
@@ -28,81 +28,81 @@ size = Vector3(0.5, 0.5, 0.5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_box"]
 size = Vector3(0.5, 0.5, 0.5)
 
-[node name="Outline" type="Node3D"]
+[node name="Outline" type="Node3D" unique_id=1183166352]
 
-[node name="Pad" type="MeshInstance3D" parent="."]
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=995126095]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
 mesh = SubResource("PlaneMesh_pad")
 
-[node name="Name" type="Label3D" parent="."]
+[node name="Name" type="Label3D" parent="." unique_id=1700179857]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 1.9)
 pixel_size = 0.004
 billboard = 2
-vertical_alignment = 2
 text = "The outline: aim at a Sock, the box, a drawer, the Door or the cupboard, near and far, to see its soft warm-white outline. Hold a Pair at a drawer with no room: it turns red"
+vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="Box" type="StaticBody3D" parent="."]
+[node name="Box" type="StaticBody3D" parent="." unique_id=929749109]
 transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -2.4, 0.25, -1.1)
 
-[node name="Mesh" type="MeshInstance3D" parent="Box"]
+[node name="Mesh" type="MeshInstance3D" parent="Box" unique_id=1300781085]
 mesh = SubResource("BoxMesh_box")
 
-[node name="Shape" type="CollisionShape3D" parent="Box"]
+[node name="Shape" type="CollisionShape3D" parent="Box" unique_id=1124028213]
 shape = SubResource("BoxShape3D_box")
 
-[node name="Outline" type="Node3D" parent="Box"]
+[node name="Outline" type="Node3D" parent="Box" unique_id=1154393223]
 visible = false
 script = ExtResource("10_outline")
 
-[node name="Cabinet" parent="." instance=ExtResource("1_cabinet")]
+[node name="Cabinet" parent="." unique_id=1775090729 instance=ExtResource("1_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, -2)
 
-[node name="Cabinet" parent="Cabinet" index="0" node_paths=PackedStringArray("hands", "coins")]
+[node name="Cabinet" parent="Cabinet" parent_id_path=PackedInt32Array(1775090729) index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "coins")]
 hands = NodePath("../../Socks/Hands")
 coins = NodePath("../../Socks/Coins")
 
-[node name="Door" parent="." instance=ExtResource("8_door")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 0, -1.6)
+[node name="Door" parent="." unique_id=161849964 instance=ExtResource("8_door")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1.6)
 
-[node name="Cupboard" parent="." instance=ExtResource("9_cupboard")]
+[node name="Cupboard" parent="." unique_id=779480887 instance=ExtResource("9_cupboard")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0, -1.6)
 
-[node name="Spots" type="Node3D" parent="."]
+[node name="Spots" type="Node3D" parent="." unique_id=1724174173]
 
-[node name="Sock" type="Marker3D" parent="Spots"]
+[node name="Sock" type="Marker3D" parent="Spots" unique_id=1554965287]
 transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -1.5, 0, -0.2)
 script = ExtResource("4_spot")
 
-[node name="Mate" type="Marker3D" parent="Spots"]
+[node name="Mate" type="Marker3D" parent="Spots" unique_id=1751669662]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0, 1.6)
 script = ExtResource("4_spot")
 
-[node name="Other" type="Marker3D" parent="Spots"]
+[node name="Other" type="Marker3D" parent="Spots" unique_id=769976630]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0, 1.6)
 script = ExtResource("4_spot")
 design = 1
 
-[node name="OtherMate" type="Marker3D" parent="Spots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 0, 1.6)
+[node name="OtherMate" type="Marker3D" parent="Spots" unique_id=1488525343]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1.6)
 script = ExtResource("4_spot")
 design = 1
 
-[node name="ReturnSpot" type="Marker3D" parent="."]
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=1695209372]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.8)
 
-[node name="Lying" type="Node3D" parent="."]
+[node name="Lying" type="Node3D" parent="." unique_id=642524621]
 
-[node name="Flights" type="Node3D" parent="."]
+[node name="Flights" type="Node3D" parent="." unique_id=76240575]
 
-[node name="FlightSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://game/sock/flight.tscn", "res://game/sock/ball_flight.tscn")
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=1940715439]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
 spawn_path = NodePath("../Flights")
 
-[node name="Socks" type="Node" parent="."]
+[node name="Socks" type="Node" parent="." unique_id=369331778]
 
-[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+[node name="Mess" type="Node" parent="Socks" unique_id=1928278754 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
 script = ExtResource("2_mess")
 catalogue = ExtResource("5_designs")
 tuning = ExtResource("6_tuning")
@@ -112,10 +112,10 @@ flights = NodePath("../../Flights")
 bounds = AABB(-3, -2, -2.5, 6, 8, 5)
 return_spot = NodePath("../../ReturnSpot")
 
-[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess")]
+[node name="Hands" type="Node" parent="Socks" unique_id=1630199369 node_paths=PackedStringArray("mess")]
 script = ExtResource("3_hands")
 mess = NodePath("../Mess")
 tuning = ExtResource("6_tuning")
 
-[node name="Coins" type="Node" parent="Socks"]
+[node name="Coins" type="Node" parent="Socks" unique_id=1074671325]
 script = ExtResource("7_coins")

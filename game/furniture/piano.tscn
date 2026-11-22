@@ -117,7 +117,7 @@ metadata/rooms = ["Living room"]
 metadata/plan_spot = "Piano (new, house/28; against a wall)"
 metadata/note = "Upright piano (Q542). Lid: the key lid, an openable hinged at its back (kind piano_lid; the key well under it is a small container). Key_<note>: the playable keys, all 88 (A0-C8, MIDI 21-108, house/33), each a hinge part that dips by open_deg about its back; keys maps node -> MIDI note. crawl_box: the open space under the keyboard between the legs."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1654584615 instance=ExtResource("1_kqrhi")]
+[node name="Looks" parent="." unique_id=1654584615 instance=ExtResource("1_kqrhi")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=155136642]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 1.02, -0.134)
@@ -238,7 +238,7 @@ shape = SubResource("BoxShape3D_sbqyk")
 script = ExtResource("2_mvb82")
 metadata/kind = "piano_lid"
 
-[node name="Looks" type="Node3D" parent="Lid" unique_id=790485290 instance=ExtResource("3_ebfgo")]
+[node name="Looks" parent="Lid" unique_id=790485290 instance=ExtResource("3_ebfgo")]
 
 [node name="Inside" type="Area3D" parent="Lid" unique_id=1140323157]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7675, 0.171)

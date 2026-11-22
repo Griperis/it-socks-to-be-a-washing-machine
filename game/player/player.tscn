@@ -1,14 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://k2c0o5v1yu3r"]
 
-[ext_resource type="Script" path="res://game/player/player.gd" id="1_player"]
+[ext_resource type="Script" uid="uid://8s7los0s6lma" path="res://game/player/player.gd" id="1_player"]
 [ext_resource type="Resource" path="res://game/player/move_tuning.tres" id="2_tuning"]
 [ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="3_hands"]
-[ext_resource type="Script" path="res://game/hands/held_view.gd" id="4_held"]
-[ext_resource type="Script" path="res://game/player/power_ring.gd" id="5_ring"]
+[ext_resource type="Script" uid="uid://bnt2xg5i6167r" path="res://game/hands/held_view.gd" id="4_held"]
+[ext_resource type="Script" uid="uid://dx0rg67j6aq51" path="res://game/player/power_ring.gd" id="5_ring"]
+[ext_resource type="PackedScene" uid="uid://cefefw80y6uea" path="res://game/look/crosshair.tscn" id="6_cross"]
 [ext_resource type="Script" uid="uid://5bfknrgi4c41" path="res://game/audio/footsteps.gd" id="6_steps"]
 [ext_resource type="Resource" path="res://game/audio/footstep_tuning.tres" id="7_steps_tuning"]
-[ext_resource type="PackedScene" path="res://game/look/crosshair.tscn" id="6_cross"]
-[ext_resource type="Script" path="res://game/ui/hud.gd" id="8_hud"]
+[ext_resource type="Script" uid="uid://bqxru467300ek" path="res://game/ui/hud.gd" id="8_hud"]
 [ext_resource type="Resource" path="res://game/ui/hud_tuning.tres" id="9_hud_tuning"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
@@ -19,52 +19,51 @@ height = 1.7
 radius = 0.35
 height = 1.7
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" unique_id=2071597669]
 collision_mask = 9
-script = ExtResource("1_player")
 floor_constant_speed = true
+script = ExtResource("1_player")
 tuning = ExtResource("2_tuning")
 hands_tuning = ExtResource("3_hands")
 
-[node name="Shape" type="CollisionShape3D" parent="."]
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1230360582]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
 shape = SubResource("CapsuleShape3D_body")
 
-[node name="Mesh" type="MeshInstance3D" parent="."]
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1649193710]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
 cast_shadow = 0
 mesh = SubResource("CapsuleMesh_body")
 
-[node name="Head" type="Node3D" parent="."]
+[node name="Head" type="Node3D" parent="." unique_id=888082870]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 
-[node name="Camera" type="Camera3D" parent="Head"]
+[node name="Camera" type="Camera3D" parent="Head" unique_id=1931129010]
 unique_name_in_owner = true
-top_level = true
 physics_interpolation_mode = 2
+top_level = true
 current = true
-fov = 75.0
 
-[node name="HeldView" type="Node3D" parent="Head/Camera"]
+[node name="HeldView" type="Node3D" parent="Head/Camera" unique_id=463386115]
 unique_name_in_owner = true
 script = ExtResource("4_held")
 
-[node name="Aim" type="RayCast3D" parent="Head"]
+[node name="Aim" type="RayCast3D" parent="Head" unique_id=2018197592]
 unique_name_in_owner = true
 target_position = Vector3(0, 0, -2.5)
 
-[node name="Hud" type="CanvasLayer" parent="."]
+[node name="Hud" type="CanvasLayer" parent="." unique_id=1367554873]
 unique_name_in_owner = true
 script = ExtResource("8_hud")
 tuning = ExtResource("9_hud_tuning")
 
-[node name="Crosshair" parent="Hud" instance=ExtResource("6_cross")]
+[node name="Crosshair" parent="Hud" unique_id=1667869579 instance=ExtResource("6_cross")]
 unique_name_in_owner = true
 
-[node name="PromptRow" type="CenterContainer" parent="Hud"]
+[node name="PromptRow" type="CenterContainer" parent="Hud" unique_id=1576698667]
 anchors_preset = -1
 anchor_top = 0.58
 anchor_right = 1.0
@@ -73,12 +72,12 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Prompts" type="HBoxContainer" parent="Hud/PromptRow"]
+[node name="Prompts" type="HBoxContainer" parent="Hud/PromptRow" unique_id=1227302054]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="AimedRow" type="CenterContainer" parent="Hud"]
+[node name="AimedRow" type="CenterContainer" parent="Hud" unique_id=223000875]
 anchors_preset = -1
 anchor_top = 0.63
 anchor_right = 1.0
@@ -87,22 +86,22 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Row" type="HBoxContainer" parent="Hud/AimedRow"]
+[node name="Row" type="HBoxContainer" parent="Hud/AimedRow" unique_id=826908204]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="Aimed" type="HBoxContainer" parent="Hud/AimedRow/Row"]
+[node name="Aimed" type="HBoxContainer" parent="Hud/AimedRow/Row" unique_id=1298056746]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="Sense" type="HBoxContainer" parent="Hud/AimedRow/Row"]
+[node name="Sense" type="HBoxContainer" parent="Hud/AimedRow/Row" unique_id=386632460]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="MessageRow" type="CenterContainer" parent="Hud"]
+[node name="MessageRow" type="CenterContainer" parent="Hud" unique_id=520727410]
 anchors_preset = -1
 anchor_top = 0.7
 anchor_right = 1.0
@@ -111,7 +110,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Message" type="Label" parent="Hud/MessageRow"]
+[node name="Message" type="Label" parent="Hud/MessageRow" unique_id=1765538597]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -120,7 +119,7 @@ theme_override_colors/font_color = Color(0.95, 0.25, 0.2, 1)
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Hints" type="HBoxContainer" parent="Hud"]
+[node name="Hints" type="HBoxContainer" parent="Hud" unique_id=1431974908]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -135,15 +134,16 @@ grow_vertical = 0
 mouse_filter = 2
 theme_override_constants/separation = 22
 
-[node name="HeldInfo" type="HBoxContainer" parent="Hud"]
+[node name="HeldInfo" type="HBoxContainer" parent="Hud" unique_id=59639809]
 offset_right = 1.0
 offset_bottom = 1.0
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="Ring" type="Control" parent="Hud"]
+[node name="Ring" type="Control" parent="Hud" unique_id=1801472566]
 unique_name_in_owner = true
 visible = false
+layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -154,6 +154,6 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("5_ring")
 
-[node name="Footsteps" type="Node" parent="."]
+[node name="Footsteps" type="Node" parent="." unique_id=1954666980]
 script = ExtResource("6_steps")
 tuning = ExtResource("7_steps_tuning")

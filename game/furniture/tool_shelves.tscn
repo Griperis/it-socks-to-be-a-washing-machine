@@ -203,7 +203,7 @@ metadata/hide = "under the bottom shelf"
 metadata/rooms = ["Workshop"]
 metadata/plan_spot = "Tool shelves"
 
-[node name="Looks" type="Node3D" parent="." unique_id=1544732115 instance=ExtResource("1_fayl6")]
+[node name="Looks" parent="." unique_id=1544732115 instance=ExtResource("1_fayl6")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1529207829]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, -0.2751, 0.78594, 0)

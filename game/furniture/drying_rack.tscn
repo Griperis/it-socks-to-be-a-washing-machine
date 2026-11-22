@@ -90,7 +90,7 @@ metadata/rooms = ["Laundry"]
 metadata/plan_spot = "Drying rack"
 metadata/note = "Open framed: give it thin colliders (legs, rails) or one box above the crawl gap."
 
-[node name="Looks" type="Node3D" parent="." unique_id=103748823 instance=ExtResource("1_ubo1k")]
+[node name="Looks" parent="." unique_id=103748823 instance=ExtResource("1_ubo1k")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=2062176087]
 shape = SubResource("ConvexPolygonShape3D_cjeqv")

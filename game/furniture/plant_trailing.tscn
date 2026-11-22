@@ -19,7 +19,7 @@ metadata/rooms = ["Plants", "Kitchen & dining", "Living room", "Home office", "K
 metadata/plan_spot = "Shelf plant (new)"
 metadata/note = "Small: for shelves, sills and the tops of units; its vines hang over the edge (-y)."
 
-[node name="Looks" type="Node3D" parent="." unique_id=380157842 instance=ExtResource("1_gv64t")]
+[node name="Looks" parent="." unique_id=380157842 instance=ExtResource("1_gv64t")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1488056173]
 shape = SubResource("ConvexPolygonShape3D_qfgh6")

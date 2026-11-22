@@ -63,7 +63,7 @@ metadata/rooms = ["Kitchen & dining"]
 metadata/plan_spot = "Counter (above)"
 metadata/note = "Wall-hung: its origin is its own bottom; hang it with the bottom at about 1.45 m."
 
-[node name="Looks" type="Node3D" parent="." unique_id=309134757 instance=ExtResource("1_t87pm")]
+[node name="Looks" parent="." unique_id=309134757 instance=ExtResource("1_t87pm")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=529192581]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.35, -0.1825)
@@ -133,7 +133,7 @@ shape = SubResource("BoxShape3D_5o7rb")
 script = ExtResource("2_lj88f")
 metadata/kind = "cupboard"
 
-[node name="Looks" type="Node3D" parent="Door" unique_id=1737179340 instance=ExtResource("3_0wl7d")]
+[node name="Looks" parent="Door" unique_id=1737179340 instance=ExtResource("3_0wl7d")]
 
 [node name="Inside" type="Area3D" parent="Door" unique_id=1754896702]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, -0.020000003)

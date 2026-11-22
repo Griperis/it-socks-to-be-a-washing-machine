@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://dbrxpuh26w4q3"]
 
 [ext_resource type="Script" uid="uid://bq3k03tw0pu2k" path="res://game/parts/parts.gd" id="1_parts"]
-[ext_resource type="PackedScene" path="res://game/player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://k2c0o5v1yu3r" path="res://game/player/player.tscn" id="2_player"]
 [ext_resource type="Script" uid="uid://w44840xcogmg" path="res://game/zoo/stations.gd" id="3_stations"]
 [ext_resource type="Script" uid="uid://bq8jis41s6u7e" path="res://game/parts/session.gd" id="5_session"]
 [ext_resource type="Script" uid="uid://cdi6pnkd82hwo" path="res://game/parts/avatar/avatars.gd" id="6_avatars"]
-[ext_resource type="PackedScene" path="res://game/parts/avatar/avatar.tscn" id="7_avatar"]
+[ext_resource type="PackedScene" uid="uid://d2u50k5e57ccb" path="res://game/parts/avatar/avatar.tscn" id="7_avatar"]
 [ext_resource type="Script" uid="uid://dljsr8dxran6u" path="res://game/zoo/zoo_net.gd" id="8_net"]
 [ext_resource type="Script" uid="uid://bmngmh2k1ssr6" path="res://game/hands/hands_tuning.gd" id="9_hands_tuning"]
 [ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="10_mess"]
@@ -13,13 +13,13 @@
 [ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="12_coins"]
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="13_designs"]
 [ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="14_tuning"]
-[ext_resource type="Environment" path="res://game/look/noon_environment.tres" id="15_env"]
-[ext_resource type="PackedScene" path="res://game/look/picture.tscn" id="16_picture"]
-[ext_resource type="PackedScene" path="res://game/zoo/stations/cabinet.tscn" id="20_cabinet"]
+[ext_resource type="Environment" uid="uid://ducjspjkhsl37" path="res://game/look/noon_environment.tres" id="15_env"]
+[ext_resource type="PackedScene" uid="uid://btvcn1t085d2p" path="res://game/look/picture.tscn" id="16_picture"]
+[ext_resource type="PackedScene" uid="uid://ckkmqe7lqy056" path="res://game/zoo/stations/cabinet.tscn" id="20_cabinet"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/every_sock.tscn" id="21_every_sock"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/handling.tscn" id="22_handling"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/heap.tscn" id="23_heap"]
-[ext_resource type="PackedScene" path="res://game/zoo/stations/house_kit.tscn" id="24_house_kit"]
+[ext_resource type="PackedScene" uid="uid://bdri2mp6dmyc6" path="res://game/zoo/stations/house_kit.tscn" id="24_house_kit"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/movement.tscn" id="25_movement"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/openables.tscn" id="26_openables"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/sounds.tscn" id="27_sounds"]
@@ -58,9 +58,8 @@ light_color = Color(1, 0.93, 0.82, 1)
 light_energy = 2.4
 shadow_enabled = true
 shadow_blur = 1.5
-sky_mode = 1
-directional_shadow_mode = 2
 directional_shadow_max_distance = 18.0
+sky_mode = 1
 
 [node name="Picture" parent="." unique_id=1262930417 node_paths=PackedStringArray("world_environment", "sun") instance=ExtResource("16_picture")]
 world_environment = NodePath("../Environment")
@@ -148,7 +147,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.5)
 [node name="Flights" type="Node3D" parent="." unique_id=1866703913]
 
 [node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=630388163]
-_spawnable_scenes = PackedStringArray("res://game/sock/flight.tscn", "res://game/sock/ball_flight.tscn")
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
 spawn_path = NodePath("../Flights")
 
 [node name="Socks" type="Node" parent="." unique_id=1247451138]

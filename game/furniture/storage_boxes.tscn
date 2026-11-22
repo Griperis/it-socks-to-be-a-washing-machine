@@ -73,7 +73,7 @@ metadata/hide = "the gap behind the stack"
 metadata/rooms = ["Garage", "Junk loft"]
 metadata/plan_spot = "Boxes, Xmas boxes"
 
-[node name="Looks" type="Node3D" parent="." unique_id=280377158 instance=ExtResource("1_f25od")]
+[node name="Looks" parent="." unique_id=280377158 instance=ExtResource("1_f25od")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1706323253]
 shape = SubResource("ConvexPolygonShape3D_0r408")

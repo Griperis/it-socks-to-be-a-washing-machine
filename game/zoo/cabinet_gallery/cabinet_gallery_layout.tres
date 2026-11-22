@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://den0fr0o1gnee" path="res://game/zoo/cabinet_gallery/cabinet_gallery_layout.gd" id="1_layout"]
 
-; placeholder: the designer's eye on the first still (assets/02)
 [resource]
 script = ExtResource("1_layout")
 per_row = 4

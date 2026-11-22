@@ -1,38 +1,43 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene format=3 uid="uid://b6ogtjv1osbd4"]
 
-[ext_resource type="Script" path="res://addons/profily/scripts/ram/ram_manager.gd" id="1_manager"]
-[ext_resource type="Script" path="res://addons/profily/scripts/ram/ram_monitor.gd" id="2_monitor"]
-[ext_resource type="Script" path="res://addons/profily/scripts/ram/ram_graph.gd" id="3_graph"]
-[ext_resource type="Script" path="res://addons/profily/scripts/ram/ram_text.gd" id="4_text"]
-[ext_resource type="StyleBoxFlat" path="res://addons/profily/styles/background_stylebox.tres" id="5_bg"]
-[ext_resource type="FontFile" path="res://addons/profily/fonts/Roboto-Regular.ttf" id="6_roboto"]
+[ext_resource type="Script" uid="uid://conn6auji2hdi" path="res://addons/profily/scripts/ram/ram_manager.gd" id="1_manager"]
+[ext_resource type="Script" uid="uid://c8ha675svl15i" path="res://addons/profily/scripts/ram/ram_monitor.gd" id="2_monitor"]
+[ext_resource type="Script" uid="uid://clvjay4cwvwsm" path="res://addons/profily/scripts/ram/ram_graph.gd" id="3_graph"]
+[ext_resource type="Script" uid="uid://byfi5dmwxxpvb" path="res://addons/profily/scripts/ram/ram_text.gd" id="4_text"]
+[ext_resource type="StyleBox" path="res://addons/profily/styles/background_stylebox.tres" id="5_bg"]
+[ext_resource type="FontFile" uid="uid://dfrm2sykl2xby" path="res://addons/profily/fonts/Roboto-Regular.ttf" id="6_roboto"]
 
-[node name="RamModule" type="Control"]
+[node name="RamModule" type="Control" unique_id=1839110376]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 330.0
 offset_bottom = 166.3
 mouse_filter = 2
 script = ExtResource("1_manager")
 
-[node name="BackgroundFull" type="Panel" parent="."]
+[node name="BackgroundFull" type="Panel" parent="." unique_id=998344812]
 unique_name_in_owner = true
+layout_mode = 0
 offset_right = 330.0
 offset_bottom = 166.3
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("5_bg")
 
-[node name="BackgroundText" type="Panel" parent="."]
+[node name="BackgroundText" type="Panel" parent="." unique_id=1926822347]
 unique_name_in_owner = true
+layout_mode = 0
 offset_right = 330.0
 offset_bottom = 92.0
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("5_bg")
 
-[node name="Monitor" type="Node" parent="."]
+[node name="Monitor" type="Node" parent="." unique_id=333060565]
 unique_name_in_owner = true
 script = ExtResource("2_monitor")
 
-[node name="GraphArea" type="Control" parent="."]
+[node name="GraphArea" type="Control" parent="." unique_id=522225183]
 unique_name_in_owner = true
+anchors_preset = 0
 offset_left = 15.0
 offset_top = 92.0
 offset_right = 315.0
@@ -40,33 +45,38 @@ offset_bottom = 156.3
 mouse_filter = 2
 script = ExtResource("3_graph")
 
-[node name="GraphAllocated" type="ColorRect" parent="GraphArea"]
+[node name="GraphAllocated" type="ColorRect" parent="GraphArea" unique_id=1118290354]
 unique_name_in_owner = true
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="GraphReserved" type="ColorRect" parent="GraphArea"]
+[node name="GraphReserved" type="ColorRect" parent="GraphArea" unique_id=974941160]
 unique_name_in_owner = true
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="GraphVram" type="ColorRect" parent="GraphArea"]
+[node name="GraphVram" type="ColorRect" parent="GraphArea" unique_id=1956924879]
 unique_name_in_owner = true
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="Text" type="Control" parent="."]
+[node name="Text" type="Control" parent="." unique_id=764500654]
 unique_name_in_owner = true
+anchors_preset = 0
 offset_right = 330.0
 offset_bottom = 166.3
 mouse_filter = 2
 script = ExtResource("4_text")
 
-[node name="AllocatedLabel" type="Label" parent="Text"]
+[node name="AllocatedLabel" type="Label" parent="Text" unique_id=1486238455]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 15.0
 offset_top = 4.0
 offset_right = 315.0
@@ -75,8 +85,9 @@ theme_override_fonts/font = ExtResource("6_roboto")
 theme_override_font_sizes/font_size = 25
 text = "0 MB — Static"
 
-[node name="ReservedLabel" type="Label" parent="Text"]
+[node name="ReservedLabel" type="Label" parent="Text" unique_id=1449542806]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 15.0
 offset_top = 32.0
 offset_right = 315.0
@@ -85,8 +96,9 @@ theme_override_fonts/font = ExtResource("6_roboto")
 theme_override_font_sizes/font_size = 25
 text = "0 MB — Static peak"
 
-[node name="VramLabel" type="Label" parent="Text"]
+[node name="VramLabel" type="Label" parent="Text" unique_id=867132079]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 15.0
 offset_top = 60.0
 offset_right = 315.0

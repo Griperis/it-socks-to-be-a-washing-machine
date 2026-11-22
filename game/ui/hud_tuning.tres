@@ -1,7 +1,6 @@
-[gd_resource type="Resource" script_class="HudTuning" format=3]
+[gd_resource type="Resource" script_class="HudTuning" format=3 uid="uid://cd3sd0g23e6ht"]
 
-[ext_resource type="Script" path="res://game/ui/hud_tuning.gd" id="1_tuning"]
+[ext_resource type="Script" uid="uid://bdnn0x8rrvkxk" path="res://game/ui/hud_tuning.gd" id="1_tuning"]
 
-; placeholder: the old held.json's info offsets (core/15)
 [resource]
 script = ExtResource("1_tuning")

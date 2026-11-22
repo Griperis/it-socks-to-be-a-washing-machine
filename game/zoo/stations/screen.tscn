@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://q216ydccycux"]
 
 [ext_resource type="PackedScene" uid="uid://h3610c6dred6" path="res://game/entities/cabinet/cabinet.tscn" id="1_cabinet"]
 [ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="2_mess"]
@@ -8,7 +8,7 @@
 [ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
 [ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="7_coins"]
 [ext_resource type="PackedScene" uid="uid://ccaa5ngdrkqig" path="res://game/entities/door/door.tscn" id="8_door"]
-[ext_resource type="PackedScene" path="res://game/zoo/screen/upgrade_switch/upgrade_switch.tscn" id="9_switch"]
+[ext_resource type="PackedScene" uid="uid://cqtma7uyqoof7" path="res://game/zoo/screen/upgrade_switch/upgrade_switch.tscn" id="9_switch"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.42, 0.38, 0.55, 1)
@@ -17,71 +17,71 @@ albedo_color = Color(0.42, 0.38, 0.55, 1)
 material = SubResource("StandardMaterial3D_pad")
 size = Vector2(5.8, 4.4)
 
-[node name="Screen" type="Node3D"]
+[node name="Screen" type="Node3D" unique_id=350630725]
 
-[node name="Pad" type="MeshInstance3D" parent="."]
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=2114567885]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
 mesh = SubResource("PlaneMesh_pad")
 
-[node name="Name" type="Label3D" parent="."]
+[node name="Name" type="Label3D" parent="." unique_id=62974393]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 1.7)
 pixel_size = 0.004
 billboard = 2
-vertical_alignment = 2
 text = "Aiming and the screen: aim at a Sock, a drawer or the Door to read its prompt; pick Socks to see the corner's hints and the held readout. The two switches turn Sock Smarts and Sock Sense on and off"
+vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="Cabinet" parent="." instance=ExtResource("1_cabinet")]
+[node name="Cabinet" parent="." unique_id=913752779 instance=ExtResource("1_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0, -1.7)
 
-[node name="Cabinet" parent="Cabinet" index="0" node_paths=PackedStringArray("hands", "coins")]
+[node name="Cabinet" parent="Cabinet" parent_id_path=PackedInt32Array(913752779) index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "coins")]
 hands = NodePath("../../Socks/Hands")
 coins = NodePath("../../Socks/Coins")
 
-[node name="Door" parent="." instance=ExtResource("8_door")]
+[node name="Door" parent="." unique_id=1838786573 instance=ExtResource("8_door")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, -1.7)
 
-[node name="SmartsSwitch" parent="." instance=ExtResource("9_switch")]
+[node name="SmartsSwitch" parent="." unique_id=1705000449 instance=ExtResource("9_switch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0, -0.6)
 
-[node name="SenseSwitch" parent="." instance=ExtResource("9_switch")]
+[node name="SenseSwitch" parent="." unique_id=1989746535 instance=ExtResource("9_switch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, 0, 0.6)
 
-[node name="UpgradeSwitch" parent="SenseSwitch" index="0"]
+[node name="UpgradeSwitch" parent="SenseSwitch" parent_id_path=PackedInt32Array(1989746535) index="0" unique_id=91238970]
 flag = "sock_sense"
 upgrade_name = "Sock Sense"
 
-[node name="Spots" type="Node3D" parent="."]
+[node name="Spots" type="Node3D" parent="." unique_id=1247270943]
 
-[node name="Sock" type="Marker3D" parent="Spots"]
+[node name="Sock" type="Marker3D" parent="Spots" unique_id=1197008643]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0, 0.9)
 script = ExtResource("4_spot")
 design = 1
 
-[node name="Mate" type="Marker3D" parent="Spots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0, 0, 1.4)
+[node name="Mate" type="Marker3D" parent="Spots" unique_id=841264980]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.4)
 script = ExtResource("4_spot")
 design = 1
 
-[node name="Other" type="Marker3D" parent="Spots"]
+[node name="Other" type="Marker3D" parent="Spots" unique_id=822760374]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, 0.9)
 script = ExtResource("4_spot")
 
-[node name="ReturnSpot" type="Marker3D" parent="."]
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=691498979]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.8)
 
-[node name="Lying" type="Node3D" parent="."]
+[node name="Lying" type="Node3D" parent="." unique_id=1332953411]
 
-[node name="Flights" type="Node3D" parent="."]
+[node name="Flights" type="Node3D" parent="." unique_id=1032381968]
 
-[node name="FlightSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://game/sock/flight.tscn", "res://game/sock/ball_flight.tscn")
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=1222263551]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
 spawn_path = NodePath("../Flights")
 
-[node name="Socks" type="Node" parent="."]
+[node name="Socks" type="Node" parent="." unique_id=1384851323]
 
-[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+[node name="Mess" type="Node" parent="Socks" unique_id=299484171 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
 script = ExtResource("2_mess")
 catalogue = ExtResource("5_designs")
 tuning = ExtResource("6_tuning")
@@ -91,10 +91,10 @@ flights = NodePath("../../Flights")
 bounds = AABB(-3, -2, -2.3, 6, 8, 4.6)
 return_spot = NodePath("../../ReturnSpot")
 
-[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess")]
+[node name="Hands" type="Node" parent="Socks" unique_id=836915254 node_paths=PackedStringArray("mess")]
 script = ExtResource("3_hands")
 mess = NodePath("../Mess")
 tuning = ExtResource("6_tuning")
 
-[node name="Coins" type="Node" parent="Socks"]
+[node name="Coins" type="Node" parent="Socks" unique_id=554878727]
 script = ExtResource("7_coins")

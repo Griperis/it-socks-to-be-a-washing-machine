@@ -98,7 +98,7 @@ metadata/rooms = ["Kitchen & dining"]
 metadata/plan_spot = "Counter"
 metadata/note = "Base unit 0.6 wide, three drawers."
 
-[node name="Looks" type="Node3D" parent="." unique_id=260968296 instance=ExtResource("1_1epst")]
+[node name="Looks" parent="." unique_id=260968296 instance=ExtResource("1_1epst")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1599333825]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.05, -0.02993)
@@ -165,7 +165,7 @@ shape = SubResource("BoxShape3D_w2bfv")
 script = ExtResource("2_f56wg")
 metadata/kind = "drawer"
 
-[node name="Looks" type="Node3D" parent="Drawer_1" unique_id=364510967 instance=ExtResource("3_sw7lr")]
+[node name="Looks" parent="Drawer_1" unique_id=364510967 instance=ExtResource("3_sw7lr")]
 
 [node name="Inside" type="Area3D" parent="Drawer_1" unique_id=855873885]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.751, 0.038600005)
@@ -184,7 +184,7 @@ shape = SubResource("BoxShape3D_qrmy0")
 script = ExtResource("2_f56wg")
 metadata/kind = "drawer"
 
-[node name="Looks" type="Node3D" parent="Drawer_2" unique_id=197251085 instance=ExtResource("4_wclvh")]
+[node name="Looks" parent="Drawer_2" unique_id=197251085 instance=ExtResource("4_wclvh")]
 
 [node name="Inside" type="Area3D" parent="Drawer_2" unique_id=1621124195]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5235, 0.038600005)
@@ -203,7 +203,7 @@ shape = SubResource("BoxShape3D_ra7mp")
 script = ExtResource("2_f56wg")
 metadata/kind = "drawer"
 
-[node name="Looks" type="Node3D" parent="Drawer_3" unique_id=1060479037 instance=ExtResource("5_1ah48")]
+[node name="Looks" parent="Drawer_3" unique_id=1060479037 instance=ExtResource("5_1ah48")]
 
 [node name="Inside" type="Area3D" parent="Drawer_3" unique_id=153882618]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.251, 0.038600005)

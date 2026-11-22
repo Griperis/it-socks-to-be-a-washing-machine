@@ -49,23 +49,23 @@ _data = {
 &"open": SubResource("Animation_open")
 }
 
-[node name="LooksGraybox" type="Node3D"]
+[node name="LooksGraybox" type="Node3D" unique_id=1187272117]
 
-[node name="Hinge" type="AnimatableBody3D" parent="."]
+[node name="Hinge" type="AnimatableBody3D" parent="." unique_id=452648645]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 0, 0)
 
-[node name="Panel" type="MeshInstance3D" parent="Hinge"]
+[node name="Panel" type="MeshInstance3D" parent="Hinge" unique_id=851489748]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 1, 0)
 mesh = SubResource("BoxMesh_door")
 
-[node name="PanelShape" type="CollisionShape3D" parent="Hinge"]
+[node name="PanelShape" type="CollisionShape3D" parent="Hinge" unique_id=1574823868]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 1, 0)
 shape = SubResource("BoxShape3D_door")
 
-[node name="Outline" type="Node3D" parent="."]
+[node name="Outline" type="Node3D" parent="." unique_id=96742916]
 visible = false
 script = ExtResource("9_outline")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=592999044]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_looks")

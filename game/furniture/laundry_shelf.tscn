@@ -64,7 +64,7 @@ metadata/rooms = ["Laundry"]
 metadata/plan_spot = "Laundry shelf (new; plan has none)"
 metadata/note = "Optional extra for the laundry's empty north wall."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1966220746 instance=ExtResource("1_nqmas")]
+[node name="Looks" parent="." unique_id=1966220746 instance=ExtResource("1_nqmas")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=499985943]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, -0.385, 0.75, 0)

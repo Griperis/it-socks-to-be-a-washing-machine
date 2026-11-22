@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://d30ref6s3w1xt"]
 
-[ext_resource type="Script" uid="uid://h8x0e3bpl2qw7" path="res://game/sock/pair_moment.gd" id="3_pmgd"]
 [ext_resource type="PackedScene" uid="uid://bkyk44qfj4fem" path="res://game/sock/looks_crew.tscn" id="1_b6aa3"]
 [ext_resource type="PackedScene" uid="uid://uk4gtry7soji" path="res://game/sock/looks_ball_crew_plain.tscn" id="2_12w58"]
+[ext_resource type="Script" uid="uid://i487yg7hn0fo" path="res://game/sock/pair_moment.gd" id="3_pmgd"]
 
 [sub_resource type="Gradient" id="Gradient_vnmgs"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -295,17 +295,17 @@ script = ExtResource("3_pmgd")
 
 [node name="Held" type="Node3D" parent="." unique_id=1146266808]
 
-[node name="Looks" type="Node3D" parent="Held" unique_id=1244533262 instance=ExtResource("1_b6aa3")]
+[node name="Looks" parent="Held" unique_id=1244533262 instance=ExtResource("1_b6aa3")]
 transform = Transform3D(-1.4988538e-08, 0.34289777, -0.9393727, -1, -4.371139e-08, 0, -4.1061284e-08, 0.9393727, 0.34289777, -0.004457671, 5.6824806e-10, -0.012211845)
 
 [node name="Mate" type="Node3D" parent="." unique_id=1927824108]
 
 [node name="FlyIn" type="Node3D" parent="Mate" unique_id=1402277319]
 
-[node name="Looks" type="Node3D" parent="Mate/FlyIn" unique_id=321039270 instance=ExtResource("1_b6aa3")]
+[node name="Looks" parent="Mate/FlyIn" unique_id=321039270 instance=ExtResource("1_b6aa3")]
 transform = Transform3D(-1.4988538e-08, 0.34289777, -0.9393727, -1, -4.371139e-08, 0, -4.1061284e-08, 0.9393727, 0.34289777, -0.004457671, 5.6824806e-10, -0.012211845)
 
-[node name="Ball" type="Node3D" parent="." unique_id=440932874 instance=ExtResource("2_12w58")]
+[node name="Ball" parent="." unique_id=440932874 instance=ExtResource("2_12w58")]
 
 [node name="Burst" type="GPUParticles3D" parent="." unique_id=1543881952]
 emitting = false

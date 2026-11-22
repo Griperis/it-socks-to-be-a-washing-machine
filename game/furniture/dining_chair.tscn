@@ -54,7 +54,7 @@ metadata/rooms = ["Kitchen & dining"]
 metadata/plan_spot = "Dining table (4 chairs)"
 metadata/note = "Four round the dining table."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1443591213 instance=ExtResource("1_1wb7k")]
+[node name="Looks" parent="." unique_id=1443591213 instance=ExtResource("1_1wb7k")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1635888792]
 shape = SubResource("ConvexPolygonShape3D_qijd8")

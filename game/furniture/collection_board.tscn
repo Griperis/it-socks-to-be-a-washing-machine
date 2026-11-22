@@ -52,7 +52,7 @@ metadata/rooms = ["Laundry"]
 metadata/plan_spot = "Whiteboard (progression/01, by the Upgrade station)"
 metadata/note = "The Whiteboard (progression/01, Q639, Q667): a marker board on a wheeled easel. Node Board = the writing face only, 4:3 (0.96 x 0.72 m), material 'paper', UV u 0..1 left to right and v 0..1 top to bottom (glTF): the game draws the Collections' legend onto it (game/campaign/whiteboard_view.gd)."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1495921238 instance=ExtResource("1_kbg16")]
+[node name="Looks" parent="." unique_id=1495921238 instance=ExtResource("1_kbg16")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=718060687]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 1.26, -0.004)

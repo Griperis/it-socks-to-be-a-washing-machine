@@ -31,7 +31,7 @@ metadata/rooms = ["Kitchen & dining"]
 metadata/plan_spot = "Counter"
 metadata/note = "A plain worktop block 0.44 wide, no door: it spaces the east run's drawers clear of the sink's door (house/12)."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1961589715 instance=ExtResource("1_11nre")]
+[node name="Looks" parent="." unique_id=1961589715 instance=ExtResource("1_11nre")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1739111333]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.05, -0.02)

@@ -34,7 +34,7 @@ metadata/rooms = ["Plants", "Living room", "Bathroom", "Home office", "Kitchen &
 metadata/plan_spot = "Plant"
 metadata/note = "A tall snake plant in a sage pot."
 
-[node name="Looks" type="Node3D" parent="." unique_id=886535997 instance=ExtResource("1_jjmwl")]
+[node name="Looks" parent="." unique_id=886535997 instance=ExtResource("1_jjmwl")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1594186739]
 shape = SubResource("ConvexPolygonShape3D_jjyyc")

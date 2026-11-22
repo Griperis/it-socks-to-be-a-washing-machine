@@ -114,7 +114,7 @@ metadata/rooms = ["Kitchen & dining"]
 metadata/plan_spot = "Counter"
 metadata/note = "Base unit 0.6 wide: a hob on top, the oven door drops down (hinge at its bottom edge)."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1217152050 instance=ExtResource("1_i6y7f")]
+[node name="Looks" parent="." unique_id=1217152050 instance=ExtResource("1_i6y7f")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1640771252]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.05, -0.03499)
@@ -232,7 +232,7 @@ shape = SubResource("BoxShape3D_kelbd")
 script = ExtResource("2_0p506")
 metadata/kind = "oven"
 
-[node name="Looks" type="Node3D" parent="Door" unique_id=1906145233 instance=ExtResource("3_w8kyw")]
+[node name="Looks" parent="Door" unique_id=1906145233 instance=ExtResource("3_w8kyw")]
 
 [node name="Inside" type="Area3D" parent="Door" unique_id=1748863725]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.41900003, -0.028500006)

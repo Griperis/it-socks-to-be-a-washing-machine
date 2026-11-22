@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b40wqgc1eb8pb"]
 
 [ext_resource type="Script" uid="uid://fvy7sub2nyv5" path="res://game/zoo/heap/heap_spout.gd" id="1_spout"]
 [ext_resource type="Script" uid="uid://cyrehskv2l0f0" path="res://game/zoo/heap/heap_button.gd" id="2_button"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="5_hands"]
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="6_designs"]
 [ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="7_hands_tuning"]
-[ext_resource type="Resource" path="res://game/zoo/heap/heap_tuning.tres" id="8_heap_tuning"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.78, 0.72, 0.62, 1)
@@ -70,6 +69,9 @@ albedo_color = Color(0.3, 0.62, 0.4, 1)
 material = SubResource("StandardMaterial3D_more")
 size = Vector3(0.5, 1, 0.3)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_button"]
+size = Vector3(0.5, 1, 0.3)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_respill"]
 albedo_color = Color(0.7, 0.38, 0.3, 1)
 
@@ -77,162 +79,158 @@ albedo_color = Color(0.7, 0.38, 0.3, 1)
 material = SubResource("StandardMaterial3D_respill")
 size = Vector3(0.5, 1, 0.3)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_button"]
-size = Vector3(0.5, 1, 0.3)
-
-[node name="Heap" type="Node3D"]
+[node name="Heap" type="Node3D" unique_id=367623963]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 13, 0, -7)
 
-[node name="Pad" type="MeshInstance3D" parent="."]
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=383493659]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
 mesh = SubResource("PlaneMesh_pad")
 
-[node name="Name" type="Label3D" parent="."]
+[node name="Name" type="Label3D" parent="." unique_id=1517763324]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -2.5)
 pixel_size = 0.004
 billboard = 2
-vertical_alignment = 2
 text = "Heap: a spout pours real Socks in waves under the moving budget. More pours another batch, Respill clears the heap and pours afresh. Pick, pair and throw them like any Sock"
+vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="Walls" type="StaticBody3D" parent="."]
+[node name="Walls" type="StaticBody3D" parent="." unique_id=365017277]
 
-[node name="NorthMesh" type="MeshInstance3D" parent="Walls"]
+[node name="NorthMesh" type="MeshInstance3D" parent="Walls" unique_id=1097965060]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -3.05)
 mesh = SubResource("BoxMesh_wall_x")
 
-[node name="North" type="CollisionShape3D" parent="Walls"]
+[node name="North" type="CollisionShape3D" parent="Walls" unique_id=921639522]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -3.05)
 shape = SubResource("BoxShape3D_wall_x")
 
-[node name="SouthMesh" type="MeshInstance3D" parent="Walls"]
+[node name="SouthMesh" type="MeshInstance3D" parent="Walls" unique_id=2080509442]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 3.05)
 mesh = SubResource("BoxMesh_wall_x")
 
-[node name="South" type="CollisionShape3D" parent="Walls"]
+[node name="South" type="CollisionShape3D" parent="Walls" unique_id=157274277]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 3.05)
 shape = SubResource("BoxShape3D_wall_x")
 
-[node name="WestMesh" type="MeshInstance3D" parent="Walls"]
+[node name="WestMesh" type="MeshInstance3D" parent="Walls" unique_id=1491651908]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.05, 0.15, 0)
 mesh = SubResource("BoxMesh_wall_z")
 
-[node name="West" type="CollisionShape3D" parent="Walls"]
+[node name="West" type="CollisionShape3D" parent="Walls" unique_id=1904623895]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.05, 0.15, 0)
 shape = SubResource("BoxShape3D_wall_z")
 
-[node name="EastMesh" type="MeshInstance3D" parent="Walls"]
+[node name="EastMesh" type="MeshInstance3D" parent="Walls" unique_id=1368563409]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.05, 0.15, 0)
 mesh = SubResource("BoxMesh_wall_z")
 
-[node name="East" type="CollisionShape3D" parent="Walls"]
+[node name="East" type="CollisionShape3D" parent="Walls" unique_id=1119316652]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.05, 0.15, 0)
 shape = SubResource("BoxShape3D_wall_z")
 
-[node name="Slope" type="StaticBody3D" parent="."]
+[node name="Slope" type="StaticBody3D" parent="." unique_id=923534477]
 transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, -1.2, 0.35, 0.6)
 
-[node name="Mesh" type="MeshInstance3D" parent="Slope"]
+[node name="Mesh" type="MeshInstance3D" parent="Slope" unique_id=1352243722]
 mesh = SubResource("BoxMesh_slope")
 
-[node name="Shape" type="CollisionShape3D" parent="Slope"]
+[node name="Shape" type="CollisionShape3D" parent="Slope" unique_id=2121285070]
 shape = SubResource("BoxShape3D_slope")
 
-[node name="Table" type="StaticBody3D" parent="."]
+[node name="Table" type="StaticBody3D" parent="." unique_id=498815344]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, 0.8)
 
-[node name="TopMesh" type="MeshInstance3D" parent="Table"]
+[node name="TopMesh" type="MeshInstance3D" parent="Table" unique_id=1631140552]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
 mesh = SubResource("BoxMesh_top")
 
-[node name="Top" type="CollisionShape3D" parent="Table"]
+[node name="Top" type="CollisionShape3D" parent="Table" unique_id=2135137543]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
 shape = SubResource("BoxShape3D_top")
 
-[node name="LegMesh1" type="MeshInstance3D" parent="Table"]
+[node name="LegMesh1" type="MeshInstance3D" parent="Table" unique_id=1907848109]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55, 0.3, -0.35)
 mesh = SubResource("BoxMesh_leg")
 
-[node name="Leg1" type="CollisionShape3D" parent="Table"]
+[node name="Leg1" type="CollisionShape3D" parent="Table" unique_id=70919936]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55, 0.3, -0.35)
 shape = SubResource("BoxShape3D_leg")
 
-[node name="LegMesh2" type="MeshInstance3D" parent="Table"]
+[node name="LegMesh2" type="MeshInstance3D" parent="Table" unique_id=1454290969]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 0.3, -0.35)
 mesh = SubResource("BoxMesh_leg")
 
-[node name="Leg2" type="CollisionShape3D" parent="Table"]
+[node name="Leg2" type="CollisionShape3D" parent="Table" unique_id=1096957055]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 0.3, -0.35)
 shape = SubResource("BoxShape3D_leg")
 
-[node name="LegMesh3" type="MeshInstance3D" parent="Table"]
+[node name="LegMesh3" type="MeshInstance3D" parent="Table" unique_id=355706536]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55, 0.3, 0.35)
 mesh = SubResource("BoxMesh_leg")
 
-[node name="Leg3" type="CollisionShape3D" parent="Table"]
+[node name="Leg3" type="CollisionShape3D" parent="Table" unique_id=152595798]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55, 0.3, 0.35)
 shape = SubResource("BoxShape3D_leg")
 
-[node name="LegMesh4" type="MeshInstance3D" parent="Table"]
+[node name="LegMesh4" type="MeshInstance3D" parent="Table" unique_id=1137957135]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 0.3, 0.35)
 mesh = SubResource("BoxMesh_leg")
 
-[node name="Leg4" type="CollisionShape3D" parent="Table"]
+[node name="Leg4" type="CollisionShape3D" parent="Table" unique_id=750408077]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 0.3, 0.35)
 shape = SubResource("BoxShape3D_leg")
 
-[node name="Spout" type="Node3D" parent="."]
+[node name="Spout" type="Node3D" parent="." unique_id=962448524]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
 
-[node name="Mesh" type="MeshInstance3D" parent="Spout"]
+[node name="Mesh" type="MeshInstance3D" parent="Spout" unique_id=1204469691]
 mesh = SubResource("CylinderMesh_spout")
 
-[node name="HeapSpout" type="Node" parent="Spout" node_paths=PackedStringArray("mess")]
+[node name="HeapSpout" type="Node" parent="Spout" unique_id=1750227670 node_paths=PackedStringArray("mess")]
 script = ExtResource("1_spout")
 mess = NodePath("../../Socks/Mess")
-tuning = ExtResource("8_heap_tuning")
 
-[node name="More" type="StaticBody3D" parent="."]
+[node name="More" type="StaticBody3D" parent="." unique_id=1252416776]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.5, -3.6)
 
-[node name="HeapButton" type="Node" parent="More" node_paths=PackedStringArray("spout")]
+[node name="HeapButton" type="Node" parent="More" unique_id=1772344764 node_paths=PackedStringArray("spout")]
 script = ExtResource("2_button")
 spout = NodePath("../../Spout/HeapSpout")
 
-[node name="Mesh" type="MeshInstance3D" parent="More"]
+[node name="Mesh" type="MeshInstance3D" parent="More" unique_id=4512775]
 mesh = SubResource("BoxMesh_more")
 
-[node name="Shape" type="CollisionShape3D" parent="More"]
+[node name="Shape" type="CollisionShape3D" parent="More" unique_id=1056033244]
 shape = SubResource("BoxShape3D_button")
 
-[node name="Label" type="Label3D" parent="More"]
+[node name="Label" type="Label3D" parent="More" unique_id=1210714421]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 pixel_size = 0.004
 billboard = 1
 text = "More"
 
-[node name="Respill" type="StaticBody3D" parent="."]
+[node name="Respill" type="StaticBody3D" parent="." unique_id=1672525804]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.5, -3.6)
 
-[node name="HeapButton" type="Node" parent="Respill" node_paths=PackedStringArray("spout")]
+[node name="HeapButton" type="Node" parent="Respill" unique_id=1810111607 node_paths=PackedStringArray("spout")]
 script = ExtResource("2_button")
 verb = &"respill"
 spout = NodePath("../../Spout/HeapSpout")
 
-[node name="Mesh" type="MeshInstance3D" parent="Respill"]
+[node name="Mesh" type="MeshInstance3D" parent="Respill" unique_id=318965508]
 mesh = SubResource("BoxMesh_respill")
 
-[node name="Shape" type="CollisionShape3D" parent="Respill"]
+[node name="Shape" type="CollisionShape3D" parent="Respill" unique_id=1640690224]
 shape = SubResource("BoxShape3D_button")
 
-[node name="Label" type="Label3D" parent="Respill"]
+[node name="Label" type="Label3D" parent="Respill" unique_id=512638343]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 pixel_size = 0.004
 billboard = 1
 text = "Respill"
 
-[node name="Counter" type="Label3D" parent="." node_paths=PackedStringArray("mess", "spout")]
+[node name="Counter" type="Label3D" parent="." unique_id=1056480432 node_paths=PackedStringArray("mess", "spout")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.4, -3.6)
 pixel_size = 0.004
 billboard = 1
@@ -246,22 +244,22 @@ script = ExtResource("3_counter")
 mess = NodePath("../Socks/Mess")
 spout = NodePath("../Spout/HeapSpout")
 
-[node name="Spots" type="Node3D" parent="."]
+[node name="Spots" type="Node3D" parent="." unique_id=252841998]
 
-[node name="ReturnSpot" type="Marker3D" parent="."]
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=776062804]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.5)
 
-[node name="Lying" type="Node3D" parent="."]
+[node name="Lying" type="Node3D" parent="." unique_id=686811736]
 
-[node name="Flights" type="Node3D" parent="."]
+[node name="Flights" type="Node3D" parent="." unique_id=1313257976]
 
-[node name="FlightSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://game/sock/flight.tscn", "res://game/sock/ball_flight.tscn")
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=1241638128]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
 spawn_path = NodePath("../Flights")
 
-[node name="Socks" type="Node" parent="."]
+[node name="Socks" type="Node" parent="." unique_id=2103662830]
 
-[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+[node name="Mess" type="Node" parent="Socks" unique_id=1203499939 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
 script = ExtResource("4_mess")
 catalogue = ExtResource("6_designs")
 tuning = ExtResource("7_hands_tuning")
@@ -271,7 +269,7 @@ flights = NodePath("../../Flights")
 bounds = AABB(-4, -2, -5, 8, 8, 10)
 return_spot = NodePath("../../ReturnSpot")
 
-[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess")]
+[node name="Hands" type="Node" parent="Socks" unique_id=1691245324 node_paths=PackedStringArray("mess")]
 script = ExtResource("5_hands")
 mess = NodePath("../Mess")
 tuning = ExtResource("7_hands_tuning")

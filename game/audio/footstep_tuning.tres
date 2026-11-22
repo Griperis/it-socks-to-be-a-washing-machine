@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="FootstepTuning" format=3]
+[gd_resource type="Resource" script_class="FootstepTuning" format=3 uid="uid://bbid103w4jrbx"]
 
-[ext_resource type="Script" path="res://game/audio/footstep_tuning.gd" id="1_o10m6"]
+[ext_resource type="Script" uid="uid://cknksc5l1m2gk" path="res://game/audio/footstep_tuning.gd" id="1_o10m6"]
 
 [resource]
 script = ExtResource("1_o10m6")

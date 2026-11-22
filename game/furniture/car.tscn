@@ -313,7 +313,7 @@ metadata/rooms = ["Garage"]
 metadata/plan_spot = "Car (house/11: the garage, Q431)"
 metadata/note = "Compact three-door hatchback, 1.62 m wide without the wing mirrors, its nose facing +z (the piece front), length along z. Door_L (the -x side) and Door_R hinge at their front edge about y and swing out; Boot (the tailgate with its glass) hinges at the roof's back edge about x and lifts. Hollow cabin: floor top 0.32 m, 0.14 m under the front seats, 0.12 m under the rear bench, a boot well about 1.0 x 0.6 m behind it. Window glass is the material 'glass' (alpha 0.3). crawl_gap is the ground clearance between the wheels; crawl_box (Godot, local [x, z]) the clear rect under the car, inside the wheels (house/11). Containers: Cabin (both doors) and Boot; colliders: the floor pan, bonnet, sides, roof, wheel tubs and wheels (the seats have none: Socks lie under them)."
 
-[node name="Looks" type="Node3D" parent="." unique_id=2140838503 instance=ExtResource("1_jdeot")]
+[node name="Looks" parent="." unique_id=2140838503 instance=ExtResource("1_jdeot")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1443464064]
 shape = SubResource("ConvexPolygonShape3D_ar327")
@@ -541,7 +541,7 @@ shape = SubResource("BoxShape3D_at472")
 script = ExtResource("2_7482v")
 metadata/kind = "cupboard"
 
-[node name="Looks" type="Node3D" parent="Cabin" unique_id=276610007 instance=ExtResource("3_kwkco")]
+[node name="Looks" parent="Cabin" unique_id=276610007 instance=ExtResource("3_kwkco")]
 
 [node name="Inside" type="Area3D" parent="Cabin" unique_id=1585220446]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.626, -0.10500002)
@@ -560,7 +560,7 @@ shape = SubResource("BoxShape3D_lbeps")
 script = ExtResource("2_7482v")
 metadata/kind = "cupboard"
 
-[node name="Looks" type="Node3D" parent="Boot" unique_id=1998357380 instance=ExtResource("4_nfne1")]
+[node name="Looks" parent="Boot" unique_id=1998357380 instance=ExtResource("4_nfne1")]
 
 [node name="Inside" type="Area3D" parent="Boot" unique_id=1010996048]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.601, -1.305)

@@ -1,9 +1,9 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://uajin4n0hgrt"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sock"]
 size = Vector3(0.3, 0.026, 0.18)
 
-[node name="Flight" type="RigidBody3D"]
+[node name="Flight" type="RigidBody3D" unique_id=1181478549]
 collision_layer = 2
 collision_mask = 7
 mass = 0.05
@@ -11,6 +11,6 @@ continuous_cd = true
 contact_monitor = true
 max_contacts_reported = 4
 
-[node name="Shape" type="CollisionShape3D" parent="."]
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1313668552]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.013, 0)
 shape = SubResource("BoxShape3D_sock")

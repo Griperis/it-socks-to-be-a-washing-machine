@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://cthqsjebuebh2"]
 
-[ext_resource type="PackedScene" path="res://game/zoo/zoo_label.tscn" id="1_label"]
+[ext_resource type="PackedScene" uid="uid://cdaqfj4hve4ul" path="res://game/zoo/zoo_label.tscn" id="1_label"]
 
-[node name="IconCell" type="Node3D"]
+[node name="IconCell" type="Node3D" unique_id=1727441157]
 
-[node name="Icon" type="Sprite3D" parent="."]
+[node name="Icon" type="Sprite3D" parent="." unique_id=1784175936]
 pixel_size = 0.0078125
 
-[node name="Label" parent="." instance=ExtResource("1_label")]
+[node name="Label" parent="." unique_id=418888440 instance=ExtResource("1_label")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35, 0)
 pixel_size = 0.0028
 double_sided = true

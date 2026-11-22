@@ -156,7 +156,7 @@ metadata/rooms = ["Garage"]
 metadata/plan_spot = "Shelf rack, Wall shelving"
 metadata/note = "Used twice in the garage, each against a wall (house/11; the third left for the Old Tree, house/45, Q1534)."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1758331462 instance=ExtResource("1_alxgy")]
+[node name="Looks" parent="." unique_id=1758331462 instance=ExtResource("1_alxgy")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1065555340]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, -0.18791, 0.3984, 0)

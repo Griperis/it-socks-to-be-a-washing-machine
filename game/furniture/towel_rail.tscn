@@ -37,7 +37,7 @@ metadata/rooms = ["Bathroom"]
 metadata/plan_spot = "Towel rail (new)"
 metadata/note = "Wall-standing rail with two towels."
 
-[node name="Looks" type="Node3D" parent="." unique_id=883314660 instance=ExtResource("1_ym1pp")]
+[node name="Looks" parent="." unique_id=883314660 instance=ExtResource("1_ym1pp")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=188821182]
 shape = SubResource("ConvexPolygonShape3D_fxidu")

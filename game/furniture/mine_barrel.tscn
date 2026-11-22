@@ -45,7 +45,7 @@ metadata/rooms = ["Grotto"]
 metadata/plan_spot = "Mine barrel"
 metadata/note = "An iron-hooped barrel; its round Lid hinges at the back (Q1058)."
 
-[node name="Looks" type="Node3D" parent="." unique_id=24909845 instance=ExtResource("1_e0vrl")]
+[node name="Looks" parent="." unique_id=24909845 instance=ExtResource("1_e0vrl")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1024818166]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.36, 0.2187)
@@ -97,7 +97,7 @@ shape = SubResource("BoxShape3D_f3mpf")
 script = ExtResource("2_wo7qj")
 metadata/kind = "cupboard"
 
-[node name="Looks" type="Node3D" parent="Lid" unique_id=2000325885 instance=ExtResource("3_8y2d7")]
+[node name="Looks" parent="Lid" unique_id=2000325885 instance=ExtResource("3_8y2d7")]
 
 [node name="Inside" type="Area3D" parent="Lid" unique_id=1583833598]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3725, 0)

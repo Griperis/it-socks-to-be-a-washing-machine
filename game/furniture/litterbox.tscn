@@ -103,7 +103,7 @@ metadata/rooms = ["Bathroom"]
 metadata/plan_spot = "Litterbox (new, cat/11)"
 metadata/note = "A covered litterbox, kept simple (Q1980, Q1985): a tray, a hood with a carry handle, a flap door with a paw print hinged at its top edge."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1708547705 instance=ExtResource("1_5nle4")]
+[node name="Looks" parent="." unique_id=1708547705 instance=ExtResource("1_5nle4")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=677381975]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.325, -0.21)
@@ -219,7 +219,7 @@ shape = SubResource("BoxShape3D_7cvks")
 script = ExtResource("2_ikfwc")
 metadata/kind = "litter_flap"
 
-[node name="Looks" type="Node3D" parent="Flap" unique_id=343111546 instance=ExtResource("3_b32o7")]
+[node name="Looks" parent="Flap" unique_id=343111546 instance=ExtResource("3_b32o7")]
 
 [node name="Inside" type="Area3D" parent="Flap" unique_id=1803943648]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2675, 0)

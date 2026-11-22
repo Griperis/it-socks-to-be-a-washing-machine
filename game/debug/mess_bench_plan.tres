@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="MessBenchPlan" format=3]
+[gd_resource type="Resource" script_class="MessBenchPlan" format=3 uid="uid://dltxj4vhwb8ih"]
 
-[ext_resource type="Script" path="res://game/debug/mess_bench_plan.gd" id="1_plan"]
-[ext_resource type="Script" path="res://game/debug/mess_bench_scenario.gd" id="2_scenario"]
+[ext_resource type="Script" uid="uid://tlhbeu4gixw7" path="res://game/debug/mess_bench_plan.gd" id="1_plan"]
+[ext_resource type="Script" uid="uid://2b3yi0qtmcu3" path="res://game/debug/mess_bench_scenario.gd" id="2_scenario"]
 [ext_resource type="Resource" path="res://game/debug/mess_checks.tres" id="3_checks"]
 
 [sub_resource type="Resource" id="Resource_idle_500"]
@@ -77,4 +77,3 @@ lying = 160
 [resource]
 script = ExtResource("1_plan")
 scenarios = Array[ExtResource("2_scenario")]([SubResource("Resource_idle_500"), SubResource("Resource_idle_2000"), SubResource("Resource_idle_10000"), SubResource("Resource_pour_500"), SubResource("Resource_settle_500"), SubResource("Resource_pour_2000"), SubResource("Resource_settle_2000"), SubResource("Resource_burst_16"), SubResource("Resource_sweep")])
-checks = ExtResource("3_checks")

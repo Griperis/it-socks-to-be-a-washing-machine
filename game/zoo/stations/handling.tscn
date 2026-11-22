@@ -1,12 +1,12 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dl206w7fbm08c"]
 
-[ext_resource type="PackedScene" path="res://game/entities/cupboard/cupboard.tscn" id="1_cupboard"]
-[ext_resource type="Script" path="res://game/mess/mess.gd" id="2_mess"]
-[ext_resource type="Script" path="res://game/hands/hands.gd" id="3_hands"]
-[ext_resource type="Script" path="res://game/mess/sock_spot.gd" id="4_spot"]
-[ext_resource type="Resource" path="res://game/sock/designs.tres" id="5_designs"]
+[ext_resource type="PackedScene" uid="uid://cetnblb56hc5v" path="res://game/entities/cupboard/cupboard.tscn" id="1_cupboard"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="2_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="3_hands"]
+[ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="4_spot"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="5_designs"]
 [ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
-[ext_resource type="Script" uid="uid://bijzj4p250y1i" path="res://game/zoo/handling/lose_button.gd" id="7_lose"]
+[ext_resource type="Script" uid="uid://bij0j4p250y1i" path="res://game/zoo/handling/lose_button.gd" id="7_lose"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.3, 0.5, 0.42, 1)
@@ -18,18 +18,15 @@ size = Vector2(5, 4)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
 albedo_color = Color(0.62, 0.5, 0.36, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
-albedo_color = Color(0.78, 0.76, 0.72, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cupboard"]
-albedo_color = Color(0.55, 0.62, 0.72, 1)
-
 [sub_resource type="BoxMesh" id="BoxMesh_table"]
 material = SubResource("StandardMaterial3D_wood")
 size = Vector3(1, 0.75, 0.6)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_table"]
 size = Vector3(1, 0.75, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.78, 0.76, 0.72, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_wall"]
 material = SubResource("StandardMaterial3D_wall")
@@ -51,6 +48,9 @@ size = Vector3(0.4, 0.5, 0.4)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_block"]
 size = Vector3(0.4, 0.5, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cupboard"]
+albedo_color = Color(0.55, 0.62, 0.72, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_back"]
 material = SubResource("StandardMaterial3D_cupboard")
@@ -97,230 +97,229 @@ size = Vector3(0.3, 0.6, 0.3)
 [sub_resource type="BoxShape3D" id="BoxShape3D_lose"]
 size = Vector3(0.3, 0.6, 0.3)
 
-[node name="Handling" type="Node3D"]
+[node name="Handling" type="Node3D" unique_id=204210761]
 
-[node name="Pad" type="MeshInstance3D" parent="."]
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=626003287]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
 mesh = SubResource("PlaneMesh_pad")
 
-[node name="Name" type="Label3D" parent="."]
+[node name="Name" type="Label3D" parent="." unique_id=1534148775]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 2.4)
 pixel_size = 0.004
 billboard = 2
-vertical_alignment = 2
 text = "Handling Socks: left click picks, a right click drops where the crosshair is white, a right hold charges a Throw and the release throws; the wheel steps, G zooms, R turns; E opens the cupboard. Pick a Sock, then its mate on the left: they become a Pair"
+vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="Table" type="StaticBody3D" parent="."]
+[node name="Table" type="StaticBody3D" parent="." unique_id=1012037854]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -0.5)
 
-[node name="Mesh" type="MeshInstance3D" parent="Table"]
+[node name="Mesh" type="MeshInstance3D" parent="Table" unique_id=1860028112]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
 mesh = SubResource("BoxMesh_table")
 
-[node name="Shape" type="CollisionShape3D" parent="Table"]
+[node name="Shape" type="CollisionShape3D" parent="Table" unique_id=2044889666]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
 shape = SubResource("BoxShape3D_table")
 
-[node name="Wall" type="StaticBody3D" parent="."]
+[node name="Wall" type="StaticBody3D" parent="." unique_id=1845279417]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.2)
 
-[node name="Mesh" type="MeshInstance3D" parent="Wall"]
+[node name="Mesh" type="MeshInstance3D" parent="Wall" unique_id=699178650]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("BoxMesh_wall")
 
-[node name="Shape" type="CollisionShape3D" parent="Wall"]
+[node name="Shape" type="CollisionShape3D" parent="Wall" unique_id=1256409143]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_wall")
 
-[node name="Shelf" type="StaticBody3D" parent="."]
+[node name="Shelf" type="StaticBody3D" parent="." unique_id=707574929]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1)
 
-[node name="Mesh" type="MeshInstance3D" parent="Shelf"]
+[node name="Mesh" type="MeshInstance3D" parent="Shelf" unique_id=126481349]
 mesh = SubResource("BoxMesh_shelf")
 
-[node name="Shape" type="CollisionShape3D" parent="Shelf"]
+[node name="Shape" type="CollisionShape3D" parent="Shelf" unique_id=109507717]
 shape = SubResource("BoxShape3D_shelf")
 
-[node name="GapLeft" type="StaticBody3D" parent="."]
+[node name="GapLeft" type="StaticBody3D" parent="." unique_id=1048957685]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.37, 0, 0.6)
 
-[node name="Mesh" type="MeshInstance3D" parent="GapLeft"]
+[node name="Mesh" type="MeshInstance3D" parent="GapLeft" unique_id=1133750749]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 mesh = SubResource("BoxMesh_block")
 
-[node name="Shape" type="CollisionShape3D" parent="GapLeft"]
+[node name="Shape" type="CollisionShape3D" parent="GapLeft" unique_id=555396110]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 shape = SubResource("BoxShape3D_block")
 
-[node name="GapRight" type="StaticBody3D" parent="."]
+[node name="GapRight" type="StaticBody3D" parent="." unique_id=1640886026]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.83, 0, 0.6)
 
-[node name="Mesh" type="MeshInstance3D" parent="GapRight"]
+[node name="Mesh" type="MeshInstance3D" parent="GapRight" unique_id=789146000]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 mesh = SubResource("BoxMesh_block")
 
-[node name="Shape" type="CollisionShape3D" parent="GapRight"]
+[node name="Shape" type="CollisionShape3D" parent="GapRight" unique_id=546030385]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 shape = SubResource("BoxShape3D_block")
 
-[node name="Cupboard" parent="." instance=ExtResource("1_cupboard")]
+[node name="Cupboard" parent="." unique_id=1192959132 instance=ExtResource("1_cupboard")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 0, -1.4)
 
-[node name="Shape" parent="Cupboard" index="1"]
+[node name="Shape" parent="Cupboard" index="1" unique_id=1472495402]
 disabled = true
 
-[node name="Body" parent="Cupboard/Looks" index="0"]
+[node name="Body" parent="Cupboard/Looks" parent_id_path=PackedInt32Array(1192959132, 1020812380) index="0" unique_id=1223889228]
 visible = false
 
-[node name="BackMesh" type="MeshInstance3D" parent="Cupboard"]
+[node name="BackMesh" type="MeshInstance3D" parent="Cupboard" unique_id=744217175]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.235)
 mesh = SubResource("BoxMesh_back")
 
-[node name="BackShape" type="CollisionShape3D" parent="Cupboard"]
+[node name="BackShape" type="CollisionShape3D" parent="Cupboard" unique_id=1717818146]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.235)
 shape = SubResource("BoxShape3D_back")
 
-[node name="LeftMesh" type="MeshInstance3D" parent="Cupboard"]
+[node name="LeftMesh" type="MeshInstance3D" parent="Cupboard" unique_id=477700148]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.485, 1, -0.025)
 mesh = SubResource("BoxMesh_side")
 
-[node name="LeftShape" type="CollisionShape3D" parent="Cupboard"]
+[node name="LeftShape" type="CollisionShape3D" parent="Cupboard" unique_id=663083724]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.485, 1, -0.025)
 shape = SubResource("BoxShape3D_side")
 
-[node name="RightMesh" type="MeshInstance3D" parent="Cupboard"]
+[node name="RightMesh" type="MeshInstance3D" parent="Cupboard" unique_id=971640903]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.485, 1, -0.025)
 mesh = SubResource("BoxMesh_side")
 
-[node name="RightShape" type="CollisionShape3D" parent="Cupboard"]
+[node name="RightShape" type="CollisionShape3D" parent="Cupboard" unique_id=1001008765]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.485, 1, -0.025)
 shape = SubResource("BoxShape3D_side")
 
-[node name="TopMesh" type="MeshInstance3D" parent="Cupboard"]
+[node name="TopMesh" type="MeshInstance3D" parent="Cupboard" unique_id=1862933960]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.985, -0.025)
 mesh = SubResource("BoxMesh_top")
 
-[node name="TopShape" type="CollisionShape3D" parent="Cupboard"]
+[node name="TopShape" type="CollisionShape3D" parent="Cupboard" unique_id=1752959465]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.985, -0.025)
 shape = SubResource("BoxShape3D_top")
 
-[node name="BottomMesh" type="MeshInstance3D" parent="Cupboard"]
+[node name="BottomMesh" type="MeshInstance3D" parent="Cupboard" unique_id=1655175633]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, -0.025)
 mesh = SubResource("BoxMesh_bottom")
 
-[node name="BottomShape" type="CollisionShape3D" parent="Cupboard"]
+[node name="BottomShape" type="CollisionShape3D" parent="Cupboard" unique_id=1386152768]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, -0.025)
 shape = SubResource("BoxShape3D_bottom")
 
-[node name="InnerShelfMesh" type="MeshInstance3D" parent="Cupboard"]
+[node name="InnerShelfMesh" type="MeshInstance3D" parent="Cupboard" unique_id=1661075476]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.04)
 mesh = SubResource("BoxMesh_inner_shelf")
 
-[node name="InnerShelfShape" type="CollisionShape3D" parent="Cupboard"]
+[node name="InnerShelfShape" type="CollisionShape3D" parent="Cupboard" unique_id=1520565497]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.04)
 shape = SubResource("BoxShape3D_inner_shelf")
 
-[node name="Spots" type="Node3D" parent="."]
+[node name="Spots" type="Node3D" parent="." unique_id=1513753962]
 
-[node name="Floor" type="Marker3D" parent="Spots"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="Floor" type="Marker3D" parent="Spots" unique_id=690780522]
 script = ExtResource("4_spot")
 
-[node name="Under" type="Marker3D" parent="Spots"]
+[node name="Under" type="Marker3D" parent="Spots" unique_id=1042274755]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0)
 script = ExtResource("4_spot")
 design = 1
 
-[node name="Over" type="Marker3D" parent="Spots"]
+[node name="Over" type="Marker3D" parent="Spots" unique_id=1800534320]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.68, 0.026, 0)
 script = ExtResource("4_spot")
 design = 3
 
-[node name="OnTable" type="Marker3D" parent="Spots"]
+[node name="OnTable" type="Marker3D" parent="Spots" unique_id=2077971240]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.75, -0.5)
 script = ExtResource("4_spot")
 design = 130
 
-[node name="BehindWall" type="Marker3D" parent="Spots"]
+[node name="BehindWall" type="Marker3D" parent="Spots" unique_id=57154428]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.45)
 script = ExtResource("4_spot")
 design = 4
 
-[node name="InCupboard" type="Marker3D" parent="Spots"]
+[node name="InCupboard" type="Marker3D" parent="Spots" unique_id=1779104231]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.015, -1.44)
 script = ExtResource("4_spot")
 design = 7
 
-[node name="MateFloor" type="Marker3D" parent="Spots"]
+[node name="MateFloor" type="Marker3D" parent="Spots" unique_id=1612313394]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0.6)
 script = ExtResource("4_spot")
 
-[node name="MateUnder" type="Marker3D" parent="Spots"]
+[node name="MateUnder" type="Marker3D" parent="Spots" unique_id=997323941]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
 script = ExtResource("4_spot")
 design = 1
 
-[node name="Lose" type="StaticBody3D" parent="."]
+[node name="Lose" type="StaticBody3D" parent="." unique_id=636700560]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0, 0.9)
 
-[node name="LoseButton" type="Node" parent="Lose" node_paths=PackedStringArray("mess", "spots")]
+[node name="LoseButton" type="Node" parent="Lose" unique_id=1991924859 node_paths=PackedStringArray("mess", "spots")]
 script = ExtResource("7_lose")
 mess = NodePath("../../Socks/Mess")
 spots = [NodePath("../../Spots/OnTable"), NodePath("../../Spots/BehindWall"), NodePath("../../Spots/InCupboard")]
 
-[node name="Mesh" type="MeshInstance3D" parent="Lose"]
+[node name="Mesh" type="MeshInstance3D" parent="Lose" unique_id=423405159]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 mesh = SubResource("BoxMesh_lose")
 
-[node name="Shape" type="CollisionShape3D" parent="Lose"]
+[node name="Shape" type="CollisionShape3D" parent="Lose" unique_id=87693589]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 shape = SubResource("BoxShape3D_lose")
 
-[node name="Label" type="Label3D" parent="Lose"]
+[node name="Label" type="Label3D" parent="Lose" unique_id=417940431]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 pixel_size = 0.003
 billboard = 1
 text = "Lose Socks"
 
-[node name="Sink" type="StaticBody3D" parent="."]
+[node name="Sink" type="StaticBody3D" parent="." unique_id=2088702289]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0, 0.3)
 
-[node name="LoseButton" type="Node" parent="Sink" node_paths=PackedStringArray("mess", "spots")]
+[node name="LoseButton" type="Node" parent="Sink" unique_id=2051041994 node_paths=PackedStringArray("mess", "spots")]
 script = ExtResource("7_lose")
 verb = &"sink"
 mess = NodePath("../../Socks/Mess")
 spots = [NodePath("../../Spots/MateUnder")]
 
-[node name="Mesh" type="MeshInstance3D" parent="Sink"]
+[node name="Mesh" type="MeshInstance3D" parent="Sink" unique_id=173321911]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 mesh = SubResource("BoxMesh_lose")
 
-[node name="Shape" type="CollisionShape3D" parent="Sink"]
+[node name="Shape" type="CollisionShape3D" parent="Sink" unique_id=1300241358]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 shape = SubResource("BoxShape3D_lose")
 
-[node name="Label" type="Label3D" parent="Sink"]
+[node name="Label" type="Label3D" parent="Sink" unique_id=405773683]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 pixel_size = 0.003
 billboard = 1
 text = "Sink a Sock"
 
-[node name="ReturnSpot" type="Marker3D" parent="."]
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=1523368637]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5)
 
-[node name="Lying" type="Node3D" parent="."]
+[node name="Lying" type="Node3D" parent="." unique_id=2068667678]
 
-[node name="Flights" type="Node3D" parent="."]
+[node name="Flights" type="Node3D" parent="." unique_id=784086407]
 
-[node name="FlightSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://game/sock/flight.tscn", "res://game/sock/ball_flight.tscn")
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=525244671]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
 spawn_path = NodePath("../Flights")
 
-[node name="Socks" type="Node" parent="."]
+[node name="Socks" type="Node" parent="." unique_id=1335692614]
 
-[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+[node name="Mess" type="Node" parent="Socks" unique_id=494017580 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
 script = ExtResource("2_mess")
 catalogue = ExtResource("5_designs")
 tuning = ExtResource("6_tuning")
@@ -330,7 +329,7 @@ flights = NodePath("../../Flights")
 bounds = AABB(-8, -2, -8, 16, 8, 16)
 return_spot = NodePath("../../ReturnSpot")
 
-[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess")]
+[node name="Hands" type="Node" parent="Socks" unique_id=1506731254 node_paths=PackedStringArray("mess")]
 script = ExtResource("3_hands")
 mess = NodePath("../Mess")
 tuning = ExtResource("6_tuning")

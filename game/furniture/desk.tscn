@@ -188,7 +188,7 @@ metadata/rooms = ["Home office"]
 metadata/plan_spot = "Desk"
 metadata/note = "One drawer on the right; a lamp, a mug and papers on top."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1246042009 instance=ExtResource("1_r7lhe")]
+[node name="Looks" parent="." unique_id=1246042009 instance=ExtResource("1_r7lhe")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=871592333]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.73, 0)
@@ -303,7 +303,7 @@ shape = SubResource("BoxShape3D_mymfa")
 script = ExtResource("2_moucu")
 metadata/kind = "drawer"
 
-[node name="Looks" type="Node3D" parent="Drawer_1" unique_id=606379631 instance=ExtResource("3_3srdr")]
+[node name="Looks" parent="Drawer_1" unique_id=606379631 instance=ExtResource("3_3srdr")]
 
 [node name="Inside" type="Area3D" parent="Drawer_1" unique_id=525451682]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42000002, 0.651, 0.0935)

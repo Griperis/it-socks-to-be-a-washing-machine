@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="MessChecks" format=3]
+[gd_resource type="Resource" script_class="MessChecks" format=3 uid="uid://d1cv4i2dns2er"]
 
-[ext_resource type="Script" path="res://game/debug/mess_checks.gd" id="1_checks"]
+[ext_resource type="Script" uid="uid://bag1ivucs6ab" path="res://game/debug/mess_checks.gd" id="1_checks"]
 
 [resource]
 script = ExtResource("1_checks")

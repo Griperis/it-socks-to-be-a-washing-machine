@@ -1,111 +1,78 @@
 [gd_scene format=3 uid="uid://yrvw83wa1w1m"]
 
 [ext_resource type="PackedScene" uid="uid://crn4o8apxt4vg" path="res://game/house/kit/pieces/gable_exterior_mirrored.tscn" id="1_13v0r"]
-[ext_resource type="ArrayMesh" uid="uid://6f025g8kwv66" path="res://game/house/kit/meshes/gable_exterior_mirrored.tres" id="2_chcpq"]
 [ext_resource type="PackedScene" uid="uid://clbnsofuxlgja" path="res://game/house/kit/pieces/gable_exterior.tscn" id="3_6tnbg"]
-[ext_resource type="ArrayMesh" uid="uid://kxut8llx76y3" path="res://game/house/kit/meshes/gable_exterior.tres" id="4_mkqed"]
 [ext_resource type="PackedScene" uid="uid://b5rc1dt7nq18i" path="res://game/house/kit/pieces/knee_exterior_start_1m.tscn" id="5_g7lj3"]
-[ext_resource type="ArrayMesh" uid="uid://iw4jf0jmvekj" path="res://game/house/kit/meshes/knee_exterior_start_1m.tres" id="6_ja5by"]
 [ext_resource type="PackedScene" uid="uid://c60r28eqm5dwa" path="res://game/house/kit/pieces/knee_exterior_2m.tscn" id="7_7t8i0"]
-[ext_resource type="ArrayMesh" uid="uid://k8qpnpxmeqc" path="res://game/house/kit/meshes/knee_exterior_2m.tres" id="8_pttxj"]
 [ext_resource type="PackedScene" uid="uid://brdglyuwddikm" path="res://game/house/kit/pieces/knee_exterior_end_1m.tscn" id="9_8pivy"]
-[ext_resource type="ArrayMesh" uid="uid://bynx6mcdnaot3" path="res://game/house/kit/meshes/knee_exterior_end_1m.tres" id="10_rwd77"]
 [ext_resource type="PackedScene" uid="uid://d3k1s7nnu3vcl" path="res://game/house/kit/pieces/knee_exterior_1m.tscn" id="11_eeqmr"]
-[ext_resource type="ArrayMesh" uid="uid://ch8djvnhpn68r" path="res://game/house/kit/meshes/knee_exterior_1m.tres" id="12_p221y"]
 [ext_resource type="PackedScene" uid="uid://bddegtn3c83u6" path="res://game/house/kit/pieces/roof_verge_w.tscn" id="13_dvrp0"]
-[ext_resource type="ArrayMesh" uid="uid://cujr1kigdgnj2" path="res://game/house/kit/meshes/roof_verge_w.tres" id="14_vwqyn"]
 [ext_resource type="PackedScene" uid="uid://bmi80isj78eay" path="res://game/house/kit/pieces/roof_2m.tscn" id="15_oe7e2"]
-[ext_resource type="ArrayMesh" uid="uid://bxhhtdyxudrni" path="res://game/house/kit/meshes/roof_2m.tres" id="16_k7edn"]
 [ext_resource type="PackedScene" uid="uid://v1c4dvwwwb7l" path="res://game/house/kit/pieces/roof_verge_e.tscn" id="17_ro078"]
-[ext_resource type="ArrayMesh" uid="uid://b46b433xuq5g" path="res://game/house/kit/meshes/roof_verge_e.tres" id="18_f3l2v"]
 [ext_resource type="PackedScene" uid="uid://dkj2q7xaveos0" path="res://game/house/kit/pieces/dormer.tscn" id="19_f16du"]
-[ext_resource type="ArrayMesh" uid="uid://hhbb0n6c4fqb" path="res://game/house/kit/meshes/dormer.tres" id="20_s2lnr"]
 [ext_resource type="PackedScene" uid="uid://dn5tdox86tgvw" path="res://game/house/kit/pieces/roof_post.tscn" id="21_j63e2"]
-[ext_resource type="ArrayMesh" uid="uid://cegofkdrn1u3h" path="res://game/house/kit/meshes/roof_post.tres" id="22_qot1u"]
 
 [node name="AtticCorner" type="Node3D" unique_id=663541189]
 
-[node name="GableExteriorMirrored" type="MeshInstance3D" parent="." unique_id=1629395679 instance=ExtResource("1_13v0r")]
+[node name="GableExteriorMirrored" parent="." unique_id=1629395679 instance=ExtResource("1_13v0r")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 8.5)
-mesh = ExtResource("2_chcpq")
 
-[node name="GableExterior" type="MeshInstance3D" parent="." unique_id=1929304073 instance=ExtResource("3_6tnbg")]
+[node name="GableExterior" parent="." unique_id=1929304073 instance=ExtResource("3_6tnbg")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6, 0, 0)
-mesh = ExtResource("4_mkqed")
 
-[node name="KneeExteriorStart1m" type="MeshInstance3D" parent="." unique_id=1752252517 instance=ExtResource("5_g7lj3")]
-mesh = ExtResource("6_ja5by")
+[node name="KneeExteriorStart1m" parent="." unique_id=1752252517 instance=ExtResource("5_g7lj3")]
 
-[node name="KneeExterior2m" type="MeshInstance3D" parent="." unique_id=1225966462 instance=ExtResource("7_7t8i0")]
+[node name="KneeExterior2m" parent="." unique_id=1225966462 instance=ExtResource("7_7t8i0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
-mesh = ExtResource("8_pttxj")
 
-[node name="KneeExterior2m2" type="MeshInstance3D" parent="." unique_id=2017858211 instance=ExtResource("7_7t8i0")]
+[node name="KneeExterior2m2" parent="." unique_id=2017858211 instance=ExtResource("7_7t8i0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
-mesh = ExtResource("8_pttxj")
 
-[node name="KneeExteriorEnd1m" type="MeshInstance3D" parent="." unique_id=1463180317 instance=ExtResource("9_8pivy")]
+[node name="KneeExteriorEnd1m" parent="." unique_id=1463180317 instance=ExtResource("9_8pivy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
-mesh = ExtResource("10_rwd77")
 
-[node name="KneeExteriorStart1m2" type="MeshInstance3D" parent="." unique_id=123193081 instance=ExtResource("5_g7lj3")]
+[node name="KneeExteriorStart1m2" parent="." unique_id=123193081 instance=ExtResource("5_g7lj3")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 6, 0, 8.5)
-mesh = ExtResource("6_ja5by")
 
-[node name="KneeExterior1m" type="MeshInstance3D" parent="." unique_id=1829364011 instance=ExtResource("11_eeqmr")]
+[node name="KneeExterior1m" parent="." unique_id=1829364011 instance=ExtResource("11_eeqmr")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 5, 0, 8.5)
-mesh = ExtResource("12_p221y")
 
-[node name="KneeExterior2m3" type="MeshInstance3D" parent="." unique_id=605771103 instance=ExtResource("7_7t8i0")]
+[node name="KneeExterior2m3" parent="." unique_id=605771103 instance=ExtResource("7_7t8i0")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4, 0, 8.5)
-mesh = ExtResource("8_pttxj")
 
-[node name="KneeExterior1m2" type="MeshInstance3D" parent="." unique_id=719454794 instance=ExtResource("11_eeqmr")]
+[node name="KneeExterior1m2" parent="." unique_id=719454794 instance=ExtResource("11_eeqmr")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2, 0, 8.5)
-mesh = ExtResource("12_p221y")
 
-[node name="KneeExteriorEnd1m2" type="MeshInstance3D" parent="." unique_id=417244037 instance=ExtResource("9_8pivy")]
+[node name="KneeExteriorEnd1m2" parent="." unique_id=417244037 instance=ExtResource("9_8pivy")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 1, 0, 8.5)
-mesh = ExtResource("10_rwd77")
 
-[node name="RoofVergeW" type="MeshInstance3D" parent="." unique_id=1153412744 instance=ExtResource("13_dvrp0")]
-mesh = ExtResource("14_vwqyn")
+[node name="RoofVergeW" parent="." unique_id=1153412744 instance=ExtResource("13_dvrp0")]
 
-[node name="Roof2m" type="MeshInstance3D" parent="." unique_id=1211820930 instance=ExtResource("15_oe7e2")]
-mesh = ExtResource("16_k7edn")
+[node name="Roof2m" parent="." unique_id=1211820930 instance=ExtResource("15_oe7e2")]
 
-[node name="Roof2m2" type="MeshInstance3D" parent="." unique_id=1340122956 instance=ExtResource("15_oe7e2")]
+[node name="Roof2m2" parent="." unique_id=1340122956 instance=ExtResource("15_oe7e2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
-mesh = ExtResource("16_k7edn")
 
-[node name="Roof2m3" type="MeshInstance3D" parent="." unique_id=154436991 instance=ExtResource("15_oe7e2")]
+[node name="Roof2m3" parent="." unique_id=154436991 instance=ExtResource("15_oe7e2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
-mesh = ExtResource("16_k7edn")
 
-[node name="RoofVergeE" type="MeshInstance3D" parent="." unique_id=1206277599 instance=ExtResource("17_ro078")]
+[node name="RoofVergeE" parent="." unique_id=1206277599 instance=ExtResource("17_ro078")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
-mesh = ExtResource("18_f3l2v")
 
-[node name="RoofVergeE2" type="MeshInstance3D" parent="." unique_id=214277041 instance=ExtResource("17_ro078")]
+[node name="RoofVergeE2" parent="." unique_id=214277041 instance=ExtResource("17_ro078")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 8.5)
-mesh = ExtResource("18_f3l2v")
 
-[node name="RoofVergeW2" type="MeshInstance3D" parent="." unique_id=1498710842 instance=ExtResource("13_dvrp0")]
+[node name="RoofVergeW2" parent="." unique_id=1498710842 instance=ExtResource("13_dvrp0")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 6, 0, 8.5)
-mesh = ExtResource("14_vwqyn")
 
-[node name="Roof2m4" type="MeshInstance3D" parent="." unique_id=1997500072 instance=ExtResource("15_oe7e2")]
+[node name="Roof2m4" parent="." unique_id=1997500072 instance=ExtResource("15_oe7e2")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2, 0, 8.5)
-mesh = ExtResource("16_k7edn")
 
-[node name="Dormer" type="MeshInstance3D" parent="." unique_id=997243460 instance=ExtResource("19_f16du")]
+[node name="Dormer" parent="." unique_id=997243460 instance=ExtResource("19_f16du")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 4, 0, 8.5)
-mesh = ExtResource("20_s2lnr")
 
-[node name="Roof2m5" type="MeshInstance3D" parent="." unique_id=21736429 instance=ExtResource("15_oe7e2")]
+[node name="Roof2m5" parent="." unique_id=21736429 instance=ExtResource("15_oe7e2")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 6, 0, 8.5)
-mesh = ExtResource("16_k7edn")
 
-[node name="RoofPost" type="MeshInstance3D" parent="." unique_id=970831201 instance=ExtResource("21_j63e2")]
+[node name="RoofPost" parent="." unique_id=970831201 instance=ExtResource("21_j63e2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1.5)
-mesh = ExtResource("22_qot1u")

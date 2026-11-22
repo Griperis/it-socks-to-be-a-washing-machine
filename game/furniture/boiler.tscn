@@ -101,7 +101,7 @@ metadata/hide = "the narrow gap under the boiler's kick plate"
 metadata/rooms = ["Boiler room"]
 metadata/plan_spot = "Boiler"
 
-[node name="Looks" type="Node3D" parent="." unique_id=1854471879 instance=ExtResource("1_hq0n7")]
+[node name="Looks" parent="." unique_id=1854471879 instance=ExtResource("1_hq0n7")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1225936964]
 transform = Transform3D(0, 0, -1, 1, 0, 0, 0, -1, 0, 0, 0.81, -0.00531)

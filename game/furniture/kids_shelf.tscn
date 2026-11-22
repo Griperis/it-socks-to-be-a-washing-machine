@@ -91,7 +91,7 @@ metadata/rooms = ["Kids' room"]
 metadata/plan_spot = "Kids' shelf (new)"
 metadata/note = "A low cube shelf with toys; the plan's kids' room has room for it on the south wall."
 
-[node name="Looks" type="Node3D" parent="." unique_id=616513107 instance=ExtResource("1_gknsl")]
+[node name="Looks" parent="." unique_id=616513107 instance=ExtResource("1_gknsl")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1272736741]
 shape = SubResource("ConvexPolygonShape3D_t3cio")

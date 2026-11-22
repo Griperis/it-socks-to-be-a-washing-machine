@@ -59,7 +59,7 @@ metadata/hide = "under the seat"
 metadata/rooms = ["Home office"]
 metadata/plan_spot = "Office chair"
 
-[node name="Looks" type="Node3D" parent="." unique_id=1221407051 instance=ExtResource("1_a7pp7")]
+[node name="Looks" parent="." unique_id=1221407051 instance=ExtResource("1_a7pp7")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=245961731]
 shape = SubResource("ConvexPolygonShape3D_sb770")

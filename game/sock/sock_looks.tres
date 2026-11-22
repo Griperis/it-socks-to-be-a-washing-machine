@@ -17,6 +17,13 @@ cloth_size = Vector2(0.206, 0.15)
 calf_body = Vector2(0.0503, 0.1078)
 patch_split = Vector2(0.0862, 0.6211)
 
+[sub_resource type="Resource" id="Fit_chunky"]
+script = ExtResource("2_fit")
+print_aspect = 0.27
+cloth_size = Vector2(0.393, 0.27)
+calf_body = Vector2(0.1571, 0.4713)
+patch_split = Vector2(0.1571, 0.7736)
+
 [sub_resource type="Resource" id="Fit_crew"]
 script = ExtResource("2_fit")
 
@@ -26,13 +33,6 @@ print_aspect = 0.31
 cloth_size = Vector2(0.314, 0.21)
 calf_body = Vector2(0.1595, 0.4558)
 patch_split = Vector2(0.1595, 0.7767)
-
-[sub_resource type="Resource" id="Fit_chunky"]
-script = ExtResource("2_fit")
-print_aspect = 0.27
-cloth_size = Vector2(0.393, 0.27)
-calf_body = Vector2(0.1571, 0.4713)
-patch_split = Vector2(0.1571, 0.7736)
 
 [resource]
 script = ExtResource("1_table")

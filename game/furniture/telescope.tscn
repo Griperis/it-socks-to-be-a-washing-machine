@@ -28,7 +28,7 @@ metadata/rooms = ["Junk loft"]
 metadata/plan_spot = "Telescope"
 metadata/note = "On a tripod, pointing up out of the dormer window (+x)."
 
-[node name="Looks" type="Node3D" parent="." unique_id=436109284 instance=ExtResource("1_r5ake")]
+[node name="Looks" parent="." unique_id=436109284 instance=ExtResource("1_r5ake")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=556660544]
 shape = SubResource("ConvexPolygonShape3D_am6k8")

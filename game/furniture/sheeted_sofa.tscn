@@ -110,7 +110,7 @@ metadata/rooms = ["Junk loft"]
 metadata/plan_spot = "Sofa under sheet"
 metadata/note = "A sofa shape under a dust sheet (hangs to the floor: no crawl gap)."
 
-[node name="Looks" type="Node3D" parent="." unique_id=14021507 instance=ExtResource("1_6gjyj")]
+[node name="Looks" parent="." unique_id=14021507 instance=ExtResource("1_6gjyj")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1511817536]
 shape = SubResource("ConvexPolygonShape3D_a7wf3")

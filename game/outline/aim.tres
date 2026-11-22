@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://bh3tprchpdk0q" path="res://game/outline/outline_style.gd" id="1_style"]
 
-; placeholder: stronger for the graybox, recheck on the M1 models (Q2374); the old game's shells were (0.003, 0.9), (0.006, 0.45), (0.0095, 0.2)
 [resource]
 script = ExtResource("1_style")
 shells = Array[Vector2]([Vector2(0.005, 1), Vector2(0.009, 0.75), Vector2(0.013, 0.35)])

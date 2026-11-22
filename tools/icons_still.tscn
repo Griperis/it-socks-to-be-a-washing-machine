@@ -1,15 +1,15 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://in0h6kdkawk8"]
 
-[ext_resource type="PackedScene" path="res://game/zoo/stations/icons.tscn" id="1_icons"]
+[ext_resource type="PackedScene" uid="uid://bia8qy2uew74e" path="res://game/zoo/stations/icons.tscn" id="1_icons"]
 
-[node name="IconsStill" type="Node3D"]
+[node name="IconsStill" type="Node3D" unique_id=172026567]
 
-[node name="Icons" parent="." instance=ExtResource("1_icons")]
+[node name="Icons" parent="." unique_id=847541716 instance=ExtResource("1_icons")]
 
-[node name="Light" type="DirectionalLight3D" parent="."]
+[node name="Light" type="DirectionalLight3D" parent="." unique_id=273902508]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
 
-[node name="Camera" type="Camera3D" parent="."]
+[node name="Camera" type="Camera3D" parent="." unique_id=1319880900]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.3, -3.8, 12)
 projection = 1
 size = 12.0

@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://q2mlw0ie30qa"]
 
-[ext_resource type="Script" path="res://game/debug/mess_bench.gd" id="1_bench"]
+[ext_resource type="Script" uid="uid://cjecsyos56ocp" path="res://game/debug/mess_bench.gd" id="1_bench"]
 
-[node name="MessBench" type="Node"]
+[node name="MessBench" type="Node" unique_id=1447694920]
 script = ExtResource("1_bench")

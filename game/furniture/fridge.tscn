@@ -94,7 +94,7 @@ metadata/rooms = ["Kitchen & dining"]
 metadata/plan_spot = "Fridge"
 metadata/note = "A rounded retro fridge-freezer; both doors hinge on the left edge (the wall side, house/12) and open 85 deg."
 
-[node name="Looks" type="Node3D" parent="." unique_id=1047130844 instance=ExtResource("1_74nyc")]
+[node name="Looks" parent="." unique_id=1047130844 instance=ExtResource("1_74nyc")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1828182747]
 shape = SubResource("ConvexPolygonShape3D_2bfoy")
@@ -177,7 +177,7 @@ shape = SubResource("BoxShape3D_yjaps")
 script = ExtResource("2_2epiy")
 metadata/kind = "fridge"
 
-[node name="Looks" type="Node3D" parent="Door_Top" unique_id=69230489 instance=ExtResource("3_2noiw")]
+[node name="Looks" parent="Door_Top" unique_id=69230489 instance=ExtResource("3_2noiw")]
 
 [node name="Inside" type="Area3D" parent="Door_Top" unique_id=963990942]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2225, -0.036900006)
@@ -196,7 +196,7 @@ shape = SubResource("BoxShape3D_8ayoc")
 script = ExtResource("2_2epiy")
 metadata/kind = "fridge"
 
-[node name="Looks" type="Node3D" parent="Door_Bottom" unique_id=347521979 instance=ExtResource("4_krcjl")]
+[node name="Looks" parent="Door_Bottom" unique_id=347521979 instance=ExtResource("4_krcjl")]
 
 [node name="Inside" type="Area3D" parent="Door_Bottom" unique_id=1614551349]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35250002, -0.036900006)

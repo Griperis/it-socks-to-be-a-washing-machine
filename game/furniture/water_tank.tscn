@@ -30,7 +30,7 @@ metadata/height = 1.718
 metadata/rooms = ["Boiler room"]
 metadata/plan_spot = "Water tank"
 
-[node name="Looks" type="Node3D" parent="." unique_id=388916841 instance=ExtResource("1_jf0y3")]
+[node name="Looks" parent="." unique_id=388916841 instance=ExtResource("1_jf0y3")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1690683168]
 shape = SubResource("ConvexPolygonShape3D_63tga")

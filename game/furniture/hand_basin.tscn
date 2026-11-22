@@ -28,7 +28,7 @@ metadata/rooms = ["WC"]
 metadata/plan_spot = "Hand basin (new)"
 metadata/note = "Pedestal basin; the back is the wall side."
 
-[node name="Looks" type="Node3D" parent="." unique_id=214946567 instance=ExtResource("1_xkbbo")]
+[node name="Looks" parent="." unique_id=214946567 instance=ExtResource("1_xkbbo")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=983416668]
 shape = SubResource("ConvexPolygonShape3D_74vkg")

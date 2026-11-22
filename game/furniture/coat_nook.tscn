@@ -141,7 +141,7 @@ metadata/rooms = ["Hall"]
 metadata/plan_spot = "Coat nook"
 metadata/note = "Bench, hook rail and coats in one; the back is the wall side."
 
-[node name="Looks" type="Node3D" parent="." unique_id=2008588810 instance=ExtResource("1_btehr")]
+[node name="Looks" parent="." unique_id=2008588810 instance=ExtResource("1_btehr")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1026512222]
 shape = SubResource("ConvexPolygonShape3D_vcjip")

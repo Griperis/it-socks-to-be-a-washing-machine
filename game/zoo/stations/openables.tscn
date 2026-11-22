@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b2u1g7oswx66l"]
 
-[ext_resource type="PackedScene" path="res://game/entities/cupboard/cupboard.tscn" id="1_cupboard"]
+[ext_resource type="PackedScene" uid="uid://cetnblb56hc5v" path="res://game/entities/cupboard/cupboard.tscn" id="1_cupboard"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.3, 0.5, 0.42, 1)
@@ -9,26 +9,26 @@ albedo_color = Color(0.3, 0.5, 0.42, 1)
 material = SubResource("StandardMaterial3D_pad")
 size = Vector2(5, 3)
 
-[node name="Openables" type="Node3D"]
+[node name="Openables" type="Node3D" unique_id=1875896871]
 
-[node name="Pad" type="MeshInstance3D" parent="."]
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=2081039677]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
 mesh = SubResource("PlaneMesh_pad")
 
-[node name="Name" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 1.0)
+[node name="Name" type="Label3D" parent="." unique_id=1508339718]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 1)
 pixel_size = 0.004
 billboard = 2
-vertical_alignment = 2
 text = "Openables: open, shut mid-swing; the right one is locked"
+vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="Cupboard" parent="." instance=ExtResource("1_cupboard")]
+[node name="Cupboard" parent="." unique_id=113493523 instance=ExtResource("1_cupboard")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
 
-[node name="CupboardLocked" parent="." instance=ExtResource("1_cupboard")]
+[node name="CupboardLocked" parent="." unique_id=1033906892 instance=ExtResource("1_cupboard")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
 
-[node name="Openable" parent="CupboardLocked" index="0"]
+[node name="Openable" parent="CupboardLocked" parent_id_path=PackedInt32Array(1033906892) index="0" unique_id=1763187273]
 locked = true

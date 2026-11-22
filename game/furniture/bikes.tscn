@@ -68,7 +68,7 @@ metadata/rooms = ["Garage"]
 metadata/plan_spot = "Bikes"
 metadata/note = "Two bikes side by side, facing along x; collide as one box or per bike."
 
-[node name="Looks" type="Node3D" parent="." unique_id=110758382 instance=ExtResource("1_nermm")]
+[node name="Looks" parent="." unique_id=110758382 instance=ExtResource("1_nermm")]
 
 [node name="Shape1" type="CollisionShape3D" parent="." unique_id=1750330053]
 shape = SubResource("ConvexPolygonShape3D_j72hf")

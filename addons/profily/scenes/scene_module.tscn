@@ -1,38 +1,43 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene format=3 uid="uid://ck7ndwf86fxr"]
 
-[ext_resource type="Script" path="res://addons/profily/scripts/scene/scene_manager.gd" id="1_manager"]
-[ext_resource type="Script" path="res://addons/profily/scripts/scene/scene_monitor.gd" id="2_monitor"]
-[ext_resource type="Script" path="res://addons/profily/scripts/scene/scene_graph.gd" id="3_graph"]
-[ext_resource type="Script" path="res://addons/profily/scripts/scene/scene_text.gd" id="4_text"]
-[ext_resource type="StyleBoxFlat" path="res://addons/profily/styles/background_stylebox.tres" id="5_bg"]
-[ext_resource type="FontFile" path="res://addons/profily/fonts/Roboto-Regular.ttf" id="6_roboto"]
+[ext_resource type="Script" uid="uid://c3ka0p8680x4a" path="res://addons/profily/scripts/scene/scene_manager.gd" id="1_manager"]
+[ext_resource type="Script" uid="uid://y06t3fjchm1a" path="res://addons/profily/scripts/scene/scene_monitor.gd" id="2_monitor"]
+[ext_resource type="Script" uid="uid://chtbkv3j1tdi" path="res://addons/profily/scripts/scene/scene_graph.gd" id="3_graph"]
+[ext_resource type="Script" uid="uid://5i0namgta6ah" path="res://addons/profily/scripts/scene/scene_text.gd" id="4_text"]
+[ext_resource type="StyleBox" path="res://addons/profily/styles/background_stylebox.tres" id="5_bg"]
+[ext_resource type="FontFile" uid="uid://dfrm2sykl2xby" path="res://addons/profily/fonts/Roboto-Regular.ttf" id="6_roboto"]
 
-[node name="SceneModule" type="Control"]
+[node name="SceneModule" type="Control" unique_id=1193263087]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 330.0
 offset_bottom = 166.3
 mouse_filter = 2
 script = ExtResource("1_manager")
 
-[node name="BackgroundFull" type="Panel" parent="."]
+[node name="BackgroundFull" type="Panel" parent="." unique_id=1921495096]
 unique_name_in_owner = true
+layout_mode = 0
 offset_right = 330.0
 offset_bottom = 166.3
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("5_bg")
 
-[node name="BackgroundText" type="Panel" parent="."]
+[node name="BackgroundText" type="Panel" parent="." unique_id=705715484]
 unique_name_in_owner = true
+layout_mode = 0
 offset_right = 330.0
 offset_bottom = 116.0
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("5_bg")
 
-[node name="Monitor" type="Node" parent="."]
+[node name="Monitor" type="Node" parent="." unique_id=517639085]
 unique_name_in_owner = true
 script = ExtResource("2_monitor")
 
-[node name="Graph" type="ColorRect" parent="."]
+[node name="Graph" type="ColorRect" parent="." unique_id=1278356676]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 15.0
 offset_top = 116.0
 offset_right = 315.0
@@ -40,15 +45,17 @@ offset_bottom = 156.3
 mouse_filter = 2
 script = ExtResource("3_graph")
 
-[node name="Text" type="Control" parent="."]
+[node name="Text" type="Control" parent="." unique_id=1422355079]
 unique_name_in_owner = true
+anchors_preset = 0
 offset_right = 330.0
 offset_bottom = 166.3
 mouse_filter = 2
 script = ExtResource("4_text")
 
-[node name="DrawCallsLabel" type="Label" parent="Text"]
+[node name="DrawCallsLabel" type="Label" parent="Text" unique_id=1670185561]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 15.0
 offset_top = 4.0
 offset_right = 315.0
@@ -57,8 +64,9 @@ theme_override_fonts/font = ExtResource("6_roboto")
 theme_override_font_sizes/font_size = 28
 text = "Draw calls 0"
 
-[node name="ObjectsLabel" type="Label" parent="Text"]
+[node name="ObjectsLabel" type="Label" parent="Text" unique_id=215306383]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 15.0
 offset_top = 36.0
 offset_right = 315.0
@@ -67,8 +75,9 @@ theme_override_fonts/font = ExtResource("6_roboto")
 theme_override_font_sizes/font_size = 25
 text = "Objects 0 · Prims 0"
 
-[node name="NodesLabel" type="Label" parent="Text"]
+[node name="NodesLabel" type="Label" parent="Text" unique_id=382248250]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 15.0
 offset_top = 62.0
 offset_right = 315.0
@@ -77,8 +86,9 @@ theme_override_fonts/font = ExtResource("6_roboto")
 theme_override_font_sizes/font_size = 25
 text = "Nodes 0 · Orphans 0"
 
-[node name="PhysicsLabel" type="Label" parent="Text"]
+[node name="PhysicsLabel" type="Label" parent="Text" unique_id=1327858991]
 unique_name_in_owner = true
+layout_mode = 0
 offset_left = 15.0
 offset_top = 88.0
 offset_right = 315.0
