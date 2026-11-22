@@ -70,3 +70,4 @@ pour's places are seeded, so log the Sock's id and tick once it is seen.
     `mess_settle` six times, in order and reversed, and twice reversed in one process: `PASS 199 checks, 20
     cases` each, no FLAKY; `PASS rules: 9 rules, no new hit`. core/49's counts at rest: sunk 0 to 7 (deepest
     20 mm), none under, none jumped.
+- Merged: 2d4d21cb (2026-11-22, branch core/50-heap-sock-sinks-under-floor)
