@@ -29,6 +29,12 @@
 ## falling Socks (a spout's pour, launched at once with their own push), `take_out` makes loose
 ## lying or falling ones GONE (never drawn, aimed or simulated; ids stay as they are, and trailing
 ## GONE records are cut off). The answer's change carries the records, so a Guest sees them too.
+##
+## An answer's change of the Mess carries only the records it changed (coop/07, coop-flight-sync
+## condition 3): a rows patch (ROWS: the Sock ids, and each one's whole record), the record count
+## when it changes, and the launches of the rows that fly. The *_patch functions make one and take
+## the patch made so far (`onto`), so one answer may change many Socks. A snapshot (a late Guest, a
+## save) stays whole: every State field by name.
 class_name Mess
 extends Part
 
@@ -61,6 +67,17 @@ const LOOKS := ^"Looks"
 const NOBODY := -1
 ## An answer's list of places where a lost Sock or Pair came back (a "pop" plays at each, core/16).
 const POPPED := "popped"
+## A rows patch's keys: the Sock ids changed, each one's whole record (Design, State, mate, pose:
+## aligned with ROWS, POSE floats a pose), the new record count when it changes (records past it are
+## cut off; records added are among the rows), and {Sock id: launch} for the rows that fly with one.
+## A row with no launch has none after it.
+const ROWS := "rows"
+const ROW_DESIGNS := "row_designs"
+const ROW_STATES := "row_states"
+const ROW_MATES := "row_mates"
+const ROW_POSES := "row_poses"
+const ROW_COUNT := "count"
+const LAUNCHES := "launches"
 
 const FLIGHT_SCENE := MessMoving.FLIGHT_SCENE
 const CLOTH_TUNING := preload("res://game/sock/sock_cloth_tuning.tres")
@@ -318,35 +335,40 @@ func waiting_count() -> int:
 
 
 ## The change that takes a lying Sock into somebody's Hands (part of the Hands' pick answer).
-func held_patch(sock: int) -> Dictionary:
-	var s := states.duplicate()
-	s[sock] = State.HELD
-	return {"states": s, "throws": _without_throw(sock)}
+func held_patch(sock: int, onto := {}) -> Dictionary:
+	var p := _rows_onto(onto)
+	_set_state(p, _row(p, sock), State.HELD)
+	return p
 
 
 ## The change that fuses lying Sock `picked` with its held mate `lead` into one Pair (part of the
 ## Hands' pick answer, P01): `picked` goes IN_PAIR, the two name each other, the lead stays held.
-func paired_patch(lead: int, picked: int) -> Dictionary:
-	var s := states.duplicate()
-	s[picked] = State.IN_PAIR
-	var m := mates.duplicate()
-	m[lead] = picked
-	m[picked] = lead
-	return {"states": s, "mates": m, "throws": _without_throw(picked)}
+func paired_patch(lead: int, picked: int, onto := {}) -> Dictionary:
+	var p := _rows_onto(onto)
+	var i := _row(p, picked)
+	_set_state(p, i, State.IN_PAIR)
+	var j := _row(p, lead)
+	var m: PackedInt32Array = p[ROW_MATES]
+	m[i] = lead
+	m[j] = picked
+	p[ROW_MATES] = m
+	return p
 
 
 ## The change that throws a held Sock (part of the Hands' throw answer): it leaves `pose` at once,
 ## no flick, with velocity `vel` and turn `spin`, thrown by player `by` (their body lets it through).
 ## A Pair's pose is its ball's centre. `drop` (the Hands' drop answer, Q2367): let go, it falls on its
 ## own to its spot with drift `vel`, and is never shelved by a Cabinet's front.
-func thrown_patch(sock: int, pose: Transform3D, vel: Vector3, spin: Vector3, by: int, drop := false) -> Dictionary:
-	var s := states.duplicate()
-	s[sock] = State.FLYING
-	var t := throws.duplicate()
-	t[sock] = {"vel": vel, "spin": spin, "by": by}
+func thrown_patch(sock: int, pose: Transform3D, vel: Vector3, spin: Vector3, by: int, drop := false, onto := {}) -> Dictionary:
+	var p := _rows_onto(onto)
+	var i := _row(p, sock)
+	_set_state(p, i, State.FLYING)
+	_set_pose(p, i, pose)
+	var launch := {"vel": vel, "spin": spin, "by": by}
 	if drop:
-		t[sock]["drop"] = true
-	return {"states": s, "poses": _with_pose(sock, pose), "throws": t}
+		launch["drop"] = true
+	(p[LAUNCHES] as Dictionary)[sock] = launch
+	return p
 
 
 ## The Host's rule for where Sock `sock` let down at `t` lies (core/16 P12, P13; the old
@@ -432,47 +454,134 @@ static func _sock_middle(design: SockDesign) -> Vector3:
 
 
 ## The change that puts lying or flying Sock `sock` down at `pose`, lying (a zoo button's answer,
-## core/16 Q2369; the Host's `rest` does the same for a flight), made on `from_states`,
-## `from_poses` and `from_throws` (the records, or a patch already made for other Socks).
-func lying_patch(sock: int, pose: Transform3D, from_states: PackedByteArray, from_poses: PackedFloat32Array,
-		from_throws: Dictionary) -> Dictionary:
-	var s := from_states.duplicate()
-	s[sock] = State.LYING
-	var t := from_throws.duplicate()
-	t.erase(sock)
-	return {"states": s, "poses": _pose_into(from_poses, sock, pose), "throws": t}
+## core/16 Q2369; the Host's `rest` does the same for a flight), added to the patch made so far.
+func lying_patch(sock: int, pose: Transform3D, onto := {}) -> Dictionary:
+	var p := _rows_onto(onto)
+	var i := _row(p, sock)
+	_set_state(p, i, State.LYING)
+	_set_pose(p, i, pose)
+	(p[LAUNCHES] as Dictionary).erase(sock)
+	return p
 
 
 ## The change that puts held or flying Pairs (their leads `leads`) into a Cabinet's drawer (part
 ## of the Cabinet's shelve answer): each lead goes SHELVED, its mate stays IN_PAIR, a throw is over.
-func shelved_patch(leads: PackedInt32Array) -> Dictionary:
-	var s := states.duplicate()
-	var t := throws.duplicate()
+func shelved_patch(leads: PackedInt32Array, onto := {}) -> Dictionary:
+	var p := _rows_onto(onto)
 	for sock in leads:
-		s[sock] = State.SHELVED
-		t.erase(sock)
-	return {"states": s, "throws": t}
+		_set_state(p, _row(p, sock), State.SHELVED)
+		(p[LAUNCHES] as Dictionary).erase(sock)
+	return p
+
+
+## The State a rows patch gives each Sock it names: {Sock id: State} (what a listener of an answer reads).
+static func row_states(patch: Dictionary) -> Dictionary[int, int]:
+	var out: Dictionary[int, int] = {}
+	var rows: PackedInt32Array = patch.get(ROWS, PackedInt32Array())
+	var row_states_of: PackedByteArray = patch.get(ROW_STATES, PackedByteArray())
+	for i in rows.size():
+		out[rows[i]] = row_states_of[i]
+	return out
+
+
+## A copy of rows patch `onto` to add rows to (an empty one when `onto` is empty).
+func _rows_onto(onto: Dictionary) -> Dictionary:
+	if onto.is_empty():
+		return {ROWS: PackedInt32Array(), ROW_DESIGNS: PackedInt32Array(), ROW_STATES: PackedByteArray(),
+				ROW_MATES: PackedInt32Array(), ROW_POSES: PackedFloat32Array(), LAUNCHES: {}}
+	assert(onto.has(ROWS), "Mess: a patch to add rows to is a rows patch")
+	return onto.duplicate(true)
+
+
+## The index of Sock `sock`'s row in rows patch `p`; a new row, made from its record now (and its
+## launch), when the patch has none yet.
+func _row(p: Dictionary, sock: int) -> int:
+	var rows: PackedInt32Array = p[ROWS]
+	var i := rows.find(sock)
+	if i >= 0:
+		return i
+	rows.append(sock)
+	p[ROWS] = rows
+	var d: PackedInt32Array = p[ROW_DESIGNS]
+	d.append(designs[sock])
+	p[ROW_DESIGNS] = d
+	var s: PackedByteArray = p[ROW_STATES]
+	s.append(states[sock])
+	p[ROW_STATES] = s
+	var m: PackedInt32Array = p[ROW_MATES]
+	m.append(mates[sock])
+	p[ROW_MATES] = m
+	var o: PackedFloat32Array = p[ROW_POSES]
+	o.append_array(poses.slice(sock * POSE, sock * POSE + POSE))
+	p[ROW_POSES] = o
+	if throws.has(sock) and not (p[LAUNCHES] as Dictionary).has(sock):
+		(p[LAUNCHES] as Dictionary)[sock] = throws[sock]
+	return rows.size() - 1
+
+
+static func _set_state(p: Dictionary, i: int, state: State) -> void:
+	var s: PackedByteArray = p[ROW_STATES]
+	s[i] = state
+	p[ROW_STATES] = s
+
+
+static func _set_pose(p: Dictionary, i: int, pose: Transform3D) -> void:
+	var o: PackedFloat32Array = p[ROW_POSES]
+	var row := pack(pose)
+	for k in POSE:
+		o[i * POSE + k] = row[k]
+	p[ROW_POSES] = o
+
+
+## The one writer of the Mess's state: a rows patch (an answer) writes only its rows, on every
+## machine alike; anything else (a snapshot, a save, a test's set-up) is written whole by field name.
+func write(patch: Dictionary, now: bool) -> void:
+	if not patch.has(ROWS):
+		super.write(patch, now)
+		return
+	var n := int(patch.get(ROW_COUNT, count()))
+	if n != count():
+		for sock in range(n, count()):
+			throws.erase(sock)
+		designs.resize(n)
+		states.resize(n)
+		mates.resize(n)
+		poses.resize(n * POSE)
+	var rows: PackedInt32Array = patch[ROWS]
+	var row_designs: PackedInt32Array = patch[ROW_DESIGNS]
+	var row_states_of: PackedByteArray = patch[ROW_STATES]
+	var row_mates: PackedInt32Array = patch[ROW_MATES]
+	var row_poses: PackedFloat32Array = patch[ROW_POSES]
+	var launches: Dictionary = patch.get(LAUNCHES, {})
+	for i in rows.size():
+		var sock := rows[i]
+		if sock < 0 or sock >= n:
+			Log.error("parts", "%s: a row for Sock %d of %d" % [id, sock, n])
+			continue
+		designs[sock] = row_designs[i]
+		states[sock] = row_states_of[i]
+		mates[sock] = row_mates[i]
+		for k in POSE:
+			poses[sock * POSE + k] = row_poses[i * POSE + k]
+		if launches.has(sock):
+			throws[sock] = launches[sock]
+		else:
+			throws.erase(sock)
+	_show(now)
 
 
 ## Only the Host's own `rest`, `wake` and `fall` (no Guest may send one: nothing in accepts()).
-## `wake` (a hit, a moving Door) and `fall` (what held it up was picked) start lying Socks or Pairs
-## moving: "sock", one, or "socks", the ones the Host starts this tick (its args never travel; the
-## answer's change does).
+## `rest` is one batch a tick of every flight that came to rest (coop/07, the old game's settle
+## stream): "socks", "ats" and "rots" (one place and turn each), "returned" (those of them that were
+## lost and came back). `wake` (a hit, a moving Door) and `fall` (what held it up was picked) start
+## lying Socks or Pairs moving: "sock", one, or "socks", the ones the Host starts this tick (its args
+## never travel; the answer's change does).
 func decide(cmd: Command) -> Dictionary:
 	if cmd.by != Parts.HOST:
 		return refuse("wrong")
 	match cmd.kind:
 		&"rest":
-			var sock: Variant = cmd.args.get("sock")
-			var at: Variant = cmd.args.get("at")
-			var rot: Variant = cmd.args.get("rot")
-			if not (sock is int) or not (at is Vector3) or not (rot is Vector3) or state_of(sock) != State.FLYING:
-				return refuse("wrong")
-			var ev := grant(lying_patch(sock, Transform3D(Basis.from_euler(rot), at), states, poses, throws))
-			if bool(cmd.args.get("returned", false)):
-				# core/16 P12b: a lost Sock came back; every machine hears a pop there (Hearing).
-				ev[POPPED] = PackedVector3Array([at])
-			return ev
+			return _decide_rest(cmd.args)
 		&"wake", &"fall":
 			var socks := PackedInt32Array()
 			var one: Variant = cmd.args.get("sock")
@@ -481,20 +590,48 @@ func decide(cmd: Command) -> Dictionary:
 				socks.append(one)
 			elif many is PackedInt32Array:
 				socks = many
-			var s := states.duplicate()
-			var any := false
+			var p := _rows_onto({})
 			for sock in socks:
 				if state_of(sock) == State.LYING:
-					s[sock] = State.FLYING
-					any = true
-			if not any:
+					_set_state(p, _row(p, sock), State.FLYING)
+			if (p[ROWS] as PackedInt32Array).is_empty():
 				return refuse("wrong")
-			return grant({"states": s})
+			return grant(p)
 		&"add":
 			return _decide_add(cmd.args)
 		&"take_out":
 			return _decide_take_out(cmd.args)
 	return refuse("wrong")
+
+
+## `rest` (Host-only): the flights named lie at their places, in one rows patch; a Sock that does not
+## fly now is left out; none flying, a refusal.
+func _decide_rest(args: Dictionary) -> Dictionary:
+	var socks: Variant = args.get("socks")
+	var ats: Variant = args.get("ats")
+	var rots: Variant = args.get("rots")
+	var back: Variant = args.get("returned", PackedInt32Array())
+	if not (socks is PackedInt32Array) or not (ats is PackedVector3Array) or not (rots is PackedVector3Array) \
+			or not (back is PackedInt32Array) or (ats as PackedVector3Array).size() != (socks as PackedInt32Array).size() \
+			or (rots as PackedVector3Array).size() != (socks as PackedInt32Array).size():
+		return refuse("wrong")
+	var p := {}
+	var popped := PackedVector3Array()
+	for i in (socks as PackedInt32Array).size():
+		var sock: int = socks[i]
+		if state_of(sock) != State.FLYING:
+			continue
+		var at: Vector3 = ats[i]
+		p = lying_patch(sock, Transform3D(Basis.from_euler(rots[i]), at), p)
+		if (back as PackedInt32Array).has(sock):
+			popped.append(at)
+	if p.is_empty():
+		return refuse("wrong")
+	var ev := grant(p)
+	if not popped.is_empty():
+		# core/16 P12b: a lost Sock came back; every machine hears a pop there (Hearing).
+		ev[POPPED] = popped
+	return ev
 
 
 ## `add` (Host-only): "designs" (PackedInt32Array), "poses" (PackedFloat32Array, POSE floats each),
@@ -517,20 +654,17 @@ func _decide_add(args: Dictionary) -> Dictionary:
 		if catalogue == null or catalogue.design(design) == null:
 			return refuse("wrong")
 	var first := count()
-	var d := designs.duplicate()
-	d.append_array(add_designs)
-	var s := states.duplicate()
-	s.resize(first + n)
-	var m := mates.duplicate()
-	m.resize(first + n)
-	var p := poses.duplicate()
-	p.append_array(ps)
-	var t := throws.duplicate()
+	var s := PackedByteArray()
+	s.resize(n)
+	s.fill(State.FLYING)
+	var m := PackedInt32Array()
+	m.resize(n)
+	m.fill(-1)
+	var launches := {}
 	for i in n:
-		s[first + i] = State.FLYING
-		m[first + i] = -1
-		t[first + i] = {"vel": (vs as PackedVector3Array)[i], "spin": (ss as PackedVector3Array)[i], "by": NOBODY}
-	return grant({"designs": d, "states": s, "mates": m, "poses": p, "throws": t})
+		launches[first + i] = {"vel": (vs as PackedVector3Array)[i], "spin": (ss as PackedVector3Array)[i], "by": NOBODY}
+	return grant({ROWS: PackedInt32Array(range(first, first + n)), ROW_DESIGNS: add_designs, ROW_STATES: s,
+			ROW_MATES: m, ROW_POSES: ps, LAUNCHES: launches, ROW_COUNT: first + n})
 
 
 ## `take_out` (Host-only): "socks" (PackedInt32Array): those lying or falling go GONE, a Pair only
@@ -542,27 +676,29 @@ func _decide_take_out(args: Dictionary) -> Dictionary:
 	var asked: Dictionary[int, bool] = {}
 	for sock: int in named:
 		asked[sock] = true
-	var s := states.duplicate()
-	var t := throws.duplicate()
-	var any := false
+	var gone: Dictionary[int, bool] = {}
 	for sock: int in named:
 		if sock < 0 or sock >= count() or state_of(sock) not in [State.LYING, State.FLYING]:
 			continue
 		var mate := mate_of(sock)
 		if mate >= 0 and not asked.has(mate):
 			continue
-		s[sock] = State.GONE
-		t.erase(sock)
+		gone[sock] = true
 		if mate >= 0:
-			s[mate] = State.GONE
-		any = true
-	if not any:
+			gone[mate] = true
+	if gone.is_empty():
 		return refuse("already")
-	var keep := s.size()
-	while keep > 0 and s[keep - 1] == State.GONE:
+	var keep := count()
+	while keep > 0 and (gone.has(keep - 1) or states[keep - 1] == State.GONE):
 		keep -= 1
-	return grant({"states": s.slice(0, keep), "designs": designs.slice(0, keep), "mates": mates.slice(0, keep),
-			"poses": poses.slice(0, keep * POSE), "throws": t})
+	var p := _rows_onto({})
+	for sock: int in gone:
+		if sock < keep:
+			_set_state(p, _row(p, sock), State.GONE)
+			(p[LAUNCHES] as Dictionary).erase(sock)
+	if keep != count():
+		p[ROW_COUNT] = keep
+	return grant(p)
 
 
 ## The lying Socks touching lying Sock `sock`, at most the tuning's wake_count (T11).
@@ -817,6 +953,12 @@ func _on_flight_in(node: Node) -> void:
 	var sock := _sock_of_flight(body)
 	if sock < 0:
 		return
+	if not _is_host():
+		# coop/07: a Guest's spawned copy never simulates. It arrives at the holder's origin with no
+		# synchronizer (coop/08 and coop/09 give it a place); left live, a pour's hundreds of copies
+		# pile into one spot and overflow Jolt's contact buffers on the Guest.
+		body.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
+		body.freeze = true
 	_flight_by_sock[sock] = body
 	_flight_shape.erase(sock)
 	if body.has_node(LOOKS):
@@ -864,25 +1006,6 @@ static func _changed(a: Variant, b: Variant, stride: int, lo: int, hi: int, out:
 
 func _container(node: Node3D) -> Node:
 	return node if node != null else self
-
-
-func _without_throw(sock: int) -> Dictionary:
-	var t := throws.duplicate()
-	t.erase(sock)
-	return t
-
-
-func _with_pose(sock: int, pose: Transform3D) -> PackedFloat32Array:
-	return _pose_into(poses, sock, pose)
-
-
-## A copy of `rows` with Sock `sock`'s pose `pose`.
-static func _pose_into(rows: PackedFloat32Array, sock: int, pose: Transform3D) -> PackedFloat32Array:
-	var p := rows.duplicate()
-	var row := pack(pose)
-	for i in POSE:
-		p[sock * POSE + i] = row[i]
-	return p
 
 
 ## A pose as POSE floats.

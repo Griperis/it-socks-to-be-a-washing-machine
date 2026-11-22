@@ -108,8 +108,8 @@ func case_real_throw() -> void:
 	var woken := {}
 	_parts.applied.connect(func(ev: Dictionary) -> void:
 		if ev.get("ok", false) and StringName(ev.get("kind", &"")) == &"wake":
-			var states: PackedByteArray = ev["changes"][_mess.id]["states"]
-			for sock in states.size():
+			var states := Mess.row_states(ev["changes"][_mess.id])
+			for sock: int in states:
 				if states[sock] == Mess.State.FLYING:
 					woken[sock] = true)
 	# Pick the nearest Sock with the real action, then throw it at the rows.

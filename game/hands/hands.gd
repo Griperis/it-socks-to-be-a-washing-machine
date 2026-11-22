@@ -251,20 +251,13 @@ func left(by: int) -> Dictionary:
 	var at: Variant = parts.where.call(by) if parts != null and parts.where.is_valid() else null
 	var feet: Vector3 = at if at is Vector3 else Vector3.ZERO
 	var t := tuning_of(by)
-	var states := mess.states.duplicate()
-	var poses := mess.poses.duplicate()
-	var throws := mess.throws.duplicate()
+	var dropped := {}
 	for i in items.size():
-		var sock := items[i]
 		var round_feet := Vector3(cos(i * 2.4), 0.0, sin(i * 2.4)) * (t.leave_spread if i > 0 else 0.0)
 		var pose := Transform3D(Basis(Vector3.UP, i * 2.4), feet + round_feet + Vector3.UP * t.leave_height)
-		states[sock] = Mess.State.FLYING
-		var row := Mess.pack(pose)
-		for k in Mess.POSE:
-			poses[sock * Mess.POSE + k] = row[k]
-		throws[sock] = {"vel": Vector3.ZERO, "spin": Vector3.ZERO, "by": by, "drop": true}
+		dropped = mess.thrown_patch(items[i], pose, Vector3.ZERO, Vector3.ZERO, by, true, dropped)
 	return {"ok": true, "dropped_at": feet, "changes": {
-		mess.id: {"states": states, "poses": poses, "throws": throws},
+		mess.id: dropped,
 		id: _patch(by, PackedInt32Array(), -1)}}
 
 

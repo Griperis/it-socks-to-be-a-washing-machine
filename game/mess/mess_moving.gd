@@ -45,6 +45,9 @@ var _leaf_was: Dictionary[RID, Transform3D] = {}
 var _leaf_now: Dictionary[RID, Transform3D] = {}
 ## How many times each flight has been pushed out of a leaf (`MessTuning.leaf_push_tries`).
 var _pushes: Dictionary[int, int] = {}
+## The flights that came to rest this tick, each with its place, turn and whether it was lost: asked
+## of the Mess as one `rest` at the tick's end (coop/07), then cleared.
+var _resting: Dictionary[int, Array] = {}
 ## A leaf shape's box in its own space (a box's size, a convex shape's points' bounds), by shape.
 var _shape_boxes: Dictionary[Shape3D, AABB] = {}
 ## The point that finds which leaf a Sock's middle is in.
@@ -111,6 +114,7 @@ func clear() -> void:
 	_leaf_body.clear()
 	_leaf_was.clear()
 	_leaf_now.clear()
+	_resting.clear()
 
 
 ## Once a physics tick: hits and picks and movers wake, still flights rest (at most
@@ -154,6 +158,7 @@ func tick(delta: float) -> void:
 		stops -= 1
 	if stops > 0:
 		_relieve(stops)
+	_ask_rests()
 	_start_waiting()
 
 
@@ -178,12 +183,29 @@ func _settle(sock: int) -> void:
 	_rest(sock, down["pose"], down["returned"])
 
 
-## Asks the Mess to write `sock` lying at `t`; `returned`: it was lost and came back (a pop plays).
+## Notes `sock` to lie at `t` in this tick's `rest`; `returned`: it was lost and came back (a pop plays).
 func _rest(sock: int, t: Transform3D, returned := false) -> void:
-	var args := {"sock": sock, "at": t.origin, "rot": t.basis.get_euler()}
-	if returned:
-		args["returned"] = true
-	_mess.parts.ask(Command.new(&"rest", Parts.HOST, _mess.id, args))
+	_resting[sock] = [t.origin, t.basis.get_euler(), returned]
+
+
+## Every flight that came to rest this tick lies, in one `rest` of the Mess (one answer, one reliable
+## message to each Guest: the old game's settle stream); none, nothing is asked.
+func _ask_rests() -> void:
+	if _resting.is_empty():
+		return
+	var socks := PackedInt32Array()
+	var ats := PackedVector3Array()
+	var rots := PackedVector3Array()
+	var back := PackedInt32Array()
+	for sock: int in _resting:
+		var r: Array = _resting[sock]
+		socks.append(sock)
+		ats.append(r[0])
+		rots.append(r[1])
+		if r[2]:
+			back.append(sock)
+	_resting.clear()
+	_mess.parts.ask(Command.new(&"rest", Parts.HOST, _mess.id, {"socks": socks, "ats": ats, "rots": rots, "returned": back}))
 
 
 ## Under pressure (Socks waiting, the general share of the budget full), up to `most` slow flights
@@ -191,11 +213,13 @@ func _rest(sock: int, t: Transform3D, returned := false) -> void:
 ## time or faster than the pressure speed (M05).
 func _relieve(most: int) -> void:
 	var t := _mess.bodies_tuning()
-	if _waiting.is_empty() or _flights.size() < t.moving_budget - t.throw_reserve:
+	if _waiting.is_empty() or _flights.size() - _resting.size() < t.moving_budget - t.throw_reserve:
 		return
 	var players := _player_spots()
 	var keyed: Array[Vector3] = []
 	for sock: int in _flights.keys():
+		if _resting.has(sock):
+			continue
 		var body := _flights[sock]
 		var speed := body.linear_velocity.length()
 		if _airborne[sock] < t.rest_time or speed >= t.pressure_speed:

@@ -265,8 +265,8 @@ func case_t11() -> void:
 	var woken := {}
 	_parts.applied.connect(func(ev: Dictionary) -> void:
 		if ev.get("ok", false) and StringName(ev.get("kind", &"")) == &"wake":
-			var states: PackedByteArray = ev["changes"][_mess.id]["states"]
-			for sock in states.size():
+			var states := Mess.row_states(ev["changes"][_mess.id])
+			for sock: int in states:
 				if states[sock] == Mess.State.FLYING and sock != ON_FLOOR:
 					woken[sock] = true)
 	# A slow drop onto the Heap (UNDER with OVER on it) wakes none.
@@ -336,9 +336,9 @@ func _shove(reach: float, target: int) -> Dictionary:
 				return
 			var v := body.linear_velocity
 			seen["dir"] = Vector3(v.x, 0.0, v.z).normalized()
-			var states: PackedByteArray = ev["changes"][_mess.id]["states"]
+			var states := Mess.row_states(ev["changes"][_mess.id])
 			var woken := PackedInt32Array()
-			for sock in states.size():
+			for sock: int in states:
 				if states[sock] == Mess.State.FLYING and sock != ON_FLOOR:
 					woken.append(sock)
 			seen["woken"] = woken)
@@ -383,8 +383,8 @@ func case_t11_pair() -> void:
 	var woken := {}
 	_parts.applied.connect(func(ev: Dictionary) -> void:
 		if ev.get("ok", false) and StringName(ev.get("kind", &"")) == &"wake":
-			var s: PackedByteArray = ev["changes"][_mess.id]["states"]
-			for sock in s.size():
+			var s := Mess.row_states(ev["changes"][_mess.id])
+			for sock: int in s:
 				if s[sock] == Mess.State.FLYING and sock != ON_FLOOR:
 					woken[sock] = true)
 	# The same Throw as T11's, which hits the Heap.
