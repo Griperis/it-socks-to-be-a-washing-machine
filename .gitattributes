@@ -22,6 +22,9 @@
 *.ttf filter=lfs diff=lfs merge=lfs -text
 *.otf filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
+*.dll filter=lfs diff=lfs merge=lfs -text
+*.so filter=lfs diff=lfs merge=lfs -text
+*.dylib filter=lfs diff=lfs merge=lfs -text
 
 # Vendored add-ons stay out of LFS: they are small, and they must arrive whole wherever the
 # repository is copied without its LFS objects (a zip download, a clone without git-lfs).
