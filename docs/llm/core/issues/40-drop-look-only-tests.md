@@ -6,7 +6,7 @@ area: tools
 feature: core
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-22
 blocked_by: []
 notes: []
 terms: []
@@ -38,3 +38,4 @@ existing tests of that kind go, the old cloth tests `hand_details` d02 (walk) an
   lost Socks). Files: `tests/{hand_details,feedback_polish,motion_polish_rest,drawer_details,look,outline,player}_test.gd`
   and the Built logs of tickets 01, 09, 11, 16, 18, 27. Verified: `kit/tools/run.sh --touched`: PASS 277 checks,
   60 cases; `grep_rules.py`: PASS. The full suite is the lead's.
+- Merged: 2bdbd371 (2026-11-22, branch core/40-drop-look-only-tests)

@@ -60,3 +60,4 @@ came from, so it stays where the player left it, only moved clear.
 - Files: `game/mess/mess.gd`, `mess_moving.gd`, `mess_tuning.gd`; `tests/leaf_push_test.gd`;
   `docs/architecture/mess.md`.
 - Verified: `kit/tools/run.sh --touched`: PASS 16763 checks, 370 cases; rules PASS.
+- Merged: 514776d9 (2026-11-22, branch core/39-pushed-out-of-a-shut-leaf)
