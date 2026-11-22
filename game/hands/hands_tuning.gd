@@ -65,6 +65,10 @@ extends Resource
 ## A falling body faster than this wakes the lying Sock it hits and up to `wake_count` touching it (T11).
 @export_range(0.0, 10.0, 0.1, "suffix:m/s") var wake_speed := 1.5 # placeholder: the designer's number (today's value from the old game)
 @export_range(0, 32, 1) var wake_count := 8 # placeholder: the designer's number (today's value from the old game)
+## A thrown Sock or Pair wakes the lying Socks it is about to hit before the contact (core/46, Q2431): those
+## in a sphere this big, `hit_lead_ticks` physics ticks ahead along its motion (the old IMPACT_REACH).
+@export_range(0.0, 0.5, 0.01, "suffix:m") var hit_reach := 0.12 # placeholder: the designer's number (today's value from the old game)
+@export_range(0, 8, 1) var hit_lead_ticks := 2 # placeholder: the designer's number (today's value from the old game)
 ## The most Throws a Guest may send in a second (each needs a held button past the tap).
 @export_range(1, 30, 1, "suffix:/s") var throw_rate := 5 # placeholder: the Host's allowance, not felt in play
 

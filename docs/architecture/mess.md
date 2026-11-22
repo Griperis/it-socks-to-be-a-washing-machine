@@ -28,7 +28,10 @@ Socks lie, are drawn, move or wake.
 - A pick: the Hands' answer writes HELD; `_show` notes the picked box; next tick `MessMoving` queries
   the column over it and queues what lay on it; they start as `fall` within the budget.
 - A hit: a flight at `wake_speed` or more touching a lying body (read from its body state's contacts)
-  queues that Sock and up to `wake_count` touching it; they start as `wake`.
+  queues that Sock and up to `wake_count` touching it; they start as `wake`. A thrown flight (not dropped,
+  poured or woken) first looks ahead (core/46, Q2431, the old `SockFlights._impact_wakes`): a `hit_reach`
+  sphere `hit_lead_ticks` ticks along its motion wakes what it is about to meet, so their bodies exist
+  before the contact and it pushes them (Jolt alone, no extra force, Q1215).
 - A Door or drawer: every `Openable` is in the group `openables`; while it animates, the Host sweeps
   its AnimatableBody3D shapes over the lying bodies and wakes those at once.
 - A rest: still for `rest_time` (or Jolt asleep) asks `rest`; out of bounds or inside a wall, at the
