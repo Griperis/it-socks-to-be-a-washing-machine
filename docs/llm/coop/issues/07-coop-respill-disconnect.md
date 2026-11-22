@@ -77,3 +77,4 @@ reliable channel, which backs up until ENet times out. Reproduce first; the caus
     tests/mess_settle_test.gd, docs/architecture/mess.md.
   - Verified: `--touched` PASS 15658 checks, 372 cases; `coop_respill` all four cases PASS (respill_0ms
     everyday; respill_50ms, pour_0ms, pour_50ms stress).
+- Merged: 46fe2ee6 (2026-11-22, branch coop/07-coop-respill-disconnect)
