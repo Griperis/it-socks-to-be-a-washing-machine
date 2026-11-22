@@ -84,7 +84,8 @@ static func plan(args: PackedStringArray, debug: bool) -> Dictionary:
 			scene = _station(arg.trim_prefix("--scene="))
 			if scene == "":
 				unknown.append(arg)
-		elif QUIET.has(arg):
+		# The co-op flags are read by the scene that starts a session (the zoo today): passed through.
+		elif QUIET.has(arg) or arg == "--host" or arg.begins_with("--join="):
 			continue
 		elif not _bench_option(arg):
 			unknown.append(arg)
