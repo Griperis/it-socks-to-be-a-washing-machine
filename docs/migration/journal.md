@@ -822,3 +822,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2472 |
 
 ---
+
+| Ticket | coop/09, the Hands and Throw in co-op: a Guest's pick, drop and Throw ghosts (Q2220, Q2221, Q2473), wheel at once, refusals and the 2 s timeout, Throws on the stamped stream seen by all, Hands keyed by player id, each Guest's own HandsTuning clamped on the Host, the ghost's cloth flat before rest; PROTOCOL 12; M0.6 batch 3; merged (main 44e2537) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 1 (sent back by the lead: Z1, D13 and G08/G09 were in the Design but left as `[later]`) |
+| Corrections | the agent's interim "a Teammate uses the Host player's tuning" contradicted D13; replaced |
+| Cost | 47,139,201 tokens, 194 tool calls, 55m25s (Opus) |
+| Time | the agent ran about 55 min over two rounds |
+| Surprises | one Throw about 5.6 KB/s, four 22 KB/s; the 2,000 pour 54.9 KB/s reliable at 50 ms; in-process tests had hidden a Guest's capacity of 1; game code +1348 −69 |
+| Stop rules | two looks and wording questions came back (Q2481, Q2482) |
+| Looks | none |
+| Decisions | Q2473-Q2482 |
+
+---
