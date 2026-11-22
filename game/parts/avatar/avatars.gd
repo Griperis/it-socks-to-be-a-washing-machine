@@ -7,6 +7,9 @@
 ## With a `roster`, the Host spawns by it: an avatar for each player in the Session, standing where
 ## the Roster says (the spawn data carries the place, so it never shows at the origin first), and a
 ## leaver's goes when the Roster lets them go. Without one, by the peers the gate admits.
+##
+## The local player's own body (coop/06) wears this machine's Roster colour; alone, or before the
+## Roster names this machine, the first Player colour (the Host's), as the old game's did.
 class_name Avatars
 extends MultiplayerSpawner
 
@@ -24,6 +27,19 @@ const WIRING_OPTIONAL := ["roster"]
 func _ready() -> void:
 	spawn_function = _make
 	multiplayer.server_disconnected.connect(clear)
+	if roster != null:
+		roster.changed.connect(_tint_own_body)
+	_tint_own_body.call_deferred()
+
+
+## The own body takes this machine's Player colour.
+func _tint_own_body() -> void:
+	var player := local_body as Player
+	if player == null or roster == null or player.own_body() == null:
+		return
+	var me := multiplayer.get_unique_id()
+	var known := not roster.entry_of(me).is_empty()
+	player.own_body().colour = roster.colour_of(me) if known else roster.tuning.colour(0)
 
 
 ## The Host: an avatar for itself now and for every player who comes in; a leaver's goes.

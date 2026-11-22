@@ -80,6 +80,12 @@ extends Resource
 @export_range(0.5, 3.0, 0.05, "suffix:m") var stand_height := 1.7
 @export_range(0.5, 3.0, 0.05, "suffix:m") var crouch_height := 1.0
 
+@export_group("First person")
+## The own body (coop/06, Q2466): only the body below this height is drawn, looking down.
+@export_range(0.0, 1.7, 0.01, "suffix:m") var belly_cut := 0.8
+## How far that belly sits behind the eyes, so its front curve shows looking down.
+@export_range(0.0, 1.0, 0.01, "suffix:m") var belly_back := 0.22
+
 @export_group("Colour and tag")
 ## How much darker than the player colour the trim (cuff stripes, heel patch, feet) is.
 @export_range(0.0, 1.0, 0.01) var trim_darken := 0.35

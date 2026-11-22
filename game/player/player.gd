@@ -6,7 +6,8 @@
 ## shows what it holds in its HeldView; zoom and turn are looks of this machine. The drop button held
 ## past the tap with something in the Hands charges a Throw (core/08: the ring round the crosshair
 ## fills) and its release asks to throw along the aim; no cancel. In co-op it is the
-## local player: Avatars copies its body to the others.
+## local player: Avatars copies its body to the others. Its own body (coop/06) is the sock creature's
+## Looks in first person: looking down it sees its belly and feet, crouching and bending with it.
 class_name Player
 extends CharacterBody3D
 
@@ -53,7 +54,7 @@ const FULL_OUTLINE := preload("res://game/outline/full.tres")
 @onready var _head: Node3D = %Head
 @onready var _camera: Camera3D = %Camera
 @onready var _shape: CollisionShape3D = %Shape
-@onready var _mesh: MeshInstance3D = %Mesh
+@onready var _own_body: AvatarLooks = %OwnBody
 @onready var _aim: RayCast3D = %Aim
 @onready var _held_view: HeldView = %HeldView
 @onready var _hud: Hud = %Hud
@@ -100,7 +101,6 @@ func _ready() -> void:
 	_aim.add_exception(self)
 	# Each body sizes its own capsule: the scene's shapes are shared between instances.
 	_shape.shape = _shape.shape.duplicate()
-	_mesh.mesh = _mesh.mesh.duplicate()
 	_camera.fov = tuning.fov
 	_apply_height(tuning.stand_height)
 	_camera.global_transform = Transform3D(_head.global_basis, _head.global_position)
@@ -218,16 +218,12 @@ func _update_crouch(want: bool) -> void:
 		_apply_height(tuning.crouch_height if crouching else tuning.stand_height)
 
 
-## Sizes the capsule, its mesh and the eyes for a body `height` tall, the origin at the feet.
+## Sizes the capsule and the eyes for a body `height` tall, the origin at the feet.
 func _apply_height(height: float) -> void:
 	var capsule := _shape.shape as CapsuleShape3D
 	capsule.radius = tuning.radius
 	capsule.height = height
-	var mesh := _mesh.mesh as CapsuleMesh
-	mesh.radius = tuning.radius
-	mesh.height = height
 	_shape.position.y = height * 0.5
-	_mesh.position.y = height * 0.5
 	_head.position.y = height - tuning.eye_below_top
 
 
@@ -240,7 +236,19 @@ func _process(delta: float) -> void:
 		if stick != Vector2.ZERO:
 			var step := deg_to_rad(tuning.pad_look_speed) * delta * zoom_slow()
 			_turn(-stick.x * step, -stick.y * step * (-1.0 if tuning.invert_y else 1.0))
+	_drive_own_body(delta)
 	_camera.global_transform = Transform3D(_head.global_basis, _head.get_global_transform_interpolated().origin)
+
+
+## The own body bends with the look and eases into the crouch, as a Teammate's avatar does.
+func _drive_own_body(delta: float) -> void:
+	_own_body.look_pitch = _head.rotation.x
+	_own_body.set_crouch(move_toward(_own_body.crouch, 1.0 if crouching else 0.0, delta * _own_body.tuning.crouch_follow))
+
+
+## The player's own body seen from their eyes (the sock creature's Looks in first person).
+func own_body() -> AvatarLooks:
+	return _own_body
 
 
 ## What interact does: uses the Part it aims at.

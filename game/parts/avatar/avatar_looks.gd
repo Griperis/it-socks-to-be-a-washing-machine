@@ -14,6 +14,10 @@
 ## - Pupils: turned to `watch` (the nearest player's eyes, within range and in front), else drifting.
 ## - Colour: the `player` surface takes `colour`, the `trim` (body and feet) that colour darkened; the
 ##   name tag over the Head says `player_name` in the colour lightened (none without a name).
+## - First person (coop/06, Q2466): the local player's own body seen from their eyes, the same Looks
+##   with `first_person` set. Only the feet and the belly below `belly_cut` (BellyMesh, made at load),
+##   set back by `belly_back` so its front curve shows looking down, its outside alone drawn; no
+##   pupils (they do not turn), no name tag, no shadow. The Player drives its pitch and crouch.
 ## The nodes the avatar's behaviour may lean on are named in looks_contract.json beside it.
 class_name AvatarLooks
 extends Node3D
@@ -32,6 +36,8 @@ const BODY := ^"Body/Armature/Skeleton3D/Avatar"
 		colour = value
 		if is_node_ready():
 			_tint()
+## The player's own body seen from their eyes (set before it enters the tree).
+@export var first_person := false
 ## The name over the head; empty shows no tag.
 @export var player_name := "":
 	set(value):
@@ -108,9 +114,26 @@ func _ready() -> void:
 		var off: Array = extras.get("crouch_offset", [0.0, -float(extras.get("crouch_drop", 0.0)), 0.0])
 		var w: Array = extras.get("bend_weights", [1.0])
 		_drops[n] = [n.position, Vector3(float(off[0]), float(off[1]), float(off[2])), n.quaternion, PackedFloat32Array(w)]
+	if first_person:
+		_make_first_person()
 	_blend = _mesh.find_blend_shape_by_name(&"Crouch")
 	_body_rest = _body.position
 	_tint()
+
+
+## The own body: the belly alone (keeping the Crouch shape key), set back behind the eyes; the feet
+## stay where they stand (their rest is taken before). No pupils, no tag, no shadows.
+func _make_first_person() -> void:
+	_mesh.mesh = BellyMesh.cut(_mesh.mesh as ArrayMesh, tuning.belly_cut, TINTED)
+	_body.position.z += tuning.belly_back
+	for i: int in _feet.size():
+		_feet[i].position.z -= tuning.belly_back  # held where they stand (the waddle keeps them there)
+	for p: Node3D in _pupils:
+		p.visible = false
+	if _tag != null:
+		_tag.visible = false
+	for m: GeometryInstance3D in [_mesh] + _feet:
+		m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 
 
 ## The body mesh, skinned to the four-bone spine.
@@ -178,15 +201,19 @@ func _tint() -> void:
 			var made := mi.mesh.surface_get_material(i) as BaseMaterial3D
 			if made == null or not made.resource_name in [TINTED, TRIM]:
 				continue
-			if colour == Color.WHITE:
+			var own_belly := first_person and mi == _mesh
+			if colour == Color.WHITE and not own_belly:
 				mi.set_surface_override_material(i, null)  # as made
 				continue
 			var paint := made.duplicate() as BaseMaterial3D
-			paint.albedo_color = colour if made.resource_name == TINTED else colour.darkened(tuning.trim_darken)
+			if colour != Color.WHITE:
+				paint.albedo_color = colour if made.resource_name == TINTED else colour.darkened(tuning.trim_darken)
+			if own_belly:
+				paint.cull_mode = BaseMaterial3D.CULL_BACK  # the cut belly's outside only
 			mi.set_surface_override_material(i, paint)
 	if _tag != null:
 		_tag.text = player_name
-		_tag.visible = player_name != ""
+		_tag.visible = player_name != "" and not first_person
 		_tag.modulate = colour.lightened(tuning.tag_lighten)
 
 
@@ -317,6 +344,8 @@ func _squash_jump(delta: float) -> void:
 ## The pupils turn to `watch` when it is in front and within range, at most `look_max` off their
 ## rest; otherwise they drift a little round it, a new drift every `wander_time` (0.6 to 1.4 times).
 func _look(delta: float) -> void:
+	if first_person:
+		return
 	_wander_left -= delta
 	if _wander_left <= 0.0:
 		_wander_left = tuning.wander_time * _rng.randf_range(0.6, 1.4)

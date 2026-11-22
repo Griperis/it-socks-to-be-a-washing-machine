@@ -1,0 +1,3 @@
+# coop/06: the own body in first person (the old game's, Q2466): from the eyes, the look straight down (the cut belly's outside and the two feet, coral), and crouched looking 55 degrees down. 60 frames a second.
+down    --size=1280x720 --do='40:own_body:down' --shots=90
+crouch  --size=1280x720 --do='40:own_body:crouch' --shots=90

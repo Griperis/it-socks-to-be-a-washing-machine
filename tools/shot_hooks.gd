@@ -218,6 +218,16 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-30.0)
 			player.reset_physics_interpolation()
 			return true
+		"own_body":
+			# coop/06: the own body seen from the eyes. Arg "down": the look straight down (the pitch
+			# limit); "crouch": crouched (the crouch held), the look 55 degrees down, a three-quarter view.
+			var player := world.get_node("Player") as Player
+			var limit := deg_to_rad(player.tuning.pitch_limit)
+			(player.get_node("Head") as Node3D).rotation.x = -limit if arg == "down" else deg_to_rad(-55.0)
+			if arg == "crouch":
+				Input.action_press(Player.CROUCH)
+			player.reset_physics_interpolation()
+			return true
 		"wheel":
 			# The next held item becomes active, as a wheel step does.
 			var player := world.get_node("Player") as Player
