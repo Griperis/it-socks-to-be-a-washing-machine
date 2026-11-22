@@ -8,7 +8,9 @@
 ## The gate: Godot starts replicating (spawns, synchronizers) and accepting RPCs the moment a peer is
 ## admitted, so nobody is admitted before the gate's checks. SceneMultiplayer's auth_callback holds
 ## each new connection: the Guest sends its word (send_auth): its PROTOCOL as 4 bytes, then the scene
-## layout hash, its player id (the profile's, never the peer id) and its name. The Host answers
+## layout hash, its player id (the profile's, never the peer id), its name and its Hands' numbers an
+## Upgrade changes (HandsTuning.to_sent(), D13: the Host clamps them to what Upgrades can make them and
+## writes them into the Roster). The Host answers
 ## ACCEPTED and admits it (complete_auth), or REFUSED and a reason byte and never admits it, so a
 ## refused Guest receives no spawn, no synchronized value and no RPC. A Guest is refused when its
 ## PROTOCOL or layout differs ("Another version of the game"), when the game is full, or when its
@@ -35,7 +37,7 @@ signal ended(text: String)
 ## synchronized property, a spawnable scene or the shape of a Command, an event, a snapshot or the
 ## gate's word changes. The word's first 4 bytes (the PROTOCOL) never move, so any two builds can
 ## tell they differ.
-const PROTOCOL := 12  # 12: coop/09, a Throw's stamped row (FlightRow) and a Command's seq
+const PROTOCOL := 12  # 12: coop/09, a Throw's stamped row (FlightRow), a Command's seq, the Hands' numbers in the word
 ## The gate's answers: one byte, and after REFUSED one byte saying why.
 const ACCEPTED := 1
 const REFUSED := 0
@@ -124,7 +126,7 @@ func host() -> Error:
 	multiplayer.peer_disconnected.connect(_on_peer_left)
 	parts.applied.connect(_on_applied)
 	if roster != null:
-		parts.apply(roster.joined(profile.id, Roster.HOST, profile.name))
+		parts.apply(roster.joined(profile.id, Roster.HOST, profile.name, _clamped_hands(_own_hands())))
 	_note("hosting on %s" % transport.describe(), false)
 	return OK
 
@@ -252,8 +254,30 @@ func _refusal(peer: int, data: PackedByteArray) -> int:
 	if 1 + _players.size() + _waiting.size() >= tuning.max_players:
 		_drop(peer, "full", "%d players" % tuning.max_players)
 		return WHY_FULL
-	_waiting[peer] = {"id": pid, "name": PlayerProfile.clean_name(word["name"])}
+	var hands: Variant = word.get("hands", {})
+	if not (hands is Dictionary) or (hands as Dictionary).size() > Command.ARGS_MAX:
+		_drop(peer, "gate", "unreadable Hands numbers")
+		return WHY_VERSION
+	_waiting[peer] = {"id": pid, "name": PlayerProfile.clean_name(word["name"]), "hands": _clamped_hands(hands)}
 	return 0
+
+
+## A player's Hands numbers as the Host keeps them: clamped to what the Upgrades can make them by this
+## level's Hands (HandsTuning.clamped()), only the known names; {} with no Hands here.
+func _clamped_hands(sent: Dictionary) -> Dictionary:
+	var hands := parts.find(func(part: Part) -> bool: return part is Hands) as Hands if parts != null else null
+	if hands == null:
+		return {}
+	return hands.own_tuning().clamped(sent).to_sent()
+
+
+## This machine's own player's Hands numbers (HandsTuning.to_sent()), or {} with no player here.
+func _own_hands() -> Dictionary:
+	for node in get_tree().get_nodes_in_group(Hands.PLAYERS):
+		var player := node as Player
+		if player != null and player.multiplayer == multiplayer and player.hands_tuning != null:
+			return player.hands_tuning.to_sent()
+	return {}
 
 
 ## Whether player id `pid` plays now or waits at the gate (the Host's own id included).
@@ -282,7 +306,7 @@ func _on_authenticating(peer: int) -> void:
 	var word := PackedByteArray()
 	word.resize(4)
 	word.encode_u32(0, protocol)
-	word.append_array(var_to_bytes({"layout": _layout, "id": profile.id, "name": profile.name}))
+	word.append_array(var_to_bytes({"layout": _layout, "id": profile.id, "name": profile.name, "hands": _own_hands()}))
 	_scene_multiplayer().send_auth(peer, word)
 
 
@@ -301,7 +325,7 @@ func _on_peer_joined(peer: int) -> void:
 	_waiting.erase(peer)
 	_players[peer] = String(who["id"])
 	if roster != null:
-		parts.apply(roster.joined(String(who["id"]), peer, String(who["name"])))
+		parts.apply(roster.joined(String(who["id"]), peer, String(who["name"]), who.get("hands", {})))
 	_guests[peer] = true
 	var snap := parts.snapshot()
 	_welcome.rpc_id(peer, snap)

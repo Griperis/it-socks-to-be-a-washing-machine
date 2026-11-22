@@ -8,8 +8,10 @@
 ## ghost stays drawn on its own body all the way, moved only by how the Host's body differs at the same
 ## moment of the flight (G03, G05): each tick its offset moves `1 - exp(-3 dt / predict_blend)` of the
 ## way to that difference, position and turn (G04, G11). When the Host's body has come to rest, the
-## ghost eases onto the rest pose and is done once nearer than `settle_close` or after `settle_wait`
-## (G07).
+## ghost eases onto the rest pose, nearer than `settle_close` or after `settle_wait` (G07); then its
+## cloth lies flat first (at most `flat_wait`; it flattens by itself under the cloth's `flat_speed`,
+## G09, being a falling body's Looks), the Mess draws the Sock and the ghost's Looks stays
+## `keep_frames` more frames, so no frame is blank and nothing pops (G08).
 class_name ThrowGhost
 extends Node3D
 
@@ -44,6 +46,10 @@ var _ref_seen := -1.0
 var _resting := -1.0
 var _rest_pose := Transform3D.IDENTITY
 var _done := false
+## G08: seconds waited for the cloth to lie flat at the rest (-1 before), and the frames the Looks still
+## stays once the Mess draws the Sock (-1 before).
+var _flat_waited := -1.0
+var _keep := -1
 
 
 ## A ghost of Sock `p_sock` of `p_mess`, let go at `from` with `vel` and `spin` under `holder`.
@@ -89,8 +95,8 @@ func _launch(launch: Dictionary) -> void:
 	_body.reset_physics_interpolation()
 	_looks = SockDress.make(design, SockDress.LYING, pair)
 	_looks.name = "Looks"
-	_looks.top_level = true
-	add_child(_looks)
+	# A falling body's Looks: its cloth bends in flight and lies flat when slow, as a flight's (G09).
+	_body.add_child(_looks)
 	_poses.append([0.0, _body.global_transform])
 	_draw(0.0)
 
@@ -110,8 +116,40 @@ func offset() -> Vector3:
 	return _off
 
 
+## The ghost's drawn Looks (null once gone).
+func looks() -> Node3D:
+	return _looks if _looks != null and is_instance_valid(_looks) else null
+
+
+## The ghost's cloth, or null (a Pair's ball has none).
+func cloth() -> SockCloth:
+	var l := looks()
+	if l == null:
+		return null
+	var found := l.find_children("*", "SockCloth", true, false)
+	return found[0] as SockCloth if not found.is_empty() else null
+
+
+## Whether its cloth lies flat (no bend left), or it has none.
+func is_flat() -> bool:
+	var c := cloth()
+	return c == null or not c.active or c.influence <= 0.001
+
+
+func _process(_delta: float) -> void:
+	if _keep < 0:
+		return
+	if _keep == 0:
+		queue_free()
+		return
+	_keep -= 1
+
+
 func _physics_process(delta: float) -> void:
 	if _done or _body == null:
+		return
+	if _flat_waited >= 0.0:
+		_wait_flat(delta)
 		return
 	_age += delta
 	_poses.append([_age, _body.global_transform])
@@ -184,7 +222,20 @@ func _settle(delta: float, k: float) -> void:
 	var at := Transform3D(Basis(_turn) * _rest_pose.basis, _rest_pose.origin + _off)
 	_place(at, delta)
 	if _off.length() < tuning.settle_close or _resting >= tuning.settle_wait:
-		end()
+		_flat_waited = 0.0
+		_wait_flat(0.0)
+
+
+## G08: at the rest, the cloth lies flat first (at most `flat_wait`), then the Mess draws the Sock and
+## the Looks stays `keep_frames` frames more.
+func _wait_flat(delta: float) -> void:
+	_flat_waited += delta
+	_place(_rest_pose, delta)
+	if not is_flat() and _flat_waited < tuning.flat_wait:
+		return
+	_done = true
+	settled.emit(sock)
+	_keep = tuning.keep_frames
 
 
 ## The ghost's body pose with the offset on it.

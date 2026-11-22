@@ -22,7 +22,8 @@ signal changed
 @export var tuning: CoopTuning
 
 @export_group("State")
-## {player id: {"peer": int, "name": String, "colour": int, "at": Vector3, "yaw": float}}.
+## {player id: {"peer": int, "name": String, "colour": int, "at": Vector3, "yaw": float, "hands": the
+## numbers of their Hands an Upgrade changes, clamped by the Host (D13)}}.
 @export var players := {}
 @export_group("")
 
@@ -115,11 +116,14 @@ func free_colour(wanted: int) -> int:
 
 ## The Host: player id `pid` on `peer`, named `who`, joins. A new id takes the next free colour and
 ## stands beside the Host (the Host itself where it stands); an id that played before stands where it
-## left and keeps its colour while free. Returns the answer, for Parts.apply().
-func joined(pid: String, peer: int, who: String) -> Dictionary:
+## left and keeps its colour while free. `hands`: their Hands' numbers as the Host clamped them.
+## Returns the answer, for Parts.apply().
+func joined(pid: String, peer: int, who: String, hands := {}) -> Dictionary:
 	var all := players.duplicate(true)
 	var before: Dictionary = all.get(pid, {})
 	var entry := {"peer": peer, "name": PlayerProfile.clean_name(who)}
+	if not hands.is_empty():
+		entry["hands"] = hands
 	if before.is_empty():
 		entry["colour"] = free_colour(0)
 		var spot := _spot_for(peer)

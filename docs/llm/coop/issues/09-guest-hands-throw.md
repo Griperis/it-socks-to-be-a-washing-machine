@@ -1,6 +1,7 @@
 ---
 type: ticket
-status: in-progress
+status: done
+done: 2026-11-22
 kind: build
 area: core
 feature: coop
@@ -56,21 +57,11 @@ and the invariants, with questions 1-9 answered (Q2439, Q2472-Q2479). One test p
 
 ## Answers
 - Q2220, Q2221, Q2226, Q2439, Q2453, Q2470, Q2472-Q2480 (2026-11-22).
+- The thrower's ghost leaves the first-person hand and eases onto the Host's body (started at the avatar's hand)
+  over 0.2 s, as built (Q2481, 2026-11-22).
+- A guess with no answer in 2 s plays "refuse" only, with no text (Q2482, 2026-11-22).
 
 ## Open follow-ups
-- [later] Not built: the Hands keyed by the 128-bit player id (Design, Z1). They stay keyed by peer number;
-  a leaver's Hands are emptied (D14), so a key never outlives its peer today. Worth its own ticket with the
-  rejoin work.
-- [later] Not built: the Host reading a Guest's own `HandsTuning` (D13). The Host uses its own player's tuning for
-  a Guest; every player has the same numbers until Upgrades (M4).
-- [later] Not built: G08/G09 (a ghost's cloth lies flat before the rest; the Mess Sock held back up to 1.5 s for
-  it). The ghost eases onto the Host's rest (G07) and the Mess draws the Sock then.
-- [later] Look, for the designer's eye: the Host starts a Guest's Throw at the Guest's avatar's hand (the
-  HoldPoint, what the others see, Q2439), the thrower's ghost at its first-person hand. The thrower sees the
-  difference (about 0.3 m) eased in over 0.2 s (G04), a short slide down at release. Keep, or start the Host's
-  body at the thrower's own hand?
-- [later] Wording: a guess that times out (Q2477) flies back (a pick) or comes back to the Hands (a Throw, a
-  drop) with "refuse" and no text. Should a line show, and which?
 - [later] Z7 (a spawned flight found by its id, not its name) not changed: only Throws are spawned now, and a
   thrown Sock cannot rest and be thrown again in one tick, so the rename cannot happen.
 
@@ -90,3 +81,16 @@ and the invariants, with questions 1-9 answered (Q2439, Q2472-Q2479). One test p
   `game/hands/ghost_tuning.gd`/`.tres`, `game/hands/held_view.gd`, `game/mess/mess.gd`, `game/parts/command.gd`,
   `game/parts/session.gd`, `tests/coop_hands_test.gd`, `tests/coop_flight_test.gd`.
 - Verified: `run.sh --touched` re-run by agent_finish; coop_hands PASS 101 checks, 6 cases; coop_flight PASS 144 checks; coop_join PASS 183; stress coop_mess:pour_2000_50ms PASS, reliable 49.7 KB/s, worst second 83 KB (coop/08: 59.4, 90).
+- 2026-11-22 agent (coop/09, the lead's three gaps): Changed: the Hands keep each player's items, active item
+  and last grab under their player id from the Roster (Z1; the peer number only while no Roster names them, and
+  remembered after a Roster clears), so a rejoin and a late joiner see the right Hands. A player's Hands numbers an
+  Upgrade changes (capacity, reach, charge, full speed) go up in the gate word; the Host clamps them to the
+  Upgrades' bounds (new `HandsTuning` "Upgrades" group, placeholders until M4), writes them into the Roster entry,
+  and reads each Guest's own (D13; the interim "Host player's tuning" is gone). A Throw or drop ghost's Looks is
+  a falling body's: its cloth bends in flight, lies flat when slow (G09), lies flat before the Mess draws the Sock
+  (at most 1.5 s) and stays 3 frames over it (G08).
+- Files: `game/hands/hands.gd`, `game/hands/hands_tuning.gd`, `game/net/roster.gd`, `game/parts/session.gd`,
+  `game/hands/throw_ghost.gd`, `game/hands/ghost_tuning.gd`, `tests/coop_join_test.gd`, `tests/coop_hands_test.gd`.
+- Verified: coop_join PASS 188 checks (leave_and_return: Z1 keys, the late joiner's and the rejoined A's Hands, D13
+  read and clamp); coop_hands PASS 103 checks (G08 flat at hand-over, Looks kept); stress
+  coop_mess:pour_2000_50ms PASS, reliable 54.9 KB/s, worst second 91 KB; `--touched` by agent_finish below.

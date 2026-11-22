@@ -21,6 +21,10 @@ extends Resource
 ## The ghost lies at the Host's rest once nearer than this, or after `settle_wait` (G07).
 @export_range(0.0001, 0.05, 0.0001, "suffix:m") var settle_close := 0.002 # placeholder: the old thrown_item.gd
 @export_range(0.1, 5.0, 0.1, "suffix:s") var settle_wait := 2.0 # placeholder: the old flights.gd
+## At the rest the ghost's cloth lies flat first, waiting at most this long (G08: the old flights.gd).
+@export_range(0.0, 5.0, 0.1, "suffix:s") var flat_wait := 1.5 # placeholder: the old flights.gd
+## Once the Mess draws the Sock, the ghost's Looks stays this many frames more: no blank frame (G08).
+@export_range(0, 10, 1) var keep_frames := 3 # placeholder: the old flights.gd
 ## A ghost's flight poses kept, for comparing at a moment of the flight (G06).
 @export_range(10, 400, 1) var keep_poses := 90 # placeholder: the old flight.gd
 

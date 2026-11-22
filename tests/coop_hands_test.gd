@@ -178,9 +178,17 @@ func case_guest_drop() -> void:
 	await _paced_ticks(4)
 	_check(ghost != null and is_instance_valid(ghost) and ghost.drawn().origin.y < y0, "E02: it falls from the hand at once")
 	var last := Transform3D.IDENTITY
+	var flat_at_hand_over := false
+	var kept := 0
 	while ghost != null and is_instance_valid(ghost) and not ghost.is_done():
 		last = ghost.drawn()
+		flat_at_hand_over = ghost.is_flat()
 		await _paced()
+	while ghost != null and is_instance_valid(ghost) and ghost.looks() != null and gm.is_drawn(sock):
+		kept += 1
+		await _paced()
+	_check(flat_at_hand_over, "G08: the ghost's cloth lies flat before the Mess draws the Sock")
+	_check(kept >= 1, "G08: the ghost's Looks stays a few frames over the Mess's drawing (%d)" % kept)
 	await _wait(func() -> bool: return _all_lie(hm, gm), "the drop to lie on both machines", FPS * 10)
 	var rest := gm.pose_of(sock)
 	print("HANDS drop: the ghost ended %.4f m from where the Host's lies" % last.origin.distance_to(rest.origin))
@@ -200,14 +208,14 @@ func case_refusals() -> void:
 	var hh := _hands(host)
 	var me := gp.player_id()
 	var view := gp.held_view()
-	# The Guest's own copy lets it hold 3; the Host gives a Guest its own player's numbers: 1 here.
+	# The Guest's own copy lets it hold 3; the Host clamps the Guest's numbers to its Upgrades: 1 here.
 	var mine := gp.hands_tuning.duplicate() as HandsTuning
 	mine.capacity = 3
 	gp.hands_tuning = mine
 	var held := await _guest_holds(host, guest, _handling_sock(guest, "Floor"))
-	var host_t := hh.tuning_of(me).duplicate() as HandsTuning
-	host_t.capacity = 1
-	_player(host).hands_tuning = host_t
+	var host_t := hh.own_tuning().duplicate() as HandsTuning
+	host_t.capacity_most = 1
+	hh.tuning = host_t
 	var other := _handling_sock(guest, "OnTable")
 	await _aim_at(guest, gm.box_of(other).get_center())
 	await _wait(func() -> bool: return gp.aimed_sock == other, "the crosshair on a second Sock", FPS * 2)
@@ -261,7 +269,6 @@ func case_race_one_sock() -> void:
 	var gp := _player(guest)
 	var sock := _handling_sock(guest, "Floor")
 	var at := gm.box_of(sock).get_center()
-	# Both stand by the Sock, a metre apart, and aim at it; one click reaches both players.
 	await _aim_at(host, at, Vector3(0.6, 0.0, 0.0))
 	await _aim_at(guest, at, Vector3(-0.6, 0.0, 0.0))
 	await _wait(func() -> bool: return hp.aimed_sock == sock and gp.aimed_sock == sock, "both crosshairs on Sock %d" % sock, FPS * 2)
@@ -299,9 +306,6 @@ func case_guest_pairs_and_shelves() -> void:
 	var mine := gp.hands_tuning.duplicate() as HandsTuning
 	mine.capacity = 3
 	gp.hands_tuning = mine
-	var host_t := _hands(host).tuning_of(me).duplicate() as HandsTuning
-	host_t.capacity = 3
-	_player(host).hands_tuning = host_t
 	await _guest_holds(host, guest, mates[0])
 	var view := gp.held_view()
 	var played := view.moments_played
@@ -406,8 +410,7 @@ func _guest_holds(_host: Node3D, guest: Node3D, sock: int) -> int:
 	return sock
 
 
-## Stands `zoo`'s player 1.2 m from `target` (plus `aside`), looking at it, with the mouse captured
-## (the other machine's player is let go of it), and waits until its avatar reached the Host.
+## Stands `zoo`'s player 1.2 m from `target` (plus `aside`), looking at it, the mouse captured here only.
 func _aim_at(zoo: Node3D, target: Vector3, aside := Vector3.ZERO) -> void:
 	var player := _player(zoo)
 	for other: Node in _branches:
