@@ -6,7 +6,7 @@ area: tools
 feature: core
 priority: now
 created: 2026-11-22
-done:
+done: 2026-11-22
 blocked_by: []
 notes: []
 terms: []
@@ -52,3 +52,4 @@ and was skipped. The designer wants it in.
   tools/grep_rules_allow.txt, docs/architecture.md.
   Verified: `PASS 15262 checks, 388 cases` (--touched), `PASS rules`, `BENCH idle_500 ... ok` and `PASS mess bench`.
   The full suite is for the lead's batch run.
+- Merged: a8494a03 (2026-11-22, branch core/48-game-log)

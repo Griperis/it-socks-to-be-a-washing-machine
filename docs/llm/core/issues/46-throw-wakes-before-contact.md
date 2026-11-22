@@ -6,7 +6,7 @@ area: core
 feature: core
 priority: next
 created: 2026-11-22
-done:
+done: 2026-11-22
 blocked_by: ["[[39-pushed-out-of-a-shut-leaf]]"]
 notes: []
 terms: [Throw, Sock, Mess]
@@ -59,3 +59,4 @@ the bounce and drop where they lie. The old game woke them just before contact, 
   0.755/1.327/2.504 and 0.538/1.215/2.225; main 0.784/1.350/3.002 and 0.713/1.204/2.457 (noise). The burst cost is
   the one open follow-up.
 - Verified: see the commit's `suite:` line
+- Merged: 15f259bd (2026-11-22, branch core/46-throw-wakes-before-contact)

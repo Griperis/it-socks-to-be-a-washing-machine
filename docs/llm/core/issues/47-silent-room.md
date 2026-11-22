@@ -6,7 +6,7 @@ area: audio
 feature: core
 priority: next
 created: 2026-11-22
-done:
+done: 2026-11-22
 blocked_by: ["[[40-drop-look-only-tests]]"]
 notes: []
 terms: []
@@ -38,3 +38,4 @@ The old game's room tone `amb_room` was silent (no pick). Ours plays a placehold
 - Files: `game/audio/sounds.gd`, `game/audio/sound_catalogue.tres`, `tests/sounds_test.gd`, `assets/audio/SOURCES.md`,
   `docs/llm/PLACEHOLDERS.md`, the clip and its `.import`.
 - Verified: PASS 15218 checks, 376 cases
+- Merged: 8c019a0a (2026-11-22, branch core/47-silent-room)
