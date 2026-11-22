@@ -5,6 +5,8 @@
 [ext_resource type="Resource" uid="uid://i4jw6ewnf4chb" path="res://game/parts/avatar/avatar_tuning.tres" id="3_tuning"]
 [ext_resource type="Script" uid="uid://bnt2xg5i6167r" path="res://game/hands/held_view.gd" id="4_held"]
 [ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="5_hands_tuning"]
+[ext_resource type="Script" uid="uid://w6hh0j4gcx6q" path="res://game/audio/teammate_steps.gd" id="6_steps"]
+[ext_resource type="Resource" uid="uid://bbid103w4jrbx" path="res://game/audio/footstep_tuning.tres" id="7_footsteps"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_pose"]
 properties/0/path = NodePath(".:pose_position")
@@ -31,6 +33,10 @@ tuning = ExtResource("3_tuning")
 script = ExtResource("4_held")
 worn = true
 tuning = ExtResource("5_hands_tuning")
+
+[node name="Steps" type="Node" parent="." unique_id=1650932217]
+script = ExtResource("6_steps")
+tuning = ExtResource("7_footsteps")
 
 [node name="Sync" type="MultiplayerSynchronizer" parent="." unique_id=1692978382]
 replication_config = SubResource("SceneReplicationConfig_pose")

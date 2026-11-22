@@ -100,7 +100,7 @@ the protocol (`PROTOCOL`), the scene layout hash (the sorted Part ids) and its p
 `user://profile[_<tag>].json`); the Host refuses another version, a full game (4) or an id already playing, else
 admits it, writes it into the `Roster` Part (keyed by player id: peer, name, colour, place; the next free colour,
 0.6 m beside the Host or where it left) and sends one snapshot (`Parts.snapshot()`: every Part's State group by id),
-which the Guest writes with `Parts.load_snapshot`. `Avatars` spawns by the Roster on the Host (an `Avatar` per player: its pose, position, yaw, pitch and crouch, goes from its owner every network frame and is checked in its setters where it lands; elsewhere it eases to it, its `AvatarLooks` derives the waddle, bend, squash and pupils, and a worn `HeldView` hangs its Hands at the HoldPoint); falling Socks come
+which the Guest writes with `Parts.load_snapshot`. `Avatars` spawns by the Roster on the Host (an `Avatar` per player: its pose, position, yaw, pitch and crouch, goes from its owner every network frame and is checked in its setters where it lands; elsewhere it eases to it, its `AvatarLooks` derives the waddle, bend, squash and pupils, a worn `HeldView` hangs its Hands at the HoldPoint, where a Teammate's Throw leaves, and `TeammateSteps` plays its steps at its body; `Hearing` plays a Teammate's cues with `Sounds.play_from` at 1.2 m over their feet); falling Socks come
 through the zoo's `FlightSpawner`. A leaver: `Parts.left` drops their Hands where they stood (`Hands.left`) and the
 Roster keeps that place. `ZooNet` reads `--host`, `--join=`, `--profile=` and puts the toasts on the HUD.
 

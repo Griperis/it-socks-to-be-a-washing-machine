@@ -35,7 +35,7 @@ const HOP := &"hop"
 @export_range(0.0, 3.0, 0.05, "suffix:m") var hop_height := 0.6
 ## The walker plays only while the camera is this near (the zoo's other stations and their tests
 ## see it stand still, its Sock lying).
-@export_range(1.0, 1000.0, 1.0, "suffix:m") var wake_range := 10.0
+@export_range(1.0, 1000.0, 0.5, "suffix:m") var wake_range := 4.5
 ## The Sock spot the walker takes (empty: none).
 @export var sock_spot: SockSpot
 

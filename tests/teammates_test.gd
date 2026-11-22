@@ -21,11 +21,17 @@ func cases() -> Array[Dictionary]:
 		{"name": "colour_tag_late", "method": "case_colour_tag_late", "world": false,
 				"title": "each avatar is tinted its player's Roster colour (the trim darker) with a \"Player\" tag in that colour lightened; a late joiner sees both others posed, tinted and tagged at once"},
 		{"name": "held", "method": "case_held", "world": false,
-				"title": "real path: the Host picks a Sock: on the Guest it hangs at the Host avatar's HoldPoint, true size, by its cuff; a second one clusters a worn step beside it; picking the mate shows the Pair as the ball"},
+				"title": "real path: the Host picks a Sock: on the Guest it hangs at the Host avatar's HoldPoint, true size, by its cuff, and \"pick\" is heard there; a second one clusters a worn step beside it; picking the mate shows the Pair as the ball with one sparkle at the hand"},
 		{"name": "forged", "method": "case_forged", "world": false,
 				"title": "on the Host, a Guest's pose that is out of the area, too high, not finite or an impossible pitch or crouch is dropped: the old pose stays"},
 		{"name": "follow", "method": "case_follow", "world": true,
 				"title": "a small move eases min(1, 12 * delta) of the way a frame, the crouch at 6 a second; a move over 1 m in one update stands there at once"},
+		{"name": "steps", "method": "case_steps", "world": false,
+				"title": "real path: the Host walks and jumps: on the Guest a step plays at the Host avatar's body every 1.4 m walked and the landing there, in the world with the local clips (silent past 20 m, so nothing at 25 m)"},
+		{"name": "cues", "method": "case_cues", "world": false,
+				"title": "the Host's pick, pair, drop and throw are heard on the Guest as loud as its own, in the world at 1.2 m over the Host avatar's feet; a leaver's drop is heard at its last place"},
+		{"name": "throw_hand", "method": "case_throw_hand", "world": false,
+				"title": "a Guest's Throw leaves, on the Host, from the Guest avatar's HoldPoint where its Sock hangs, at once"},
 		{"name": "station", "method": "case_station", "world": false,
 				"title": "the Avatar station in the zoo, played alone: its stand-in Teammate walks its loop through its pose and takes the station's Sock; the other stands still"},
 	]
@@ -109,9 +115,12 @@ func case_held() -> void:
 		socks[spot] = (handling.get_node("Spots/" + spot) as SockSpot).sock
 	var held := seen.held
 	_check(held != null and held.worn and held.hands == gh, "the Host's avatar wears a HeldView of the Guest's Hands")
+	_listen()
 	# The Host's own pick, as its pick button asks it.
 	hh.pick(1, socks["Floor"])
 	await _until(func() -> bool: return held.looks_of(socks["Floor"]) != null and held.settled(), "the Sock to fly to the Host avatar's hand")
+	_heard_at(&"pick", seen.pose_position + Vector3.UP * Hearing.CUE_HEIGHT, "the Guest hears the Host's pick at 1.2 m over its avatar's feet")
+	_check(_heard.any(func(h: Array) -> bool: return h[0] == &"pick" and not h[1]), "the Host hears its own pick flat")
 	var hold := seen.looks.hold_point()
 	_check(held.global_position.distance_to(hold.global_position) < 0.001, "the worn Hands hang at the avatar's HoldPoint")
 	var design := gh.mess.design_of(socks["Floor"])
@@ -137,6 +146,9 @@ func case_held() -> void:
 	var lead: int = socks["Floor"] if gh.items_of(1).has(socks["Floor"]) else socks["MateFloor"]
 	await _until(func() -> bool: return held.is_ball(lead) and held.settled(), "the Pair to show as the ball")
 	_check(held.moment_of(lead) == null, "no pairing moment plays on a Teammate")
+	_check(held.sparkles == 1, "one sparkle burst at the hand as the ball arrives (%d)" % held.sparkles)
+	_heard_at(&"pair", seen.pose_position + Vector3.UP * Hearing.CUE_HEIGHT, "the Guest hears the pair there")
+	_unlisten()
 	_drop_branches()
 
 
@@ -199,7 +211,147 @@ func case_station() -> void:
 	_drop_branches()
 
 
+func case_steps() -> void:
+	var pair := await _joined()
+	var host: Node3D = pair[0]
+	var guest: Node3D = pair[1]
+	var hp := _player(host)
+	var seen := _avatars(guest).of(1)
+	var steps := seen.get_node("Steps") as TeammateSteps
+	_listen()
+	var start := hp.global_position
+	Input.action_press(Player.MOVE_FORWARD)
+	await _until(func() -> bool: return hp.global_position.distance_to(start) > 5.0, "the Host's player to walk 5 m")
+	Input.action_release(Player.MOVE_FORWARD)
+	await _until(func() -> bool: return seen.global_position.distance_to(hp.global_position) < 0.02, "the avatar to stop where the Host stopped")
+	var walked := Vector2(hp.global_position.x - start.x, hp.global_position.z - start.z).length()
+	var want := floori(walked / steps.tuning.step_distance)
+	_check(absi(steps.steps - want) <= 1, "a step every 1.4 m: %d steps for %.1f m" % [steps.steps, walked])
+	var step: Array = _last_heard(&"step_wood")
+	_check(not step.is_empty() and step[1], "the step plays in the world")
+	if not step.is_empty():
+		var at: Vector3 = step[2]
+		_check(Vector2(at.x - hp.global_position.x, at.z - hp.global_position.z).length() < 1.5, "at the Host avatar's body (%s)" % at)
+	var voice := Sounds.last_voice as AudioStreamPlayer3D
+	_check(voice != null and voice.max_distance <= 20.0 and voice.unit_size == 3.0,
+			"full within 3 m, gone at 20 m: nothing heard 25 m away")
+	Input.action_press(Player.JUMP)
+	await _until(func() -> bool: return not hp.is_on_floor(), "the Host to jump")
+	Input.action_release(Player.JUMP)
+	await _until(func() -> bool: return steps.lands >= 1, "the Guest to hear the Host land")
+	_check(not _last_heard(&"land").is_empty() and _last_heard(&"land")[1], "the landing plays in the world, at the body")
+	_unlisten()
+	_drop_branches()
+
+
+func case_cues() -> void:
+	var pair := await _joined()
+	var host: Node3D = pair[0]
+	var guest: Node3D = pair[1]
+	var handling := host.get_node("Stations/Handling") as Node3D
+	var at := handling.to_global(BY_HANDLING)
+	_stand(_player(host), at, 0.0)
+	var seen := _avatars(guest).of(1)
+	await _until(func() -> bool: return seen.position.distance_to(at) < 0.02, "the Guest to see the Host at the Handling station")
+	var hh := host.get_node("Socks/Hands") as Hands
+	var gh := guest.get_node("Socks/Hands") as Hands
+	var over := at + Vector3.UP * Hearing.CUE_HEIGHT
+	_listen()
+	hh.pick(1, (handling.get_node("Spots/Floor") as SockSpot).sock)
+	await _until(func() -> bool: return not gh.items_of(1).is_empty(), "the Host to hold a Sock")
+	_heard_at(&"pick", over, "pick")
+	hh.drop(1, at + Vector3(0.0, 0.0, -0.8), Vector3.UP)
+	await _until(func() -> bool: return gh.items_of(1).is_empty(), "the Host to drop it")
+	_heard_at(&"drop", over, "drop")
+	await _physics_ticks(25)
+	hh.pick(1, (handling.get_node("Spots/Under") as SockSpot).sock)
+	await _until(func() -> bool: return not gh.items_of(1).is_empty(), "the Host to hold another")
+	await _physics_ticks(25)
+	hh.throw(1, Vector3(0.0, 0.3, 1.0).normalized(), 0.5)
+	await _until(func() -> bool: return gh.items_of(1).is_empty(), "the Host to throw it")
+	_heard_at(&"throw", over, "throw")
+	# The Guest picks a Sock, steps away and leaves: the Host hears its drop where it last stood.
+	var g_peer := _session(guest).me()
+	var g_at := handling.to_global(BY_HANDLING + Vector3(1.2, 0.0, 0.0))
+	_stand(_player(guest), g_at, 0.0)
+	var copy := _avatars(host).of(g_peer)
+	await _until(func() -> bool: return copy.pose_position.distance_to(g_at) < 0.05, "the Host to see the Guest by the Socks")
+	gh.pick(g_peer, (handling.get_node("Spots/MateFloor") as SockSpot).sock)
+	await _until(func() -> bool: return not hh.items_of(g_peer).is_empty(), "the Guest to hold a Sock")
+	_heard.clear()
+	_session(guest).close()
+	await _until(func() -> bool: return not _last_heard(&"drop").is_empty(), "the Host to hear the leaver's drop")
+	var drop: Array = _last_heard(&"drop")
+	_check(drop[1] and (drop[2] as Vector3).distance_to(g_at + Vector3.UP * Hearing.CUE_HEIGHT) < 0.1,
+			"in the world at the leaver's last place (%s)" % drop[2])
+	_unlisten()
+	_drop_branches()
+
+
+func case_throw_hand() -> void:
+	var pair := await _joined()
+	var host: Node3D = pair[0]
+	var guest: Node3D = pair[1]
+	var handling := host.get_node("Stations/Handling") as Node3D
+	var g_peer := _session(guest).me()
+	var g_at := handling.to_global(BY_HANDLING)
+	_stand(_player(guest), g_at, 0.0)
+	var copy := _avatars(host).of(g_peer)
+	await _until(func() -> bool: return copy.position.distance_to(g_at) < 0.02, "the Host to see the Guest by the Socks")
+	var hh := host.get_node("Socks/Hands") as Hands
+	var gh := guest.get_node("Socks/Hands") as Hands
+	var sock := (handling.get_node("Spots/Floor") as SockSpot).sock
+	gh.pick(g_peer, sock)
+	await _until(func() -> bool: return copy.held.looks_of(sock) != null and copy.held.settled(), "the Sock to hang at the Guest avatar's hand on the Host")
+	var dir := Vector3(0.0, 0.2, 1.0).normalized()
+	var drawn: Transform3D = copy.held.drawn_of(sock)
+	_check(hh.hand_of(g_peer, dir).origin.is_equal_approx(drawn.origin), "on the Host, the Guest's hand is where its avatar holds the Sock")
+	var started := [Vector3.INF]
+	var note := func(ev: Dictionary) -> void:
+		if StringName(ev.get("kind", &"")) == &"throw" and ev.get("ok", false):
+			var body := hh.mess.moving_body(sock)
+			if body != null:
+				started[0] = body.global_position
+	(host.get_node("Parts") as Parts).applied.connect(note)
+	gh.throw(g_peer, dir, 0.5)
+	await _until(func() -> bool: return started[0] != Vector3.INF, "the Host to answer the Guest's Throw")
+	_check((started[0] as Vector3).distance_to(drawn.origin) < 0.1,
+			"the Sock leaves from the Guest avatar's hand (%s, hand %s)" % [started[0], drawn.origin])
+	_drop_branches()
+
+
 # --- Helpers -------------------------------------------------------------------------------------
+
+## What Sounds played since _listen(): [event, spatial, at].
+var _heard: Array[Array] = []
+
+
+func _listen() -> void:
+	_heard.clear()
+	if not Sounds.played.is_connected(_on_played):
+		Sounds.played.connect(_on_played)
+
+
+func _unlisten() -> void:
+	if Sounds.played.is_connected(_on_played):
+		Sounds.played.disconnect(_on_played)
+
+
+func _on_played(event: StringName, spatial: bool, at: Vector3, _bus: StringName) -> void:
+	_heard.append([event, spatial, at])
+
+
+func _last_heard(event: StringName) -> Array:
+	for i in range(_heard.size() - 1, -1, -1):
+		if _heard[i][0] == event:
+			return _heard[i]
+	return []
+
+
+## `event` was heard in the world near `at`.
+func _heard_at(event: StringName, at: Vector3, what: String) -> void:
+	var near := _heard.filter(func(h: Array) -> bool: return h[0] == event and h[1] and (h[2] as Vector3).distance_to(at) < 0.1)
+	_check(not near.is_empty(), "%s: \"%s\" heard in the world at %s (%s)" % [what, event, at, _heard.filter(func(h: Array) -> bool: return h[0] == event)])
 
 ## The avatar `a` is tinted `colour` (its trim darker) and tagged "Player" in the colour lightened.
 func _dressed(a: Avatar, colour: Color, who: String) -> void:
@@ -254,6 +406,8 @@ func _branch(label: String, keep: Array = KEEP) -> Node3D:
 
 
 func _drop_branches() -> void:
+	_unlisten()
+	Input.action_release(Player.JUMP)
 	Input.action_release(Player.MOVE_FORWARD)
 	Input.action_release(Player.CROUCH)
 	for node in _branches:

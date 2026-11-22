@@ -141,7 +141,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, 17.5)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 75.5, 0, 9.5)
 
 [node name="Avatar" parent="Stations" unique_id=1700142687 instance=ExtResource("39_avatar")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, 18.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -2)
 
 [node name="Spots" type="Node3D" parent="." unique_id=1540973286]
 
