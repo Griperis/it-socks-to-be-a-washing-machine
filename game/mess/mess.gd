@@ -34,7 +34,15 @@
 ## condition 3): a rows patch (ROWS: the Sock ids, and each one's whole record), the record count
 ## when it changes, and the launches of the rows that fly. The *_patch functions make one and take
 ## the patch made so far (`onto`), so one answer may change many Socks. A snapshot (a late Guest, a
-## save) stays whole: every State field by name.
+## save) stays whole, packed and compressed (whole_state()), a flying Sock with its body's motion.
+##
+## Moving Socks on every machine (coop/08, docs/migration/coop-mess-sync.md, Q2222, Q2472): when a
+## record turns FLYING by a wake, a fall, a pour, a sweep or a drop, each machine starts its own body
+## from the record (the Host's decides; a Guest's is looks only, on LAYER_LOOKS, and never wakes,
+## rests or writes anything shared), and the Host's rest batch snaps it. Only a Throw's body is the
+## Host's alone, under `flights` (the spawner's path; coop/09 streams it); every other body is under
+## this Mess's own holder (bodies_holder()), which no spawner sees. Every machine sweeps its own lying
+## Socks with its moving Doors and drawers; a Guest's swept Sock the Host never moved goes back.
 class_name Mess
 extends Part
 
@@ -50,10 +58,14 @@ enum State { LYING, HELD, FLYING, IN_PAIR, SHELVED, GONE }
 const LAYER_HOUSE := 1
 const LAYER_FLIGHT := 2
 const LAYER_LYING := 4
+## A Guest's looks-only falling Sock (coop/08): it touches the house, the lying Socks and the other
+## looks-only bodies, never a Throw's copy.
+const LAYER_LOOKS := 16
+const LOOKS_MASK := LAYER_HOUSE | LAYER_LYING | LAYER_LOOKS
 const AIM_MASK := LAYER_HOUSE | LAYER_LYING
 ## What the crosshair looks for a Sock in: a lying one or a moving one (a woken or thrown body, as the
-## old game's SOCK_LIVE), never a wall (R03).
-const SOCK_MASK := LAYER_LYING | LAYER_FLIGHT
+## old game's SOCK_LIVE; a Guest's own body too), never a wall (R03).
+const SOCK_MASK := LAYER_LYING | LAYER_FLIGHT | LAYER_LOOKS
 ## Floats in one pose: a Transform3D (basis columns x, y, z, then the origin).
 const POSE := 12
 ## The metadata a falling body carries: its Sock id.
@@ -78,6 +90,14 @@ const ROW_MATES := "row_mates"
 const ROW_POSES := "row_poses"
 const ROW_COUNT := "count"
 const LAUNCHES := "launches"
+## A whole state packed (whole_state()): the compressed bytes and their size unpacked.
+const PACKED := "packed"
+const PACKED_SIZE := "packed_size"
+## The bytes of one body in flight in a packed whole state: its origin (3 floats), turn (a quaternion)
+## and velocity and spin (3 each), as half floats.
+const MOTION := 12 + 10 * 2
+## The name of the holder of the bodies no spawner sees (bodies_holder()).
+const BODIES := "Bodies"
 
 const FLIGHT_SCENE := MessMoving.FLIGHT_SCENE
 const CLOTH_TUNING := preload("res://game/sock/sock_cloth_tuning.tres")
@@ -134,6 +154,11 @@ var _flight_looks: Dictionary[RigidBody3D, bool] = {}
 var _flight_shape: Dictionary[int, StringName] = {}
 ## Whether the last frame drew any flying Sock as an instance (the next one must clear it).
 var _flying_drawn := false
+## The holder of every body but a Throw's (made in _ready, a child of this Mess: no spawner's path).
+var _bodies: Node3D
+## A whole state's bodies in flight as it was written (a late Guest, a load): {Sock id: [pose,
+## velocity, spin]}, read by the next _show() as it starts them, then cleared.
+var _motion: Dictionary[int, Array] = {}
 ## The Host's dice for a lost Sock's return scatter (return_pose()).
 var _scatter := RandomNumberGenerator.new()
 ## More nodes of SockSpots, handed over before this Mess is ready by a scene that joins the level
@@ -145,6 +170,10 @@ var more_spots: Array[Node3D] = []
 ## records (as if placed in the inspector), and hide. A snapshot (a late Guest, a load) replaces them whole.
 func _ready() -> void:
 	assert(tuning != null, "Mess: its HandsTuning (`tuning`) is not set")
+	if _bodies == null:
+		_bodies = Node3D.new()
+		_bodies.name = BODIES
+		add_child(_bodies)
 	if not designs.is_empty():
 		return
 	var holders: Array[Node3D] = [spots]
@@ -320,14 +349,15 @@ func body_count() -> int:
 	return _lying_bodies.size() if _lying_bodies != null else 0
 
 
-## The falling body of a Sock (the Host's), or null.
+## The falling body of a Sock this machine started itself (the Host's, or a Guest's looks-only one), or null.
 func flight_of(sock: int) -> RigidBody3D:
 	return _moving.flight_of(sock)
 
 
-## How many Socks move now (falling bodies), and how many wait to.
+## How many Socks move now on this machine (its falling bodies: the heap sign's Moving count, a
+## Guest's own included, B14), and how many wait to.
 func moving_count() -> int:
-	return _moving.moving_count()
+	return _moving.moving_count() if _is_host() else _flight_nodes().size()
 
 
 func waiting_count() -> int:
@@ -536,8 +566,11 @@ static func _set_pose(p: Dictionary, i: int, pose: Transform3D) -> void:
 ## The one writer of the Mess's state: a rows patch (an answer) writes only its rows, on every
 ## machine alike; anything else (a snapshot, a save, a test's set-up) is written whole by field name.
 func write(patch: Dictionary, now: bool) -> void:
+	if patch.has(PACKED):
+		patch = _unpacked(patch)
 	if not patch.has(ROWS):
 		super.write(patch, now)
+		_motion.clear()
 		return
 	var n := int(patch.get(ROW_COUNT, count()))
 	if n != count():
@@ -568,6 +601,78 @@ func write(patch: Dictionary, now: bool) -> void:
 		else:
 			throws.erase(sock)
 	_show(now)
+
+
+## The whole state as it is sent whole (a late Guest, a save; coop/08, A05, A07): the State fields as
+## packed arrays, exact (the records written from it equal these), and each body in flight's place
+## and motion (MOTION bytes a body: looks only, so its turn and speeds are half floats), through
+## var_to_bytes and zstd.
+func whole_state() -> Dictionary:
+	var socks := PackedInt32Array()
+	var motion := PackedByteArray()
+	for sock: int in _flight_by_sock:
+		var body := moving_body(sock)
+		if body == null or state_of(sock) != State.FLYING or not body.has_meta(SOCK_META):
+			continue
+		socks.append(sock)
+		motion.resize(motion.size() + MOTION)
+		_pack_motion(motion, socks.size() - 1, body.global_transform, body.linear_velocity, body.angular_velocity)
+	var raw := var_to_bytes({"designs": designs, "states": states, "mates": mates, "throws": throws,
+			"poses": poses, "moving": socks, "motion": motion})
+	return {PACKED: raw.compress(FileAccess.COMPRESSION_ZSTD), PACKED_SIZE: raw.size()}
+
+
+## A packed whole state (whole_state()) as its fields by name; its bodies in flight are kept for the
+## _show() that follows (`_motion`). {} when it does not read.
+func _unpacked(patch: Dictionary) -> Dictionary:
+	var fields := unpacked(patch)
+	if fields.is_empty():
+		Log.error("parts", "%s: an unreadable packed state" % id)
+		return {}
+	_motion = fields["motion"]
+	fields.erase("motion")
+	return fields
+
+
+## A packed whole state (whole_state()) read back: the State fields by name, and "motion", each body in
+## flight's {Sock id: [pose, velocity, spin]}. {} when it does not read.
+static func unpacked(whole: Dictionary) -> Dictionary:
+	var bytes: Variant = whole.get(PACKED)
+	var size := int(whole.get(PACKED_SIZE, 0))
+	if not (bytes is PackedByteArray) or size <= 0:
+		return {}
+	var plain: Variant = bytes_to_var((bytes as PackedByteArray).decompress(size, FileAccess.COMPRESSION_ZSTD))
+	if not (plain is Dictionary) or not (plain as Dictionary).has("poses"):
+		return {}
+	var d := plain as Dictionary
+	var motion: Dictionary[int, Array] = {}
+	var socks: PackedInt32Array = d.get("moving", PackedInt32Array())
+	var bytes_of: PackedByteArray = d.get("motion", PackedByteArray())
+	for i in mini(socks.size(), bytes_of.size() / MOTION):
+		motion[socks[i]] = _unpack_motion(bytes_of, i)
+	return {"designs": d["designs"], "states": d["states"], "mates": d["mates"], "throws": d["throws"],
+			"poses": d["poses"], "motion": motion}
+
+
+## Body `i`'s place, velocity and spin into `out` (MOTION bytes a body): its origin as floats, its turn
+## (a quaternion), velocity and spin as half floats.
+static func _pack_motion(out: PackedByteArray, i: int, at: Transform3D, vel: Vector3, spin: Vector3) -> void:
+	var o := i * MOTION
+	var q := at.basis.orthonormalized().get_rotation_quaternion()
+	for k in 3:
+		out.encode_float(o + k * 4, at.origin[k])
+	var halves := [q.x, q.y, q.z, q.w, vel.x, vel.y, vel.z, spin.x, spin.y, spin.z]
+	for k in halves.size():
+		out.encode_half(o + 12 + k * 2, halves[k])
+
+
+## Body `i`'s [pose, velocity, spin] out of `bytes` (_pack_motion()).
+static func _unpack_motion(bytes: PackedByteArray, i: int) -> Array:
+	var o := i * MOTION
+	var h := func(k: int) -> float: return bytes.decode_half(o + 12 + k * 2)
+	var q := Quaternion(h.call(0), h.call(1), h.call(2), h.call(3)).normalized()
+	var at := Vector3(bytes.decode_float(o), bytes.decode_float(o + 4), bytes.decode_float(o + 8))
+	return [Transform3D(Basis(q), at), Vector3(h.call(4), h.call(5), h.call(6)), Vector3(h.call(7), h.call(8), h.call(9))]
 
 
 ## Only the Host's own `rest`, `wake` and `fall` (no Guest may send one: nothing in accepts()).
@@ -791,8 +896,9 @@ func _show(now: bool) -> void:
 			State.LYING:
 				_lie(sock)
 			State.FLYING:
-				if _is_host():
-					_moving.start(sock, woken.has(sock))
+				# Every machine starts its own body, but for a Throw on a Guest (the spawner's copy).
+				if _is_host() or not is_throw(sock):
+					_moving.start(sock, woken.has(sock), _motion.get(sock, []))
 					started = true
 	if started:
 		# Once for every body this change started (a thrown one has its Looks at once: its cloth
@@ -816,13 +922,18 @@ func _take_down(sock: int) -> void:
 ## The Host: starts the Socks woken by a hit, a pick or a moving Door as the budget allows, and
 ## writes a fallen one lying where its body rests (M06: under the rest speed
 ## and spin for the rest time), or at the return spot when it left the bounds (T14) or would lie
-## inside a wall (T08). Every machine: the flights nearest the camera get their Looks.
+## inside a wall (T08). A Guest: its moving Doors and drawers sweep its own lying Socks, looks only.
+## Every machine: the flights nearest the camera get their Looks.
 func _physics_process(delta: float) -> void:
 	if _lying_bodies == null:
 		return
 	give_looks()
-	if _is_host() and parts != null:
+	if parts == null:
+		return
+	if _is_host():
 		_moving.tick(delta)
+	else:
+		_moving.tick_looks(delta)
 
 
 ## Every machine, each frame: the flights with no Looks are drawn as instances where their bodies
@@ -855,6 +966,32 @@ func _process(_delta: float) -> void:
 
 func _is_host() -> bool:
 	return parts == null or parts.is_host()
+
+
+## Whether this machine decides the Mess (the Host, or alone): a Guest's bodies are looks only.
+func decides() -> bool:
+	return _is_host()
+
+
+## Whether flying Sock `sock` is a Throw (thrown by a player, not dropped, poured or woken): the one
+## body that goes over the spawner (coop/09 streams it); every other is started on each machine.
+func is_throw(sock: int) -> bool:
+	var launch: Dictionary = throws.get(sock, {})
+	return not launch.is_empty() and int(launch.get("by", NOBODY)) != NOBODY and not bool(launch.get("drop", false))
+
+
+## A Guest's own sweep (coop/08): lying Sock `sock` is taken off the lying tier, its record as it
+## is, while its looks-only body moves.
+func lift(sock: int) -> void:
+	if _lying_bodies != null and _lying_bodies.has(sock):
+		_take_down(sock)
+
+
+## A Guest's looks-only body of a Sock the Host never moved has ended: it lies again where its record
+## says (B06).
+func lie_again(sock: int) -> void:
+	if _lying_bodies != null and state_of(sock) == State.LYING and not _lying_bodies.has(sock):
+		_lie(sock)
 
 
 ## The two tiers' numbers (a default when none is set).
@@ -914,9 +1051,19 @@ func give_looks() -> void:
 		_flight_looks[body] = true
 
 
-## Where the falling bodies go (the spawner's path in co-op).
+## Where a Throw's body goes (the spawner's path in co-op).
 func flight_holder() -> Node:
 	return _container(flights)
+
+
+## Where every other falling body goes (woken, fallen, poured, swept, dropped: no spawner sees it).
+func bodies_holder() -> Node:
+	return _bodies if _bodies != null else _container(flights)
+
+
+## Every falling body on this machine (its own, and a Guest's spawned Throw copies).
+func flight_bodies() -> Array[RigidBody3D]:
+	return _flight_nodes()
 
 
 ## The lying Socks `shape` at `xform` overlaps, at most `most`.
@@ -933,17 +1080,21 @@ func _flight_nodes() -> Array[RigidBody3D]:
 	return out
 
 
-## From now on the falling bodies are known as they enter and leave `flights` (those there already too).
+## From now on the falling bodies are known as they enter and leave `flights` and this Mess's own
+## holder (those there already too).
 func _watch_flights() -> void:
-	var holder := _container(flights)
-	if not holder.child_entered_tree.is_connected(_on_flight_in):
-		holder.child_entered_tree.connect(_on_flight_in)
-		holder.child_exiting_tree.connect(_on_flight_out)
 	_flight_by_sock.clear()
 	_flight_looks.clear()
 	_flight_shape.clear()
-	for child in holder.get_children():
-		_on_flight_in(child)
+	var holders: Array[Node] = [_container(flights)]
+	if bodies_holder() != holders[0]:
+		holders.append(bodies_holder())
+	for holder in holders:
+		if not holder.child_entered_tree.is_connected(_on_flight_in):
+			holder.child_entered_tree.connect(_on_flight_in)
+			holder.child_exiting_tree.connect(_on_flight_out)
+		for child in holder.get_children():
+			_on_flight_in(child)
 
 
 func _on_flight_in(node: Node) -> void:
@@ -953,10 +1104,9 @@ func _on_flight_in(node: Node) -> void:
 	var sock := _sock_of_flight(body)
 	if sock < 0:
 		return
-	if not _is_host():
-		# coop/07: a Guest's spawned copy never simulates. It arrives at the holder's origin with no
-		# synchronizer (coop/08 and coop/09 give it a place); left live, a pour's hundreds of copies
-		# pile into one spot and overflow Jolt's contact buffers on the Guest.
+	if not _is_host() and not body.has_meta(SOCK_META):
+		# coop/07: a Guest's spawned Throw copy never simulates. It arrives at the holder's origin with
+		# no synchronizer (coop/09 gives it the stamped stream); left live, copies piled into one spot.
 		body.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
 		body.freeze = true
 	_flight_by_sock[sock] = body

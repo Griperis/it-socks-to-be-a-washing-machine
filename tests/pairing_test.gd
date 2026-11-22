@@ -543,8 +543,7 @@ func case_invariants() -> void:
 	_check(not _parts.answer(Command.new(&"fall", Parts.HOST, _mess.id, {"sock": ON_FLOOR}))["ok"], "and only a lying one")
 	var snap := _parts.snapshot()
 	var back := _roundtrip(snap)
-	var saved: Dictionary = back[String(_mess.id)]
-	_same(saved["mates"], snap[_mess.id]["mates"], "the Pair survives a save")
+	_same(Mess.unpacked(back[String(_mess.id)])["mates"], _mess.mates, "the Pair survives a save")
 	_parts.where = Callable()
 
 

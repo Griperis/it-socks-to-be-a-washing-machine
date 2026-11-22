@@ -5,6 +5,11 @@
 ## Q2308); under pressure the slowest farthest from the players rest first. A pick, a fast hit and a
 ## moving Door or drawer wake the lying Socks they meet. It writes no state: it asks the Mess's
 ## Host-only Commands, and the Mess says when a Sock starts or stops flying.
+##
+## On a Guest (coop/08) it starts a looks-only body for every Sock the Host's answers make FLYING (but
+## a Throw: the spawner's copy), on Mess.LAYER_LOOKS; it never asks anything. Its moving Doors and
+## drawers sweep its own lying Socks the same way, the records as they are (`tick_looks`); such a
+## body the Host never moved goes back where it lay once it comes to rest.
 class_name MessMoving
 extends RefCounted
 
@@ -97,11 +102,12 @@ func forget(sock: int) -> void:
 
 
 ## The Mess shows Sock `sock` FLYING with no body yet: it starts now (woken, dropped or thrown:
-## Q2367 took the drop's flick away).
-func start(sock: int, woken: bool) -> void:
+## Q2367 took the drop's flick away). `motion` ([pose, velocity, spin], a whole state's body in flight:
+## a late Guest, a load) starts it there instead of at its record.
+func start(sock: int, woken: bool, motion: Array = []) -> void:
 	if _flights.has(sock):
 		return
-	_launch(sock, woken)
+	_launch(sock, woken, motion)
 
 
 ## Every body freed (a whole new state, or the Mess leaves).
@@ -160,6 +166,36 @@ func tick(delta: float) -> void:
 		_relieve(stops)
 	_ask_rests()
 	_start_waiting()
+
+
+## A Guest, once a physics tick (coop/08): its moving Doors and drawers sweep its own lying Socks
+## (looks only), and a body of a Sock the Host never moved (its record still LYING) goes back where it
+## lay once still for the rest time, asleep or out of bounds (B06). Bodies the Host's answers started
+## wait for its rest batch. Nothing is asked.
+func tick_looks(delta: float) -> void:
+	var t := _mess.bodies_tuning()
+	_sweep_movers()
+	var back: Array[int] = []
+	var bounded := _mess.bounds.has_volume()
+	var to_local := _mess.lying.global_transform.affine_inverse() if bounded and _mess.lying != null else Transform3D.IDENTITY
+	for sock: int in _flights:
+		var body := _flights[sock]
+		var speed := body.linear_velocity.length()
+		_airborne[sock] += delta
+		_speeds[sock] = speed
+		_switch_ccd(body, speed, t)
+		if _mess.state_of(sock) != Mess.State.LYING:
+			continue
+		if bounded and not _mess.bounds.has_point(to_local * body.global_position):
+			back.append(sock)
+			continue
+		var slow := speed < t.rest_speed and body.angular_velocity.length() < t.rest_spin
+		_still[sock] = _still[sock] + delta if slow else 0.0
+		if _still[sock] >= t.rest_time or (body.sleeping and _airborne[sock] > t.asleep_rest_after):
+			back.append(sock)
+	for sock in back:
+		_drop_flight(sock)
+		_mess.lie_again(sock)
 
 
 ## A flight that has come to rest lies where it is, pushed up onto a floor it sank into, or at the
@@ -347,6 +383,14 @@ func _sweep_movers() -> void:
 						found.append(sock)
 	if found.is_empty():
 		return
+	if not _mess.decides():
+		# A Guest: looks only, within the budget; the rest wait for the Host's answers.
+		for sock in found:
+			if _flights.size() >= t.moving_budget:
+				break
+			_mess.lift(sock)
+			_launch(sock, true)
+		return
 	var now := PackedInt32Array()
 	var late := PackedInt32Array()
 	for sock in found:
@@ -479,7 +523,10 @@ static func _nearest(players: PackedVector3Array, at: Vector3) -> float:
 ## as a woken Sock; a thrown one bounces and drags as a Throw (M10). A dropped or thrown one's own
 ## player's body lets it through. A Pair is its ball's body; it drags as a Pair from its first touch
 ## (P07), a fallen or dropped one from the start.
-func _launch(sock: int, woken: bool) -> void:
+##
+## On a Guest the body is looks only (coop/08): on Mess.LAYER_LOOKS, sparing no thrower (it touches
+## no player's body but through the house layer). Only a Throw's body goes under the spawner's path.
+func _launch(sock: int, woken: bool, motion: Array = []) -> void:
 	var t := _mess.bodies_tuning()
 	var hands := _mess.tuning
 	var pair := _mess.is_pair(sock)
@@ -504,13 +551,25 @@ func _launch(sock: int, woken: bool) -> void:
 	if not launch.is_empty():
 		body.linear_velocity = launch["vel"]
 		body.angular_velocity = launch["spin"]
+	if motion.size() == 3:
+		body.linear_velocity = motion[1]
+		body.angular_velocity = motion[2]
+	var here := _mess.decides()
+	if not here:
+		body.collision_layer = Mess.LAYER_LOOKS
+		body.collision_mask = Mess.LOOKS_MASK
 	_switch_ccd(body, body.linear_velocity.length(), t)
 	if not pair:
 		body.inertia = turn_inertia(body.mass, SockDress.box(_mess.design_of(sock)), t.turn_weight)
-	_mess.flight_holder().add_child(body, true)
-	body.global_transform = _mess.pose_of(sock)
+	# The pose is set before the body enters the tree (m06 backlog: it was set after add_child, so a
+	# spawner's copy was made at the holder's origin), in the holder's space.
+	var holder := _mess.flight_holder() if _mess.is_throw(sock) else _mess.bodies_holder()
+	var pose: Transform3D = motion[0] if motion.size() == 3 else _mess.pose_of(sock)
+	var space := holder as Node3D
+	body.transform = space.global_transform.affine_inverse() * pose if space != null and space.is_inside_tree() else pose
+	holder.add_child(body, true)
 	body.reset_physics_interpolation()
-	if not launch.is_empty():
+	if not launch.is_empty() and here:
 		_spare_thrower(body, int(launch["by"]))
 	body.body_entered.connect(_on_contact.bind(sock))
 	_flights[sock] = body
@@ -540,7 +599,8 @@ func _on_contact(other: Node, sock: int) -> void:
 	if _mess.is_pair(sock) and not _damped.has(sock):
 		_damp_pair(sock)
 	_bounce(sock)
-	_mess.flight_touched.emit(sock, other)
+	if _mess.decides():
+		_mess.flight_touched.emit(sock, other)
 
 
 ## The sound of a hit: "bounce" at the body, softer and lower the slower it hit.

@@ -56,6 +56,11 @@ many exist.
   average with a burst cap; the number is a placeholder until measured).
 - Join of a 2,000-Sock Mess: under 100 KB on the wire (old: about 40 KB a 1,000).
 - A Guest's frame time during a pour within the Host's (the same local bodies, budget 512).
+- Measured by coop/08 (`tests/coop_mess_test.gd`, `tests/coop_respill_test.gd`, the `MESS` and `RESPILL` lines):
+  a 2,000-Sock pour 59 to 61 KB/s reliable, worst second 90 KB (0 and 50 ms; coop/07: 58 to 60); the join of the
+  zoo's 2,039 Socks 19.7 KB (before: 132 KB), mid-pour (3,059 Socks, 474 flying) 90 KB (before: 256 KB with the
+  spawner's copies), after a 2,000 pour at rest (4,039 Socks) 110 KB: a poured Sock's pose is 48 bytes that do not
+  compress; the Guest's Mess scripts a tick 0.5 ms against the Host's 1.3 ms with the same bodies.
 
 ## Tickets
 - coop/07 (running): reproduce the disconnect; answers carry changed records only; rests batched a tick.

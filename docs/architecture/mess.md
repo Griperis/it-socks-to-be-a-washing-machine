@@ -10,7 +10,7 @@ Socks lie, are drawn, move or wake.
 | `mess.gd` (`Mess`, the Part) | The records (designs, states, poses, throws, mates), the patches other Parts' answers use, the Host-only `rest`, `wake`, `fall`, `_show` (only the changed records, a split search over the packed arrays), lending a lying Sock its Looks, the flights' Looks and drawing |
 | `mess_bodies.gd` (`MessBodies`) | Each lying Sock's static body in the physics server (no node), its RID to Sock id, and the queries over them through `PhysicsQueries` |
 | `mess_drawing.gd` (`MessDrawing`) | The MultiMeshes: one per 8 m floor cell and shape for lying Socks, one per shape for flights without a Looks; a CPU copy of each buffer (never read back), flushed once a frame |
-| `mess_moving.gd` (`MessMoving`) | The Host's flights (`flight.tscn`, `ball_flight.tscn`): the budget, the wait queue, starts and rests, hits, picks' column wakes, Door and drawer sweeps |
+| `mess_moving.gd` (`MessMoving`) | The flights (`flight.tscn`, `ball_flight.tscn`): on the Host the budget, the wait queue, starts and rests, hits, picks' column wakes, Door and drawer sweeps; on a Guest its looks-only bodies and its own sweeps (`tick_looks`, coop/08) |
 | `mess_tuning.gd` + `.tres` (`MessTuning`) | The numbers of the above |
 
 ## The tiers
@@ -20,8 +20,12 @@ Socks lie, are drawn, move or wake.
 - A lying Sock someone needs as a scene (the aimed one) asks `looks_of(sock)`: its Looks is lent, the
   instance hides; `return_looks(sock)` gives it back.
 - HELD: nothing of the Mess (the HeldView draws it).
-- FLYING: a RigidBody3D under `flights` (the spawner's path), drawn by the flying MultiMesh, or with a
-  `Looks` child (cloth) for the `flying_cap` nearest the camera.
+- FLYING: a RigidBody3D on every machine (coop/08), drawn by the flying MultiMesh, or with a `Looks` child
+  (cloth) for the `flying_cap` nearest the camera. A Throw's body is the Host's, under `flights` (the
+  spawner's path); every other (woken, fallen, poured, swept, dropped) is started by each machine from the
+  record under the Mess's own `Bodies` holder, which no spawner sees. A Guest's is looks only, on
+  `Mess.LAYER_LOOKS` (it touches the house, lying Socks and its other looks bodies), and never wakes, rests
+  or writes anything shared; the Host's rest batch snaps it.
 
 ## Flows
 
@@ -33,7 +37,9 @@ Socks lie, are drawn, move or wake.
   sphere `hit_lead_ticks` ticks along its motion wakes what it is about to meet, so their bodies exist
   before the contact and it pushes them (Jolt alone, no extra force, Q1215).
 - A Door or drawer: every `Openable` is in the group `openables`; while it animates, the Host sweeps
-  its AnimatableBody3D shapes over the lying bodies and wakes those at once.
+  its AnimatableBody3D shapes over the lying bodies and wakes those at once. A Guest sweeps its own the
+  same way (`Mess.lift`), records as they are; one the Host never woke goes back where it lay once still
+  (`Mess.lie_again`).
 - A rest: still for `rest_time` (or Jolt asleep) is noted, and at the tick's end every flight noted is
   asked as one `rest` (coop/07: one answer, one reliable message a tick, none when nothing rested, as the
   old game's settle stream); out of bounds or inside a wall, at the
@@ -52,12 +58,12 @@ Socks lie, are drawn, move or wake.
   when records are added or cut off, the launches of the rows that fly). Make one with the `*_patch`
   functions, chaining several Socks through their `onto` argument (`lose_button.gd`, `Hands.left`); never
   hand-build `states`/`poses` arrays into an answer. `Mess.write` applies a rows patch the same on every
-  machine; a snapshot (a late Guest, a save) is still the whole fields by name. A listener reads a patch with
-  `Mess.row_states()`.
-- A Guest's spawned flight copy is frozen (kinematic) as it arrives (`_on_flight_in`): it has no
-  synchronizer yet and comes in at the holder's origin; left live, a pour's copies piled there and
-  overflowed Jolt's buffers on the Guest (coop/07). coop/08 and coop/09 give the Guest its own bodies and
-  the Throw stream.
+  machine. A snapshot (a late Guest, a save) is `Part.whole_state()`: for the Mess the State fields packed and
+  zstd-compressed (`PACKED`), exact, with each body in flight's place and motion (`MOTION` bytes, half floats:
+  looks only), read back by `Mess.unpacked()` (a test reads a saved field through it). A listener reads a patch
+  with `Mess.row_states()`.
+- A Guest's spawned Throw copy (no `SOCK_META`) is frozen (kinematic) as it arrives (`_on_flight_in`): it has
+  no synchronizer yet (coop/09 gives it the stamped stream). Only Throws come over the spawner now.
 - A flight flies as the same leg and foot boxes it lies on (`MessBodies.parts_at`), with
   `MessTuning.turn_weight` times its flat box's inertia (a 50 g board's own spins to Jolt's cap on an
   edge landing), and sweeps (CCD) only from 1 m/s (core/23). Poured and dropped Socks fly as woken ones.

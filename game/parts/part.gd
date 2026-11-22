@@ -81,6 +81,12 @@ func state() -> Dictionary:
 	return d
 
 
+## The state as it is sent whole (a late Guest's snapshot, a save): state(), unless a part packs it
+## smaller (the Mess, coop/08). write() with `now` takes it back.
+func whole_state() -> Dictionary:
+	return state()
+
+
 ## The one writer of state. Called only by Parts: with the Host's answer, or a whole snapshot.
 func write(patch: Dictionary, now: bool) -> void:
 	var names := state_names()
