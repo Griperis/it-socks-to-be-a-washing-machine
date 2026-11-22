@@ -736,3 +736,33 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | the stamped pose eased at 12/s (`docs/research/coop-ragdoll-sync.md`); the lag (100 to 155 ms) is judged at the knockdown |
 
 ---
+
+| Field | Content |
+|---|---|
+| Ticket | coop/03, host, join and roster behind a transport seam ready for Steam (NetTransport/EnetTransport, PlayerProfile with the long id, the gate with protocol, layout hash, id and name, the Roster Part, refusals, toasts, leaver's drop, 10 s join timeout, throttle at full), M0.6 batch 1; merged (main a3457f7) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | went outside its Owns list where the acceptance needed it (`Hands.left()`, `hearing.gd` drop once, `Player.announce()`/`notice()`); with coop/04 the new avatar test shared one profile on both zoos and the gate refused it: the lead gave each zoo its own profile at integration |
+| Cost | 20,832,512 tokens, 122 tool calls, 20m42s (Opus) |
+| Time | the agent ran about 21 min |
+| Surprises | none |
+| Stop rules | none needed |
+| Looks | none |
+| Decisions | Q2440-Q2449, Q2456-Q2460 |
+
+---
+
+| Field | Content |
+|---|---|
+| Ticket | coop/04, the avatar model ported as is (4 bones, the Looks scene and contract, the capsule replaced), M0.6 batch 2, an asset piece; approved (Q2465); merged (main a3457f7) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | none |
+| Cost | 9,919,850 tokens, 91 tool calls, 19m14s (Opus) |
+| Time | the agent ran about 19 min |
+| Surprises | the import's bone rests carry a 0.6 to 1.2 degree lean the coop/02 stand-in lacks (noted for the knockdown) |
+| Stop rules | none needed |
+| Looks | the before and after strip: no pixel differs in six views |
+| Decisions | Q2438, Q2465 |
+
+---
