@@ -1,0 +1,9 @@
+# coop/10: knockdown in the zoo's Knockdown station (Q2490, Q2495). The knocked view with the vignette
+# (looking along the fall), the knocked view pitched down at the own body, a Teammate lying, and a
+# Teammate dragged by the feet (seen from the side, the dragger walking off to the left), and the Outline
+# and Hold: Drag on a lying Teammate under the crosshair (Q2498). 60 frames a second.
+view      --size=1280x720 --do='30:knockdown:host;60:knockdown:self' --shots=190
+own-body  --size=1280x720 --do='30:knockdown:host;60:knockdown:self_down' --shots=190
+lying     --size=1280x720 --do='40:knockdown:mate' --shots=200
+dragged   --size=1280x720 --do='40:knockdown:mate;130:knockdown:drag' --shots=205
+outline   --size=1280x720 --do='40:knockdown:mate;130:knockdown:aim' --shots=170

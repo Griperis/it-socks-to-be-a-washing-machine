@@ -8,6 +8,13 @@
 ## fills) and its release asks to throw along the aim; no cancel. In co-op it is the
 ## local player: Avatars copies its body to the others. Its own body (coop/06) is the sock creature's
 ## Looks in first person: looking down it sees its belly and feet, crouching and bending with it.
+##
+## Knocked down (coop/10): while the level's Knockdowns says it is down its input is frozen as by a menu
+## (a charge is dropped, a drag let go), save the jump key, which struggles while it is dragged; its body
+## stays at its ragdoll's feet, the camera rides the ragdoll's head (stopping wall_gap short of a wall),
+## its own body copies the ragdoll and a vignette darkens the edges; the HUD stays. With empty Hands, a
+## lying Teammate under the crosshair wins the left button over a Sock or a thing (Q2493): held, it drags
+## them by the feet at drag_speed of the pace, let go it drops them.
 class_name Player
 extends CharacterBody3D
 
@@ -38,6 +45,9 @@ const HANDS_FULL := "Hands full"
 const CANT_DROP := "Can't drop there"
 ## What the message row says when a pick completes a Pair (the old game.gd, core/16 P02).
 const PAIRED := "Paired!"
+## What the knocked player reads (the old teammate_news_installer.gd, Q2494): the thrower's name, then this.
+const KNOCKED_YOU := "knocked you down"
+const KNOCKED_BY_UNKNOWN := "A teammate"
 ## The crosshair where a drop may go (and always with empty Hands), and where it may not (the Hud's).
 static var CROSSHAIR_OK := Hud.CROSSHAIR_OK
 static var CROSSHAIR_NO := Hud.CROSSHAIR_NO
@@ -61,6 +71,8 @@ const FULL_OUTLINE := preload("res://game/outline/full.tres")
 @onready var _ring: PowerRing = %Ring
 ## A Guest's looks-only guesses of its own pick, drop, Throw and wheel (coop/09).
 @onready var _ghosts: GuestGhosts = %Ghosts
+## The knocked view's vignette (Q2490).
+@onready var _vignette: ColorRect = %Vignette
 
 ## True while a menu has the player's input (set_input_blocked()).
 var _input_blocked := false
@@ -97,6 +109,14 @@ var _message_left := 0.0
 ## T01: whether a Throw is charging, and how full its ring is (0 to 1 over the charge time).
 var charging := false
 var charge := 0.0
+## coop/10: the level's Knockdowns, whether this player lies down now, the lying body (a peer) the
+## crosshair is on (-1: none), whether the left button holds a grab, and how far from the body's middle
+## the eyes may be this tick (a wall between: wall_gap short of it).
+var _knockdowns: Knockdowns
+var knocked := false
+var aimed_body := -1
+var _grab_held := false
+var _eye_reach := INF
 
 
 func _ready() -> void:
@@ -125,6 +145,8 @@ func _ready() -> void:
 ## player reads no walk, jump, look, use or Hands input; it still falls and still holds what it holds.
 func set_input_blocked(on: bool) -> void:
 	_input_blocked = on
+	if on:
+		_let_go_body()  # H97: a menu lets go of a dragged body
 
 
 ## This machine's player id: who its Commands come from.
@@ -157,6 +179,8 @@ func hands() -> Hands:
 func _unhandled_input(event: InputEvent) -> void:
 	if _input_blocked:
 		return
+	if knocked and (event is InputEventMouseMotion or event.is_action_pressed(HANDS_NEXT) or event.is_action_pressed(HANDS_PREV)):
+		return  # F68: the look follows the ragdoll, not the mouse
 	if event is InputEventMouseButton and event.is_pressed() and not _captured:
 		# L03, R01: the click that captures does nothing else; the wheel never captures.
 		if not _is_wheel(event as InputEventMouseButton):
@@ -198,6 +222,15 @@ func _turn(yaw: float, pitch: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	var kd := knockdowns()
+	var down := kd != null and kd.is_down(player_id())
+	if down != knocked:
+		_set_knocked(down)
+	if knocked:
+		_lie(kd)
+		_time += delta
+		_update_hands(delta)
+		return
 	var walk := Vector2.ZERO if _input_blocked else Input.get_vector(MOVE_LEFT, MOVE_RIGHT, MOVE_FORWARD, MOVE_BACK)
 	_update_crouch(not _input_blocked and Input.is_action_pressed(CROUCH))
 	if not is_on_floor():
@@ -205,6 +238,8 @@ func _physics_process(delta: float) -> void:
 	elif not _input_blocked and not crouching and Input.is_action_just_pressed(JUMP):
 		velocity.y = tuning.jump_speed
 	var pace := tuning.walk_speed * (tuning.crouch_speed_factor if crouching else 1.0)
+	if kd != null and kd.dragging_of(player_id()) >= 0:
+		pace *= kd.tuning.drag_speed  # H95
 	var direction := global_basis * Vector3(walk.x, 0.0, walk.y)
 	velocity.x = direction.x * pace
 	velocity.z = direction.z * pace
@@ -213,6 +248,93 @@ func _physics_process(delta: float) -> void:
 	if not _input_blocked and Input.is_action_just_pressed(INTERACT):
 		interact()
 	_update_hands(delta)
+
+
+# --- Knocked down (coop/10) ----------------------------------------------------------------------
+
+## The level's Knockdowns (with two zoos in one tree, this player's own), or null.
+func knockdowns() -> Knockdowns:
+	if _knockdowns == null or not is_instance_valid(_knockdowns):
+		if not is_inside_tree():
+			return null
+		for node in get_tree().get_nodes_in_group(Knockdowns.GROUP):
+			var k := node as Knockdowns
+			if _knockdowns == null or (owner != null and k.owner == owner):
+				_knockdowns = k
+	return _knockdowns
+
+
+## This player's own ragdoll (its avatar's on this machine), or null: alone it has none.
+func own_ragdoll() -> Ragdoll:
+	var kd := knockdowns()
+	return kd.ragdoll_of(player_id()) if kd != null else null
+
+
+## Down (F68, L145): the charge goes, a drag is let go, the vignette shows. Up: the own body stands, the
+## view returns to the head.
+func _set_knocked(on: bool) -> void:
+	knocked = on
+	_eye_reach = INF
+	if on:
+		_drop_down_at = -1.0
+		_set_charge(false)
+		_let_go_body()
+		crouching = false
+		_apply_height(tuning.stand_height)
+		var t := knockdowns().tuning
+		var mat := _vignette.material as ShaderMaterial
+		if mat != null:
+			mat.set_shader_parameter(&"dark", t.vignette_dark)
+			mat.set_shader_parameter(&"start", t.vignette_start)
+	else:
+		_own_body.end_ragdoll()
+		reset_physics_interpolation()
+	_vignette.visible = on
+
+
+## One tick lying: the body stays at the ragdoll's feet (G85, K142), the eyes' wall test runs (F70,
+## F71), and the jump key struggles while dragged (H105).
+func _lie(kd: Knockdowns) -> void:
+	velocity = Vector3.ZERO
+	var rag := own_ragdoll()
+	if rag != null and rag.phase != Ragdoll.Phase.UP:
+		global_position = rag.floor_under(rag.feet())
+		var middle := rag.point_at(tuning.stand_height * 0.5)
+		var eye := rag.point_at(kd.tuning.eye)
+		var hit := PhysicsQueries.ray(self, middle, eye, Mess.LAYER_HOUSE, [get_rid()])
+		_eye_reach = maxf(0.0, middle.distance_to(hit["position"]) - kd.tuning.wall_gap) if not hit.is_empty() else INF
+	if not _input_blocked and kd.dragger_of(player_id()) >= 0 and Input.is_action_just_pressed(JUMP):
+		kd.struggle(player_id())
+
+
+## F69, F72: the camera on the ragdoll's head as drawn, the pitch it had, never past the wall test.
+func _knocked_camera() -> void:
+	var rag := own_ragdoll()
+	if rag == null or rag.phase == Ragdoll.Phase.UP:
+		return
+	var moves := rag.motions()
+	_own_body.copy_ragdoll(moves)
+	var t := knockdowns().tuning
+	var head := moves[Ragdoll.BONES - 1]
+	var middle := moves[1] * (Vector3.UP * tuning.stand_height * 0.5)
+	var eye := head * (Vector3.UP * t.eye)
+	if middle.distance_to(eye) > _eye_reach:
+		eye = middle + (eye - middle).normalized() * _eye_reach
+	_camera.global_transform = Transform3D(head.basis.orthonormalized() * Basis(Vector3.RIGHT, _head.rotation.x), eye)
+
+
+## The camera, now (a test's still or check reads it).
+func view() -> Transform3D:
+	return _camera.global_transform
+
+
+## Lets go of the body this player drags, or of a grab not answered yet.
+func _let_go_body() -> void:
+	var kd := knockdowns()
+	var held := _grab_held
+	_grab_held = false
+	if kd != null and (held or kd.dragging_of(player_id()) >= 0):
+		kd.let_go(player_id())
 
 
 ## C01, C02: down at once; up only when the crouched body could move up into the standing height.
@@ -237,6 +359,9 @@ func _apply_height(height: float) -> void:
 ## look as it is now, so a mouse turn never waits for a physics tick. The right stick turns here too (P01).
 func _process(delta: float) -> void:
 	_update_zoom(delta)
+	if knocked:
+		_knocked_camera()
+		return
 	if not _input_blocked:
 		var stick := Input.get_vector(LOOK_LEFT, LOOK_RIGHT, LOOK_UP, LOOK_DOWN)
 		if stick != Vector2.ZERO:
@@ -299,10 +424,14 @@ func _update_hands(delta: float) -> void:
 		return
 	var me := player_id()
 	var found := aim_found(h)
-	aimed_sock = found["sock"]
-	_outline(h.mess, aimed_sock)
-	_outline_thing(_aimed_outline(h.mess, aimed_sock, found["lying"]))
 	var holding := h.active_of(me) >= 0
+	var kd := knockdowns()
+	aimed_body = kd.aimed_body(eyes(), aim_dir(), me) if kd != null and not holding and _acting() else -1
+	# H91, Q2498: a lying body under the crosshair wins over a Sock or a thing, and shows its Outline.
+	aimed_sock = found["sock"] if aimed_body < 0 else -1
+	_outline(h.mess, aimed_sock)
+	var body := kd.avatar_of(aimed_body) if aimed_body >= 0 else null
+	_outline_thing(Outline.of(body) if body != null else _aimed_outline(h.mess, aimed_sock, found["lying"]))
 	_tick_spot = {}
 	_tick_refusal = ""
 	if holding:
@@ -317,11 +446,19 @@ func _update_hands(delta: float) -> void:
 		_drop_down_at = -1.0
 		_set_charge(false)
 		_swallow_press = false
+		if _grab_held:
+			_let_go_body()
 		return
 	if _swallow_press:
 		_swallow_press = false
 		return
-	if Input.is_action_just_pressed(PICK):
+	if _grab_held and Input.is_action_just_released(PICK):
+		_let_go_body()  # H96
+	if Input.is_action_just_pressed(PICK) and aimed_body >= 0:
+		# H93, Q2493: a lying body under the crosshair wins the click over a Sock or a thing.
+		_grab_held = true
+		kd.grab(me, aimed_body)
+	elif Input.is_action_just_pressed(PICK):
 		if aimed_sock >= 0:
 			_pick(h, aimed_sock)
 		else:
@@ -346,7 +483,7 @@ func _update_hands(delta: float) -> void:
 ## Whether the buttons of the Hands, the zoom and the turn act: not under a menu, and only with the
 ## mouse captured (L03, R01).
 func _acting() -> bool:
-	return _captured and not _input_blocked
+	return _captured and not _input_blocked and not knocked
 
 
 ## T01: starts a charge (the ring shows, empty) or ends one (the ring hides).
@@ -501,10 +638,19 @@ func _update_screen(h: Hands) -> void:
 	if sock < 0:
 		_aim.force_raycast_update()
 		part = part_of(_aim.get_collider() as Node)
-	_hud.show_target(Prompts.target(part, _hud.pad))
+	var target := Prompts.target(part, _hud.pad)
+	if aimed_body >= 0:
+		target.clear()
+		target.append(Prompts.drag_prompt(_hud.pad))
+	_hud.show_target(target)
 	var items := h.items_of(me) if h != null else PackedInt32Array()
 	var capacity := h.tuning_of(me).capacity if h != null else 0
-	_hud.show_hints(Prompts.hints(items.size(), _hud.pad))
+	var hints := Prompts.hints(items.size(), _hud.pad)
+	var kd := knockdowns()
+	if kd != null and kd.dragger_of(me) >= 0:
+		hints.clear()
+		hints.append(Prompts.struggle_hint(_hud.pad))  # H105, Q2489: the hint only
+	_hud.show_hints(hints)
 	# A15: what picking the aimed loose Sock would make the Hands show.
 	if aimed != null and upgrades.sense() and not mess.is_pair(sock):
 		var pairs := h.mate_held(me, sock) >= 0
@@ -585,6 +731,7 @@ func _aims_full_drawer() -> bool:
 func _on_applied(ev: Dictionary) -> void:
 	if _hands != null:
 		Hearing.applied(ev, player_id(), _hands.parts, _ghosts.answered(ev))
+	_knock_news(ev)
 	if ev.get("ok", false) and int(ev.get("by", 0)) == player_id() and ev.has("paired") \
 			and StringName(ev.get("kind", &"")) == &"pick":
 		say_paired()
@@ -604,6 +751,23 @@ func _on_applied(ev: Dictionary) -> void:
 		Hands.NO_SPOT, Hands.FAR:
 			if StringName(ev.get("kind", &"")) == &"drop":
 				say(CANT_DROP)
+
+
+## coop/10: "<Name> knocked you down" for the knocked player alone (F78, Q2494); a grab granted after
+## the button came up lets go at once (H96).
+func _knock_news(ev: Dictionary) -> void:
+	var kd := knockdowns()
+	if kd == null or not ev.get("ok", false) or StringName(ev.get("to", &"")) != kd.id:
+		return
+	var kind := StringName(ev.get("kind", &""))
+	if kind == Knockdowns.KNOCK and int(ev.get("target", 0)) == player_id():
+		var thrower := int(ev.get("thrower", 0))
+		var roster := kd.parts.find(func(part: Part) -> bool: return part is Roster) as Roster if kd.parts != null else null
+		var known := roster != null and not roster.entry_of(thrower).is_empty()
+		announce(roster.name_of(thrower) if known else KNOCKED_BY_UNKNOWN, roster.colour_of(thrower) if known else Color.WHITE,
+				KNOCKED_YOU, kd.tuning.message_time)
+	elif kind == Knockdowns.GRAB and int(ev.get("by", 0)) == player_id() and not _grab_held:
+		kd.let_go(player_id())
 
 
 ## The Part of the thing `node` belongs to: the first part of the closest entity root above it

@@ -15,6 +15,12 @@
 ## there at once (Q2451). Its Looks gets the drawn pitch and crouch and the nearest player's eyes (Q2455)
 ## and derives every motion from them (Q2461). Its colour and name tag come from the Roster (Q2462);
 ## its held things hang at its Looks' HoldPoint in its worn HeldView (Q2464). It never reads input.
+##
+## Knocked down (coop/10): on every machine it follows the level's Knockdowns each frame. Its Ragdoll
+## lies down from the knock (the Host simulates it, the others ease to the Host's pose), gets up at the
+## rise, stands at the end; meanwhile its Looks copies the ragdoll and its Mate capsule (what a falling
+## ragdoll bumps on a standing player) is off. A body lying with a dragger plays "drag_scrape" at its
+## feet each `scrape_every` they slide, and lets the dragger walk through it.
 class_name Avatar
 extends Node3D
 
@@ -61,9 +67,20 @@ var dropped := 0
 
 ## A pose further than `snap` from the last one came: the next frame stands there at once.
 var _jumped := false
+## The level's Knockdowns (found once), who drags this body now and the bodies let through for them,
+## and how far its feet slid since the last scrape.
+var _knockdowns: Knockdowns
+var _dragger := -1
+var _drag_bodies: Array[CollisionObject3D] = []
+var _slid := 0.0
+var _last_feet := Vector3.INF
+## How many drag scrapes it played (a test reads it).
+var scrapes := 0
 
 @onready var looks := get_node_or_null(^"Looks") as AvatarLooks
 @onready var held := get_node_or_null(^"Held") as HeldView
+@onready var ragdoll := get_node_or_null(^"Ragdoll") as Ragdoll
+@onready var mate := get_node_or_null(^"Mate") as CollisionObject3D
 
 
 func _enter_tree() -> void:
@@ -104,6 +121,7 @@ func _process(delta: float) -> void:
 		rotation.y = pose_yaw
 		pitch = pose_pitch
 		crouch = pose_crouch
+		_follow_knockdown()
 		return
 	if _jumped:
 		_snap()
@@ -117,6 +135,127 @@ func _process(delta: float) -> void:
 		looks.look_pitch = pitch
 		looks.set_crouch(crouch)
 		looks.watch = nearest_eyes()
+	_follow_knockdown()
+
+
+# --- Knocked down (coop/10) ----------------------------------------------------------------------
+
+## Whether its player lies down now (getting up included) on this machine.
+func is_down() -> bool:
+	return ragdoll != null and ragdoll.phase != Ragdoll.Phase.UP
+
+
+## The ragdoll follows its player's knockdown here: down at a new knock, up at the rise, standing at the end.
+func _follow_knockdown() -> void:
+	if ragdoll == null:
+		return
+	var kd := _find_knockdowns()
+	var e := kd.entry_of(peer()) if kd != null else {}
+	if e.is_empty():
+		if ragdoll.phase != Ragdoll.Phase.UP:
+			ragdoll.stand()
+			_set_dragger(-1, kd)
+			if looks != null:
+				looks.end_ragdoll()
+			if mate != null:
+				mate.collision_layer = Ragdoll.MATE_LAYER
+		return
+	var n := int(e.get("n", 0))
+	if ragdoll.phase == Ragdoll.Phase.UP or ragdoll.serial != n:
+		ragdoll.knock(n, Transform3D(Basis(Vector3.UP, float(e.get("yaw", 0.0))), e.get("at", Vector3.ZERO)),
+				e.get("push", Vector3.FORWARD), float(e.get("high", 0.5)), float(e.get("side", 0.0)))
+		if e.get("pose") is PackedByteArray:
+			ragdoll.take(e["pose"])
+		_let_through_inside()
+		if mate != null:
+			mate.collision_layer = 0
+		_last_feet = Vector3.INF
+	if kd.is_rising(peer()) and ragdoll.phase == Ragdoll.Phase.DOWN:
+		ragdoll.rise(_world_yaw())
+	_set_dragger(kd.dragger_of(peer()), kd)
+	_scrape(kd)
+	if looks != null:
+		looks.copy_ragdoll(ragdoll.motions())
+
+
+## E53, E54: the falling body never bumps its own player's walking body, nor a Teammate who stood inside
+## it when it was hit (within 2 body radii sideways and the body's height up).
+func _let_through_inside() -> void:
+	var own := follow as CollisionObject3D
+	if own != null:
+		ragdoll.except_with(own)
+	var parent := get_parent()
+	if parent == null:
+		return
+	var reach := 2.0 * (ragdoll.tuning.body_radius if ragdoll.tuning != null else 0.3)
+	for node in parent.get_children():
+		var other := node as Avatar
+		if other == null or other == self or other.mate == null:
+			continue
+		var d := other.global_position - global_position
+		if Vector2(d.x, d.z).length() <= reach and absf(d.y) <= tuning.stand_height:
+			ragdoll.except_with(other.mate)
+			var body := other.follow as CollisionObject3D
+			if body != null:
+				ragdoll.except_with(body)
+
+
+## H100: the dragger's walking body and Mate pass through the body they pull, on every machine. They
+## still do after the drag, until it stands: let go, the body lies round the dragger's legs, and would
+## otherwise be flung out of them.
+func _set_dragger(by: int, kd: Knockdowns) -> void:
+	if by == _dragger:
+		return
+	_drag_bodies.clear()
+	_dragger = by
+	if by < 0 or kd == null:
+		return
+	var a := kd.avatar_of(by)
+	if a != null and a.mate != null:
+		_drag_bodies.append(a.mate)
+	if a != null and a.follow is CollisionObject3D:
+		_drag_bodies.append(a.follow as CollisionObject3D)
+	for node in get_tree().get_nodes_in_group(Hands.PLAYERS):
+		var player := node as Player
+		if player != null and player.player_id() == by and player.multiplayer == multiplayer and not _drag_bodies.has(player):
+			_drag_bodies.append(player)
+	for body in _drag_bodies:
+		ragdoll.except_with(body)
+
+
+## H103: a dragged body's feet scrape the floor: "drag_scrape" there each scrape_every they slide.
+func _scrape(kd: Knockdowns) -> void:
+	var at := ragdoll.feet()
+	if _dragger < 0 or _last_feet == Vector3.INF:
+		_last_feet = at
+		_slid = 0.0
+		return
+	_slid += Vector2(at.x - _last_feet.x, at.z - _last_feet.z).length()
+	_last_feet = at
+	if _slid >= kd.tuning.scrape_every:
+		_slid = 0.0
+		scrapes += 1
+		Sounds.play_at(&"drag_scrape", at)
+
+
+## Its player's turn about the up axis in the world.
+func _world_yaw() -> float:
+	var space := get_parent() as Node3D
+	var b := Basis(Vector3.UP, pose_yaw)
+	if space != null:
+		b = space.global_basis * b
+	return b.get_euler().y
+
+
+## The Knockdowns of this avatar's level (with two zoos in one tree, the one whose scene holds it).
+func _find_knockdowns() -> Knockdowns:
+	if _knockdowns != null and is_instance_valid(_knockdowns):
+		return _knockdowns
+	for node in get_tree().get_nodes_in_group(Knockdowns.GROUP):
+		var k := node as Knockdowns
+		if _knockdowns == null or (k.owner != null and k.owner.is_ancestor_of(self)):
+			_knockdowns = k
+	return _knockdowns
 
 
 ## Where the nearest other player's eyes are, within the look range of this body, or null with

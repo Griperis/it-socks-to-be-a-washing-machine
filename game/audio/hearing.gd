@@ -3,7 +3,8 @@
 ## cycle, a drop, a throw) play flat for the player they are answered to; everyone else hears a pick, a
 ## pair, a drop and a throw as loud, in the world at 1.2 m over that Teammate's feet (coop/05, Q2453;
 ## a cycle is the player's own). A Pair shelved is heard in the world at its drawer by everyone, and a
-## leaver's dropped Hands at their last place. Refusals are said by Player.say(), which plays "refuse".
+## leaver's dropped Hands at their last place. A knockdown (coop/10) is heard by everyone at the hit
+## point and buzzes the knocked player's pad; a grab buzzes the dragged player's. Refusals are said by Player.say(), which plays "refuse".
 ## Looks only: it reads the answer and decides nothing.
 class_name Hearing
 extends RefCounted
@@ -50,6 +51,17 @@ static func applied(ev: Dictionary, me: int, parts: Parts, guessed := false) -> 
 					PadRumble.play(PadRumble.THROW)
 			else:
 				_teammate(&"throw", by, parts)
+		&"knock":
+			# coop/10 M148, M155, Q2491: every machine hears the knockdown at the hit point; only the
+			# knocked player's pad buzzes (M149, Q2492).
+			if ev.get("at") is Vector3:
+				Sounds.play_at(&"knockdown", ev["at"])
+			if int(ev.get("target", 0)) == me:
+				PadRumble.play(PadRumble.KNOCK)
+		&"grab":
+			# M150: the dragged player's pad buzzes as they are grabbed.
+			if int(ev.get("target", 0)) == me:
+				PadRumble.play(PadRumble.KNOCK)
 		&"shelve", &"thrown_shelve":
 			_shelved(ev, parts)
 		&"left":

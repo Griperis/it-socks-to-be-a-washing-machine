@@ -1,6 +1,7 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
+done: 2026-11-22
 kind: build
 area: core
 feature: coop
@@ -63,7 +64,48 @@ out. One test per remaining line, named after it.
 
 ## Answers
 - Q2225, Q2437, Q2438, Q2483-Q2496 (2026-11-22).
+- The vignette is approved as the first still shows (`knockdown-view.png`): keep the numbers, `vignette_dark` 0.7,
+  `vignette_start` 0.45 (Q2497, 2026-11-22).
+- H91: build the outline on the lying body under the crosshair in this ticket, with core/11's Outline and the same
+  rule as other usable things (Q2498, 2026-11-22).
 
 ## Open follow-ups
+- [later] Looks for the designer to judge from the stills: a dragged body is pulled through the dragger to
+  `hold_behind` 0.6 m behind them (the old numbers) and, let go, lies round their legs (it still lets them through
+  until it stands, so it is not flung out of them); the knocked view in `knockdown-view.png` looks at the sky after a
+  fall backwards.
+- [later] The Knockdown station stands at (-17.5, 0, 3.5) beside Handling, its pad 4.5 x 4 m: the only free floor
+  inside the Mess's bounds. The designer may move it by hand.
+- [later] It holds 2 Socks, not 3: with 1 or 3 more Sock records in the zoo, `mess_settle:real_path` fails ("no Sock
+  inside (2)": the heap's pour leaves two Socks resting inside each other). It passes with 0 or 2. A latent fault of
+  the Mess's settle, found here, not fixed here.
+- [later] Lines built and not proven by a case: F70-F71 (the view stops `wall_gap` short of a wall: no wall at the
+  station), E53 (a Teammate inside the falling body), E62/F72 (the Host's bones drawn interpolated: headless shows no
+  frames between ticks), H97 (a menu lets go), H101 ("apart"), D37 in co-op (a knocked dragger's drag ends: tested
+  only in the Host's answer).
+- [later] In the station the stand-in has no Roster entry, so a knock by it reads "A teammate knocked you down" (the
+  old fallback); a real Teammate's name shows in co-op.
 
 ## Built log
+
+### 2026-11-22
+- Changed: a full-charge Throw of a Sock or a Pair knocks a Teammate down as Godot's physical-bone ragdoll (four bones
+  authored in `ragdoll.tscn`, the Host simulates, a stamped 84-byte pose eased at 12/s elsewhere); the Hands drop as a
+  leaver's; knockdown sound at the hit, knock rumble for the knocked and the grabbed; the knocked view rides the head
+  with a vignette, input frozen, own body lying; up 5.5 s later where it lies; drag by the feet, 10 Space presses free;
+  late joiners see it; a Guest's knock is dropped. Zoo station Knockdown with a stand-in Teammate. PROTOCOL 13.
+- Files: game/knockdown/, game/parts/avatar/ragdoll.*, avatar.gd/tscn, avatar_looks.gd, game/player/player.*,
+  game/zoo/stations/knockdown.tscn, tests/knockdown_test.gd, tests/coop_knockdown_test.gd
+- Bytes a second per knocked player (Host's ENet total, falling, minus standing): 1,943-2,023 B/s at 0 ms,
+  1,950-2,029 B/s at 50 ms; 16.7-17.3 poses a second reach the Guest.
+- Verified: suite: PASS 16128 checks, 401 cases (--touched, 45 suites); grep_rules PASS; asset_lint PASS; stills in
+  builds/review-knockdown/ (view, own-body, lying, dragged).
+
+### 2026-11-22 (Q2497, Q2498)
+- Changed: a lying Teammate under the crosshair with empty Hands shows its Outline (core/11's, a child of the
+  avatar's Looks), shown and hidden by the aim as any usable thing's; the vignette kept as approved. Stills retaken:
+  the drag from the side with the feet pulled to the dragger, and the Outline with Hold: Drag.
+- Files: game/parts/avatar/avatar.tscn, game/player/player.gd, tests/knockdown_test.gd, tools/shot_hooks.gd,
+  tools/shots/sets/knockdown.txt
+- Verified: knockdown PASS 45 checks, 5 cases; the full --touched verdict is in the commit's `suite:` line; stills
+  builds/review-knockdown/knockdown-dragged.png, knockdown-outline.png.

@@ -18,6 +18,9 @@
 ##   with `first_person` set. Only the feet and the belly below `belly_cut` (BellyMesh, made at load),
 ##   set back by `belly_back` so its front curve shows looking down, its outside alone drawn; no
 ##   pupils (they do not turn), no name tag, no shadow. The Player drives its pitch and crouch.
+## - Knocked down (coop/10): copy_ragdoll() places the whole creature by the ragdoll's Root and bends
+##   it by the other three bones, so the pupils, HoldPoint, Head (the name tag) and HatPoint ride along;
+##   the walk, bend, crouch and squash stop and are reset while it lies, and come back at end_ragdoll().
 ## The nodes the avatar's behaviour may lean on are named in looks_contract.json beside it.
 class_name AvatarLooks
 extends Node3D
@@ -55,6 +58,8 @@ var crouch := 0.0
 var bend := 0.0
 ## 0 standing still, 1 waddling fully.
 var walk := 0.0
+## Whether it copies a ragdoll now (copy_ragdoll()).
+var ragdolled := false
 
 var _body: Node3D
 var _mesh: MeshInstance3D
@@ -174,6 +179,8 @@ func seed_idle(text: String) -> void:
 ## Crouches by `weight` (0 standing, 1 crouched): the shape key, and the points moving with it.
 func set_crouch(weight: float) -> void:
 	crouch = clampf(weight, 0.0, 1.0)
+	if ragdolled:
+		return  # a lying body copies its ragdoll (copy_ragdoll())
 	if _blend >= 0:
 		_mesh.set_blend_shape_value(_blend, crouch)
 	_pose()
@@ -186,6 +193,9 @@ func pupil_turn(i: int) -> float:
 
 func _process(delta: float) -> void:
 	if delta <= 0.0 or not is_visible_in_tree():
+		return
+	if ragdolled:
+		_look(delta)
 		return
 	_waddle(delta)
 	_bend(delta)
@@ -306,6 +316,51 @@ func _turn(weights: PackedFloat32Array) -> Quaternion:
 		if angle > 0.000001:
 			v += weights[b] * q.get_axis() * angle
 	return Quaternion(v.normalized(), v.length()) if v.length() > 0.000001 else Quaternion.IDENTITY
+
+
+# --- Knocked down (coop/10) --------------------------------------------------------------------
+
+## Lies as the ragdoll does: `moves` are how each of the four bones moved from standing at the origin
+## to now, in the world (Ragdoll.motions()). The first places the whole creature, the others bend it.
+func copy_ragdoll(moves: Array[Transform3D]) -> void:
+	if moves.size() < _bone_rest.size():
+		return
+	if not ragdolled:
+		ragdolled = true
+		walk = 0.0
+		_squash = 0.0
+		_squash_speed = 0.0
+		scale = Vector3.ONE
+		_body.position = _body_rest
+		_body.rotation = Vector3.ZERO
+		for i: int in _feet.size():
+			_feet[i].transform = _body.transform.affine_inverse() * Transform3D(Basis.IDENTITY, _feet_rest[i])
+		crouch = 0.0
+		if _blend >= 0:
+			_mesh.set_blend_shape_value(_blend, 0.0)
+	global_transform = moves[0]
+	var back := moves[0].affine_inverse()
+	for b: int in _bone_rest.size():
+		_moves[b] = back * moves[b]
+		_skeleton.set_bone_global_pose(b, _moves[b] * _bone_rest[b])
+	for n: Node3D in _drops:
+		var d: Array = _drops[n]
+		n.position = _ride(d[3], d[0] as Vector3)
+		var i := _pupils.find(n)
+		n.quaternion = _turn(d[3]) * (_pupil_look[i] if i >= 0 else (d[2] as Quaternion))
+	_posed = Vector2.INF
+
+
+## Stands again where its avatar is: the walk, bend, crouch and squash take over.
+func end_ragdoll() -> void:
+	if not ragdolled:
+		return
+	ragdolled = false
+	transform = Transform3D.IDENTITY
+	_last = Vector3.INF
+	_last_y = INF
+	_posed = Vector2.INF
+	set_crouch(crouch)
 
 
 # --- Squash and stretch --------------------------------------------------------------------------

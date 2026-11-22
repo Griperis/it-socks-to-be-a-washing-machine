@@ -35,6 +35,9 @@
 [ext_resource type="Script" uid="uid://cabdnviw3m0oh" path="res://game/net/roster.gd" id="37_roster"]
 [ext_resource type="Resource" uid="uid://b0moa0fsavwjb" path="res://game/net/coop_tuning.tres" id="38_coop"]
 [ext_resource type="PackedScene" uid="uid://b7tq2avatarst" path="res://game/zoo/stations/avatar.tscn" id="39_avatar"]
+[ext_resource type="PackedScene" uid="uid://chiexs1bn5bo5" path="res://game/zoo/stations/knockdown.tscn" id="40_knockdown"]
+[ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="41_knockdowns"]
+[ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="42_knock_tuning"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.42, 0.44, 0.46, 1)
@@ -143,6 +146,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 75.5, 0, 9.5)
 [node name="Avatar" parent="Stations" unique_id=1700142687 instance=ExtResource("39_avatar")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -2)
 
+[node name="Knockdown" parent="Stations" unique_id=1700150606 instance=ExtResource("40_knockdown")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 0, 3.5)
+
 [node name="Spots" type="Node3D" parent="." unique_id=1540973286]
 
 [node name="ReturnSpot" type="Marker3D" parent="." unique_id=1397039282]
@@ -172,6 +178,11 @@ return_spot = NodePath("../../ReturnSpot")
 script = ExtResource("11_hands")
 mess = NodePath("../Mess")
 tuning = ExtResource("14_tuning")
+
+[node name="Knockdowns" type="Node" parent="Socks" unique_id=1032541671 node_paths=PackedStringArray("hands")]
+script = ExtResource("41_knockdowns")
+tuning = ExtResource("42_knock_tuning")
+hands = NodePath("../Hands")
 
 [node name="Coins" type="Node" parent="Socks" unique_id=1032541670]
 script = ExtResource("12_coins")

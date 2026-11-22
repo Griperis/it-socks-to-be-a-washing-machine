@@ -1,0 +1,146 @@
+[gd_scene format=3 uid="uid://c7yuua4327oud"]
+
+[ext_resource type="Script" uid="uid://b57wpsom1mo7n" path="res://game/parts/avatar/ragdoll.gd" id="1_ragdoll"]
+[ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="2_tuning"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_root"]
+radius = 0.285
+height = 0.57
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_spine0"]
+radius = 0.3
+height = 0.65
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_spine1"]
+radius = 0.3
+height = 0.62
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_spine2"]
+radius = 0.3
+height = 0.73
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_pose"]
+properties/0/path = NodePath(".:pose")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+
+[node name="Ragdoll" type="Node3D" unique_id=1460311729]
+script = ExtResource("1_ragdoll")
+tuning = ExtResource("2_tuning")
+
+[node name="Bones" type="Skeleton3D" parent="." unique_id=1460311730]
+top_level = true
+bones/0/name = "Root"
+bones/0/parent = -1
+bones/0/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+bones/0/enabled = true
+bones/0/position = Vector3(0, 0, 0)
+bones/0/rotation = Quaternion(0, 0, 0, 1)
+bones/0/scale = Vector3(1, 1, 1)
+bones/1/name = "Spine0"
+bones/1/parent = 0
+bones/1/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+bones/1/enabled = true
+bones/1/position = Vector3(0, 0.45, 0)
+bones/1/rotation = Quaternion(0, 0, 0, 1)
+bones/1/scale = Vector3(1, 1, 1)
+bones/2/name = "Spine1"
+bones/2/parent = 1
+bones/2/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+bones/2/enabled = true
+bones/2/position = Vector3(0, 0.35, 0)
+bones/2/rotation = Quaternion(0, 0, 0, 1)
+bones/2/scale = Vector3(1, 1, 1)
+bones/3/name = "Spine2"
+bones/3/parent = 2
+bones/3/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, 0)
+bones/3/enabled = true
+bones/3/position = Vector3(0, 0.32, 0)
+bones/3/rotation = Quaternion(0, 0, 0, 1)
+bones/3/scale = Vector3(1, 1, 1)
+
+[node name="Simulator" type="PhysicalBoneSimulator3D" parent="Bones" unique_id=1460311731]
+
+[node name="Root" type="PhysicalBone3D" parent="Bones/Simulator" unique_id=1460311732]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.315, 0)
+collision_layer = 64
+collision_mask = 201
+body_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.315, 0)
+friction = 0.8
+linear_damp = 0.4
+angular_damp = 2.0
+can_sleep = false
+bone_name = "Root"
+
+[node name="Capsule" type="CollisionShape3D" parent="Bones/Simulator/Root" unique_id=1460311733]
+shape = SubResource("CapsuleShape3D_root")
+
+[node name="Spine0" type="PhysicalBone3D" parent="Bones/Simulator" unique_id=1460311734]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
+collision_layer = 64
+collision_mask = 201
+joint_type = 2
+joint_offset = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, -0.175, 0)
+joint_rotation = Vector3(0, 0, 1.5707964)
+body_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.175, 0)
+friction = 0.8
+linear_damp = 0.4
+angular_damp = 2.0
+can_sleep = false
+bone_name = "Spine0"
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 22.5
+joint_constraints/bias = 0.3
+joint_constraints/softness = 0.8
+joint_constraints/relaxation = 1.0
+
+[node name="Capsule" type="CollisionShape3D" parent="Bones/Simulator/Spine0" unique_id=1460311735]
+shape = SubResource("CapsuleShape3D_spine0")
+
+[node name="Spine1" type="PhysicalBone3D" parent="Bones/Simulator" unique_id=1460311736]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.96, 0)
+collision_layer = 64
+collision_mask = 201
+joint_type = 2
+joint_offset = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, -0.16, 0)
+joint_rotation = Vector3(0, 0, 1.5707964)
+body_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.16, 0)
+friction = 0.8
+linear_damp = 0.4
+angular_damp = 2.0
+can_sleep = false
+bone_name = "Spine1"
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 22.5
+joint_constraints/bias = 0.3
+joint_constraints/softness = 0.8
+joint_constraints/relaxation = 1.0
+
+[node name="Capsule" type="CollisionShape3D" parent="Bones/Simulator/Spine1" unique_id=1460311737]
+shape = SubResource("CapsuleShape3D_spine1")
+
+[node name="Spine2" type="PhysicalBone3D" parent="Bones/Simulator" unique_id=1460311738]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.335, 0)
+collision_layer = 64
+collision_mask = 201
+joint_type = 2
+joint_offset = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, -0.215, 0)
+joint_rotation = Vector3(0, 0, 1.5707964)
+body_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.215, 0)
+friction = 0.8
+linear_damp = 0.4
+angular_damp = 2.0
+can_sleep = false
+bone_name = "Spine2"
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 22.5
+joint_constraints/bias = 0.3
+joint_constraints/softness = 0.8
+joint_constraints/relaxation = 1.0
+
+[node name="Capsule" type="CollisionShape3D" parent="Bones/Simulator/Spine2" unique_id=1460311739]
+shape = SubResource("CapsuleShape3D_spine2")
+
+[node name="Sync" type="MultiplayerSynchronizer" parent="." unique_id=1460311740]
+delta_interval = 0.05
+replication_config = SubResource("SceneReplicationConfig_pose")

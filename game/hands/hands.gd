@@ -296,7 +296,7 @@ func _let_go(by: int, launch: Dictionary, drop: bool) -> Dictionary:
 	var items := items_of(by).duplicate()
 	items.remove_at(active_index(by))
 	return {"ok": true, "launch": launch, "changes": {
-		mess.id: mess.thrown_patch(sock, launch["from"], launch["vel"], launch["spin"], by, drop),
+		mess.id: mess.thrown_patch(sock, launch["from"], launch["vel"], launch["spin"], by, drop, {}, float(launch.get("charge", -1.0))),
 		id: _patch(by, items, items.size() - 1)}}
 
 
@@ -337,7 +337,7 @@ func taken_patch(by: int, socks: PackedInt32Array) -> Dictionary:
 ## above, faster the fuller the charge (T03). Its speed is the charge's, its direction the arc from
 ## where it leaves to the point the crosshair is on (Q2356), the low or the high one, whichever is
 ## nearer the old aim (along `dir`, the lob lifted); an aim at nothing, or out of the arc's reach,
-## flies along that old aim.
+## flies along that old aim. "charge" goes with it: a full one can knock a Teammate down (coop/10).
 func launch_of(by: int, dir: Vector3, charge: float) -> Dictionary:
 	var t := tuning_of(by)
 	var vel := dir * lerpf(t.min_speed, t.max_speed, charge)
@@ -350,7 +350,7 @@ func launch_of(by: int, dir: Vector3, charge: float) -> Dictionary:
 		var aimed := Arc.aimed(from.origin, hit["position"], vel.length(), _gravity(), t.thrown_linear_damp, vel)
 		if aimed != Vector3.ZERO:
 			vel = aimed
-	return {"from": from, "vel": vel, "spin": t.spin}
+	return {"from": from, "vel": vel, "spin": t.spin, "charge": charge}
 
 
 ## Where and how a drop by player `by` on `point` leaves (Q2367): {"from": the pose it is let go at

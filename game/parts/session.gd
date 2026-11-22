@@ -37,7 +37,7 @@ signal ended(text: String)
 ## synchronized property, a spawnable scene or the shape of a Command, an event, a snapshot or the
 ## gate's word changes. The word's first 4 bytes (the PROTOCOL) never move, so any two builds can
 ## tell they differ.
-const PROTOCOL := 12  # 12: coop/09, a Throw's stamped row (FlightRow), a Command's seq, the Hands' numbers in the word
+const PROTOCOL := 13  # 13: coop/10, the Knockdowns Part, an avatar's Ragdoll pose stream, a Throw's charge
 ## The gate's answers: one byte, and after REFUSED one byte saying why.
 const ACCEPTED := 1
 const REFUSED := 0
