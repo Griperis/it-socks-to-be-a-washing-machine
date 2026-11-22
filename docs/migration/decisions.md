@@ -1,4 +1,4 @@
-Next free Q number: Q2436 (update this line whenever a round of questions is asked)
+Next free Q number: Q2456 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -348,3 +348,25 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2433: a Throw that cannot reach the crosshair (a light charge to the far floor, a charge-0 lob) lands short, as the old game; no change.
 - Q2434: the old sound events and modes left out of core/17 all stay for M1.1 (which ports every old sound); none dropped.
 - Q2435: core/46's cost is accepted (a Throw into a heap wakes about twice as many Socks; burst_16 p95 1.0 to 1.8 ms, under the 8 ms budget) and it merges as is; the push is small (friction stops hit Socks within mm) and the designer judges it by playing (designer: "Merge as is, I'll play it").
+
+## M0.6 planning (2026-11-22)
+- Q2436: the M0.6 plan goes as proposed: batch 0 two spikes (flight bodies on a synchronizer, a ragdoll pose to a Guest), 1 host/join/roster, 2 the avatar model and Teammates seen, 3 the Mess and Throw in co-op, 4 knockdown, 5 close-out (`milestones.md`).
+- Q2437: M0.6's knockdown is the knockdown and the drag (with the struggle); the wash waits for the washing machine (M5). Refines Q2225's "full knockdown".
+- Q2438: the avatar is ported as is, 4 bones (Root, Spine0-2): the ragdoll folds at the spine only, as the old game. A limbed rig would be its own look ticket.
+- Q2439: a Teammate's Throw leaves the hand at once, with only the network's 0.1 s delay; the old pause at release is not recreated (it came from the hand-to-eyes blend that Q2356 and Q2367 removed). Changes Q2226.
+- Q2440: every player is named "Player" until the lobby (M4); no name flag.
+- Q2441: a player's colour is the next free one in the old order, automatic (the Host first).
+- Q2442: the join and leave toasts as the old game, 2 s in the player's colour, under the crosshair; the joiner sees "Joined <Host>'s zoo".
+- Q2443: 4 players at most; the fifth is refused with "The game is full (4 players)".
+- Q2444: the old refusal texts stay ("The game is full", "You are already in this game", "Another version of the game", "The Host ended the session"), with "Host" capitalised.
+- Q2445: the join gate also checks the scene layout; a mismatch is refused with the "Another version of the game" text.
+- Q2446: a leaver's held things drop where they last stood, as the old game (Q248).
+- Q2447: a join with nobody there gives up after 10 s with "Could not reach <ip>" and stays single-player.
+- Q2448: a new joiner appears 0.6 m beside the Host, facing the same way; a returning player id where they left.
+- Q2449: no proving token until the lobby (M4); a copied profile joining as its owner is accepted for M0.6 playtests (confirms Q2224).
+- Q2450: a Teammate's body eases at 12 per second (crouch 6), as the old game; judged on a strip.
+- Q2451: a Teammate who moves over 1 m in one update snaps; smaller moves ease.
+- Q2452: a Teammate's steps and landing use the local player's clips in 3D at their body, full level up close, fading from 3 m to 20 m, a step every 1.4 m (new in M0.6, Q2376).
+- Q2453: a Teammate's pick, pair, drop, shelve and throw sounds play as loud as the local player's, in 3D at 1.2 m over their feet, as the old game.
+- Q2454: others do not see a Teammate's held turn (R) or zoom (G), as the old game.
+- Q2455: the avatar's pupils follow the nearest player, as the old game.
