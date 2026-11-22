@@ -331,13 +331,11 @@ func case_s07_land() -> void:
 
 func case_s08() -> void:
 	await _zoo_up()
-	_check(Sounds.is_looping(&"amb_room"), "the zoo has the room ambience looping")
-	var voice := Sounds.start_loop(&"amb_room")
-	_check(voice != null and voice.playing and voice.bus == &"Ambient", "playing on the Ambient bus")
-	_check(Sounds.start_loop(&"amb_room") == voice, "asking again does not start a second one")
+	_check(not Sounds.is_looping(&"amb_room"), "the zoo has no room tone: it is silent")
+	_check(Sounds.start_loop(&"amb_room") == null, "asking for it starts no voice (and logs nothing)")
+	_check(Sounds.catalogue.find(&"amb_room").clips.is_empty(), "the event stays, with no clip")
 	_zoo.free()
 	_zoo = null
-	_check(not Sounds.is_looping(&"amb_room"), "and it stops with the zoo")
 
 
 func case_s10() -> void:
@@ -493,10 +491,9 @@ func case_d04() -> void:
 	await _frames(3)
 	_check(st.buttons.get_child_count() > st.events().size(), "the buttons and the group names are built")
 	_check(st.get_node_or_null("Ambience") != null and st.get_node_or_null("TilePatch") != null and st.get_node_or_null("Door") != null, "the ambience, the tile patch and the Door stay")
-	_check(Sounds.is_looping(&"amb_room"), "the ambience plays")
+	_check(not Sounds.is_looping(&"amb_room"), "the ambience is silent")
 	_alone.free()
 	_alone = null
-	_check(not Sounds.is_looping(&"amb_room"), "and stops with the station")
 
 
 ## The zoo, whole, with the player in it and the Parts bound.

@@ -216,8 +216,7 @@ func _asked(name: StringName, spatial: bool) -> SoundEvent:
 		push_error("Sounds: '%s' is %s, asked %s" % [name, "a world sound (play_at)" if e.spatial else "a flat sound (play)", "from a spot" if spatial else "flat"])
 		return null
 	elif e.clips.is_empty():
-		push_error("Sounds: '%s' has no clips" % name)
-		return null
+		return null  # an event with no pick is silent on purpose (amb_room), no error
 	return e
 
 

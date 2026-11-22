@@ -24,4 +24,3 @@ The old game's picks for the core events (ported, Q2319). CC0 or public domain, 
 | step_wood__kenney_footstep00.ogg | cc0/kenney_footstep00 | Kenney | CC0 | https://opengameart.org/content/50-rpg-sound-effects |
 | step_tile__owlish_hard1.ogg | cc0/owlish_hard1 | OwlishMedia | CC0 | https://opengameart.org/content/sound-effects-pack |
 | land__qubodup_jumpland.ogg | cc0/qubodup_jumpland | qubodup | CC0 | https://opengameart.org/content/jump-landing-sound |
-| amb_room__rubberduck_ambient1.ogg | cc0/rubberduck_ambient1 | rubberduck | CC0 | https://opengameart.org/content/30-cc0-sfx-loops |
