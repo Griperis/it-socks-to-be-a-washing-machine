@@ -102,7 +102,17 @@ func play(name: StringName) -> void:
 ## `strength` (0 soft to 1 hard, a bounce's hit speed) makes it quieter and lower the softer it is, by
 ## the event's soft_db, soft_pitch and hard_pitch; the default 1 plays it as the event says.
 func play_at(name: StringName, where: Vector3, strength := 1.0) -> void:
-	var e := _asked(name, true)
+	_play_world(_asked(name, true), name, where, strength)
+
+
+## Plays a player's own flat event as a Teammate's, from `where` (their body): the same clips and
+## level as one's own, but in the world, fading with distance and muffled behind a shut Door like any
+## world sound (Q2452, Q2453).
+func play_from(name: StringName, where: Vector3) -> void:
+	_play_world(_asked(name, false), name, where, 1.0)
+
+
+func _play_world(e: SoundEvent, name: StringName, where: Vector3, strength: float) -> void:
 	if e == null or _too_soon(e):
 		return
 	strength = clampf(strength, 0.0, 1.0)

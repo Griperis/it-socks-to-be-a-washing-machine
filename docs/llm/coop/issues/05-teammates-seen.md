@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: coop
 priority: next
 created: 2026-11-22
-done:
+done: 2026-11-22
 blocked_by: ["[[03-host-join-roster]]", "[[04-avatar-model]]"]
 notes: ["M0.6 batch 2 (Q2436); look and feel: one round on how it moves before it is handed out (designer-grilling rule 10)"]
 terms: [Teammate, Avatar, HoldPoint]
@@ -64,12 +64,48 @@ Teammate's Throw leaves the hand at once (Q2439).
 - An avatar zoo station `game/zoo/stations/avatar.tscn` (Q2468): the Avatar standing and a stand-in Teammate walking a loop, crouching, looking up and down and holding a Sock, driven only through the pose properties.
 - A strip of two players side by side (walk, crouch, look up and down, hold) for the designer; no test of
   the look itself (Q2421).
+- A zoo station for the avatar (Q2468): `game/zoo/stations/avatar.tscn`, instanced by hand under `Stations`: the
+  real Avatar standing still and a stand-in Teammate that walks a loop, crouches, looks up and down and holds a
+  Sock, driven only through the pose properties a real Teammate's synchronizer writes; tested only for loading
+  and the stand-in moving its pose.
 
 ## Answers
 - Q2439, Q2450-Q2455, Q2460 (2026-11-22).
+- Look round: the strip of how a Teammate moves, is coloured, tagged and holds is approved (Q2469, 2026-11-22).
 - Look and feel (rule 10): every old motion with the old numbers (Q2461); name tag "Player" in their colour at the cuff top (Q2462); a far or hidden Teammate unmarked (Q2463); held things as old (Q2464). Additions nobody asked for (wind-up cue, release squash, blink, wave) are not built (list question 8: report only).
 
 ## Open follow-ups
+- [later] On the Host, a Guest's pick capacity and other Hands numbers come from the Hands' own tuning (no
+  Guest Player is on the Host's machine); the co-op tests found the other zoo's Player instead. Not changed
+  here (coop_join leans on it); for the Upgrade's capacity to count for a Guest it must be shared state.
+- [later] A Teammate's shelve plays at the drawer, as the old game (behaviour 106), not at 1.2 m over their
+  feet as Q2453's wording reads; the designer may want it moved.
 
 ## Built log
 - 2026-11-22 lead: model opus (netcode and avatar motion, CLAUDE.md "Models").
+- 2026-11-22 agent: look round, stopped at the first strip (Look work). Changed: the Avatar's pose adds pitch
+  and crouch, sent every network frame; each copy that receives a pose drops a non-finite or out-of-area one
+  in its setter (the Host's too); the puppet eases at 12/s (crouch 6/s) and snaps over 1 m (AvatarTuning,
+  `avatar_tuning.tres`); AvatarLooks moves as the old avatar.gd (waddle, bob, sway, look bend on the spine,
+  crouch key and points, squash and stretch, pupils to the nearest player, idle drift seeded by the peer),
+  tints player and trim (body and feet) and shows the "Player" tag from the Roster; HeldView gains a worn mode
+  (the Teammate's Hands at their HoldPoint, true size, clustered by `worn_step`, a Pair as the ball, no turn,
+  zoom or moment). The Avatar station (Q2468) with `TeammateStandIn`; ZooNet.where() places the stand-in for
+  the reach rule. The `teammates` shot action and set. Files: game/parts/avatar/*, game/hands/held_view.gd,
+  game/zoo/avatar/teammate_stand_in.gd, game/zoo/stations/avatar.tscn, game/zoo/zoo.tscn, game/zoo/zoo_net.gd,
+  tests/teammates_test.gd, tests/avatar_test.gd, tools/shot_hooks.gd, tools/shot_teammates.gd, tools/shots/sets/teammates.txt,
+  tests/scene_parts_test.gd (a forged pose is now dropped where it lands), docs/architecture.md. The stand-in
+  plays only with the camera within 4.5 m, so other stations' tests see its Sock lying.
+  Verified: PASS 15628 checks, 368 cases (--touched); PASS rules; PASS asset_lint.
+- 2026-11-22 agent: the rest after the go (Q2469). Changed: `TeammateSteps` on each Avatar plays a Teammate's
+  steps (every 1.4 m, by the floor's surface) and landing at their body with the local clips, in the world
+  (`Sounds.play_from`: a flat event heard from a place, fading 3 m to 20 m, muffled behind a shut Door);
+  Hearing plays a Teammate's pick, pair, drop and throw that way at 1.2 m over where they stand, and a
+  leaver's drop at their last place; `Hands.worn_hand_of` has a Teammate's Throw and drop leave from where
+  their Sock hangs on the avatar (Q2439); a pairing in a worn HeldView flies the ball in from where the mate
+  lay and plays `MateSparkle` (20 specks of 0.035 m at 1 m/s for 0.55 s, a 0.3 m ring over 0.35 s from 0.8,
+  white share 0.35) at the hand. The Avatar station moved by the spawn (between Outline and the Heap), its
+  stand-in waking within 4.5 m. Files: game/audio/{sounds,hearing,footsteps,teammate_steps}.gd,
+  game/hands/{hands,held_view,mate_sparkle}.gd, game/hands/mate_sparkle.tscn, game/parts/avatar/avatar.tscn,
+  game/zoo/avatar/teammate_stand_in.gd, game/zoo/zoo.tscn, tests/teammates_test.gd, docs/architecture.md.
+  Verified: PASS 15790 checks, 415 cases (--touched); PASS rules; PASS asset_lint.

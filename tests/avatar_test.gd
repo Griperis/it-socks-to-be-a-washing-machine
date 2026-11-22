@@ -19,11 +19,11 @@ func cases() -> Array[Dictionary]:
 		{"name": "model", "method": "case_model", "world": false,
 				"title": "the Avatar wears the old sock creature: the contract's nodes, the four-bone spine, the player, trim and eye surfaces, the Crouch key, the extras, facing -z with the cuff rim 1.7 m over its feet"},
 		{"name": "colour", "method": "case_colour", "world": false,
-				"title": "the player's colour goes on the body's player surface only; the trim, eyes and pupils keep their colours"},
+				"title": "the player's colour goes on the body's player surface, a darker shade on the trim (body and feet); the eyes and pupils keep their colours"},
 		{"name": "spike_rig", "method": "case_spike_rig", "world": false,
 				"title": "the coop/02 ragdoll stand-in has the import's bone names, parents and rest places"},
 		{"name": "seen", "method": "case_seen", "world": false,
-				"title": "real path: the Host walks forward and the Guest sees the sock creature, white, where the Host's player stands"},
+				"title": "real path: the Host walks forward and the Guest sees the sock creature, in the Host's colour, where the Host's player stands"},
 	]
 
 
@@ -86,8 +86,10 @@ func case_colour() -> void:
 	var coral := Color(0.95, 0.45, 0.4)
 	looks.colour = coral
 	_check(_shown(body, 0).albedo_color == coral, "the player surface shows the colour")
-	_check(_shown(body, 1).albedo_color == made_trim and _shown(body, 2).albedo_color == body.mesh.surface_get_material(2).albedo_color,
-			"the trim and the eyes keep their made colours")
+	_check(made_trim == body.mesh.surface_get_material(1).albedo_color, "the trim shows as made while white")
+	_check(_shown(body, 1).albedo_color == coral.darkened(looks.tuning.trim_darken), "the trim shows the colour darkened (coop/05)")
+	_check(_shown(looks.feet()[0], 0).albedo_color == coral.darkened(looks.tuning.trim_darken), "and so do the feet")
+	_check(_shown(body, 2).albedo_color == body.mesh.surface_get_material(2).albedo_color, "the eyes keep their made colour")
 	var pupil := looks.find_child("PupilL", true, false) as MeshInstance3D
 	_check(pupil.get_surface_override_material(0) == null, "the pupils keep theirs")
 	_check((body.mesh.surface_get_material(0) as BaseMaterial3D).albedo_color == Color.WHITE,
@@ -134,7 +136,8 @@ func case_seen() -> void:
 	var looks := seen.get_node_or_null("Looks") as AvatarLooks
 	_check(looks != null and looks.is_visible_in_tree() and looks.body().is_visible_in_tree(), "the guest sees the sock creature, not a capsule")
 	if looks != null:
-		_check(_shown(looks.body(), 0).albedo_color == Color.WHITE, "its body is white until the player colours come (coop/03)")
+		var coral := (host.get_node("Session/Roster") as Roster).tuning.colours[0]
+		_check(_shown(looks.body(), 0).albedo_color == coral, "its body is the Host's colour, the first (coop/05)")
 		_near(seen.rotation.y, host_player.global_rotation.y, 0.05, "it faces the way the host's player faces")
 	_drop_branches()
 

@@ -497,9 +497,13 @@ func case_avatars() -> void:
 	_avatar(late, l_id).pose_position = Vector3(3.0, 0.0, 3.0)
 	await _until(func() -> bool: return _avatar(a, l_id).pose_position == Vector3(3.0, 0.0, 3.0), "a Guest to see the late Guest move (through the Host)")
 	_avatar(a, a_id).pose_position = Vector3(NAN, 0.0, 0.0)
-	await _until(func() -> bool: return is_nan(_avatar(late, a_id).pose_position.x), "the bad pose to arrive")
+	_check(_avatar(a, a_id).pose_position == Vector3(2.0, 0.0, 2.0), "the owner's copy keeps no pose that is not finite (coop/05)")
+	# As the synchronizer would write a forged one on a copy that receives it.
+	_avatar(late, a_id).set(&"pose_position", Vector3(NAN, 0.0, 0.0))
 	await _frames(2)
-	_check(_avatar(late, a_id).position.distance_to(Vector3(2.0, 0.0, 2.0)) < 0.01, "a copy ignores a pose that is not finite")
+	_check(_avatar(late, a_id).pose_position == Vector3(2.0, 0.0, 2.0) and _avatar(late, a_id).dropped > 0,
+			"a copy drops a pose that is not finite")
+	_check(_avatar(late, a_id).position.distance_to(Vector3(2.0, 0.0, 2.0)) < 0.01, "and stays where it was")
 	_check(_take_errors().is_empty(), "no engine error while they moved and joined")
 	(a["session"] as Session).close()
 	(a["avatars"] as Avatars).clear()

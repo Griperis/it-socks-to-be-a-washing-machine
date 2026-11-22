@@ -51,8 +51,13 @@ func _physics_process(delta: float) -> void:
 ## The surface of the floor the body stands on: the metadata of the thing a short look straight down
 ## meets, or of the nodes above it; wood when none says.
 func surface_under() -> StringName:
-	var from := _body.global_position + Vector3.UP * LOOK_UP
-	var hit := PhysicsQueries.ray(_body, from, from + Vector3.DOWN * LOOK_DOWN, Mess.LAYER_HOUSE)
+	return surface_at(_body, _body.global_position)
+
+
+## The surface of the floor under `feet` (a point of `from_node`'s world), as surface_under() reads it.
+static func surface_at(from_node: Node3D, feet: Vector3) -> StringName:
+	var from := feet + Vector3.UP * LOOK_UP
+	var hit := PhysicsQueries.ray(from_node, from, from + Vector3.DOWN * LOOK_DOWN, Mess.LAYER_HOUSE)
 	var node: Node = hit.get("collider") as Node
 	while node != null:
 		if node.has_meta(SURFACE_META):

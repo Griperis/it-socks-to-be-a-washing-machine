@@ -66,6 +66,11 @@ func where(by: int) -> Variant:
 		return avatar.pose_position
 	if by == session.me() and avatars.local_body != null:
 		return avatars.local_body.global_position
+	# The Avatar station's stand-in Teammate (coop/05, Q2468): it picks where its body stands.
+	for node in get_tree().get_nodes_in_group(TeammateStandIn.GROUP):
+		var stand_in := node as Avatar
+		if stand_in != null and stand_in.peer() == by and owner != null and owner.is_ancestor_of(stand_in):
+			return stand_in.global_position
 	return null
 
 

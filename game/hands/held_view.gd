@@ -14,6 +14,13 @@
 ## way (D10). A held Sock's cloth bends by itself (SockCloth, D01-D03); a thrown one leaves with the
 ## bend it had here (core/27 P08), and the held readout follows the active Sock's sway (P03, sway()).
 ##
+## Worn (coop/05, Q2464): a Teammate's Hands, hung from `anchor` (their avatar's HoldPoint) instead of
+## in front of a camera: true size, the active item right at the HoldPoint and the others clustered
+## close round it, a `worn_step` further each, left then right; a held Sock by its cuff, toe down, its
+## side to the front; a Pair as the ball just under it. Others never see the turn or the zoom (Q2454),
+## and a pairing there plays no moment: the ball flies in from where the picked mate lay and, as it
+## reaches the hand, a small sparkle burst and ring play there (MateSparkle, behaviour 60).
+##
 ## Looks of this machine only: it reads the Hands and the Mess, never writes them. Ported from the
 ## old game's held_view.gd (its layout numbers, its depth trick, its zoom, its glide and fly-up).
 class_name HeldView
@@ -36,15 +43,33 @@ const FLY_IN_END := 0.2
 ## What that Sock flies under: Mate/FlyIn holds its Looks.
 const FLY_IN := ^"Mate/FlyIn"
 
-## What it shows: whose Hands, the numbers, and the field of view the layout is drawn for.
+## The sparkle at a Teammate's hand when their pick makes a Pair.
+const MATE_SPARKLE := preload("res://game/hands/mate_sparkle.tscn")
+## A Teammate's worn Hands (old held.json "worn_step", HV:338-344): a hung item hangs from the anchor.
+const WORN_HANG := Basis(Vector3.UP, PI / 2.0) * Basis(Vector3.BACK, -PI / 2.0)
+
+## Worn on a Teammate's avatar, at `anchor`, rather than in front of the camera.
+@export var worn := false
+## How far each further worn item sits from the active one, times its tucked place plus one; x goes
+## left for the first, right for the second, and so on.
+@export var worn_step := Vector3(0.07, 0.02, 0.05)
+## The numbers of the held layout, the glide and the fly-up.
+@export var tuning: HandsTuning
+
+## What it shows: whose Hands, and the field of view the layout is drawn for.
 var hands: Hands
 var me := 1
-var tuning: HandsTuning
+## Worn: the node it hangs from each frame (the avatar's HoldPoint).
+var anchor: Node3D
 var base_fov := 75.0
 ## True while the turn button is held.
 var turning := false
 ## How many pairing moments have started here (P05: once per pairing).
 var moments_played := 0
+## Worn: how many sparkles played at the hand (behaviour 60: once per pairing).
+var sparkles := 0
+## Worn: the held Socks that just became a Pair here, by Sock id: their ball flies in from the mate.
+var _paired_here: Dictionary[int, bool] = {}
 
 ## The Looks of each held Sock, and each one's turn about its long axis, by Sock id.
 var _looks: Dictionary[int, Node3D] = {}
@@ -82,6 +107,8 @@ func _enter_tree() -> void:
 
 
 func _process(delta: float) -> void:
+	if worn and anchor != null:
+		global_transform = anchor.global_transform
 	_grow(delta)  # first: a Sock let go in this refresh is drawn at the hand's size on its first frame
 	refresh(delta)
 
@@ -90,16 +117,21 @@ func _process(delta: float) -> void:
 ## moves the glide and the flights (0 puts every item at its place at once).
 func refresh(delta := 0.0) -> void:
 	var items := hands.items_of(me) if hands != null else PackedInt32Array()
+	var had := _looks.keys()
 	for sock: int in _looks.keys():
 		if not items.has(sock):
 			_let_go(sock)
 	for sock in items:
 		var pair := hands.mess.is_pair(sock)
 		if _looks.has(sock) and pair and not _balls.has(sock):
-			# A held Sock became a Pair here: its ball, under the moment, in the ball's place at once.
+			# A held Sock became a Pair here: its ball, under the moment, in the ball's place at once
+			# (worn: no moment, the ball alone).
 			_looks[sock].queue_free()
 			_forget(sock)
-			_start_moment(sock)
+			if not worn:
+				_start_moment(sock)
+			else:
+				_paired_here[sock] = true
 		if not _looks.has(sock):
 			var looks := SockDress.make(hands.mess.design_of(sock), SockDress.HELD, pair)
 			looks.name = "Held%d" % sock
@@ -110,13 +142,24 @@ func refresh(delta := 0.0) -> void:
 			else:
 				_cloths[sock] = _find_cloth(looks)
 				_watch_bend(sock, looks)
-			if _seen and not _moments.has(sock) and tuning != null:
+			# Worn, a pairing here: the held Sock stayed and became the Pair (its mate flew in), or the
+			# picked one is the Pair and its held mate went.
+			var mate := hands.mess.mate_of(sock) if pair else -1
+			var stayed := _paired_here.has(sock)
+			if stayed or (worn and pair and _seen and mate >= 0 and had.has(mate)):
+				_paired_here.erase(sock)
+				var lay := mate if stayed else sock
+				if tuning != null and lay >= 0:
+					_flying[sock] = {"from": _lay_pose(lay), "t": 0.0, "sparkle": true}
+				else:
+					_sparkle.call_deferred(sock)
+			elif _seen and not _moments.has(sock) and tuning != null:
 				_flying[sock] = {"from": _lay_pose(sock), "t": 0.0}
 	_seen = hands != null
 	var active := hands.active_index(me) if hands != null else -1
 	if active >= 0 and active < items.size():
 		_was_active[items[active]] = true
-	if turning and active >= 0 and tuning != null:
+	if turning and not worn and active >= 0 and tuning != null:
 		var sock := items[active]
 		_spin[sock] = wrapf(_spin.get(sock, 0.0) + TAU / maxf(tuning.turn_time, 0.05) * delta, -PI, PI)
 	var follow := 1.0
@@ -173,6 +216,11 @@ func looks_of(sock: int) -> Node3D:
 	return _looks.get(sock)
 
 
+## Whether held item `sock` is drawn as a Pair's ball.
+func is_ball(sock: int) -> bool:
+	return _balls.has(sock)
+
+
 ## The pairing moment playing over held Pair `sock`, or null.
 func moment_of(sock: int) -> Node3D:
 	return _moments.get(sock)
@@ -212,6 +260,8 @@ func target(i: int, active: int, sock: int) -> Transform3D:
 
 ## Where held item `i` hangs before its turn and the zoom: what glides (D08).
 func _layout(i: int, active: int, sock: int) -> Transform3D:
+	if worn:
+		return _worn_layout(i, active, sock)
 	if tuning == null:
 		return Transform3D.IDENTITY
 	var design := hands.mess.design_of(sock)
@@ -228,10 +278,26 @@ func _layout(i: int, active: int, sock: int) -> Transform3D:
 	return Transform3D(HANG.scaled(Vector3.ONE * s), grip + HANG.x * half)
 
 
+## Where worn item `i` hangs from the anchor, true size: the active one right there, the others a
+## `worn_step` further each, left then right (the old _worn_target()).
+func _worn_layout(i: int, active: int, sock: int) -> Transform3D:
+	var at := Vector3.ZERO
+	if i != active:
+		var j := i if i < active or active < 0 else i - 1
+		at = worn_step * float(j + 1) * Vector3(-1.0 if j % 2 == 0 else 1.0, 1.0, 1.0)
+	var design := hands.mess.design_of(sock)
+	var s := design.size_scale() if design != null else 1.0
+	if hands.mess.is_pair(sock):
+		var radius := SockDress.ball_radius(design) if design != null else 0.0
+		return Transform3D(Basis.IDENTITY.scaled(Vector3.ONE * s), at + Vector3.DOWN * radius)
+	var half := SockDress.BOX.x * 0.5 * s
+	return Transform3D(WORN_HANG.scaled(Vector3.ONE * s), at + WORN_HANG.x * half)
+
+
 ## `rest` (where an item hangs) turned about its long axis by its spin and placed for the zoom: the
 ## active item comes close and large, every item keeps its screen size and place.
 func _finish(rest: Transform3D, is_active: bool, sock: int) -> Transform3D:
-	if tuning == null:
+	if tuning == null or worn:
 		return rest
 	var grip := rest.origin
 	if not hands.mess.is_pair(sock):
@@ -265,6 +331,8 @@ func _fly_up(sock: int, looks: Node3D, delta: float) -> void:
 	fly["t"] = u
 	if u >= 1.0:
 		_flying.erase(sock)
+		if fly.get("sparkle", false):
+			_sparkle(sock)
 		return
 	var to := looks.global_transform
 	var eased := smoothstep(0.0, 1.0, u)
@@ -272,6 +340,23 @@ func _fly_up(sock: int, looks: Node3D, delta: float) -> void:
 	var at := from.interpolate_with(to, eased)
 	at.origin = from.origin.lerp(to.origin, eased) + Vector3.UP * (tuning.pick_hop * 4.0 * u * (1.0 - u))
 	looks.global_transform = at
+
+
+## A Teammate's new Pair `sock` reached their hand: the sparkle burst and ring there, in its
+## Collection's colour.
+func _sparkle(sock: int) -> void:
+	var looks: Node3D = _looks.get(sock)
+	if looks == null or not is_inside_tree():
+		return
+	var colour := Color(1.0, 0.8, 0.4)
+	var design := hands.mess.design_of(sock)
+	if design != null and hands.mess.catalogue != null:
+		colour = hands.mess.catalogue.collection_colour(design.collection)
+	var fx := MATE_SPARKLE.instantiate() as MateSparkle
+	fx.position = looks.position
+	add_child(fx)
+	fx.play(colour)
+	sparkles += 1
 
 
 ## Places the pairing moment's second Sock while it flies in: its FlyIn starts where the Sock lay
@@ -331,7 +416,8 @@ func _let_go(sock: int) -> void:
 	var mess := hands.mess if hands != null else null
 	if mess == null or mess.state_of(sock) != Mess.State.FLYING or tuning == null or tuning.let_go_grow <= 0.0:
 		return
-	_growing[sock] = {"from": tuning.active_scale * (tuning.ball_scale if pair else 1.0), "t": 0.0}
+	var from := 1.0 if worn else tuning.active_scale * (tuning.ball_scale if pair else 1.0)
+	_growing[sock] = {"from": from, "t": 0.0}
 	var throw: Dictionary = mess.throws.get(sock, {})
 	if not pair and not bend.is_empty() and not throw.is_empty() and not throw.get("drop", false):
 		_growing[sock]["bend"] = bend

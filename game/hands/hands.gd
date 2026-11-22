@@ -379,6 +379,9 @@ func start_of(by: int, dir: Vector3) -> Transform3D:
 ## much smaller, so it looks the same), turned as it hangs, unscaled: the pose its body takes.
 ## The zoom and the turn button are looks only and not in it.
 func hand_of(by: int, dir: Vector3) -> Transform3D:
+	var worn: Variant = worn_hand_of(by)
+	if worn is Transform3D:
+		return worn
 	var t := tuning_of(by)
 	var up := Vector3.UP if absf(dir.normalized().y) < 0.999 else Vector3.BACK
 	var view := Basis.looking_at(dir, up)
@@ -389,6 +392,23 @@ func hand_of(by: int, dir: Vector3) -> Transform3D:
 	var design := mess.design_of(sock)
 	var half := SockDress.BOX.x * 0.5 * (design.size_scale() if design != null else 1.0) * t.active_scale
 	return Transform3D(view * HeldView.HANG, eyes + view * (t.active_pos + (Vector3.UP + HeldView.HANG.x) * half))
+
+
+## Where Teammate `by`'s active item hangs on this machine, at their avatar's HoldPoint (its worn
+## HeldView), unscaled; null for a player on this machine or one with no worn view here. A Teammate's
+## Throw and drop leave from there at once (coop/05, Q2439).
+func worn_hand_of(by: int) -> Variant:
+	if not is_inside_tree() or _plays_here(by):
+		return null
+	var sock := active_of(by)
+	for node in get_tree().get_nodes_in_group(HeldView.GROUP):
+		var view := node as HeldView
+		if view == null or not view.worn or view.me != by or view.hands != self:
+			continue
+		var at: Variant = view.drawn_of(sock)
+		if at is Transform3D:
+			return Transform3D((at as Transform3D).basis.orthonormalized(), (at as Transform3D).origin)
+	return null
 
 
 ## Where player `by`'s eyes are: their player's when it is on this machine (alone, always), else
@@ -418,6 +438,16 @@ func _player_of(by: int) -> Player:
 			if player != null and player.player_id() == by:
 				return player
 	return null
+
+
+## Whether player `by` plays in this Hands' own level on this machine (with two zoos in one tree, a
+## player of the other zoo does not).
+func _plays_here(by: int) -> bool:
+	for node in get_tree().get_nodes_in_group(PLAYERS):
+		var player := node as Player
+		if player != null and player.player_id() == by and (owner == null or player.owner == owner):
+			return true
+	return false
 
 
 static func _gravity() -> float:

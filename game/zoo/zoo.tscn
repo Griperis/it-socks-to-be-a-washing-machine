@@ -34,6 +34,7 @@
 [ext_resource type="PackedScene" uid="uid://sv5wba3wf252" path="res://game/zoo/stations/furniture.tscn" id="36_furniture"]
 [ext_resource type="Script" uid="uid://cabdnviw3m0oh" path="res://game/net/roster.gd" id="37_roster"]
 [ext_resource type="Resource" uid="uid://b0moa0fsavwjb" path="res://game/net/coop_tuning.tres" id="38_coop"]
+[ext_resource type="PackedScene" uid="uid://b7tq2avatarst" path="res://game/zoo/stations/avatar.tscn" id="39_avatar"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.42, 0.44, 0.46, 1)
@@ -138,6 +139,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, 17.5)
 
 [node name="Furniture" parent="Stations" unique_id=1700134768 instance=ExtResource("36_furniture")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 75.5, 0, 9.5)
+
+[node name="Avatar" parent="Stations" unique_id=1700142687 instance=ExtResource("39_avatar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -2)
 
 [node name="Spots" type="Node3D" parent="." unique_id=1540973286]
 
