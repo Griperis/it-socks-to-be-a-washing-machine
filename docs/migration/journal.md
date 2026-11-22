@@ -848,3 +848,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2483-Q2498 |
 
 ---
+
+| Ticket | core/49, a pour left two Socks inside each other: the spout now checks its own wave's earlier picks; the test counts Socks pressed within Jolt's slop (Q2499) and fails a Sock made inside another; merged (main d2b9087) |
+| Planned vs actual | 0 planned (found by coop/10), 1 actual |
+| Redo count | 1 (sent back after the designer's Q2499) |
+| Corrections | the extra-record count was a red herring: it changed the ids and Jolt's order, not the pour |
+| Cost | 11,450,421 tokens, 93 tool calls, 45m48s (Opus) |
+| Time | about 46 min over two rounds |
+| Surprises | about 200 of 500 Socks rest pressed into another (deepest about 21 mm), 0-6 a run measured past 22 mm by sharp boxes; a rarer fault (a Sock 116 mm under the floor) went to core/50; game code +115 −31 |
+| Stop rules | the slop question went to the designer (Q2499) |
+| Looks | none |
+| Decisions | Q2499 |
+
+---
