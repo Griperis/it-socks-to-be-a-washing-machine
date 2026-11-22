@@ -28,7 +28,7 @@ static func fold(root: Node) -> void:
 			continue
 		var base := n.get_parent().get_node_or_null(NodePath(full.substr(0, cut))) as MeshInstance3D
 		if base == null:
-			push_warning("ModelLods: %s has no close-up %s beside it" % [full, full.substr(0, cut)])
+			_warn("%s has no close-up %s beside it" % [full, full.substr(0, cut)])
 			continue
 		if not chains.has(base):
 			chains[base] = {}
@@ -62,12 +62,12 @@ static func merged(base: Mesh, lods: Array[Mesh]) -> Mesh:
 		for i in lods.size():
 			var lod := lods[i]
 			if lod == null or lod.get_surface_count() != base.get_surface_count():
-				push_warning("ModelLods: LOD %d of %s has a different surface count" % [i + 1, base.resource_name])
+				_warn("LOD %d of %s has a different surface count" % [i + 1, base.resource_name])
 				return base
 			var px := FAR_PX if i == lods.size() - 1 else MID_PX
 			var indices := _append(arrays, lod.surface_get_arrays(s))
 			if indices.is_empty():
-				push_warning("ModelLods: LOD %d of %s has a different vertex format" % [i + 1, base.resource_name])
+				_warn("LOD %d of %s has a different vertex format" % [i + 1, base.resource_name])
 				return base
 			# The level is drawn while its "edge length" projects below the mesh detail threshold
 			# (in pixels): the model's longest side over the switch size.
@@ -109,3 +109,14 @@ static func _append(arrays: Array, more: Array) -> PackedInt32Array:
 	for i in src.size():
 		out[i] = src[i] + offset
 	return out
+
+
+## A warning into the game's log (area "lods") when the game runs; at import, in the editor, where
+## no autoload is alive, into the editor's own output.
+static func _warn(text: String) -> void:
+	var tree := Engine.get_main_loop() as SceneTree
+	var game_log: Node = tree.root.get_node_or_null(^"Log") if tree != null else null
+	if game_log != null and game_log.has_method(&"warn"):
+		game_log.call(&"warn", "lods", text)
+	else:
+		push_warning("ModelLods: " + text)

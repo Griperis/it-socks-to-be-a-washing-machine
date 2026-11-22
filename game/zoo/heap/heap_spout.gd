@@ -143,7 +143,7 @@ func _physics_process(delta: float) -> void:
 	if designs.is_empty():
 		_stuck += delta
 		if _stuck > tuning.give_up:
-			print("heap: no room for %d more Socks, given up" % _queue.size())
+			Log.warn("heap", "no room for %d more Socks, given up" % _queue.size())
 			_queue = PackedInt32Array()
 		return
 	_stuck = 0.0

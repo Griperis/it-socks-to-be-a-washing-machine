@@ -14,12 +14,12 @@ const FAULTS: Array[String] = ["never", "lost", "hot", "jumped", "flips", "jitte
 static func keep(folder: String, run: Dictionary, plan: MessBenchPlan) -> String:
 	var dir := ProjectSettings.globalize_path(folder)
 	if DirAccess.make_dir_recursive_absolute(dir) != OK and not DirAccess.dir_exists_absolute(dir):
-		push_error("mess bench: cannot make %s" % dir)
+		Log.error("bench", "cannot make %s" % dir)
 		return ""
 	var own := dir.path_join(RESULTS % String(run["label"]).validate_filename())
 	var file := FileAccess.open(own, FileAccess.WRITE)
 	if file == null:
-		push_error("mess bench: cannot write %s" % own)
+		Log.error("bench", "cannot write %s" % own)
 		return ""
 	file.store_string(JSON.stringify(run, "\t"))
 	file.close()
@@ -33,7 +33,7 @@ static func keep(folder: String, run: Dictionary, plan: MessBenchPlan) -> String
 	var path := dir.path_join(REPORT)
 	var out := FileAccess.open(path, FileAccess.WRITE)
 	if out == null:
-		push_error("mess bench: cannot write %s" % path)
+		Log.error("bench", "cannot write %s" % path)
 		return ""
 	out.store_string(text(runs, plan))
 	out.close()

@@ -88,7 +88,7 @@ func write(patch: Dictionary, now: bool) -> void:
 		if String(key) in names:
 			set(String(key), patch[key])
 		else:
-			push_error("%s has no state field %s" % [id, key])
+			Log.error("parts", "%s has no state field %s" % [id, key])
 	_show(now)
 
 

@@ -65,7 +65,7 @@ func host() -> Error:
 	var peer := ENetMultiplayerPeer.new()
 	var err := peer.create_server(port, max_guests)
 	if err != OK:
-		push_error("session: cannot listen on port %d (%s)" % [port, error_string(err)])
+		Log.error("net", "cannot listen on port %d (%s)" % [port, error_string(err)])
 		return err
 	_peer = peer
 	port = peer.host.get_local_port()
@@ -288,14 +288,12 @@ func _end(text: String) -> void:
 	ended.emit(text)
 
 
-## One line about the session: into the game's log when it has one (the autoload `Log` of the
-## log template, asked for by name so this file needs no log to load), else printed.
+## One line about the session, into the game's log (area "net").
 func _note(text: String, warning: bool) -> void:
-	var game_log := get_node_or_null(^"/root/Log")
-	if game_log != null and game_log.has_method(&"write"):
-		game_log.call(&"warn" if warning else &"info", "net", text)
+	if warning:
+		Log.warn("net", text)
 	else:
-		print("session: ", text)
+		Log.info("net", text)
 
 
 func _exit_tree() -> void:

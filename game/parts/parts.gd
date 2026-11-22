@@ -130,7 +130,7 @@ func apply(ev: Dictionary) -> void:
 		for id: Variant in changes:
 			var part := of(StringName(id))
 			if part == null:
-				push_error("parts: no part %s in this level" % id)
+				Log.error("parts", "no part %s in this level" % id)
 				continue
 			part.write(changes[id], false)
 	applied.emit(ev)

@@ -211,9 +211,9 @@ func _on_setting(key: String) -> void:
 func _asked(name: StringName, spatial: bool) -> SoundEvent:
 	var e := catalogue.find(name)
 	if e == null:
-		push_error("Sounds: no event named '%s' in the catalogue" % name)
+		Log.error("sounds", "no event named '%s' in the catalogue" % name)
 	elif e.spatial != spatial:
-		push_error("Sounds: '%s' is %s, asked %s" % [name, "a world sound (play_at)" if e.spatial else "a flat sound (play)", "from a spot" if spatial else "flat"])
+		Log.error("sounds", "'%s' is %s, asked %s" % [name, "a world sound (play_at)" if e.spatial else "a flat sound (play)", "from a spot" if spatial else "flat"])
 		return null
 	elif e.clips.is_empty():
 		return null  # an event with no pick is silent on purpose (amb_room), no error

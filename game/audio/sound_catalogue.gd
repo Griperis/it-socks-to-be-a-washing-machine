@@ -32,9 +32,9 @@ func _build_index() -> void:
 	_indexed = events.size()
 	for e in events:
 		if e == null:
-			push_error("SoundCatalogue: a null entry in events")
+			Log.error("sounds", "a null entry in events")
 		elif _by_name.has(e.event):
-			push_error("SoundCatalogue: the event '%s' is in the catalogue twice" % e.event)
+			Log.error("sounds", "the event '%s' is in the catalogue twice" % e.event)
 		else:
 			_by_name[e.event] = e
 
