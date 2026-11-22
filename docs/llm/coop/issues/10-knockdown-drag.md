@@ -109,3 +109,4 @@ out. One test per remaining line, named after it.
   tools/shots/sets/knockdown.txt
 - Verified: knockdown PASS 45 checks, 5 cases; the full --touched verdict is in the commit's `suite:` line; stills
   builds/review-knockdown/knockdown-dragged.png, knockdown-outline.png.
+- Merged: ea7ab1a5 (2026-11-22, branch coop/10-knockdown-drag)
