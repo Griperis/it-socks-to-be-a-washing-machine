@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: audio
 feature: core
@@ -30,3 +30,11 @@ The old game's room tone `amb_room` was silent (no pick). Ours plays a placehold
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-22
+- Changed: `amb_room` has no clip (event kept, loop flag kept); `Sounds._asked` returns null for an event with no clips
+  without `push_error` (was an error); placeholder clip, its `.import` and its SOURCES line removed; the two ambience
+  cases now assert silence.
+- Files: `game/audio/sounds.gd`, `game/audio/sound_catalogue.tres`, `tests/sounds_test.gd`, `assets/audio/SOURCES.md`,
+  `docs/llm/PLACEHOLDERS.md`, the clip and its `.import`.
+- Verified: PASS 15218 checks, 376 cases
