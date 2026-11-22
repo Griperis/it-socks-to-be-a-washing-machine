@@ -1,4 +1,4 @@
-Next free Q number: Q2483 (update this line whenever a round of questions is asked)
+Next free Q number: Q2497 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -397,3 +397,17 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2480: sections D to M of `m06-lists/03-mess-throw-coop.md`, with Q2473-Q2479 folded in, are approved; coop/09 is built from them (designer, 2026-11-22).
 - Q2481: a Guest's own Throw ghost leaves its first-person hand and eases onto the Host's flight (from the avatar's hand, about 0.3 m away) over 0.2 s, as coop/09 built it (designer, 2026-11-22).
 - Q2482: a Guest's pick, drop or Throw timed out after 2 s (Q2477) plays "refuse" only, with no text (designer, 2026-11-22).
+- Q2483: in M0.6 only full-charge Throws of Socks and Pairs knock down; the lantern, Radio, Beeper, Guide card and Cat get their knock at their own milestone (list 04 question 2; designer, 2026-11-22).
+- Q2484: the old exemptions stay: the thrower, someone already down, someone in the drum, an Elevator rider are never knocked (list 04 question 3; designer, 2026-11-22).
+- Q2485: a knocked-down player drops everything in the Hands (changes the old game, which kept them) (list 04 question 4; designer, 2026-11-22).
+- Q2486: the knocked player's items drop as a leaver's do (D14 of list 03): where they stood, a Pair as a ball, lying in the Mess for anyone (designer, 2026-11-22).
+- Q2487: no immunity after getting up, as the old game (list 04 question 5; designer, 2026-11-22).
+- Q2488: getting up as the old game: a 0.6 s smoothstep blend, the same facing, no hop or bounce (list 04 question 6; designer, 2026-11-22).
+- Q2489: the struggle shows only the hint "Mash: Struggle [Space]" for now, as the old game; a better struggle display is tracked to improve later (list 04 question 7; designer, 2026-11-22: "1, but track to improve").
+- Q2490: the knocked player's view gets a vignette while down (changes the old game, which added nothing); its look stops at its first still (list 04 question 8; designer, 2026-11-22).
+- Q2491: the knockdown sound is the first placeholder candidate until M1.1 (list 04 question 10; designer, 2026-11-22).
+- Q2492: only the knocked (and the dragged) player's pad rumbles; the thrower gets none (list 04 question 11; designer, 2026-11-22).
+- Q2493: a lying body under the crosshair wins the left click over a Sock or a station, as the old game (list 04 question 12; designer, 2026-11-22).
+- Q2494: the knocked player sees "<Name> knocked you down", as the old game (list 04 question 13; designer, 2026-11-22).
+- Q2495: the knocked player sees their own body in the ragdoll pose under the head camera, as the old game (list 04 question 14; designer, 2026-11-22).
+- Q2496: list 04 (`m06-lists/04-knockdown.md`) is approved with Q2437, Q2438 and Q2483-Q2495 folded in; batch 4 is built from it (designer, 2026-11-22).

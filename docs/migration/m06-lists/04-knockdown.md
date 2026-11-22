@@ -1,4 +1,4 @@
-> Draft behaviour list for M0.6 (Q2436), written from the reference on 2026-11-22; for the designer to approve. Answered 2026-11-22: question 1 by Q2437, question 9 by Q2438; the rest open (asked before batch 4).
+> Draft behaviour list for M0.6 (Q2436), written from the reference on 2026-11-22; for the designer to approve. Answered 2026-11-22: question 1 by Q2437, question 9 by Q2438, questions 2-8 and 10-14 by Q2483-Q2495. Approved (Q2496).
 
 # M0.6 piece: Knockdown (behaviour list, draft)
 
@@ -57,7 +57,7 @@ Scope tags used below:
 33. When a knocked player wears or carries a Backpack vacuum, then it drops beside them with its load, worn and carried by nobody, at a landing spot chosen by the Host with a random turn. (needs the Backpack vacuum) (ref: game/world/flight_rules.gd:345, 356; game/devices/backpack_vacuums.gd:14, 330-341, 345-359)
 34. When a knocked player carries a Hamper, then it spills (a "hamper_spill" at their feet). (needs the Hamper) (ref: game/devices/hampers.gd:236)
 35. When a knocked player holds the Cat, then it wriggles free and jumps down by their feet. (needs the Cat) (ref: game/cat/cat.gd:680)
-36. When a knocked player holds Socks or Pairs in the Hands, then they keep them (nothing in the old code drops them). Open: keep? (zoo) (ref: game/world/flight_rules.gd:333-349, no drop of Hands; see Questions)
+36. When a knocked player holds Socks or Pairs in the Hands, then they drop them all, as a leaver's: where they stood, a Pair as a ball, lying in the Mess (changed by Q2485, Q2486) (zoo) (ref: game/world/flight_rules.gd:333-349, no drop of Hands; see Questions)
 37. When a knocked player was dragging a Teammate, then that drag ends ("knocked") and the body lies where it is. (needs the drag) (ref: game/knockdown/drags.gd:106-111)
 38. When a knocked player was standing on or being stood on in a stack, then see the stack rule: a knocked player holds no one (stack off). (outside M0.6) (ref: game/player/rig_stack.gd:49)
 
@@ -102,7 +102,7 @@ Scope tags used below:
 72. When the camera is drawn, then it follows the ragdoll's pose as drawn between ticks (interpolated), not the raw tick pose. (zoo) (ref: game/player/rig_knockdown.gd:141-152)
 73. When the ragdoll is in the car, or this is a Teammate's machine view, then the eye clip is cleared. (needs the Elevator for the car) (ref: game/player/rig_knockdown.gd:132-133)
 74. When the knockdown ends, then the camera returns to the standing head, at the standing eye height. (zoo) (ref: game/player/rig_knockdown.gd:104-105; game/player/player.gd:726-729)
-75. When the player is knocked down, then the view does not fade, blur or get an overlay in the old game. The only fade in the whole feature is the wash's (section H). (zoo) (ref: no fade or overlay in game/player/rig_knockdown.gd; game/knockdown/screen_fade.gd is used by the wash and the rogue sequence only)
+75. When the player is knocked down, then a vignette darkens the view's edges while down (changed by Q2490; the old game added nothing; its look stops at the first still). (zoo) (ref: no fade or overlay in game/player/rig_knockdown.gd; game/knockdown/screen_fade.gd is used by the wash and the rogue sequence only)
 76. When the player is knocked down, then the HUD stays shown (the crosshair and hints remain). Only the washed player's HUD is hidden (Q991). (zoo) (ref: game/player/rig_wash.gd:34-35)
 77. When the player is knocked down, then their view's roll can be any amount (the camera tips over with the head). (zoo) (ref: game/player/player.gd:732-735)
 78. When the player is knocked down, then they see a message "<name> knocked you down" (the thrower's roster name, "A teammate" when unknown). Only the knocked player sees it; the thrower and others get no line. (zoo, with names from the roster) (ref: game/ui/teammate_news_installer.gd:54-59)
@@ -116,8 +116,8 @@ Scope tags used below:
 83. When the body blends up, then it faces the way the player faced (their own yaw, which a knockdown never changed because input is frozen). (zoo) (ref: game/player/rig_knockdown.gd:46)
 84. When the body blends up, then every machine plays the blend itself; the Host's pose is ignored during it. (zoo) (ref: game/player/rig_knockdown.gd:155-163)
 85. When the ragdoll lies, then the player's own walking body (the capsule) stays at the ragdoll's feet each tick on the player's own machine, so the player gets up where they lie. (zoo) (ref: game/player/rig_knockdown.gd:52-53, 26-29)
-86. When `down` reaches 0, then the ragdoll is freed, the avatar stands, the view returns to the head, and the player can move again. No bounce, hop or squash is played at standing. (zoo; "getting up facing, bounce" is open in P105) (ref: game/player/rig_knockdown.gd:32-35, 97-105; docs/migration/feature-catalogue.md:263)
-87. When the player stands up, then there is no immunity: they can be hit again at once. The only protection is during the rise, when a dragged player cannot be grabbed (below). Open: is that right? (zoo) (ref: game/knockdown/drags.gd:56; no immunity timer in game/ or data/tuning/knockdown.json)
+86. When `down` reaches 0, then the ragdoll is freed, the avatar stands, the view returns to the head, and the player can move again. No bounce, hop or squash is played at standing (Q2488). (zoo) (ref: game/player/rig_knockdown.gd:32-35, 97-105; docs/migration/feature-catalogue.md:263)
+87. When the player stands up, then there is no immunity: they can be hit again at once. The only protection is during the rise, when a dragged player cannot be grabbed (below). (Q2487) (zoo) (ref: game/knockdown/drags.gd:56; no immunity timer in game/ or data/tuning/knockdown.json)
 88. When the player starts getting up, then they cannot be grabbed to drag ("standing"). (needs the drag) (ref: game/knockdown/drags.gd:56)
 89. When the rogue sequence ends, then every knockdown, drag and wash ends and everyone respawns (Q759). (needs the rogue machine, outside the zoo) (ref: game/house/house_rules.gd:105-118)
 90. When a player leaves the game while down, then their ragdoll goes with them and any drag or wash of theirs ends. (zoo, with leave) (ref: game/knockdown/drags.gd:113-119; game/hands/hands_rules.gd:416-418)
@@ -126,7 +126,7 @@ Scope tags used below:
 
 91. When a Teammate stands near a knocked-down body with empty Hands and aims at it within reach, then the body is outlined (highlighted) and the hint "Hold: Drag [left button]" shows. (needs the drag) (ref: game/player/rig_aim.gd:172-174; game/ui/prompts.gd:54)
 92. When the aim line passes within one body radius of a lying body's bent middle line, then that body is the aimed one. (needs the drag) (ref: game/player/rig_aim.gd:255-275)
-93. When the dragger presses the left button on a knocked body, then a knocked body wins the click over a Sock or a Station under the crosshair. Open: keep? (needs the drag) (ref: game/player/rig_click.gd:39-40; docs/migration/digests/digest-core-and-coop.md:72)
+93. When the dragger presses the left button on a knocked body, then a knocked body wins the click over a Sock or a Station under the crosshair (Q2493). (needs the drag) (ref: game/player/rig_click.gd:39-40; docs/migration/digests/digest-core-and-coop.md:72)
 94. When the grab is asked, then the Host grants it unless: gone, the dragger is down, the target is not down or is already rising, someone drags them, they ride the Elevator, the dragger drags already, or the dragger's Hands are not empty. (needs the drag) (ref: game/knockdown/drags.gd:51-67)
 95. When the grab is granted, then the dragger's Hands carry the body (nothing else comes in) and the dragger walks at "drag.speed" 0.6 of their pace. (needs the drag) (ref: game/knockdown/drags.gd:1-5, 70-72; game/player/rig.gd:340)
 96. When the dragger lets go of the left button, then the body drops where it lies. If the button comes up before the Host grants it, then it lets go at once on the grant. (needs the drag) (ref: game/player/rig_drag.gd:131-139, 148-153)
@@ -140,7 +140,7 @@ Scope tags used below:
 104. When the knockdown timer runs while dragged, then it is not paused (Q754): the dragged player slips out of the grip as the rise starts (`down` at or under 0.6 s), on every machine. (needs the drag) (ref: game/knockdown/drags.gd:98-104)
 105. When a dragged player presses Space (the jump action), then one struggle press goes up as a Command. The key hint "Mash: Struggle [Space]" shows to the dragged player. (needs the drag) (ref: game/player/rig.gd:346-347; game/ui/prompts.gd:75-76)
 106. When a dragged player's presses reach 10 ("drag.struggle_presses"), then they are freed on every machine and `down` is cut to the rise time: they get up at once and cannot be grabbed again while rising (Q986). (needs the drag) (ref: game/knockdown/drags.gd:187-207; data/tuning/drag.json struggle_presses)
-107. When a struggle press lands, then everyone gets a "struggled" signal with presses and needed, but no count is shown anywhere in the old game. Open in P105: show a count? (needs the drag) (ref: game/core/game.gd:166-167; game/knockdown/drags.gd:200-201; docs/migration/digests/digest-core-and-coop.md:70 ("no count shown"))
+107. When a struggle press lands, then everyone gets a "struggled" signal with presses and needed, but no count is shown, only the hint (Q2489; a better struggle display is tracked to improve later). (needs the drag) (ref: game/core/game.gd:166-167; game/knockdown/drags.gd:200-201; docs/migration/digests/digest-core-and-coop.md:70 ("no count shown"))
 108. When a drag ends, then the reason is one of: "drop", "struggle", "up", "apart", "knocked", "leave", "rogue", "wash"; the body lies where it is. (needs the drag) (ref: game/knockdown/drags.gd:16-17, 129-139)
 109. When a drag starts or ends, then the dragger's and the dragged player's prompts are re-synced. (needs the drag) (ref: game/player/rig_drag.gd:148-163)
 110. When a dragged player gets grabbed or dragged, then a knock rumble buzzes on their pad. (needs the drag) (ref: game/player/rig_drag.gd:63-64)
@@ -179,7 +179,7 @@ Scope tags used below:
 137. When a late joiner joins while someone is in the drum, then the roster entry carries the drum time left. (needs the washing machine) (ref: game/knockdown/knockdown_poses.gd:17-19, 29-30)
 138. When a knockdown is saved, then it is not: a knocked player is not in a save game and not in the join snapshot's world. (zoo) (ref: game/knockdown/knockdown_poses.gd:1-3)
 139. When a Teammate is knocked down, then the knocked-down body's collision stays on every machine, so walkers bump it on Guests too. (zoo) (ref: game/player/ragdoll.gd:10-12)
-140. When a Teammate lies, then their name tag and held item follow the bone pose (hat, clothes, eyes, name ride the bones). The held item is drawn from the Hands state at the HoldPoint. Open: what does a Teammate's held item do while they lie? (zoo) (ref: game/player/avatar.gd:623-626; docs/migration/coop-structure-for-the-port.md:67)
+140. When a Teammate lies, then their name tag and held item follow the bone pose (hat, clothes, eyes, name ride the bones). The held item is drawn from the Hands state at the HoldPoint. A knocked Teammate holds nothing: the Hands dropped at the hit (Q2485). (zoo) (ref: game/player/avatar.gd:623-626; docs/migration/coop-structure-for-the-port.md:67)
 
 ### K. Co-op ownership
 
