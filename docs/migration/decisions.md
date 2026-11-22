@@ -1,4 +1,4 @@
-Next free Q number: Q2435 (update this line whenever a round of questions is asked)
+Next free Q number: Q2436 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -347,3 +347,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2432: the room ambience `amb_room` is silent, as the old game (the placeholder clip goes; core/47).
 - Q2433: a Throw that cannot reach the crosshair (a light charge to the far floor, a charge-0 lob) lands short, as the old game; no change.
 - Q2434: the old sound events and modes left out of core/17 all stay for M1.1 (which ports every old sound); none dropped.
+- Q2435: core/46's cost is accepted (a Throw into a heap wakes about twice as many Socks; burst_16 p95 1.0 to 1.8 ms, under the 8 ms budget) and it merges as is; the push is small (friction stops hit Socks within mm) and the designer judges it by playing (designer: "Merge as is, I'll play it").

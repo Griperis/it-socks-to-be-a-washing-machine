@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-info
+status: done
 kind: build
 area: core
 feature: core
@@ -28,10 +28,11 @@ the bounce and drop where they lie. The old game woke them just before contact, 
   Built log.
 
 ## Answers
+- The Throw's cost (burst_16 p95 1.0 to 1.8 ms, moving peak 52 to 124) is accepted; merged as is, the designer judges the push by playing (Q2435, 2026-11-22).
 - A Throw wakes the lying Socks it is about to hit just before contact, as the old game (Q2431, 2026-11-22).
 
 ## Open follow-ups
-- [blocking] `burst_16` costs more. A Throw now pushes the Socks it meets and keeps going, so it wakes more of the
+- [answered 2026-11-22: merge as is, the designer plays it (Q2435)] `burst_16` costs more. A Throw now pushes the Socks it meets and keeps going, so it wakes more of the
   heap: moving peak 124 against 52, wakes 37/s against 15/s. Physics tick p95 is 1.79/1.87 ms against 1.00/1.05 ms
   on `main` (worst 2.17/2.22 against 1.14/1.30), still far under the 8 ms budget. That breaks "no worse tick beyond
   noise". Is that cost all right, or should a Throw wake fewer (for example only its first look-ahead hit, as one
