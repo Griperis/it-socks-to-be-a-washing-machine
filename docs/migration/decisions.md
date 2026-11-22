@@ -1,4 +1,4 @@
-Next free Q number: Q2481 (update this line whenever a round of questions is asked)
+Next free Q number: Q2483 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -395,3 +395,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2478: a Guest hears its own pick at the click, with the ghost (list 03 question 7; changes the old game, which played it at the answer; designer, 2026-11-22).
 - Q2479: a Guest's pairing moment starts only on the Host's answer, never at the click; no Pair splits back (list 03 question 9; designer, 2026-11-22).
 - Q2480: sections D to M of `m06-lists/03-mess-throw-coop.md`, with Q2473-Q2479 folded in, are approved; coop/09 is built from them (designer, 2026-11-22).
+- Q2481: a Guest's own Throw ghost leaves its first-person hand and eases onto the Host's flight (from the avatar's hand, about 0.3 m away) over 0.2 s, as coop/09 built it (designer, 2026-11-22).
+- Q2482: a Guest's pick, drop or Throw timed out after 2 s (Q2477) plays "refuse" only, with no text (designer, 2026-11-22).
