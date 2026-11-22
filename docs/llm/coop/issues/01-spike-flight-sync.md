@@ -37,3 +37,4 @@ packet against the Host's reliable answer. Option C (keep a custom stamped strea
 ## Open follow-ups
 
 ## Built log
+- 2026-11-22 lead: model opus (hard netcode and physics, CLAUDE.md "Models").

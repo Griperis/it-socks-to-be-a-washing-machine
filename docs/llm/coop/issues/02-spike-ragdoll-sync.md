@@ -37,3 +37,4 @@ four stacked capsules of 0.3 m radius, cone joints 45 degrees swing and 22.5 twi
 ## Open follow-ups
 
 ## Built log
+- 2026-11-22 lead: model opus (hard netcode and physics, CLAUDE.md "Models").
