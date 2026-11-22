@@ -1,4 +1,4 @@
-Next free Q number: Q2456 (update this line whenever a round of questions is asked)
+Next free Q number: Q2459 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -370,3 +370,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2453: a Teammate's pick, pair, drop, shelve and throw sounds play as loud as the local player's, in 3D at 1.2 m over their feet, as the old game.
 - Q2454: others do not see a Teammate's held turn (R) or zoom (G), as the old game.
 - Q2455: the avatar's pupils follow the nearest player, as the old game.
+- Q2456: the lobby and the multiplayer system should be ready for Steam (designer, 2026-11-22).
+- Q2457: M0.6 builds on ENet behind a swappable seam: the transport, the player identity and the join gate assume no IP address, so Steam's peer, lobby and ids come in with the lobby (M4) without rework. Steam is not run in M0.6.
+- Q2458: the player id is one field: the Steam ID on Steam, proven by Steam's auth ticket (which replaces the proving token planned for M4); off Steam (LAN, IP) the long random id of Q2224. Saves are keyed by that one field.
