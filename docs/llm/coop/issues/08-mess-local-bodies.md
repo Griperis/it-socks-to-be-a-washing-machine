@@ -93,3 +93,4 @@ Doors sweeping on the Host only, the co-op cost of whole arrays, the heap sign's
     0 ms; Host 1.25 (2.33), Guest 0.45 (0.77) at 50 ms; the Guest holds as many bodies as the Host (200 of 200 in
     the real-path pour).
   Verified: `PASS 15735 checks, 380 cases` (run.sh --touched); coop_mess and coop_respill with --stress PASS; coop_flight --stress PASS.
+- Merged: 703c1971 (2026-11-22, branch coop/08-mess-local-bodies)
