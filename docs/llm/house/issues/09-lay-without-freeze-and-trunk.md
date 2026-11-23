@@ -92,4 +92,4 @@ From house/05 (2026-11-23):
     h09_trail_stays_on_treads; the timing case strict at 14 ms; the kitchen case picks a floor Sock);
     docs/architecture/sock-generator.md.
   - Stills: builds/review-house-09/house-09-trunk-a.png, house-09-trunk-b.png (retaken).
-  - Verified: PASS rules; the touched suites by agent_finish (its suite: line is in the report to the lead)
+  - Verified: PASS rules; after merging main (d833a6f) the touched suites by agent_finish (its suite: line is in the report to the lead)
