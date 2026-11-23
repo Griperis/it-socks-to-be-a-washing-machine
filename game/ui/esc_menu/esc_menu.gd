@@ -35,10 +35,9 @@ var _options: Control = null
 @onready var _end_session: Button = %EndSession
 @onready var _leave: Button = %Leave
 @onready var _options_button: Button = %Options
-@onready var _back: Button = %Back
+@onready var _back: CloseButton = %Back
 @onready var _ask: Control = %Ask
 @onready var _end: Button = %End
-@onready var _cancel: Button = %Cancel
 
 
 func _ready() -> void:
@@ -48,10 +47,9 @@ func _ready() -> void:
 	_quit.pressed.connect(quit)
 	_end_session.pressed.connect(_ask_end)
 	_end.pressed.connect(end_session)
-	_cancel.pressed.connect(func() -> void: _show_ask(false))
 	_leave.pressed.connect(leave)
 	_options_button.pressed.connect(_open_options)
-	_back.pressed.connect(close)
+	_back.pressed.connect(_escape)
 	if net != null:
 		net.ended_to_title.connect(func(text: String) -> void: go_to_title.call(text))
 
@@ -139,14 +137,14 @@ func _show_ask(on: bool) -> void:
 	_ask.visible = on
 	_menu.visible = not on
 	if on:
-		_cancel.grab_focus()
+		_back.key().grab_focus()
 
 
 func _first_key() -> Button:
 	for b: Button in [_back_to_title, _end_session, _leave]:
 		if b.visible:
 			return b
-	return _back
+	return _back.key()
 
 
 func _save() -> void:
@@ -164,10 +162,18 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed(TOGGLE):
 		return
 	get_viewport().set_input_as_handled()
+	_escape(true)
+
+
+## Esc, a pad's B and the close key alike: the question goes first, else the menu closes (`toggles`:
+## the Esc key also opens it).
+func _escape(toggles := false) -> void:
 	if asking():
 		_show_ask(false)
-	else:
+	elif toggles:
 		toggle()
+	else:
+		close()
 
 
 func _open_options() -> void:

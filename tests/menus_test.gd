@@ -60,6 +60,12 @@ func cases() -> Array[Dictionary]:
 				"title": "E02: a Host's End session asks \"Everyone will be sent back to the menu.\"; End saves, ends the session and goes to the title; a Guest's Leave goes to the title; a title Guest whose Host ended goes to the title with the reason"},
 		{"name": "e03_options_in_esc", "method": "case_e03", "world": false,
 				"title": "E03: Options opens from the ESC menu; Esc closes it first"},
+		{"name": "x01_close_key_title", "method": "case_x01", "world": false,
+				"title": "X01 real path: on the title, Multiplayer, Join, Options and Licence each show the ESC close key at the same top-right corner of their panel; a click closes the page (one page up), Esc does the same"},
+		{"name": "x02_close_key_esc_menu", "method": "case_x02", "world": false,
+				"title": "X02 real path: the ESC menu and the Options over it show the close key; a click closes each, Esc too; over End session's question the key cancels the question first"},
+		{"name": "x03_every_dialogue_has_it", "method": "case_x03", "world": false,
+				"title": "X03: every dialogue scene under game/ui (a root with a `closed` signal, the title's Multiplayer and Join pages) holds the shared close_button scene, at the top right"},
 	]
 
 
@@ -112,8 +118,8 @@ func case_m03() -> void:
 	_check((t.get_node("Pages/Center/Column/Panel/Stack/Join/Firewall") as Label).text.contains("UDP port 24680"), "the firewall line")
 	await _key(&"ui_cancel")
 	_check(t.page == TitleScreen.MULTIPLAYER, "Esc goes one page up")
-	await _click(t.get_node("Pages/Center/Column/Panel/Stack/Multiplayer/BackMultiplayer"))
-	_check(t.page == TitleScreen.HOME, "Back goes home")
+	await _click((t.get_node("%Close") as CloseButton).key())
+	_check(t.page == TitleScreen.HOME, "the close key goes home")
 
 
 func case_m04() -> void:
@@ -121,7 +127,7 @@ func case_m04() -> void:
 	t.show_page(TitleScreen.JOIN)
 	(t.get_node("%NameField") as LineEdit).text = "  Sockmaster  "
 	(t.get_node("%AddressField") as LineEdit).text = " 10.0.0.7 "
-	await _click(t.get_node("Pages/Center/Column/Panel/Stack/Join/BackJoin"))
+	await _click((t.get_node("%Close") as CloseButton).key())
 	var p := Worlds.profile()
 	_check(p.name == "Sockmaster" and p.address == "10.0.0.7", "the name and address are kept (%s, %s)" % [p.name, p.address])
 	t.show_page(TitleScreen.JOIN)
@@ -402,6 +408,98 @@ func case_e03() -> void:
 	_check(options != null, "Options opens from the ESC menu")
 	await _key(&"ui_cancel")
 	_check(menu.is_open() and (options == null or not is_instance_valid(options) or options.is_queued_for_deletion()), "Esc closes Options first, the menu stays")
+
+
+# --- The close key ----------------------------------------------------------------------------------
+
+## The key sits in the panel's top-right corner, and shows the ESC keycap.
+func _check_corner(close: CloseButton, what: String) -> void:
+	var key := close.key()
+	var area := close.get_global_rect()
+	_check(key.is_visible_in_tree() and absf(key.get_global_rect().end.x - area.end.x) < 1.0
+			and key.get_global_rect().position.y - area.position.y < 24.0, "%s: the close key is at the top right" % what)
+	_check(key.icon == UiIcons.texture("key_esc") and key.text == "", "%s: it is the ESC keycap, icon only" % what)
+
+
+func case_x01() -> void:
+	var t := await _title()
+	var corner := (t.get_node("%Close") as CloseButton)
+	for pg: String in [TitleScreen.MULTIPLAYER, TitleScreen.JOIN]:
+		t.show_page(pg)
+		await _frames(2)
+		_check_corner(corner, pg)
+		await _click(corner.key())
+		_check(t.page != pg, "%s: a click closes it" % pg)
+		t.show_page(pg)
+		await _key(&"ui_cancel")
+		_check(t.page != pg, "%s: Esc closes it" % pg)
+	for pg: String in [TitleScreen.OPTIONS_PAGE, TitleScreen.LICENCE_PAGE]:
+		t.show_page(pg)
+		await _frames(2)
+		var page := t.get_node("Pages").get_child(t.get_node("Pages").get_child_count() - 1)
+		var close := page.get_node("%Back") as CloseButton
+		_check_corner(close, pg)
+		await _click(close.key())
+		await _frames(2)
+		_check(t.page == TitleScreen.HOME, "%s: a click closes it" % pg)
+		t.show_page(pg)
+		await _frames(2)
+		await _key(&"ui_cancel")
+		await _frames(2)
+		_check(t.page == TitleScreen.HOME, "%s: Esc closes it" % pg)
+
+
+func case_x02() -> void:
+	var level := await _level(Worlds.pick_solo(), [])
+	var menu := LevelRuntime.of(level).esc_menu
+	for how: String in ["click", "esc"]:
+		menu.open()
+		await _frames(2)
+		_check_corner(menu.get_node("%Back") as CloseButton, "the ESC menu")
+		if how == "click":
+			await _click((menu.get_node("%Back") as CloseButton).key())
+		else:
+			await _key(&"ui_cancel")
+		_check(not menu.is_open(), "the ESC menu closes by %s" % how)
+	menu.open()
+	await _click(menu.get_node("%Options"))
+	var options := menu.find_child("Options", false, false) as OptionsScreen
+	_check_corner(options.get_node("%Back") as CloseButton, "Options over the ESC menu")
+	await _click((options.get_node("%Back") as CloseButton).key())
+	await _frames(2)
+	_check(menu.is_open() and (not is_instance_valid(options) or options.is_queued_for_deletion()), "its key closes Options, the menu stays")
+	menu.close()
+
+
+func case_x03() -> void:
+	var seen := 0
+	for path in _scenes_under("res://game/ui"):
+		var root := (load(path) as PackedScene).instantiate()
+		if root.has_signal(&"closed"):
+			seen += 1
+			_check(_has_close(root), "%s holds the shared close key" % path)
+		root.free()
+	_check(seen >= 3, "the scan found the dialogues (%d)" % seen)
+	var title := (load(TITLE) as PackedScene).instantiate()
+	_check(_has_close(title), "the title's Multiplayer and Join pages hold it")
+	title.free()
+
+
+func _has_close(root: Node) -> bool:
+	for n in root.find_children("*", "Control", true, false):
+		if n.scene_file_path == "res://game/ui/close_button.tscn":
+			return true
+	return false
+
+
+func _scenes_under(dir: String) -> Array[String]:
+	var out: Array[String] = []
+	for f in DirAccess.get_files_at(dir):
+		if f.ends_with(".tscn"):
+			out.append(dir.path_join(f))
+	for d in DirAccess.get_directories_at(dir):
+		out.append_array(_scenes_under(dir.path_join(d)))
+	return out
 
 
 # --- Helpers --------------------------------------------------------------------------------------

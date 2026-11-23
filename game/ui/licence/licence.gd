@@ -21,7 +21,7 @@ const LICENCES := "Licences"
 var open_link := func(url: String) -> void: OS.shell_open(url)
 
 @onready var _column: VBoxContainer = %Column
-@onready var _back: Button = %Back
+@onready var _back: CloseButton = %Back
 
 
 func _ready() -> void:

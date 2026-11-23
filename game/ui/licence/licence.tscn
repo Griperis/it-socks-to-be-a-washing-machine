@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://brxnqbog8u06f" path="res://game/ui/licence/licence.gd" id="1_licence"]
 [ext_resource type="Resource" uid="uid://b3mjth3k8ibvm" path="res://game/ui/licence/credits.tres" id="2_credits"]
-[ext_resource type="Texture2D" uid="uid://38pexbvy6uov" path="res://assets/ui/key_esc.svg" id="3_esc"]
+[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
 
 [node name="Licence" type="Control" unique_id=341517]
 layout_mode = 3
@@ -51,10 +51,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="Back" type="Button" parent="Panel/Box" unique_id=389031]
+[node name="Back" parent="Panel" instance=ExtResource("close_btn")]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-theme_type_variation = &"EscButton"
-text = "Back"
-icon = ExtResource("3_esc")
