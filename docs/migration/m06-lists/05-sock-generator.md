@@ -1,0 +1,217 @@
+> Draft behaviour list for core/52 (the Sock generator), written from the reference on 2026-11-23; for the designer to approve.
+
+# M0.6 piece 5: The Sock generator (behaviour list, draft)
+
+Words follow `GLOSSARY.md`. Paths are in `reference/it-socks/` (tag v0.1.1) unless they start with `game/`, `docs/` or
+`data/` of the port (a line says "port" then). "Old" is the game at tag v0.1.1. A line is one thing the designer can keep or
+drop. Nothing is left out as minor.
+
+The old generator is **`SockLayout`** (`game/world/sock_layout.gd`, 1726 lines): "every Sock's resting pose computed from the
+game's seed, with no physics drop and no pre-baked file" (sock_layout.gd:1-23). Its numbers are in
+`data/tuning/mess.json` "spill" and "mates_*", `data/tuning/stages.json` (stage Pairs, high spots) and `data/tuning/grotto.json`.
+Its places come from the house's data file `assets/house/house_layout.json` read by `FlatLayout` (`game/house/flat_layout.gd`)
+and the furniture tops found on the meshes (`HouseParts.tops()`, `game/house/house_parts.gd:241-360`). It is not under the names
+spawn_socks / scatter / fill_floor: it is `bake()` (a New Game) and `spawn()` (a floor's stage). `SockPour`
+(`game/world/sock_pour.gd`) is the old zoo's pour, ported already as the port's heap spout.
+
+Scope tags used below:
+- **(zoo)** can exist in a zoo station today.
+- **(needs Stages)** the old floor-by-floor campaign (M4 in the port, Q2385).
+- **(needs the washing machine)** the old basement machine; the port has none yet.
+- **(needs the Grotto)** the old Lost Sock Grotto level (switched off in the port until ported, Q2144).
+- **(needs a house)** needs the house built from the kit with rooms, stairs and levels (house/03 on).
+
+## Behaviour list
+
+### A. When it runs and who runs it
+
+1. When a New Game starts, then the Host lays the whole starting Mess from the game's seed before anyone joins, behind the loading screen "The washer bursts open...", with every player frozen. (needs a house) (ref: game/core/main.gd:637-666)
+2. When guests are connected at a New Game's bake, then it refuses ("a New Game's layout never runs while guests are connected"); guests waiting in the Lobby join once it is laid. (co-op) (ref: game/core/main.gd:640-645)
+3. When a floor opens (its Fix, the campaign on), then the Host lays that stage's Socks the same way onto the house as it stands and onto the Socks already lying there, and lands them for everyone. (needs Stages) (ref: game/campaign/campaign_installer.gd:13-18, 40-50; game/world/sock_layout.gd:299-360)
+4. When a stage's Socks come due while one stage's spawn is still being laid, then the next waits and runs right after (the zoo's quick stages). (needs Stages) (ref: game/campaign/campaign_installer.gd:46, 68)
+5. When the drum's own stage is the current one, then the generator does not run: the drum's Lost Socks are laid by the drum's rules. (needs the washing machine) (ref: game/campaign/campaign_installer.gd:46-47; game/campaign/campaign.gd:205-206)
+6. When the layout runs, then its plan (where every slot is and which Design takes it) runs on a worker thread and the laying runs a slice a frame within a frame budget, so the loading screen keeps animating and a stage's spawn never hitches the Fix's frame. (ref: game/world/sock_layout.gd:247-265, 318-348, 363-365; game/core/main.gd:346)
+7. When the progress is asked, then it is 0.1 once planned, then 0.1 + 0.9 x the share of Socks laid (the loading bar). (ref: game/world/sock_layout.gd:280-287)
+8. When the same seed, Designs, levels and high share were laid before in this process, then the stored rows are returned at once, not laid again (a memo). (ref: game/world/sock_layout.gd:233-238, 276)
+9. When the layout is done, then it prints one line: Socks, ms (planning, laying), how many moved to open floor, how many forced, tries a Sock. (ref: game/world/sock_layout.gd:273-275)
+
+### B. How many Socks
+
+10. When a New Game starts, then its Mess has "mess.pairs_by_players" Pairs for 1, 2, 3, 4 players (605, 605, 605, 605: the whole catalogue, Q640), never more than the catalogue; two Socks a Pair. (ref: game/core/game.gd:833-840; data/tuning/mess.json pairs_by_players)
+11. When the campaign is on, then a New Game lays only the basement stage's Designs, on the unlocked floors (the basement). (needs Stages) (ref: game/core/main.gd:650-655; game/core/game.gd:821-831)
+12. When a stage spawns, then it spawns at least what each unlocked Cabinet's unlocked Rows still need, then more of their Designs up to "stages.pairs" for that stage (50, 160, 150, 130, 50: basement, ground, first, attic, grotto), scaled down when Drawers are smaller than full. (needs Stages) (ref: game/campaign/campaign.gd:196-249; data/tuning/stages.json pairs)
+13. When a stage spawns and Dirty Socks are on, then about "laundry.dirty_share" (0.1) more Pairs of Dirty Socks come with it, at least one, none on the basement. Dirty Socks are off in v0.1.1 ("laundry.dirty_socks" false). (switched off) (ref: game/campaign/laundry.gd:244-252, 263-282; data/tuning/laundry.json)
+14. When fewer Designs are in play than the whole catalogue, then every count of the spill (washer fan, insides, unders, tops, stairs, Heaps) shrinks by the same share (Designs in play / Designs of the placed Collections). (ref: game/world/sock_layout.gd:1114-1121)
+15. When only some levels are laid (a stage), then the counts are those levels' share of the house's counts ("spill.level_shares"), capped at the whole. (ref: game/world/sock_layout.gd:1118-1120, 1232-1242)
+16. When the planned slots add up to more than the Socks, then the last planned ones are cut (the slot list is cut to the Sock count). (ref: game/world/sock_layout.gd:1199)
+
+### C. Which Designs, and in what share
+
+17. When the Designs for N Pairs are picked, then every placed Collection (one with a Cabinet this run) keeps its share of them, at least one each, the leftover going to the largest remainders, spread evenly through each Collection's Designs (commons and rares alike); every machine picks the same. (ref: game/core/game.gd:859-905)
+18. When a Collection has no Cabinet this run, then none of its Designs is in the Mess. (ref: game/world/sock_layout.gd:224-228, 979-981)
+19. When the washer lesson is on, then its Designs (the first common Design of Simple and of Animals; two of Simple with the campaign on) are always in. (needs the washing machine) (ref: game/core/game.gd:893-902; game/world/sock_layout.gd:1643-1652)
+20. When a stage's Designs are picked, then the lesson's come first and the rest are spread by a golden-ratio walk, so any first part of the list is spread evenly. (needs Stages) (ref: game/campaign/campaign.gd:232-235, 252-258)
+21. When the Grotto is a level, then its own Collection ("grotto.collections": lost) lies only there and every other Design only in the house. (needs the Grotto) (ref: game/world/sock_layout.gd:983-1011)
+
+### D. Where Socks may land: the kinds of place
+
+22. When a New Game is laid, then "spill.from_washer" (160) Socks lie in a fan in front of the washer's door: each at 0.45 m + speed x 0.35 m out (speed 1.2 to 2.6 m/s at random), and a normal spread of 0.3 m sideways. A stage's spawn has no fan. (needs the washing machine) (ref: game/world/sock_layout.gd:477-485, 1121-1127; data/tuning/mess.json spill.from_washer, washer_speed_min/max)
+23. When an openable (a door, lid or drawer) is in the layout, then "spill.inside" names how many Socks lie in it (Fridge 8, Freezer 4, CupboardA 5, CupboardADrawer 2, CupboardB 8, Oven 2, three kitchen drawers 2 each, WallCupboard 3, LaundryBasket 14, Desk 1, three filing drawers 2 each, Nightstand 2, three dresser drawers 3 each, Vanity 4, ToyChest 6, TrunkA 5, TrunkB 5, Car 6, CarBoot 4, Litterbox 3). (zoo: furniture) (ref: game/world/sock_layout.gd:1128-1139; data/tuning/mess.json spill.inside)
+24. When a Sock lies in an openable, then it lies on its floor or one of its shelves (picked at random), under the next shelf (or the top), 1 cm in from the walls, along the space's long side (+-0.15 rad, either way round), tilted up at one end when it is longer than the space. (zoo: furniture) (ref: game/world/sock_layout.gd:495-508, 1133-1139)
+25. When a Sock is too long or thick for its openable (a shallow drawer), then it trades Designs with the nearest floor slot on its level whose Sock fits, so every stocked openable gets its Socks. (zoo) (ref: game/world/sock_layout.gd:1366-1393, 1441-1447)
+26. When a crawl space (the gap under a bed, sofa, table, piano, desk, tub, car, coat nook) is in the layout, then "spill.under" names how many Socks lie under it (UnderBed 16, UnderSofa 10, UnderCoffeeTable 6, UnderKitchenTable 8, UnderPiano 4, UnderDesk 4, UnderTub 3, UnderBunkBed 6, UnderCot 4, UnderCoatNook 5, UnderCar 4). (zoo: furniture) (ref: game/world/sock_layout.gd:1140-1149; data/tuning/mess.json spill.under)
+27. When a Sock lies under furniture, then it lies in a strip along an edge that faces open floor (not a wall or other furniture: at least 2 of 3 probes 0.35 m out are open floor), 0.15 m deep under low furniture (under 0.4 m) and 0.35 m under high, parallel to that edge (+-0.2 rad), so the crosshair reaches it. (zoo) (ref: game/world/sock_layout.gd:486-494, 1579-1604; data/tuning/mess.json edge_band_low/high, low_furniture)
+28. When furniture tops are in the layout, then "spill.on_surfaces" (70) Socks lie on them, each top picked by its area times the spill's thickness there (row 41), each try at another random point of the top. (zoo: furniture) (ref: game/world/sock_layout.gd:1150-1162, 1206-1215; data/tuning/mess.json on_surfaces)
+29. When a top is at least "stages.high_spot" (1.7 m) over its floor, then it is a high spot. With the campaign on and 2+ players, "stages.high_share" (0.05) of all the stage's Socks lie on high spots besides the 70; alone, none do (the same Socks go to reachable spots). (needs Stages) (ref: game/world/sock_layout.gd:1152-1161, 1225-1227; game/campaign/campaign_installer.gd:53-56; data/tuning/stages.json high_spot, high_share)
+30. When a top is found, then it is a piece's own top from its mesh: a 4 cm cell kept when it lies 5 cm or more over the floor, has 12 cm free over it (under the house and other pieces), is 6 cm in from the top's edges with its neighbours level within 2 cm, was seen from above, lies in a room, and is outside every clear zone, openable inside, crawl space, device and carried prop; cells are joined into rects per 5 cm height band. (zoo: furniture, port Spots/Top<n>) (ref: game/house/house_parts.gd:14-23, 241-360; game/house/flat_layout.gd:553-564)
+31. When a Sock lies on the stairs, then "spill.on_stairs" (6) lie on single steps and landings anywhere, and "spill.stair_trail" (6) lie as a trail up one storey's flights, spread evenly from the foot to the top (Q441); each 2 cm in from the step's edges, along the step. (needs a house) (ref: game/world/sock_layout.gd:1163-1176, 1449-1473; data/tuning/mess.json on_stairs, stair_trail)
+32. When the rest are laid, then they lie on open floor, each level its share of the whole Mess ("spill.level_shares": 0.25 each of basement, ground, first, attic; a level not named gets an even share) less what the fan, insides, unders, tops and stairs already put there, the rounding's leftovers to the levels that want the most. (needs a house) (ref: game/world/sock_layout.gd:1177-1198, 1244-1279; data/tuning/mess.json level_shares)
+33. When floor Socks are laid on a level, then "spill.heaps" (28, scaled) Heaps are placed on it, each at an open floor point with a weight 0.3 to 1.3; "spill.heap_share" (0.55) of the floor Socks go to a Heap picked by weight, within a normal spread of "spill.heap_spread" (0.22 m) of its middle (at the middle when that point is not open floor 0.12 m in); the rest lie scattered. (zoo) (ref: game/world/sock_layout.gd:1184-1197; data/tuning/mess.json heaps, heap_share, heap_spread)
+34. When the washer lesson is on, then the two lesson Pairs lie flat on the washer's top, each Pair's Socks side by side 16 cm apart, the Pairs 0.4 m apart; any other Sock that settled on the top takes a vacated pose instead, so the four lie clean and the count stays. (needs the washing machine) (ref: game/world/sock_layout.gd:1655-1712; game/core/game.gd:771)
+35. When the Grotto is laid, then "grotto.hidden_share" (0.7) of its Socks lie in its hiding spots (crates', barrels' insides, niches, cracks, rubble, benches' gaps, weighted by "grotto.spot_weights", GrottoRubble 1.5) and the rest on its tunnels' floor; each Design takes its zone by Rarity (Common near the ladder, Uncommon side, Rare deep), the nearest zone when full, both Socks in the same zone (Q1059, Q1060). (needs the Grotto) (ref: game/world/sock_layout.gd:1022-1098; data/tuning/grotto.json)
+
+### E. Where Socks may not land (exclusions and spacing)
+
+36. When a floor point is drawn, then it is on a 0.2 m grid, at a random point of its cell, in a room that is not a stair zone, 0.28 m in from the room's walls (0.18 + half a cell). (needs a house) (ref: game/world/sock_layout.gd:84-85, 1495-1541)
+37. When a floor point lies in a stairwell's hole (a flight from below opens into the room), then it is not open floor (the hole grown 0.2 m). (needs a house) (ref: game/world/sock_layout.gd:1520-1532)
+38. When a point lies in a clear zone (in front of every Cabinet, round the Wardrobe Station and the washer's, grown 0.1 m, up to their y_max), then no floor Sock lies there, and no other Sock either (the check on every try). (zoo) (ref: game/world/sock_layout.gd:543-551, 1544-1563; game/house/flat_layout.gd:527-541)
+39. When a point lies on a furniture footprint (grown 5 cm, within 0.3 m of its base height), then it is not open floor. (zoo) (ref: game/world/sock_layout.gd:1547-1567)
+40. When a point in the attic is under a roof lower than 1 m over the floor (where a crouching player does not fit), then it is not open floor. (needs a house) (ref: game/world/sock_layout.gd:1572-1573)
+41. When floor points are drawn, then each is weighted by how thickly Socks lie there: exp(-walk / "gradient_falloff" (5 m)), never under "gradient_floor" (0.2), by the walking distance from the washer, so the Mess thins out away from the machine. A Sock sent to open floor after failing (row 52) is drawn evenly instead. (needs the washing machine) (ref: game/world/sock_layout.gd:1483-1493, 1534-1535, 960-976; data/tuning/mess.json gradient_falloff, gradient_floor)
+42. When a try's point is not in a room or has left the house (lost), then it fails. (zoo) (ref: game/world/sock_layout.gd:543-547)
+43. When a floor Sock's try lands on furniture (more than 0.25 m over the floor it was planned on), then it fails. (zoo) (ref: game/world/sock_layout.gd:540-542)
+44. When a Sock's two ends would lie more than 3 cm higher or lower than its middle (over a top's edge, a step), then it would hang: the try fails. (zoo) (ref: game/world/sock_layout.gd:57-58, 536-539)
+45. When a Sock inside an openable would poke out of its floor plan (turned box), then the try fails. (zoo) (ref: game/world/sock_layout.gd:517-522)
+46. When a Sock on a top lies shut in (every look up, level and 45 degrees up round the compass meets the house within 1.2 m: a piano's keys under its lid), then the try fails (house/22). (zoo) (ref: game/world/sock_layout.gd:45-48, 605-616, 756-759)
+47. When a Sock would rest on a ledge (a leg's foot, a rim: held up more than 1 cm over what the rays found, or more than 3 cm over the floor it was planned on; 1 cm on a top), then the try fails. (zoo) (ref: game/world/sock_layout.gd:40-44, 735-744)
+48. When a Sock would stand over its space's ceiling (a shelf, a crawl space's top, 1.2 m over a floor), then the try fails and its space counts as full. (zoo) (ref: game/world/sock_layout.gd:745-747)
+49. When a Sock would start inside the house or a laid Sock even raised 3 x 3 cm, or would fall more than 1.5 m (a void), or is not touching what holds it (1 cm under), then the try fails. (zoo) (ref: game/world/sock_layout.gd:34-39, 716-755)
+50. When Socks are laid, then Socks never overlap each other: each next Sock comes down onto the laid ones' boxes (row 55). There is no other spacing rule between Socks (no minimum distance). (zoo) (ref: game/world/sock_layout.gd:15-23, 794-860)
+51. When a new spawn is laid onto a Mess that already lies, then the lying Socks are marked first, so new ones come down on top of them, never inside. (needs Stages) (ref: game/world/sock_layout.gd:336-344, 913-926)
+52. When a slot fails all its tries (8; an inside slot's first go 6 x 8 = 48, as a Car's cabin is mostly seats), then it moves to open floor of its level, evenly drawn, at most 6 times, 8 tries each; a space found full to its top 3 times in a slot, or 4 slots in all, takes no more. (zoo) (ref: game/world/sock_layout.gd:49-67, 376-421, 960-976)
+53. When a Sock has nowhere left, then it is forced: laid on its last spot whatever the house says, flat, turned at random, 2 mm over the floor. (zoo) (ref: game/world/sock_layout.gd:405-409, 465-467)
+54. When the layout runs, then every room Door is open and every hatch shut; a door or drawer that moved, and the Radio, are put where they stand first. (needs a house) (ref: game/world/sock_layout.gd:188-218; game/core/main.gd:661-662)
+
+### F. How a Sock comes to rest (computed, no physics step)
+
+55. When a Sock is laid, then it is turned at random about up, its lean comes from what lies under its two ends (the house by rays and the Socks laid before by a 4 cm height map), at most a slope of 0.4 (about 22 degrees), and it comes straight down onto the house and the laid Socks as its collider boxes (a shape cast), resting 0.5 mm over what it meets. It never stands on its cuff or toe. (zoo) (ref: game/world/sock_layout.gd:15-23, 30-39, 641-766, 901-903)
+56. When a floor Sock is laid on a Heap, then it first rolls down the Heap where it is steeper than 0.4 (steps of 0.12 m, at most 12, never into a wall or furniture), so a Heap slumps into a mound instead of a column. (zoo) (ref: game/world/sock_layout.gd:68-75, 523-526, 557-594)
+57. When a Heap is boxed in by walls and furniture and can not slump, then it grows at most 0.4 m over its floor; then it is full and its next Socks go elsewhere. (zoo) (ref: game/world/sock_layout.gd:75-76, 705-710)
+58. When a floor Sock's later tries are drawn, then they lie within a normal spread of 7 cm of its planned point (a Heap's, or the first 3 tries), else 4 cm x the try number. (zoo) (ref: game/world/sock_layout.gd:60-61, 511-513)
+59. When the Socks are laid, then rarer Designs go first (a random key times "mess.hiding_weight" by Rarity: common 1, uncommon 1.5, rare 3), so they lie deeper in the Heaps (Q839); the rows keep the plan's order. (zoo) (ref: game/world/sock_layout.gd:376-417; data/tuning/mess.json hiding_weight)
+60. When the layout is done, then every Sock is Resting (a still body, drawn in bulk); none is moving. (zoo) (ref: game/world/sock_layout.gd:3-5; docs/adr/0008-two-tier-socks.md)
+
+### G. Mates: where a Sock's mate lies
+
+61. When Designs take their slots, then a Design's two Socks are put a Mate distance apart, walked through the house (Q409): from "mate_distance_min" (0.4 m) for the Design found first to "mate_distance_max" (6 m) for the one found last (a shuffled order, commons first), times the Rarity's factor (common 1.0, uncommon 1.4, rare 2.0), capped at 8 m. (zoo) (ref: game/world/sock_layout.gd:1281-1305; data/tuning/mess.json mate_distance_*, rarity_distance_factor)
+62. When the mate's slot is sought, then up to 96 free slots are tried and the one whose walk is nearest the Mate distance wins; within 0.25 m it is taken at once. The Pairs with the longest distance are placed first, while every slot is still free. (zoo) (ref: game/world/sock_layout.gd:81-82, 1307-1365)
+63. When a slot is picked for a Design, then it is a hiding spot (inside an openable, under furniture, on a top, or in a Heap) or an open one, the hiding spots weighted by the Rarity's hiding weight against the open slots: rarer Designs hide more often. Never told to the player (Q839). (zoo) (ref: game/world/sock_layout.gd:1323-1327, 1394-1411)
+64. When "mess.mates_across_levels.share" names a Rarity (rare 0.5; common and uncommon 0), then that share of its Pairs has the mate on another level, at most 1 level up or down, as near its Mate distance as that level allows (Q446); those are placed first. (needs a house) (ref: game/world/sock_layout.gd:1306-1310, 1330-1345, 1420-1438; data/tuning/mess.json mates_across_levels)
+
+### H. The seed and determinism
+
+65. When a New Game starts, then it picks a seed of its own at random and saves it with the game; with random layouts off (the tests, the shots, the zoo) it uses "mess.seed" (1). (ref: game/core/game.gd:283, 808-813; data/tuning/mess.json seed)
+66. When a stage spawns, then its seed is the game's seed hashed with the number of unlocked floors. (needs Stages) (ref: game/core/game.gd:816-818; game/campaign/campaign_installer.gd:49-50)
+67. When the same seed is laid again, then the same Mess comes out however many frames the laying takes: the hidden physics space is never stepped, only queried. (ref: game/world/sock_layout.gd:193-195)
+68. When the house, the tuning or the physics engine changes, then the Mess is different for the same seed; tests check rules, never positions. (ref: docs/adr/0005-baked-heap-mess.md Consequences; game/house/house_parts.gd:266; game/world/sock_layout.gd:53-55)
+
+### I. How they appear
+
+69. When a New Game's Mess is laid, then it appears all at once, at rest, when the loading screen lifts: no Sock is seen falling or pouring. (ref: game/core/main.gd:647-680)
+70. When the New Game's Mess is in, then about a third of the room Doors ("doors.shut_share" 0.333) swing shut, picked at random each New Game, pushing the Socks in their way (Q518); the join snapshot carries them. (needs a house) (ref: game/core/main.gd:670-675; game/house/door_rules.gd:88-91; data/tuning/doors.json)
+71. When a staged New Game starts, then no Sock lies in the house yet: the Socks wait for the first wash. The first bin clicked into the machine plays the intro, and the first stage's Mess is landed in its usual places while the cutscene hides it. (needs the washing machine, needs Stages) (ref: game/core/game.gd:772-776; game/campaign/laundry.gd:128-170)
+72. When the first wash's part 2 plays, then the door swings open (0.4 s), 500 real Sock models in seeded Designs fly out of the door at 2.6 m/s (+-35%), in a 24 degree cone aimed 35 degrees up, leaving over 1.8 s, falling at 9.8 m/s2, bouncing (0.35 of the speed kept) and spinning 8 rad/s, then lie on the floor until the effect ends (3.6 s) and the door shuts (0.6 s). Decoration only: those are not the Mess's Socks. (needs the washing machine) (ref: game/devices/first_wash_spit.gd:1-60; game/devices/rogue_machine.gd:294-310; data/tuning/first_wash.json spit)
+73. When a stage's Socks are landed, then they appear at rest where they were laid, all at once, with the World's next ids; no fall, no pour. (needs Stages) (ref: game/campaign/campaign_installer.gd:59-68; game/campaign/campaign.gd:562-565, 613-619)
+
+### J. Co-op and the late joiner
+
+74. When the layout runs, then only the Host runs it; the Guests get the rows, never re-computing them (Q839). (co-op) (ref: game/world/sock_layout.gd:1-5)
+75. When a stage spawn is laid, then the Host's "stage land" answer carries every row (Design, position, turn) with the Host's ids to every machine. (co-op, needs Stages) (ref: game/campaign/campaign.gd:562-584, 613-619)
+76. When a player joins late, then they get the Mess as it lies in the join snapshot (the save), not a re-run of the generator. (co-op) (ref: game/net/join.gd:48-50, 61-71)
+77. When the New Game's Mess is laid in the old game, then nobody can be in the game yet (row 2), so no Guest ever sees it being made. (co-op) (ref: game/core/main.gd:640-645)
+
+### K. Motions and sounds (Q2277)
+
+78. When the New Game's Mess is laid, then no sound plays and nothing moves; the loading screen reads "The washer bursts open..." (ref: game/core/main.gd:647)
+79. When the first wash's Socks fly out (row 72), then "socks_pour" (a whoosh, CC0 placeholder, none picked) plays at the machine's porthole, in 3D. (needs the washing machine) (ref: game/devices/rogue_machine.gd:296-301; data/sounds.json socks_pour; game/audio/sound_bank.gd:101)
+80. When the first wash's door opens and shuts around the spill, then it swings (0.4 s open, 0.6 s shut, the closing a placeholder, Q1854). (needs the washing machine) (ref: game/devices/rogue_machine.gd:302-310)
+81. When a stage's Socks are landed, then no sound plays and nothing moves. (needs Stages) (ref: game/campaign/campaign.gd:613-619)
+82. When the Doors shut at the start (row 70), then they swing and push Socks: the Doors' own swing and sounds (house rules), nothing of the generator's own. (needs a house) (ref: game/house/door_rules.gd:88-91)
+83. When the old zoo pours Socks (its heap spawner), then up to 40 a tick enter from above as Moving Socks with a small sideways push and fall (ported: the port's heap spout). (zoo, ported) (ref: game/world/sock_pour.gd:30-120)
+
+## Invariants
+
+- I1. Every Design in play has exactly two Socks in the Mess after a layout (sock_layout.gd:1199-1200, 1328-1365).
+- I2. No laid Sock overlaps the house or another Sock; each rests on something (sock_layout.gd:716-755).
+- I3. No Sock lies in a clear zone (Cabinet fronts, the Wardrobe Station, the washer) (sock_layout.gd:548-551).
+- I4. The same seed and inputs give the same rows (sock_layout.gd:193-195).
+- I5. Only the Host computes; every other machine takes rows (sock_layout.gd:1-5).
+- I6. A forced Sock is the only exception to I2 (sock_layout.gd:405-409).
+
+## Numbers
+
+| What | Old value | Where |
+|---|---|---|
+| Pairs at New Game, 1-4 players | 605 each (whole catalogue) | mess.json pairs_by_players |
+| Stage Pairs (basement, ground, first, attic, grotto) | 50, 160, 150, 130, 50 | stages.json pairs |
+| Washer fan | 160 Socks, 1.2-2.6 m/s, 0.45 + 0.35 x speed out, 0.3 m sideways | mess.json spill; sock_layout.gd:477-485 |
+| Inside openables | 26 named counts, 103 in all | mess.json spill.inside |
+| Under furniture | 11 named counts, 70 in all; strips 0.15 / 0.35 m, low under 0.4 m | mess.json spill.under, edge_band_* |
+| On tops | 70 | mess.json on_surfaces |
+| High spot / share | 1.7 m / 0.05 (2+ players) | stages.json |
+| Stairs | 6 anywhere + 6 trail | mess.json on_stairs, stair_trail |
+| Heaps | 28, share 0.55, spread 0.22 m | mess.json heaps, heap_share, heap_spread |
+| Thinning | exp(-walk / 5 m), at least 0.2 | mess.json gradient_* |
+| Level shares | 0.25 each of 4 | mess.json level_shares |
+| Mate distance | 0.4-6 m, x1 / 1.4 / 2, cap 8 m; slack 0.25 m; 96 tries | mess.json; sock_layout.gd:81-82 |
+| Hiding weight | 1 / 1.5 / 3 | mess.json hiding_weight |
+| Mates across levels | rare 0.5, 1 level apart | mess.json mates_across_levels |
+| Floor grid / wall margin | 0.2 m / 0.28 m | sock_layout.gd:84-85, 1532 |
+| Height map cell, max lean, rest gap | 4 cm, 0.4, 0.5 mm | sock_layout.gd:30-38 |
+| Tries | 8 (inside 48), 6 moves, full after 3 / 4 | sock_layout.gd:49-67 |
+| Heap roll | 0.12 m steps, 12, repose 0.4; boxed Heap 0.4 m | sock_layout.gd:68-76 |
+| Top cells | 4 cm, 5 cm rise, 12 cm headroom, 6 cm inset | house_parts.gd:17-23 |
+| Seed (tests, zoo) | 1 | mess.json seed |
+| Doors shut at start | 0.333 | doors.json shut_share |
+| First wash spit | 500 Socks, 2.6 m/s, 24 deg, 35 deg up, 3.6 s | first_wash.json spit |
+
+## Already in the port
+
+- Exists: `SockSpot` (port `game/mess/sock_spot.gd`): a Marker3D with a Design id, placed by hand; the Mess turns every one under its `spots` node (and a station's, `more_spots`) into a lying Sock at `_ready`, then hides it. A late Guest gets the whole state instead. This is the "authored" starting Mess; it has no generator. (port game/mess/mess.gd:117-118, 174-208)
+- Exists: the zoo's `Spots` node, the Mess's `spots` (port game/zoo/zoo.tscn:152, 171), empty; the stations' own `Spots` with SockSpots (handling, knockdown, cabinet, avatar, outline, screen) handed over by ZooStations.
+- Exists: furniture `Spots/Top<n>`: Area3D boxes on no layer, a rect a Sock may rest on from the top's height to its headroom, joined from the old manifest's cells by the old piece-local rule (row 30), 1168 boxes over 43 of the 67 pieces. What the house round a placed piece leaves clear is not applied (the level's to decide). (port docs/architecture/furniture.md "Spots"; game/furniture/*.tscn)
+- Exists: openables' `Inside` (Area3D, metadata `shelves_y`) and the furniture root's metadata `crawl_gap`, `hide`, `footprint`, `height`: the old insides and crawl spaces, data only. (port docs/architecture/furniture.md)
+- Exists: the heap spout (`HeapSpout`, port game/zoo/heap/heap_spout.gd, `HeapTuning`): the Host pours waves of real Mess Socks (at most 40 a tick, while the moving budget has room, each at a free place of an AABB column with a random turn and a sideways push) as one Mess `add` Command; seeded RNG (2034). Reusable for "poured in" (Question 7).
+- Exists: Mess `add` (Host-only): appends records as FLYING with a launch; the answer carries the rows to every Guest. There is no `add` of LYING records yet (needed for "at rest" from a generator run during play). (port game/mess/mess.gd:760-788)
+- Exists: Mess `whole_state()`: the late Guest's snapshot, packed and compressed. (port game/mess/mess.gd:625-640)
+- Exists: `SockDesign` with `rarity`, `collection`, `size`; `DesignCatalogue` (designs.tres). (port game/sock/sock_design.gd)
+- Missing: Collections tied to Cabinets in play, Stages, the washer, the house's rooms and levels as data, walking distance, the Grotto.
+- Decided before: Q2176 "Sock spots: a bake button on the furniture piece computes them from its surfaces and saves them with the scene; dots in the editor, single ones added or deleted by hand." (port docs/migration/decisions.md:46). The furniture's Spots are boxes, not dots, today.
+
+## Findings for the rework
+
+What was weak or tangled in the old generator:
+
+1. **Data lived in four places, none of them in the editor.** Counts in `mess.json` keyed by node names ("Fridge", "UnderBed"), places in `house_layout.json` (rooms, clear zones, crawl spaces, openables), tops computed at load from a 1.16 MB manifest of mesh cells (`house_parts.gd:241`), stage numbers in `stages.json`. Renaming a piece silently dropped its Socks (`.get(o["name"], 0)`, sock_layout.gd:1133). A level designer could not see any of it.
+2. **Everything generated, nothing authored.** The only hand-placed Socks were the washer lesson, patched over the result afterwards (`with_washer_lesson`, sock_layout.gd:1675). There was no way to say "three Socks on this shelf, here".
+3. **One RNG stream for the whole house.** Every slot, try, Heap and Mate draws from one `_rng`; a change anywhere shifts every Sock after it. The code says so twice: a layout change left the Car empty "by luck of the seed" (sock_layout.gd:53-55), and a prop's wider clear ring "moved the seeded bakes for nothing" (house_parts.gd:266). Determinism held only for identical inputs.
+4. **Determinism also depended on the world's state**: door poses, the Radio, the lying Socks, the physics engine (rows 51, 54, 68). Fine for the Host-computes rule, fragile for a preview that must match the game.
+5. **Cost.** A hidden Jolt space for the house plus tile spaces for laid Socks (about 245 a bake, a pool kept for the process because Jolt never gives memory back, sock_layout.gd:96-99), a worker thread for the plan, frame slicing, a memo; a stage spawn still hitched the Fix 100-290 ms (feature catalogue P60). 1210 Socks took about 1 s headless (ADR-0005).
+6. **Tangled concerns in one 1726-line node**: Design choice, counts, places, Mate distance by walking, hiding odds, rest physics, Heaps, stairs, the Grotto, the lesson, reporting. Mate distance needs the walk graph of a whole house, which the port does not have.
+7. **Two rest paths.** The layout computed poses by its own cast-and-heightmap physics, different from how the Mess's bodies really settle; a Sock laid by one could wake and move under the other.
+8. **Good ideas worth keeping**: Host computes, Guests take rows; rejection rules per try (edge, ledge, shut in, ceiling); under-furniture edge strips so the crosshair reaches; rarer laid first (deeper); a report of moved and forced Socks; never-stepped space so frame timing does not matter.
+
+## Questions for the designer
+
+1. **What an area is.** (a) Boxes only: a `SockArea` box volume, Socks land on whatever surface is under it inside the box (floor, a top, a shelf), found by a ray down. (b) A floor polygon drawn on the floor (Path3D or polygon points) plus boxes for raised places. (c) Boxes plus furniture-top markers: the furniture's own `Spots/Top<n>` count as areas. Recommended: (a) with (c): one box node covers floors, Heaps and shelves with one rule, the editor's box gizmo is built in, and the tops the furniture already carries become areas without a second shape type; a polygon adds a gizmo to write for little gain in rooms that are mostly rectangles.
+2. **Do furniture pieces carry their own landing tops?** (a) Yes: each piece's `Spots/Top<n>` (and `Inside`, and the crawl gap) is a landing place with a weight, so a piece dropped in a room brings its places with it. (b) No: only level areas count; the pieces' Spots are ignored. (c) Yes, but each piece's place is off unless an area in the level covers it. Recommended: (a): it is what Q2176 and the old game did (tops, insides and unders per piece), and moving a piece moves its Socks; a level `SockExclusion` still wins.
+3. **Counts: per area, per floor, or both.** (a) Each area has its own count. (b) The floor's Resource has one count (Pairs) and each area a weight that shares it out (as the old level shares and top areas). (c) The floor's count with weights, and an area may pin an exact count (a shelf with 3). Recommended: (c): one number to balance per floor, as the old `stages.pairs`, and exact counts where a designer wants a set piece; the generator fills the pinned ones first.
+4. **Which Designs.** (a) The floor's Resource lists the Collections in play and their shares; areas take from the floor's pool. (b) Each area may also limit or weight Designs (rare ones under the bed). (c) Old rule only: every placed Collection by its share, rarer ones hiding more by "hiding_weight". Recommended: (a) plus the old hiding weight as an area flag "hiding spot" (b-lite): keeps the old "rarer hides more" without per-area Design lists to maintain.
+5. **Mates.** The old Mate distance is walked through the house's room graph, which the port lacks. (a) Straight-line distance between the two Socks (min to max by Rarity, as the old numbers). (b) Mates in different areas when possible, no distance. (c) Random (no rule) until the house has rooms. Recommended: (a): the old numbers carry over and the preview can show it; walking distance can replace it once the house has a graph.
+6. **Preview: dots or Sock shapes.** (a) Dots (small spheres or a point MultiMesh) at each landing point. (b) Small Sock shapes in each Design's colour at the real pose (box-sized, lying, turned). (c) Dots by default, Sock shapes on a toggle. Recommended: (b): the designer judges a Mess by how it looks (overlaps, Heaps, edges), a coloured box per Sock is as cheap as a dot in a MultiMesh, and it shows the turn and the lean.
+7. **At rest or poured in.** (a) At rest: Socks appear lying where the preview showed (the old game, rows 69 and 73); the Mess gains an `add` of LYING records. (b) Poured in at start through the heap spout's path (they fall and settle physically; the preview shows only where they start). (c) At rest, and an optional per-area "drop from above" for a few. Recommended: (a): the acceptance says the Socks lie where the preview showed, which a physical pour can not promise; the pour stays the zoo's heap station.
+8. **Seed per level or per run.** (a) One seed saved on the level (the same Mess every time, authored). (b) A new seed each run, saved with the game (the old New Game, Q839), the level's seed only for the editor and tests. (c) The level's seed by default, a per-run seed as a switch on the floor's Resource. Recommended: (c): the preview needs a fixed seed, play may want variety; the old game varied it every New Game, so the switch keeps that choice open.
+9. **How the rest is computed.** (a) The old way: a ray down to the surface plus overlap tests against the house and already-placed Socks (no physics step), Heaps by the height-map roll. (b) Simple: a ray down per point, flat on the surface, spacing by a minimum distance between Socks, no stacking (no Heaps). (c) (b) plus the old Heap roll as an area flag "heap". Recommended: (c): one rule works the same in the editor and the game (the editor's own physics space, rays only), Heaps where an area asks for one; the full old shape-cast stacking is the cost listed in Finding 5.
+10. **Exclusions.** (a) `SockExclusion` boxes only, placed by hand (Cabinet fronts, doorways). (b) Boxes plus automatic ones: a margin from walls and doors, and every Cabinet's front. (c) Boxes plus the old rules as numbers on the floor Resource (wall margin 0.28 m, furniture footprints, low ceilings). Recommended: (c): the old rules kept as numbers, a box for anything else; Cabinets and doors can carry their own exclusion child later.
+11. **Old details to keep or drop** (Q2277: each is a line the designer keeps or drops): the washer fan (row 22), the thinning away from the washer (row 41), the stair trail (row 31), high spots with 2+ players (row 29), under-furniture edge strips (row 27), the washer lesson (row 34), mates across levels (row 64), doors shut at start (row 70), the first-wash spit and its sound (rows 72, 79-80). Recommended: keep the edge strips and the hiding weight now (they are area rules); park the washer fan, thinning, lesson and spit to the washing machine's piece; stairs and levels to the house; high spots to co-op Stages. The designer drops any of them, not the agent.
+12. **Rows over the network.** A floor's Mess is up to about 1200 Socks. (a) The Host generates and sends rows in the `add` answer (the old way, Q839). (b) Every machine generates from the seed. Recommended: (a): the old rule and the port's coop shape (only the Host's answer writes state); (b) breaks as soon as anything differs between machines.
