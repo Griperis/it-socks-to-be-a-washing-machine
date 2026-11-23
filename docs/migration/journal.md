@@ -965,3 +965,29 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2518-Q2530 |
 
 ---
+
+| Ticket | assets/09, model fixes from the designer's walk: a body-coloured sill closes the car's window slit, the car's two doors open separately ("Car Door"), the whiteboard's pens lie apart; merged (main 88a5ac5) |
+| Planned vs actual | 0 planned (from play), 1 actual |
+| Redo count | 0 |
+| Corrections | the merge's suite hit an ENet port taken by a parallel test run; rerun green; free ports added to coop/12 |
+| Cost | about 263k subagent tokens, 154 tool calls, 26 min (Opus) |
+| Time | see cost |
+| Surprises | fkit.py's mesh names doubled on import (car_car_Body) and were fixed; 29 furniture openings now |
+| Stop rules | none hit |
+| Looks | builds/review-assets-09/ |
+| Decisions | Q2536 |
+
+---
+
+| Ticket | house/05, the Mess in the house: Sock areas per floor at the old stage counts (990 Socks), all eight Cabinets, stair Socks flat on the treads; F5 plays pick, pair, shelve and Coins, a Guest sees the same Mess; merged (main f3b6de4) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | the merge stopped on 250 mesh files re-imported by the suite run (churn, restored in the integration worktree) |
+| Cost | about 296k subagent tokens, 156 tool calls, 31 min (Opus) |
+| Time | see cost |
+| Surprises | laying takes 1.7 s in one frame (house/09); the attic trunk's inside is 10 cm too high (house/09); the full suite now takes 282 s |
+| Stop rules | none hit |
+| Looks | builds/review-house-05/house-05-old-beside-new.png |
+| Decisions | Q2530, Q2541-Q2544 |
+
+---
