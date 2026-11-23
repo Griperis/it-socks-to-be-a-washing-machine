@@ -6,7 +6,7 @@ area: core
 feature: frame
 priority: next
 created: 2026-11-23
-done:
+done: 2026-11-23
 blocked_by: []
 notes: ["M4's Lobby, design core/61: docs/architecture/lobby.md, list docs/migration/m4-lists/02-lobby.md", "Q2585", "suggested model: sonnet"]
 terms: [Host, Guest, World, Part, Roster]
@@ -33,3 +33,4 @@ the profile; Join's own field goes; `PlayerProfile.suggested_name()` returns "" 
 Changed: the "Your name" field moved from the Join page to the Multiplayer page above Host and Join; the name is kept on leaving the page, Host and Join; Join keeps the address only. `PlayerProfile.suggested_name()` (returns "") and `shown_name()` (typed name wins, an untouched suggestion is not kept as typed). The wire is unchanged (the gate already carried the name), so PROTOCOL stays. Shot action `name`, shot set `name-field`; stills in `builds/review-name-field/`.
 Files: game/ui/title/title.gd, title.tscn, game/net/player_profile.gd, tests/menus_test.gd, tests/game_link_test.gd, tests/suggesting_profile.gd, tools/shot_hooks.gd, tools/shots/sets/name-field.txt.
 Verified: PASS 18421 checks, 519 cases
+- Merged: 928ec412 (2026-11-23, branch core/64-name-field-multiplayer-page)
