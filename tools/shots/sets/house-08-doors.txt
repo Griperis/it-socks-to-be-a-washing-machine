@@ -1,0 +1,9 @@
+# house/08: the room Door, in the zoo's Doors station (a Door shut, 0.6 s swing at its sine in-out ease, open; both hands) and in the house
+shut  --scene=res://game/zoo/zoo.tscn --size=1280x720 --do='60:doors:view;70:doors:use' --shots=69
+swing1  --scene=res://game/zoo/zoo.tscn --size=1280x720 --do='60:doors:view;70:doors:use' --shots=78
+swing2  --scene=res://game/zoo/zoo.tscn --size=1280x720 --do='60:doors:view;70:doors:use' --shots=88
+swing3  --scene=res://game/zoo/zoo.tscn --size=1280x720 --do='60:doors:view;70:doors:use' --shots=96
+open  --scene=res://game/zoo/zoo.tscn --size=1280x720 --do='60:doors:view;70:doors:use' --shots=130
+both-hands-open  --scene=res://game/zoo/zoo.tscn --size=1280x720 --do='60:doors:view;70:doors:use;71:doors:use_far' --shots=130
+house-laundry-door  --scene=res://game/house/house.tscn --size=1280x720 --do='30:door_house:LaundryLobby:2.6:4.1:-90' --shots=70
+house-laundry-door-shut  --scene=res://game/house/house.tscn --size=1280x720 --do='30:door_house:LaundryLobby:2.6:4.1:-90;40:door_use:LaundryLobby' --shots=130

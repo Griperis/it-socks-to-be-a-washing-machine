@@ -17,7 +17,19 @@ until menus exist. Shell, furniture, Cabinets and the starting Mess: F5 plays th
   basement's) and the per-floor light layers are not ported.
 - `Doors/FrontDoor`, `Doors/GarageDoor`: `shut_front_door.tscn` and `shut_garage_door.tscn`, plain leaves (a
   StaticBody3D, no Part) in the doorways' wall line, so nothing can open them and nobody walks out (Q2514), until
-  the exterior ticket brings the door entities.
+  the exterior ticket brings the door entities. Their leaves are the old front door's (teal, two raised panels, a
+  brass knob inside) and the old garage door's (ribbed, steel handle, stiffening frame), made by `tools/door_build.gd`
+  with the room Doors' leaf (house/08, Q2571).
+- `Doors/<Doorway>`: the eight room Doors of the old house (house/08, Q2568: none in the ground floor's two open
+  doorways): `WorkshopLobby`, `LaundryLobby`, `BoilerLobby`, `LobbyGarage` (basement), `OfficeLanding`,
+  `BedroomLanding`, `BathroomLanding`, `KidsLanding` (first floor). Each is `game/entities/door/room_door.tscn` or
+  `room_door_flipped.tscn` (the Door entity with the real leaf, `looks_leaf*.tscn`; `door.tscn` keeps its graybox Looks for the zoo's other stations) (the two hands: the hinge at the leaf's low or high end along its wall), turned to its doorway
+  and standing flush with its room's face of the 0.12 m wall, the leaf 0.866 x 2.075 x 0.04 m in the kit's 0.9 x 2.1 m
+  opening. Placed `open = true` (an override on each `Openable`). `Doors/DoorShuts` (`DoorShuts`, the last child,
+  with `door_shut_rules.tres`: share 0.333, `keep_open` LaundryLobby and LobbyGarage, `seed` 1, `new_seed_each_start`)
+  sets `open = false` on the picked third (3 of 8: a Fisher-Yates shuffle of the names not kept open from the seed)
+  when the level enters, before the Mess lays and before anything binds, on every machine; a Guest's snapshot then
+  replaces each Door's state whole. They stand shut with no swing and no sound (Q2570).
 - The zoo's noon light: `Environment` (`game/look/noon_environment.tres`), `Sun`, `Picture`.
 - `Cabinets/<Spot>`: the old eight Cabinet spots (the old layout's `cabinet_spots`, moved to the plan as a piece
   is), each its old default Collection, unlocked, 2 Rows, wired to the runtime's `Hands` and `Coins` (house/05).

@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="DoorShutRules" format=3 uid="uid://c8doorshutres3"]
+
+[ext_resource type="Script" uid="uid://c8doorshutrul1" path="res://game/house/door_shut_rules.gd" id="1_rules"]
+
+[resource]
+script = ExtResource("1_rules")

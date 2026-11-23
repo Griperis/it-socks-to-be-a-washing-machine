@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://7j6plso4tfeew"]
+
+[ext_resource type="Script" uid="uid://bilshnr7wp5ir" path="res://game/parts/openable.gd" id="1_qegq8"]
+[ext_resource type="PackedScene" uid="uid://lbmq8pdi7fnrw" path="res://game/entities/door/looks_leaf.tscn" id="2_yaayx"]
+
+[node name="RoomDoor" type="Node3D" unique_id=1481466129]
+
+[node name="Openable" type="Node" parent="." unique_id=99892436]
+script = ExtResource("1_qegq8")
+open_sound = &"door_open"
+close_sound = &"door_close"
+noun = "Door"
+
+[node name="Looks" type="Node3D" parent="." unique_id=1788769218 instance=ExtResource("2_yaayx")]

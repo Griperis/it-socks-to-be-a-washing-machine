@@ -1,4 +1,4 @@
-> Behaviour list for house/08 (the room Doors in the house), written from the reference on 2026-11-23. **Not yet approved:** the questions at the end wait for the designer. Step 2 (build) starts after the answers; each `(changed by Q####)` is added then.
+> Behaviour list for house/08 (the room Doors in the house), written from the reference on 2026-11-23. Answered 2026-11-23 by Q2568-Q2571 (the questions at the end, each with its answer); the answers are folded into the lines below as `(changed by Q####)` and bind. Built in house/08 step 2 (`docs/architecture/house.md` "Doors").
 
 # M0.6 piece 6: The room Doors (behaviour list)
 
@@ -46,10 +46,10 @@ Scope tags used below:
 
 1. When the house is built, then eight doorways have a room Door: basement WorkshopLobby, LaundryLobby, BoilerLobby, LobbyGarage; first
    floor OfficeLanding, BedroomLanding, BathroomLanding, KidsLanding. The ground floor's doorways have none (open for good). (needs a house)
-   (see Q1) (ref: assets/house/house_layout.json room_doors; game/house/flat_layout.gd:655-658)
+   (kept by Q2568: no Doors in the ground floor's two open doorways) (ref: assets/house/house_layout.json room_doors; game/house/flat_layout.gd:655-658)
 2. When a Door is placed, then it stands in its doorway's wall line with its hinge at one jamb and the leaf running along the doorway: leaf
    0.866 m wide, 2.075 m high, 0.04 m thick, in a wall 0.12 m thick, 0.008 m off the floor. Each record names its hinge point and the
-   direction the leaf runs. (needs a house) (see Q6) (ref: house_layout.json room_doors width, thickness, wall, min, max, hinge, along)
+   direction the leaf runs. (needs a house) (the leaf's size from the kit's real openings, 0.9 x 2.1 m: the old 0.866 x 2.075 leaf fits them; Q2571) (ref: house_layout.json room_doors width, thickness, wall, min, max, hinge, along)
 3. When a Door opens, then it turns 90 degrees into its own room (the record's `into`; the sign of `open_deg` is +90 for WorkshopLobby,
    BoilerLobby, LobbyGarage, OfficeLanding and -90 for LaundryLobby, BedroomLanding, BathroomLanding, KidsLanding), so a leaf never swings
    out into the stair lobby or the landing. (needs a house) (ref: house_layout.json open_deg, into; game/house/doors.gd:3-5)
@@ -96,10 +96,10 @@ Scope tags used below:
 21. When a Door swings, then every Sock lying in the leaf's way is moved out of it by the leaf, and wakes if it must; Socks pushed into others
     wake those. (zoo) (the port's sweep, core/13 and core/39; the old also moved them by maths at the click, see Q2) (ref: game/world/sock_bodies.gd:405; game/house/door_rules.gd:55-74)
 22. When a Door shuts onto a Sock lying where the leaf will stand (the reveal, the doorway), then the Sock is pushed out of the leaf, flat, to
-    the side the leaf swept from, never sent to the return spot with a pop. (zoo) (kept, Q2428; the old pushed a Sock in the reveal out in front
-    of the doorway on its other side, `_beyond`: see Q2) (ref: game/house/doors.gd:122-129, 133-145)
-23. When a Sock is moved by the old push, then it lies still where it goes: a push is not a throw. (the old; the port's sweep may leave a Sock
-    in flight for a moment, see Q2) (ref: game/house/door_rules.gd:55-58, 64-74)
+    the side the leaf swept from, never sent to the return spot with a pop. (zoo) (kept, Q2428; changed by Q2569: the old pushed a Sock in the reveal out in front
+    of the doorway on its other side, `_beyond`, which is not ported) (ref: game/house/doors.gd:122-129, 133-145)
+23. When a Sock is moved by the old push, then it lies still where it goes: a push is not a throw. (not ported, Q2569: the port's sweep may leave a Sock
+    in flight for a moment) (ref: game/house/door_rules.gd:55-58, 64-74)
 24. When the Radio lies in a Door's way (on the floor), then it is pushed out too. (needs devices) (ref: game/house/door_rules.gd:84-91)
 25. When a floor Pair lies in a Door's way (a dropped Pair), then it is pushed out and re-shown. The port has no floor Pairs: a Pair is two
     Mess Socks. (not ported: no floor Pairs) (ref: game/house/door_rules.gd:76-83)
@@ -107,7 +107,7 @@ Scope tags used below:
     stuck and not thrown, and the leaf never stops. (zoo) (the old open follow-up of house/21; the port's player is a character body against an
     animated body: to be tried in step 2) (ref: game/house/room_door.gd:9-10)
 27. When the old push finds no free spot for a Sock in the arc (furniture, another room), then it goes out in front of the doorway on the
-    other side, kept 0.15 m off the jambs. (the old `_free` and `_beyond`; the port's sweep leaves it on the side the leaf swept from: see Q2)
+    other side, kept 0.15 m off the jambs. (the old `_free` and `_beyond`; not ported, Q2569: the port's sweep leaves it on the side the leaf swept from)
     (ref: game/house/doors.gd:122-154)
 28. When a Sock lies on a Door's open leaf (a thrown Sock landing on its top edge), then it slides off when the leaf turns: no Sock sticks to a
     moving leaf. (zoo) (port: Jolt) (ref: game/world/sock_bodies.gd:724-745)
@@ -134,9 +134,9 @@ Scope tags used below:
     shuffle, the rest open. (needs a house) (changed by Q2528: from the level's seed, with the generator, core/52) (ref: game/house/doors.gd:75-92;
     game/house/door_rules.gd:86-93; data/tuning/doors.json shut_share)
 37. When the Doors are picked, then LaundryLobby and LobbyGarage (the way from the laundry room to the garage) always start open, so the Old
-    Tree's calls carry. (needs the Old Tree) (see Q3) (ref: game/house/doors.gd:61-63)
+    Tree's calls carry. (needs the Old Tree) (kept as the old, the lead's reading of the list: a name list on the level's resource, until the Tree exists) (ref: game/house/doors.gd:61-63)
 38. When the shut ones are chosen, then the old game swung them shut at the New Game's bake, with their sound, under the loading screen, pushing
-    out the Socks the layout had left in their way (the layout ran with every Door open). (changed: see Q4; the port's generator lays onto the
+    out the Socks the layout had left in their way (the layout ran with every Door open). (changed by Q2570: the start-shut Doors are already shut, silent, with no swing; the port's generator lays onto the
     house as it stands) (ref: game/house/door_rules.gd:86-93; game/core/main.gd:661-662)
 39. When the same seed starts the level again, then the same Doors start shut. (kept: same seed, same shuffle) (ref: game/house/doors.gd:75-92)
 40. When a game runs with random layouts off (the tests, the shots, the zoo), then every Door starts open unless the test says otherwise. (kept:
@@ -167,8 +167,8 @@ Scope tags used below:
 ### I. Looks
 
 50. When a Door is drawn in the old game, then the leaf is the house model's own `Door_<name>` mesh, taken out of the model and put on the
-    hinge. (ref: game/house/room_door.gd `build`) (see Q5)
-51. When a Door's leaf is graybox, then it is a plain 0.9 x 2 x 0.05 m box (the port's stand-in). A Looks scene with the same contract (nodes
+    hinge. (changed by Q2571: ported now as a Looks scene by `tools/door_build.gd`, from make_house.py's Door_<doorway> geometry: the leaf, two raised panels and a brass lever handle a face; the front and garage doors' leaves match it) (ref: game/house/room_door.gd `build`)
+51. When a Door's leaf is graybox (the earlier stand-in, `looks_graybox.tscn`, kept), then it is a plain 0.9 x 2 x 0.05 m box. A Looks scene with the same contract (nodes
     `Hinge`, `Outline`, animation `open`) swaps it with no code change. (zoo) (port)
 52. When the Door's Looks changes, then the sweeps and sounds do not. (port; the old collision was the record's box, not the mesh) (ref:
     game/house/room_door.gd `build`, FlatLayout._box)
@@ -187,11 +187,11 @@ Scope tags used below:
 - The old Door was one class of `Openable`; the port's is the Part `Openable` on an entity with a Looks child (Q2251).
 - The old swing was a code Tween; the port's is an AnimationPlayer in the Looks.
 
-## Questions for the designer
+## Questions for the designer (answered)
 
 1. **The ground floor's two doorways.** The old house had Doors in the basement (4) and first floor (4) and open doorways on the ground floor. The
    port's shell has 2 ground-floor doorways with the same kind of kit door piece. (a) No Doors there (as the old; 8 Doors, 3 shut). (b) A Door in
-   each (10 Doors, 3 shut at a New Game). (c) A Door in each but never shut at a New Game. Recommended: (a): the ticket says "in the old doorways", the
+   each (10 Doors, 3 shut at a New Game). (c) A Door in each but never shut at a New Game. **Answer (Q2568): (a).** Recommended: (a): the ticket says "in the old doorways", the
    old house is the reference, and a Door there is a one-line addition later.
 2. **How a Door moves a Sock: the physics sweep only, or the old push as well.** The old game both swept (the leaf as a body over resting Socks) and,
    at the click, moved every Sock in the quarter disc and the reveal out by maths, into the room or in front of the doorway on the other side, the Socks
@@ -199,20 +199,20 @@ Scope tags used below:
    only: Socks wake, may roll a little, a Sock in a shutting leaf goes to the side the leaf came from. (b) The sweep plus the old push at the click:
    nothing lies in a Door's arc and every Sock lies still where it is put. (c) The sweep, and the old push only for the reveal (what a shutting leaf
    would crush). Recommended: (a): Q2308 and Q2428 chose the physics and "pushed out", the Mess already does it on both machines, and the old push's
-   "other side of the doorway" is dropped (rows 22 and 27 change accordingly).
+   "other side of the doorway" is dropped (rows 22 and 27 change accordingly). **Answer (Q2569): (a), the physics sweep only.**
 3. **LaundryLobby and LobbyGarage always open (row 37).** The old kept both open at a New Game so the Old Tree's calls carry; the Tree is M4. (a)
    Keep a list of the two names on the level's resource now, used until the Tree exists. (b) Drop it: any Door may start shut. Recommended: (a): a
-   two-name list costs nothing and the Tree is still planned.
+   two-name list costs nothing and the Tree is still planned. **Answer: kept as the old (lead).**
 4. **Shut at the start: at once and silent, or the old swing.** The old swung the shut ones closed at the New Game under the loading screen, with
    their sound. The port has no loading screen and starts a level with no sound (Q2523). (a) They start shut, no swing, no sound, and the generator
-   lays Socks knowing which leaves are shut. (b) They swing shut when the level appears, with the sound. Recommended: (a).
+   lays Socks knowing which leaves are shut. (b) They swing shut when the level appears, with the sound. **Answer (Q2570): (a): already shut and silent.** Recommended: (a).
 5. **The leaf's Looks.** The old leaf was the house model's panelled leaf; the port's is a graybox box. (a) Keep the graybox in this ticket, and make
    the leaf's look in a later look ticket (Q2153). (b) Build the panelled leaf from the kit's wood materials now (a Blender job). Recommended: (a): the
-   ticket is the behaviour; the strip shows the graybox shut, mid-swing and open.
+   ticket is the behaviour; the strip shows the graybox shut, mid-swing and open. **Answer (Q2571): (b), now, ported from `make_house.py`'s Door_<doorway> geometry (a Looks scene); the front and garage leaves match.**
 6. **The leaf's size against the kit's doorway.** The old leaf is 0.866 x 2.075 m; the port's graybox is 0.9 x 2 m and the kit's piece is named 1.5 m
    (the opening inside it is not read yet). (a) Size the leaf to the kit's real opening, read in step 2, the old numbers a guide. (b) Keep the old
-   leaf size whatever the opening is. Recommended: (a): a leaf that does not fill its doorway is a visible fault.
+   leaf size whatever the opening is. Recommended: (a): a leaf that does not fill its doorway is a visible fault. **Answer: from the kit's real openings (lead).**
 7. **Old details to keep or drop** (Q2277): the sound at 1 m over the floor, not at the leaf's origin (row 29); the muffling lifting as the leaf
    clears the line, not at the swing's start (row 33); the swinging leaf nudging a player through the physics (row 26); a quiet walk-through (row 35);
    the cat opening Doors (row 49, its own later piece). Recommended: keep rows 26 and 35 as written, take the port's sound place and muffling timing
-   (rows 29, 33) as differences to show in the station, park the cat to its piece.
+   (rows 29, 33) as differences to show in the station, park the cat to its piece. **Answer: kept as recommended (lead).**
