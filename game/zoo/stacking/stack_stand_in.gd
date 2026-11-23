@@ -10,6 +10,10 @@ extends Node3D
 
 const LABEL := preload("res://game/zoo/zoo_label.tscn")
 
+## Where a review session's carrier (the Host's player) stands, from the station along the zoo's axes:
+## off the pad, clear of the stand-ins (review()).
+const REVIEW_SPOT := Vector3(3.5, 0.0, -2.5)
+
 ## The phases of one round while ridden, in order.
 const WALK := &"walk"
 const CROUCH := &"crouch"
@@ -110,3 +114,59 @@ func _place() -> void:
 	carrier.pose_position = centre + Vector3(cos(angle), 0.0, sin(angle)) * radius
 	var along := Vector3(-sin(angle), 0.0, cos(angle))
 	carrier.pose_yaw = atan2(-along.x, -along.z)
+
+
+## For a review session of two game processes (kit/tools/net_shot.sh, a Host and a Guest in the zoo),
+## from its expr command: scene().get_node("Stations/Stacking/Teammates").review("<arg>"). "a" (the
+## Host): its player at REVIEW_SPOT facing -z, its full body shown, a camera from its side, as the
+## carrier's own machine sees the stack; "b" (the Guest): its player 0.7 m behind, facing it, ready to
+## climb by its jump key; "b_view": the Guest's camera from the same side and its full body, as the
+## rider's machine sees it; "walk" / "stop": the Host's player walks forward / stops.
+func review(arg: String) -> String:
+	var world := LevelRuntime.level_of(self)
+	var player := LevelRuntime.of(world).player
+	var at: Vector3 = (get_parent() as Node3D).global_position + REVIEW_SPOT
+	match arg:
+		"a":
+			player.global_position = at
+			player.rotation.y = 0.0
+			player.reset_physics_interpolation()
+			show_body(player)
+			camera(world, at + Vector3(-3.8, 2.4, -0.6), at + Vector3(0.0, 1.3, -1.0))
+		"b":
+			player.global_position = at + Vector3(0.0, 0.0, 0.7)
+			player.rotation.y = 0.0
+			player.reset_physics_interpolation()
+		"b_view":
+			show_body(player)
+			camera(world, at + Vector3(-3.8, 2.4, -0.6), at + Vector3(0.0, 1.3, -1.0))
+		"walk":
+			Input.action_press(Player.MOVE_FORWARD)
+		"stop":
+			Input.action_release(Player.MOVE_FORWARD)
+	return "%s at %s riding %s" % [arg, player.global_position, player.riding()]
+
+
+## Shows `player`'s full body (the mirror's, as a Teammate sees it) instead of the belly cut for its
+## eyes. A mirror in the zoo hides that body each frame while it does not render, so it is shown again
+## just before each frame is drawn.
+static func show_body(player: Player) -> void:
+	var body := player.mirror_body()
+	player.own_body().visible = false
+	RenderingServer.frame_pre_draw.connect(func() -> void:
+		if is_instance_valid(body) and not player.own_body().visible:
+			body.visible = true
+			body.colour = player.own_body().colour
+			body.look_pitch = player.own_body().look_pitch
+			body.set_crouch(player.own_body().crouch))
+
+
+## A camera at `from` looking at `to`, made current.
+static func camera(world: Node, from: Vector3, to: Vector3) -> void:
+	var cam := Camera3D.new()
+	world.add_child(cam)
+	cam.fov = 50.0
+	cam.global_position = from
+	cam.look_at(to)
+	cam.reset_physics_interpolation()
+	cam.make_current()

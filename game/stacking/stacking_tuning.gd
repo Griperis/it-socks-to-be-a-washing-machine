@@ -1,8 +1,6 @@
 ## Stacking on a Teammate's back and the soft push between standing players (core/41, list
 ## docs/migration/m3-lists/01-player-stacking.md): one .tres beside it, edited in the inspector. Every
-## number is today's value from the old game (data/tuning/stacking.json, players.json), not a decision,
-## save the two marked "port": how far a Teammate drawn on this machine may be off a back and still count
-## as standing on it (the old game sent who rode whom in the pose; Q2591 sends nothing).
+## number is today's value from the old game (data/tuning/stacking.json, players.json), not a decision.
 class_name StackingTuning
 extends Resource
 
@@ -27,10 +25,6 @@ extends Resource
 @export_range(0.0, 0.2, 0.01, "suffix:m") var room_start := 0.02 # placeholder: the designer's number (the old game's)
 ## How fast a climber steers over the back's middle: the offset times this, per second (list 16).
 @export_range(0.0, 30.0, 0.5, "suffix:/s") var climb_steer := 8.0 # placeholder: the designer's number (the old game's)
-## Port: a Teammate drawn here counts as standing on a back when their feet are within this of its top...
-@export_range(0.0, 1.0, 0.01, "suffix:m") var seen_height := 0.15 # placeholder: the designer's number (port: no riding id in the pose, Q2591)
-## ...and within the back's radius plus this along the floor (their drawn body trails by the lag).
-@export_range(0.0, 2.0, 0.05, "suffix:m") var seen_slack := 0.5 # placeholder: the designer's number (port: no riding id in the pose, Q2591)
 ## The soft push (Q263, lists 45-48): nearer than this, centre to centre, pushes...
 @export_range(0.0, 2.0, 0.05, "suffix:m") var push_apart := 0.6 # placeholder: the designer's number (the old game's players.json)
 ## ...at (push_apart - gap) times this, in m/s.

@@ -22,9 +22,8 @@ const LOOP_S := 4.0
 ## On B's own machine B stands on A's drawn disc: at most its radius plus the body's round bottom off
 ## its middle, and within AT of its top.
 const RIDER_OFF_MOST := 0.65
-## On A's machine B's drawn body trails A's back by the lag (Q2591: no offset is sent); it must stay
-## within the reach a rider seen here is counted at (back_radius + seen_slack).
-const SEEN_OFF_MOST := 0.8
+## On A's machine B is drawn at A's feet plus the offset B's pose sends (Q2592): within this of A's back.
+const SEEN_OFF_MOST := 0.65
 ## The jitter bound: how much the frame's move of B's place against A's on-screen back may differ from the
 ## frame before's. A trail that turns with A changes smoothly; a jitter jumps back and forth. Measured once
 ## A is under way: for its first SETTLE_FRAMES A goes from still to its pace in one tick and B's drawn
@@ -43,8 +42,9 @@ func cases() -> Array[Dictionary]:
 		{"name": "carried_loop", "method": "case_carried_loop", "world": false,
 				"title": "0 and 50 ms one way: B rides A while A walks a loop: on each machine B's drawn place stays within a typed bound of A's on-screen back (on A's machine it trails by the lag, Q2591), and on B's machine no jitter (the frame's move against the frame before's) over 0.01 m once under way; A stays at the carry pace throughout and counts B on its back (the numbers on A's machine are printed: carried_loop_seen holds the open rule)"},
 		{"name": "carried_loop_seen", "method": "case_carried_loop_seen", "world": false,
-				"off": "[blocking] core/41 Open follow-ups: on A's machine B is drawn 0.44 m (0 ms) to 0.67 m (50 ms) behind A's back, off the disc (its jitter there, 0.000-0.009 m, is a Teammate walking alone's); a riding offset in the pose would fix the trail and goes to the designer first (Q2591)",
 				"title": "0 and 50 ms one way: on A's machine B is drawn on A's disc (within its radius and the body's round bottom) and riding adds no jitter over 0.01 m"},
+		{"name": "jump_heard", "method": "case_jump_heard", "world": false,
+				"title": "Q2593: B's climb is a jump: jump plays on B's machine and at B's body on A's; A's jump with B on its back plays at A's body on B's machine, and none at B's (the rider rides, it does not jump); B still rides after A lands"},
 		{"name": "carrier_stands", "method": "case_carrier_stands", "world": false,
 				"title": "lines 29, 30: crouched A with B on its back stands up with room for the stack (B rides up), and stays crouched under a board that leaves room for A alone"},
 	]
@@ -163,6 +163,40 @@ func _carried_loop(lag_ms: int, on_disc: bool) -> void:
 		_check(most["step_host"] <= STEP_MOST, "%d ms: on A's machine riding adds no jitter over %.2f m (%.4f; B walking alone there: %.4f)" % [
 				lag_ms, STEP_MOST, most["step_host"], alone])
 	_check(full_pace[0] == 0, "%d ms: A kept the carry pace the whole loop (full pace %d frames)" % [lag_ms, full_pace[0]])
+	_drop_branches()
+
+
+func case_jump_heard() -> void:
+	var pair := await _joined(0)
+	var host: Node3D = pair[0]
+	var guest: Node3D = pair[1]
+	var a := _player(host)
+	var b := _player(guest)
+	var b_steps := _avatars(host).of(_session(guest).me()).get_node("Steps") as TeammateSteps
+	var a_steps := _avatars(guest).of(1).get_node("Steps") as TeammateSteps
+	var heard_b := b_steps.jumps
+	var heard_a := a_steps.jumps
+	await _climb(host, guest)
+	_check(b.jumps == 1, "B's climb counts as its jump (it plays jump on B's machine)")
+	await _until(func() -> bool:
+		_pace()
+		return b_steps.jumps == heard_b + 1, "A's machine to hear B's jump at B's body", 900, 0.1)
+	await _until(func() -> bool: return a.stack().carry < 1.0, "A's machine to see B on A's back")
+	b.set_input_blocked(true)
+	a.set_input_blocked(false)
+	Input.action_press(Player.JUMP)
+	await _until(func() -> bool: return a.velocity.y > 0.1, "A's jump to leave the floor", 30)
+	Input.action_release(Player.JUMP)
+	await _until(func() -> bool:
+		_pace()
+		return a_steps.jumps == heard_a + 1, "B's machine to hear A's jump at A's body", 900, 0.1)
+	await _until(func() -> bool:
+		_pace()
+		return a.is_on_floor() and a.velocity.y <= 0.0, "A to land")
+	await _until(func() -> bool:
+		_pace()
+		return b.riding() and absf(b.global_position.y - Stacks.feet(_avatars(guest).of(1)).y - 1.4) < AT, "B to ride A's back again after the jump", 900, 0.3)
+	_check(b_steps.jumps == heard_b + 1 and b.jumps == 1, "the rider made no jump of its own")
 	_drop_branches()
 
 

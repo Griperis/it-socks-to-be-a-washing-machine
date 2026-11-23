@@ -95,6 +95,8 @@ var _captured := false
 var _swallow_press := false
 ## True while crouched (C01).
 var crouching := false
+## How many times it has jumped (climbs too): its Avatar's pose carries it, so Teammates hear each one.
+var jumps := 0
 ## The lying Sock the crosshair rests on, or -1; the one drawn outlined.
 var aimed_sock := -1
 var _outlined := -1
@@ -359,10 +361,12 @@ func _let_go_body() -> void:
 		kd.let_go(player_id())
 
 
-## A jump from the floor; near a Teammate's back it is a climb (core/41, lists 13-15): fast enough to
+## A jump from the floor (heard as "jump", flat; Teammates hear it at its body); near a Teammate's back it is a climb (core/41, lists 13-15): fast enough to
 ## clear the back, tucked into a crouch at once, steered over the back until it lands.
 func _jump() -> void:
 	velocity.y = tuning.jump_speed
+	jumps += 1
+	Sounds.play(&"jump")  # every jump, a climb too (Q2593); its Avatar's pose carries the count
 	var to := _stack.climb_target()
 	if to != null:
 		velocity.y = _stack.climb_speed(to)

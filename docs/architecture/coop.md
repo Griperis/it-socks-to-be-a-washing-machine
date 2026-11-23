@@ -21,7 +21,7 @@ in `docs/architecture.md` say what happens in order; this file says who owns wha
 | Throws in the air | `game/sock/flight_row.gd` | A Throw's body streams stamped rows to every Guest; the Guest plays them 0.1 s behind |
 | The Mess in co-op | `game/mess/mess.gd`, `mess_moving.gd` | Every machine starts its own body for a flying Sock; a Guest's are looks only on `Mess.LAYER_LOOKS`; the Host's `rest` snaps them |
 | Knockdown | `game/knockdown/knockdowns.gd` | Who is down, who drags whom, struggles; Host-only `knock` |
-| Stacking | `game/stacking/` (`back.gd`, `player_stack.gd`, `stacks.gd`, `stacking_tuning.tres`) | Nothing shared (Q2591): each Avatar's `Back` is a plain disc where the body is drawn on this machine; the local player's `Stack` meets, rides (moving its own body by what the back moved), climbs onto one and halves its pace when a Teammate is drawn on its own back; the soft push. No riding id in the pose |
+| Stacking | `game/stacking/` (`back.gd`, `player_stack.gd`, `stacks.gd`, `stacking_tuning.tres`) | Nothing decided: each Avatar's `Back` is a plain disc where the body is drawn on this machine; the local player's `Stack` meets, rides (moving its own body by what the back moved), climbs onto one, halves its pace while a Teammate's pose says they ride it; the soft push. The pose carries `pose_riding` and `pose_ride_offset` (Q2592): every other machine draws a rider at its carrier's drawn feet plus the offset, and `pose_jumps` (Q2593): each new one plays `jump` at the body (`TeammateSteps`) |
 | Teammates heard | `game/audio/hearing.gd`, `teammate_steps.gd` | A Teammate's cues and steps at their body (`Sounds.play_from`) |
 
 ## Rules that hold everywhere

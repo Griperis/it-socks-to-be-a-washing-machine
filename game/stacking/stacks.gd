@@ -1,8 +1,7 @@
-## Who stands on whom, as this machine sees it (core/41). Nothing about a stack is sent or decided
-## (Q2591): every machine reads it from where the players' bodies are drawn here. A Teammate stands on a
-## back when their feet are within `seen_height` of its top and within its radius plus `seen_slack` of
-## it along the floor. Every player has an Avatar on every machine in co-op (this machine's own is hidden
-## at the local body), so the avatars are the players.
+## Who stands on whom, as this machine sees it (core/41). Nothing about a stack is decided: each player's
+## pose says whose back they stand on (Avatar.pose_riding, Q2592), written by their own machine from the
+## back their body stands on. Every player has an Avatar on every machine in co-op (this machine's own is
+## hidden at the local body, its pose this player's), so the avatars are the players.
 class_name Stacks
 extends RefCounted
 
@@ -39,38 +38,22 @@ static func back_top(a: Avatar, t: StackingTuning) -> Vector3:
 	return feet(a) + Vector3.UP * (height(a) - t.ride_sink)
 
 
-## Whether feet at `at` stand on a back whose top is `top`, as drawn here.
-static func on_back(at: Vector3, top: Vector3, t: StackingTuning) -> bool:
-	return absf(at.y - top.y) <= t.seen_height \
-			and Vector2(at.x - top.x, at.z - top.z).length() <= t.back_radius + t.seen_slack
-
-
-## The player `a` stands on (the nearest back their feet are on), or null.
-static func under(a: Avatar, all: Array[Avatar], t: StackingTuning) -> Avatar:
-	if a.is_down():
+## The player `a` stands on: the one its pose says it rides (Q2592), when they are here and up; or null.
+static func under(a: Avatar, all: Array[Avatar]) -> Avatar:
+	if a.is_down() or a.pose_riding < 0:
 		return null
-	var at := feet(a)
-	var best: Avatar = null
-	var best_d := INF
 	for b in all:
-		if b == a or b.is_down():
-			continue
-		var top := back_top(b, t)
-		if not on_back(at, top, t):
-			continue
-		var d := Vector2(at.x - top.x, at.z - top.z).length()
-		if d < best_d:
-			best_d = d
-			best = b
-	return best
+		if b != a and b.peer() == a.pose_riding and not b.is_down():
+			return b
+	return null
 
 
 ## How many players high the stack is up to `a` (1 on the floor, 2 on a back, ...), list 6.
-static func level(a: Avatar, all: Array[Avatar], t: StackingTuning) -> int:
+static func level(a: Avatar, all: Array[Avatar]) -> int:
 	var n := 1
 	var at := a
 	while n <= DEPTH:
-		var below := under(at, all, t)
+		var below := under(at, all)
 		if below == null or below == a:
 			break
 		n += 1
@@ -81,24 +64,24 @@ static func level(a: Avatar, all: Array[Avatar], t: StackingTuning) -> int:
 ## Whether `a`'s back holds anyone now: not while they lie down, nor on top of a full stack (lists 4, 6).
 ## In the drum (list 5) waits for the washing machine.
 static func holds(a: Avatar, all: Array[Avatar], t: StackingTuning) -> bool:
-	return not a.is_down() and level(a, all, t) < t.max_high
+	return not a.is_down() and level(a, all) < t.max_high
 
 
-## The Teammates standing right on a back whose top is `top` (not lying down, not `except`).
-static func riders_at(top: Vector3, all: Array[Avatar], t: StackingTuning, except: Avatar = null) -> Array[Avatar]:
+## The players standing right on player `peer`'s back, as their poses say (not lying down).
+static func riders_of(peer: int, all: Array[Avatar]) -> Array[Avatar]:
 	var out: Array[Avatar] = []
 	for b in all:
-		if b != except and not b.is_down() and on_back(feet(b), top, t):
+		if b.peer() != peer and b.pose_riding == peer and not b.is_down():
 			out.append(b)
 	return out
 
 
-## How tall the stack on a back whose top is `top` is, over the top of the body under it: the tallest
-## rider and what stands on them, each `ride_sink` lower (list 29), over at most DEPTH levels.
-static func load_on(top: Vector3, all: Array[Avatar], t: StackingTuning, except: Avatar = null, depth := 0) -> float:
+## How tall the stack on player `peer`'s back is, over the top of their body: the tallest rider and
+## what stands on them, each `ride_sink` lower (list 29), over at most DEPTH levels.
+static func load_of(peer: int, all: Array[Avatar], t: StackingTuning, depth := 0) -> float:
 	var most := 0.0
 	if depth > DEPTH:
 		return most
-	for r in riders_at(top, all, t, except):
-		most = maxf(most, height(r) - t.ride_sink + load_on(back_top(r, t), all, t, r, depth + 1))
+	for r in riders_of(peer, all):
+		most = maxf(most, height(r) - t.ride_sink + load_of(r.peer(), all, t, depth + 1))
 	return most

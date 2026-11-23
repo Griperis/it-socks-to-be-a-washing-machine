@@ -66,6 +66,7 @@ func case_climb_ride_real_path() -> void:
 	var want := sqrt(2.0 * player.tuning.gravity * (top - feet + t.climb_clear))
 	_near(player.velocity.y, want, 0.25, "the climb leaves fast enough to clear the back by %.2f m (%.2f m/s)" % [t.climb_clear, want])
 	_check(player.crouching, "it tucks into a crouch at once")
+	_check(player.jumps == 1, "a climb is a jump: it plays jump (Q2593)")
 	_check(player.stack().climb_to == back, "it steers onto the stand-in's back")
 	var peak := [feet]
 	await _until(func() -> bool:

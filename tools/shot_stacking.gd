@@ -2,12 +2,11 @@
 class_name ShotStacking
 extends RefCounted
 
-
 ## core/41 at the Stacking station, played alone: the zoo's player climbs the stand-in carrier (peer 7) by
-## its pressed jump and rides it round its loop. Arg "setup" stands the player 0.7 m behind the carrier,
+## its pressed jump and rides it round its loop. Arg "setup" stands the player 0.7 m beside the carrier,
 ## facing it, shows its full body (the mirror's, as a Teammate sees it) and puts a camera on the station
-## from the side; "jump" presses the jump, "release" lets it go; "rider" puts the camera in the
-## player's own eyes, looking down over the carrier's head.
+## from above; "jump" presses the jump, "release" lets it go; "rider" puts the camera in the player's own
+## eyes, looking down over the carrier's head.
 static func act(world: Node, arg: String) -> void:
 	var player := LevelRuntime.of(world).player
 	var station := world.get_node("Stations/Stacking") as Node3D
@@ -18,24 +17,8 @@ static func act(world: Node, arg: String) -> void:
 			player.global_position = Vector3(top.x, 0.0, top.z + 0.7)
 			player.rotation.y = 0.0
 			player.reset_physics_interpolation()
-			# The full body a Teammate sees (the mirror's; a mirror in the zoo hides it each frame while
-			# it does not render, so it is shown again just before each frame is drawn), not the belly
-			# cut for the eyes.
-			var body := player.mirror_body()
-			player.own_body().visible = false
-			RenderingServer.frame_pre_draw.connect(func() -> void:
-				if is_instance_valid(body) and not player.own_body().visible:
-					body.visible = true
-					body.colour = Color("f08a7a")
-					body.look_pitch = player.own_body().look_pitch
-					body.set_crouch(player.own_body().crouch))
-			var cam := Camera3D.new()
-			world.add_child(cam)
-			cam.fov = 50.0
-			cam.global_position = station.to_global(Vector3(-1.5, 4.2, 3.2))
-			cam.look_at(station.to_global(Vector3(0.9, 0.9, 0.0)))
-			cam.reset_physics_interpolation()
-			cam.make_current()
+			StackStandIn.show_body(player)
+			StackStandIn.camera(world, station.to_global(Vector3(-1.5, 4.2, 3.2)), station.to_global(Vector3(0.9, 0.9, 0.0)))
 		"jump":
 			Input.action_press(Player.JUMP)
 		"release":

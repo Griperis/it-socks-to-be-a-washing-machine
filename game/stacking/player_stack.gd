@@ -1,7 +1,7 @@
 ## The local player's side of stacking (core/41, list docs/migration/m3-lists/01-player-stacking.md) and
 ## the soft push (Q263): a child of the Player, which calls it around its own move each physics frame.
-## Every machine does this for its own player only, from the Teammates as drawn here (Q2591: nothing is
-## sent or decided).
+## Every machine does this for its own player only, from the Teammates as drawn here; who rides whom is
+## in each player's pose (Q2592), nothing is decided.
 ##
 ## Before the move: the body meets a Teammate's back only from above (feet at its top less
 ## `touch_slack` or higher, or the back it rides), else passes through it (lists 9-11); never its own
@@ -47,9 +47,9 @@ func before_move() -> void:
 	_all = Stacks.peers(_player)
 	_meet_backs()
 	_carry_ride()
-	var riders := Stacks.riders_at(top(), _all, tuning, own_avatar())
-	carry = tuning.carry_speed if not riders.is_empty() else 1.0
-	load_height = Stacks.load_on(top(), _all, tuning, own_avatar())
+	var me := _player.player_id()
+	carry = tuning.carry_speed if not Stacks.riders_of(me, _all).is_empty() else 1.0
+	load_height = Stacks.load_of(me, _all, tuning)
 
 
 ## Lying down or a menu that ends play: no ride, no climb.
@@ -67,15 +67,6 @@ func keeps_crouched() -> bool:
 ## The top of this player's own back (list 2), from the body as it is now.
 func top() -> Vector3:
 	return _player.global_position + Vector3.UP * (_player.body_height() - tuning.ride_sink)
-
-
-## This machine's own avatar (hidden at the local body), or null alone.
-func own_avatar() -> Avatar:
-	var me := _player.player_id()
-	for a in _all:
-		if a.peer() == me:
-			return a
-	return null
 
 
 ## The Teammates' avatars (not this player's own).
