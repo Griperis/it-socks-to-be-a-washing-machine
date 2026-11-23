@@ -1,4 +1,4 @@
-Next free Q number: Q2581 (update this line whenever a round of questions is asked)
+Next free Q number: Q2582 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -495,3 +495,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2578: core/58's screens merge as shown; a follow-up puts an ESC close button at the top right of every dialogue, always (core/59) (designer, 2026-11-23).
 - Q2579: the loading card reads "Loading the house..." (core/58; designer, 2026-11-23).
 - Q2580: the title's "Zoo" button shows in debug builds only, gone in a release build, as the zoo itself (core/58; designer, 2026-11-23).
+- Q2581: inside any piece (trunks, cupboards, drawers) laid Socks stack on the ones laid there before, as the old game computed it; trunks hold about 5 to 6 (house/09; designer, 2026-11-23).
