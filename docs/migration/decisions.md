@@ -1,4 +1,4 @@
-Next free Q number: Q2545 (update this line whenever a round of questions is asked)
+Next free Q number: Q2553 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -459,3 +459,11 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2542: the house's Socks are laid a slice per frame behind a short loading screen ("The washer bursts open...", as the old), so nothing freezes; they still appear all at once (Q2523) (designer, 2026-11-23).
 - Q2543: all eight Cabinets stay open until Stages (M4) lock them (house/05; designer, 2026-11-23).
 - Q2544: house/05 merges as its strip shows; the attic trunk's inside is fixed in its own ticket (designer, 2026-11-23).
+- Q2545: the Host decides every speaker's lines in co-op (the washer, the Old Tree, cutscenes); everyone hears the same line (V1, core/56; designer, 2026-11-23).
+- Q2546: the bake writes an Animation per line (mouth, brows, moods), played by the speaker's Looks AnimationPlayer with the audio (V2; designer, 2026-11-23).
+- Q2547: a line may have several takes, one picked at random each time it plays (V3; designer, 2026-11-23).
+- Q2548: two speakers at once: fixed priority cutscene > washer > Old Tree; the higher cuts the lower; lower lines are dropped, except story beats that wait (V4; designer, 2026-11-23).
+- Q2549: voices get their own Voice bus with a volume slider; the music ducks only in cutscenes, as the old (V5; designer, 2026-11-23).
+- Q2550: subtitles in the old look (cream, black outline, bottom centre, on the Theme), one row per speaker, with the speaker's icon and no name (V6; designer, 2026-11-23).
+- Q2551: a line's text comes from transcribing its recording and is corrected in the string table (V7; designer, 2026-11-23).
+- Q2552: a subtitle shows while the line is within earshot, through a shut Door too (V8; designer, 2026-11-23).
