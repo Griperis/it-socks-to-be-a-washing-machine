@@ -106,7 +106,7 @@ func _add_shape(shape: StringName, design: SockDesign) -> void:
 
 
 ## The lying Sock mesh's points in its Looks' space at Size medium (what the Sock's boxes fit).
-func sock_points() -> PackedVector3Array:
+static func sock_points() -> PackedVector3Array:
 	var out := PackedVector3Array()
 	var found := body_mesh(BOX_LOOKS)
 	var mesh: Mesh = found[0]

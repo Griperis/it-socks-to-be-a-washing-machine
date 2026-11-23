@@ -172,6 +172,11 @@ var _bodies: Node3D
 var _motion: Dictionary[int, Array] = {}
 ## The Host's dice for a lost Sock's return scatter (return_pose()).
 var _scatter := RandomNumberGenerator.new()
+## The Host (core/55, Q2531): the Socks a generator laid since the last tick (at the start, or an add
+## "lying": a reseed), and the boxes of lying Socks taken away, looked at next tick: a Sock with nothing
+## under it falls. Not state: a list of what to look at.
+var _laid_since: Dictionary[int, bool] = {}
+var _freed_since: Array[AABB] = []
 ## More nodes of SockSpots, handed over before this Mess is ready by a scene that joins the level
 ## (a zoo station, whose own Mess steps aside for the zoo's: ZooStations): read after `spots`, in order.
 var more_spots: Array[Node3D] = []
@@ -201,8 +206,11 @@ func _ready() -> void:
 
 ## A generator's starting Socks become records, lying, as the SockSpots do (Q2523: no fall, no sound).
 func _add_generated(gen: GeneratedSocks) -> void:
+	MessBodies.fit(MessDrawing.sock_points(), bodies_tuning().min_thick)
 	var made := gen.make(lying_boxes())
 	var add_designs: PackedInt32Array = made["designs"]
+	for i in add_designs.size():
+		_laid_since[designs.size() + i] = true
 	designs.append_array(add_designs)
 	for i in add_designs.size():
 		states.append(State.LYING)
@@ -848,6 +856,8 @@ func added_lying_patch(add_designs: PackedInt32Array, add_poses: PackedFloat32Ar
 	var o: PackedFloat32Array = p[ROW_POSES]
 	for i in add_designs.size():
 		var sock := start + i
+		# Looked at once it lies (core/55): a refused patch's rows are only looked at in vain.
+		_laid_since[sock] = true
 		var at := rows.find(sock)
 		if at >= 0:
 			# A record cut off earlier in this patch comes back as a new one.
@@ -918,6 +928,12 @@ func resting_on(under: AABB) -> PackedInt32Array:
 	return _lying_bodies.above(under, t.wake_margin, t.pick_column, t.above_slack, t.pick_wakes)
 
 
+## Whether lying Sock `sock` rests on the house or another lying Sock (within the tuning's
+## support_reach under it; core/55, Q2531). True for one with no lying body.
+func supported(sock: int) -> bool:
+	return _lying_bodies == null or _lying_bodies.supported(sock, bodies_tuning().support_reach)
+
+
 ## The box lying Sock `sock` takes in the level, or an empty one.
 func box_of(sock: int) -> AABB:
 	return _lying_bodies.bounds_of(sock) if _lying_bodies != null else AABB()
@@ -962,6 +978,7 @@ func _show(now: bool) -> void:
 		_shown_states = PackedByteArray()
 		_shown_states.resize(count())
 		_shown_states.fill(255)
+		_freed_since.clear()
 	else:
 		var found: Dictionary[int, bool] = {}
 		var common := mini(_shown_states.size(), count())
@@ -969,6 +986,8 @@ func _show(now: bool) -> void:
 		_changed(_shown_poses, poses, POSE, 0, common, found)
 		for sock in range(common, _shown_states.size()):
 			# A record cut off the end (`take_out`).
+			if _lying_bodies.has(sock) and _is_host():
+				_freed_since.append(_lying_bodies.bounds_of(sock))
 			_take_down(sock)
 			_moving.forget(sock)
 		_shown_states.resize(count())
@@ -982,6 +1001,8 @@ func _show(now: bool) -> void:
 		if _lying_bodies.has(sock):
 			if state_of(sock) in [State.HELD, State.IN_PAIR] and _is_host():
 				_moving.note_taken(_lying_bodies.bounds_of(sock))
+			elif state_of(sock) in [State.GONE, State.SHELVED] and _is_host():
+				_freed_since.append(_lying_bodies.bounds_of(sock))
 			if state_of(sock) == State.FLYING and was == State.LYING:
 				woken[sock] = true
 			_take_down(sock)
@@ -1027,9 +1048,30 @@ func _physics_process(delta: float) -> void:
 	if parts == null:
 		return
 	if _is_host():
+		_fall_unsupported()
 		_moving.tick(delta)
 	else:
+		_laid_since.clear()
+		_freed_since.clear()
 		_moving.tick_looks(delta)
+
+
+## The Host, once a tick (core/55, Q2531): every Sock a generator laid since the last tick (its start,
+## a reseed's add), and every lying Sock over the box of one taken away, that has nothing under it falls (a `fall`, through the Moving path, as when what held it up was picked).
+func _fall_unsupported() -> void:
+	if _laid_since.is_empty() and _freed_since.is_empty():
+		return
+	for place in _freed_since:
+		for sock in resting_on(place):
+			_laid_since[sock] = true
+	_freed_since.clear()
+	var falls := PackedInt32Array()
+	for sock: int in _laid_since:
+		if state_of(sock) == State.LYING and not supported(sock):
+			falls.append(sock)
+	_laid_since.clear()
+	if not falls.is_empty():
+		queue_wake(falls, &"fall")
 
 
 ## Every machine, each frame: the flights with no Looks are drawn as instances where their bodies

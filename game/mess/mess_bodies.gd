@@ -38,6 +38,13 @@ func _init(from: Node, points: PackedVector3Array, min_thick: float) -> void:
 	_leg_foot = _fitted
 
 
+## The leg and foot boxes fitted now, if no Mess has fitted them yet (a Sock generator's Heap rests on
+## them before the first Mess binds: core/55).
+static func fit(points: PackedVector3Array, min_thick: float) -> void:
+	if _fitted.is_empty():
+		_fitted = leg_and_foot(points, min_thick)
+
+
 ## A Sock's leg and foot boxes at Size `scale`: [[size, centre], ...] in its own space (its bottom at
 ## y = 0), the shapes it lies on and flies with (MessMoving). One box, SockDress.BOX, before any Mess
 ## has fitted them.
@@ -148,6 +155,24 @@ func above(under: AABB, margin: float, column: float, slack: float, most: int) -
 			break
 		out.append(int(k.y))
 	return out
+
+
+## Whether lying Sock `sock` rests on something (core/55, Q2531): the house or another lying Sock
+## within `reach` under one of its shapes (a thin slab of its footprint just under its bottom meets
+## it). A Sock with no body counts as resting.
+func supported(sock: int, reach: float) -> bool:
+	if not _body.has(sock):
+		return true
+	var slab := BoxShape3D.new()
+	for part: Array in _parts[_key[sock]]:
+		var shape := part[0] as Shape3D
+		var size := (shape as BoxShape3D).size if shape is BoxShape3D else Vector3.ONE * (shape as SphereShape3D).radius
+		var bottom := size.y * 0.5 if shape is BoxShape3D else (shape as SphereShape3D).radius
+		slab.size = Vector3(size.x, reach, size.z)
+		var at: Transform3D = _pose[sock] * (part[1] as Transform3D) * Transform3D(Basis.IDENTITY, Vector3.DOWN * (bottom + reach * 0.5 + 0.0005))
+		if not PhysicsQueries.overlap_rids(_from, slab, at, Mess.LAYER_HOUSE | Mess.LAYER_LYING, 1).is_empty():
+			return true
+	return false
 
 
 ## The lying Socks `shape` at `xform` overlaps, at most `most`.

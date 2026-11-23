@@ -5,7 +5,8 @@
 ## for the biggest Sock's box (SockGeneratorTuning.place_box), so the result does not depend on which
 ## Design takes a place. Designs and Mates come after (pair_up()).
 ##
-## A row is {"pose": Transform3D (the Sock's box's bottom middle, its length along x), "kind": SockArea.Kind}.
+## A row is {"pose": Transform3D (the Sock's box's bottom middle, its length along x), "kind": SockArea.Kind,
+## "ground": where it would lie with nothing under it (its surface's height and the gap)}.
 @tool
 class_name SockLaying
 extends RefCounted
@@ -39,6 +40,8 @@ var _trying := ""
 
 ## Laid boxes by hash cell: [size, middle's transform] each (with the boxes that were there before).
 var _laid: Dictionary[Vector2i, Array] = {}
+## The boxes that were there before (the Mess's other lying Socks, their real boxes).
+var _before: Array[Array] = []
 ## A Heap's height map: the top of what lies over each CELL, by [floor bucket, cell x, cell z].
 var _height: Dictionary[Vector3i, float] = {}
 var _box := BoxShape3D.new()
@@ -48,6 +51,7 @@ var _rng := RandomNumberGenerator.new()
 func _init(with: SockGeneratorTuning, query_node: Node3D, before: Array[Array]) -> void:
 	tuning = with
 	node = query_node
+	_before = before
 	for b: Array in before:
 		_add_box(b[0], b[1])
 
@@ -98,7 +102,7 @@ func lay_area(area: SockArea, places: SockPlaces, seed: int) -> void:
 			continue
 		if i < hidden and place["kind"] == SockArea.Kind.FLOOR:
 			hidden_to_floor[String(area.name)] = hidden_to_floor.get(String(area.name), 0) + 1
-		rows.append({"pose": pose, "kind": place["kind"]})
+		rows.append({"pose": pose, "kind": place["kind"], "ground": _ground})
 	if missed > 0:
 		left_out[String(area.name)] = missed
 
@@ -132,7 +136,7 @@ func lay_trail(trail: SockTrail, seed: int, keep_out: Array[Array]) -> void:
 		if pose == null:
 			missed += 1
 			continue
-		rows.append({"pose": pose, "kind": SockArea.Kind.TRAIL})
+		rows.append({"pose": pose, "kind": SockArea.Kind.TRAIL, "ground": _ground})
 	if missed > 0:
 		left_out[String(trail.name)] = missed
 
@@ -294,6 +298,7 @@ func _rest(from: Vector3, to: Vector3, yaw: float, rest: float, keep_out: Array[
 		return _fail("sock")
 	_add_box(tuning.place_box, centre)
 	_mark(bucket, basis, pose)
+	_ground = hit.y + tuning.gap
 	return pose
 
 
@@ -364,6 +369,53 @@ func _meets_laid(centre: Transform3D, heap: bool) -> bool:
 
 ## The spacing of the area being laid (set by the generator before each area).
 var _spacing := 0.0
+## The height the last rested Sock would have with nothing under it (its row's "ground").
+var _ground := 0.0
+
+
+## Once each row's Sock is known (core/55, Q2531): a Heap's Socks were stacked on the place box,
+## the biggest Sock's, so a smaller Sock under one, or one whose leg and foot miss the one above, left
+## it hanging. Each stacked row (in the order laid) comes down onto the leg and foot boxes under it
+## (`parts`, one list per row: MessBodies.parts_at its Size, [size, centre] in its own space; empty:
+## a row not laid), or to its ground; x, z and its turn stay. A row only ever comes down (its boxes lie
+## inside the place box), so it meets nothing it did not meet before.
+func restack(parts: Array[Array]) -> void:
+	for i in rows.size():
+		var pose: Transform3D = rows[i]["pose"]
+		var ground: float = rows[i]["ground"]
+		if pose.origin.y <= ground + 0.0005:
+			continue
+		var y := ground
+		for j in i:
+			var other: Transform3D = rows[j]["pose"]
+			if absf(float(rows[j]["ground"]) - ground) > 0.05 or other.origin.y >= pose.origin.y:
+				continue
+			for pj: Array in parts[j]:
+				var under := other * Transform3D(Basis.IDENTITY, pj[1])
+				var size_j: Vector3 = pj[0]
+				if _over(pose, parts[i], under, size_j):
+					y = maxf(y, under.origin.y + size_j.y * 0.5 + tuning.gap)
+		for b: Array in _before:
+			var middle: Transform3D = b[1]
+			var size: Vector3 = b[0]
+			var bottom := middle.origin.y - size.y * 0.5
+			if bottom < ground - 0.05 or bottom >= pose.origin.y:
+				continue
+			if _over(pose, parts[i], middle, size):
+				y = maxf(y, middle.origin.y + size.y * 0.5 + tuning.gap)
+		rows[i]["pose"] = Transform3D(pose.basis, Vector3(pose.origin.x, minf(y, pose.origin.y), pose.origin.z))
+
+
+## Whether a Sock at `pose` made of `parts` lies over (its footprint meets) the box `size` at `middle`.
+static func _over(pose: Transform3D, parts: Array, middle: Transform3D, size: Vector3) -> bool:
+	var flat := Vector3(size.x, 0.001, size.z)
+	for part: Array in parts:
+		var at := pose * Transform3D(Basis.IDENTITY, part[1])
+		at.origin.y = middle.origin.y
+		var tall := Vector3((part[0] as Vector3).x, 20.0, (part[0] as Vector3).z)
+		if MessBodies.boxes_meet(tall, at, flat, middle):
+			return true
+	return false
 
 
 ## Sets the spacing two Socks of the next area keep.

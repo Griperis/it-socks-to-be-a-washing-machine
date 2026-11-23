@@ -35,6 +35,12 @@ Socks lie, are drawn, move or wake.
 
 - A pick: the Hands' answer writes HELD; `_show` notes the picked box; next tick `MessMoving` queries
   the column over it and queues what lay on it; they start as `fall` within the budget.
+- Nothing under it (core/55, Q2531): the Host notes every Sock a generator lays (its start in
+  `_add_generated`, a reseed's or any `add` "lying" in `added_lying_patch`) and, in `_show`, the box of every
+  lying Sock taken out or cut off; next
+  tick `_fall_unsupported` checks those and what lay over the boxes (`MessBodies.supported`: a slab of
+  each leg and foot box's footprint, `support_reach` deep, under it meets the house or a lying Sock) and
+  starts the ones with nothing under them as `fall`. No Sock stays frozen in the air.
 - A hit: a flight at `wake_speed` or more touching a lying body (read from its body state's contacts)
   queues that Sock and up to `wake_count` touching it; they start as `wake`. A thrown flight (not dropped,
   poured or woken) first looks ahead (core/46, Q2431, the old `SockFlights._impact_wakes`): a `hit_reach`
