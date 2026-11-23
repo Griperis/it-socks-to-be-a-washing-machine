@@ -78,7 +78,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "b01_kit_pieces_only", "method": "case_b01_kit_pieces_only", "world": false,
 				"title": "B01: the shell is built from the kit's pieces only, every one on the half-metre grid in 90 degree turns, on four storeys"},
 		{"name": "b01_openings", "method": "case_b01_openings", "world": false,
-				"title": "B01: every doorway lets a player through at the plan's place, every window piece is centred where the plan says, the stair and the Cellar hatch are open"},
+				"title": "B01: every doorway lets a player through at the plan's place, every window piece is centred where the plan says, the stair is open"},
 		{"name": "b02_materials", "method": "case_b02_materials", "world": false,
 				"title": "B02: every wall face, floor and corner wears its room's old paint, the outside the old render"},
 		{"name": "b05_grid_windows", "method": "case_b05_grid_windows", "world": false,
@@ -266,13 +266,11 @@ func case_b01_openings() -> void:
 		var line := {"N": 0.0, "S": 8.5, "W": 0.0, "E": 10.5}
 		var across := mid.z if w[2] in ["N", "S"] else mid.x
 		_near(across, line[w[2]], EPS, "%s stands in the %s wall's line" % [w[0], w[2]])
-	# Down the stair's well to the basement; down the Cellar hatch under the basement floor (the
-	# shaft: d07).
+	# Down the stair's well to the basement; the basement floor has no hatch (house/07).
 	var hit := _hit(Vector3(4.6, 5.9, 6.0), Vector3(4.6, -4, 6.0))
 	_check(not hit.is_empty() and (hit["position"] as Vector3).y < 4.6 and (hit["position"] as Vector3).y > 3.0,
 			"the attic floor is open over the U stair (%s)" % [hit.get("position")])
-	_check(_clear(Vector3(2.75, -2.5, 1.75), Vector3(2.75, -4, 1.75)), "the Cellar hatch opens through the workshop floor")
-	_check(not _clear(Vector3(2.0, -2.5, 3.0), Vector3(2.0, -4, 3.0)), "the workshop floor stands round it")
+	_check(not _clear(Vector3(2.75, -2.5, 1.75), Vector3(2.75, -4, 1.75)), "the workshop floor is whole where the Cellar hatch was (house/07)")
 	# The roof over the attic, the ridge 3.88 m over its floor at z 4.25 (plan K11).
 	hit = _hit(Vector3(2.0, 6.5, 4.25), Vector3(2.0, 12, 4.25))
 	_check(not hit.is_empty() and absf((hit["position"] as Vector3).y - (6.0 + 3.88)) < 0.3, "the roof closes the attic at the ridge (%s)" % [hit.get("position")])

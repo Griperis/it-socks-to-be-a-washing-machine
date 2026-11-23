@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: house
 feature: house
@@ -32,3 +32,19 @@ unless a wall fix cannot be made in the shell, and then only the lines needed.
 - A look change, so no test (Q2421): a before/after strip of each fixed wall from both sides and of the basement floor
   where the hatch was (`builds/review-house-07/`).
 - The full suite passes; the house's real-path walk still passes.
+
+## Built log
+
+- 2026-11-23. Changed: the partitions already painted each face with its own room (checked all 14 lines of
+  every storey). The wrong colours were the OUTER walls: a plain exterior piece (2 m, 1 m) that straddled the
+  line where two rooms meet took one room's paint over both, so a strip of the next room showed in the
+  corner. `_plain` in the shell builder now cuts each run at the room lines. Wrong before (storey, wall,
+  span, rooms): Basement N 2.5-4.5 workshop|boiler; Basement S 6-8 lobby|garage; Basement W 2.5-4.5
+  workshop|laundry; First N 2.5-4.5 office|landing; First N 6-7 landing|bathroom; First E 2.5-4.5
+  bathroom|kids; First W 2.5-4.5 office|bedroom. The basement's `floor_hatch_15m` tile is gone (plain
+  floor tiles); `tests/house_test.gd` now expects the workshop floor whole. Shell rebuilt. Added a
+  `cam:` view to the `house` shot action and shot sets `house-07`, `house-07-ext`.
+  Files: tools/house_shell_build.gd, game/house/shell.tscn, tests/house_test.gd, tools/shot_hooks.gd,
+  tools/shots/sets/house-07.txt, house-07-ext.txt. Strips: builds/review-house-07/
+  (outer-walls-before-after.png, hatch-before-after.png, before/, after/).
+  Verified: PASS 1447 checks, 80 cases.

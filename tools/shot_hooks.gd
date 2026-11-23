@@ -159,7 +159,17 @@ static func act(world: Node, what: String, arg: String) -> bool:
 					"stairs_first": [4.55, 5.75, -2.553, 2.9], "loft": [0.60, 0.60, -2.254, 5.8],
 					"kitchen-b": [3.23, 7.74, 0.395, 0.0], "living-b": [9.50, 7.74, 0.381, 0.0]}
 			var shift := Vector3(0.1, 0.0, 0.1)
-			if outside.has(view):
+			if view.begins_with("cam:"):
+				# house/07: a camera at "cam:px,py,pz,tx,ty,tz" (the plan's frame) looking at a wall.
+				var n := view.trim_prefix("cam:").split_floats(",")
+				var cam := Camera3D.new()
+				world.add_child(cam)
+				cam.fov = 70.0
+				cam.global_position = house.to_global(Vector3(n[0], n[1], n[2]) + shift)
+				cam.look_at(house.to_global(Vector3(n[3], n[4], n[5]) + shift))
+				cam.make_current()
+				player.process_mode = Node.PROCESS_MODE_DISABLED
+			elif outside.has(view):
 				var o: Array = outside[view]
 				var cam := Camera3D.new()
 				world.add_child(cam)
