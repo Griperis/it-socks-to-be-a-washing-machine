@@ -1,4 +1,4 @@
-Next free Q number: Q2529 (update this line whenever a round of questions is asked)
+Next free Q number: Q2531 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -443,3 +443,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2526: Heaps are an area option: an area flagged "heap" piles its floor Socks into mounds by the old roll-down rule; otherwise Socks lie flat, spaced, never overlapping (core/52; designer, 2026-11-23).
 - Q2527: exclusions are the old rules as numbers on the area (0.28 m from walls, off furniture footprints, not where a crouching player cannot reach, not in stair holes, clear in front of Cabinets) plus `SockExclusion` boxes placed by hand (core/52; designer, 2026-11-23).
 - Q2528: core/52 brings these old details now: the under-furniture edge strips, the thinning away from the washer (from a marker until the machine exists), the stair trail, and about a third of the room doors shut at a New Game (once the house has room doors); the rest wait for their feature, none dropped (core/52; designer, 2026-11-23).
+- Q2529: core/52 merges as its stills show (designer, 2026-11-23).
+- Q2530: the stair trail's Socks lie flat on each tread: house/05 gives the stair pieces step-shaped landing places; the player still walks the ramp collision (designer, 2026-11-23).

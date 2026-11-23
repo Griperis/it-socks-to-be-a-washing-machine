@@ -7,7 +7,7 @@ feature: house
 priority: now
 created: 2026-11-23
 done:
-blocked_by: [core/51-level-runtime-scene, core/52-sock-generator]
+blocked_by: []
 notes: ["Q2516"]
 terms: [Mess, Sock, Pair, Cabinet, Hands]
 ---
@@ -22,6 +22,9 @@ throws and shelves in the house as in the zoo.
 - Sock areas (core/52) placed as the old game's generator had them for each floor of the house; counts as the old game.
 - The Cabinets and anything else the core loop needs in the house that the zoo has (old placements, `layout.py`
   cabinet_spots).
+- The stair pieces get step-shaped landing places so the stair trail's Socks lie flat on each tread; the player still
+  walks the ramp collision (Q2530).
+- Measure how long laying a whole floor (about 1200 Socks) takes in one frame (core/52's [later]); if it hitches, say so.
 - Floors thicker than 0.2 m where core/50 found Socks sinking, if the kit allows (core/50's note).
 
 ## Acceptance
