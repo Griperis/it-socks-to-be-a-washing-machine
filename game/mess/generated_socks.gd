@@ -1,5 +1,6 @@
 ## The Sock generator's Part (core/52): the seed that made a generator's Socks and which Mess records
-## they are. When the level starts the Mess asks make() before it binds (as it reads the SockSpots), on
+## they are. When the level starts the Mess lays them (start(), StartingSocks: before it binds, or behind the
+## loading screen, house/09) and notes where (took()), on
 ## every machine; a Guest's snapshot then replaces the Mess and this state whole, so everyone sees the
 ## Host's Socks (Q839, Q2524). After that only the Host's answer to `regenerate` (a zoo button: a new
 ## seed, the old Socks out, the new ones in, lying, Q2523) changes them, in one answer.
@@ -31,16 +32,19 @@ func _enter_tree() -> void:
 		generator = get_parent() as SockGenerator
 
 
-## Before the level binds (the Mess's _ready): the seed (the level's, or a new one each start) and the
-## starting Socks' records, avoiding the lying boxes `before`. Notes where they will be.
-func make(before: Array[Array]) -> Dictionary:
+## When the level starts (the Mess's _ready, StartingSocks): picks the seed (the level's, or a new one
+## each start) and returns the laying to run, or null with no generator or Mess.
+func start() -> SockLayingJob:
 	if generator == null or mess == null:
-		return {"designs": PackedInt32Array(), "poses": PackedFloat32Array()}
+		return null
 	seed = randi() if generator.new_seed_each_start else generator.seed
-	var made := generator.records(seed, mess.catalogue, before)
-	first = mess.count()
-	socks = (made["designs"] as PackedInt32Array).size()
-	return made
+	return SockLayingJob.new(generator, seed)
+
+
+## The starting Socks joined the Mess: `n` records from record `at`.
+func took(at: int, n: int) -> void:
+	first = at
+	socks = n
 
 
 ## A Guest may ask a regeneration at most twice a second; it takes no args.

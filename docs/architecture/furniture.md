@@ -17,7 +17,7 @@ The old house's 67 pieces, each a scene in `game/furniture/<piece>.tscn` (Q2151)
   holding an `Openable` (metadata `kind`: the old container kind; its `open_sound` and `close_sound` are
   `<kind>_open` and `<kind>_close` of the sound catalogue, assets/07), its Looks
   `parts/looks_<piece>_<opening>.tscn` and `Inside` (the interior box where Socks hide, an Area3D on no
-  layer, metadata `shelves_y`). The Looks: each moving part an AnimatableBody3D named as in the old
+  layer, metadata `shelves_y`; its bottom on the piece's collision floor, or the Sock generator lays nothing inside: house/09 raised the trunk's onto the lining's top, 0.16 m). The Looks: each moving part an AnimatableBody3D named as in the old
   model at its old pivot, with `Mesh` and its collision; `Outline`; an AnimationPlayer on physics frames
   with `open` and `shut` (the old swing: 0.35 s, easing out both ways). Contract `parts/looks_contract.json`.
 - **Spots:** `Spots/Top<n>`, Area3D boxes on no layer: a rect a Sock may rest on, from the top's height
