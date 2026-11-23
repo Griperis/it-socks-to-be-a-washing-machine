@@ -887,3 +887,55 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2221, Q2481 |
 
 ---
+
+| Ticket | assets/05, Socks look like knitted wool: one seamless knit tile (normal, roughness, cavity) from Blender, tiled by the sock shader under every Design, faded with distance; merged (main 4a86d7a) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | none |
+| Cost | see the agent's report (Opus) |
+| Time | see cost |
+| Surprises | game code +186 −27 |
+| Stop rules | none hit (Q2504: built to the end, reviewed in the batch strip) |
+| Looks | builds/review-assets-05/sock-wool-before-after.png |
+| Decisions | Q2500, Q2504 |
+
+---
+
+| Ticket | assets/06, fabrics get a soft rim sheen: StandardMaterial3D rim 0.35, tint 0 on the 14 fab_* materials; merged (main 4a86d7a) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | none |
+| Cost | see the agent's report (Opus) |
+| Time | see cost |
+| Surprises | game code +44; the rim is per material, no shared value |
+| Stop rules | none hit |
+| Looks | builds/review-assets-06/strip.png |
+| Decisions | Q2501, Q2504 |
+
+---
+
+| Ticket | assets/07, furniture devices: opening sounds for 19 openables, the piano's 88 sampled keys, a real planar wall mirror with the own body in it, the dust sheet on a locked Cabinet (not aimable while sheeted); merged (main 4a86d7a) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 1 (Q2513: the sheeted Cabinet made unaimable, as old) |
+| Corrections | stopped at the 5-hour limit and resumed |
+| Cost | about 850k subagent tokens (Opus) |
+| Time | see cost |
+| Surprises | game code +4169 −10; a second player body for the mirror; docs/architecture.md clash with house/04, resolved |
+| Stop rules | none hit |
+| Looks | builds/review-furniture-devices/furniture-devices-strip.png |
+| Decisions | Q2502, Q2505-Q2508, Q2513 |
+
+---
+
+| Ticket | house/04, the house is the main scene (F5): built from the kit, furnished as the old house, noon light plus the old lamps, the wainscot, the shaft walls, the roof marks fixed, the outside doors shut; old houses A and B gone from the zoo; merged (main 4a86d7a) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 1 (Q2514: the outside doors shut) |
+| Corrections | stopped at the 5-hour limit and resumed; a damaged commit on the mounted drive, its branch soft-reset and recommitted |
+| Cost | about 830k subagent tokens (Opus) |
+| Time | see cost |
+| Surprises | game code +5424 −6238; LevelNet added (the house may not use the zoo's ZooNet); no Socks in the house yet (house/05) |
+| Stop rules | none hit |
+| Looks | builds/review-house-04/ |
+| Decisions | Q2503, Q2509-Q2512, Q2514, Q2515 |
+
+---

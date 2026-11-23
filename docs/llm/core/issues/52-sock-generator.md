@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-info
+status: ready-for-agent
 kind: build
 area: core
 feature: mess
@@ -43,6 +43,26 @@ spacing), the seed, how they appear (at rest, poured, dropped), what a late join
 - The same seed makes the same Mess on Host and Guest; a late joiner sees it.
 - Stills for the designer: the editor viewport with areas and the preview (`builds/review-sock-generator/`), and the
   game view of the same station after generation.
+
+## Answers
+- The behaviour list (`docs/migration/m06-lists/05-sock-generator.md`) answered by Q2518-Q2528 (designer, 2026-11-23); fold
+  them into its lines and header, then build Step 2 to them, overriding the Step 2 sketch above where they differ:
+  - Q2518 one `SockArea` box over a room or floor finds every landing place under it (open floor, tops, insides,
+    under-gaps), tinted by kind in the viewport; furniture under it joins automatically.
+  - Q2519 furniture brings its own places (`Spots/Top<n>`, `Inside`, the crawl gap).
+  - Q2520 one Pair count per area, split by place size x a weight per kind; a piece may override its weight; no pins.
+  - Q2521 rarity does not decide hiding; hidden share one number on the area, 0.3 by default.
+  - Q2522 the preview: dots tinted by kind. Q2523 Socks appear lying where the preview showed, no fall, no sound
+    (the Mess gains an add of lying records).
+  - Q2524 the level's seed by default, a switch for a new seed each New Game saved with the game.
+  - Q2525 mates 0.4-6 m apart in a straight line (improving it: core/53).
+  - Q2526 "heap" as an area option (the old roll-down); otherwise flat, spaced, never overlapping.
+  - Q2527 exclusions: the old rules as numbers on the area plus `SockExclusion` boxes.
+  - Q2528 now: under-edge strips, thinning from a washer marker, the stair trail; doors shut at a New Game only once
+    the house has room doors (it has none yet: a [later] line, not built here). The rest parked with their feature.
+  - The Host generates and sends the rows (the old rule, Q839; only the Host's answer writes state).
+- Rest computed by rays and overlap tests in the editor's and the game's physics space (no physics step), so the
+  preview and the game agree; the full old shape-cast stacking is not ported (Finding 5).
 
 ## Open follow-ups
 - [blocking] Step 1 is done: the behaviour list `docs/migration/m06-lists/05-sock-generator.md` waits for the designer's
