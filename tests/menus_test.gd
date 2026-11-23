@@ -29,7 +29,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "m04_join_kept", "method": "case_m04", "world": false,
 				"title": "M04: leaving the Join page keeps the typed name (cleaned: trimmed, at most 16, empty is Player) and address in the profile"},
 		{"name": "m05_join_goes", "method": "case_m05", "world": false,
-				"title": "M05: Join (or Enter in the address) goes into the house as a Guest behind \"Joining...\"; Solo behind \"Loading the house...\", a New Game too (Q2579); Host listening"},
+				"title": "M05 (core/63): Join (or Enter in the address) goes to the Lobby as a Guest of that address; Solo to the Lobby with the Solo World, a New Game when none (Q2579, Q2583); Host to the Lobby listening on its World; the Lobby goes on the title's way in"},
 		{"name": "m06_quit", "method": "case_m06", "world": false,
 				"title": "M06: Quit closes the game"},
 		{"name": "m07_notice", "method": "case_m07", "world": false,
@@ -170,28 +170,33 @@ func case_m05() -> void:
 	t.show_page(TitleScreen.JOIN)
 	(t.get_node("%AddressField") as LineEdit).text = "127.0.0.1:9"
 	await _click(t.get_node("%JoinGo"))
-	_check(_went.size() == 1 and _went[0][1] == TitleScreen.JOINING, "Join goes in behind \"Joining...\"")
-	var root := (load(ONE_BOX) as PackedScene).instantiate()
-	(_went[0][2] as Callable).call(root)
-	_check(LevelRuntime.of(root).launch == PackedStringArray(["--join=127.0.0.1:9"]) and LevelRuntime.of(root).world == null, "as a Guest of that address, with no World")
-	root.free()
+	_check(_went.size() == 1 and _went[0][0] == LobbyScreen.SCENE, "Join goes to the Lobby")
+	var lobby := _lobby_from(_went[0])
+	_check(lobby.mode == LobbyScreen.Mode.JOIN and lobby.address == "127.0.0.1:9" and lobby.world == null, "as a Guest of that address, with no World")
+	lobby.free()
 	_went.clear()
 	(t.get_node("%AddressField") as LineEdit).text_submitted.emit("127.0.0.1:9")
-	_check(_went.size() == 1, "Enter in the address joins")
+	_check(_went.size() == 1 and _went[0][0] == LobbyScreen.SCENE, "Enter in the address joins")
 	_went.clear()
 	t.show_page(TitleScreen.HOME)
 	await _click(t.get_node("%Solo"))
-	_check(_went.size() == 1 and _went[0][1] == "Loading the house...", "Solo with no save: a New Game behind \"Loading the house...\" (Q2579)")
-	root = (load(ONE_BOX) as PackedScene).instantiate()
-	(_went[0][2] as Callable).call(root)
-	_check(LevelRuntime.of(root).world != null and LevelRuntime.of(root).launch.is_empty(), "alone, the Solo World handed to the level")
-	root.free()
+	_check(_went.size() == 1 and _went[0][0] == LobbyScreen.SCENE, "Solo goes to the Lobby (Q2583)")
+	lobby = _lobby_from(_went[0])
+	_check(lobby.mode == LobbyScreen.Mode.SOLO and lobby.world != null and lobby.world.slot == Worlds.SOLO and lobby.world.is_new,
+			"alone, with the Solo World: a New Game with no save (Q2579)")
+	_check(lobby.go_into == t.go_into, "the Lobby goes into the house the title's way")
+	lobby.free()
 	_went.clear()
 	t.host()
-	root = (load(ONE_BOX) as PackedScene).instantiate()
-	(_went[0][2] as Callable).call(root)
-	_check(LevelRuntime.of(root).launch.has("--host") and LevelRuntime.of(root).world.hosting, "Host listens")
-	root.free()
+	lobby = _lobby_from(_went[0])
+	_check(lobby.mode == LobbyScreen.Mode.HOST and lobby.world.hosting, "Host goes to the Lobby listening on its World")
+	lobby.free()
+
+
+func _lobby_from(went: Array) -> LobbyScreen:
+	var root := (load(String(went[0])) as PackedScene).instantiate() as LobbyScreen
+	(went[2] as Callable).call(root)
+	return root
 
 
 func case_m06() -> void:

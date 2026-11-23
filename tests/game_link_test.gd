@@ -18,6 +18,7 @@ const PLAYER_BODY := 8
 var _branches: Array[Node] = []
 var _stand_in: Node = null
 var _runner_scene: Node = null
+var _went_titles: Array[String] = []
 
 
 func cases() -> Array[Dictionary]:
@@ -35,7 +36,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "l05_roster_merge", "method": "case_l05", "world": false,
 				"title": "a save loads into the live Roster: the present player stays (standing where the save kept it), an absent player's entry comes back with its spot and colour, an entry the save lacks stays"},
 		{"name": "l06_real_path_title", "method": "case_l06", "world": false,
-				"title": "real path: title Host, a Guest's title joins by address, the house loads for both through the link, both see each other's avatar and the Guest's pick (its key) lands on the Host"},
+				"title": "real path (core/63): title Host into the Lobby, a Guest's title joins its Lobby by address, Ready from both, the Host's Start loads the house for both through the link, each stands at its Roster spot, both see each other's avatar and the Guest's pick (its key) lands on the Host"},
 		{"name": "l06_real_path_title_50ms", "method": "case_l06_50ms", "world": false,
 				"title": "real path from the title with 50 ms each way"},
 	]
@@ -43,6 +44,7 @@ func cases() -> Array[Dictionary]:
 
 func _before_case() -> void:
 	_drop_branches()
+	_went_titles.clear()
 
 
 # --- L01 ------------------------------------------------------------------------------------------
@@ -239,34 +241,72 @@ func _from_title(lag_ms: int) -> void:
 	_open_title(guest, true, lag_ms, func() -> String:
 		return PlayerProfile.clean_name((guest.get_node("Title") as TitleScreen).get_node("%NameField").text) if guest.has_node("Title") else PlayerProfile.NAME)
 	await _frames(2)
-	# The Host's title: Multiplayer, Host.
 	var ht := host.get_node("Title") as TitleScreen
 	var gt := guest.get_node("Title") as TitleScreen
-	gt.visible = false  # both titles lie over each other in this one window: the clicks go to the Host's
+	# Both screens lie over each other in this one window: only the one clicked shows.
+	gt.visible = false
 	await _click(ht.get_node("%MultiplayerKey") as Control)
 	(ht.get_node("%NameField") as LineEdit).text = "Hostess"  # typed in the one field, then Host
 	await _click(ht.get_node("%Host") as Control)
-	await _until(func() -> bool: return _level_of(host) != null, "the Host's title to load the house", 900, 30.0)
-	var hr := LevelRuntime.of(_level_of(host))
-	await _until(func() -> bool: return hr.session != null and hr.session.is_online(), "the Host to listen", 900, 20.0)
-	await _until(func() -> bool: return hr.loading.is_lifted() and hr.parts.is_settled(), "the Host's house to be laid", 3000, 60.0)
-	# The Guest's title: Multiplayer, Join, the address, Join.
+	await _until(func() -> bool: return _lobby_of(host) != null, "the Host's title to open the Lobby", 900, 20.0)
+	var hlobby := _lobby_of(host)
+	var hs := hlobby.link.session
+	await _until(func() -> bool: return hs.is_online(), "the Host's Lobby to listen", 900, 20.0)
+	hlobby.visible = false
 	gt.visible = true
 	await _click(gt.get_node("%MultiplayerKey") as Control)
 	(gt.get_node("%NameField") as LineEdit).text = "Visitor"
 	await _click(gt.get_node("%JoinKey") as Control)
-	(gt.get_node("%AddressField") as LineEdit).text = "127.0.0.1:%d" % hr.session.port
+	(gt.get_node("%AddressField") as LineEdit).text = "127.0.0.1:%d" % hs.port
 	await _click(gt.get_node("%JoinGo") as Control)
-	await _until(func() -> bool: return _level_of(guest) != null, "the Guest's title to load the house", 900, 30.0)
+	await _until(func() -> bool: return _lobby_of(guest) != null, "the Guest's title to open the Lobby", 900, 20.0)
+	var globby := _lobby_of(guest)
+	await _until(func() -> bool: return (globby.place_texts().size() == 4 and globby.place_texts()[1].contains("Visitor")
+			and hlobby.place_texts()[1].contains("Visitor")), "both Lobbies to show both players", 900, 20.0)
+	var g_peer := globby.link.session.me()
+	_check(globby.place_texts()[0].contains("Hostess") and hlobby.place_texts()[0].contains("Hostess"),
+			"the Guest's Lobby shows the name typed on the Host's Multiplayer page (%s)" % [globby.place_texts()])
+	_check(hlobby.place_texts()[0].begins_with(LobbyScreen.HOST_MARK) and hlobby.place_texts()[3] == LobbyScreen.WAITING_PLAYER,
+			"the Host's place first with its mark, a free place waits (%s)" % [hlobby.place_texts()])
+	_check((globby.get_node("%Waiting") as Control).visible and not (globby.get_node("%Start") as Control).visible
+			and (globby.get_node("%Back") as Button).text == LobbyScreen.LEAVE, "the Guest waits for the Host to start, its Back reads Leave")
+	_check((hlobby.get_node("%Start") as Button).disabled, "Start is greyed while nobody is Ready")
+	# Ready from both: the Guest's click asks the Host.
+	await _click(globby.get_node("%Ready") as Control)
+	await _until(func() -> bool: return hlobby.link.lobby.is_ready(g_peer), "the Guest's Ready to reach the Host", 900, 20.0)
+	_check((hlobby.get_node("%Start") as Button).disabled, "Start still greyed: the Host is not Ready")
+	globby.visible = false
+	hlobby.visible = true
+	await _click(hlobby.get_node("%Ready") as Control)
+	await _until(func() -> bool: return not (hlobby.get_node("%Start") as Button).disabled and globby.link.lobby.all_ready(),
+			"everyone Ready on both machines", 900, 20.0)
+	_check((globby.get_node("%Ready") as Button).text == LobbyScreen.READY_ON, "the Guest's key says it is Ready")
+	# The Host's Start: both machines load the house behind the loading screen.
+	await _click(hlobby.get_node("%Start") as Control)
+	await _until(func() -> bool: return _level_of(host) != null and _level_of(guest) != null, "Start to load the house on both machines", 900, 30.0)
+	_check(_lobby_of(host) == null and _lobby_of(guest) == null, "the Lobby is gone on both")
+	_check(_went_titles.is_empty(), "nobody went back to the title (%s)" % [_went_titles])
+	var hr := LevelRuntime.of(_level_of(host))
 	var gr := LevelRuntime.of(_level_of(guest))
-	await _until(func() -> bool: return gr.session != null and gr.session.is_online(), "the Guest to connect", 900, 20.0)
 	_check(hr.link == GameLink.of(host) and not hr.link.is_private() and gr.link == GameLink.of(guest) and not gr.link.is_private(),
 			"each house plays through the link its title made")
+	await _until(func() -> bool: return hr.loading.is_lifted() and hr.parts.is_settled(), "the Host's house to be laid", 3000, 60.0)
 	await _until(func() -> bool: return gr.net.mode_text().begins_with("Joined"), "the Guest to be welcomed into the house", 3000, 60.0)
-	var g_peer := gr.session.me()
-	_check(hr.roster.name_of(Roster.HOST) == "Hostess" and gr.roster.name_of(Roster.HOST) == "Hostess", "the Guest's Roster has the name typed on the Host's Multiplayer page")
-	_check(hr.roster.name_of(g_peer) == "Visitor", "and the Host's Roster the Guest's typed name (%s)" % hr.roster.name_of(g_peer))
+	_check(gr.session.me() == g_peer and gr.session.is_online(), "the same connection, no reconnect")
+	_check(hr.roster.name_of(Roster.HOST) == "Hostess" and gr.roster.name_of(Roster.HOST) == "Hostess" and hr.roster.name_of(g_peer) == "Visitor",
+			"the names typed on the title carry into the house")
 	await _until(func() -> bool: return hr.avatars.of(g_peer) != null and gr.avatars.of(1) != null, "each to see the other's avatar", 900, 20.0)
+	# Both stand at their Roster spots: the Host where its body is, the Guest beside it.
+	var h_at: Variant = hr.roster.entry_of(1).get("at")
+	var g_at: Variant = hr.roster.entry_of(g_peer).get("at")
+	_check(h_at is Vector3 and g_at is Vector3 and (h_at as Vector3).distance_to(g_at) > 0.3, "both have spots, apart (%s, %s)" % [h_at, g_at])
+	if h_at is Vector3 and g_at is Vector3:
+		_check(Vector2(hr.player.global_position.x, hr.player.global_position.z).distance_to(Vector2(h_at.x, h_at.z)) < 0.3,
+				"the Host stands at its spot")
+		_check(Vector2(gr.player.global_position.x, gr.player.global_position.z).distance_to(Vector2(g_at.x, g_at.z)) < 0.3,
+				"the Guest stands at its spot (%s, %s)" % [gr.player.global_position, g_at])
+	await _frames(5)
+	_check(_lobby_of(host) == null and _lobby_of(guest) == null, "the Lobby does not come back")
 	# The Guest picks a Sock by its key; the Host's Hands hold it for the Guest.
 	hr.player.set_input_blocked(true)
 	var mess := gr.mess
@@ -340,8 +380,9 @@ func _linked_pair(lag_ms: int) -> Array[Node]:
 	return [host, guest]
 
 
-## The title in `machine`, its way into the game putting the level in the machine's view; the way back
-## to the title stays put. With `lag_ms`, the machine's peer is wrapped in the frame its Net starts.
+## The title in `machine`; its way in puts the Lobby under the machine and the level in the machine's
+## view; the ways back to the title only note it. With `lag_ms`, the machine's peer is wrapped once the
+## Lobby has started its session.
 func _open_title(machine: Node, guest: bool, lag_ms: int, guest_name := func() -> String: return PlayerProfile.NAME) -> void:
 	var t := (load(TITLE) as PackedScene).instantiate() as TitleScreen
 	t.name = "Title"
@@ -349,20 +390,38 @@ func _open_title(machine: Node, guest: bool, lag_ms: int, guest_name := func() -
 		var root := (load(path) as PackedScene).instantiate()
 		if setup.is_valid():
 			setup.call(root)
-		if guest:
-			# One process, one profile file: the Guest plays as another player.
-			# (it keeps the name typed on its title's field).
-			var other := PlayerProfile.fresh()
-			other.name = guest_name.call()
-			GameLink.of(t).session.profile = other
+		var lobby := root as LobbyScreen
+		var before := _lobby_of(machine)
+		if lobby != null:
+			if guest:
+				# One process, one profile file: the Guest plays as another player.
+				# (it keeps the name typed on its title's field).
+				var other := PlayerProfile.fresh()
+				other.name = guest_name.call()
+				GameLink.of(machine).session.profile = other
+			lobby.go_to_title = func(notice: String) -> void: _went_titles.append("%s:%s" % [machine.name, notice])
+			var title := machine.get_node_or_null("Title")
+			if title != null:
+				machine.remove_child(title)
+				title.queue_free()
+			lobby.name = "Lobby"
+			machine.add_child(lobby)
+			if lag_ms > 0:
+				# Queued after the Lobby's own deferred start: the peer is wrapped before anything is polled.
+				(func() -> void: _lag(machine, lag_ms)).call_deferred()
+			return
 		var runtime := LevelRuntime.of(root)
 		runtime.esc_menu.go_to_title = func(_notice: String) -> void: pass
+		if before != null:
+			machine.remove_child(before)
+			before.queue_free()
 		(machine.get_node("View") as Node).add_child(root)
-		if lag_ms > 0:
-			# Queued after the Net's own deferred start: the peer is wrapped before anything is polled.
-			(func() -> void: _lag(machine, lag_ms)).call_deferred()
-		t.queue_free()
 	machine.add_child(t)
+
+
+func _lobby_of(machine: Node) -> LobbyScreen:
+	var l := machine.get_node_or_null("Lobby") as LobbyScreen
+	return l if l != null and not l.is_queued_for_deletion() else null
 
 
 func _level_of(machine: Node) -> Node:

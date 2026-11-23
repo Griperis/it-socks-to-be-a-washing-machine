@@ -3,24 +3,22 @@
 ## line under them and the Licence key in the corner (the Zoo key too in a debug build). The pages swap
 ## at once; the Zoo key in the corner is a debug build's only (Q2580). The look is the scene's, on the Theme; code fills data and reacts to presses.
 ##
-## - Solo: the Solo World (Worlds.pick_solo(): Continue it, or a New Game when there is none) behind
-##   the loading screen, alone, nothing listening (Q2561; the Lobby comes later).
-## - Multiplayer: one "Your name" field above Host and Join (kept in the profile; Q2585), Host (the last-played co-op World, or a New Game in a free slot; listening) and Join
-##   (address, kept in the profile; "Joining..." behind the loading screen).
+## - Solo: the Lobby (core/63, Q2583) with the Solo World (Worlds.pick_solo()), alone, nothing listening.
+## - Multiplayer: one "Your name" field above Host and Join (kept in the profile; Q2585), Host (the Lobby on
+##   the last-played co-op World, or a New Game in a free slot; listening) and Join (address, kept in the
+##   profile; the Host's Lobby or house).
 ## - Options, Licence: their pages. Quit closes the game.
 ## - Each way into the game (Solo, Host, Join) makes the game link (GameLink, core/62) beside the title,
 ##   which the level then plays through and a scene change keeps; back at the title the game is over
 ##   and the title frees the link it finds.
-## - The command line: `--host` hosts at once (the newest co-op World, else the Solo World, else a New
-##   Game); `--join=<address>` joins at once.
+## - The command line: `--host` hosts at once into a Lobby (the newest co-op World, else the Solo World,
+##   else a New Game); `--join=<address>` joins the Host's Lobby or house at once.
 class_name TitleScreen
 extends Control
 
 const ZOO := "res://game/zoo/zoo.tscn"
 const OPTIONS := preload("res://game/ui/options/options.tscn")
 const LICENCE := preload("res://game/ui/licence/licence.tscn")
-## The loading screen's words for a Guest (the old M:506). placeholder: the old wording.
-const JOINING := "Joining..."
 const HOME := "home"
 const MULTIPLAYER := "multiplayer"
 const JOIN := "join"
@@ -119,28 +117,26 @@ func status() -> String:
 	return _status.text
 
 
-## Solo: the Solo World, alone.
+## Solo: the Lobby with the Solo World, alone (Q2583).
 func solo() -> void:
 	var w := Worlds.pick_solo()
 	if w == null:
 		_status.text = Worlds.take_notice()
 		return
-	_go(w, _profile_args())
+	_to_lobby(LobbyScreen.Mode.SOLO, w, "")
 
 
-## Host: the Host's World, listening. `from_command_line`: the `--host` rule.
+## Host: the Lobby on the Host's World, listening. `from_command_line`: the `--host` rule.
 func host(from_command_line := false) -> void:
 	_keep_name()
 	var w := Worlds.pick_host(from_command_line)
 	if w == null:
 		_status.text = Worlds.take_notice()
 		return
-	var launch := PackedStringArray(["--host"])
-	launch.append_array(_profile_args())
-	_go(w, launch)
+	_to_lobby(LobbyScreen.Mode.HOST, w, "")
 
 
-## Join: the Host at the typed address (the remembered one when empty).
+## Join: the Host's Lobby (or its house) at the typed address (the remembered one when empty).
 func join(where := "") -> void:
 	_keep_name()
 	_keep_join_fields()
@@ -148,24 +144,22 @@ func join(where := "") -> void:
 	if address == "":
 		_address.grab_focus()
 		return
-	var launch := PackedStringArray(["--join=%s" % address])
-	launch.append_array(_profile_args())
-	GameLink.open_beside(self)
-	go_into.call(Worlds.LEVEL, JOINING, func(root: Node) -> void:
-		var runtime := LevelRuntime.of(root)
-		if runtime != null:
-			runtime.from_title = true
-			runtime.launch = launch)
+	_to_lobby(LobbyScreen.Mode.JOIN, null, address)
 
 
-func _go(w: WorldSlot, launch: PackedStringArray) -> void:
+## Into the Lobby with the game link made beside the title; the Lobby goes on the way this title does.
+func _to_lobby(mode: LobbyScreen.Mode, w: WorldSlot, address: String) -> void:
 	GameLink.open_beside(self)
-	go_into.call(w.record.level, w.loading_heading(), func(root: Node) -> void:
-		var runtime := LevelRuntime.of(root)
-		if runtime != null:
-			runtime.world = w
-			runtime.from_title = true
-			runtime.launch = launch)
+	var way_in := go_into
+	var args := _profile_args()
+	go_into.call(LobbyScreen.SCENE, "", func(root: Node) -> void:
+		var lobby := root as LobbyScreen
+		if lobby != null:
+			lobby.mode = mode
+			lobby.world = w
+			lobby.address = address
+			lobby.launch = args
+			lobby.go_into = way_in)
 
 
 func _keep_join_fields() -> void:
