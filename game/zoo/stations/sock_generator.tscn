@@ -1,32 +1,32 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c6s728lc0yqao"]
 
-[ext_resource type="Script" path="res://game/mess/sock_generator.gd" id="1_gen"]
-[ext_resource type="Script" path="res://game/mess/generated_socks.gd" id="2_generated"]
-[ext_resource type="Script" path="res://game/mess/sock_area.gd" id="3_area"]
-[ext_resource type="Script" path="res://game/mess/sock_exclusion.gd" id="4_exclusion"]
-[ext_resource type="Script" path="res://game/mess/sock_trail.gd" id="5_trail"]
-[ext_resource type="Script" path="res://game/zoo/sock_generator/regenerate_button.gd" id="6_button"]
-[ext_resource type="Script" path="res://game/zoo/sock_generator/seed_sign.gd" id="7_sign"]
-[ext_resource type="Script" path="res://game/mess/mess.gd" id="8_mess"]
-[ext_resource type="Script" path="res://game/hands/hands.gd" id="9_hands"]
-[ext_resource type="Script" path="res://game/coins/coins.gd" id="10_coins"]
-[ext_resource type="Resource" path="res://game/sock/designs.tres" id="11_designs"]
-[ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="12_hands_tuning"]
-[ext_resource type="PackedScene" path="res://game/furniture/double_bed.tscn" id="13_bed"]
-[ext_resource type="PackedScene" path="res://game/furniture/kitchen_cupboard.tscn" id="14_cupboard"]
-[ext_resource type="PackedScene" path="res://game/furniture/dresser.tscn" id="15_dresser"]
-[ext_resource type="PackedScene" path="res://game/furniture/dining_table.tscn" id="16_table"]
-[ext_resource type="PackedScene" path="res://game/furniture/coffee_table.tscn" id="17_coffee"]
-[ext_resource type="PackedScene" path="res://game/entities/cabinet/cabinet.tscn" id="18_cabinet"]
-[ext_resource type="PackedScene" path="res://game/house/kit/pieces/stair_full.tscn" id="19_stair"]
-[ext_resource type="PackedScene" path="res://game/furniture/nightstand.tscn" id="20_nightstand"]
+[ext_resource type="Script" uid="uid://cyhr6nx34vjq0" path="res://game/mess/sock_generator.gd" id="1_gen"]
+[ext_resource type="Script" uid="uid://co2u54sk1yir8" path="res://game/mess/generated_socks.gd" id="2_generated"]
+[ext_resource type="Script" uid="uid://cub70qrwflqk1" path="res://game/mess/sock_area.gd" id="3_area"]
+[ext_resource type="Script" uid="uid://xxf745x54a46" path="res://game/mess/sock_exclusion.gd" id="4_exclusion"]
+[ext_resource type="Script" uid="uid://c76hgi71q4k4g" path="res://game/mess/sock_trail.gd" id="5_trail"]
+[ext_resource type="Script" uid="uid://coig4etidipk8" path="res://game/zoo/sock_generator/regenerate_button.gd" id="6_button"]
+[ext_resource type="Script" uid="uid://dlacqnrt2ohho" path="res://game/zoo/sock_generator/seed_sign.gd" id="7_sign"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="8_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="9_hands"]
+[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="10_coins"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="11_designs"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="12_hands_tuning"]
+[ext_resource type="PackedScene" uid="uid://cf20nsmnjwiwq" path="res://game/furniture/double_bed.tscn" id="13_bed"]
+[ext_resource type="PackedScene" uid="uid://cbfpt4hh7gm3q" path="res://game/furniture/kitchen_cupboard.tscn" id="14_cupboard"]
+[ext_resource type="PackedScene" uid="uid://b7hu47vi16lp5" path="res://game/furniture/dresser.tscn" id="15_dresser"]
+[ext_resource type="PackedScene" uid="uid://2vvcamr2b8ap" path="res://game/furniture/dining_table.tscn" id="16_table"]
+[ext_resource type="PackedScene" uid="uid://drbceifsj6ysv" path="res://game/furniture/coffee_table.tscn" id="17_coffee"]
+[ext_resource type="PackedScene" uid="uid://h3610c6dred6" path="res://game/entities/cabinet/cabinet.tscn" id="18_cabinet"]
+[ext_resource type="PackedScene" uid="uid://dbhsmp6446wf3" path="res://game/house/kit/pieces/stair_full.tscn" id="19_stair"]
+[ext_resource type="PackedScene" uid="uid://bpls1fkyretjy" path="res://game/furniture/nightstand.tscn" id="20_nightstand"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ground"]
 albedo_color = Color(0.72, 0.66, 0.56, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_ground"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
 material = SubResource("StandardMaterial3D_ground")
-size = Vector3(14, 0.2, 14)
+size = Vector2(14, 14)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
 size = Vector3(14, 0.2, 14)
@@ -61,12 +61,12 @@ size = Vector3(0.5, 1, 0.3)
 [node name="SockGenerator" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 0, -8)
 
+[node name="Pad" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_pad")
+
 [node name="Ground" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 metadata/surface = "wood"
-
-[node name="Mesh" type="MeshInstance3D" parent="Ground"]
-mesh = SubResource("BoxMesh_ground")
 
 [node name="Shape" type="CollisionShape3D" parent="Ground"]
 shape = SubResource("BoxShape3D_ground")
@@ -90,7 +90,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.05, 0.6, 0)
 shape = SubResource("BoxShape3D_wall_z")
 
 [node name="Name" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, -5.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, -5.2)
 pixel_size = 0.004
 billboard = 2
 text = "Sock generator: three areas lay their Pairs on the open floor, on tops, inside and under the furniture (the south one in Heaps), a trail up the stairs, nothing in the red box or in front of the Cabinet. New seed lays them again"

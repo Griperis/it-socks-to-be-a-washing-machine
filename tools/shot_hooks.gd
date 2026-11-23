@@ -446,12 +446,12 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			var station := world.get_node("Stations/SockGenerator") as Node3D
 			var gen := station.get_node("Generator") as SockGenerator
 			var generated := gen.get_node("Generated") as GeneratedSocks
-			var mess := world.get_node("Socks/Mess") as Mess
+			var mess := LevelRuntime.of(world).mess
 			var mode := arg.get_slice(":", 0)
 			var view := arg.get_slice(":", 1) if arg.contains(":") else ""
 			if mode != "game":
 				gen.show_preview(true, generated.seed, mess.lying_boxes(generated.first, generated.first + generated.socks))
-			(world.get_node("Lying") as Node3D).visible = mode != "preview"
+			LevelRuntime.of(world).lying.visible = mode != "preview"
 			var cam := Camera3D.new()
 			world.add_child(cam)
 			cam.fov = 60.0
@@ -460,8 +460,8 @@ static func act(world: Node, what: String, arg: String) -> bool:
 					cam.global_position = station.to_global(Vector3(0.4, 15.0, 0.2))
 					cam.look_at(station.to_global(Vector3(0.4, 0.0, 0.0)), Vector3.FORWARD)
 				"low":
-					cam.global_position = station.to_global(Vector3(0.5, 1.7, 7.2))
-					cam.look_at(station.to_global(Vector3(0.0, 0.2, 0.0)))
+					cam.global_position = station.to_global(Vector3(3.2, 1.7, 7.2))
+					cam.look_at(station.to_global(Vector3(-0.5, 0.2, -1.0)))
 				_:
 					cam.global_position = station.to_global(Vector3(5.5, 8.0, 9.5))
 					cam.look_at(station.to_global(Vector3(0.0, 0.0, -0.5)))

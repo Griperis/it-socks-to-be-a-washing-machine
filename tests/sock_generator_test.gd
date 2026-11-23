@@ -43,7 +43,7 @@ func case_real_path() -> void:
 	await _zoo_up()
 	var mess := _mess()
 	var gen := _generated()
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	_check(gen.first >= 0 and gen.socks > 0, "the station's Socks were laid at start (%d from %d)" % [gen.socks, gen.first])
 	_matches_preview(gen.seed, "at start")
 	var seed_before := gen.seed
@@ -219,7 +219,7 @@ func case_heap_strips() -> void:
 func case_coop() -> void:
 	await _zoo_up()
 	var mess := _mess()
-	var parts := _zoo.get_node("Parts") as Parts
+	var parts := LevelRuntime.of(_zoo).parts
 	var gen := _generated()
 	var row := Mess.pack(Transform3D(Basis.IDENTITY, _station().global_position + Vector3.UP))
 	var guest_add := parts.answer(Command.new(&"add", 2, mess.id, {"designs": PackedInt32Array([0]), "poses": row, "lying": true}))
@@ -231,11 +231,11 @@ func case_coop() -> void:
 	# A late joiner before the regeneration: it takes the snapshot, then the Host's answer.
 	var late := (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(late)
-	await _until(func() -> bool: return (late.get_node("Socks/Mess") as Mess).body_count() > 0, "the late zoo to bind")
-	var late_parts := late.get_node("Parts") as Parts
+	await _until(func() -> bool: return LevelRuntime.of(late).mess.body_count() > 0, "the late zoo to bind")
+	var late_parts := LevelRuntime.of(late).parts
 	late_parts.load_snapshot(parts.snapshot())
 	await _physics_ticks(2)
-	var late_mess := late.get_node("Socks/Mess") as Mess
+	var late_mess := LevelRuntime.of(late).mess
 	var late_gen := late_parts.of(gen.id) as GeneratedSocks
 	_same(late_mess.state(), mess.state(), "the late joiner's Mess is the Host's")
 	_same(late_gen.state(), gen.state(), "the late joiner's generator state is the Host's")
@@ -394,14 +394,14 @@ func _zoo_up() -> void:
 
 func _settle_zoo() -> void:
 	var mess := _mess()
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	await _until(func() -> bool: return player.is_on_floor() and mess.looks_of(mess.count() - 1) != null, "the player to stand and every Sock to lie", 600)
 	mess.return_looks(mess.count() - 1)
 	player.capture_mouse()
 
 
 func _mess() -> Mess:
-	return _zoo.get_node("Socks/Mess") as Mess
+	return LevelRuntime.of(_zoo).mess
 
 
 func _station() -> Node3D:
@@ -417,14 +417,14 @@ func _generated() -> GeneratedSocks:
 
 
 func _stand(at: Vector3) -> void:
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	player.global_position = at
 	player.velocity = Vector3.ZERO
 	player.reset_physics_interpolation()
 
 
 func _aim(target: Vector3) -> void:
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	var head := player.get_node("Head") as Node3D
 	var to := target - player.global_position
 	player.rotation.y = atan2(-to.x, -to.z)

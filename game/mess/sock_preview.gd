@@ -6,14 +6,14 @@
 class_name SockPreview
 extends RefCounted
 
-const AREA_COLOUR := Color(0.3, 0.55, 1.0, 0.12)
+const AREA_COLOUR := Color(0.3, 0.55, 1.0, 0.16)
 const EXCLUSION_COLOUR := Color(1.0, 0.25, 0.2, 0.25)
 ## A dot's tint by kind: open floor, top, inside, under, trail.
 const KIND_COLOURS: Array[Color] = [
-	Color(0.35, 0.8, 1.0), Color(1.0, 0.85, 0.2), Color(0.35, 1.0, 0.45), Color(1.0, 0.35, 0.9), Color(1.0, 0.55, 0.15),
+	Color(0.1, 0.4, 1.0), Color(1.0, 0.8, 0.0), Color(0.1, 0.85, 0.25), Color(0.95, 0.15, 0.85), Color(1.0, 0.45, 0.0),
 ]
 ## A dot's radius.
-const DOT := 0.04
+const DOT := 0.06
 
 
 ## A translucent, unshaded box of `size` in `colour`.
@@ -55,6 +55,8 @@ static func dots(places: Array[Dictionary], in_space: Transform3D) -> MultiMeshI
 	sphere.rings = 4
 	var mat := _material(Color.WHITE)
 	mat.vertex_color_use_as_albedo = true
+	# Seen through the furniture: a dot inside a cupboard or under a bed shows where it is.
+	mat.no_depth_test = true
 	sphere.material = mat
 	var mm := MultiMesh.new()
 	mm.transform_format = MultiMesh.TRANSFORM_3D

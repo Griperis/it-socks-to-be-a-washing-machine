@@ -23,6 +23,9 @@ The old house's 67 pieces, each a scene in `game/furniture/<piece>.tscn` (Q2151)
   to the headroom over it. Joined from the old manifest's cells by the old game's piece-local rule (seen,
   0.12 m headroom, 0.06 m in from the top's edges, 0.05 m bands); what the house round a placed piece
   leaves clear is the level's to decide.
+- **What the Sock generator reads** (core/52, `docs/architecture/sock-generator.md`): `Spots/Top<n>` (tops),
+  each opening's `Inside` and its `shelves_y` (insides), the root's `crawl_gap` and `crawl_box` (the gap under it)
+  and `footprint`; a root may carry `sock_weight` (a float) to override the area's weight for all its places.
 - **Lamp:** the old_tree's small light (OmniLight3D, no shadow).
 - Origins at the floor centre of the bounding box, +Z front (F04); wall-hung pieces are modelled at the
   floor and lifted where they are placed.

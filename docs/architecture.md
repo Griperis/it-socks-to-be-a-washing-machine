@@ -62,6 +62,7 @@ How this game is built, unless a decision record says otherwise. They are the ga
 | Subsystem | File | Read it when |
 |---|---|---|
 | The Mess | `docs/architecture/mess.md` | you change how Socks lie, are drawn, move or wake |
+| The Sock generator | `docs/architecture/sock-generator.md` | you change where a level's starting Socks land, its areas, exclusions or preview |
 | The house kit | `docs/architecture/house-kit.md` | you add or change a kit piece, a library material or the kit's sizes |
 | The material library | `docs/architecture/materials.md` | you add, pick or change a shared material, or a model uses one |
 | Furniture | `docs/architecture/furniture.md` | you place, change or add a furniture piece, its openings, collision or Sock spots, or a device (opening sounds, the piano, the mirror, the dust sheet) |
