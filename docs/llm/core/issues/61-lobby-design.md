@@ -71,3 +71,4 @@ Changed: `docs/architecture/lobby.md` reworked to the decided shape: the first t
 Lobby scene and `LobbyState`, the name field, the drawer and World pages, the look, the details. Tickets written: core/62 game
 link, core/63 Lobby scene and state, core/64 name field, core/65 World drawer, core/66 Lobby look, core/67 Lobby details.
 Verified: docs only; no game code changed.
+- Merged: 77785b97 (2026-11-23, branch core/61-lobby-design)
