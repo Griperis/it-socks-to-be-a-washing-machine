@@ -10,9 +10,9 @@ extends RefCounted
 ## / "look_level" (the full pitch, 85 degrees), "hold" has each pick a Sock of the station, "hold_more"
 ## a second one each, "close" moves the camera nearer, from their right.
 static func act(world: Node, arg: String) -> void:
-	var players := world.get_node("Players") as Node3D
+	var players := LevelRuntime.of(world).players
 	var station := world.get_node("Stations/Handling") as Node3D
-	var hands := world.get_node("Socks/Hands") as Hands
+	var hands := LevelRuntime.of(world).hands
 	var peers: Array[int] = [4, 5]
 	if arg == "setup":
 		var scene := load("res://game/parts/avatar/avatar.tscn") as PackedScene
@@ -28,11 +28,11 @@ static func act(world: Node, arg: String) -> void:
 		# Room for two Socks each, for this run only (a player's Hands hold one before the Upgrade).
 		hands.tuning = hands.tuning.duplicate() as HandsTuning
 		hands.tuning.capacity = 4
-		var player := world.get_node("Player") as Player
+		var player := LevelRuntime.of(world).player
 		player.global_position = station.to_global(Vector3(0.0, 0.0, 12.0))  # out of the way
 		# Only the two show: no HUD, no station sign.
 		player.hud().visible = false
-		(world.get_node("Net/Hud") as CanvasLayer).visible = false
+		(LevelRuntime.of(world).net.get_node(^"Hud") as CanvasLayer).visible = false
 		(station.get_node("Name") as Node3D).visible = false
 		var cam := Camera3D.new()
 		world.add_child(cam)

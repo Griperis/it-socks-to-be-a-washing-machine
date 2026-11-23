@@ -4,8 +4,9 @@
 ## --host nor --join the level is played alone (a Host of one, no peer). The label in the corner says
 ## which it is; who joins and leaves, and why a join ended, show under the crosshair (the HUD's
 ## message line). No lobby, no menu: the level's Session, Roster and Avatars do the work; this only
-## starts them and says what happened. The zoo's ZooNet adds its stand-in Teammate (house/04 moved
-## this out of the zoo, so the house needs nothing of game/zoo/).
+## starts them and says what happened. It is the Net of `level_runtime.tscn` in every level; the
+## level's word comes from the runtime instance (`place`), and a body that places itself (the zoo's
+## stand-in Teammate) joins the PLACES_ITSELF group, so the house needs nothing of game/zoo/.
 class_name LevelNet
 extends Node
 
@@ -16,6 +17,13 @@ const JOINED := "joined"
 const LEFT := "left"
 ## The joiner's line (Q2442): the Host's name, then the level's word (place_name()).
 const JOINED_LEVEL := "Joined %s's %s"
+## The group of Avatars that pick where they stand themselves (the zoo's stand-in Teammates, Q2468):
+## the reach rule asks them where they are.
+const PLACES_ITSELF := &"stand_in_teammates"
+
+## The level's word (place_name()); the runtime sets it from its instance.
+## placeholder: the wording waits for the designer (house/04).
+var place := "house"
 
 @onready var _mode: Label = %Mode
 
@@ -71,15 +79,19 @@ func where(by: int) -> Variant:
 	return _where_else(by)
 
 
-## Where a player this level places itself stands (the zoo's stand-in Teammate), or null.
-func _where_else(_by: int) -> Variant:
+## Where a player of this level that places itself stands (the zoo's stand-in Teammate), or null.
+func _where_else(by: int) -> Variant:
+	var level := LevelRuntime.level_of(self)
+	for node in get_tree().get_nodes_in_group(PLACES_ITSELF):
+		var stand_in := node as Avatar
+		if stand_in != null and stand_in.peer() == by and level != null and level.is_ancestor_of(stand_in):
+			return stand_in.global_position
 	return null
 
 
 ## The level's word in the corner and the joiner's line: "house" (the zoo's says "zoo").
-## placeholder: the wording waits for the designer (house/04).
 func place_name() -> String:
-	return "house"
+	return place
 
 
 ## Where player `by` stands and which way they face (about the up axis), or null: what the Roster

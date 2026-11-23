@@ -19,11 +19,13 @@ until menus exist. Shell and furniture only: no game functions yet (M3 brings th
   StaticBody3D, no Part) in the doorways' wall line, so nothing can open them and nobody walks out (Q2514), until
   the exterior ticket brings the door entities.
 - The zoo's noon light: `Environment` (`game/look/noon_environment.tres`), `Sun`, `Picture`.
-- `Player` at the old spawn (room.gd `spawn_pos`, `spawn_yaw`: the laundry, facing its doorway);
-  `ReturnSpot` there too.
-- The shared-state path as the zoo has it: `Socks/Mess`, `Hands`, `Knockdowns`, `Coins`, `Parts`,
-  `Players`, `Avatars`, `Session/Roster`, `Spots`, `Lying`, `Flights`, `FlightSpawner`, and `Net`, a
-  `LevelNet` (`--host`, `--join=`, `--profile=`; alone it is a Host of one).
+- `Spawn` at the old spawn (room.gd `spawn_pos`, `spawn_yaw`: the laundry, facing its doorway);
+  `ReturnSpot` there too (unturned).
+- `Runtime`, the one instance of the level runtime (`game/level/level_runtime.tscn`, core/51, Q2517;
+  `docs/architecture.md` "A level"): the player, the shared-state path (`Socks/Mess`, `Hands`, `Knockdowns`,
+  `Coins`, `Parts`, `Players`, `Avatars`, `Session/Roster`, `Spots`, `Lying`, `Flights`, `FlightSpawner`) and
+  `Net`, a `LevelNet` (`--host`, `--join=`, `--profile=`; alone it is a Host of one). The house sets only
+  its `mess_bounds` on it.
 
 ## Where it came from
 

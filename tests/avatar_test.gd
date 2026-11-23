@@ -116,16 +116,16 @@ func case_seen() -> void:
 	var host := _branch("Host")
 	var guest := _branch("Guest")
 	await _frames(2)
-	var hs := host.get_node("Session") as Session
+	var hs := LevelRuntime.of(host).session
 	hs.port = 0
 	# Two players, two profiles: the gate refuses one player id twice (coop/03).
 	hs.profile = PlayerProfile.fresh()
-	(guest.get_node("Session") as Session).profile = PlayerProfile.fresh()
-	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
-	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
-	var ga := guest.get_node("Avatars") as Avatars
+	LevelRuntime.of(guest).session.profile = PlayerProfile.fresh()
+	_check(LevelRuntime.of(host).net.start(["--host"]) == OK, "the host zoo hosts")
+	_check(LevelRuntime.of(guest).net.start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
+	var ga := LevelRuntime.of(guest).avatars
 	await _until(func() -> bool: return ga.of(1) != null, "the guest to see the host's avatar")
-	var host_player := host.get_node("Player") as Player
+	var host_player := LevelRuntime.of(host).player
 	var start := host_player.global_position
 	Input.action_press(&"move_forward")
 	await _until(func() -> bool: return host_player.global_position.distance_to(start) > 1.0, "the host's player to walk a metre")
@@ -136,7 +136,7 @@ func case_seen() -> void:
 	var looks := seen.get_node_or_null("Looks") as AvatarLooks
 	_check(looks != null and looks.is_visible_in_tree() and looks.body().is_visible_in_tree(), "the guest sees the sock creature, not a capsule")
 	if looks != null:
-		var coral := (host.get_node("Session/Roster") as Roster).tuning.colours[0]
+		var coral := LevelRuntime.of(host).roster.tuning.colours[0]
 		_check(_shown(looks.body(), 0).albedo_color == coral, "its body is the Host's colour, the first (coop/05)")
 		_near(seen.rotation.y, host_player.global_rotation.y, 0.05, "it faces the way the host's player faces")
 	_drop_branches()
@@ -167,7 +167,7 @@ func _branch(label: String) -> Node3D:
 
 func _drop_branches() -> void:
 	for node: Node in _branches:
-		var session := node.get_node_or_null("View/Zoo/Session") as Session
+		var session := _in_branch(node).session
 		if session != null:
 			session.close()
 		var path := node.get_path()
@@ -175,3 +175,9 @@ func _drop_branches() -> void:
 		node.free()
 		get_tree().set_multiplayer(null, path)
 	_branches.clear()
+
+
+## The level runtime of the zoo in branch `node` (a machine of its own), or null.
+func _in_branch(node: Node) -> LevelRuntime:
+	var zoo := node.get_node_or_null("View/Zoo")
+	return LevelRuntime.of(zoo) if zoo != null else null

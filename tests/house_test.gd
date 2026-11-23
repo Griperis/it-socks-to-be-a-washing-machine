@@ -14,6 +14,7 @@ const MATERIALS := "res://game/house/kit/materials"
 const PLAYER := "res://game/player/player.tscn"
 const SHELL := "res://game/house/shell.tscn"
 const HOUSE := "res://game/house/house.tscn"
+const RUNTIME := "res://game/level/level_runtime.tscn"
 const FURNITURE := "res://game/furniture"
 ## The old spawn moved to the plan (room.gd spawn_pos 1.58, -2.9, 5.59 in the laundry, spawn_yaw).
 const SPAWN := Vector3(1.68, -3.0, 5.87)
@@ -148,7 +149,7 @@ func _house() -> Node3D:
 func _level_up() -> Node3D:
 	_level = (load(HOUSE) as PackedScene).instantiate() as Node3D
 	add_child(_level)
-	var player := _level.get_node("Player") as Player
+	var player := LevelRuntime.of(_level).player
 	await _until(func() -> bool: return player.is_on_floor(), "the player to stand in the house")
 	return _level
 
@@ -702,7 +703,7 @@ func _go(player: Player, to: Vector2, what: String) -> void:
 
 func case_real_path_doors_shut() -> void:
 	var house := await _level_up()
-	var player := house.get_node("Player") as Player
+	var player := LevelRuntime.of(house).player
 	# In the hall, facing the front door (north, -Z) from 1.5 m in.
 	player.global_position = Vector3(5.75, 0.0, 1.5)
 	player.rotation.y = 0.0
@@ -734,7 +735,7 @@ func case_real_path_doors_shut() -> void:
 
 func case_real_path_spawn_to_every_floor() -> void:
 	var house := await _level_up()
-	var player := house.get_node("Player") as Player
+	var player := LevelRuntime.of(house).player
 	var at := func() -> Vector3: return player.global_position
 	_check((at.call() as Vector3).distance_to(SPAWN) < 0.1, "the player starts at the old spawn in the laundry (%s)" % at.call())
 	_near(player.rotation.y, SPAWN_YAW, 0.01, "facing the old spawn's way")
@@ -775,13 +776,15 @@ func case_h01_main_scene() -> void:
 	var house := await _level_up()
 	var shell := house.get_node_or_null("Shell") as Node3D
 	_check(shell != null and shell.scene_file_path == SHELL and shell.transform == Transform3D.IDENTITY, "the shell stands at the origin, the house's frame")
+	var runtime := LevelRuntime.of(house)
+	_check(runtime != null and runtime.scene_file_path == RUNTIME and runtime.get_parent() == house, "the house has one instance of the level runtime")
 	for n: String in ["Player", "Parts", "Session", "Session/Roster", "Socks/Mess", "Socks/Hands", "Socks/Knockdowns", "Socks/Coins",
 			"Avatars", "FlightSpawner", "Net", "Net/Hud/Mode"]:
-		_check(house.get_node_or_null(n) != null, "the house has its %s, as the zoo" % n)
-	var net := house.get_node("Net")
-	_check(net is LevelNet and not net is ZooNet, "its co-op start is the game's LevelNet")
+		_check(runtime.get_node_or_null(n) != null, "the house has its %s, as the zoo" % n)
+	var net := runtime.net
+	_check(net is LevelNet, "its co-op start is the game's LevelNet")
 	_same((net as LevelNet).place_name(), "house", "which names the house")
-	var parts := house.get_node("Parts") as Parts
+	var parts := LevelRuntime.of(house).parts
 	var door := house.get_node("Furniture/Fridge/Door_Top/Openable") as Part
 	_check(door != null and door.parts == parts, "the furniture's openings are bound to the house's Parts (%s)" % (door.id if door != null else &""))
 	var fresh := (load(HOUSE) as PackedScene).instantiate()
@@ -885,25 +888,25 @@ func case_h03_lights() -> void:
 func case_h04_coop() -> void:
 	var alone := _branch("Alone")
 	await _frames(2)
-	var alone_net := alone.get_node("Net") as LevelNet
-	_check(not (alone.get_node("Session") as Session).is_online() and alone.get_node("Players").get_child_count() == 0,
+	var alone_net := LevelRuntime.of(alone).net
+	_check(not LevelRuntime.of(alone).session.is_online() and LevelRuntime.of(alone).players.get_child_count() == 0,
 			"alone, the house opens no network and has no avatars")
 	_check(alone_net.mode_text().begins_with("Alone"), "the corner says: %s" % alone_net.mode_text())
 	var host := _branch("Host")
 	var guest := _branch("Guest")
 	await _frames(2)
-	var hs := host.get_node("Session") as Session
+	var hs := LevelRuntime.of(host).session
 	hs.port = 0
 	hs.profile = PlayerProfile.fresh()
-	_check((host.get_node("Net") as LevelNet).start(["--host"]) == OK, "the house hosts")
-	var gs := guest.get_node("Session") as Session
+	_check(LevelRuntime.of(host).net.start(["--host"]) == OK, "the house hosts")
+	var gs := LevelRuntime.of(guest).session
 	gs.profile = PlayerProfile.fresh()
-	_check((guest.get_node("Net") as LevelNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "another house joins it")
-	await _until(func() -> bool: return (guest.get_node("Net") as LevelNet).mode_text().begins_with("Joined"), "the guest to be welcomed")
-	_check((guest.get_node("Net") as LevelNet).mode_text().contains("house"), "into the host's house: %s" % (guest.get_node("Net") as LevelNet).mode_text())
+	_check(LevelRuntime.of(guest).net.start(["--join=127.0.0.1:%d" % hs.port]) == OK, "another house joins it")
+	await _until(func() -> bool: return LevelRuntime.of(guest).net.mode_text().begins_with("Joined"), "the guest to be welcomed")
+	_check(LevelRuntime.of(guest).net.mode_text().contains("house"), "into the host's house: %s" % LevelRuntime.of(guest).net.mode_text())
 	var g_id := gs.me()
-	var ha := host.get_node("Avatars") as Avatars
-	var ga := guest.get_node("Avatars") as Avatars
+	var ha := LevelRuntime.of(host).avatars
+	var ga := LevelRuntime.of(guest).avatars
 	await _until(func() -> bool: return ha.of(g_id) != null and ga.of(1) != null, "each house to show the other's avatar")
 	_drop_branches()
 
@@ -927,7 +930,8 @@ func _branch(label: String) -> Node3D:
 ## Every co-op machine goes: its session closes, then the nodes, then its MultiplayerAPI.
 func _drop_branches() -> void:
 	for node in _branches:
-		var session := node.get_node_or_null("View/House/Session") as Session
+		var house := node.get_node_or_null("View/House")
+		var session := LevelRuntime.of(house).session if house != null else null
 		if session != null:
 			session.close()
 		var path := node.get_path()

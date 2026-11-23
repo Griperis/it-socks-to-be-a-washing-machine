@@ -248,8 +248,9 @@ func case_h03() -> void:
 	await _build()
 	_check(_player.hands_tuning.capacity == 1, "the Hands hold 1 to start (%d)" % _player.hands_tuning.capacity)
 	var zoo := (load(ZOO) as PackedScene).instantiate()
-	var zoo_player := zoo.get_node("Player") as Player
-	_check(zoo_player.hands_tuning != null and zoo_player.hands_tuning.capacity == 3, "the zoo's player holds 3")
+	# The zoo's level runtime gives its player the zoo's tuning as the player enters the tree.
+	var zoo_tuning := LevelRuntime.of(zoo).hands_tuning
+	_check(zoo_tuning != null and zoo_tuning.capacity == 3, "the zoo's player holds 3")
 	zoo.free()
 
 

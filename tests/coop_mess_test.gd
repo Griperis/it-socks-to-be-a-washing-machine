@@ -78,7 +78,7 @@ func case_pour_real_path() -> void:
 		await _paced()
 		frames += 1
 		most_moving = maxi(most_moving, gm.moving_count())
-		spawned = maxi(spawned, guest.get_node("Flights").get_child_count())
+		spawned = maxi(spawned, LevelRuntime.of(guest).flights.get_child_count())
 		for sock in range(first_count, gm.count()):
 			if gm.state_of(sock) != Mess.State.FLYING:
 				continue
@@ -118,7 +118,7 @@ func case_throw_into_heap() -> void:
 	var sock := _loose_lying(hm, 0, spout.first)
 	var from := heap_at + Vector3(-2.0, 0.5, 0.0)
 	var vel := (heap_at - from).normalized() * 8.0
-	var parts := host.get_node("Parts") as Parts
+	var parts := LevelRuntime.of(host).parts
 	parts.apply({"ok": true, "kind": &"throw", "by": Parts.HOST, "to": hm.id,
 			"changes": {hm.id: hm.thrown_patch(sock, Transform3D(Basis.IDENTITY, from), vel, Vector3.ZERO, Parts.HOST)}})
 	var woken: Dictionary[int, bool] = {}
@@ -132,7 +132,7 @@ func case_throw_into_heap() -> void:
 				continue
 			woken[s] = true
 			var body := gm.moving_body(s)
-			if body != null and body.get_parent() != guest.get_node("Flights"):
+			if body != null and body.get_parent() != LevelRuntime.of(guest).flights:
 				local_bodies[s] = true
 	print("MESS throw: %d heap Socks woken on the Host and shown on the Guest; %d as the Guest's own bodies" % [woken.size(), local_bodies.size()])
 	_check(not woken.is_empty(), "the Throw wakes Socks of the heap")
@@ -224,18 +224,18 @@ func _late_join(n: int, lag_ms: int) -> void:
 	var host := _branch("Host")
 	var guest := _branch("Guest")
 	await _frames(2)
-	var hs := host.get_node("Session") as Session
-	var gs := guest.get_node("Session") as Session
+	var hs := LevelRuntime.of(host).session
+	var gs := LevelRuntime.of(guest).session
 	hs.port = 0
 	hs.profile = PlayerProfile.fresh()
 	gs.profile = PlayerProfile.fresh()
-	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
+	_check(LevelRuntime.of(host).net.start(["--host"]) == OK, "the host zoo hosts")
 	_lag(host, lag_ms)
 	var hm := _mess(host)
 	var gm := _mess(guest)
 	var tag := "%d at %dms" % [n, lag_ms]
 	print("MESS join %s: a fresh zoo's Mess (%d Socks) packs to %d bytes; whole fields would be %d" \
-			% [tag, hm.count(), var_to_bytes((host.get_node("Parts") as Parts).snapshot()).size(), var_to_bytes(hm.state()).size()])
+			% [tag, hm.count(), var_to_bytes(LevelRuntime.of(host).parts.snapshot()).size(), var_to_bytes(hm.state()).size()])
 	var spout := _spout(host, n)
 	await _click(host, "More")
 	var want := mini(n / 2, hm.bodies_tuning().moving_budget / 2)
@@ -254,7 +254,7 @@ func _late_join(n: int, lag_ms: int) -> void:
 				at_welcome[sock] = body.global_position
 				if gm.state_of(sock) != Mess.State.FLYING:
 					not_flying[0] += 1)
-	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
+	_check(LevelRuntime.of(guest).net.start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
 	_lag(guest, lag_ms)
 	_spy(guest)
 	var frames := 0
@@ -274,7 +274,7 @@ func _late_join(n: int, lag_ms: int) -> void:
 	note.call()
 	var join_bytes := int(peer.sent_bytes.get(MultiplayerPeer.TRANSFER_MODE_RELIABLE, 0)) - r0
 	print("MESS join %s: mid-pour, %d Socks (%d flying on the Host): %d reliable bytes from the Host until the welcome; the snapshot packs to %d bytes" \
-			% [tag, hm.count(), hm.moving_count(), join_bytes, var_to_bytes((host.get_node("Parts") as Parts).snapshot()).size()])
+			% [tag, hm.count(), hm.moving_count(), join_bytes, var_to_bytes(LevelRuntime.of(host).parts.snapshot()).size()])
 	_check(not at_welcome.is_empty(), "the Guest is welcomed with flying Socks as bodies (%d)" % at_welcome.size())
 	# Each body starts on the path the Host's took between the snapshot and the welcome.
 	var off := 0
@@ -313,7 +313,7 @@ func _late_join(n: int, lag_ms: int) -> void:
 	print("MESS pour %s: %.1f s from the welcome to all at rest; reliable from the Host %d B: %.0f B/s, worst second %d B" \
 			% [tag, secs, bytes, bytes / maxf(secs, 0.001), worst_second])
 	print("MESS ticks %s: the Mess's scripts a tick, Host %s, Guest %s" % [tag, _tick_text(0), _tick_text(1)])
-	print("MESS join %s: once all rest, %d Socks, the snapshot packs to %d bytes" % [tag, hm.count(), var_to_bytes((host.get_node("Parts") as Parts).snapshot()).size()])
+	print("MESS join %s: once all rest, %d Socks, the snapshot packs to %d bytes" % [tag, hm.count(), var_to_bytes(LevelRuntime.of(host).parts.snapshot()).size()])
 	_check(gs.is_online(), "%s: the Guest stays joined" % tag)
 	_check(_rested(hm, gm, spout, n), "%s: every Sock rests on both machines" % tag)
 	_same(gm.state(), hm.state(), "%s: the late Guest's Mess ends equal to the Host's" % tag)
@@ -328,18 +328,18 @@ func _pair(lag_ms: int) -> Array[Node3D]:
 	var host := _branch("Host")
 	var guest := _branch("Guest")
 	await _frames(2)
-	var hs := host.get_node("Session") as Session
-	var gs := guest.get_node("Session") as Session
+	var hs := LevelRuntime.of(host).session
+	var gs := LevelRuntime.of(guest).session
 	hs.port = 0
 	hs.profile = PlayerProfile.fresh()
 	gs.profile = PlayerProfile.fresh()
-	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
+	_check(LevelRuntime.of(host).net.start(["--host"]) == OK, "the host zoo hosts")
 	_lag(host, lag_ms)
-	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
+	_check(LevelRuntime.of(guest).net.start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
 	_lag(guest, lag_ms)
 	var hm := _mess(host)
 	var gm := _mess(guest)
-	await _until(func() -> bool: return (guest.get_node("Net") as ZooNet).mode_text().begins_with("Joined") \
+	await _until(func() -> bool: return LevelRuntime.of(guest).net.mode_text().begins_with("Joined") \
 			and gm.count() == hm.count(), "the guest zoo to be welcomed with the Host's Mess")
 	_spy(guest)
 	return [host, guest]
@@ -347,7 +347,7 @@ func _pair(lag_ms: int) -> Array[Node3D]:
 
 ## From now on every Command the Guest's machine sends up is noted.
 func _spy(guest: Node3D) -> void:
-	var parts := guest.get_node("Parts") as Parts
+	var parts := LevelRuntime.of(guest).parts
 	var up := parts.relay
 	parts.relay = func(cmd: Command) -> void:
 		_guest_asked.append(cmd)
@@ -363,7 +363,7 @@ func _kinds(cmds: Array[Command]) -> String:
 
 
 func _mess(zoo: Node3D) -> Mess:
-	return zoo.get_node("Socks/Mess") as Mess
+	return LevelRuntime.of(zoo).mess
 
 
 ## The heap station's spout with a batch of `n`.
@@ -426,7 +426,7 @@ func _drawer_box(drawer: Openable) -> AABB:
 
 ## The Host's player steps beside drawer `drawer` and asks it open or shut (the Host's answer).
 func _open(host: Node3D, drawer: Openable, open: bool) -> void:
-	var player := host.get_node("Player") as Player
+	var player := LevelRuntime.of(host).player
 	# Beside the Cabinet, out of the drawer's way; the Host's avatar takes the place in a few ticks
 	# (what the reach check reads).
 	var cabinet := drawer.get_parent() as Node3D
@@ -435,7 +435,7 @@ func _open(host: Node3D, drawer: Openable, open: bool) -> void:
 	player.velocity = Vector3.ZERO
 	player.reset_physics_interpolation()
 	await _physics_ticks(4)
-	(host.get_node("Parts") as Parts).ask(Command.new(&"open", Parts.HOST, drawer.id, {"open": open}))
+	LevelRuntime.of(host).parts.ask(Command.new(&"open", Parts.HOST, drawer.id, {"open": open}))
 
 
 ## The flat way drawer `drawer` slides out: it is opened and shut again on the Host, and its body's
@@ -470,7 +470,7 @@ func _before_front(host: Node3D, drawer: Openable, slide: Vector3) -> PackedInt3
 		var at := Vector3(edge.x, box.get_center().y, edge.z) + across * (socks.size() - 2) * 0.12
 		p = hm.lying_patch(sock, Transform3D(Basis(Vector3.UP, atan2(slide.x, slide.z) + PI * 0.5), at), p)
 		sock += 1
-	(host.get_node("Parts") as Parts).apply({"ok": true, "kind": &"lose", "by": Parts.HOST, "to": hm.id, "changes": {hm.id: p}})
+	LevelRuntime.of(host).parts.apply({"ok": true, "kind": &"lose", "by": Parts.HOST, "to": hm.id, "changes": {hm.id: p}})
 	return socks
 
 
@@ -478,7 +478,7 @@ func _before_front(host: Node3D, drawer: Openable, slide: Vector3) -> PackedInt3
 func _click(zoo: Node3D, button: String) -> void:
 	var station := zoo.get_node(HEAP) as Node3D
 	var target := (station.get_node(button) as Node3D).global_position
-	var player := zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(zoo).player
 	player.capture_mouse()
 	player.global_position = target + station.global_basis * Vector3(0.0, -0.5, -1.5)
 	player.velocity = Vector3.ZERO
@@ -567,7 +567,7 @@ func _branch(label: String) -> Node3D:
 
 func _drop_branches() -> void:
 	for node in _branches:
-		var session := node.get_node_or_null("View/Zoo/Session") as Session
+		var session := _in_branch(node).session
 		if session != null:
 			session.close()
 		var path := node.get_path()
@@ -575,3 +575,9 @@ func _drop_branches() -> void:
 		node.free()
 		get_tree().set_multiplayer(null, path)
 	_branches.clear()
+
+
+## The level runtime of the zoo in branch `node` (a machine of its own), or null.
+func _in_branch(node: Node) -> LevelRuntime:
+	var zoo := node.get_node_or_null("View/Zoo")
+	return LevelRuntime.of(zoo) if zoo != null else null

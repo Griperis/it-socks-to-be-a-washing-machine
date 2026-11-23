@@ -316,23 +316,23 @@ func _spot_sock(spot: String) -> int:
 
 
 func _kd() -> Knockdowns:
-	return _zoo.get_node("Socks/Knockdowns") as Knockdowns
+	return LevelRuntime.of(_zoo).knockdowns
 
 
 func _mess() -> Mess:
-	return _zoo.get_node("Socks/Mess") as Mess
+	return LevelRuntime.of(_zoo).mess
 
 
 func _hands() -> Hands:
-	return _zoo.get_node("Socks/Hands") as Hands
+	return LevelRuntime.of(_zoo).hands
 
 
 func _parts() -> Parts:
-	return _zoo.get_node("Parts") as Parts
+	return LevelRuntime.of(_zoo).parts
 
 
 func _player() -> Player:
-	return _zoo.get_node("Player") as Player
+	return LevelRuntime.of(_zoo).player
 
 
 func _mate() -> Avatar:
