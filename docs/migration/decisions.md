@@ -1,4 +1,4 @@
-Next free Q number: Q2536 (update this line whenever a round of questions is asked)
+Next free Q number: Q2537 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -450,3 +450,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2533: triage: player stacking (core/41), hand-off (core/42) and pings and hint arrows (core/43) go to M3, soon; the F1 debug menu (core/44), the studio intro (core/45) and the walked mate distance (core/53) go to M5, by need (designer, 2026-11-23).
 - Q2534: M0.6 batch 5, the close-out, starts now (designer, 2026-11-23).
 - Q2535: after M3, M4 (the run's frame), M1.1 (sound) and M5 (features) run in parallel wherever they can; the architecture and the authoring of voicelines (the washer's, the Old Tree's, cutscenes) are designed first, before their features (designer, 2026-11-23).
+- Q2536: assets/09 approved as its stills show: the body-coloured sill closes the car's window slit, the doors open separately as "Car Door", the pens lie apart (designer, 2026-11-23).
