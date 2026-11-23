@@ -69,6 +69,7 @@
 [ext_resource type="Script" uid="uid://cyhr6nx34vjq0" path="res://game/mess/sock_generator.gd" id="82_generator"]
 [ext_resource type="Script" uid="uid://cub70qrwflqk1" path="res://game/mess/sock_area.gd" id="83_area"]
 [ext_resource type="Script" uid="uid://c76hgi71q4k4g" path="res://game/mess/sock_trail.gd" id="84_trail"]
+[ext_resource type="Script" path="res://game/house/house_lights.gd" id="86_lights"]
 [ext_resource type="Script" uid="uid://co2u54sk1yir8" path="res://game/mess/generated_socks.gd" id="85_generated"]
 
 [node name="House" type="Node3D" unique_id=1892225822]
@@ -292,6 +293,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.569, 6, 1.475)
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.308, 6, 7.85)
 
 [node name="Lights" type="Node3D" parent="." unique_id=1445155412]
+script = ExtResource("86_lights")
+layered = Array[NodePath]([NodePath("../Shell"), NodePath("../Furniture"), NodePath("../Cabinets"), NodePath("../Doors")])
 
 [node name="Ceiling_workshop" type="OmniLight3D" parent="Lights" unique_id=1424989359]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02, -0.46, 1.77)
@@ -300,6 +303,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(0)
 
 [node name="Ceiling_laundry" type="OmniLight3D" parent="Lights" unique_id=1406876837]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02, -0.46, 5.98)
@@ -308,6 +312,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(0)
 
 [node name="Ceiling_boiler" type="OmniLight3D" parent="Lights" unique_id=1361744519]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, -0.46, 1.02)
@@ -316,6 +321,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(0)
 
 [node name="Ceiling_stair_lobby" type="OmniLight3D" parent="Lights" unique_id=1921770898]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, -0.46, 3.78)
@@ -324,6 +330,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(0)
 
 [node name="Ceiling_garage" type="OmniLight3D" parent="Lights" unique_id=1269629089]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.48, -0.46, 4.25)
@@ -332,6 +339,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(0)
 
 [node name="Ceiling_stairs_basement" type="OmniLight3D" parent="Lights" unique_id=147070147]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 1.13, 7.9)
@@ -340,6 +348,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(0, 1)
 
 [node name="Ceiling_kitchen" type="OmniLight3D" parent="Lights" unique_id=65870976]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02, 2.54, 4.25)
@@ -348,6 +357,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(1)
 
 [node name="Ceiling_hall" type="OmniLight3D" parent="Lights" unique_id=587346379]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 2.54, 2.8)
@@ -356,6 +366,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(1)
 
 [node name="Ceiling_living" type="OmniLight3D" parent="Lights" unique_id=198353881]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.48, 2.18, 4.25)
@@ -364,6 +375,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(1)
 
 [node name="Ceiling_stairs_ground" type="OmniLight3D" parent="Lights" unique_id=426770898]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 4.13, 7.9)
@@ -372,6 +384,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(1, 2)
 
 [node name="Ceiling_office" type="OmniLight3D" parent="Lights" unique_id=495201154]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02, 5.44, 1.77)
@@ -380,6 +393,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Ceiling_bedroom" type="OmniLight3D" parent="Lights" unique_id=1387094287]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02, 5.08, 5.98)
@@ -388,6 +402,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Ceiling_landing" type="OmniLight3D" parent="Lights" unique_id=966309601]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 5.44, 2.8)
@@ -396,6 +411,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Ceiling_bathroom" type="OmniLight3D" parent="Lights" unique_id=20485797]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.48, 5.44, 1.77)
@@ -404,6 +420,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Ceiling_kids" type="OmniLight3D" parent="Lights" unique_id=2104704009]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.48, 5.44, 5.98)
@@ -412,6 +429,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Ceiling_stairs_first" type="OmniLight3D" parent="Lights" unique_id=1504451910]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 6.53, 7.9)
@@ -420,6 +438,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(2, 3)
 
 [node name="Ceiling_loft_2" type="OmniLight3D" parent="Lights" unique_id=2047072146]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7923, 8.809, 4.25)
@@ -428,6 +447,7 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(3)
 
 [node name="Ceiling_loft_7" type="OmniLight3D" parent="Lights" unique_id=830428628]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7077, 8.809, 4.25)
@@ -436,18 +456,21 @@ shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
 omni_range = 6
+metadata/lit_levels = PackedInt32Array(3)
 
 [node name="Lamp_FloorLamp" type="OmniLight3D" parent="Lights" unique_id=1796023232]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.13, 1.38, 8.13)
 light_color = Color(1, 0.88, 0.7, 1)
 light_energy = 0.7
 omni_range = 3
+metadata/lit_levels = PackedInt32Array(1)
 
 [node name="Lamp_Nightstand" type="OmniLight3D" parent="Lights" unique_id=825885781]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.76, 3.78, 8.21)
 light_color = Color(1, 0.88, 0.7, 1)
 light_energy = 0.7
 omni_range = 3
+metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Doors" type="Node3D" parent="." unique_id=1264190857]
 
