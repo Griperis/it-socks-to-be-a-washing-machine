@@ -1,4 +1,4 @@
-Next free Q number: Q2588 (update this line whenever a round of questions is asked)
+Next free Q number: Q2591 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -502,3 +502,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2585: the name is typed in one field on the Multiplayer page, for Host and Join, built so a Steam name can fill it later (core/61 L4; designer, 2026-11-23).
 - Q2586: the drawer's "Pairs per Drawer" slider waits for the Stages piece (core/61 L5; designer, 2026-11-23).
 - Q2587: a co-op World's row name is made in one swappable place, easy to change; first the members' names, with "World 1", "World 2" plus details on the World's state as the likely simpler form, judged at the Lobby look's first still; no Guest is limited to Worlds they belong to (core/61 L7; designer, 2026-11-23).
+- Q2588: the catch by Throw is part of the Hand-off ticket: one rule and one hit test for Hand-off, catch and knockdown (core/42; designer, 2026-11-23).
+- Q2589: a knocked-down Teammate cannot be handed a Sock, as the other knockdown exemptions (a change from the old; core/42; designer, 2026-11-23).
+- Q2590: every other recommended answer in core/41, core/42 and core/43's Open follow-ups stands (mostly as the old; a Guest's Hand-off times out after 2 s per Q2477; a ping outlines anything with the Outline component; the hint arrow is built now with pings as its first source); the stack's sync is asked again (designer, 2026-11-23).
