@@ -7,6 +7,7 @@ collision, its Sock spots and its settings live in the Godot scenes and are neve
 | Family | Script | Source files it builds | glb in the game |
 |---|---|---|---|
 | Sock shapes (4) | `sock/make_socks.py` | `assets_src/blender/sock/socks.blend` | `assets/sock/<shape>.glb` |
+| Sock knit tile (1) | `sock/make_knit.py` (run alone: `blender -b -P assets_src/generate/sock/make_knit.py -- [--out <png>]`; a picture, no `.blend`, assets/05) | none | `assets/sock/knit.png` |
 | Sock balls (9) | `sock/make_sock_balls.py` | `assets_src/blender/sock/sock_balls.blend` | `assets/sock/ball_<cuff>.glb` |
 | Cabinets (17) | `cabinet/make_cabinets.py` (+ `cabinet_art.py`, the front art; `appliance_family.py`, shared helpers) | `assets_src/blender/cabinet/cabinet_<collection>.blend` | `assets/cabinet/<collection>.glb` |
 | Furniture (67) | `furniture/fkit.py` (+ `kit.py`, the look; the group files `basement.py`, `ground.py`, `first.py`, `attic.py`, `plants.py`, `grotto.py`, one function per piece) | `assets_src/blender/furniture/<piece>.blend` | `assets/furniture/<piece>.glb` |

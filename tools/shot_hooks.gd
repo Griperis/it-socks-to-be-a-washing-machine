@@ -416,6 +416,31 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.make_current()
 			(station.get_node("More/HeapButton") as HeapButton).use(player.player_id())
 			return true
+		"held_zoom":
+			# assets/05: the zoo's player turns side-on to the handling station (its sign out of the
+			# view) and holds the zoom button, so the held Sock is seen up close.
+			var player := world.get_node("Player") as Player
+			player.rotation.y = PI / 2.0
+			(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-20.0)
+			player.reset_physics_interpolation()
+			player.capture_mouse()
+			Input.action_press(&"zoom")
+			return true
+		"heap_view":
+			# assets/05: a camera on the heap station's lying heap, after `heap_more` has poured it.
+			# Arg "close": under a metre from the Socks; "far": 5 m away.
+			var station := world.get_node("Stations/Heap") as Node3D
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 50.0
+			var target := station.to_global(Vector3(0.0, 0.05, 0.0))
+			if arg == "close":
+				cam.global_position = station.to_global(Vector3(-0.55, 0.65, -0.5))
+			else:
+				cam.global_position = target + (station.to_global(Vector3(-2.8, 1.5, -4.0)) - target).normalized() * 5.0
+			cam.look_at(target)
+			cam.make_current()
+			return true
 		"outline":
 			# core/11: the zoo's player stands before a thing of the outline station and aims at it, so
 			# its own aim shows the outline. arg "<thing>_<near|far>": thing sock, box, drawer (the

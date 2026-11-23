@@ -9,6 +9,8 @@ extends RefCounted
 const TABLE := preload("res://game/sock/sock_looks.tres")
 const SHADER := preload("res://game/sock/sock_pattern.gdshader")
 const PRINTS := preload("res://assets/sock/prints.png")
+## The knit tiled over every Sock (assets/05).
+const KNIT := preload("res://game/sock/sock_knit.tres")
 
 static var _scenes: Dictionary[String, PackedScene] = {}
 ## One material per Design, for its Socks and for its Pair's ball, shared by every Looks of it.
@@ -128,13 +130,20 @@ static func ball_radius(cuff: StringName) -> float:
 	return r
 
 
-## The shared part of every sock material: the shader, the prints, the cloth and the shape's fit.
+## The shared part of every sock material: the shader, the prints, the cloth, the knit and the shape's fit.
 static func _new_material(collection: StringName, ball: bool) -> ShaderMaterial:
 	var m := ShaderMaterial.new()
 	m.shader = SHADER
 	m.set_shader_parameter(&"prints", PRINTS)
 	m.set_shader_parameter(&"prints_grid", TABLE.prints_grid)
-	m.set_shader_parameter(&"fabric", float(TABLE.fabric_of(collection)))
+	var fabric := TABLE.fabric_of(collection)
+	m.set_shader_parameter(&"fabric", float(fabric))
+	m.set_shader_parameter(&"knit", KNIT.texture)
+	m.set_shader_parameter(&"knit_tile_stitches", Vector2(KNIT.tile_stitches))
+	m.set_shader_parameter(&"knit_stitch", KNIT.stitch_of(fabric))
+	m.set_shader_parameter(&"knit_strength", KNIT.strength_of(fabric))
+	m.set_shader_parameter(&"knit_cavity", KNIT.cavity)
+	m.set_shader_parameter(&"knit_fade", KNIT.fade_distance)
 	var f := TABLE.ball_fit if ball else TABLE.fit(TABLE.shape_of(collection))
 	m.set_shader_parameter(&"print_aspect", f.print_aspect)
 	m.set_shader_parameter(&"cloth_size", f.cloth_size)
