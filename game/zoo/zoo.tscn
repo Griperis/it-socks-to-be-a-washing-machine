@@ -22,6 +22,7 @@
 [ext_resource type="PackedScene" uid="uid://b7tq2avatarst" path="res://game/zoo/stations/avatar.tscn" id="39_avatar"]
 [ext_resource type="PackedScene" uid="uid://chiexs1bn5bo5" path="res://game/zoo/stations/knockdown.tscn" id="40_knockdown"]
 [ext_resource type="PackedScene" uid="uid://c6s728lc0yqao" path="res://game/zoo/stations/sock_generator.tscn" id="52_sock_generator"]
+[ext_resource type="PackedScene" uid="uid://bx2esfl7c8ibt" path="res://game/zoo/stations/hand_off.tscn" id="53_hand_off"]
 [ext_resource type="PackedScene" uid="uid://q0tm1ywugfrf" path="res://game/level/level_runtime.tscn" id="43_runtime"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
@@ -123,6 +124,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -2)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 0, 3.5)
 
 [node name="SockGenerator" parent="Stations" instance=ExtResource("52_sock_generator")]
+
+[node name="HandOff" parent="Stations" unique_id=1700158525 instance=ExtResource("53_hand_off")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 3.5)
 
 [node name="ReturnSpot" type="Marker3D" parent="." unique_id=1397039282]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.5)

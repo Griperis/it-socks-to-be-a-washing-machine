@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://bx2esfl7c8ibt"]
+
+[ext_resource type="PackedScene" uid="uid://d2u50k5e57ccb" path="res://game/parts/avatar/avatar.tscn" id="1_avatar"]
+[ext_resource type="Script" uid="uid://1azmiwah39zt6" path="res://game/zoo/hand_off/hand_off_stand_in.gd" id="2_stand_in"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="3_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="4_hands"]
+[ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="5_spot"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="6_designs"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="7_tuning"]
+[ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="8_knockdowns"]
+[ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="9_knock_tuning"]
+[ext_resource type="Script" uid="uid://idp3dgpkcusvg" path="res://game/zoo/hand_off/hand_off_numbers.gd" id="11_numbers"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.42, 0.47, 0.4, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_pad")
+size = Vector2(4.5, 4)
+
+[node name="HandOff" type="Node3D" unique_id=1460312770]
+
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=1460312771]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Name" type="Label3D" parent="." unique_id=1460312772]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 2.1, -1.6)
+pixel_size = 0.004
+billboard = 2
+text = "Hand-off: holding a Sock or a Pair, aim at a Teammate and click the right button: a Pair always goes over, a loose Sock only when it completes a Pair in their Hands. A Throw under the full ring that hits them is caught by the same rule; a refused one bounces off. The left Teammate holds a Brown Sock (its Hands are full), the right one holds nothing"
+vertical_alignment = 2
+autowrap_mode = 3
+width = 700.0
+
+[node name="Numbers" type="Node3D" parent="." unique_id=1460312790]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.01, 1.75)
+script = ExtResource("11_numbers")
+
+[node name="Holder" type="Node3D" parent="." unique_id=1460312773 node_paths=PackedStringArray("avatar", "holds")]
+script = ExtResource("2_stand_in")
+avatar = NodePath("6")
+holds = NodePath("../Spots/Held")
+
+[node name="6" parent="Holder" unique_id=1460312774 instance=ExtResource("1_avatar")]
+pose_position = Vector3(-1, 0, -1)
+pose_yaw = 3.1415927
+
+[node name="Open" type="Node3D" parent="." unique_id=1460312791 node_paths=PackedStringArray("avatar")]
+script = ExtResource("2_stand_in")
+avatar = NodePath("7")
+colour = Color(0.31, 0.702, 0.663, 1)
+
+[node name="7" parent="Open" unique_id=1460312792 instance=ExtResource("1_avatar")]
+pose_position = Vector3(1.2, 0, -1)
+pose_yaw = 3.1415927
+
+[node name="Spots" type="Node3D" parent="." unique_id=1460312775]
+
+[node name="Held" type="Marker3D" parent="Spots" unique_id=1460312776]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 0, -1.5)
+script = ExtResource("5_spot")
+design = 12
+
+[node name="Mate" type="Marker3D" parent="Spots" unique_id=1460312777]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 0, 0.9)
+script = ExtResource("5_spot")
+design = 12
+
+[node name="Odd" type="Marker3D" parent="Spots" unique_id=1460312793]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 1.1)
+script = ExtResource("5_spot")
+design = 16
+
+[node name="PairA" type="Marker3D" parent="Spots" unique_id=1460312794]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0, 0.9)
+script = ExtResource("5_spot")
+design = 26
+
+[node name="PairB" type="Marker3D" parent="Spots" unique_id=1460312795]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 1.1)
+script = ExtResource("5_spot")
+design = 26
+
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=1460312779]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
+
+[node name="Lying" type="Node3D" parent="." unique_id=1460312780]
+
+[node name="Flights" type="Node3D" parent="." unique_id=1460312781]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=1460312782]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="." unique_id=1460312783]
+
+[node name="Mess" type="Node" parent="Socks" unique_id=1460312784 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+script = ExtResource("3_mess")
+catalogue = ExtResource("6_designs")
+tuning = ExtResource("7_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+bounds = AABB(-8, -2, -8, 16, 8, 16)
+return_spot = NodePath("../../ReturnSpot")
+
+[node name="Hands" type="Node" parent="Socks" unique_id=1460312785 node_paths=PackedStringArray("mess")]
+script = ExtResource("4_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("7_tuning")
+
+[node name="Knockdowns" type="Node" parent="Socks" unique_id=1460312786 node_paths=PackedStringArray("hands")]
+script = ExtResource("8_knockdowns")
+tuning = ExtResource("9_knock_tuning")
+hands = NodePath("../Hands")

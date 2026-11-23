@@ -179,7 +179,8 @@ func case_never_split() -> void:
 	for verb: StringName in _hands.accepts():
 		verbs.append(String(verb))
 	verbs.sort()
-	_same(verbs, PackedStringArray(["cycle", "drop", "pick", "throw"]), "no Command splits a Pair")
+	# core/42: a Hand-off moves the whole item (a Pair as its lead) into a Teammate's Hands, never one Sock of it.
+	_same(verbs, PackedStringArray(["cycle", "drop", "hand_off", "pick", "throw"]), "no Command splits a Pair")
 	Input.action_press(&"drop_throw")
 	await _until(func() -> bool: return _player.charging and _player.charge >= 1.0, "the ring to fill", 200)
 	Input.action_release(&"drop_throw")

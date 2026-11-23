@@ -4,7 +4,9 @@
 ## pair, a drop and a throw as loud, in the world at 1.2 m over that Teammate's feet (coop/05, Q2453;
 ## a cycle is the player's own). A Pair shelved is heard in the world at its drawer by everyone, and a
 ## leaver's dropped Hands at their last place. A knockdown (coop/10) is heard by everyone at the hit
-## point and buzzes the knocked player's pad; a grab buzzes the dragged player's. Refusals are said by Player.say(), which plays "refuse".
+## point and buzzes the knocked player's pad; a grab buzzes the dragged player's. A Hand-off or a catch
+## (core/42) is the giver's drop and the receiver's pick or pair. Refusals are said by Player.say(),
+## which plays "refuse".
 ## Looks only: it reads the answer and decides nothing.
 class_name Hearing
 extends RefCounted
@@ -62,6 +64,8 @@ static func applied(ev: Dictionary, me: int, parts: Parts, guessed := false) -> 
 			# M150: the dragged player's pad buzzes as they are grabbed.
 			if int(ev.get("target", 0)) == me:
 				PadRumble.play(PadRumble.KNOCK)
+		&"hand_off", &"catch":
+			_handed(ev, me, parts)
 		&"shelve", &"thrown_shelve":
 			_shelved(ev, parts)
 		&"left":
@@ -77,6 +81,29 @@ static func _teammate(name: StringName, by: int, parts: Parts) -> void:
 	var at: Variant = parts.where.call(by) if parts != null and parts.where.is_valid() else null
 	if at is Vector3:
 		Sounds.play_from(name, (at as Vector3) + Vector3.UP * CUE_HEIGHT)
+
+
+## core/42 lines 19-21, 44: a Hand-off's giver plays "drop" (a catch has none: its Throw was heard);
+## the receiver's item goes in as a pick: "pair" (and the pair buzz) when it makes a Pair there, else
+## "pick"; each flat for its own player, at the player for everyone else. With no room the receiver
+## hears "refuse" with "Hands full" (Player.say()), nothing else; no buzz for the Hand-off itself.
+static func _handed(ev: Dictionary, me: int, parts: Parts) -> void:
+	var giver := int(ev.get("giver", -1))
+	var receiver := int(ev.get("receiver", -1))
+	if giver >= 0:
+		if giver == me:
+			Sounds.play(&"drop")
+		else:
+			_teammate(&"drop", giver, parts)
+	if ev.get("full", false):
+		return
+	var cue := &"pair" if ev.has("paired") else &"pick"
+	if receiver == me:
+		Sounds.play(cue)
+		if ev.has("paired"):
+			PadRumble.play(PadRumble.PAIR)
+	else:
+		_teammate(cue, receiver, parts)
 
 
 ## A Pair went into a drawer: "shelve" at the first drawer it went into.

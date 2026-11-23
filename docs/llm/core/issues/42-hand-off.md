@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: core
 priority: next
 created: 2026-11-21
-done:
+done: 2026-11-23
 blocked_by: []
 notes: ["tracked, not planned (Q2430); the catalogue's milestone: M4", "triaged to M3, soon (Q2533, 2026-11-23)", "suggested model: opus (co-op netcode, one hit test with knockdown)"]
 terms: []
@@ -44,6 +44,7 @@ Port of the old game's Hand-off of a held Sock or Pair to a teammate (catalogue 
 - [answered, see Answers] Telling the receiver who gave (line 43). Old: nothing. Options: (a) keep (recommended); (b) a line in the giver's colour ("<Name> gave you a Sock").
 - [answered, see Answers] A Guest's Hand-off with no answer (line 42). Old: waits with no timeout. Options: (a) the 2 s timeout of Q2477 and Q2482 (the item stays, "refuse" only) (recommended: one rule for all Guest Commands); (b) keep waiting.
 - [later] Catch of a lantern, Radio, Beeper, Guide card, Cat, Gift, Part and Laundry bin come with those things (M4/M5).
+- [later] Lines of the list tagged "needs" another piece are not built and come with it, none dropped: 3 (the Elevator, M5), 13 and 15 (the Dirty Sock and the Laundry bin, M5), 17 and 39 (the Guide card and the devices, M5), 22 (the Sole Mates "match", M4), 46-50 (section I).
 
 ## Built log
 ### 2026-11-23
@@ -55,3 +56,8 @@ Port of the old game's Hand-off of a held Sock or Pair to a teammate (catalogue 
 - Changed: shaped for building after Q2588-Q2591: answers, checkable Acceptance, model, status ready-for-agent. Docs only.
 - Files: this ticket.
 - Verified: docs only.
+
+### 2026-11-23 (built)
+- Changed: the Hand-off. The Hands' `hand_off` verb (a Pair always, a loose Sock only completing a Pair there, "Not their mate" to the giver; no room: it lies at the receiver's feet across the way it came, "Hands full" to the receiver; never to a knocked-down Teammate, Q2589; within reach plus the Host's slack) and the Host-only `catch`, asked by the Knockdowns' one hit test for a Throw below full charge (a refused one bounces at 0.25 of its speed, upwards kept, no word). Aim: `AimFinder.mate()` (reach shortened by the first wall, body 0.3 m from 0.1 m over the feet, the entry point counts, nearer than the aimed Sock); the Player outlines the Teammate, keeps the crosshair white and the corner's Drop, and a short right click hands off instead of a drop. The receiver's HeldView flies the item in from the giver's hand as drawn on each machine, or from where a Throw hit (`pick_time` 0.3 s, `pick_hop` 0.18 m, flat, a random turn; the worn sparkle and the own pairing moment as a pick's). Hearing: the giver's drop, the receiver's pick or pair (pair buzz). A Guest guesses nothing; no answer in 2 s: "refuse" only. Numbers in `game/hands/hand_off_tuning.tres` (placeholders). The zoo's Hand-off station (two stand-in Teammates; the numbers board built at load); in the main scene through the level runtime's Hands, Knockdowns and Player. Session.PROTOCOL 16 (after main's 15, core/62 and core/63). knockdown:weak_throw now checks the bounce; pairing:never_split lists `hand_off`.
+- Files: `game/hands/hands.gd`, `hand_off_tuning.gd/.tres`, `aim_finder.gd`, `held_view.gd`, `guest_ghosts.gd`; `game/knockdown/knockdowns.gd`; `game/player/player.gd`; `game/audio/hearing.gd`; `game/parts/session.gd`; `game/zoo/stations/hand_off.tscn`, `game/zoo/hand_off/`, `game/zoo/zoo.tscn`; `tools/shot_hooks.gd`, `tools/shots/sets/hand-off.txt`; `tests/hand_off_test.gd`, `tests/coop_hand_off_test.gd`, `tests/knockdown_test.gd`, `tests/pairing_test.gd`; `docs/architecture.md`, `docs/architecture/coop.md`.
+- Verified: after merging main (6355372): `kit/tools/run.sh --touched`: PASS 18765 checks, 533 cases; `--grep=coop`: PASS 1062 checks, 44 cases (hand_off 52 checks, coop_hand_off 140 checks at 0 and 50 ms); grep_rules PASS. Stills and strips: `builds/review-hand-off/` (`tools/shots/sets/hand-off.txt`: flight and catch strips, Not their mate, Hands full).
