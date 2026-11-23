@@ -1,4 +1,4 @@
-Next free Q number: Q2537 (update this line whenever a round of questions is asked)
+Next free Q number: Q2541 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -451,3 +451,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2534: M0.6 batch 5, the close-out, starts now (designer, 2026-11-23).
 - Q2535: after M3, M4 (the run's frame), M1.1 (sound) and M5 (features) run in parallel wherever they can; the architecture and the authoring of voicelines (the washer's, the Old Tree's, cutscenes) are designed first, before their features (designer, 2026-11-23).
 - Q2536: assets/09 approved as its stills show: the body-coloured sill closes the car's window slit, the doors open separately as "Car Door", the pens lie apart (designer, 2026-11-23).
+- Q2537: the attic balustrade's cut-back rail stays as it is, ending with no post (house/04; designer, 2026-11-23).
+- Q2538: the bathroom wainscot is kept (tiles to 1.2 m) with its trim made a real raised strip, as the skirting (house/07; designer, 2026-11-23).
+- Q2539: the rim sheen is 0.25 on the cream fabrics (linen, sheet, sofa), 0.35 on the others (assets/06; designer, 2026-11-23).
+- Q2540: M4 starts with the main menu and saves, the save format chosen first (designer, 2026-11-23).
