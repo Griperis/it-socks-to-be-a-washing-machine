@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: in-progress
+status: done
 kind: build
 area: core
 feature: frame
 priority: now
 created: 2026-11-23
-done:
+done: 2026-11-23
 blocked_by: []
 notes: ["M4's first piece; design core/57, Q2553-Q2562; list docs/migration/m4-lists/01-main-menu-and-saves.md"]
 terms: [Host, Guest, Mess, Part, Hands]
@@ -73,3 +73,18 @@ intro, key remapping, the encyclopedia key.
   Q2575) become one; the house's slice-a-frame laying should keep the screen up until it ends (SceneChanger now
   fades it two frames after the scene is in), and a loaded World need not lay the generators' Socks it then replaces.
 - [later] `tools/shot_hooks.gd` is over 600 lines (grep_rules note).
+
+## Built log
+### 2026-11-23
+- Changed: the game starts on the title (Solo, Multiplayer with Host and Join, Options, Licence, Quit); a choice
+  loads the house behind the old loading screen (cream card, tumbling sock, bar, 0.5 s fade). Each World is saved as
+  the join snapshot to `user://worlds/<player id>/<slot>.json` through a SaveStore: within 2 s of a change (worker
+  thread) and on every way out of the ESC menu (which never pauses); a failed write keeps the old file and the HUD
+  says so once; backup and damaged files; a version per Part with steps and sample saves; Q2559 resets; flying Socks
+  laid where they land. Alone the player is in its own Roster by player id (Hands, Coins). Options rows on Settings,
+  menu sounds, the cursor, the "It Socks" user folder.
+- Files: game/save/, game/ui/{title,options,licence,loading,esc_menu}/, game/scenes/scene_changer.gd,
+  game/audio/ui_sounds.gd, game/look/keycap_style.gd, game/look/theme.tres, tests/save_test.gd, tests/menus_test.gd,
+  tests/saves/.
+- Verified: kit/tools/run.sh --touched in agent_finish (suite line in the commit's run); grep_rules and asset_lint
+  PASS; stills builds/review-menus/menus-*.png.
