@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-info
+status: wontfix
 kind: build
 area: core
 feature: core
@@ -8,7 +8,7 @@ priority: next
 created: 2026-11-19
 done:
 blocked_by: ["[[04-one-cabinet]]"]
-notes: []
+notes: ["superseded by coop/03-coop/08 (M0.6), closed 2026-11-23"]
 terms: []
 ---
 

@@ -4,11 +4,11 @@ status: needs-triage
 kind: build
 area: core
 feature: core
-priority: later
+priority: next
 created: 2026-11-21
 done:
 blocked_by: []
-notes: ["tracked, not planned (Q2430); the catalogue's milestone: M3"]
+notes: ["tracked, not planned (Q2430); the catalogue's milestone: M3", "triaged to M3, soon (Q2533, 2026-11-23); to shape with its behaviour list"]
 terms: []
 ---
 

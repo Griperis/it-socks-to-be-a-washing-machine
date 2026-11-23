@@ -1,4 +1,4 @@
-Next free Q number: Q2532 (update this line whenever a round of questions is asked)
+Next free Q number: Q2536 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -446,3 +446,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2529: core/52 merges as its stills show (designer, 2026-11-23).
 - Q2530: the stair trail's Socks lie flat on each tread: house/05 gives the stair pieces step-shaped landing places; the player still walks the ramp collision (designer, 2026-11-23).
 - Q2531: generated Socks are never frozen in the air: a laid Sock with nothing under it wakes and falls (or lands on the heap); a reseed lays the new Mess only onto the world without the old one (designer, 2026-11-23).
+- Q2532: the room Doors come now, as M3's next ticket after house/05 (swing, push Socks, sounds, the co-op sweep, about a third shut at a New Game, Q2528) (designer, 2026-11-23).
+- Q2533: triage: player stacking (core/41), hand-off (core/42) and pings and hint arrows (core/43) go to M3, soon; the F1 debug menu (core/44), the studio intro (core/45) and the walked mate distance (core/53) go to M5, by need (designer, 2026-11-23).
+- Q2534: M0.6 batch 5, the close-out, starts now (designer, 2026-11-23).
+- Q2535: after M3, M4 (the run's frame), M1.1 (sound) and M5 (features) run in parallel wherever they can; the architecture and the authoring of voicelines (the washer's, the Old Tree's, cutscenes) are designed first, before their features (designer, 2026-11-23).

@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-info
+status: wontfix
 kind: build
 area: core
 feature: core
@@ -8,7 +8,7 @@ priority: next
 created: 2026-11-19
 done:
 blocked_by: []
-notes: []
+notes: ["superseded by coop/02 (the ragdoll spike), closed 2026-11-23"]
 terms: []
 ---
 
