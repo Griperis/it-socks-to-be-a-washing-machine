@@ -103,6 +103,13 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# pulled off (shoot a few frames later for the slide, 30 frames later for the bare Cabinet).
 			_devices_shot(world, arg)
 			return true
+		"fixes09":
+			# assets/09: the car and the whiteboard at the Furniture station, the other stations hidden.
+			# arg "windows": the car's greenhouse close up from front-left, above the belt; "door_l" and
+			# "door_r": that door opened alone by the zoo's player (shoot 40 frames later for the end of the
+			# swing); "tray": the whiteboard's marker tray from the front.
+			_fixes09_shot(world, arg)
+			return true
 		"house_kit":
 			# A camera on the house kit station (house/02): "lineup" (every piece from above), "walls",
 			# "openings", "floors", "roof_pieces" (rows of the line-up), "room" (the U room from
@@ -724,6 +731,43 @@ static func _devices_shot(world: Node, arg: String) -> void:
 			stand.call(cabinet.to_global(Vector3(-0.7, 0.0, 1.2)), cabinet.to_global(Vector3(0.0, 0.5, 0.2)))
 			if arg == "pull":
 				(station.get_node("SheetSwitch/CabinetLockSwitch") as Part).use(player.player_id())
+
+
+## The assets/09 views: see "fixes09" in act().
+static func _fixes09_shot(world: Node, arg: String) -> void:
+	var station := world.get_node("Stations/Furniture") as Node3D
+	var line_up := station.get_node("LineUp") as FurnitureLineUp
+	for s in world.get_node("Stations").get_children():
+		(s as Node3D).visible = s == station
+	(station.get_node("Name") as Node3D).visible = false
+	var car := line_up.piece("car")
+	var board := line_up.piece("collection_board")
+	# Only the piece looked at shows: its neighbours in the line-up stand in the way.
+	for p: Node in line_up.get_children():
+		(p as Node3D).visible = p == (board if arg == "tray" else car)
+	var cam := Camera3D.new()
+	world.add_child(cam)
+	cam.fov = 40.0
+	match arg:
+		"windows":
+			cam.global_position = car.to_global(Vector3(-2.6, 1.9, 2.2))
+			cam.look_at(car.to_global(Vector3(-0.5, 1.05, 0.2)))
+		"door_l", "door_r":
+			var sx := -1.0 if arg == "door_l" else 1.0
+			var player := LevelRuntime.of(world).player
+			player.velocity = Vector3.ZERO
+			player.global_position = car.to_global(Vector3(sx * 1.4, 0.0, 1.5))
+			player.reset_physics_interpolation()
+			(car.get_node("DoorL" if sx < 0.0 else "DoorR").get_node("Openable") as Openable).use(player.player_id())
+			player.visible = false
+			cam.global_position = car.to_global(Vector3(sx * 3.4, 2.2, 2.6))
+			cam.look_at(car.to_global(Vector3(sx * 0.4, 0.6, 0.0)))
+		"tray":
+			cam.fov = 30.0
+			cam.global_position = board.to_global(Vector3(0.15, 1.15, 1.0))
+			cam.look_at(board.to_global(Vector3(0.0, 0.85, 0.04)))
+	cam.reset_physics_interpolation()
+	cam.make_current()
 
 
 ## Puts the old game's model of every piece in the line-up in place of its Looks (a review still).

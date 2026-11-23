@@ -15,7 +15,8 @@ const LIBRARY := "res://game/materials/"
 ## (every moving part but the piano's 88 keys opens one); 31 such parts; the spots joined as the old
 ## game joined them (tools/furniture_from_old.py): 584 rects.
 const PIECES := 67
-const OPENINGS := 28
+## The car's old Cabin is one opening per door since assets/09: 29 openings.
+const OPENINGS := 29
 const MOVING := 31
 const KEYS := 88
 const SPOT_RECTS := 584

@@ -1,0 +1,6 @@
+# assets/09: the car's windows meeting the body with no slit (a sill under the side and rear glass), each
+# door opened alone by the player's use, and the whiteboard's markers lying apart on the tray.
+windows  --size=1280x720 --do='30:fixes09:windows' --shots=40
+door_l  --size=1280x720 --do='30:fixes09:door_l' --shots=80
+door_r  --size=1280x720 --do='30:fixes09:door_r' --shots=80
+tray  --size=1280x720 --do='30:fixes09:tray' --shots=40

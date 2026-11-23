@@ -380,7 +380,7 @@ class Piece:
         self.root.select_set(True)
         for k, o in self.nodes.items():
             o.name = k
-            o.data.name = self.id + "_" + k
+            o.data.name = k
             o.select_set(True)
         bpy.ops.export_scene.gltf(filepath=path, export_format="GLB", export_yup=True, export_apply=True,
                                   export_cameras=False, export_lights=False, use_selection=True)
@@ -388,11 +388,14 @@ class Piece:
             o.name = self.id + ":" + k
 
     def clean_names(self):
-        """Gives the nodes their glb names for good (Body, Door, ...; meshes <piece>_<node>), as
-        export() does for its own write: the piece is then ready to export or save as a source."""
+        """Gives the nodes their glb names for good (Body, Door, ...; each mesh named as its node), as
+        export() does for its own write: the piece is then ready to export or save as a source. Godot
+        names an imported mesh <glb>_<mesh>, the key its .glb.import saves it by to
+        meshes/<piece>_<node>.res (assets/09: a mesh named <piece>_<node> came in as <piece>_<piece>_<node>
+        and was never saved)."""
         for k, o in self.nodes.items():
             o.name = k
-            o.data.name = self.id + "_" + k
+            o.data.name = k
 
     def strip_helpers(self):
         """Removes every object that is not the piece (made only to be measured, such as a hidden

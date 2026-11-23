@@ -12,7 +12,8 @@ The old house's 67 pieces, each a scene in `game/furniture/<piece>.tscn` (Q2151)
   (masks of the house layer) pass it and meet the root's shapes. The 4 rugs (metadata `rug`) have none.
 - **Looks:** `looks/looks_<piece>.tscn`, the still meshes (Body; Board, MirrorGlass; the piano's
   `Key_<midi>` with metadata `midi`). Contract `looks/looks_contract.json`.
-- **Openings:** one Node3D per old container (named as it: `Door`, `Drawer_1`, `Cabin`, `Boot`, `Lid`...)
+- **Openings:** one Node3D per old container (named as it: `Door`, `Drawer_1`, `Boot`, `Lid`...; the car's old `Cabin` is `DoorL` and `DoorR`, each door
+  opening by itself onto its half of the cabin floor, assets/09)
   holding an `Openable` (metadata `kind`: the old container kind; its `open_sound` and `close_sound` are
   `<kind>_open` and `<kind>_close` of the sound catalogue, assets/07), its Looks
   `parts/looks_<piece>_<opening>.tscn` and `Inside` (the interior box where Socks hide, an Area3D on no
