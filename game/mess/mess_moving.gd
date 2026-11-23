@@ -115,6 +115,32 @@ func start(sock: int, woken: bool, motion: Array = []) -> void:
 	_launch(sock, woken, motion)
 
 
+## This machine decides alone now (it left the session, or its Host quit; coop/12): each looks-only
+## body becomes a body of its own from where it is and how it moves, so every Sock that flies here
+## rests by this machine's rules. `copies` are the Throw copies the spawner made ({sock: body},
+## frozen, playing the Host's rows): each is replaced the same way.
+func take_over(copies: Dictionary) -> void:
+	var motions: Dictionary[int, Array] = {}
+	for sock: int in _flights.keys():
+		var body := _flights[sock]
+		if body.collision_layer != Mess.LAYER_LOOKS:
+			continue
+		motions[sock] = [body.global_transform, body.linear_velocity, body.angular_velocity]
+		_drop_flight(sock)
+		body.get_parent().remove_child(body)
+	for key: Variant in copies:
+		var copy := copies[key] as RigidBody3D
+		var row := FlightRow.of(copy)
+		var moves: Array = row.last_motion() if row != null else [Vector3.ZERO, Vector3.ZERO]
+		motions[int(key)] = [copy.global_transform, moves[0], moves[1]]
+		if copy.get_parent() != null:
+			copy.get_parent().remove_child(copy)
+		copy.queue_free()
+	for sock: int in motions:
+		if _mess.state_of(sock) == Mess.State.FLYING:
+			_launch(sock, not _mess.is_throw(sock), motions[sock])
+
+
 ## Every body freed (a whole new state, or the Mess leaves).
 func clear() -> void:
 	for sock: int in _flights.keys():

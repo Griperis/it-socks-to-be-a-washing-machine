@@ -146,6 +146,12 @@ func apply(ev: Dictionary) -> void:
 	applied.emit(ev)
 
 
+## This machine stopped being a Guest: every part takes over what it showed as looks only (coop/12).
+func went_alone() -> void:
+	for part: Part in _by_id.values():
+		part.went_alone()
+
+
 ## The Host: player `by` left; each part says what that does to it (a carried thing drops).
 func left(by: int) -> void:
 	for part: Part in _by_id.values():

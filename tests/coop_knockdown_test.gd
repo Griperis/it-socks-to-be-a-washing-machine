@@ -22,12 +22,14 @@ var _branches: Array[Node] = []
 var _pace_next := 0
 ## Every spatial sound played: [name, where, frame].
 var _heard: Array[Array] = []
+## Why each drag the Guest saw end ended (case_drag_ends).
+var _whys: Array[String] = []
 
 
 func cases() -> Array[Dictionary]:
 	return [
-		{"name": "real_path_50ms", "method": "case_real_path_50ms", "world": false,
-				"title": "coop/10 real path, 50 ms: the Host throws a full-charge Sock at the Guest: it falls as a ragdoll on both (E40, J129, J130, K141), drops its Sock where it stood (D36), its view rides the head (F68, F69, F75), reads Player knocked you down (F78), hears knockdown (M155), its pad buzzes (M149), and stands up 5.5 s later where it lies (G85, K142)"},
+		{"name": "real_path", "method": "case_real_path", "world": false,
+				"title": "coop/10 real path, 0 and 50 ms one way: the Host throws a full-charge Sock at the Guest: it falls as a ragdoll on both (E40, J129, J130, K141), drops its Sock where it stood (D36), its view rides the head (F68, F69, F75), reads Player knocked you down (F78), hears knockdown (M155), its pad buzzes (M149), and stands up 5.5 s later where it lies (G85, K142)"},
 		{"name": "drag_and_struggle", "method": "case_drag_and_struggle", "world": false,
 				"title": "coop/10 H93-H110, 50 ms: the Guest grabs the knocked Host by the feet and drags it; the Host's 10 jump presses free it and it gets up (H106); a drag ends at the rise (H104)"},
 		{"name": "late_joiner", "method": "case_late_joiner", "world": false,
@@ -36,6 +38,12 @@ func cases() -> Array[Dictionary]:
 				"title": "coop/10 B23, B26, invariant 1: a Guest's knock or release Command is dropped by the Host; its grab of a standing body is refused"},
 		{"name": "pose_bytes", "method": "case_pose_bytes", "world": false,
 				"title": "coop/10 J132, J133: the Host's bytes a second per knocked player, at 0 and 50 ms one way (printed); a pose of the wrong size is dropped (J134)"},
+		{"name": "drag_ends", "method": "case_drag_ends", "world": false,
+				"title": "coop/12 (coop/10 D37, H97, H101 in co-op): the Guest drags the knocked Host; its drag ends on both machines when a menu opens on it (H97), when the feet are left over 2 m behind (H101, apart), and when the Guest is knocked down itself (D37, knocked)"},
+		{"name": "inside", "method": "case_inside", "world": false,
+				"title": "coop/12 (coop/10 E53): a Teammate standing inside the body as it is knocked is let through by the falling bones on both machines; one standing 1.5 m off is not"},
+		{"name": "wall_gap", "method": "case_wall_gap", "world": false,
+				"title": "coop/12 (coop/10 F70, F71): the knocked Guest's view stops wall_gap short of a wall between the body's middle and its eyes, a physics tick after the wall is there"},
 	]
 
 
@@ -59,8 +67,13 @@ func _on_played(sound: StringName, spatial: bool, at: Vector3, _bus: StringName)
 
 # --- The cases -----------------------------------------------------------------------------------
 
-func case_real_path_50ms() -> void:
-	var zoos := await _pair(LAG_MS)
+func case_real_path() -> void:
+	for lag_ms: int in [0, LAG_MS]:
+		await _real_path_round(lag_ms)
+
+
+func _real_path_round(lag_ms: int) -> void:
+	var zoos := await _pair(lag_ms)
 	var host: Node3D = zoos[0]
 	var guest: Node3D = zoos[1]
 	var hp := _player(host)
@@ -105,7 +118,7 @@ func case_real_path_50ms() -> void:
 	_check(gp.hud().visible, "F76: the HUD stays")
 	await _wait(func() -> bool: return _topple(host_rag) > 45.0 and _topple(own.ragdoll) > 40.0, "J129: it lies over on both machines", FPS * 3)
 	var gap := host_rag.feet().distance_to(own.ragdoll.feet())
-	print("KNOCK real path 50 ms: lies over %.0f (Host) and %.0f (Guest) degrees, feet %.2f m apart" % [_topple(host_rag), _topple(own.ragdoll), gap])
+	print("KNOCK real path %d ms: lies over %.0f (Host) and %.0f (Guest) degrees, feet %.2f m apart" % [lag_ms, _topple(host_rag), _topple(own.ragdoll), gap])
 	var eye := gp.view().origin
 	_check(eye.y < 1.2, "F69: the Guest's view rides the fallen head (%.2f m up)" % eye.y)
 	_check(Vector2(gp.global_position.x - own.ragdoll.feet().x, gp.global_position.z - own.ragdoll.feet().z).length() < 0.05,
@@ -235,6 +248,156 @@ func case_forged() -> void:
 	_check(not _kd(host).is_down(Parts.HOST) and not gk.is_down(Parts.HOST), "invariant 1: nobody is knocked by a Guest's word")
 	_check(_kd(host).drags.is_empty(), "H94: a grab of a standing body is refused")
 	_drop_branches()
+
+
+func case_drag_ends() -> void:
+	var zoos := await _pair(LAG_MS)
+	var host: Node3D = zoos[0]
+	var guest: Node3D = zoos[1]
+	var gp := _player(guest)
+	var g := gp.player_id()
+	var hk := _kd(host)
+	var gk := _kd(guest)
+	_whys.clear()
+	_parts(guest).applied.connect(_on_guest_applied)
+	var whys := _whys
+	_place(host, GUEST_AT, GUEST_AT + Vector3(0.0, 1.6, -3.0))
+	await _paced_ticks(20)
+	# H97: a menu opens on the dragger.
+	await _down_and_grabbed(host, guest)
+	gp.set_input_blocked(true)
+	await _wait(func() -> bool: return not hk.drags.has(Parts.HOST) and not gk.drags.has(Parts.HOST), "H97: a menu on the Guest lets go, on both", FPS * 2)
+	gp.set_input_blocked(false)
+	gp.set("_grab_held", false)
+	await _wait(func() -> bool: return not hk.is_down(Parts.HOST), "the Host stands again", FPS * 8)
+	await _paced_ticks(10)
+	# H101: the feet left more than break_distance behind (the dragger moved off at once: stuck, a wall).
+	await _down_and_grabbed(host, guest)
+	await _paced_ticks(20)
+	_check(gk.dragger_of(Parts.HOST) == g, "H101: a drag within the break distance holds")
+	var rag := _avatar(host, Parts.HOST).ragdoll
+	var away := rag.feet() + Vector3(hk.tuning.break_distance + 3.0, 0.0, 0.0)
+	_place(guest, away, away + Vector3(3.0, 1.0, 0.0))
+	await _wait(func() -> bool: return not hk.drags.has(Parts.HOST) and not gk.drags.has(Parts.HOST), "H101: the feet over 2 m away end the drag, on both", FPS * 2)
+	_check(whys.has(Knockdowns.APART), "H101: as apart (%s)" % [whys])
+	gp.set("_grab_held", false)
+	await _wait(func() -> bool: return not hk.is_down(Parts.HOST), "the Host stands again", FPS * 8)
+	await _paced_ticks(10)
+	# D37: the dragger is knocked down.
+	await _down_and_grabbed(host, guest)
+	_knock(host, g, Parts.HOST)
+	await _wait(func() -> bool: return gk.is_down(g) and not hk.drags.has(Parts.HOST) and not gk.drags.has(Parts.HOST),
+			"D37: a knocked dragger's drag ends, on both", FPS * 2)
+	_check(whys.has(Knockdowns.KNOCKED), "D37: as knocked (%s)" % [whys])
+	_check(hk.is_down(Parts.HOST), "D37: the body lies where it is")
+	gp.set("_grab_held", false)
+	_drop_branches()
+
+
+func case_inside() -> void:
+	var zoos := await _pair(LAG_MS)
+	var host: Node3D = zoos[0]
+	var guest: Node3D = zoos[1]
+	var g := _player(guest).player_id()
+	for d: float in [0.25, 1.5]:
+		_place(host, GUEST_AT, GUEST_AT + Vector3(0.0, 1.6, -3.0))
+		_place(guest, GUEST_AT + Vector3(d, 0.0, 0.0), GUEST_AT + Vector3(d, 1.6, -3.0))
+		await _wait(func() -> bool: return _avatar(host, g).global_position.distance_to(GUEST_AT + Vector3(d, 0.0, 0.0)) < 0.05 \
+				and _avatar(guest, Parts.HOST).global_position.distance_to(GUEST_AT) < 0.05, "both stand %.2f m apart on both machines" % d, FPS * 2)
+		_knock(host, Parts.HOST, g)
+		await _wait(func() -> bool: return _kd(guest).is_down(Parts.HOST) and _avatar(guest, Parts.HOST).ragdoll.phase == Ragdoll.Phase.DOWN, "the Host down on both", FPS * 2)
+		await _paced_ticks(2)
+		for zoo: Node3D in [host, guest]:
+			var body := _avatar(zoo, Parts.HOST)
+			var mate := _avatar(zoo, g)
+			var through := _bones_except(body.ragdoll, mate.mate)
+			var where := "on the %s's machine" % zoo.get_parent().get_parent().name
+			if d < 1.0:
+				_check(through, "E53: the falling body lets the Guest standing inside it through, %s" % where)
+			else:
+				_check(not through, "E53: a Guest standing %.1f m off is not let through, %s" % [d, where])
+		await _wait(func() -> bool: return not _kd(host).is_down(Parts.HOST) and not _kd(guest).is_down(Parts.HOST) \
+				and _avatar(guest, Parts.HOST).ragdoll.phase == Ragdoll.Phase.UP, "the Host stands up", FPS * 8)
+		await _paced_ticks(10)
+	_drop_branches()
+
+
+func case_wall_gap() -> void:
+	var zoos := await _pair(LAG_MS)
+	var host: Node3D = zoos[0]
+	var guest: Node3D = zoos[1]
+	var gp := _player(guest)
+	var g := gp.player_id()
+	_place(guest, GUEST_AT, GUEST_AT + Vector3(0.0, 1.6, -3.0))
+	await _paced_ticks(20)
+	_knock(host, g, Parts.HOST)
+	await _wait(func() -> bool: return gp.knocked, "the Guest down", FPS * 2)
+	var rag := _avatar(guest, g).ragdoll
+	await _wait(func() -> bool: return _topple(rag) > 40.0, "the Guest's body to lie over", FPS * 3)
+	await _paced_ticks(20)
+	var t := _kd(guest).tuning
+	var middle := rag.point_at(gp.tuning.stand_height * 0.5)
+	var eye := rag.point_at(t.eye)
+	var free := gp.view().origin.distance_to(middle)
+	_check(free > t.wall_gap + 0.1, "F70: with no wall the view rides the head (%.2f m from the middle)" % free)
+	# A thin wall across the line from the body's middle to its eyes, a third of the way.
+	var wall := StaticBody3D.new()
+	wall.collision_layer = Mess.LAYER_HOUSE
+	wall.collision_mask = 0
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = Vector3(2.0, 2.0, 0.05)
+	shape.shape = box
+	wall.add_child(shape)
+	guest.add_child(wall)
+	var at := middle.lerp(eye, 0.6)
+	wall.global_transform = Transform3D(Basis.looking_at((eye - middle).normalized(), Vector3.UP if absf((eye - middle).normalized().y) < 0.9 else Vector3.FORWARD), at)
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	await get_tree().process_frame
+	middle = rag.point_at(gp.tuning.stand_height * 0.5)
+	var to_wall := middle.distance_to(at)
+	var now := gp.view().origin.distance_to(middle)
+	print("KNOCK wall gap: view %.2f m from the body's middle with no wall; a wall %.2f m off: %.2f m" % [free, to_wall, now])
+	_check(now <= to_wall - t.wall_gap + 0.05 and now >= to_wall - t.wall_gap - 0.1,
+			"F70, F71: the view stops wall_gap (%.2f) short of the wall within a tick (%.2f m from the middle, wall %.2f m)" % [t.wall_gap, now, to_wall])
+	wall.queue_free()
+	_drop_branches()
+
+
+## Why each drag a Guest saw end ended (the answers' "why").
+func _on_guest_applied(ev: Dictionary) -> void:
+	if ev.has("why"):
+		_whys.append(String(ev["why"]))
+
+
+## The Host knocks itself down (as by the Guest) and the Guest, standing at its feet, grabs it as its
+## held button does.
+func _down_and_grabbed(host: Node3D, guest: Node3D) -> void:
+	var gp := _player(guest)
+	var g := gp.player_id()
+	_knock(host, Parts.HOST, g)
+	await _wait(func() -> bool: return _kd(guest).is_down(Parts.HOST) and _player(host).knocked, "the Host to lie down", FPS * 2)
+	await _paced_ticks(70)
+	var rag := _avatar(guest, Parts.HOST).ragdoll
+	_place(guest, rag.feet() + Vector3(0.8, 0.0, 0.0), rag.feet())
+	await _paced_ticks(int(LAG_MS * 3 * FPS / 1000.0) + 4)
+	gp.capture_mouse()
+	gp.set("_grab_held", true)
+	_parts(guest).ask(Command.new(Knockdowns.GRAB, g, _kd(guest).id, {"target": Parts.HOST}))
+	await _wait(func() -> bool: return _kd(host).dragger_of(Parts.HOST) == g and _kd(guest).dragger_of(Parts.HOST) == g,
+			"the Guest drags the Host", FPS * 2)
+
+
+## Whether every bone of `rag` has a collision exception with `body`.
+func _bones_except(rag: Ragdoll, body: CollisionObject3D) -> bool:
+	var bones := rag.find_children("*", "PhysicalBone3D", true, false)
+	if bones.is_empty() or body == null:
+		return false
+	for bone: Node in bones:
+		if not (bone as PhysicalBone3D).get_collision_exceptions().has(body):
+			return false
+	return true
 
 
 func case_pose_bytes() -> void:
