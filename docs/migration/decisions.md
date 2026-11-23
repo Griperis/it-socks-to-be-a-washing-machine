@@ -1,4 +1,4 @@
-Next free Q number: Q2553 (update this line whenever a round of questions is asked)
+Next free Q number: Q2564 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -467,3 +467,14 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2550: subtitles in the old look (cream, black outline, bottom centre, on the Theme), one row per speaker, with the speaker's icon and no name (V6; designer, 2026-11-23).
 - Q2551: a line's text comes from transcribing its recording and is corrected in the string table (V7; designer, 2026-11-23).
 - Q2552: a subtitle shows while the line is within earshot, through a shut Door too (V8; designer, 2026-11-23).
+- Q2553: the save file is the kit's save template, one JSON file per World with the World's record and every Part's state (M1, core/57; designer, 2026-11-23).
+- Q2554: Worlds as the old slots (one Solo, five co-op) without the Group lock: anyone may join a co-op World (M2; designer, 2026-11-23).
+- Q2555: autosave within 2 s of any change and at once on every way out, on a worker thread, as the old (M3; designer, 2026-11-23).
+- Q2556: a save that cannot be written keeps the old file, logs why, and the HUD says "Could not save the game" (placeholder) once until a save works (M4; designer, 2026-11-23).
+- Q2557: old saves always load: each Part's saved state carries a version, a migration chain steps old saves to the current shape, new fields take defaults, and sample saves of each version are loaded by the suite; built now with menus and saves, enforced from the first outside play-test (before it a change may say "breaks saves") (M5; designer, 2026-11-23).
+- Q2558: stable ids are node paths now, checked by a committed id list in a test; an editor tool fills ids before the first outside play-test (M6; designer, 2026-11-23).
+- Q2559: a load resets as the old: Doors, drawers and lids shut (what rode out slides back), the TV off, the Radio keeps its channel, lost things back by the washer, absent players' Socks dropped, nobody knocked down (M7; designer, 2026-11-23).
+- Q2560: things in the air when the game saves are laid where they would land, as the old (M8; designer, 2026-11-23).
+- Q2561: until the Lobby piece, Solo continues or starts the Solo World and Host the last co-op World, straight into the house; the World list, Continue/New Game and Delete come with the Lobby (M9; designer, 2026-11-23).
+- Q2562: the first menus-and-saves build holds the title, Options, Licence, loading screen, cursor, menu sounds, ESC menu and saves; the studio intro and the encyclopedia key come later (M10; designer, 2026-11-23).
+- Q2563: house/07 merges as its strips show (designer, 2026-11-23).

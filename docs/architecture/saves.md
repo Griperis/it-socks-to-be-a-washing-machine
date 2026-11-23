@@ -174,6 +174,14 @@ the player where they stood.
 - The autosave's snapshot is on the main thread; with 10,000 Socks its cost is the Mess's packing. Measure before
   lowering `autosave_seconds`.
 
+## Decided (Q2553-Q2562, 2026-11-23)
+M1 a (JSON per World, the kit's template); M2 c (the old slots, no Group lock); M3 a (2 s after a change and on every
+way out); M4 a (old file kept, a HUD line); M5: old saves always load: a version per Part's state, a migration chain,
+defaults for new fields, sample saves of each version in the suite; built now, enforced from the first outside
+play-test; M6 a (node paths now, an editor tool before the play-test); M7 a (the old resets); M8 b (things in the air
+laid where they would land, as the old); M9 a (straight into the house); M10 a (core screens and saves). Where the
+text above assumed another option, these win.
+
 ## Choices for the designer
 
 Each with 2-3 options; **(rec)** marks the recommendation.
