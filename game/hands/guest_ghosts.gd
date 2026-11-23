@@ -84,15 +84,14 @@ func pick(sock: int) -> void:
 
 
 ## The Guest throws its active item along `dir` with `charge`. The ghost flies the launch the Host
-## works out, from where the Host draws the Sock on this player's avatar (Hands.avatar_hand_of()),
-## and is drawn from this machine's first-person hand easing onto it (Q2481, coop/11).
+## works out, from this machine's first-person hand, where the Host lets it go too (Hands.start_of(),
+## Q2573, coop/13): the same body and numbers, so it flies the Host's arc.
 func throw(dir: Vector3, charge: float) -> void:
 	var h := _hands()
 	var sock := _shown_active(h)
 	if sock < 0:
 		return
-	var launch := h.launch_of(_me(), dir, charge, h.avatar_hand_of(_me(), sock))
-	launch["shown"] = h.start_of(_me(), dir)
+	var launch := h.launch_of(_me(), dir, charge)
 	var seq := h.parts.next_seq()
 	Sounds.play(&"throw")
 	PadRumble.play(PadRumble.THROW)

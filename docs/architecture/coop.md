@@ -16,7 +16,7 @@ in `docs/architecture.md` say what happens in order; this file says who owns wha
 | Who plays | `game/net/roster.gd`, `player_profile.gd`, `coop_tuning.gd/.tres` | The Roster Part (by player id: peer, name, colour, place, Hands numbers); the long random id in `user://profile[_<tag>].json`; max players, colours, timeouts |
 | The rules | `game/parts/part.gd`, `parts.gd`, `command.gd` | Every shared thing is a Part; `decide()` on the Host only; `Parts.apply` the one writer; the Command's wire shape and arg checks |
 | Bodies seen | `game/parts/avatar/` | `Avatars` spawns one `Avatar` per Roster entry; the pose goes from its owner on a MultiplayerSynchronizer, checked in its setters; `AvatarLooks` derives every motion; `Ragdoll` the knockdown body |
-| A Guest's guesses | `game/hands/guest_ghosts.gd`, `throw_ghost.gd`, `ghost_tuning.tres` | Looks only: a pick, drop, Throw or wheel shown at once and matched to the Host's answer by `seq` |
+| A Guest's guesses | `game/hands/guest_ghosts.gd`, `throw_ghost.gd`, `ghost_tuning.tres` | Looks only: a pick, drop, Throw or wheel shown at once and matched to the Host's answer by `seq`; a Throw or drop flies its own body from the hand the Host lets it go from, corrected once it parts (Q2573) |
 | Throws in the air | `game/sock/flight_row.gd` | A Throw's body streams stamped rows to every Guest; the Guest plays them 0.1 s behind |
 | The Mess in co-op | `game/mess/mess.gd`, `mess_moving.gd` | Every machine starts its own body for a flying Sock; a Guest's are looks only on `Mess.LAYER_LOOKS`; the Host's `rest` snaps them |
 | Knockdown | `game/knockdown/knockdowns.gd` | Who is down, who drags whom, struggles; Host-only `knock` |
@@ -68,6 +68,13 @@ The heavy part is the pour (each rest batch is a reliable answer); at rest only 
 The designer's two windows are the reference for frame times.
 
 ## Gotchas
+- Every Throw and drop leaves the thrower's own first-person hand (`Hands.start_of`, from their eyes and aim) on
+  every machine, so a Guest's ghost flies the Host's flight; Teammates see it drawn from the thrower's avatar's
+  hand, easing onto the body in 0.2 s (`Mess._leads`; coop/13).
+- `tools/coop_probe.sh` (coop/13): a Host and a Guest as two headless processes, as the designer's two windows;
+  the Guest throws and drops by input, the Host pours; prints what both showed (the Guest's drawn Throw against
+  the Host's arc, anything under the floor, each Guest body's snap at its rest, every Sock's record and drawn
+  instance on both).
 - A Guest finds a spawned Throw copy by its name (`Flight<id>`); every other body is its own (no spawner).
 - ENet's packet throttle is held at full on every peer (`EnetTransport`); left alone it drops 31 of 32
   unreliable packets at 60 frames a second.

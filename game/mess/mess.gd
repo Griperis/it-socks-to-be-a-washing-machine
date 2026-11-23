@@ -165,6 +165,14 @@ var stream_offset := INF
 ## The Socks this machine's ghosts draw themselves (GuestGhosts): the Mess does not draw them, lying or
 ## flying, until let go (hold_back()).
 var _held_back: Dictionary[int, bool] = {}
+## Where a Teammate's let-go Sock `sock` hangs on their avatar here, `worn_start.call(by, sock)`: a
+## Transform3D, or null for a player on this machine (Hands.worn_start_of(), set by the Hands).
+var worn_start: Callable
+## A Teammate's Throws and drops on this machine (coop/13, Q2439): each leaves its thrower's own hand
+## (Hands.start_of()) but is drawn from their avatar's hand, easing onto its body over the ghosts'
+## `hand_over_time`: {Sock id: [the move, the turn, the tick it was let go, its Looks' own transform
+## or null]}.
+var _leads: Dictionary[int, Array] = {}
 ## The holder of every body but a Throw's (made in _ready, a child of this Mess: no spawner's path).
 var _bodies: Node3D
 ## A whole state's bodies in flight as it was written (a late Guest, a load): {Sock id: [pose,
@@ -340,13 +348,22 @@ func drawn_flight_of(sock: int) -> Variant:
 	var looks := body.get_node_or_null(LOOKS) as Node3D
 	if looks != null:
 		return looks.global_transform
-	return body.global_transform * _sized(design_of(sock))
+	var at := body.global_transform
+	if _leads.has(sock):
+		at = _led(sock, body, at.orthonormalized())
+	return at * _sized(design_of(sock))
 
 
 ## Where Sock `sock` is now: its falling body's place while it moves, else where its record puts it.
 func where_of(sock: int) -> Vector3:
 	var body := moving_body(sock) if state_of(sock) == State.FLYING else null
 	return body.global_position if body != null else pose_of(sock).origin
+
+
+## The transform lying Sock `sock`'s instance is drawn with on this machine, or null (not drawn as an
+## instance: lent its Looks, held back, or not lying). Tests compare two machines' heaps by it.
+func drawn_lying_of(sock: int) -> Variant:
+	return _drawing.drawn_of(sock) if _drawing != null else null
 
 
 ## Whether lying Sock `sock` is shown now: as an instance of its cell or as its lent Looks.
@@ -1017,6 +1034,7 @@ func _show(now: bool) -> void:
 				if _is_host() or not is_throw(sock):
 					_moving.start(sock, woken.has(sock), _motion.get(sock, []))
 					started = true
+				_lead_from_hand(sock)
 	if started:
 		# Once for every body this change started (a thrown one has its Looks at once: its cloth
 		# carries the hand's bend).
@@ -1045,6 +1063,8 @@ func _physics_process(delta: float) -> void:
 	if _lying_bodies == null:
 		return
 	give_looks()
+	if not _leads.is_empty():
+		_ease_leads()
 	if parts == null:
 		return
 	if _is_host():
@@ -1096,7 +1116,8 @@ func _process(_delta: float) -> void:
 		if not poses.has(shape):
 			poses[shape] = []
 			of[shape] = []
-		poses[shape].append(body.get_global_transform_interpolated().orthonormalized())
+		var pose := body.get_global_transform_interpolated().orthonormalized()
+		poses[shape].append(_led(sock, body, pose) if _leads.has(sock) else pose)
 		of[shape].append(design)
 	_drawing.draw_flying(poses, of)
 	_flying_drawn = not poses.is_empty()
@@ -1209,6 +1230,75 @@ func _draw_lying(sock: int) -> void:
 	_drawing.draw(sock, pose_of(sock), MessDrawing.shape_of(design, is_pair(sock)), design)
 
 
+## A Teammate's Throw or drop of Sock `sock` just let go here (coop/13, Q2439): it is drawn from where
+## their avatar holds it, easing onto its body. Nothing for a Sock with no thrower (woken, poured), one
+## of a player on this machine (the Host's own, a Guest's ghost), or a body already in flight (a late
+## joiner's).
+func _lead_from_hand(sock: int) -> void:
+	if _leads.has(sock) or not worn_start.is_valid() or _held_back.has(sock) or not throws.has(sock):
+		return
+	var by := int((throws[sock] as Dictionary).get("by", NOBODY))
+	var body := moving_body(sock)
+	if by == NOBODY or body == null:
+		return
+	var from := pose_of(sock).orthonormalized()
+	var row := FlightRow.of(body)
+	if (row == null or row.host_side) and body.global_position.distance_to(from.origin) > 0.001:
+		return
+	if row != null and not row.host_side and row.flight_time() > 0.0:
+		return
+	var hand: Variant = worn_start.call(by, sock)
+	if not (hand is Transform3D):
+		return
+	var at := hand as Transform3D
+	_leads[sock] = [at.origin - from.origin,
+			(at.basis.get_rotation_quaternion() * from.basis.get_rotation_quaternion().inverse()).normalized(),
+			FlightRow.tick(), null]
+	_place_lead(sock, body)
+
+
+## How much of Sock `sock`'s lead from the hand is left: 1 at the let-go, 0 after `hand_over_time` of
+## its flight (a Guest's copy counts the Host's flight as it plays it).
+func _lead_left(sock: int, body: RigidBody3D) -> float:
+	var row := FlightRow.of(body)
+	var t := (FlightRow.tick() - float(_leads[sock][2])) / float(Engine.physics_ticks_per_second)
+	if row != null and not row.host_side:
+		t = maxf(0.0, row.flight_time())
+	return 1.0 - smoothstep(0.0, maxf(ghost_tuning().hand_over_time, 0.001), t)
+
+
+## Pose `at` of Sock `sock`'s body with what is left of its lead from the hand on it.
+func _led(sock: int, body: RigidBody3D, at: Transform3D) -> Transform3D:
+	var lead: Array = _leads[sock]
+	var w := _lead_left(sock, body)
+	return Transform3D(Basis(Quaternion.IDENTITY.slerp(lead[1], w)) * at.basis, at.origin + (lead[0] as Vector3) * w)
+
+
+## Once a tick: each led Sock's Looks (a body with one) is drawn with what is left of its lead; a lead
+## eased away goes, its Looks on its body again.
+func _ease_leads() -> void:
+	for sock: int in _leads.keys():
+		var body := moving_body(sock)
+		if body == null:
+			_leads.erase(sock)
+			continue
+		if _place_lead(sock, body) <= 0.0:
+			_leads.erase(sock)
+
+
+## Sock `sock`'s Looks (its body has one) drawn with what is left of its lead; returns what is left.
+func _place_lead(sock: int, body: RigidBody3D) -> float:
+	var lead: Array = _leads[sock]
+	var looks := body.get_node_or_null(LOOKS) as Node3D
+	if looks != null and lead[3] == null:
+		lead[3] = looks.transform
+	var w := _lead_left(sock, body)
+	if looks != null:
+		var at := body.global_transform.orthonormalized()
+		looks.transform = at.affine_inverse() * _led(sock, body, at) * (lead[3] as Transform3D)
+	return w
+
+
 ## Every machine: while fewer than the cloth's flying_cap flights have a Looks (core/09), the
 ## nearest the camera without one gets it; none is taken from a flight that has one (no pop).
 func give_looks() -> void:
@@ -1245,6 +1335,8 @@ func give_looks() -> void:
 		looks.visible = not _held_back.has(sock)
 		body.add_child(looks)
 		_flight_looks[body] = true
+		if _leads.has(sock):
+			_place_lead(sock, body)
 
 
 ## Where a Throw's body goes (the spawner's path in co-op).
@@ -1313,6 +1405,7 @@ func _on_flight_in(node: Node) -> void:
 	_flight_shape.erase(sock)
 	if body.has_node(LOOKS):
 		_flight_looks[body] = true
+	_lead_from_hand(sock)
 
 
 ## A body that leaves: forgotten, unless a new body of the same Sock took its place already (a rest
@@ -1326,6 +1419,7 @@ func _on_flight_out(node: Node) -> void:
 	if _flight_by_sock.get(sock) == body:
 		_flight_by_sock.erase(sock)
 		_flight_shape.erase(sock)
+		_leads.erase(sock)
 
 
 ## The Sock a falling body is: its metadata (the Host's), else its name (a spawned copy).
