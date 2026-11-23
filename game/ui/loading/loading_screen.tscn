@@ -61,7 +61,7 @@ stretch_mode = 5
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Heading1"
-text = "Loading the flat..."
+text = "Loading the house..."
 horizontal_alignment = 1
 
 [node name="Bar" type="ProgressBar" parent="Back/Center/Card/Rows" unique_id=72271]

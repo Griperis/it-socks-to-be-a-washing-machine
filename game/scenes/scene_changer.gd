@@ -1,7 +1,7 @@
 ## SceneChanger: changes the current scene behind the loading screen (the autoload `SceneChanger`;
 ## the kit's scenes/ template, its loading screen replaced by the game's, game/ui/loading/).
 ##
-##   SceneChanger.change_to(HOUSE, "Loading the flat...", func(root: Node) -> void: ...)
+##   SceneChanger.change_to(HOUSE, "Loading the house...", func(root: Node) -> void: ...)
 ##
 ## The loading screen goes up and is drawn once before any work; the scene loads on a worker thread
 ## (`ResourceLoader.load_threaded_request`) with the bar following it; `setup` gets the new scene's

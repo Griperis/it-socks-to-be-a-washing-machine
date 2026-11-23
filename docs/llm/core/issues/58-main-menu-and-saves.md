@@ -55,9 +55,12 @@ intro, key remapping, the encyclopedia key.
 - Stills for the designer: the title, Options, the ESC menu and the loading screen (`builds/review-menus/`); the look is a
   first still (the screens' style is reviewed before the merge).
 
+## Answers
+- The screens merge as their stills show (`builds/review-menus/`) (Q2578, 2026-11-23).
+- The loading card reads "Loading the house..." (Q2579, 2026-11-23).
+- The title's Zoo key is in debug builds only; a release build has none (Q2580, 2026-11-23).
+
 ## Open follow-ups
-- [later] The screens' look is a first still (`builds/review-menus/`): the keycaps, panel, colours and sizes follow the
-  old UiBits numbers on the Theme (`KeycapStyle`); the designer's go before the merge.
 - [later] Wording is the old game's, all placeholder: "Could not save the game", "This World was saved by a newer
   version of It Socks" (a newer build's file is refused, not loaded), the loading screen's words, the ESC menu's
   "Menu" heading.

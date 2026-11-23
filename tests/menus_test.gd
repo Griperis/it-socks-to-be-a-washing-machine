@@ -23,7 +23,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "m01_title_first", "method": "case_m01", "world": false,
 				"title": "M01: the game launches into the title (run/main_scene; the house stays reachable with --scene=); the mouse is freed"},
 		{"name": "m02_home", "method": "case_m02", "world": false,
-				"title": "M02: the home page reads \"It Socks\" over Solo, Multiplayer, Options and Quit (red), each with its icon, on the cream panel over the dark backdrop; the Licence key sits in the corner on home only"},
+				"title": "M02: the home page reads \"It Socks\" over Solo, Multiplayer, Options and Quit (red), each with its icon, on the cream panel over the dark backdrop; the Licence key sits in the corner on home only; the Zoo key only in a debug build (Q2580)"},
 		{"name": "m03_pages", "method": "case_m03", "world": false,
 				"title": "M03: Multiplayer shows Host, Join and Back; Join shows the name and address fields, Join and the firewall line; Back and Esc go one page up; the pages swap at once"},
 		{"name": "m04_join_kept", "method": "case_m04", "world": false,
@@ -95,6 +95,8 @@ func case_m02() -> void:
 	_check((t.get_node("Pages/Center/Column/Panel") as Control).theme_type_variation == &"TitlePanel", "on the cream panel")
 	_check((t.get_node("Backdrop") as ColorRect).color.is_equal_approx(Color("#2b211c")), "over the dark backdrop")
 	_check((t.get_node("%LicenceKey") as Control).visible, "the Licence key on home")
+	var zoo := t.get_node_or_null("%ZooKey") as Control
+	_check((zoo != null and zoo.visible) == OS.is_debug_build(), "the Zoo key only in a debug build (Q2580)")
 	_check(ProjectSettings.get_setting("gui/theme/custom") == THEME, "every screen is on the one Theme")
 	await _click(t.get_node("%MultiplayerKey"))
 	_check(not (t.get_node("%LicenceKey") as Control).visible, "the corner key hides on another page")
@@ -313,9 +315,9 @@ func case_d01() -> void:
 	var screen := (load(LOADING) as PackedScene).instantiate() as LoadingScreen
 	_nodes.append(screen)
 	add_child(screen)
-	screen.set_heading("Loading the flat...")
+	screen.set_heading("Loading the house...")
 	await _frames(2)
-	_check(screen.heading() == "Loading the flat..." and screen.shown_progress() < 0.0, "the heading, no bar until the wait can tell")
+	_check(screen.heading() == "Loading the house..." and screen.shown_progress() < 0.0, "the heading, no bar until the wait can tell")
 	var sock := screen.get_node("%Sock") as Control
 	var turn := sock.rotation
 	await _frames(10)

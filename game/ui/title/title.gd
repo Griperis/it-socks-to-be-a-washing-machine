@@ -1,7 +1,7 @@
 ## The game's first screen (the old TitleScreen, B60; core/58): the dark backdrop, one cream keycap
 ## panel with its pages shown one at a time (home, Multiplayer, Join, Options, Licence), the status
 ## line under them and the Licence key in the corner (the Zoo key too in a debug build). The pages swap
-## at once. The look is the scene's, on the Theme; code fills data and reacts to presses.
+## at once; the Zoo key in the corner is a debug build's only (Q2580). The look is the scene's, on the Theme; code fills data and reacts to presses.
 ##
 ## - Solo: the Solo World (Worlds.pick_solo(): Continue it, or a New Game when there is none) behind
 ##   the loading screen, alone, nothing listening (Q2561; the Lobby comes later).
@@ -60,8 +60,12 @@ func _ready() -> void:
 	_join.pressed.connect(join)
 	_address.text_submitted.connect(func(_t: String) -> void: join())
 	_licence_key.pressed.connect(show_page.bind(LICENCE_PAGE))
-	_zoo_key.visible = OS.is_debug_build()
-	_zoo_key.pressed.connect(func() -> void: go_into.call(ZOO, "", Callable()))
+	# The Zoo key is a debug build's only (Q2580): a release build has none.
+	if OS.is_debug_build():
+		_zoo_key.pressed.connect(func() -> void: go_into.call(ZOO, "", Callable()))
+	else:
+		_zoo_key.queue_free()
+		_zoo_key = null
 	for back: Node in find_children("Back*", "Button", true, false):
 		(back as Button).pressed.connect(back_out)
 	var p := Worlds.profile()
@@ -91,7 +95,8 @@ func show_page(which: String) -> void:
 		_page_node.connect(&"closed", _on_page_closed)
 		_holder.add_child(_page_node)
 	_licence_key.visible = which == HOME
-	_zoo_key.visible = which == HOME and OS.is_debug_build()
+	if _zoo_key != null:
+		_zoo_key.visible = which == HOME
 	var first := _first_focus(which)
 	if first != null:
 		first.grab_focus()

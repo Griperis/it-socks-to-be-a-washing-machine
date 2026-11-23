@@ -25,7 +25,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 				"loading":
 					var screen := (load("res://game/ui/loading/loading_screen.tscn") as PackedScene).instantiate() as LoadingScreen
 					world.add_child(screen)
-					screen.set_heading("Loading the flat...")
+					screen.set_heading("Loading the house...")
 					screen.set_progress(0.45)
 				_:
 					(world as TitleScreen).show_page(arg)
