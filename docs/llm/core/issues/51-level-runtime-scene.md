@@ -63,3 +63,4 @@ Spots, ReturnSpot, Lying, Flights, FlightSpawner (and Environment, Sun, Picture,
 - Verified: run.sh --touched (every suite): PASS 17673 checks, 483 cases (FLAKY mess_settle:real_path_3, see
   follow-ups); net_shot host and guest join in the house; before/after stills
   builds/review-level-runtime/level-runtime-before-after.png, 0 px differ in all three.
+- Merged: 3231d4fe (2026-11-23, branch core/51-level-runtime-scene)
