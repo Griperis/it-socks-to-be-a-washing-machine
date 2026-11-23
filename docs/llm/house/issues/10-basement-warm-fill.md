@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: wontfix
 kind: build
 area: house
 feature: house
@@ -8,7 +8,7 @@ priority: soon
 created: 2026-11-23
 done:
 blocked_by: [house/06-lamp-rules]
-notes: ["Q2572; house/06's [later]"]
+notes: ["Q2572; closed by Q2574: the basement stays bright, no warm fill"]
 terms: []
 ---
 

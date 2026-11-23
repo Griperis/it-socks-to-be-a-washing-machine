@@ -1,4 +1,4 @@
-Next free Q number: Q2574 (update this line whenever a round of questions is asked)
+Next free Q number: Q2575 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -488,3 +488,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2571: the room Door gets its real leaf in house/08, ported from the old house's own leaf geometry (`reference/it-socks/tools/blender/make_house.py`, Door_<doorway>), as a Looks scene; the front and garage doors' plain leaves (house/04) match it (designer, 2026-11-23).
 - Q2572: house/06 merges as built; the old basement's warm daytime fill (0.35, #ffd4a0) is ported in its own ticket (house/10) (designer, 2026-11-23).
 - Q2573: a Guest's own Throw is predicted on the Guest with full physics (the same Jolt body and numbers as the Host's, so it flies the real arc), the Host stays authoritative, and the Guest's body is corrected smoothly to the Host's stream when they part (designer's M0.6 run, 2026-11-23).
+- Q2574: the basement stays as bright as the rest of the house; the old warm daytime fill is not ported (replaces Q2572's "port it later"; house/10 closed) (designer, 2026-11-23).
