@@ -1,4 +1,4 @@
-Next free Q number: Q2592 (update this line whenever a round of questions is asked)
+Next free Q number: Q2594 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -506,3 +506,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2589: a knocked-down Teammate cannot be handed a Sock, as the other knockdown exemptions (a change from the old; core/42; designer, 2026-11-23).
 - Q2590: every other recommended answer in core/41, core/42 and core/43's Open follow-ups stands (mostly as the old; a Guest's Hand-off times out after 2 s per Q2477; a ping outlines anything with the Outline component; the hint arrow is built now with pings as its first source); the stack's sync is asked again (designer, 2026-11-23).
 - Q2591: a stack is a plain collider: the back disc that a player can jump onto, each machine moving its own body on it as on a moving platform; no riding id in the pose. Only if the co-op case at 50 ms shows the rider jittering on other machines is a riding offset added, and that goes to the designer first (core/41; designer, 2026-11-23).
+- Q2592: the rider's synced pose carries the old game's riding offset (riding on whom, at what spot on the back), so every machine draws the rider on the carrier's back; built because the plain collider drew the rider 0.44-0.67 m behind on the carrier's machine (replaces Q2591's no-id; core/41; designer, 2026-11-23).
+- Q2593: the old jump and land sounds are ported now with stacking, for every jump, climbs included, on every machine (core/41; designer, 2026-11-23).
