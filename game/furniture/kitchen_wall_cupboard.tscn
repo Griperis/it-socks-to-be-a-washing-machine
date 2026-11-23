@@ -131,6 +131,8 @@ shape = SubResource("BoxShape3D_5o7rb")
 
 [node name="Openable" type="Node" parent="Door" unique_id=421334623]
 script = ExtResource("2_lj88f")
+open_sound = &"cupboard_open"
+close_sound = &"cupboard_close"
 metadata/kind = "cupboard"
 
 [node name="Looks" parent="Door" unique_id=1737179340 instance=ExtResource("3_0wl7d")]

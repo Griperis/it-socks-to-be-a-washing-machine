@@ -301,6 +301,8 @@ shape = SubResource("BoxShape3D_mymfa")
 
 [node name="Openable" type="Node" parent="Drawer_1" unique_id=1243485004]
 script = ExtResource("2_moucu")
+open_sound = &"drawer_open"
+close_sound = &"drawer_close"
 metadata/kind = "drawer"
 
 [node name="Looks" parent="Drawer_1" unique_id=606379631 instance=ExtResource("3_3srdr")]

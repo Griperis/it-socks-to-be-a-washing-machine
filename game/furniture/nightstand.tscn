@@ -163,6 +163,8 @@ shape = SubResource("BoxShape3D_h1j30")
 
 [node name="Openable" type="Node" parent="Drawer_1" unique_id=1876929303]
 script = ExtResource("2_p8njl")
+open_sound = &"drawer_open"
+close_sound = &"drawer_close"
 metadata/kind = "drawer"
 
 [node name="Looks" parent="Drawer_1" unique_id=1755066305 instance=ExtResource("3_4w2e1")]

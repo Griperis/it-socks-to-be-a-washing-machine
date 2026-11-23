@@ -3,6 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://dy67vow2mgqoa" path="res://game/furniture/looks/looks_piano.tscn" id="1_kqrhi"]
 [ext_resource type="Script" uid="uid://bilshnr7wp5ir" path="res://game/parts/openable.gd" id="2_mvb82"]
 [ext_resource type="PackedScene" uid="uid://b4vqaqq66vufw" path="res://game/furniture/parts/looks_piano_lid.tscn" id="3_ebfgo"]
+[ext_resource type="Script" uid="uid://c7n3imbt28nmg" path="res://game/devices/piano_key.gd" id="20_key"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="22_outline"]
+[ext_resource type="Resource" uid="uid://cf0irphmujwq5" path="res://game/devices/piano_tuning.tres" id="21_tuning"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ehg03"]
 size = Vector3(0.4, 0.34, 1.4)
@@ -102,6 +105,270 @@ size = Vector3(1.2, 0.21999997, 0.16)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_f4ars"]
 size = Vector3(1.28, 0.35000002, 0.19999999)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key21_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key22_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key23_1"]
+size = Vector3(0.022, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key24_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key25_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key26_1"]
+size = Vector3(0.022, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key27_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key28_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key29_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key30_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key31_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key32_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key33_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key34_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key35_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key36_1"]
+size = Vector3(0.022, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key37_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key38_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key39_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key40_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key41_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key42_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key43_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key44_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key45_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key46_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key47_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key48_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key49_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key50_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key51_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key52_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key53_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key54_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key55_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key56_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key57_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key58_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key59_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key60_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key61_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key62_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key63_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key64_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key65_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key66_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key67_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key68_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key69_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key70_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key71_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key72_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key73_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key74_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key75_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key76_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key77_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key78_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key79_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key80_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key81_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key82_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key83_1"]
+size = Vector3(0.0222, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key84_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key85_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key86_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key87_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key88_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key89_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key90_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key91_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key92_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key93_1"]
+size = Vector3(0.022, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key94_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key95_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key96_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key97_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key98_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key99_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key100_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key101_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key102_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key103_1"]
+size = Vector3(0.022, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key104_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key105_1"]
+size = Vector3(0.0221, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key106_1"]
+size = Vector3(0.0136, 0.047, 0.095)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key107_1"]
+size = Vector3(0.022, 0.05, 0.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_key108_1"]
+size = Vector3(0.0221, 0.05, 0.15)
 
 [node name="Piano" type="StaticBody3D" unique_id=674169631]
 collision_mask = 0
@@ -236,6 +503,8 @@ shape = SubResource("BoxShape3D_sbqyk")
 
 [node name="Openable" type="Node" parent="Lid" unique_id=1232376408]
 script = ExtResource("2_mvb82")
+open_sound = &"piano_lid_open"
+close_sound = &"piano_lid_close"
 metadata/kind = "piano_lid"
 
 [node name="Looks" parent="Lid" unique_id=790485290 instance=ExtResource("3_ebfgo")]
@@ -272,3 +541,1765 @@ monitorable = false
 
 [node name="Box" type="CollisionShape3D" parent="Spots/Top2" unique_id=297005559]
 shape = SubResource("BoxShape3D_f4ars")
+
+[node name="Keys" type="Node3D" parent="."]
+
+[node name="Key_21" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5993, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_21"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 21
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_21"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_21"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_21")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_21/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key21_1")
+
+[node name="Key_22" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5875, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_22"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 22
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_22"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_22"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_22")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_22/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key22_1")
+
+[node name="Key_23" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5757, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_23"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 23
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_23"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_23"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_23")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_23/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key23_1")
+
+[node name="Key_24" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5523, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_24"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 24
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_24"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_24"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_24")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_24/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key24_1")
+
+[node name="Key_25" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5405, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_25"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 25
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_25"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_25"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_25")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_25/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key25_1")
+
+[node name="Key_26" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5288, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_26"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 26
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_26"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_26"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_26")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_26/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key26_1")
+
+[node name="Key_27" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.517, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_27"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 27
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_27"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_27"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_27")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_27/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key27_1")
+
+[node name="Key_28" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5052, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_28"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 28
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_28"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_28"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_28")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_28/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key28_1")
+
+[node name="Key_29" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4818, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_29"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 29
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_29"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_29"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_29")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_29/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key29_1")
+
+[node name="Key_30" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.47, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_30"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 30
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_30"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_30"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_30")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_30/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key30_1")
+
+[node name="Key_31" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4582, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_31"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 31
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_31"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_31"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_31")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_31/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key31_1")
+
+[node name="Key_32" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4465, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_32"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 32
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_32"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_32"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_32")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_32/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key32_1")
+
+[node name="Key_33" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4347, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_33"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 33
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_33"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_33"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_33")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_33/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key33_1")
+
+[node name="Key_34" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.423, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_34"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 34
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_34"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_34"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_34")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_34/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key34_1")
+
+[node name="Key_35" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4112, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_35"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 35
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_35"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_35"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_35")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_35/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key35_1")
+
+[node name="Key_36" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3877, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_36"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 36
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_36"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_36"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_36")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_36/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key36_1")
+
+[node name="Key_37" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.376, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_37"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 37
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_37"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_37"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_37")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_37/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key37_1")
+
+[node name="Key_38" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3643, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_38"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 38
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_38"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_38"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_38")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_38/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key38_1")
+
+[node name="Key_39" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3525, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_39"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 39
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_39"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_39"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_39")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_39/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key39_1")
+
+[node name="Key_40" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3408, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_40"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 40
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_40"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_40"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_40")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_40/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key40_1")
+
+[node name="Key_41" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3173, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_41"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 41
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_41"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_41"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_41")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_41/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key41_1")
+
+[node name="Key_42" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3055, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_42"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 42
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_42"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_42"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_42")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_42/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key42_1")
+
+[node name="Key_43" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2937, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_43"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 43
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_43"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_43"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_43")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_43/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key43_1")
+
+[node name="Key_44" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.282, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_44"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 44
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_44"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_44"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_44")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_44/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key44_1")
+
+[node name="Key_45" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2702, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_45"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 45
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_45"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_45"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_45")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_45/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key45_1")
+
+[node name="Key_46" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2585, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_46"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 46
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_46"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_46"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_46")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_46/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key46_1")
+
+[node name="Key_47" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2467, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_47"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 47
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_47"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_47"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_47")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_47/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key47_1")
+
+[node name="Key_48" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2233, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_48"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 48
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_48"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_48"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_48")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_48/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key48_1")
+
+[node name="Key_49" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2115, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_49"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 49
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_49"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_49"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_49")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_49/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key49_1")
+
+[node name="Key_50" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1998, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_50"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 50
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_50"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_50"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_50")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_50/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key50_1")
+
+[node name="Key_51" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.188, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_51"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 51
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_51"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_51"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_51")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_51/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key51_1")
+
+[node name="Key_52" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1762, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_52"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 52
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_52"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_52"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_52")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_52/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key52_1")
+
+[node name="Key_53" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1528, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_53"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 53
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_53"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_53"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_53")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_53/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key53_1")
+
+[node name="Key_54" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.141, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_54"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 54
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_54"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_54"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_54")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_54/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key54_1")
+
+[node name="Key_55" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1293, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_55"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 55
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_55"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_55"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_55")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_55/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key55_1")
+
+[node name="Key_56" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1175, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_56"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 56
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_56"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_56"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_56")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_56/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key56_1")
+
+[node name="Key_57" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1058, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_57"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 57
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_57"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_57"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_57")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_57/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key57_1")
+
+[node name="Key_58" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.094, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_58"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 58
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_58"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_58"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_58")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_58/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key58_1")
+
+[node name="Key_59" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0822, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_59"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 59
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_59"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_59"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_59")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_59/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key59_1")
+
+[node name="Key_60" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0587, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_60"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 60
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_60"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_60"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_60")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_60/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key60_1")
+
+[node name="Key_61" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.047, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_61"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 61
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_61"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_61"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_61")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_61/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key61_1")
+
+[node name="Key_62" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0353, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_62"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 62
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_62"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_62"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_62")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_62/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key62_1")
+
+[node name="Key_63" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0235, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_63"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 63
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_63"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_63"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_63")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_63/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key63_1")
+
+[node name="Key_64" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0117, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_64"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 64
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_64"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_64"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_64")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_64/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key64_1")
+
+[node name="Key_65" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0117, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_65"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 65
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_65"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_65"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_65")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_65/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key65_1")
+
+[node name="Key_66" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0235, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_66"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 66
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_66"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_66"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_66")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_66/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key66_1")
+
+[node name="Key_67" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0353, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_67"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 67
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_67"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_67"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_67")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_67/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key67_1")
+
+[node name="Key_68" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.047, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_68"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 68
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_68"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_68"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_68")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_68/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key68_1")
+
+[node name="Key_69" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0587, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_69"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 69
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_69"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_69"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_69")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_69/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key69_1")
+
+[node name="Key_70" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0705, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_70"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 70
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_70"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_70"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_70")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_70/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key70_1")
+
+[node name="Key_71" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0822, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_71"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 71
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_71"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_71"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_71")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_71/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key71_1")
+
+[node name="Key_72" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1058, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_72"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 72
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_72"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_72"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_72")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_72/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key72_1")
+
+[node name="Key_73" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1175, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_73"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 73
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_73"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_73"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_73")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_73/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key73_1")
+
+[node name="Key_74" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1293, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_74"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 74
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_74"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_74"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_74")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_74/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key74_1")
+
+[node name="Key_75" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.141, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_75"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 75
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_75"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_75"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_75")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_75/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key75_1")
+
+[node name="Key_76" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1528, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_76"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 76
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_76"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_76"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_76")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_76/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key76_1")
+
+[node name="Key_77" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1762, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_77"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 77
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_77"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_77"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_77")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_77/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key77_1")
+
+[node name="Key_78" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.188, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_78"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 78
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_78"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_78"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_78")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_78/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key78_1")
+
+[node name="Key_79" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1998, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_79"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 79
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_79"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_79"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_79")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_79/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key79_1")
+
+[node name="Key_80" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2115, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_80"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 80
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_80"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_80"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_80")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_80/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key80_1")
+
+[node name="Key_81" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2233, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_81"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 81
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_81"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_81"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_81")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_81/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key81_1")
+
+[node name="Key_82" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.235, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_82"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 82
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_82"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_82"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_82")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_82/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key82_1")
+
+[node name="Key_83" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2467, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_83"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 83
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_83"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_83"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_83")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_83/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key83_1")
+
+[node name="Key_84" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2702, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_84"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 84
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_84"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_84"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_84")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_84/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key84_1")
+
+[node name="Key_85" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.282, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_85"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 85
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_85"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_85"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_85")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_85/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key85_1")
+
+[node name="Key_86" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2937, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_86"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 86
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_86"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_86"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_86")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_86/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key86_1")
+
+[node name="Key_87" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3055, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_87"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 87
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_87"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_87"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_87")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_87/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key87_1")
+
+[node name="Key_88" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3173, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_88"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 88
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_88"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_88"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_88")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_88/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key88_1")
+
+[node name="Key_89" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3408, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_89"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 89
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_89"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_89"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_89")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_89/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key89_1")
+
+[node name="Key_90" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3525, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_90"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 90
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_90"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_90"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_90")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_90/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key90_1")
+
+[node name="Key_91" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3643, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_91"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 91
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_91"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_91"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_91")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_91/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key91_1")
+
+[node name="Key_92" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.376, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_92"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 92
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_92"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_92"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_92")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_92/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key92_1")
+
+[node name="Key_93" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3877, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_93"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 93
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_93"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_93"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_93")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_93/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key93_1")
+
+[node name="Key_94" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3995, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_94"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 94
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_94"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_94"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_94")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_94/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key94_1")
+
+[node name="Key_95" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4112, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_95"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 95
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_95"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_95"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_95")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_95/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key95_1")
+
+[node name="Key_96" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4347, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_96"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 96
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_96"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_96"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_96")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_96/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key96_1")
+
+[node name="Key_97" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4465, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_97"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 97
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_97"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_97"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_97")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_97/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key97_1")
+
+[node name="Key_98" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4582, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_98"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 98
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_98"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_98"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_98")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_98/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key98_1")
+
+[node name="Key_99" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_99"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 99
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_99"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_99"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_99")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_99/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key99_1")
+
+[node name="Key_100" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4818, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_100"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 100
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_100"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_100"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_100")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_100/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key100_1")
+
+[node name="Key_101" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5052, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_101"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 101
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_101"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_101"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_101")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_101/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key101_1")
+
+[node name="Key_102" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.517, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_102"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 102
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_102"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_102"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_102")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_102/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key102_1")
+
+[node name="Key_103" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5288, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_103"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 103
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_103"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_103"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_103")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_103/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key103_1")
+
+[node name="Key_104" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5405, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_104"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 104
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_104"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_104"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_104")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_104/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key104_1")
+
+[node name="Key_105" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5523, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_105"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 105
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_105"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_105"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_105")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_105/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key105_1")
+
+[node name="Key_106" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.564, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_106"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 106
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_106"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_106"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_106")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_106/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0385, 0.1075)
+shape = SubResource("BoxShape3D_key106_1")
+
+[node name="Key_107" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5757, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_107"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 107
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_107"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_107"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_107")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_107/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key107_1")
+
+[node name="Key_108" type="Node3D" parent="Keys"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5993, 0.69, 0.066)
+
+[node name="Key" type="Node" parent="Keys/Key_108"]
+script = ExtResource("20_key")
+tuning = ExtResource("21_tuning")
+note = 108
+
+[node name="Body" type="StaticBody3D" parent="Keys/Key_108"]
+collision_mask = 0
+
+[node name="Outline" type="Node3D" parent="Keys/Key_108"]
+visible = false
+script = ExtResource("22_outline")
+meshes = Array[NodePath]([NodePath("../../../Looks/Key_108")])
+
+[node name="Shape1" type="CollisionShape3D" parent="Keys/Key_108/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5e-05, 0.025, 0.135)
+shape = SubResource("BoxShape3D_key108_1")

@@ -85,6 +85,14 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# from the reference's glb with its own materials (IT_SOCKS_REFERENCE, else res://reference/it-socks).
 			_furniture_shot(world, arg)
 			return true
+		"devices":
+			# assets/07: the furniture devices, seen by the zoo's player at the Furniture station. arg
+			# "mirror": the wall mirror lifted to its old hang (0.9 m) and the player before it (its own
+			# body in the reflection); "piano": the player at the keys opens the lid; "keys": C4, E4 and G4 played;
+			# "sheet": the locked Cabinet under its dust sheet; "pull": its switch used, so the sheet is
+			# pulled off (shoot a few frames later for the slide, 30 frames later for the bare Cabinet).
+			_devices_shot(world, arg)
+			return true
 		"house_kit":
 			# A camera on the house kit station (house/02): "lineup" (every piece from above), "walls",
 			# "openings", "floors", "roof_pieces" (rows of the line-up), "room" (the U room from
@@ -635,6 +643,44 @@ static func _furniture_shot(world: Node, arg: String) -> void:
 		cam.look_at(line_up.to_global(Vector3(6.0, 0.0, -13.0)))
 	cam.reset_physics_interpolation()
 	cam.make_current()
+
+
+## The devices' views (assets/07): see "devices" in act().
+static func _devices_shot(world: Node, arg: String) -> void:
+	var station := world.get_node("Stations/Furniture") as Node3D
+	var line_up := station.get_node("LineUp") as FurnitureLineUp
+	var player := world.get_node("Player") as Player
+	var head := player.get_node("%Head") as Node3D
+	(station.get_node("Name") as Node3D).visible = false
+	var stand := func(at: Vector3, look: Vector3) -> void:
+		player.velocity = Vector3.ZERO
+		player.global_position = at
+		var to := look - at
+		player.rotation = Vector3(0.0, atan2(-to.x, -to.z), 0.0)
+		var up := look - (at + Vector3.UP * head.position.y)
+		head.rotation.x = atan2(up.y, Vector2(up.x, up.z).length())
+		player.reset_physics_interpolation()
+	match arg:
+		"mirror":
+			var piece := line_up.piece("wall_mirror")
+			piece.position.y = 0.9
+			var glass := piece.get_node("Mirror") as Node3D
+			stand.call(piece.to_global(Vector3(0.25, -0.9, 1.1)), glass.global_position + Vector3(0.0, -0.15, 0.0))
+		"piano":
+			var piano := line_up.piece("piano")
+			var lid := piano.get_node("Lid/Openable") as Openable
+			stand.call(piano.to_global(Vector3(0.1, 0.0, 0.95)), piano.to_global(Vector3(0.0, 0.7, 0.15)))
+			lid.use(player.player_id())
+		"keys":
+			var piano := line_up.piece("piano")
+			for note: int in [60, 64, 67]:
+				var key := piano.get_node("Keys/Key_%d/Key" % note) as PianoKey
+				key.use(player.player_id())
+		"sheet", "pull":
+			var cabinet := station.get_node("SheetedCabinet") as Node3D
+			stand.call(cabinet.to_global(Vector3(-0.7, 0.0, 1.2)), cabinet.to_global(Vector3(0.0, 0.5, 0.2)))
+			if arg == "pull":
+				(station.get_node("SheetSwitch/CabinetLockSwitch") as Part).use(player.player_id())
 
 
 ## Puts the old game's model of every piece in the line-up in place of its Looks (a review still).
