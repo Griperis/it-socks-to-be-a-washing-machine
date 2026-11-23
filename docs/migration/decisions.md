@@ -1,4 +1,4 @@
-Next free Q number: Q2531 (update this line whenever a round of questions is asked)
+Next free Q number: Q2532 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -445,3 +445,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2528: core/52 brings these old details now: the under-furniture edge strips, the thinning away from the washer (from a marker until the machine exists), the stair trail, and about a third of the room doors shut at a New Game (once the house has room doors); the rest wait for their feature, none dropped (core/52; designer, 2026-11-23).
 - Q2529: core/52 merges as its stills show (designer, 2026-11-23).
 - Q2530: the stair trail's Socks lie flat on each tread: house/05 gives the stair pieces step-shaped landing places; the player still walks the ramp collision (designer, 2026-11-23).
+- Q2531: generated Socks are never frozen in the air: a laid Sock with nothing under it wakes and falls (or lands on the heap); a reseed lays the new Mess only onto the world without the old one (designer, 2026-11-23).
