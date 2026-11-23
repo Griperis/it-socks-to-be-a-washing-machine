@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://aqr7myiixfj7s"]
 
 [ext_resource type="Script" uid="uid://2pk3orkw4k3z4" path="res://game/lobby/lobby.gd" id="1_lobby"]
+[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
 
 [node name="Lobby" type="Control" unique_id=965929202]
 layout_mode = 3
@@ -196,9 +197,5 @@ layout_mode = 2
 theme_type_variation = &"ExitButton"
 text = "New game"
 
-[node name="AskNo" type="Button" parent="Ask/Center/Panel/Box/Keys" unique_id=597891247]
+[node name="AskClose" parent="Ask/Center/Panel" instance=ExtResource("close_btn")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(240, 72)
-layout_mode = 2
-theme_type_variation = &"KeycapButton"
-text = "Cancel"

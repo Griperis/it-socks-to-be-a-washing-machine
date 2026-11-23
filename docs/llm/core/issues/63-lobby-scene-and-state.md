@@ -61,3 +61,9 @@ Assumption to confirm at the first still: Solo's bar is the old one (Continue, N
     tests/menus_test.gd (m05), tests/save_test.gd (s01 through the Lobby), tests/wiring_scenes.txt,
     docs/architecture/lobby.md
   - Verified: PASS 18604 checks, 564 cases (--touched ran every suite)
+- 2026-11-23 (lead's fix before the merge)
+  - Changed: merged main; Solo's "New game" question has the shared ESC close key at its top right and no Cancel
+    (Q2578, core/59): the key or Esc cancels; no other dialogue added (Back and Leave ask nothing). PROTOCOL stays 15
+    (main 14).
+  - Files: game/lobby/lobby.tscn, game/lobby/lobby.gd, tests/lobby_test.gd (k06), this ticket
+  - Verified: PASS 18606 checks, 564 cases (--touched ran every suite)

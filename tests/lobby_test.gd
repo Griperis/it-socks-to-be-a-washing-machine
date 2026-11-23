@@ -31,7 +31,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "k05_late_joiner_skips_50ms", "method": "case_k05_50ms", "world": false,
 				"title": "the late joiner with 50 ms each way"},
 		{"name": "k06_solo_bar", "method": "case_k06", "world": false,
-				"title": "Solo's Lobby: one place, no Ready or Start; no save: Continue hidden and New Game goes in at once; a save: Continue goes on with it, New Game asks \"Start a new game? The saved game is lost.\" (Cancel stays, New game goes in with a New Game)"},
+				"title": "Solo's Lobby: one place, no Ready or Start; no save: Continue hidden and New Game goes in at once; a save: Continue goes on with it, New Game asks \"Start a new game? The saved game is lost.\" (the close key at its top right or Esc stays, Q2578; New game goes in with a New Game)"},
 	]
 
 
@@ -244,8 +244,14 @@ func case_k06() -> void:
 	await _click(lobby.get_node("%NewGame") as Control)
 	_check(lobby.asking() and _into.is_empty(), "New Game over a save asks first")
 	_check((lobby.get_node("Ask/Center/Panel/Box/Question") as Label).text == "Start a new game? The saved game is lost.", "with the old words")
-	await _click(lobby.get_node("%AskNo") as Control)
-	_check(not lobby.asking() and _into.is_empty(), "Cancel goes back to the Lobby")
+	var close := lobby.get_node("%AskClose") as CloseButton
+	var area := close.get_global_rect()  # it fills the panel's inside, as every dialogue's (menus x01)
+	_check(close.key().is_visible_in_tree() and absf(close.key().get_global_rect().end.x - area.end.x) < 1.0
+			and close.key().get_global_rect().position.y - area.position.y < 24.0 and close.key().icon == UiIcons.texture("key_esc"),
+			"the question has the ESC close key at its top right (Q2578)")
+	_check(lobby.find_children("*", "Button", true, false).all(func(b: Node) -> bool: return (b as Button).text != "Cancel"), "and no Cancel")
+	await _click(close.key())
+	_check(not lobby.asking() and _into.is_empty(), "the close key goes back to the Lobby")
 	await _click(lobby.get_node("%NewGame") as Control)
 	await _key(&"ui_cancel")
 	_check(not lobby.asking() and _into.is_empty() and _did.is_empty(), "Esc closes the question, the Lobby stays")

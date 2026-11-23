@@ -4,7 +4,8 @@
 ## World's card, the places as a list of names in their colours, the status line and the bottom bar.
 ##
 ## - Solo (a Host of one, nothing listening): one place, no Ready; Back, Continue (hidden with no save)
-##   and New Game (asks before a saved game is overwritten), then the house (the old Solo bar).
+##   and New Game (asks before a saved game is overwritten: the question's close key or Esc cancels,
+##   Q2578), then the house (the old Solo bar).
 ## - Host: listening; four places; Back, Ready and Start (greyed until everyone present is Ready). Start
 ##   has every machine load the house behind the loading screen; the house handshake does the rest.
 ## - Guest: joins the Host's address behind the "Joining..." card until the link's snapshot comes; Leave,
@@ -71,7 +72,7 @@ var _joining_card: LoadingScreen = null
 @onready var _new_game: Button = %NewGame
 @onready var _ask: Control = %Ask
 @onready var _ask_yes: Button = %AskYes
-@onready var _ask_no: Button = %AskNo
+@onready var _ask_close: CloseButton = %AskClose
 
 
 func _enter_tree() -> void:
@@ -88,7 +89,7 @@ func _ready() -> void:
 	_continue.pressed.connect(continue_world)
 	_new_game.pressed.connect(new_game)
 	_ask_yes.pressed.connect(_new_game_over_save)
-	_ask_no.pressed.connect(func() -> void: _show_ask(false))
+	_ask_close.pressed.connect(func() -> void: _show_ask(false))
 	link.lobby.changed.connect(_refresh)
 	link.roster.changed.connect(_refresh)
 	link.session.linked.connect(_on_linked)
@@ -226,7 +227,7 @@ func _new_game_over_save() -> void:
 func _show_ask(on: bool) -> void:
 	_ask.visible = on
 	if on:
-		_ask_no.grab_focus()
+		_ask_yes.grab_focus()
 
 
 func _ask_lobby(cmd: Command) -> void:
