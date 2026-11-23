@@ -5,8 +5,8 @@
 ##
 ## - Solo: the Solo World (Worlds.pick_solo(): Continue it, or a New Game when there is none) behind
 ##   the loading screen, alone, nothing listening (Q2561; the Lobby comes later).
-## - Multiplayer: Host (the last-played co-op World, or a New Game in a free slot; listening) and Join
-##   (name and address, kept in the profile; "Joining..." behind the loading screen).
+## - Multiplayer: one "Your name" field above Host and Join (kept in the profile; Q2585), Host (the last-played co-op World, or a New Game in a free slot; listening) and Join
+##   (address, kept in the profile; "Joining..." behind the loading screen).
 ## - Options, Licence: their pages. Quit closes the game.
 ## - Each way into the game (Solo, Host, Join) makes the game link (GameLink, core/62) beside the title,
 ##   which the level then plays through and a scene change keeps; back at the title the game is over
@@ -73,7 +73,7 @@ func _ready() -> void:
 		_zoo_key = null
 	_close.pressed.connect(back_out)
 	var p := Worlds.profile()
-	_name.text = p.name if p.name != PlayerProfile.NAME else ""
+	_name.text = p.shown_name()
 	_address.text = p.address
 	_status.text = Worlds.take_notice()
 	show_page(HOME)
@@ -83,6 +83,8 @@ func _ready() -> void:
 ## Shows page `which` alone (no slide, no fade); the corner keys only on home. Leaving the Join page
 ## keeps what was typed in the profile.
 func show_page(which: String) -> void:
+	if page == MULTIPLAYER and which != MULTIPLAYER:
+		_keep_name()
 	if page == JOIN and which != JOIN:
 		_keep_join_fields()
 	if is_instance_valid(_page_node):
@@ -128,6 +130,7 @@ func solo() -> void:
 
 ## Host: the Host's World, listening. `from_command_line`: the `--host` rule.
 func host(from_command_line := false) -> void:
+	_keep_name()
 	var w := Worlds.pick_host(from_command_line)
 	if w == null:
 		_status.text = Worlds.take_notice()
@@ -139,6 +142,7 @@ func host(from_command_line := false) -> void:
 
 ## Join: the Host at the typed address (the remembered one when empty).
 func join(where := "") -> void:
+	_keep_name()
 	_keep_join_fields()
 	var address := where if where != "" else _address.text.strip_edges()
 	if address == "":
@@ -166,11 +170,20 @@ func _go(w: WorldSlot, launch: PackedStringArray) -> void:
 
 func _keep_join_fields() -> void:
 	var p := Worlds.profile()
-	var typed := PlayerProfile.clean_name(_name.text)
 	var address := _address.text.strip_edges().left(PlayerProfile.ADDRESS_MAX)
-	if typed != p.name or address != p.address:
-		p.name = typed
+	if address != p.address:
 		p.address = address
+		p.save()
+
+
+## The one "Your name" field (Multiplayer page, for Host and Join): kept in the profile.
+func _keep_name() -> void:
+	var p := Worlds.profile()
+	var typed := PlayerProfile.clean_name(_name.text)
+	if _name.text.strip_edges() == p.shown_name():
+		return  # untouched (a suggestion shown is not a typed name)
+	if typed != p.name:
+		p.name = typed
 		p.save()
 
 
@@ -187,9 +200,9 @@ func _first_focus(which: String) -> Control:
 		HOME:
 			return _solo
 		MULTIPLAYER:
-			return _host
-		JOIN:
 			return _name
+		JOIN:
+			return _address
 	return null
 
 

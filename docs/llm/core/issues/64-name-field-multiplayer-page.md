@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: frame
@@ -28,3 +28,8 @@ the profile; Join's own field goes; `PlayerProfile.suggested_name()` returns "" 
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-23
+Changed: the "Your name" field moved from the Join page to the Multiplayer page above Host and Join; the name is kept on leaving the page, Host and Join; Join keeps the address only. `PlayerProfile.suggested_name()` (returns "") and `shown_name()` (typed name wins, an untouched suggestion is not kept as typed). The wire is unchanged (the gate already carried the name), so PROTOCOL stays. Shot action `name`, shot set `name-field`; stills in `builds/review-name-field/`.
+Files: game/ui/title/title.gd, title.tscn, game/net/player_profile.gd, tests/menus_test.gd, tests/game_link_test.gd, tests/suggesting_profile.gd, tools/shot_hooks.gd, tools/shots/sets/name-field.txt.
+Verified: PASS 18421 checks, 519 cases

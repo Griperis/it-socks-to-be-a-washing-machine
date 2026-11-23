@@ -60,6 +60,8 @@ func cases() -> Array[Dictionary]:
 				"title": "E02: a Host's End session asks \"Everyone will be sent back to the menu.\"; End saves, ends the session and goes to the title; a Guest's Leave goes to the title; a title Guest whose Host ended goes to the title with the reason"},
 		{"name": "e03_options_in_esc", "method": "case_e03", "world": false,
 				"title": "E03: Options opens from the ESC menu; Esc closes it first"},
+		{"name": "n01_name_suggestion", "method": "case_n01", "world": false,
+				"title": "N01: the Multiplayer page's one name field: a suggested name fills an empty field, a typed name wins, an untouched suggestion is not kept; a name is cut at 16, empty is Player"},
 		{"name": "x01_close_key_title", "method": "case_x01", "world": false,
 				"title": "X01 real path: on the title, Multiplayer, Join, Options and Licence each show the ESC close key at the same top-right corner of their panel; a click closes the page (one page up), Esc does the same"},
 		{"name": "x02_close_key_esc_menu", "method": "case_x02", "world": false,
@@ -67,6 +69,30 @@ func cases() -> Array[Dictionary]:
 		{"name": "x03_every_dialogue_has_it", "method": "case_x03", "world": false,
 				"title": "X03: every dialogue scene under game/ui (a root with a `closed` signal, the title's Multiplayer and Join pages) holds the shared close_button scene, at the top right"},
 	]
+
+
+func case_n01() -> void:
+	# A made-up suggestion fills an empty field; a typed name wins; an untouched suggestion is not kept as typed.
+	var p := SuggestingProfile.new()
+	p.id = PlayerProfile.new_id()
+	p.suggestion = "SteamSock"
+	Worlds.use_profile(p)
+	_check(PlayerProfile.fresh().suggested_name() == "", "the seam suggests nothing for now")
+	var t := await _title()
+	await _click(t.get_node("%MultiplayerKey"))
+	var field := t.get_node("%NameField") as LineEdit
+	_check(field.text == "SteamSock", "the suggestion fills an empty field (%s)" % field.text)
+	t.show_page(TitleScreen.HOME)
+	_check(p.name == PlayerProfile.NAME, "an untouched suggestion is not kept as a typed name")
+	t.show_page(TitleScreen.MULTIPLAYER)
+	field.text = "Typed"
+	t.show_page(TitleScreen.HOME)
+	_check(p.name == "Typed" and p.shown_name() == "Typed", "a typed name wins over the suggestion")
+	var t2 := await _title()
+	await _click(t2.get_node("%MultiplayerKey"))
+	_check((t2.get_node("%NameField") as LineEdit).text == "Typed", "and comes back in the field")
+	var long_name := PlayerProfile.clean_name("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	_check(long_name.length() == PlayerProfile.NAME_MAX and PlayerProfile.clean_name("   ") == PlayerProfile.NAME, "a name is cut at 16, empty is Player")
 
 
 func _before_case() -> void:
@@ -112,9 +138,10 @@ func case_m03() -> void:
 	var t := await _title()
 	await _click(t.get_node("%MultiplayerKey"))
 	_check(t.page == TitleScreen.MULTIPLAYER and (t.get_node("%Host") as Control).is_visible_in_tree() and (t.get_node("%JoinKey") as Control).is_visible_in_tree(), "Multiplayer shows Host and Join")
+	_check((t.get_node("%NameField") as Control).is_visible_in_tree() and (t.get_node("%NameField") as Control).global_position.y < (t.get_node("%Host") as Control).global_position.y, "the name field is on the Multiplayer page, above Host")
 	_check(not (t.get_node("%Home") as Control).visible, "the home page went at once")
 	await _click(t.get_node("%JoinKey"))
-	_check(t.page == TitleScreen.JOIN and (t.get_node("%NameField") as Control).is_visible_in_tree() and (t.get_node("%AddressField") as Control).is_visible_in_tree(), "Join shows the two fields")
+	_check(t.page == TitleScreen.JOIN and not (t.get_node("%NameField") as Control).is_visible_in_tree() and (t.get_node("%AddressField") as Control).is_visible_in_tree(), "Join shows the address only (the name is on the Multiplayer page)")
 	_check((t.get_node("Pages/Center/Column/Panel/Stack/Join/Firewall") as Label).text.contains("UDP port 24680"), "the firewall line")
 	await _key(&"ui_cancel")
 	_check(t.page == TitleScreen.MULTIPLAYER, "Esc goes one page up")
@@ -124,13 +151,14 @@ func case_m03() -> void:
 
 func case_m04() -> void:
 	var t := await _title()
-	t.show_page(TitleScreen.JOIN)
+	t.show_page(TitleScreen.MULTIPLAYER)
 	(t.get_node("%NameField") as LineEdit).text = "  Sockmaster  "
+	t.show_page(TitleScreen.JOIN)
 	(t.get_node("%AddressField") as LineEdit).text = " 10.0.0.7 "
 	await _click((t.get_node("%Close") as CloseButton).key())
 	var p := Worlds.profile()
 	_check(p.name == "Sockmaster" and p.address == "10.0.0.7", "the name and address are kept (%s, %s)" % [p.name, p.address])
-	t.show_page(TitleScreen.JOIN)
+	t.show_page(TitleScreen.MULTIPLAYER)
 	(t.get_node("%NameField") as LineEdit).text = "   "
 	t.show_page(TitleScreen.HOME)
 	_check(Worlds.profile().name == PlayerProfile.NAME, "an empty name is Player")

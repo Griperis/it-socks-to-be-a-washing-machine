@@ -78,6 +78,21 @@ static func clean_name(v: Variant) -> String:
 	return text if text != "" else NAME
 
 
+## A name the platform suggests for the field (Steam's persona name at M4, Q2585); "" for none. A
+## typed name wins (shown_name). The one seam where a Steam name fills the field.
+func suggested_name() -> String:
+	return ""
+
+
+## What the Multiplayer page's field shows: the typed name, else the suggestion, else "" (the
+## field's placeholder says "Player").
+func shown_name() -> String:
+	if name != NAME:
+		return name
+	var s := suggested_name().strip_edges().left(NAME_MAX)
+	return s if s != NAME else ""
+
+
 func save() -> void:
 	if path == "":
 		return

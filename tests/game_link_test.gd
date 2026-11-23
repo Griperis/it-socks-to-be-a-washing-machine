@@ -236,13 +236,15 @@ func _from_title(lag_ms: int) -> void:
 	var guest := _machine("Guest")
 	await _frames(1)
 	_open_title(host, false, lag_ms)
-	_open_title(guest, true, lag_ms)
+	_open_title(guest, true, lag_ms, func() -> String:
+		return PlayerProfile.clean_name((guest.get_node("Title") as TitleScreen).get_node("%NameField").text) if guest.has_node("Title") else PlayerProfile.NAME)
 	await _frames(2)
 	# The Host's title: Multiplayer, Host.
 	var ht := host.get_node("Title") as TitleScreen
 	var gt := guest.get_node("Title") as TitleScreen
 	gt.visible = false  # both titles lie over each other in this one window: the clicks go to the Host's
 	await _click(ht.get_node("%MultiplayerKey") as Control)
+	(ht.get_node("%NameField") as LineEdit).text = "Hostess"  # typed in the one field, then Host
 	await _click(ht.get_node("%Host") as Control)
 	await _until(func() -> bool: return _level_of(host) != null, "the Host's title to load the house", 900, 30.0)
 	var hr := LevelRuntime.of(_level_of(host))
@@ -251,6 +253,7 @@ func _from_title(lag_ms: int) -> void:
 	# The Guest's title: Multiplayer, Join, the address, Join.
 	gt.visible = true
 	await _click(gt.get_node("%MultiplayerKey") as Control)
+	(gt.get_node("%NameField") as LineEdit).text = "Visitor"
 	await _click(gt.get_node("%JoinKey") as Control)
 	(gt.get_node("%AddressField") as LineEdit).text = "127.0.0.1:%d" % hr.session.port
 	await _click(gt.get_node("%JoinGo") as Control)
@@ -261,6 +264,8 @@ func _from_title(lag_ms: int) -> void:
 			"each house plays through the link its title made")
 	await _until(func() -> bool: return gr.net.mode_text().begins_with("Joined"), "the Guest to be welcomed into the house", 3000, 60.0)
 	var g_peer := gr.session.me()
+	_check(hr.roster.name_of(Roster.HOST) == "Hostess" and gr.roster.name_of(Roster.HOST) == "Hostess", "the Guest's Roster has the name typed on the Host's Multiplayer page")
+	_check(hr.roster.name_of(g_peer) == "Visitor", "and the Host's Roster the Guest's typed name (%s)" % hr.roster.name_of(g_peer))
 	await _until(func() -> bool: return hr.avatars.of(g_peer) != null and gr.avatars.of(1) != null, "each to see the other's avatar", 900, 20.0)
 	# The Guest picks a Sock by its key; the Host's Hands hold it for the Guest.
 	hr.player.set_input_blocked(true)
@@ -337,7 +342,7 @@ func _linked_pair(lag_ms: int) -> Array[Node]:
 
 ## The title in `machine`, its way into the game putting the level in the machine's view; the way back
 ## to the title stays put. With `lag_ms`, the machine's peer is wrapped in the frame its Net starts.
-func _open_title(machine: Node, guest: bool, lag_ms: int) -> void:
+func _open_title(machine: Node, guest: bool, lag_ms: int, guest_name := func() -> String: return PlayerProfile.NAME) -> void:
 	var t := (load(TITLE) as PackedScene).instantiate() as TitleScreen
 	t.name = "Title"
 	t.go_into = func(path: String, _heading: String, setup: Callable) -> void:
@@ -346,7 +351,10 @@ func _open_title(machine: Node, guest: bool, lag_ms: int) -> void:
 			setup.call(root)
 		if guest:
 			# One process, one profile file: the Guest plays as another player.
-			GameLink.of(t).session.profile = PlayerProfile.fresh()
+			# (it keeps the name typed on its title's field).
+			var other := PlayerProfile.fresh()
+			other.name = guest_name.call()
+			GameLink.of(t).session.profile = other
 		var runtime := LevelRuntime.of(root)
 		runtime.esc_menu.go_to_title = func(_notice: String) -> void: pass
 		(machine.get_node("View") as Node).add_child(root)
