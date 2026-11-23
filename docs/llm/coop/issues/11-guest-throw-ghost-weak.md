@@ -90,3 +90,4 @@ side.
   `guest_throw_ghost_on_host_flight`).
 - Verified: case PASS 52 checks (0 and 50 ms, full and half); `run.sh --touched` PASS 16279 checks, 410 cases
   (coop/09's coop_hands and coop_flight cases and budgets among them); grep_rules PASS.
+- Merged: 7fe4692f (2026-11-23, branch coop/11-guest-throw-ghost-weak)
