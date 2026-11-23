@@ -15,6 +15,9 @@ until menus exist. Shell and furniture only: no game functions yet (M3 brings th
   (1, 0.88, 0.7); ceiling lights energy 1, range 6, shadow on (blur 2, bias 0.05), 8 cm under the marker;
   lamps energy 0.7, range 3, no shadow. All lit: the old day cycle (lamps off by day but the
   basement's) and the per-floor light layers are not ported.
+- `Doors/FrontDoor`, `Doors/GarageDoor`: `shut_front_door.tscn` and `shut_garage_door.tscn`, plain leaves (a
+  StaticBody3D, no Part) in the doorways' wall line, so nothing can open them and nobody walks out (Q2514), until
+  the exterior ticket brings the door entities.
 - The zoo's noon light: `Environment` (`game/look/noon_environment.tres`), `Sun`, `Picture`.
 - `Player` at the old spawn (room.gd `spawn_pos`, `spawn_yaw`: the laundry, facing its doorway);
   `ReturnSpot` there too.

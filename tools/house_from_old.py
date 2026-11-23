@@ -68,6 +68,8 @@ EXT = [
     ("knockdowns", "Script", "res://game/knockdown/knockdowns.gd"),
     ("knock_tuning", "Resource", "res://game/knockdown/knockdown_tuning.tres"),
     ("shell", "PackedScene", "res://game/house/shell.tscn"),
+    ("front_door", "PackedScene", "res://game/house/shut_front_door.tscn"),
+    ("garage_door", "PackedScene", "res://game/house/shut_garage_door.tscn"),
 ]
 # What the zoo's FlightSpawner spawns (a flying Sock and a thrown pair), the same here.
 SPAWNABLE = '"uid://uajin4n0hgrt", "uid://1pbfln7cmu0i"'
@@ -269,6 +271,10 @@ def main():
             props += ["shadow_enabled = true", "shadow_bias = 0.05", "shadow_blur = 2.0"]
         props.append("omni_range = %s" % r(lt["range"]))
         node(lt["name"], "OmniLight3D", "Lights", props=props)
+    # The front and garage doors stay shut until the exterior ticket (Q2514): no Part, nothing to open.
+    node("Doors", "Node3D", ".")
+    node("FrontDoor", None, "Doors", instance=ext_id["front_door"], props=["transform = " + xform(0, 5.75, 0, 0)])
+    node("GarageDoor", None, "Doors", instance=ext_id["garage_door"], props=["transform = " + xform(0, 8.25, -3, 0)])
     node("Player", None, ".", instance=ext_id["player"], props=["transform = " + xform(yaw, *spawn)])
     node("Spots", "Node3D", ".")
     node("ReturnSpot", "Marker3D", ".", props=["transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, %s, %s, %s)" % tuple(r(v) for v in spawn)])

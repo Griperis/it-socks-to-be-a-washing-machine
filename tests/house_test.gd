@@ -98,6 +98,8 @@ func cases() -> Array[Dictionary]:
 				"title": "every old room light hangs in its room, the old lamps' lights at their lamps, with the old colour, energy, range and shadow"},
 		{"name": "h04_coop", "method": "case_h04_coop", "world": false,
 				"title": "the house is played alone as a Host of one; with --host and --join a second house joins it and each sees the other's avatar"},
+		{"name": "real_path_doors_shut", "method": "case_real_path_doors_shut", "world": false,
+				"title": "real path (Q2514): the front door and the garage door stay shut: aimed at, no prompt and no outline, the use button opens nothing, and the player walking at the front door stops at it"},
 		{"name": "real_path_spawn_to_every_floor", "method": "case_real_path_spawn_to_every_floor", "world": false,
 				"title": "real path: in the house the player starts at the old spawn in the laundry, walks through the doorway to the stair lobby and climbs the U stair to the ground, first and attic floors"},
 		{"name": "real_path_front_door_to_attic", "method": "case_real_path_front_door_to_attic", "world": false,
@@ -696,6 +698,38 @@ func _go(player: Player, to: Vector2, what: String) -> void:
 	for a: StringName in keys:
 		Input.action_release(a)
 	_check(d.length() < 0.15, "%s (off by %.2f m)" % [what, d.length()])
+
+
+func case_real_path_doors_shut() -> void:
+	var house := await _level_up()
+	var player := house.get_node("Player") as Player
+	# In the hall, facing the front door (north, -Z) from 1.5 m in.
+	player.global_position = Vector3(5.75, 0.0, 1.5)
+	player.rotation.y = 0.0
+	(player.get_node("%Head") as Node3D).rotation.x = -0.15
+	player.reset_physics_interpolation()
+	await _physics_ticks(6)
+	var hud := player.hud()
+	_check(player.aimed_outline == null, "aimed at the front door, nothing is outlined")
+	_same(hud.prompt_text(), "", "and no prompt shows")
+	Input.action_press(Player.INTERACT)
+	await _physics_ticks(2)
+	Input.action_release(Player.INTERACT)
+	await _physics_ticks(2)
+	_same(hud.refusal_text(), "", "the use button says nothing")
+	_check(player.interact() == null, "and finds nothing to use there")
+	# Walking at it, the player stops at the door's leaf (in the wall's middle, z 0).
+	var z := await _walk_to_stop(player, &"move_forward", 2)
+	_check(z > 0.3 and z < 0.5, "the player is stopped by the shut front door (z %s)" % z)
+	# Both doorways are closed from outside too: a ray at waist height meets each leaf in the wall's line.
+	for d: Array in [["front door", Vector3(5.75, 1.0, -1.0)], ["garage door", Vector3(8.25, -2.0, -1.0)]]:
+		var from: Vector3 = d[1]
+		var hit := _hit(from, from + Vector3(0, 0, 2.0))
+		_check(not hit.is_empty() and absf((hit["position"] as Vector3).z + 0.025) < 0.005, "the %s is shut (%s)" % [d[0], hit.get("position")])
+		_check(hit.is_empty() or Parts.part_of(hit["collider"] as Node) == null, "the %s is no thing to open" % d[0])
+	for n: String in ["Doors/FrontDoor", "Doors/GarageDoor"]:
+		var odd := house.get_node(n).find_children("*", "", true, false).filter(func(c: Node) -> bool: return c is Part or c is Outline)
+		_check(odd.is_empty(), "%s has no Part and no Outline" % n)
 
 
 func case_real_path_spawn_to_every_floor() -> void:

@@ -43,6 +43,9 @@ The house is the game's own scene, not a zoo station (Q2503). Shell and furnitur
 - A strip in `builds/review-house-04/`: each floor, old beside new, furnished and lit.
 
 ## Answers
+- Q2514 (2026-11-23): until the exterior ticket the front door and the garage door stay shut and cannot be opened
+  (no prompt, a click refused or ignored; no outline).
+- Q2515 (2026-11-23): merge with every lamp lit; the old lamp rules are a follow-up ticket.
 - Q2509-Q2512 (2026-11-23): see the acceptance.
 - Q2503 (2026-11-23): the house only, no exterior; keep house B (windows on the 0.5 m grid), remove house A; the house becomes a main scene launched from the game, built from the kit pieces.
 - Q2504 (2026-11-23): built to the end with no stop at the first still; a before and after strip for the designer's batch review before the merge.
@@ -56,10 +59,12 @@ The house is the game's own scene, not a zoo station (Q2503). Shell and furnitur
 - [later] D09 explained: the balustrade's side rails ran to the south wall, under the 40 degree slope, so their
   ends came out through the roof (the old house too). They now stop where the slope clears the handrail by
   5 cm; the rail ends there without a post. A post or a rail that follows the slope instead?
-- [later] Nothing outside the house (Q2503): a player who walks out of the front door or the garage door falls
-  for ever. A floor, a fall catch or a shut door until the exterior ticket?
-- [later] Every lamp is lit at noon. The old house switched all but the basement's off by day and lit each
-  floor's lights only on its own floor (light layers); neither is ported.
+- Answered (Q2514, 2026-11-23): nothing outside the house (Q2503); a player who walked out of the front door or
+  the garage door fell for ever. Until the exterior ticket both doors stay shut and cannot be opened: built
+  (`game/house/shut_front_door.tscn`, `shut_garage_door.tscn`, no Part: no prompt, no outline, a click meets
+  nothing).
+- Answered, Q2515, own ticket: every lamp is lit at noon. The old house switched all but the basement's off by
+  day and lit each floor's lights only on its own floor (light layers); a follow-up ticket ports those rules.
 - [later] The corner label and the joiner's line say "house" ("Joined <name>'s house"), the zoo's "zoo":
   placeholder wording.
 - [later] The old openables' own names (the fridge's Fridge and Freezer, the car's CarBoot) are not carried
@@ -93,3 +98,11 @@ The house is the game's own scene, not a zoo station (Q2503). Shell and furnitur
 - Verified: `PASS 16354 checks, 455 cases` (--touched: every suite, project.godot); house 14 cases incl. the real paths spawn to the attic and front door to the attic;
   `PASS rules`, `PASS asset_lint`. Strip: `builds/review-house-04/floor-1-basement.png` .. `floor-4-attic-outside.png`
   (old, house/03, house/04 per view) and the `house` set's stills (`house-roof-south.png`: D09).
+
+### 2026-11-23 (Q2514, Q2515)
+- Changed: the front door and the garage door stay shut until the exterior ticket (Q2514): plain leaves in the
+  doorways with no Part, so no prompt, no outline, a click meets nothing and nobody walks out. Lamps stay all lit
+  (Q2515; their rules are their own ticket).
+- Files: game/house/shut_front_door.tscn, shut_garage_door.tscn, house.tscn, tools/house_from_old.py,
+  tests/house_test.gd, docs/architecture/house.md, this ticket.
+- Verified: `PASS 16365 checks, 456 cases` (--touched); house 15 cases incl. real_path_doors_shut.
