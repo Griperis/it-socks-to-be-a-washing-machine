@@ -86,9 +86,9 @@ func case_v04() -> void:
 
 func case_real_path() -> void:
 	await _zoo_up()
-	var player := _zoo.get_node("Player") as Player
-	var mess := _zoo.get_node("Socks/Mess") as Mess
-	var hands := _zoo.get_node("Socks/Hands") as Hands
+	var player := LevelRuntime.of(_zoo).player
+	var mess := LevelRuntime.of(_zoo).mess
+	var hands := LevelRuntime.of(_zoo).hands
 	var handling := _zoo.get_node("Stations/Handling") as Node3D
 	var cross := player.get_node("Hud/Crosshair") as Crosshair
 	player.capture_mouse()   # the mouse is the player's: buttons act (R01)

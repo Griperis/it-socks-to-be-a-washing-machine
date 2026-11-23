@@ -253,7 +253,7 @@ func _find_knockdowns() -> Knockdowns:
 		return _knockdowns
 	for node in get_tree().get_nodes_in_group(Knockdowns.GROUP):
 		var k := node as Knockdowns
-		if _knockdowns == null or (k.owner != null and k.owner.is_ancestor_of(self)):
+		if _knockdowns == null or _holds(k):
 			_knockdowns = k
 	return _knockdowns
 
@@ -335,11 +335,17 @@ func _dress() -> void:
 	looks.player_name = roster.name_of(peer()) if known else ""
 
 
+## Whether the level of `node` (a Knockdowns, a Hands) holds this avatar.
+func _holds(node: Node) -> bool:
+	var level := LevelRuntime.level_of(node)
+	return level != null and level.is_ancestor_of(self)
+
+
 ## The Hands of this avatar's level: with two zoos in one tree, the one whose scene holds this avatar.
 func _find_hands() -> Hands:
 	var found: Hands = null
 	for node in get_tree().get_nodes_in_group(Hands.GROUP):
 		var h := node as Hands
-		if found == null or (h.owner != null and h.owner.is_ancestor_of(self)):
+		if found == null or _holds(h):
 			found = h
 	return found

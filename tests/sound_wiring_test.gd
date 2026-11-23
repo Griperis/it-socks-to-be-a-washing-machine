@@ -335,7 +335,7 @@ func case_w12() -> void:
 func case_w13() -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	await _until(func() -> bool: return player.is_on_floor(), "the zoo's player to stand")
 	player.velocity = Vector3.ZERO
 	player.global_position = Vector3(-8.0, 0.0, 8.0)

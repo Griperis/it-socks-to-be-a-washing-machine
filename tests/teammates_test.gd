@@ -108,8 +108,8 @@ func case_held() -> void:
 	_stand(_player(host), at, 0.0)
 	var seen := _avatars(guest).of(1)
 	await _until(func() -> bool: return seen.position.distance_to(at) < 0.02, "the Guest to see the Host at the Handling station")
-	var hh := host.get_node("Socks/Hands") as Hands
-	var gh := guest.get_node("Socks/Hands") as Hands
+	var hh := LevelRuntime.of(host).hands
+	var gh := LevelRuntime.of(guest).hands
 	var socks: Dictionary[String, int] = {}
 	for spot: String in ["Floor", "Under", "MateFloor"]:
 		socks[spot] = (handling.get_node("Spots/" + spot) as SockSpot).sock
@@ -253,8 +253,8 @@ func case_cues() -> void:
 	_stand(_player(host), at, 0.0)
 	var seen := _avatars(guest).of(1)
 	await _until(func() -> bool: return seen.position.distance_to(at) < 0.02, "the Guest to see the Host at the Handling station")
-	var hh := host.get_node("Socks/Hands") as Hands
-	var gh := guest.get_node("Socks/Hands") as Hands
+	var hh := LevelRuntime.of(host).hands
+	var gh := LevelRuntime.of(guest).hands
 	var over := at + Vector3.UP * Hearing.CUE_HEIGHT
 	_listen()
 	hh.pick(1, (handling.get_node("Spots/Floor") as SockSpot).sock)
@@ -298,8 +298,8 @@ func case_throw_hand() -> void:
 	_stand(_player(guest), g_at, 0.0)
 	var copy := _avatars(host).of(g_peer)
 	await _until(func() -> bool: return copy.position.distance_to(g_at) < 0.02, "the Host to see the Guest by the Socks")
-	var hh := host.get_node("Socks/Hands") as Hands
-	var gh := guest.get_node("Socks/Hands") as Hands
+	var hh := LevelRuntime.of(host).hands
+	var gh := LevelRuntime.of(guest).hands
 	var sock := (handling.get_node("Spots/Floor") as SockSpot).sock
 	gh.pick(g_peer, sock)
 	await _until(func() -> bool: return copy.held.looks_of(sock) != null and copy.held.settled(), "the Sock to hang at the Guest avatar's hand on the Host")
@@ -312,7 +312,7 @@ func case_throw_hand() -> void:
 			var body := hh.mess.moving_body(sock)
 			if body != null:
 				started[0] = body.global_position
-	(host.get_node("Parts") as Parts).applied.connect(note)
+	LevelRuntime.of(host).parts.applied.connect(note)
 	gh.throw(g_peer, dir, 0.5)
 	await _until(func() -> bool: return started[0] != Vector3.INF, "the Host to answer the Guest's Throw")
 	_check((started[0] as Vector3).distance_to(drawn.origin) < 0.1,
@@ -411,7 +411,7 @@ func _drop_branches() -> void:
 	Input.action_release(Player.MOVE_FORWARD)
 	Input.action_release(Player.CROUCH)
 	for node in _branches:
-		var session := node.get_node_or_null("View/Zoo/Session") as Session
+		var session := _in_branch(node).session
 		if session != null:
 			session.close()
 		var path := node.get_path()
@@ -429,20 +429,26 @@ func _stand(player: Player, at: Vector3, yaw: float) -> void:
 
 
 func _session(zoo: Node3D) -> Session:
-	return zoo.get_node("Session") as Session
+	return LevelRuntime.of(zoo).session
 
 
-func _net(zoo: Node3D) -> ZooNet:
-	return zoo.get_node("Net") as ZooNet
+func _net(zoo: Node3D) -> LevelNet:
+	return LevelRuntime.of(zoo).net
 
 
 func _roster(zoo: Node3D) -> Roster:
-	return zoo.get_node("Session/Roster") as Roster
+	return LevelRuntime.of(zoo).roster
 
 
 func _avatars(zoo: Node3D) -> Avatars:
-	return zoo.get_node("Avatars") as Avatars
+	return LevelRuntime.of(zoo).avatars
 
 
 func _player(zoo: Node3D) -> Player:
-	return zoo.get_node("Player") as Player
+	return LevelRuntime.of(zoo).player
+
+
+## The level runtime of the zoo in branch `node` (a machine of its own), or null.
+func _in_branch(node: Node) -> LevelRuntime:
+	var zoo := node.get_node_or_null("View/Zoo")
+	return LevelRuntime.of(zoo) if zoo != null else null

@@ -131,7 +131,7 @@ func case_v01_kinds() -> void:
 
 func case_v01_real_path() -> void:
 	await _zoo_up()
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	var fridge := _piece("fridge")
 	var door := fridge.get_node("Door_Top") as Node3D
 	var openable := door.get_node("Openable") as Openable
@@ -304,7 +304,7 @@ func case_m06_low() -> void:
 
 func case_m08_real_path() -> void:
 	await _zoo_up()
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	var piece := _piece("wall_mirror")
 	var mirror := piece.get_node("Mirror") as Mirror
 	_check(not mirror.active and not player.mirror_body().visible, "far off, no reflection and no mirror body")
@@ -327,7 +327,7 @@ func case_m08_real_path() -> void:
 	_check(mask & Mirror.MESS_SOCKS == 0 and mask & 1 != 0, "nor the Mess Socks; a Teammate's avatar (layer 1) it does")
 	var socks := 0
 	var off_layer := 0
-	for mess: Mess in [_zoo.get_node("Socks/Mess") as Mess]:
+	for mess: Mess in [LevelRuntime.of(_zoo).mess]:
 		for n: Node in mess.lying.find_children("*", "MultiMeshInstance3D", true, false):
 			socks += 1
 			if (n as VisualInstance3D).layers != Mirror.MESS_SOCKS:
@@ -377,7 +377,7 @@ func case_d01_drape() -> void:
 
 func case_d05_unaimable() -> void:
 	await _zoo_up()
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	var cabinet_root := _zoo.get_node(STATION + "/SheetedCabinet") as Node3D
 	var cabinet := cabinet_root.get_node("Cabinet") as Cabinet
 	var drawer := cabinet_root.get_node("Drawer1") as Node3D
@@ -411,7 +411,7 @@ func case_d05_unaimable() -> void:
 
 func case_d03_real_path() -> void:
 	await _zoo_up()
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	var station := _zoo.get_node(STATION) as Node3D
 	var cabinet_root := station.get_node("SheetedCabinet") as Node3D
 	var cabinet := cabinet_root.get_node("Cabinet") as Cabinet
@@ -480,7 +480,7 @@ func case_v05_old_tree() -> void:
 func _zoo_up() -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	await _until(func() -> bool: return player.is_on_floor(), "the zoo's player to stand")
 	await _frames(2)
 	_heard.clear()

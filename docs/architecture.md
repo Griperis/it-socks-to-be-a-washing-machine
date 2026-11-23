@@ -81,12 +81,25 @@ debug or release). The game's refusals go through `Log` with an area; only the c
 terminal output stays a plain `print()`.
 
 The main scene is the house (`game/house/house.tscn`, house/04, Q2509: F5 and a plain launch start there until
-menus exist): the shell, the old furniture, the lamps, the player and the same shared-state path as the zoo;
-`Parts.bind` registers every Part by its node path and `LevelNet` (`game/net/level_net.gd`) hosts or joins on
-`--host` / `--join=`. The zoo (`game/zoo/zoo.tscn`) starts with `-- --zoo` or F6 in the editor: `ZooStations`
-joins every station's Socks to the zoo's one Mess before anything binds, and `ZooNet` is its `LevelNet` (the
-zoo's word and its stand-in Teammate). Shots load the zoo unless a set line gives `--scene=`
+menus exist): the shell, the old furniture, the lamps and one level runtime. `Parts.bind` registers every Part by its
+node path from the level's root (so the runtime's are `Runtime/Socks/Mess` and the like) and `LevelNet`
+(`game/net/level_net.gd`) hosts or joins on `--host` / `--join=`. The zoo (`game/zoo/zoo.tscn`) starts with
+`-- --zoo` or F6 in the editor: `ZooStations` joins every station's Socks to the zoo's one Mess (its runtime's)
+before anything binds. Shots load the zoo unless a set line gives `--scene=`
 (`tools/shot_hooks.gd` `SCENE`).
+
+**A level (core/51, Q2517).** Every level shares one game setup, `game/level/level_runtime.tscn` (`LevelRuntime`):
+the Player, Players and Avatars, Session and Roster, Net (`LevelNet`), Parts, Socks (Mess, Hands, Knockdowns, Coins),
+Spots, Lying, Flights and the FlightSpawner, wired inside it. It is sealed: a level instances it once, as a child of
+its root named `Runtime`, and overrides nothing inside it (no editable children). What differs per level is set on
+that instance: `spawn` and `return_spot` (empty: the level's children `Spawn` and `ReturnSpot`, the return spot
+falling back to the spawn), `mess_bounds`, the player's `hands_tuning` and `upgrades`, and `place_name` (the corner's
+word). Before any of its nodes is ready it puts the player on the spawn, gives the Mess its return spot and bounds and
+gives the Parts the whole level to bind. Code reaches its nodes with `LevelRuntime.of(node)` (the level or anything in
+it: `.player`, `.mess`, `.hands`, `.session`, `.net` ...); `LevelRuntime.level_of(node)` is the level a runtime node
+belongs to, where code used to read `owner`. **A new level** is a new scene: its geometry (and look: Environment, Sun,
+Picture, lights), a `Spawn` marker and one instance of `level_runtime.tscn`; `game/level/one_box_level.tscn` (one
+floor box) is the smallest, walked and played in co-op by `tests/level_test.gd`.
 
 **A frame.** `player.gd` moves the body, looks the aim up once (`AimFinder`), feeds the outline, the prompts and the
 HUD, then reads the buttons. On the Host, `MessMoving.tick` checks hits, picks' columns, Door and drawer sweeps and

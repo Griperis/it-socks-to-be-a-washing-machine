@@ -1,5 +1,5 @@
 ## The numbers of joining and the roster (coop/03): one .tres beside it (coop_tuning.tres), edited in
-## the inspector. Read by the Session, the Roster and the zoo's ZooNet.
+## the inspector. Read by the Session, the Roster and the LevelNet.
 class_name CoopTuning
 extends Resource
 

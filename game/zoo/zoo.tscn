@@ -1,18 +1,7 @@
 [gd_scene format=3 uid="uid://dbrxpuh26w4q3"]
 
-[ext_resource type="Script" uid="uid://bq3k03tw0pu2k" path="res://game/parts/parts.gd" id="1_parts"]
-[ext_resource type="PackedScene" uid="uid://k2c0o5v1yu3r" path="res://game/player/player.tscn" id="2_player"]
 [ext_resource type="Script" uid="uid://w44840xcogmg" path="res://game/zoo/stations.gd" id="3_stations"]
-[ext_resource type="Script" uid="uid://bq8jis41s6u7e" path="res://game/parts/session.gd" id="5_session"]
-[ext_resource type="Script" uid="uid://cdi6pnkd82hwo" path="res://game/parts/avatar/avatars.gd" id="6_avatars"]
-[ext_resource type="PackedScene" uid="uid://d2u50k5e57ccb" path="res://game/parts/avatar/avatar.tscn" id="7_avatar"]
-[ext_resource type="Script" uid="uid://dljsr8dxran6u" path="res://game/zoo/zoo_net.gd" id="8_net"]
 [ext_resource type="Script" uid="uid://bmngmh2k1ssr6" path="res://game/hands/hands_tuning.gd" id="9_hands_tuning"]
-[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="10_mess"]
-[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="11_hands"]
-[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="12_coins"]
-[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="13_designs"]
-[ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="14_tuning"]
 [ext_resource type="Environment" uid="uid://ducjspjkhsl37" path="res://game/look/noon_environment.tres" id="15_env"]
 [ext_resource type="PackedScene" uid="uid://btvcn1t085d2p" path="res://game/look/picture.tscn" id="16_picture"]
 [ext_resource type="PackedScene" uid="uid://ckkmqe7lqy056" path="res://game/zoo/stations/cabinet.tscn" id="20_cabinet"]
@@ -30,12 +19,9 @@
 [ext_resource type="Resource" path="res://game/zoo/screen/zoo_upgrades.tres" id="32_upgrades"]
 [ext_resource type="PackedScene" uid="uid://c3p6luowfkhuw" path="res://game/zoo/stations/materials.tscn" id="35_materials"]
 [ext_resource type="PackedScene" uid="uid://sv5wba3wf252" path="res://game/zoo/stations/furniture.tscn" id="36_furniture"]
-[ext_resource type="Script" uid="uid://cabdnviw3m0oh" path="res://game/net/roster.gd" id="37_roster"]
-[ext_resource type="Resource" uid="uid://b0moa0fsavwjb" path="res://game/net/coop_tuning.tres" id="38_coop"]
 [ext_resource type="PackedScene" uid="uid://b7tq2avatarst" path="res://game/zoo/stations/avatar.tscn" id="39_avatar"]
 [ext_resource type="PackedScene" uid="uid://chiexs1bn5bo5" path="res://game/zoo/stations/knockdown.tscn" id="40_knockdown"]
-[ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="41_knockdowns"]
-[ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="42_knock_tuning"]
+[ext_resource type="PackedScene" uid="uid://q0tm1ywugfrf" path="res://game/level/level_runtime.tscn" id="43_runtime"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.42, 0.44, 0.46, 1)
@@ -90,14 +76,8 @@ A new station is its own file there plus one instance under Stations in this sce
 [node name="Spawn" type="Marker3D" parent="." unique_id=1377517963]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 
-[node name="Player" parent="." unique_id=792447717 instance=ExtResource("2_player")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
-hands_tuning = SubResource("Resource_zoo_hands")
-upgrades = ExtResource("32_upgrades")
-
-[node name="Stations" type="Node3D" parent="." unique_id=1917466477 node_paths=PackedStringArray("socks")]
+[node name="Stations" type="Node3D" parent="." unique_id=1917466477]
 script = ExtResource("3_stations")
-socks = NodePath("../Socks")
 
 [node name="Cabinet" parent="Stations" unique_id=1700008019 instance=ExtResource("20_cabinet")]
 
@@ -141,76 +121,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -2)
 [node name="Knockdown" parent="Stations" unique_id=1700150606 instance=ExtResource("40_knockdown")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 0, 3.5)
 
-[node name="Spots" type="Node3D" parent="." unique_id=1540973286]
-
 [node name="ReturnSpot" type="Marker3D" parent="." unique_id=1397039282]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.5)
 
-[node name="Lying" type="Node3D" parent="." unique_id=1939434701]
-
-[node name="Flights" type="Node3D" parent="." unique_id=1866703913]
-
-[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=630388163]
-_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
-spawn_path = NodePath("../Flights")
-
-[node name="Socks" type="Node" parent="." unique_id=1247451138]
-
-[node name="Mess" type="Node" parent="Socks" unique_id=278618895 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
-script = ExtResource("10_mess")
-catalogue = ExtResource("13_designs")
-tuning = ExtResource("14_tuning")
-spots = NodePath("../../Spots")
-lying = NodePath("../../Lying")
-flights = NodePath("../../Flights")
-bounds = AABB(-20, -6, -60, 109, 20, 80)
-return_spot = NodePath("../../ReturnSpot")
-
-[node name="Hands" type="Node" parent="Socks" unique_id=982001843 node_paths=PackedStringArray("mess")]
-script = ExtResource("11_hands")
-mess = NodePath("../Mess")
-tuning = ExtResource("14_tuning")
-
-[node name="Knockdowns" type="Node" parent="Socks" unique_id=1032541671 node_paths=PackedStringArray("hands")]
-script = ExtResource("41_knockdowns")
-tuning = ExtResource("42_knock_tuning")
-hands = NodePath("../Hands")
-
-[node name="Coins" type="Node" parent="Socks" unique_id=1032541670]
-script = ExtResource("12_coins")
-
-[node name="Parts" type="Node" parent="." unique_id=1728372765]
-script = ExtResource("1_parts")
-
-[node name="Players" type="Node3D" parent="." unique_id=625099761]
-
-[node name="Avatars" type="MultiplayerSpawner" parent="." unique_id=614340951 node_paths=PackedStringArray("local_body", "roster")]
-spawn_path = NodePath("../Players")
-script = ExtResource("6_avatars")
-avatar_scene = ExtResource("7_avatar")
-local_body = NodePath("../Player")
-roster = NodePath("../Session/Roster")
-
-[node name="Session" type="Node" parent="." unique_id=1091206714 node_paths=PackedStringArray("parts", "roster")]
-script = ExtResource("5_session")
-parts = NodePath("../Parts")
-roster = NodePath("Roster")
-tuning = ExtResource("38_coop")
-
-[node name="Roster" type="Node" parent="Session" unique_id=1388205514]
-script = ExtResource("37_roster")
-tuning = ExtResource("38_coop")
-
-[node name="Net" type="Node" parent="." unique_id=2061444600 node_paths=PackedStringArray("session", "avatars")]
-script = ExtResource("8_net")
-session = NodePath("../Session")
-avatars = NodePath("../Avatars")
-
-[node name="Hud" type="CanvasLayer" parent="Net" unique_id=1484433855]
-
-[node name="Mode" type="Label" parent="Net/Hud" unique_id=975392515]
-unique_name_in_owner = true
-offset_left = 12.0
-offset_top = 8.0
-offset_right = 600.0
-offset_bottom = 34.0
+[node name="Runtime" parent="." unique_id=1728372765 instance=ExtResource("43_runtime")]
+mess_bounds = AABB(-20, -6, -60, 109, 20, 80)
+hands_tuning = SubResource("Resource_zoo_hands")
+upgrades = ExtResource("32_upgrades")
+place_name = "zoo"

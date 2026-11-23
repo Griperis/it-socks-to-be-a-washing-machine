@@ -1,0 +1,3 @@
+# Levels the game loads at run time that the wiring check does not find by itself (kit/docs/TESTING.md 4).
+# The one-box example level (core/51): a level is its geometry, a Spawn and one level runtime.
+res://game/level/one_box_level.tscn

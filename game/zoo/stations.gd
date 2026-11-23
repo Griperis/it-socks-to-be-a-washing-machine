@@ -17,11 +17,17 @@ const SOCKS := ^"Socks"
 ## Its Mess, under it.
 const MESS := ^"Mess"
 
-## The zoo's Socks: the level's one Mess, Hands and Coins. Empty, every station keeps its own.
-@export var socks: Node
+## The zoo's Socks: the level's one Mess, Hands and Coins (its LevelRuntime's). Empty, every station
+## keeps its own.
+var socks: Node
+
+
 ## Before any child is ready and before the level's Parts bind: the instances already under this
 ## node join the zoo's socks, in tree order, so the Mess lists their spots the same on every machine.
 func _enter_tree() -> void:
+	var runtime := LevelRuntime.of(get_parent())
+	if socks == null and runtime != null:
+		socks = runtime.socks
 	for station in get_children():
 		if station is Node3D:
 			_join_socks(station)

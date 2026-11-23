@@ -166,7 +166,7 @@ func case_s01_station() -> void:
 func case_s01_real_path() -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	await _until(func() -> bool: return player.is_on_floor(), "the player to stand", 600)
 	var st := _zoo.get_node("Stations/SockLooks") as SockLooksStation
 	# The player stands 4 m in front of the station, facing it, and walks up to it.
@@ -265,7 +265,7 @@ func case_s04() -> void:
 func case_s04_tiers() -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
-	var mess := _zoo.get_node("Socks/Mess") as Mess
+	var mess := LevelRuntime.of(_zoo).mess
 	await _until(func() -> bool: return mess.count() > 0 and mess._drawing != null and mess._drawing.drawn_count() > 0, "the Socks to lie", 600)
 	var drawing := mess._drawing
 	var shapes := {}
@@ -385,11 +385,11 @@ func case_w01() -> void:
 func case_w01_real_path() -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	await _until(func() -> bool: return player.is_on_floor(), "the player to stand", 600)
 	player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 	var station := _zoo.get_node("Stations/Handling") as Node3D
-	var mess := _zoo.get_node("Socks/Mess") as Mess
+	var mess := LevelRuntime.of(_zoo).mess
 	var sock := (station.get_node("Spots/Floor") as SockSpot).sock
 	# The player stands before the handling station's floor Sock, looking down at it.
 	var target := mess.pose_of(sock).origin

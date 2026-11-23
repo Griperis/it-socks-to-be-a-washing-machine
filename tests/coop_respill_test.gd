@@ -91,21 +91,21 @@ func _round(lag_ms: int, large: bool) -> void:
 	var host := _branch("Host")
 	var guest := _branch("Guest")
 	await _frames(2)
-	var hs := host.get_node("Session") as Session
-	var gs := guest.get_node("Session") as Session
+	var hs := LevelRuntime.of(host).session
+	var gs := LevelRuntime.of(guest).session
 	hs.port = 0
 	hs.profile = PlayerProfile.fresh()
 	gs.profile = PlayerProfile.fresh()
 	gs.ended.connect(func(text: String) -> void:
 		_ended = text
 		_ended_frame = Engine.get_process_frames())
-	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
+	_check(LevelRuntime.of(host).net.start(["--host"]) == OK, "the host zoo hosts")
 	_lag(host, lag_ms)
-	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
+	_check(LevelRuntime.of(guest).net.start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
 	_lag(guest, lag_ms)
-	var hm := host.get_node("Socks/Mess") as Mess
-	var gm := guest.get_node("Socks/Mess") as Mess
-	await _until(func() -> bool: return (guest.get_node("Net") as ZooNet).mode_text().begins_with("Joined") \
+	var hm := LevelRuntime.of(host).mess
+	var gm := LevelRuntime.of(guest).mess
+	await _until(func() -> bool: return LevelRuntime.of(guest).net.mode_text().begins_with("Joined") \
 			and gm.count() == hm.count(), "the guest zoo to be welcomed with the Host's Mess")
 	var tag := "%dms" % lag_ms
 	var peer := host.multiplayer.multiplayer_peer as LagPeer
@@ -136,9 +136,9 @@ func _round(lag_ms: int, large: bool) -> void:
 ## Paces frames until `n` heap Socks were poured and every Sock rests on both machines (or the Guest
 ## is gone); prints the reliable bytes; checks the Guest is still joined and its Mess is the Host's.
 func _settle(host: Node3D, guest: Node3D, spout: HeapSpout, n: int, label: String, peer: LagPeer) -> void:
-	var hm := host.get_node("Socks/Mess") as Mess
-	var gm := guest.get_node("Socks/Mess") as Mess
-	var gs := guest.get_node("Session") as Session
+	var hm := LevelRuntime.of(host).mess
+	var gm := LevelRuntime.of(guest).mess
+	var gs := LevelRuntime.of(guest).session
 	var r0 := int(peer.sent_bytes.get(MultiplayerPeer.TRANSFER_MODE_RELIABLE, 0))
 	var p0 := int(peer.sent_packets.get(MultiplayerPeer.TRANSFER_MODE_RELIABLE, 0))
 	var t0 := Time.get_ticks_usec()
@@ -177,7 +177,7 @@ func _settle(host: Node3D, guest: Node3D, spout: HeapSpout, n: int, label: Strin
 func _click(zoo: Node3D, button: String) -> void:
 	var station := zoo.get_node(HEAP) as Node3D
 	var target := (station.get_node(button) as Node3D).global_position
-	var player := zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(zoo).player
 	player.capture_mouse()   # the mouse is the Host player's: buttons act (R01); the Guest's is not
 	player.global_position = target + station.global_basis * Vector3(0.0, -0.5, -1.5)
 	player.velocity = Vector3.ZERO
@@ -229,7 +229,7 @@ func _branch(label: String) -> Node3D:
 
 func _drop_branches() -> void:
 	for node in _branches:
-		var session := node.get_node_or_null("View/Zoo/Session") as Session
+		var session := _in_branch(node).session
 		if session != null:
 			session.close()
 		var path := node.get_path()
@@ -237,3 +237,9 @@ func _drop_branches() -> void:
 		node.free()
 		get_tree().set_multiplayer(null, path)
 	_branches.clear()
+
+
+## The level runtime of the zoo in branch `node` (a machine of its own), or null.
+func _in_branch(node: Node) -> LevelRuntime:
+	var zoo := node.get_node_or_null("View/Zoo")
+	return LevelRuntime.of(zoo) if zoo != null else null

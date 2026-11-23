@@ -1,5 +1,5 @@
 ## coop/03: Host, join and roster. Real zoos (only their Handling station, to stay light), each a
-## machine of its own in one process, joined over real ENet through the zoo's own wiring: ZooNet
+## machine of its own in one process, joined over real ENet through the zoo's own wiring: LevelNet
 ## reads the command line's flags, the Session gates, the Roster places and colours, the HUD says who
 ## came and went. Plus the pieces that need no network: the profile file, the transport's address,
 ## the next free colour.
@@ -159,7 +159,7 @@ func case_refusals() -> void:
 	await _frames(2)
 	_session(bare).profile = PlayerProfile.fresh()
 	await _refused(host, bare, where_to, "Another version of the game", "layout")
-	_check(_roster(host).peers().size() == 4 and (host.get_node("Players") as Node).get_child_count() == 4,
+	_check(_roster(host).peers().size() == 4 and LevelRuntime.of(host).players.get_child_count() == 4,
 			"none was admitted: still 4 in the roster and 4 avatars")
 
 
@@ -177,7 +177,7 @@ func _refused(host: Node3D, zoo: Node3D, flag: String, text: String, reason: Str
 	_check(ended == [text], "it hears why: %s" % [ended])
 	_check(_player(zoo).hud().message_text() == text, "its HUD says it (%s)" % _player(zoo).hud().message_text())
 	_check(_net(zoo).mode_text() == "Alone: %s" % text, "and its corner (%s)" % _net(zoo).mode_text())
-	_check(not _session(zoo).is_online() and (zoo.get_node("Players") as Node).get_child_count() == 0,
+	_check(not _session(zoo).is_online() and LevelRuntime.of(zoo).players.get_child_count() == 0,
 			"it plays alone, with no avatar spawned")
 	_check(_counted(hs, reason) == counted + 1, "the Host counts it as %s (%s)" % [reason, hs.dropped])
 	_same(_roster(host).players, before, "the Host's roster is as it was")
@@ -211,8 +211,8 @@ func case_leave_and_return() -> void:
 	var ha := _avatars(host)
 	await _until(func() -> bool: return ha.of(a_peer) != null and ha.of(a_peer).pose_position.distance_to(a_at) < 0.05,
 			"the Host to see A at the Handling station")
-	var a_hands := a.get_node("Socks/Hands") as Hands
-	var h_hands := host.get_node("Socks/Hands") as Hands
+	var a_hands := LevelRuntime.of(a).hands
+	var h_hands := LevelRuntime.of(host).hands
 	var socks: Array[int] = []
 	for spot: String in ["Floor", "Over"]:
 		var sock := (handling.get_node("Spots/" + spot) as SockSpot).sock
@@ -241,10 +241,10 @@ func case_leave_and_return() -> void:
 	var br := _roster(b)
 	_check(br.colour_index_of(1) == 0 and br.colour_index_of(a_peer) == 1 and br.colour_index_of(b_peer) == 2,
 			"B knows each colour: Host 0, A 1, itself 2")
-	var bm := b.get_node("Socks/Mess") as Mess
+	var bm := LevelRuntime.of(b).mess
 	_check(bm.state_of(socks[0]) == Mess.State.HELD and bm.state_of(socks[1]) == Mess.State.HELD,
 			"B's Mess has A's Socks held")
-	var b_hands := b.get_node("Socks/Hands") as Hands
+	var b_hands := LevelRuntime.of(b).hands
 	_check(b_hands.items_of(a_peer) == PackedInt32Array(socks), "Z1: the late joiner B sees A's Hands")
 	await _until(func() -> bool: return ba.of(a_peer).held.looks_of(socks[1]) != null, "Z1: B draws A's Socks at A's hand")
 	# A leaves, holding them.
@@ -257,10 +257,10 @@ func case_leave_and_return() -> void:
 	var count_left := func(ev: Dictionary, who: String) -> void:
 		if ev.has("dropped_at"):
 			left_on[who] = int(left_on[who]) + 1
-	(host.get_node("Parts") as Parts).applied.connect(count_left.bind("host"))
-	(b.get_node("Parts") as Parts).applied.connect(count_left.bind("b"))
+	LevelRuntime.of(host).parts.applied.connect(count_left.bind("host"))
+	LevelRuntime.of(b).parts.applied.connect(count_left.bind("b"))
 	_session(a).close()
-	var hm := host.get_node("Socks/Mess") as Mess
+	var hm := LevelRuntime.of(host).mess
 	var lies_by_a := func(m: Mess) -> bool:
 		for sock in socks:
 			var lead := sock if m.state_of(sock) != Mess.State.IN_PAIR else m.mate_of(sock)
@@ -296,7 +296,7 @@ func case_leave_and_return() -> void:
 	var again := (handling.get_node("Spots/Under") as SockSpot).sock
 	await _until(func() -> bool: return ha.of(a_again) != null and ha.of(a_again).pose_position.distance_to(a_at) < 0.1,
 			"the Host to see A back at the Handling station")
-	(a.get_node("Socks/Hands") as Hands).pick(a_again, again)
+	LevelRuntime.of(a).hands.pick(a_again, again)
 	await _until(func() -> bool: return h_hands.items_of(a_again) == PackedInt32Array([again]) \
 			and b_hands.items_of(a_again) == PackedInt32Array([again]), "Z1: the Host and B to see A's Hands after the rejoin")
 	_check(h_hands.held.has(a_profile.id) and not h_hands.held.has(a_again), "Z1: still under A's player id")
@@ -348,7 +348,7 @@ func _branch(label: String, keep: Array = KEEP) -> Node3D:
 
 func _drop_branches() -> void:
 	for node in _branches:
-		var session := node.get_node_or_null("View/Zoo/Session") as Session
+		var session := _in_branch(node).session
 		if session != null:
 			session.close()
 		var path := node.get_path()
@@ -373,23 +373,23 @@ func _stand(player: Player, at: Vector3, yaw: float) -> void:
 
 
 func _session(zoo: Node3D) -> Session:
-	return zoo.get_node("Session") as Session
+	return LevelRuntime.of(zoo).session
 
 
-func _net(zoo: Node3D) -> ZooNet:
-	return zoo.get_node("Net") as ZooNet
+func _net(zoo: Node3D) -> LevelNet:
+	return LevelRuntime.of(zoo).net
 
 
 func _roster(zoo: Node3D) -> Roster:
-	return zoo.get_node("Session/Roster") as Roster
+	return LevelRuntime.of(zoo).roster
 
 
 func _avatars(zoo: Node3D) -> Avatars:
-	return zoo.get_node("Avatars") as Avatars
+	return LevelRuntime.of(zoo).avatars
 
 
 func _player(zoo: Node3D) -> Player:
-	return zoo.get_node("Player") as Player
+	return LevelRuntime.of(zoo).player
 
 
 ## Every .gd under `folder`.
@@ -401,3 +401,9 @@ static func _scripts(folder: String) -> PackedStringArray:
 	for d in DirAccess.get_directories_at(folder):
 		out.append_array(_scripts(folder.path_join(d)))
 	return out
+
+
+## The level runtime of the zoo in branch `node` (a machine of its own), or null.
+func _in_branch(node: Node) -> LevelRuntime:
+	var zoo := node.get_node_or_null("View/Zoo")
+	return LevelRuntime.of(zoo) if zoo != null else null

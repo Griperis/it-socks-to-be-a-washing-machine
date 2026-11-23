@@ -370,7 +370,7 @@ func case_a16() -> void:
 	var state := (load(ZOO) as PackedScene).get_state()
 	var zoo_flags: PlayerUpgrades = null
 	for i in state.get_node_count():
-		if state.get_node_name(i) == &"Player":
+		if state.get_node_name(i) == &"Runtime":   # the zoo's level runtime gives them to its player
 			for p in state.get_node_property_count(i):
 				if state.get_node_property_name(i, p) == &"upgrades":
 					zoo_flags = state.get_node_property_value(i, p) as PlayerUpgrades

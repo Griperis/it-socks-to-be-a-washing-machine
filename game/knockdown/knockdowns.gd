@@ -563,4 +563,5 @@ func ragdoll_of(peer: int) -> Ragdoll:
 
 
 func _in_level(node: Node) -> bool:
-	return owner == null or owner.is_ancestor_of(node)
+	var level := LevelRuntime.level_of(self)
+	return level == null or level.is_ancestor_of(node)
