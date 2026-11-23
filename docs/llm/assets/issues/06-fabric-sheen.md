@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: assets
 feature: assets
@@ -29,5 +29,17 @@ in the shared material library. Its own ticket by Q2153; shaped with stills afte
 - Q2504 (2026-11-23): built to the end with no stop at the first still; a before and after strip for the designer's batch review before the merge.
 
 ## Open follow-ups
+- [later] Strength is my placeholder: rim 0.35 (white, rim_tint 0.0) reads a little bright on the cream fabrics (sheeted
+  sofa, bed linen). A softer number (0.2-0.25) is one edit per file. There is no curtain piece in the game yet, so the
+  strip shows the bed and the sheeted sofa; the cloth strip of the Materials station is in the Built log's note.
 
 ## Built log
+
+### 2026-11-23
+- Changed: the 14 `game/materials/fab_*.tres` got `rim_enabled = true`, `rim = 0.35`, `rim_tint = 0.0`. Mapping: every
+  old file (all 67 furniture .glb, checked) has the same KHR_materials_sheen: sheenColorFactor (1,1,1), sheenRoughnessFactor 0.5
+  (the generator's `sheen=0.1`). White colour -> rim_tint 0.0 (a white rim); roughness 0.5 -> rim 0.35 (0.7 x 0.5, a
+  placeholder scale: Godot's rim has no roughness). No other material changed; no code, no test (a look number, Q2421).
+- Files: `game/materials/fab_*.tres`, `tools/shots/sets/fabric-sheen.txt`, `docs/architecture/materials.md`.
+- Strip: `builds/review-assets-06/strip.png` (bed and sheeted sofa, before and after).
+- Verified: suite PASS (agent_finish), asset_lint and grep_rules below.

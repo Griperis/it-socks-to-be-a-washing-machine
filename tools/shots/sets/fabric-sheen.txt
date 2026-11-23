@@ -1,0 +1,2 @@
+row2  --size=1280x720 --do='30:furniture:row2' --shots=40
+row7  --size=1280x720 --do='30:furniture:row7' --shots=40

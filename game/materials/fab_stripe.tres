@@ -5,4 +5,7 @@ resource_name = "fab_stripe"
 cull_mode = 2
 albedo_color = Color(0.98, 0.92, 0.82, 1)
 roughness = 0.9
+rim_enabled = true
+rim = 0.35
+rim_tint = 0.0
 metadata/old_pieces = PackedStringArray("armchair", "bath_mat", "bikes", "bunk_bed", "car", "coat_nook", "coffee_table", "collection_board", "dining_table", "double_bed", "dresser", "drying_rack", "floor_lamp", "hand_basin", "ironing_board", "kids_shelf", "kitchen_sink", "laundry_basket", "laundry_shelf", "living_rug", "nightstand", "office_chair", "old_cot", "old_tree", "play_rug", "rocking_horse", "sheeted_sofa", "ski_bag", "sofa", "storage_boxes", "telescope", "towel_rail", "water_tank", "workbench")
