@@ -1,3 +1,2 @@
-# assets/06: the fab_* cloths with and without the rim sheen.
-singles_2  --size=1280x720 --do='30:materials:singles_2' --shots=40
-singles_3  --size=1280x720 --do='30:materials:singles_3' --shots=40
+row2  --size=1280x720 --do='30:furniture:row2' --shots=40
+row7  --size=1280x720 --do='30:furniture:row7' --shots=40

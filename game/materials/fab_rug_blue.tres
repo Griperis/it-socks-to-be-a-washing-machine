@@ -7,5 +7,5 @@ albedo_color = Color(0.45, 0.58, 0.72, 1)
 roughness = 0.9
 rim_enabled = true
 rim = 0.35
-rim_tint = 0.6
+rim_tint = 0.0
 metadata/old_pieces = PackedStringArray("double_bed", "living_rug")

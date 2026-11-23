@@ -7,5 +7,5 @@ albedo_color = Color(0.6, 0.68, 0.52, 1)
 roughness = 0.9
 rim_enabled = true
 rim = 0.35
-rim_tint = 0.6
+rim_tint = 0.0
 metadata/old_pieces = PackedStringArray("bath_mat", "coat_nook", "dining_table", "drying_rack", "hand_basin", "kids_shelf", "laundry_shelf", "towel_rail")
