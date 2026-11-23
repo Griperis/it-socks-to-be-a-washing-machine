@@ -952,3 +952,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2517 |
 
 ---
+
+| Ticket | core/52, the Sock generator: one SockArea box finds landing places (floor, tops, insides, under-gaps) and previews them as dots in the editor; Socks laid at rest from the level's seed by the Host; heaps, exclusions, hidden share 0.3, straight-line mates, under-edge strips, washer thinning, stair trail; a zoo station; merged (main baaf279) |
+| Planned vs actual | 1 planned (two steps: list, then build), 1 actual |
+| Redo count | 0 |
+| Corrections | none |
+| Cost | about 640k subagent tokens (Opus) |
+| Time | about 42 min for step 2 |
+| Surprises | game code +1762 −13, tests +450; the stills draw the preview in game (the editor run headless drew the same 110 dots); the kit's stairs collide as a ramp (Q2530) |
+| Stop rules | the behaviour list stopped for the designer, as planned |
+| Looks | builds/review-sock-generator/ |
+| Decisions | Q2518-Q2530 |
+
+---
