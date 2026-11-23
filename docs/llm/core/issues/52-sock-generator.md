@@ -106,3 +106,4 @@ spacing), the seed, how they appear (at rest, poured, dropped), what a late join
   - Stills: builds/review-sock-generator/ (sock-generator-preview, -preview-top: the preview; -game, -game-top, -game-low:
     the station after the start; -both-low: the preview over the Socks).
   - Verified: PASS 17697 checks, 453 cases (`kit/tools/run.sh --touched`); PASS rules.
+- Merged: aceb2963 (2026-11-23, branch core/52-sock-generator)
