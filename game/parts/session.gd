@@ -337,10 +337,15 @@ func _scene_multiplayer() -> SceneMultiplayer:
 # --- Host ----------------------------------------------------------------------------------------
 
 ## A Guest passed the gate: the Roster takes it in (every Guest already in hears that), then it gets
-## the whole state, its own entry in it, then every event.
+## the whole state, its own entry in it, then every event. While the level still makes its starting
+## state (its Socks laid behind the loading screen, house/09) the Guest waits at the gate for it.
 func _on_peer_joined(peer: int) -> void:
 	if not multiplayer.is_server() or _guests.has(peer) or not _waiting.has(peer):
 		return
+	while not parts.is_settled():
+		await parts.settled
+		if not _waiting.has(peer) or not is_inside_tree():
+			return
 	var who: Dictionary = _waiting[peer]
 	_waiting.erase(peer)
 	_players[peer] = String(who["id"])

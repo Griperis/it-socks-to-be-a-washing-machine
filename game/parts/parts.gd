@@ -10,6 +10,8 @@ extends Node
 signal applied(ev: Dictionary)
 ## bind() found every part (the level is ready): a save may be loaded now.
 signal bound
+## The last unsettle() was settled: the level's starting state is whole (house/09).
+signal settled
 
 ## The Host's player id, and the player's id when playing alone.
 const HOST := 1
@@ -32,6 +34,24 @@ var _by_id: Dictionary[StringName, Part] = {}
 var is_bound := false
 ## The last seq this machine gave a Command (next_seq()).
 var _seq := 0
+## Who still makes the level's starting state (unsettle()), by node.
+var _unsettled: Dictionary[Object, bool] = {}
+
+
+## The level is still making its starting state (house/09: its Socks laid behind the loading screen)
+## until `by` calls settle(): a joining Guest's snapshot waits for `settled`.
+func unsettle(by: Object) -> void:
+	_unsettled[by] = true
+
+
+func settle(by: Object) -> void:
+	if _unsettled.erase(by) and _unsettled.is_empty():
+		settled.emit()
+
+
+## Whether nothing still makes the level's starting state (a snapshot of it is whole).
+func is_settled() -> bool:
+	return _unsettled.is_empty()
 
 
 ## Binds once the level is ready, so every part's looks are in place for the first _show(true).

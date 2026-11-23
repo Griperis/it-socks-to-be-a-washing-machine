@@ -176,7 +176,7 @@ overrides in code. Code fills data and reacts to presses.
 | `game/ui/title/title.tscn` | the backdrop, the cream panel, the pages as child scenes shown one at a time (home, multiplayer, join), the status line, the corner keys | new; becomes `run/main_scene` (Q2509 kept the house only "until menus exist"; the house stays reachable with `-- --scene=`) |
 | `game/ui/options/options.tscn` | the old rows (findings, "Options") plus the Voice volume (core/56 V5), on `Settings`; in the title and the ESC menu | the kit's `options/` template, rows rebuilt to the old ones |
 | `game/ui/licence/licence.tscn` | the credits and licences, built at load from a `Credits` Resource (one entry per work, the old `credits.json` fields); a test that every asset is covered | new |
-| `game/ui/loading/loading_screen.tscn` | the old card: tumbling sock, heading, progress bar; the 0.5 s fade in from the backdrop | the kit's `scenes/` template (`SceneChanger`: threaded load, drawn once before the work), its loading screen replaced by this one |
+| `game/level/loading_screen.tscn` (house/09's, one scene for every wait) | the old card: tumbling sock, heading, progress bar; the 0.5 s fade in from the backdrop | the kit's `scenes/` template (`SceneChanger`: threaded load, drawn once before the work), its loading screen replaced by this one |
 | `game/ui/esc_menu/esc_menu.tscn` | Back to title / Quit game (solo), End session with its question (Host), Leave (Guest), Options | the kit's `pause/` template with `can_pause_override` always false: menus never pause (Q253) |
 
 - **Menu sounds:** a small autoload `UiSounds` hooks every button as it enters the tree (the old rule): `ui_click` on

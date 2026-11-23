@@ -73,9 +73,6 @@ intro, key remapping, the encyclopedia key.
   reads, else a broken file replaces a good backup), the unchecked `store_string` / `get_error()` before the renames,
   and `JSON.from_native` writing a `PackedByteArray` byte by byte (the game's copy writes Base64): fixed in
   `game/save/save.gd` and `local_file_store.gd`.
-- [later] When house/09 merges: its placeholder loading screen and this one (`game/ui/loading/`, the old look per
-  Q2575) become one; the house's slice-a-frame laying should keep the screen up until it ends (SceneChanger now
-  fades it two frames after the scene is in), and a loaded World need not lay the generators' Socks it then replaces.
 - [later] `tools/shot_hooks.gd` is over 600 lines (grep_rules note).
 
 ## Built log
@@ -87,8 +84,16 @@ intro, key remapping, the encyclopedia key.
   says so once; backup and damaged files; a version per Part with steps and sample saves; Q2559 resets; flying Socks
   laid where they land. Alone the player is in its own Roster by player id (Hands, Coins). Options rows on Settings,
   menu sounds, the cursor, the "It Socks" user folder.
-- Files: game/save/, game/ui/{title,options,licence,loading,esc_menu}/, game/scenes/scene_changer.gd,
+- Files: game/save/, game/ui/{title,options,licence,esc_menu}/, game/level/loading_screen.tscn, game/scenes/scene_changer.gd,
   game/audio/ui_sounds.gd, game/look/keycap_style.gd, game/look/theme.tres, tests/save_test.gd, tests/menus_test.gd,
   tests/saves/.
 - Verified: kit/tools/run.sh --touched in agent_finish (suite line in the commit's run); grep_rules and asset_lint
   PASS; stills builds/review-menus/menus-*.png.
+### 2026-11-23 (house/09 merged in)
+- Changed: one loading screen for every wait, `game/level/loading_screen.tscn` (house/09's laying driver with the old
+  look, Q2575): "Loading the house..." always (Q2579), "Joining..." for a Guest; SceneChanger's copy fills the first
+  tenth of the bar while the scene loads, then hands over to the house's laying, which fades out when the Socks are
+  laid. A loaded World skips the generators' laying (`Mess.skip_generated`). `game/ui/loading/` is gone.
+- Files: game/level/loading_screen.{gd,tscn}, loading_tuning.gd, game/scenes/scene_changer.gd,
+  game/level/level_runtime.gd, game/mess/mess.gd, tests/menus_test.gd, tests/house_test.gd.
+- Verified: agent_finish's full run; still builds/review-menus/menus-loading.png retaken.

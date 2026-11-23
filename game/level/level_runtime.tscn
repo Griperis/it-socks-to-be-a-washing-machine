@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://bqdsblq5wlstm" path="res://game/save/autosave.gd" id="18_autosave"]
 [ext_resource type="Resource" uid="uid://bdk0j4fv51es5" path="res://game/save/save_tuning.tres" id="19_save_tuning"]
 [ext_resource type="PackedScene" uid="uid://xjx2cc6moh4d" path="res://game/ui/esc_menu/esc_menu.tscn" id="20_esc_menu"]
+[ext_resource type="PackedScene" uid="uid://b0s58u22waxoe" path="res://game/level/loading_screen.tscn" id="21_loading"]
 
 [node name="LevelRuntime" type="Node3D" unique_id=573781402]
 script = ExtResource("0_runtime")
@@ -105,3 +106,8 @@ tuning = ExtResource("19_save_tuning")
 autosave = NodePath("../Autosave")
 session = NodePath("../Session")
 net = NodePath("../Net")
+
+[node name="LoadingScreen" parent="." node_paths=PackedStringArray("mess", "parts", "player") unique_id=1739204816 instance=ExtResource("21_loading")]
+mess = NodePath("../Socks/Mess")
+parts = NodePath("../Parts")
+player = NodePath("../Player")

@@ -8,7 +8,7 @@ extends TestSuite
 const TITLE := "res://game/ui/title/title.tscn"
 const OPTIONS := "res://game/ui/options/options.tscn"
 const LICENCE := "res://game/ui/licence/licence.tscn"
-const LOADING := "res://game/ui/loading/loading_screen.tscn"
+const LOADING := "res://game/level/loading_screen.tscn"
 const ONE_BOX := "res://game/level/one_box_level.tscn"
 const THEME := "res://game/look/theme.tres"
 
@@ -53,7 +53,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "c01_cursor", "method": "case_c01", "world": false,
 				"title": "C01: the game's own cursor is the white arrow (assets/ui/cursor.svg) with its hotspot at (3, 2), set by the project"},
 		{"name": "d01_loading", "method": "case_d01", "world": false,
-				"title": "D01: the loading screen is the backdrop, the cream card, the tumbling sock, the heading and a bar that never goes back; finish() shows it full, takes the card away and fades out, never holding input"},
+				"title": "D01: the loading screen (one scene for the scene's load and the house's laying, Q2575) is the backdrop, the cream card, the tumbling sock, \"Loading the house...\" and a bar that never goes back; finish() shows it full, takes the card away and fades out, never holding input; a loaded World lays nothing, a Guest reads \"Joining...\""},
 		{"name": "e01_esc_menu", "method": "case_e01", "world": false,
 				"title": "E01: Esc in play opens the ESC menu and nothing pauses; alone Back to title and Quit game; the player's input is held; Esc closes it"},
 		{"name": "e02_end_session", "method": "case_e02", "world": false,
@@ -313,11 +313,11 @@ func case_c01() -> void:
 
 func case_d01() -> void:
 	var screen := (load(LOADING) as PackedScene).instantiate() as LoadingScreen
+	screen.free_when_faded = true
 	_nodes.append(screen)
 	add_child(screen)
-	screen.set_heading("Loading the house...")
 	await _frames(2)
-	_check(screen.heading() == "Loading the house..." and screen.shown_progress() < 0.0, "the heading, no bar until the wait can tell")
+	_check(screen.text() == LoadingScreen.LOADING and not screen.bar_shown(), "\"Loading the house...\" (Q2579), no bar until the wait can tell")
 	var sock := screen.get_node("%Sock") as Control
 	var turn := sock.rotation
 	await _frames(10)
@@ -331,6 +331,22 @@ func case_d01() -> void:
 	_check(not (screen.get_node("%Card") as Control).visible and (screen.get_node("%Back") as Control).mouse_filter == Control.MOUSE_FILTER_IGNORE, "the card goes and nothing holds input")
 	var gone: WeakRef = weakref(screen)
 	await _until(func() -> bool: return gone.get_ref() == null, "the screen to fade out and go", roundi(screen.tuning.fade_seconds * 60.0) + 30)
+	# A loaded World lays nothing (its Socks come from the save), and a Guest reads "Joining...".
+	var house := (load("res://game/house/house.tscn") as PackedScene).instantiate()
+	var w := WorldSlot.new()
+	w.is_new = false
+	LevelRuntime.of(house).world = w
+	_nodes.append(house)
+	add_child(house)
+	await _frames(2)
+	_check(not LevelRuntime.of(house).mess.is_laying() and not LevelRuntime.of(house).loading.is_showing(), "a loaded World lays nothing: no laying screen")
+	house.free()
+	var joining := (load(ONE_BOX) as PackedScene).instantiate()
+	LevelRuntime.of(joining).launch = PackedStringArray(["--join=127.0.0.1:9"])
+	LevelRuntime.of(joining).from_title = true
+	add_child(joining)
+	_check(LevelRuntime.of(joining).loading.text() == LoadingScreen.JOINING, "a Guest reads \"Joining...\"")
+	joining.free()
 
 
 # --- ESC menu -------------------------------------------------------------------------------------

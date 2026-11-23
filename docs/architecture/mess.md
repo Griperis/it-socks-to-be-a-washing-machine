@@ -29,7 +29,8 @@ Socks lie, are drawn, move or wake.
   spawner's path); every other (woken, fallen, poured, swept, dropped) is started by each machine from the
   record under the Mess's own `Bodies` holder, which no spawner sees. A Guest's is looks only, on
   `Mess.LAYER_LOOKS` (it touches the house, lying Socks and its other looks bodies), and never wakes, rests
-  or writes anything shared; the Host's rest batch snaps it.
+  or writes anything shared; the Host's rest batch lies it, its drawing gliding from the body's place onto the
+  rest pose over `MessTuning.rest_glide` (Q2577, `Mess._glides`; its lying body is there at once).
 
 ## Flows
 
@@ -89,9 +90,14 @@ Socks lie, are drawn, move or wake.
 - A Guest's own pick, drop, Throw and wheel are looks-only guesses (`GuestGhosts`, a child of the Player,
   `ThrowGhost` on `Mess.LAYER_GHOST` touching the house only, the HeldView's pick ghost): every Command carries a
   `seq` the answer echoes; while a ghost draws a Sock, `Mess.hold_back(sock, true)` keeps the Mess from drawing
-  it (lying or flying, body and record as they are). A Throw or drop ghost follows the Host's body at the same
-  moment of the flight (`FlightRow.flight_time`), easing the difference in over `predict_blend`, and eases onto
-  the Host's rest.
+  it (lying or flying, body and record as they are). A Throw or drop ghost flies its own body from the
+  thrower's first-person hand, where the Host lets it go too (`Hands.start_of`, coop/13, Q2573), and is drawn on
+  it until it parts from the Host's body at the same moment of the flight (`FlightRow.flight_time`) by more than
+  `part_distance` or `part_turn`; from then the difference eases in over `predict_blend`. It eases onto the
+  Host's rest. Its body undoes a push into the floor as a flight does (`MessMoving.undo_push`, core/50).
+- A Teammate's Throw or drop (any let-go Sock whose thrower plays on another machine) is drawn from where their
+  avatar holds it (`Hands.worn_start_of`, through `Mess.worn_start`), easing onto its body over
+  `GhostTuning.hand_over_time` (`Mess._leads`, the MultiMesh row or the body's Looks; coop/13, Q2439).
 - A flight flies as the same leg and foot boxes it lies on (`MessBodies.parts_at`), with
   `MessTuning.turn_weight` times its flat box's inertia (a 50 g board's own spins to Jolt's cap on an
   edge landing), and sweeps (CCD) only from 1 m/s (core/23). Poured and dropped Socks fly as woken ones.

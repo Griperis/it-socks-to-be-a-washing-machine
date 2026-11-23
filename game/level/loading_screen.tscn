@@ -1,16 +1,16 @@
-[gd_scene format=3 uid="uid://pi57plf2xpsn"]
+[gd_scene format=3 uid="uid://b0s58u22waxoe"]
 
-[ext_resource type="Script" uid="uid://jejum3cluwr3" path="res://game/ui/loading/loading_screen.gd" id="1_screen"]
-[ext_resource type="Resource" uid="uid://x0p244rebp27" path="res://game/ui/loading/loading_tuning.tres" id="2_tuning"]
+[ext_resource type="Script" uid="uid://c0y4tbpm1pp26" path="res://game/level/loading_screen.gd" id="1_screen"]
+[ext_resource type="Resource" uid="uid://b6upbqli1p34q" path="res://game/level/loading_tuning.tres" id="2_tuning"]
 [ext_resource type="Texture2D" uid="uid://b8tububa37q3o" path="res://assets/ui/sock.svg" id="3_sock"]
 
-[node name="LoadingScreen" type="CanvasLayer" unique_id=8919]
+[node name="LoadingScreen" type="CanvasLayer" unique_id=1460029131]
 process_mode = 3
 layer = 30
 script = ExtResource("1_screen")
 tuning = ExtResource("2_tuning")
 
-[node name="Back" type="ColorRect" parent="." unique_id=16838]
+[node name="Back" type="ColorRect" parent="." unique_id=1460037050]
 unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,7 +19,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.168627, 0.129412, 0.109804, 1)
 
-[node name="Center" type="CenterContainer" parent="Back" unique_id=24757]
+[node name="Middle" type="CenterContainer" parent="Back" unique_id=1460044969]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -28,24 +28,24 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Card" type="PanelContainer" parent="Back/Center" unique_id=32676]
+[node name="Card" type="PanelContainer" parent="Back/Middle" unique_id=1460052888]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(560, 0)
 layout_mode = 2
 theme_type_variation = &"TitlePanel"
 
-[node name="Rows" type="VBoxContainer" parent="Back/Center/Card" unique_id=40595]
+[node name="Rows" type="VBoxContainer" parent="Back/Middle/Card" unique_id=1460060807]
 layout_mode = 2
 theme_override_constants/separation = 22
 alignment = 1
 
-[node name="SockHolder" type="Control" parent="Back/Center/Card/Rows" unique_id=48514]
+[node name="SockHolder" type="Control" parent="Back/Middle/Card/Rows" unique_id=1460068726]
 custom_minimum_size = Vector2(144, 144)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
 
-[node name="Sock" type="TextureRect" parent="Back/Center/Card/Rows/SockHolder" unique_id=56433]
+[node name="Sock" type="TextureRect" parent="Back/Middle/Card/Rows/SockHolder" unique_id=1460076645]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 24.0
@@ -57,14 +57,14 @@ texture = ExtResource("3_sock")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Heading" type="Label" parent="Back/Center/Card/Rows" unique_id=64352]
+[node name="Text" type="Label" parent="Back/Middle/Card/Rows" unique_id=1460084564]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Heading1"
 text = "Loading the house..."
 horizontal_alignment = 1
 
-[node name="Bar" type="ProgressBar" parent="Back/Center/Card/Rows" unique_id=72271]
+[node name="Progress" type="ProgressBar" parent="Back/Middle/Card/Rows" unique_id=1460092483]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(440, 28)

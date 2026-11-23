@@ -1,14 +1,15 @@
 ## SceneChanger: changes the current scene behind the loading screen (the autoload `SceneChanger`;
-## the kit's scenes/ template, its loading screen replaced by the game's, game/ui/loading/).
+## the kit's scenes/ template, its loading screen replaced by the game's one, game/level/loading_screen.tscn).
 ##
 ##   SceneChanger.change_to(HOUSE, "Loading the house...", func(root: Node) -> void: ...)
 ##
 ## The loading screen goes up and is drawn once before any work; the scene loads on a worker thread
 ## (`ResourceLoader.load_threaded_request`) with the bar following it; `setup` gets the new scene's
 ## root before it enters the tree (the title hands the level its World this way, never through a
-## static); the old scene is taken out of the tree first and freed after. Two frames after the new
-## scene is in, the screen fades out from the backdrop's colour (LoadingScreen.finish()), over
-## everything, with no input lock. A path that fails to load does NOT change the scene: `failed` is
+## static); the old scene is taken out of the tree first and freed after. The scene's load fills the
+## first `load_share` of the bar. Two frames after the new scene is in, a level that lays its Socks
+## behind its own loading screen (the same scene) takes the wait over, the bar where this one left it;
+## else this screen fades out from the backdrop's colour (LoadingScreen.finish()), input not held. A path that fails to load does NOT change the scene: `failed` is
 ## emitted and an error logged.
 extends Node
 
@@ -17,7 +18,7 @@ signal progress(ratio: float)
 signal finished(path: String)
 signal failed(path: String, reason: String)
 
-const LOADING := preload("res://game/ui/loading/loading_screen.tscn")
+const LOADING := preload("res://game/level/loading_screen.tscn")
 
 var _busy := false
 var _screen: LoadingScreen = null
@@ -75,7 +76,13 @@ func change_to(path: String, heading := "", setup := Callable()) -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 	if screen() != null:
-		_screen.finish()
+		var runtime := LevelRuntime.of(root) if is_instance_valid(root) else null
+		var theirs := runtime.loading if runtime != null and runtime.has_node(^"LoadingScreen") else null
+		if theirs != null and theirs.is_showing():
+			theirs.set_progress(_screen.shown_progress())
+			_screen.queue_free()
+		else:
+			_screen.finish()
 	_screen = null
 	_busy = false
 	finished.emit(path)
@@ -105,14 +112,16 @@ func _fail(path: String, reason: String) -> void:
 func _report(ratio: float) -> void:
 	progress.emit(ratio)
 	if screen() != null:
-		_screen.set_progress(ratio)
+		_screen.set_progress(ratio * _screen.tuning.load_share)
 
 
 ## The loading screen up, DRAWN once before the heavy work starts (headless: one frame).
 func _show_screen(heading: String) -> void:
 	_screen = LOADING.instantiate() as LoadingScreen
+	_screen.free_when_faded = true
+	if heading != "":
+		_screen.set_heading(heading)
 	get_tree().root.add_child(_screen)
-	_screen.set_heading(heading)
 	if DisplayServer.get_name() == "headless":
 		await get_tree().process_frame
 	else:

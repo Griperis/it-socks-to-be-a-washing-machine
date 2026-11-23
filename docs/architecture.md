@@ -98,11 +98,11 @@ before anything binds. Shots load the zoo unless a set line gives `--scene=`
 
 **A level (core/51, Q2517).** Every level shares one game setup, `game/level/level_runtime.tscn` (`LevelRuntime`):
 the Player, Players and Avatars, Session and Roster, Net (`LevelNet`), Parts, Socks (Mess, Hands, Knockdowns, Coins),
-Spots, Lying, Flights and the FlightSpawner, wired inside it. It is sealed: a level instances it once, as a child of
+Spots, Lying, Flights, the FlightSpawner and the LoadingScreen (house/09), wired inside it. It is sealed: a level instances it once, as a child of
 its root named `Runtime`, and overrides nothing inside it (no editable children). What differs per level is set on
 that instance: `spawn` and `return_spot` (empty: the level's children `Spawn` and `ReturnSpot`, the return spot
 falling back to the spawn), `mess_bounds`, the player's `hands_tuning` and `upgrades`, and `place_name` (the corner's
-word). Before any of its nodes is ready it puts the player on the spawn, gives the Mess its return spot and bounds and
+word), and `load_screen` (the starting Socks laid behind the loading screen, `docs/architecture/sock-generator.md`). Before any of its nodes is ready it puts the player on the spawn, gives the Mess its return spot and bounds and
 gives the Parts the whole level to bind. Code reaches its nodes with `LevelRuntime.of(node)` (the level or anything in
 it: `.player`, `.mess`, `.hands`, `.session`, `.net` ...); `LevelRuntime.level_of(node)` is the level a runtime node
 belongs to, where code used to read `owner`. **A new level** is a new scene: its geometry (and look: Environment, Sun,

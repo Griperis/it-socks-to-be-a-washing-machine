@@ -1,9 +1,9 @@
 # core/58: the screens for the designer's first look: the title's home page, Multiplayer, Join, Options and Licence,
-# the ESC menu over the house, and the loading screen (the saved game's words, the bar half way) over the house.
+# the ESC menu over the house, and the house's own loading screen while its Socks are laid (frame 40).
 title  --scene=res://game/ui/title/title.tscn --size=1920x1080 --shots=30
 multiplayer  --scene=res://game/ui/title/title.tscn --size=1920x1080 --do='10:menu:multiplayer' --shots=30
 join  --scene=res://game/ui/title/title.tscn --size=1920x1080 --do='10:menu:join' --shots=30
 options  --scene=res://game/ui/title/title.tscn --size=1920x1080 --do='10:menu:options' --shots=30
 licence  --scene=res://game/ui/title/title.tscn --size=1920x1080 --do='10:menu:licence' --shots=30
 esc-menu  --scene=res://game/house/house.tscn --size=1920x1080 --do='60:menu:esc' --shots=90
-loading  --scene=res://game/house/house.tscn --size=1920x1080 --do='60:menu:loading' --shots=75
+loading  --scene=res://game/house/house.tscn --size=1920x1080 --shots=40

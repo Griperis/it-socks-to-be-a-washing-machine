@@ -22,6 +22,9 @@ extends Node3D
 @export var upgrades: PlayerUpgrades
 ## The level's word in the corner and the joiner's line (LevelNet.place_name()).
 @export var place_name := "house"
+## Lays the level's generated Socks a slice per frame behind the loading screen (the house, house/09,
+## Q2542); off: all in the start-up frame (the zoo's few).
+@export var load_screen := false
 
 ## The World this level plays (core/58), set by the title before the level enters the tree; null
 ## plays the level as built and saves nothing (F5, the zoo, tests, `--scene=`).
@@ -70,9 +73,21 @@ func _enter_tree() -> void:
 	var back := _marker(return_spot, RETURN_SPOT)
 	mess.return_spot = back if back != null else start
 	mess.bounds = mess_bounds
+	mess.lay_in_slices = load_screen
+	# A loaded World's Socks come from its save: the generators lay nothing (Q2579).
+	mess.skip_generated = world != null and not world.is_new
+	if has_node(^"LoadingScreen") and (launch_joins() or (not from_title and _joins_by_command_line())):
+		loading.set_heading(LoadingScreen.JOINING)
 	parts.level = level
 	net.place = place_name
 	autosave.world = world
+
+
+func _joins_by_command_line() -> bool:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--join="):
+			return true
+	return false
 
 
 ## Whether the title started this level as a Guest (launch has `--join=`).
@@ -120,6 +135,8 @@ var lying: Node3D:
 	get: return get_node(^"Lying") as Node3D
 var flights: Node3D:
 	get: return get_node(^"Flights") as Node3D
+var loading: LoadingScreen:
+	get: return get_node(^"LoadingScreen") as LoadingScreen
 
 
 ## The marker at `path` (from this node), else the level's child named `fallback`, or null.

@@ -82,6 +82,7 @@ func case_s01() -> void:
 	await _click(_title.get_node("%Solo") as Control)
 	await _until(func() -> bool: return _level != null, "the title's Solo to load the house")
 	var runtime := LevelRuntime.of(_level)
+	await _until(func() -> bool: return runtime.loading.is_lifted(), "the house's Socks to be laid behind the loading screen", 3000)
 	await _until(func() -> bool: return runtime.autosave.saves() and runtime.player.is_on_floor(), "the Solo World to be loaded and the player to stand")
 	_check(runtime.autosave.world.slot == Worlds.SOLO and runtime.autosave.world.is_new, "a New Game in the Solo slot")
 	var mess := runtime.mess
@@ -617,7 +618,7 @@ func _house(world: WorldSlot) -> Node:
 	runtime.from_title = world != null
 	_levels.append(house)
 	add_child(house)
-	await _until(func() -> bool: return runtime.parts.is_bound and runtime.player.is_on_floor() and runtime.roster.id_of(1) != "", "the house to start")
+	await _until(func() -> bool: return runtime.loading.is_lifted() and runtime.parts.is_bound and runtime.player.is_on_floor() and runtime.roster.id_of(1) != "", "the house to start", 3000)
 	return house
 
 
@@ -708,16 +709,24 @@ func _kitchen_pair(mess: Mess, house: Node) -> Dictionary:
 	var made := house.get_node("SockGenerators/Ground/Generated") as GeneratedSocks
 	for sock in range(made.first, made.first + made.socks):
 		var at := mess.pose_of(sock).origin
-		if not KITCHEN.has_point(Vector2(at.x, at.z)) or not _open_sock(mess, sock):
+		if mess.design_of(sock).collection != &"food" or not KITCHEN.has_point(Vector2(at.x, at.z)) or not _open_sock(mess, sock):
 			continue
 		for o in range(made.first, made.first + made.socks):
 			if o == sock or mess.designs[o] != mess.designs[sock] or not _open_sock(mess, o):
 				continue
 			var s1 := _spot_seeing(mess, _centre(mess, sock))
 			var s2 := _spot_seeing(mess, _centre(mess, o))
-			if s1 != Vector3.INF and s2 != Vector3.INF:
+			if s1 != Vector3.INF and s2 != Vector3.INF and _seen_first(mess, s1, sock) and _seen_first(mess, s2, o):
 				return {"socks": [sock, o], "spots": [s1, s2]}
 	return {}
+
+
+## Whether the crosshair from eye height at `spot` meets Sock `sock` first (no other Sock in front).
+func _seen_first(mess: Mess, spot: Vector3, sock: int) -> bool:
+	var eye := spot + Vector3.UP * 1.6
+	var target := _centre(mess, sock)
+	var hit := PhysicsQueries.ray(mess, eye, eye + (target - eye) * 1.2, Mess.AIM_MASK)
+	return not hit.is_empty() and mess.sock_of_hit(hit) == sock
 
 
 func _open_sock(mess: Mess, sock: int) -> bool:
