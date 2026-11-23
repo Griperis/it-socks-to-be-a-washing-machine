@@ -9,8 +9,10 @@ extends Resource
 @export_range(0.0, 20.0, 0.1, "suffix:rad/s") var hot_spin := 2.0 # placeholder: until the designer has seen the benchmark's report
 ## ...or while still moving faster than this.
 @export_range(0.0, 5.0, 0.01, "suffix:m/s") var hot_speed := 0.35 # placeholder: until the designer has seen the benchmark's report
-## A Sock written lying farther than this from where its body was the tick before jumped (a snap of
-## the rest rule: a push up onto a floor); one that came back at the return spot counts as lost instead.
+## A Sock written lying farther than this from where its body was when the Mess judged it jumped (a
+## snap of the rest rule: a push up onto a floor); one that came back at the return spot counts as lost
+## instead. Judged from the body's place that tick, not the tick before (core/54: Jolt's own push of a
+## slow Sock in its last step, drawn as the body moved, is not the rule's snap).
 @export_range(0.0, 1.0, 0.001, "suffix:m") var jump := 0.01 # placeholder: until the designer has seen the benchmark's report
 
 @export_group("A flight")

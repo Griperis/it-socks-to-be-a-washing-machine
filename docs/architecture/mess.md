@@ -52,7 +52,11 @@ Socks lie, are drawn, move or wake.
   than its speed and turn explain by more than `push_slack`, with the middle of its leg or foot inside
   the house, it goes back there `push_lift` higher (at the very same place Jolt pushes it again), its
   fall and turn stopped. A pressure rest (`_relieve`) never moves a Sock: one that `put_down` would lift
-  or push flies on, and one moving at the pressure speed the step before is not taken.
+  or push flies on, and one moving at the pressure speed or turning at `pressure_spin`, now or the step
+  before, is not taken (core/54).
+- Put to sleep mid-turn (core/54): Jolt can put a slow Sock to sleep while it still tips over (2 rad/s the
+  step before), zeroing its motion. An asleep flight rests at once only when it was under the rest speed
+  and turn the step before (`MessMoving._slept_still`); otherwise it is woken and goes on.
 - Pushed out of a leaf (core/39, Q2428): `MessMoving` remembers each Door and drawer leaf it sweeps (its
   place before its last step and now). A resting Sock whose middle is in such a leaf is moved, flat, to the
   side the leaf swept from, wholly `leaf_clearance` past its face (`out_of_leaf`, `Mess._reach`); a flight
@@ -191,8 +195,10 @@ build, so the exclusion is for size and for not shipping the benchmark, not for 
 | `sweep` | A Door and a drawer opened and shut through 160 lying Socks: the movers' sweeps and wakes |
 
 Faults (`MessWatch`): never (still moving at the limit), lost (came back at the return spot), hot (written lying
-while turning or moving fast), jumped (snapped at its rest), flips (turned faster than `flip_spin`), jitter (woken
+while turning or moving fast at its last tick seen moving), jumped (snapped at its rest, from its body's place
+the tick the Mess rested it, core/54), flips (turned faster than `flip_spin`), jitter (woken
 `jitter_wakes` times or more), sunk (lowest point under the floor), inside (its leg or foot overlapping another
 Sock's deeper than `inside`, 22 mm; from `pressed`, 6 mm, it is counted as pressed, Q2499), made_inside (a new Sock
 made overlapping a moving one, core/49), under (a moving Sock's leg or foot middle more than `under`, 50 mm,
-under the floor, core/50). A scenario with one, or with its 95th-percentile tick over the budget, fails the run.
+under the floor, core/50). Each fault leaves a line in `MessWatch.notes` (the Sock and its last ticks), which
+`mess_settle` prints. A scenario with one, or with its 95th-percentile tick over the budget, fails the run.

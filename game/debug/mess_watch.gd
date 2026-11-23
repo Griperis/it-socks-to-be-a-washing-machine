@@ -6,8 +6,8 @@
 ##
 ## The counts, against MessChecks:
 ## - rests, and of them: lost (written lying far from where its body was: it came back at the
-##   return spot), jumped (snapped farther than `jump`), hot (written lying while still turning or
-##   moving fast);
+##   return spot), jumped (snapped farther than `jump` from where its body was when the Mess judged
+##   it), hot (written lying while still turning or moving fast at its last tick seen moving);
 ## - wakes (a lying Sock that moves again), and Socks that jitter (woken `jitter_wakes` times or more);
 ## - Socks that flip (turning faster than `flip_spin` while moving);
 ## - Socks under the floor: the middle of a moving Sock's leg or foot (a Pair's ball) more than `under`
@@ -16,6 +16,7 @@
 ##   tick it is first seen (core/49: two Socks of one pour made inside each other rest stuck together);
 ## - survey(), once the heap rests: lying Socks sunk under the floor, pressed into another lying Sock
 ##   (allowed and counted, Q2499: Jolt's slop) or inside it (deeper than the slop).
+## Each fault leaves a line in `notes` with the Sock's id and its last ticks (core/54).
 class_name MessWatch
 extends Node
 
@@ -28,6 +29,8 @@ const CELL := 0.45
 const NEAR := 0.45
 ## How often the moving count is noted for the report's line over time.
 const SERIES_EVERY := 0.5
+## How many ticks of a moving Sock's track a fault's note keeps.
+const TRACK := 12
 
 @export var mess: Mess
 @export var checks: MessChecks = preload("res://game/debug/mess_checks.tres")
@@ -60,6 +63,8 @@ var own_usec := 0
 
 var _flying: Dictionary[int, bool] = {}
 var _at: Dictionary[int, Vector3] = {}
+## Each falling body's place before this tick's Mess (`_before_tick`).
+var _judged: Dictionary[int, Vector3] = {}
 var _speed: Dictionary[int, float] = {}
 var _spin: Dictionary[int, float] = {}
 ## The Socks that lay at some time while watched (a body starting for one of them is a wake).
@@ -73,11 +78,31 @@ var worst_under := 0.0
 var _seen: Dictionary[int, bool] = {}
 var _since_series := 0.0
 var _started := false
+## What each fault was, one line a Sock with its last TRACK ticks (place, speed, turn, contacts,
+## asleep): what a failing suite prints, so a rare fault can be looked into from one run (core/54).
+var notes := PackedStringArray()
+## The last TRACK ticks of each moving Sock, as text, and each Sock's wakes and rests (time, place).
+var _track: Dictionary[int, PackedStringArray] = {}
+var _story: Dictionary[int, PackedStringArray] = {}
 
 
 func _ready() -> void:
 	process_physics_priority = 1000
+	get_tree().physics_frame.connect(_before_tick)
 	_note_lying()
+
+
+## Before every node's physics tick (the Mess's too): where each falling body is now, the place the
+## Mess judges it at this tick and writes it lying at when it comes to rest (core/54: Jolt's position
+## solve moved a slow Sock 13 mm in the step before its rest; that was the body's own move, drawn so,
+## not a snap of the rest rule, which the jump counts).
+func _before_tick() -> void:
+	if mess == null:
+		return
+	_judged.clear()
+	for body in mess.flight_bodies():
+		if body.has_meta(Mess.SOCK_META):
+			_judged[int(body.get_meta(Mess.SOCK_META))] = body.global_position
 
 
 ## The Socks lying now are known as lying (once: when it starts with a Mess that has its records).
@@ -110,6 +135,9 @@ func restart() -> void:
 	_woken.clear()
 	_flipped.clear()
 	_since_series = 0.0
+	notes = PackedStringArray()
+	_track.clear()
+	_story.clear()
 
 
 ## Whether nothing has moved or waited for MessChecks.quiet.
@@ -150,6 +178,12 @@ func _physics_process(delta: float) -> void:
 		if not _flying.has(sock) and _lay.has(sock):
 			wakes += 1
 			_woken[sock] = int(_woken.get(sock, 0)) + 1
+			_tell(sock, "woken at %.2f s at %s" % [watched, body.global_position])
+			if _woken[sock] == checks.jitter_wakes:
+				notes.append("Sock %d jitters: %s" % [sock, " | ".join(_story[sock])])
+		if not _flying.has(sock):
+			_track[sock] = PackedStringArray()
+		_note_tick(sock, body)
 		var spin := body.angular_velocity.length()
 		_at[sock] = body.global_position
 		_speed[sock] = body.linear_velocity.length()
@@ -164,6 +198,7 @@ func _physics_process(delta: float) -> void:
 				if not _under.has(sock):
 					_under[sock] = true
 					under += 1
+					notes.append("Sock %d under: its part's middle at %.3f m | track: %s" % [sock, part.global_position.y, " | ".join(_track[sock])])
 	for sock in made:
 		if _made_inside(sock, poses):
 			made_inside += 1
@@ -175,6 +210,7 @@ func _physics_process(delta: float) -> void:
 		_at.erase(sock)
 		_speed.erase(sock)
 		_spin.erase(sock)
+		_track.erase(sock)
 	_flying = now
 	peak_moving = maxi(peak_moving, now.size())
 	watched += delta
@@ -211,15 +247,40 @@ func _depth(a: int, at_a: Transform3D, b: int, at_b: Transform3D) -> float:
 func _rested(sock: int) -> void:
 	rests += 1
 	_lay[sock] = true
-	var snap := mess.pose_of(sock).origin.distance_to(_at[sock])
+	var snap := mess.pose_of(sock).origin.distance_to(_judged.get(sock, _at[sock]))
+	var faults := PackedStringArray()
 	if snap > LOST_OVER:
 		lost += 1
 	else:
 		worst_jump = maxf(worst_jump, snap)
 		if snap > checks.jump:
 			jumped += 1
+			faults.append("jumped")
 	if _spin[sock] > checks.hot_spin or _speed[sock] > checks.hot_speed:
 		hot += 1
+		faults.append("hot")
+	_tell(sock, "rested at %.2f s at %s (snap %.3f m, speed %.2f m/s, turn %.2f rad/s)" % [watched, mess.pose_of(sock).origin, snap, _speed[sock], _spin[sock]])
+	if not faults.is_empty():
+		notes.append("Sock %d %s: rested at %s, snap %.3f m | track: %s" % [sock, " and ".join(faults), mess.pose_of(sock).origin, snap, " | ".join(_track.get(sock, PackedStringArray()))])
+
+
+## One tick of moving Sock `sock`'s track: time, place, speed, turn, contacts, asleep.
+func _note_tick(sock: int, body: RigidBody3D) -> void:
+	var state := PhysicsServer3D.body_get_direct_state(body.get_rid())
+	var lines: PackedStringArray = _track[sock]
+	var p := body.global_position
+	lines.append("%.3f (%.3f %.3f %.3f) v %.2f w %.2f c %d%s" % [watched, p.x, p.y, p.z, body.linear_velocity.length(), body.angular_velocity.length(),
+			state.get_contact_count() if state != null else -1, " asleep" if body.sleeping else ""])
+	if lines.size() > TRACK:
+		lines.remove_at(0)
+	_track[sock] = lines
+
+
+## A line of Sock `sock`'s story (its wakes and rests).
+func _tell(sock: int, line: String) -> void:
+	var lines: PackedStringArray = _story.get(sock, PackedStringArray())
+	lines.append(line)
+	_story[sock] = lines
 
 
 ## The heap as it lies now: {"sunk": lying Socks whose lowest point is under the floor, "sunk_worst":

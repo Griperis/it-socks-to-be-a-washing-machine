@@ -16,6 +16,9 @@ extends Resource
 @export_range(1, 256, 1) var stop_cap := 8 # placeholder: ported (SockWorld.DEMOTE_CAP), until a stress test
 ## Under pressure (Socks waiting, the budget full) a moving Sock slower than this may be made to rest.
 @export_range(0.0, 5.0, 0.01, "suffix:m/s") var pressure_speed := 0.3 # placeholder: ported (SockBodies.PRESSURE_SPEED)
+## ...and turning slower than this (core/54: a Sock jostled in a heap, turning 2 rad/s, was made to rest
+## mid-turn; the old game weighed speed alone).
+@export_range(0.0, 20.0, 0.1, "suffix:rad/s") var pressure_spin := 1.5 # placeholder: core/54, under MessChecks.hot_spin (2 rad/s), until the designer plays it
 ## Those are made to rest in bands of speed (up to `pressure_speed` in this many), the slowest band
 ## first and the farthest from the players first within a band.
 @export_range(1, 100, 1) var pressure_bands := 15 # placeholder: ported (SockBodies' 15 bands)
@@ -75,8 +78,9 @@ extends Resource
 ## A flight that one physics step moves farther than its own speed and turn explain, by more than this,
 ## leaving the middle of its leg or foot inside the house, was pushed there by Jolt's position solve, not
 ## flown (core/50: a Sock was so pushed 0.17 m to 0.24 m into the zoo's 0.2 m floor in one step, and
-## then held under it by the floor's bottom face).
-@export_range(0.0, 0.5, 0.005, "suffix:m") var push_slack := 0.05 # placeholder: core/50, until the designer plays it
+## then held under it by the floor's bottom face; core/54: a lying-still flight 33 mm down in one step,
+## its leg's middle 50 mm under the floor's top, slipped under 0.05).
+@export_range(0.0, 0.5, 0.005, "suffix:m") var push_slack := 0.02 # placeholder: core/50, 0.02 since core/54, until the designer plays it
 ## How far from its middle a turning Sock's ends move per radian, for that (about half its leg).
 @export_range(0.0, 1.0, 0.01, "suffix:m") var push_reach := 0.2 # placeholder: core/50, half a Sock's 0.35 m leg rounded up
 ## Such a flight goes back where it was the step before, this much higher, its fall and turn stopped:

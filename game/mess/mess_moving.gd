@@ -25,6 +25,9 @@ var _still: Dictionary[int, float] = {}
 ## Each body's speed before this physics step (what its hits are judged by), and the step before.
 var _speeds: Dictionary[int, float] = {}
 var _speeds_before: Dictionary[int, float] = {}
+## Each body's turn (rad/s) at the last tick, and the tick before (core/54).
+var _spins: Dictionary[int, float] = {}
+var _spins_before: Dictionary[int, float] = {}
 ## Each body's place after the last physics step (core/50: a step that pushed it into the house is undone).
 var _was: Dictionary[int, Transform3D] = {}
 ## How many steps were undone so since the Mess started (the suite and the benchmark read it).
@@ -156,11 +159,14 @@ func tick(delta: float) -> void:
 			out.append(sock)
 			continue
 		var pair := _mess.mate_of(sock) >= 0
+		var spin := body.angular_velocity.length()
+		_spins_before[sock] = float(_spins.get(sock, spin))
+		_spins[sock] = spin
 		var slow := speed < (t.pair_rest_speed if pair else t.rest_speed) \
-				and body.angular_velocity.length() < (t.pair_rest_spin if pair else t.rest_spin)
+				and spin < (t.pair_rest_spin if pair else t.rest_spin)
 		var still := _still[sock] + delta if slow else 0.0
 		_still[sock] = still
-		if still >= t.rest_time or (body.sleeping and _airborne[sock] > t.asleep_rest_after):
+		if still >= t.rest_time or (body.sleeping and _airborne[sock] > t.asleep_rest_after and _slept_still(sock, body, pair, t)):
 			ready.append(sock)
 	for sock in out:
 		_rest(sock, _mess.return_pose(sock), true)
@@ -174,6 +180,17 @@ func tick(delta: float) -> void:
 		_relieve(stops)
 	_ask_rests()
 	_start_waiting()
+
+
+## Whether flight `sock`, put to sleep by the physics, was still the step before (under the rest
+## speed and turn) and may rest; else it is woken to go on (core/54: Jolt put a Sock to sleep while it
+## tipped over at 2 rad/s, its motion zeroed, and the Sock was written lying mid-turn: "hot").
+func _slept_still(sock: int, body: RigidBody3D, pair: bool, t: MessTuning) -> bool:
+	if float(_speeds_before[sock]) < (t.pair_rest_speed if pair else t.rest_speed) \
+			and float(_spins_before[sock]) < (t.pair_rest_spin if pair else t.rest_spin):
+		return true
+	body.sleeping = false
+	return false
 
 
 ## A Guest, once a physics tick (coop/08): its moving Doors and drawers sweep its own lying Socks
@@ -299,8 +316,8 @@ func _ask_rests() -> void:
 
 ## Under pressure (Socks waiting, the general share of the budget full), up to `most` slow flights
 ## farthest from the players rest now, the slowest first; never one moving for less than the rest
-## time or faster than the pressure speed (M05), now or the step before (core/50: one just stopped
-## by a hit is still moving).
+## time or faster than the pressure speed (M05) or the pressure turn (core/54), now or the step before
+## (core/50: one just stopped by a hit is still moving).
 func _relieve(most: int) -> void:
 	var t := _mess.bodies_tuning()
 	if _waiting.is_empty() or _flights.size() - _resting.size() < t.moving_budget - t.throw_reserve:
@@ -312,7 +329,8 @@ func _relieve(most: int) -> void:
 			continue
 		var body := _flights[sock]
 		var speed := body.linear_velocity.length()
-		if _airborne[sock] < t.rest_time or speed >= t.pressure_speed or float(_speeds_before.get(sock, 0.0)) >= t.pressure_speed:
+		if _airborne[sock] < t.rest_time or speed >= t.pressure_speed or float(_speeds_before.get(sock, 0.0)) >= t.pressure_speed \
+				or body.angular_velocity.length() >= t.pressure_spin or float(_spins_before.get(sock, 0.0)) >= t.pressure_spin:
 			continue
 		keyed.append(Vector3(floorf(speed / t.pressure_speed * t.pressure_bands), -_nearest(players, body.global_position), sock))
 	keyed.sort()
@@ -689,6 +707,8 @@ func _drop_flight(sock: int) -> void:
 	_flights.erase(sock)
 	_was.erase(sock)
 	_speeds_before.erase(sock)
+	_spins.erase(sock)
+	_spins_before.erase(sock)
 	_airborne.erase(sock)
 	_still.erase(sock)
 	_speeds.erase(sock)
