@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: needs-info
 kind: design
 area: core
 feature: frame
@@ -43,5 +43,29 @@ what is answered.
 - No game code changed.
 
 ## Open follow-ups
+Options and recommendations are in `docs/architecture/lobby.md` "The choices for the designer".
+- [blocking] L1 The Lobby's shape and where a World is chosen: (a, recommended) a screen over the loaded house with the World
+  chosen before on the title's World pages (drops the World settings drawer, a Guest seeing other Worlds, "Joining..." after
+  Start); (b) the old shape, a Lobby scene with a Session of its own and a reconnect at Start (about twice the work, netcode
+  risk); (c) no Lobby for co-op (drops the pedestals, Ready and Start: only the designer may).
+- [blocking] L2 Does Solo go through the Lobby: (a, recommended) no, the Solo page is Continue / New Game and then the house;
+  (b) yes, as the old, one pedestal and Start.
+- [blocking] L3 The Wardrobe and the stats card: (a, recommended) split out to the Wardrobe piece, the first Lobby has Avatars in
+  their colour; (b) the stats card now with the Pairs and Coins tallies the port can count; (c) both now, after the Wardrobe.
+- [blocking] L4 Where a name is typed: (a, recommended) one field on the Multiplayer page for Host and Join; (b) on the Lobby
+  under the own pedestal; (c) Join page only.
+- [blocking] L5 "Pairs per Drawer" slider: (a, recommended) wait for the Stages piece; (b) port it now, unused until Stages.
+- [blocking] L7 A World's name: (a, recommended) the members' names everywhere, "Co-op World n" while none; (b) the old two names;
+  (c) a name the Host types.
+- [later] L6 What the Lobby offers after an ending (a finished World, only New Game, a mark on the row; keep tidying): decide with
+  the ending's piece.
 
 ## Built log
+### 2026-11-23 (ticket agent)
+Changed: step 1 and step 2 as a design, docs only. 74 old lines listed with their file:line (11 sections: the Lobby, its
+drawer, Worlds, Solo, ending, Steam, words) and the old Lobby's weak points. The proposal: a Lobby screen over the loaded house
+(LobbyState Part, cover, hold, Start's fade), the World pages before it, four build tickets (core/62 World pages, core/63 Lobby
+state and cover, core/64 Lobby look, core/65 Lobby details) and three later ones (Wardrobe and stats card, Steam lobby, after an
+ending). Read core/58 as merged on main.
+Files: docs/migration/m4-lists/02-lobby.md, docs/architecture/lobby.md, this ticket.
+Verified: docs only; no game code changed.
