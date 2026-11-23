@@ -1,4 +1,4 @@
-Next free Q number: Q2572 (update this line whenever a round of questions is asked)
+Next free Q number: Q2573 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -486,3 +486,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2569: a swinging Door moves Socks by the physics sweep only, no click-time push (house/08; designer, 2026-11-23).
 - Q2570: the Doors shut at a New Game are already shut when the house appears, silent (house/08; designer, 2026-11-23).
 - Q2571: the room Door gets its real leaf in house/08, ported from the old house's own leaf geometry (`reference/it-socks/tools/blender/make_house.py`, Door_<doorway>), as a Looks scene; the front and garage doors' plain leaves (house/04) match it (designer, 2026-11-23).
+- Q2572: house/06 merges as built; the old basement's warm daytime fill (0.35, #ffd4a0) is ported in its own ticket (house/10) (designer, 2026-11-23).
