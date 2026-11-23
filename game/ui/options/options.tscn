@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bpyxa4ruadhwg" path="res://game/ui/options/options.gd" id="1_options"]
 [ext_resource type="PackedScene" uid="uid://21yxowo6t1da" path="res://game/ui/options/choice_row.tscn" id="2_choice"]
 [ext_resource type="PackedScene" uid="uid://bar07nhyknsry" path="res://game/ui/options/slider_row.tscn" id="3_slider"]
-[ext_resource type="Texture2D" uid="uid://38pexbvy6uov" path="res://assets/ui/key_esc.svg" id="4_esc"]
+[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
 
 [node name="Options" type="Control" unique_id=270246]
 process_mode = 3
@@ -179,10 +179,5 @@ title = "FPS cap"
 values = [0, 30, 60, 120, 144]
 labels = PackedStringArray("None", "30", "60", "120", "144")
 
-[node name="Back" type="Button" parent="Panel/Box" unique_id=317760]
+[node name="Back" parent="Panel" instance=ExtResource("close_btn")]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-theme_type_variation = &"EscButton"
-text = "Back"
-icon = ExtResource("4_esc")

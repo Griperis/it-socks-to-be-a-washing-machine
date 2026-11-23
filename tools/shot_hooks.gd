@@ -17,10 +17,15 @@ static func act(world: Node, what: String, arg: String) -> bool:
 	match what:
 		"menu":
 			# core/58: the screens. arg "options" / "multiplayer" / "join" / "licence" shows that title
-			# page; "esc" opens the level's ESC menu.
+			# page; "esc" opens the level's ESC menu, "esc_options" Options over it.
 			match arg:
 				"esc":
 					LevelRuntime.of(world).esc_menu.open()
+				"esc_options":
+					# core/59: Options opened over the ESC menu.
+					var menu := LevelRuntime.of(world).esc_menu
+					menu.open()
+					(menu.get_node("%Options") as Button).pressed.emit()
 				_:
 					(world as TitleScreen).show_page(arg)
 			return true

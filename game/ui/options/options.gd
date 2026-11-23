@@ -9,7 +9,7 @@ extends Control
 signal closed
 
 @onready var _rows: Container = %Rows
-@onready var _back: Button = %Back
+@onready var _back: CloseButton = %Back
 
 
 func _ready() -> void:

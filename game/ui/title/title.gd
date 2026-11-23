@@ -47,6 +47,7 @@ var _page_node: Control = null
 @onready var _address: LineEdit = %AddressField
 @onready var _licence_key: Button = %LicenceKey
 @onready var _zoo_key: Button = %ZooKey
+@onready var _close: CloseButton = %Close
 
 
 func _ready() -> void:
@@ -66,8 +67,7 @@ func _ready() -> void:
 	else:
 		_zoo_key.queue_free()
 		_zoo_key = null
-	for back: Node in find_children("Back*", "Button", true, false):
-		(back as Button).pressed.connect(back_out)
+	_close.pressed.connect(back_out)
 	var p := Worlds.profile()
 	_name.text = p.name if p.name != PlayerProfile.NAME else ""
 	_address.text = p.address
@@ -95,6 +95,7 @@ func show_page(which: String) -> void:
 		_page_node.connect(&"closed", _on_page_closed)
 		_holder.add_child(_page_node)
 	_licence_key.visible = which == HOME
+	_close.visible = which == MULTIPLAYER or which == JOIN
 	if _zoo_key != null:
 		_zoo_key.visible = which == HOME
 	var first := _first_focus(which)
@@ -102,7 +103,7 @@ func show_page(which: String) -> void:
 		first.grab_focus()
 
 
-## The Back of a page (Esc does the same): one page up.
+## The close key of a page (Esc does the same): one page up.
 func back_out() -> void:
 	show_page(MULTIPLAYER if page == JOIN else HOME)
 
