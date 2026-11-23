@@ -34,14 +34,16 @@ before it is built.
 The house is the game's own scene, not a zoo station (Q2503). Shell and furniture only: no game functions in it yet (M3 brings the core loop into the house). Rooms, windows and doors as house B has them on the 0.5 m grid (house/02, house/03).
 
 ## Acceptance
-- `game/house/house.tscn`: house B moved out of the zoo into its own playable scene, built only from the kit's pieces, with the player and the shared-state path set up as in the zoo (a Host of one; `--host` and `--join` work there too). It becomes the project's main scene (F5 and a plain launch start in the house); the zoo stays playable with `-- --zoo` and by running `zoo.tscn` in the editor.
+- `game/house/house.tscn`: house B moved out of the zoo into its own playable scene, built only from the kit's pieces, with the player and the shared-state path set up as in the zoo (a Host of one; `--host` and `--join` work there too). It is the game level and the project's main scene (F5 and a plain launch start in the house) until menus exist (Q2509); the zoo stays playable with `-- --zoo` and by running `zoo.tscn` in the editor (F6).
 - `old_house_a.tscn` and its zoo instance are removed; `old_house_b.tscn` goes from the zoo too once `house.tscn` holds it.
-- The shell details, the house only: the bathroom's tile wainscot (D01), the plinth (D03) and the front step (D04) so the front door is reachable, the garage ramp as old (D06), the elevator shaft's walls and floor lips (D07), the orange marks on the south roof explained or fixed (D09). D08 goes with the move out of the zoo. Out (Q2503): fences, trees, the street and the basement light wells (D02, D05).
-- The ported furniture (assets/04) placed where the old house had it (from `reference/it-socks/tools/layout.py`), so Play walks through a furnished house, as M2's "done when" says.
-- Walkable in first person on every floor, stairs included; a test walks the player from the front door to every floor.
-- A strip in `builds/review-house-04/`: each floor, old beside new, and the front.
+- The shell details, the house only: the bathroom's tile wainscot (D01), the elevator shaft's walls and floor lips (D07), the orange marks on the south roof explained or fixed (D09). D08 goes with the move out of the zoo. Out (Q2503, Q2511): nothing outside the house: no lawn, plinth, step, ramp, fences, trees, street or light wells (D02-D06). The player starts inside at the old spawn (`reference/it-socks/game/house/room.gd` spawn_pos and spawn_yaw, moved with the re-gridded plan).
+- The ported furniture (assets/04) placed where the old house had it (from `reference/it-socks/tools/layout.py`), so Play walks through a furnished house, as M2's "done when" says (Q2510).
+- Light: the zoo's noon light (sun, sky, AgX, grade) plus each old room lamp's light as the old house had it (the old lamp lights' places, colours, energy and range, written in the Built log) (Q2512).
+- Walkable in first person on every floor, stairs included; a test walks the player from the spawn to every floor.
+- A strip in `builds/review-house-04/`: each floor, old beside new, furnished and lit.
 
 ## Answers
+- Q2509-Q2512 (2026-11-23): see the acceptance.
 - Q2503 (2026-11-23): the house only, no exterior; keep house B (windows on the 0.5 m grid), remove house A; the house becomes a main scene launched from the game, built from the kit pieces.
 - Q2504 (2026-11-23): built to the end with no stop at the first still; a before and after strip for the designer's batch review before the merge.
 

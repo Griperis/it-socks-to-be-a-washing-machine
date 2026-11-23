@@ -54,3 +54,4 @@ catalogue or `milestones.md` names one. Nothing here is decided as play; a play 
 - `MessMoving._launch` sets a flight's pose after `add_child`, so a spawned copy starts at the origin for one packet; set it before. Source: coop/01. Milestone: M0.6 batch 3.
 - A Guest's pick capacity on the Host comes from the Hands' own tuning, not the Guest's Upgrade (with the Hands keyed by player id). Source: coop/05, coop/03. Milestone: M0.6 batch 3.
 - A better struggle display for a dragged player (a count or a bar instead of the hint alone; designer: "track to improve", Q2489). Source: list 04. Milestone: Polish.
+- The Old Tree: its motion (breathing, rustle), bulb flicker and voice were not ported; it will be reworked (Q2506). Source: assets/07. Milestone: M5 (with the campaign).

@@ -1,4 +1,4 @@
-Next free Q number: Q2505 (update this line whenever a round of questions is asked)
+Next free Q number: Q2513 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -419,3 +419,11 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2502: assets/07 builds all five furniture devices as the old game (open and shut sounds per container kind, the wall mirror, the piano's 88 keys, the dust sheet, the Old Tree's shader), its behaviour list written in full from the old code (designer, 2026-11-23).
 - Q2503: house/04: the house only, no exterior (no fences, trees, street or light wells). Keep house B (windows on the 0.5 m grid) and remove house A. The house becomes a main scene launched from the game, built from the kit pieces (designer, 2026-11-23: "Look what's currently built in the game. I want the house to be a main scene, launched from the game, built from the kit pieces we have").
 - Q2504: M1 and M2 run on their own: agents build each ticket to the end with no stop at the first still, matching the old game and the designer's answers, and leave a before and after strip in `builds/review-<family>/`; the designer reviews the batch before it merges, and a change is a follow-up. Relaxes, for M1 and M2, the first-still stop and the family-batch approval before building (Q2216) (designer, 2026-11-23).
+- Q2505: the wall mirrors draw a real planar reflection as the old game (a second camera behind the glass, 256 px, every 3rd frame, within 4.5 m, off on Low; teammates and the player's own full body, no Mess Socks) (assets/07; designer, 2026-11-23).
+- Q2506: the Old Tree stays as it is (the model with its glowing bulbs); its motion, flicker and voice are not ported now because it will be reworked; tracked (assets/07; designer, 2026-11-23).
+- Q2507: the dust sheet is built now as the old one: draped over a locked Cabinet, pulled off (slides forward, spills and fades in 0.5 s) on the unlock, triggered by a switch at the furniture station until Cabinet locks exist; the sheeted sofa stays a model (assets/07; designer, 2026-11-23).
+- Q2508: the piano as the old game: 88 keys, each its sampled note, dip 0.04 s, rise 0.16 s, 12 voices, the lid with its sound; anyone plays it and every player hears it (assets/07; designer, 2026-11-23).
+- Q2509: the house is the game level and the project's main scene (F5 starts it) until there are menus (house/04; designer, 2026-11-23).
+- Q2510: the old furniture is placed as the old house had it, moved with the rooms to the 0.5 m grid (house/04; designer, 2026-11-23).
+- Q2511: nothing outside the house: no lawn, plinth, step or ramp; the player starts inside, at the old spawn (house/04; designer, 2026-11-23).
+- Q2512: the house is lit by the zoo's noon light plus each old room lamp's light as the old house had it (house/04; designer, 2026-11-23).
