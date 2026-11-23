@@ -206,7 +206,8 @@ func case_b01_kit_pieces_only() -> void:
 				continue
 			var at := house.to_local(p.global_transform.origin) if p.is_inside_tree() else _local(house, p)
 			var turn := rad_to_deg(p.rotation.y)
-			if not (_on_grid(at.x) and _on_grid(at.y) and _on_grid(at.z)):
+			# The bathroom's trim strips stand off wall faces, off the half-metre grid (house/07).
+			if not p.scene_file_path.get_file().begins_with("wainscot_trim_") and not (_on_grid(at.x) and _on_grid(at.y) and _on_grid(at.z)):
 				odd.append("%s is off the grid (%s)" % [house.get_path_to(p), at])
 			if not is_equal_approx(snappedf(turn, 90.0), snappedf(turn, 0.01)) or absf(p.rotation.x) > EPS or absf(p.rotation.z) > EPS:
 				odd.append("%s is not turned in 90 degree steps (%s)" % [house.get_path_to(p), turn])
@@ -368,7 +369,15 @@ func case_d01_wainscot() -> void:
 	if tiled == null:
 		return
 	_near(float(tiled.get_shader_parameter("top")), 1.2, EPS, "the tiles reach 1.2 m over the floor (make_flat.py make_wall_tiles)")
-	_near(float(tiled.get_shader_parameter("band")), 0.035, EPS, "a 3.5 cm trim band over them")
+	_near(float(tiled.get_shader_parameter("band")), 0.0, EPS, "no painted band over them: the trim is a raised strip (house/07)")
+	var strips := 0
+	var shell := (load(SHELL) as PackedScene).instantiate() as Node3D
+	for p in _pieces(shell):
+		if p.scene_file_path.get_file().begins_with("wainscot_trim_"):
+			strips += 1
+			_near(p.mesh.get_aabb().position.y, 1.2, EPS, "%s sits at the tiles' top" % p.name)
+	_check(strips == 5, "the bathroom has its five trim strips (%d)" % strips)
+	shell.free()
 	_check(tiled.get_shader_parameter("tiles") is Texture2D and String((tiled.get_shader_parameter("tiles") as Texture2D).resource_path).ends_with("wall_tiles.png"),
 			"the tiles are the old wall tiles")
 	_check(tiled.get_shader_parameter("paint") == (load(MATERIALS.path_join("wall_bathroom.tres")) as StandardMaterial3D).albedo_color,

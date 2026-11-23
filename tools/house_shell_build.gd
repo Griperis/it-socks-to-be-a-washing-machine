@@ -146,6 +146,8 @@ func _shell(windows: Dictionary, attic: Dictionary) -> void:
 			_outer_walls(root, node, windows)
 			_partitions(root, node)
 			_stair(root, node)
+			if storey[0] == "First":
+				_wainscot_trim(root, node)
 		_floor(root, node)
 		_piece(root, _group(root, node, "Shaft"), String(storey[0]), SHAFT_WALLS[storey[0]],
 				Vector3(SHAFT_TILE.x, 0, SHAFT_TILE.y), 0.0, "")
@@ -266,6 +268,31 @@ func _partitions(root: Node, storey: Node3D) -> void:
 				at = Vector3(a if dir == "E" else b, 0, v)
 				deg = 0.0 if dir == "E" else 180.0
 			_piece(root, group, name, seg[2], at, deg, "")
+
+
+## The bathroom's raised wainscot trim (house/07, Q2538): the kit's strips along its four walls at the
+## tiles' top, standing off each wall face (the east and west strips run the whole face, the north and
+## south ones between their feet; the west face's door has its casings' gap).
+func _wainscot_trim(root: Node, storey: Node3D) -> void:
+	var sizes := load("res://game/house/kit/house_kit_sizes.tres") as HouseKitSizes
+	var e := sizes.exterior / 2
+	var p := sizes.partition / 2
+	var d := sizes.skirting_depth
+	var x0 := 6.5 + p
+	var x1 := X1 - e
+	var z0 := e
+	var z1 := 3.5 - p
+	var door_from := 2.0 + (1.5 - sizes.door_width) / 2 - sizes.casing
+	var door_to := door_from + sizes.door_width + 2 * sizes.casing
+	var group := _group(root, storey, "Wainscot")
+	var across := KIT_BUILD.wainscot_trim_name(x1 - x0 - 2 * d)
+	var along := KIT_BUILD.wainscot_trim_name(z1 - z0)
+	var name := String(storey.name)
+	_piece(root, group, name, across, Vector3(x0 + d, 0, z0), 0.0, "North")
+	_piece(root, group, name, across, Vector3(x1 - d, 0, z1), 180.0, "South")
+	_piece(root, group, name, along, Vector3(x1, 0, z0), -90.0, "East")
+	_piece(root, group, name, KIT_BUILD.wainscot_trim_name(door_from - z0), Vector3(x0, 0, door_from), 90.0, "West")
+	_piece(root, group, name, KIT_BUILD.wainscot_trim_name(z1 - door_to), Vector3(x0, 0, z1), 90.0, "WestSouth")
 
 
 # --- Stair, floors, attic -----------------------------------------------------------------------

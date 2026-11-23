@@ -65,6 +65,9 @@ const METALLIC := {"stainless": 0.85}
 ## The bathroom's walls with the old tile wainscot (house/04 D01): the wall paint over the wall tiles,
 ## a ShaderMaterial on wainscot.gdshader (made when its file does not exist yet).
 const WAINSCOT := {"wall_bathroom_tiled": ["wall_bathroom", "wall_tiles.png", 0.6, 0.3]}
+## The wainscot's top over the floor line and the trim strip's height over it (make_flat.py make_wall_tiles).
+const WAINSCOT_TOP := 1.2
+const WAINSCOT_TRIM_HEIGHT := 0.035
 const WAINSCOT_SHADER := "res://game/house/kit/wainscot.gdshader"
 const EXTERIOR_PAINTS: Array[String] = ["wall_kitchen", "wall_outside", "trim"]
 const PARTITION_PAINTS: Array[String] = ["wall_kitchen", "wall_hall", "trim"]
@@ -98,6 +101,7 @@ func _init() -> void:
 	_shafts()
 	_stairs()
 	_roof()
+	_wainscot_trims()
 	if _only == "":
 		_rooms()
 	print("house_kit_build: done")
@@ -243,6 +247,38 @@ func _doors() -> void:
 	var g := s.garage_door
 	_door("door_garage", g.z, (g.z - g.x) / 2, g.x, g.y, s.exterior, ["wall_garage", "wall_outside", "trim"], false)
 	_hatch()
+
+
+## The bathroom's wainscot trim (house/07, Q2538): a raised strip over the tiles, standing off the wall
+## as the skirting does, in place of the band the shader once painted. One piece for each stretch of
+## the first floor's bathroom (x 6.5 to 10.5, z 0 to 3.5, centre lines): the north and south faces
+## between the east and west strips' feet, the east face, the west face either side of its door's
+## casing. Named by its length in cm; its origin is where its run starts, its inside faces +Z.
+func _wainscot_trims() -> void:
+	var s := _sizes
+	var e: float = s.exterior
+	var p: float = s.partition
+	var d: float = s.skirting_depth
+	# The west partition's door (door_partition_15m at z 2 to 3.5): its casings' reach.
+	var door_from: float = 2.0 + (1.5 - s.door_width) / 2 - s.casing
+	var door_to: float = door_from + s.door_width + 2 * s.casing
+	var lengths: Array[float] = [4.0 - e / 2 - p / 2 - 2 * d, 3.5 - e / 2 - p / 2, door_from - e / 2, 3.5 - p / 2 - door_to]
+	for length: float in lengths:
+		_begin(["trim"] as Array[String])
+		var h: float = WAINSCOT_TRIM_HEIGHT
+		var profile: Array[Vector2] = [Vector2(0, 0), Vector2(d, 0), Vector2(d, h * 0.7), Vector2(d * 0.5, h), Vector2(0, h)]
+		var lows: Array[Vector3] = []
+		var highs: Array[Vector3] = []
+		for q in profile:
+			var at := Vector3(0, WAINSCOT_TOP, 0) + Vector3.BACK * q.x + Vector3.UP * q.y
+			lows.append(at)
+			highs.append(at + Vector3.RIGHT * length)
+		_prism(lows, highs, 0)
+		_save(wainscot_trim_name(length))
+
+
+static func wainscot_trim_name(length: float) -> String:
+	return "wainscot_trim_%d" % roundi(length * 100.0)
 
 
 ## A wall `length` long with a doorway from `a`, `w` wide and `dh` high: the old jamb linings in its
@@ -1170,7 +1206,8 @@ func _wainscot_material(name: String) -> Material:
 	m.set_shader_parameter("tile_roughness", spec[3])
 	# make_flat.py make_wall_tiles: to 1.2 m, the trim 0.035 m over it.
 	m.set_shader_parameter("top", 1.2)
-	m.set_shader_parameter("band", 0.035)
+	# The trim is a raised strip now (wainscot_trim_* pieces), not a painted band.
+	m.set_shader_parameter("band", 0.0)
 	m.set_shader_parameter("band_colour", trim[0])
 	m.set_shader_parameter("band_roughness", trim[1])
 	var err := ResourceSaver.save(m, path)

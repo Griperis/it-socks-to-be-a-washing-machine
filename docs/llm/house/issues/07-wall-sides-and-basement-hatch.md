@@ -48,3 +48,11 @@ unless a wall fix cannot be made in the shell, and then only the lines needed.
   tools/shots/sets/house-07.txt, house-07-ext.txt. Strips: builds/review-house-07/
   (outer-walls-before-after.png, hatch-before-after.png, before/, after/).
   Verified: PASS 1447 checks, 80 cases.
+- 2026-11-23 (Q2538). Changed: the bathroom's wainscot trim is a raised strip (3.5 cm high, the skirting's
+  depth and profile) at the tiles' top, no longer painted: the kit builder makes four `wainscot_trim_*`
+  pieces (north/south 380 cm, east 334, west 213 and 17 either side of the door's casings), the shell
+  builder places them on the first floor's bathroom walls, and `wall_bathroom_tiled` has `band` 0
+  (the shader keeps the uniform). Strips: builds/review-house-07/house-07-trim-before-after.png,
+  trim-close-up.png. Files: tools/house_kit_build.gd, tools/house_shell_build.gd, game/house/shell.tscn,
+  game/house/kit/{pieces,meshes}/wainscot_trim_*, game/house/kit/materials/wall_bathroom_tiled.tres,
+  tools/shots/sets/house-07-trim.txt.

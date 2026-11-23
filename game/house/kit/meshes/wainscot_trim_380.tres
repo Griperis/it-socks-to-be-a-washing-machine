@@ -1,0 +1,18 @@
+[gd_resource type="ArrayMesh" format=4 uid="uid://2jee8wg41nk2"]
+
+[ext_resource type="Material" uid="uid://dys61w5jbovb2" path="res://game/house/kit/materials/trim.tres" id="1_fv3jr"]
+
+[resource]
+resource_name = "wainscot_trim_380"
+_surfaces = [{
+"aabb": AABB(0, 1.2, 0, 3.796, 0.034999967, 0.022),
+"attribute_data": PackedByteArray("AAAAAJqZmb9YObQ8a7ycv1g5tDyamZm/WDk0PHsUnr8AAAAAexSevwAAAAB7FJ6/WDm0PGu8nL9YOTQ8exSevwAAAAB7FJ6/WDm0PJqZmb9YObQ8a7ycvwAAAACamZm/qvFyQAAAAAAAAAAAWDm0PKrxckBYObQ8AAAAAAAAAACq8XJAmpmZvwAAAABrvJy/qvFyQGu8nL+q8XJAmpmZvwAAAACamZm/AAAAAGu8nL+q8XJAWDm0PAAAAABYOTQ8qvFyQFg5NDwAAAAAWDm0PKrxckBYOTQ8AAAAAAAAAACq8XJAAAAAAAAAAABYOTQ8qvFyQHsUnr8AAAAAmpmZv6rxckCamZm/qvFyQHsUnr8AAAAAexSevwAAAACamZm/"),
+"format": 34359742487,
+"index_count": 48,
+"index_data": PackedByteArray("AAABAAIAAAADAAEAAAAEAAMABQAGAAcACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEwAUABUAFgAXABgAFgAZABcAGgAbABwAGgAdABsAHgAfACAAIQAiACMA"),
+"material": ExtResource("1_fv3jr"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("AAAAAJqZmT8AAAAAAAAAAGu8nD9YObQ8AAAAAJqZmT9YObQ8AAAAAHsUnj9YOTQ8AAAAAHsUnj8AAAAAqvFyQHsUnj8AAAAAqvFyQGu8nD9YObQ8qvFyQHsUnj9YOTQ8qvFyQHsUnj8AAAAAqvFyQJqZmT9YObQ8qvFyQGu8nD9YObQ8qvFyQJqZmT8AAAAAqvFyQJqZmT8AAAAAAAAAAJqZmT9YObQ8qvFyQJqZmT9YObQ8AAAAAJqZmT8AAAAAqvFyQJqZmT9YObQ8AAAAAGu8nD9YObQ8qvFyQGu8nD9YObQ8qvFyQJqZmT9YObQ8AAAAAJqZmT9YObQ8AAAAAGu8nD9YObQ8qvFyQGu8nD9YObQ8AAAAAHsUnj9YOTQ8qvFyQHsUnj9YOTQ8AAAAAGu8nD9YObQ8qvFyQHsUnj9YOTQ8AAAAAHsUnj8AAAAAqvFyQHsUnj8AAAAAAAAAAHsUnj9YOTQ8qvFyQHsUnj8AAAAAAAAAAJqZmT8AAAAAqvFyQJqZmT8AAAAAqvFyQHsUnj8AAAAAAAAAAHsUnj8AAAAAAAAAAJqZmT8AAAAAAAD/f/9//78AAP9//3//vwAA/3//f/+/AAD/f/9//78AAP9//3//v////3//f/+/////f/9//7////9//3//v////3//f/+/////f/9//7////9//3//v////3//f/+//38AAAAA/7//fwAAAAD/v/9/AAAAAP+//38AAAAA/7//f/9//38AgP9//3//fwCA/3//f/9/AID/f/9//38AgP9//3//fwCA/3//f/9/AID/f3zBVVOmq/9/fMFVU6ar/398wVVTpqv/f3zBVVOmq/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+///////9/AID//////38AgP//////fwCA//////9/AID//////38AgP//////fwCA")
+}]
