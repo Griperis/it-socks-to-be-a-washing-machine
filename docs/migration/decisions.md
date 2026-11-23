@@ -1,4 +1,4 @@
-Next free Q number: Q2500 (update this line whenever a round of questions is asked)
+Next free Q number: Q2505 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -414,3 +414,8 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2497: coop/10's knockdown vignette is approved as its first still shows (black edges, `vignette_dark` 0.7 from `vignette_start` 0.45); judged further in the zoo (designer, 2026-11-22).
 - Q2498: a knocked body under the crosshair gets the outline (list 04 H91) in coop/10, before the merge (designer, 2026-11-22).
 - Q2499: Socks pressed under a heap may rest up to 20 mm into each other (Jolt's default penetration slop); accepted and only counted in the test; the spout's own overlap is fixed (core/49; designer, 2026-11-22).
+- Q2500: assets/05's wool is one tiling knit normal and roughness texture over every Sock shape in the Sock shader, under the Design's colours, pattern and print, faded with distance so it does not shimmer (designer, 2026-11-23).
+- Q2501: assets/06's fabric sheen is StandardMaterial3D rim and rim tint on every `fab_*` material of the shared library; no custom shader (designer, 2026-11-23).
+- Q2502: assets/07 builds all five furniture devices as the old game (open and shut sounds per container kind, the wall mirror, the piano's 88 keys, the dust sheet, the Old Tree's shader), its behaviour list written in full from the old code (designer, 2026-11-23).
+- Q2503: house/04: the house only, no exterior (no fences, trees, street or light wells). Keep house B (windows on the 0.5 m grid) and remove house A. The house becomes a main scene launched from the game, built from the kit pieces (designer, 2026-11-23: "Look what's currently built in the game. I want the house to be a main scene, launched from the game, built from the kit pieces we have").
+- Q2504: M1 and M2 run on their own: agents build each ticket to the end with no stop at the first still, matching the old game and the designer's answers, and leave a before and after strip in `builds/review-<family>/`; the designer reviews the batch before it merges, and a change is a follow-up. Relaxes, for M1 and M2, the first-still stop and the family-batch approval before building (Q2216) (designer, 2026-11-23).

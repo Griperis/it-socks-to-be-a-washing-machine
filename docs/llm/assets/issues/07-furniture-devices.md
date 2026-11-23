@@ -1,13 +1,13 @@
 ---
 type: ticket
-status: needs-triage
+status: ready-for-agent
 kind: build
 area: assets
 feature: assets
 priority: now
 created: 2026-11-21
 done:
-blocked_by: ["[[04-furniture-and-materials]]"]
+blocked_by: []
 notes: []
 terms: []
 ---
@@ -26,7 +26,16 @@ now). Old code: `reference/it-socks/game/house/openable.gd` (the cue table by co
 - V04 The sheeted sofa's dust sheet looks and behaves as the old one.
 - V05 The Old Tree has its own shader, as the old one.
 
+## Acceptance
+- The behaviour list above is first expanded from the old code into every sound, motion and number (one line each, small details included, Q2277), written into this ticket; then built with one test per line.
+- Each device is placed at the furniture station (`game/zoo/stations/furniture.tscn`) and works there: a door, a drawer, a lid and a flap each play their kind's open and shut sound; the mirror reflects; each piano key plays its note and dips; the dust sheet as old; the Old Tree with its shader.
+- Sounds go through the sound catalogue with the old clips (plug and play, no code per sound).
+- A strip in `builds/review-furniture-devices/`: the mirror, the piano, the dust sheet and the Old Tree, old beside new.
+
+## Answers
+- Q2502 (2026-11-23): all five devices as the old game, the behaviour list written in full from the old code.
+- Q2504 (2026-11-23): built to the end with no stop at the first still; a before and after strip for the designer's batch review before the merge.
+
 ## Open follow-ups
-- [blocking] The behaviour list's details from the old code, approved by the designer before building.
 
 ## Built log

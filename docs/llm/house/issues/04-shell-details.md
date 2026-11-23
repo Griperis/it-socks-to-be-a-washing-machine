@@ -1,13 +1,13 @@
 ---
 type: ticket
-status: needs-triage
+status: ready-for-agent
 kind: build
 area: house
 feature: house
-priority: later
+priority: now
 created: 2026-11-21
 done:
-blocked_by: ["[[03-old-house-from-the-kit]]"]
+blocked_by: []
 notes: []
 terms: []
 ---
@@ -30,7 +30,21 @@ before it is built.
 - D08 The station's name label no longer floats over the house in exterior views.
 - D09 The small orange marks on the south roof slope seen from the front (also in the old still): explained or fixed.
 
+## Design
+The house is the game's own scene, not a zoo station (Q2503). Shell and furniture only: no game functions in it yet (M3 brings the core loop into the house). Rooms, windows and doors as house B has them on the 0.5 m grid (house/02, house/03).
+
+## Acceptance
+- `game/house/house.tscn`: house B moved out of the zoo into its own playable scene, built only from the kit's pieces, with the player and the shared-state path set up as in the zoo (a Host of one; `--host` and `--join` work there too). It becomes the project's main scene (F5 and a plain launch start in the house); the zoo stays playable with `-- --zoo` and by running `zoo.tscn` in the editor.
+- `old_house_a.tscn` and its zoo instance are removed; `old_house_b.tscn` goes from the zoo too once `house.tscn` holds it.
+- The shell details, the house only: the bathroom's tile wainscot (D01), the plinth (D03) and the front step (D04) so the front door is reachable, the garage ramp as old (D06), the elevator shaft's walls and floor lips (D07), the orange marks on the south roof explained or fixed (D09). D08 goes with the move out of the zoo. Out (Q2503): fences, trees, the street and the basement light wells (D02, D05).
+- The ported furniture (assets/04) placed where the old house had it (from `reference/it-socks/tools/layout.py`), so Play walks through a furnished house, as M2's "done when" says.
+- Walkable in first person on every floor, stairs included; a test walks the player from the front door to every floor.
+- A strip in `builds/review-house-04/`: each floor, old beside new, and the front.
+
+## Answers
+- Q2503 (2026-11-23): the house only, no exterior; keep house B (windows on the 0.5 m grid), remove house A; the house becomes a main scene launched from the game, built from the kit pieces.
+- Q2504 (2026-11-23): built to the end with no stop at the first still; a before and after strip for the designer's batch review before the merge.
+
 ## Open follow-ups
-- [blocking] Which of these the designer wants and when (shaped with stills).
 
 ## Built log
