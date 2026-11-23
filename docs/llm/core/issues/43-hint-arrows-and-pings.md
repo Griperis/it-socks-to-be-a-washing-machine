@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-triage
+status: in-progress
 kind: build
 area: ui
 feature: core
@@ -17,7 +17,9 @@ terms: []
 Port of the old game's edge arrow pointing to an off-screen hint target (progression/76) and the pings: middle-mouse bubble, emoji wheel, edge marker, teammate outlines through walls (catalogue B65).
 
 ## Acceptance
-- To be shaped when it is planned (the `migration-port` skill: behaviour list first).
+- Step 1 (2026-11-23): the behaviour list `docs/migration/m3-lists/03-hint-arrows-and-pings.md` (the `migration-port` skill, step 1:
+  every line, motion, glide, pop and sound with its old file:line; what was weak) and its open choices as
+  `[blocking]` Open follow-ups. Then the designer approves the list and the ticket is shaped for its build.
 
 ## Answers
 - Tracked as a ticket, not planned yet (Q2430, 2026-11-21).
