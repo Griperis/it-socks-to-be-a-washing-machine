@@ -729,11 +729,14 @@ func _seen_first(mess: Mess, spot: Vector3, sock: int) -> bool:
 	return not hit.is_empty() and mess.sock_of_hit(hit) == sock
 
 
+## Whether lying Sock `sock` has no other Sock resting over it and no piece of the house over it
+## (core/60: a probe from 6 cm over its origin started inside a Sock stacked on it).
 func _open_sock(mess: Mess, sock: int) -> bool:
-	if mess.state_of(sock) != Mess.State.LYING:
+	if mess.state_of(sock) != Mess.State.LYING or not mess.resting_on(mess.box_of(sock)).is_empty():
 		return false
-	var at := mess.pose_of(sock).origin
-	return PhysicsQueries.ray(mess, at + Vector3.UP * 0.06, at + Vector3.UP * 2.2, Mess.LAYER_HOUSE | Mess.LAYER_LYING).is_empty()
+	var box := mess.box_of(sock)
+	var top := Vector3(box.get_center().x, box.end.y + 0.002, box.get_center().z)
+	return PhysicsQueries.ray(mess, top, top + Vector3.UP * 2.2, Mess.LAYER_HOUSE | Mess.LAYER_LYING).is_empty()
 
 
 func _spot_seeing(mess: Mess, target: Vector3) -> Vector3:
