@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: needs-info
+status: done
 kind: design
 area: core
 feature: frame
 priority: next
 created: 2026-11-23
-done:
+done: 2026-11-23
 blocked_by: []
 notes: ["designer 2026-11-23: prepare the Lobby while M3's lists are written", "Q2561: the World list, Continue/New Game and Delete come with the Lobby"]
 terms: [Host, Guest, World, Group, Part]
@@ -42,21 +42,17 @@ what is answered.
 - The choices are `[blocking]` Open follow-ups here, each with options and a recommendation.
 - No game code changed.
 
+## Answers
+- L1: the Lobby is its own scene; Session and Roster live for the whole game (no reconnect); Start has the Host load the house
+  for everyone behind the one loading screen; the World is chosen in the Lobby, the drawer comes back (Q2582, 2026-11-23).
+- L2: Solo goes through the Lobby, one pedestal (Q2583, 2026-11-23).
+- L3: the Wardrobe and the stats card are split out (Q2584, 2026-11-23).
+- L4: the name is typed in one field on the Multiplayer page, a Steam name can fill it later (Q2585, 2026-11-23).
+- L5: the "Pairs per Drawer" slider waits for the Stages piece (Q2586, 2026-11-23).
+- L7: one swappable row name, the members' names first, judged at the look's first still; no Guest limited to their Worlds
+  (Q2587, 2026-11-23).
+
 ## Open follow-ups
-Options and recommendations are in `docs/architecture/lobby.md` "The choices for the designer".
-- [blocking] L1 The Lobby's shape and where a World is chosen: (a, recommended) a screen over the loaded house with the World
-  chosen before on the title's World pages (drops the World settings drawer, a Guest seeing other Worlds, "Joining..." after
-  Start); (b) the old shape, a Lobby scene with a Session of its own and a reconnect at Start (about twice the work, netcode
-  risk); (c) no Lobby for co-op (drops the pedestals, Ready and Start: only the designer may).
-- [blocking] L2 Does Solo go through the Lobby: (a, recommended) no, the Solo page is Continue / New Game and then the house;
-  (b) yes, as the old, one pedestal and Start.
-- [blocking] L3 The Wardrobe and the stats card: (a, recommended) split out to the Wardrobe piece, the first Lobby has Avatars in
-  their colour; (b) the stats card now with the Pairs and Coins tallies the port can count; (c) both now, after the Wardrobe.
-- [blocking] L4 Where a name is typed: (a, recommended) one field on the Multiplayer page for Host and Join; (b) on the Lobby
-  under the own pedestal; (c) Join page only.
-- [blocking] L5 "Pairs per Drawer" slider: (a, recommended) wait for the Stages piece; (b) port it now, unused until Stages.
-- [blocking] L7 A World's name: (a, recommended) the members' names everywhere, "Co-op World n" while none; (b) the old two names;
-  (c) a name the Host types.
 - [later] L6 What the Lobby offers after an ending (a finished World, only New Game, a mark on the row; keep tidying): decide with
   the ending's piece.
 
@@ -68,4 +64,10 @@ drawer, Worlds, Solo, ending, Steam, words) and the old Lobby's weak points. The
 state and cover, core/64 Lobby look, core/65 Lobby details) and three later ones (Wardrobe and stats card, Steam lobby, after an
 ending). Read core/58 as merged on main.
 Files: docs/migration/m4-lists/02-lobby.md, docs/architecture/lobby.md, this ticket.
+Verified: docs only; no game code changed.
+### 2026-11-23 (rework to Q2582-Q2587)
+Changed: `docs/architecture/lobby.md` reworked to the decided shape: the first ticket moves Session and Roster into a game-lifetime
+`GameLink` (the Part ids, the join snapshot at the house handshake, a late joiner after Start, the tests that stay green), then the
+Lobby scene and `LobbyState`, the name field, the drawer and World pages, the look, the details. Tickets written: core/62 game
+link, core/63 Lobby scene and state, core/64 name field, core/65 World drawer, core/66 Lobby look, core/67 Lobby details.
 Verified: docs only; no game code changed.
