@@ -1,7 +1,8 @@
 ## The sound of a walking body. A child of a CharacterBody3D (the player): a step every
 ## `step_distance` metres walked on the floor, `step_<surface>` by the floor under it (the floor's
 ## `surface` metadata, "wood" or "tile", set in the editor on the floor body or a node above it; none
-## means wood), and `land` after a fall of `land_speed` or more. Flat: the player's own.
+## means wood), and `land` after a fall of `land_speed` or more. Flat: the player's own. A player on a
+## Teammate's back steps by the floor of the room under the stack (core/41, list 25).
 class_name Footsteps
 extends Node
 
@@ -12,6 +13,8 @@ const DEFAULT_SURFACE := &"wood"
 ## The look for the floor starts this far above the feet and reaches this far below them.
 const LOOK_UP := 0.2
 const LOOK_DOWN := 0.5
+## How far the look reaches down from a Teammate's back (a stack of three stands under 3 m).
+const RIDE_LOOK_DOWN := 4.0
 
 @export var tuning: FootstepTuning
 
@@ -51,13 +54,15 @@ func _physics_process(delta: float) -> void:
 ## The surface of the floor the body stands on: the metadata of the thing a short look straight down
 ## meets, or of the nodes above it; wood when none says.
 func surface_under() -> StringName:
-	return surface_at(_body, _body.global_position)
+	var player := _body as Player
+	var riding := player != null and player.riding()
+	return surface_at(_body, _body.global_position, RIDE_LOOK_DOWN if riding else LOOK_DOWN)
 
 
 ## The surface of the floor under `feet` (a point of `from_node`'s world), as surface_under() reads it.
-static func surface_at(from_node: Node3D, feet: Vector3) -> StringName:
+static func surface_at(from_node: Node3D, feet: Vector3, down := LOOK_DOWN) -> StringName:
 	var from := feet + Vector3.UP * LOOK_UP
-	var hit := PhysicsQueries.ray(from_node, from, from + Vector3.DOWN * LOOK_DOWN, Mess.LAYER_HOUSE)
+	var hit := PhysicsQueries.ray(from_node, from, from + Vector3.DOWN * down, Mess.LAYER_HOUSE)
 	var node: Node = hit.get("collider") as Node
 	while node != null:
 		if node.has_meta(SURFACE_META):

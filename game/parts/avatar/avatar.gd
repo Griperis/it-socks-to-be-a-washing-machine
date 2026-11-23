@@ -21,6 +21,9 @@
 ## rise, stands at the end; meanwhile its Looks copies the ragdoll and its Mate capsule (what a falling
 ## ragdoll bumps on a standing player) is off. A body lying with a dragger plays "drag_scrape" at its
 ## feet each `scrape_every` they slide, and lets the dragger walk through it.
+##
+## Its Back (core/41) is its player's back on this machine: the disc a Teammate climbs and stands on,
+## where the body is drawn here (Q2591: nothing about a stack is in the pose).
 class_name Avatar
 extends Node3D
 
@@ -81,6 +84,8 @@ var scrapes := 0
 @onready var held := get_node_or_null(^"Held") as HeldView
 @onready var ragdoll := get_node_or_null(^"Ragdoll") as Ragdoll
 @onready var mate := get_node_or_null(^"Mate") as CollisionObject3D
+## Its player's back, which Teammates stand on (core/41; it places itself each physics frame).
+@onready var back := get_node_or_null(^"Back") as Back
 
 
 func _enter_tree() -> void:

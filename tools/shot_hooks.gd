@@ -692,6 +692,9 @@ static func act(world: Node, what: String, arg: String) -> bool:
 		"teammates":
 			ShotTeammates.act(world, arg)
 			return true
+		"stacking":
+			ShotStacking.act(world, arg)
+			return true
 	return false
 
 
