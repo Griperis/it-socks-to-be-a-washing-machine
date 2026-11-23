@@ -8,6 +8,9 @@
 ## - Multiplayer: Host (the last-played co-op World, or a New Game in a free slot; listening) and Join
 ##   (name and address, kept in the profile; "Joining..." behind the loading screen).
 ## - Options, Licence: their pages. Quit closes the game.
+## - Each way into the game (Solo, Host, Join) makes the game link (GameLink, core/62) beside the title,
+##   which the level then plays through and a scene change keeps; back at the title the game is over
+##   and the title frees the link it finds.
 ## - The command line: `--host` hosts at once (the newest co-op World, else the Solo World, else a New
 ##   Game); `--join=<address>` joins at once.
 class_name TitleScreen
@@ -52,6 +55,7 @@ var _page_node: Control = null
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE  # back from the game the mouse is still captured
+	GameLink.close_beside(self)  # back at the title the game is over
 	_solo.pressed.connect(solo)
 	_multiplayer.pressed.connect(show_page.bind(MULTIPLAYER))
 	_options.pressed.connect(show_page.bind(OPTIONS_PAGE))
@@ -142,6 +146,7 @@ func join(where := "") -> void:
 		return
 	var launch := PackedStringArray(["--join=%s" % address])
 	launch.append_array(_profile_args())
+	GameLink.open_beside(self)
 	go_into.call(Worlds.LEVEL, JOINING, func(root: Node) -> void:
 		var runtime := LevelRuntime.of(root)
 		if runtime != null:
@@ -150,6 +155,7 @@ func join(where := "") -> void:
 
 
 func _go(w: WorldSlot, launch: PackedStringArray) -> void:
+	GameLink.open_beside(self)
 	go_into.call(w.record.level, w.loading_heading(), func(root: Node) -> void:
 		var runtime := LevelRuntime.of(root)
 		if runtime != null:

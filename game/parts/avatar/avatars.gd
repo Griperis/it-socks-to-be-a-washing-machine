@@ -6,7 +6,9 @@
 ##
 ## With a `roster`, the Host spawns by it: an avatar for each player in the Session, standing where
 ## the Roster says (the spawn data carries the place, so it never shows at the origin first), and a
-## leaver's goes when the Roster lets them go. Without one, by the peers the gate admits.
+## leaver's goes when the Roster lets them go. Without one, by the peers the gate admits. With a
+## `session`, a Guest's avatar is spawned only once that Guest's house is ready (Session.sees_house(),
+## core/62): Godot sends a spawn to every peer, and a Guest still loading its level has nowhere to put it.
 ##
 ## The local player's own body (coop/06) wears this machine's Roster colour; alone, or before the
 ## Roster names this machine, the first Player colour (the Host's), as the old game's did.
@@ -17,11 +19,11 @@ extends MultiplayerSpawner
 @export var avatar_scene: PackedScene
 ## The local player's body, which this machine's own avatar copies (and hides behind).
 @export var local_body: Node3D
-## Who plays; empty spawns by the peers instead.
-@export var roster: Roster
-
-## Links the wiring check lets stay empty: the code below has a fallback.
-const WIRING_OPTIONAL := ["roster"]
+## Who plays; empty spawns by the peers instead. The game link's Roster (LevelRuntime sets it as it
+## enters the tree: it lives outside the level).
+var roster: Roster
+## The game link's Session, set with the roster: whose house is ready.
+var session: Session
 
 
 func _ready() -> void:
@@ -30,6 +32,16 @@ func _ready() -> void:
 	if roster != null:
 		roster.changed.connect(_tint_own_body)
 	_tint_own_body.call_deferred()
+
+
+## The level leaves while the link stays (a scene change): the Roster and the connection stop calling
+## into it.
+func _exit_tree() -> void:
+	clear()
+	if multiplayer != null and multiplayer.server_disconnected.is_connected(clear):
+		multiplayer.server_disconnected.disconnect(clear)
+	if roster != null and is_instance_valid(roster) and roster.changed.is_connected(_tint_own_body):
+		roster.changed.disconnect(_tint_own_body)
 
 
 ## The own body takes this machine's Player colour.
@@ -45,12 +57,16 @@ func _tint_own_body() -> void:
 ## The Host: an avatar for itself now and for every player who comes in; a leaver's goes.
 func host() -> void:
 	if roster != null:
-		roster.changed.connect(_follow_roster)
+		if not roster.changed.is_connected(_follow_roster):
+			roster.changed.connect(_follow_roster)
+		if session != null and not session.house_changed.is_connected(_on_house_changed):
+			session.house_changed.connect(_on_house_changed)
 		_follow_roster()
 		return
 	_add(multiplayer.get_unique_id())
-	multiplayer.peer_connected.connect(_add)
-	multiplayer.peer_disconnected.connect(_remove)
+	if not multiplayer.peer_connected.is_connected(_add):
+		multiplayer.peer_connected.connect(_add)
+		multiplayer.peer_disconnected.connect(_remove)
 
 
 ## The avatar of player `id` (a peer id) on this machine, or null.
@@ -65,8 +81,10 @@ func clear() -> void:
 		var sig: Signal = pair[0]
 		if sig.is_connected(pair[1]):
 			sig.disconnect(pair[1])
-	if roster != null and roster.changed.is_connected(_follow_roster):
+	if roster != null and is_instance_valid(roster) and roster.changed.is_connected(_follow_roster):
 		roster.changed.disconnect(_follow_roster)
+	if session != null and is_instance_valid(session) and session.house_changed.is_connected(_on_house_changed):
+		session.house_changed.disconnect(_on_house_changed)
 	var players := get_node_or_null(spawn_path)
 	if players == null:
 		return
@@ -77,6 +95,8 @@ func clear() -> void:
 ## The Host: an avatar for each peer in the Roster now, at its entry's place; none for anyone else.
 func _follow_roster() -> void:
 	var live := roster.peers()
+	if session != null:
+		live = PackedInt32Array(Array(live).filter(func(p: int) -> bool: return session.sees_house(p)))
 	for peer in live:
 		if of(peer) == null:
 			var e := roster.entry_of(peer)
@@ -87,6 +107,10 @@ func _follow_roster() -> void:
 	for child in players.get_children():
 		if not child.is_queued_for_deletion() and not live.has(String(child.name).to_int()):
 			child.queue_free()
+
+
+func _on_house_changed(_peer: int) -> void:
+	_follow_roster()
 
 
 func _add(id: int) -> void:
