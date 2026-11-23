@@ -1111,6 +1111,23 @@ func decides() -> bool:
 	return _is_host()
 
 
+## coop/12: this machine left the session (or its Host quit) with Socks in the air: each looks-only
+## body and each frozen Throw copy becomes a body of its own where it is, and a flying Sock with no
+## body starts one, so all of them rest here.
+func went_alone() -> void:
+	if _moving == null:
+		return
+	var copies := {}
+	for sock: int in _flight_by_sock:
+		var body := _flight_by_sock[sock]
+		if not body.has_meta(SOCK_META) and not body.is_queued_for_deletion():
+			copies[sock] = body
+	_moving.take_over(copies)
+	for sock in count():
+		if state_of(sock) == State.FLYING and moving_body(sock) == null:
+			_moving.start(sock, true)
+
+
 ## Whether flying Sock `sock` is a Throw (thrown by a player, not dropped, poured or woken): the one
 ## body that goes over the spawner (coop/09 streams it); every other is started on each machine.
 func is_throw(sock: int) -> bool:

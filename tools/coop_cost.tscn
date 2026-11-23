@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://12l13lvnh01i"]
+
+[ext_resource type="Script" uid="uid://m5opi0n2bx67" path="res://tools/coop_cost.gd" id="1_cost"]
+
+[node name="CoopCost" type="Node" unique_id=1093462871]
+script = ExtResource("1_cost")

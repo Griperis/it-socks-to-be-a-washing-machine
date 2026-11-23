@@ -63,6 +63,12 @@ func _show(_now: bool) -> void:
 	pass
 
 
+## This machine was a Guest and decides alone now (it left, or its Host quit; coop/12): whatever it
+## showed as looks only becomes its own. Looks only: never writes state.
+func went_alone() -> void:
+	pass
+
+
 ## The Host: what player `by` leaving does to this part, as grant(...); {} for nothing.
 func left(_by: int) -> Dictionary:
 	return {}

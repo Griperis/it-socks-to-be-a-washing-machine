@@ -32,7 +32,7 @@ var _spoil_throws := false
 func cases() -> Array[Dictionary]:
 	return [
 		{"name": "guest_pick_throw_real_path", "method": "case_guest_pick_throw_real_path", "world": false,
-				"title": "coop/09 real path, 50 ms: the Guest clicks a Sock at the heap: the ghost flies at once, pick sounds at the click, the Hands change on the answer; it throws: the ghost leaves at once, the Host's body flies, lies equal on both"},
+				"title": "coop/09 real path, 0 and 50 ms one way: the Guest clicks a Sock at the heap: the ghost flies at once, pick sounds at the click, the Hands change on the answer; it throws: the ghost leaves at once, the Host's body flies, lies equal on both"},
 		{"name": "guest_drop", "method": "case_guest_drop", "world": false,
 				"title": "coop/09 E01-E03: a Guest's drop falls at once as a ghost and ends where the Host's did"},
 		{"name": "refusals", "method": "case_refusals", "world": false,
@@ -70,7 +70,12 @@ func _on_played(name: StringName, spatial: bool, _at: Vector3, _bus: StringName)
 # --- The cases -----------------------------------------------------------------------------------
 
 func case_guest_pick_throw_real_path() -> void:
-	var zoos := await _pair(LAG_MS)
+	for lag_ms: int in [0, LAG_MS]:
+		await _pick_throw_round(lag_ms)
+
+
+func _pick_throw_round(lag_ms: int) -> void:
+	var zoos := await _pair(lag_ms)
 	var host: Node3D = zoos[0]
 	var guest: Node3D = zoos[1]
 	var hm := _mess(host)
@@ -89,13 +94,27 @@ func case_guest_pick_throw_real_path() -> void:
 	await _wait(func() -> bool: return gp.aimed_sock == sock, "the Guest's crosshair to rest on Sock %d" % sock, FPS * 2)
 	_flat.clear()
 	var clicked := Engine.get_process_frames()
-	await _press(&"pick")
+	# What the Guest shows while its pick waits on the answer, read on the click's frame (at 0 ms the
+	# answer can be back two frames later).
 	var view := gp.held_view()
-	_check(view.has_ghost(sock), "D01: the ghost flies at once")
+	var guess := {}
+	Input.action_press(&"pick")
+	for _i in 3:
+		await _paced()
+		if guess.is_empty() and gp.ghosts().pick_waiting():
+			guess = {"ghost": view.has_ghost(sock), "hands": gh.items_of(me).has(sock),
+					"state": gm.state_of(sock), "held_back": gm.is_held_back(sock)}
+	Input.action_release(&"pick")
+	await _paced_ticks(1)
 	_check(_played_within(&"pick", clicked, 4), "Q2478: pick sounds at the click (%s)" % [_flat])
-	_check(not gh.items_of(me).has(sock), "D03: the Guest's Hands have not changed before the answer")
-	_check(gm.state_of(sock) == Mess.State.LYING, "D03: the Sock still lies in the Guest's Mess")
-	_check(gm.is_held_back(sock), "the Mess does not draw the Sock while its ghost flies")
+	# At 0 ms the Host's answer can come back within the click's own frame (both machines poll in one
+	# process), so no frame shows the guess alone: D01-D03 are judged where the answer takes a while.
+	if lag_ms > 0 or not guess.is_empty():
+		_check(not guess.is_empty(), "the Guest's pick waits on the Host's answer")
+		_check(guess.get("ghost", false), "D01: the ghost flies at once")
+		_check(guess.get("hands", true) == false, "D03: the Guest's Hands have not changed before the answer")
+		_check(guess.get("state", -1) == Mess.State.LYING, "D03: the Sock still lies in the Guest's Mess")
+		_check(guess.get("held_back", false), "the Mess does not draw the Sock while its ghost flies")
 	await _wait(func() -> bool: return gh.items_of(me).has(sock), "the Hands to change on the Host's answer")
 	_check(hh.items_of(me).has(sock), "the Host's Hands hold the Sock for the Guest")
 	_check(_count(&"pick") == 1, "pick sounds once, at the click, not again at the answer (%d)" % _count(&"pick"))
@@ -150,8 +169,8 @@ func case_guest_pick_throw_real_path() -> void:
 			largest_back = maxf(largest_back, -Vector3(step.x, 0.0, step.z).dot(dir))
 		last = now
 	await _wait(func() -> bool: return _all_lie(hm, gm) and gp.ghosts().ghost_of(sock) == null, "the Throw to lie on both machines", FPS * 15)
-	print("HANDS throw: the ghost's largest step a frame %.3f m, largest change of step over the ghost body's own %.3f m; frames drawn going back %d, at most %.3f m" \
-			% [largest_step, largest_change, back, largest_back])
+	print("HANDS throw %d ms: the ghost's largest step a frame %.3f m, largest change of step over the ghost body's own %.3f m; frames drawn going back %d, at most %.3f m" \
+			% [lag_ms, largest_step, largest_change, back, largest_back])
 	_check(largest_change < 0.08, "G18: the ghost never jumps: the drawing changes its step a frame by under 0.08 m more than its body's own motion (%.3f m)" % largest_change)
 	_check(largest_back < 0.05, "G18: the ghost never goes back along the Throw more than the blend's ease (%.3f m)" % largest_back)
 	_check(heard >= 1, "H07, M04: the Guest hears the Host's body bounce (%d)" % heard)

@@ -1,0 +1,76 @@
+# Co-op
+
+What makes the game a Host and up to three Guests (M0.6). The flows "A change", "A join" and "A knockdown"
+in `docs/architecture.md` say what happens in order; this file says who owns what. The rules behind it:
+`docs/migration/coop-structure-for-the-port.md` (decided state on scene parts, the Host answers),
+`docs/migration/coop-mess-sync.md` (the Mess), `docs/research/coop-flight-sync.md` and
+`docs/research/coop-ragdoll-sync.md` (the two spikes).
+
+## What it owns
+
+| Piece | Files | Owns |
+|---|---|---|
+| The link | `game/parts/session.gd` | The only node with RPCs: the gate (PROTOCOL, layout hash, player id, Hands numbers), the guards, Commands up, answers down, the snapshot to a joiner, a leaver, the Host quitting |
+| The transport | `game/net/net_transport.gd`, `enet_transport.gd` | How a machine reaches the others; the only file that names ENet or reads an address (Steam comes as another transport at M4) |
+| Start and words | `game/net/level_net.gd` | `--host`, `--join=`, `--profile=`; the HUD's toasts and mode line |
+| Who plays | `game/net/roster.gd`, `player_profile.gd`, `coop_tuning.gd/.tres` | The Roster Part (by player id: peer, name, colour, place, Hands numbers); the long random id in `user://profile[_<tag>].json`; max players, colours, timeouts |
+| The rules | `game/parts/part.gd`, `parts.gd`, `command.gd` | Every shared thing is a Part; `decide()` on the Host only; `Parts.apply` the one writer; the Command's wire shape and arg checks |
+| Bodies seen | `game/parts/avatar/` | `Avatars` spawns one `Avatar` per Roster entry; the pose goes from its owner on a MultiplayerSynchronizer, checked in its setters; `AvatarLooks` derives every motion; `Ragdoll` the knockdown body |
+| A Guest's guesses | `game/hands/guest_ghosts.gd`, `throw_ghost.gd`, `ghost_tuning.tres` | Looks only: a pick, drop, Throw or wheel shown at once and matched to the Host's answer by `seq` |
+| Throws in the air | `game/sock/flight_row.gd` | A Throw's body streams stamped rows to every Guest; the Guest plays them 0.1 s behind |
+| The Mess in co-op | `game/mess/mess.gd`, `mess_moving.gd` | Every machine starts its own body for a flying Sock; a Guest's are looks only on `Mess.LAYER_LOOKS`; the Host's `rest` snaps them |
+| Knockdown | `game/knockdown/knockdowns.gd` | Who is down, who drags whom, struggles; Host-only `knock` |
+| Teammates heard | `game/audio/hearing.gd`, `teammate_steps.gd` | A Teammate's cues and steps at their body (`Sounds.play_from`) |
+
+## Rules that hold everywhere
+- **Only the Host decides.** A Guest's `Parts.ask` goes up through `Session._command`; nothing on a Guest
+  writes a Part but the Host's answer (`_event`, an `authority` RPC Godot refuses from anyone else).
+- **The guards, in order** (`Session._command`): sender admitted; wire shape (`Command.shape_error`); the
+  target is a bound Part; the Part accepts the verb; the args match exactly (`Command.args_error`); the
+  verb's rate (`"rate"` in `accepts()`, else `Session.RATE`, 10 a second). A drop is counted in `dropped`
+  (per player and reason), logged at most once a second, and never kicks anyone. Host-only verbs (`knock`,
+  `release`, the Mess's) are simply not in `accepts()`, so a Guest's is a `verb` drop.
+- **A pose is checked where it lands.** An Avatar's setters drop a pose that is not finite or outside
+  `AvatarTuning.area` on every receiving copy (`dropped` counts them); the owner's own copy is the only
+  one that writes it. A Ragdoll pose of the wrong size is dropped (J134).
+- **Prediction is looks only.** Ghosts and a Guest's Mess bodies never ask and never write; the Host's answer
+  replaces them.
+- **Leaving.** The Host: `Parts.left(peer)` drops the leaver's Hands where they stood and ends their drags.
+  The leaver (or every Guest when the Host quits): `Session.close()` makes it a Host of one; `Parts.went_alone()`
+  lets each Part take over what it showed as looks only (`Mess.went_alone`: each looks-only body and frozen
+  Throw copy becomes its own body where it is, so every flying Sock rests; coop/12). `GuestGhosts` drops its
+  guesses.
+- **The wire's version.** `Session.PROTOCOL` goes up with any change to an RPC, a synchronized property, a
+  spawnable scene, or the shape of a Command, event, snapshot or gate word.
+
+## Tests
+Two or three zoos in one process, each a machine of its own (`SceneTree.set_multiplayer` per branch), real
+ENet on 127.0.0.1, `tests/support/lag_peer.gd` for a one-way delay; frames paced to 60 a second of wall time
+where the network matters. In a test every Host listens on a port the system picks (`Session.free_port`, set
+by `tests/hooks.gd`), so parallel runs never clash. The real paths run at 0 and 50 ms one way:
+`coop_join:join`, `teammates:walk_crouch`, `coop_mess:pour_real_path`, `coop_hands:guest_pick_throw_real_path`
+and `guest_throw_ghost_on_host_flight`, `coop_knockdown:real_path`. The guards: `coop_guard` (bad shape, flood,
+forged pose and knockdown), `scene_parts:guard`, `coop_knockdown:forged`, `teammates:forged`.
+
+## The cost
+`tools/coop_cost.sh`: a Host and a Guest as two headless processes, the Host pouring 2,000 Socks at the heap.
+Measured 2026-11-23 on the agents' Linux machine (headless: no drawing in the frame time):
+
+| Window | Host sends | Guest sends | Host frame (mean / 95th / worst) | Guest frame (mean / 95th / worst) |
+|---|---|---|---|---|
+| The pour (2,000 Socks added to the zoo's 2,151, 15.7 s) | 72.2 KB/s | 4.6 KB/s | 23.4 / 38.3 / 38.6 ms (36 frames/s) | 27.1 / 36.2 / 68.8 ms (60 frames/s) |
+| At rest after (4,151 Socks, 5 s) | 3.7 KB/s | 3.7 KB/s | 4.5 / 8.1 / 9.9 ms | 7.2 / 17.1 / 17.1 ms |
+
+Bytes are ENet's totals with its headers; a frame is the engine's process plus physics time. The Host's pour
+frames are the Mess's own physics (it simulates every falling Sock); the Guest's are its looks-only bodies.
+
+The heavy part is the pour (each rest batch is a reliable answer); at rest only the avatars' poses move.
+The designer's two windows are the reference for frame times.
+
+## Gotchas
+- A Guest finds a spawned Throw copy by its name (`Flight<id>`); every other body is its own (no spawner).
+- ENet's packet throttle is held at full on every peer (`EnetTransport`); left alone it drops 31 of 32
+  unreliable packets at 60 frames a second.
+- In one process both machines poll in one frame, so at 0 ms an answer can come back within the click's
+  own frame: a case judging "before the answer" uses a delay.
+- `Session.close()` runs on `_exit_tree` too; then it writes nothing (`_leaving`).

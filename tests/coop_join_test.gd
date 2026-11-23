@@ -5,6 +5,7 @@
 ## the next free colour.
 extends TestSuite
 
+const LagPeer := preload("res://tests/support/lag_peer.gd")
 const ZOO := "res://game/zoo/zoo.tscn"
 ## The stations each zoo keeps.
 const KEEP := ["Handling"]
@@ -19,6 +20,8 @@ const BY_HANDLING := Vector3(0.0, 0.0, 1.5)
 const NOBODY := "127.0.0.1:1"
 ## Profile tags this suite writes, removed after each case.
 const TAGS := ["coop_join_test_a", "coop_join_test_b"]
+## The one-way delays the real path runs at (coop/12).
+const LAGS: Array[int] = [0, 50]
 
 ## Each machine: a Node with its own MultiplayerAPI.
 var _branches: Array[Node] = []
@@ -31,7 +34,9 @@ func cases() -> Array[Dictionary]:
 		{"name": "seam", "method": "case_seam", "world": false,
 				"title": "the transport alone reads an address; the next free colour wraps round the 8 and skips the taken ones"},
 		{"name": "join", "method": "case_join", "world": false,
-				"title": "real path: a zoo started with --host and another with --join= and its own --profile=: the Guest reads \"Joined Player's zoo\" and stands 0.6 m beside the Host facing its way; the Host reads \"Player joined\" in the second colour"},
+				"title": "real path, 0 and 50 ms one way: a zoo started with --host and another with --join= and its own --profile=: the Guest reads \"Joined Player's zoo\" and stands 0.6 m beside the Host facing its way; the Host reads \"Player joined\" in the second colour"},
+		{"name": "free_port", "method": "case_free_port", "world": false,
+				"title": "coop/12: in a test every Host listens on a port the system picks: with the game's port taken by another program, two Hosts at once each host on their own port and a Guest joins one"},
 		{"name": "refusals", "method": "case_refusals", "world": false,
 				"title": "a full house of 4 refuses a fifth (\"The game is full (4 players)\"), the same player id (\"You are already in this game\"), another protocol and another scene layout (\"Another version of the game\"), each told on the Guest and none admitted"},
 		{"name": "leave_and_return", "method": "case_leave_and_return", "world": false,
@@ -93,14 +98,22 @@ func case_seam() -> void:
 # --- Joining -------------------------------------------------------------------------------------
 
 func case_join() -> void:
+	for lag_ms: int in LAGS:
+		await _join_round(lag_ms)
+		_drop_branches()
+
+
+func _join_round(lag_ms: int) -> void:
 	var host := _branch("Host")
 	var guest := _branch("Guest")
 	await _frames(2)
 	_stand(_player(host), HOST_AT, HOST_YAW)
-	_check(_net(host).start(["--host", "--profile=%s" % TAGS[0]]) == OK, "the zoo started with --host hosts")
+	_check(_net(host).start(["--host", "--profile=%s" % TAGS[0]]) == OK, "the zoo started with --host hosts (%d ms)" % lag_ms)
+	_lag(host, lag_ms)
 	_check(_session(host).profile.id == PlayerProfile.load_or_make(TAGS[0]).id, "as the player of --profile=")
 	_check(_net(guest).start(["--join=127.0.0.1:%d" % _session(host).port, "--profile=%s" % TAGS[1]]) == OK,
 			"the other zoo started with --join= and its own --profile= starts joining")
+	_lag(guest, lag_ms)
 	var g_hud := _player(guest).hud()
 	await _until(func() -> bool: return g_hud.message_text() == "Joined Player's zoo", "the Guest to read \"Joined Player's zoo\"")
 	var h_hud := _player(host).hud()
@@ -122,6 +135,29 @@ func case_join() -> void:
 	var ha := _avatars(host)
 	await _until(func() -> bool: return ha.of(g_peer) != null and ha.of(g_peer).position.distance_to(gp.global_position) < 0.05,
 			"the Host to see the Guest's avatar where it stands")
+
+
+func case_free_port() -> void:
+	_check(Session.free_port, "the test hooks set Session.free_port")
+	# Another program (or another test run) holds the game's port.
+	var squatter := PacketPeerUDP.new()
+	var held := squatter.bind(Session.PORT, "*") == OK
+	var a := _branch("HostA")
+	var b := _branch("HostB")
+	var guest := _branch("Guest")
+	await _frames(2)
+	for zoo: Node3D in [a, b, guest]:
+		_session(zoo).profile = PlayerProfile.fresh()
+	_check(_net(a).start(["--host"]) == OK and _session(a).is_online(), "the first Host hosts (the game's port %s)" % ("held elsewhere" if held else "already in use"))
+	_check(_net(b).start(["--host"]) == OK and _session(b).is_online(), "a second Host at the same time hosts too")
+	var pa := _session(a).port
+	var pb := _session(b).port
+	_check(pa > 0 and pb > 0 and pa != pb and pa != Session.PORT and pb != Session.PORT,
+			"each on its own free port, not the game's %d (%d, %d)" % [Session.PORT, pa, pb])
+	_net(guest).start(["--join=127.0.0.1:%d" % pb])
+	await _until(func() -> bool: return _player(guest).hud().message_text() == "Joined Player's zoo", "a Guest to join the second Host by its port")
+	squatter.close()
+	_drop_branches()
 
 
 func case_refusals() -> void:
@@ -356,6 +392,12 @@ func _drop_branches() -> void:
 		node.free()
 		get_tree().set_multiplayer(null, path)
 	_branches.clear()
+
+
+## Puts `lag_ms` of delay on every packet `zoo`'s machine receives (tests/support/lag_peer.gd).
+func _lag(zoo: Node3D, lag_ms: int) -> void:
+	var mp := zoo.multiplayer
+	mp.multiplayer_peer = LagPeer.new(mp.multiplayer_peer as ENetMultiplayerPeer, lag_ms, 0.0, _branches.size())
 
 
 func _forget_profiles() -> void:
