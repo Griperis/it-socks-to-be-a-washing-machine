@@ -29,6 +29,11 @@ generated Socks land, how the preview draws, or how the start and a regeneration
 - **A regeneration.** `regenerate` on the Host: the next seed's records, avoiding every other lying Sock; one answer
   carries the Mess's rows patch (`taken_out_patch` of the old records, then `added_lying_patch` of the new) and the
   Part's new `seed`, `first`, `socks`.
+- **A Heap's height (core/55, Q2531).** The laying stacks a Heap's Socks on the place box; `records()`,
+  once each row's Design is known, brings every stacked row down onto the real leg and foot boxes under it
+  (`SockLaying.restack`, `MessBodies.parts_at` its Size), so none hangs. Only height changes, only down:
+  the preview's dots of a Heap's stacked Socks may stand up to a few cm over where they lie. A Sock that
+  would still hang falls at the next tick (the Mess's `_fall_unsupported`).
 - **The preview.** In the editor the generator lays `seed` and draws a dot per row; an area, exclusion or trail
   redraws it when moved or changed (0.2 s later), as does a generator number; furniture is not watched: "Refresh
   preview" on the generator. A game draws it only when a shot calls `show_preview(true, seed, before)`.
@@ -40,6 +45,8 @@ generated Socks land, how the preview draws, or how the start and a regeneration
 - **Dice per area.** Each area draws from `hash([seed, area name])`, each trail from its name, the Pairs from
   `hash([seed, "mates"])`: a change to one area moves no other area's Socks (a later area only avoids the ones laid
   before it, in tree order).
+- **Height in a Heap only.** x, z and the turn of every Sock are exact; a stacked Heap Sock lies at its
+  dot's height or lower (above).
 - **Same queries.** Every ray and overlap goes through `PhysicsQueries` (also in the editor: the edited scene's
   world); nothing steps physics. The game's laying also avoids the Mess's other lying Socks (`Mess.lying_boxes`);
   the editor knows no Mess, so a SockSpot inside an area shows no gap in the preview.
@@ -53,6 +60,9 @@ generated Socks land, how the preview draws, or how the start and a regeneration
   all its places).
 - A hidden Sock whose hidden places are all full goes to open floor (the old rule); the report counts it
   (`hidden_to_floor`). A Sock with no place at all is left out and named in the log (never forced).
+- The laying sees only `Mess.LAYER_HOUSE`: a reseed never sees the old Socks (lying bodies are
+  `LAYER_LYING`), but it does see a player's body (the player's CharacterBody3D is on layer 1), so a
+  reseed keeps clear of where players stand and differs from the preview there.
 - The kit's stairs collide as a ramp: a trail's Socks lie leaned on the ramp, not on the drawn treads.
 - The zoo's station (`game/zoo/stations/sock_generator.tscn`, its button and sign in `game/zoo/sock_generator/`)
   sets `scan` to its root; a level sets it to the level. Areas in the house are house/05's.

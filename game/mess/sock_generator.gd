@@ -100,6 +100,16 @@ func records(with_seed: int, catalogue: DesignCatalogue, before: Array[Array] = 
 		var tmp := order[k]
 		order[k] = order[j]
 		order[j] = tmp
+	# Each row's leg and foot at its Size, then a Heap's stacked Socks come down onto the real
+	# Socks under them (core/55, Q2531). A row left out of the Pairs is not laid: nothing rests on it.
+	var parts: Array[Array] = []
+	for r in laying.rows.size():
+		parts.append([])
+	for k in pairs.size():
+		var shape := MessBodies.parts_at(SockDress.scale_of(pool[order[k]]))
+		parts[pairs[k].x] = shape
+		parts[pairs[k].y] = shape
+	laying.restack(parts)
 	for k in pairs.size():
 		var design := pool[order[k]]
 		for row: int in [pairs[k].x, pairs[k].y]:

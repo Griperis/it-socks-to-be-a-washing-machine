@@ -30,6 +30,9 @@ extends Resource
 ## How far under the picked Sock's top a Sock's bottom may be and still count as lying on it (one
 ## beside it, on the floor, stays).
 @export_range(0.0, 0.1, 0.001, "suffix:m") var above_slack := 0.01 # placeholder: until play
+## How far under a laid Sock something must be for it to count as resting (core/55, Q2531): farther,
+## it wakes and falls.
+@export_range(0.0, 0.1, 0.001, "suffix:m") var support_reach := 0.01 # placeholder: the ticket's 1 cm, until play
 ## How many lying Socks a moving Door or drawer wakes in one tick at most (M09).
 @export_range(1, 512, 1) var sweep_cap := 32 # placeholder: ported (SockWorld.SWEEP_CAP)
 ## How far round a moving Door's or drawer's shapes a lying Sock counts as in its way or on it.

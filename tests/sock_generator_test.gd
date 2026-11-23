@@ -29,6 +29,14 @@ func cases() -> Array[Dictionary]:
 				"title": "G07: with a new seed each start the generator picks its own seed, kept in its state, and lays from it"},
 		{"name": "g08_preview", "method": "case_preview", "world": false,
 				"title": "G08: the preview draws a dot per landing point and the areas' boxes, only when asked in a game"},
+		{"name": "g09_reseed_rests", "method": "case_reseed_rests", "world": false,
+				"title": "G09 (core/55): real path: the player clicks New seed five times; each time the next seed is laid onto the world without the old Socks, every Sock rests on something (none over 1 cm in the air) where its preview shows"},
+		{"name": "g10_support_taken", "method": "case_support_taken", "world": false,
+				"title": "G10 (core/55): a Sock lying on another falls when the one under it is taken out, and comes to rest on the floor"},
+		{"name": "g11_laid_in_air", "method": "case_laid_in_air", "world": false,
+				"title": "G11 (core/55): a Sock laid lying with nothing under it (a reseed's add) falls through the Moving path and rests"},
+		{"name": "g12_piece_moved", "method": "case_piece_moved", "world": false,
+				"title": "G12 (core/55): real path: a table moved away with Socks on it, the player clicks New seed: every new Sock rests on the world as it is now"},
 	]
 
 
@@ -295,14 +303,21 @@ func _matches_preview(seed: int, when: String) -> void:
 	var made := _generator().records(seed, mess.catalogue, mess.lying_boxes(g.first, g.first + g.socks))
 	_same(mess.designs.slice(g.first, g.first + g.socks), made["designs"], "%s: the Socks' Designs are the seed's" % when)
 	_same(mess.poses.slice(g.first * Mess.POSE, (g.first + g.socks) * Mess.POSE), made["poses"], "%s: the Socks lie where the seed lays them" % when)
-	var preview := _origins(_generator().lay(seed, mess.lying_boxes(g.first, g.first + g.socks)).rows)
+	# A point's x and z, its height and its ground: a Heap's stacked Sock comes down onto the real Socks
+	# under it (core/55), so it lies at its point's height or lower, never under its ground.
+	var preview: Dictionary[Vector2i, Vector2] = {}
+	for r: Dictionary in _generator().lay(seed, mess.lying_boxes(g.first, g.first + g.socks)).rows:
+		var at := (r["pose"] as Transform3D).origin
+		preview[_flat_key(at)] = Vector2(at.y, float(r["ground"]))
 	var off := 0
 	for sock in range(g.first, g.first + g.socks):
+		var at := mess.pose_of(sock).origin
+		var point: Vector2 = preview.get(_flat_key(at), Vector2(INF, INF))
 		if mess.state_of(sock) != Mess.State.LYING or not mess.is_drawn(sock):
 			off += 1
-		elif not preview.has(_key(mess.pose_of(sock).origin)):
+		elif absf(at.y - point.x) > 0.0005 and (at.y > point.x or at.y < point.y - 0.0005):
 			off += 1
-	_check(off == 0, "%s: every Sock lies, drawn, on a point of the preview (%d not)" % [when, off])
+	_check(off == 0, "%s: every Sock lies, drawn, on a point of the preview (a Heap's stacked one at it or lower; %d not)" % [when, off])
 
 
 func _origins(rows: Array[Dictionary]) -> Array[Vector3i]:
@@ -327,6 +342,10 @@ func _by_area(rows: Array[Dictionary]) -> Dictionary:
 	for k: String in out:
 		(out[k] as Array).sort()
 	return out
+
+
+static func _flat_key(p: Vector3) -> Vector2i:
+	return Vector2i(roundi(p.x * 1000.0), roundi(p.z * 1000.0))
 
 
 static func _key(p: Vector3) -> Vector3i:
@@ -438,3 +457,124 @@ func _press(action: StringName) -> void:
 	await _physics_ticks(2)
 	Input.action_release(action)
 	await _physics_ticks(2)
+
+
+
+func case_reseed_rests() -> void:
+	await _zoo_up()
+	var gen := _generated()
+	var button := _station().get_node("Regenerate") as Node3D
+	_check(_hanging().is_empty(), "at start every Sock rests on something (%s do not)" % [_hanging()])
+	_matches_preview(gen.seed, "at start")
+	for k in 5:
+		var seed_before := gen.seed
+		_stand(button.global_position + Vector3(-1.5, -0.5, 0.0))
+		await _aim(button.global_position)
+		# Laid now, with the old seed's Socks still lying: the reseed must not see them. (The player
+		# stands where it will click: the laying keeps clear of a player's body.)
+		var with_old := _origins(_generator().lay(seed_before + 1, _before()).rows)
+		await _press(&"pick")
+		await _until(func() -> bool: return gen.seed == seed_before + 1, "the click on New seed %d to lay the next seed's Socks" % (k + 1))
+		await _physics_ticks(3)
+		_same(_origins(_generator().lay(gen.seed, _before()).rows), with_old, "reseed %d: laid onto the world without the old Socks" % (k + 1))
+		var hanging := _hanging()
+		_check(hanging.is_empty(), "reseed %d: every Sock rests on something (%s do not)" % [k + 1, hanging])
+		_check(_moving_count() == 0, "reseed %d: no Sock had to fall (%d moving)" % [k + 1, _moving_count()])
+		_matches_preview(gen.seed, "reseed %d" % (k + 1))
+
+
+func case_support_taken() -> void:
+	await _zoo_up()
+	var mess := _mess()
+	var at := _free_floor()
+	var lower := await _add_lying(Transform3D(Basis.IDENTITY, at + Vector3.UP * 0.0005))
+	var top := mess.box_of(lower).end.y
+	var upper := await _add_lying(Transform3D(Basis(Vector3.UP, 0.4), Vector3(at.x, top + 0.0005, at.z)))
+	await _physics_ticks(3)
+	_check(mess.state_of(upper) == Mess.State.LYING and mess.supported(upper), "the upper Sock rests on the lower one")
+	mess.parts.ask(Command.new(&"take_out", Parts.HOST, mess.id, {"socks": PackedInt32Array([lower])}))
+	await _until(func() -> bool: return mess.state_of(upper) == Mess.State.FLYING, "the upper Sock to fall when the lower one is gone", 300)
+	await _until(func() -> bool: return mess.state_of(upper) == Mess.State.LYING, "the fallen Sock to come to rest", 600)
+	_check(mess.pose_of(upper).origin.y < top - 0.005 and mess.supported(upper), "it rests on the floor (%.3f m up)" % mess.pose_of(upper).origin.y)
+
+
+func case_laid_in_air() -> void:
+	await _zoo_up()
+	var mess := _mess()
+	var at := _free_floor()
+	var sock := await _add_lying(Transform3D(Basis.IDENTITY, at + Vector3.UP * 0.4), false)
+	await _until(func() -> bool: return mess.state_of(sock) == Mess.State.FLYING, "the Sock laid in the air to fall", 300)
+	await _until(func() -> bool: return mess.state_of(sock) == Mess.State.LYING, "the fallen Sock to come to rest", 600)
+	_check(mess.pose_of(sock).origin.y < 0.05 and mess.supported(sock), "it rests on the floor (%.3f m up)" % mess.pose_of(sock).origin.y)
+
+
+func case_piece_moved() -> void:
+	await _zoo_up()
+	var mess := _mess()
+	var gen := _generated()
+	var table := _station().get_node("Table") as Node3D
+	var on_top := 0
+	for sock in range(gen.first, gen.first + gen.socks):
+		var at := mess.pose_of(sock).origin
+		if at.y > 0.3 and Vector2(at.x - table.global_position.x, at.z - table.global_position.z).length() < 1.2:
+			on_top += 1
+	_check(on_top > 0, "some of the generator's Socks lie on the table (%d)" % on_top)
+	table.global_position += Vector3(0.0, 0.0, -1.5)
+	await _physics_ticks(2)
+	# What lay on the table now hangs; the next reseed takes them out and lays onto the world as it is.
+	var seed_before := gen.seed
+	var button := _station().get_node("Regenerate") as Node3D
+	_stand(button.global_position + Vector3(-1.5, -0.5, 0.0))
+	await _aim(button.global_position)
+	await _press(&"pick")
+	await _until(func() -> bool: return gen.seed == seed_before + 1, "the click on New seed after the table moved")
+	await _physics_ticks(3)
+	_check(_hanging().is_empty(), "after the table moved, every reseeded Sock rests on something (%s do not)" % [_hanging()])
+	_check(_moving_count() == 0, "and none had to fall (%d moving)" % _moving_count())
+
+
+## The generator's lying Socks with nothing within 1 cm under them (the Mess's own look, Q2531).
+func _hanging() -> PackedInt32Array:
+	var mess := _mess()
+	var g := _generated()
+	var out := PackedInt32Array()
+	for sock in range(g.first, g.first + g.socks):
+		if mess.state_of(sock) == Mess.State.LYING and not mess.supported(sock):
+			out.append(sock)
+	return out
+
+
+func _moving_count() -> int:
+	var mess := _mess()
+	var g := _generated()
+	var n := 0
+	for sock in range(g.first, g.first + g.socks):
+		if mess.state_of(sock) != Mess.State.LYING:
+			n += 1
+	return n
+
+
+## A spot of the station's open floor no Sock lies near and nothing stands over (on the open side).
+func _free_floor() -> Vector3:
+	for x: float in [6.4, 5.6, -6.0]:
+		for z: float in [6.0, 0.5, -1.0, -6.0]:
+			var at := _station().to_global(Vector3(x, 0.0, z))
+			var hit := PhysicsQueries.ray(_station(), at + Vector3.UP * 2.0, at + Vector3.DOWN * 0.1, Mess.LAYER_HOUSE | Mess.LAYER_LYING)
+			if not hit.is_empty() and absf((hit["position"] as Vector3).y - at.y) < 0.001 \
+					and _mess().resting_on(AABB(at + Vector3(-0.6, -0.2, -0.6), Vector3(1.2, 0.1, 1.2))).is_empty():
+				return at
+	_check(false, "a free spot of open floor in the station")
+	return _station().global_position
+
+
+## The Host lays a new Sock lying at `pose` (an `add` with "lying", the path a reseed takes): its id.
+## `settle`: waits until it lies drawn.
+func _add_lying(pose: Transform3D, settle := true) -> int:
+	var mess := _mess()
+	var sock := mess.count()
+	var design: int = mess.catalogue.designs[0].id
+	mess.parts.ask(Command.new(&"add", Parts.HOST, mess.id, {"designs": PackedInt32Array([design]), "poses": Mess.pack(pose), "lying": true}))
+	_check(mess.count() == sock + 1 and mess.state_of(sock) == Mess.State.LYING, "the new Sock is laid lying")
+	if settle:
+		await _physics_ticks(2)
+	return sock
