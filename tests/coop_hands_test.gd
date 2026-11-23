@@ -16,6 +16,8 @@ const LAG_MS := 50
 const KEEP := ["Heap", "Cabinet", "Handling"]
 ## The Socks poured at the heap for the real path.
 const POUR := 6
+## How near a Guest's own Throw ghost flies to the Host's flight before its first touch (coop/11).
+const GHOST_ON_FLIGHT := 0.02
 
 var _branches: Array[Node] = []
 var _pace_next := 0
@@ -41,6 +43,8 @@ func cases() -> Array[Dictionary]:
 				"title": "coop/09 J01, K01, K04: a Guest pairs (the moment on the answer) and shelves into a Cabinet drawer, paid, seen by the Host"},
 		{"name": "late_join_mid_throw", "method": "case_late_join_mid_throw", "world": false,
 				"title": "coop/09 A/H02, Q2472: a Guest joining while a Throw is in the air sees it fly on and lie where the Host's did"},
+		{"name": "guest_throw_ghost_on_host_flight", "method": "case_guest_throw_ghost_on_host_flight", "world": false,
+				"title": "coop/11, Q2481, 0 and 50 ms: the Guest charges and releases a full and a half Throw: its ghost leaves with the Host's launch, flies the Host's flight as the Guest's stream shows it, and eases from the first-person hand onto it in 0.2 s with no jump"},
 	]
 
 
@@ -367,6 +371,120 @@ func case_late_join_mid_throw() -> void:
 # --- Helpers -------------------------------------------------------------------------------------
 
 ## A Host and a Guest `lag_ms` each way, the Guest welcomed; the Host's player does not act.
+## coop/11: the Guest's own Throw, by its real input (hold past the tap, release at a charge), at 0
+## and 50 ms, full and half: the ghost's body against the Host's body at the same moment of the
+## flight as the Guest's stream shows it (FlightRow.sample()), until the first touch; the drawn ghost
+## on that flight once the hand-over is done; no frame's step more than the Host's own frame.
+func case_guest_throw_ghost_on_host_flight() -> void:
+	for lag_ms: int in [0, LAG_MS]:
+		for c: float in [1.0, 0.5]:
+			await _ghost_against_host(lag_ms, c)
+
+
+func _ghost_against_host(lag_ms: int, c: float) -> void:
+	var zoos := await _pair(lag_ms)
+	var host: Node3D = zoos[0]
+	var guest: Node3D = zoos[1]
+	var hm := _mess(host)
+	var gm := _mess(guest)
+	var gp := _player(guest)
+	var gt := gp.ghosts().tuning
+	var label := "%d ms, charge %.1f" % [lag_ms, c]
+	var sock := await _guest_holds(host, guest, _handling_sock(guest, "Floor"))
+	# A fixed point ahead, up, on what the crosshair meets.
+	await _aim_at(guest, gp.global_position + gp.global_basis * Vector3(0.0, 1.2, -4.0))
+	Input.action_press(&"drop_throw")
+	await _paced_ticks(int(gp.hands_tuning.tap * FPS) + 1 + int(round(c * gp.hands_tuning.charge_time * FPS)))
+	var charge := gp.charge
+	Input.action_release(&"drop_throw")
+	var ghost: ThrowGhost = null
+	for _i in 4:
+		await _paced()
+		ghost = gp.ghosts().ghost_of(sock)
+		if ghost != null:
+			break
+	_check(ghost != null, "%s: the Throw's ghost leaves at once" % label)
+	if ghost == null:
+		_drop_branches()
+		return
+	var hand := gp.hands().start_of(gp.player_id(), gp.aim_dir())
+	var first_drawn := ghost.drawn().origin
+	# Each tick before the first touch: [age, the ghost body's pose then, drawn then]; checked against
+	# the stream once it has played that moment.
+	var path: Array[Array] = []
+	var pending: Array[Array] = []
+	var touched := false
+	var last_vel := ghost.body().linear_velocity
+	var g := float(ProjectSettings.get_setting("physics/3d/default_gravity", 9.8))
+	var worst_body := 0.0
+	var worst_drawn := 0.0
+	var compared := 0
+	var worst_extra := 0.0
+	var host_frame := 0.0
+	var last_step := Vector3.ZERO
+	var last_body_step := Vector3.ZERO
+	var last_drawn := first_drawn
+	var last_body := ghost.body().global_position
+	var row: FlightRow = null
+	while is_instance_valid(ghost) and not ghost.is_done():
+		await _paced()
+		if not is_instance_valid(ghost) or ghost.is_done():
+			break
+		var age := float(ghost.get("_age"))
+		var body_at := ghost.body().global_position
+		var drawn_at := ghost.drawn().origin
+		var vel := ghost.body().linear_velocity
+		# A touch: the velocity turned by more than gravity and drag explain in a tick.
+		if not touched and (vel - last_vel).length() > g * 2.5 / FPS:
+			touched = true
+		last_vel = vel
+		if not touched:
+			# The ghost's own pose at its age (what it compares, G06) and what its drawing adds to it.
+			var own: Variant = ghost.call("_pose_at", age)
+			if own is Transform3D:
+				pending.append([age, (own as Transform3D).origin, (own as Transform3D).origin + drawn_at - body_at])
+		path.append([age, body_at, drawn_at])
+		var step := drawn_at - last_drawn
+		var body_step := body_at - last_body
+		if hm.state_of(sock) == Mess.State.FLYING and path.size() > 1:
+			worst_extra = maxf(worst_extra, (step - last_step).distance_to(body_step - last_body_step))
+		last_step = step
+		last_body_step = body_step
+		last_drawn = drawn_at
+		last_body = body_at
+		var copy := gm.moving_body(sock)
+		if row == null and copy != null:
+			row = FlightRow.of(copy)
+		var hb := hm.moving_body(sock)
+		if hb != null:
+			host_frame = maxf(host_frame, hb.linear_velocity.length() / FPS)
+		if row == null or not is_instance_valid(row):
+			continue
+		var played := row.flight_time()
+		while not pending.is_empty() and played >= float(pending[0][0]):
+			var e: Array = pending.pop_front()
+			var at: Variant = row.sample(float(e[0]))
+			if not (at is Transform3D):
+				continue
+			var on := (at as Transform3D).origin
+			compared += 1
+			worst_body = maxf(worst_body, on.distance_to(e[1]))
+			if float(e[0]) >= gt.hand_over_time:
+				worst_drawn = maxf(worst_drawn, on.distance_to(e[2]))
+	await _wait(func() -> bool: return _all_lie(hm, gm) and gp.ghosts().ghost_of(sock) == null, "%s: the Throw to lie on both machines" % label, FPS * 15)
+	var lines: Array[String] = []
+	for e: Array in path.slice(0, 48, 6):
+		lines.append("%.2f body %s drawn %s" % [e[0], e[1], e[2]])
+	print("HANDS ghost %s (charge %.3f): first drawn %.3f m from the hand; body vs the Host's flight at most %.4f m and drawn after the hand-over %.4f m over %d moments before the first touch; largest change of step over the body's own %.4f m, the Host's frame %.4f m\n  %s" \
+			% [label, charge, first_drawn.distance_to(hand.origin), worst_body, worst_drawn, compared, worst_extra, host_frame, "\n  ".join(lines)])
+	_check(compared >= 6, "%s: the ghost's flight was compared with the Host's at %d moments before its first touch" % [label, compared])
+	_check(first_drawn.distance_to(hand.origin) < 0.1, "Q2481 %s: the ghost is drawn from the first-person hand (%.3f m)" % [label, first_drawn.distance_to(hand.origin)])
+	_check(worst_body < GHOST_ON_FLIGHT, "coop/11 %s: the ghost's body flies the Host's flight within %.2f m (%.4f m)" % [label, GHOST_ON_FLIGHT, worst_body])
+	_check(worst_drawn < GHOST_ON_FLIGHT, "Q2481 %s: after the %.1f s hand-over the drawn ghost is on the Host's flight within %.2f m (%.4f m)" % [label, gt.hand_over_time, GHOST_ON_FLIGHT, worst_drawn])
+	_check(worst_extra <= host_frame, "Q2481 %s: no jump: the drawing changes its step by at most the Host's own motion in a frame (%.4f <= %.4f m)" % [label, worst_extra, host_frame])
+	_drop_branches()
+
+
 func _pair(lag_ms: int) -> Array[Node3D]:
 	var host := _branch("Host")
 	var guest := _branch("Guest")
@@ -598,3 +716,4 @@ func _drop_branches() -> void:
 		node.free()
 		get_tree().set_multiplayer(null, path)
 	_branches.clear()
+

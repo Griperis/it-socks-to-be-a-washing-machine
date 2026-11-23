@@ -306,9 +306,16 @@ func _worn_layout(i: int, active: int, sock: int) -> Transform3D:
 	if i != active:
 		var j := i if i < active or active < 0 else i - 1
 		at = worn_step * float(j + 1) * Vector3(-1.0 if j % 2 == 0 else 1.0, 1.0, 1.0)
-	var design := hands.mess.design_of(sock)
+	return worn_pose(hands.mess, sock, at)
+
+
+## Where Sock `sock` of `mess` hangs worn, `at` from the anchor (the HoldPoint), true size: a Sock by
+## its cuff, toe down; a Pair's ball with its top there. A Guest works out its own Throw's start from
+## it as the Host draws it on its avatar (Hands.avatar_hand_of(), coop/11).
+static func worn_pose(mess: Mess, sock: int, at := Vector3.ZERO) -> Transform3D:
+	var design := mess.design_of(sock)
 	var s := design.size_scale() if design != null else 1.0
-	if hands.mess.is_pair(sock):
+	if mess.is_pair(sock):
 		var radius := SockDress.ball_radius(design) if design != null else 0.0
 		return Transform3D(Basis.IDENTITY.scaled(Vector3.ONE * s), at + Vector3.DOWN * radius)
 	var half := SockDress.BOX.x * 0.5 * s

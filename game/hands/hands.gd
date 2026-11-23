@@ -338,13 +338,16 @@ func taken_patch(by: int, socks: PackedInt32Array) -> Dictionary:
 ## where it leaves to the point the crosshair is on (Q2356), the low or the high one, whichever is
 ## nearer the old aim (along `dir`, the lob lifted); an aim at nothing, or out of the arc's reach,
 ## flies along that old aim. "charge" goes with it: a full one can knock a Teammate down (coop/10).
-func launch_of(by: int, dir: Vector3, charge: float) -> Dictionary:
+##
+## `hand`, when set, is the hand to leave from instead of hand_of(): a Guest's own Throw ghost leaves
+## with the launch the Host works out from its avatar's hand (avatar_hand_of(), coop/11, Q2481).
+func launch_of(by: int, dir: Vector3, charge: float, hand: Variant = null) -> Dictionary:
 	var t := tuning_of(by)
 	var vel := dir * lerpf(t.min_speed, t.max_speed, charge)
 	if charge < t.tap_charge:
 		vel = dir * t.lob_speed + Vector3.UP * t.lob_lift
 	var eyes := eyes_of(by)
-	var from := start_of(by, dir)
+	var from := start_of(by, dir, hand)
 	var hit := PhysicsQueries.ray(self, eyes, eyes + dir * AIM_FAR, Mess.AIM_MASK, _body_of(by))
 	if not hit.is_empty():
 		var aimed := Arc.aimed(from.origin, hit["position"], vel.length(), _gravity(), t.thrown_linear_damp, vel)
@@ -411,10 +414,11 @@ func _falls_clear(by: int, from: Vector3, vel: Vector3, to: Vector3, damp: float
 
 ## Where player `by`'s active item leaves their Hands, looking along `dir`: the hand's pose (hand_of),
 ## or, when a wall is between the eyes and the hand or the hand is inside one (T04), on the
-## eye-line `throw_clear` body depths short of the wall, turned as in the hand.
-func start_of(by: int, dir: Vector3) -> Transform3D:
+## eye-line `throw_clear` body depths short of the wall, turned as in the hand. `hand`, when set, is
+## the hand's pose to start from instead (launch_of()).
+func start_of(by: int, dir: Vector3, at_hand: Variant = null) -> Transform3D:
 	var eyes := eyes_of(by)
-	var hand := hand_of(by, dir)
+	var hand: Transform3D = at_hand if at_hand is Transform3D else hand_of(by, dir)
 	var out := hand.origin - eyes
 	var me := _body_of(by)
 	var clear := tuning_of(by).throw_clear
@@ -463,6 +467,19 @@ func worn_hand_of(by: int) -> Variant:
 		if at is Transform3D:
 			return Transform3D((at as Transform3D).basis.orthonormalized(), (at as Transform3D).origin)
 	return null
+
+
+## Where player `by`'s Sock `sock` hangs as the Host draws it on their avatar (worn_hand_of() there),
+## worked out on their own machine from their own body's HoldPoint (AvatarLooks.avatar_hold()) and the
+## worn hang (HeldView.worn_pose()), unscaled; null when they do not play here or have no own body.
+## A Guest's Throw ghost leaves with the launch from there, so it flies the Host's flight (coop/11).
+func avatar_hand_of(by: int, sock: int) -> Variant:
+	var player := _player_of(by)
+	var own := player.own_body() if player != null else null
+	if own == null or not own.is_inside_tree() or sock < 0:
+		return null
+	var at := own.avatar_hold() * HeldView.worn_pose(mess, sock)
+	return Transform3D(at.basis.orthonormalized(), at.origin)
 
 
 ## Where player `by`'s eyes are: their player's when it is on this machine (alone, always), else

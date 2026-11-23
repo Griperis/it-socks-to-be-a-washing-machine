@@ -18,6 +18,9 @@ extends Resource
 ## A ghost's drawn offset moves `1 - exp(-3 dt / predict_blend)` of the way to how the Host's body
 ## differs at the same moment of the flight: 95 per cent in this long (G04, G11).
 @export_range(0.01, 1.0, 0.01, "suffix:s") var predict_blend := 0.2 # placeholder: the old release.json predict_blend
+## A Throw's ghost is drawn from the first-person hand and eases onto its body, which flies the Host's
+## launch from the avatar's hand, in this long (Q2481, coop/11).
+@export_range(0.0, 1.0, 0.01, "suffix:s") var hand_over_time := 0.2 # placeholder: Q2481's 0.2 s
 ## The ghost lies at the Host's rest once nearer than this, or after `settle_wait` (G07).
 @export_range(0.0001, 0.05, 0.0001, "suffix:m") var settle_close := 0.002 # placeholder: the old thrown_item.gd
 @export_range(0.1, 5.0, 0.1, "suffix:s") var settle_wait := 2.0 # placeholder: the old flights.gd

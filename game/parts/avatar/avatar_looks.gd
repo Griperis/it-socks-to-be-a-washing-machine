@@ -151,6 +151,15 @@ func hold_point() -> Node3D:
 	return get_node(^"Body/HoldPoint") as Node3D
 
 
+## Where the HoldPoint is as an avatar of this body draws it: the first-person body's own is set
+## back by `belly_back` with the Body (coop/11: a Guest's Throw starts where the Host's avatar holds it).
+func avatar_hold() -> Transform3D:
+	var at := hold_point().global_transform
+	if not first_person:
+		return at
+	return at.translated(-(global_basis * Vector3(0.0, 0.0, tuning.belly_back)))
+
+
 ## The top of the cuff, where the name tag floats.
 func head() -> Node3D:
 	return get_node(^"Body/Head") as Node3D

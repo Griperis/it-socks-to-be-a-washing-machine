@@ -31,7 +31,12 @@ var stale := 0
 var heard := 0
 ## Rows kept, oldest first: [tick, position, rotation, velocity, spin].
 var _rows: Array[Array] = []
-## The Host's tick of the first row seen: the flight's start on the Host's clock.
+## The Host's tick whose row shows the body's launch pose, its first step not yet seen (coop/11): sent
+## once, with the spawn. A row stamped N shows the body as the step before tick N left it, so a body
+## let go outside a physics tick still shows its launch pose at the tick after; counting the flight
+## from the first row's stamp put the Host's flight a step ahead of the thrower's ghost. -1 before.
+var born := -1.0
+## The Host's tick of the first row seen: the flight's start on the Host's clock when no `born` came.
 var _first := -1.0
 ## The Host's tick the body was last put at (flight_time()).
 var _played := -1.0
@@ -60,6 +65,8 @@ static func attach(body: RigidBody3D, p_mess: Mess, p_host_side: bool) -> Flight
 	r.name = NAME
 	r.mess = p_mess
 	r.host_side = p_host_side
+	if p_host_side:
+		r.born = tick() + (0.0 if Engine.is_in_physics_frame() else 1.0)
 	body.add_child(r)
 	var sync := MultiplayerSynchronizer.new()
 	sync.name = SYNC
@@ -68,6 +75,10 @@ static func attach(body: RigidBody3D, p_mess: Mess, p_host_side: bool) -> Flight
 	config.add_property(path)
 	config.property_set_spawn(path, true)
 	config.property_set_replication_mode(path, SceneReplicationConfig.REPLICATION_MODE_ALWAYS)
+	var born_path := NodePath("%s:born" % NAME)
+	config.add_property(born_path)
+	config.property_set_spawn(born_path, true)
+	config.property_set_replication_mode(born_path, SceneReplicationConfig.REPLICATION_MODE_NEVER)
 	sync.replication_config = config
 	sync.replication_interval = 0.0
 	body.add_child(sync)
@@ -166,16 +177,21 @@ func _bounce(at: Vector3, speed: float) -> void:
 ## How far into its flight the body is drawn now on this machine (Host seconds since its first row),
 ## or -1 before any row.
 func flight_time() -> float:
-	if _first < 0.0 or _played < 0.0:
+	if _start() < 0.0 or _played < 0.0:
 		return -1.0
-	return maxf(0.0, (_played - _first) / _tps())
+	return maxf(0.0, (_played - _start()) / _tps())
 
 
 ## Where the Host's body was `t` seconds into its flight, or null when no row is kept from then.
 func sample(t: float) -> Variant:
-	if _first < 0.0:
+	if _start() < 0.0 or _rows.is_empty():
 		return null
-	return _sample_tick(_first + t * _tps())
+	return _sample_tick(_start() + t * _tps())
+
+
+## The Host's tick the flight started at: `born`, else the first row's.
+func _start() -> float:
+	return born if born >= 0.0 else _first
 
 
 ## The pose at Host tick `at` from the rows kept: between two rows, or on along the newest row's
