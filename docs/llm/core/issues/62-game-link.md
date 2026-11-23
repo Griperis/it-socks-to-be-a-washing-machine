@@ -62,3 +62,4 @@ still goes straight into the house, now through a link it makes.
     game/ui/title/title.gd, tests/game_link_test.gd(.uid), tests/hooks.gd, tests/house_test.gd (h01 finds the
     Session through the link), tests/wiring_scenes.txt, docs/architecture/coop.md, saves.md, lobby.md
   - Verified: PASS 18523 checks, 557 cases (every suite; --touched reached all through tests/hooks.gd)
+- Merged: 4e7ac513 (2026-11-23, branch core/62-game-link)
