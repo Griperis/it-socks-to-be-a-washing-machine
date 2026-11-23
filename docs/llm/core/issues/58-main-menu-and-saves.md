@@ -1,13 +1,13 @@
 ---
 type: ticket
-status: ready-for-agent
+status: needs-info
 kind: build
 area: core
 feature: frame
 priority: now
 created: 2026-11-23
 done:
-blocked_by: []
+blocked_by: [research: docs/research/steam-cloud-saves.md]
 notes: ["M4's first piece; design core/57, Q2553-Q2562; list docs/migration/m4-lists/01-main-menu-and-saves.md"]
 terms: [Host, Guest, Mess, Part, Hands]
 ---
