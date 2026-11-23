@@ -67,3 +67,4 @@ Assumption to confirm at the first still: Solo's bar is the old one (Continue, N
     (main 14).
   - Files: game/lobby/lobby.tscn, game/lobby/lobby.gd, tests/lobby_test.gd (k06), this ticket
   - Verified: PASS 18606 checks, 564 cases (--touched ran every suite)
+- Merged: 78fa0560 (2026-11-23, branch core/63-lobby-scene-and-state)
