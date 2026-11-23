@@ -139,5 +139,5 @@ and number of the old code (Q2277). Old sources: `game/house/openable.gd` (CUE_S
     game/zoo/stations/furniture.tscn, game/zoo/sounds/sound_spot.gd, assets/audio/*, tests/{furniture_devices,piano}_test.gd,
     tests/{sounds,furniture}_test.gd, tools/{shot_hooks.gd,piano_keys_from_old.py,shots/sets/furniture-devices.txt}.
     Strip: builds/review-furniture-devices/furniture-devices-strip.png.
-  - Verified: see the commit's suite line (run.sh --touched).
+  - Verified: suite: PASS 17437 checks, 469 cases (every suite: the audio files cannot be placed); PASS rules; PASS asset_lint.
 
