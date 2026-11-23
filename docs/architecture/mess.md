@@ -29,7 +29,8 @@ Socks lie, are drawn, move or wake.
   spawner's path); every other (woken, fallen, poured, swept, dropped) is started by each machine from the
   record under the Mess's own `Bodies` holder, which no spawner sees. A Guest's is looks only, on
   `Mess.LAYER_LOOKS` (it touches the house, lying Socks and its other looks bodies), and never wakes, rests
-  or writes anything shared; the Host's rest batch snaps it.
+  or writes anything shared; the Host's rest batch lies it, its drawing gliding from the body's place onto the
+  rest pose over `MessTuning.rest_glide` (Q2577, `Mess._glides`; its lying body is there at once).
 
 ## Flows
 

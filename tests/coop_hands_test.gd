@@ -20,6 +20,9 @@ const POUR := 6
 const GHOST_ON_FLIGHT := 0.02
 ## How far under the floor's top (y 0 in the zoo) a Sock's middle may be drawn or rest: core/50's sunk.
 const UNDER := 0.02
+## The most a Sock on the Guest may move in one frame from its falling copy's last place onto the Host's
+## rest and along its glide (Q2577; a snap was up to 0.6 m).
+const REST_STEP := 0.08
 
 var _branches: Array[Node] = []
 var _pace_next := 0
@@ -551,12 +554,36 @@ func case_throw_drop_pour_real_path() -> void:
 	await _press_button(host, "More")
 	var lowest := INF
 	var frames := 0
+	# Q2577: each Sock the Guest showed falling is drawn, frame by frame, from its body's last place
+	# gliding onto the Host's rest: its drawn place never jumps more than REST_STEP in a frame.
+	var shown: Dictionary[int, Vector3] = {}
+	var rest_step := 0.0
+	var glided := 0
+	var snap_far := 0.0
 	while frames < FPS * 40 and not (spout.first >= 0 and spout.pending() == 0 and _all_lie(hm, gm) and hm.count() - spout.first >= POUR * 5):
 		await _paced()
 		frames += 1
 		for body: RigidBody3D in gm.flight_bodies():
 			lowest = minf(lowest, _lowest_middle(body))
+		if spout.first < 0:
+			continue
+		for s1 in range(spout.first, gm.count()):
+			var body := gm.moving_body(s1)
+			var now: Vector3 = body.global_position if body != null else gm.lying_drawn_pose(s1).origin
+			if body == null and gm.state_of(s1) != Mess.State.LYING:
+				continue
+			if shown.has(s1) and body == null:
+				rest_step = maxf(rest_step, now.distance_to(shown[s1]))
+				if gm.lying_drawn_pose(s1).origin != gm.pose_of(s1).origin:
+					glided += 1
+					snap_far = maxf(snap_far, shown[s1].distance_to(gm.pose_of(s1).origin))
+			if body != null or gm.lying_drawn_pose(s1).origin != gm.pose_of(s1).origin:
+				shown[s1] = now
+			else:
+				shown.erase(s1)
 	_check(_all_lie(hm, gm), "the pour lies on both machines")
+	# The last rests glide on (Q2577).
+	await _paced_ticks(int(gm.bodies_tuning().rest_glide * FPS) + 3)
 	var worst := 0.0
 	var worst_turn := 0.0
 	var drawn_worst := 0.0
@@ -574,6 +601,9 @@ func case_throw_drop_pour_real_path() -> void:
 			under += 1
 	print("HANDS coop/13 pour: the Guest's moving bodies' lowest leg or foot middle %.4f m; at rest records off by at most %.5f m, %.3f deg, drawn instances %.5f m; lying under the floor %d" \
 			% [lowest, worst, worst_turn, drawn_worst, under])
+	print("HANDS coop/13 pour, Q2577: %d gliding frames, the farthest glide %.4f m, the largest drawn step a frame %.4f m" % [glided, snap_far, rest_step])
+	_check(glided > 0, "Q2577: the Guest's Socks glide onto the Host's rest (%d frames)" % glided)
+	_check(rest_step < REST_STEP, "Q2577: no Sock on the Guest jumps more than %.2f m in a frame, falling or gliding to its rest (%.4f m)" % [REST_STEP, rest_step])
 	_check(lowest > -UNDER, "item 2: no moving Sock on the Guest goes under the floor (%.4f m)" % lowest)
 	_check(under == 0, "item 2: no Sock on the Guest rests under the floor (%d)" % under)
 	_check(worst < 0.001 and worst_turn < 1.0, "item 3: every Sock on the Guest lies where the Host's does (%.5f m, %.3f deg)" % [worst, worst_turn])

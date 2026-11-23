@@ -43,9 +43,11 @@ causes for an earlier version of item 1: read it).
 
 ## Answers
 - Q2573 (2026-11-23).
+- Q2577: while a heap settles, a Guest's own falling copies glide onto the Host's rest pose over about 0.2 s (a typed
+  Resource number) instead of snapping; no extra traffic (2026-11-23).
 
 ## Open follow-ups
-- [later] Item 3, for the designer before the merge (the small-details rule): at rest the two heaps are equal (every
+- [answered Q2577: B, glide over about 0.2 s, built below] Item 3, for the designer before the merge (the small-details rule): at rest the two heaps are equal (every
   record and every drawn instance, 0 and 50 ms, 200 and 300 Socks), so what was seen is most likely the heap while it
   settles: the Guest's own looks-only bodies (Q2222) come to rest a median 11 cm and 55 degrees from where the Host's
   rest, 95th percentile 30 cm, worst 60 cm, and each is snapped there at its rest (280 of 300 by more than 5 cm or
@@ -95,3 +97,18 @@ causes for an earlier version of item 1: read it).
   `tests/teammates_test.gd` (`throw_hand`), `tools/coop_probe.{sh,gd,tscn,py}`, `docs/architecture/{mess,coop}.md`.
 - Verified: coop_hands PASS 209 checks, 8 cases; teammates PASS 71 checks, 9 cases; grep_rules PASS;
   `run.sh --touched` by agent_finish below.
+- 2026-11-23 agent (coop/13, Q2577): Merged main (4f1cba8). Changed: on a Guest, a Sock the Host's rest batch lies
+  while its own falling copy is still here is drawn gliding from that copy's place onto the rest pose over
+  `MessTuning.rest_glide` (0.2 s, placeholder), smoothstep, position and turn (`Mess._glides`, `lying_drawn_pose`);
+  its lying body is at the rest pose at once, nothing more is sent. New check in `throw_drop_pour_real_path`: no
+  Sock on the Guest moves more than 0.08 m in a frame from its copy's last place along its glide (measured
+  0.0074 m, glides up to 0.06 m in that 30-Sock pour; snaps reached 0.6 m in a 300 pour), and drawn instances equal
+  the Host's once the glides end.
+- Cost (`tools/coop_cost.sh`, 2,000 poured): Host sends 63.9 KB/s during the pour, 3.7 KB/s at rest; Host frame
+  17.7 / 30.4 / 33.2 ms (mean / 95th / worst), Guest 21.2 / 39.1 / 70.8 ms during the pour, 5.9 / 8.0 / 8.0 at rest
+  (coop/12's table: 72.2 KB/s; 23.4 / 38.3 / 38.6 and 27.1 / 36.2 / 68.8 ms). `coop_mess:pour_2000_50ms` (stress)
+  PASS 9 checks: reliable 33.1 KB/s, worst second 45.8 KB; the Mess's scripts a tick Host 3.19 ms (95th 5.12),
+  Guest 1.64 ms (95th 2.67).
+- Files: `game/mess/mess.gd`, `game/mess/mess_tuning.gd`, `tests/coop_hands_test.gd`,
+  `docs/architecture/mess.md`.
+- Verified: `coop_hands:throw_drop_pour_real_path` PASS 26 checks; `run.sh --touched` by agent_finish below.
