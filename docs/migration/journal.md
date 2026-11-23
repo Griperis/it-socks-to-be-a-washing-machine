@@ -1082,3 +1082,20 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2540, Q2553-Q2563, Q2575, Q2579, Q2580 |
 
 ---
+
+| Ticket | core/59, the ESC close key at the top right of every dialogue (Options, Licence, ESC menu, Multiplayer, Join) replacing the bottom-left Back; the End-session question's Cancel removed (Q2578); merged (main c86b0e5) |
+| Cost | about 104k subagent tokens |
+| Surprises | a lead mistake: the first merge's worktree was removed while it still ran; rerun clean |
+| Looks | builds/review-esc-close/ |
+
+---
+
+| Ticket | core/61, the Lobby design: 74 old details (`m4-lists/02-lobby.md`), `docs/architecture/lobby.md`, build tickets core/62-67 (Q2582-Q2587); merged (main 7961957) |
+| Cost | about 234k subagent tokens |
+
+---
+
+| Ticket | core/60, the Heap's top Sock "never reached the Hands": the pick was fine; the tests' open-Sock probe started inside the Sock above; the kitchen real path aims at a Heap top again; merged (main bfb77e6) |
+| Cost | about 97k subagent tokens (Opus) |
+
+---
