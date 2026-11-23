@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: house
 feature: house
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-23
 blocked_by: []
 notes: []
 terms: []
@@ -48,5 +48,48 @@ The house is the game's own scene, not a zoo station (Q2503). Shell and furnitur
 - Q2504 (2026-11-23): built to the end with no stop at the first still; a before and after strip for the designer's batch review before the merge.
 
 ## Open follow-ups
+- [later] D01 found: the old house's own shell (make_house.py) has no bathroom wainscot (the old still shows plain
+  walls); the numbers are the old flat's (make_flat.py make_wall_tiles: tiles to 1.2 m, a trim 3.5 cm over).
+  Built as a wall paint (`wall_bathroom_tiled`), so the trim band is painted, not a raised board. Keep it?
+- [later] D07: the shaft's walls are the old "door" cream, its sill stainless; the hatch's frame, panel,
+  buttons and car are the elevator entity's (M5).
+- [later] D09 explained: the balustrade's side rails ran to the south wall, under the 40 degree slope, so their
+  ends came out through the roof (the old house too). They now stop where the slope clears the handrail by
+  5 cm; the rail ends there without a post. A post or a rail that follows the slope instead?
+- [later] Nothing outside the house (Q2503): a player who walks out of the front door or the garage door falls
+  for ever. A floor, a fall catch or a shut door until the exterior ticket?
+- [later] Every lamp is lit at noon. The old house switched all but the basement's off by day and lit each
+  floor's lights only on its own floor (light layers); neither is ported.
+- [later] The corner label and the joiner's line say "house" ("Joined <name>'s house"), the zoo's "zoo":
+  placeholder wording.
+- [later] The old openables' own names (the fridge's Fridge and Freezer, the car's CarBoot) are not carried
+  over: the openings keep the furniture scenes' node names.
+- [later] Kit: `kit/tools/shot.gd` reads only the main scene as its default; the game's `tools/shot_hooks.gd`
+  setup() sets the harness's `_scene` to the zoo so the old sets still work. A hooks constant (as the runner's
+  `WORLD`) would be cleaner. `kit/tools/net_shot.gd` loads the main scene: co-op net shots now start in the house.
+- [later] The strip's room-kitchen view stands in the fridge's player box (the old view point, 0.7, 0.7, is where the
+  fridge now stands), so it shows the fridge's side; the old baseline still was taken before the fridge stood there.
+- [later] `tools/house_kit_build.gd` (1181 lines) and `tools/shot_hooks.gd` (714) are over grep_rules' 600:
+  to split.
 
 ## Built log
+
+### 2026-11-23
+- Changed: the house is the game's level and main scene (`game/house/house.tscn`): house B's shell
+  (`game/house/shell.tscn`, kit pieces only, no ground), the 66 old furniture placements moved to the plan, the
+  old lights, the zoo's noon light, the player at the old spawn in the laundry, the zoo's shared-state path with
+  `LevelNet` (`--host`, `--join=`; `ZooNet` extends it). `-- --zoo` starts the zoo. Both old-house stations
+  gone (D08 with them); the Furniture station moved from x 75.5 to 21.5, next to the zoo floor, as nothing led
+  to it any more. Shell details: the shaft's walls, hatches and sills (D07), the bathroom's tile wainscot
+  (D01), the balustrade no longer through the roof (D09). Lights (room.gd `_build_light`): colour
+  (1, 0.88, 0.7); 18 ceiling lights 8 cm under the old markers, in proportion across their rooms, energy 1,
+  range 6, shadow (blur 2, bias 0.05); the floor lamp's (1.38 m up) and the nightstand's lamps, energy 0.7,
+  range 3, no shadow. Spawn (1.68, -3, 5.87), yaw 0.922.
+- Files: game/house/house.tscn, shell.tscn, kit/ (3 shaft pieces, wainscot.gdshader, 3 materials, balustrade),
+  game/net/level_net.gd, game/zoo/zoo_net.gd, zoo.tscn, game/debug/game_cli.gd, project.godot,
+  tools/house_shell_build.gd (was old_house_build.gd), house_from_old.py, house_kit_build.gd, shot_hooks.gd,
+  shots/sets/house.txt, tests/house_test.gd (was old_house_test.gd), game_cli_test.gd, zoo_test.gd,
+  docs/architecture.md, architecture/house.md, house-kit.md, furniture.md.
+- Verified: `PASS 16354 checks, 455 cases` (--touched: every suite, project.godot); house 14 cases incl. the real paths spawn to the attic and front door to the attic;
+  `PASS rules`, `PASS asset_lint`. Strip: `builds/review-house-04/floor-1-basement.png` .. `floor-4-attic-outside.png`
+  (old, house/03, house/04 per view) and the `house` set's stills (`house-roof-south.png`: D09).

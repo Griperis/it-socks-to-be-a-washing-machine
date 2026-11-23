@@ -1,0 +1,903 @@
+## The house (house/03, house/04): its shell, the old house rebuilt from the house kit with its
+## windows rounded to 0.5 m (Q2381, Q2503), built from kit pieces only at the plan's numbers
+## (docs/architecture/house-kit-plan.md), painted with the old rooms' materials, with the bathroom's
+## tile wainscot (D01), the elevator shaft's walls (D07), nothing through the roof (D09) and no two
+## faces in one plane; and the level game/house/house.tscn, the project's main scene (Q2509): the
+## shell, the old furniture where the old house had it (Q2510), the old lamps and the zoo's noon
+## light (Q2512), the player at the old spawn and the shared-state path (a Host of one; --host and
+## --join). Walked by the player's own input from the spawn to every floor, and from the front door
+## to the attic.
+extends TestSuite
+
+const PIECES := "res://game/house/kit/pieces"
+const MATERIALS := "res://game/house/kit/materials"
+const PLAYER := "res://game/player/player.tscn"
+const SHELL := "res://game/house/shell.tscn"
+const HOUSE := "res://game/house/house.tscn"
+const FURNITURE := "res://game/furniture"
+## The old spawn moved to the plan (room.gd spawn_pos 1.58, -2.9, 5.59 in the laundry, spawn_yaw).
+const SPAWN := Vector3(1.68, -3.0, 5.87)
+const SPAWN_YAW := 0.922
+## The old room light (room.gd LAMP_COLOUR) and the old lamp's.
+const LAMP_COLOUR := Color(1.0, 0.88, 0.7)
+## The shaft's hole (plan K09): x 3.24..3.94 (the x 4 partition's face), z 4.8..5.5.
+const SHAFT := Rect2(3.24, 4.8, 0.7, 0.7)
+const EPS := 0.001
+## The layer of the meshes' hollow shapes in the z-fight cases (_occluders()).
+const OCCLUDE := 1 << 19
+## The directions _inside_mesh() looks from, skewed off every axis.
+const SKEW: Array[Vector3] = [Vector3(0.31, 0.83, 0.47), Vector3(-0.62, 0.41, 0.67), Vector3(0.53, -0.38, 0.76),
+		Vector3(-0.44, -0.71, -0.55), Vector3(0.77, 0.29, -0.57), Vector3(0.97, 0.13, 0.21), Vector3(-0.96, -0.17, 0.22),
+		Vector3(0.14, 0.97, -0.19), Vector3(-0.18, -0.96, 0.21), Vector3(0.16, -0.23, 0.96), Vector3(-0.21, 0.15, -0.97)]
+## Floor tops by storey (plan K02).
+const FLOOR_Y := {"Basement": -3.0, "Ground": 0.0, "First": 3.0, "Attic": 6.0}
+## The doorways (plan K08): id, storey, axis of the wall line ("x": x = line), line, centre along,
+## width.
+const DOORWAYS: Array[Array] = [
+	["D1", "Basement", "x", 4.0, 2.75, 0.9], ["D2", "Basement", "x", 4.0, 4.1, 0.9],
+	["D3", "Basement", "z", 2.0, 5.25, 0.9], ["D4", "Basement", "x", 6.5, 4.75, 0.9],
+	["D5", "Ground", "x", 4.0, 2.75, 0.9], ["D6", "Ground", "x", 6.5, 4.75, 0.9],
+	["D7", "First", "x", 4.0, 2.75, 0.9], ["D8", "First", "x", 4.0, 4.1, 0.9],
+	["D9", "First", "x", 6.5, 2.75, 0.9], ["D10", "First", "x", 6.5, 4.75, 0.9],
+	["D11", "Ground", "z", 0.0, 5.75, 0.9], ["D12", "Basement", "z", 0.0, 8.25, 2.4],
+]
+## The windows in the outer walls (plan K06): id, storey, side, centre along, old width, grid width,
+## sill (W12's over the ground floor).
+const WINDOWS: Array[Array] = [
+	["W1", "Basement", "N", 1.75, 1.2, 1.0, 1.75], ["W2", "Basement", "W", 6.75, 1.0, 1.0, 1.75],
+	["W3", "Basement", "S", 3.25, 1.0, 1.0, 1.75], ["W4", "Basement", "E", 3.75, 1.0, 1.0, 1.75],
+	["W5", "Ground", "N", 3.25, 1.0, 1.0, 1.1], ["W6", "Ground", "W", 7.25, 1.1, 1.0, 0.9],
+	["W7", "Ground", "S", 1.75, 2.0, 2.0, 0.9], ["W8", "Ground", "N", 4.5, 0.5, 0.5, 1.3],
+	["W9", "Ground", "N", 8.25, 1.2, 1.0, 0.9], ["W10", "Ground", "E", 4.75, 1.4, 1.5, 0.9],
+	["W11", "Ground", "S", 8.25, 2.4, 2.5, 0.9], ["W12", "Ground", "S", 5.25, 1.5, 1.5, 2.4],
+	["W13", "First", "N", 1.75, 1.2, 1.0, 0.9], ["W14", "First", "W", 1.75, 1.1, 1.0, 0.9],
+	["W15", "First", "W", 7.75, 0.8, 1.0, 0.9], ["W16", "First", "S", 2.25, 1.4, 1.5, 0.9],
+	["W17", "First", "N", 5.25, 1.1, 1.0, 0.9], ["W18", "First", "N", 7.75, 1.0, 1.0, 1.3],
+	["W19", "First", "S", 8.0, 1.5, 1.5, 0.9],
+]
+## The rooms' paints by storey, centre line to centre line (make_house.py ROOMS, WALL_COLOURS).
+const ROOMS := {
+	"Basement": [[Rect2(0, 0, 4, 3.5), "wall_workshop", "basement_tile"], [Rect2(0, 3.5, 4, 5), "wall_bathroom", "basement_tile"],
+			[Rect2(4, 0, 2.5, 2), "wall_boiler", "basement_tile"], [Rect2(4, 2, 2.5, 6.5), "wall_lobby", "basement_tile"],
+			[Rect2(6.5, 0, 4, 8.5), "wall_garage", "basement_tile"]],
+	"Ground": [[Rect2(0, 0, 4, 8.5), "wall_kitchen", "kitchen_tile"], [Rect2(4, 0, 2.5, 8.5), "wall_hall", "wood"],
+			[Rect2(6.5, 0, 4, 8.5), "wall_kitchen", "wood"]],
+	"First": [[Rect2(0, 0, 4, 3.5), "wall_office", "wood"], [Rect2(0, 3.5, 4, 5), "wall_bedroom", "wood"],
+			[Rect2(4, 0, 2.5, 8.5), "wall_hall", "wood"], [Rect2(6.5, 0, 4, 3.5), "wall_bathroom_tiled", "bath_tile"],
+			[Rect2(6.5, 3.5, 4, 5), "wall_kids", "wood"]],
+	"Attic": [[Rect2(0, 0, 10.5, 8.5), "wall_loft", "loft_boards"]],
+}
+
+var _level: Node3D = null
+var _branches: Array[Node] = []
+
+
+func cases() -> Array[Dictionary]:
+	return [
+		{"name": "b01_kit_pieces_only", "method": "case_b01_kit_pieces_only", "world": false,
+				"title": "B01: the shell is built from the kit's pieces only, every one on the half-metre grid in 90 degree turns, on four storeys"},
+		{"name": "b01_openings", "method": "case_b01_openings", "world": false,
+				"title": "B01: every doorway lets a player through at the plan's place, every window piece is centred where the plan says, the stair and the Cellar hatch are open"},
+		{"name": "b02_materials", "method": "case_b02_materials", "world": false,
+				"title": "B02: every wall face, floor and corner wears its room's old paint, the outside the old render"},
+		{"name": "b05_grid_windows", "method": "case_b05_grid_windows", "world": false,
+				"title": "B05: the house has the windows rounded to 0.5 m (house B, Q2503)"},
+		{"name": "d01_wainscot", "method": "case_d01_wainscot", "world": false,
+				"title": "D01: the bathroom's walls have the old tile wainscot to 1.2 m and a trim band over it; no other room has it"},
+		{"name": "d07_shaft", "method": "case_d07_shaft", "world": false,
+				"title": "D07: the elevator shaft has walls round its hole on every storey, its hatch open at the old faces, its sill out of it, the attic's closed by a lid"},
+		{"name": "d09_roof", "method": "case_d09_roof", "world": false,
+				"title": "D09: nothing in the attic comes out through the roof (the balustrade's ends stop under the slope)"},
+		{"name": "k14_no_z_fight", "method": "case_k14_no_z_fight", "world": false,
+				"title": "K14: the shell has no two faces facing the same way in one plane where they can be seen"},
+		{"name": "h01_main_scene", "method": "case_h01_main_scene", "world": false,
+				"title": "the house is the project's main scene: the shell, the player, the shared-state path, the zoo's noon light, and nothing of game/zoo/"},
+		{"name": "h02_furniture", "method": "case_h02_furniture", "world": false,
+				"title": "the old furniture stands where the old house had it, moved to the plan, each piece on its floor inside its room"},
+		{"name": "h03_lights", "method": "case_h03_lights", "world": false,
+				"title": "every old room light hangs in its room, the old lamps' lights at their lamps, with the old colour, energy, range and shadow"},
+		{"name": "h04_coop", "method": "case_h04_coop", "world": false,
+				"title": "the house is played alone as a Host of one; with --host and --join a second house joins it and each sees the other's avatar"},
+		{"name": "real_path_spawn_to_every_floor", "method": "case_real_path_spawn_to_every_floor", "world": false,
+				"title": "real path: in the house the player starts at the old spawn in the laundry, walks through the doorway to the stair lobby and climbs the U stair to the ground, first and attic floors"},
+		{"name": "real_path_front_door_to_attic", "method": "case_real_path_front_door_to_attic", "world": false,
+				"title": "real path: in the shell the player walks in from the front door (no ground outside, Q2503), is stopped by the hall's partition, and climbs the U stair to the first floor and on to the attic"},
+	]
+
+
+func _before_case() -> void:
+	for a: StringName in [&"move_forward", &"move_back", &"move_left", &"move_right"]:
+		Input.action_release(a)
+	if _level != null:
+		_level.free()
+		_level = null
+	_drop_branches()
+
+
+## A level of the shell at the origin (its frame the house's), optionally with the player at `at`
+## facing +Z and the level's Parts; physics ready.
+func _shell(player_at := Vector3.INF) -> Player:
+	_level = Node3D.new()
+	_level.name = "Level"
+	var shell := (load(SHELL) as PackedScene).instantiate() as Node3D
+	_level.add_child(shell)
+	var player: Player = null
+	if player_at != Vector3.INF:
+		player = (load(PLAYER) as PackedScene).instantiate() as Player
+		player.position = player_at
+		player.rotation.y = PI   # facing +Z
+		_level.add_child(player)
+		var parts := Parts.new()
+		parts.name = "Parts"
+		_level.add_child(parts)
+	add_child(_level)
+	if player != null:
+		await _until(func() -> bool: return player.is_on_floor(), "the player to stand")
+	else:
+		await _physics_ticks(2)
+	return player
+
+
+func _house() -> Node3D:
+	return _level.get_child(0) as Node3D
+
+
+## The house level, in the tree; physics ready and the player standing.
+func _level_up() -> Node3D:
+	_level = (load(HOUSE) as PackedScene).instantiate() as Node3D
+	add_child(_level)
+	var player := _level.get_node("Player") as Player
+	await _until(func() -> bool: return player.is_on_floor(), "the player to stand in the house")
+	return _level
+
+
+func _pieces(house: Node) -> Array[MeshInstance3D]:
+	var out: Array[MeshInstance3D] = []
+	var own := house if house.owner == null else house.owner
+	for node: Node in house.find_children("*", "MeshInstance3D", true, false):
+		if node.owner == own:
+			out.append(node as MeshInstance3D)
+	return out
+
+
+func _hit(from: Vector3, to: Vector3) -> Dictionary:
+	return PhysicsQueries.ray(_level, from, to, Mess.LAYER_HOUSE)
+
+
+func _clear(from: Vector3, to: Vector3) -> bool:
+	return _hit(from, to).is_empty()
+
+
+static func _on_grid(v: float) -> bool:
+	return absf(v - snappedf(v, 0.5)) < EPS
+
+
+## The material a piece shows on `slot`: its override, else its mesh's.
+static func _shown(p: MeshInstance3D, slot: int) -> String:
+	var m := p.get_surface_override_material(slot)
+	if m == null:
+		m = p.mesh.surface_get_material(slot)
+	return m.resource_path.get_file().get_basename() if m != null else ""
+
+
+func _storey_of(p: Node) -> String:
+	var n := p
+	while n != null and not FLOOR_Y.has(String(n.name)):
+		n = n.get_parent()
+	return String(n.name) if n != null else ""
+
+
+# --- B01 ----------------------------------------------------------------------------------------
+
+func case_b01_kit_pieces_only() -> void:
+	for path: String in [SHELL]:
+		var station := (load(path) as PackedScene).instantiate() as Node3D
+		var house := station
+		var storeys := {}
+		var count := 0
+		var odd: Array[String] = []
+		for p in _pieces(house):
+			count += 1
+			if not p.scene_file_path.begins_with(PIECES):
+				odd.append("%s is no kit piece" % house.get_path_to(p))
+				continue
+			var at := house.to_local(p.global_transform.origin) if p.is_inside_tree() else _local(house, p)
+			var turn := rad_to_deg(p.rotation.y)
+			if not (_on_grid(at.x) and _on_grid(at.y) and _on_grid(at.z)):
+				odd.append("%s is off the grid (%s)" % [house.get_path_to(p), at])
+			if not is_equal_approx(snappedf(turn, 90.0), snappedf(turn, 0.01)) or absf(p.rotation.x) > EPS or absf(p.rotation.z) > EPS:
+				odd.append("%s is not turned in 90 degree steps (%s)" % [house.get_path_to(p), turn])
+			storeys[_storey_of(p)] = true
+		for o: String in odd.slice(0, 10):
+			_check(false, "%s: %s" % [path.get_file(), o])
+		_check(odd.is_empty(), "%s: all %d meshes of the house are kit pieces on the grid in 90 degree turns" % [path.get_file(), count])
+		_check(count > 400, "%s: the whole house is there (%d pieces)" % [path.get_file(), count])
+		for s: String in FLOOR_Y:
+			_check(storeys.has(s), "%s has its %s storey" % [path.get_file(), s])
+			var node := house.get_node_or_null(s) as Node3D
+			_check(node != null and is_equal_approx(node.position.y, FLOOR_Y[s]), "%s's %s floor is at y %s" % [path.get_file(), s, FLOOR_Y[s]])
+		station.free()
+
+
+## A node's position in `house`'s frame, out of the tree (the parents' positions added up).
+static func _local(house: Node3D, p: Node3D) -> Vector3:
+	var at := p.position
+	var n := p.get_parent() as Node3D
+	while n != null and n != house:
+		at = n.transform * at
+		n = n.get_parent() as Node3D
+	return at
+
+
+func case_b01_openings() -> void:
+	await _shell()
+	var house := _house()
+	# Each doorway lets a body 0.7 m wide and 1.8 m tall through at its place; just past each jamb
+	# the wall stands.
+	for d: Array in DOORWAYS:
+		var y: float = FLOOR_Y[d[1]]
+		var line: float = d[3]
+		var c: float = d[4]
+		var w: float = d[5]
+		var across := func(along: float, h: float) -> bool:
+			if d[2] == "x":
+				return _clear(Vector3(line - 0.5, y + h, along), Vector3(line + 0.5, y + h, along))
+			return _clear(Vector3(along, y + h, line - 0.5), Vector3(along, y + h, line + 0.5))
+		var through := true
+		for off: float in [-0.35, 0.0, 0.35]:
+			for h: float in [0.3, 1.0, 1.8]:
+				through = through and across.call(c + off, h)
+		_check(through, "%s lets the player through at %s %s, along %s" % [d[0], d[2], line, c])
+		_check(not across.call(c - w / 2 - 0.12, 1.0) and not across.call(c + w / 2 + 0.12, 1.0) and not across.call(c, 2.3),
+				"%s has wall beside and over it" % d[0])
+	# Each window piece is centred where the plan says (the piece's middle along its wall).
+	for w: Array in WINDOWS:
+		var node := house.get_node_or_null("%s/%s/%s" % [w[1], w[2], w[0]]) as MeshInstance3D
+		_check(node != null, "%s is in its storey's %s wall" % [w[0], w[2]])
+		if node == null:
+			continue
+		var box := node.mesh.get_aabb()
+		var mid := node.global_transform * Vector3(box.get_center().x, 0, 0)
+		var along := mid.x if w[2] in ["N", "S"] else mid.z
+		_near(along, w[3], EPS, "%s is centred at %s along the %s wall" % [w[0], w[3], w[2]])
+		var line := {"N": 0.0, "S": 8.5, "W": 0.0, "E": 10.5}
+		var across := mid.z if w[2] in ["N", "S"] else mid.x
+		_near(across, line[w[2]], EPS, "%s stands in the %s wall's line" % [w[0], w[2]])
+	# Down the stair's well to the basement; down the Cellar hatch under the basement floor (the
+	# shaft: d07).
+	var hit := _hit(Vector3(4.6, 5.9, 6.0), Vector3(4.6, -4, 6.0))
+	_check(not hit.is_empty() and (hit["position"] as Vector3).y < 4.6 and (hit["position"] as Vector3).y > 3.0,
+			"the attic floor is open over the U stair (%s)" % [hit.get("position")])
+	_check(_clear(Vector3(2.75, -2.5, 1.75), Vector3(2.75, -4, 1.75)), "the Cellar hatch opens through the workshop floor")
+	_check(not _clear(Vector3(2.0, -2.5, 3.0), Vector3(2.0, -4, 3.0)), "the workshop floor stands round it")
+	# The roof over the attic, the ridge 3.88 m over its floor at z 4.25 (plan K11).
+	hit = _hit(Vector3(2.0, 6.5, 4.25), Vector3(2.0, 12, 4.25))
+	_check(not hit.is_empty() and absf((hit["position"] as Vector3).y - (6.0 + 3.88)) < 0.3, "the roof closes the attic at the ridge (%s)" % [hit.get("position")])
+	for s: String in ["Basement", "Ground", "First"]:
+		var stair := house.get_node("%s/Stair" % s).get_child(0) as Node3D
+		_check(stair.position.is_equal_approx(Vector3(4, 0, 5.5)), "the %s's U stair stands on its well's corner, its first riser at z 5.5" % s)
+
+
+# --- B02 ----------------------------------------------------------------------------------------
+
+## The room paint a step off a point, or the outside render.
+func _paint_at(storey: String, at: Vector3, column: int) -> String:
+	if at.x <= 0.0 or at.x >= 10.5 or at.z <= 0.0 or at.z >= 8.5:
+		return "wall_outside"
+	for room: Array in ROOMS[storey]:
+		if (room[0] as Rect2).has_point(Vector2(at.x, at.z)):
+			return room[column]
+	return ""
+
+
+func case_b02_materials() -> void:
+	await _shell()
+	var house := _house()
+	var wrong: Array[String] = []
+	var faced := 0
+	for p in _pieces(house):
+		var file := p.scene_file_path.get_file().get_basename()
+		var storey := _storey_of(p)
+		var xf := house.global_transform.affine_inverse() * p.global_transform
+		var box := p.mesh.get_aabb()
+		if file.begins_with("floor_"):
+			var c := xf * Vector3(box.get_center().x, 0, box.get_center().z)
+			if _shown(p, 0) != _paint_at(storey, c, 2):
+				wrong.append("%s shows %s" % [house.get_path_to(p), _shown(p, 0)])
+		elif file.begins_with("wall_") or file.begins_with("door_") or file.begins_with("window_"):
+			faced += 1
+			for slot: int in [0, 1]:
+				var spot := xf * Vector3(box.get_center().x, 0, 0.3 if slot == 0 else -0.3)
+				var want := _paint_at("Ground" if file == "window_stair" else storey, spot, 1)
+				if _shown(p, slot) != want:
+					wrong.append("%s slot %d shows %s, not %s" % [house.get_path_to(p), slot, _shown(p, slot), want])
+		elif file.begins_with("corner_"):
+			var inside := xf * Vector3(0.3, 0, 0.3)
+			if _shown(p, 0) != _paint_at(storey, inside, 1) or _shown(p, 1) != "wall_outside":
+				wrong.append("%s shows %s / %s" % [house.get_path_to(p), _shown(p, 0), _shown(p, 1)])
+		elif file.begins_with("ceiling"):
+			if _shown(p, 0) != "ceiling":
+				wrong.append("%s shows %s" % [house.get_path_to(p), _shown(p, 0)])
+	for w: String in wrong.slice(0, 10):
+		_check(false, w)
+	_check(wrong.is_empty() and faced > 100, "every wall face, floor, corner and ceiling wears its room's paint (%d wall pieces, %d wrong)" % [faced, wrong.size()])
+	# Spot checks against the old house: the kitchen's tiles, the bathroom's, the loft's boards, the
+	# hall's yellow beside the kitchen's cream on the x 4 partition, the laundry's bathroom green.
+	var first_x4 := house.get_node("Ground/X4").get_child(0) as MeshInstance3D
+	_check(_shown(first_x4, 0) == "wall_kitchen" and _shown(first_x4, 1) == "wall_hall", "the ground floor's x 4 partition is the kitchen's on its west face and the hall's on its east")
+	var tiles := {"Ground": [1.0, 1.0, "kitchen_tile"], "First": [8.0, 1.0, "bath_tile"], "Attic": [1.0, 1.0, "loft_boards"],
+			"Basement": [1.0, 6.0, "basement_tile"]}
+	for s: String in tiles:
+		var t: Array = tiles[s]
+		var found := false
+		for p in _pieces(house.get_node("%s/Floor" % s)):
+			var at := p.position
+			var side := p.mesh.get_aabb().size.x
+			if t[0] >= at.x and t[0] < at.x + side and t[1] >= at.z and t[1] < at.z + side:
+				found = _shown(p, 0) == t[2]
+		_check(found, "the %s floor at x %s z %s is %s" % [s, t[0], t[1], t[2]])
+	var laundry := house.get_node("Basement/Z3_5").get_child(0) as MeshInstance3D
+	_check(_shown(laundry, 0) == "wall_bathroom" and _shown(laundry, 1) == "wall_workshop", "the laundry's walls have the old green, the workshop's its grey")
+
+
+# --- B05, B06 -----------------------------------------------------------------------------------
+
+func case_b05_grid_windows() -> void:
+	var shell := (load(SHELL) as PackedScene).instantiate() as Node3D
+	var width := func(p: MeshInstance3D) -> float:
+		return float(p.scene_file_path.get_file().get_slice("_", 1)) / 100.0
+	for w: Array in WINDOWS:
+		if w[0] == "W12":
+			continue
+		var node := shell.get_node_or_null("%s/%s/%s" % [w[1], w[2], w[0]]) as MeshInstance3D
+		_check(node != null, "the house has %s" % w[0])
+		if node != null:
+			_near(width.call(node), w[5], EPS, "%s is rounded to %s m" % [w[0], w[5]])
+	for pair: Array in [["Attic/Walls/W20", "gable_exterior_grid_mirrored"], ["Attic/Walls/W21", "gable_exterior_grid"],
+			["Attic/Roof/W22", "dormer_grid"]]:
+		_check(shell.get_node(pair[0]).scene_file_path.ends_with("/%s.tscn" % pair[1]), "%s is the %s" % [pair[0], pair[1]])
+	shell.free()
+
+
+# --- D01, D07, D09 ------------------------------------------------------------------------------
+
+func case_d01_wainscot() -> void:
+	var tiled := load(MATERIALS.path_join("wall_bathroom_tiled.tres")) as ShaderMaterial
+	_check(tiled != null and tiled.shader != null, "the tiled bathroom paint is a shader material")
+	if tiled == null:
+		return
+	_near(float(tiled.get_shader_parameter("top")), 1.2, EPS, "the tiles reach 1.2 m over the floor (make_flat.py make_wall_tiles)")
+	_near(float(tiled.get_shader_parameter("band")), 0.035, EPS, "a 3.5 cm trim band over them")
+	_check(tiled.get_shader_parameter("tiles") is Texture2D and String((tiled.get_shader_parameter("tiles") as Texture2D).resource_path).ends_with("wall_tiles.png"),
+			"the tiles are the old wall tiles")
+	_check(tiled.get_shader_parameter("paint") == (load(MATERIALS.path_join("wall_bathroom.tres")) as StandardMaterial3D).albedo_color,
+			"over them the bathroom's paint")
+	await _shell()
+	var house := _house()
+	var faces := 0
+	var elsewhere := 0
+	for p in _pieces(house):
+		for slot in p.get_surface_override_material_count():
+			if _shown(p, slot) != "wall_bathroom_tiled":
+				continue
+			var xf := house.global_transform.affine_inverse() * p.global_transform
+			var spot := xf * Vector3(p.mesh.get_aabb().get_center().x, 0, 0.3 if slot == 0 else -0.3)
+			if _storey_of(p) == "First" and Rect2(6.5, 0, 4, 3.5).has_point(Vector2(spot.x, spot.z)):
+				faces += 1
+			else:
+				elsewhere += 1
+	_check(faces >= 8, "the bathroom's wall faces wear the wainscot (%d)" % faces)
+	_same(elsewhere, 0, "no face outside the bathroom wears it")
+	var laundry := house.get_node("Basement/Z3_5").get_child(0) as MeshInstance3D
+	_same(_shown(laundry, 0), "wall_bathroom", "the laundry keeps the plain green")
+
+
+func case_d07_shaft() -> void:
+	await _shell()
+	var house := _house()
+	var want := {"Basement": "shaft_hatch_w", "Ground": "shaft_hatch_w", "First": "shaft_closed", "Attic": "shaft_attic"}
+	for st: String in want:
+		var group := house.get_node_or_null("%s/Shaft" % st)
+		var piece := group.get_child(0) as MeshInstance3D if group != null and group.get_child_count() > 0 else null
+		_check(piece != null and piece.scene_file_path.ends_with("/%s.tscn" % want[st]), "the %s has the shaft's %s" % [st, want[st]])
+		if piece != null:
+			_check(piece.position.is_equal_approx(Vector3(3, 0, 4.5)), "on the shaft's tile")
+	var mid := SHAFT.get_center()
+	for st: String in want:
+		var y: float = FLOOR_Y[st]
+		# The north and south walls, and the west one under the hatch, stand on the hole's edges.
+		var n := _hit(Vector3(mid.x, y + 0.5, mid.y - 1.0), Vector3(mid.x, y + 0.5, mid.y))
+		_check(not n.is_empty() and absf((n["position"] as Vector3).z - SHAFT.position.y) < 0.01, "%s: the shaft's north wall stands on the hole's edge (%s)" % [st, n.get("position")])
+		var s := _hit(Vector3(mid.x, y + 0.5, mid.y + 1.0), Vector3(mid.x, y + 0.5, mid.y))
+		_check(not s.is_empty() and absf((s["position"] as Vector3).z - SHAFT.end.y) < 0.01, "%s: its south wall too (%s)" % [st, s.get("position")])
+		var w := _hit(Vector3(mid.x - 1.0, y + 0.5, mid.y), Vector3(mid.x, y + 0.5, mid.y))
+		_check(not w.is_empty() and absf((w["position"] as Vector3).x - SHAFT.position.x) < 0.01, "%s: its west wall too (%s)" % [st, w.get("position")])
+	# The hatch: at 1.1 m over the floor, open on the west in the basement and on the ground floor
+	# (the ray reaches the x 4 partition), closed there on the first floor and in the attic.
+	for st: String in want:
+		var y: float = FLOOR_Y[st]
+		var h := _hit(Vector3(mid.x - 1.0, y + 1.1, mid.y), Vector3(mid.x + 0.6, y + 1.1, mid.y))
+		var x := (h["position"] as Vector3).x if not h.is_empty() else INF
+		if want[st] == "shaft_hatch_w":
+			_check(absf(x - 3.94) < 0.01, "%s: the hatch opens into the shaft from the west (%s)" % [st, x])
+		else:
+			_check(absf(x - SHAFT.position.x) < 0.01, "%s: the west wall is closed at the hatch's height (%s)" % [st, x])
+	# The first floor's hatch is the partition's, onto the landing; the attic's faces east.
+	for st: String in ["First", "Attic"]:
+		var y: float = FLOOR_Y[st]
+		var h := _hit(Vector3(mid.x + 1.0, y + 1.1, mid.y), Vector3(mid.x - 0.6, y + 1.1, mid.y))
+		_check(not h.is_empty() and absf((h["position"] as Vector3).x - (SHAFT.position.x + 0.04)) < 0.01,
+				"%s: from the east, the hatch opens into the shaft (%s)" % [st, h.get("position")])
+		var low := _hit(Vector3(mid.x + 1.0, y + 0.4, mid.y), Vector3(mid.x - 0.6, y + 0.4, mid.y))
+		_check(not low.is_empty() and (low["position"] as Vector3).x > SHAFT.end.x - 0.05, "%s: under the hatch the shaft is closed from the east (%s)" % [st, low.get("position")])
+	# The sill sticks out of the hatch's face; down the shaft from under the attic's lid to the
+	# basement floor; the lid closes it at 2.15 m over the attic floor.
+	var sill := _hit(Vector3(SHAFT.position.x - 0.03, 2.0, mid.y), Vector3(SHAFT.position.x - 0.03, 0.5, mid.y))
+	_check(not sill.is_empty() and absf((sill["position"] as Vector3).y - 0.805) < 0.01, "the ground floor's hatch has its sill out of its face (%s)" % [sill.get("position")])
+	var down := _hit(Vector3(mid.x, 8.0, mid.y), Vector3(mid.x, -4, mid.y))
+	_check(not down.is_empty() and absf((down["position"] as Vector3).y + 3.0) < 0.01, "the shaft runs open from the attic to the basement floor (%s)" % [down.get("position")])
+	var lid := _hit(Vector3(mid.x, 9.0, mid.y), Vector3(mid.x, 6.5, mid.y))
+	_check(not lid.is_empty() and absf((lid["position"] as Vector3).y - (6.0 + 2.15 + 0.04)) < 0.01, "the attic's lid closes the shaft (%s)" % [lid.get("position")])
+
+
+## The roof's underside over the attic floor (house_kit_sizes roof_under) at a point of the plan.
+static func _roof_under(x: float, z: float) -> float:
+	var d := minf(z, 8.5 - z)
+	return 0.4 + (d - 0.1) * tan(deg_to_rad(40.0))
+
+
+func case_d09_roof() -> void:
+	await _shell()
+	var house := _house()
+	var out: Array[String] = []
+	for group: String in ["Stair", "Shaft"]:
+		for p in _pieces(house.get_node("Attic/" + group)):
+			var xf := house.global_transform.affine_inverse() * p.global_transform
+			for s in p.mesh.get_surface_count():
+				for v: Vector3 in p.mesh.surface_get_arrays(s)[Mesh.ARRAY_VERTEX] as PackedVector3Array:
+					var at := xf * v
+					if at.y - 6.0 > _roof_under(at.x, at.z) + 0.001:
+						out.append("%s at %s" % [p.name, at])
+	for o: String in out.slice(0, 5):
+		_check(false, "comes out through the roof: " + o)
+	_check(out.is_empty(), "the attic's stair, balustrade and shaft stay under the roof (%d points over it)" % out.size())
+
+
+# --- K14 ----------------------------------------------------------------------------------------
+
+func case_k14_no_z_fight() -> void:
+	await _shell()
+	_occluders()
+	await _physics_ticks(2)
+	# The inside test itself: inside the hall's first skirting board, and in the hall's air.
+	var space := _level.get_world_3d().direct_space_state
+	_check(_inside_mesh(space, Vector3(4.07, 0.05, 1.0)), "a point in the hall's west skirting is inside a mesh")
+	_check(not _inside_mesh(space, Vector3(5.25, 1.2, 2.0)), "a point in the hall's air is inside none")
+	var fights := _fights(_planes(_level), 30)
+	for f in fights:
+		_check(false, "no two faces fight: " + f)
+	_check(fights.is_empty(), "the shell: no two faces share a plane facing one way where they can be seen (%d found)" % fights.size())
+	# The test would see a fight: a floor tile laid on the hall's floor, and one beside a skirting board.
+	for at: Vector3 in [Vector3(5.0, 0, 2.0), Vector3(4.06, 0.12, 1.0)]:
+		var tile := (load(PIECES.path_join("floor_05m.tscn")) as PackedScene).instantiate() as MeshInstance3D
+		tile.position = at
+		_level.add_child(tile)
+		await _physics_ticks(1)
+		_check(not _fights(_planes(_level), 1).is_empty(), "a floor tile at %s is found fighting" % at)
+		tile.free()
+
+
+## Every mesh of the level as a hollow shape on its own layer, for _inside_mesh(): trim (skirting, casings)
+## has no collider, yet hides what is behind it.
+func _occluders() -> void:
+	var body := StaticBody3D.new()
+	body.name = "Occluders"
+	body.collision_layer = OCCLUDE
+	body.collision_mask = 0
+	var shapes := {}
+	for node: Node in _level.find_children("*", "MeshInstance3D", true, false):
+		var mi := node as MeshInstance3D
+		if mi.mesh == null:
+			continue
+		if not shapes.has(mi.mesh):
+			var made := mi.mesh.create_trimesh_shape()
+			made.backface_collision = true
+			shapes[mi.mesh] = made
+		var cs := CollisionShape3D.new()
+		cs.shape = shapes[mi.mesh]
+		cs.transform = mi.global_transform
+		body.add_child(cs)
+	_level.add_child(body)
+
+
+## Whether a point lies inside some mesh (a skirting board, a casing: trim has no collider): from the
+## point, a ray in one of a few skewed directions meets the inside of a face first. In open air every
+## ray meets an outside first; where two faces meet face to face the first hit is either, so a
+## direction whose first back face is no nearer than a front face says nothing.
+func _inside_mesh(space: PhysicsDirectSpaceState3D, at: Vector3) -> bool:
+	for dir: Vector3 in SKEW:
+		var query := PhysicsRayQueryParameters3D.create(at, at + dir.normalized() * 2.0, OCCLUDE)
+		query.hit_back_faces = true
+		var any := space.intersect_ray(query)
+		if any.is_empty():
+			continue
+		query.hit_back_faces = false
+		var front := space.intersect_ray(query)
+		if front.is_empty() or at.distance_to(front["position"] as Vector3) > at.distance_to(any["position"] as Vector3) + 0.00001:
+			return true
+	return false
+
+
+## Every triangle of every mesh under `root`, in world space, bucketed by its plane (the normal and
+## the distance from the origin, rounded): faces facing the same way in one plane (as house_kit_test).
+func _planes(root: Node) -> Dictionary:
+	var planes := {}
+	for node: Node in root.find_children("*", "MeshInstance3D", true, false):
+		var mi := node as MeshInstance3D
+		if mi.mesh == null or not mi.is_visible_in_tree():
+			continue
+		var xf := mi.global_transform
+		for s in mi.mesh.get_surface_count():
+			var arrays := mi.mesh.surface_get_arrays(s)
+			var verts := arrays[Mesh.ARRAY_VERTEX] as PackedVector3Array
+			var idx := arrays[Mesh.ARRAY_INDEX] as PackedInt32Array
+			var count := idx.size() if not idx.is_empty() else verts.size()
+			for t in range(0, count, 3):
+				var a := xf * verts[idx[t] if not idx.is_empty() else t]
+				var b := xf * verts[idx[t + 1] if not idx.is_empty() else t + 1]
+				var c := xf * verts[idx[t + 2] if not idx.is_empty() else t + 2]
+				var n := (b - a).cross(c - a)
+				if n.length() < 1e-9:
+					continue
+				n = n.normalized()
+				var key := "%.3f %.3f %.3f %.3f" % [snappedf(n.x, 0.001) + 0.0, snappedf(n.y, 0.001) + 0.0, snappedf(n.z, 0.001) + 0.0,
+						snappedf(n.dot(a), 0.001) + 0.0]
+				if not planes.has(key):
+					planes[key] = []
+				(planes[key] as Array).append([mi, n, a, b, c])
+	return planes
+
+
+## The pairs of faces that overlap in one plane facing one way where they can be seen: a point just
+## in front of the overlap is inside no collider (as house_kit_test).
+func _fights(planes: Dictionary, limit: int) -> Array[String]:
+	var out: Array[String] = []
+	var space := _level.get_world_3d().direct_space_state
+	var probe := PhysicsPointQueryParameters3D.new()
+	probe.collision_mask = Mess.LAYER_HOUSE
+	for key: String in planes:
+		var tris: Array = planes[key]
+		if tris.size() < 2:
+			continue
+		var n: Vector3 = tris[0][1]
+		var d: float = n.dot(tris[0][2])
+		var u := n.cross(Vector3.UP if absf(n.y) < 0.9 else Vector3.RIGHT).normalized()
+		var v := n.cross(u)
+		var flat: Array = []
+		for tri: Array in tris:
+			var poly := PackedVector2Array()
+			for k: int in [2, 3, 4]:
+				var p: Vector3 = tri[k]
+				poly.append(Vector2(p.dot(u), p.dot(v)))
+			var rect := Rect2(poly[0], Vector2.ZERO).expand(poly[1]).expand(poly[2])
+			flat.append([tri[0], poly, rect])
+		for i in flat.size():
+			for j in range(i + 1, flat.size()):
+				var ri: Rect2 = flat[i][2]
+				var rj: Rect2 = flat[j][2]
+				if not ri.grow(-0.0005).intersects(rj.grow(-0.0005)):
+					continue
+				var area := 0.0
+				for poly: PackedVector2Array in Geometry2D.intersect_polygons(flat[i][1], flat[j][1]):
+					var part := absf(_area(poly))
+					if part < 1e-6:
+						continue
+					var mid := Vector2.ZERO
+					for q in poly:
+						mid += q
+					mid /= poly.size()
+					probe.position = u * mid.x + v * mid.y + n * d - n * 0.003
+					if space.intersect_point(probe, 1).is_empty() and not _inside_mesh(space, probe.position):
+						area += part
+				if area > 1e-5:
+					out.append("%s and %s (plane %s, %.5f m2)" % [_level.get_path_to(flat[i][0] as Node), _level.get_path_to(flat[j][0] as Node), key, area])
+					if out.size() >= limit:
+						return out
+	return out
+
+
+static func _area(poly: PackedVector2Array) -> float:
+	var a := 0.0
+	for i in poly.size():
+		var p := poly[i]
+		var q := poly[(i + 1) % poly.size()]
+		a += p.x * q.y - q.x * p.y
+	return a / 2
+
+
+# --- The real path ------------------------------------------------------------------------------
+
+## Holds `action` until `cond` holds, then lets go.
+func _walk(action: StringName, cond: Callable, what: String) -> void:
+	Input.action_press(action)
+	await _until(cond, what, 1200)
+	Input.action_release(action)
+
+
+## Holds `action` until the player stops moving along `axis` (0 x, 2 z); returns where it stopped.
+func _walk_to_stop(player: Player, action: StringName, axis: int) -> float:
+	Input.action_press(action)
+	var last := player.global_position[axis]
+	var still := 0
+	var frames := 0
+	while still < 15 and frames < 900:
+		await _physics_ticks(1)
+		frames += 1
+		var v := player.global_position[axis]
+		still = still + 1 if absf(v - last) < 0.0005 else 0
+		last = v
+	Input.action_release(action)
+	return last
+
+
+## Up one storey's U stair from beside the well's west partition, the player facing +Z: south up the
+## west flight to the half landing, east across it, north up the east flight to the floor above.
+func _climb(player: Player, floor_y: float) -> void:
+	var at := func() -> Vector3: return player.global_position
+	await _walk(&"move_forward", func() -> bool: return (at.call() as Vector3).z > 7.7 and player.is_on_floor(),
+			"the player to climb the west flight to the half landing over y %s" % floor_y)
+	_near((at.call() as Vector3).y, floor_y + 1.5, 0.06, "the player stands on the half landing over y %s" % floor_y)
+	await _walk(&"move_left", func() -> bool: return (at.call() as Vector3).x > 5.8, "the player to cross the landing")
+	await _walk(&"move_back", func() -> bool: return (at.call() as Vector3).z < 5.0 and player.is_on_floor(),
+			"the player to climb the east flight to the floor over y %s" % floor_y)
+	_near((at.call() as Vector3).y, floor_y + 3.0, 0.06, "the player is a storey up, on y %s" % (floor_y + 3.0))
+
+
+func case_real_path_front_door_to_attic() -> void:
+	var player := await _shell(Vector3(5.75, 0, 0.45))
+	var at := func() -> Vector3: return player.global_position
+	# In from the front door (x 5.3..6.2 of the north wall) and down the hall.
+	await _walk(&"move_forward", func() -> bool: return (at.call() as Vector3).z > 4.2, "the player to walk in at the front door and down the hall")
+	_near((at.call() as Vector3).y, 0.0, 0.06, "the player walks the ground floor")
+	# Right (west) until the x 4 partition stops it, beside the up flight.
+	var x := await _walk_to_stop(player, &"move_right", 0)
+	_check(x > 4.06 + 0.3 and x < 4.06 + 0.5, "the hall's west partition stops the player beside it (x %s)" % x)
+	await _climb(player, 0.0)
+	# On the first floor's landing, back west beside the next up flight, and up again.
+	await _walk(&"move_right", func() -> bool: return (at.call() as Vector3).x < 4.65, "the player to step beside the attic's flight")
+	await _climb(player, 3.0)
+	var top := at.call() as Vector3
+	_check(top.z < 5.5 and top.x > 5.2 and top.x < 6.5, "the player stands in the attic beside the balustrade (%s)" % top)
+	var eye := top + Vector3(0, 1.6, 0)
+	var roof := _hit(eye, eye + Vector3(0, 4, 0))
+	_check(not roof.is_empty() and (roof["position"] as Vector3).y > 7.7 and (roof["position"] as Vector3).y < 9.9, "the roof is over the player's head in the attic (%s)" % [roof.get("position")])
+
+
+## Walks the player (facing +Z) to `to` (x, z) by its own buttons: forward and back along z, left
+## and right along x, held while it is off by more than a few centimetres.
+func _go(player: Player, to: Vector2, what: String) -> void:
+	var keys := {&"move_forward": false, &"move_back": false, &"move_left": false, &"move_right": false}
+	var frames := 0
+	var d := Vector2.INF
+	while frames < 900:
+		d = to - Vector2(player.global_position.x, player.global_position.z)
+		if d.length() < 0.08:
+			break
+		var want := {&"move_forward": d.y > 0.04, &"move_back": d.y < -0.04, &"move_left": d.x > 0.04, &"move_right": d.x < -0.04}
+		for a: StringName in want:
+			if want[a] != keys[a]:
+				keys[a] = want[a]
+				if want[a]:
+					Input.action_press(a)
+				else:
+					Input.action_release(a)
+		await _physics_ticks(1)
+		frames += 1
+	for a: StringName in keys:
+		Input.action_release(a)
+	_check(d.length() < 0.15, "%s (off by %.2f m)" % [what, d.length()])
+
+
+func case_real_path_spawn_to_every_floor() -> void:
+	var house := await _level_up()
+	var player := house.get_node("Player") as Player
+	var at := func() -> Vector3: return player.global_position
+	_check((at.call() as Vector3).distance_to(SPAWN) < 0.1, "the player starts at the old spawn in the laundry (%s)" % at.call())
+	_near(player.rotation.y, SPAWN_YAW, 0.01, "facing the old spawn's way")
+	player.rotation.y = PI   # facing +Z: forward is south, left east
+	# Round the ironing board, through the laundry's doorway (D2, z 3.65..4.55 of the x 4 partition)
+	# into the stair lobby, beside the up flight.
+	await _go(player, Vector2(2.4, 4.1), "the player walks to the laundry's doorway")
+	await _go(player, Vector2(4.6, 4.1), "the player walks through it into the stair lobby")
+	_near((at.call() as Vector3).y, -3.0, 0.06, "the player walks the basement")
+	await _climb(player, -3.0)
+	await _walk(&"move_right", func() -> bool: return (at.call() as Vector3).x < 4.65, "the player to step beside the first floor's flight")
+	await _climb(player, 0.0)
+	await _walk(&"move_right", func() -> bool: return (at.call() as Vector3).x < 4.65, "the player to step beside the attic's flight")
+	await _climb(player, 3.0)
+	var top := at.call() as Vector3
+	_check(top.y > 5.9 and top.z < 5.5, "the player stands in the attic (%s)" % top)
+
+
+# --- The level ----------------------------------------------------------------------------------
+
+## Every res:// file `path` needs, through its dependencies.
+static func _needs(path: String, seen: Dictionary) -> void:
+	if seen.has(path):
+		return
+	seen[path] = true
+	if not (path.ends_with(".tscn") or path.ends_with(".tres") or path.ends_with(".gd")):
+		return
+	for dep: String in ResourceLoader.get_dependencies(path):
+		var p := dep.get_slice("::", dep.get_slice_count("::") - 1) if dep.contains("::") else dep
+		if p.begins_with("uid://"):
+			p = ResourceUID.ensure_path(p)
+		if p.begins_with("res://"):
+			_needs(p, seen)
+
+
+func case_h01_main_scene() -> void:
+	_same(String(ProjectSettings.get_setting("application/run/main_scene")), HOUSE, "the house is the project's main scene (F5, a plain launch)")
+	var house := await _level_up()
+	var shell := house.get_node_or_null("Shell") as Node3D
+	_check(shell != null and shell.scene_file_path == SHELL and shell.transform == Transform3D.IDENTITY, "the shell stands at the origin, the house's frame")
+	for n: String in ["Player", "Parts", "Session", "Session/Roster", "Socks/Mess", "Socks/Hands", "Socks/Knockdowns", "Socks/Coins",
+			"Avatars", "FlightSpawner", "Net", "Net/Hud/Mode"]:
+		_check(house.get_node_or_null(n) != null, "the house has its %s, as the zoo" % n)
+	var net := house.get_node("Net")
+	_check(net is LevelNet and not net is ZooNet, "its co-op start is the game's LevelNet")
+	_same((net as LevelNet).place_name(), "house", "which names the house")
+	var parts := house.get_node("Parts") as Parts
+	var door := house.get_node("Furniture/Fridge/Door_Top/Openable") as Part
+	_check(door != null and door.parts == parts, "the furniture's openings are bound to the house's Parts (%s)" % (door.id if door != null else &""))
+	var fresh := (load(HOUSE) as PackedScene).instantiate()
+	var env := fresh.get_node("Environment") as WorldEnvironment
+	_check(env.environment != null and env.environment.resource_path == "res://game/look/noon_environment.tres", "the zoo's noon sky and grade")
+	fresh.free()
+	var sun := house.get_node("Sun") as DirectionalLight3D
+	_check(sun.shadow_enabled and is_equal_approx(sun.light_energy, 2.4), "the zoo's sun")
+	_check(house.get_node_or_null("Picture") != null, "and its picture (AgX, grade)")
+	var seen := {}
+	_needs(HOUSE, seen)
+	var zoo: Array = seen.keys().filter(func(p: String) -> bool: return p.begins_with("res://game/zoo/"))
+	_check(zoo.is_empty(), "the house needs nothing of game/zoo/ (%s)" % [zoo])
+
+
+## The storeys' floors.
+const FLOORS: Array[float] = [-3.0, 0.0, 3.0, 6.0]
+## The old rooms by storey (the old layout's names; a stair room's light hangs over its floor's well).
+const ROOM_FLOORS := {"Basement": ["workshop", "laundry", "boiler", "stair_lobby", "garage", "stairs_basement"],
+		"Ground": ["kitchen", "hall", "living", "stairs_ground"],
+		"First": ["office", "bedroom", "landing", "bathroom", "kids", "stairs_first"]}
+
+
+func case_h02_furniture() -> void:
+	var house := (load(HOUSE) as PackedScene).instantiate() as Node3D
+	var pieces := house.get_node("Furniture").get_children()
+	_same(pieces.size(), 66, "every old placement of the house's four floors is there (66; the Grotto's are not)")
+	var wrong: Array[String] = []
+	for node in pieces:
+		var p := node as Node3D
+		if not p.scene_file_path.begins_with(FURNITURE + "/"):
+			wrong.append("%s is no furniture scene" % p.name)
+		var at := p.position
+		if at.x < 0.1 or at.x > 10.4 or at.z < 0.1 or at.z > 8.4:
+			wrong.append("%s stands outside the house's walls (%s)" % [p.name, at])
+		var on_floor := FLOORS.any(func(f: float) -> bool: return at.y >= f - EPS and at.y < f + 2.3)
+		if not on_floor:
+			wrong.append("%s is on no floor (%s)" % [p.name, at])
+		if absf(p.rotation.x) > EPS or absf(p.rotation.z) > EPS:
+			wrong.append("%s is tipped" % p.name)
+	for w: String in wrong.slice(0, 8):
+		_check(false, w)
+	_check(wrong.is_empty(), "each piece is a furniture scene, upright, on a floor inside the walls")
+	# The old places moved to the plan: against the wall they stood against, lifted as they were.
+	var spots := {"Fridge": [Vector3(0.49, 0, 0.47), 0.0], "Bathtub": [Vector3(10.02, 3, 1.05), -90.0],
+			"WallCupboard": [Vector3(3.75, 1.45, 1.46), -90.0], "SkiBag": [Vector3(6.706, -2, 2.261), 90.0],
+			"Car": [Vector3(8.41, -3, 2.24), 180.0], "OldCot": [Vector3(1.421, 6, 6.86), 180.0], "Piano": [Vector3(8.858, 0, 8.08), 180.0]}
+	for n: String in spots:
+		var p := house.get_node_or_null("Furniture/" + n) as Node3D
+		_check(p != null, "%s is placed" % n)
+		if p != null:
+			_check(p.position.distance_to(spots[n][0]) < 0.002, "%s stands at %s (%s)" % [n, spots[n][0], p.position])
+			_near(rad_to_deg(p.rotation.y), spots[n][1], 0.01, "%s turned %s degrees" % [n, spots[n][1]])
+	_check(house.get_node("Furniture/Fridge").scene_file_path == FURNITURE + "/fridge.tscn" and house.get_node("Furniture/Chair4").scene_file_path == FURNITURE + "/dining_chair.tscn",
+			"each is the old piece's scene (a repeat numbered: Chair4)")
+	house.free()
+
+
+func case_h03_lights() -> void:
+	var house := (load(HOUSE) as PackedScene).instantiate() as Node3D
+	var ceiling := 0
+	var lamps := 0
+	var wrong: Array[String] = []
+	for node in house.get_node("Lights").get_children():
+		var l := node as OmniLight3D
+		if l == null:
+			wrong.append("%s is no OmniLight3D" % node.name)
+			continue
+		if not l.light_color.is_equal_approx(LAMP_COLOUR):
+			wrong.append("%s is %s" % [l.name, l.light_color])
+		if String(l.name).begins_with("Ceiling_"):
+			ceiling += 1
+			if not (is_equal_approx(l.light_energy, 1.0) and is_equal_approx(l.omni_range, 6.0) and l.shadow_enabled
+					and is_equal_approx(l.shadow_blur, 2.0) and is_equal_approx(l.shadow_bias, 0.05)):
+				wrong.append("%s: energy %s range %s shadow %s" % [l.name, l.light_energy, l.omni_range, l.shadow_enabled])
+			# Under its room's ceiling, high over its floor (a stair's light hangs in the well above).
+			var room := String(l.name).trim_prefix("Ceiling_")
+			var fl := 6.0
+			for level: String in ROOM_FLOORS:
+				if room in ROOM_FLOORS[level]:
+					fl = FLOOR_Y[level]
+			if l.position.y - fl < 2.0 or l.position.y - fl > 4.5:
+				wrong.append("%s hangs at %s over its floor" % [l.name, l.position.y - fl])
+		elif String(l.name).begins_with("Lamp_"):
+			lamps += 1
+			if not (is_equal_approx(l.light_energy, 0.7) and is_equal_approx(l.omni_range, 3.0) and not l.shadow_enabled):
+				wrong.append("%s: energy %s range %s" % [l.name, l.light_energy, l.omni_range])
+	for w: String in wrong.slice(0, 8):
+		_check(false, w)
+	_check(wrong.is_empty(), "every light has the old colour, energy, range and shadow")
+	_same(ceiling, 18, "a ceiling light per old room light (18)")
+	_same(lamps, 2, "the floor lamp's and the nightstand's lights")
+	var kitchen := house.get_node("Lights/Ceiling_kitchen") as Node3D
+	_check(kitchen.position.distance_to(Vector3(2.02, 2.54, 4.25)) < 0.01, "the kitchen's hangs in its middle, 16 cm under its ceiling (%s)" % kitchen.position)
+	var lamp := house.get_node("Lights/Lamp_FloorLamp") as Node3D
+	var stand := house.get_node("Furniture/FloorLamp") as Node3D
+	_check(lamp.position.distance_to(stand.position + Vector3(0, 1.38, 0)) < 0.002, "the floor lamp's light is in its shade, 1.38 m up")
+	house.free()
+
+
+func case_h04_coop() -> void:
+	var alone := _branch("Alone")
+	await _frames(2)
+	var alone_net := alone.get_node("Net") as LevelNet
+	_check(not (alone.get_node("Session") as Session).is_online() and alone.get_node("Players").get_child_count() == 0,
+			"alone, the house opens no network and has no avatars")
+	_check(alone_net.mode_text().begins_with("Alone"), "the corner says: %s" % alone_net.mode_text())
+	var host := _branch("Host")
+	var guest := _branch("Guest")
+	await _frames(2)
+	var hs := host.get_node("Session") as Session
+	hs.port = 0
+	hs.profile = PlayerProfile.fresh()
+	_check((host.get_node("Net") as LevelNet).start(["--host"]) == OK, "the house hosts")
+	var gs := guest.get_node("Session") as Session
+	gs.profile = PlayerProfile.fresh()
+	_check((guest.get_node("Net") as LevelNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "another house joins it")
+	await _until(func() -> bool: return (guest.get_node("Net") as LevelNet).mode_text().begins_with("Joined"), "the guest to be welcomed")
+	_check((guest.get_node("Net") as LevelNet).mode_text().contains("house"), "into the host's house: %s" % (guest.get_node("Net") as LevelNet).mode_text())
+	var g_id := gs.me()
+	var ha := host.get_node("Avatars") as Avatars
+	var ga := guest.get_node("Avatars") as Avatars
+	await _until(func() -> bool: return ha.of(g_id) != null and ga.of(1) != null, "each house to show the other's avatar")
+	_drop_branches()
+
+
+func _branch(label: String) -> Node3D:
+	var node := Node.new()
+	node.name = label
+	add_child(node)
+	get_tree().set_multiplayer(SceneMultiplayer.new(), node.get_path())
+	var view := SubViewport.new()
+	view.name = "View"
+	view.own_world_3d = true
+	view.size = Vector2i(64, 64)
+	node.add_child(view)
+	var house := (load(HOUSE) as PackedScene).instantiate() as Node3D
+	view.add_child(house)
+	_branches.append(node)
+	return house
+
+
+## Every co-op machine goes: its session closes, then the nodes, then its MultiplayerAPI.
+func _drop_branches() -> void:
+	for node in _branches:
+		var session := node.get_node_or_null("View/House/Session") as Session
+		if session != null:
+			session.close()
+		var path := node.get_path()
+		remove_child(node)
+		node.free()
+		get_tree().set_multiplayer(null, path)
+	_branches.clear()

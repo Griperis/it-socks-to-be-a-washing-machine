@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://bn7cvcb600s0i"]
+
+[ext_resource type="ArrayMesh" uid="uid://ddhgv8fy7cfu7" path="res://game/house/kit/meshes/shaft_hatch_w.tres" id="1_18jik"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s0rns"]
+size = Vector3(0.7, 3, 0.04)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_myof8"]
+size = Vector3(0.7, 3, 0.04)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_al4mu"]
+size = Vector3(0.04, 3, 0.039999984)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m6hos"]
+size = Vector3(0.04, 3, 0.039999984)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bt3sj"]
+size = Vector3(0.04, 0.82, 0.54)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jlfeu"]
+size = Vector3(0.04, 1.6, 0.54)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nj7nf"]
+size = Vector3(0.12999998, 0.03, 0.62)
+
+[node name="ShaftHatchW" type="MeshInstance3D" unique_id=1386781740]
+mesh = ExtResource("1_18jik")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1296653779]
+collision_mask = 0
+
+[node name="Box1" type="CollisionShape3D" parent="Body" unique_id=1193833687]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.59, 1.48, 0.32000002)
+shape = SubResource("BoxShape3D_s0rns")
+
+[node name="Box2" type="CollisionShape3D" parent="Body" unique_id=1155096008]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.59, 1.48, 0.97999996)
+shape = SubResource("BoxShape3D_myof8")
+
+[node name="Box3" type="CollisionShape3D" parent="Body" unique_id=1165041531]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26, 1.48, 0.35999998)
+shape = SubResource("BoxShape3D_al4mu")
+
+[node name="Box4" type="CollisionShape3D" parent="Body" unique_id=1539275658]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26, 1.48, 0.94)
+shape = SubResource("BoxShape3D_m6hos")
+
+[node name="Box5" type="CollisionShape3D" parent="Body" unique_id=699849403]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26, 0.39, 0.65)
+shape = SubResource("BoxShape3D_bt3sj")
+
+[node name="Box6" type="CollisionShape3D" parent="Body" unique_id=416309130]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26, 2.18, 0.65)
+shape = SubResource("BoxShape3D_jlfeu")
+
+[node name="Box7" type="CollisionShape3D" parent="Body" unique_id=1883189327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.23499998, 0.79, 0.65)
+shape = SubResource("BoxShape3D_nj7nf")

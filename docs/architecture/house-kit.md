@@ -23,19 +23,29 @@ house/02, Q2343-Q2358).
 roof with its old and new numbers. It is written by `tools/house_plan.py`, which holds the numbers and
 checks the plan's rules; its stills go to `builds/review-house-02/`. House/03 builds from it.
 
-## The old house from the kit (house/03)
+## The old house from the kit (house/03, house/04)
 
-`game/zoo/stations/old_house_a.tscn` (old window widths) and `old_house_b.tscn` (widths rounded to
-0.5 m, Q2381): the whole old house from the plan's new column, kit pieces only, under `House/<storey>/`
-(`Basement`, `Ground`, `First`, `Attic` at y -3, 0, 3, 6; groups `N` `E` `S` `W` for the outer walls,
-`X4`, `X6_5`, `Z3_5`, `Z2` for the partitions, `Floor`, `CeilingBelow`, `Stair`, `Roof`; openings named
-by their plan id, W1-W22, D11, D12). Each stands on its own ground east of the zoo floor (a lawn of boxes
-round the basement, the light wells and the garage ramp; its `Pad` is the footprint at the boxes'
-foot). Both are written by `tools/old_house_build.gd` (its header says how to run it): change the
-plan's numbers there, never the scenes by hand. Tests: `tests/old_house_test.gd`; stills: the
-`old-house` shot set (the old looks-baseline views, `tools/shot_hooks.gd` `old_house`).
+`game/house/shell.tscn`: the whole old house from the plan's new column with its windows rounded to
+0.5 m (house B, Q2381, Q2503; house A with the old widths is gone), kit pieces only, under
+`<storey>/` (`Basement`, `Ground`, `First`, `Attic` at y -3, 0, 3, 6; groups `N` `E` `S` `W` for the
+outer walls, `X4`, `X6_5`, `Z3_5`, `Z2` for the partitions, `Floor`, `CeilingBelow`, `Stair`, `Shaft`,
+`Roof`; openings named by their plan id, W1-W22, D11, D12). No ground round it (Q2503). It is written by
+`tools/house_shell_build.gd` (its header says how to run it): change the plan's numbers there, never
+the shell by hand. The level that holds it is `docs/architecture/house.md`. Tests: `tests/house_test.gd`;
+stills: the `house` shot set (the old looks-baseline views, `tools/shot_hooks.gd` `house`).
 
-Two pieces were added for it: `corner_exterior_open` (a corner without its +X arm, where W15 runs to
+House/04 added the shell details: the elevator shaft's walls a storey each at the shaft tile
+(`shaft_hatch_w` with the hatch open west in the basement and on the ground floor, `shaft_closed` on the
+first floor where the x 4 partition has the hatch, `shaft_attic` with the hatch east and a lid at
+2.15 m; 4 cm walls inside the tiles' hole, so they cover its edges, and a stainless sill 5 mm proud of
+the opening's foot; make_elevator.py's SHEATH, LIP, ATTIC_SHAFT); the bathroom's tile wainscot as a wall
+paint, `wall_bathroom_tiled` (a ShaderMaterial on `wainscot.gdshader`: the old wall tiles to 1.2 m over
+the piece's origin, a 3.5 cm trim band, the bathroom's paint above; make_flat.py make_wall_tiles); and
+the balustrade's side rails stopping where the slope's underside clears the handrail by 5 cm (they came
+out through the roof, as in the old house). `house_kit_build.gd -- --only=<prefix>` writes only those
+pieces.
+
+House/03 added two pieces: `corner_exterior_open` (a corner without its +X arm, where W15 runs to
 the south wall's line) and `door_partition_offset_hatch_2m` (D8's off-centre doorway and the
 elevator's hatch in one partition: their own pieces would overlap).
 
@@ -103,4 +113,7 @@ piece).
 - Never hand-edit a piece, mesh or `rooms/` file: change the sizes or the build script and rebuild.
   A rebuild keeps file uids but renumbers node `unique_id`s.
 - The station has its own ground beyond the zoo floor's west edge (the line-up is 25 x 36 m).
+- A rebuild of every piece renumbers every piece file's node ids: build one family with `--only=`.
+- A wall paint in the library may be a ShaderMaterial (`wall_bathroom_tiled`): its heights are over the
+  piece's origin, which is the floor line for every wall-like piece.
 - Tests: `tests/house_kit_test.gd`. Stills: the `house-kit` shot set.

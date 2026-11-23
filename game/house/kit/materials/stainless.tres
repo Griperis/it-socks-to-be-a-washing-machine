@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://d1y6gts7lv8e5"]
+
+[resource]
+resource_name = "stainless"
+albedo_color = Color(0.8, 0.81, 0.82, 1)
+metallic = 0.85
+roughness = 0.32

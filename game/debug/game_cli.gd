@@ -16,6 +16,8 @@ const BENCHES: Array[Dictionary] = [
 ]
 ## Where the zoo's stations are, for `--scene=<name>`.
 const STATIONS := "res://game/zoo/stations/%s.tscn"
+## `--zoo`: the zoo, now that the house is the main scene (house/04, Q2509).
+const ZOO := "res://game/zoo/zoo.tscn"
 ## Flags that are accepted and mean nothing to a command (the engine's own are before the `--`).
 const QUIET: Array[String] = ["--headless"]
 
@@ -40,7 +42,7 @@ func _ready() -> void:
 			_change(String(what["scene"]))
 
 
-## The project's own main scene (the zoo) is instanced before any autoload can swap it, so it is
+## The project's own main scene (the house) is instanced before any autoload can swap it, so it is
 ## there for a frame: the change waits for its deferred start-up to finish, then replaces it.
 func _change(scene: String) -> void:
 	await get_tree().process_frame
@@ -79,13 +81,18 @@ static func plan(args: PackedStringArray, debug: bool) -> Dictionary:
 			else:
 				bench = true
 				scene = b["scene"]
+		elif arg == "--zoo":
+			asked = true
+			scene = ZOO if ResourceLoader.exists(ZOO) else ""
+			if scene == "":
+				unknown.append(arg)
 		elif arg.begins_with("--scene="):
 			asked = true
 			scene = _station(arg.trim_prefix("--scene="))
 			if scene == "":
 				unknown.append(arg)
 		# The co-op flags and the profile to play as are read by the scene that starts a session (the
-		# zoo today): passed through.
+		# house and the zoo): passed through.
 		elif QUIET.has(arg) or arg == "--host" or arg.begins_with("--join=") or arg.begins_with("--profile="):
 			continue
 		elif not _bench_option(arg):
@@ -107,6 +114,7 @@ static func plan(args: PackedStringArray, debug: bool) -> Dictionary:
 static func help_text() -> String:
 	var lines := PackedStringArray(["It Socks command line (debug builds), after `--`:",
 			"  --help                 this text, then quit",
+			"  --zoo                  start the zoo instead of the house",
 			"  --scene=<scene>        start a scene (res:// path) or a zoo station by its file name (--scene=heap)"])
 	for b in BENCHES:
 		lines.append("  --bench=%-14s %s" % [b["name"], b["help"]])

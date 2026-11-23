@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://d1akwskccy117"]
+
+[ext_resource type="ArrayMesh" uid="uid://cb7a6aehu5pg0" path="res://game/house/kit/meshes/shaft_closed.tres" id="1_faa0w"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fr28n"]
+size = Vector3(0.7, 3, 0.04)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4wyi6"]
+size = Vector3(0.7, 3, 0.04)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_iqop8"]
+size = Vector3(0.04, 3, 0.62)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_04gnh"]
+size = Vector3(0.23000002, 0.03, 0.62)
+
+[node name="ShaftClosed" type="MeshInstance3D" unique_id=15739732]
+mesh = ExtResource("1_faa0w")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=2064741044]
+collision_mask = 0
+
+[node name="Box1" type="CollisionShape3D" parent="Body" unique_id=1819391796]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.59, 1.48, 0.32000002)
+shape = SubResource("BoxShape3D_fr28n")
+
+[node name="Box2" type="CollisionShape3D" parent="Body" unique_id=2078358071]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.59, 1.48, 0.97999996)
+shape = SubResource("BoxShape3D_4wyi6")
+
+[node name="Box3" type="CollisionShape3D" parent="Body" unique_id=2014505310]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.26, 1.48, 0.65)
+shape = SubResource("BoxShape3D_iqop8")
+
+[node name="Box4" type="CollisionShape3D" parent="Body" unique_id=1731610291]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.015, 0.79, 0.65)
+shape = SubResource("BoxShape3D_04gnh")

@@ -46,6 +46,12 @@ extends Resource
 ## runs 0.01 m into the x 4 partition, so the hole's side never lies in the partition's face (K14,
 ## house/03): the shaft stays 0.7 m wide inside, from x 3.24 to the partition's face.
 @export var shaft_hole := Rect2(0.24, 0.3, 0.71, 0.7)
+## The shaft's walls inside its hole (house/04 D07, make_elevator.py SHEATH), how far the hatch's
+## stainless sill sticks out of its face (LIP), and the shaft's height over the attic floor, where a
+## lid closes it (ATTIC_SHAFT). The hatch's opening is elevator_hatch's.
+@export_range(0.01, 0.1, 0.01, "suffix:m") var shaft_wall := 0.04
+@export_range(0.0, 0.2, 0.01, "suffix:m") var shaft_lip := 0.07
+@export_range(1.0, 3.0, 0.05, "suffix:m") var attic_shaft := 2.15
 ## The Cellar hatch's hole, in the middle of a tile this big (plan K09).
 @export_range(0.5, 3.0, 0.5, "suffix:m") var hatch_tile := 1.5
 @export var hatch_hole := Rect2(0.375, 0.375, 0.75, 0.75)

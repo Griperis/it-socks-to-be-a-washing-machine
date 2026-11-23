@@ -12,7 +12,7 @@ config_version=5
 
 config/name="It Socks"
 config/version="0.1.0"
-run/main_scene="res://game/zoo/zoo.tscn"
+run/main_scene="res://game/house/house.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 
 [audio]

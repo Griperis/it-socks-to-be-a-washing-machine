@@ -1,0 +1,534 @@
+[gd_scene format=3 uid="uid://4v7si58whnkg"]
+
+[ext_resource type="Script" uid="uid://bq3k03tw0pu2k" path="res://game/parts/parts.gd" id="1_parts"]
+[ext_resource type="PackedScene" uid="uid://k2c0o5v1yu3r" path="res://game/player/player.tscn" id="2_player"]
+[ext_resource type="Script" uid="uid://bq8jis41s6u7e" path="res://game/parts/session.gd" id="3_session"]
+[ext_resource type="Script" uid="uid://cdi6pnkd82hwo" path="res://game/parts/avatar/avatars.gd" id="4_avatars"]
+[ext_resource type="PackedScene" uid="uid://d2u50k5e57ccb" path="res://game/parts/avatar/avatar.tscn" id="5_avatar"]
+[ext_resource type="Script" uid="uid://2hleeyffro51" path="res://game/net/level_net.gd" id="6_net"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="7_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="8_hands"]
+[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="9_coins"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="10_designs"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="11_tuning"]
+[ext_resource type="Environment" uid="uid://ducjspjkhsl37" path="res://game/look/noon_environment.tres" id="12_env"]
+[ext_resource type="PackedScene" uid="uid://btvcn1t085d2p" path="res://game/look/picture.tscn" id="13_picture"]
+[ext_resource type="Script" uid="uid://cabdnviw3m0oh" path="res://game/net/roster.gd" id="14_roster"]
+[ext_resource type="Resource" uid="uid://b0moa0fsavwjb" path="res://game/net/coop_tuning.tres" id="15_coop"]
+[ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="16_knockdowns"]
+[ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="17_knock_tuning"]
+[ext_resource type="PackedScene" uid="uid://ckc4dqpj0fwpu" path="res://game/house/shell.tscn" id="18_shell"]
+[ext_resource type="PackedScene" uid="uid://bx1argtpmkv03" path="res://game/furniture/bath_mat.tscn" id="19_bath_mat"]
+[ext_resource type="PackedScene" uid="uid://cduemv5yy03f8" path="res://game/furniture/bathtub.tscn" id="20_bathtub"]
+[ext_resource type="PackedScene" uid="uid://qgpybbsr22y3" path="res://game/furniture/boiler.tscn" id="21_boiler"]
+[ext_resource type="PackedScene" uid="uid://d0tymj4rhkprp" path="res://game/furniture/bookshelf.tscn" id="22_bookshelf"]
+[ext_resource type="PackedScene" uid="uid://dxlstxaf1bcm3" path="res://game/furniture/bunk_bed.tscn" id="23_bunk_bed"]
+[ext_resource type="PackedScene" uid="uid://1jimqnyph4i7" path="res://game/furniture/car.tscn" id="24_car"]
+[ext_resource type="PackedScene" uid="uid://dtelkj7alj3kf" path="res://game/furniture/coat_nook.tscn" id="25_coat_nook"]
+[ext_resource type="PackedScene" uid="uid://drbceifsj6ysv" path="res://game/furniture/coffee_table.tscn" id="26_coffee_table"]
+[ext_resource type="PackedScene" uid="uid://baovhffvuha3h" path="res://game/furniture/collection_board.tscn" id="27_collection_board"]
+[ext_resource type="PackedScene" uid="uid://dcgpn32e80wqu" path="res://game/furniture/desk.tscn" id="28_desk"]
+[ext_resource type="PackedScene" uid="uid://csbs8jg25bcwx" path="res://game/furniture/dining_chair.tscn" id="29_dining_chair"]
+[ext_resource type="PackedScene" uid="uid://2vvcamr2b8ap" path="res://game/furniture/dining_table.tscn" id="30_dining_table"]
+[ext_resource type="PackedScene" uid="uid://3b1upgqaj6xw" path="res://game/furniture/doormat.tscn" id="31_doormat"]
+[ext_resource type="PackedScene" uid="uid://cf20nsmnjwiwq" path="res://game/furniture/double_bed.tscn" id="32_double_bed"]
+[ext_resource type="PackedScene" uid="uid://b7hu47vi16lp5" path="res://game/furniture/dresser.tscn" id="33_dresser"]
+[ext_resource type="PackedScene" uid="uid://jmpdugl3hti1" path="res://game/furniture/filing_cabinet.tscn" id="34_filing_cabinet"]
+[ext_resource type="PackedScene" uid="uid://8rrur36ei5wd" path="res://game/furniture/floor_lamp.tscn" id="35_floor_lamp"]
+[ext_resource type="PackedScene" uid="uid://bcfs4w3gxrry6" path="res://game/furniture/fridge.tscn" id="36_fridge"]
+[ext_resource type="PackedScene" uid="uid://dhhdiby46idbs" path="res://game/furniture/ironing_board.tscn" id="37_ironing_board"]
+[ext_resource type="PackedScene" uid="uid://c2xcvtka2w4k8" path="res://game/furniture/kids_shelf.tscn" id="38_kids_shelf"]
+[ext_resource type="PackedScene" uid="uid://bj7ae4cj1h2yx" path="res://game/furniture/kitchen_corner.tscn" id="39_kitchen_corner"]
+[ext_resource type="PackedScene" uid="uid://cbfpt4hh7gm3q" path="res://game/furniture/kitchen_cupboard.tscn" id="40_kitchen_cupboard"]
+[ext_resource type="PackedScene" uid="uid://dvbqrq4wkxkxp" path="res://game/furniture/kitchen_drawers.tscn" id="41_kitchen_drawers"]
+[ext_resource type="PackedScene" uid="uid://cplmgulxyn7hu" path="res://game/furniture/kitchen_filler.tscn" id="42_kitchen_filler"]
+[ext_resource type="PackedScene" uid="uid://yngdcb8dnk7h" path="res://game/furniture/kitchen_oven.tscn" id="43_kitchen_oven"]
+[ext_resource type="PackedScene" uid="uid://bgipqah0x8ee0" path="res://game/furniture/kitchen_shelf.tscn" id="44_kitchen_shelf"]
+[ext_resource type="PackedScene" uid="uid://cild3gyofi0ri" path="res://game/furniture/kitchen_sink.tscn" id="45_kitchen_sink"]
+[ext_resource type="PackedScene" uid="uid://ckn2oylo34jp6" path="res://game/furniture/kitchen_wall_cupboard.tscn" id="46_kitchen_wall_cupboard"]
+[ext_resource type="PackedScene" uid="uid://dl674i1lkemjc" path="res://game/furniture/laundry_basket.tscn" id="47_laundry_basket"]
+[ext_resource type="PackedScene" uid="uid://dtu2wqac82qmw" path="res://game/furniture/laundry_shelf.tscn" id="48_laundry_shelf"]
+[ext_resource type="PackedScene" uid="uid://dtt8ua8fsn430" path="res://game/furniture/litterbox.tscn" id="49_litterbox"]
+[ext_resource type="PackedScene" uid="uid://bl4bvutpbeb5d" path="res://game/furniture/living_rug.tscn" id="50_living_rug"]
+[ext_resource type="PackedScene" uid="uid://bpls1fkyretjy" path="res://game/furniture/nightstand.tscn" id="51_nightstand"]
+[ext_resource type="PackedScene" uid="uid://4kx2qt87cycq" path="res://game/furniture/office_chair.tscn" id="52_office_chair"]
+[ext_resource type="PackedScene" uid="uid://d21r685ftwv14" path="res://game/furniture/old_cot.tscn" id="53_old_cot"]
+[ext_resource type="PackedScene" uid="uid://b0dgpaqabl8x4" path="res://game/furniture/old_tree.tscn" id="54_old_tree"]
+[ext_resource type="PackedScene" uid="uid://cmakjb5mev0w7" path="res://game/furniture/paint_tins.tscn" id="55_paint_tins"]
+[ext_resource type="PackedScene" uid="uid://bluadg36upnvc" path="res://game/furniture/piano.tscn" id="56_piano"]
+[ext_resource type="PackedScene" uid="uid://c3v2q6jr3i3pk" path="res://game/furniture/plant_big.tscn" id="57_plant_big"]
+[ext_resource type="PackedScene" uid="uid://bcmvj0rj6wf67" path="res://game/furniture/plant_cactus.tscn" id="58_plant_cactus"]
+[ext_resource type="PackedScene" uid="uid://dd7gajm76xwhe" path="res://game/furniture/plant_snake.tscn" id="59_plant_snake"]
+[ext_resource type="PackedScene" uid="uid://dm0sohc5acmi7" path="res://game/furniture/plant_trailing.tscn" id="60_plant_trailing"]
+[ext_resource type="PackedScene" uid="uid://rvyt1po0vju" path="res://game/furniture/play_rug.tscn" id="61_play_rug"]
+[ext_resource type="PackedScene" uid="uid://b2bdth2fk7rpa" path="res://game/furniture/printer.tscn" id="62_printer"]
+[ext_resource type="PackedScene" uid="uid://drj5x2peest0l" path="res://game/furniture/rocking_horse.tscn" id="63_rocking_horse"]
+[ext_resource type="PackedScene" uid="uid://dgskr6yt18fmw" path="res://game/furniture/shelf_rack.tscn" id="64_shelf_rack"]
+[ext_resource type="PackedScene" uid="uid://2lxv6mamm4t0" path="res://game/furniture/ski_bag.tscn" id="65_ski_bag"]
+[ext_resource type="PackedScene" uid="uid://ckci24xjkkxqj" path="res://game/furniture/sofa.tscn" id="66_sofa"]
+[ext_resource type="PackedScene" uid="uid://dpne4pi7bmqhq" path="res://game/furniture/storage_boxes.tscn" id="67_storage_boxes"]
+[ext_resource type="PackedScene" uid="uid://bawktyu4eopu7" path="res://game/furniture/telescope.tscn" id="68_telescope"]
+[ext_resource type="PackedScene" uid="uid://c0cf3qnn7o4fy" path="res://game/furniture/toilet.tscn" id="69_toilet"]
+[ext_resource type="PackedScene" uid="uid://bp4iv2umekiwr" path="res://game/furniture/tool_shelves.tscn" id="70_tool_shelves"]
+[ext_resource type="PackedScene" uid="uid://bsobqcpabklr8" path="res://game/furniture/towel_rail.tscn" id="71_towel_rail"]
+[ext_resource type="PackedScene" uid="uid://tnq1ehlvik0v" path="res://game/furniture/toy_chest.tscn" id="72_toy_chest"]
+[ext_resource type="PackedScene" uid="uid://hvc6rvap7u8o" path="res://game/furniture/trunk.tscn" id="73_trunk"]
+[ext_resource type="PackedScene" uid="uid://c1seu11po0aca" path="res://game/furniture/vanity.tscn" id="74_vanity"]
+[ext_resource type="PackedScene" uid="uid://dhvhrg77mfkmt" path="res://game/furniture/wall_mirror.tscn" id="75_wall_mirror"]
+[ext_resource type="PackedScene" uid="uid://dhq34lrwumcsx" path="res://game/furniture/water_tank.tscn" id="76_water_tank"]
+[ext_resource type="PackedScene" uid="uid://c6d0bxocji2dg" path="res://game/furniture/workbench.tscn" id="77_workbench"]
+
+[node name="House" type="Node3D" unique_id=1892225822]
+
+[node name="Environment" type="WorldEnvironment" parent="." unique_id=1853724251]
+environment = ExtResource("12_env")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1739442099]
+transform = Transform3D(0.900969, -0.198987, 0.385564, 0, 0.888633, 0.458618, -0.433884, -0.413201, 0.800631, 0, 6, 0)
+light_color = Color(1, 0.93, 0.82, 1)
+light_energy = 2.4
+shadow_enabled = true
+shadow_blur = 1.5
+directional_shadow_max_distance = 18.0
+sky_mode = 1
+
+[node name="Picture" parent="." node_paths=PackedStringArray("world_environment", "sun") unique_id=234646926 instance=ExtResource("13_picture")]
+world_environment = NodePath("../Environment")
+sun = NodePath("../Sun")
+
+[node name="Shell" parent="." unique_id=1655686428 instance=ExtResource("18_shell")]
+
+[node name="Furniture" type="Node3D" parent="." unique_id=1645816109]
+
+[node name="Workbench" parent="Furniture" unique_id=1766052159 instance=ExtResource("77_workbench")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.43, -3, 0.5)
+
+[node name="ToolShelves" parent="Furniture" unique_id=396288381 instance=ExtResource("70_tool_shelves")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.36, -3, 2.36)
+
+[node name="PaintTins" parent="Furniture" unique_id=1191831910 instance=ExtResource("55_paint_tins")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.52, -3, 0.39)
+
+[node name="Boxes" parent="Furniture" unique_id=1898306180 instance=ExtResource("67_storage_boxes")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2.036, -3, 2.995)
+
+[node name="Boiler" parent="Furniture" unique_id=389164766 instance=ExtResource("21_boiler")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.05, -3, 0.47)
+
+[node name="WaterTank" parent="Furniture" unique_id=2063095136 instance=ExtResource("76_water_tank")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.51, -3, 0.52)
+
+[node name="LaundryBasket" parent="Furniture" unique_id=184569087 instance=ExtResource("47_laundry_basket")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.32, -3, 5.925)
+
+[node name="IroningBoard" parent="Furniture" unique_id=1622435971 instance=ExtResource("37_ironing_board")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.146, -3, 3.81)
+
+[node name="LaundryShelf" parent="Furniture" unique_id=213213873 instance=ExtResource("48_laundry_shelf")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.27, -3, 6.75)
+
+[node name="CollectionBoard" parent="Furniture" unique_id=1140559169 instance=ExtResource("27_collection_board")]
+transform = Transform3D(-0.1736, 0, -0.9848, 0, 1, 0, 0.9848, 0, -0.1736, 3.06, -3, 6.21)
+
+[node name="Car" parent="Furniture" unique_id=235197242 instance=ExtResource("24_car")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 8.41, -3, 2.24)
+
+[node name="WallShelving" parent="Furniture" unique_id=1282137391 instance=ExtResource("64_shelf_rack")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 8.41, -3, 8.175)
+
+[node name="OldTree" parent="Furniture" unique_id=728288318 instance=ExtResource("54_old_tree")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 7.035, -3, 7.675)
+
+[node name="ShelfRackA" parent="Furniture" unique_id=38112886 instance=ExtResource("64_shelf_rack")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.175, -3, 5.265)
+
+[node name="SkiBag" parent="Furniture" unique_id=964699526 instance=ExtResource("65_ski_bag")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.706, -2, 2.261)
+
+[node name="Fridge" parent="Furniture" unique_id=1543628158 instance=ExtResource("36_fridge")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.49, 0, 0.47)
+
+[node name="KitchenCupboard" parent="Furniture" unique_id=5897862 instance=ExtResource("40_kitchen_cupboard")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.55, 0, 0.42)
+
+[node name="Oven" parent="Furniture" unique_id=1182585715 instance=ExtResource("43_kitchen_oven")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.16, 0, 0.425)
+
+[node name="KitchenSink" parent="Furniture" unique_id=236558920 instance=ExtResource("45_kitchen_sink")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.86, 0, 0.415)
+
+[node name="KitchenCorner" parent="Furniture" unique_id=747344107 instance=ExtResource("39_kitchen_corner")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.63, 0, 0.41)
+
+[node name="KitchenFiller" parent="Furniture" unique_id=1565040948 instance=ExtResource("42_kitchen_filler")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.63, 0, 0.94)
+
+[node name="KitchenDrawers" parent="Furniture" unique_id=1728300452 instance=ExtResource("41_kitchen_drawers")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.62, 0, 1.46)
+
+[node name="WallCupboard" parent="Furniture" unique_id=935417823 instance=ExtResource("46_kitchen_wall_cupboard")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.75, 1.45, 1.46)
+
+[node name="ShelfPlant" parent="Furniture" unique_id=915792548 instance=ExtResource("60_plant_trailing")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.76, 2.19, 1.46)
+
+[node name="KitchenShelf" parent="Furniture" unique_id=428026510 instance=ExtResource("44_kitchen_shelf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.015, 1.395, 0.22)
+
+[node name="KitchenTable" parent="Furniture" unique_id=1200853951 instance=ExtResource("30_dining_table")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.806, 0, 6.728)
+
+[node name="Chair" parent="Furniture" unique_id=4145735 instance=ExtResource("29_dining_chair")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.006, 0, 6.448)
+
+[node name="Chair2" parent="Furniture" unique_id=497432525 instance=ExtResource("29_dining_chair")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.006, 0, 7.008)
+
+[node name="Chair3" parent="Furniture" unique_id=1037573970 instance=ExtResource("29_dining_chair")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2.616, 0, 6.448)
+
+[node name="Chair4" parent="Furniture" unique_id=1808335514 instance=ExtResource("29_dining_chair")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 2.616, 0, 7.008)
+
+[node name="CoatNook" parent="Furniture" unique_id=1688500143 instance=ExtResource("25_coat_nook")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4.26, 0, 1.09)
+
+[node name="Doormat" parent="Furniture" unique_id=145569386 instance=ExtResource("31_doormat")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.89, 0, 1.2)
+
+[node name="Sofa" parent="Furniture" unique_id=2072088498 instance=ExtResource("66_sofa")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 8.913, 0, 5.65)
+
+[node name="CoffeeTable" parent="Furniture" unique_id=205076582 instance=ExtResource("26_coffee_table")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.913, 0, 4.26)
+
+[node name="LivingRug" parent="Furniture" unique_id=947223942 instance=ExtResource("50_living_rug")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.913, 0, 4.26)
+
+[node name="FloorLamp" parent="Furniture" unique_id=1125850 instance=ExtResource("35_floor_lamp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.13, 0, 8.13)
+
+[node name="Plant" parent="Furniture" unique_id=1561813597 instance=ExtResource("57_plant_big")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.17, 0, 7.8)
+
+[node name="Piano" parent="Furniture" unique_id=1366459751 instance=ExtResource("56_piano")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 8.858, 0, 8.08)
+
+[node name="Desk" parent="Furniture" unique_id=958226333 instance=ExtResource("28_desk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.861, 3, 0.5)
+
+[node name="OfficeChair" parent="Furniture" unique_id=1497610709 instance=ExtResource("52_office_chair")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.711, 3, 1.2)
+
+[node name="Bookshelf" parent="Furniture" unique_id=172412605 instance=ExtResource("22_bookshelf")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.31, 3, 2.98)
+
+[node name="FilingCabinet" parent="Furniture" unique_id=660107317 instance=ExtResource("34_filing_cabinet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.56, 3, 0.48)
+
+[node name="Printer" parent="Furniture" unique_id=58139913 instance=ExtResource("62_printer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.56, 4.02, 0.46)
+
+[node name="Bookcase" parent="Furniture" unique_id=1913257883 instance=ExtResource("22_bookshelf")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4.26, 3, 0.98)
+
+[node name="Bed" parent="Furniture" unique_id=41526551 instance=ExtResource("32_double_bed")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 2.91, 3, 7.265)
+
+[node name="Nightstand" parent="Furniture" unique_id=460224920 instance=ExtResource("51_nightstand")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.68, 3, 8.17)
+
+[node name="Dresser" parent="Furniture" unique_id=1853834792 instance=ExtResource("33_dresser")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.375, 3, 6.607)
+
+[node name="Vanity" parent="Furniture" unique_id=1352873413 instance=ExtResource("74_vanity")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.825, 3, 0.63)
+
+[node name="BathMirror" parent="Furniture" unique_id=301693999 instance=ExtResource("75_wall_mirror")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.605, 4.15, 0.63)
+
+[node name="TowelRail" parent="Furniture" unique_id=72525103 instance=ExtResource("71_towel_rail")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.68, 3, 1.662)
+
+[node name="Bathtub" parent="Furniture" unique_id=971549321 instance=ExtResource("20_bathtub")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.02, 3, 1.05)
+
+[node name="BathMat" parent="Furniture" unique_id=1451016799 instance=ExtResource("19_bath_mat")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 9.39, 3, 1.05)
+
+[node name="BathWc" parent="Furniture" unique_id=471028416 instance=ExtResource("69_toilet")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 8.41, 3, 3.11)
+
+[node name="SnakePlant" parent="Furniture" unique_id=547341036 instance=ExtResource("59_plant_snake")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.18, 3, 3.16)
+
+[node name="Litterbox" parent="Furniture" unique_id=241327532 instance=ExtResource("49_litterbox")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 7.78, 3, 3.19)
+
+[node name="BunkBed" parent="Furniture" unique_id=798580987 instance=ExtResource("23_bunk_bed")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 9.87, 3, 7.4)
+
+[node name="ToyChest" parent="Furniture" unique_id=1388228562 instance=ExtResource("72_toy_chest")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 7.17, 3, 8.05)
+
+[node name="KidsShelf" parent="Furniture" unique_id=270086755 instance=ExtResource("38_kids_shelf")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.74, 3, 6.365)
+
+[node name="Cactus" parent="Furniture" unique_id=24808730 instance=ExtResource("58_plant_cactus")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.74, 4.075, 6.065)
+
+[node name="PlayRug" parent="Furniture" unique_id=1531424737 instance=ExtResource("61_play_rug")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.837, 3, 6.255)
+
+[node name="TrunkA" parent="Furniture" unique_id=360533391 instance=ExtResource("73_trunk")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.586, 6, 5.76)
+
+[node name="TrunkB" parent="Furniture" unique_id=940925958 instance=ExtResource("73_trunk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.592, 6, 1.475)
+
+[node name="RockingHorse" parent="Furniture" unique_id=1385834776 instance=ExtResource("63_rocking_horse")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.569, 6, 2.564)
+
+[node name="OldCot" parent="Furniture" unique_id=135780115 instance=ExtResource("53_old_cot")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.421, 6, 6.86)
+
+[node name="XmasBoxes" parent="Furniture" unique_id=2125329684 instance=ExtResource("67_storage_boxes")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.569, 6, 1.475)
+
+[node name="Telescope" parent="Furniture" unique_id=424556748 instance=ExtResource("68_telescope")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 8.308, 6, 7.85)
+
+[node name="Lights" type="Node3D" parent="." unique_id=1445155412]
+
+[node name="Ceiling_workshop" type="OmniLight3D" parent="Lights" unique_id=1424989359]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02, -0.46, 1.77)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_laundry" type="OmniLight3D" parent="Lights" unique_id=1406876837]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02, -0.46, 5.98)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_boiler" type="OmniLight3D" parent="Lights" unique_id=1361744519]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, -0.46, 1.02)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_stair_lobby" type="OmniLight3D" parent="Lights" unique_id=1921770898]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, -0.46, 3.78)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_garage" type="OmniLight3D" parent="Lights" unique_id=1269629089]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.48, -0.46, 4.25)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_stairs_basement" type="OmniLight3D" parent="Lights" unique_id=147070147]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 1.13, 7.9)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_kitchen" type="OmniLight3D" parent="Lights" unique_id=65870976]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02, 2.54, 4.25)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_hall" type="OmniLight3D" parent="Lights" unique_id=587346379]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 2.54, 2.8)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_living" type="OmniLight3D" parent="Lights" unique_id=198353881]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.48, 2.18, 4.25)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_stairs_ground" type="OmniLight3D" parent="Lights" unique_id=426770898]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 4.13, 7.9)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_office" type="OmniLight3D" parent="Lights" unique_id=495201154]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02, 5.44, 1.77)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_bedroom" type="OmniLight3D" parent="Lights" unique_id=1387094287]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.02, 5.08, 5.98)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_landing" type="OmniLight3D" parent="Lights" unique_id=966309601]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 5.44, 2.8)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_bathroom" type="OmniLight3D" parent="Lights" unique_id=20485797]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.48, 5.44, 1.77)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_kids" type="OmniLight3D" parent="Lights" unique_id=2104704009]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.48, 5.44, 5.98)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_stairs_first" type="OmniLight3D" parent="Lights" unique_id=1504451910]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 6.53, 7.9)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_loft_2" type="OmniLight3D" parent="Lights" unique_id=2047072146]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7923, 8.809, 4.25)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Ceiling_loft_7" type="OmniLight3D" parent="Lights" unique_id=830428628]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.7077, 8.809, 4.25)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 6
+
+[node name="Lamp_FloorLamp" type="OmniLight3D" parent="Lights" unique_id=1796023232]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.13, 1.38, 8.13)
+light_color = Color(1, 0.88, 0.7, 1)
+light_energy = 0.7
+omni_range = 3
+
+[node name="Lamp_Nightstand" type="OmniLight3D" parent="Lights" unique_id=825885781]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.76, 3.78, 8.21)
+light_color = Color(1, 0.88, 0.7, 1)
+light_energy = 0.7
+omni_range = 3
+
+[node name="Player" parent="." unique_id=1502210363 instance=ExtResource("2_player")]
+transform = Transform3D(0.6042, 0, 0.7968, 0, 1, 0, -0.7968, 0, 0.6042, 1.68, -3, 5.87)
+
+[node name="Spots" type="Node3D" parent="." unique_id=1999085043]
+
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=715124708]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.68, -3, 5.87)
+
+[node name="Lying" type="Node3D" parent="." unique_id=655752018]
+
+[node name="Flights" type="Node3D" parent="." unique_id=113584815]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=1852212849]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="." unique_id=970226274]
+
+[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights", "return_spot") unique_id=161512457]
+script = ExtResource("7_mess")
+catalogue = ExtResource("10_designs")
+tuning = ExtResource("11_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+bounds = AABB(-2, -5, -2, 14.5, 17, 12.5)
+return_spot = NodePath("../../ReturnSpot")
+
+[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess") unique_id=567136988]
+script = ExtResource("8_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("11_tuning")
+
+[node name="Knockdowns" type="Node" parent="Socks" node_paths=PackedStringArray("hands") unique_id=2063851314]
+script = ExtResource("16_knockdowns")
+tuning = ExtResource("17_knock_tuning")
+hands = NodePath("../Hands")
+
+[node name="Coins" type="Node" parent="Socks" unique_id=916480979]
+script = ExtResource("9_coins")
+
+[node name="Parts" type="Node" parent="." unique_id=427637761]
+script = ExtResource("1_parts")
+
+[node name="Players" type="Node3D" parent="." unique_id=464476505]
+
+[node name="Avatars" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("local_body", "roster") unique_id=1885243291]
+spawn_path = NodePath("../Players")
+script = ExtResource("4_avatars")
+avatar_scene = ExtResource("5_avatar")
+local_body = NodePath("../Player")
+roster = NodePath("../Session/Roster")
+
+[node name="Session" type="Node" parent="." node_paths=PackedStringArray("parts", "roster") unique_id=1170416455]
+script = ExtResource("3_session")
+parts = NodePath("../Parts")
+roster = NodePath("Roster")
+tuning = ExtResource("15_coop")
+
+[node name="Roster" type="Node" parent="Session" unique_id=684302146]
+script = ExtResource("14_roster")
+tuning = ExtResource("15_coop")
+
+[node name="Net" type="Node" parent="." node_paths=PackedStringArray("session", "avatars") unique_id=432951409]
+script = ExtResource("6_net")
+session = NodePath("../Session")
+avatars = NodePath("../Avatars")
+
+[node name="Hud" type="CanvasLayer" parent="Net" unique_id=1153874506]
+
+[node name="Mode" type="Label" parent="Net/Hud" unique_id=1250551748]
+unique_name_in_owner = true
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 600.0
+offset_bottom = 34.0

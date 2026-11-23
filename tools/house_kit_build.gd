@@ -2,6 +2,8 @@
 ## house_kit_sizes.tres, and any missing material of the library (materials/*.tres) from the old
 ## house's colours (house/01, house/02). Run it after a change to the sizes, from the project folder:
 ##   "$(kit/tools/engine.sh --path)" --headless --path . --script res://tools/house_kit_build.gd
+## `-- --only=<prefix>` after it writes only the pieces whose file name starts so (and no room): a
+## new piece without renumbering every other file's node ids.
 ## A piece is a MeshInstance3D root (one mesh in meshes/, its material slots in a fixed order: see
 ## docs/architecture/house-kit.md "Material slots") with a StaticBody3D "Body" of boxes on the house's
 ## physics layer. A piece file keeps its uid across rebuilds; a material that exists is never
@@ -54,7 +56,16 @@ const LIBRARY := {
 	"bath_tile": [Color(1, 1, 1), 0.4, "bath_tiles.png", 0.6],
 	"basement_tile": [Color(0.72, 0.71, 0.68), 0.7],
 	"loft_boards": [Color(0.80, 0.66, 0.48), 0.8],
+	# The elevator shaft's walls (make_elevator.py: the old "door" paint) and its hatch's sill.
+	"shaft": [Color(0.96, 0.93, 0.87), 0.5],
+	"stainless": [Color(0.80, 0.81, 0.82), 0.32],
 }
+## Library materials that are metal (make_house.py's stainless: metallic 0.85).
+const METALLIC := {"stainless": 0.85}
+## The bathroom's walls with the old tile wainscot (house/04 D01): the wall paint over the wall tiles,
+## a ShaderMaterial on wainscot.gdshader (made when its file does not exist yet).
+const WAINSCOT := {"wall_bathroom_tiled": ["wall_bathroom", "wall_tiles.png", 0.6, 0.3]}
+const WAINSCOT_SHADER := "res://game/house/kit/wainscot.gdshader"
 const EXTERIOR_PAINTS: Array[String] = ["wall_kitchen", "wall_outside", "trim"]
 const PARTITION_PAINTS: Array[String] = ["wall_kitchen", "wall_hall", "trim"]
 
@@ -66,20 +77,29 @@ var _shapes: Array[Transform3D] = []
 var _shape_sizes: Array[Vector3] = []
 ## Slots counted from `base` (the dormer's slab is a roof slab whose slots 0 and 1 are its 4 and 5).
 var _offset := 0
+## `--only=<prefix>`: the pieces written (empty: all, and the rooms).
+var _only := ""
 
 
 func _init() -> void:
 	_sizes = load(SIZES)
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--only="):
+			_only = arg.trim_prefix("--only=")
 	for name: String in LIBRARY:
 		_material(name)
+	for name: String in WAINSCOT:
+		_wainscot_material(name)
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(ROOMS))
 	_walls()
 	_doors()
 	_windows()
 	_tiles()
+	_shafts()
 	_stairs()
 	_roof()
-	_rooms()
+	if _only == "":
+		_rooms()
 	print("house_kit_build: done")
 	quit()
 
@@ -387,6 +407,60 @@ func _tile(file: String, side: float, y0: float, y1: float, paint: String, hole 
 	_save(file)
 
 
+## The elevator shaft's walls (house/04 D07), one piece a storey at the shaft tile's origin, inside
+## the tiles' hole: the shaft's walls from the floor tile up to the next storey's (they cover the
+## holes' edges), the hatch's opening (elevator_hatch) and a stainless sill sticking out of it. The
+## east side is the x 4 partition but in the attic. The car, its hatch panel and buttons are the
+## elevator's (M5). Slots: 0 the walls, 1 the sill.
+func _shafts() -> void:
+	var s := _sizes
+	var lip: float = s.shaft_lip
+	var w: float = s.shaft_wall
+	var hole := s.shaft_hole
+	# The partition's face (the hole runs 0.01 m into it) and its far face (the first floor's hatch).
+	var face: float = hole.end.x - 0.01
+	var far: float = 1.0 + s.partition / 2
+	_shaft("shaft_hatch_w", true, false, false, Vector2(hole.position.x - lip, hole.position.x + w + 0.02))
+	_shaft("shaft_closed", false, false, false, Vector2(face - w, far + lip))
+	_shaft("shaft_attic", false, true, true, Vector2(hole.end.x - w - 0.02, hole.end.x + lip))
+
+
+func _shaft(file: String, west_hatch: bool, east_wall: bool, east_hatch: bool, sill_x: Vector2) -> void:
+	var s := _sizes
+	var h := s.elevator_hatch
+	var w: float = s.shaft_wall
+	var hole := s.shaft_hole
+	var attic := east_wall
+	var x0 := hole.position.x
+	var x1: float = hole.end.x if east_wall else hole.end.x - 0.01
+	var z0 := hole.position.y
+	var z1 := hole.end.y
+	var y0: float = -s.sink
+	var y1: float = s.attic_shaft if attic else s.storey - s.sink
+	_begin(["shaft", "stainless"])
+	var boxes: Array[AABB] = [_aabb(x0, x1, y0, y1, z0, z0 + w), _aabb(x0, x1, y0, y1, z1 - w, z1)]
+	for side: Array in [[x0, x0 + w, west_hatch], [x1 - w, x1, east_hatch]]:
+		if side[0] > x0 and not east_wall:
+			continue
+		var a: float = side[0]
+		var b: float = side[1]
+		if side[2]:
+			boxes.append_array([_aabb(a, b, y0, y1, z0 + w, h.x), _aabb(a, b, y0, y1, h.y, z1 - w),
+					_aabb(a, b, y0, h.z, h.x, h.y), _aabb(a, b, h.w, y1, h.x, h.y)])
+		else:
+			boxes.append(_aabb(a, b, y0, y1, z0 + w, z1 - w))
+	if attic:
+		boxes.append(_aabb(x0, x1, y1, y1 + w, z0, z1))
+	for box in boxes:
+		_box(box, 0)
+		_col(box)
+	# The sill: 5 mm proud of the opening's foot, so its top lies in no face of the walls.
+	var sill := _aabb(sill_x.x, sill_x.y, h.z - 0.025, h.z + 0.005, h.x - w, h.y + w)
+	_box(sill, 1)
+	_col(sill)
+	_save(file)
+
+
 func _stairs() -> void:
 	var s := _sizes
 	_flight("stair_full", s.stair_steps)
@@ -496,12 +570,17 @@ func _balustrade() -> void:
 	# otherwise lie in the floor tile's edge face (K14, house/03).
 	var rails: Array[AABB] = [_aabb(f - 0.06, f, 0, 1, 0, back), _aabb(f, info["mid"] - s.newel / 2, 0, 1, -0.07, -0.01),
 			_aabb(w - f, w - f + 0.06, 0, 1, 0, back)]
+	# The side rails are drawn only as far south as the roof's underside clears the handrail by 5 cm:
+	# beyond, under the low slope, they came out through the roof (house/04 D09, the old house's too).
+	# Past their ends the slope is too low for a crouching player (1 m tall, 0.35 m round) to reach
+	# the void.
+	var clear: float = s.stair_well.y - (s.exterior / 2 + (1.05 - s.knee) / s.slope())
 	_begin(["oak"])
 	for r in rails:
 		var x0 := r.position.x
 		var x1 := r.end.x
 		var z0 := r.position.z
-		var z1 := r.end.z
+		var z1 := minf(r.end.z, clear)
 		_box(_aabb(x0 - 0.01, x1 + 0.01, 0.95, 1.0, z0, z1), 0)
 		_box(_aabb(x0, x1, -s.sink, 0.06, z0, z1), 0)
 		var along_x := (x1 - x0) > (z1 - z0)
@@ -967,6 +1046,8 @@ static func _uv(c: Vector3, n: Vector3) -> Vector2:
 
 
 func _save(file: String) -> void:
+	if _only != "" and not file.begins_with(_only):
+		return
 	var mesh := ArrayMesh.new()
 	for i in _st.size():
 		var st := _st[i]
@@ -1052,6 +1133,7 @@ func _material(name: String) -> Material:
 	m.resource_name = name
 	m.albedo_color = spec[0]
 	m.roughness = spec[1]
+	m.metallic = float(METALLIC.get(name, 0.0))
 	if spec.size() > 2 and spec[2] is float:
 		m.albedo_color.a = spec[2]
 		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
@@ -1061,6 +1143,36 @@ func _material(name: String) -> Material:
 		m.uv1_triplanar = true
 		m.uv1_world_triplanar = true
 		m.uv1_scale = Vector3.ONE / float(spec[3])
+	var err := ResourceSaver.save(m, path)
+	if err != OK:
+		push_error("house_kit_build: cannot save %s (%s)" % [path, error_string(err)])
+	else:
+		keep_uid(path, ResourceUID.INVALID_ID)
+	return load(path)
+
+
+## A wall paint with the tile wainscot (WAINSCOT: the paint, the tile image, its repeat, its
+## roughness), made only when its file does not exist yet; the band takes the trim's colour.
+func _wainscot_material(name: String) -> Material:
+	var path := MATERIALS.path_join(name + ".tres")
+	if FileAccess.file_exists(path):
+		return load(path)
+	var spec: Array = WAINSCOT[name]
+	var paint: Array = LIBRARY[spec[0]]
+	var trim: Array = LIBRARY["trim"]
+	var m := ShaderMaterial.new()
+	m.resource_name = name
+	m.shader = load(WAINSCOT_SHADER)
+	m.set_shader_parameter("paint", paint[0])
+	m.set_shader_parameter("paint_roughness", paint[1])
+	m.set_shader_parameter("tiles", load(TEXTURES.path_join(spec[1])))
+	m.set_shader_parameter("tile_repeat", spec[2])
+	m.set_shader_parameter("tile_roughness", spec[3])
+	# make_flat.py make_wall_tiles: to 1.2 m, the trim 0.035 m over it.
+	m.set_shader_parameter("top", 1.2)
+	m.set_shader_parameter("band", 0.035)
+	m.set_shader_parameter("band_colour", trim[0])
+	m.set_shader_parameter("band_roughness", trim[1])
 	var err := ResourceSaver.save(m, path)
 	if err != OK:
 		push_error("house_kit_build: cannot save %s (%s)" % [path, error_string(err)])
