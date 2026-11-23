@@ -137,6 +137,17 @@ func host() -> Error:
 	return OK
 
 
+## Playing alone (a Host of one, core/58): this machine's player is in its own Roster under its
+## profile's id, as when it hosts, so its Hands and Coins are kept by its player id, never its peer
+## number, and a save keeps where it stands. Nothing while a session is open.
+func enter_alone() -> void:
+	if is_online() or roster == null:
+		return
+	if profile == null:
+		profile = PlayerProfile.fresh()
+	parts.apply(roster.joined(profile.id, Roster.HOST, profile.name, _clamped_hands(_own_hands())))
+
+
 ## Joins the Host at `where` (opaque to this file: "ip" or "ip:port" for ENet). From now on this
 ## machine's Commands go up to the Host. With no welcome in CoopTuning.join_timeout, or when the
 ## transport gives up first, it ends with "Could not reach <where>".

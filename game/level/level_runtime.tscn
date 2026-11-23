@@ -16,6 +16,9 @@
 [ext_resource type="Resource" uid="uid://b0moa0fsavwjb" path="res://game/net/coop_tuning.tres" id="15_coop"]
 [ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="16_knockdowns"]
 [ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="17_knock_tuning"]
+[ext_resource type="Script" uid="uid://bqdsblq5wlstm" path="res://game/save/autosave.gd" id="18_autosave"]
+[ext_resource type="Resource" uid="uid://bdk0j4fv51es5" path="res://game/save/save_tuning.tres" id="19_save_tuning"]
+[ext_resource type="PackedScene" uid="uid://xjx2cc6moh4d" path="res://game/ui/esc_menu/esc_menu.tscn" id="20_esc_menu"]
 
 [node name="LevelRuntime" type="Node3D" unique_id=573781402]
 script = ExtResource("0_runtime")
@@ -77,10 +80,11 @@ tuning = ExtResource("15_coop")
 script = ExtResource("14_roster")
 tuning = ExtResource("15_coop")
 
-[node name="Net" type="Node" parent="." node_paths=PackedStringArray("session", "avatars") unique_id=432951409]
+[node name="Net" type="Node" parent="." node_paths=PackedStringArray("session", "avatars", "autosave") unique_id=432951409]
 script = ExtResource("6_net")
 session = NodePath("../Session")
 avatars = NodePath("../Avatars")
+autosave = NodePath("../Autosave")
 
 [node name="Hud" type="CanvasLayer" parent="Net" unique_id=1153874506]
 
@@ -90,3 +94,14 @@ offset_left = 12.0
 offset_top = 8.0
 offset_right = 600.0
 offset_bottom = 34.0
+
+[node name="Autosave" type="Node" parent="." node_paths=PackedStringArray("parts", "session") unique_id=1731902455]
+script = ExtResource("18_autosave")
+parts = NodePath("../Parts")
+session = NodePath("../Session")
+tuning = ExtResource("19_save_tuning")
+
+[node name="EscMenu" parent="." node_paths=PackedStringArray("autosave", "session", "net") unique_id=1093755214 instance=ExtResource("20_esc_menu")]
+autosave = NodePath("../Autosave")
+session = NodePath("../Session")
+net = NodePath("../Net")

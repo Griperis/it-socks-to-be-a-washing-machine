@@ -91,6 +91,11 @@ func _ready() -> void:
 # --- Questions anyone may ask --------------------------------------------------------------------
 
 ## How long player `peer` still lies on this machine's clock; 0 standing.
+## Who lies knocked down now is not kept: a loaded World has nobody down (Q2559).
+func save_state() -> Dictionary:
+	return {}
+
+
 func left_of(peer: int) -> float:
 	return maxf(0.0, float(_left.get(peer, 0.0))) if down.has(peer) else 0.0
 

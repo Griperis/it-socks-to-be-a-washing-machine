@@ -23,6 +23,8 @@ extends Resource
 ## The least time between two plays of this event, in seconds: a play sooner than this after the last
 ## is dropped (a bounce heard 20 times in one tick is one bounce). 0 plays every one.
 @export_range(0.0, 2.0, 0.01, "suffix:s") var min_gap := 0.0
+## How far each play's level may stray, plus or minus, in dB (the menus' ±1.5, Q336). 0: none.
+@export_range(0.0, 12.0, 0.1, "suffix:dB") var volume_jitter_db := 0.0
 ## A sampled instrument (the piano): each clip one recorded note, played by Sounds.play_note() at a
 ## MIDI note. Empty for every other sound.
 @export var instrument: Instrument

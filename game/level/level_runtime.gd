@@ -23,6 +23,14 @@ extends Node3D
 ## The level's word in the corner and the joiner's line (LevelNet.place_name()).
 @export var place_name := "house"
 
+## The World this level plays (core/58), set by the title before the level enters the tree; null
+## plays the level as built and saves nothing (F5, the zoo, tests, `--scene=`).
+var world: WorldSlot = null
+## Started from the title (not the command line): how the Net starts (`--host`, `--join=<where>`,
+## or nothing for alone), and a Guest whose session ends goes back to the title.
+var from_title := false
+var launch := PackedStringArray()
+
 const SPAWN := ^"Spawn"
 const RETURN_SPOT := ^"ReturnSpot"
 
@@ -64,6 +72,15 @@ func _enter_tree() -> void:
 	mess.bounds = mess_bounds
 	parts.level = level
 	net.place = place_name
+	autosave.world = world
+
+
+## Whether the title started this level as a Guest (launch has `--join=`).
+func launch_joins() -> bool:
+	for arg in launch:
+		if arg.begins_with("--join="):
+			return true
+	return false
 
 
 ## The local body.
@@ -82,6 +99,10 @@ var net: LevelNet:
 	get: return get_node(^"Net") as LevelNet
 var parts: Parts:
 	get: return get_node(^"Parts") as Parts
+var autosave: Autosave:
+	get: return get_node(^"Autosave") as Autosave
+var esc_menu: EscMenu:
+	get: return get_node(^"EscMenu") as EscMenu
 ## The node the Mess, Hands, Knockdowns and Coins are under (ZooStations joins stations' to it).
 var socks: Node:
 	get: return get_node(^"Socks")

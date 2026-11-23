@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://vt663nfy6fr5"]
+
+[node name="LicenceLine" type="Label" unique_id=325679]
+custom_minimum_size = Vector2(840, 0)
+theme_type_variation = &"InkLabel"
+text = "Line"
+autowrap_mode = 3

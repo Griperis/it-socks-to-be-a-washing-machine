@@ -15,6 +15,21 @@ static func setup(shot: Node) -> void:
 ## The game's own --do actions. Return true when `what` was handled.
 static func act(world: Node, what: String, arg: String) -> bool:
 	match what:
+		"menu":
+			# core/58: the screens. arg "options" / "multiplayer" / "join" / "licence" shows that title
+			# page; "esc" opens the level's ESC menu; "loading" puts the loading screen up over the
+			# scene with the saved game's words and its bar half way (a still of the wait).
+			match arg:
+				"esc":
+					LevelRuntime.of(world).esc_menu.open()
+				"loading":
+					var screen := (load("res://game/ui/loading/loading_screen.tscn") as PackedScene).instantiate() as LoadingScreen
+					world.add_child(screen)
+					screen.set_heading("Loading the flat...")
+					screen.set_progress(0.45)
+				_:
+					(world as TitleScreen).show_page(arg)
+			return true
 		"throw_charge":
 			# The zoo's player steps onto the handling station, takes its first Sock and holds the
 			# drop button: the Throw's ring starts filling after the tap (core/08).

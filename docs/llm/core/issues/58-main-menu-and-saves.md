@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: in-progress
 kind: build
 area: core
 feature: frame
@@ -49,3 +49,22 @@ intro, key remapping, the encyclopedia key.
 - A failed write shows the HUD line once and keeps the old file.
 - Stills for the designer: the title, Options, the ESC menu and the loading screen (`builds/review-menus/`); the look is a
   first still (the screens' style is reviewed before the merge).
+
+## Open follow-ups
+- [later] The screens' look is a first still (`builds/review-menus/`): the keycaps, panel, colours and sizes follow the
+  old UiBits numbers on the Theme (`KeycapStyle`); the designer's go before the merge.
+- [later] Wording is the old game's, all placeholder: "Could not save the game", "This World was saved by a newer
+  version of It Socks" (a newer build's file is refused, not loaded), the loading screen's words, the ESC menu's
+  "Menu" heading.
+- [later] Old details not built here, for the designer to keep or drop: the pad's menu guard (pad focus walk with LB/RB,
+  the pad not read while unfocused); the 3D switched off while the loading screen shows; the title's "Connecting to
+  <ip>..." line (a Guest now goes in behind "Joining..." and comes back to the title with the reason); `LICENSES.txt`
+  beside the exported game (with the release export).
+- [later] Kit (for the lead to propose): the save template's `.bak` rule (the old file becomes the backup only when it
+  reads, else a broken file replaces a good backup), the unchecked `store_string` / `get_error()` before the renames,
+  and `JSON.from_native` writing a `PackedByteArray` byte by byte (the game's copy writes Base64): fixed in
+  `game/save/save.gd` and `local_file_store.gd`.
+- [later] When house/09 merges: its placeholder loading screen and this one (`game/ui/loading/`, the old look per
+  Q2575) become one; the house's slice-a-frame laying should keep the screen up until it ends (SceneChanger now
+  fades it two frames after the scene is in), and a loaded World need not lay the generators' Socks it then replaces.
+- [later] `tools/shot_hooks.gd` is over 600 lines (grep_rules note).

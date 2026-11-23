@@ -92,7 +92,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "k14_no_z_fight", "method": "case_k14_no_z_fight", "world": false,
 				"title": "K14: the shell has no two faces facing the same way in one plane where they can be seen"},
 		{"name": "h01_main_scene", "method": "case_h01_main_scene", "world": false,
-				"title": "the house is the project's main scene: the shell, the player, the shared-state path, the zoo's noon light, and nothing of game/zoo/"},
+				"title": "the house is the level the title's Solo and Host play (core/58): the shell, the player, the shared-state path, the zoo's noon light, and nothing of game/zoo/"},
 		{"name": "h02_furniture", "method": "case_h02_furniture", "world": false,
 				"title": "the old furniture stands where the old house had it, moved to the plan, each piece on its floor inside its room"},
 		{"name": "h03_lights", "method": "case_h03_lights", "world": false,
@@ -785,7 +785,8 @@ static func _needs(path: String, seen: Dictionary) -> void:
 
 
 func case_h01_main_scene() -> void:
-	_same(String(ProjectSettings.get_setting("application/run/main_scene")), HOUSE, "the house is the project's main scene (F5, a plain launch)")
+	_same(String(ProjectSettings.get_setting("application/run/main_scene")), "res://game/ui/title/title.tscn", "the title is the project's main scene and Solo plays the house (core/58)")
+	_same(Worlds.LEVEL, HOUSE, "Solo and Host go into the house")
 	var house := await _level_up()
 	var shell := house.get_node_or_null("Shell") as Node3D
 	_check(shell != null and shell.scene_file_path == SHELL and shell.transform == Transform3D.IDENTITY, "the shell stands at the origin, the house's frame")

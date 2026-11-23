@@ -1,8 +1,65 @@
-# Saves and the main menu (proposal)
+# Saves and the main menu
 
-**Status: proposal for the designer (core/57, Q2540). Nothing here is built.** The findings it rests on:
-`docs/migration/m4-lists/01-main-menu-and-saves.md`. Choices for the designer are at the end (M1-M10); the design
-below follows the recommended option of each, and names where another option would change it.
+**Status: built (core/58), as decided (Q2553-Q2567).** The "As built" section below is what the code does
+and wins over the proposal text after it where they differ (the proposal and its choices M1-M10 are kept for the
+record). Findings: `docs/migration/m4-lists/01-main-menu-and-saves.md`; Steam Cloud: `docs/research/steam-cloud-saves.md`.
+
+## As built (core/58)
+
+**Files.** `game/save/`: `Save` (autoload, the kit template amended), `SaveStore` with `LocalFileStore` and
+`MemoryStore`, `Worlds` (autoload), `WorldSlot`, `WorldRecord`, `Autosave` (a node of `level_runtime.tscn`),
+`SaveTuning` (`save_tuning.tres`). Screens: `game/ui/title/`, `options/`, `licence/`, `loading/`, `esc_menu/`;
+`SceneChanger` (`game/scenes/`, autoload); `UiSounds` (`game/audio/ui_sounds.gd`, autoload); `KeycapStyle`
+(`game/look/keycap_style.gd`) for the keycaps and panels on `game/look/theme.tres`.
+
+**A save.** `Autosave.collect()`: `{"world": WorldRecord, "parts": Parts.save_snapshot(), "versions":
+Parts.save_versions()}`; `Save.encode()` wraps it as `{"version", "saved_at", "data"}` through `JSON.from_native`,
+every `PackedByteArray` written as `"b64:<Base64>"` (the Mess's packed state). Part hooks: `save_state()`
+(Knockdowns `{}`, Hands without `grabbed_at`, Roster with nobody playing and each present player's spot, the Mess
+with every flying Sock laid where it would land: `Mess.landing_pose()`), `save_version()` / `upgrade_save()` (each
+Part's own version, stepped by `Parts.load_save()`), `loaded(host)` (Openable shut, Carriable let go, the Mess's lost
+Socks at the return spot, every absent player's Hands dropped at their Roster spot).
+
+**A load.** The title picks a `WorldSlot` (`Worlds.pick_solo()` / `pick_host()`) and hands it to the level through
+`SceneChanger.change_to(path, heading, setup)` (`LevelRuntime.world`, `from_title`, `launch`). `LevelNet.start()`
+loads it (`Autosave.restore()`) before the player enters: alone `Session.enter_alone()` writes the player into its
+own Roster by its profile's player id (the core/57 gap: Hands and Coins are keyed by player id, never the peer
+number), a Host `Session.host()` does the same; the body stands at its Roster spot.
+
+**Saving.** Within `autosave_seconds` of any applied answer (`Save.write_later()`: the data copied on the main
+thread, the text and the write on `WorkerThreadPool`); at once on Back to title, Quit game, End session, the window's
+close and the level leaving with a change unsaved. Only a machine that decides (alone or the Host). A failed write
+keeps the old file; the HUD says "Could not save the game" once until a save works. The Solo World played with a
+Guest becomes the first free co-op World.
+
+**Tests.** `tests/save_test.gd` (S01-S17; S99 writes a sample save), `tests/menus_test.gd`. Committed beside them in
+`tests/saves/`: `sample_v<n>.json` (one per save version, all loaded by S10), `shape.json` (S11: each saved Part's
+fields and version; a changed shape needs a raised `save_version()`), `house_ids.txt` (S12: the house's saved ids;
+a rename shows). When a change is meant, run `GAME_SAVES_OUT=<folder> kit/tools/run.sh --grep=save:s1` (and
+`--stress --grep=save:s99` for a new version's sample) and commit what it writes.
+
+## Steam Cloud (Q2564-Q2567)
+
+Every save read and write goes through `Save.store` (a `SaveStore`); no other code touches save files (the profile
+keeps its own small file, `user://profile.json`, synced too). `application/config/use_custom_user_dir` is on with
+the name "It Socks", so `user://` is `%APPDATA%\It Socks\` on Windows and `~/.local/share/It Socks/` on Linux.
+Worlds are `user://worlds/<player id>/<slot>.json`. Next to a World the local-file store keeps `<slot>.json.tmp`
+(the write in progress), `<slot>.json.bak` (the file before) and `<slot>.json.damaged` (one that read neither way):
+none of them ends in `.json`, so none syncs; settings (`settings.json`), logs and benches are outside `worlds/`.
+
+Auto-Cloud pattern: `worlds/*/*.json` (tests/save_test.gd S15 matches every name a store writes against this line).
+
+The Steamworks Auto-Cloud settings to enter (the M4 Steam piece; not tried, Steam cannot run here):
+
+| Root | Subdirectory | Pattern | OS | Recursive |
+|---|---|---|---|---|
+| `WinAppDataRoaming` | `It Socks/worlds/{64BitSteamID}` | `*.json` | `[Cross-Platform]` | no |
+| `WinAppDataRoaming` | `It Socks` | `profile.json` | `[Cross-Platform]` | no |
+
+Root override: `WinAppDataRoaming` on Linux becomes `LinuxXdgDataHome` (Replace Path keeps `It Socks/...`).
+Byte quota: 50 MB, files: 20 (six Worlds and the profile, with room). Off Steam the player id folder is the
+profile's 128-bit id; on Steam the Steam ID, matching `{64BitSteamID}`. Wrap a save in `Steam.beginFileWriteBatch()`
+/ `endFileWriteBatch()` by overriding `SaveStore.begin_batch()` / `end_batch()` when Steam is present.
 
 ## What it owns
 

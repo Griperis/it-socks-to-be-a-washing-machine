@@ -8,6 +8,8 @@ extends Node
 ## An answer was applied here (granted or refused). The Host's Session sends it on to the Guests;
 ## sounds and the HUD may listen. Never decide anything in a handler of it.
 signal applied(ev: Dictionary)
+## bind() found every part (the level is ready): a save may be loaded now.
+signal bound
 
 ## The Host's player id, and the player's id when playing alone.
 const HOST := 1
@@ -26,6 +28,8 @@ var relay: Callable
 ## reach check in decide() (near()). Unset, every player is near everything.
 var where: Callable
 var _by_id: Dictionary[StringName, Part] = {}
+## bind() has run.
+var is_bound := false
 ## The last seq this machine gave a Command (next_seq()).
 var _seq := 0
 
@@ -54,6 +58,8 @@ func bind(root: Node) -> void:
 		if thing != null and not thing.has_meta(ENTITY_META):
 			thing.set_meta(ENTITY_META, part)
 		part._show(true)
+	is_bound = true
+	bound.emit()
 
 
 ## The part of the thing `node` belongs to (what the player's use button on `node` means): the first
@@ -168,6 +174,50 @@ func snapshot() -> Dictionary:
 	for id: StringName in _by_id:
 		d[id] = _by_id[id].whole_state()
 	return d
+
+
+## What a save keeps of every part (Part.save_state()), by id as a String; a part that keeps nothing
+## is left out.
+func save_snapshot() -> Dictionary:
+	var d := {}
+	for id: StringName in _by_id:
+		var s := _by_id[id].save_state()
+		if not s.is_empty():
+			d[String(id)] = s
+	return d
+
+
+## Each saved part's save_version(), by id as a String.
+func save_versions() -> Dictionary:
+	var d := {}
+	for id: StringName in _by_id:
+		d[String(id)] = _by_id[id].save_version()
+	return d
+
+
+## The Host: a save loaded (Parts.save_snapshot() and save_versions() as they were written): each
+## part's state is brought to its own version (Part.upgrade_save()), written whole and shown at once;
+## an id this level no longer has is skipped (logged). Then every part's loaded() reset is applied,
+## `host` being the Host's player id.
+func load_save(saved: Dictionary, versions: Dictionary, host: String) -> void:
+	var snap := {}
+	for id: Variant in saved:
+		var part := of(StringName(id))
+		if part == null or not (saved[id] is Dictionary):
+			Log.warn("save", "the save has a part %s this level does not" % id)
+			continue
+		var state: Dictionary = saved[id]
+		var v := int(versions.get(id, 1))
+		while v < part.save_version():
+			state = part.upgrade_save(state, v)
+			v += 1
+		snap[id] = state
+	load_snapshot(snap)
+	for part: Part in _by_id.values():
+		var ev := part.loaded(host)
+		if not ev.is_empty():
+			ev.merge({"kind": &"loaded", "by": HOST, "to": part.id})
+			apply(ev)
 
 
 ## Every part's id.

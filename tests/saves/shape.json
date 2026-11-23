@@ -1,0 +1,63 @@
+{
+	"res://game/coins/coins.gd": {
+		"fields": {
+			"coins": "Dictionary"
+		},
+		"version": 1
+	},
+	"res://game/devices/piano_key.gd": {
+		"fields": {
+			"by": "int",
+			"strikes": "int"
+		},
+		"version": 1
+	},
+	"res://game/entities/cabinet/cabinet.gd": {
+		"fields": {
+			"collection": "StringName",
+			"locked": "bool",
+			"rows": "int",
+			"shelf": "Array"
+		},
+		"version": 1
+	},
+	"res://game/hands/hands.gd": {
+		"fields": {
+			"active": "Dictionary",
+			"grabbed_at": "Dictionary",
+			"held": "Dictionary"
+		},
+		"version": 1
+	},
+	"res://game/mess/generated_socks.gd": {
+		"fields": {
+			"first": "int",
+			"seed": "int",
+			"socks": "int"
+		},
+		"version": 1
+	},
+	"res://game/mess/mess.gd": {
+		"fields": {
+			"designs": "PackedInt32Array",
+			"mates": "PackedInt32Array",
+			"poses": "PackedFloat32Array",
+			"states": "PackedByteArray",
+			"throws": "Dictionary"
+		},
+		"version": 1
+	},
+	"res://game/net/roster.gd": {
+		"fields": {
+			"players": "Dictionary"
+		},
+		"version": 1
+	},
+	"res://game/parts/openable.gd": {
+		"fields": {
+			"locked": "bool",
+			"open": "bool"
+		},
+		"version": 1
+	}
+}

@@ -1,0 +1,154 @@
+{
+	"data": {
+		"args": [
+			"s:world",
+			{
+				"args": [
+					"s:kind",
+					"s:solo",
+					"s:members",
+					{
+						"args": [
+							"s:263abc77f9a8ed264c6c75e949febd9d",
+							{
+								"args": [
+									"s:name",
+									"s:Player",
+									"s:colour",
+									"i:0"
+								],
+								"type": "Dictionary"
+							}
+						],
+						"type": "Dictionary"
+					},
+					"s:play_time",
+					"f:0.01666666666667",
+					"s:last_played",
+					"i:1795460298",
+					"s:level",
+					"s:res://game/house/house.tscn",
+					"s:floor",
+					"s:",
+					"s:seed",
+					"i:0"
+				],
+				"type": "Dictionary"
+			},
+			"s:parts",
+			{
+				"args": [
+					"s:Runtime/Socks/Mess",
+					{
+						"args": [
+							"s:packed",
+							"s:b64:KLUv/SCwpQIAMoQNFZBF6Qishr83swkDzMzMVNr4uf4Qp4eVaOkKgGYUlfMN4JKk/cHEF+WR/YXfXNxLVYSYf/hPCwB7bGUJXoG+oB2gu6km0Im60wZgBNzoy8oR",
+							"s:packed_size",
+							"i:176"
+						],
+						"type": "Dictionary"
+					},
+					"s:Runtime/Socks/Hands",
+					{
+						"args": [
+							"s:held",
+							{
+								"args": [],
+								"type": "Dictionary"
+							},
+							"s:active",
+							{
+								"args": [],
+								"type": "Dictionary"
+							}
+						],
+						"type": "Dictionary"
+					},
+					"s:Runtime/Socks/Coins",
+					{
+						"args": [
+							"s:coins",
+							{
+								"args": [
+									"s:263abc77f9a8ed264c6c75e949febd9d",
+									"i:12"
+								],
+								"type": "Dictionary"
+							}
+						],
+						"type": "Dictionary"
+					},
+					"s:Runtime/Session/Roster",
+					{
+						"args": [
+							"s:players",
+							{
+								"args": [
+									"s:263abc77f9a8ed264c6c75e949febd9d",
+									{
+										"args": [
+											"s:peer",
+											"i:0",
+											"s:name",
+											"s:Player",
+											"s:hands",
+											{
+												"args": [
+													"s:capacity",
+													"i:1",
+													"s:reach",
+													"f:2.5",
+													"s:charge_time",
+													"f:1.2",
+													"s:max_speed",
+													"f:5.0"
+												],
+												"type": "Dictionary"
+											},
+											"s:colour",
+											"i:0",
+											"s:at",
+											{
+												"args": [
+													0.0,
+													0.0,
+													2.0
+												],
+												"type": "Vector3"
+											},
+											"s:yaw",
+											"f:0.0"
+										],
+										"type": "Dictionary"
+									}
+								],
+								"type": "Dictionary"
+							}
+						],
+						"type": "Dictionary"
+					}
+				],
+				"type": "Dictionary"
+			},
+			"s:versions",
+			{
+				"args": [
+					"s:Runtime/Socks/Mess",
+					"i:1",
+					"s:Runtime/Socks/Hands",
+					"i:1",
+					"s:Runtime/Socks/Knockdowns",
+					"i:1",
+					"s:Runtime/Socks/Coins",
+					"i:1",
+					"s:Runtime/Session/Roster",
+					"i:1"
+				],
+				"type": "Dictionary"
+			}
+		],
+		"type": "Dictionary"
+	},
+	"saved_at": "2026-11-23T18:58:18",
+	"version": 1
+}
