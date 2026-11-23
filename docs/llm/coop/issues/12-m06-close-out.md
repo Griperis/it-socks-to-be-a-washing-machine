@@ -88,3 +88,4 @@ The last batch of M0.6 (Q2534), as `docs/migration/milestones.md` batch 5 says, 
   (removed), tools/coop_cost.{gd,tscn,sh}, docs/architecture/coop.md (new), docs/architecture.md,
   docs/migration/review-guide-m06.md (new), docs/migration/m06-backlog.md
 - Verified: suite: PASS 17940 checks, 495 cases (--touched, 55 suites); grep_rules PASS; tools/coop_cost.sh PASS. The full --touched verdict at commit is in the commit's `suite:` line.
+- Merged: 26a3ccf7 (2026-11-23, branch coop/12-m06-close-out)
