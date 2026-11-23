@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://b0s58u22waxoe"]
+
+[ext_resource type="Script" uid="uid://c0y4tbpm1pp26" path="res://game/level/loading_screen.gd" id="1_screen"]
+[ext_resource type="Resource" uid="uid://b6upbqli1p34q" path="res://game/level/loading_tuning.tres" id="2_tuning"]
+
+[node name="LoadingScreen" type="CanvasLayer"]
+layer = 30
+script = ExtResource("1_screen")
+tuning = ExtResource("2_tuning")
+
+[node name="Cover" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Back" type="ColorRect" parent="Cover"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.168627, 0.129412, 0.109804, 1)
+
+[node name="Middle" type="CenterContainer" parent="Cover"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Card" type="PanelContainer" parent="Cover/Middle"]
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 2
+
+[node name="Rows" type="VBoxContainer" parent="Cover/Middle/Card"]
+layout_mode = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="Text" type="Label" parent="Cover/Middle/Card/Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "The washer bursts open..."
+horizontal_alignment = 1
+
+[node name="Progress" type="ProgressBar" parent="Cover/Middle/Card/Rows"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(440, 28)
+layout_mode = 2
+size_flags_horizontal = 4
+max_value = 1.0
+show_percentage = false

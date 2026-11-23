@@ -157,9 +157,9 @@ func above(under: AABB, margin: float, column: float, slack: float, most: int) -
 	return out
 
 
-## Whether lying Sock `sock` rests on something (core/55, Q2531): the house or another lying Sock
-## within `reach` under one of its shapes (a thin slab of its footprint just under its bottom meets
-## it). A Sock with no body counts as resting.
+## Whether lying Sock `sock` rests on something (core/55, Q2531): the house, a stair's tread or another
+## lying Sock within `reach` under one of its shapes (a thin slab of its footprint just under its bottom
+## meets it). A Sock with no body counts as resting.
 func supported(sock: int, reach: float) -> bool:
 	if not _body.has(sock):
 		return true
@@ -172,6 +172,10 @@ func supported(sock: int, reach: float) -> bool:
 		var at: Transform3D = _pose[sock] * (part[1] as Transform3D) * Transform3D(Basis.IDENTITY, Vector3.DOWN * (bottom + reach * 0.5 + 0.0005))
 		if not PhysicsQueries.overlap_rids(_from, slab, at, Mess.LAYER_HOUSE | Mess.LAYER_LYING, 1).is_empty():
 			return true
+		# A stair trail's Sock lies on a tread, under the walking ramp (Q2530, house/09): held up.
+		for body in PhysicsQueries.overlap_colliders(_from, slab, at, SockTrail.LAYER_TREADS, 4):
+			if (body as Node).name == SockTrail.TREADS:
+				return true
 	return false
 
 

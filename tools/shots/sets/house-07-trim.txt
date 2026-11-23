@@ -1,5 +1,5 @@
 # house/07: the bathroom's wainscot trim (Q2538)
-trim-north-window  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:8.5,4.5,3.0,8.5,4.3,0' --shots=70
-trim-east  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:7.2,4.5,1.7,10.5,4.3,1.7' --shots=70
-trim-south-corner  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:9.5,4.5,1.0,7.5,4.3,3.5' --shots=70
-trim-west-door  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:9.2,4.5,2.6,6.5,4.3,1.0' --shots=70
+trim-north-window  --scene=res://game/house/house.tscn --size=960x540 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;30:house:cam:8.5,4.5,3.0,8.5,4.3,0' --shots=70
+trim-east  --scene=res://game/house/house.tscn --size=960x540 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;30:house:cam:7.2,4.5,1.7,10.5,4.3,1.7' --shots=70
+trim-south-corner  --scene=res://game/house/house.tscn --size=960x540 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;30:house:cam:9.5,4.5,1.0,7.5,4.3,3.5' --shots=70
+trim-west-door  --scene=res://game/house/house.tscn --size=960x540 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;30:house:cam:9.2,4.5,2.6,6.5,4.3,1.0' --shots=70

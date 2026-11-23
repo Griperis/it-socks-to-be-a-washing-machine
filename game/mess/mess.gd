@@ -165,6 +165,17 @@ var stream_offset := INF
 ## The Socks this machine's ghosts draw themselves (GuestGhosts): the Mess does not draw them, lying or
 ## flying, until let go (hold_back()).
 var _held_back: Dictionary[int, bool] = {}
+## Where a Teammate's let-go Sock `sock` hangs on their avatar here, `worn_start.call(by, sock)`: a
+## Transform3D, or null for a player on this machine (Hands.worn_start_of(), set by the Hands).
+var worn_start: Callable
+## A Teammate's Throws and drops on this machine (coop/13, Q2439): each leaves its thrower's own hand
+## (Hands.start_of()) but is drawn from their avatar's hand, easing onto its body over the ghosts'
+## `hand_over_time`: {Sock id: [the move, the turn, the tick it was let go, its Looks' own transform
+## or null]}.
+var _leads: Dictionary[int, Array] = {}
+## A Guest's Socks gliding from where their own falling copy was onto the Host's rest pose (Q2577):
+## {Sock id: [the pose it glides from, seconds glided]}. Only the drawing glides.
+var _glides: Dictionary[int, Array] = {}
 ## The holder of every body but a Throw's (made in _ready, a child of this Mess: no spawner's path).
 var _bodies: Node3D
 ## A whole state's bodies in flight as it was written (a late Guest, a load): {Sock id: [pose,
@@ -180,6 +191,12 @@ var _freed_since: Array[AABB] = []
 ## More nodes of SockSpots, handed over before this Mess is ready by a scene that joins the level
 ## (a zoo station, whose own Mess steps aside for the zoo's: ZooStations): read after `spots`, in order.
 var more_spots: Array[Node3D] = []
+## Lays the generators' starting Socks a slice per frame (lay_step(), the level's loading screen)
+## instead of before the level binds (LevelRuntime.load_screen, house/09).
+var lay_in_slices := false
+## The generators' starting Socks while they are being laid, else null. Not state: work in hand, given
+## up when a whole state is written (a Guest's snapshot).
+var starting: StartingSocks
 
 
 ## Before the level binds: the SockSpots (of `spots`, then of `more_spots`) become the starting
@@ -197,17 +214,44 @@ func _ready() -> void:
 	for holder in holders:
 		if holder != null:
 			_add_spots(holder)
-	# The Sock generators' starting Socks (core/52), after the SockSpots, in tree order.
+	# The Sock generators' starting Socks (core/52), after the SockSpots, in tree order: now, or a
+	# slice per frame behind the loading screen (house/09, lay_step()).
+	var gens: Array[GeneratedSocks] = []
 	for node in get_tree().get_nodes_in_group(GeneratedSocks.GROUP):
 		var gen := node as GeneratedSocks
 		if gen != null and gen.mess == self:
-			_add_generated(gen)
+			gens.append(gen)
+	if not gens.is_empty():
+		MessBodies.fit(MessDrawing.sock_points(), bodies_tuning().min_thick)
+		starting = StartingSocks.new(self, gens)
+		if not lay_in_slices:
+			lay_step(-1)
+
+
+## Whether the generated starting Socks are still being laid (lay_in_slices).
+func is_laying() -> bool:
+	return starting != null
+
+
+## Lays the starting Socks until done or the clock (Time.get_ticks_usec()) passes `until` (below 0:
+## no limit); once done they join the Mess and are shown, all at once (a slice: in the next call, a
+## frame of its own). Returns whether nothing is left to lay.
+func lay_step(until: int) -> bool:
+	if starting == null:
+		return true
+	var was_done := starting.is_done()
+	if not starting.step(until) or (not was_done and until >= 0):
+		return false
+	starting.reveal()
+	starting = null
+	if parts != null:
+		_show(false)
+	return true
 
 
 ## A generator's starting Socks become records, lying, as the SockSpots do (Q2523: no fall, no sound).
-func _add_generated(gen: GeneratedSocks) -> void:
-	MessBodies.fit(MessDrawing.sock_points(), bodies_tuning().min_thick)
-	var made := gen.make(lying_boxes())
+func add_generated(gen: GeneratedSocks, made: Dictionary) -> void:
+	gen.took(count(), (made["designs"] as PackedInt32Array).size())
 	var add_designs: PackedInt32Array = made["designs"]
 	for i in add_designs.size():
 		_laid_since[designs.size() + i] = true
@@ -340,13 +384,22 @@ func drawn_flight_of(sock: int) -> Variant:
 	var looks := body.get_node_or_null(LOOKS) as Node3D
 	if looks != null:
 		return looks.global_transform
-	return body.global_transform * _sized(design_of(sock))
+	var at := body.global_transform
+	if _leads.has(sock):
+		at = _led(sock, body, at.orthonormalized())
+	return at * _sized(design_of(sock))
 
 
 ## Where Sock `sock` is now: its falling body's place while it moves, else where its record puts it.
 func where_of(sock: int) -> Vector3:
 	var body := moving_body(sock) if state_of(sock) == State.FLYING else null
 	return body.global_position if body != null else pose_of(sock).origin
+
+
+## The transform lying Sock `sock`'s instance is drawn with on this machine, or null (not drawn as an
+## instance: lent its Looks, held back, or not lying). Tests compare two machines' heaps by it.
+func drawn_lying_of(sock: int) -> Variant:
+	return _drawing.drawn_of(sock) if _drawing != null else null
 
 
 ## Whether lying Sock `sock` is shown now: as an instance of its cell or as its lent Looks.
@@ -620,6 +673,7 @@ func write(patch: Dictionary, now: bool) -> void:
 		patch = _unpacked(patch)
 	if not patch.has(ROWS):
 		stream_offset = INF
+		starting = null
 		super.write(patch, now)
 		_motion.clear()
 		return
@@ -970,6 +1024,7 @@ func _show(now: bool) -> void:
 			return_looks(sock)
 		changed = PackedInt32Array(range(count()))
 		_moving.clear()
+		_glides.clear()
 		_lying_bodies.clear()
 		for sock in range(count(), _shown_states.size()):
 			_drawing.undraw(sock)
@@ -1006,6 +1061,7 @@ func _show(now: bool) -> void:
 			if state_of(sock) == State.FLYING and was == State.LYING:
 				woken[sock] = true
 			_take_down(sock)
+		_glide_from_body(sock)
 		_moving.forget(sock)
 	var started := false
 	for sock in changed:
@@ -1017,6 +1073,7 @@ func _show(now: bool) -> void:
 				if _is_host() or not is_throw(sock):
 					_moving.start(sock, woken.has(sock), _motion.get(sock, []))
 					started = true
+				_lead_from_hand(sock)
 	if started:
 		# Once for every body this change started (a thrown one has its Looks at once: its cloth
 		# carries the hand's bend).
@@ -1028,6 +1085,7 @@ func _show(now: bool) -> void:
 
 ## Sock `sock` no longer lies as it was shown: its lent Looks, its drawing and its body go.
 func _take_down(sock: int) -> void:
+	_glides.erase(sock)
 	if _lent.has(sock):
 		_lent[sock].queue_free()
 		_lent.erase(sock)
@@ -1045,6 +1103,8 @@ func _physics_process(delta: float) -> void:
 	if _lying_bodies == null:
 		return
 	give_looks()
+	if not _leads.is_empty():
+		_ease_leads()
 	if parts == null:
 		return
 	if _is_host():
@@ -1076,9 +1136,11 @@ func _fall_unsupported() -> void:
 
 ## Every machine, each frame: the flights with no Looks are drawn as instances where their bodies
 ## are. Nothing is built or uploaded while no Sock is drawn so (core/31).
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if _drawing == null:
 		return
+	if not _glides.is_empty():
+		_glide(delta)
 	_drawing.flush()
 	if _flight_by_sock.size() == _flight_looks.size() and not _flying_drawn:
 		return
@@ -1096,7 +1158,8 @@ func _process(_delta: float) -> void:
 		if not poses.has(shape):
 			poses[shape] = []
 			of[shape] = []
-		poses[shape].append(body.get_global_transform_interpolated().orthonormalized())
+		var pose := body.get_global_transform_interpolated().orthonormalized()
+		poses[shape].append(_led(sock, body, pose) if _leads.has(sock) else pose)
 		of[shape].append(design)
 	_drawing.draw_flying(poses, of)
 	_flying_drawn = not poses.is_empty()
@@ -1206,7 +1269,111 @@ func _draw_lying(sock: int) -> void:
 	if _held_back.has(sock):
 		return
 	var design := design_of(sock)
-	_drawing.draw(sock, pose_of(sock), MessDrawing.shape_of(design, is_pair(sock)), design)
+	_drawing.draw(sock, lying_drawn_pose(sock), MessDrawing.shape_of(design, is_pair(sock)), design)
+
+
+## A Guest (Q2577): Sock `sock` now lies by the Host's rest while its own falling copy is still here:
+## it is drawn gliding from where that copy is onto the rest pose (lying_drawn_pose()).
+func _glide_from_body(sock: int) -> void:
+	if _is_host() or state_of(sock) != State.LYING or bodies_tuning().rest_glide <= 0.0:
+		return
+	var body := moving_body(sock)
+	if body != null:
+		_glides[sock] = [body.global_transform.orthonormalized(), 0.0]
+
+
+## Where lying Sock `sock` is drawn now: its record's pose, or on its glide onto it (Q2577).
+func lying_drawn_pose(sock: int) -> Transform3D:
+	var to := pose_of(sock)
+	if not _glides.has(sock):
+		return to
+	var g: Array = _glides[sock]
+	var u := smoothstep(0.0, maxf(bodies_tuning().rest_glide, 0.001), float(g[1]))
+	var from := g[0] as Transform3D
+	var turn := from.basis.get_rotation_quaternion().slerp(to.orthonormalized().basis.get_rotation_quaternion(), u)
+	return Transform3D(Basis(turn), from.origin.lerp(to.origin, u))
+
+
+## Once a frame: each gliding Sock moves on along its glide; one at its rest pose stops gliding.
+func _glide(delta: float) -> void:
+	var t := bodies_tuning().rest_glide
+	for sock: int in _glides.keys():
+		var g: Array = _glides[sock]
+		g[1] = float(g[1]) + delta
+		var done := float(g[1]) >= t
+		if done:
+			_glides.erase(sock)
+		if _drawing.is_drawn(sock):
+			_draw_lying(sock)
+
+
+## A Teammate's Throw or drop of Sock `sock` just let go here (coop/13, Q2439): it is drawn from where
+## their avatar holds it, easing onto its body. Nothing for a Sock with no thrower (woken, poured), one
+## of a player on this machine (the Host's own, a Guest's ghost), or a body already in flight (a late
+## joiner's).
+func _lead_from_hand(sock: int) -> void:
+	if _leads.has(sock) or not worn_start.is_valid() or _held_back.has(sock) or not throws.has(sock):
+		return
+	var by := int((throws[sock] as Dictionary).get("by", NOBODY))
+	var body := moving_body(sock)
+	if by == NOBODY or body == null:
+		return
+	var from := pose_of(sock).orthonormalized()
+	var row := FlightRow.of(body)
+	if (row == null or row.host_side) and body.global_position.distance_to(from.origin) > 0.001:
+		return
+	if row != null and not row.host_side and row.flight_time() > 0.0:
+		return
+	var hand: Variant = worn_start.call(by, sock)
+	if not (hand is Transform3D):
+		return
+	var at := hand as Transform3D
+	_leads[sock] = [at.origin - from.origin,
+			(at.basis.get_rotation_quaternion() * from.basis.get_rotation_quaternion().inverse()).normalized(),
+			FlightRow.tick(), null]
+	_place_lead(sock, body)
+
+
+## How much of Sock `sock`'s lead from the hand is left: 1 at the let-go, 0 after `hand_over_time` of
+## its flight (a Guest's copy counts the Host's flight as it plays it).
+func _lead_left(sock: int, body: RigidBody3D) -> float:
+	var row := FlightRow.of(body)
+	var t := (FlightRow.tick() - float(_leads[sock][2])) / float(Engine.physics_ticks_per_second)
+	if row != null and not row.host_side:
+		t = maxf(0.0, row.flight_time())
+	return 1.0 - smoothstep(0.0, maxf(ghost_tuning().hand_over_time, 0.001), t)
+
+
+## Pose `at` of Sock `sock`'s body with what is left of its lead from the hand on it.
+func _led(sock: int, body: RigidBody3D, at: Transform3D) -> Transform3D:
+	var lead: Array = _leads[sock]
+	var w := _lead_left(sock, body)
+	return Transform3D(Basis(Quaternion.IDENTITY.slerp(lead[1], w)) * at.basis, at.origin + (lead[0] as Vector3) * w)
+
+
+## Once a tick: each led Sock's Looks (a body with one) is drawn with what is left of its lead; a lead
+## eased away goes, its Looks on its body again.
+func _ease_leads() -> void:
+	for sock: int in _leads.keys():
+		var body := moving_body(sock)
+		if body == null:
+			_leads.erase(sock)
+			continue
+		if _place_lead(sock, body) <= 0.0:
+			_leads.erase(sock)
+
+
+## Sock `sock`'s Looks (its body has one) drawn with what is left of its lead; returns what is left.
+func _place_lead(sock: int, body: RigidBody3D) -> float:
+	var lead: Array = _leads[sock]
+	var looks := body.get_node_or_null(LOOKS) as Node3D
+	if looks != null and lead[3] == null:
+		lead[3] = looks.transform
+	var w := _lead_left(sock, body)
+	if looks != null:
+		var at := body.global_transform.orthonormalized()
+		looks.transform = at.affine_inverse() * _led(sock, body, at) * (lead[3] as Transform3D)
+	return w
 
 
 ## Every machine: while fewer than the cloth's flying_cap flights have a Looks (core/09), the
@@ -1245,6 +1412,8 @@ func give_looks() -> void:
 		looks.visible = not _held_back.has(sock)
 		body.add_child(looks)
 		_flight_looks[body] = true
+		if _leads.has(sock):
+			_place_lead(sock, body)
 
 
 ## Where a Throw's body goes (the spawner's path in co-op).
@@ -1313,6 +1482,7 @@ func _on_flight_in(node: Node) -> void:
 	_flight_shape.erase(sock)
 	if body.has_node(LOOKS):
 		_flight_looks[body] = true
+	_lead_from_hand(sock)
 
 
 ## A body that leaves: forgotten, unless a new body of the same Sock took its place already (a rest
@@ -1326,6 +1496,7 @@ func _on_flight_out(node: Node) -> void:
 	if _flight_by_sock.get(sock) == body:
 		_flight_by_sock.erase(sock)
 		_flight_shape.erase(sock)
+		_leads.erase(sock)
 
 
 ## The Sock a falling body is: its metadata (the Host's), else its name (a spawned copy).

@@ -22,6 +22,9 @@ extends Node3D
 @export var upgrades: PlayerUpgrades
 ## The level's word in the corner and the joiner's line (LevelNet.place_name()).
 @export var place_name := "house"
+## Lays the level's generated Socks a slice per frame behind the loading screen (the house, house/09,
+## Q2542); off: all in the start-up frame (the zoo's few).
+@export var load_screen := false
 
 const SPAWN := ^"Spawn"
 const RETURN_SPOT := ^"ReturnSpot"
@@ -62,6 +65,7 @@ func _enter_tree() -> void:
 	var back := _marker(return_spot, RETURN_SPOT)
 	mess.return_spot = back if back != null else start
 	mess.bounds = mess_bounds
+	mess.lay_in_slices = load_screen
 	parts.level = level
 	net.place = place_name
 
@@ -99,6 +103,8 @@ var lying: Node3D:
 	get: return get_node(^"Lying") as Node3D
 var flights: Node3D:
 	get: return get_node(^"Flights") as Node3D
+var loading: LoadingScreen:
+	get: return get_node(^"LoadingScreen") as LoadingScreen
 
 
 ## The marker at `path` (from this node), else the level's child named `fallback`, or null.

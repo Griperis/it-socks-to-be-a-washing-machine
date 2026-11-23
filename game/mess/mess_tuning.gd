@@ -51,6 +51,9 @@ extends Resource
 ## A body the physics has put to sleep rests at once, once it has moved for this long (a body just
 ## launched may start asleep for a tick).
 @export_range(0.0, 1.0, 0.01, "suffix:s") var asleep_rest_after := 0.1 # placeholder: until play
+## A Guest: a Sock its own falling copy showed glides from where that copy was onto the Host's rest pose
+## in this long, instead of snapping there (Q2577); its lying body is at the rest pose at once.
+@export_range(0.0, 1.0, 0.01, "suffix:s") var rest_glide := 0.2 # placeholder: Q2577's "about 0.2 s"
 
 @export_group("Lost")
 ## A lost Sock or Pair (out of bounds, or resting inside a wall) comes back at the return spot,

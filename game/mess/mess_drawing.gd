@@ -200,6 +200,17 @@ func is_drawn(sock: int) -> bool:
 	return _cell_of.has(sock)
 
 
+## The transform lying Sock `sock`'s instance is drawn with here (its Size and mesh place included),
+## or null when it is not drawn as one (tests compare two machines' heaps by it).
+func drawn_of(sock: int) -> Variant:
+	if not _cell_of.has(sock):
+		return null
+	var b := _buf[_cell_of[sock]]
+	var i := _slot_of[sock] * STRIDE
+	return Transform3D(Vector3(b[i], b[i + 4], b[i + 8]), Vector3(b[i + 1], b[i + 5], b[i + 9]),
+			Vector3(b[i + 2], b[i + 6], b[i + 10]), Vector3(b[i + 3], b[i + 7], b[i + 11]))
+
+
 ## How many lying Socks are drawn as instances, and in how many MultiMeshes.
 func drawn_count() -> int:
 	return _cell_of.size()

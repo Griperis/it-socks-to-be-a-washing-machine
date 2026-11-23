@@ -10,6 +10,9 @@ extends Node3D
 ## The physics layer of a stair piece's treads (its `Treads` body, tools/house_kit_build.gd): thin boxes
 ## on the steps' tops that only a trail's Socks rest on; the player and the Mess meet the walking ramps.
 const LAYER_TREADS := 128
+## The treads body's name: what lies on one is held up (MessBodies.supported(), house/09). The layer is
+## shared with a standing player's Mate capsule (Ragdoll.MATE_LAYER), so the name tells them apart.
+const TREADS := &"Treads"
 
 ## How many Socks lie on the trail.
 @export_range(0, 200, 1) var socks := 6:

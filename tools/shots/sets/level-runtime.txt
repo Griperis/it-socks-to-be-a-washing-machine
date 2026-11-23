@@ -1,4 +1,4 @@
 # core/51: the level runtime moves no look: one house room, the house's spawn and the zoo's spawn, before (main) and after (they must match).
-room-kitchen  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-kitchen' --shots=70
-house-spawn  --scene=res://game/house/house.tscn --size=1280x720 --shots=40
+room-kitchen  --scene=res://game/house/house.tscn --size=1280x720 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;30:house:room-kitchen' --shots=70
+house-spawn  --scene=res://game/house/house.tscn --size=1280x720 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500' --shots=40
 zoo-spawn  --scene=res://game/zoo/zoo.tscn --size=1280x720 --shots=40

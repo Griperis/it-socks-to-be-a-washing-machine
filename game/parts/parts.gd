@@ -8,6 +8,8 @@ extends Node
 ## An answer was applied here (granted or refused). The Host's Session sends it on to the Guests;
 ## sounds and the HUD may listen. Never decide anything in a handler of it.
 signal applied(ev: Dictionary)
+## The last unsettle() was settled: the level's starting state is whole (house/09).
+signal settled
 
 ## The Host's player id, and the player's id when playing alone.
 const HOST := 1
@@ -28,6 +30,24 @@ var where: Callable
 var _by_id: Dictionary[StringName, Part] = {}
 ## The last seq this machine gave a Command (next_seq()).
 var _seq := 0
+## Who still makes the level's starting state (unsettle()), by node.
+var _unsettled: Dictionary[Object, bool] = {}
+
+
+## The level is still making its starting state (house/09: its Socks laid behind the loading screen)
+## until `by` calls settle(): a joining Guest's snapshot waits for `settled`.
+func unsettle(by: Object) -> void:
+	_unsettled[by] = true
+
+
+func settle(by: Object) -> void:
+	if _unsettled.erase(by) and _unsettled.is_empty():
+		settled.emit()
+
+
+## Whether nothing still makes the level's starting state (a snapshot of it is whole).
+func is_settled() -> bool:
+	return _unsettled.is_empty()
 
 
 ## Binds once the level is ready, so every part's looks are in place for the first _show(true).

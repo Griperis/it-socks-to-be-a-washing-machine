@@ -38,27 +38,59 @@ var cells: Dictionary[Vector2i, Dictionary] = {}
 var keep_out: Array[Array] = []
 
 var _probe := BoxShape3D.new()
+## The finding so far (step()): the level's nodes, the area's grid, the next floor cell and the next
+## node looked at for tops, insides and under-gaps.
+var _nodes: Array[Node] = []
+var _nx := 1
+var _nz := 1
+var _cell := 0
+var _node := 0
 
 
-func _init(of_area: SockArea, with: SockGeneratorTuning, in_level: Node, from_washer: Node3D, exclusions: Array[Array]) -> void:
+## Finds every place at once, or with `at_once` false only gets ready for step() (house/09: a level
+## may lay its Socks a slice per frame). Either way the places come out the same, in the same order.
+func _init(of_area: SockArea, with: SockGeneratorTuning, in_level: Node, from_washer: Node3D, exclusions: Array[Array], at_once := true) -> void:
 	area = of_area
 	tuning = with
 	scan = in_level
 	washer = from_washer
 	keep_out = exclusions.duplicate()
-	var nodes: Array[Node] = []
-	_walk(scan, nodes)
-	for node in nodes:
+	_walk(scan, _nodes)
+	for node in _nodes:
 		if node is Cabinet:
 			_cabinet_zone(node as Cabinet)
-	_find_floor()
-	for node in nodes:
-		if node is Area3D and String(node.name).begins_with("Top") and node.get_parent() != null and node.get_parent().name == &"Spots":
-			_add_top(node as Area3D)
-		elif node is Area3D and node.name == &"Inside" and node.has_meta(&"shelves_y"):
-			_add_inside(node as Area3D)
-		elif node is Node3D and float(node.get_meta(&"crawl_gap", 0.0)) > 0.0 and node.has_meta(&"footprint"):
-			_add_under(node as Node3D)
+	_nx = maxi(1, floori(area.size.x / tuning.floor_grid))
+	_nz = maxi(1, floori(area.size.z / tuning.floor_grid))
+	if at_once:
+		step(null)
+
+
+## Finds places, the floor cells first, then the furniture's, while `clock` has room for one more
+## (null: no limit). Returns whether all are found.
+func step(clock: SliceClock) -> bool:
+	while _cell < _nx * _nz:
+		if not SliceClock.fits(clock, &"cell"):
+			return false
+		_try_cell(_cell / _nz, _cell % _nz)
+		_cell += 1
+	while _node < _nodes.size():
+		var node: Object = _nodes[_node]
+		# A node made and gone meanwhile (a slice per frame: a toast, a body) is no place.
+		if is_instance_valid(node):
+			if not SliceClock.fits(clock, &"node"):
+				return false
+			_look_at(node as Node)
+		_node += 1
+	return true
+
+
+func _look_at(node: Node) -> void:
+	if node is Area3D and String(node.name).begins_with("Top") and node.get_parent() != null and node.get_parent().name == &"Spots":
+		_add_top(node as Area3D)
+	elif node is Area3D and node.name == &"Inside" and node.has_meta(&"shelves_y"):
+		_add_inside(node as Area3D)
+	elif node is Node3D and float(node.get_meta(&"crawl_gap", 0.0)) > 0.0 and node.has_meta(&"footprint"):
+		_add_under(node as Node3D)
 
 
 ## The level's furniture piece `node` belongs to (the nearest node up with a `footprint`), or null.
@@ -113,26 +145,22 @@ func _is_furniture(node: Node) -> bool:
 	return node != null and node.get_children().any(func(c: Node) -> bool: return c is Cabinet)
 
 
-## Every grid cell's middle of the area tried once for open floor.
-func _find_floor() -> void:
+## Grid cell (i, k)'s middle of the area tried once for open floor (every cell, i then k).
+func _try_cell(i: int, k: int) -> void:
 	var g := tuning.floor_grid
-	var nx := maxi(1, floori(area.size.x / g))
-	var nz := maxi(1, floori(area.size.z / g))
-	var x0 := -nx * g * 0.5
-	var z0 := -nz * g * 0.5
-	for i in nx:
-		for k in nz:
-			var local := Vector3(x0 + (i + 0.5) * g, 0.0, z0 + (k + 0.5) * g)
-			var p := area.global_transform * local
-			var y := floor_at(p, area.rules.wall_margin, area.rules.furniture_margin)
-			if is_nan(y):
-				continue
-			var space := Transform3D(area.global_basis, Vector3(p.x, y, p.z))
-			var place := {"kind": SockArea.Kind.FLOOR, "space": space, "rect": Rect2(-g * 0.5, -g * 0.5, g, g),
-					"from": FLOOR_RAY, "along": -1.0, "weight": g * g * area.floor_weight * fade(space.origin),
-					"piece": null, "cell": Vector2i(i, k)}
-			floor_places.append(place)
-			cells[Vector2i(i, k)] = place
+	var x0 := -_nx * g * 0.5
+	var z0 := -_nz * g * 0.5
+	var local := Vector3(x0 + (i + 0.5) * g, 0.0, z0 + (k + 0.5) * g)
+	var p := area.global_transform * local
+	var y := floor_at(p, area.rules.wall_margin, area.rules.furniture_margin)
+	if is_nan(y):
+		return
+	var space := Transform3D(area.global_basis, Vector3(p.x, y, p.z))
+	var place := {"kind": SockArea.Kind.FLOOR, "space": space, "rect": Rect2(-g * 0.5, -g * 0.5, g, g),
+			"from": FLOOR_RAY, "along": -1.0, "weight": g * g * area.floor_weight * fade(space.origin),
+			"piece": null, "cell": Vector2i(i, k)}
+	floor_places.append(place)
+	cells[Vector2i(i, k)] = place
 
 
 ## A top's box (`Spots/Top<n>` and its box shape): a Sock rests on its bottom face.
