@@ -69,3 +69,4 @@ house's lights and layers in `reference/it-socks/game/house/`).
 - Files: game/house/house_lights.gd (+ .uid), game/house/house.tscn, docs/architecture/house.md, this ticket.
 - Verified: see the commit's suite line. Strip `builds/review-house-06/floor-1-basement.png` .. `floor-4-attic-outside.png`
   (old | house/04 | house/06; the old and house/04 columns are cut from `review-house-04`).
+- Merged: 99ff1552 (2026-11-23, branch house/06-lamp-rules)
