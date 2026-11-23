@@ -1,7 +1,7 @@
 ## The game's link (docs/architecture/lobby.md "Core/62", Q2582): the co-op connection and who plays,
 ## for a whole game, beside the current scene and not inside it, so a scene change keeps the
 ## connection. It holds the `Session` (the one RPC node), its `Roster` and the link's own `Parts`,
-## which bind the Parts that outlive a scene (the Roster now).
+## which bind the Parts that outlive a scene (the Roster, and the Lobby's LobbyState: core/63).
 ##
 ## Not an autoload: a test runs two or three machines in one process, so whoever starts a game makes
 ## one (the title, beside itself: under the tree's root in the game, which SceneChanger leaves alone)
@@ -29,6 +29,9 @@ var roster: Roster:
 	get: return get_node(^"Session/Roster") as Roster
 var parts: Parts:
 	get: return get_node(^"Parts") as Parts
+## What the Lobby shows and its rules (Ready, Start, the World: core/63).
+var lobby: LobbyState:
+	get: return get_node(^"LobbyState") as LobbyState
 
 
 func _enter_tree() -> void:
