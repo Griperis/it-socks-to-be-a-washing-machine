@@ -61,3 +61,4 @@ places areas there in parallel).
   the air; the preview check now allows a stacked Heap Sock
   to lie at its dot's height or lower); docs/architecture/mess.md, sock-generator.md.
 - Verified: PASS 17740 checks, 457 cases (--touched); rules PASS; asset_lint PASS. Before the fix the same probe found 7-20 hanging Socks at start and after each reseed. A piece moved while the game runs has no path today (only Doors and drawers move, and they sweep, M09); a piece moved before a reseed is G12.
+- Merged: 1662ff97 (2026-11-23, branch core/55-reseed-socks-stuck-in-air)
