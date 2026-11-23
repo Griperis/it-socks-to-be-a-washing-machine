@@ -180,6 +180,12 @@ var _freed_since: Array[AABB] = []
 ## More nodes of SockSpots, handed over before this Mess is ready by a scene that joins the level
 ## (a zoo station, whose own Mess steps aside for the zoo's: ZooStations): read after `spots`, in order.
 var more_spots: Array[Node3D] = []
+## Lays the generators' starting Socks a slice per frame (lay_step(), the level's loading screen)
+## instead of before the level binds (LevelRuntime.load_screen, house/09).
+var lay_in_slices := false
+## The generators' starting Socks while they are being laid, else null. Not state: work in hand, given
+## up when a whole state is written (a Guest's snapshot).
+var starting: StartingSocks
 
 
 ## Before the level binds: the SockSpots (of `spots`, then of `more_spots`) become the starting
@@ -197,17 +203,44 @@ func _ready() -> void:
 	for holder in holders:
 		if holder != null:
 			_add_spots(holder)
-	# The Sock generators' starting Socks (core/52), after the SockSpots, in tree order.
+	# The Sock generators' starting Socks (core/52), after the SockSpots, in tree order: now, or a
+	# slice per frame behind the loading screen (house/09, lay_step()).
+	var gens: Array[GeneratedSocks] = []
 	for node in get_tree().get_nodes_in_group(GeneratedSocks.GROUP):
 		var gen := node as GeneratedSocks
 		if gen != null and gen.mess == self:
-			_add_generated(gen)
+			gens.append(gen)
+	if not gens.is_empty():
+		MessBodies.fit(MessDrawing.sock_points(), bodies_tuning().min_thick)
+		starting = StartingSocks.new(self, gens)
+		if not lay_in_slices:
+			lay_step(-1)
+
+
+## Whether the generated starting Socks are still being laid (lay_in_slices).
+func is_laying() -> bool:
+	return starting != null
+
+
+## Lays the starting Socks until done or the clock (Time.get_ticks_usec()) passes `until` (below 0:
+## no limit); once done they join the Mess and are shown, all at once (a slice: in the next call, a
+## frame of its own). Returns whether nothing is left to lay.
+func lay_step(until: int) -> bool:
+	if starting == null:
+		return true
+	var was_done := starting.is_done()
+	if not starting.step(until) or (not was_done and until >= 0):
+		return false
+	starting.reveal()
+	starting = null
+	if parts != null:
+		_show(false)
+	return true
 
 
 ## A generator's starting Socks become records, lying, as the SockSpots do (Q2523: no fall, no sound).
-func _add_generated(gen: GeneratedSocks) -> void:
-	MessBodies.fit(MessDrawing.sock_points(), bodies_tuning().min_thick)
-	var made := gen.make(lying_boxes())
+func add_generated(gen: GeneratedSocks, made: Dictionary) -> void:
+	gen.took(count(), (made["designs"] as PackedInt32Array).size())
 	var add_designs: PackedInt32Array = made["designs"]
 	for i in add_designs.size():
 		_laid_since[designs.size() + i] = true
@@ -620,6 +653,7 @@ func write(patch: Dictionary, now: bool) -> void:
 		patch = _unpacked(patch)
 	if not patch.has(ROWS):
 		stream_offset = INF
+		starting = null
 		super.write(patch, now)
 		_motion.clear()
 		return

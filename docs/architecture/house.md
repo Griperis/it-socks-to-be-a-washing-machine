@@ -31,7 +31,7 @@ until menus exist. Shell, furniture, Cabinets and the starting Mess: F5 plays th
   `docs/architecture.md` "A level"): the player, the shared-state path (`Socks/Mess`, `Hands`, `Knockdowns`,
   `Coins`, `Parts`, `Players`, `Avatars`, `Session/Roster`, `Spots`, `Lying`, `Flights`, `FlightSpawner`) and
   `Net`, a `LevelNet` (`--host`, `--join=`, `--profile=`; alone it is a Host of one). The house sets only
-  its `mess_bounds` on it.
+  its `mess_bounds` and `load_screen` (house/09: its Socks laid a slice per frame behind the `LoadingScreen`) on it.
 
 ## Where it came from
 

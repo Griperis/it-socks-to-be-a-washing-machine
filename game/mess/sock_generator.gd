@@ -59,22 +59,10 @@ static func of(node: Node) -> SockGenerator:
 ## Lays every area's Socks, then the trails', from `with_seed`, avoiding the boxes `before` ([size,
 ## middle's transform] each, the Socks already lying). Returns the laying (its rows and report).
 func lay(with_seed: int, before: Array[Array] = []) -> SockLaying:
-	var laying := SockLaying.new(tuning, self, before)
-	var keep_out: Array[Array] = []
-	var areas: Array[SockArea] = []
-	var trails: Array[SockTrail] = []
-	_collect(self, areas, trails, keep_out)
-	var level := scan if scan != null else get_parent() as Node3D
-	for area in areas:
-		var places := SockPlaces.new(area, tuning, level if level != null else self, washer, keep_out)
-		laying.set_spacing(area.rules.spacing)
-		laying.lay_area(area, places, with_seed)
-	laying.set_spacing(0.0)
-	for trail in trails:
-		laying.lay_trail(trail, with_seed, keep_out)
-	last_report = {"asked": laying.asked, "laid": laying.rows.size(), "left_out": laying.left_out.duplicate(),
-			"fails": laying.fails.duplicate(), "hidden_to_floor": laying.hidden_to_floor.duplicate()}
-	return laying
+	var job := SockLayingJob.new(self, with_seed)
+	job.plan(-1)
+	job.lay(before, -1)
+	return job.laying
 
 
 ## The Mess records of a laying from `with_seed` (Q2523, Q2525): {"designs": PackedInt32Array, "poses":
@@ -82,14 +70,29 @@ func lay(with_seed: int, before: Array[Array] = []) -> SockLaying:
 ## Mate distance apart, every Pair a Design of `catalogue` (each Collection its share, spread evenly,
 ## repeating when the Pairs outnumber the Designs).
 func records(with_seed: int, catalogue: DesignCatalogue, before: Array[Array] = []) -> Dictionary:
-	var laying := lay(with_seed, before)
+	return records_of(lay(with_seed, before), with_seed, catalogue)
+
+
+## The Mess records (records()) of a finished laying from `with_seed` (a SockLayingJob's, house/09).
+func records_of(laying: SockLaying, with_seed: int, catalogue: DesignCatalogue) -> Dictionary:
+	var dealt := deal(laying, with_seed, catalogue)
+	laying.restack(dealt[2])
+	return records_dealt(laying, dealt)
+
+
+## A finished laying's Pairs and their Designs (Q2525): [the Pairs (rows a, b), each Pair's SockDesign,
+## each row's leg and foot at its Design's Size (MessBodies.parts_at; empty: a row left out)], for
+## SockLaying.restack() and then records_dealt(). No Pairs when `catalogue` gives no Design.
+func deal(laying: SockLaying, with_seed: int, catalogue: DesignCatalogue) -> Array:
 	var pairs := laying.pair_up(with_seed)
 	var pool := _designs(catalogue)
-	var designs := PackedInt32Array()
-	var poses := PackedFloat32Array()
-	var kinds := PackedByteArray()
+	var dealt: Array[SockDesign] = []
+	var parts: Array[Array] = []
+	for r in laying.rows.size():
+		parts.append([])
 	if pool.is_empty():
-		return {"designs": designs, "poses": poses, "kinds": kinds}
+		var none: Array[Vector2i] = []
+		return [none, dealt, parts]
 	var order: Array[int] = []
 	for k in pairs.size():
 		order.append(_spread(k, pairs.size(), pool.size()))
@@ -102,16 +105,23 @@ func records(with_seed: int, catalogue: DesignCatalogue, before: Array[Array] = 
 		order[j] = tmp
 	# Each row's leg and foot at its Size, then a Heap's stacked Socks come down onto the real
 	# Socks under them (core/55, Q2531). A row left out of the Pairs is not laid: nothing rests on it.
-	var parts: Array[Array] = []
-	for r in laying.rows.size():
-		parts.append([])
 	for k in pairs.size():
+		dealt.append(pool[order[k]])
 		var shape := MessBodies.parts_at(SockDress.scale_of(pool[order[k]]))
 		parts[pairs[k].x] = shape
 		parts[pairs[k].y] = shape
-	laying.restack(parts)
+	return [pairs, dealt, parts]
+
+
+## The Mess records (records()) of a laying dealt (deal()) and restacked.
+func records_dealt(laying: SockLaying, dealt: Array) -> Dictionary:
+	var pairs: Array[Vector2i] = dealt[0]
+	var designs_of: Array[SockDesign] = dealt[1]
+	var designs := PackedInt32Array()
+	var poses := PackedFloat32Array()
+	var kinds := PackedByteArray()
 	for k in pairs.size():
-		var design := pool[order[k]]
+		var design := designs_of[k]
 		for row: int in [pairs[k].x, pairs[k].y]:
 			var r: Dictionary = laying.rows[row]
 			designs.append(design.id)
@@ -140,7 +150,8 @@ func _designs(catalogue: DesignCatalogue) -> Array[SockDesign]:
 	return out
 
 
-func _collect(node: Node, areas: Array[SockArea], trails: Array[SockTrail], keep_out: Array[Array]) -> void:
+## The areas, trails and exclusion boxes under `node` (any depth), in tree order.
+func collect(node: Node, areas: Array[SockArea], trails: Array[SockTrail], keep_out: Array[Array]) -> void:
 	for child in node.get_children():
 		if child is SockArea:
 			areas.append(child as SockArea)
@@ -148,7 +159,7 @@ func _collect(node: Node, areas: Array[SockArea], trails: Array[SockTrail], keep
 			trails.append(child as SockTrail)
 		elif child is SockExclusion:
 			keep_out.append((child as SockExclusion).box())
-		_collect(child, areas, trails, keep_out)
+		collect(child, areas, trails, keep_out)
 
 
 ## Shows the landing points (of `with_seed`, avoiding `before`) and the boxes in a running game (a

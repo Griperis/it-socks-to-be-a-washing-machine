@@ -16,6 +16,7 @@
 [ext_resource type="Resource" uid="uid://b0moa0fsavwjb" path="res://game/net/coop_tuning.tres" id="15_coop"]
 [ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="16_knockdowns"]
 [ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="17_knock_tuning"]
+[ext_resource type="PackedScene" uid="uid://b0s58u22waxoe" path="res://game/level/loading_screen.tscn" id="18_loading"]
 
 [node name="LevelRuntime" type="Node3D" unique_id=573781402]
 script = ExtResource("0_runtime")
@@ -90,3 +91,8 @@ offset_left = 12.0
 offset_top = 8.0
 offset_right = 600.0
 offset_bottom = 34.0
+
+[node name="LoadingScreen" parent="." node_paths=PackedStringArray("mess", "parts", "player") unique_id=1739204816 instance=ExtResource("18_loading")]
+mess = NodePath("../Socks/Mess")
+parts = NodePath("../Parts")
+player = NodePath("../Player")

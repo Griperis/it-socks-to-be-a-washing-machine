@@ -183,6 +183,21 @@ static func act(world: Node, what: String, arg: String) -> bool:
 				head.rotation.x = -0.12
 			player.reset_physics_interpolation()
 			return true
+		"house_trunk":
+			# house/09: the attic trunk `arg` ("TrunkA", "TrunkB") opened by the player, a camera over
+			# its front looking in at the Socks laid inside.
+			var trunk := world.get_node("Furniture/" + arg) as Node3D
+			var by := LevelRuntime.of(world).player
+			by.global_position = trunk.to_global(Vector3(1.2, 0.05, 0.6))
+			by.reset_physics_interpolation()
+			(trunk.get_node("Lid/Openable") as Openable).use(Parts.HOST)
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 60.0
+			cam.global_position = trunk.to_global(Vector3(0.0, 1.3, 1.0))
+			cam.look_at(trunk.to_global(Vector3(0.0, 0.15, 0.0)))
+			cam.make_current()
+			return true
 		"sounds":
 			# A camera over the Sounds station's buttons (core/22): arg "overview" looks down on the
 			# whole station, "block" from above the button block.

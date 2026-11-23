@@ -15,17 +15,30 @@ generated Socks land, how the preview draws, or how the start and a regeneration
 | `sock_trail.gd` (`SockTrail`, `@tool`) | A stair trail: `socks` spread from the node to `to`, across the line (Q2528) |
 | `sock_places.gd` (`SockPlaces`) | One area's landing places: open floor cells (a ray per grid cell, then a clearance box for walls and one for furniture), tops (`Spots/Top<n>`), insides (`Inside` and its `shelves_y`), under-gaps (`crawl_gap`, `crawl_box`, in strips along edges that see open floor), the boxes kept out (exclusions, every Cabinet's front) |
 | `sock_laying.gd` (`SockLaying`) | One laying: per Sock a place by size x weight (and the washer's thinning), tries a point, rests it by rays (middle and ends) and an overlap test with the house, the kept-out boxes and the Socks laid before; a Heap's roll-down and stacking; the Pairs (`pair_up`, Q2525); the report (`fails`, `left_out`, `hidden_to_floor`) |
+| `sock_laying_job.gd` (`SockLayingJob`) | One generator's laying from one seed cut into slices (house/09): `plan()`, `lay()`, `records()`, each until a deadline; `SockGenerator.lay()` and `records()` run it whole |
+| `starting_socks.gd` (`StartingSocks`) | A level's starting Socks: every generator of a Mess laid in order, a slice at a time (`step()`, `progress()` for the loading bar) or at once, then `reveal()` into the Mess |
 | `sock_preview.gd` (`SockPreview`) | The editor's looks: translucent boxes, a trail's line, dots tinted by kind (blue floor, yellow top, green inside, magenta under, orange trail), drawn through the furniture |
 | `sock_generator_tuning.gd` + `.tres` (`SockGeneratorTuning`) | The level's numbers: the place box, tries, rest slack, the grid, Mates, Heaps, thinning, strips |
-| `generated_socks.gd` (`GeneratedSocks`, the Part, the generator's `Generated` child) | State: `seed`, `first`, `socks` (which Mess records are the generator's). `make()` at the start; `regenerate` (Guest-allowed, rate 2, within `reach`) |
+| `generated_socks.gd` (`GeneratedSocks`, the Part, the generator's `Generated` child) | State: `seed`, `first`, `socks` (which Mess records are the generator's). `start()` and `took()` at the start; `regenerate` (Guest-allowed, rate 2, within `reach`) |
 
 ## Flows
 
-- **The start.** `Mess._ready` (before anything binds) reads the SockSpots, then asks every `GeneratedSocks` in
-  the group `generated_socks` whose `mess` is it, in tree order: `make()` picks the seed (the generator's, or
-  `randi()` with `new_seed_each_start`) and returns the records, which the Mess appends LYING (Q2523: no fall, no
-  sound). Every machine does this; a Guest's snapshot then replaces the Mess and the Part whole, so everyone has
-  the Host's Socks and seed.
+- **The start.** `Mess._ready` (before anything binds) reads the SockSpots, then gathers every `GeneratedSocks`
+  in the group `generated_socks` whose `mess` is it, in tree order, into a `StartingSocks`
+  (`starting_socks.gd`): each `start()` picks the seed (the generator's, or `randi()` with
+  `new_seed_each_start`) and gives a `SockLayingJob` (`sock_laying_job.gd`: `plan()` finds every area's places,
+  `lay()` lays a Sock at a time, `records()` deals the Designs, restacks the Heaps a few rows at a time and makes
+  the records). All places are found first, then each generator lays, avoiding the SockSpots' and the earlier
+  generators' Socks; when the last is done every generator's records join the Mess at once, LYING (Q2523: no
+  fall, no sound; `took()` notes where). By default all of it runs in `_ready` (the zoo). A level whose runtime
+  instance has `load_screen` (the house, house/09, Q2542) lays it a slice per frame instead: the runtime's
+  `LoadingScreen` (`game/level/loading_screen.tscn`, `LoadingTuning.slice_ms`, the old 14 ms) calls
+  `Mess.lay_step(deadline)` each frame, the Socks join in a frame of their own (the reveal), and the screen goes
+  `hide_frames` later. Meanwhile the level's 3D is not drawn, the local player is frozen at the spawn (its body
+  kept in the space, so the laying sees what it sees in one frame) and `Parts.unsettle()` holds a joining
+  Guest's snapshot (`Session._on_peer_joined` waits for `Parts.settled`). The slices change nothing: the same
+  seed lays the same Socks in one frame or in many. Every machine lays; a Guest's snapshot then replaces the Mess
+  and the Part whole (dropping a laying in hand, `Mess.write`), so everyone has the Host's Socks and seed.
 - **A regeneration.** `regenerate` on the Host: the next seed's records, avoiding every other lying Sock; one answer
   carries the Mess's rows patch (`taken_out_patch` of the old records, then `added_lying_patch` of the new) and the
   Part's new `seed`, `first`, `socks`.
@@ -71,4 +84,4 @@ generated Socks land, how the preview draws, or how the start and a regeneration
 - The zoo's station (`game/zoo/stations/sock_generator.tscn`, its button and sign in `game/zoo/sock_generator/`)
   sets `scan` to its root; a level sets it to the level. The house (house/05) has one generator per floor under `SockGenerators`, each
   its floor's two Cabinets' Collections and one `Floor` area (the old stage's Pairs, Heaps on), the stair trails
-  under the floor they start from; the whole house lays in one start-up frame (about 1.7 s for 990 Socks, headless).
+  under the floor they start from; it lays behind the loading screen (house/09: about 1.7 s for 990 Socks in one frame before, headless debug).

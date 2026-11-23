@@ -46,6 +46,25 @@ var _before: Array[Array] = []
 var _height: Dictionary[Vector3i, float] = {}
 var _box := BoxShape3D.new()
 var _rng := RandomNumberGenerator.new()
+## The area being laid a Sock at a time (begin_area(), lay_next()): its places, how many Socks it
+## asks, the next one, how many found no place, how many hide, the open places, both kinds' weight
+## sums and its Heaps' middles.
+var _area: SockArea
+var _places: SockPlaces
+var _socks := 0
+var _next := 0
+var _missed := 0
+var _hidden := 0
+var _open_places: Array[Dictionary] = []
+var _open_sums: PackedFloat64Array
+var _hidden_sums: PackedFloat64Array
+var _heaps: Array[Vector3] = []
+## restack_from()'s index: each row's reach, the widest reach of a row or a box, and the rows and the
+## boxes before by HASH cell.
+var _reach_of := PackedFloat32Array()
+var _widest := 0.0
+var _row_cells: Dictionary[Vector2i, PackedInt32Array] = {}
+var _box_cells: Dictionary[Vector2i, PackedInt32Array] = {}
 
 
 func _init(with: SockGeneratorTuning, query_node: Node3D, before: Array[Array]) -> void:
@@ -58,53 +77,82 @@ func _init(with: SockGeneratorTuning, query_node: Node3D, before: Array[Array]) 
 
 ## Lays `area`'s Socks (its places from SockPlaces), its dice from `seed`.
 func lay_area(area: SockArea, places: SockPlaces, seed: int) -> void:
+	begin_area(area, places, seed)
+	while lay_next():
+		pass
+
+
+## Gets ready to lay `area`'s Socks one at a time (lay_next(), house/09): its dice, its Heaps.
+func begin_area(area: SockArea, places: SockPlaces, seed: int) -> void:
 	_rng.seed = hash([seed, String(area.name)])
-	var socks := area.pairs * 2
-	asked += socks
-	var hidden := roundi(socks * area.hidden_share) if not places.hidden_places.is_empty() else 0
-	var open: Array[Dictionary] = places.top_places.duplicate()
-	open.append_array(places.floor_places)
-	var open_sums := _sums(open)
-	var hidden_sums := _sums(places.hidden_places)
+	_area = area
+	_places = places
+	_socks = area.pairs * 2
+	_next = 0
+	_missed = 0
+	asked += _socks
+	_hidden = roundi(_socks * area.hidden_share) if not places.hidden_places.is_empty() else 0
+	_open_places = places.top_places.duplicate()
+	_open_places.append_array(places.floor_places)
+	_open_sums = _sums(_open_places)
+	_hidden_sums = _sums(places.hidden_places)
 	var floor_sums := _sums(places.floor_places)
-	var heaps: Array[Vector3] = []
+	_heaps.clear()
 	if area.heap and not places.floor_places.is_empty():
-		var n := maxi(1, roundi(tuning.heaps_per_100 * (socks - hidden) / 100.0))
+		var n := maxi(1, roundi(tuning.heaps_per_100 * (_socks - _hidden) / 100.0))
 		for i in n:
 			var cell: Dictionary = places.floor_places[_weighted(floor_sums)]
-			heaps.append((cell["space"] as Transform3D).origin)
-	var missed := 0
-	for i in socks:
-		var pose: Variant = null
-		var place: Dictionary = {}
-		var group: Array[Dictionary] = places.hidden_places if i < hidden else open
-		var sums := hidden_sums if i < hidden else open_sums
-		# Its place, then other places of its own kind of place (hidden or open), each tried a few times.
-		for pick in tuning.repicks + 1:
-			if pose != null or sums.is_empty():
+			_heaps.append((cell["space"] as Transform3D).origin)
+
+
+## Lays the area's next Sock (begin_area()). Returns whether any is left to lay.
+func lay_next() -> bool:
+	if _area == null:
+		return false
+	if _next >= _socks:
+		if _missed > 0:
+			left_out[String(_area.name)] = _missed
+		_area = null
+		_places = null
+		return false
+	var area := _area
+	var places := _places
+	var i := _next
+	_next += 1
+	var pose: Variant = null
+	var place: Dictionary = {}
+	var group: Array[Dictionary] = places.hidden_places if i < _hidden else _open_places
+	var sums := _hidden_sums if i < _hidden else _open_sums
+	# Its place, then other places of its own kind of place (hidden or open), each tried a few times.
+	for pick in tuning.repicks + 1:
+		if pose != null or sums.is_empty():
+			break
+		place = group[_weighted(sums)]
+		var in_heap: bool = place["kind"] == SockArea.Kind.FLOOR and not _heaps.is_empty() and _rng.randf() < tuning.heap_share
+		if in_heap:
+			pose = _lay_in_heap(area, places, _heaps[_rng.randi_range(0, _heaps.size() - 1)])
+		for t in tuning.tries:
+			if pose != null:
 				break
-			place = group[_weighted(sums)]
-			var in_heap: bool = place["kind"] == SockArea.Kind.FLOOR and not heaps.is_empty() and _rng.randf() < tuning.heap_share
-			if in_heap:
-				pose = _lay_in_heap(area, places, heaps[_rng.randi_range(0, heaps.size() - 1)])
-			for t in tuning.tries:
-				if pose != null:
-					break
-				pose = _fit(area, places, place, area.heap and place["kind"] == SockArea.Kind.FLOOR)
-		# No room in its place: the open floor of its area, at an even draw.
-		var floor_try := 0
-		while pose == null and floor_try < tuning.floor_tries and not places.floor_places.is_empty():
-			floor_try += 1
-			place = places.floor_places[_rng.randi_range(0, places.floor_places.size() - 1)]
-			pose = _fit(area, places, place, area.heap)
-		if pose == null:
-			missed += 1
-			continue
-		if i < hidden and place["kind"] == SockArea.Kind.FLOOR:
-			hidden_to_floor[String(area.name)] = hidden_to_floor.get(String(area.name), 0) + 1
-		rows.append({"pose": pose, "kind": place["kind"], "ground": _ground})
-	if missed > 0:
-		left_out[String(area.name)] = missed
+			pose = _fit(area, places, place, area.heap and place["kind"] == SockArea.Kind.FLOOR)
+	# No room in its place: the open floor of its area, at an even draw.
+	var floor_try := 0
+	while pose == null and floor_try < tuning.floor_tries and not places.floor_places.is_empty():
+		floor_try += 1
+		place = places.floor_places[_rng.randi_range(0, places.floor_places.size() - 1)]
+		pose = _fit(area, places, place, area.heap)
+	if pose == null:
+		_missed += 1
+		return true
+	if i < _hidden and place["kind"] == SockArea.Kind.FLOOR:
+		hidden_to_floor[String(area.name)] = hidden_to_floor.get(String(area.name), 0) + 1
+	rows.append({"pose": pose, "kind": place["kind"], "ground": _ground})
+	return true
+
+
+## How many of the area's Socks are tried so far (lay_next()), of `asked` in all.
+func tried() -> int:
+	return asked - (_socks - _next if _area != null else 0)
 
 
 ## Lays a trail's Socks evenly from its foot to its top, each across the line.
@@ -380,30 +428,93 @@ var _ground := 0.0
 ## a row not laid), or to its ground; x, z and its turn stay. A row only ever comes down (its boxes lie
 ## inside the place box), so it meets nothing it did not meet before.
 func restack(parts: Array[Array]) -> void:
-	for i in rows.size():
+	restack_from(parts, 0, -1)
+
+
+## restack() a slice at a time (house/09): the rows from `first` on, until all are done or the clock
+## (Time.get_ticks_usec()) passes `until` (below 0: no limit). Returns the next row to restack
+## (rows.size(): all done). Start at 0; go on with the same `parts`.
+func restack_from(parts: Array[Array], first: int, until: int) -> int:
+	# house/09: a row looks only at the rows and boxes near it (by HASH cell, within both reaches:
+	# farther apart they cannot meet), so the house's Heaps restack in a few ms, not a third of a second.
+	# The height is the highest of what it lies over, so the order they are looked at in does not matter.
+	if first == 0:
+		_index_for_restack(parts)
+	var reach := _reach_of
+	var widest := _widest
+	var row_cells := _row_cells
+	var box_cells := _box_cells
+	for i in range(first, rows.size()):
+		if i > first and until >= 0 and Time.get_ticks_usec() >= until:
+			return i
 		var pose: Transform3D = rows[i]["pose"]
 		var ground: float = rows[i]["ground"]
 		if pose.origin.y <= ground + 0.0005:
 			continue
 		var y := ground
-		for j in i:
-			var other: Transform3D = rows[j]["pose"]
-			if absf(float(rows[j]["ground"]) - ground) > 0.05 or other.origin.y >= pose.origin.y:
-				continue
-			for pj: Array in parts[j]:
-				var under := other * Transform3D(Basis.IDENTITY, pj[1])
-				var size_j: Vector3 = pj[0]
-				if _over(pose, parts[i], under, size_j):
-					y = maxf(y, under.origin.y + size_j.y * 0.5 + tuning.gap)
-		for b: Array in _before:
-			var middle: Transform3D = b[1]
-			var size: Vector3 = b[0]
-			var bottom := middle.origin.y - size.y * 0.5
-			if bottom < ground - 0.05 or bottom >= pose.origin.y:
-				continue
-			if _over(pose, parts[i], middle, size):
-				y = maxf(y, middle.origin.y + size.y * 0.5 + tuning.gap)
+		var flat := Vector2(pose.origin.x, pose.origin.z)
+		var here := _hash_cell(pose.origin)
+		var span := ceili((reach[i] + widest) / HASH)
+		for cx in range(here.x - span, here.x + span + 1):
+			for cz in range(here.y - span, here.y + span + 1):
+				var cell := Vector2i(cx, cz)
+				for j: int in row_cells.get(cell, PackedInt32Array()):
+					if j >= i:
+						continue
+					var other: Transform3D = rows[j]["pose"]
+					if absf(float(rows[j]["ground"]) - ground) > 0.05 or other.origin.y >= pose.origin.y:
+						continue
+					if flat.distance_to(Vector2(other.origin.x, other.origin.z)) > reach[i] + reach[j]:
+						continue
+					for pj: Array in parts[j]:
+						var under := other * Transform3D(Basis.IDENTITY, pj[1])
+						var size_j: Vector3 = pj[0]
+						if _over(pose, parts[i], under, size_j):
+							y = maxf(y, under.origin.y + size_j.y * 0.5 + tuning.gap)
+				for k: int in box_cells.get(cell, PackedInt32Array()):
+					var middle: Transform3D = _before[k][1]
+					var size: Vector3 = _before[k][0]
+					var bottom := middle.origin.y - size.y * 0.5
+					if bottom < ground - 0.05 or bottom >= pose.origin.y:
+						continue
+					if flat.distance_to(Vector2(middle.origin.x, middle.origin.z)) > reach[i] + Vector2(size.x, size.z).length() * 0.5:
+						continue
+					if _over(pose, parts[i], middle, size):
+						y = maxf(y, middle.origin.y + size.y * 0.5 + tuning.gap)
 		rows[i]["pose"] = Transform3D(pose.basis, Vector3(pose.origin.x, minf(y, pose.origin.y), pose.origin.z))
+	return rows.size()
+
+
+## The rows' and the boxes-before's HASH cells and reaches for restack_from() (x and z never change).
+func _index_for_restack(parts: Array[Array]) -> void:
+	_reach_of = PackedFloat32Array()
+	_widest = 0.0
+	_row_cells = {}
+	_box_cells = {}
+	for i in rows.size():
+		_reach_of.append(_reach(parts[i]))
+		_widest = maxf(_widest, _reach_of[i])
+		var c := _hash_cell((rows[i]["pose"] as Transform3D).origin)
+		if not _row_cells.has(c):
+			_row_cells[c] = PackedInt32Array()
+		_row_cells[c].append(i)
+	for k in _before.size():
+		var b: Array = _before[k]
+		_widest = maxf(_widest, Vector2((b[0] as Vector3).x, (b[0] as Vector3).z).length() * 0.5)
+		var c := _hash_cell((b[1] as Transform3D).origin)
+		if not _box_cells.has(c):
+			_box_cells[c] = PackedInt32Array()
+		_box_cells[c].append(k)
+
+
+## How far from its middle, flat, a Sock made of `parts` ([size, centre] each) reaches at most.
+static func _reach(parts: Array) -> float:
+	var out := 0.0
+	for part: Array in parts:
+		var size: Vector3 = part[0]
+		var centre: Vector3 = part[1]
+		out = maxf(out, Vector2(centre.x, centre.z).length() + Vector2(size.x, size.z).length() * 0.5)
+	return out
 
 
 ## Whether a Sock at `pose` made of `parts` lies over (its footprint meets) the box `size` at `middle`.
