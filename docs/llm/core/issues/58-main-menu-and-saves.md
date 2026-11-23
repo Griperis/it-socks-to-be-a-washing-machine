@@ -25,6 +25,11 @@ sounds, the ESC menu, and saves. Screens are scenes on the one Theme (Q2163); re
 (settings, saving, pause menu, scene changer) as the design names. Not in scope: the Lobby, the World list, the studio
 intro, key remapping, the encyclopedia key.
 
+## The loading screen's old look (Q2575)
+- Port the old loading screen by examination (`reference/it-socks/game/ui/loading_screen.gd`): the cream card with what
+  is happening, the tumbling sock in its fixed square, the bar, the backdrop colour and the fade into play; on house/09's
+  placeholder (reuse its scene and progress).
+
 ## Must-haves
 - The save is the join snapshot written to a file (Parts), per World; Worlds as Q2554; autosave Q2555; the failed write
   Q2556; the version and migration chain with sample saves in the suite (Q2557); the id list test (Q2558); the load

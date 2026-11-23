@@ -305,7 +305,7 @@ note = "A locked Cabinet's dust sheet comes off (progression/03, Q719; assets/07
 
 [sub_resource type="Resource" id="Resource_piano_instrument"]
 script = ExtResource("109_dev")
-roots = PackedFloat32Array(20.87, 23.78, 28.02, 32.81, 35.88, 39.93, 44.91, 47.92, 51.93, 56.92, 59.9, 63.92, 68.94, 71.96, 76.0, 80.86, 83.99, 87.87, 92.94, 96.03, 100.15, 105.29, 108.18)
+roots = PackedFloat32Array(20.87, 23.78, 28.02, 32.81, 35.88, 39.93, 44.91, 47.92, 51.93, 56.92, 59.9, 63.92, 68.94, 71.96, 76, 80.86, 83.99, 87.87, 92.94, 96.03, 100.15, 105.29, 108.18)
 
 [sub_resource type="Resource" id="Resource_piano"]
 script = ExtResource("1_76itk")

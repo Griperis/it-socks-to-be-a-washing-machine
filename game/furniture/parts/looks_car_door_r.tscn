@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://p6j13x85ccpvw"]
+[gd_scene format=3 uid="uid://pwkqqk42i7uu"]
 
 [ext_resource type="ArrayMesh" uid="uid://bgtv2k8bapqmp" path="res://assets/furniture/meshes/car_Door_R.res" id="2_fvmwb"]
 [ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="3_tih7s"]
