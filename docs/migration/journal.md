@@ -1099,3 +1099,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Cost | about 97k subagent tokens (Opus) |
 
 ---
+
+| Ticket | core/62, the game link: Session and Roster moved out of the level to a `GameLink` beside the current scene (Q2582), save ids kept (`Runtime/Session/Roster`), Guests spawned after their house handshake, synchronizers filtered for a loading Guest, PROTOCOL 14; merged (main ed98062) |
+| Cost | about 312k subagent tokens (Opus) |
+| Surprises | a title-started Host cannot reach an F5 `--join=` Guest (different Session paths); 3+ players: a loading Guest still gets another Guest's avatar spawn (both [later], for core/63) |
+
+---
