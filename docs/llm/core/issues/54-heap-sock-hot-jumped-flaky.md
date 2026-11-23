@@ -65,6 +65,6 @@ A flaky test is a defect to rework (kit/docs/TESTING.md "Flaky cases"), never a 
     printed by `mess_settle` (the ledger's next entry names the Sock).
   - Files: `game/mess/mess_moving.gd`, `game/mess/mess_tuning.gd`, `game/debug/mess_watch.gd`,
     `game/debug/mess_checks.gd`, `tests/mess_settle_test.gd`, `docs/architecture/mess.md`.
-  - Verified: after merging main (896496a), 50 runs of the whole `mess_settle` suite (25 in order, 25 reversed,
+  - Verified: after merging main, 50 runs of the whole `mess_settle` suite (25 in order, 25 reversed,
     reruns off): `PASS 204 checks, 21 cases` each, no FAIL, no FLAKY. `--touched` (51 suites, coop/07's and coop/08's included): `PASS 18362 checks, 511 cases`, no FLAKY;
     `PASS rules: 9 rules, no new hit`.
