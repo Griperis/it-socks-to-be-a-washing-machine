@@ -3,14 +3,17 @@
 ## `--profile=<tag>` plays as another profile (two copies on one PC are two players). With neither
 ## --host nor --join the level is played alone (a Host of one, no peer). The label in the corner says
 ## which it is; who joins and leaves, and why a join ended, show under the crosshair (the HUD's
-## message line). No lobby, no menu: the level's Session, Roster and Avatars do the work; this only
-## starts them and says what happened. It is the Net of `level_runtime.tscn` in every level; the
+## message line). No lobby, no menu: the link's Session and Roster (GameLink, core/62) and the level's
+## Avatars do the work; this only starts them and says what happened. A level that comes in while the
+## link is already online (a scene change) picks the session up where it is (resume). It is the Net of
+## `level_runtime.tscn` in every level; the
 ## level's word comes from the runtime instance (`place`), and a body that places itself (the zoo's
 ## stand-in Teammate) joins the PLACES_ITSELF group, so the house needs nothing of game/zoo/.
 class_name LevelNet
 extends Node
 
-@export var session: Session
+## The game link's Session (LevelRuntime sets it as it enters the tree: it lives outside the level).
+var session: Session
 @export var avatars: Avatars
 ## The level's saving (core/58): a World handed to the level is loaded before the player enters it.
 @export var autosave: Autosave
@@ -47,8 +50,12 @@ func _ready() -> void:
 	start.call_deferred(args)
 
 
-## Hosts or joins as `args` say (the command line's user arguments); with neither, plays alone.
+## Hosts or joins as `args` say (the command line's user arguments); with neither, plays alone. With the
+## link already online (a scene change), the session goes on in this level instead.
 func start(args: PackedStringArray) -> Error:
+	if session.is_online():
+		_resume()
+		return OK
 	for arg in args:
 		if arg.begins_with("--profile="):
 			session.profile = PlayerProfile.load_or_make(arg.trim_prefix("--profile="))
@@ -71,11 +78,7 @@ func start(args: PackedStringArray) -> Error:
 				_say("Could not host on port %d (%s): playing alone" % [session.port, error_string(err)])
 				_enter_alone()
 				return err
-			avatars.host()
-			multiplayer.peer_connected.connect(_on_players_changed)
-			multiplayer.peer_disconnected.connect(_on_players_changed)
-			_on_players_changed(0)
-			_stand_where_kept()
+			_host_here()
 			return OK
 		if arg.begins_with("--join="):
 			if session.profile == null:
@@ -89,13 +92,61 @@ func start(args: PackedStringArray) -> Error:
 	return OK
 
 
+## The Host in this level: the avatars by the Roster, the corner counting players.
+func _host_here() -> void:
+	_place_everyone()
+	avatars.host()
+	for sig: Signal in [multiplayer.peer_connected, multiplayer.peer_disconnected]:
+		if not sig.is_connected(_on_players_changed):
+			sig.connect(_on_players_changed)
+	_on_players_changed(0)
+	_stand_where_kept()
+
+
+## The link was online before this level came in: the Host loads the World handed to the level (the
+## Roster merges it) and spawns avatars here; a Guest's Session tells the Host once this level is
+## ready, and the welcome follows.
+func _resume() -> void:
+	if session.parts.is_host():
+		if autosave != null and autosave.world != null:
+			autosave.restore(session.profile.id)
+		_host_here()
+	else:
+		_say("Joining the %s ..." % place_name())
+
+
+## The level leaves while the link stays (a scene change): nothing of the link calls into it any more.
+func _exit_tree() -> void:
+	if session == null or not is_instance_valid(session):
+		return
+	for pair: Array in [[session.welcomed, _on_welcomed], [session.ended, _on_ended],
+			[multiplayer.peer_connected, _on_players_changed], [multiplayer.peer_disconnected, _on_players_changed]]:
+		var sig: Signal = pair[0]
+		if sig.is_connected(pair[1]):
+			sig.disconnect(pair[1])
+	if session.roster != null and session.roster.pose_of == Callable(self, &"pose_of"):
+		session.roster.pose_of = Callable()
+
+
 ## Alone: this machine's player enters its own Roster (Session.enter_alone()) and stands where a
 ## loaded World kept it.
 func _enter_alone() -> void:
 	if session.is_online():
 		return
 	session.enter_alone()
+	_place_everyone()
 	_stand_where_kept()
+
+
+## The Host: players who came in through the Lobby (where nobody stands) get their spots in this level
+## (Roster.placed()), the Host where its body stands and the others beside it.
+func _place_everyone() -> void:
+	var roster := session.roster
+	if roster == null:
+		return
+	var ev := roster.placed()
+	if not ev.is_empty():
+		session.parts.apply(ev)
 
 
 ## The local body stands where the Roster keeps this machine's player (a loaded World's spot, Q296);
@@ -111,7 +162,7 @@ func _stand_at_entry() -> void:
 	var body := avatars.local_body
 	if roster == null or body == null:
 		return
-	var mine := roster.entry_of(session.me())
+	var mine := roster.entry_of(_me())
 	if mine.is_empty() or not mine.has("at"):
 		return
 	body.global_position = mine["at"]
@@ -121,13 +172,18 @@ func _stand_at_entry() -> void:
 	body.reset_physics_interpolation()
 
 
+## This machine's player id; the multiplayer's own while the link is gone (the level being freed).
+func _me() -> int:
+	return session.me() if is_instance_valid(session) else multiplayer.get_unique_id() if is_inside_tree() else Parts.HOST
+
+
 ## Where player `by` stands, as this machine knows it: its avatar's newest pose in a session, the
 ## local body for this machine's own player, null for a player it cannot place.
 func where(by: int) -> Variant:
 	var avatar := avatars.of(by)
 	if avatar != null and avatar.pose_position.is_finite():
 		return avatar.pose_position
-	if by == session.me() and avatars.local_body != null:
+	if by == _me() and avatars.local_body != null:
 		return avatars.local_body.global_position
 	return _where_else(by)
 
@@ -151,7 +207,7 @@ func place_name() -> String:
 ## keeps for a joiner's place and a leaver's.
 func pose_of(by: int) -> Variant:
 	var avatar := avatars.of(by)
-	if by == session.me() and avatars.local_body != null:
+	if by == _me() and avatars.local_body != null:
 		return Transform3D(Basis(Vector3.UP, avatars.local_body.global_rotation.y), avatars.local_body.global_position)
 	if avatar != null and avatar.pose_position.is_finite() and is_finite(avatar.pose_yaw):
 		return Transform3D(Basis(Vector3.UP, avatar.pose_yaw), avatar.pose_position)
@@ -174,7 +230,7 @@ func _on_welcomed() -> void:
 	_stand_at_entry()
 	var host_name := roster.name_of(Roster.HOST) if roster != null else PlayerProfile.NAME
 	_tell_plain(JOINED_LEVEL % [host_name, place_name()])
-	_say("Joined %s's %s as player %d" % [host_name, place_name(), session.me()])
+	_say("Joined %s's %s as player %d" % [host_name, place_name(), _me()])
 
 
 ## The session ended on this machine. A Guest who came from the title goes back to it, which says why
@@ -197,7 +253,7 @@ func _on_applied(ev: Dictionary) -> void:
 	var kind := StringName(ev.get("kind", &""))
 	if kind != Roster.JOINED and kind != Roster.LEFT:
 		return
-	if int(ev.get("by", 0)) == session.me() and kind == Roster.JOINED:
+	if int(ev.get("by", 0)) == _me() and kind == Roster.JOINED:
 		return
 	var entry: Dictionary = roster.players.get(String(ev.get("player", "")), {})
 	if entry.is_empty():

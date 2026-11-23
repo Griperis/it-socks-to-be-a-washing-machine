@@ -1,0 +1,201 @@
+[gd_scene format=3 uid="uid://aqr7myiixfj7s"]
+
+[ext_resource type="Script" uid="uid://2pk3orkw4k3z4" path="res://game/lobby/lobby.gd" id="1_lobby"]
+[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
+
+[node name="Lobby" type="Control" unique_id=965929202]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lobby")
+
+[node name="Backdrop" type="ColorRect" parent="." unique_id=963974961]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.168627, 0.129412, 0.109804, 1)
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=641550200]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 48
+
+[node name="Column" type="VBoxContainer" parent="Margin" unique_id=1962983643]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="CardRow" type="CenterContainer" parent="Margin/Column" unique_id=553166245]
+layout_mode = 2
+
+[node name="Card" type="PanelContainer" parent="Margin/Column/CardRow" unique_id=1050039954]
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 2
+theme_type_variation = &"TitlePanel"
+
+[node name="Box" type="VBoxContainer" parent="Margin/Column/CardRow/Card" unique_id=1426951822]
+layout_mode = 2
+
+[node name="CardTitle" type="Label" parent="Margin/Column/CardRow/Card/Box" unique_id=196929788]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Heading1"
+horizontal_alignment = 1
+
+[node name="CardLine" type="Label" parent="Margin/Column/CardRow/Card/Box" unique_id=840449442]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"InkLabel"
+horizontal_alignment = 1
+
+[node name="Stage" type="CenterContainer" parent="Margin/Column" unique_id=1620522473]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Places" type="VBoxContainer" parent="Margin/Column/Stage" unique_id=178645969]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Status" type="Label" parent="Margin/Column" unique_id=172002372]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"StatusLabel"
+horizontal_alignment = 1
+
+[node name="Bar" type="HBoxContainer" parent="Margin/Column" unique_id=1426080417]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Back" type="Button" parent="Margin/Column/Bar" unique_id=444877464]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 72)
+layout_mode = 2
+theme_type_variation = &"ExitButton"
+text = "Back"
+
+[node name="Middle" type="HBoxContainer" parent="Margin/Column/Bar" unique_id=634428824]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="Ready" type="Button" parent="Margin/Column/Bar/Middle" unique_id=168750240]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 72)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "Ready"
+
+[node name="Start" type="Button" parent="Margin/Column/Bar/Middle" unique_id=1784924981]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 72)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+disabled = true
+text = "Start"
+
+[node name="Waiting" type="Label" parent="Margin/Column/Bar/Middle" unique_id=1359065653]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 72)
+layout_mode = 2
+theme_type_variation = &"ThinLabel"
+text = "Waiting for the Host to start"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Continue" type="Button" parent="Margin/Column/Bar/Middle" unique_id=669162901]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 72)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "Continue"
+
+[node name="NewGame" type="Button" parent="Margin/Column/Bar/Middle" unique_id=1819326539]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 72)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "New Game"
+
+[node name="Balance" type="Control" parent="Margin/Column/Bar" unique_id=1612564385]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Ask" type="Control" parent="." unique_id=1322529948]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="Ask" unique_id=138988171]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.168627, 0.129412, 0.109804, 0.8)
+
+[node name="Center" type="CenterContainer" parent="Ask" unique_id=487755416]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Ask/Center" unique_id=1430866779]
+custom_minimum_size = Vector2(640, 0)
+layout_mode = 2
+theme_type_variation = &"TitlePanel"
+
+[node name="Box" type="VBoxContainer" parent="Ask/Center/Panel" unique_id=1824645022]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Heading" type="Label" parent="Ask/Center/Panel/Box" unique_id=1881563111]
+layout_mode = 2
+theme_type_variation = &"Heading1"
+text = "New game"
+horizontal_alignment = 1
+
+[node name="Question" type="Label" parent="Ask/Center/Panel/Box" unique_id=284816666]
+layout_mode = 2
+theme_type_variation = &"InkLabel"
+text = "Start a new game? The saved game is lost."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Keys" type="HBoxContainer" parent="Ask/Center/Panel/Box" unique_id=714696788]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="AskYes" type="Button" parent="Ask/Center/Panel/Box/Keys" unique_id=514284636]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 72)
+layout_mode = 2
+theme_type_variation = &"ExitButton"
+text = "New game"
+
+[node name="AskClose" parent="Ask/Center/Panel" instance=ExtResource("close_btn")]
+unique_name_in_owner = true

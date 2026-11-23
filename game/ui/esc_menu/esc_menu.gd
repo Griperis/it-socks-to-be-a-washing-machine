@@ -18,7 +18,8 @@ const TITLE := "res://game/ui/title/title.tscn"
 const OPTIONS := preload("res://game/ui/options/options.tscn")
 
 @export var autosave: Autosave
-@export var session: Session
+## The game link's Session (LevelRuntime sets it as it enters the tree: it lives outside the level).
+var session: Session
 @export var net: LevelNet
 
 ## How a way out leaves the level: func(notice: String). A test swaps it to stay put.

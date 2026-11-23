@@ -133,13 +133,16 @@ func joined(pid: String, peer: int, who: String, hands := {}) -> Dictionary:
 		entry["hands"] = hands
 	if before.is_empty():
 		entry["colour"] = free_colour(0, others)
-		var spot := _spot_for(peer)
-		entry["at"] = spot.origin
-		entry["yaw"] = spot.basis.get_euler().y
+		# With no level (the Lobby) nobody stands anywhere yet: placed() gives the spot in the house.
+		if _pose(HOST) != null:
+			var spot := _spot_for(peer)
+			entry["at"] = spot.origin
+			entry["yaw"] = spot.basis.get_euler().y
 	else:
 		entry["colour"] = free_colour(int(before.get("colour", 0)), others)
-		entry["at"] = before.get("at", Vector3.ZERO)
-		entry["yaw"] = before.get("yaw", 0.0)
+		if before.has("at"):
+			entry["at"] = before["at"]
+			entry["yaw"] = before.get("yaw", 0.0)
 	all[pid] = entry
 	var ev := grant({"players": all})
 	ev.merge({"kind": JOINED, "by": peer, "to": id, "player": pid})
@@ -179,6 +182,61 @@ func save_state() -> Dictionary:
 				e["yaw"] = (pose as Transform3D).basis.get_euler().y
 		e["peer"] = 0
 	return {"players": all}
+
+
+## A save loads into the live Roster (core/62: the Roster lives for the whole game, so players may be
+## in it before the house loads): the present players stay as they are, each standing where the save
+## kept them (Q296); every saved player not here comes back with their spot, colour and Hands; an
+## entry the save does not name stays.
+func restored(saved: Dictionary) -> Dictionary:
+	var kept: Dictionary = saved.get("players", {}) if saved.get("players") is Dictionary else {}
+	var all := players.duplicate(true)
+	for pid: Variant in kept:
+		if not (kept[pid] is Dictionary):
+			continue
+		var was: Dictionary = kept[pid]
+		var now: Dictionary = all.get(pid, {})
+		if int(now.get("peer", 0)) == 0:
+			var back := was.duplicate(true)
+			back["peer"] = 0
+			all[pid] = back
+		else:
+			if was.has("at"):
+				now["at"] = was["at"]
+			if was.has("yaw"):
+				now["yaw"] = was["yaw"]
+	return {"players": all}
+
+
+## The Host, as a house comes in (LevelNet): every present player with no spot yet (they joined in the
+## Lobby, where nobody stands) gets one, the Host where it stands and the others beside it in peer
+## order, as a join in the house would. Returns the answer, or {} when everyone has a spot.
+func placed() -> Dictionary:
+	var all := players.duplicate(true)
+	var host_pose: Variant = _pose(HOST)
+	var at: Transform3D = host_pose if host_pose != null else Transform3D.IDENTITY
+	var flat := Basis(Vector3.UP, at.basis.get_euler().y)
+	var k := 0
+	var changed_any := false
+	for peer in peers():
+		var pid := id_of(peer)
+		var e: Dictionary = all[pid]
+		if peer != HOST:
+			k += 1
+		if e.has("at"):
+			continue
+		var spot := at
+		if peer != HOST:
+			var side := 1.0 if k % 2 == 1 else -1.0
+			spot = Transform3D(flat, at.origin + flat.x * tuning.beside * float(ceili(k / 2.0)) * side)
+		e["at"] = spot.origin
+		e["yaw"] = spot.basis.get_euler().y
+		changed_any = true
+	if not changed_any:
+		return {}
+	var ev := grant({"players": all})
+	ev.merge({"kind": &"placed", "by": HOST, "to": id})
+	return ev
 
 
 ## The Session is over on this machine (alone again): nobody is in it. Returns the answer.

@@ -5,31 +5,52 @@
 ## admits gets the whole state first. Playing alone needs none of it: with no peer, Parts is a Host
 ## of one.
 ##
+## It lives in the game link (GameLink, core/62) for the whole game, so a scene change keeps the
+## connection: it works with two Parts, the link's (`link_parts`: the Roster) and the loaded level's
+## (`level_parts`, null between levels), and `parts` is the one in use (the level's, which reads
+## through to the link's, else the link's).
+##
 ## The gate: Godot starts replicating (spawns, synchronizers) and accepting RPCs the moment a peer is
 ## admitted, so nobody is admitted before the gate's checks. SceneMultiplayer's auth_callback holds
-## each new connection: the Guest sends its word (send_auth): its PROTOCOL as 4 bytes, then the scene
-## layout hash, its player id (the profile's, never the peer id), its name and its Hands' numbers an
-## Upgrade changes (HandsTuning.to_sent(), D13: the Host clamps them to what Upgrades can make them and
-## writes them into the Roster). The Host answers
+## each new connection: the Guest sends its word (send_auth): its PROTOCOL as 4 bytes, then its player
+## id (the profile's, never the peer id), its name, its Hands' numbers an Upgrade changes
+## (HandsTuning.to_sent(), D13: the Host clamps them to what Upgrades can make them and writes them
+## into the Roster) and, when it already has a level, that level's layout hash. The Host answers
 ## ACCEPTED and admits it (complete_auth), or REFUSED and a reason byte and never admits it, so a
 ## refused Guest receives no spawn, no synchronized value and no RPC. A Guest is refused when its
-## PROTOCOL or layout differs ("Another version of the game"), when the game is full, or when its
-## player id already plays ("You are already in this game"). Once both sides complete,
-## peer_connected fires: the Host writes the player into the Roster (one answer) and sends the
-## snapshot. From M4 the word carries Steam's auth ticket too (Q2458); no token before (Q2449).
+## PROTOCOL differs, or its layout differs from the Host's level ("Another version of the game"), when
+## the game is full, or when its player id already plays ("You are already in this game"). Once both
+## sides complete, peer_connected fires: the Host writes the player into the Roster (one answer) and
+## sends the link's snapshot (`linked`). From M4 the word carries Steam's auth ticket too (Q2458); no
+## token before (Q2449).
+##
+## The house handshake (core/62): when a Guest's level is bound and its starting state made, it sends
+## `house_ready` with its PROTOCOL and its level's layout hash (a Guest that joined from inside the
+## Host's level, its layout in its gate word, has said it at the gate and is welcomed once the Host's
+## level is settled). The Host refuses a mismatch ("Another
+## version of the game", the Guest goes alone), else waits until its own level is settled and sends
+## that level's snapshot (`welcomed`). Until then the Host sends that Guest nothing of the level: no
+## answer about a level Part, no spawn, no synchronized value (LevelRuntime's visibility filter asks
+## sees_house()), and drops a Command for a level Part (reason "not_ready", counted, never printed).
 ##
 ## Guarding: every any_peer RPC checks its packet before anything reads it. A Guest's Command, in
 ## this order: its wire shape (Command.shape_error()), its target is a part Parts bound (an id under
-## the level: `..` or an absolute path names none), the part accepts() the verb, the args match the
-## verb's declared args exactly, and the player is within the verb's rate.
+## the level or the link: `..` or an absolute path names none), a level Part only once that Guest's
+## house is ready, the part accepts() the verb, the args match the verb's declared args exactly, and
+## the player is within the verb's rate.
 ## A bad packet is dropped and counted (`dropped`, per player and reason; stats["bad_packets"] in
 ## all), printed at most once a second per player and reason, and never crashes or kicks anyone.
 ## The Host's own Commands skip these checks; every Command still goes through decide().
 class_name Session
 extends Node
 
-## A Guest has the Host's snapshot and is in the game.
+## A Guest has the Host's level snapshot: it plays in the Host's level.
 signal welcomed
+## A Guest has the Host's link snapshot (the Roster): it is in the game, its level may still load.
+signal linked
+## The Host: Guest `peer` came into this machine's level (its house_ready was handled) or left it
+## (sees_house() changed for it): the Avatars spawn its avatar only while it is in.
+signal house_changed(peer: int)
 ## The session is over for this machine; `text` says why.
 signal ended(text: String)
 
@@ -37,7 +58,7 @@ signal ended(text: String)
 ## synchronized property, a spawnable scene or the shape of a Command, an event, a snapshot or the
 ## gate's word changes. The word's first 4 bytes (the PROTOCOL) never move, so any two builds can
 ## tell they differ.
-const PROTOCOL := 14  # 14: core/42, the Hands' hand_off verb and its answer; 13: coop/10, the Knockdowns Part, an avatar's Ragdoll pose stream, a Throw's charge
+const PROTOCOL := 16  # 14: core/62, the game link: the layout leaves the gate's word for house_ready, the link's snapshot; 15: core/63, LobbyState in the link; 16: core/42, the Hands' hand_off verb and its answer
 ## The gate's answers: one byte, and after REFUSED one byte saying why.
 const ACCEPTED := 1
 const REFUSED := 0
@@ -54,8 +75,8 @@ const ALREADY := "You are already in this game"
 const HOST_QUIT := "The Host ended the session"
 const UNREACHABLE := "Could not reach %s"
 
-## The level's Parts.
-@export var parts: Parts
+## The game link's Parts (the Roster's); a Session with none (a test's) works with a level's alone.
+@export var link_parts: Parts
 ## Who plays: written here on the Host when a player is admitted, and by Parts.left() when one goes.
 ## Optional: without one the Session still gates and relays.
 @export var roster: Roster
@@ -68,7 +89,15 @@ const UNREACHABLE := "Could not reach %s"
 static var free_port := false
 
 ## Links the wiring check lets stay empty: the code below has a fallback.
-const WIRING_OPTIONAL := ["roster", "tuning"]
+const WIRING_OPTIONAL := ["roster", "tuning", "link_parts"]
+
+## The loaded level's Parts (attach_level()), null between levels.
+var level_parts: Parts = null
+## The Parts in use: the level's (which reads through to the link's), else the link's. Setting it
+## attaches a level's (a test's bare Session).
+var parts: Parts:
+	get: return level_parts if level_parts != null else link_parts
+	set(value): attach_level(value)
 
 ## How this machine reaches the others.
 var transport: NetTransport = EnetTransport.new()
@@ -78,19 +107,31 @@ var profile: PlayerProfile = null
 var protocol := PROTOCOL
 var stats := {"bad_packets": 0}
 ## What was dropped, per player and reason: {peer: {"args": 2, "rate": 5}}. Reasons: "protocol",
-## "gate" (an unreadable word), "layout", "already", "full" (refused at the gate), "not in the
-## game", "shape", "no part", "verb", "args", "rate".
+## "gate" (an unreadable word), "layout", "already", "full" (refused at the gate or at house_ready),
+## "not in the game", "shape", "no part", "not_ready" (a level Part before house_ready), "verb",
+## "args", "rate", "house" (an unreadable house_ready).
 var dropped: Dictionary[int, Dictionary] = {}
 
 var _peer: MultiplayerPeer = null
-## The hash of the Part paths this scene declares: the contract both machines must share.
-var _layout := ""
 ## The Host: who passed the gate and is not in yet: {peer: {"id": player id, "name": String}}.
 var _waiting: Dictionary[int, Dictionary] = {}
 ## The Host: the player id on each admitted peer (a live field: never saved, never a key).
 var _players: Dictionary[int, String] = {}
-## Guests the gate admitted, who got the snapshot; only they receive events.
+## Guests the gate admitted, who got the link snapshot; only they receive events.
 var _guests: Dictionary[int, bool] = {}
+## The Host: Guests whose house_ready was handled and who got the level snapshot (they play in it).
+var _in_house: Dictionary[int, bool] = {}
+## The Host: Guests whose house_ready waits for this machine's level to settle.
+var _house_waiting: Dictionary[int, bool] = {}
+## The Host: Guests whose house_ready came while this machine had no level (its house still loading
+## after Start): {peer: layout}, answered when a level attaches.
+var _house_early: Dictionary[int, String] = {}
+## A Guest: it has the link snapshot.
+var _in_game := false
+## A Guest: the level whose house_ready was sent (or is waiting to be), so it is sent once.
+var _house_asked: Parts = null
+## The Parts whose `applied` this Session relays (the one in use while online).
+var _listening: Parts = null
 ## Per Guest and verb: [the start of this second in ms, Commands in it].
 var _rates: Dictionary[int, Dictionary] = {}
 ## Per Guest and reason: when a drop was last printed, in ms.
@@ -130,7 +171,7 @@ func host() -> Error:
 	multiplayer.multiplayer_peer = _peer
 	multiplayer.peer_connected.connect(_on_peer_joined)
 	multiplayer.peer_disconnected.connect(_on_peer_left)
-	parts.applied.connect(_on_applied)
+	_listen(parts)
 	if roster != null:
 		parts.apply(roster.joined(profile.id, Roster.HOST, profile.name, _clamped_hands(_own_hands())))
 	_note("hosting on %s" % transport.describe(), false)
@@ -164,15 +205,17 @@ func join(where: String) -> Error:
 	multiplayer.peer_authenticating.connect(_on_authenticating)
 	multiplayer.server_disconnected.connect(_on_host_gone)
 	multiplayer.connection_failed.connect(_on_unreachable)
-	parts.relay = _send_up
+	_set_relay(_send_up)
+	_listen(parts)
 	_joining = where
 	_give_up.start(tuning.join_timeout)
 	return OK
 
 
 ## This player's id: 1 on the Host and when playing alone, the peer id on a Guest.
+## Out of the tree (a level's own link as the level leaves) it is the Host's id: nobody else is left.
 func me() -> int:
-	return multiplayer.get_unique_id()
+	return multiplayer.get_unique_id() if is_inside_tree() else Parts.HOST
 
 
 func is_online() -> bool:
@@ -195,12 +238,13 @@ func close() -> void:
 	_scene_multiplayer().auth_callback = Callable()
 	for pair: Array in [[multiplayer.peer_connected, _on_peer_joined], [multiplayer.peer_disconnected, _on_peer_left],
 			[multiplayer.peer_authenticating, _on_authenticating], [multiplayer.server_disconnected, _on_host_gone],
-			[multiplayer.connection_failed, _on_unreachable], [parts.applied, _on_applied]]:
+			[multiplayer.connection_failed, _on_unreachable]]:
 		var sig: Signal = pair[0]
 		if sig.is_connected(pair[1]):
 			sig.disconnect(pair[1])
-	var was_guest := parts.relay.is_valid()
-	parts.relay = Callable()
+	_listen(null)
+	var was_guest := parts != null and parts.relay.is_valid()
+	_set_relay(Callable())
 	if was_guest and not _leaving:
 		parts.went_alone()  # coop/12: its looks-only bodies become its own
 	_peer = null
@@ -210,10 +254,75 @@ func close() -> void:
 	_waiting.clear()
 	_players.clear()
 	_guests.clear()
+	_in_house.clear()
+	_house_waiting.clear()
+	_house_early.clear()
+	_in_game = false
+	_house_asked = null
 	_rates.clear()
 	_said.clear()
-	if roster != null and not _leaving and not roster.players.is_empty() and roster.parts == parts:
+	if roster != null and not _leaving and not roster.players.is_empty() and parts != null and parts.of(roster.id) == roster:
 		parts.apply(roster.cleared())
+
+
+## A level comes in (LevelRuntime, as it enters the tree): its Parts read through to the link's and
+## become the ones in use. Online, a Guest's Commands go up from it and, once it is settled, its
+## house_ready goes to the Host.
+func attach_level(p: Parts) -> void:
+	if p == level_parts:
+		return
+	if level_parts != null:
+		detach_level(level_parts)
+	level_parts = p
+	if p == null:
+		return
+	if link_parts != null and p != link_parts:
+		p.link = link_parts
+	if _peer == null:
+		return
+	_listen(parts)
+	if not multiplayer.is_server():
+		p.relay = _send_up
+		_house_step()
+	else:
+		var early := _house_early.duplicate()
+		_house_early.clear()
+		for peer: int in early:
+			if _guests.has(peer):
+				_take_house(peer, early[peer])
+
+
+## A level goes (LevelRuntime, as it leaves the tree): the link's Parts are in use again. The Host
+## stops sending any Guest the level; a Guest tells the Host its house is gone.
+func detach_level(p: Parts) -> void:
+	if p == null or p != level_parts:
+		return
+	level_parts = null
+	if _peer == null:
+		return
+	p.relay = Callable()
+	_listen(parts)
+	if multiplayer.is_server():
+		_in_house.clear()
+		_house_waiting.clear()
+	else:
+		_house_asked = null
+		if _in_game and is_inside_tree():
+			_house_left.rpc_id(1)
+
+
+## The Host: whether this machine may send Guest `peer` anything of its level (its house_ready was
+## handled). True on a Guest and alone: a Guest sends its own avatar to the Host, who has a house.
+## LevelRuntime's visibility filter on every synchronizer of the level asks it.
+func sees_house(peer: int) -> bool:
+	if _peer == null or not multiplayer.is_server() or peer == Parts.HOST:
+		return true
+	return _in_house.has(peer)
+
+
+## Whether Guest `peer`'s house_ready was handled (the Host).
+func in_house(peer: int) -> bool:
+	return _in_house.has(peer)
 
 
 ## The hash of the sorted Part ids `p` binds: what both machines' scenes must declare alike.
@@ -228,7 +337,27 @@ static func layout_of(p: Parts) -> String:
 func _prepare() -> void:
 	if profile == null:
 		profile = PlayerProfile.fresh()
-	_layout = layout_of(parts)
+
+
+## The layout hash of this machine's level, or "" with none bound.
+func _level_layout() -> String:
+	return layout_of(level_parts) if level_parts != null and level_parts.is_bound else ""
+
+
+## The Parts in use relay their answers to the Guests (the Host) and nobody else's.
+func _listen(p: Parts) -> void:
+	if _listening != null and is_instance_valid(_listening) and _listening.applied.is_connected(_on_applied):
+		_listening.applied.disconnect(_on_applied)
+	_listening = p
+	if p != null:
+		p.applied.connect(_on_applied)
+
+
+## A Guest's way up, on the link's Parts and the level's alike.
+func _set_relay(c: Callable) -> void:
+	for p: Parts in [link_parts, level_parts]:
+		if p != null:
+			p.relay = c
 
 
 # --- The gate (both sides) ----------------------------------------------------------------------
@@ -261,10 +390,14 @@ func _refusal(peer: int, data: PackedByteArray) -> int:
 		return WHY_VERSION
 	var said: Variant = bytes_to_var(data.slice(4)) if data.size() > 4 else null
 	var word: Dictionary = said if said is Dictionary else {}
-	if not PlayerProfile.is_id(word.get("id")) or not (word.get("layout") is String) or not (word.get("name") is String):
+	if not PlayerProfile.is_id(word.get("id")) or not (word.get("name") is String) \
+			or (word.has("layout") and not (word["layout"] is String)):
 		_drop(peer, "gate", "an unreadable word of %d bytes" % data.size())
 		return WHY_VERSION
-	if String(word["layout"]) != _layout:
+	# A Guest that already has a level is checked against this machine's now: it never enters the
+	# Roster when its house_ready would be refused anyway.
+	var mine := _level_layout()
+	if word.has("layout") and mine != "" and String(word["layout"]) != mine:
 		_drop(peer, "layout", "another scene layout")
 		return WHY_VERSION
 	var pid := String(word["id"])
@@ -278,7 +411,8 @@ func _refusal(peer: int, data: PackedByteArray) -> int:
 	if not (hands is Dictionary) or (hands as Dictionary).size() > Command.ARGS_MAX:
 		_drop(peer, "gate", "unreadable Hands numbers")
 		return WHY_VERSION
-	_waiting[peer] = {"id": pid, "name": PlayerProfile.clean_name(word["name"]), "hands": _clamped_hands(hands)}
+	_waiting[peer] = {"id": pid, "name": PlayerProfile.clean_name(word["name"]), "hands": _clamped_hands(hands),
+			"in_level": word.has("layout") and mine != ""}
 	return 0
 
 
@@ -326,7 +460,11 @@ func _on_authenticating(peer: int) -> void:
 	var word := PackedByteArray()
 	word.resize(4)
 	word.encode_u32(0, protocol)
-	word.append_array(var_to_bytes({"layout": _layout, "id": profile.id, "name": profile.name, "hands": _own_hands()}))
+	var said := {"id": profile.id, "name": profile.name, "hands": _own_hands()}
+	var layout := _level_layout()
+	if layout != "":
+		said["layout"] = layout
+	word.append_array(var_to_bytes(said))
 	_scene_multiplayer().send_auth(peer, word)
 
 
@@ -337,14 +475,19 @@ func _scene_multiplayer() -> SceneMultiplayer:
 # --- Host ----------------------------------------------------------------------------------------
 
 ## A Guest passed the gate: the Roster takes it in (every Guest already in hears that), then it gets
-## the whole state, its own entry in it, then every event. While the level still makes its starting
-## state (its Socks laid behind the loading screen, house/09) the Guest waits at the gate for it.
+## the link's state, its own entry in it, then every event about the link. The level's state waits for
+## its house_ready (_house_ready()). A Guest whose word already named this machine's level layout
+## (it joined from inside that level: the command line, the title's Join today) has said its house is
+## ready at the gate: once this machine's level is settled (its Socks laid, house/09) it is taken in and
+## gets the link's and the level's snapshot together, as one welcome.
 func _on_peer_joined(peer: int) -> void:
 	if not multiplayer.is_server() or _guests.has(peer) or not _waiting.has(peer):
 		return
-	while not parts.is_settled():
-		await parts.settled
-		if not _waiting.has(peer) or not is_inside_tree():
+	var level := level_parts
+	var in_level := bool(_waiting[peer].get("in_level", false)) and level != null
+	while in_level and not level.is_settled():
+		await level.settled
+		if not _waiting.has(peer) or not is_inside_tree() or level_parts != level:
 			return
 	var who: Dictionary = _waiting[peer]
 	_waiting.erase(peer)
@@ -352,10 +495,86 @@ func _on_peer_joined(peer: int) -> void:
 	if roster != null:
 		parts.apply(roster.joined(String(who["id"]), peer, String(who["name"]), who.get("hands", {})))
 	_guests[peer] = true
-	var snap := parts.snapshot()
-	_welcome.rpc_id(peer, snap)
-	_note("%d joined (%s, colour %d, snapshot %d bytes)" % [peer, String(who["id"]).left(12),
+	var snap := link_parts.snapshot() if link_parts != null else {}
+	_linked.rpc_id(peer, snap)
+	_note("%d joined (%s, colour %d, link snapshot %d bytes)" % [peer, String(who["id"]).left(12),
 			roster.colour_index_of(peer) if roster != null else -1, var_to_bytes(snap).size()], false)
+	if in_level:
+		_take_into_house(peer, level)
+
+
+## A Guest's level is bound and settled (the house handshake): its PROTOCOL and layout must be this
+## machine's level's, else it is refused as another version. Then, once this machine's own level is
+## settled (its Socks laid, house/09), it gets the level's whole state and from now on everything of
+## it.
+@rpc("any_peer", "call_remote", "reliable")
+func _house_ready(protocol_said: Variant, layout: Variant) -> void:
+	var peer := multiplayer.get_remote_sender_id()
+	if not multiplayer.is_server() or not _guests.has(peer):
+		_drop(peer, "not in the game", "")
+		return
+	if not (protocol_said is int) or not (layout is String) or String(layout).length() > 128:
+		_drop(peer, "house", "an unreadable house_ready")
+		return
+	if _in_house.has(peer) or _house_waiting.has(peer):
+		return
+	if int(protocol_said) != PROTOCOL:
+		_drop(peer, "protocol", "%d at house_ready, not %d" % [int(protocol_said), PROTOCOL])
+		_house_refused.rpc_id(peer, WHY_VERSION)
+		return
+	if level_parts == null:
+		# This machine's house is still loading (both load at Start, core/63): it is answered when it comes.
+		_house_early[peer] = String(layout)
+		return
+	_take_house(peer, String(layout))
+
+
+## The Host: Guest `peer`'s house is ready with `layout`, and this machine has a level: once that level
+## is bound its layout is checked, and once it is settled the Guest is taken in.
+func _take_house(peer: int, layout: String) -> void:
+	var level := level_parts
+	_house_waiting[peer] = true
+	while not level.is_bound:
+		await level.bound
+		if not _house_waiting.has(peer) or level_parts != level or not is_inside_tree():
+			return
+	if layout != layout_of(level):
+		_house_waiting.erase(peer)
+		_drop(peer, "layout", "another level layout at house_ready")
+		_house_refused.rpc_id(peer, WHY_VERSION)
+		return
+	while not level.is_settled():
+		await level.settled
+		if not _house_waiting.has(peer) or level_parts != level or not is_inside_tree():
+			return
+	_house_waiting.erase(peer)
+	_take_into_house(peer, level)
+
+
+## The Host: Guest `peer`'s house is ready and this machine's `level` settled: it gets the level's whole
+## state and from now on everything of it.
+func _take_into_house(peer: int, level: Parts) -> void:
+	if not _guests.has(peer) or _in_house.has(peer):
+		return
+	_in_house[peer] = true
+	var snap := level.snapshot()
+	_welcome.rpc_id(peer, snap)
+	house_changed.emit(peer)
+	_note("%d is in the level (snapshot %d bytes)" % [peer, var_to_bytes(snap).size()], false)
+
+
+## A Guest's level went (a scene change): it is sent nothing of this machine's level until its next
+## house_ready.
+@rpc("any_peer", "call_remote", "reliable")
+func _house_left() -> void:
+	var peer := multiplayer.get_remote_sender_id()
+	if not multiplayer.is_server() or not _guests.has(peer):
+		_drop(peer, "not in the game", "")
+		return
+	_house_waiting.erase(peer)
+	_house_early.erase(peer)
+	if _in_house.erase(peer):
+		house_changed.emit(peer)
 
 
 ## A Guest's Command: checked (see the top), then answered for the Guest who sent it (first to
@@ -370,9 +589,12 @@ func _command(wire: Variant) -> void:
 	if cmd == null:
 		_drop(peer, "shape", Command.shape_error(wire))
 		return
-	var part := parts.of(cmd.to)
+	var part := parts.of(cmd.to) if parts != null else null
 	if part == null:
 		_drop(peer, "no part", String(cmd.to).left(60))
+		return
+	if not _in_house.has(peer) and not _is_link_part(cmd.to):
+		_count(peer, "not_ready")
 		return
 	var verb: Dictionary = part.accepts().get(cmd.kind, {})
 	if verb.is_empty():
@@ -391,16 +613,39 @@ func _command(wire: Variant) -> void:
 
 ## The Host's answer goes to every Guest; a refusal changes nothing, so it goes to the asker alone
 ## (I13, F07), and to nobody when the asker is the Host.
+## A Guest whose house is not ready yet hears only answers about the link's parts.
 func _on_applied(ev: Dictionary) -> void:
 	if not multiplayer.is_server():
 		return
+	var link_only := _about_link_only(ev)
 	if not ev.get("ok", false):
 		var asker := int(ev.get("by", 0))
-		if _guests.has(asker):
+		if _guests.has(asker) and (link_only or _in_house.has(asker)):
 			_event.rpc_id(asker, ev)
 		return
 	for peer: int in _guests:
-		_event.rpc_id(peer, ev)
+		if link_only or _in_house.has(peer):
+			_event.rpc_id(peer, ev)
+
+
+## Whether answer `ev` changes (or names) only the link's parts.
+func _about_link_only(ev: Dictionary) -> bool:
+	var changes: Variant = ev.get("changes")
+	if changes is Dictionary and not (changes as Dictionary).is_empty():
+		for id: Variant in changes:
+			if not _is_link_part(StringName(id)):
+				return false
+		return true
+	return _is_link_part(StringName(ev.get("to", &"")))
+
+
+## Whether `id` names one of the link's parts (there is a link and it is not the level's).
+func _is_link_part(id: StringName) -> bool:
+	if link_parts == null:
+		return false
+	if level_parts != null:
+		return level_parts.is_link_part(id)
+	return link_parts.of(id) != null
 
 
 ## A Guest went: each part lets go of what it held (Parts.left: its Hands drop where it stood, the
@@ -409,6 +654,9 @@ func _on_peer_left(peer: int) -> void:
 	_rates.erase(peer)
 	_said.erase(peer)
 	_waiting.erase(peer)
+	_in_house.erase(peer)
+	_house_waiting.erase(peer)
+	_house_early.erase(peer)
 	if _guests.erase(peer):
 		parts.left(peer)
 		_note("%d left" % peer, false)
@@ -427,12 +675,18 @@ func _rate_ok(peer: int, verb: StringName, limit: int) -> bool:
 	return int(r[1]) <= limit
 
 
-## A packet from `peer` was dropped: counted under `reason`, printed at most once a second per
-## player and reason.
-func _drop(peer: int, reason: String, detail: String) -> void:
+## A packet from `peer` was dropped: counted (dropped, stats), never printed. Returns that peer's counts.
+func _count(peer: int, reason: String) -> Dictionary:
 	stats["bad_packets"] = int(stats["bad_packets"]) + 1
 	var counts: Dictionary = dropped.get_or_add(peer, {})
 	counts[reason] = int(counts.get(reason, 0)) + 1
+	return counts
+
+
+## A packet from `peer` was dropped: counted under `reason`, printed at most once a second per
+## player and reason.
+func _drop(peer: int, reason: String, detail: String) -> void:
+	var counts := _count(peer, reason)
 	var said: Dictionary = _said.get_or_add(peer, {})
 	var now := Time.get_ticks_msec()
 	if now - int(said.get(reason, -1000)) < 1000:
@@ -454,13 +708,51 @@ func _event(ev: Dictionary) -> void:
 	parts.apply(ev)
 
 
-## The whole state, once, after the gate admitted this Guest.
+## The link's whole state (the Roster), once, after the gate admitted this Guest: it is in the game.
+## Its level, once ready, says so (house_ready).
+@rpc("authority", "call_remote", "reliable")
+func _linked(snap: Dictionary) -> void:
+	_give_up.stop()
+	_in_game = true
+	if link_parts != null:
+		link_parts.load_snapshot(snap)
+	linked.emit()
+	_house_step()
+
+
+## The level's whole state, once, after the Host handled this Guest's house_ready.
 @rpc("authority", "call_remote", "reliable")
 func _welcome(snap: Dictionary) -> void:
 	_joining = ""
 	_give_up.stop()
-	parts.load_snapshot(snap)
+	if parts != null:
+		parts.load_snapshot(snap)
 	welcomed.emit()
+
+
+## The Host refused this Guest's house (another PROTOCOL or level layout).
+@rpc("authority", "call_remote", "reliable")
+func _house_refused(why: int) -> void:
+	_end.call_deferred(_refusal_text(why))
+
+
+## A Guest in the game: once its level is bound and settled, it tells the Host (once per level).
+func _house_step() -> void:
+	var level := level_parts
+	if not _in_game or level == null or _house_asked == level or multiplayer.is_server():
+		return
+	_house_asked = level
+	while not level.is_bound:
+		await level.bound
+		if _house_asked != level or not is_inside_tree():
+			return
+	while not level.is_settled():
+		await level.settled
+		if _house_asked != level or not is_inside_tree():
+			return
+	if _peer == null or level_parts != level:
+		return
+	_house_ready.rpc_id(1, protocol, layout_of(level))
 
 
 func _on_host_gone() -> void:
