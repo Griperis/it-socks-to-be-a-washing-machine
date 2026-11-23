@@ -12,6 +12,11 @@
 ## cloth lies flat first (at most `flat_wait`; it flattens by itself under the cloth's `flat_speed`,
 ## G09, being a falling body's Looks), the Mess draws the Sock and the ghost's Looks stays
 ## `keep_frames` more frames, so no frame is blank and nothing pops (G08).
+##
+## A Throw's ghost body flies the Host's launch: from where the Host draws the Sock on the thrower's
+## avatar, with the velocity the Host aims from there (Hands.avatar_hand_of(), coop/11). It is drawn
+## from the first-person hand (the launch's "shown" pose), that lead easing away over `hand_over_time`
+## (Q2481), so what the Guest sees is on the Host's flight by then and has nothing left to catch up.
 class_name ThrowGhost
 extends Node3D
 
@@ -37,9 +42,17 @@ var _looks: Node3D
 ## This ghost's flight poses: [seconds since release, Transform3D], oldest first (G06).
 var _poses: Array[Array] = []
 var _age := 0.0
+## The physics tick whose step is the body's first: its age counts the steps it has taken, as a
+## FlightRow's flight time counts the Host body's from its launch pose (coop/11: counting this node's
+## own ticks put it a step behind when it was made inside a physics tick).
+var _born := 0
 ## The drawn offset from the ghost's body: a move and a turn.
 var _off := Vector3.ZERO
 var _turn := Quaternion.IDENTITY
+## Where it is drawn from at release (the first-person hand) less its body's start: eased away over
+## `hand_over_time` (Q2481).
+var _lead := Vector3.ZERO
+var _lead_turn := Quaternion.IDENTITY
 ## When the Host's local body (a drop's) was first seen, in this ghost's age.
 var _ref_seen := -1.0
 ## Easing onto the Host's rest: the time it has eased, or -1 before.
@@ -78,19 +91,33 @@ func _launch(launch: Dictionary) -> void:
 	MessMoving.fit(_body, design)
 	var hands := mess.tuning
 	var t := mess.bodies_tuning()
+	# As the Host's body (MessMoving._launch, coop/11): a drop slides and drags as a woken Sock (a
+	# Pair's ball as a Pair); a Throw bounces and drags as a Throw, a Pair's from its first touch.
+	_body.physics_material_override = MessMoving.let_go_material(t, drop)
 	_body.linear_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
 	_body.angular_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
-	if drop or pair:
+	if drop:
 		_body.linear_damp = hands.pair_linear_damp if pair else t.woken_linear_damp
 		_body.angular_damp = hands.pair_angular_damp if pair else t.woken_angular_damp
 	else:
 		_body.linear_damp = hands.thrown_linear_damp
 		_body.angular_damp = hands.thrown_angular_damp
+		if pair:
+			_body.contact_monitor = true
+			_body.max_contacts_reported = 1
+			_body.body_entered.connect(_on_pair_touch, CONNECT_ONE_SHOT)
 	_body.linear_velocity = launch["vel"]
 	_body.angular_velocity = launch["spin"]
+	MessMoving.switch_ccd(_body, _body.linear_velocity.length(), t)
 	if not pair:
 		_body.inertia = MessMoving.turn_inertia(_body.mass, SockDress.box(design), t.turn_weight)
 	_body.transform = launch["from"]
+	_born = Engine.get_physics_frames() + (0 if Engine.is_in_physics_frame() else 1)
+	if launch.get("shown") is Transform3D:
+		var shown := (launch["shown"] as Transform3D).orthonormalized()
+		var from := (launch["from"] as Transform3D).orthonormalized()
+		_lead = shown.origin - from.origin
+		_lead_turn = (shown.basis.get_rotation_quaternion() * from.basis.get_rotation_quaternion().inverse()).normalized()
 	add_child(_body)
 	_body.reset_physics_interpolation()
 	_looks = SockDress.make(design, SockDress.LYING, pair)
@@ -99,6 +126,12 @@ func _launch(launch: Dictionary) -> void:
 	_body.add_child(_looks)
 	_poses.append([0.0, _body.global_transform])
 	_draw(0.0)
+
+
+## A thrown Pair's ball drags as a Pair from its first touch, as the Host's (MessMoving._damp_pair).
+func _on_pair_touch(_other: Node) -> void:
+	_body.linear_damp = mess.tuning.pair_linear_damp
+	_body.angular_damp = mess.tuning.pair_angular_damp
 
 
 ## The ghost's body (tests read where it is).
@@ -151,7 +184,8 @@ func _physics_process(delta: float) -> void:
 	if _flat_waited >= 0.0:
 		_wait_flat(delta)
 		return
-	_age += delta
+	_age = maxf(0.0, float(Engine.get_physics_frames() - _born) / float(Engine.physics_ticks_per_second))
+	MessMoving.switch_ccd(_body, _body.linear_velocity.length(), mess.bodies_tuning())
 	_poses.append([_age, _body.global_transform])
 	while _poses.size() > tuning.keep_poses:
 		_poses.pop_front()
@@ -238,10 +272,12 @@ func _wait_flat(delta: float) -> void:
 	_keep = tuning.keep_frames
 
 
-## The ghost's body pose with the offset on it.
+## The ghost's body pose with the offset and what is left of the hand's lead on it.
 func _drawn_pose() -> Transform3D:
 	var own := _body.global_transform.orthonormalized()
-	return Transform3D(Basis(_turn) * own.basis, own.origin + _off)
+	var w := 1.0 - smoothstep(0.0, maxf(tuning.hand_over_time, 0.001), _age)
+	var turn := _turn * Quaternion.IDENTITY.slerp(_lead_turn, w)
+	return Transform3D(Basis(turn) * own.basis, own.origin + _off + _lead * w)
 
 
 func _draw(delta: float) -> void:

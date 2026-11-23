@@ -47,7 +47,7 @@ var _waiting: Dictionary[int, StringName] = {}
 var _order := PackedInt32Array()
 var _sorted := true
 ## The flights' physics materials, shared: one per friction and bounce (two while the tuning holds still).
-var _materials: Dictionary[Vector2, PhysicsMaterial] = {}
+static var _materials: Dictionary[Vector2, PhysicsMaterial] = {}
 ## The Door and drawer leaves seen moving (core/39), by body RID: the body, and its place before its
 ## last step and now (which side a Sock left inside it is pushed out to).
 var _leaf_body: Dictionary[RID, AnimatableBody3D] = {}
@@ -151,7 +151,7 @@ func tick(delta: float) -> void:
 		_airborne[sock] += delta
 		_speeds_before[sock] = float(_speeds.get(sock, speed))
 		_speeds[sock] = speed
-		_switch_ccd(body, speed, t)
+		switch_ccd(body, speed, t)
 		if bounded and not _mess.bounds.has_point(to_local * body.global_position):
 			out.append(sock)
 			continue
@@ -193,7 +193,7 @@ func tick_looks(delta: float) -> void:
 		var speed := body.linear_velocity.length()
 		_airborne[sock] += delta
 		_speeds[sock] = speed
-		_switch_ccd(body, speed, t)
+		switch_ccd(body, speed, t)
 		if _mess.state_of(sock) != Mess.State.LYING:
 			continue
 		if bounded and not _mess.bounds.has_point(to_local * body.global_position):
@@ -593,8 +593,7 @@ func _launch(sock: int, woken: bool, motion: Array = []) -> void:
 	body.name = Mess.FLIGHT_NAME % sock
 	body.set_meta(Mess.SOCK_META, sock)
 	fit(body, _mess.design_of(sock))
-	body.physics_material_override = _material(t.woken_friction, 0.0) if woken \
-			else _material(t.released_friction, t.released_bounce)
+	body.physics_material_override = let_go_material(t, woken)
 	body.linear_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
 	body.angular_damp_mode = RigidBody3D.DAMP_MODE_REPLACE
 	if woken:
@@ -613,7 +612,7 @@ func _launch(sock: int, woken: bool, motion: Array = []) -> void:
 	if not here:
 		body.collision_layer = Mess.LAYER_LOOKS
 		body.collision_mask = Mess.LOOKS_MASK
-	_switch_ccd(body, body.linear_velocity.length(), t)
+	switch_ccd(body, body.linear_velocity.length(), t)
 	if not pair:
 		body.inertia = turn_inertia(body.mass, SockDress.box(_mess.design_of(sock)), t.turn_weight)
 	# The pose is set before the body enters the tree (m06 backlog: it was set after add_child, so a
@@ -701,7 +700,7 @@ func _drop_flight(sock: int) -> void:
 
 ## A body at `speed` sweeps its way (continuous collision) from the tuning's `ccd_on` and stops
 ## sweeping under its `ccd_off`.
-static func _switch_ccd(body: RigidBody3D, speed: float, t: MessTuning) -> void:
+static func switch_ccd(body: RigidBody3D, speed: float, t: MessTuning) -> void:
 	if speed >= t.ccd_on:
 		body.continuous_cd = true
 	elif speed < t.ccd_off:
@@ -741,13 +740,16 @@ static func turn_inertia(mass: float, box: Vector3, weight: float) -> Vector3:
 
 
 ## The shared material with this friction and bounce (made the first time it is asked for).
-func _material(friction: float, bounce: float) -> PhysicsMaterial:
-	var key := Vector2(friction, bounce)
+## The surface a let-go body has: a woken, poured or dropped one slides (`woken_friction`, no bounce),
+## a thrown one bounces (`released_friction`, `released_bounce`, M10). A Guest's Throw or drop ghost
+## body has the same, so it bounces as the Host's does (coop/11). One material per pair of numbers.
+static func let_go_material(t: MessTuning, woken: bool) -> PhysicsMaterial:
+	var key := Vector2(t.woken_friction, 0.0) if woken else Vector2(t.released_friction, t.released_bounce)
 	var material: PhysicsMaterial = _materials.get(key)
 	if material == null:
 		material = PhysicsMaterial.new()
-		material.friction = friction
-		material.bounce = bounce
+		material.friction = key.x
+		material.bounce = key.y
 		_materials[key] = material
 	return material
 
