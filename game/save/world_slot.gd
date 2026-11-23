@@ -20,6 +20,6 @@ var hosting := false
 var profile: PlayerProfile
 
 
-## The words of the loading screen for this World (the old M:209-211; "Loading the house...", Q2579).
+## The words of the loading screen for this World: "Loading the house...", a New Game too (Q2579).
 func loading_heading() -> String:
-	return "The washer bursts open..." if is_new else "Loading the house..."
+	return "Loading the house..."

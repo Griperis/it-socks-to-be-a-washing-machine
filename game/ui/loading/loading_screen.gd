@@ -1,5 +1,5 @@
 ## The loading screen (the old card, Q356): the title's dark backdrop, a cream card with a tumbling
-## sock, the heading ("The washer bursts open...", "Loading the house...", "Joining...") and a progress
+## sock, the heading ("Loading the house...", Q2579; "Joining...") and a progress
 ## bar while the wait can tell how far it is; the bar never goes backwards. finish() takes the card
 ## away and fades the backdrop out over `fade_seconds`, over everything, with no input lock
 ## (Q1262-Q1265). SceneChanger puts it up; the look is the scene's, on the Theme.

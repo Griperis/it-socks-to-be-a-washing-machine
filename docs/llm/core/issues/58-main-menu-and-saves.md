@@ -57,7 +57,8 @@ intro, key remapping, the encyclopedia key.
 
 ## Answers
 - The screens merge as their stills show (`builds/review-menus/`) (Q2578, 2026-11-23).
-- The loading card reads "Loading the house..." (Q2579, 2026-11-23).
+- The loading card reads "Loading the house...", for a New Game too; a loaded World skips the generators' laying
+  instead of laying and replacing (Q2579, 2026-11-23).
 - The title's Zoo key is in debug builds only; a release build has none (Q2580, 2026-11-23).
 
 ## Open follow-ups

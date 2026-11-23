@@ -29,7 +29,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "m04_join_kept", "method": "case_m04", "world": false,
 				"title": "M04: leaving the Join page keeps the typed name (cleaned: trimmed, at most 16, empty is Player) and address in the profile"},
 		{"name": "m05_join_goes", "method": "case_m05", "world": false,
-				"title": "M05: Join (or Enter in the address) goes into the house as a Guest behind \"Joining...\"; Solo behind \"The washer bursts open...\" for a New Game; Host listening"},
+				"title": "M05: Join (or Enter in the address) goes into the house as a Guest behind \"Joining...\"; Solo behind \"Loading the house...\", a New Game too (Q2579); Host listening"},
 		{"name": "m06_quit", "method": "case_m06", "world": false,
 				"title": "M06: Quit closes the game"},
 		{"name": "m07_notice", "method": "case_m07", "world": false,
@@ -147,7 +147,7 @@ func case_m05() -> void:
 	_went.clear()
 	t.show_page(TitleScreen.HOME)
 	await _click(t.get_node("%Solo"))
-	_check(_went.size() == 1 and _went[0][1] == "The washer bursts open...", "Solo with no save: a New Game behind its words")
+	_check(_went.size() == 1 and _went[0][1] == "Loading the house...", "Solo with no save: a New Game behind \"Loading the house...\" (Q2579)")
 	root = (load(ONE_BOX) as PackedScene).instantiate()
 	(_went[0][2] as Callable).call(root)
 	_check(LevelRuntime.of(root).world != null and LevelRuntime.of(root).launch.is_empty(), "alone, the Solo World handed to the level")
