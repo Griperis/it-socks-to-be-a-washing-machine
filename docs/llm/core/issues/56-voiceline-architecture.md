@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: needs-info
 kind: design
 area: core
 feature: voice
@@ -31,3 +31,18 @@ trigger, priority, the subtitle), how a designer adds or swaps a line by droppin
 system, Q2296), how it fits the plug-and-play sound system (core/17), co-op (who hears what, the Host's trigger),
 subtitles on the one Theme, localisation later (`kit/docs/agents/shipping-basics.md`), and a tiny zoo station sketch.
 End with the choices for the designer, 2-3 options each with a recommendation.
+
+## Open follow-ups
+- [blocking] V1-V8 in `docs/architecture/voice.md` "Choices for the designer": who decides the Old Tree's lines in
+  co-op; Animation vs code-sampled acting; takes; two speakers at once; Voice bus and ducking; subtitle look; where a
+  line's text is first written; a muffled line's subtitle. Each has 2-3 options and a recommendation.
+
+## Built log
+### 2026-11-23
+- Changed: Step 1 and Step 2 written (docs only). Findings: every line kind of the old game (washer comments,
+  cutscenes, drum comments, Old Tree lines and calls), how each was authored, triggered, played, subtitled, and what
+  was weak. Proposal: VoiceLine/VoiceSegment/VoiceSpeaker Resources, a VoiceBook built at load, one VoicePicker, a
+  Voices autoload, a Subtitles scene on the Theme, drop-a-file authoring through a bake tool, a Voice bus, the Host
+  deciding lines in co-op, subtitle keys in a CSV from the start, a Voice zoo station sketch; choices V1-V8.
+- Files: docs/migration/voice-findings.md, docs/architecture/voice.md
+- Verified: docs only, no suite (agent_finish --no-test).

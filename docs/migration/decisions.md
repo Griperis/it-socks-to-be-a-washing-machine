@@ -1,4 +1,4 @@
-Next free Q number: Q2541 (update this line whenever a round of questions is asked)
+Next free Q number: Q2545 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -455,3 +455,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2538: the bathroom wainscot is kept (tiles to 1.2 m) with its trim made a real raised strip, as the skirting (house/07; designer, 2026-11-23).
 - Q2539: the rim sheen is 0.25 on the cream fabrics (linen, sheet, sofa), 0.35 on the others (assets/06; designer, 2026-11-23).
 - Q2540: M4 starts with the main menu and saves, the save format chosen first (designer, 2026-11-23).
+- Q2541: the house's Mess uses the old stage counts per floor (basement 50, ground 160, first 150, attic 130 Pairs; 990 Socks), not the whole catalogue (house/05; designer, 2026-11-23).
+- Q2542: the house's Socks are laid a slice per frame behind a short loading screen ("The washer bursts open...", as the old), so nothing freezes; they still appear all at once (Q2523) (designer, 2026-11-23).
+- Q2543: all eight Cabinets stay open until Stages (M4) lock them (house/05; designer, 2026-11-23).
+- Q2544: house/05 merges as its strip shows; the attic trunk's inside is fixed in its own ticket (designer, 2026-11-23).
