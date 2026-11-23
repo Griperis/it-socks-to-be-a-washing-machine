@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: needs-info
 kind: build
 area: core
 feature: mess
@@ -43,3 +43,16 @@ spacing), the seed, how they appear (at rest, poured, dropped), what a late join
 - The same seed makes the same Mess on Host and Guest; a late joiner sees it.
 - Stills for the designer: the editor viewport with areas and the preview (`builds/review-sock-generator/`), and the
   game view of the same station after generation.
+
+## Open follow-ups
+- [blocking] Step 1 is done: the behaviour list `docs/migration/m06-lists/05-sock-generator.md` waits for the designer's
+  approval and its 12 questions (area shape, furniture tops, counts, Designs, Mates, preview, at rest or poured, seed,
+  rest computation, exclusions, old details to keep, rows over the network). Step 2 starts after the answers.
+
+## Built log
+- 2026-11-23
+  - Changed: Step 1 only. The old generator is `SockLayout` (`game/world/sock_layout.gd`, `bake()` for a New Game,
+    `spawn()` for a stage) with `mess.json` "spill", `stages.json` and `HouseParts.tops()`; written up as 83 behaviour
+    lines with refs, invariants, numbers, what the port already has, findings for the rework and 12 questions.
+  - Files: docs/migration/m06-lists/05-sock-generator.md, docs/llm/core/issues/52-sock-generator.md
+  - Verified: docs only (agent_finish --no-test).
