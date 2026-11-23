@@ -1,5 +1,5 @@
 > Draft behaviour list for M4's second piece, the Lobby (core/61), written from the reference on 2026-11-23; for the
-> designer to approve. The proposal built on it: `docs/architecture/lobby.md` (choices L1-L7 there).
+> designer to approve. The proposal built on it: `docs/architecture/lobby.md` (decided Q2582-Q2587).
 
 # M4 piece: the Lobby
 
@@ -10,8 +10,7 @@ S = `game/lobby/lobby_sidebar.gd`, ST = `game/lobby/lobby_stage.gd`, C = `game/l
 R = `game/lobby/lobby_ready.gd`, N = `game/net/lobby.gd`, TS = `game/ui/title_screen.gd`, W = `game/core/worlds.gd`,
 TU = `data/tuning/lobby.json`, I05..I08 = `docs/llm/lobby/issues/05..08`. Every number under TU is a placeholder in
 the old game too.
-"(wardrobe)" marks a line that needs the Wardrobe or the Profile's Lifetime tallies (not in the port yet, see the
-proposal's L3); "(steam)" a line of the Steam piece; "(ending)" a line of the ending's piece.
+"(wardrobe)" marks a line that needs the Wardrobe or the Profile's Lifetime tallies (not in the port yet; split out, Q2584); "(steam)" a line of the Steam piece; "(ending)" a line of the ending's piece.
 The old Lobby was a scene of its own with its own Session beside it, loaded before the house (N:1-34); the lines say
 what the player sees, not that shape; where the proposal changes how a line comes about, it says so (proposal "The
 shape").
