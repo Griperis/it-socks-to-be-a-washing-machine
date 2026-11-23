@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://tlhbeu4gixw7" path="res://game/debug/mess_bench_plan.gd" id="1_plan"]
 [ext_resource type="Script" uid="uid://2b3yi0qtmcu3" path="res://game/debug/mess_bench_scenario.gd" id="2_scenario"]
-[ext_resource type="Resource" path="res://game/debug/mess_checks.tres" id="3_checks"]
+[ext_resource type="Resource" uid="uid://d1cv4i2dns2er" path="res://game/debug/mess_checks.tres" id="3_checks"]
 
 [sub_resource type="Resource" id="Resource_idle_500"]
 script = ExtResource("2_scenario")

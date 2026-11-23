@@ -12,6 +12,8 @@ const ZOO := "res://game/zoo/zoo.tscn"
 const HEAP := "Stations/Heap"
 const NET_WAIT_S := 20.0
 const FPS := 60
+## The one-way delay the real path also runs at (coop/12).
+const LAG_MS := 50
 ## The real-path pour (the ticket's 200 Socks) and the large one (2,000).
 const POUR := 200
 const LARGE := 2000
@@ -32,11 +34,13 @@ var _tick_us: Array[PackedInt32Array] = [PackedInt32Array(), PackedInt32Array()]
 func cases() -> Array[Dictionary]:
 	return [
 		{"name": "pour_real_path", "method": "case_pour_real_path", "world": false,
-				"title": "coop/08, real path: the Host's player clicks More (200 Socks); the Guest shows each Sock falling as a body of its own from the Host's answer, writes nothing shared, and ends with the Host's records and poses"},
+				"title": "coop/08, real path, 0 and 50 ms one way: the Host's player clicks More (200 Socks); the Guest shows each Sock falling as a body of its own from the Host's answer, writes nothing shared, and ends with the Host's records and poses"},
 		{"name": "throw_into_heap", "method": "case_throw_into_heap", "world": false,
 				"title": "coop/08: a Throw into a heap on the Host: the Guest shows the woken Socks tumbling as its own bodies, then snapped to the Host's rest"},
 		{"name": "drawer_sweep", "method": "case_drawer_sweep", "world": false,
 				"title": "coop/08: a drawer opening on the Host over lying Socks: the Guest shows them moving and ends equal; a drawer moving on a Guest alone sweeps its own Socks as looks only and they go back where they lay"},
+		{"name": "leave_mid_pour", "method": "case_leave_mid_pour", "world": false,
+				"title": "coop/12, coop/08 follow-up: a Guest leaving mid-pour with a Throw in the air, and a Guest whose Host quits, each play on alone: no looks-only body or frozen Throw copy is left, every Sock that flew rests by this machine's own bodies"},
 		{"name": "late_join_pour", "method": "case_late_join_pour", "world": false,
 				"title": "coop/08: a Guest joining mid-pour starts each flying Sock's body from where the Host's is, and ends equal; the join is packed and compressed"},
 		{"name": "pour_2000_0ms", "method": "case_pour_2000_0ms", "world": false, "stress": true,
@@ -57,7 +61,12 @@ func _before_case() -> void:
 # --- The cases -----------------------------------------------------------------------------------
 
 func case_pour_real_path() -> void:
-	var zoos := await _pair(0)
+	for lag_ms: int in [0, LAG_MS]:
+		await _pour_round(lag_ms)
+
+
+func _pour_round(lag_ms: int) -> void:
+	var zoos := await _pair(lag_ms)
 	var host: Node3D = zoos[0]
 	var guest: Node3D = zoos[1]
 	var hm := _mess(host)
@@ -90,8 +99,8 @@ func case_pour_real_path() -> void:
 				started[sock] = body.global_position
 			elif body.global_position.distance_to(started[sock]) > 0.1:
 				moved[sock] = true
-	print("MESS real path: %d frames; the Guest showed %d of %d poured Socks as bodies, %d moved; most moving on the Guest %d" \
-			% [frames, started.size(), POUR, moved.size(), most_moving])
+	print("MESS real path %d ms: %d frames; the Guest showed %d of %d poured Socks as bodies, %d moved; most moving on the Guest %d" \
+			% [lag_ms, frames, started.size(), POUR, moved.size(), most_moving])
 	_check(without == 0, "every Sock the Guest has flying has a body there in the same frame (%d frame-Socks without)" % without)
 	_check(started.size() == POUR, "the Guest showed every poured Sock as a body (%d of %d)" % [started.size(), POUR])
 	_check(moved.size() >= POUR * 0.9, "the Guest's bodies fall, not only rest (%d of %d moved)" % [moved.size(), POUR])
@@ -201,6 +210,62 @@ func case_drawer_sweep() -> void:
 	_check(not hm.states.has(Mess.State.FLYING) and hm.moving_count() == 0, "nothing moved on the Host")
 	_check(_guest_asked.is_empty(), "the Guest's machine asked nothing (%s)" % [_kinds(_guest_asked)])
 	_drop_branches()
+
+
+func case_leave_mid_pour() -> void:
+	for host_quits: bool in [false, true]:
+		await _leave_round(host_quits)
+
+
+## The Host pours and throws one Sock; while they fly the Guest leaves (or the Host quits). The Guest,
+## alone now, must end with every Sock lying and no body of the session's left.
+func _leave_round(host_quits: bool) -> void:
+	var label := "the Host quits" if host_quits else "the Guest leaves"
+	var zoos := await _pair(0)
+	var host: Node3D = zoos[0]
+	var guest: Node3D = zoos[1]
+	var hm := _mess(host)
+	var gm := _mess(guest)
+	var spout := _spout(host, POUR)
+	await _click(host, "More")
+	await _until(func() -> bool: return spout.first >= 0 and gm.count() == hm.count() and gm.moving_count() >= POUR / 4,
+			"%s: a share of the pour to fly on the Guest" % label)
+	var heap_at := (host.get_node(HEAP + "/Spout") as Node3D).global_position
+	var sock := _loose_lying(hm, 0, spout.first)
+	var from := heap_at + Vector3(-3.0, 1.5, 0.0)
+	LevelRuntime.of(host).parts.apply({"ok": true, "kind": &"throw", "by": Parts.HOST, "to": hm.id,
+			"changes": {hm.id: hm.thrown_patch(sock, Transform3D(Basis.IDENTITY, from), Vector3(0.0, 5.0, 1.0), Vector3.ZERO, Parts.HOST)}})
+	await _until(func() -> bool: return gm.moving_body(sock) != null and FlightRow.of(gm.moving_body(sock)) != null,
+			"%s: the Guest's stamped copy of the Throw" % label)
+	await _paced_frames(3)
+	var flying_then := 0
+	for s in gm.count():
+		if gm.state_of(s) == Mess.State.FLYING:
+			flying_then += 1
+	if host_quits:
+		LevelRuntime.of(host).session.close()
+	else:
+		LevelRuntime.of(guest).session.close()
+	await _until(func() -> bool: return not LevelRuntime.of(guest).session.is_online(), "%s: the Guest is alone" % label)
+	var looks_left := 0
+	var frames := 0
+	while frames < SETTLE_FRAMES and (gm.states.has(Mess.State.FLYING) or gm.moving_count() > 0):
+		await _paced()
+		frames += 1
+		for body in gm.flight_bodies():
+			if body.collision_layer == Mess.LAYER_LOOKS or body.freeze:
+				looks_left += 1
+	print("MESS leave (%s): %d Socks flying at the leave; all lie %d frames later" % [label, flying_then, frames])
+	_check(flying_then > POUR / 4, "%s: Socks were flying on the Guest at the leave (%d)" % [label, flying_then])
+	_check(looks_left == 0, "%s: no looks-only body or frozen Throw copy is left on the Guest after it (%d frame-bodies)" % [label, looks_left])
+	_check(not gm.states.has(Mess.State.FLYING) and gm.flight_bodies().is_empty(), "%s: every Sock lies on the Guest, with no body left" % label)
+	_check(gm.state_of(sock) == Mess.State.LYING, "%s: the Throw lies too" % label)
+	_drop_branches()
+
+
+func _paced_frames(n: int) -> void:
+	for _i in n:
+		await _paced()
 
 
 func case_late_join_pour() -> void:

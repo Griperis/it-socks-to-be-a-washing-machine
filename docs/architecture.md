@@ -67,6 +67,7 @@ How this game is built, unless a decision record says otherwise. They are the ga
 | The material library | `docs/architecture/materials.md` | you add, pick or change a shared material, or a model uses one |
 | Furniture | `docs/architecture/furniture.md` | you place, change or add a furniture piece, its openings, collision or Sock spots, or a device (opening sounds, the piano, the mirror, the dust sheet) |
 | The house level | `docs/architecture/house.md` | you change the house scene: its shell, furniture, lights, spawn or what it holds |
+| Co-op | `docs/architecture/coop.md` | you touch the Session, the transport, the Roster, avatars, a Guest's guesses, a Throw's stream, knockdown, or anything a Guest sees or sends |
 
 A ticket that adds a subsystem adds its row here and its file.
 
@@ -122,7 +123,8 @@ admits it, writes it into the `Roster` Part (keyed by player id: peer, name, col
 which the Guest writes with `Parts.load_snapshot`. `Avatars` spawns by the Roster on the Host (an `Avatar` per player: its pose, position, yaw, pitch and crouch, goes from its owner every network frame and is checked in its setters where it lands; elsewhere it eases to it, its `AvatarLooks` derives the waddle, bend, squash and pupils, a worn `HeldView` hangs its Hands at the HoldPoint, where a Teammate's Throw leaves, and `TeammateSteps` plays its steps at its body; `Hearing` plays a Teammate's cues with `Sounds.play_from` at 1.2 m over their feet); thrown Socks come
 through the zoo's `FlightSpawner`, each with its stamped row (`FlightRow`); a Guest's own actions show at once
 as looks-only guesses (`GuestGhosts`) until the Host's answer, matched by the Command's `seq`. A leaver: `Parts.left` drops their Hands where they stood (`Hands.left`) and the
-Roster keeps that place. `LevelNet` reads `--host`, `--join=`, `--profile=` and puts the toasts on the HUD.
+Roster keeps that place; the leaver's machine (every Guest's, when the Host quits) is a Host of one and
+`Parts.went_alone` turns its looks-only bodies into its own (coop/12). `LevelNet` reads `--host`, `--join=`, `--profile=` and puts the toasts on the HUD.
 
 **A knockdown (coop/10).** `Knockdowns` (`game/knockdown/`, one Part under `Socks`, keyed by peer) holds who is down
 (their fall, a serial), who drags whom and the struggle presses. On the Host it tests every full-charge Throw in the

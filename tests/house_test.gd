@@ -78,7 +78,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "b01_kit_pieces_only", "method": "case_b01_kit_pieces_only", "world": false,
 				"title": "B01: the shell is built from the kit's pieces only, every one on the half-metre grid in 90 degree turns, on four storeys"},
 		{"name": "b01_openings", "method": "case_b01_openings", "world": false,
-				"title": "B01: every doorway lets a player through at the plan's place, every window piece is centred where the plan says, the stair and the Cellar hatch are open"},
+				"title": "B01: every doorway lets a player through at the plan's place, every window piece is centred where the plan says, the stair is open"},
 		{"name": "b02_materials", "method": "case_b02_materials", "world": false,
 				"title": "B02: every wall face, floor and corner wears its room's old paint, the outside the old render"},
 		{"name": "b05_grid_windows", "method": "case_b05_grid_windows", "world": false,
@@ -218,7 +218,8 @@ func case_b01_kit_pieces_only() -> void:
 				continue
 			var at := house.to_local(p.global_transform.origin) if p.is_inside_tree() else _local(house, p)
 			var turn := rad_to_deg(p.rotation.y)
-			if not (_on_grid(at.x) and _on_grid(at.y) and _on_grid(at.z)):
+			# The bathroom's trim strips stand off wall faces, off the half-metre grid (house/07).
+			if not p.scene_file_path.get_file().begins_with("wainscot_trim_") and not (_on_grid(at.x) and _on_grid(at.y) and _on_grid(at.z)):
 				odd.append("%s is off the grid (%s)" % [house.get_path_to(p), at])
 			if not is_equal_approx(snappedf(turn, 90.0), snappedf(turn, 0.01)) or absf(p.rotation.x) > EPS or absf(p.rotation.z) > EPS:
 				odd.append("%s is not turned in 90 degree steps (%s)" % [house.get_path_to(p), turn])
@@ -278,13 +279,11 @@ func case_b01_openings() -> void:
 		var line := {"N": 0.0, "S": 8.5, "W": 0.0, "E": 10.5}
 		var across := mid.z if w[2] in ["N", "S"] else mid.x
 		_near(across, line[w[2]], EPS, "%s stands in the %s wall's line" % [w[0], w[2]])
-	# Down the stair's well to the basement; down the Cellar hatch under the basement floor (the
-	# shaft: d07).
+	# Down the stair's well to the basement; the basement floor has no hatch (house/07).
 	var hit := _hit(Vector3(4.6, 5.9, 6.0), Vector3(4.6, -4, 6.0))
 	_check(not hit.is_empty() and (hit["position"] as Vector3).y < 4.6 and (hit["position"] as Vector3).y > 3.0,
 			"the attic floor is open over the U stair (%s)" % [hit.get("position")])
-	_check(_clear(Vector3(2.75, -2.5, 1.75), Vector3(2.75, -4, 1.75)), "the Cellar hatch opens through the workshop floor")
-	_check(not _clear(Vector3(2.0, -2.5, 3.0), Vector3(2.0, -4, 3.0)), "the workshop floor stands round it")
+	_check(not _clear(Vector3(2.75, -2.5, 1.75), Vector3(2.75, -4, 1.75)), "the workshop floor is whole where the Cellar hatch was (house/07)")
 	# The roof over the attic, the ridge 3.88 m over its floor at z 4.25 (plan K11).
 	hit = _hit(Vector3(2.0, 6.5, 4.25), Vector3(2.0, 12, 4.25))
 	_check(not hit.is_empty() and absf((hit["position"] as Vector3).y - (6.0 + 3.88)) < 0.3, "the roof closes the attic at the ridge (%s)" % [hit.get("position")])
@@ -382,7 +381,15 @@ func case_d01_wainscot() -> void:
 	if tiled == null:
 		return
 	_near(float(tiled.get_shader_parameter("top")), 1.2, EPS, "the tiles reach 1.2 m over the floor (make_flat.py make_wall_tiles)")
-	_near(float(tiled.get_shader_parameter("band")), 0.035, EPS, "a 3.5 cm trim band over them")
+	_near(float(tiled.get_shader_parameter("band")), 0.0, EPS, "no painted band over them: the trim is a raised strip (house/07)")
+	var strips := 0
+	var shell := (load(SHELL) as PackedScene).instantiate() as Node3D
+	for p in _pieces(shell):
+		if p.scene_file_path.get_file().begins_with("wainscot_trim_"):
+			strips += 1
+			_near(p.mesh.get_aabb().position.y, 1.2, EPS, "%s sits at the tiles' top" % p.name)
+	_check(strips == 5, "the bathroom has its five trim strips (%d)" % strips)
+	shell.free()
 	_check(tiled.get_shader_parameter("tiles") is Texture2D and String((tiled.get_shader_parameter("tiles") as Texture2D).resource_path).ends_with("wall_tiles.png"),
 			"the tiles are the old wall tiles")
 	_check(tiled.get_shader_parameter("paint") == (load(MATERIALS.path_join("wall_bathroom.tres")) as StandardMaterial3D).albedo_color,

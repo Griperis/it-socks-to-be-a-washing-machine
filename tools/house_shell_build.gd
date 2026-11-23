@@ -1,6 +1,6 @@
 ## Builds the house's shell from the house kit's pieces (house/03, house/04): game/house/shell.tscn,
 ## the old house on the 0.5 m grid with its windows rounded to 0.5 m (house B, Q2381, Q2503): every
-## room, wall, opening, the U stair, the shaft's and the Cellar hatch's tiles, the elevator shaft's
+## room, wall, opening, the U stair, the shaft's tiles, the elevator shaft's
 ## walls (D07), the bathroom's tile wainscot (D01) and the roof at the numbers of
 ## docs/architecture/house-kit-plan.md. Shell only: no ground round it (Q2503, Q2511); the playable
 ## level that holds it is game/house/house.tscn (by hand). Run it from the project folder after a
@@ -30,8 +30,6 @@ const STOREYS: Array[Array] = [["Basement", -3.0], ["Ground", 0.0], ["First", 3.
 const WELL := Rect2(4.0, 5.5, 2.5, 3.0)
 ## The elevator shaft's tile (x, z) on the ground, first and attic floors (plan K09).
 const SHAFT_TILE := Vector2(3.0, 4.5)
-## The Cellar hatch's tile in the workshop floor (plan K09).
-const HATCH_TILE := Vector2(2.0, 1.0)
 ## The elevator shaft's walls by storey (D07): its hatch faces west into the laundry and the kitchen,
 ## the first floor's is the x 4 partition's onto the landing, the attic's faces east (make_elevator.py
 ## HATCH_FACE). Each at the shaft's tile.
@@ -148,6 +146,8 @@ func _shell(windows: Dictionary, attic: Dictionary) -> void:
 			_outer_walls(root, node, windows)
 			_partitions(root, node)
 			_stair(root, node)
+			if storey[0] == "First":
+				_wainscot_trim(root, node)
 		_floor(root, node)
 		_piece(root, _group(root, node, "Shaft"), String(storey[0]), SHAFT_WALLS[storey[0]],
 				Vector3(SHAFT_TILE.x, 0, SHAFT_TILE.y), 0.0, "")
@@ -211,15 +211,30 @@ func _outer_walls(root: Node, storey: Node3D, windows: Dictionary) -> void:
 		_plain(root, group, name, side, at, hi)
 
 
-## Plain outer wall pieces from `a` to `b` along a side, longest first.
+## Plain outer wall pieces from `a` to `b` along a side, longest first. A piece never crosses the
+## line where one room ends and the next begins (house/07): it would wear one room's paint over
+## both, so each stretch between two room lines is filled on its own.
 func _plain(root: Node, group: Node3D, storey: String, side: String, a: float, b: float) -> void:
-	var at := a
-	while at < b - 0.001:
-		for l: float in LENGTHS:
-			if at + l <= b + 0.001:
-				_on_side(root, group, storey, side, at, at + l, "wall_exterior_" + _tag(l), "")
-				at += l
-				break
+	var cuts: Array[float] = [a]
+	for room: Array in ROOMS[storey]:
+		var r: Rect2 = room[1]
+		var touches := {"N": r.position.y == 0.0, "S": r.end.y == Z1, "W": r.position.x == 0.0, "E": r.end.x == X1}
+		if not touches[side]:
+			continue
+		for edge: float in ([r.position.x, r.end.x] if side in ["N", "S"] else [r.position.y, r.end.y]):
+			if edge > a + 0.001 and edge < b - 0.001 and not cuts.any(func(c: float) -> bool: return is_equal_approx(c, edge)):
+				cuts.append(edge)
+	cuts.append(b)
+	cuts.sort()
+	for i: int in cuts.size() - 1:
+		var at := cuts[i]
+		var end := cuts[i + 1]
+		while at < end - 0.001:
+			for l: float in LENGTHS:
+				if at + l <= end + 0.001:
+					_on_side(root, group, storey, side, at, at + l, "wall_exterior_" + _tag(l), "")
+					at += l
+					break
 
 
 ## A piece on an outer side from `a` to `b` along it, placed clockwise (inside inward).
@@ -255,6 +270,31 @@ func _partitions(root: Node, storey: Node3D) -> void:
 			_piece(root, group, name, seg[2], at, deg, "")
 
 
+## The bathroom's raised wainscot trim (house/07, Q2538): the kit's strips along its four walls at the
+## tiles' top, standing off each wall face (the east and west strips run the whole face, the north and
+## south ones between their feet; the west face's door has its casings' gap).
+func _wainscot_trim(root: Node, storey: Node3D) -> void:
+	var sizes := load("res://game/house/kit/house_kit_sizes.tres") as HouseKitSizes
+	var e := sizes.exterior / 2
+	var p := sizes.partition / 2
+	var d := sizes.skirting_depth
+	var x0 := 6.5 + p
+	var x1 := X1 - e
+	var z0 := e
+	var z1 := 3.5 - p
+	var door_from := 2.0 + (1.5 - sizes.door_width) / 2 - sizes.casing
+	var door_to := door_from + sizes.door_width + 2 * sizes.casing
+	var group := _group(root, storey, "Wainscot")
+	var across := KIT_BUILD.wainscot_trim_name(x1 - x0 - 2 * d)
+	var along := KIT_BUILD.wainscot_trim_name(z1 - z0)
+	var name := String(storey.name)
+	_piece(root, group, name, across, Vector3(x0 + d, 0, z0), 0.0, "North")
+	_piece(root, group, name, across, Vector3(x1 - d, 0, z1), 180.0, "South")
+	_piece(root, group, name, along, Vector3(x1, 0, z0), -90.0, "East")
+	_piece(root, group, name, KIT_BUILD.wainscot_trim_name(door_from - z0), Vector3(x0, 0, door_from), 90.0, "West")
+	_piece(root, group, name, KIT_BUILD.wainscot_trim_name(z1 - door_to), Vector3(x0, 0, z1), 90.0, "WestSouth")
+
+
 # --- Stair, floors, attic -----------------------------------------------------------------------
 
 func _stair(root: Node, storey: Node3D) -> void:
@@ -263,7 +303,7 @@ func _stair(root: Node, storey: Node3D) -> void:
 
 
 ## The floor tiles of a storey and, under each, the ceiling of the storey below (in this storey's
-## node, at its floor line): the shaft's and the Cellar hatch's tiles first, then each room covered
+## node, at its floor line): the shaft's tile first, then each room covered
 ## from its north-west corner with the largest tile that fits. The stair's well stays open above the
 ## basement.
 func _floor(root: Node, storey: Node3D) -> void:
@@ -281,9 +321,6 @@ func _floor(root: Node, storey: Node3D) -> void:
 		var at := Vector3(SHAFT_TILE.x, 0, SHAFT_TILE.y)
 		_tile(root, floor_group, name, "floor_shaft_1m", at, 1.0)
 		_piece(root, ceiling, name, ceiling_kind + "shaft_1m", at, 0.0, "")
-	else:
-		_mark(covered, Rect2(HATCH_TILE, Vector2(1.5, 1.5)))
-		_tile(root, floor_group, name, "floor_hatch_15m", Vector3(HATCH_TILE.x, 0, HATCH_TILE.y), 1.5)
 	for room: Array in ROOMS[name]:
 		var r: Rect2 = room[1]
 		var z := r.position.y

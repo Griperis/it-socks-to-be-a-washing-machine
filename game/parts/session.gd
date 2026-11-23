@@ -63,6 +63,10 @@ const UNREACHABLE := "Could not reach %s"
 ## The port to open; 0 opens on a free one (tests do; read it back after host()).
 @export var port := PORT
 
+## A test run sets it (tests/hooks.gd, coop/12): every Host listens on a port the system picks and reads it
+## back, so two test runs at once never clash on `port`.
+static var free_port := false
+
 ## Links the wiring check lets stay empty: the code below has a fallback.
 const WIRING_OPTIONAL := ["roster", "tuning"]
 
@@ -111,6 +115,8 @@ func _ready() -> void:
 ## Opens the game for Guests. Call it once the level and its Parts are ready.
 func host() -> Error:
 	_prepare()
+	if free_port:
+		port = 0
 	var err := transport.host(port, tuning.max_players * 2)
 	if err != OK:
 		Log.error("net", "cannot listen on port %d (%s)" % [port, error_string(err)])
@@ -182,7 +188,10 @@ func close() -> void:
 		var sig: Signal = pair[0]
 		if sig.is_connected(pair[1]):
 			sig.disconnect(pair[1])
+	var was_guest := parts.relay.is_valid()
 	parts.relay = Callable()
+	if was_guest and not _leaving:
+		parts.went_alone()  # coop/12: its looks-only bodies become its own
 	_peer = null
 	transport.peer = null
 	_joining = ""

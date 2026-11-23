@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: needs-info
+status: done
 kind: design
 area: core
 feature: frame
 priority: next
 created: 2026-11-23
-done:
+done: 2026-11-23
 blocked_by: []
 notes: ["Q2540: M4 starts with the main menu and saves, the save format first"]
 terms: [Host, Guest, Mess, Part]
@@ -55,3 +55,7 @@ recommendation.
   scenes on the one Theme with the kit templates named, the menu flow; choices M1-M10.
 - Files: docs/migration/m4-lists/01-main-menu-and-saves.md, docs/architecture/saves.md
 - Verified: docs only, no suite (agent_finish --no-test).
+
+## Answers
+- M1-M10 answered by Q2553-Q2562 (designer, 2026-11-23); `docs/architecture/saves.md` is the agreed design, its
+  "Decided" section wins over the text where they differ. The build is core/58.
