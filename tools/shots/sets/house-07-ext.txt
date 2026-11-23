@@ -1,0 +1,15 @@
+# house/07: the outer walls at the line where two rooms meet, seen from each room
+b-ext-n-workshop-boiler-1  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:2,-1.5,1.6,3.3,-1.7,0' --shots=70
+b-ext-n-workshop-boiler-2  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:5.3,-1.5,1.6,4.3,-1.7,0' --shots=70
+b-ext-s-lobby-garage-1  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:5.2,-1.5,7.2,6.2,-1.7,8.5' --shots=70
+b-ext-s-lobby-garage-2  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:8.5,-1.5,7.2,7.2,-1.7,8.5' --shots=70
+b-ext-w-workshop-laundry-1  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:1.8,-1.5,1.4,0,-1.7,3.0' --shots=70
+b-ext-w-workshop-laundry-2  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:1.8,-1.5,5.5,0,-1.7,4.0' --shots=70
+f-ext-n-office-landing-1  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:2,4.5,2,3.2,4.3,0' --shots=70
+f-ext-n-office-landing-2  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:5.3,4.5,1.6,4.3,4.3,0' --shots=70
+f-ext-n-landing-bathroom-1  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:5.2,4.5,1.8,6.2,4.3,0' --shots=70
+f-ext-n-landing-bathroom-2  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:8,4.5,1.8,6.8,4.3,0' --shots=70
+f-ext-e-bathroom-kids-1  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:8.8,4.5,1.0,10.5,4.3,3.0' --shots=70
+f-ext-e-bathroom-kids-2  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:8.8,4.5,6.0,10.5,4.3,4.0' --shots=70
+f-ext-w-office-bedroom-1  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:1.8,4.5,1.4,0,4.3,3.0' --shots=70
+f-ext-w-office-bedroom-2  --scene=res://game/house/house.tscn --size=960x540 --do='30:house:cam:1.8,4.5,5.5,0,4.3,4.0' --shots=70

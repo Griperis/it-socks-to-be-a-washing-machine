@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://c5kojl13id4nl"]
+
+[ext_resource type="ArrayMesh" uid="uid://2jee8wg41nk2" path="res://game/house/kit/meshes/wainscot_trim_380.tres" id="1_vuqs3"]
+
+[node name="WainscotTrim380" type="MeshInstance3D" unique_id=796578570]
+mesh = ExtResource("1_vuqs3")
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=681527389]
+collision_mask = 0
