@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="SockKnit" format=3 uid="uid://bd7odsd660yyf"]
+
+[ext_resource type="Script" uid="uid://b6dd1gaw8fcts" path="res://game/sock/sock_knit.gd" id="1_knit"]
+[ext_resource type="Texture2D" uid="uid://7h0dfkf5svet" path="res://assets/sock/knit.png" id="2_tile"]
+
+[resource]
+script = ExtResource("1_knit")
+texture = ExtResource("2_tile")

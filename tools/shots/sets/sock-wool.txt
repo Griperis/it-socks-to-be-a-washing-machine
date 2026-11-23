@@ -1,0 +1,5 @@
+# assets/05 W01: the knit texture: a held Sock (taken at 60, turned side-on and looked at closely with the zoom held from 100), the heap
+# station's lying heap (poured at 60, at rest by 470) under a metre away and 5 m away.
+held  --size=1280x720 --do='60:pick_floor;100:held_zoom' --shots=150
+heap_close  --size=1280x720 --do='60:heap_more;470:heap_view:close' --shots=480
+heap_5m  --size=1280x720 --do='60:heap_more;470:heap_view:far' --shots=480
