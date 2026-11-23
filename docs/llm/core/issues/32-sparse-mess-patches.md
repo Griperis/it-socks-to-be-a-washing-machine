@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-triage
+status: wontfix
 kind: build
 area: core
 feature: core
@@ -8,7 +8,7 @@ priority: next
 created: 2026-11-21
 done:
 blocked_by: ["[[31-mess-benchmark-and-settling]]"]
-notes: []
+notes: ["done by coop/07 (changed records only), closed 2026-11-23"]
 terms: []
 ---
 

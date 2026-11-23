@@ -183,6 +183,14 @@ func flight_time() -> float:
 
 
 ## Where the Host's body was `t` seconds into its flight, or null when no row is kept from then.
+## The newest row's velocity and spin, [Vector3, Vector3]; zeros before any row (coop/12: a Guest
+## left alone starts its own body from them).
+func last_motion() -> Array:
+	if _rows.is_empty():
+		return [Vector3.ZERO, Vector3.ZERO]
+	return [_rows[-1][3], _rows[-1][4]]
+
+
 func sample(t: float) -> Variant:
 	if _start() < 0.0 or _rows.is_empty():
 		return null

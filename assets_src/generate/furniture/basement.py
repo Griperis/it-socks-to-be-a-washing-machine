@@ -217,8 +217,9 @@ def collection_board(P):
     ty = -0.045
     P.add(box("Tray", (W * 0.8, 0.07, 0.012), (0, ty + 0.01, z0 - fr - 0.012), alu, r=0.004, seg=1))
     P.add(box("TrayLip", (W * 0.8, 0.008, 0.024), (0, ty - 0.021, z0 - fr - 0.012), alu, r=0.003, seg=1))
+    # The markers lie end to end along the tray, apart (assets/09: they overlapped), left of the eraser.
     for k, c in enumerate(("red", "navy", "sage_dark")):
-        x = -0.3 + k * 0.07
+        x = -0.36 + k * 0.18
         zt = z0 - fr + 0.012
         P.add(tube("Marker", [(x, ty, zt), (x + 0.12, ty, zt)], 0.009, M(c, 0.45), n=8))
         P.add(tube("Cap", [(x + 0.12, ty, zt), (x + 0.15, ty, zt)], 0.01, M(c, 0.35), n=8))
@@ -704,6 +705,10 @@ def car(P):
 
     # The greenhouse: glass panes, pillars, a cream roof.
     zb = BELT - 0.02
+    # The window sills (assets/09): a strip under the side and rear glass, from inboard of the glass to over
+    # the body's wall, so the glass and the body meet with no see-through slit.
+    SILL_W, SILL_D, SILL_H, SILL_Z = 0.1, 0.08, 0.06, zb - 0.045
+    SILL_X = XB + 0.035
 
     def side(y, z, sx):
         t = (z - zb) / (ROOF - zb)
@@ -715,6 +720,10 @@ def car(P):
                                                side(DB - 0.05, ROOF, sx), side(WSR_Y + 0.02, ROOF, sx)], glass)
         P.add(_pane("Quarter", [side(DB + 0.04, zb, sx), side(RB_Y - 0.02, zb, sx), side(RR_Y, ROOF, sx),
                                 side(DB, ROOF, sx)], glass))
+        # The sill under the quarter glass (assets/09): the glass stands inboard of the body's rounded
+        # shoulder, and the sill closes the slit between them.
+        P.add(box("Sill", (SILL_W, RB_Y - DB - 0.025, SILL_H), (sx * SILL_X, (DB + RB_Y + 0.005) / 2, SILL_Z), paint,
+                  r=0.015, seg=1))
         for a, b in (((WS_Y, zb), (WSR_Y, ROOF)), ((DB + 0.02, zb), (DB - 0.02, ROOF)),
                      ((RB_Y, zb), (RR_Y, ROOF))):
             P.add(tube("Pillar", [side(a[0], a[1] - 0.02, sx), side(b[0], b[1], sx)], 0.045, paint, n=8))
@@ -799,7 +808,8 @@ def car(P):
                 tube("MirrorArm", [(x, DF + 0.12, BELT - 0.02), (x + sx * 0.09, DF + 0.14, BELT + 0.04)], 0.015,
                      paint, n=6),
                 ball("Mirror", 0.07, (x + sx * 0.12, DF + 0.16, BELT + 0.07), paint, seg=10, rings=6,
-                     scale=(0.9, 0.6, 0.7))]
+                     scale=(0.9, 0.6, 0.7)),
+                box("Sill", (SILL_W, DB - DF - 0.03, SILL_H), (sx * SILL_X, (DF + DB) / 2, SILL_Z), paint, r=0.015, seg=1)]
         # Its collision: the panel below the belt and the glass above it (not the wing mirror).
         P.hinge(name, objs, (x, DF + 0.02, FLOOR), (0, 0, -sx), 70,
                 boxes=[_sx_box(sx, (W / 2 - 0.075, DF + 0.02, FLOOR), (W / 2 + 0.01, DB - 0.01, BELT)),
@@ -811,7 +821,8 @@ def car(P):
           tube("BootFrame", [(-XB, RB_Y + 0.01, zb), (-XR, RR_Y + 0.01, ROOF - 0.02), (XR, RR_Y + 0.01, ROOF - 0.02),
                              (XB, RB_Y + 0.01, zb)], 0.035, paint, n=8),
           box("Plate", (0.4, 0.02, 0.1), (0, L / 2 + 0.005, 0.6), M("paper", 0.5), r=0.008, seg=1),
-          box("Handle", (0.18, 0.03, 0.03), (0, L / 2 + 0.01, 0.75), steel, r=0.01, seg=1)]
+          box("Handle", (0.18, 0.03, 0.03), (0, L / 2 + 0.01, 0.75), steel, r=0.01, seg=1),
+          box("Sill", (2 * (SILL_X + SILL_W / 2), SILL_D, SILL_H), (0, RB_Y + 0.03, SILL_Z), paint, r=0.015, seg=1)]
     for sx in (-1, 1):
         bt.append(box("TailLamp", (0.12, 0.04, 0.2), (sx * 0.6, L / 2 - 0.005, 0.62),
                       M("terracotta", 0.2), r=0.02))

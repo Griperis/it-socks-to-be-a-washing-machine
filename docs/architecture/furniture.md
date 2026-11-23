@@ -12,17 +12,21 @@ The old house's 67 pieces, each a scene in `game/furniture/<piece>.tscn` (Q2151)
   (masks of the house layer) pass it and meet the root's shapes. The 4 rugs (metadata `rug`) have none.
 - **Looks:** `looks/looks_<piece>.tscn`, the still meshes (Body; Board, MirrorGlass; the piano's
   `Key_<midi>` with metadata `midi`). Contract `looks/looks_contract.json`.
-- **Openings:** one Node3D per old container (named as it: `Door`, `Drawer_1`, `Cabin`, `Boot`, `Lid`...)
+- **Openings:** one Node3D per old container (named as it: `Door`, `Drawer_1`, `Boot`, `Lid`...; the car's old `Cabin` is `DoorL` and `DoorR`, each door
+  opening by itself onto its half of the cabin floor, assets/09)
   holding an `Openable` (metadata `kind`: the old container kind; its `open_sound` and `close_sound` are
   `<kind>_open` and `<kind>_close` of the sound catalogue, assets/07), its Looks
   `parts/looks_<piece>_<opening>.tscn` and `Inside` (the interior box where Socks hide, an Area3D on no
-  layer, metadata `shelves_y`). The Looks: each moving part an AnimatableBody3D named as in the old
+  layer, metadata `shelves_y`; its bottom on the piece's collision floor, or the Sock generator lays nothing inside: house/09 raised the trunk's onto the lining's top, 0.16 m). The Looks: each moving part an AnimatableBody3D named as in the old
   model at its old pivot, with `Mesh` and its collision; `Outline`; an AnimationPlayer on physics frames
   with `open` and `shut` (the old swing: 0.35 s, easing out both ways). Contract `parts/looks_contract.json`.
 - **Spots:** `Spots/Top<n>`, Area3D boxes on no layer: a rect a Sock may rest on, from the top's height
   to the headroom over it. Joined from the old manifest's cells by the old game's piece-local rule (seen,
   0.12 m headroom, 0.06 m in from the top's edges, 0.05 m bands); what the house round a placed piece
   leaves clear is the level's to decide.
+- **What the Sock generator reads** (core/52, `docs/architecture/sock-generator.md`): `Spots/Top<n>` (tops),
+  each opening's `Inside` and its `shelves_y` (insides), the root's `crawl_gap` and `crawl_box` (the gap under it)
+  and `footprint`; a root may carry `sock_weight` (a float) to override the area's weight for all its places.
 - **Lamp:** the old_tree's small light (OmniLight3D, no shadow).
 - Origins at the floor centre of the bounding box, +Z front (F04); wall-hung pieces are modelled at the
   floor and lifted where they are placed.

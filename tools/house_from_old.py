@@ -12,8 +12,9 @@ What it writes, in the editor's format (uids, unique_ids):
 - the old lights: a ceiling light per old room light marker (Room._build_light: 8 cm under the marker,
   the old lamp colour, energy 1, range 6, shadow on, blur 2, bias 0.05) and the old lamps' lights
   (a placement's `lamp`: the lamp colour, energy 0.7, range 3, no shadow);
-- the zoo's noon light (sun, sky, grade), the player at the old spawn (room.gd spawn_pos, spawn_yaw),
-  and the shared-state path as the zoo has it (Socks, Parts, Session, Avatars, LevelNet; a Host of one).
+- the zoo's noon light (sun, sky, grade), the Spawn at the old spawn (room.gd spawn_pos, spawn_yaw),
+  and one instance of the level runtime (game/level/level_runtime.tscn, Q2517: the player, Socks, Parts,
+  Session, Avatars, LevelNet; a Host of one).
 
 The move to the plan (docs/architecture/house-kit-plan.md): the old layout measures from the old
 walls' inside faces; each room's inside faces moved to the new plan's (its "Rooms" table). A piece keeps
@@ -50,29 +51,13 @@ LAMP_COLOUR = (1.0, 0.88, 0.7)
 CEILING_LIGHT_DROP = 0.08
 # The res:// files the level uses beside the furniture: id -> (type, path).
 EXT = [
-    ("parts", "Script", "res://game/parts/parts.gd"),
-    ("player", "PackedScene", "res://game/player/player.tscn"),
-    ("session", "Script", "res://game/parts/session.gd"),
-    ("avatars", "Script", "res://game/parts/avatar/avatars.gd"),
-    ("avatar", "PackedScene", "res://game/parts/avatar/avatar.tscn"),
-    ("net", "Script", "res://game/net/level_net.gd"),
-    ("mess", "Script", "res://game/mess/mess.gd"),
-    ("hands", "Script", "res://game/hands/hands.gd"),
-    ("coins", "Script", "res://game/coins/coins.gd"),
-    ("designs", "Resource", "res://game/sock/designs.tres"),
-    ("tuning", "Resource", "res://game/hands/hands_tuning.tres"),
     ("env", "Environment", "res://game/look/noon_environment.tres"),
     ("picture", "PackedScene", "res://game/look/picture.tscn"),
-    ("roster", "Script", "res://game/net/roster.gd"),
-    ("coop", "Resource", "res://game/net/coop_tuning.tres"),
-    ("knockdowns", "Script", "res://game/knockdown/knockdowns.gd"),
-    ("knock_tuning", "Resource", "res://game/knockdown/knockdown_tuning.tres"),
     ("shell", "PackedScene", "res://game/house/shell.tscn"),
     ("front_door", "PackedScene", "res://game/house/shut_front_door.tscn"),
     ("garage_door", "PackedScene", "res://game/house/shut_garage_door.tscn"),
+    ("runtime", "PackedScene", "res://game/level/level_runtime.tscn"),
 ]
-# What the zoo's FlightSpawner spawns (a flying Sock and a thrown pair), the same here.
-SPAWNABLE = '"uid://uajin4n0hgrt", "uid://1pbfln7cmu0i"'
 
 
 def uid_of(res_path):
@@ -275,36 +260,10 @@ def main():
     node("Doors", "Node3D", ".")
     node("FrontDoor", None, "Doors", instance=ext_id["front_door"], props=["transform = " + xform(0, 5.75, 0, 0)])
     node("GarageDoor", None, "Doors", instance=ext_id["garage_door"], props=["transform = " + xform(0, 8.25, -3, 0)])
-    node("Player", None, ".", instance=ext_id["player"], props=["transform = " + xform(yaw, *spawn)])
-    node("Spots", "Node3D", ".")
+    # The level's own spawn and return spot; the game setup is one instance of the level runtime (Q2517).
+    node("Spawn", "Marker3D", ".", props=["transform = " + xform(yaw, *spawn)])
     node("ReturnSpot", "Marker3D", ".", props=["transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, %s, %s, %s)" % tuple(r(v) for v in spawn)])
-    node("Lying", "Node3D", ".")
-    node("Flights", "Node3D", ".")
-    node("FlightSpawner", "MultiplayerSpawner", ".", props=["_spawnable_scenes = PackedStringArray(%s)" % SPAWNABLE,
-                                                             'spawn_path = NodePath("../Flights")'])
-    node("Socks", "Node", ".")
-    node("Mess", "Node", "Socks", extra='node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")', props=[
-        "script = " + E("mess"), "catalogue = " + E("designs"), "tuning = " + E("tuning"), 'spots = NodePath("../../Spots")',
-        'lying = NodePath("../../Lying")', 'flights = NodePath("../../Flights")', "bounds = AABB(-2, -5, -2, 14.5, 17, 12.5)",
-        'return_spot = NodePath("../../ReturnSpot")'])
-    node("Hands", "Node", "Socks", extra='node_paths=PackedStringArray("mess")', props=[
-        "script = " + E("hands"), 'mess = NodePath("../Mess")', "tuning = " + E("tuning")])
-    node("Knockdowns", "Node", "Socks", extra='node_paths=PackedStringArray("hands")', props=[
-        "script = " + E("knockdowns"), "tuning = " + E("knock_tuning"), 'hands = NodePath("../Hands")'])
-    node("Coins", "Node", "Socks", props=["script = " + E("coins")])
-    node("Parts", "Node", ".", props=["script = " + E("parts")])
-    node("Players", "Node3D", ".")
-    node("Avatars", "MultiplayerSpawner", ".", extra='node_paths=PackedStringArray("local_body", "roster")', props=[
-        'spawn_path = NodePath("../Players")', "script = " + E("avatars"), "avatar_scene = " + E("avatar"),
-        'local_body = NodePath("../Player")', 'roster = NodePath("../Session/Roster")'])
-    node("Session", "Node", ".", extra='node_paths=PackedStringArray("parts", "roster")', props=[
-        "script = " + E("session"), 'parts = NodePath("../Parts")', 'roster = NodePath("Roster")', "tuning = " + E("coop")])
-    node("Roster", "Node", "Session", props=["script = " + E("roster"), "tuning = " + E("coop")])
-    node("Net", "Node", ".", extra='node_paths=PackedStringArray("session", "avatars")', props=[
-        "script = " + E("net"), 'session = NodePath("../Session")', 'avatars = NodePath("../Avatars")'])
-    node("Hud", "CanvasLayer", "Net")
-    node("Mode", "Label", "Net/Hud", props=["unique_name_in_owner = true", "offset_left = 12.0", "offset_top = 8.0",
-                                            "offset_right = 600.0", "offset_bottom = 34.0"])
+    node("Runtime", None, ".", instance=ext_id["runtime"], props=["mess_bounds = AABB(-2, -5, -2, 14.5, 17, 12.5)"])
     while out and out[-1] == "":
         out.pop()
     with open(OUT, "w", newline="\n") as f:

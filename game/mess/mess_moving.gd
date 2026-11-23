@@ -118,6 +118,32 @@ func start(sock: int, woken: bool, motion: Array = []) -> void:
 	_launch(sock, woken, motion)
 
 
+## This machine decides alone now (it left the session, or its Host quit; coop/12): each looks-only
+## body becomes a body of its own from where it is and how it moves, so every Sock that flies here
+## rests by this machine's rules. `copies` are the Throw copies the spawner made ({sock: body},
+## frozen, playing the Host's rows): each is replaced the same way.
+func take_over(copies: Dictionary) -> void:
+	var motions: Dictionary[int, Array] = {}
+	for sock: int in _flights.keys():
+		var body := _flights[sock]
+		if body.collision_layer != Mess.LAYER_LOOKS:
+			continue
+		motions[sock] = [body.global_transform, body.linear_velocity, body.angular_velocity]
+		_drop_flight(sock)
+		body.get_parent().remove_child(body)
+	for key: Variant in copies:
+		var copy := copies[key] as RigidBody3D
+		var row := FlightRow.of(copy)
+		var moves: Array = row.last_motion() if row != null else [Vector3.ZERO, Vector3.ZERO]
+		motions[int(key)] = [copy.global_transform, moves[0], moves[1]]
+		if copy.get_parent() != null:
+			copy.get_parent().remove_child(copy)
+		copy.queue_free()
+	for sock: int in motions:
+		if _mess.state_of(sock) == Mess.State.FLYING:
+			_launch(sock, not _mess.is_throw(sock), motions[sock])
+
+
 ## Every body freed (a whole new state, or the Mess leaves).
 func clear() -> void:
 	for sock: int in _flights.keys():
@@ -234,29 +260,39 @@ func tick_looks(delta: float) -> void:
 ## the same place Jolt pushes it again), with its fall and turn stopped; nothing else is judged of it
 ## this tick. It costs one point query only for such a step.
 func _pushed_in(sock: int, body: RigidBody3D, delta: float, t: MessTuning) -> bool:
-	var now := body.global_transform
-	var was: Transform3D = _was.get(sock, now)
-	_was[sock] = now
-	var motion := float(_speeds.get(sock, 0.0)) + body.linear_velocity.length() + body.angular_velocity.length() * t.push_reach
-	if now.origin.distance_to(was.origin) <= motion * delta + t.push_slack or not _in_house(body):
+	var was: Transform3D = _was.get(sock, body.global_transform)
+	var back: Variant = undo_push(_mess, body, was, float(_speeds.get(sock, 0.0)), delta, t)
+	if not (back is Transform3D):
+		_was[sock] = body.global_transform
 		return false
-	var back := was.translated(Vector3.UP * t.push_lift)
-	body.global_transform = back
-	body.reset_physics_interpolation()
-	var v := body.linear_velocity
-	body.linear_velocity = Vector3(v.x, maxf(v.y, 0.0), v.z)
-	body.angular_velocity = Vector3.ZERO
 	_was[sock] = back
 	_still[sock] = 0.0
 	pushed_in += 1
 	return true
 
 
+## The rule of _pushed_in() for any falling body (a Guest's Throw or drop ghost too, coop/13): `body`
+## was at `was` the tick before, at `speed_before`. Pushed in, it goes back `push_lift` higher, its
+## fall and turn stopped, and that place is returned; else null.
+static func undo_push(near: Node, body: RigidBody3D, was: Transform3D, speed_before: float, delta: float, t: MessTuning) -> Variant:
+	var now := body.global_transform
+	var motion := speed_before + body.linear_velocity.length() + body.angular_velocity.length() * t.push_reach
+	if now.origin.distance_to(was.origin) <= motion * delta + t.push_slack or not _in_house(near, body):
+		return null
+	var back := was.translated(Vector3.UP * t.push_lift)
+	body.global_transform = back
+	body.reset_physics_interpolation()
+	var v := body.linear_velocity
+	body.linear_velocity = Vector3(v.x, maxf(v.y, 0.0), v.z)
+	body.angular_velocity = Vector3.ZERO
+	return back
+
+
 ## Whether the middle of one of `body`'s shapes (a leg, a foot, a Pair's ball) is inside the house.
-func _in_house(body: RigidBody3D) -> bool:
+static func _in_house(near: Node, body: RigidBody3D) -> bool:
 	for child in body.get_children():
 		var shape := child as CollisionShape3D
-		if shape != null and PhysicsQueries.inside(_mess, shape.global_position, Mess.LAYER_HOUSE):
+		if shape != null and PhysicsQueries.inside(near, shape.global_position, Mess.LAYER_HOUSE):
 			return true
 	return false
 

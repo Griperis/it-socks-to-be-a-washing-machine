@@ -1,0 +1,9 @@
+# house/05: each floor of the house with its generated Socks and Cabinets, from the old looks-baseline views (docs/migration/baseline/tour-sandbox/), to set beside them
+room-laundry  --scene=res://game/house/house.tscn --size=1280x720 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;30:house:room-laundry' --shots=70
+room-garage  --scene=res://game/house/house.tscn --size=1280x720 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;30:house:room-garage' --shots=70
+room-kitchen-b  --scene=res://game/house/house.tscn --size=1280x720 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;30:house:room-kitchen-b' --shots=70
+room-living  --scene=res://game/house/house.tscn --size=1280x720 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;30:house:room-living' --shots=70
+room-stairs_ground  --scene=res://game/house/house.tscn --size=1280x720 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;30:house:room-stairs_ground' --shots=70
+room-kids  --scene=res://game/house/house.tscn --size=1280x720 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;30:house:room-kids' --shots=70
+room-bedroom  --scene=res://game/house/house.tscn --size=1280x720 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;30:house:room-bedroom' --shots=70
+room-loft  --scene=res://game/house/house.tscn --size=1280x720 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;30:house:room-loft' --shots=70

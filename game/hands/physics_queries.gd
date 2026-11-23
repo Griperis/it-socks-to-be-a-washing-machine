@@ -77,6 +77,27 @@ static func overlap_rids(node: Node, shape: Shape3D, xform: Transform3D, mask: i
 	return out
 
 
+## The nodes of `mask` that `shape` at `xform` overlaps, at most `most` (the Sock generator's
+## clearance test, core/52: a wall and a furniture piece are told apart by their node). A body with no
+## node is left out. Also read in the editor by the generator's preview. Empty when `node` has no world yet.
+## `exclude`: bodies not counted (a stair's walking ramps over a Sock on its tread, house/05).
+static func overlap_colliders(node: Node, shape: Shape3D, xform: Transform3D, mask: int, most: int, exclude: Array[RID] = []) -> Array[Object]:
+	var out: Array[Object] = []
+	var space := _space(node) if most > 0 else null
+	if space == null:
+		return out
+	var query := PhysicsShapeQueryParameters3D.new()
+	query.shape = shape
+	query.transform = xform
+	query.collision_mask = mask
+	query.exclude = exclude
+	for hit: Dictionary in space.intersect_shape(query, most):
+		var collider: Object = hit.get("collider")
+		if collider != null:
+			out.append(collider)
+	return out
+
+
 ## The physics space `node` is in, or null while it has no world.
 static func _space(node: Node) -> PhysicsDirectSpaceState3D:
 	if not node.is_inside_tree():

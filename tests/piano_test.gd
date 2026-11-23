@@ -82,7 +82,7 @@ func _last(event: StringName) -> Dictionary:
 func _zoo_up() -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	await _until(func() -> bool: return player.is_on_floor(), "the zoo's player to stand")
 	await _frames(2)
 	_heard.clear()
@@ -144,7 +144,7 @@ func case_p01_keys() -> void:
 
 func case_p02_real_path() -> void:
 	await _zoo_up()
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	var piano := _piece("piano")
 	var key := piano.get_node("Keys/Key_60/Key") as PianoKey
 	var lid := piano.get_node("Lid/Openable") as Openable

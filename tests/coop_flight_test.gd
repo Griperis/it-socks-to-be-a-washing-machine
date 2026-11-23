@@ -97,21 +97,21 @@ func _flight_round(lag_ms: int, small := true, unthrottled := true) -> void:
 	await _frames(2)
 	_hook(host, true)
 	_hook(guest, false)
-	var hs := host.get_node("Session") as Session
+	var hs := LevelRuntime.of(host).session
 	hs.port = 0
 	# Two players (a profile each, in memory); the throttle as the case asks (the transport holds it
 	# at full unless told not to).
 	for zoo: Node3D in [host, guest]:
-		var s := zoo.get_node("Session") as Session
+		var s := LevelRuntime.of(zoo).session
 		s.profile = PlayerProfile.fresh()
 		(s.transport as EnetTransport).full_throttle = unthrottled
-	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
+	_check(LevelRuntime.of(host).net.start(["--host"]) == OK, "the host zoo hosts")
 	_lag(host, lag_ms)
-	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
+	_check(LevelRuntime.of(guest).net.start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
 	_lag(guest, lag_ms)
-	var gm := guest.get_node("Socks/Mess") as Mess
-	var hm := host.get_node("Socks/Mess") as Mess
-	await _until(func() -> bool: return (guest.get_node("Net") as ZooNet).mode_text().begins_with("Joined") \
+	var gm := LevelRuntime.of(guest).mess
+	var hm := LevelRuntime.of(host).mess
+	await _until(func() -> bool: return LevelRuntime.of(guest).net.mode_text().begins_with("Joined") \
 			and gm.count() == hm.count() and gm.looks_of(0) != null, "the guest zoo to be welcomed with the Host's Mess")
 	_errors.lines.clear()
 	var peer := host.multiplayer.multiplayer_peer as LagPeer
@@ -126,8 +126,8 @@ func _flight_round(lag_ms: int, small := true, unthrottled := true) -> void:
 	print("SPIKE %s: %d Socks; idle unreliable from the Host: %.0f B/s" % [tag, hm.count(), idle])
 
 	# One Throw, through the Hands' Command, from the zoo's handling station.
-	var hands := host.get_node("Socks/Hands") as Hands
-	var player := host.get_node("Player") as Player
+	var hands := LevelRuntime.of(host).hands
+	var player := LevelRuntime.of(host).player
 	var handling := host.get_node("Stations/Handling") as Node3D
 	var one := (handling.get_node("Spots/Under") as SockSpot).sock
 	_stand(player, handling.to_global(Vector3(0.0, 0.0, 1.5)), 0.0)
@@ -152,14 +152,14 @@ func _flight_round(lag_ms: int, small := true, unthrottled := true) -> void:
 ## `n` Throws in one tick from a 4-wide grid over the open floor, of lying loose Socks not in `skip`;
 ## followed by _watch().
 func _burst(host: Node3D, guest: Node3D, n: int, skip: Array, label: String, peer: LagPeer, idle: float, strict: bool) -> void:
-	var hm := host.get_node("Socks/Mess") as Mess
+	var hm := LevelRuntime.of(host).mess
 	var socks := PackedInt32Array()
 	for sock in hm.count():
 		if socks.size() == n:
 			break
 		if not skip.has(sock) and hm.state_of(sock) == Mess.State.LYING and not hm.is_pair(sock):
 			socks.append(sock)
-	var parts := host.get_node("Parts") as Parts
+	var parts := LevelRuntime.of(host).parts
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 7
 	for i in socks.size():
@@ -176,8 +176,8 @@ func _burst(host: Node3D, guest: Node3D, n: int, skip: Array, label: String, pee
 ## the numbers and checks the rules.
 ## With `strict`, also that every copy moved and ended where its Sock lies.
 func _watch(host: Node3D, guest: Node3D, socks: PackedInt32Array, label: String, peer: LagPeer, idle: float, strict: bool) -> void:
-	var hm := host.get_node("Socks/Mess") as Mess
-	var gm := guest.get_node("Socks/Mess") as Mess
+	var hm := LevelRuntime.of(host).mess
+	var gm := LevelRuntime.of(guest).mess
 	var start := Engine.get_process_frames()
 	var host_hist: Dictionary[int, Array] = {}  # sock: [[frame, pos]]
 	var last_guest: Dictionary[int, Vector3] = {}
@@ -319,8 +319,8 @@ static func _lag_of(hist: Array, pos: Vector3, now: int) -> float:
 func _hook(zoo: Node3D, host_side: bool) -> void:
 	if host_side:
 		return
-	var flights := zoo.get_node("Flights") as Node3D
-	var mess := zoo.get_node("Socks/Mess") as Mess
+	var flights := LevelRuntime.of(zoo).flights
+	var mess := LevelRuntime.of(zoo).mess
 	flights.child_entered_tree.connect(func(node: Node) -> void:
 		var body := node as RigidBody3D
 		if body == null or not String(body.name).begins_with(Mess.FLIGHT_PREFIX):
@@ -378,7 +378,7 @@ func _branch(label: String, small: bool) -> Node3D:
 
 func _drop_branches() -> void:
 	for node in _branches:
-		var session := node.get_node_or_null("View/Zoo/Session") as Session
+		var session := _in_branch(node).session
 		if session != null:
 			session.close()
 		var path := node.get_path()
@@ -386,3 +386,9 @@ func _drop_branches() -> void:
 		node.free()
 		get_tree().set_multiplayer(null, path)
 	_branches.clear()
+
+
+## The level runtime of the zoo in branch `node` (a machine of its own), or null.
+func _in_branch(node: Node) -> LevelRuntime:
+	var zoo := node.get_node_or_null("View/Zoo")
+	return LevelRuntime.of(zoo) if zoo != null else null

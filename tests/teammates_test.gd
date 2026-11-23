@@ -4,20 +4,25 @@
 ## the follow's numbers on one avatar alone. No case judges the look itself (Q2421): that is the strip.
 extends TestSuite
 
+const LagPeer := preload("res://tests/support/lag_peer.gd")
 const ZOO := "res://game/zoo/zoo.tscn"
 const AVATAR := "res://game/parts/avatar/avatar.tscn"
 const KEEP := ["Handling"]
 const NET_WAIT_S := 20.0
 ## Where a player stands to pick at the Handling station, in the station's space.
 const BY_HANDLING := Vector3(0.0, 0.0, 1.5)
+## The one-way delays the real path runs at (coop/12).
+const LAGS: Array[int] = [0, 50]
 
 var _branches: Array[Node] = []
+## The wall-clock time of the next paced frame, in microseconds (_pace()).
+var _pace_next := 0
 
 
 func cases() -> Array[Dictionary]:
 	return [
 		{"name": "walk_crouch", "method": "case_walk_crouch", "world": false,
-				"title": "real path: the Host walks forward: on the Guest its avatar follows close behind, faces its way, its feet rock while it walks and rest when it stops; the Host crouches: the avatar's Crouch goes to 1 and back to 0"},
+				"title": "real path, 0 and 50 ms one way: the Host walks forward: on the Guest its avatar follows close behind, faces its way, its feet rock while it walks and rest when it stops; the Host crouches: the avatar's Crouch goes to 1 and back to 0"},
 		{"name": "colour_tag_late", "method": "case_colour_tag_late", "world": false,
 				"title": "each avatar is tinted its player's Roster colour (the trim darker) with a \"Player\" tag in that colour lightened; a late joiner sees both others posed, tinted and tagged at once"},
 		{"name": "held", "method": "case_held", "world": false,
@@ -31,7 +36,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "cues", "method": "case_cues", "world": false,
 				"title": "the Host's pick, pair, drop and throw are heard on the Guest as loud as its own, in the world at 1.2 m over the Host avatar's feet; a leaver's drop is heard at its last place"},
 		{"name": "throw_hand", "method": "case_throw_hand", "world": false,
-				"title": "a Guest's Throw leaves, on the Host, from the Guest avatar's HoldPoint where its Sock hangs, at once"},
+				"title": "coop/13, Q2439, Q2573: a Guest's Throw leaves, on the Host, from the Guest's own hand (where its ghost leaves), drawn at once from the Guest avatar's HoldPoint where its Sock hangs, easing onto its body in 0.2 s"},
 		{"name": "station", "method": "case_station", "world": false,
 				"title": "the Avatar station in the zoo, played alone: its stand-in Teammate walks its loop through its pose and takes the station's Sock; the other stands still"},
 	]
@@ -43,7 +48,12 @@ func _before_case() -> void:
 
 
 func case_walk_crouch() -> void:
-	var pair := await _joined()
+	for lag_ms: int in LAGS:
+		await _walk_crouch(lag_ms)
+
+
+func _walk_crouch(lag_ms: int) -> void:
+	var pair := await _joined(lag_ms)
 	var host: Node3D = pair[0]
 	var guest: Node3D = pair[1]
 	var hp := _player(host)
@@ -52,15 +62,22 @@ func case_walk_crouch() -> void:
 	var start := hp.global_position
 	var rocked := [0.0]
 	var lag := [0.0]
+	var speed := [0.0]
 	Input.action_press(Player.MOVE_FORWARD)
 	await _until(func() -> bool:
+		# Frames at 60 a second of wall time while the network delays (the runner's frames run faster).
+		_pace()
 		rocked[0] = maxf(rocked[0], absf(looks.feet()[0].rotation.x))
+		speed[0] = maxf(speed[0], Vector2(hp.velocity.x, hp.velocity.z).length())
 		if hp.global_position.distance_to(start) > 0.5:
 			lag[0] = maxf(lag[0], seen.global_position.distance_to(hp.global_position))
 		return hp.global_position.distance_to(start) > 3.0, "the Host's player to walk 3 m")
 	Input.action_release(Player.MOVE_FORWARD)
 	_check(rocked[0] > deg_to_rad(5.0), "the avatar's feet rocked while it walked (%.1f deg)" % rad_to_deg(rocked[0]))
-	_check(lag[0] < 0.8, "it followed close behind, an eased lag (%.2f m at most)" % lag[0])
+	# The eased lag, plus the way walked while the pose is on the wire.
+	var most: float = 0.8 + float(speed[0]) * lag_ms / 1000.0
+	print("TEAMMATE follow %d ms: %.2f m behind at most (walking %.2f m/s; allowed %.2f)" % [lag_ms, lag[0], speed[0], most])
+	_check(lag[0] < most, "%d ms: it followed close behind, an eased lag (%.2f m at most, under %.2f)" % [lag_ms, lag[0], most])
 	_check(looks.walk > 0.3, "it waddles while walking (%.2f)" % looks.walk)
 	await _until(func() -> bool: return seen.global_position.distance_to(hp.global_position) < 0.02 and looks.walk < 0.01,
 			"the avatar to stand where the Host stopped and stop waddling")
@@ -108,8 +125,8 @@ func case_held() -> void:
 	_stand(_player(host), at, 0.0)
 	var seen := _avatars(guest).of(1)
 	await _until(func() -> bool: return seen.position.distance_to(at) < 0.02, "the Guest to see the Host at the Handling station")
-	var hh := host.get_node("Socks/Hands") as Hands
-	var gh := guest.get_node("Socks/Hands") as Hands
+	var hh := LevelRuntime.of(host).hands
+	var gh := LevelRuntime.of(guest).hands
 	var socks: Dictionary[String, int] = {}
 	for spot: String in ["Floor", "Under", "MateFloor"]:
 		socks[spot] = (handling.get_node("Spots/" + spot) as SockSpot).sock
@@ -253,8 +270,8 @@ func case_cues() -> void:
 	_stand(_player(host), at, 0.0)
 	var seen := _avatars(guest).of(1)
 	await _until(func() -> bool: return seen.position.distance_to(at) < 0.02, "the Guest to see the Host at the Handling station")
-	var hh := host.get_node("Socks/Hands") as Hands
-	var gh := guest.get_node("Socks/Hands") as Hands
+	var hh := LevelRuntime.of(host).hands
+	var gh := LevelRuntime.of(guest).hands
 	var over := at + Vector3.UP * Hearing.CUE_HEIGHT
 	_listen()
 	hh.pick(1, (handling.get_node("Spots/Floor") as SockSpot).sock)
@@ -298,25 +315,37 @@ func case_throw_hand() -> void:
 	_stand(_player(guest), g_at, 0.0)
 	var copy := _avatars(host).of(g_peer)
 	await _until(func() -> bool: return copy.position.distance_to(g_at) < 0.02, "the Host to see the Guest by the Socks")
-	var hh := host.get_node("Socks/Hands") as Hands
-	var gh := guest.get_node("Socks/Hands") as Hands
+	var hh := LevelRuntime.of(host).hands
+	var gh := LevelRuntime.of(guest).hands
 	var sock := (handling.get_node("Spots/Floor") as SockSpot).sock
 	gh.pick(g_peer, sock)
 	await _until(func() -> bool: return copy.held.looks_of(sock) != null and copy.held.settled(), "the Sock to hang at the Guest avatar's hand on the Host")
 	var dir := Vector3(0.0, 0.2, 1.0).normalized()
 	var drawn: Transform3D = copy.held.drawn_of(sock)
 	_check(hh.hand_of(g_peer, dir).origin.is_equal_approx(drawn.origin), "on the Host, the Guest's hand is where its avatar holds the Sock")
-	var started := [Vector3.INF]
+	var own := gh.start_of(g_peer, dir)
+	var started := [Vector3.INF, Vector3.INF]
 	var note := func(ev: Dictionary) -> void:
 		if StringName(ev.get("kind", &"")) == &"throw" and ev.get("ok", false):
 			var body := hh.mess.moving_body(sock)
 			if body != null:
 				started[0] = body.global_position
-	(host.get_node("Parts") as Parts).applied.connect(note)
+				started[1] = (hh.mess.drawn_flight_of(sock) as Transform3D).origin
+	LevelRuntime.of(host).parts.applied.connect(note)
 	gh.throw(g_peer, dir, 0.5)
 	await _until(func() -> bool: return started[0] != Vector3.INF, "the Host to answer the Guest's Throw")
-	_check((started[0] as Vector3).distance_to(drawn.origin) < 0.1,
-			"the Sock leaves from the Guest avatar's hand (%s, hand %s)" % [started[0], drawn.origin])
+	_check((started[0] as Vector3).distance_to(own.origin) < 0.02,
+			"Q2573: the Sock leaves from the Guest's own hand, where its ghost leaves (%s, the Guest's hand %s)" % [started[0], own.origin])
+	_check((started[1] as Vector3).distance_to(drawn.origin) < 0.1,
+			"Q2439: on the Host it is drawn from the Guest avatar's hand at once (%s, hand %s)" % [started[1], drawn.origin])
+	var ease := hh.mess.ghost_tuning().hand_over_time
+	var until := Engine.get_physics_frames() + int(ease * Engine.physics_ticks_per_second) + 4
+	await _until(func() -> bool: return Engine.get_physics_frames() >= until, "%.1f s of the flight" % ease)
+	var body := hh.mess.moving_body(sock)
+	if body != null:
+		var shown := (hh.mess.drawn_flight_of(sock) as Transform3D).origin
+		_check(shown.distance_to(body.global_position) < 0.01,
+				"after %.1f s it is drawn on its body (%.4f m)" % [ease, shown.distance_to(body.global_position)])
 	_drop_branches()
 
 
@@ -372,17 +401,37 @@ func _shown(mi: MeshInstance3D, surface: int) -> BaseMaterial3D:
 
 
 ## A Host zoo and a Guest zoo, joined, each seeing the other's avatar: [host, guest].
-func _joined() -> Array:
+func _joined(lag_ms := 0) -> Array:
 	var host := _branch("Host")
 	var guest := _branch("Guest")
 	await _frames(2)
 	_session(host).profile = PlayerProfile.fresh()
 	_session(guest).profile = PlayerProfile.fresh()
 	_check(_net(host).start(["--host"]) == OK, "the Host hosts")
+	if lag_ms > 0:
+		_lag(host, lag_ms)
 	_net(guest).start(["--join=127.0.0.1:%d" % _session(host).port])
+	if lag_ms > 0:
+		_lag(guest, lag_ms)
 	await _until(func() -> bool: return _avatars(guest).of(1) != null and _avatars(host).of(_session(guest).me()) != null \
 			and not _roster(guest).entry_of(1).is_empty(), "each to see the other's avatar")
 	return [host, guest]
+
+
+## Holds this frame until 1/60 s of wall time since the last paced one (coop_hands_test's pace).
+func _pace() -> void:
+	var now := Time.get_ticks_usec()
+	if _pace_next == 0 or now - _pace_next > 100000:
+		_pace_next = now
+	_pace_next += 1000000 / 60
+	if now < _pace_next:
+		OS.delay_usec(_pace_next - now)
+
+
+## Puts `lag_ms` of delay on every packet `zoo`'s machine receives (tests/support/lag_peer.gd).
+func _lag(zoo: Node3D, lag_ms: int) -> void:
+	var mp := zoo.multiplayer
+	mp.multiplayer_peer = LagPeer.new(mp.multiplayer_peer as ENetMultiplayerPeer, lag_ms, 0.0, _branches.size())
 
 
 func _branch(label: String, keep: Array = KEEP) -> Node3D:
@@ -411,7 +460,7 @@ func _drop_branches() -> void:
 	Input.action_release(Player.MOVE_FORWARD)
 	Input.action_release(Player.CROUCH)
 	for node in _branches:
-		var session := node.get_node_or_null("View/Zoo/Session") as Session
+		var session := _in_branch(node).session
 		if session != null:
 			session.close()
 		var path := node.get_path()
@@ -429,20 +478,26 @@ func _stand(player: Player, at: Vector3, yaw: float) -> void:
 
 
 func _session(zoo: Node3D) -> Session:
-	return zoo.get_node("Session") as Session
+	return LevelRuntime.of(zoo).session
 
 
-func _net(zoo: Node3D) -> ZooNet:
-	return zoo.get_node("Net") as ZooNet
+func _net(zoo: Node3D) -> LevelNet:
+	return LevelRuntime.of(zoo).net
 
 
 func _roster(zoo: Node3D) -> Roster:
-	return zoo.get_node("Session/Roster") as Roster
+	return LevelRuntime.of(zoo).roster
 
 
 func _avatars(zoo: Node3D) -> Avatars:
-	return zoo.get_node("Avatars") as Avatars
+	return LevelRuntime.of(zoo).avatars
 
 
 func _player(zoo: Node3D) -> Player:
-	return zoo.get_node("Player") as Player
+	return LevelRuntime.of(zoo).player
+
+
+## The level runtime of the zoo in branch `node` (a machine of its own), or null.
+func _in_branch(node: Node) -> LevelRuntime:
+	var zoo := node.get_node_or_null("View/Zoo")
+	return LevelRuntime.of(zoo) if zoo != null else null

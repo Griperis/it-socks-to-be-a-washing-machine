@@ -15,11 +15,25 @@ static func setup(shot: Node) -> void:
 ## The game's own --do actions. Return true when `what` was handled.
 static func act(world: Node, what: String, arg: String) -> bool:
 	match what:
+		"menu":
+			# core/58: the screens. arg "options" / "multiplayer" / "join" / "licence" shows that title
+			# page; "esc" opens the level's ESC menu, "esc_options" Options over it.
+			match arg:
+				"esc":
+					LevelRuntime.of(world).esc_menu.open()
+				"esc_options":
+					# core/59: Options opened over the ESC menu.
+					var menu := LevelRuntime.of(world).esc_menu
+					menu.open()
+					(menu.get_node("%Options") as Button).pressed.emit()
+				_:
+					(world as TitleScreen).show_page(arg)
+			return true
 		"throw_charge":
 			# The zoo's player steps onto the handling station, takes its first Sock and holds the
 			# drop button: the Throw's ring starts filling after the tap (core/08).
-			var player := world.get_node("Player") as Player
-			var hands := world.get_node("Socks/Hands") as Hands
+			var player := LevelRuntime.of(world).player
+			var hands := LevelRuntime.of(world).hands
 			var station := world.get_node("Stations/Handling") as Node3D
 			player.global_position = station.global_position + Vector3(0.0, 0.0, 1.5)
 			player.rotation.y = 0.0
@@ -103,6 +117,13 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# pulled off (shoot a few frames later for the slide, 30 frames later for the bare Cabinet).
 			_devices_shot(world, arg)
 			return true
+		"fixes09":
+			# assets/09: the car and the whiteboard at the Furniture station, the other stations hidden.
+			# arg "windows": the car's greenhouse close up from front-left, above the belt; "door_l" and
+			# "door_r": that door opened alone by the zoo's player (shoot 40 frames later for the end of the
+			# swing); "tray": the whiteboard's marker tray from the front.
+			_fixes09_shot(world, arg)
+			return true
 		"house_kit":
 			# A camera on the house kit station (house/02): "lineup" (every piece from above), "walls",
 			# "openings", "floors", "roof_pieces" (rows of the line-up), "room" (the U room from
@@ -142,7 +163,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# frame) and the old floors (-2.9, 0, 2.9, 5.8) become the new (-3, 0, 3, 6). "roof-south" looks
 			# at the south slope from close by (D09).
 			var house := world.get_node("Shell") as Node3D
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			var head := player.get_node("%Head") as Node3D
 			var view := arg
 			var outside := {"exterior-front": [Vector3(5.0, 3.0, 22.0), Vector3(5.0, 3.5, 4.0)],
@@ -159,7 +180,17 @@ static func act(world: Node, what: String, arg: String) -> bool:
 					"stairs_first": [4.55, 5.75, -2.553, 2.9], "loft": [0.60, 0.60, -2.254, 5.8],
 					"kitchen-b": [3.23, 7.74, 0.395, 0.0], "living-b": [9.50, 7.74, 0.381, 0.0]}
 			var shift := Vector3(0.1, 0.0, 0.1)
-			if outside.has(view):
+			if view.begins_with("cam:"):
+				# house/07: a camera at "cam:px,py,pz,tx,ty,tz" (the plan's frame) looking at a wall.
+				var n := view.trim_prefix("cam:").split_floats(",")
+				var cam := Camera3D.new()
+				world.add_child(cam)
+				cam.fov = 70.0
+				cam.global_position = house.to_global(Vector3(n[0], n[1], n[2]) + shift)
+				cam.look_at(house.to_global(Vector3(n[3], n[4], n[5]) + shift))
+				cam.make_current()
+				player.process_mode = Node.PROCESS_MODE_DISABLED
+			elif outside.has(view):
 				var o: Array = outside[view]
 				var cam := Camera3D.new()
 				world.add_child(cam)
@@ -175,6 +206,21 @@ static func act(world: Node, what: String, arg: String) -> bool:
 				player.rotation = Vector3(0.0, float(r[2]), 0.0)
 				head.rotation.x = -0.12
 			player.reset_physics_interpolation()
+			return true
+		"house_trunk":
+			# house/09: the attic trunk `arg` ("TrunkA", "TrunkB") opened by the player, a camera over
+			# its front looking in at the Socks laid inside.
+			var trunk := world.get_node("Furniture/" + arg) as Node3D
+			var by := LevelRuntime.of(world).player
+			by.global_position = trunk.to_global(Vector3(1.2, 0.05, 0.6))
+			by.reset_physics_interpolation()
+			(trunk.get_node("Lid/Openable") as Openable).use(Parts.HOST)
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 60.0
+			cam.global_position = trunk.to_global(Vector3(0.0, 1.3, 1.0))
+			cam.look_at(trunk.to_global(Vector3(0.0, 0.15, 0.0)))
+			cam.make_current()
 			return true
 		"sounds":
 			# A camera over the Sounds station's buttons (core/22): arg "overview" looks down on the
@@ -194,8 +240,8 @@ static func act(world: Node, what: String, arg: String) -> bool:
 		"pair_first", "pair_mate":
 			# The zoo's player steps onto the handling station and takes its first Sock, then (a
 			# grab interval later) that Sock's mate: the pairing moment plays in the Hands (core/03).
-			var player := world.get_node("Player") as Player
-			var hands := world.get_node("Socks/Hands") as Hands
+			var player := LevelRuntime.of(world).player
+			var hands := LevelRuntime.of(world).hands
 			var station := world.get_node("Stations/Handling") as Node3D
 			if what == "pair_first":
 				player.global_position = station.global_position + Vector3(0.0, 0.0, 1.5)
@@ -207,8 +253,8 @@ static func act(world: Node, what: String, arg: String) -> bool:
 		"pick_floor", "pick_over":
 			# core/09: the zoo's player steps onto the handling station (looking down at its Socks)
 			# and takes the Sock on the floor; `pick_over` then takes the one lying over another.
-			var player := world.get_node("Player") as Player
-			var hands := world.get_node("Socks/Hands") as Hands
+			var player := LevelRuntime.of(world).player
+			var hands := LevelRuntime.of(world).hands
 			var station := world.get_node("Stations/Handling") as Node3D
 			var spot := "Spots/Floor"
 			if what == "pick_floor":
@@ -223,8 +269,8 @@ static func act(world: Node, what: String, arg: String) -> bool:
 		"refuse":
 			# core/18: the zoo's player takes the first Sock and aims at the open air, where a drop is refused: the
 			# crosshair is red and the message shows.
-			var player := world.get_node("Player") as Player
-			var hands := world.get_node("Socks/Hands") as Hands
+			var player := LevelRuntime.of(world).player
+			var hands := LevelRuntime.of(world).hands
 			var station := world.get_node("Stations/Handling") as Node3D
 			player.global_position = station.global_position + Vector3(0.0, 0.0, 1.5)
 			player.rotation.y = 0.0
@@ -235,14 +281,14 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			return true
 		"look_down":
 			# The head tilts down at the Socks on the floor (core/09: a fly-in seen from where it lay).
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-30.0)
 			player.reset_physics_interpolation()
 			return true
 		"own_body":
 			# coop/06: the own body seen from the eyes. Arg "down": the look straight down (the pitch
 			# limit); "crouch": crouched (the crouch held), the look 55 degrees down, a three-quarter view.
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			var limit := deg_to_rad(player.tuning.pitch_limit)
 			(player.get_node("Head") as Node3D).rotation.x = -limit if arg == "down" else deg_to_rad(-55.0)
 			if arg == "crouch":
@@ -253,8 +299,8 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			return _knockdown(world, arg)
 		"wheel":
 			# The next held item becomes active, as a wheel step does.
-			var player := world.get_node("Player") as Player
-			(world.get_node("Socks/Hands") as Hands).cycle(player.player_id(), 1)
+			var player := LevelRuntime.of(world).player
+			LevelRuntime.of(world).hands.cycle(player.player_id(), 1)
 			return true
 		"cloth":
 			# core/36: a tuning override for this run only, arg "drag/stiffness/gravity" (the .tres is not
@@ -275,14 +321,14 @@ static func act(world: Node, what: String, arg: String) -> bool:
 		"look_up":
 			# The player turns round to the open floor behind, head nearly level, so a held Sock
 			# shows against the far floor and a walk meets no wall.
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			player.rotation.y = PI
 			(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-10.0)
 			player.reset_physics_interpolation()
 			return true
 		"turn_view":
 			# The view turns left by 1.2 rad in 0.4 s, as the mouse would; arg "quick" (core/36): 90 degrees in 0.15 s.
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			if arg == "quick":
 				player.create_tween().tween_property(player, ^"rotation:y", player.rotation.y + PI / 2.0, 0.15)
 			else:
@@ -291,12 +337,12 @@ static func act(world: Node, what: String, arg: String) -> bool:
 		"drop_aimed":
 			# core/23: arg "look" tilts the head 45 degrees down at the open floor; without one, the held
 			# Sock is dropped where the crosshair is, as a tap of the drop button does.
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			if arg == "look":
 				(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-45.0)
 				player.reset_physics_interpolation()
 				return true
-			var hands := world.get_node("Socks/Hands") as Hands
+			var hands := LevelRuntime.of(world).hands
 			var spot := player.drop_spot()
 			if not spot.is_empty():
 				hands.drop(player.player_id(), spot["point"], spot["normal"])
@@ -304,7 +350,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 		"landing_cam":
 			# core/16 P04: a camera low beside where the crosshair points on the floor, looking at it
 			# (a dropped Pair's landing seen from the side).
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			var spot := player.drop_spot()
 			if spot.is_empty():
 				return false
@@ -319,7 +365,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 		"lose_socks":
 			# core/16 P12: the handling station's Lose button is used: its Socks come back at the zoo's
 			# return spot, scattered; a camera looks down on the spot.
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			var station := world.get_node("Stations/Handling") as Node3D
 			player.global_position = station.to_global(Vector3(-1.4, 0.0, 1.4))
 			player.reset_physics_interpolation()
@@ -334,16 +380,16 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			return true
 		"throw_lob":
 			# The held Sock is thrown ahead with a light charge, landing in view.
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-25.0)
-			var hands := world.get_node("Socks/Hands") as Hands
+			var hands := LevelRuntime.of(world).hands
 			hands.throw(player.player_id(), player.aim_dir(), 0.3)
 			return true
 		"shelve_pair", "shelve_mate", "shelve_click":
 			# core/09 D11: the zoo's player stands before the Cabinet station's drawers, takes a
 			# Simple Sock and its mate (one Pair), and shelves it by a click on the bottom drawer.
-			var player := world.get_node("Player") as Player
-			var hands := world.get_node("Socks/Hands") as Hands
+			var player := LevelRuntime.of(world).player
+			var hands := LevelRuntime.of(world).hands
 			var station := world.get_node("Stations/Cabinet") as Node3D
 			match what:
 				"shelve_pair":
@@ -361,7 +407,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# core/27 P11: the zoo's player, holding the Cabinet station's Pair (shelve_pair, shelve_mate),
 			# steps back and throws it at the second drawer's front with a firm charge; arg "cam" puts a
 			# camera beside the drawers instead, looking along their fronts.
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			var station := world.get_node("Stations/Cabinet") as Node3D
 			var cab := station.get_node("Cabinet") as Node3D
 			var front := (cab.get_node("Drawer2/Looks/Slide/Front") as Node3D).global_position
@@ -379,7 +425,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-25.0)
 			player.reset_physics_interpolation()
 			var dir := (front - player.eyes()).normalized()
-			(world.get_node("Socks/Hands") as Hands).throw(player.player_id(), dir, 0.5)
+			LevelRuntime.of(world).hands.throw(player.player_id(), dir, 0.5)
 			return true
 		"swing_view", "swing_use":
 			# core/27 P15: arg "door" (the Cabinet station's Door) or "cupboard" (the openables station's
@@ -389,10 +435,10 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			var thing := world.get_node(path) as Node3D
 			var openable := thing.get_node("Openable") as Openable
 			if what == "swing_use":
-				openable.use((world.get_node("Player") as Player).player_id())
+				openable.use(LevelRuntime.of(world).player.player_id())
 				return true
 			# The player stands in front of it, in reach of the use.
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			player.global_position = thing.global_transform * Vector3(0.0, 0.0, 1.6)
 			player.reset_physics_interpolation()
 			var cam := Camera3D.new()
@@ -406,7 +452,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 		"drawer_view", "drawer_use":
 			# core/09 D12: the zoo's player looks at the Cabinet station's bottom drawer from the
 			# side; `drawer_use` opens or shuts it, as a click with empty Hands does.
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			var station := world.get_node("Stations/Cabinet") as Node3D
 			if what == "drawer_view":
 				player.global_position = station.to_global(Vector3(0.6, 0.0, -0.6))
@@ -421,7 +467,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# and the zoo's player, standing at the buttons, presses More: the spout pours one batch.
 			# Arg "close": the camera close on the landing under the spout (core/23).
 			var station := world.get_node("Stations/Heap") as Node3D
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			player.global_position = station.to_global(Vector3(2.5, 0.0, -4.6))
 			player.reset_physics_interpolation()
 			var cam := Camera3D.new()
@@ -437,10 +483,40 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.make_current()
 			(station.get_node("More/HeapButton") as HeapButton).use(player.player_id())
 			return true
+		"sock_generator":
+			# core/52: a camera over the Sock generator station. Arg "preview": the preview as the editor
+			# draws it (the areas' boxes, the red exclusion, the trail's line, a dot per landing point
+			# tinted by kind) with the lying Socks hidden; "game": the same view of the Socks as they lie;
+			# "both": the preview over the Socks. A suffix ":<view>" picks the view ("top" looks straight
+			# down, "low" from the south at eye height; none: from the south-east, high).
+			var station := world.get_node("Stations/SockGenerator") as Node3D
+			var gen := station.get_node("Generator") as SockGenerator
+			var generated := gen.get_node("Generated") as GeneratedSocks
+			var mess := LevelRuntime.of(world).mess
+			var mode := arg.get_slice(":", 0)
+			var view := arg.get_slice(":", 1) if arg.contains(":") else ""
+			if mode != "game":
+				gen.show_preview(true, generated.seed, mess.lying_boxes(generated.first, generated.first + generated.socks))
+			LevelRuntime.of(world).lying.visible = mode != "preview"
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 60.0
+			match view:
+				"top":
+					cam.global_position = station.to_global(Vector3(0.4, 15.0, 0.2))
+					cam.look_at(station.to_global(Vector3(0.4, 0.0, 0.0)), Vector3.FORWARD)
+				"low":
+					cam.global_position = station.to_global(Vector3(3.2, 1.7, 7.2))
+					cam.look_at(station.to_global(Vector3(-0.5, 0.2, -1.0)))
+				_:
+					cam.global_position = station.to_global(Vector3(5.5, 8.0, 9.5))
+					cam.look_at(station.to_global(Vector3(0.0, 0.0, -0.5)))
+			cam.make_current()
+			return true
 		"held_zoom":
 			# assets/05: the zoo's player turns side-on to the handling station (its sign out of the
 			# view) and holds the zoom button, so the held Sock is seen up close.
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			player.rotation.y = PI / 2.0
 			(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-20.0)
 			player.reset_physics_interpolation()
@@ -469,9 +545,9 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# are eye distances (1.5 and 2.4 m; a Sock on the floor 1.8 and 2.4 m). arg "pair": the
 			# player takes the station's first Sock and its mate, one Pair in the Hands.
 			var station := world.get_node("Stations/Outline") as Node3D
-			var player := world.get_node("Player") as Player
+			var player := LevelRuntime.of(world).player
 			if arg == "pair":
-				var hands := world.get_node("Socks/Hands") as Hands
+				var hands := LevelRuntime.of(world).hands
 				player.global_position = station.to_global(Vector3(-1.7, 0.0, 1.2))
 				player.reset_physics_interpolation()
 				hands.pick(player.player_id(), (station.get_node("Spots/Sock") as SockSpot).sock)
@@ -484,7 +560,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			var target := Vector3.ZERO
 			match thing:
 				"sock":
-					var mess := world.get_node("Socks/Mess") as Mess
+					var mess := LevelRuntime.of(world).mess
 					target = mess.box_of((station.get_node("Spots/Sock") as SockSpot).sock).get_center()
 				"box":
 					target = (station.get_node("Box") as Node3D).global_position
@@ -513,9 +589,9 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# Sense off; "sock", "mate", "drawer", "door" stand before that thing and aim at it; "take"
 			# takes the station's first Sock, "take2" also the Apricot; "floor" aims at the floor ahead.
 			var station := world.get_node("Stations/Screen") as Node3D
-			var player := world.get_node("Player") as Player
-			var hands := world.get_node("Socks/Hands") as Hands
-			var mess := world.get_node("Socks/Mess") as Mess
+			var player := LevelRuntime.of(world).player
+			var hands := LevelRuntime.of(world).hands
+			var mess := LevelRuntime.of(world).mess
 			var head := player.get_node("Head") as Node3D
 			var spot := Vector3.ZERO
 			var target := Vector3.ZERO
@@ -662,7 +738,7 @@ static func _furniture_shot(world: Node, arg: String) -> void:
 static func _devices_shot(world: Node, arg: String) -> void:
 	var station := world.get_node("Stations/Furniture") as Node3D
 	var line_up := station.get_node("LineUp") as FurnitureLineUp
-	var player := world.get_node("Player") as Player
+	var player := LevelRuntime.of(world).player
 	var head := player.get_node("%Head") as Node3D
 	(station.get_node("Name") as Node3D).visible = false
 	var stand := func(at: Vector3, look: Vector3) -> void:
@@ -696,6 +772,43 @@ static func _devices_shot(world: Node, arg: String) -> void:
 				(station.get_node("SheetSwitch/CabinetLockSwitch") as Part).use(player.player_id())
 
 
+## The assets/09 views: see "fixes09" in act().
+static func _fixes09_shot(world: Node, arg: String) -> void:
+	var station := world.get_node("Stations/Furniture") as Node3D
+	var line_up := station.get_node("LineUp") as FurnitureLineUp
+	for s in world.get_node("Stations").get_children():
+		(s as Node3D).visible = s == station
+	(station.get_node("Name") as Node3D).visible = false
+	var car := line_up.piece("car")
+	var board := line_up.piece("collection_board")
+	# Only the piece looked at shows: its neighbours in the line-up stand in the way.
+	for p: Node in line_up.get_children():
+		(p as Node3D).visible = p == (board if arg == "tray" else car)
+	var cam := Camera3D.new()
+	world.add_child(cam)
+	cam.fov = 40.0
+	match arg:
+		"windows":
+			cam.global_position = car.to_global(Vector3(-2.6, 1.9, 2.2))
+			cam.look_at(car.to_global(Vector3(-0.5, 1.05, 0.2)))
+		"door_l", "door_r":
+			var sx := -1.0 if arg == "door_l" else 1.0
+			var player := LevelRuntime.of(world).player
+			player.velocity = Vector3.ZERO
+			player.global_position = car.to_global(Vector3(sx * 1.4, 0.0, 1.5))
+			player.reset_physics_interpolation()
+			(car.get_node("DoorL" if sx < 0.0 else "DoorR").get_node("Openable") as Openable).use(player.player_id())
+			player.visible = false
+			cam.global_position = car.to_global(Vector3(sx * 3.4, 2.2, 2.6))
+			cam.look_at(car.to_global(Vector3(sx * 0.4, 0.6, 0.0)))
+		"tray":
+			cam.fov = 30.0
+			cam.global_position = board.to_global(Vector3(0.15, 1.15, 1.0))
+			cam.look_at(board.to_global(Vector3(0.0, 0.85, 0.04)))
+	cam.reset_physics_interpolation()
+	cam.make_current()
+
+
 ## Puts the old game's model of every piece in the line-up in place of its Looks (a review still).
 static func _show_old_furniture(line_up: FurnitureLineUp) -> void:
 	var root := OS.get_environment("IT_SOCKS_REFERENCE")
@@ -724,14 +837,14 @@ static func _show_old_furniture(line_up: FurnitureLineUp) -> void:
 ## "drag": this player grabs the lying stand-in by the feet and walks back, seen from aside; "aim": this
 ## player's own view on the lying stand-in (its Outline, Hold: Drag).
 static func _knockdown(world: Node, arg: String) -> bool:
-	var player := world.get_node("Player") as Player
-	var kd := world.get_node("Socks/Knockdowns") as Knockdowns
-	var parts := world.get_node("Parts") as Parts
+	var player := LevelRuntime.of(world).player
+	var kd := LevelRuntime.of(world).knockdowns
+	var parts := LevelRuntime.of(world).parts
 	var station := world.get_node("Stations/Knockdown") as Node3D
 	var mate := station.get_node("Teammate/5") as Avatar
 	match arg:
 		"host":
-			(world.get_node("Net") as ZooNet).start(["--host"])
+			LevelRuntime.of(world).net.start(["--host"])
 			player.global_position = station.to_global(Vector3(-1.2, 0.0, 0.6))
 			player.rotation.y = deg_to_rad(-60.0)
 			player.reset_physics_interpolation()

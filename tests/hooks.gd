@@ -12,3 +12,8 @@ static func scrub(_tree: SceneTree) -> void:
 	Settings.reset_to_defaults()
 	Sounds.reset()
 	PadRumble.reset()
+	# coop/12: every Host in a test listens on a free port, so parallel runs never clash.
+	Session.free_port = true
+	# core/58: saves go to a fresh in-memory store, the Worlds under a fresh profile, no title line.
+	Save.reset()
+	Worlds.reset()

@@ -939,3 +939,146 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2503, Q2509-Q2512, Q2514, Q2515 |
 
 ---
+
+| Ticket | core/51, the level runtime scene: the player, co-op and Mess nodes in one sealed `level_runtime.tscn` that the house, the zoo and a one-box example level each instance (Q2517, by composition); ZooNet folded into LevelNet; merged (main 3607fed) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | none |
+| Cost | 224k subagent tokens, 109 tool calls, 25 min (Opus) |
+| Time | see cost |
+| Surprises | about 280 test path lookups changed to LevelRuntime.of(); Part ids now Runtime/Socks/...; ReturnSpot stays in each level |
+| Stop rules | none hit |
+| Looks | builds/review-level-runtime/level-runtime-before-after.png (0 px differ) |
+| Decisions | Q2517 |
+
+---
+
+| Ticket | core/52, the Sock generator: one SockArea box finds landing places (floor, tops, insides, under-gaps) and previews them as dots in the editor; Socks laid at rest from the level's seed by the Host; heaps, exclusions, hidden share 0.3, straight-line mates, under-edge strips, washer thinning, stair trail; a zoo station; merged (main baaf279) |
+| Planned vs actual | 1 planned (two steps: list, then build), 1 actual |
+| Redo count | 0 |
+| Corrections | none |
+| Cost | about 640k subagent tokens (Opus) |
+| Time | about 42 min for step 2 |
+| Surprises | game code +1762 −13, tests +450; the stills draw the preview in game (the editor run headless drew the same 110 dots); the kit's stairs collide as a ramp (Q2530) |
+| Stop rules | the behaviour list stopped for the designer, as planned |
+| Looks | builds/review-sock-generator/ |
+| Decisions | Q2518-Q2530 |
+
+---
+
+| Ticket | assets/09, model fixes from the designer's walk: a body-coloured sill closes the car's window slit, the car's two doors open separately ("Car Door"), the whiteboard's pens lie apart; merged (main 88a5ac5) |
+| Planned vs actual | 0 planned (from play), 1 actual |
+| Redo count | 0 |
+| Corrections | the merge's suite hit an ENet port taken by a parallel test run; rerun green; free ports added to coop/12 |
+| Cost | about 263k subagent tokens, 154 tool calls, 26 min (Opus) |
+| Time | see cost |
+| Surprises | fkit.py's mesh names doubled on import (car_car_Body) and were fixed; 29 furniture openings now |
+| Stop rules | none hit |
+| Looks | builds/review-assets-09/ |
+| Decisions | Q2536 |
+
+---
+
+| Ticket | house/05, the Mess in the house: Sock areas per floor at the old stage counts (990 Socks), all eight Cabinets, stair Socks flat on the treads; F5 plays pick, pair, shelve and Coins, a Guest sees the same Mess; merged (main f3b6de4) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | the merge stopped on 250 mesh files re-imported by the suite run (churn, restored in the integration worktree) |
+| Cost | about 296k subagent tokens, 156 tool calls, 31 min (Opus) |
+| Time | see cost |
+| Surprises | laying takes 1.7 s in one frame (house/09); the attic trunk's inside is 10 cm too high (house/09); the full suite now takes 282 s |
+| Stop rules | none hit |
+| Looks | builds/review-house-05/house-05-old-beside-new.png |
+| Decisions | Q2530, Q2541-Q2544 |
+
+---
+
+| Ticket | core/55, reseeded and starting Heap Socks hung frozen in the air: the Heap stacked on the biggest Sock's box (15-20% of the station's Socks up to 0.36 m up), nothing woke them; now stacked on the real Socks, and a laid Sock with nothing within 1 cm under it wakes and falls (Q2531); merged (main 6341cfc) |
+| Planned vs actual | 0 planned (from play), 1 actual |
+| Redo count | 0 |
+| Corrections | the lead's guess (old Socks in the rays) was wrong; a damaged commit, the branch soft-reset and recommitted |
+| Cost | about 237k subagent tokens (Opus) |
+| Time | about 38 min |
+| Surprises | game code +136 −4; a reseed keeps clear of a standing player |
+| Stop rules | none hit |
+| Looks | none |
+| Decisions | Q2531 |
+
+---
+
+| Ticket | coop/12, the M0.6 close-out: co-op cases at 0 and 50 ms, guard tests, a leaver's looks-only bodies, free test ports, the co-op cost, code map and review guide; merged (main 20696e9) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | free ports added mid-run (an ENet port clash broke a merge) |
+| Cost | about 304k subagent tokens (Opus) |
+| Time | about 28 min |
+| Surprises | the smooth knocked fall (E62/F72) cannot be checked headless: in the designer's run |
+| Stop rules | none hit |
+| Looks | none |
+| Decisions | Q2534 |
+
+---
+
+| Ticket | house/07, from the designer's walk: 7 outer-wall pieces crossing room lines cut there (no stray strip of the next room's colour), the basement hatch closed, the bathroom trim a raised strip; merged (main 16c3c78) |
+| Planned vs actual | 0 planned (from play), 1 actual |
+| Redo count | 0 |
+| Corrections | the raised trim (Q2538) added mid-run; the first merge refused while the lead edited decisions.md |
+| Cost | about 205k subagent tokens (Sonnet) |
+| Time | about 50 min |
+| Surprises | the partitions were already right; the fault was outer walls |
+| Stop rules | none hit |
+| Looks | builds/review-house-07/ |
+| Decisions | Q2538, Q2563 |
+
+---
+
+| Ticket | house/06, the old lamp rules: by day only the basement's lamps lit, each lamp lights only its own floor (light layers), a night switch for a later day cycle; merged (main e370c34) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | the merge refused twice on the designer's editor re-saves (committed as editor format) |
+| Cost | about 158k subagent tokens (Sonnet) |
+| Time | about 12 min |
+| Surprises | the old basement's warm daytime fill not ported (house/10, Q2572) |
+| Stop rules | none hit |
+| Looks | builds/review-house-06/ |
+| Decisions | Q2515, Q2572 |
+
+---
+
+| Ticket | coop/13, from the designer's M0.6 run: the Host let a Guest's Throw and drop go from the avatar's hand 0.6 m under the Guest's view (no arc, a slide down); now every Throw and drop leaves the thrower's own hand (within 2 mm of the Host's flight), the Guest's drops keep core/50's floor guard, settling heaps glide 0.2 s onto the Host's rest (Q2577); merged (main 682f8f6) |
+| Planned vs actual | 0 planned (from play), 1 actual |
+| Redo count | 1 (Q2577: the glide) |
+| Corrections | none |
+| Cost | about 565k subagent tokens (Opus) |
+| Time | about 35 min |
+| Surprises | equal heaps at rest were already met: the difference was mid-settle; Host 63.9 KB/s and 17.7 ms mean during a 2,000-Sock pour |
+| Stop rules | none hit |
+| Looks | none |
+| Decisions | Q2573, Q2577 |
+
+---
+
+| Ticket | house/09, laying without a freeze: the house's Socks are laid in timed slices behind the loading card (`SliceClock`, longest slice 11.1 ms of 14), stair-trail Socks stay on their treads (a tread counts as support), trunks hold 6 and 5 (Socks stack inside any piece, Q2581); merged (main d6810de) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 1 (the review's fixes: flaky slice timing, trail Socks falling, trunks) |
+| Corrections | none |
+| Cost | about 500k subagent tokens (Opus), fixes round |
+| Time | about 95 min, fixes round |
+| Surprises | the kitchen real-path case's Heap pick never reached the Hands (core/60); tread layer 128 shared with the Mate capsule |
+| Stop rules | none hit |
+| Looks | builds/review-house-09/ |
+| Decisions | Q2576, Q2581 |
+
+---
+
+| Ticket | core/58, M4's first build: title (Solo, Multiplayer, Options, Quit; Zoo in debug builds, Q2580), Options, Licence, ESC menu, one loading screen ("Loading the house...", Q2579; "Joining..." for a Guest) driven by house/09's laying, saves through the `SaveStore` seam (local file and memory backends, Steam Auto-Cloud ready), autosave; Solo/Host go straight into the house until the Lobby (Q2561); merged (main 67c76a3) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 2 (Q2579: the loading text always; the ESC still retaken after the laying) |
+| Corrections | none |
+| Cost | about 577k subagent tokens |
+| Time | about 3 h with the waits on house/09 |
+| Surprises | S01 aimed at the wrong kitchen Sock after house/09 (see core/60) |
+| Stop rules | none hit |
+| Looks | builds/review-menus/ |
+| Decisions | Q2540, Q2553-Q2563, Q2575, Q2579, Q2580 |
+
+---

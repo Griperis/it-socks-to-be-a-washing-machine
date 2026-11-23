@@ -63,6 +63,10 @@ const UNREACHABLE := "Could not reach %s"
 ## The port to open; 0 opens on a free one (tests do; read it back after host()).
 @export var port := PORT
 
+## A test run sets it (tests/hooks.gd, coop/12): every Host listens on a port the system picks and reads it
+## back, so two test runs at once never clash on `port`.
+static var free_port := false
+
 ## Links the wiring check lets stay empty: the code below has a fallback.
 const WIRING_OPTIONAL := ["roster", "tuning"]
 
@@ -111,6 +115,8 @@ func _ready() -> void:
 ## Opens the game for Guests. Call it once the level and its Parts are ready.
 func host() -> Error:
 	_prepare()
+	if free_port:
+		port = 0
 	var err := transport.host(port, tuning.max_players * 2)
 	if err != OK:
 		Log.error("net", "cannot listen on port %d (%s)" % [port, error_string(err)])
@@ -129,6 +135,17 @@ func host() -> Error:
 		parts.apply(roster.joined(profile.id, Roster.HOST, profile.name, _clamped_hands(_own_hands())))
 	_note("hosting on %s" % transport.describe(), false)
 	return OK
+
+
+## Playing alone (a Host of one, core/58): this machine's player is in its own Roster under its
+## profile's id, as when it hosts, so its Hands and Coins are kept by its player id, never its peer
+## number, and a save keeps where it stands. Nothing while a session is open.
+func enter_alone() -> void:
+	if is_online() or roster == null:
+		return
+	if profile == null:
+		profile = PlayerProfile.fresh()
+	parts.apply(roster.joined(profile.id, Roster.HOST, profile.name, _clamped_hands(_own_hands())))
 
 
 ## Joins the Host at `where` (opaque to this file: "ip" or "ip:port" for ENet). From now on this
@@ -182,7 +199,10 @@ func close() -> void:
 		var sig: Signal = pair[0]
 		if sig.is_connected(pair[1]):
 			sig.disconnect(pair[1])
+	var was_guest := parts.relay.is_valid()
 	parts.relay = Callable()
+	if was_guest and not _leaving:
+		parts.went_alone()  # coop/12: its looks-only bodies become its own
 	_peer = null
 	transport.peer = null
 	_joining = ""
@@ -317,10 +337,15 @@ func _scene_multiplayer() -> SceneMultiplayer:
 # --- Host ----------------------------------------------------------------------------------------
 
 ## A Guest passed the gate: the Roster takes it in (every Guest already in hears that), then it gets
-## the whole state, its own entry in it, then every event.
+## the whole state, its own entry in it, then every event. While the level still makes its starting
+## state (its Socks laid behind the loading screen, house/09) the Guest waits at the gate for it.
 func _on_peer_joined(peer: int) -> void:
 	if not multiplayer.is_server() or _guests.has(peer) or not _waiting.has(peer):
 		return
+	while not parts.is_settled():
+		await parts.settled
+		if not _waiting.has(peer) or not is_inside_tree():
+			return
 	var who: Dictionary = _waiting[peer]
 	_waiting.erase(peer)
 	_players[peer] = String(who["id"])

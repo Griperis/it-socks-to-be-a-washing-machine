@@ -1,4 +1,4 @@
-Next free Q number: Q2529 (update this line whenever a round of questions is asked)
+Next free Q number: Q2592 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -443,3 +443,66 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2526: Heaps are an area option: an area flagged "heap" piles its floor Socks into mounds by the old roll-down rule; otherwise Socks lie flat, spaced, never overlapping (core/52; designer, 2026-11-23).
 - Q2527: exclusions are the old rules as numbers on the area (0.28 m from walls, off furniture footprints, not where a crouching player cannot reach, not in stair holes, clear in front of Cabinets) plus `SockExclusion` boxes placed by hand (core/52; designer, 2026-11-23).
 - Q2528: core/52 brings these old details now: the under-furniture edge strips, the thinning away from the washer (from a marker until the machine exists), the stair trail, and about a third of the room doors shut at a New Game (once the house has room doors); the rest wait for their feature, none dropped (core/52; designer, 2026-11-23).
+- Q2529: core/52 merges as its stills show (designer, 2026-11-23).
+- Q2530: the stair trail's Socks lie flat on each tread: house/05 gives the stair pieces step-shaped landing places; the player still walks the ramp collision (designer, 2026-11-23).
+- Q2531: generated Socks are never frozen in the air: a laid Sock with nothing under it wakes and falls (or lands on the heap); a reseed lays the new Mess only onto the world without the old one (designer, 2026-11-23).
+- Q2532: the room Doors come now, as M3's next ticket after house/05 (swing, push Socks, sounds, the co-op sweep, about a third shut at a New Game, Q2528) (designer, 2026-11-23).
+- Q2533: triage: player stacking (core/41), hand-off (core/42) and pings and hint arrows (core/43) go to M3, soon; the F1 debug menu (core/44), the studio intro (core/45) and the walked mate distance (core/53) go to M5, by need (designer, 2026-11-23).
+- Q2534: M0.6 batch 5, the close-out, starts now (designer, 2026-11-23).
+- Q2535: after M3, M4 (the run's frame), M1.1 (sound) and M5 (features) run in parallel wherever they can; the architecture and the authoring of voicelines (the washer's, the Old Tree's, cutscenes) are designed first, before their features (designer, 2026-11-23).
+- Q2536: assets/09 approved as its stills show: the body-coloured sill closes the car's window slit, the doors open separately as "Car Door", the pens lie apart (designer, 2026-11-23).
+- Q2537: the attic balustrade's cut-back rail stays as it is, ending with no post (house/04; designer, 2026-11-23).
+- Q2538: the bathroom wainscot is kept (tiles to 1.2 m) with its trim made a real raised strip, as the skirting (house/07; designer, 2026-11-23).
+- Q2539: the rim sheen is 0.25 on the cream fabrics (linen, sheet, sofa), 0.35 on the others (assets/06; designer, 2026-11-23).
+- Q2540: M4 starts with the main menu and saves, the save format chosen first (designer, 2026-11-23).
+- Q2541: the house's Mess uses the old stage counts per floor (basement 50, ground 160, first 150, attic 130 Pairs; 990 Socks), not the whole catalogue (house/05; designer, 2026-11-23).
+- Q2542: the house's Socks are laid a slice per frame behind a short loading screen ("The washer bursts open...", as the old), so nothing freezes; they still appear all at once (Q2523) (designer, 2026-11-23).
+- Q2543: all eight Cabinets stay open until Stages (M4) lock them (house/05; designer, 2026-11-23).
+- Q2544: house/05 merges as its strip shows; the attic trunk's inside is fixed in its own ticket (designer, 2026-11-23).
+- Q2545: the Host decides every speaker's lines in co-op (the washer, the Old Tree, cutscenes); everyone hears the same line (V1, core/56; designer, 2026-11-23).
+- Q2546: the bake writes an Animation per line (mouth, brows, moods), played by the speaker's Looks AnimationPlayer with the audio (V2; designer, 2026-11-23).
+- Q2547: a line may have several takes, one picked at random each time it plays (V3; designer, 2026-11-23).
+- Q2548: two speakers at once: fixed priority cutscene > washer > Old Tree; the higher cuts the lower; lower lines are dropped, except story beats that wait (V4; designer, 2026-11-23).
+- Q2549: voices get their own Voice bus with a volume slider; the music ducks only in cutscenes, as the old (V5; designer, 2026-11-23).
+- Q2550: subtitles in the old look (cream, black outline, bottom centre, on the Theme), one row per speaker, with the speaker's icon and no name (V6; designer, 2026-11-23).
+- Q2551: a line's text comes from transcribing its recording and is corrected in the string table (V7; designer, 2026-11-23).
+- Q2552: a subtitle shows while the line is within earshot, through a shut Door too (V8; designer, 2026-11-23).
+- Q2553: the save file is the kit's save template, one JSON file per World with the World's record and every Part's state (M1, core/57; designer, 2026-11-23).
+- Q2554: Worlds as the old slots (one Solo, five co-op) without the Group lock: anyone may join a co-op World (M2; designer, 2026-11-23).
+- Q2555: autosave within 2 s of any change and at once on every way out, on a worker thread, as the old (M3; designer, 2026-11-23).
+- Q2556: a save that cannot be written keeps the old file, logs why, and the HUD says "Could not save the game" (placeholder) once until a save works (M4; designer, 2026-11-23).
+- Q2557: old saves always load: each Part's saved state carries a version, a migration chain steps old saves to the current shape, new fields take defaults, and sample saves of each version are loaded by the suite; built now with menus and saves, enforced from the first outside play-test (before it a change may say "breaks saves") (M5; designer, 2026-11-23).
+- Q2558: stable ids are node paths now, checked by a committed id list in a test; an editor tool fills ids before the first outside play-test (M6; designer, 2026-11-23).
+- Q2559: a load resets as the old: Doors, drawers and lids shut (what rode out slides back), the TV off, the Radio keeps its channel, lost things back by the washer, absent players' Socks dropped, nobody knocked down (M7; designer, 2026-11-23).
+- Q2560: things in the air when the game saves are laid where they would land, as the old (M8; designer, 2026-11-23).
+- Q2561: until the Lobby piece, Solo continues or starts the Solo World and Host the last co-op World, straight into the house; the World list, Continue/New Game and Delete come with the Lobby (M9; designer, 2026-11-23).
+- Q2562: the first menus-and-saves build holds the title, Options, Licence, loading screen, cursor, menu sounds, ESC menu and saves; the studio intro and the encyclopedia key come later (M10; designer, 2026-11-23).
+- Q2563: house/07 merges as its strips show (designer, 2026-11-23).
+- Q2564: saves sync by Steam Auto-Cloud (set on the Steamworks site, no Steam code), written through a small `SaveStore` layer with a local-file backend so another store or the Steam API can replace it (C1, docs/research/steam-cloud-saves.md; designer, 2026-11-23).
+- Q2565: Worlds and the profile sync between PCs; settings (graphics, resolution and the like) stay on each PC (C2; designer, 2026-11-23).
+- Q2566: each Steam account on a PC has its own Worlds, under `user://worlds/<player id>/` (C3; designer, 2026-11-23).
+- Q2567: the save folder (`use_custom_user_dir`) is "It Socks", set now with menus and saves (C4; designer, 2026-11-23).
+- Q2568: the 2 ground-floor doorways the old house left open stay without Doors (house/08; designer, 2026-11-23).
+- Q2569: a swinging Door moves Socks by the physics sweep only, no click-time push (house/08; designer, 2026-11-23).
+- Q2570: the Doors shut at a New Game are already shut when the house appears, silent (house/08; designer, 2026-11-23).
+- Q2571: the room Door gets its real leaf in house/08, ported from the old house's own leaf geometry (`reference/it-socks/tools/blender/make_house.py`, Door_<doorway>), as a Looks scene; the front and garage doors' plain leaves (house/04) match it (designer, 2026-11-23).
+- Q2572: house/06 merges as built; the old basement's warm daytime fill (0.35, #ffd4a0) is ported in its own ticket (house/10) (designer, 2026-11-23).
+- Q2573: a Guest's own Throw is predicted on the Guest with full physics (the same Jolt body and numbers as the Host's, so it flies the real arc), the Host stays authoritative, and the Guest's body is corrected smoothly to the Host's stream when they part (designer's M0.6 run, 2026-11-23).
+- Q2574: the basement stays as bright as the rest of the house; the old warm daytime fill is not ported (replaces Q2572's "port it later"; house/10 closed) (designer, 2026-11-23).
+- Q2575: the old loading screen's look (the cream card, the tumbling sock, the bar, the fade into play) is ported in core/58 with the menus; house/09 merges with its placeholder (designer, 2026-11-23).
+- Q2576: the attic trunks get about 5 Socks each, as the old, through their own weight override (Q2520); the floor's total stays (house/09; designer, 2026-11-23).
+- Q2577: while a heap settles, a Guest's own falling copies glide onto the Host's rest pose over about 0.2 s (a typed Resource number) instead of snapping; no extra traffic (coop/13; designer, 2026-11-23).
+- Q2578: core/58's screens merge as shown; a follow-up puts an ESC close button at the top right of every dialogue, always (core/59) (designer, 2026-11-23).
+- Q2579: the loading card reads "Loading the house..." (core/58; designer, 2026-11-23).
+- Q2580: the title's "Zoo" button shows in debug builds only, gone in a release build, as the zoo itself (core/58; designer, 2026-11-23).
+- Q2581: inside any piece (trunks, cupboards, drawers) laid Socks stack on the ones laid there before, as the old game computed it; trunks hold about 5 to 6 (house/09; designer, 2026-11-23).
+- Q2582: the Lobby is its own scene; Session and Roster move out of the level to an object that lives for the whole game, so the connection carries from the Lobby into the house with no reconnect; Start has the Host load the house for everyone behind the one loading screen; the World can be chosen in the Lobby, so the old World drawer comes back (core/61 L1; designer, 2026-11-23).
+- Q2583: Solo goes through the Lobby as the old game: one pedestal and Start (core/61 L2; designer, 2026-11-23).
+- Q2584: the Wardrobe page and the stats card are split out to the Wardrobe piece; the first Lobby shows Avatars in their colour (core/61 L3; designer, 2026-11-23).
+- Q2585: the name is typed in one field on the Multiplayer page, for Host and Join, built so a Steam name can fill it later (core/61 L4; designer, 2026-11-23).
+- Q2586: the drawer's "Pairs per Drawer" slider waits for the Stages piece (core/61 L5; designer, 2026-11-23).
+- Q2587: a co-op World's row name is made in one swappable place, easy to change; first the members' names, with "World 1", "World 2" plus details on the World's state as the likely simpler form, judged at the Lobby look's first still; no Guest is limited to Worlds they belong to (core/61 L7; designer, 2026-11-23).
+- Q2588: the catch by Throw is part of the Hand-off ticket: one rule and one hit test for Hand-off, catch and knockdown (core/42; designer, 2026-11-23).
+- Q2589: a knocked-down Teammate cannot be handed a Sock, as the other knockdown exemptions (a change from the old; core/42; designer, 2026-11-23).
+- Q2590: every other recommended answer in core/41, core/42 and core/43's Open follow-ups stands (mostly as the old; a Guest's Hand-off times out after 2 s per Q2477; a ping outlines anything with the Outline component; the hint arrow is built now with pings as its first source); the stack's sync is asked again (designer, 2026-11-23).
+- Q2591: a stack is a plain collider: the back disc that a player can jump onto, each machine moving its own body on it as on a moving platform; no riding id in the pose. Only if the co-op case at 50 ms shows the rider jittering on other machines is a riding offset added, and that goes to the designer first (core/41; designer, 2026-11-23).

@@ -22,6 +22,11 @@ const ROOMS := "res://game/zoo/house_kit/rooms"
 const LAYER_HOUSE := 1
 ## How deep a stair's walking ramp is under its top.
 const RAMP_DEPTH := 0.3
+## A stair's treads (house/05, Q2530): thin boxes on each step's top, in a body "Treads" on their own
+## physics layer (SockTrail.LAYER_TREADS) that only the Sock generator's stair trail looks at, so its Socks
+## lie flat on the steps while the player and everything else still meet the walking ramps.
+const LAYER_TREADS := 128
+const TREAD_DEPTH := 0.02
 ## The material slots of a wall-like piece: its inside (+Z) face, its outside (-Z) face, trim, glass.
 const A := 0
 const B := 1
@@ -65,6 +70,9 @@ const METALLIC := {"stainless": 0.85}
 ## The bathroom's walls with the old tile wainscot (house/04 D01): the wall paint over the wall tiles,
 ## a ShaderMaterial on wainscot.gdshader (made when its file does not exist yet).
 const WAINSCOT := {"wall_bathroom_tiled": ["wall_bathroom", "wall_tiles.png", 0.6, 0.3]}
+## The wainscot's top over the floor line and the trim strip's height over it (make_flat.py make_wall_tiles).
+const WAINSCOT_TOP := 1.2
+const WAINSCOT_TRIM_HEIGHT := 0.035
 const WAINSCOT_SHADER := "res://game/house/kit/wainscot.gdshader"
 const EXTERIOR_PAINTS: Array[String] = ["wall_kitchen", "wall_outside", "trim"]
 const PARTITION_PAINTS: Array[String] = ["wall_kitchen", "wall_hall", "trim"]
@@ -75,6 +83,8 @@ var _st: Array[SurfaceTool] = []
 var _paints: Array[String] = []
 var _shapes: Array[Transform3D] = []
 var _shape_sizes: Array[Vector3] = []
+## The piece's treads (a stair's), each a box: its "Treads" body.
+var _treads: Array[AABB] = []
 ## Slots counted from `base` (the dormer's slab is a roof slab whose slots 0 and 1 are its 4 and 5).
 var _offset := 0
 ## `--only=<prefix>`: the pieces written (empty: all, and the rooms).
@@ -98,6 +108,7 @@ func _init() -> void:
 	_shafts()
 	_stairs()
 	_roof()
+	_wainscot_trims()
 	if _only == "":
 		_rooms()
 	print("house_kit_build: done")
@@ -243,6 +254,38 @@ func _doors() -> void:
 	var g := s.garage_door
 	_door("door_garage", g.z, (g.z - g.x) / 2, g.x, g.y, s.exterior, ["wall_garage", "wall_outside", "trim"], false)
 	_hatch()
+
+
+## The bathroom's wainscot trim (house/07, Q2538): a raised strip over the tiles, standing off the wall
+## as the skirting does, in place of the band the shader once painted. One piece for each stretch of
+## the first floor's bathroom (x 6.5 to 10.5, z 0 to 3.5, centre lines): the north and south faces
+## between the east and west strips' feet, the east face, the west face either side of its door's
+## casing. Named by its length in cm; its origin is where its run starts, its inside faces +Z.
+func _wainscot_trims() -> void:
+	var s := _sizes
+	var e: float = s.exterior
+	var p: float = s.partition
+	var d: float = s.skirting_depth
+	# The west partition's door (door_partition_15m at z 2 to 3.5): its casings' reach.
+	var door_from: float = 2.0 + (1.5 - s.door_width) / 2 - s.casing
+	var door_to: float = door_from + s.door_width + 2 * s.casing
+	var lengths: Array[float] = [4.0 - e / 2 - p / 2 - 2 * d, 3.5 - e / 2 - p / 2, door_from - e / 2, 3.5 - p / 2 - door_to]
+	for length: float in lengths:
+		_begin(["trim"] as Array[String])
+		var h: float = WAINSCOT_TRIM_HEIGHT
+		var profile: Array[Vector2] = [Vector2(0, 0), Vector2(d, 0), Vector2(d, h * 0.7), Vector2(d * 0.5, h), Vector2(0, h)]
+		var lows: Array[Vector3] = []
+		var highs: Array[Vector3] = []
+		for q in profile:
+			var at := Vector3(0, WAINSCOT_TOP, 0) + Vector3.BACK * q.x + Vector3.UP * q.y
+			lows.append(at)
+			highs.append(at + Vector3.RIGHT * length)
+		_prism(lows, highs, 0)
+		_save(wainscot_trim_name(length))
+
+
+static func wainscot_trim_name(length: float) -> String:
+	return "wainscot_trim_%d" % roundi(length * 100.0)
 
 
 ## A wall `length` long with a doorway from `a`, `w` wide and `dh` high: the old jamb linings in its
@@ -487,6 +530,7 @@ func _flight(file: String, steps: int) -> void:
 	_begin(["wood"])
 	for i in steps:
 		_box(_aabb(0, w, -s.sink, (i + 1) * r, i * g, (i + 1) * g), 0)
+		_tread(_aabb(0, w, -s.sink, (i + 1) * r, i * g, (i + 1) * g))
 	var top := steps * r
 	var run := steps * g
 	_ramp(Vector3(w / 2, r / 2, 0.0), Vector3(w / 2, top, run - g / 2), w, false)
@@ -515,10 +559,13 @@ func _u_stair(file: String, solid: bool) -> void:
 	for k in range(1, 8):
 		var top := k * r
 		_box(_aabb(west.x, west.y, _step_bottom(top, solid), top, (k - 1) * g, k * g), 0)
+		_tread(_aabb(west.x, west.y, _step_bottom(top, solid), top, (k - 1) * g, k * g))
 		top = half + k * r
 		_box(_aabb(east.x, east.y, _step_bottom(top, solid), top, land_z - k * g, land_z - (k - 1) * g), 0)
+		_tread(_aabb(east.x, east.y, _step_bottom(top, solid), top, land_z - k * g, land_z - (k - 1) * g))
 	var landing := _aabb(f, s.stair_well.x - f, -s.sink if solid else half - 0.2, half, land_z, back)
 	_box(landing, 0)
+	_tread(landing)
 	var newel := _aabb(mid - n / 2, mid + n / 2, -s.sink, s.storey - s.sink, 0, land_z)
 	_box(newel, 1)
 	_ramp(Vector3((west.x + west.y) / 2, 0.0, -g), Vector3((west.x + west.y) / 2, half, land_z), west.y - west.x, true)
@@ -925,6 +972,7 @@ func _begin(paints: Array[String]) -> void:
 		_st.append(st)
 	_shapes.clear()
 	_shape_sizes.clear()
+	_treads.clear()
 	_offset = 0
 
 
@@ -934,6 +982,11 @@ func _begin_offset(base: int) -> void:
 
 func _end_offset() -> void:
 	_offset = 0
+
+
+## A tread on the step whose top is `box`'s (only its top TREAD_DEPTH is kept).
+func _tread(box: AABB) -> void:
+	_treads.append(AABB(Vector3(box.position.x, box.end.y - TREAD_DEPTH, box.position.z), Vector3(box.size.x, TREAD_DEPTH, box.size.z)))
 
 
 func _col(box: AABB) -> void:
@@ -1084,6 +1137,22 @@ func _save(file: String) -> void:
 		shape.transform = _shapes[i]
 		body.add_child(shape)
 		shape.owner = root
+	if not _treads.is_empty():
+		var treads := StaticBody3D.new()
+		treads.name = "Treads"
+		treads.collision_layer = LAYER_TREADS
+		treads.collision_mask = 0
+		root.add_child(treads)
+		treads.owner = root
+		for i in _treads.size():
+			var shape := CollisionShape3D.new()
+			shape.name = "Tread%d" % (i + 1)
+			var box := BoxShape3D.new()
+			box.size = _treads[i].size
+			shape.shape = box
+			shape.position = _treads[i].get_center()
+			treads.add_child(shape)
+			shape.owner = root
 	var path := PIECES.path_join(file + ".tscn")
 	var uid := ResourceLoader.get_resource_uid(path) if FileAccess.file_exists(path) else ResourceUID.INVALID_ID
 	var packed := PackedScene.new()
@@ -1170,7 +1239,8 @@ func _wainscot_material(name: String) -> Material:
 	m.set_shader_parameter("tile_roughness", spec[3])
 	# make_flat.py make_wall_tiles: to 1.2 m, the trim 0.035 m over it.
 	m.set_shader_parameter("top", 1.2)
-	m.set_shader_parameter("band", 0.035)
+	# The trim is a raised strip now (wainscot_trim_* pieces), not a painted band.
+	m.set_shader_parameter("band", 0.0)
 	m.set_shader_parameter("band_colour", trim[0])
 	m.set_shader_parameter("band_roughness", trim[1])
 	var err := ResourceSaver.save(m, path)

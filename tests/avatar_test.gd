@@ -6,7 +6,7 @@ extends TestSuite
 
 const AVATAR := "res://game/parts/avatar/avatar.tscn"
 const FEET := "res://assets/avatar/feet.glb"
-const SPIKE := "res://tests/support/ragdoll_spike/ragdoll_spike.tscn"
+const RAGDOLL := "res://game/parts/avatar/ragdoll.tscn"
 const ZOO := "res://game/zoo/zoo.tscn"
 const CONTRACT := "res://game/parts/avatar/looks_contract.json"
 const BONES: Array[String] = ["Root", "Spine0", "Spine1", "Spine2"]
@@ -20,8 +20,8 @@ func cases() -> Array[Dictionary]:
 				"title": "the Avatar wears the old sock creature: the contract's nodes, the four-bone spine, the player, trim and eye surfaces, the Crouch key, the extras, facing -z with the cuff rim 1.7 m over its feet"},
 		{"name": "colour", "method": "case_colour", "world": false,
 				"title": "the player's colour goes on the body's player surface, a darker shade on the trim (body and feet); the eyes and pupils keep their colours"},
-		{"name": "spike_rig", "method": "case_spike_rig", "world": false,
-				"title": "the coop/02 ragdoll stand-in has the import's bone names, parents and rest places"},
+		{"name": "ragdoll_rig", "method": "case_ragdoll_rig", "world": false,
+				"title": "the knockdown ragdoll (coop/10, replacing the coop/02 spike's stand-in) has the import's bone names, parents and rest places"},
 		{"name": "seen", "method": "case_seen", "world": false,
 				"title": "real path: the Host walks forward and the Guest sees the sock creature, in the Host's colour, where the Host's player stands"},
 	]
@@ -97,11 +97,11 @@ func case_colour() -> void:
 	looks.free()
 
 
-func case_spike_rig() -> void:
+func case_ragdoll_rig() -> void:
 	var avatar := (load(AVATAR) as PackedScene).instantiate() as Node3D
 	var model := avatar.find_child("Skeleton3D", true, false) as Skeleton3D
-	var spike := (load(SPIKE) as PackedScene).instantiate() as Node3D
-	for stand_in: Skeleton3D in [spike.get_node("Ragdoll") as Skeleton3D, spike.get_node("Body") as Skeleton3D]:
+	var spike := (load(RAGDOLL) as PackedScene).instantiate() as Node3D
+	for stand_in: Skeleton3D in [spike.get_node("Bones") as Skeleton3D]:
 		_check(stand_in.get_bone_count() == model.get_bone_count(), "%s has %d bones" % [stand_in.name, stand_in.get_bone_count()])
 		for i: int in mini(stand_in.get_bone_count(), model.get_bone_count()):
 			_check(stand_in.get_bone_name(i) == model.get_bone_name(i) and stand_in.get_bone_parent(i) == model.get_bone_parent(i),
@@ -116,16 +116,16 @@ func case_seen() -> void:
 	var host := _branch("Host")
 	var guest := _branch("Guest")
 	await _frames(2)
-	var hs := host.get_node("Session") as Session
+	var hs := LevelRuntime.of(host).session
 	hs.port = 0
 	# Two players, two profiles: the gate refuses one player id twice (coop/03).
 	hs.profile = PlayerProfile.fresh()
-	(guest.get_node("Session") as Session).profile = PlayerProfile.fresh()
-	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
-	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
-	var ga := guest.get_node("Avatars") as Avatars
+	LevelRuntime.of(guest).session.profile = PlayerProfile.fresh()
+	_check(LevelRuntime.of(host).net.start(["--host"]) == OK, "the host zoo hosts")
+	_check(LevelRuntime.of(guest).net.start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
+	var ga := LevelRuntime.of(guest).avatars
 	await _until(func() -> bool: return ga.of(1) != null, "the guest to see the host's avatar")
-	var host_player := host.get_node("Player") as Player
+	var host_player := LevelRuntime.of(host).player
 	var start := host_player.global_position
 	Input.action_press(&"move_forward")
 	await _until(func() -> bool: return host_player.global_position.distance_to(start) > 1.0, "the host's player to walk a metre")
@@ -136,7 +136,7 @@ func case_seen() -> void:
 	var looks := seen.get_node_or_null("Looks") as AvatarLooks
 	_check(looks != null and looks.is_visible_in_tree() and looks.body().is_visible_in_tree(), "the guest sees the sock creature, not a capsule")
 	if looks != null:
-		var coral := (host.get_node("Session/Roster") as Roster).tuning.colours[0]
+		var coral := LevelRuntime.of(host).roster.tuning.colours[0]
 		_check(_shown(looks.body(), 0).albedo_color == coral, "its body is the Host's colour, the first (coop/05)")
 		_near(seen.rotation.y, host_player.global_rotation.y, 0.05, "it faces the way the host's player faces")
 	_drop_branches()
@@ -167,7 +167,7 @@ func _branch(label: String) -> Node3D:
 
 func _drop_branches() -> void:
 	for node: Node in _branches:
-		var session := node.get_node_or_null("View/Zoo/Session") as Session
+		var session := _in_branch(node).session
 		if session != null:
 			session.close()
 		var path := node.get_path()
@@ -175,3 +175,9 @@ func _drop_branches() -> void:
 		node.free()
 		get_tree().set_multiplayer(null, path)
 	_branches.clear()
+
+
+## The level runtime of the zoo in branch `node` (a machine of its own), or null.
+func _in_branch(node: Node) -> LevelRuntime:
+	var zoo := node.get_node_or_null("View/Zoo")
+	return LevelRuntime.of(zoo) if zoo != null else null

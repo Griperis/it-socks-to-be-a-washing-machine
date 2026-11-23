@@ -9,8 +9,8 @@
 class_name TeammateStandIn
 extends Node3D
 
-## The group the walker is in: the zoo's reach rule finds it there (ZooNet.where()).
-const GROUP := &"stand_in_teammates"
+## The group the walker is in: the zoo's reach rule finds it there (LevelNet.where()).
+const GROUP := LevelNet.PLACES_ITSELF
 ## The phases of one round, in order.
 const WALK := &"walk"
 const CROUCH := &"crouch"

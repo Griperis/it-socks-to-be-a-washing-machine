@@ -13,9 +13,11 @@ M1 and M2 run beside M0.5 and M0.6, not after them.
 | M1.1 | Sound | The sound system is built in M0.5 for the core (Q2296); M1.1 ports every other old sound and pad rumble, ported with the old clips and numbers, made plug-and-play: a sound is added or swapped by dropping in a file and naming it, with no code change. The list from the four merged pieces is in `old-details-backlog.md` (Q2278) | planned |
 | Polish | The polish pass | The core's polish details are done in M0.5 (Q2296); this pass holds those of later pieces | planned |
 | M2 | The house | Built by hand in the editor from a half-metre kit and the ported props; Play walks through it in first person (Q2154-Q2157, Q2175, Q2176) | planned, beside the zoo |
-| M3 | The core loop in the house | The Mess, Hands, Throws, Pairs and Cabinets (with Doors and Drawers) play in co-op in the house; the Mess bench is no slower than the old game's (Q2161, Q2168) | planned |
+| M3 | The core loop in the house | The Mess, Hands, Throws, Pairs and Cabinets (with Doors and Drawers) play in co-op in the house; the Mess bench is no slower than the old game's (Q2161, Q2168) | started 2026-11-23: house/05 (the Mess in the house), house/08 room Doors (Q2532), core/41 stacking, core/42 hand-off, core/43 pings (Q2533) |
 | M4 | The frame of a run | Stages, the Laundry day, menus, saves and the lobby, on Steam (its lobby, invites, relay and Steam IDs proven by its auth ticket, Q2456-Q2458; off Steam the proving token for the random id); screens are scenes on one Theme (Q2163) | planned |
 | M5 | Features by need | Each switched-off or planned feature (the vacuum devices, Hampers, the Grotto, Dirty Socks, the Cat, cutscenes, ...) is ported when the designer calls it, each first as a zoo station (Q2144, Q2214) | planned |
+
+After M3, M4, M1.1 and M5 run in parallel wherever they can; the voicelines' architecture and authoring are designed first (core/56, Q2535).
 
 ## M0.5 batches (Q2296)
 Each batch is one theme, tested in one sitting at one or two stations, ending with a short play session and the

@@ -71,11 +71,11 @@ func case_runs() -> void:
 		return
 	_zoo = scene.instantiate() as Node3D
 	add_child(_zoo)
-	var parts := _zoo.get_node("Parts") as Parts
+	var parts := LevelRuntime.of(_zoo).parts
 	_check(parts.find(func(_p: Part) -> bool: return true) != null, "its Parts found the parts on the stations")
 	_check(_zoo.get_node_or_null("Spawn") is Marker3D, "it has a spawn point")
 	await _frames(30)
-	var player := _zoo.get_node("Player") as CharacterBody3D
+	var player := LevelRuntime.of(_zoo).player
 	_check(player.is_on_floor(), "the player stands on the floor")
 	_zoo.free()
 	_zoo = null
@@ -165,7 +165,7 @@ func case_labels() -> void:
 ## Walks the zoo's player to `target` on the ground by the move key, turning it as the mouse would;
 ## `each` runs every physics tick.
 func _walk_to(target: Vector3, each: Callable = Callable()) -> void:
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	Input.action_press(&"move_forward")
 	var ticks := 0
 	while ticks < 1500:
@@ -200,7 +200,7 @@ func _label_whole(camera: Camera3D, label: Label3D) -> bool:
 
 func case_labels_walk() -> void:
 	await _zoo_up()
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	var camera := player.camera()
 	# The old houses that stood here went to the house level (house/04); the Furniture station stands
 	# on its own ground east of the zoo floor, its name at its south end.
@@ -250,28 +250,28 @@ func case_alone() -> void:
 func case_coop() -> void:
 	var alone := _branch("Alone")
 	await _frames(2)
-	var alone_net := alone.get_node("Net") as ZooNet
-	_check(not (alone.get_node("Session") as Session).is_online() and alone.get_node("Players").get_child_count() == 0,
+	var alone_net := LevelRuntime.of(alone).net
+	_check(not LevelRuntime.of(alone).session.is_online() and LevelRuntime.of(alone).players.get_child_count() == 0,
 			"alone, the zoo opens no network and has no avatars")
 	_check(alone_net.mode_text().begins_with("Alone"), "the corner says: %s" % alone_net.mode_text())
 	var host := _branch("Host")
 	var guest := _branch("Guest")
 	await _frames(2)
-	var hs := host.get_node("Session") as Session
+	var hs := LevelRuntime.of(host).session
 	hs.port = 0
 	hs.profile = PlayerProfile.fresh()
-	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
-	var gs := guest.get_node("Session") as Session
+	_check(LevelRuntime.of(host).net.start(["--host"]) == OK, "the host zoo hosts")
+	var gs := LevelRuntime.of(guest).session
 	gs.profile = PlayerProfile.fresh()
-	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
-	await _until(func() -> bool: return (guest.get_node("Net") as ZooNet).mode_text().begins_with("Joined"), "the guest zoo to be welcomed")
+	_check(LevelRuntime.of(guest).net.start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
+	await _until(func() -> bool: return LevelRuntime.of(guest).net.mode_text().begins_with("Joined"), "the guest zoo to be welcomed")
 	var g_id := gs.me()
-	_check((host.get_node("Net") as ZooNet).mode_text().contains("2 player"), "the host's corner counts two players")
-	var ha := host.get_node("Avatars") as Avatars
-	var ga := guest.get_node("Avatars") as Avatars
+	_check(LevelRuntime.of(host).net.mode_text().contains("2 player"), "the host's corner counts two players")
+	var ha := LevelRuntime.of(host).avatars
+	var ga := LevelRuntime.of(guest).avatars
 	await _until(func() -> bool: return ha.of(g_id) != null and ga.of(1) != null, "each zoo to show the other's avatar")
-	var host_player := host.get_node("Player") as Player
-	var guest_player := guest.get_node("Player") as Player
+	var host_player := LevelRuntime.of(host).player
+	var guest_player := LevelRuntime.of(guest).player
 	var cupboard_at := (guest.get_node(CUPBOARD) as Node3D).global_position
 	guest_player.global_position = cupboard_at + Vector3(0.0, 0.0, 1.5)
 	guest_player.rotation.y = 0.0
@@ -294,11 +294,11 @@ func case_z01_click() -> void:
 	await _zoo_up()
 	var handling := _zoo.get_node("Stations/Handling") as Node3D
 	var station := _zoo.get_node("Stations/Cabinet") as Node3D
-	var mess := _zoo.get_node("Socks/Mess") as Mess
-	var hands := _zoo.get_node("Socks/Hands") as Hands
-	var coins := _zoo.get_node("Socks/Coins") as Coins
+	var mess := LevelRuntime.of(_zoo).mess
+	var hands := LevelRuntime.of(_zoo).hands
+	var coins := LevelRuntime.of(_zoo).coins
 	var cabinet := station.get_node("Cabinet/Cabinet") as Cabinet
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	var sock := _sock_of(handling, "Floor")
 	var mate := _sock_of(handling, "MateFloor")
 	_stand(handling, BY_HANDLING)
@@ -326,10 +326,10 @@ func case_z01_throw() -> void:
 	await _zoo_up()
 	var handling := _zoo.get_node("Stations/Handling") as Node3D
 	var station := _zoo.get_node("Stations/Cabinet") as Node3D
-	var mess := _zoo.get_node("Socks/Mess") as Mess
-	var hands := _zoo.get_node("Socks/Hands") as Hands
+	var mess := LevelRuntime.of(_zoo).mess
+	var hands := LevelRuntime.of(_zoo).hands
 	var cabinet := station.get_node("Cabinet/Cabinet") as Cabinet
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	var sock := _sock_of(handling, "Under")
 	var mate := _sock_of(handling, "MateUnder")
 	_stand(handling, BY_HANDLING)
@@ -355,9 +355,9 @@ func case_z01_throw() -> void:
 
 func case_z02() -> void:
 	await _zoo_up()
-	var mess := _zoo.get_node("Socks/Mess") as Mess
-	var hands := _zoo.get_node("Socks/Hands") as Hands
-	var coins := _zoo.get_node("Socks/Coins") as Coins
+	var mess := LevelRuntime.of(_zoo).mess
+	var hands := LevelRuntime.of(_zoo).hands
+	var coins := LevelRuntime.of(_zoo).coins
 	var found := {"Mess": 0, "Hands": 0, "Coins": 0}
 	for node in _zoo.find_children("*", "Node", true, false):
 		if node is Mess:
@@ -367,7 +367,7 @@ func case_z02() -> void:
 		elif node is Coins:
 			found["Coins"] += 1
 	_check(found == {"Mess": 1, "Hands": 1, "Coins": 1}, "one Mess, one Hands, one Coins in the zoo (%s)" % [found])
-	_check(hands.mess == mess and hands.id == &"Socks/Hands" and mess.id == &"Socks/Mess" and coins.id == &"Socks/Coins",
+	_check(hands.mess == mess and hands.id == &"Runtime/Socks/Hands" and mess.id == &"Runtime/Socks/Mess" and coins.id == &"Runtime/Socks/Coins",
 			"the Hands' Mess is the Mess; their ids are the zoo's (%s, %s, %s)" % [hands.id, mess.id, coins.id])
 	var seen := {}
 	var spots := 0
@@ -384,7 +384,12 @@ func case_z02() -> void:
 			_check(mess.state_of(spot.sock) == Mess.State.LYING and mess.designs[spot.sock] == spot.design
 					and mess.pose_of(spot.sock).origin.distance_to(spot.global_position) < 0.001 and mess.looks_of(spot.sock) != null,
 					"it lies where %s/%s places it, as its Design" % [station.name, spot.name])
-	_check(mess.count() == spots and spots > 0, "every SockSpot of every station is one record (%d records, %d spots)" % [mess.count(), spots])
+	# A station's Sock generator (core/52) adds its own records after the SockSpots.
+	var generated := 0
+	for node in _zoo.get_tree().get_nodes_in_group(GeneratedSocks.GROUP):
+		if (node as GeneratedSocks).mess == mess:
+			generated += (node as GeneratedSocks).socks
+	_check(mess.count() == spots + generated and spots > 0, "every SockSpot of every station is one record, and every generated Sock one more (%d records, %d spots, %d generated)" % [mess.count(), spots, generated])
 	var cabinet := _zoo.get_node("Stations/Cabinet/Cabinet/Cabinet") as Cabinet
 	_check(cabinet.hands_of() == hands and cabinet.coins_of() == coins and cabinet.mess_of() == mess,
 			"the Cabinet takes from the zoo's Hands and Mess and pays into the zoo's Coins")
@@ -400,6 +405,9 @@ func case_z03() -> void:
 		if mess != null:
 			with_socks += 1
 			var spots := mess.spots.get_children().filter(func(n: Node) -> bool: return n is SockSpot).size()
+			for node in station.find_children("*", "Node", true, false):
+				if node is GeneratedSocks:
+					spots += (node as GeneratedSocks).socks
 			_check(mess.count() == spots, "%s alone: its own Mess holds its %d Socks (%d)" % [path, spots, mess.count()])
 			var hands := station.get_node(^"Socks/Hands") as Hands
 			_check(hands.mess == mess, "%s alone: its own Hands take from its own Mess" % path)
@@ -413,10 +421,10 @@ func case_z03() -> void:
 func case_z04() -> void:
 	await _zoo_up()
 	var handling := _zoo.get_node("Stations/Handling") as Node3D
-	var mess := _zoo.get_node("Socks/Mess") as Mess
-	var hands := _zoo.get_node("Socks/Hands") as Hands
+	var mess := LevelRuntime.of(_zoo).mess
+	var hands := LevelRuntime.of(_zoo).hands
 	var spot := _zoo.get_node("ReturnSpot") as Marker3D
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	var sock := _sock_of(handling, "Floor")
 	_stand(handling, BY_HANDLING)
 	await _physics_ticks(2)
@@ -436,15 +444,15 @@ func case_z04() -> void:
 	await _until(func() -> bool: return mess.state_of(sock) == Mess.State.LYING, "the Sock to come down")
 	_check(mess.pose_of(sock).origin.distance_to(spot.global_position) <= mess.bodies_tuning().return_scatter + 0.001, "it lies at the zoo's return spot, scattered within its radius (core/16 P12)")
 	var looks := mess.looks_of(sock)
-	_check(looks != null and looks.get_parent() == _zoo.get_node("Lying"), "drawn in the zoo's Lying")
+	_check(looks != null and looks.get_parent() == LevelRuntime.of(_zoo).lying, "drawn in the zoo's Lying")
 
 
 ## A zoo, its player standing on the floor and every Sock lying.
 func _zoo_up() -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
-	var mess := _zoo.get_node("Socks/Mess") as Mess
-	var player := _zoo.get_node("Player") as Player
+	var mess := LevelRuntime.of(_zoo).mess
+	var player := LevelRuntime.of(_zoo).player
 	await _until(func() -> bool: return player.is_on_floor() and mess.looks_of(0) != null, "the player to stand and the Socks to lie")
 
 
@@ -455,7 +463,7 @@ func _sock_of(station: Node, spot_name: String) -> int:
 
 ## Puts the zoo's player at `at` in `station`'s space.
 func _stand(station: Node3D, at: Vector3) -> void:
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	player.global_position = station.to_global(at)
 	player.velocity = Vector3.ZERO
 	player.reset_physics_interpolation()
@@ -463,7 +471,7 @@ func _stand(station: Node3D, at: Vector3) -> void:
 
 ## Turns the zoo's player to `target` and pitches the head at it, as the mouse would.
 func _aim(target: Vector3) -> void:
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 	var head := player.get_node("Head") as Node3D
 	var to := target - player.global_position
@@ -515,7 +523,7 @@ func _branch(label: String) -> Node3D:
 ## Every co-op machine goes: its session closes, then the nodes, then its MultiplayerAPI.
 func _drop_branches() -> void:
 	for node in _branches:
-		var session := node.get_node_or_null("View/Zoo/Session") as Session
+		var session := _in_branch(node).session
 		if session != null:
 			session.close()
 		var path := node.get_path()
@@ -524,3 +532,8 @@ func _drop_branches() -> void:
 		get_tree().set_multiplayer(null, path)
 	_branches.clear()
 
+
+## The level runtime of the zoo in branch `node` (a machine of its own), or null.
+func _in_branch(node: Node) -> LevelRuntime:
+	var zoo := node.get_node_or_null("View/Zoo")
+	return LevelRuntime.of(zoo) if zoo != null else null

@@ -18,6 +18,11 @@ const KEEP := ["Heap", "Cabinet", "Handling"]
 const POUR := 6
 ## How near a Guest's own Throw ghost flies to the Host's flight before its first touch (coop/11).
 const GHOST_ON_FLIGHT := 0.02
+## How far under the floor's top (y 0 in the zoo) a Sock's middle may be drawn or rest: core/50's sunk.
+const UNDER := 0.02
+## The most a Sock on the Guest may move in one frame from its falling copy's last place onto the Host's
+## rest and along its glide (Q2577; a snap was up to 0.6 m).
+const REST_STEP := 0.08
 
 var _branches: Array[Node] = []
 var _pace_next := 0
@@ -32,7 +37,7 @@ var _spoil_throws := false
 func cases() -> Array[Dictionary]:
 	return [
 		{"name": "guest_pick_throw_real_path", "method": "case_guest_pick_throw_real_path", "world": false,
-				"title": "coop/09 real path, 50 ms: the Guest clicks a Sock at the heap: the ghost flies at once, pick sounds at the click, the Hands change on the answer; it throws: the ghost leaves at once, the Host's body flies, lies equal on both"},
+				"title": "coop/09 real path, 0 and 50 ms one way: the Guest clicks a Sock at the heap: the ghost flies at once, pick sounds at the click, the Hands change on the answer; it throws: the ghost leaves at once, the Host's body flies, lies equal on both"},
 		{"name": "guest_drop", "method": "case_guest_drop", "world": false,
 				"title": "coop/09 E01-E03: a Guest's drop falls at once as a ghost and ends where the Host's did"},
 		{"name": "refusals", "method": "case_refusals", "world": false,
@@ -44,7 +49,9 @@ func cases() -> Array[Dictionary]:
 		{"name": "late_join_mid_throw", "method": "case_late_join_mid_throw", "world": false,
 				"title": "coop/09 A/H02, Q2472: a Guest joining while a Throw is in the air sees it fly on and lie where the Host's did"},
 		{"name": "guest_throw_ghost_on_host_flight", "method": "case_guest_throw_ghost_on_host_flight", "world": false,
-				"title": "coop/11, Q2481, 0 and 50 ms: the Guest charges and releases a full and a half Throw: its ghost leaves with the Host's launch, flies the Host's flight as the Guest's stream shows it, and eases from the first-person hand onto it in 0.2 s with no jump"},
+				"title": "coop/11, coop/13, Q2573, 0 and 50 ms: the Guest charges and releases a full and a half Throw: its ghost leaves the first-person hand with the Host's launch from there, and is drawn on the Host's flight as the Guest's stream shows it from its first frame, with no jump"},
+		{"name": "throw_drop_pour_real_path", "method": "case_throw_drop_pour_real_path", "world": false,
+				"title": "coop/13 real path, 50 ms one way: the Guest throws (drawn on the Host's arc, no pop at the rest) and drops (never drawn under the floor) by its own input, the Host pours at the heap: no Sock on the Guest is ever under the floor, and once all lie every Sock lies and is drawn on the Guest where the Host's is (1 mm, 1 degree)"},
 	]
 
 
@@ -70,7 +77,12 @@ func _on_played(name: StringName, spatial: bool, _at: Vector3, _bus: StringName)
 # --- The cases -----------------------------------------------------------------------------------
 
 func case_guest_pick_throw_real_path() -> void:
-	var zoos := await _pair(LAG_MS)
+	for lag_ms: int in [0, LAG_MS]:
+		await _pick_throw_round(lag_ms)
+
+
+func _pick_throw_round(lag_ms: int) -> void:
+	var zoos := await _pair(lag_ms)
 	var host: Node3D = zoos[0]
 	var guest: Node3D = zoos[1]
 	var hm := _mess(host)
@@ -89,13 +101,27 @@ func case_guest_pick_throw_real_path() -> void:
 	await _wait(func() -> bool: return gp.aimed_sock == sock, "the Guest's crosshair to rest on Sock %d" % sock, FPS * 2)
 	_flat.clear()
 	var clicked := Engine.get_process_frames()
-	await _press(&"pick")
+	# What the Guest shows while its pick waits on the answer, read on the click's frame (at 0 ms the
+	# answer can be back two frames later).
 	var view := gp.held_view()
-	_check(view.has_ghost(sock), "D01: the ghost flies at once")
+	var guess := {}
+	Input.action_press(&"pick")
+	for _i in 3:
+		await _paced()
+		if guess.is_empty() and gp.ghosts().pick_waiting():
+			guess = {"ghost": view.has_ghost(sock), "hands": gh.items_of(me).has(sock),
+					"state": gm.state_of(sock), "held_back": gm.is_held_back(sock)}
+	Input.action_release(&"pick")
+	await _paced_ticks(1)
 	_check(_played_within(&"pick", clicked, 4), "Q2478: pick sounds at the click (%s)" % [_flat])
-	_check(not gh.items_of(me).has(sock), "D03: the Guest's Hands have not changed before the answer")
-	_check(gm.state_of(sock) == Mess.State.LYING, "D03: the Sock still lies in the Guest's Mess")
-	_check(gm.is_held_back(sock), "the Mess does not draw the Sock while its ghost flies")
+	# At 0 ms the Host's answer can come back within the click's own frame (both machines poll in one
+	# process), so no frame shows the guess alone: D01-D03 are judged where the answer takes a while.
+	if lag_ms > 0 or not guess.is_empty():
+		_check(not guess.is_empty(), "the Guest's pick waits on the Host's answer")
+		_check(guess.get("ghost", false), "D01: the ghost flies at once")
+		_check(guess.get("hands", true) == false, "D03: the Guest's Hands have not changed before the answer")
+		_check(guess.get("state", -1) == Mess.State.LYING, "D03: the Sock still lies in the Guest's Mess")
+		_check(guess.get("held_back", false), "the Mess does not draw the Sock while its ghost flies")
 	await _wait(func() -> bool: return gh.items_of(me).has(sock), "the Hands to change on the Host's answer")
 	_check(hh.items_of(me).has(sock), "the Host's Hands hold the Sock for the Guest")
 	_check(_count(&"pick") == 1, "pick sounds once, at the click, not again at the answer (%d)" % _count(&"pick"))
@@ -150,8 +176,8 @@ func case_guest_pick_throw_real_path() -> void:
 			largest_back = maxf(largest_back, -Vector3(step.x, 0.0, step.z).dot(dir))
 		last = now
 	await _wait(func() -> bool: return _all_lie(hm, gm) and gp.ghosts().ghost_of(sock) == null, "the Throw to lie on both machines", FPS * 15)
-	print("HANDS throw: the ghost's largest step a frame %.3f m, largest change of step over the ghost body's own %.3f m; frames drawn going back %d, at most %.3f m" \
-			% [largest_step, largest_change, back, largest_back])
+	print("HANDS throw %d ms: the ghost's largest step a frame %.3f m, largest change of step over the ghost body's own %.3f m; frames drawn going back %d, at most %.3f m" \
+			% [lag_ms, largest_step, largest_change, back, largest_back])
 	_check(largest_change < 0.08, "G18: the ghost never jumps: the drawing changes its step a frame by under 0.08 m more than its body's own motion (%.3f m)" % largest_change)
 	_check(largest_back < 0.05, "G18: the ghost never goes back along the Throw more than the blend's ease (%.3f m)" % largest_back)
 	_check(heard >= 1, "H07, M04: the Guest hears the Host's body bounce (%d)" % heard)
@@ -337,25 +363,25 @@ func case_guest_pairs_and_shelves() -> void:
 func case_late_join_mid_throw() -> void:
 	var host := _branch("Host")
 	await _frames(2)
-	var hs := host.get_node("Session") as Session
+	var hs := LevelRuntime.of(host).session
 	hs.port = 0
 	hs.profile = PlayerProfile.fresh()
-	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
+	_check(LevelRuntime.of(host).net.start(["--host"]) == OK, "the host zoo hosts")
 	_lag(host, LAG_MS)
 	var hm := _mess(host)
 	var sock := _handling_sock(host, "Floor")
 	var from := Vector3(0.0, 1.5, 8.0)
-	var parts := host.get_node("Parts") as Parts
+	var parts := LevelRuntime.of(host).parts
 	parts.apply({"ok": true, "kind": &"throw", "by": Parts.HOST, "to": hm.id,
 			"changes": {hm.id: hm.thrown_patch(sock, Transform3D(Basis.IDENTITY, from), Vector3(0.0, 6.0, 1.5), Vector3(1.0, 2.0, 0.5), Parts.HOST)}})
 	var guest := _branch("Guest")
 	await _frames(2)
-	var gs := guest.get_node("Session") as Session
+	var gs := LevelRuntime.of(guest).session
 	gs.profile = PlayerProfile.fresh()
-	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
+	_check(LevelRuntime.of(guest).net.start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
 	_lag(guest, LAG_MS)
 	var gm := _mess(guest)
-	await _wait(func() -> bool: return (guest.get_node("Net") as ZooNet).mode_text().begins_with("Joined") and gm.count() == hm.count(),
+	await _wait(func() -> bool: return LevelRuntime.of(guest).net.mode_text().begins_with("Joined") and gm.count() == hm.count(),
 			"the Guest to be welcomed", FPS * 10)
 	_check(hm.state_of(sock) == Mess.State.FLYING, "the Throw is still in the air at the welcome")
 	await _wait(func() -> bool: return gm.moving_body(sock) != null, "the late Guest's copy of the Throw", FPS * 2)
@@ -388,7 +414,6 @@ func _ghost_against_host(lag_ms: int, c: float) -> void:
 	var hm := _mess(host)
 	var gm := _mess(guest)
 	var gp := _player(guest)
-	var gt := gp.ghosts().tuning
 	var label := "%d ms, charge %.1f" % [lag_ms, c]
 	var sock := await _guest_holds(host, guest, _handling_sock(guest, "Floor"))
 	# A fixed point ahead, up, on what the crosshair meets.
@@ -426,6 +451,7 @@ func _ghost_against_host(lag_ms: int, c: float) -> void:
 	var last_drawn := first_drawn
 	var last_body := ghost.body().global_position
 	var row: FlightRow = null
+	var parted_early := false
 	while is_instance_valid(ghost) and not ghost.is_done():
 		await _paced()
 		if not is_instance_valid(ghost) or ghost.is_done():
@@ -437,6 +463,8 @@ func _ghost_against_host(lag_ms: int, c: float) -> void:
 		# A touch: the velocity turned by more than gravity and drag explain in a tick.
 		if not touched and (vel - last_vel).length() > g * 2.5 / FPS:
 			touched = true
+		if not touched and ghost.parted():
+			parted_early = true
 		last_vel = vel
 		if not touched:
 			# The ghost's own pose at its age (what it compares, G06) and what its drawing adds to it.
@@ -469,40 +497,208 @@ func _ghost_against_host(lag_ms: int, c: float) -> void:
 			var on := (at as Transform3D).origin
 			compared += 1
 			worst_body = maxf(worst_body, on.distance_to(e[1]))
-			if float(e[0]) >= gt.hand_over_time:
-				worst_drawn = maxf(worst_drawn, on.distance_to(e[2]))
+			worst_drawn = maxf(worst_drawn, on.distance_to(e[2]))
 	await _wait(func() -> bool: return _all_lie(hm, gm) and gp.ghosts().ghost_of(sock) == null, "%s: the Throw to lie on both machines" % label, FPS * 15)
 	var lines: Array[String] = []
 	for e: Array in path.slice(0, 48, 6):
 		lines.append("%.2f body %s drawn %s" % [e[0], e[1], e[2]])
-	print("HANDS ghost %s (charge %.3f): first drawn %.3f m from the hand; body vs the Host's flight at most %.4f m and drawn after the hand-over %.4f m over %d moments before the first touch; largest change of step over the body's own %.4f m, the Host's frame %.4f m\n  %s" \
+	print("HANDS ghost %s (charge %.3f): first drawn %.3f m from the hand; body vs the Host's flight at most %.4f m and drawn %.4f m over %d moments before the first touch; largest change of step over the body's own %.4f m, the Host's frame %.4f m\n  %s" \
 			% [label, charge, first_drawn.distance_to(hand.origin), worst_body, worst_drawn, compared, worst_extra, host_frame, "\n  ".join(lines)])
 	_check(compared >= 6, "%s: the ghost's flight was compared with the Host's at %d moments before its first touch" % [label, compared])
 	_check(first_drawn.distance_to(hand.origin) < 0.1, "Q2481 %s: the ghost is drawn from the first-person hand (%.3f m)" % [label, first_drawn.distance_to(hand.origin)])
 	_check(worst_body < GHOST_ON_FLIGHT, "coop/11 %s: the ghost's body flies the Host's flight within %.2f m (%.4f m)" % [label, GHOST_ON_FLIGHT, worst_body])
-	_check(worst_drawn < GHOST_ON_FLIGHT, "Q2481 %s: after the %.1f s hand-over the drawn ghost is on the Host's flight within %.2f m (%.4f m)" % [label, gt.hand_over_time, GHOST_ON_FLIGHT, worst_drawn])
+	_check(worst_drawn < GHOST_ON_FLIGHT, "Q2573 %s: from its first frame the drawn ghost is on the Host's flight within %.2f m (%.4f m)" % [label, GHOST_ON_FLIGHT, worst_drawn])
+	_check(not parted_early, "Q2573 %s: it flies on its own body, never corrected, until its first touch" % label)
 	_check(worst_extra <= host_frame, "Q2481 %s: no jump: the drawing changes its step by at most the Host's own motion in a frame (%.4f <= %.4f m)" % [label, worst_extra, host_frame])
 	_drop_branches()
+
+
+func case_throw_drop_pour_real_path() -> void:
+	var zoos := await _pair(LAG_MS)
+	var host: Node3D = zoos[0]
+	var guest: Node3D = zoos[1]
+	var hm := _mess(host)
+	var gm := _mess(guest)
+	var gp := _player(guest)
+	# The Throw, charged and released by input, at a point ahead and up.
+	var sock := await _guest_holds(host, guest, _handling_sock(guest, "Floor"))
+	await _aim_at(guest, gp.global_position + gp.global_basis * Vector3(0.0, 1.2, -4.0))
+	Input.action_press(&"drop_throw")
+	await _paced_ticks(int(gp.hands_tuning.tap * FPS) + 2 + int(gp.hands_tuning.charge_time * FPS))
+	Input.action_release(&"drop_throw")
+	var seen := await _watch_let_go(host, guest, sock, true)
+	print("HANDS coop/13 throw: drawn vs the Host's flight at most %.4f m over %d moments before the first touch; lowest drawn %.4f m; ended %.4f m from the rest; largest step a frame %.4f m, the Host's frame %.4f m" \
+			% [seen["worst"], seen["compared"], seen["lowest"], seen["end"], seen["step"], seen["host_frame"]])
+	_check(seen["compared"] >= 6 and seen["worst"] < GHOST_ON_FLIGHT,
+			"item 1: the Guest's Throw is drawn on the Host's arc within %.2f m (%.4f m, %d moments)" % [GHOST_ON_FLIGHT, seen["worst"], seen["compared"]])
+	_check(seen["end"] < 0.02, "item 1: the drawing ends on the Host's rest (%.4f m)" % seen["end"])
+	_check(seen["step"] <= seen["host_frame"] + 0.01, "item 1: no pop: no frame's step over the Host body's own (%.4f m, %.4f m)" % [seen["step"], seen["host_frame"]])
+	_check(seen["lowest"] > -UNDER, "item 2: the Throw is never drawn under the floor (%.4f m)" % seen["lowest"])
+	# The drop, by a tap, on the floor ahead.
+	sock = await _guest_holds(host, guest, sock)
+	var feet := gp.global_position
+	for i in 8:
+		await _aim_at(guest, feet + Basis(Vector3.UP, i * PI / 4.0) * Vector3(0.0, 0.0, -1.5))
+		if gp.drop_refusal(_hands(guest)) == "":
+			break
+	await _wait(func() -> bool: return gp.drop_refusal(_hands(guest)) == "", "a white crosshair on the floor", FPS * 2)
+	Input.action_press(&"drop_throw")
+	await _paced_ticks(2)
+	Input.action_release(&"drop_throw")
+	seen = await _watch_let_go(host, guest, sock, false)
+	print("HANDS coop/13 drop: lowest drawn %.4f m; ended %.4f m from the rest" % [seen["lowest"], seen["end"]])
+	_check(seen["lowest"] > -UNDER, "item 2: the dropped Sock is never drawn under the floor (%.4f m)" % seen["lowest"])
+	_check(seen["end"] < 0.02, "item 2: the drop's drawing ends on the Host's rest (%.4f m)" % seen["end"])
+	# The pour, on the Host.
+	var spout := _spout(host, POUR * 5)
+	await _press_button(host, "More")
+	var lowest := INF
+	var frames := 0
+	# Q2577: each Sock the Guest showed falling is drawn, frame by frame, from its body's last place
+	# gliding onto the Host's rest: its drawn place never jumps more than REST_STEP in a frame.
+	var shown: Dictionary[int, Vector3] = {}
+	var rest_step := 0.0
+	var glided := 0
+	var snap_far := 0.0
+	while frames < FPS * 40 and not (spout.first >= 0 and spout.pending() == 0 and _all_lie(hm, gm) and hm.count() - spout.first >= POUR * 5):
+		await _paced()
+		frames += 1
+		for body: RigidBody3D in gm.flight_bodies():
+			lowest = minf(lowest, _lowest_middle(body))
+		if spout.first < 0:
+			continue
+		for s1 in range(spout.first, gm.count()):
+			var body := gm.moving_body(s1)
+			var now: Vector3 = body.global_position if body != null else gm.lying_drawn_pose(s1).origin
+			if body == null and gm.state_of(s1) != Mess.State.LYING:
+				continue
+			if shown.has(s1) and body == null:
+				rest_step = maxf(rest_step, now.distance_to(shown[s1]))
+				if gm.lying_drawn_pose(s1).origin != gm.pose_of(s1).origin:
+					glided += 1
+					snap_far = maxf(snap_far, shown[s1].distance_to(gm.pose_of(s1).origin))
+			if body != null or gm.lying_drawn_pose(s1).origin != gm.pose_of(s1).origin:
+				shown[s1] = now
+			else:
+				shown.erase(s1)
+	_check(_all_lie(hm, gm), "the pour lies on both machines")
+	# The last rests glide on (Q2577).
+	await _paced_ticks(int(gm.bodies_tuning().rest_glide * FPS) + 3)
+	var worst := 0.0
+	var worst_turn := 0.0
+	var drawn_worst := 0.0
+	var under := 0
+	for s2 in hm.count():
+		var a := hm.pose_of(s2).orthonormalized()
+		var b := gm.pose_of(s2).orthonormalized()
+		worst = maxf(worst, a.origin.distance_to(b.origin))
+		worst_turn = maxf(worst_turn, rad_to_deg((a.basis.get_rotation_quaternion().inverse() * b.basis.get_rotation_quaternion()).get_angle()))
+		var da: Variant = hm.drawn_lying_of(s2)
+		var db: Variant = gm.drawn_lying_of(s2)
+		if da is Transform3D and db is Transform3D:
+			drawn_worst = maxf(drawn_worst, (da as Transform3D).origin.distance_to((db as Transform3D).origin))
+		if gm.state_of(s2) == Mess.State.LYING and b.origin.y < -UNDER:
+			under += 1
+	print("HANDS coop/13 pour: the Guest's moving bodies' lowest leg or foot middle %.4f m; at rest records off by at most %.5f m, %.3f deg, drawn instances %.5f m; lying under the floor %d" \
+			% [lowest, worst, worst_turn, drawn_worst, under])
+	print("HANDS coop/13 pour, Q2577: %d gliding frames, the farthest glide %.4f m, the largest drawn step a frame %.4f m" % [glided, snap_far, rest_step])
+	_check(glided > 0, "Q2577: the Guest's Socks glide onto the Host's rest (%d frames)" % glided)
+	_check(rest_step < REST_STEP, "Q2577: no Sock on the Guest jumps more than %.2f m in a frame, falling or gliding to its rest (%.4f m)" % [REST_STEP, rest_step])
+	_check(lowest > -UNDER, "item 2: no moving Sock on the Guest goes under the floor (%.4f m)" % lowest)
+	_check(under == 0, "item 2: no Sock on the Guest rests under the floor (%d)" % under)
+	_check(worst < 0.001 and worst_turn < 1.0, "item 3: every Sock on the Guest lies where the Host's does (%.5f m, %.3f deg)" % [worst, worst_turn])
+	_check(drawn_worst < 0.001, "item 3: and is drawn there (%.5f m)" % drawn_worst)
+	_drop_branches()
+
+
+## Watches the Guest's ghost of Sock `sock` until it ends and the Sock lies on both machines: how far its
+## drawing is from the Host's flight (a Throw, `throw`: at the same moment, as the Guest's stream plays
+## it, before its first touch), its lowest drawn middle, how far it ended from the rest, its largest
+## step a frame, and the Host body's largest step a frame.
+func _watch_let_go(host: Node3D, guest: Node3D, sock: int, throw: bool) -> Dictionary:
+	var hm := _mess(host)
+	var gm := _mess(guest)
+	var gp := _player(guest)
+	var out := {"worst": 0.0, "compared": 0, "lowest": INF, "end": INF, "step": 0.0, "host_frame": 0.0}
+	var ghost: ThrowGhost = null
+	for _i in 4:
+		await _paced()
+		ghost = gp.ghosts().ghost_of(sock)
+		if ghost != null:
+			break
+	_check(ghost != null, "the ghost leaves at once")
+	if ghost == null:
+		return out
+	var g := float(ProjectSettings.get_setting("physics/3d/default_gravity", 9.8))
+	var last_vel := ghost.body().linear_velocity
+	var touched := false
+	var pending: Array[Array] = []
+	var last := ghost.drawn().origin
+	var row: FlightRow = null
+	var last_drawn := Transform3D.IDENTITY
+	while is_instance_valid(ghost) and not ghost.is_done():
+		await _paced()
+		if not is_instance_valid(ghost) or ghost.is_done():
+			break
+		var drawn := ghost.drawn().origin
+		last_drawn = ghost.drawn()
+		out["lowest"] = minf(out["lowest"], drawn.y)
+		out["step"] = maxf(out["step"], drawn.distance_to(last))
+		last = drawn
+		var hb := hm.moving_body(sock)
+		if hb != null:
+			out["host_frame"] = maxf(out["host_frame"], hb.linear_velocity.length() / FPS)
+		if not throw:
+			continue
+		var vel := ghost.body().linear_velocity
+		if not touched and (vel - last_vel).length() > g * 2.5 / FPS:
+			touched = true
+		last_vel = vel
+		if not touched:
+			pending.append([float(ghost.get("_age")), drawn])
+		var copy := gm.moving_body(sock)
+		if row == null and copy != null:
+			row = FlightRow.of(copy)
+		if row == null or not is_instance_valid(row):
+			continue
+		while not pending.is_empty() and row.flight_time() >= float(pending[0][0]):
+			var e: Array = pending.pop_front()
+			var at: Variant = row.sample(float(e[0]))
+			if at is Transform3D:
+				out["compared"] += 1
+				out["worst"] = maxf(out["worst"], (at as Transform3D).origin.distance_to(e[1]))
+	await _wait(func() -> bool: return _all_lie(hm, gm) and gp.ghosts().ghost_of(sock) == null, "the Sock to lie on both machines", FPS * 15)
+	out["end"] = last_drawn.origin.distance_to(gm.pose_of(sock).origin)
+	return out
+
+
+## The lowest middle of `body`'s leg, foot or ball, in the level.
+func _lowest_middle(body: RigidBody3D) -> float:
+	var low := INF
+	for child in body.get_children():
+		if child is CollisionShape3D:
+			low = minf(low, (child as CollisionShape3D).global_position.y)
+	return low
 
 
 func _pair(lag_ms: int) -> Array[Node3D]:
 	var host := _branch("Host")
 	var guest := _branch("Guest")
 	await _frames(2)
-	var hs := host.get_node("Session") as Session
-	var gs := guest.get_node("Session") as Session
+	var hs := LevelRuntime.of(host).session
+	var gs := LevelRuntime.of(guest).session
 	hs.port = 0
 	hs.profile = PlayerProfile.fresh()
 	gs.profile = PlayerProfile.fresh()
-	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
+	_check(LevelRuntime.of(host).net.start(["--host"]) == OK, "the host zoo hosts")
 	_lag(host, lag_ms)
-	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
+	_check(LevelRuntime.of(guest).net.start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
 	_lag(guest, lag_ms)
 	var hm := _mess(host)
 	var gm := _mess(guest)
-	await _wait(func() -> bool: return (guest.get_node("Net") as ZooNet).mode_text().begins_with("Joined") and gm.count() == hm.count(),
+	await _wait(func() -> bool: return LevelRuntime.of(guest).net.mode_text().begins_with("Joined") and gm.count() == hm.count(),
 			"the guest zoo to be welcomed with the Host's Mess", FPS * 10)
-	var parts := guest.get_node("Parts") as Parts
+	var parts := LevelRuntime.of(guest).parts
 	var up := parts.relay
 	parts.relay = func(cmd: Command) -> void:
 		if _withhold:
@@ -532,7 +728,7 @@ func _guest_holds(_host: Node3D, guest: Node3D, sock: int) -> int:
 func _aim_at(zoo: Node3D, target: Vector3, aside := Vector3.ZERO) -> void:
 	var player := _player(zoo)
 	for other: Node in _branches:
-		var p := other.get_node_or_null("View/Zoo/Player") as Player
+		var p := _in_branch(other).player
 		if p != null and p != player:
 			p.set("_captured", false)
 	player.capture_mouse()
@@ -611,15 +807,15 @@ func _paced_ticks(n: int) -> void:
 
 
 func _mess(zoo: Node3D) -> Mess:
-	return zoo.get_node("Socks/Mess") as Mess
+	return LevelRuntime.of(zoo).mess
 
 
 func _hands(zoo: Node3D) -> Hands:
-	return zoo.get_node("Socks/Hands") as Hands
+	return LevelRuntime.of(zoo).hands
 
 
 func _player(zoo: Node3D) -> Player:
-	return zoo.get_node("Player") as Player
+	return LevelRuntime.of(zoo).player
 
 
 func _avatar(zoo: Node3D, peer: int) -> Avatar:
@@ -708,7 +904,7 @@ func _branch(label: String) -> Node3D:
 
 func _drop_branches() -> void:
 	for node in _branches:
-		var session := node.get_node_or_null("View/Zoo/Session") as Session
+		var session := _in_branch(node).session
 		if session != null:
 			session.close()
 		var path := node.get_path()
@@ -717,3 +913,8 @@ func _drop_branches() -> void:
 		get_tree().set_multiplayer(null, path)
 	_branches.clear()
 
+
+## The level runtime of the zoo in branch `node` (a machine of its own), or null.
+func _in_branch(node: Node) -> LevelRuntime:
+	var zoo := node.get_node_or_null("View/Zoo")
+	return LevelRuntime.of(zoo) if zoo != null else null

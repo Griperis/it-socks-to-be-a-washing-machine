@@ -63,8 +63,39 @@ func _show(_now: bool) -> void:
 	pass
 
 
+## This machine was a Guest and decides alone now (it left, or its Host quit; coop/12): whatever it
+## showed as looks only becomes its own. Looks only: never writes state.
+func went_alone() -> void:
+	pass
+
+
 ## The Host: what player `by` leaving does to this part, as grant(...); {} for nothing.
 func left(_by: int) -> Dictionary:
+	return {}
+
+
+## What this part keeps in a save (docs/architecture/saves.md): whole_state() by default; {} keeps
+## nothing (who lies knocked down now is not kept). Never writes state.
+func save_state() -> Dictionary:
+	return whole_state()
+
+
+## The version of save_state()'s shape (Q2557): raise it when a State field is added, renamed or
+## changes type, and teach upgrade_save() the step. tests/save_test.gd keeps every part's shape beside
+## its number and fails when the shape changes but the number does not.
+func save_version() -> int:
+	return 1
+
+
+## A saved state of version `from` brought to version `from + 1` (the steps run one at a time up to
+## save_version()). A field the save lacks keeps the scene's own value (write() sets only what it gets).
+func upgrade_save(state: Dictionary, _from: int) -> Dictionary:
+	return state
+
+
+## The Host, after a save is loaded: what a load resets (Q2559), as grant(...); {} for nothing. Kept
+## beside the thing it resets (a Door shuts, absent players' Socks drop). `host`: the Host's player id.
+func loaded(_host: String) -> Dictionary:
 	return {}
 
 

@@ -8,7 +8,7 @@ priority: later
 created: 2026-11-21
 done:
 blocked_by: []
-notes: ["tracked, not planned (Q2430); the catalogue's milestone: M6"]
+notes: ["tracked, not planned (Q2430); the catalogue's milestone: M6", "triaged to M5, by need (Q2533, 2026-11-23)"]
 terms: []
 ---
 

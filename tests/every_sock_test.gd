@@ -105,8 +105,8 @@ func case_e02() -> void:
 func case_e03() -> void:
 	await _zoo_up()
 	var st := _station()
-	var mess := _zoo.get_node("Socks/Mess") as Mess
-	var hands := _zoo.get_node("Socks/Hands") as Hands
+	var mess := LevelRuntime.of(_zoo).mess
+	var hands := LevelRuntime.of(_zoo).hands
 	var first := st.spots.get_node("d40_a") as SockSpot
 	var sock := first.sock
 	var mate := (st.spots.get_node("d40_b") as SockSpot).sock
@@ -124,7 +124,7 @@ func case_e03() -> void:
 func case_e03_records() -> void:
 	await _zoo_up()
 	var st := _station()
-	var mess := _zoo.get_node("Socks/Mess") as Mess
+	var mess := LevelRuntime.of(_zoo).mess
 	_check(st.get_node_or_null(ZooStations.SOCKS) == null, "the station has no Socks of its own in the zoo")
 	var bad := 0
 	for node in st.spots.get_children():
@@ -140,8 +140,8 @@ func case_e04() -> void:
 	var before := _user_files()
 	await _zoo_up()
 	var st := _station()
-	var mess := _zoo.get_node("Socks/Mess") as Mess
-	var hands := _zoo.get_node("Socks/Hands") as Hands
+	var mess := LevelRuntime.of(_zoo).mess
+	var hands := LevelRuntime.of(_zoo).hands
 	var sock := (st.spots.get_node("d3_a") as SockSpot).sock
 	var where := mess.pose_of(sock).origin
 	_stand(st, Vector3(-12.0, 0.0, 1.2))
@@ -154,7 +154,7 @@ func case_e04() -> void:
 	_zoo = null
 	await _zoo_up()
 	st = _station()
-	mess = _zoo.get_node("Socks/Mess") as Mess
+	mess = LevelRuntime.of(_zoo).mess
 	var again := (st.spots.get_node("d3_a") as SockSpot).sock
 	_check(again == sock and mess.state_of(again) == Mess.State.LYING and mess.pose_of(again).origin.is_equal_approx(where),
 			"in the next zoo the Sock lies in its place again")
@@ -164,7 +164,7 @@ func case_e04() -> void:
 func case_e05() -> void:
 	await _zoo_up()
 	var st := _station()
-	var mess := _zoo.get_node("Socks/Mess") as Mess
+	var mess := LevelRuntime.of(_zoo).mess
 	var ends := true
 	for station in _zoo.get_node("Stations").get_children():
 		if station != st:
@@ -223,8 +223,8 @@ func _station() -> EverySockStation:
 
 func _zoo_up() -> void:
 	_zoo_node()
-	var mess := _zoo.get_node("Socks/Mess") as Mess
-	var player := _zoo.get_node("Player") as Player
+	var mess := LevelRuntime.of(_zoo).mess
+	var player := LevelRuntime.of(_zoo).player
 	await _until(func() -> bool: return player.is_on_floor() and mess.looks_of(mess.count() - 1) != null, "the player to stand and every Sock to lie", 600)
 
 
@@ -237,14 +237,14 @@ func _user_files() -> PackedStringArray:
 
 
 func _stand(station: Node3D, at: Vector3) -> void:
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	player.global_position = station.to_global(at)
 	player.velocity = Vector3.ZERO
 	player.reset_physics_interpolation()
 
 
 func _aim(target: Vector3) -> void:
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 	var head := player.get_node("Head") as Node3D
 	var to := target - player.global_position

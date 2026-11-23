@@ -15,7 +15,8 @@ const LIBRARY := "res://game/materials/"
 ## (every moving part but the piano's 88 keys opens one); 31 such parts; the spots joined as the old
 ## game joined them (tools/furniture_from_old.py): 584 rects.
 const PIECES := 67
-const OPENINGS := 28
+## The car's old Cabin is one opening per door since assets/09: 29 openings.
+const OPENINGS := 29
 const MOVING := 31
 const KEYS := 88
 const SPOT_RECTS := 584
@@ -48,6 +49,8 @@ func cases() -> Array[Dictionary]:
 				"title": "F03: the Furniture station shows every piece once, its name in front, on the station's pad and ground"},
 		{"name": "f03_from_data", "method": "case_f03_from_data", "world": false,
 				"title": "F03 (Q2337): a new piece scene in the folder appears in the line-up with no other change"},
+		{"name": "h09_insides_on_floors", "method": "case_h09_insides_on_floors", "world": false,
+				"title": "house/09: every opening's Inside box has its bottom on the piece's collision floor (within the Sock generator's rest slack), so Socks can be laid inside"},
 	]
 
 
@@ -408,3 +411,40 @@ func _remove_temp() -> void:
 	for f in dir.get_files():
 		dir.remove(f)
 	DirAccess.remove_absolute(TEMP)
+
+
+# --- Insides (house/09) --------------------------------------------------------------------------
+
+## Every opening's Inside, shut, at the origin: a ray down through the middle of its floor and of each
+## of its four quarters, from 5 cm over the box's bottom, meets the piece's collision (the house layer)
+## within the generator's rest slack of the bottom: what the laying's rays need to lay a Sock inside.
+func case_h09_insides_on_floors() -> void:
+	var slack := (load("res://game/mess/sock_generator_tuning.tres") as SockGeneratorTuning).rest_slack
+	var insides := 0
+	var off: Array[String] = []
+	for path in FurnitureLineUp.pieces():
+		var piece := _scene(path)
+		add_child(piece)
+		for o in _openings(piece):
+			var inside := o.get_node_or_null("Inside") as Area3D
+			if inside == null:
+				continue
+			for shape_node in inside.get_children():
+				var shape := shape_node as CollisionShape3D
+				if shape == null or not (shape.shape is BoxShape3D):
+					continue
+				insides += 1
+				var size := (shape.shape as BoxShape3D).size
+				var gaps: Array[float] = []
+				for q: Vector2 in [Vector2.ZERO, Vector2(-0.25, -0.25), Vector2(0.25, -0.25), Vector2(-0.25, 0.25), Vector2(0.25, 0.25)]:
+					var bottom := shape.global_transform * Vector3(q.x * size.x, -size.y * 0.5, q.y * size.z)
+					var hit := PhysicsQueries.ray(piece, bottom + Vector3.UP * 0.05, bottom + Vector3.DOWN * 0.5, Mess.LAYER_HOUSE)
+					gaps.append(bottom.y - (hit["position"] as Vector3).y if not hit.is_empty() else INF)
+				if gaps.any(func(g: float) -> bool: return absf(g) > slack):
+					off.append("%s/%s: %s" % [path.get_file().get_basename(), o.name, gaps])
+		remove_child(piece)
+		piece.free()
+	for line in off:
+		Log.info("furniture", "house/09: an Inside off its floor: " + line)
+	_check(insides == OPENINGS, "every opening has its Inside box (%d of %d)" % [insides, OPENINGS])
+	_check(off.is_empty(), "every Inside's bottom lies on its piece's floor within %.2f m (%d do not: %s)" % [slack, off.size(), off])

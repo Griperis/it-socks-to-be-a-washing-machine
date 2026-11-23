@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://qeskk948rhe7"]
+
+[ext_resource type="Script" uid="uid://d0p81vodybfki" path="res://tools/coop_probe.gd" id="1_probe"]
+
+[node name="CoopProbe" type="Node"]
+script = ExtResource("1_probe")

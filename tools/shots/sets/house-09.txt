@@ -1,0 +1,4 @@
+# house/09: F5's loading screen while the house's Socks are laid, then the attic's two trunks opened, with the Socks laid inside
+loading  --scene=res://game/house/house.tscn --size=1280x720 --shots=20
+trunk-a  --scene=res://game/house/house.tscn --size=1280x720 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;10:house_trunk:TrunkA' --shots=60
+trunk-b  --scene=res://game/house/house.tscn --size=1280x720 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;10:house_trunk:TrunkB' --shots=60

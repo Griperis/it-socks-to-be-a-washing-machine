@@ -62,31 +62,52 @@ How this game is built, unless a decision record says otherwise. They are the ga
 | Subsystem | File | Read it when |
 |---|---|---|
 | The Mess | `docs/architecture/mess.md` | you change how Socks lie, are drawn, move or wake |
+| The Sock generator | `docs/architecture/sock-generator.md` | you change where a level's starting Socks land, its areas, exclusions or preview |
 | The house kit | `docs/architecture/house-kit.md` | you add or change a kit piece, a library material or the kit's sizes |
 | The material library | `docs/architecture/materials.md` | you add, pick or change a shared material, or a model uses one |
 | Furniture | `docs/architecture/furniture.md` | you place, change or add a furniture piece, its openings, collision or Sock spots, or a device (opening sounds, the piano, the mirror, the dust sheet) |
 | The house level | `docs/architecture/house.md` | you change the house scene: its shell, furniture, lights, spawn or what it holds |
+| Saves and the menus | `docs/architecture/saves.md` | you change what is saved or loaded, the save file, Worlds, the title, Options, Licence, the loading screen or the ESC menu |
+| Co-op | `docs/architecture/coop.md` | you touch the Session, the transport, the Roster, avatars, a Guest's guesses, a Throw's stream, knockdown, or anything a Guest sees or sends |
 
 A ticket that adds a subsystem adds its row here and its file.
 
 ## Key flows
 
-**Boot.** `project.godot` loads six autoloads in order: `Log`, `ProfilerBoot` (F3, debug builds), `GameCliBoot`
+**Boot.** `project.godot` loads ten autoloads in order: `Log`, `ProfilerBoot` (F3, debug builds), `GameCliBoot`
 (`game/debug/game_cli.gd`: reads the arguments after `--`; a bench or `--scene=` swaps the scene after one frame),
-`Profily`, `Settings` (`game/settings/settings.gd`, `user://settings.json`) and `Sounds` (`game/audio/sounds.gd`).
+`Profily`, `Settings` (`game/settings/settings.gd`, `user://settings.json`, the Options keys), `Sounds`
+(`game/audio/sounds.gd`), `Save` and `Worlds` (`game/save/`), `SceneChanger` (`game/scenes/`) and `UiSounds`
+(every menu button's click and hover). `user://` is the "It Socks" folder (`use_custom_user_dir`, Q2567).
 **The log.** `Log` (`game/log/log.gd`, the kit's log template) is the one stream: the game's lines
 (`Log.info/warn/error(area, text)`) and every engine or script error with its script calls, in `user://logs/game.log`
 (this run; `game.1.log` the run before, five kept). The file starts with the build line (name, version, Godot,
 debug or release). The game's refusals go through `Log` with an area; only the command line's and the benchmark's
 terminal output stays a plain `print()`.
 
-The main scene is the house (`game/house/house.tscn`, house/04, Q2509: F5 and a plain launch start there until
-menus exist): the shell, the old furniture, the lamps, the player and the same shared-state path as the zoo;
-`Parts.bind` registers every Part by its node path and `LevelNet` (`game/net/level_net.gd`) hosts or joins on
-`--host` / `--join=`. The zoo (`game/zoo/zoo.tscn`) starts with `-- --zoo` or F6 in the editor: `ZooStations`
-joins every station's Socks to the zoo's one Mess before anything binds, and `ZooNet` is its `LevelNet` (the
-zoo's word and its stand-in Teammate). Shots load the zoo unless a set line gives `--scene=`
+The main scene is the title (`game/ui/title/title.tscn`, core/58): Solo, Multiplayer (Host, Join), Options, Licence
+and Quit; a choice goes through `SceneChanger.change_to()` behind the loading screen into the house
+(`game/house/house.tscn`), handing its `LevelRuntime` the World (`world`, `from_title`, `launch`); `--host` and
+`--join=` on the command line act on the title at once, `--scene=` still starts the house alone. The house holds the
+shell, the old furniture, the lamps and one level runtime. `Parts.bind` registers every Part by its
+node path from the level's root (so the runtime's are `Runtime/Socks/Mess` and the like) and `LevelNet`
+(`game/net/level_net.gd`) hosts or joins on `--host` / `--join=`. The zoo (`game/zoo/zoo.tscn`) starts with
+`-- --zoo` or F6 in the editor: `ZooStations` joins every station's Socks to the zoo's one Mess (its runtime's)
+before anything binds. Shots load the zoo unless a set line gives `--scene=`
 (`tools/shot_hooks.gd` `SCENE`).
+
+**A level (core/51, Q2517).** Every level shares one game setup, `game/level/level_runtime.tscn` (`LevelRuntime`):
+the Player, Players and Avatars, Session and Roster, Net (`LevelNet`), Parts, Socks (Mess, Hands, Knockdowns, Coins),
+Spots, Lying, Flights, the FlightSpawner and the LoadingScreen (house/09), wired inside it. It is sealed: a level instances it once, as a child of
+its root named `Runtime`, and overrides nothing inside it (no editable children). What differs per level is set on
+that instance: `spawn` and `return_spot` (empty: the level's children `Spawn` and `ReturnSpot`, the return spot
+falling back to the spawn), `mess_bounds`, the player's `hands_tuning` and `upgrades`, and `place_name` (the corner's
+word), and `load_screen` (the starting Socks laid behind the loading screen, `docs/architecture/sock-generator.md`). Before any of its nodes is ready it puts the player on the spawn, gives the Mess its return spot and bounds and
+gives the Parts the whole level to bind. Code reaches its nodes with `LevelRuntime.of(node)` (the level or anything in
+it: `.player`, `.mess`, `.hands`, `.session`, `.net` ...); `LevelRuntime.level_of(node)` is the level a runtime node
+belongs to, where code used to read `owner`. **A new level** is a new scene: its geometry (and look: Environment, Sun,
+Picture, lights), a `Spawn` marker and one instance of `level_runtime.tscn`; `game/level/one_box_level.tscn` (one
+floor box) is the smallest, walked and played in co-op by `tests/level_test.gd`.
 
 **A frame.** `player.gd` moves the body, looks the aim up once (`AimFinder`), feeds the outline, the prompts and the
 HUD, then reads the buttons. On the Host, `MessMoving.tick` checks hits, picks' columns, Door and drawer sweeps and
@@ -108,7 +129,8 @@ admits it, writes it into the `Roster` Part (keyed by player id: peer, name, col
 which the Guest writes with `Parts.load_snapshot`. `Avatars` spawns by the Roster on the Host (an `Avatar` per player: its pose, position, yaw, pitch and crouch, goes from its owner every network frame and is checked in its setters where it lands; elsewhere it eases to it, its `AvatarLooks` derives the waddle, bend, squash and pupils, a worn `HeldView` hangs its Hands at the HoldPoint, where a Teammate's Throw leaves, and `TeammateSteps` plays its steps at its body; `Hearing` plays a Teammate's cues with `Sounds.play_from` at 1.2 m over their feet); thrown Socks come
 through the zoo's `FlightSpawner`, each with its stamped row (`FlightRow`); a Guest's own actions show at once
 as looks-only guesses (`GuestGhosts`) until the Host's answer, matched by the Command's `seq`. A leaver: `Parts.left` drops their Hands where they stood (`Hands.left`) and the
-Roster keeps that place. `LevelNet` reads `--host`, `--join=`, `--profile=` and puts the toasts on the HUD.
+Roster keeps that place; the leaver's machine (every Guest's, when the Host quits) is a Host of one and
+`Parts.went_alone` turns its looks-only bodies into its own (coop/12). `LevelNet` reads `--host`, `--join=`, `--profile=` and puts the toasts on the HUD.
 
 **A knockdown (coop/10).** `Knockdowns` (`game/knockdown/`, one Part under `Socks`, keyed by peer) holds who is down
 (their fall, a serial), who drags whom and the struggle presses. On the Host it tests every full-charge Throw in the
@@ -123,5 +145,11 @@ The knocked `Player` freezes its input, stays at its ragdoll's feet, puts the ca
 the vignette (`game/knockdown/vignette.tscn`); a lying body under the crosshair shows its Outline (a child of the
 avatar's Looks) and wins the left button for a drag.
 
-**A save.** Not built yet: saving starts at the first outside play-test. The seam is the same snapshot
-(`Parts.snapshot` / `load_snapshot`); settings are saved on their own by `Settings`.
+**A save (core/58, `docs/architecture/saves.md`).** The join snapshot written to a file per World:
+`Autosave` (a node of the level runtime, the Host or a player alone only) writes `Parts.save_snapshot()` (each
+Part's `save_state()`) with the World's record through `Save` and its `SaveStore` to
+`user://worlds/<player id>/<slot>.json`, within 2 s of an applied answer (the text on a worker thread) and at once on
+every way out (the ESC menu's Back to title, Quit game, End session; the window's close). `LevelNet.start()` loads
+the World before the player enters (`Parts.load_save()`: each Part's own version stepped, then its `loaded()`
+reset); alone the player is in its own Roster by its player id (`Session.enter_alone()`). Esc in play opens the ESC
+menu (`game/ui/esc_menu/`), which never pauses. Settings are saved on their own by `Settings`, per machine.

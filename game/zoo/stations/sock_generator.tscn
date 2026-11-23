@@ -1,0 +1,228 @@
+[gd_scene format=3 uid="uid://c6s728lc0yqao"]
+
+[ext_resource type="Script" uid="uid://cyhr6nx34vjq0" path="res://game/mess/sock_generator.gd" id="1_gen"]
+[ext_resource type="Script" uid="uid://co2u54sk1yir8" path="res://game/mess/generated_socks.gd" id="2_generated"]
+[ext_resource type="Script" uid="uid://cub70qrwflqk1" path="res://game/mess/sock_area.gd" id="3_area"]
+[ext_resource type="Script" uid="uid://xxf745x54a46" path="res://game/mess/sock_exclusion.gd" id="4_exclusion"]
+[ext_resource type="Script" uid="uid://c76hgi71q4k4g" path="res://game/mess/sock_trail.gd" id="5_trail"]
+[ext_resource type="Script" uid="uid://coig4etidipk8" path="res://game/zoo/sock_generator/regenerate_button.gd" id="6_button"]
+[ext_resource type="Script" uid="uid://dlacqnrt2ohho" path="res://game/zoo/sock_generator/seed_sign.gd" id="7_sign"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="8_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="9_hands"]
+[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="10_coins"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="11_designs"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="12_hands_tuning"]
+[ext_resource type="PackedScene" uid="uid://cf20nsmnjwiwq" path="res://game/furniture/double_bed.tscn" id="13_bed"]
+[ext_resource type="PackedScene" uid="uid://cbfpt4hh7gm3q" path="res://game/furniture/kitchen_cupboard.tscn" id="14_cupboard"]
+[ext_resource type="PackedScene" uid="uid://b7hu47vi16lp5" path="res://game/furniture/dresser.tscn" id="15_dresser"]
+[ext_resource type="PackedScene" uid="uid://2vvcamr2b8ap" path="res://game/furniture/dining_table.tscn" id="16_table"]
+[ext_resource type="PackedScene" uid="uid://drbceifsj6ysv" path="res://game/furniture/coffee_table.tscn" id="17_coffee"]
+[ext_resource type="PackedScene" uid="uid://h3610c6dred6" path="res://game/entities/cabinet/cabinet.tscn" id="18_cabinet"]
+[ext_resource type="PackedScene" uid="uid://dbhsmp6446wf3" path="res://game/house/kit/pieces/stair_full.tscn" id="19_stair"]
+[ext_resource type="PackedScene" uid="uid://bpls1fkyretjy" path="res://game/furniture/nightstand.tscn" id="20_nightstand"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ground"]
+albedo_color = Color(0.72, 0.66, 0.56, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_ground")
+size = Vector2(14, 14)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(14, 0.2, 14)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.86, 0.84, 0.78, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_x"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(10.2, 1.2, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_x"]
+size = Vector3(10.2, 1.2, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_z"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(0.1, 1.2, 10.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_z"]
+size = Vector3(0.1, 1.2, 10.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_button"]
+albedo_color = Color(0.3, 0.5, 0.75, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_button"]
+material = SubResource("StandardMaterial3D_button")
+size = Vector3(0.5, 1, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_button"]
+size = Vector3(0.5, 1, 0.3)
+
+[node name="SockGenerator" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 0, -8)
+
+[node name="Pad" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+metadata/surface = "wood"
+
+[node name="Shape" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_ground")
+
+[node name="Walls" type="StaticBody3D" parent="."]
+
+[node name="NorthMesh" type="MeshInstance3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -5.05)
+mesh = SubResource("BoxMesh_wall_x")
+
+[node name="North" type="CollisionShape3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -5.05)
+shape = SubResource("BoxShape3D_wall_x")
+
+[node name="WestMesh" type="MeshInstance3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.05, 0.6, 0)
+mesh = SubResource("BoxMesh_wall_z")
+
+[node name="West" type="CollisionShape3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.05, 0.6, 0)
+shape = SubResource("BoxShape3D_wall_z")
+
+[node name="Name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, -5.2)
+pixel_size = 0.004
+billboard = 2
+text = "Sock generator: three areas lay their Pairs on the open floor, on tops, inside and under the furniture (the south one in Heaps), a trail up the stairs, nothing in the red box or in front of the Cabinet. New seed lays them again"
+vertical_alignment = 2
+autowrap_mode = 3
+width = 700.0
+
+[node name="Seed" type="Label3D" parent="." node_paths=PackedStringArray("generated")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -5.2)
+pixel_size = 0.004
+billboard = 2
+text = "Seed"
+script = ExtResource("7_sign")
+generated = NodePath("../Generator/Generated")
+
+[node name="Bed" parent="." instance=ExtResource("13_bed")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0, -3.83)
+
+[node name="Nightstand" parent="." instance=ExtResource("20_nightstand")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95, 0, -4.7)
+
+[node name="Cupboard" parent="." instance=ExtResource("14_cupboard")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 0, -4.62)
+
+[node name="Dresser" parent="." instance=ExtResource("15_dresser")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -4.68, 0, 1.2)
+
+[node name="Table" parent="." instance=ExtResource("16_table")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0, 1.4)
+
+[node name="CoffeeTable" parent="." instance=ExtResource("17_coffee")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 0, 2.6)
+
+[node name="Cabinet" parent="." instance=ExtResource("18_cabinet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, -4.7)
+
+[node name="Cabinet" parent="Cabinet" index="0" node_paths=PackedStringArray("hands", "coins")]
+hands = NodePath("../../Socks/Hands")
+coins = NodePath("../../Socks/Coins")
+
+[node name="Stair" parent="." instance=ExtResource("19_stair")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 0, -2.5)
+
+[node name="Washer" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+
+[node name="Generator" type="Node3D" parent="." node_paths=PackedStringArray("washer", "scan")]
+script = ExtResource("1_gen")
+washer = NodePath("../Washer")
+scan = NodePath("..")
+
+[node name="Bedroom" type="Node3D" parent="Generator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -2.5)
+script = ExtResource("3_area")
+size = Vector3(5, 2.4, 5)
+pairs = 12
+
+[node name="Kitchen" type="Node3D" parent="Generator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -2.5)
+script = ExtResource("3_area")
+size = Vector3(5, 2.4, 5)
+pairs = 10
+
+[node name="Living" type="Node3D" parent="Generator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.5)
+script = ExtResource("3_area")
+size = Vector3(10, 2.4, 5)
+pairs = 30
+heap = true
+
+[node name="Doorway" type="Node3D" parent="Generator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4.4)
+script = ExtResource("4_exclusion")
+size = Vector3(1.4, 2, 1.2)
+
+[node name="StairTrail" type="Node3D" parent="Generator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.1, 0, -2.2)
+script = ExtResource("5_trail")
+to = Vector3(0, 2.8, 3.6)
+
+[node name="Generated" type="Node" parent="Generator" node_paths=PackedStringArray("mess", "generator")]
+script = ExtResource("2_generated")
+mess = NodePath("../../Socks/Mess")
+generator = NodePath("..")
+
+[node name="Regenerate" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.5, 4.5)
+
+[node name="RegenerateButton" type="Node" parent="Regenerate" node_paths=PackedStringArray("generated")]
+script = ExtResource("6_button")
+generated = NodePath("../../Generator/Generated")
+
+[node name="Mesh" type="MeshInstance3D" parent="Regenerate"]
+mesh = SubResource("BoxMesh_button")
+
+[node name="Shape" type="CollisionShape3D" parent="Regenerate"]
+shape = SubResource("BoxShape3D_button")
+
+[node name="Label" type="Label3D" parent="Regenerate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+pixel_size = 0.004
+billboard = 2
+text = "New seed"
+
+[node name="Spots" type="Node3D" parent="."]
+
+[node name="ReturnSpot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 3)
+
+[node name="Lying" type="Node3D" parent="."]
+
+[node name="Flights" type="Node3D" parent="."]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="."]
+
+[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+script = ExtResource("8_mess")
+catalogue = ExtResource("11_designs")
+tuning = ExtResource("12_hands_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+return_spot = NodePath("../../ReturnSpot")
+
+[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess")]
+script = ExtResource("9_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("12_hands_tuning")
+
+[node name="Coins" type="Node" parent="Socks"]
+script = ExtResource("10_coins")

@@ -13,6 +13,10 @@ Socks lie, are drawn, move or wake.
 | `mess_moving.gd` (`MessMoving`) | The flights (`flight.tscn`, `ball_flight.tscn`): on the Host the budget, the wait queue, starts and rests, hits, picks' column wakes, Door and drawer sweeps; on a Guest its looks-only bodies and its own sweeps (`tick_looks`, coop/08) |
 | `mess_tuning.gd` + `.tres` (`MessTuning`) | The numbers of the above |
 
+- Records also come from a level's Sock generator at the start (`GeneratedSocks`, read in `_ready` after the
+  SockSpots) and from its `regenerate` answer (`taken_out_patch`, `added_lying_patch`); `add` with `"lying": true`
+  appends LYING records with no launch (core/52, Q2523). `docs/architecture/sock-generator.md`.
+
 ## The tiers
 
 - LYING: a server body on `Mess.LAYER_LYING` (two boxes, leg and foot; a Pair a sphere) and one
@@ -25,12 +29,19 @@ Socks lie, are drawn, move or wake.
   spawner's path); every other (woken, fallen, poured, swept, dropped) is started by each machine from the
   record under the Mess's own `Bodies` holder, which no spawner sees. A Guest's is looks only, on
   `Mess.LAYER_LOOKS` (it touches the house, lying Socks and its other looks bodies), and never wakes, rests
-  or writes anything shared; the Host's rest batch snaps it.
+  or writes anything shared; the Host's rest batch lies it, its drawing gliding from the body's place onto the
+  rest pose over `MessTuning.rest_glide` (Q2577, `Mess._glides`; its lying body is there at once).
 
 ## Flows
 
 - A pick: the Hands' answer writes HELD; `_show` notes the picked box; next tick `MessMoving` queries
   the column over it and queues what lay on it; they start as `fall` within the budget.
+- Nothing under it (core/55, Q2531): the Host notes every Sock a generator lays (its start in
+  `_add_generated`, a reseed's or any `add` "lying" in `added_lying_patch`) and, in `_show`, the box of every
+  lying Sock taken out or cut off; next
+  tick `_fall_unsupported` checks those and what lay over the boxes (`MessBodies.supported`: a slab of
+  each leg and foot box's footprint, `support_reach` deep, under it meets the house or a lying Sock) and
+  starts the ones with nothing under them as `fall`. No Sock stays frozen in the air.
 - A hit: a flight at `wake_speed` or more touching a lying body (read from its body state's contacts)
   queues that Sock and up to `wake_count` touching it; they start as `wake`. A thrown flight (not dropped,
   poured or woken) first looks ahead (core/46, Q2431, the old `SockFlights._impact_wakes`): a `hit_reach`
@@ -83,9 +94,14 @@ Socks lie, are drawn, move or wake.
 - A Guest's own pick, drop, Throw and wheel are looks-only guesses (`GuestGhosts`, a child of the Player,
   `ThrowGhost` on `Mess.LAYER_GHOST` touching the house only, the HeldView's pick ghost): every Command carries a
   `seq` the answer echoes; while a ghost draws a Sock, `Mess.hold_back(sock, true)` keeps the Mess from drawing
-  it (lying or flying, body and record as they are). A Throw or drop ghost follows the Host's body at the same
-  moment of the flight (`FlightRow.flight_time`), easing the difference in over `predict_blend`, and eases onto
-  the Host's rest.
+  it (lying or flying, body and record as they are). A Throw or drop ghost flies its own body from the
+  thrower's first-person hand, where the Host lets it go too (`Hands.start_of`, coop/13, Q2573), and is drawn on
+  it until it parts from the Host's body at the same moment of the flight (`FlightRow.flight_time`) by more than
+  `part_distance` or `part_turn`; from then the difference eases in over `predict_blend`. It eases onto the
+  Host's rest. Its body undoes a push into the floor as a flight does (`MessMoving.undo_push`, core/50).
+- A Teammate's Throw or drop (any let-go Sock whose thrower plays on another machine) is drawn from where their
+  avatar holds it (`Hands.worn_start_of`, through `Mess.worn_start`), easing onto its body over
+  `GhostTuning.hand_over_time` (`Mess._leads`, the MultiMesh row or the body's Looks; coop/13, Q2439).
 - A flight flies as the same leg and foot boxes it lies on (`MessBodies.parts_at`), with
   `MessTuning.turn_weight` times its flat box's inertia (a 50 g board's own spins to Jolt's cap on an
   edge landing), and sweeps (CCD) only from 1 m/s (core/23). Poured and dropped Socks fly as woken ones.

@@ -12,7 +12,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "scene", "method": "case_scene", "world": false,
 				"title": "the game started with -- --scene=heap starts the heap station"},
 		{"name": "zoo_and_house", "method": "case_zoo_and_house", "world": false,
-				"title": "the game started plainly plays the house, alone; started with -- --zoo it starts the zoo instead"},
+				"title": "the game started plainly shows the title (core/58); -- --scene= starts the house, -- --zoo the zoo"},
 		{"name": "none", "method": "case_none", "world": false,
 				"title": "no arguments (and engine flags alone) start the game as before"},
 		{"name": "help", "method": "case_help", "world": false,
@@ -62,11 +62,14 @@ func case_scene() -> void:
 
 
 func case_zoo_and_house() -> void:
-	_same(String(ProjectSettings.get_setting("application/run/main_scene")), "res://game/house/house.tscn", "the house is the main scene")
+	_same(String(ProjectSettings.get_setting("application/run/main_scene")), "res://game/ui/title/title.tscn", "the title is the main scene (core/58)")
 	var plain := _game(PackedStringArray(["--headless", "--audio-driver", "Dummy", "--quit-after", "40"]), PackedStringArray())
 	var text: String = plain["text"]
 	_check(not text.contains("GameCli: scene"), "a plain start swaps no scene")
-	_check(not text.contains("SCRIPT ERROR"), "the house starts without an error")
+	_check(not text.contains("SCRIPT ERROR"), "the title starts without an error")
+	var house := _game(PackedStringArray(["--headless", "--audio-driver", "Dummy", "--quit-after", "40"]), PackedStringArray(["--scene=res://game/house/house.tscn"]))
+	text = house["text"]
+	_check(text.contains("GameCli: scene res://game/house/house.tscn") and not text.contains("SCRIPT ERROR"), "-- --scene= starts the house alone, without an error")
 	var zoo := _game(PackedStringArray(["--headless", "--audio-driver", "Dummy", "--quit-after", "40"]), PackedStringArray(["--zoo"]))
 	text = zoo["text"]
 	_check(text.contains("GameCli: scene res://game/zoo/zoo.tscn"), "-- --zoo starts the zoo")

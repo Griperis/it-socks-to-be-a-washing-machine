@@ -142,14 +142,14 @@ func case_l01_look() -> void:
 	_near(player.rotation.y, -0.25, 0.0001, "100 px right turns the body 0.25 rad to the right")
 	_near(head.rotation.x, -0.1, 0.0001, "40 px down tilts the head down 0.1 rad")
 	_near(head.rotation.z, 0.0, 0.0001, "only the head tilts")
-	player.tuning.look_scale = 2.0
+	Settings.set_value(Settings.MOUSE_SPEED, 2.0)
 	_mouse(player, 0, -40)
-	_near(head.rotation.x, 0.1, 0.0001, "scale 2 doubles the turn")
-	player.tuning.look_scale = 1.0
-	player.tuning.invert_y = true
+	_near(head.rotation.x, 0.1, 0.0001, "Options' Mouse speed 2.00x doubles the turn")
+	Settings.set_value(Settings.MOUSE_SPEED, 1.0)
+	Settings.set_value(Settings.INVERT_Y, true)
 	_mouse(player, 0, -40)
-	_near(head.rotation.x, 0.0, 0.0001, "Invert Y flips the tilt")
-	player.tuning.invert_y = false
+	_near(head.rotation.x, 0.0, 0.0001, "Options' Invert Y flips the tilt")
+	Settings.set_value(Settings.INVERT_Y, false)
 
 
 func case_l02_tilt_limit() -> void:

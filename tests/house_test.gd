@@ -14,6 +14,7 @@ const MATERIALS := "res://game/house/kit/materials"
 const PLAYER := "res://game/player/player.tscn"
 const SHELL := "res://game/house/shell.tscn"
 const HOUSE := "res://game/house/house.tscn"
+const RUNTIME := "res://game/level/level_runtime.tscn"
 const FURNITURE := "res://game/furniture"
 ## The old spawn moved to the plan (room.gd spawn_pos 1.58, -2.9, 5.59 in the laundry, spawn_yaw).
 const SPAWN := Vector3(1.68, -3.0, 5.87)
@@ -77,7 +78,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "b01_kit_pieces_only", "method": "case_b01_kit_pieces_only", "world": false,
 				"title": "B01: the shell is built from the kit's pieces only, every one on the half-metre grid in 90 degree turns, on four storeys"},
 		{"name": "b01_openings", "method": "case_b01_openings", "world": false,
-				"title": "B01: every doorway lets a player through at the plan's place, every window piece is centred where the plan says, the stair and the Cellar hatch are open"},
+				"title": "B01: every doorway lets a player through at the plan's place, every window piece is centred where the plan says, the stair is open"},
 		{"name": "b02_materials", "method": "case_b02_materials", "world": false,
 				"title": "B02: every wall face, floor and corner wears its room's old paint, the outside the old render"},
 		{"name": "b05_grid_windows", "method": "case_b05_grid_windows", "world": false,
@@ -91,7 +92,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "k14_no_z_fight", "method": "case_k14_no_z_fight", "world": false,
 				"title": "K14: the shell has no two faces facing the same way in one plane where they can be seen"},
 		{"name": "h01_main_scene", "method": "case_h01_main_scene", "world": false,
-				"title": "the house is the project's main scene: the shell, the player, the shared-state path, the zoo's noon light, and nothing of game/zoo/"},
+				"title": "the house is the level the title's Solo and Host play (core/58): the shell, the player, the shared-state path, the zoo's noon light, and nothing of game/zoo/"},
 		{"name": "h02_furniture", "method": "case_h02_furniture", "world": false,
 				"title": "the old furniture stands where the old house had it, moved to the plan, each piece on its floor inside its room"},
 		{"name": "h03_lights", "method": "case_h03_lights", "world": false,
@@ -102,6 +103,20 @@ func cases() -> Array[Dictionary]:
 				"title": "real path (Q2514): the front door and the garage door stay shut: aimed at, no prompt and no outline, the use button opens nothing, and the player walking at the front door stops at it"},
 		{"name": "real_path_spawn_to_every_floor", "method": "case_real_path_spawn_to_every_floor", "world": false,
 				"title": "real path: in the house the player starts at the old spawn in the laundry, walks through the doorway to the stair lobby and climbs the U stair to the ground, first and attic floors"},
+		{"name": "h05_mess", "method": "case_h05_mess", "world": false,
+				"title": "house/05: each floor's Sock generator lays the old stage's Pairs (50, 160, 150, 130) of its floor's two Cabinets' Collections on every kind of place, each Sock on its floor; the old eight Cabinets stand at the old spots; the laying time is measured"},
+		{"name": "h05_stair_treads", "method": "case_h05_stair_treads", "world": false,
+				"title": "house/05 (Q2530): the stair trails' Socks lie flat on the steps' treads, never leaned on the ramp; the player does not meet the treads"},
+		{"name": "real_path_loading_screen", "method": "case_real_path_loading_screen", "world": false,
+				"title": "real path (house/09, Q2542): F5 shows the loading screen (\"Loading the house...\", Q2579, a filling bar) while the Socks are laid a slice per frame, the player held at the spawn though walk is pressed; then every Socks appears at once and the player walks"},
+		{"name": "h09_slices_within_budget", "method": "case_h09_slices_within_budget", "world": false, "perf": true,
+				"title": "house/09: no frame's slice of laying the house runs past the loading screen's slice budget: each unit of work runs only when the longest of its kind still fits"},
+		{"name": "h09_same_seed_sliced", "method": "case_h09_same_seed_sliced", "world": false,
+				"title": "house/09: the same seed lays the same Socks (Designs, poses, generators' records) all in one frame and over many frames"},
+		{"name": "h09_trail_stays_on_treads", "method": "case_h09_trail_stays_on_treads", "world": false,
+				"title": "house/09 (Q2530): the stair trails' Socks laid flat on the treads stay lying there through 120 ticks of play (a tread holds a Sock up)"},
+		{"name": "real_path_kitchen_loop", "method": "case_real_path_kitchen_loop", "world": false,
+				"title": "real path (house/05): in the house the player picks a Sock in the kitchen, picks its mate into a Pair, shelves it in the kitchen's Cabinet with a click and earns Coins"},
 		{"name": "real_path_front_door_to_attic", "method": "case_real_path_front_door_to_attic", "world": false,
 				"title": "real path: in the shell the player walks in from the front door (no ground outside, Q2503), is stopped by the hall's partition, and climbs the U stair to the first floor and on to the attic"},
 	]
@@ -148,7 +163,7 @@ func _house() -> Node3D:
 func _level_up() -> Node3D:
 	_level = (load(HOUSE) as PackedScene).instantiate() as Node3D
 	add_child(_level)
-	var player := _level.get_node("Player") as Player
+	var player := LevelRuntime.of(_level).player
 	await _until(func() -> bool: return player.is_on_floor(), "the player to stand in the house")
 	return _level
 
@@ -205,7 +220,8 @@ func case_b01_kit_pieces_only() -> void:
 				continue
 			var at := house.to_local(p.global_transform.origin) if p.is_inside_tree() else _local(house, p)
 			var turn := rad_to_deg(p.rotation.y)
-			if not (_on_grid(at.x) and _on_grid(at.y) and _on_grid(at.z)):
+			# The bathroom's trim strips stand off wall faces, off the half-metre grid (house/07).
+			if not p.scene_file_path.get_file().begins_with("wainscot_trim_") and not (_on_grid(at.x) and _on_grid(at.y) and _on_grid(at.z)):
 				odd.append("%s is off the grid (%s)" % [house.get_path_to(p), at])
 			if not is_equal_approx(snappedf(turn, 90.0), snappedf(turn, 0.01)) or absf(p.rotation.x) > EPS or absf(p.rotation.z) > EPS:
 				odd.append("%s is not turned in 90 degree steps (%s)" % [house.get_path_to(p), turn])
@@ -265,13 +281,11 @@ func case_b01_openings() -> void:
 		var line := {"N": 0.0, "S": 8.5, "W": 0.0, "E": 10.5}
 		var across := mid.z if w[2] in ["N", "S"] else mid.x
 		_near(across, line[w[2]], EPS, "%s stands in the %s wall's line" % [w[0], w[2]])
-	# Down the stair's well to the basement; down the Cellar hatch under the basement floor (the
-	# shaft: d07).
+	# Down the stair's well to the basement; the basement floor has no hatch (house/07).
 	var hit := _hit(Vector3(4.6, 5.9, 6.0), Vector3(4.6, -4, 6.0))
 	_check(not hit.is_empty() and (hit["position"] as Vector3).y < 4.6 and (hit["position"] as Vector3).y > 3.0,
 			"the attic floor is open over the U stair (%s)" % [hit.get("position")])
-	_check(_clear(Vector3(2.75, -2.5, 1.75), Vector3(2.75, -4, 1.75)), "the Cellar hatch opens through the workshop floor")
-	_check(not _clear(Vector3(2.0, -2.5, 3.0), Vector3(2.0, -4, 3.0)), "the workshop floor stands round it")
+	_check(not _clear(Vector3(2.75, -2.5, 1.75), Vector3(2.75, -4, 1.75)), "the workshop floor is whole where the Cellar hatch was (house/07)")
 	# The roof over the attic, the ridge 3.88 m over its floor at z 4.25 (plan K11).
 	hit = _hit(Vector3(2.0, 6.5, 4.25), Vector3(2.0, 12, 4.25))
 	_check(not hit.is_empty() and absf((hit["position"] as Vector3).y - (6.0 + 3.88)) < 0.3, "the roof closes the attic at the ridge (%s)" % [hit.get("position")])
@@ -369,7 +383,15 @@ func case_d01_wainscot() -> void:
 	if tiled == null:
 		return
 	_near(float(tiled.get_shader_parameter("top")), 1.2, EPS, "the tiles reach 1.2 m over the floor (make_flat.py make_wall_tiles)")
-	_near(float(tiled.get_shader_parameter("band")), 0.035, EPS, "a 3.5 cm trim band over them")
+	_near(float(tiled.get_shader_parameter("band")), 0.0, EPS, "no painted band over them: the trim is a raised strip (house/07)")
+	var strips := 0
+	var shell := (load(SHELL) as PackedScene).instantiate() as Node3D
+	for p in _pieces(shell):
+		if p.scene_file_path.get_file().begins_with("wainscot_trim_"):
+			strips += 1
+			_near(p.mesh.get_aabb().position.y, 1.2, EPS, "%s sits at the tiles' top" % p.name)
+	_check(strips == 5, "the bathroom has its five trim strips (%d)" % strips)
+	shell.free()
 	_check(tiled.get_shader_parameter("tiles") is Texture2D and String((tiled.get_shader_parameter("tiles") as Texture2D).resource_path).ends_with("wall_tiles.png"),
 			"the tiles are the old wall tiles")
 	_check(tiled.get_shader_parameter("paint") == (load(MATERIALS.path_join("wall_bathroom.tres")) as StandardMaterial3D).albedo_color,
@@ -702,7 +724,7 @@ func _go(player: Player, to: Vector2, what: String) -> void:
 
 func case_real_path_doors_shut() -> void:
 	var house := await _level_up()
-	var player := house.get_node("Player") as Player
+	var player := LevelRuntime.of(house).player
 	# In the hall, facing the front door (north, -Z) from 1.5 m in.
 	player.global_position = Vector3(5.75, 0.0, 1.5)
 	player.rotation.y = 0.0
@@ -734,7 +756,7 @@ func case_real_path_doors_shut() -> void:
 
 func case_real_path_spawn_to_every_floor() -> void:
 	var house := await _level_up()
-	var player := house.get_node("Player") as Player
+	var player := LevelRuntime.of(house).player
 	var at := func() -> Vector3: return player.global_position
 	_check((at.call() as Vector3).distance_to(SPAWN) < 0.1, "the player starts at the old spawn in the laundry (%s)" % at.call())
 	_near(player.rotation.y, SPAWN_YAW, 0.01, "facing the old spawn's way")
@@ -771,17 +793,20 @@ static func _needs(path: String, seen: Dictionary) -> void:
 
 
 func case_h01_main_scene() -> void:
-	_same(String(ProjectSettings.get_setting("application/run/main_scene")), HOUSE, "the house is the project's main scene (F5, a plain launch)")
+	_same(String(ProjectSettings.get_setting("application/run/main_scene")), "res://game/ui/title/title.tscn", "the title is the project's main scene and Solo plays the house (core/58)")
+	_same(Worlds.LEVEL, HOUSE, "Solo and Host go into the house")
 	var house := await _level_up()
 	var shell := house.get_node_or_null("Shell") as Node3D
 	_check(shell != null and shell.scene_file_path == SHELL and shell.transform == Transform3D.IDENTITY, "the shell stands at the origin, the house's frame")
+	var runtime := LevelRuntime.of(house)
+	_check(runtime != null and runtime.scene_file_path == RUNTIME and runtime.get_parent() == house, "the house has one instance of the level runtime")
 	for n: String in ["Player", "Parts", "Session", "Session/Roster", "Socks/Mess", "Socks/Hands", "Socks/Knockdowns", "Socks/Coins",
 			"Avatars", "FlightSpawner", "Net", "Net/Hud/Mode"]:
-		_check(house.get_node_or_null(n) != null, "the house has its %s, as the zoo" % n)
-	var net := house.get_node("Net")
-	_check(net is LevelNet and not net is ZooNet, "its co-op start is the game's LevelNet")
+		_check(runtime.get_node_or_null(n) != null, "the house has its %s, as the zoo" % n)
+	var net := runtime.net
+	_check(net is LevelNet, "its co-op start is the game's LevelNet")
 	_same((net as LevelNet).place_name(), "house", "which names the house")
-	var parts := house.get_node("Parts") as Parts
+	var parts := LevelRuntime.of(house).parts
 	var door := house.get_node("Furniture/Fridge/Door_Top/Openable") as Part
 	_check(door != null and door.parts == parts, "the furniture's openings are bound to the house's Parts (%s)" % (door.id if door != null else &""))
 	var fresh := (load(HOUSE) as PackedScene).instantiate()
@@ -885,26 +910,41 @@ func case_h03_lights() -> void:
 func case_h04_coop() -> void:
 	var alone := _branch("Alone")
 	await _frames(2)
-	var alone_net := alone.get_node("Net") as LevelNet
-	_check(not (alone.get_node("Session") as Session).is_online() and alone.get_node("Players").get_child_count() == 0,
+	var alone_net := LevelRuntime.of(alone).net
+	_check(not LevelRuntime.of(alone).session.is_online() and LevelRuntime.of(alone).players.get_child_count() == 0,
 			"alone, the house opens no network and has no avatars")
 	_check(alone_net.mode_text().begins_with("Alone"), "the corner says: %s" % alone_net.mode_text())
 	var host := _branch("Host")
 	var guest := _branch("Guest")
 	await _frames(2)
-	var hs := host.get_node("Session") as Session
+	var hs := LevelRuntime.of(host).session
 	hs.port = 0
 	hs.profile = PlayerProfile.fresh()
-	_check((host.get_node("Net") as LevelNet).start(["--host"]) == OK, "the house hosts")
-	var gs := guest.get_node("Session") as Session
+	_check(LevelRuntime.of(host).net.start(["--host"]) == OK, "the house hosts")
+	var gs := LevelRuntime.of(guest).session
 	gs.profile = PlayerProfile.fresh()
-	_check((guest.get_node("Net") as LevelNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "another house joins it")
-	await _until(func() -> bool: return (guest.get_node("Net") as LevelNet).mode_text().begins_with("Joined"), "the guest to be welcomed")
-	_check((guest.get_node("Net") as LevelNet).mode_text().contains("house"), "into the host's house: %s" % (guest.get_node("Net") as LevelNet).mode_text())
+	# house/09: the Guest joins while the Host still lays its Socks; it is welcomed only once they are laid.
+	var host_mess := LevelRuntime.of(host).mess
+	_check(host_mess.is_laying(), "the guest joins while the host still lays its Socks")
+	var laying_at_welcome: Array[bool] = []
+	gs.welcomed.connect(func() -> void: laying_at_welcome.append(host_mess.is_laying()))
+	_check(LevelRuntime.of(guest).net.start(["--join=127.0.0.1:%d" % hs.port]) == OK, "another house joins it")
+	await _until(func() -> bool: return LevelRuntime.of(guest).net.mode_text().begins_with("Joined"), "the guest to be welcomed")
+	_check(LevelRuntime.of(guest).net.mode_text().contains("house"), "into the host's house: %s" % LevelRuntime.of(guest).net.mode_text())
+	_check(laying_at_welcome == [false], "the guest waited for the host's Socks to be laid (%s)" % [laying_at_welcome])
 	var g_id := gs.me()
-	var ha := host.get_node("Avatars") as Avatars
-	var ga := guest.get_node("Avatars") as Avatars
+	var ha := LevelRuntime.of(host).avatars
+	var ga := LevelRuntime.of(guest).avatars
 	await _until(func() -> bool: return ha.of(g_id) != null and ga.of(1) != null, "each house to show the other's avatar")
+	# house/05: the Guest sees the Host's Mess, the generated Socks where the Host laid them.
+	var hm := LevelRuntime.of(host).mess
+	var gm := LevelRuntime.of(guest).mess
+	await _until(func() -> bool: return gm.count() == hm.count(), "the guest's Mess to have the host's Socks")
+	var differ := 0
+	for sock in hm.count():
+		if gm.designs[sock] != hm.designs[sock] or not gm.pose_of(sock).origin.is_equal_approx(hm.pose_of(sock).origin):
+			differ += 1
+	_check(hm.count() > 900 and differ == 0, "the guest sees the host's %d Socks, each its Design where it lies (%d differ)" % [hm.count(), differ])
 	_drop_branches()
 
 
@@ -927,7 +967,8 @@ func _branch(label: String) -> Node3D:
 ## Every co-op machine goes: its session closes, then the nodes, then its MultiplayerAPI.
 func _drop_branches() -> void:
 	for node in _branches:
-		var session := node.get_node_or_null("View/House/Session") as Session
+		var house := node.get_node_or_null("View/House")
+		var session := LevelRuntime.of(house).session if house != null else null
 		if session != null:
 			session.close()
 		var path := node.get_path()
@@ -935,3 +976,394 @@ func _drop_branches() -> void:
 		node.free()
 		get_tree().set_multiplayer(null, path)
 	_branches.clear()
+
+
+# --- The Mess in the house (house/05) -----------------------------------------------------------
+
+## Each floor's generator: its floor height, the old stage's Pairs (stages.json "pairs") and the
+## Collections of the floor's two Cabinets (stages.json "floors").
+const GENERATORS := {
+	"Basement": [-3.0, 50, [&"simple", &"sport"]], "Ground": [0.0, 160, [&"food", &"patterns"]],
+	"First": [3.0, 150, [&"animals", &"superhero"]], "Attic": [6.0, 130, [&"winter", &"space"]],
+}
+## The old cabinet_spots (house_layout.json) moved to the plan: name, Collection, x, floor, z, yaw.
+const CABINETS: Array[Array] = [
+	["Laundry", &"simple", 1.42, -3.0, 8.15, PI], ["Garage", &"sport", 10.15, -3.0, 7.30, -PI / 2],
+	["Kitchen", &"food", 0.35, 0.0, 4.99, PI / 2], ["Living", &"patterns", 10.15, 0.0, 2.08, -PI / 2],
+	["KidsNorth", &"animals", 7.84, 3.0, 3.81, 0.0], ["KidsEast", &"superhero", 10.15, 3.0, 5.38, -PI / 2],
+	["LoftWest", &"winter", 0.35, 6.0, 4.26, PI / 2], ["LoftEast", &"space", 10.15, 6.0, 4.26, -PI / 2],
+]
+## The kitchen's inside faces (house-kit-plan.md "Rooms").
+const KITCHEN := Rect2(0.1, 0.1, 3.84, 8.3)
+## The player's own collision layer (furniture's PlayerBody, docs/architecture/furniture.md).
+const PLAYER_BODY := 8
+
+
+func _generator(house: Node3D, floor_name: String) -> SockGenerator:
+	return house.get_node("SockGenerators/" + floor_name) as SockGenerator
+
+
+func case_h05_mess() -> void:
+	var house := await _level_up()
+	var mess := LevelRuntime.of(house).mess
+	var cat := mess.catalogue
+	var total := 0
+	var all_kinds: Dictionary[int, int] = {}
+	for floor_name: String in GENERATORS:
+		var want: Array = GENERATORS[floor_name]
+		var gen := _generator(house, floor_name)
+		var made := gen.get_node("Generated") as GeneratedSocks
+		var trail := 0
+		for node in gen.get_children():
+			if node is SockTrail:
+				trail += (node as SockTrail).socks
+		var area := gen.get_node("Floor") as SockArea
+		_same(area.pairs, want[1], "%s: the old stage's %d Pairs" % [floor_name, want[1]])
+		_check(area.heap, "%s: its floor Socks gather in Heaps, as on the old game's every floor" % floor_name)
+		var asked := area.pairs * 2 + trail
+		_check(made.socks >= asked - 2 and made.socks % 2 == 0,
+				"%s: its Socks lie (%d of %d asked, %s)" % [floor_name, made.socks, asked, gen.last_report])
+		total += made.socks
+		var wrong_floor := 0
+		var wrong_design := 0
+		for sock in range(made.first, made.first + made.socks):
+			var y := mess.pose_of(sock).origin.y
+			if y < float(want[0]) - 0.05 or y > float(want[0]) + 3.0:
+				wrong_floor += 1
+			if not (want[2] as Array).has(cat.design(mess.designs[sock]).collection):
+				wrong_design += 1
+		_check(wrong_floor == 0, "%s: every Sock lies on its floor or its stair (%d do not)" % [floor_name, wrong_floor])
+		_check(wrong_design == 0, "%s: every Sock is of its floor's Cabinets' Collections %s (%d are not)" % [floor_name, want[2], wrong_design])
+		var laying := gen.lay(made.seed, mess.lying_boxes(made.first, made.first + made.socks))
+		var kinds: Dictionary[int, int] = {}
+		for row: Dictionary in laying.rows:
+			kinds[int(row["kind"])] = kinds.get(int(row["kind"]), 0) + 1
+		for k: int in [SockArea.Kind.FLOOR, SockArea.Kind.TOP]:
+			_check(kinds.get(k, 0) > 0, "%s: Socks on %s places (%s; %s)" % [floor_name, SockArea.Kind.keys()[k], kinds, gen.last_report])
+		# Hidden: inside and under furniture.
+		var hidden: int = kinds.get(SockArea.Kind.INSIDE, 0) + kinds.get(SockArea.Kind.UNDER, 0)
+		_check(hidden > 0, "%s: Socks hidden inside and under furniture (%s; %s)" % [floor_name, kinds, gen.last_report])
+		for k: int in kinds:
+			all_kinds[k] = all_kinds.get(k, 0) + kinds[k]
+	for k: int in SockArea.Kind.values():
+		_check(all_kinds.get(k, 0) > 0, "the house has Socks on %s places (%d)" % [SockArea.Kind.keys()[k], all_kinds.get(k, 0)])
+	Log.info("house", "house/05: the house's Socks by kind %s" % [all_kinds])
+	# house/09: the attic's two trunks hold Socks inside (their Inside on the lump in their bottom).
+	var attic := _generator(house, "Attic").get_node("Generated") as GeneratedSocks
+	var in_trunks := {}
+	for trunk_name: String in ["TrunkA", "TrunkB"]:
+		var box := house.get_node("Furniture/%s/Lid/Inside/Box" % trunk_name) as CollisionShape3D
+		var half := (box.shape as BoxShape3D).size * 0.5 + Vector3(0.01, 0.01, 0.01)
+		var n := 0
+		for sock in range(attic.first, attic.first + attic.socks):
+			var local := box.global_transform.affine_inverse() * mess.pose_of(sock).origin
+			if absf(local.x) <= half.x and absf(local.y) <= half.y and absf(local.z) <= half.z:
+				n += 1
+		in_trunks[trunk_name] = n
+	Log.info("house", "house/09: Socks inside the attic's trunks %s" % [in_trunks])
+	_check(in_trunks.values().all(func(n: int) -> bool: return n >= 3 and n <= 7), "each attic trunk holds about 5 Socks inside, as the old game (Q2576: %s)" % [in_trunks])
+	# The laying time of the whole house in one frame (core/52's [later]): every generator again.
+	var t0 := Time.get_ticks_usec()
+	for floor_name: String in GENERATORS:
+		var made := _generator(house, floor_name).get_node("Generated") as GeneratedSocks
+		_generator(house, floor_name).records(made.seed, cat, mess.lying_boxes(made.first, made.first + made.socks))
+	var ms := (Time.get_ticks_usec() - t0) / 1000.0
+	Log.info("house", "house/05: the house's %d generated Socks are laid in %.0f ms" % [total, ms])
+	_check(total > 900, "the house's floors hold %d Socks, laid in %.0f ms in one frame" % [total, ms])
+	for c: Array in CABINETS:
+		var root := house.get_node_or_null("Cabinets/" + String(c[0])) as Node3D
+		var cab := root.get_node_or_null("Cabinet") as Cabinet if root != null else null
+		_check(cab != null and cab.collection == c[1], "the %s Cabinet holds %s" % [c[0], c[1]])
+		if root != null:
+			_check(root.global_position.distance_to(Vector3(c[2], c[3], c[4])) < 0.01 and absf(angle_difference(root.rotation.y, c[5])) < 0.01,
+					"the %s Cabinet stands at the old spot, its back to the wall (%s)" % [c[0], root.global_position])
+		if cab != null:
+			_check(cab.hands == LevelRuntime.of(house).hands and cab.coins != null, "the %s Cabinet shelves through the house's Hands and pays its Coins" % c[0])
+
+
+func case_h05_stair_treads() -> void:
+	var house := await _level_up()
+	var mess := LevelRuntime.of(house).mess
+	var trails := 0
+	var flat := 0
+	for floor_name: String in GENERATORS:
+		var gen := _generator(house, floor_name)
+		var made := gen.get_node("Generated") as GeneratedSocks
+		var laying := gen.lay(made.seed, mess.lying_boxes(made.first, made.first + made.socks))
+		for row: Dictionary in laying.rows:
+			if int(row["kind"]) != SockArea.Kind.TRAIL:
+				continue
+			trails += 1
+			var pose: Transform3D = row["pose"]
+			var hit := PhysicsQueries.ray(house, pose.origin + Vector3.UP * 0.01, pose.origin + Vector3.DOWN * 0.02, SockTrail.LAYER_TREADS)
+			if pose.basis.y.normalized().dot(Vector3.UP) > 0.999 and not hit.is_empty():
+				flat += 1
+	_same(trails, 12, "the stairs hold the old 6 trail Socks and 6 more on single steps")
+	_same(flat, trails, "every one lies flat on a tread")
+	var player := LevelRuntime.of(house).player
+	_check(player.collision_mask & SockTrail.LAYER_TREADS == 0, "the player does not collide with the treads: it walks the ramp")
+	var tread := house.get_node("Shell/Ground/Stair/StairU/Treads") as StaticBody3D
+	_check(tread.collision_layer == SockTrail.LAYER_TREADS and tread.collision_mask == 0, "the stair's treads are on their own layer only")
+
+
+## Whether the lying Sock `sock` is open to the eye: nothing of the house or another Sock over it.
+func _open_sock(mess: Mess, sock: int) -> bool:
+	if mess.state_of(sock) != Mess.State.LYING:
+		return false
+	var at := mess.pose_of(sock).origin
+	return PhysicsQueries.ray(mess, at + Vector3.UP * 0.06, at + Vector3.UP * 2.2, Mess.LAYER_HOUSE | Mess.LAYER_LYING).is_empty()
+
+
+## A place 1-1.6 m from `target` on the ground floor where the player stands and sees it, or INF.
+func _spot_seeing(mess: Mess, target: Vector3) -> Vector3:
+	var probe := BoxShape3D.new()
+	probe.size = Vector3(0.6, 1.5, 0.6)
+	for r: float in [1.0, 1.3, 1.6]:
+		for k in 12:
+			var a := TAU * k / 12.0
+			var at := Vector3(target.x + cos(a) * r, 0.0, target.z + sin(a) * r)
+			var floor_hit := PhysicsQueries.ray(mess, at + Vector3.UP * 1.0, at + Vector3.DOWN * 0.3, Mess.LAYER_HOUSE)
+			if floor_hit.is_empty() or absf((floor_hit["position"] as Vector3).y) > 0.05:
+				continue
+			if not PhysicsQueries.overlap_rids(mess, probe, Transform3D(Basis.IDENTITY, at + Vector3.UP * 0.85), Mess.LAYER_HOUSE | PLAYER_BODY, 1).is_empty():
+				continue
+			if PhysicsQueries.ray(mess, at + Vector3.UP * 1.5, target, Mess.LAYER_HOUSE).is_empty():
+				return at
+	return Vector3.INF
+
+
+func case_real_path_kitchen_loop() -> void:
+	var house := await _level_up()
+	var runtime := LevelRuntime.of(house)
+	var mess := runtime.mess
+	var hands := runtime.hands
+	var player := runtime.player
+	var made := _generator(house, "Ground").get_node("Generated") as GeneratedSocks
+	# A food Sock lying open in the kitchen whose mate lies open too, each with a place to stand and see it.
+	var first := -1
+	var mate := -1
+	var spots: Array[Vector3] = []
+	for sock in range(made.first, made.first + made.socks):
+		var at := mess.pose_of(sock).origin
+		# On the floor itself (house/09: not on another Sock of a Heap, where a pick may take the column).
+		if mess.design_of(sock).collection != &"food" or not KITCHEN.has_point(Vector2(at.x, at.z)) or at.y > 0.01 or not _open_sock(mess, sock):
+			continue
+		var other := -1
+		for o in range(made.first, made.first + made.socks):
+			if o != sock and mess.designs[o] == mess.designs[sock]:
+				other = o
+		if other < 0 or mess.pose_of(other).origin.y > 0.01 or not _open_sock(mess, other):
+			continue
+		var s1 := _spot_seeing(mess, _sock_centre(mess, sock))
+		var s2 := _spot_seeing(mess, _sock_centre(mess, other))
+		if s1 != Vector3.INF and s2 != Vector3.INF:
+			first = sock
+			mate = other
+			spots = [s1, s2]
+			break
+	_check(first >= 0, "a food Pair lies open in the kitchen (%d, %d)" % [first, mate])
+	if first < 0:
+		return
+	player.capture_mouse()   # the mouse is the player's: buttons act (R01)
+	_stand_player(player, spots[0])
+	await _aim_player(player, _sock_centre(mess, first))
+	await _press_action(&"pick")
+	await _until(func() -> bool: return hands.active_of(1) == first, "the kitchen Sock to be in the Hands")
+	await _physics_ticks(25)
+	_stand_player(player, spots[1])
+	await _aim_player(player, _sock_centre(mess, mate))
+	await _press_action(&"pick")
+	await _until(func() -> bool: return mess.is_pair(first) or mess.is_pair(mate), "its mate to fuse into a Pair")
+	var pair := first if mess.is_pair(first) else mate
+	var root := house.get_node("Cabinets/Kitchen") as Node3D
+	var cab := root.get_node("Cabinet") as Cabinet
+	_stand_player(player, root.global_transform * Vector3(0.0, 0.0, 1.2))
+	var front := root.get_node("Drawer1/Looks/Slide/Front") as Node3D
+	await _aim_player(player, front.global_position + root.global_basis.z * 0.02)
+	await _press_action(&"pick")
+	await _until(func() -> bool: return cab.contents(0).has(pair), "the Pair to be shelved in the kitchen's Cabinet")
+	_check(mess.state_of(pair) == Mess.State.SHELVED and hands.items_of(1).is_empty(), "the Pair is shelved and the Hands are empty")
+	_check(runtime.coins.of_player(1) > 0, "the player earned Coins (%d)" % runtime.coins.of_player(1))
+
+
+func _sock_centre(mess: Mess, sock: int) -> Vector3:
+	return mess.pose_of(sock) * Vector3(0.0, SockDress.box(mess.design_of(sock)).y * 0.5, 0.0)
+
+
+func _stand_player(player: Player, at: Vector3) -> void:
+	player.global_position = at
+	player.velocity = Vector3.ZERO
+	player.reset_physics_interpolation()
+
+
+## Turns the body to `target` and pitches the head at it, as the mouse would.
+func _aim_player(player: Player, target: Vector3) -> void:
+	var head := player.get_node("Head") as Node3D
+	var to := target - player.global_position
+	player.rotation.y = atan2(-to.x, -to.z)
+	var up := target - head.global_position
+	head.rotation.x = atan2(up.y, Vector2(up.x, up.z).length())
+	await _physics_ticks(2)
+
+
+func _press_action(action: StringName) -> void:
+	Input.action_press(action)
+	await _physics_ticks(2)
+	Input.action_release(action)
+	await _physics_ticks(2)
+
+
+# --- Laid without a freeze (house/09) ------------------------------------------------------------
+
+## The loading screen's words (Q2579: "Loading the house...", a New Game too).
+const LOADING_TEXT := "Loading the house..."
+
+
+func case_real_path_loading_screen() -> void:
+	_level = (load(HOUSE) as PackedScene).instantiate() as Node3D
+	add_child(_level)
+	var rt := LevelRuntime.of(_level)
+	var screen := rt.loading
+	var mess := rt.mess
+	var player := rt.player
+	var spots := mess.count()
+	_check(screen.is_showing() and screen.text() == LOADING_TEXT, "F5: the loading screen says \"%s\"" % screen.text())
+	_check(mess.is_laying() and get_viewport().disable_3d, "the house's Socks are being laid; the level's 3D is not drawn")
+	_check(not rt.parts.is_settled(), "a joining Guest would wait")
+	var start := player.global_position
+	Input.action_press(&"move_forward")
+	var counts: Dictionary[int, bool] = {}
+	var went_down := false
+	var last := 0.0
+	var moved_while := 0.0
+	var frames := 0
+	while screen.is_showing() and frames < 3000:
+		await get_tree().process_frame
+		frames += 1
+		counts[mess.count()] = true
+		if screen.shown_progress() < last:
+			went_down = true
+		last = screen.shown_progress()
+		if mess.is_laying():
+			moved_while = maxf(moved_while, player.global_position.distance_to(start))
+	_check(not screen.is_showing(), "the loading screen goes once the Socks are laid (%d frames)" % frames)
+	_check(screen.frames > 1, "the laying took %d frames, a slice each" % screen.frames)
+	_check(not went_down and is_equal_approx(last, 1.0), "the bar only fills, to the end (%.2f)" % last)
+	var full := mess.count()
+	_check(full > spots + 900 and counts.keys().all(func(n: int) -> bool: return n == spots or n == full),
+			"the %d Socks appear all at once (counts seen %s)" % [full - spots, counts.keys()])
+	_check(moved_while < 0.01, "the player stands at the spawn while the Socks are laid, walk pressed (%.3f m)" % moved_while)
+	_check(not get_viewport().disable_3d and rt.parts.is_settled(), "the level draws again; a Guest may join")
+	var lifted_at := player.global_position
+	var walked := await _until(func() -> bool: return player.global_position.distance_to(lifted_at) > 0.3, "the player to walk")
+	Input.action_release(&"move_forward")
+	_check(walked, "then the player walks")
+	var laying_longest := 0
+	for k in screen.slices.size() - 1:
+		laying_longest = maxi(laying_longest, screen.slices[k])
+	Log.info("house", "house/09: the house's Socks laid in %d frames, the longest slice of laying %.1f ms (budget %.1f ms), the reveal %.1f ms, the longest frame %.1f ms" % [
+			screen.frames, laying_longest / 1000.0, screen.tuning.slice_ms, screen.slices[-1] / 1000.0, screen.longest_frame / 1000.0])
+
+
+
+func case_h09_slices_within_budget() -> void:
+	var mark := _cpu_mark()
+	_level = (load(HOUSE) as PackedScene).instantiate() as Node3D
+	add_child(_level)
+	var screen := LevelRuntime.of(_level).loading
+	await _until(func() -> bool: return not screen.is_showing(), "the house's Socks to be laid", 3000)
+	var budget := screen.tuning.slice_ms
+	# The last slice is the reveal (every Sock joins the Mess and is drawn, all at once, Q2523), not laying.
+	var laying := screen.slices.slice(0, screen.slices.size() - 1)
+	var over: Array[float] = []
+	var longest := 0
+	for s in laying:
+		longest = maxi(longest, s)
+		if s / 1000.0 > budget:
+			over.append(s / 1000.0)
+	Log.info("house", "house/09: %d slices of laying, the longest %.1f ms (budget %.0f ms); the reveal %.1f ms; longest frame %.1f ms" % [
+			laying.size(), longest / 1000.0, budget, screen.slices[-1] / 1000.0, screen.longest_frame / 1000.0])
+	_budget(over.is_empty(), "no slice of laying runs past %.0f ms (%d of %d do: %s)" % [
+			budget, over.size(), laying.size(), over], mark)
+
+
+func case_h09_same_seed_sliced() -> void:
+	var at_once := _house_view("AtOnce", func(house: Node3D) -> void:
+		(house.get_node("Runtime") as LevelRuntime).load_screen = false)
+	var a := LevelRuntime.of(at_once)
+	_check(not a.mess.is_laying() and not a.loading.is_showing(), "with no loading screen the Socks are laid before the level is ready")
+	# As laid, before a tick of the Mess (a Sock with nothing under it falls at the next tick, core/55).
+	var a_designs := a.mess.designs.duplicate()
+	var a_poses := a.mess.poses.duplicate()
+	var sliced := _house_view("Sliced", func(_house: Node3D) -> void: pass)
+	var b := LevelRuntime.of(sliced)
+	# Its screen's slices (8 ms, more frames than its own 14), taken here so the records are read the moment the last is laid.
+	b.loading.set_process(false)
+	var frames := 0
+	var done := false
+	while not done and frames < 6000:
+		await get_tree().process_frame
+		frames += 1
+		done = b.mess.lay_step(Time.get_ticks_usec() + 8000)
+	var b_designs := b.mess.designs.duplicate()
+	var b_poses := b.mess.poses.duplicate()
+	b.loading.set_process(true)
+	_check(done and frames > 50, "the other house laid them over %d frames" % frames)
+	_check(a_designs.size() > 900 and a_designs == b_designs, "the same Designs in the same order (%d and %d Socks)" % [a_designs.size(), b_designs.size()])
+	var differ: Array[int] = []
+	for sock in mini(a_designs.size(), b_designs.size()):
+		if not Mess.unpack(a_poses, sock).is_equal_approx(Mess.unpack(b_poses, sock)):
+			differ.append(sock)
+	_check(a_poses == b_poses, "every Sock lies at the same pose (%d differ: %s)" % [differ.size(), differ.slice(0, 8)])
+	for floor_name: String in GENERATORS:
+		var ga := _generator(at_once, floor_name).get_node("Generated") as GeneratedSocks
+		var gb := _generator(sliced, floor_name).get_node("Generated") as GeneratedSocks
+		_check(ga.seed == gb.seed and ga.first == gb.first and ga.socks == gb.socks,
+				"%s: the same seed and records (%d from %d)" % [floor_name, gb.socks, gb.first])
+
+
+## A house in its own world (a SubViewport) and MultiplayerAPI, `setup` called on it before it
+## enters the tree; dropped with the co-op branches.
+func _house_view(label: String, setup: Callable) -> Node3D:
+	var node := Node.new()
+	node.name = label
+	add_child(node)
+	get_tree().set_multiplayer(SceneMultiplayer.new(), node.get_path())
+	var view := SubViewport.new()
+	view.name = "View"
+	view.own_world_3d = true
+	view.size = Vector2i(64, 64)
+	node.add_child(view)
+	var house := (load(HOUSE) as PackedScene).instantiate() as Node3D
+	setup.call(house)
+	view.add_child(house)
+	_branches.append(node)
+	return house
+
+
+func case_h09_trail_stays_on_treads() -> void:
+	var house := await _level_up()
+	var mess := LevelRuntime.of(house).mess
+	var trails := 0
+	for floor_name: String in GENERATORS:
+		for node in _generator(house, floor_name).get_children():
+			if node is SockTrail:
+				trails += (node as SockTrail).socks
+	var first := _on_treads(mess)
+	await _physics_ticks(120)
+	var after := _on_treads(mess)
+	_check(first.size() == trails, "the %d trail Socks lie flat on the treads (%d do)" % [trails, first.size()])
+	_check(after == first, "after 120 ticks every one still lies on its tread (%d of %d)" % [after.size(), first.size()])
+
+
+## The lying Socks whose middle has a stair's tread just under it (within 1 cm), by id.
+func _on_treads(mess: Mess) -> Array[int]:
+	var out: Array[int] = []
+	for sock in mess.count():
+		if mess.state_of(sock) != Mess.State.LYING:
+			continue
+		var p := mess.pose_of(sock).origin
+		var hit := PhysicsQueries.ray(mess, p + Vector3.UP * 0.005, p + Vector3.DOWN * 0.01, SockTrail.LAYER_TREADS)
+		if not hit.is_empty() and (hit["collider"] as Node).name == SockTrail.TREADS:
+			out.append(sock)
+	return out

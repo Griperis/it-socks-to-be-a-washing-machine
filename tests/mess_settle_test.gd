@@ -126,15 +126,15 @@ func _real_path(extra: int, floor_margin := -1.0) -> void:
 		var thin := floor_shape.shape.duplicate() as BoxShape3D
 		thin.margin = floor_margin
 		floor_shape.shape = thin
-	var spots := _zoo.get_node("Spots") as Node3D
+	var spots := LevelRuntime.of(_zoo).spots
 	for k in extra:
 		var spot := SockSpot.new()
 		spot.design = 4 + k
 		spot.position = EXTRA_AT + Vector3(0.4 * k, 0.0, 0.0)
 		spots.add_child(spot)
 	add_child(_zoo)
-	var mess := _zoo.get_node("Socks/Mess") as Mess
-	var player := _zoo.get_node("Player") as Player
+	var mess := LevelRuntime.of(_zoo).mess
+	var player := LevelRuntime.of(_zoo).player
 	var station := _zoo.get_node(HEAP) as Node3D
 	var spout := station.get_node("Spout/HeapSpout") as HeapSpout
 	await _until(func() -> bool: return player.is_on_floor() and mess.body_count() > 0, "the player to stand and the Socks to lie", 600)
@@ -169,7 +169,7 @@ func _real_path(extra: int, floor_margin := -1.0) -> void:
 			"every poured Sock lies (%d of %d)" % [mess.states.slice(before).count(Mess.State.LYING), spout.tuning.batch])
 	_check(int(r["moving"]) == 0 and int(r["waiting"]) == 0, "no Sock moves or waits (%d, %d)" % [r["moving"], r["waiting"]])
 	_no_faults(r)
-	_check(_interpolated(_zoo.get_node("Lying")) == 0, "no MultiMesh of the Mess is physics-interpolated (%d)" % _interpolated(_zoo.get_node("Lying")))
+	_check(_interpolated(LevelRuntime.of(_zoo).lying) == 0, "no MultiMesh of the Mess is physics-interpolated (%d)" % _interpolated(LevelRuntime.of(_zoo).lying))
 
 
 # --- core/54: put to sleep mid-turn ---------------------------------------------------------------

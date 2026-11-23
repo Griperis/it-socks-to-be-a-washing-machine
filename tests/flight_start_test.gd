@@ -151,7 +151,7 @@ func case_t01_heap() -> void:
 	spout.tuning = t
 	var first := _mess.count()
 	_player.global_position = station.to_global(Vector3(0.0, 0.0, -4.5))
-	(_zoo.get_node("Parts") as Parts).ask(Command.new(&"more", 1, spout.id, {}))
+	LevelRuntime.of(_zoo).parts.ask(Command.new(&"more", 1, spout.id, {}))
 	var rises: Dictionary[int, float] = {}
 	var lows: Dictionary[int, float] = {}
 	await _watch(func() -> bool:
@@ -171,8 +171,8 @@ func case_t01_heap() -> void:
 func case_t01_every() -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
-	_mess = _zoo.get_node("Socks/Mess") as Mess
-	_player = _zoo.get_node("Player") as Player
+	_mess = LevelRuntime.of(_zoo).mess
+	_player = LevelRuntime.of(_zoo).player
 	var ticks: Array[int] = [0]
 	await _watch(func() -> bool:
 		ticks[0] += 1
@@ -363,8 +363,8 @@ func _build() -> void:
 func _zoo_up() -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
-	_mess = _zoo.get_node("Socks/Mess") as Mess
-	_player = _zoo.get_node("Player") as Player
+	_mess = LevelRuntime.of(_zoo).mess
+	_player = LevelRuntime.of(_zoo).player
 	await _until(func() -> bool: return _player.is_on_floor() and _mess.looks_of(_mess.count() - 1) != null, "the player to stand and every Sock to lie", 600)
 	_mess.return_looks(_mess.count() - 1)
 

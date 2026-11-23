@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://b1swfovsquwoe"]
+
+[ext_resource type="Script" uid="uid://brxnqbog8u06f" path="res://game/ui/licence/licence.gd" id="1_licence"]
+[ext_resource type="Resource" uid="uid://b3mjth3k8ibvm" path="res://game/ui/licence/credits.tres" id="2_credits"]
+[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
+
+[node name="Licence" type="Control" unique_id=341517]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_licence")
+credits = ExtResource("2_credits")
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=349436]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -400.0
+offset_right = 480.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"TitlePanel"
+
+[node name="Box" type="VBoxContainer" parent="Panel" unique_id=357355]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Heading" type="Label" parent="Panel/Box" unique_id=365274]
+layout_mode = 2
+theme_type_variation = &"Heading1"
+text = "Licence"
+horizontal_alignment = 1
+
+[node name="Scroll" type="ScrollContainer" parent="Panel/Box" unique_id=373193]
+custom_minimum_size = Vector2(900, 560)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Column" type="VBoxContainer" parent="Panel/Box/Scroll" unique_id=381112]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Back" parent="Panel" instance=ExtResource("close_btn")]
+unique_name_in_owner = true

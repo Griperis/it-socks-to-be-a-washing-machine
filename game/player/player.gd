@@ -194,8 +194,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	elif event is InputEventMouseMotion and _captured:
 		var motion := event as InputEventMouseMotion
-		var step := tuning.look_sensitivity * tuning.look_scale * zoom_slow()
-		_turn(-motion.relative.x * step, -motion.relative.y * step * (-1.0 if tuning.invert_y else 1.0))
+		var step := tuning.look_sensitivity * Settings.get_float(Settings.MOUSE_SPEED) * zoom_slow()
+		_turn(-motion.relative.x * step, -motion.relative.y * step * _y_sign())
 	if _captured and (event.is_action_pressed(HANDS_NEXT) or event.is_action_pressed(HANDS_PREV)):
 		var h := hands()
 		if h != null and h.items_of(player_id()).size() > 1:
@@ -211,6 +211,11 @@ func _unhandled_input(event: InputEvent) -> void:
 func capture_mouse() -> void:
 	_captured = true
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+
+## The look's up-down sign: Options' Invert Y (a setting of this machine).
+func _y_sign() -> float:
+	return -1.0 if Settings.get_bool(Settings.INVERT_Y) else 1.0
 
 
 static func _is_wheel(event: InputEventMouseButton) -> bool:
@@ -368,8 +373,8 @@ func _process(delta: float) -> void:
 	if not _input_blocked:
 		var stick := Input.get_vector(LOOK_LEFT, LOOK_RIGHT, LOOK_UP, LOOK_DOWN)
 		if stick != Vector2.ZERO:
-			var step := deg_to_rad(tuning.pad_look_speed) * delta * zoom_slow()
-			_turn(-stick.x * step, -stick.y * step * (-1.0 if tuning.invert_y else 1.0))
+			var step := deg_to_rad(tuning.pad_look_speed) * Settings.get_float(Settings.PAD_SPEED) * delta * zoom_slow()
+			_turn(-stick.x * step, -stick.y * step * _y_sign())
 	_drive_own_body(delta)
 	_camera.global_transform = Transform3D(_head.global_basis, _head.get_global_transform_interpolated().origin)
 

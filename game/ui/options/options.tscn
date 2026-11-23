@@ -1,0 +1,183 @@
+[gd_scene format=3 uid="uid://ulysvrdttwr8"]
+
+[ext_resource type="Script" uid="uid://bpyxa4ruadhwg" path="res://game/ui/options/options.gd" id="1_options"]
+[ext_resource type="PackedScene" uid="uid://21yxowo6t1da" path="res://game/ui/options/choice_row.tscn" id="2_choice"]
+[ext_resource type="PackedScene" uid="uid://bar07nhyknsry" path="res://game/ui/options/slider_row.tscn" id="3_slider"]
+[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
+
+[node name="Options" type="Control" unique_id=270246]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_options")
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=278165]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -470.0
+offset_top = -460.0
+offset_right = 470.0
+offset_bottom = 460.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"TitlePanel"
+
+[node name="Box" type="VBoxContainer" parent="Panel" unique_id=286084]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Heading" type="Label" parent="Panel/Box" unique_id=294003]
+layout_mode = 2
+theme_type_variation = &"Heading1"
+text = "Options"
+horizontal_alignment = 1
+
+[node name="Scroll" type="ScrollContainer" parent="Panel/Box" unique_id=301922]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Rows" type="VBoxContainer" parent="Panel/Box/Scroll" unique_id=309841]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Graphics" parent="Panel/Box/Scroll/Rows" unique_id=143542 instance=ExtResource("2_choice")]
+layout_mode = 2
+key = "graphics/preset"
+title = "Graphics"
+values = ["auto", "low", "medium", "high"]
+labels = PackedStringArray("Auto", "Low", "Medium", "High")
+
+[node name="SSAO" parent="Panel/Box/Scroll/Rows" unique_id=151461 instance=ExtResource("2_choice")]
+layout_mode = 2
+key = "graphics/ssao"
+title = "SSAO"
+values = [0, 1]
+labels = PackedStringArray("Off", "On")
+
+[node name="Master" parent="Panel/Box/Scroll/Rows" unique_id=159380 instance=ExtResource("3_slider")]
+layout_mode = 2
+key = "audio/master_volume"
+title = "Master"
+min_value = 0.0
+max_value = 1.0
+step = 0.05
+percent = true
+
+[node name="Music" parent="Panel/Box/Scroll/Rows" unique_id=167299 instance=ExtResource("3_slider")]
+layout_mode = 2
+key = "audio/music_volume"
+title = "Music"
+min_value = 0.0
+max_value = 1.0
+step = 0.05
+percent = true
+
+[node name="Effects" parent="Panel/Box/Scroll/Rows" unique_id=175218 instance=ExtResource("3_slider")]
+layout_mode = 2
+key = "audio/sfx_volume"
+title = "Effects"
+min_value = 0.0
+max_value = 1.0
+step = 0.05
+percent = true
+
+[node name="Ambience" parent="Panel/Box/Scroll/Rows" unique_id=183137 instance=ExtResource("3_slider")]
+layout_mode = 2
+key = "audio/ambient_volume"
+title = "Ambience"
+min_value = 0.0
+max_value = 1.0
+step = 0.05
+percent = true
+
+[node name="Voices" parent="Panel/Box/Scroll/Rows" unique_id=191056 instance=ExtResource("3_slider")]
+layout_mode = 2
+key = "audio/voice_volume"
+title = "Voices"
+min_value = 0.0
+max_value = 1.0
+step = 0.05
+percent = true
+
+[node name="UI" parent="Panel/Box/Scroll/Rows" unique_id=198975 instance=ExtResource("3_slider")]
+layout_mode = 2
+key = "audio/ui_volume"
+title = "UI"
+min_value = 0.0
+max_value = 1.0
+step = 0.05
+percent = true
+
+[node name="Mousespeed" parent="Panel/Box/Scroll/Rows" unique_id=206894 instance=ExtResource("3_slider")]
+layout_mode = 2
+key = "input/mouse_speed"
+title = "Mouse speed"
+min_value = 0.2
+max_value = 3.0
+step = 0.05
+percent = false
+
+[node name="InvertY" parent="Panel/Box/Scroll/Rows" unique_id=214813 instance=ExtResource("2_choice")]
+layout_mode = 2
+key = "input/invert_y"
+title = "Invert Y"
+values = [false, true]
+labels = PackedStringArray("Off", "On")
+
+[node name="Padspeed" parent="Panel/Box/Scroll/Rows" unique_id=222732 instance=ExtResource("3_slider")]
+layout_mode = 2
+key = "input/pad_speed"
+title = "Pad speed"
+min_value = 0.2
+max_value = 3.0
+step = 0.05
+percent = false
+
+[node name="Padrumble" parent="Panel/Box/Scroll/Rows" unique_id=230651 instance=ExtResource("2_choice")]
+layout_mode = 2
+key = "pad/rumble"
+title = "Pad rumble"
+values = [false, true]
+labels = PackedStringArray("Off", "On")
+
+[node name="Subtitles" parent="Panel/Box/Scroll/Rows" unique_id=238570 instance=ExtResource("2_choice")]
+layout_mode = 2
+key = "display/subtitles"
+title = "Subtitles"
+values = [false, true]
+labels = PackedStringArray("Off", "On")
+
+[node name="Display" parent="Panel/Box/Scroll/Rows" unique_id=246489 instance=ExtResource("2_choice")]
+layout_mode = 2
+key = "display/window_mode"
+title = "Display"
+values = ["windowed", "fullscreen"]
+labels = PackedStringArray("Windowed", "Fullscreen")
+
+[node name="Vsync" parent="Panel/Box/Scroll/Rows" unique_id=254408 instance=ExtResource("2_choice")]
+layout_mode = 2
+key = "display/vsync"
+title = "V-sync"
+values = [false, true]
+labels = PackedStringArray("Off", "On")
+
+[node name="FPScap" parent="Panel/Box/Scroll/Rows" unique_id=262327 instance=ExtResource("2_choice")]
+layout_mode = 2
+key = "display/fps_cap"
+title = "FPS cap"
+values = [0, 30, 60, 120, 144]
+labels = PackedStringArray("None", "30", "60", "120", "144")
+
+[node name="Back" parent="Panel" instance=ExtResource("close_btn")]
+unique_name_in_owner = true

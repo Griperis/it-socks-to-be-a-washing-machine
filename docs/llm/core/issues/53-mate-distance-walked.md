@@ -8,7 +8,7 @@ priority: later
 created: 2026-11-23
 done:
 blocked_by: [core/52-sock-generator]
-notes: ["Q2525"]
+notes: ["Q2525", "triaged to M5, by need (Q2533, 2026-11-23)"]
 terms: [Mess, Sock, Pair]
 ---
 

@@ -98,11 +98,11 @@ func colour_index_of(peer: int) -> int:
 
 
 ## The first colour not taken by a player in the Session, starting at `wanted` and wrapping round.
-func free_colour(wanted: int) -> int:
+func free_colour(wanted: int, among: Dictionary = players) -> int:
 	var count := maxi(tuning.colours.size(), 1)
 	var taken := {}
-	for pid: Variant in players:
-		var e: Dictionary = players[pid]
+	for pid: Variant in among:
+		var e: Dictionary = among[pid]
 		if int(e.get("peer", 0)) != 0:
 			taken[int(e.get("colour", -1))] = true
 	for i in count:
@@ -120,17 +120,24 @@ func free_colour(wanted: int) -> int:
 ## Returns the answer, for Parts.apply().
 func joined(pid: String, peer: int, who: String, hands := {}) -> Dictionary:
 	var all := players.duplicate(true)
+	if peer == HOST:
+		# This machine's own entry made alone under another profile (a test's) gives way: a peer is one player.
+		for other: Variant in all.keys():
+			if String(other) != pid and int((all[other] as Dictionary).get("peer", 0)) == HOST:
+				all.erase(other)
+	var others := all.duplicate()
+	others.erase(pid)
 	var before: Dictionary = all.get(pid, {})
 	var entry := {"peer": peer, "name": PlayerProfile.clean_name(who)}
 	if not hands.is_empty():
 		entry["hands"] = hands
 	if before.is_empty():
-		entry["colour"] = free_colour(0)
+		entry["colour"] = free_colour(0, others)
 		var spot := _spot_for(peer)
 		entry["at"] = spot.origin
 		entry["yaw"] = spot.basis.get_euler().y
 	else:
-		entry["colour"] = free_colour(int(before.get("colour", 0)))
+		entry["colour"] = free_colour(int(before.get("colour", 0)), others)
 		entry["at"] = before.get("at", Vector3.ZERO)
 		entry["yaw"] = before.get("yaw", 0.0)
 	all[pid] = entry
@@ -155,6 +162,23 @@ func left(by: int) -> Dictionary:
 	var ev := grant({"players": all})
 	ev["player"] = pid
 	return ev
+
+
+## What a save keeps (docs/architecture/saves.md): every entry, nobody playing (a load has nobody in
+## it until they join), each present player where they stand now and which way they face (Q296: each
+## starts the loaded game where they quit).
+func save_state() -> Dictionary:
+	var all := players.duplicate(true)
+	for pid: Variant in all:
+		var e: Dictionary = all[pid]
+		var peer := int(e.get("peer", 0))
+		if peer != 0:
+			var pose: Variant = _pose(peer)
+			if pose != null:
+				e["at"] = (pose as Transform3D).origin
+				e["yaw"] = (pose as Transform3D).basis.get_euler().y
+		e["peer"] = 0
+	return {"players": all}
 
 
 ## The Session is over on this machine (alone again): nobody is in it. Returns the answer.

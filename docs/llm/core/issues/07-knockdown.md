@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-info
+status: wontfix
 kind: build
 area: core
 feature: core
@@ -8,7 +8,7 @@ priority: next
 created: 2026-11-19
 done:
 blocked_by: ["[[05-coop-zoo-base]]", "[[06-ragdoll-pose-test]]"]
-notes: []
+notes: ["superseded by coop/10 (merged), closed 2026-11-23"]
 terms: []
 ---
 

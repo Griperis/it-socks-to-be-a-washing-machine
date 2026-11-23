@@ -10,7 +10,7 @@
 ## camera and it. Eight flat and eight world voices are used in turn, as in the old game. An
 ## instrument's notes (the piano: `Sounds.play_note(&"piano", 60, where)`) ring on voices of their own.
 ##
-## Buses are default_bus_layout.tres: Master, SFX, Ambient, Music, UI (their mix is the layout's
+## Buses are default_bus_layout.tres: Master, SFX, Ambient, Music, UI, Voice (Q2549; their mix is the layout's
 ## volume) and Muffled copies of the last three that send into them. The player's volume per bus is
 ## a setting ("audio/<bus>_volume", 0 to 1, default 1), multiplied onto the layout's mix.
 extends Node
@@ -32,6 +32,7 @@ const VOLUME_KEYS := {
 	&"Ambient": "audio/ambient_volume",
 	&"Music": "audio/music_volume",
 	&"UI": "audio/ui_volume",
+	&"Voice": "audio/voice_volume",
 }
 ## How many walls and doors one look from the listener to a sound goes through at most.
 const MUFFLE_HOPS := 6
@@ -335,6 +336,7 @@ func _stream_of(e: SoundEvent) -> AudioStream:
 	else:
 		var r := AudioStreamRandomizer.new()
 		r.random_pitch = 1.0 + catalogue.pitch_jitter
+		r.random_volume_offset_db = e.volume_jitter_db
 		r.playback_mode = AudioStreamRandomizer.PLAYBACK_RANDOM
 		for i in e.clips.size():
 			r.add_stream(i, e.clips[i])
