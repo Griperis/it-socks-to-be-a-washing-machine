@@ -26,6 +26,14 @@ extends Node3D
 ## Q2542); off: all in the start-up frame (the zoo's few).
 @export var load_screen := false
 
+## The World this level plays (core/58), set by the title before the level enters the tree; null
+## plays the level as built and saves nothing (F5, the zoo, tests, `--scene=`).
+var world: WorldSlot = null
+## Started from the title (not the command line): how the Net starts (`--host`, `--join=<where>`,
+## or nothing for alone), and a Guest whose session ends goes back to the title.
+var from_title := false
+var launch := PackedStringArray()
+
 const SPAWN := ^"Spawn"
 const RETURN_SPOT := ^"ReturnSpot"
 
@@ -66,8 +74,28 @@ func _enter_tree() -> void:
 	mess.return_spot = back if back != null else start
 	mess.bounds = mess_bounds
 	mess.lay_in_slices = load_screen
+	# A loaded World's Socks come from its save: the generators lay nothing (Q2579).
+	mess.skip_generated = world != null and not world.is_new
+	if has_node(^"LoadingScreen") and (launch_joins() or (not from_title and _joins_by_command_line())):
+		loading.set_heading(LoadingScreen.JOINING)
 	parts.level = level
 	net.place = place_name
+	autosave.world = world
+
+
+func _joins_by_command_line() -> bool:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--join="):
+			return true
+	return false
+
+
+## Whether the title started this level as a Guest (launch has `--join=`).
+func launch_joins() -> bool:
+	for arg in launch:
+		if arg.begins_with("--join="):
+			return true
+	return false
 
 
 ## The local body.
@@ -86,6 +114,10 @@ var net: LevelNet:
 	get: return get_node(^"Net") as LevelNet
 var parts: Parts:
 	get: return get_node(^"Parts") as Parts
+var autosave: Autosave:
+	get: return get_node(^"Autosave") as Autosave
+var esc_menu: EscMenu:
+	get: return get_node(^"EscMenu") as EscMenu
 ## The node the Mess, Hands, Knockdowns and Coins are under (ZooStations joins stations' to it).
 var socks: Node:
 	get: return get_node(^"Socks")

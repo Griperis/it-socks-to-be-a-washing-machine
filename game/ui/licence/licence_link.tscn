@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://fsw5qt0ev40s"]
+
+[node name="LicenceLink" type="LinkButton" unique_id=333598]
+size_flags_horizontal = 0
+theme_type_variation = &"LicenceLink"
+text = "https://"

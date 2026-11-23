@@ -99,6 +99,8 @@ const PACKED_SIZE := "packed_size"
 ## The bytes of one body in flight in a packed whole state: its origin (3 floats), turn (a quaternion)
 ## and velocity and spin (3 each), as half floats.
 const MOTION := 12 + 10 * 2
+## How many physics steps a save follows a flying Sock to where it lands (landing_pose()).
+const LANDING_STEPS := 600
 ## The name of the holder of the bodies no spawner sees (bodies_holder()).
 const BODIES := "Bodies"
 
@@ -194,6 +196,8 @@ var more_spots: Array[Node3D] = []
 ## Lays the generators' starting Socks a slice per frame (lay_step(), the level's loading screen)
 ## instead of before the level binds (LevelRuntime.load_screen, house/09).
 var lay_in_slices := false
+## A loaded World's Socks come whole from its save: the generators lay nothing (LevelRuntime, core/58).
+var skip_generated := false
 ## The generators' starting Socks while they are being laid, else null. Not state: work in hand, given
 ## up when a whole state is written (a Guest's snapshot).
 var starting: StartingSocks
@@ -221,7 +225,7 @@ func _ready() -> void:
 		var gen := node as GeneratedSocks
 		if gen != null and gen.mess == self:
 			gens.append(gen)
-	if not gens.is_empty():
+	if not gens.is_empty() and not skip_generated:
 		MessBodies.fit(MessDrawing.sock_points(), bodies_tuning().min_thick)
 		starting = StartingSocks.new(self, gens)
 		if not lay_in_slices:
@@ -725,6 +729,67 @@ func whole_state() -> Dictionary:
 	var raw := var_to_bytes({"designs": designs, "states": states, "mates": mates, "throws": throws,
 			"poses": poses, "moving": socks, "motion": motion})
 	return {PACKED: raw.compress(FileAccess.COMPRESSION_ZSTD), PACKED_SIZE: raw.size()}
+
+
+## What a save keeps (Q2560, as the old): the whole state with every Sock in the air laid where it
+## would land, no launch left; the live game is untouched.
+func save_state() -> Dictionary:
+	var lay_states := states.duplicate()
+	var lay_poses := poses.duplicate()
+	for sock in count():
+		if states[sock] != State.FLYING:
+			continue
+		var landed := pack(landing_pose(sock))
+		lay_states[sock] = State.LYING
+		for k in POSE:
+			lay_poses[sock * POSE + k] = landed[k]
+	var raw := var_to_bytes({"designs": designs, "states": lay_states, "mates": mates, "throws": {},
+			"poses": lay_poses, "moving": PackedInt32Array(), "motion": PackedByteArray()})
+	return {PACKED: raw.compress(FileAccess.COMPRESSION_ZSTD), PACKED_SIZE: raw.size()}
+
+
+## Where flying Sock `sock` would come to lie: its path from where it is now (its body's, else its
+## record's pose and launch) stepped as the physics steps it until it meets the house or a lying
+## Sock, laid flat there with its turn about the up axis kept, then put down by the Host's rule
+## (put_down(): a lost one comes back at the return spot).
+func landing_pose(sock: int) -> Transform3D:
+	var body := moving_body(sock)
+	var from := body.global_transform if body != null else pose_of(sock)
+	var launch: Dictionary = throws.get(sock, {})
+	var vel: Vector3 = body.linear_velocity if body != null else launch.get("vel", Vector3.ZERO)
+	var damp := tuning.thrown_linear_damp if not launch.is_empty() and tuning != null else bodies_tuning().woken_linear_damp
+	var gravity := float(ProjectSettings.get_setting("physics/3d/default_gravity", 9.8))
+	var dt := 1.0 / float(Engine.physics_ticks_per_second)
+	var radius := SockDress.ball_radius(design_of(sock)) if is_pair(sock) else 0.0
+	var at := from.origin
+	var low := Vector3.DOWN * radius
+	var landed := false
+	for i in LANDING_STEPS:
+		vel = (vel + Vector3.DOWN * gravity * dt) * maxf(0.0, 1.0 - damp * dt)
+		var hit := PhysicsQueries.ray(self, at + low, at + low + vel * dt, AIM_MASK)
+		if not hit.is_empty():
+			at = (hit["position"] as Vector3) - low
+			landed = true
+			break
+		at += vel * dt
+	var turn := Basis(Vector3.UP, from.basis.get_euler().y)
+	var pose := Transform3D(turn, at)
+	if not landed:
+		return return_pose(sock)
+	var put := put_down(sock, pose)
+	return put.get("pose", pose)
+
+
+## The Host, after a load (Q2559): a Sock saved lying outside the playable space (lost) lies at the
+## return spot, as any lost Sock comes back.
+func loaded(_host: String) -> Dictionary:
+	if not bounds.has_volume():
+		return {}
+	var p := {}
+	for sock in count():
+		if states[sock] == State.LYING and not in_bounds(pose_of(sock).origin):
+			p = lying_patch(sock, return_pose(sock), p)
+	return grant(p) if not p.is_empty() else {}
 
 
 ## A packed whole state (whole_state()) as its fields by name; its bodies in flight are kept for the

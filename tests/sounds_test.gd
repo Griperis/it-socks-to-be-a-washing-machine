@@ -483,7 +483,8 @@ func case_d02() -> void:
 		_check(not spots.has(node.position), "%s has a spot of its own" % e.event)
 		spots[node.position] = true
 		rows[snappedf(node.position.z, 0.001)] = true
-	_check(rows.size() > 1 and rows.size() <= 4, "in %d rows, a compact block" % rows.size())
+	# core/58: the UI group (the menus' click and hover) is a fifth row.
+	_check(rows.size() > 1 and rows.size() <= 5, "in %d rows, a compact block" % rows.size())
 
 
 func case_d04() -> void:

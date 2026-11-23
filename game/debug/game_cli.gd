@@ -93,7 +93,8 @@ static func plan(args: PackedStringArray, debug: bool) -> Dictionary:
 				unknown.append(arg)
 		# The co-op flags and the profile to play as are read by the scene that starts a session (the
 		# house and the zoo): passed through.
-		elif QUIET.has(arg) or arg == "--host" or arg.begins_with("--join=") or arg.begins_with("--profile="):
+		elif QUIET.has(arg) or arg == "--host" or arg.begins_with("--join=") or arg.begins_with("--profile=") \
+				or arg == "--new-game":
 			continue
 		elif not _bench_option(arg):
 			unknown.append(arg)
@@ -120,7 +121,7 @@ static func help_text() -> String:
 		lines.append("  --bench=%-14s %s" % [b["name"], b["help"]])
 		lines.append("      needs the engine flag --fixed-fps 10 before the `--`, e.g. \"It Socks.exe\" --fixed-fps 10 -- --bench=%s" % b["name"])
 		lines.append("      options: %s" % " ".join(PackedStringArray(b["options"])))
-	lines.append("Results go to user://bench/<bench>/ (Windows: %APPDATA%\\Godot\\app_userdata\\It Socks\\bench\\<bench>\\);")
+	lines.append("Results go to user://bench/<bench>/ (Windows: %APPDATA%\\It Socks\\bench\\<bench>\\);")
 	lines.append("the last line printed is `BENCH saved <folder>`. --out=<folder> overrides.")
 	lines.append("A bench is drawn in a window unless the engine's own --headless is given before the `--`.")
 	lines.append("Worker threads are not capped from here (an engine setting read at start): the report says \"uncapped\".")

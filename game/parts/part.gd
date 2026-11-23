@@ -74,6 +74,31 @@ func left(_by: int) -> Dictionary:
 	return {}
 
 
+## What this part keeps in a save (docs/architecture/saves.md): whole_state() by default; {} keeps
+## nothing (who lies knocked down now is not kept). Never writes state.
+func save_state() -> Dictionary:
+	return whole_state()
+
+
+## The version of save_state()'s shape (Q2557): raise it when a State field is added, renamed or
+## changes type, and teach upgrade_save() the step. tests/save_test.gd keeps every part's shape beside
+## its number and fails when the shape changes but the number does not.
+func save_version() -> int:
+	return 1
+
+
+## A saved state of version `from` brought to version `from + 1` (the steps run one at a time up to
+## save_version()). A field the save lacks keeps the scene's own value (write() sets only what it gets).
+func upgrade_save(state: Dictionary, _from: int) -> Dictionary:
+	return state
+
+
+## The Host, after a save is loaded: what a load resets (Q2559), as grant(...); {} for nothing. Kept
+## beside the thing it resets (a Door shuts, absent players' Socks drop). `host`: the Host's player id.
+func loaded(_host: String) -> Dictionary:
+	return {}
+
+
 ## The names of the state fields, read from the "State" group of the inspector (once per script:
 ## a part's script does not change while the game runs).
 func state_names() -> PackedStringArray:
