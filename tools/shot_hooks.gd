@@ -437,6 +437,36 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.make_current()
 			(station.get_node("More/HeapButton") as HeapButton).use(player.player_id())
 			return true
+		"sock_generator":
+			# core/52: a camera over the Sock generator station. Arg "preview": the preview as the editor
+			# draws it (the areas' boxes, the red exclusion, the trail's line, a dot per landing point
+			# tinted by kind) with the lying Socks hidden; "game": the same view of the Socks as they lie;
+			# "both": the preview over the Socks. A suffix ":<view>" picks the view ("top" looks straight
+			# down, "low" from the south at eye height; none: from the south-east, high).
+			var station := world.get_node("Stations/SockGenerator") as Node3D
+			var gen := station.get_node("Generator") as SockGenerator
+			var generated := gen.get_node("Generated") as GeneratedSocks
+			var mess := world.get_node("Socks/Mess") as Mess
+			var mode := arg.get_slice(":", 0)
+			var view := arg.get_slice(":", 1) if arg.contains(":") else ""
+			if mode != "game":
+				gen.show_preview(true, generated.seed, mess.lying_boxes(generated.first, generated.first + generated.socks))
+			(world.get_node("Lying") as Node3D).visible = mode != "preview"
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 60.0
+			match view:
+				"top":
+					cam.global_position = station.to_global(Vector3(0.4, 15.0, 0.2))
+					cam.look_at(station.to_global(Vector3(0.4, 0.0, 0.0)), Vector3.FORWARD)
+				"low":
+					cam.global_position = station.to_global(Vector3(0.5, 1.7, 7.2))
+					cam.look_at(station.to_global(Vector3(0.0, 0.2, 0.0)))
+				_:
+					cam.global_position = station.to_global(Vector3(5.5, 8.0, 9.5))
+					cam.look_at(station.to_global(Vector3(0.0, 0.0, -0.5)))
+			cam.make_current()
+			return true
 		"held_zoom":
 			# assets/05: the zoo's player turns side-on to the handling station (its sign out of the
 			# view) and holds the zoom button, so the held Sock is seen up close.
