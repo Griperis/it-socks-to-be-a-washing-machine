@@ -1,4 +1,4 @@
-Next free Q number: Q2568 (update this line whenever a round of questions is asked)
+Next free Q number: Q2572 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -482,3 +482,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2565: Worlds and the profile sync between PCs; settings (graphics, resolution and the like) stay on each PC (C2; designer, 2026-11-23).
 - Q2566: each Steam account on a PC has its own Worlds, under `user://worlds/<player id>/` (C3; designer, 2026-11-23).
 - Q2567: the save folder (`use_custom_user_dir`) is "It Socks", set now with menus and saves (C4; designer, 2026-11-23).
+- Q2568: the 2 ground-floor doorways the old house left open stay without Doors (house/08; designer, 2026-11-23).
+- Q2569: a swinging Door moves Socks by the physics sweep only, no click-time push (house/08; designer, 2026-11-23).
+- Q2570: the Doors shut at a New Game are already shut when the house appears, silent (house/08; designer, 2026-11-23).
+- Q2571: the room Door gets its real leaf in house/08, ported from the old house's own leaf geometry (`reference/it-socks/tools/blender/make_house.py`, Door_<doorway>), as a Looks scene; the front and garage doors' plain leaves (house/04) match it (designer, 2026-11-23).
