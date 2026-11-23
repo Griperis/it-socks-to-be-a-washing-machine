@@ -27,6 +27,26 @@ const BUILT_IN := {
 	"audio/master_volume": 1.0,
 }
 
+## The game's own keys (core/58: the Options rows), kept per machine, never in a save or the profile
+## (Q2565). graphics/preset: "auto", "low", "medium", "high" (GraphicsPreset.chosen()); graphics/ssao:
+## -1 the preset's own, 0 off, 1 on; the speeds are multipliers; fps_cap 0 is none.
+const GRAPHICS_PRESET := "graphics/preset"
+const SSAO := "graphics/ssao"
+const MOUSE_SPEED := "input/mouse_speed"
+const INVERT_Y := "input/invert_y"
+const PAD_SPEED := "input/pad_speed"
+const SUBTITLES := "display/subtitles"
+const FPS_CAP := "display/fps_cap"
+const GAME_KEYS := {
+	GRAPHICS_PRESET: "auto",
+	SSAO: -1,
+	MOUSE_SPEED: 1.0,
+	INVERT_Y: false,
+	PAD_SPEED: 1.0,
+	SUBTITLES: true,
+	FPS_CAP: 0,
+}
+
 ## How `JSON.from_native` marks a String, an int, a float, a StringName and a NodePath.
 const NATIVE_PREFIX: Array[String] = ["s:", "i:", "f:", "sn:", "np:"]
 
@@ -41,6 +61,7 @@ var _values := {}
 
 func _init() -> void:
 	register(BUILT_IN)
+	register(GAME_KEYS)
 
 
 func _ready() -> void:
@@ -159,10 +180,16 @@ var master_volume: float:
 func apply_all() -> void:
 	for key: String in BUILT_IN:
 		_apply(key)
+	_apply(FPS_CAP)
 
 
 func _apply(key: String) -> void:
+	# The display rows are not applied in a headless run (the old ST:194-195).
+	if key.begins_with("display/") and DisplayServer.get_name() == "headless":
+		return
 	match key:
+		FPS_CAP:
+			Engine.max_fps = maxi(get_int(FPS_CAP), 0)
 		"display/window_mode":
 			match window_mode:
 				"fullscreen":

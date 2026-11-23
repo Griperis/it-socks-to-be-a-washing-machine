@@ -15,6 +15,15 @@ static func setup(shot: Node) -> void:
 ## The game's own --do actions. Return true when `what` was handled.
 static func act(world: Node, what: String, arg: String) -> bool:
 	match what:
+		"menu":
+			# core/58: the screens. arg "options" / "multiplayer" / "join" / "licence" shows that title
+			# page; "esc" opens the level's ESC menu.
+			match arg:
+				"esc":
+					LevelRuntime.of(world).esc_menu.open()
+				_:
+					(world as TitleScreen).show_page(arg)
+			return true
 		"throw_charge":
 			# The zoo's player steps onto the handling station, takes its first Sock and holds the
 			# drop button: the Throw's ring starts filling after the tap (core/08).

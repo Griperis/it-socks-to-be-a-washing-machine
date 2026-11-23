@@ -12,10 +12,14 @@ const NAME := "Player"
 const NAME_MAX := 16
 ## The id's bytes: 128 bits.
 const ID_BYTES := 16
+## The longest address kept.
+const ADDRESS_MAX := 128
 
 ## The player id: 32 hex characters off Steam.
 var id := ""
 var name := NAME
+## The last Host's address typed on the title's Join page ("" for none).
+var address := ""
 ## The file it was read from and is kept in; "" for one made only in memory.
 var path := ""
 
@@ -29,6 +33,7 @@ static func load_or_make(tag: String) -> PlayerProfile:
 	if data is Dictionary and is_id((data as Dictionary).get("id")):
 		p.id = String(data["id"])
 		p.name = clean_name(data.get("name", NAME))
+		p.address = String(data.get("address", "")).strip_edges().left(ADDRESS_MAX) if data.get("address") is String else ""
 		return p
 	p.id = new_id()
 	p.save()
@@ -80,4 +85,4 @@ func save() -> void:
 	if f == null:
 		Log.warn("net", "cannot write the profile %s (%s)" % [path, error_string(FileAccess.get_open_error())])
 		return
-	f.store_string(JSON.stringify({"id": id, "name": name}, "\t"))
+	f.store_string(JSON.stringify({"id": id, "name": name, "address": address}, "\t"))

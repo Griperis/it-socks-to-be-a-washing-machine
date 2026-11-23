@@ -71,6 +71,12 @@ func use(by: int) -> void:
 	parts.ask(Command.new(&"open", by, id, {"open": not open}))
 
 
+## The Host, after a load (Q2559): it starts shut, so what rode out in an open drawer slides back with
+## it as on any shut. A locked one stays locked.
+func loaded(_host: String) -> Dictionary:
+	return grant({"open": false}) if open else {}
+
+
 ## A Guest sends the wanted value, at most 5 presses a second.
 func accepts() -> Dictionary[StringName, Dictionary]:
 	return {&"open": {"args": {"open": TYPE_BOOL}, "rate": 5}}

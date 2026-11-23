@@ -328,6 +328,43 @@ func left(by: int) -> Dictionary:
 		id: _patch(by, PackedInt32Array(), -1)}}
 
 
+## What a save keeps: who holds what and which is active; not the Host's clock (`grabbed_at`).
+func save_state() -> Dictionary:
+	return {"held": held, "active": active}
+
+
+## The Host, after a load (Q2559, Q295): nobody holds anything offline, so every player's Hands but
+## the Host's (`host`, its player id) drop where that player last stood (their Roster spot), as a
+## leaver's do; they come back empty-handed.
+func loaded(host: String) -> Dictionary:
+	var r := _roster_of()
+	var keep_held := {}
+	var keep_active := {}
+	var dropped := {}
+	var t := _own_tuning()
+	var gone := false
+	for key: Variant in held:
+		if String(key) == host or (key is int and int(key) == Parts.HOST):
+			keep_held[key] = held[key]
+			if active.has(key):
+				keep_active[key] = active[key]
+			continue
+		gone = true
+		var items: PackedInt32Array = held[key]
+		var entry: Dictionary = r.players.get(String(key), {}) if r != null else {}
+		var feet: Vector3 = entry.get("at", mess.return_pose(items[0]).origin if not items.is_empty() else Vector3.ZERO)
+		for i in items.size():
+			var round_feet := Vector3(cos(i * 2.4), 0.0, sin(i * 2.4)) * (t.leave_spread if i > 0 else 0.0)
+			var pose := Transform3D(Basis(Vector3.UP, i * 2.4), feet + round_feet + Vector3.UP * t.leave_height)
+			dropped = mess.thrown_patch(items[i], pose, Vector3.ZERO, Vector3.ZERO, Mess.NOBODY, true, dropped)
+	if not gone:
+		return {}
+	var changes := {id: {"held": keep_held, "active": keep_active, "grabbed_at": {}}}
+	if not dropped.is_empty():
+		changes[mess.id] = dropped
+	return {"ok": true, "changes": changes}
+
+
 ## The change that takes Socks `socks` out of player `by`'s Hands, the others kept in their order and
 ## the newest active (part of a Cabinet's shelve answer, core/04).
 func taken_patch(by: int, socks: PackedInt32Array) -> Dictionary:

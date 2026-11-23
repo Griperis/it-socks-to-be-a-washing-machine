@@ -35,6 +35,13 @@ func _ready() -> void:
 		_grade_table = env.adjustment_color_correction
 		world_environment.environment = env
 	apply(preset if preset != null else GraphicsPreset.chosen())
+	Settings.changed.connect(_on_setting)
+
+
+## Options changed the preset or SSAO: the picture follows at once (a set `preset` stays).
+func _on_setting(key: String) -> void:
+	if preset == null and (key == Settings.GRAPHICS_PRESET or key == Settings.SSAO):
+		apply(GraphicsPreset.chosen())
 
 
 ## Puts `p` on the environment, the sun and the viewport.
@@ -42,7 +49,7 @@ func apply(p: GraphicsPreset) -> void:
 	applied = p
 	if world_environment != null and world_environment.environment != null:
 		var env := world_environment.environment
-		env.ssao_enabled = p.ssao
+		env.ssao_enabled = GraphicsPreset.ssao_on(p)
 		env.glow_enabled = p.glow
 		if env.sky != null:
 			# Sky.RADIANCE_SIZE_32 is 0 and each step doubles the size.

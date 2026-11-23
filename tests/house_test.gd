@@ -92,7 +92,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "k14_no_z_fight", "method": "case_k14_no_z_fight", "world": false,
 				"title": "K14: the shell has no two faces facing the same way in one plane where they can be seen"},
 		{"name": "h01_main_scene", "method": "case_h01_main_scene", "world": false,
-				"title": "the house is the project's main scene: the shell, the player, the shared-state path, the zoo's noon light, and nothing of game/zoo/"},
+				"title": "the house is the level the title's Solo and Host play (core/58): the shell, the player, the shared-state path, the zoo's noon light, and nothing of game/zoo/"},
 		{"name": "h02_furniture", "method": "case_h02_furniture", "world": false,
 				"title": "the old furniture stands where the old house had it, moved to the plan, each piece on its floor inside its room"},
 		{"name": "h03_lights", "method": "case_h03_lights", "world": false,
@@ -108,7 +108,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "h05_stair_treads", "method": "case_h05_stair_treads", "world": false,
 				"title": "house/05 (Q2530): the stair trails' Socks lie flat on the steps' treads, never leaned on the ramp; the player does not meet the treads"},
 		{"name": "real_path_loading_screen", "method": "case_real_path_loading_screen", "world": false,
-				"title": "real path (house/09, Q2542): F5 shows the loading screen (\"The washer bursts open...\", a filling bar) while the Socks are laid a slice per frame, the player held at the spawn though walk is pressed; then every Socks appears at once and the player walks"},
+				"title": "real path (house/09, Q2542): F5 shows the loading screen (\"Loading the house...\", Q2579, a filling bar) while the Socks are laid a slice per frame, the player held at the spawn though walk is pressed; then every Socks appears at once and the player walks"},
 		{"name": "h09_slices_within_budget", "method": "case_h09_slices_within_budget", "world": false, "perf": true,
 				"title": "house/09: no frame's slice of laying the house runs past the loading screen's slice budget: each unit of work runs only when the longest of its kind still fits"},
 		{"name": "h09_same_seed_sliced", "method": "case_h09_same_seed_sliced", "world": false,
@@ -793,7 +793,8 @@ static func _needs(path: String, seen: Dictionary) -> void:
 
 
 func case_h01_main_scene() -> void:
-	_same(String(ProjectSettings.get_setting("application/run/main_scene")), HOUSE, "the house is the project's main scene (F5, a plain launch)")
+	_same(String(ProjectSettings.get_setting("application/run/main_scene")), "res://game/ui/title/title.tscn", "the title is the project's main scene and Solo plays the house (core/58)")
+	_same(Worlds.LEVEL, HOUSE, "Solo and Host go into the house")
 	var house := await _level_up()
 	var shell := house.get_node_or_null("Shell") as Node3D
 	_check(shell != null and shell.scene_file_path == SHELL and shell.transform == Transform3D.IDENTITY, "the shell stands at the origin, the house's frame")
@@ -1214,8 +1215,8 @@ func _press_action(action: StringName) -> void:
 
 # --- Laid without a freeze (house/09) ------------------------------------------------------------
 
-## The loading screen's words (the old main.gd's, Q2542).
-const LOADING_TEXT := "The washer bursts open..."
+## The loading screen's words (Q2579: "Loading the house...", a New Game too).
+const LOADING_TEXT := "Loading the house..."
 
 
 func case_real_path_loading_screen() -> void:

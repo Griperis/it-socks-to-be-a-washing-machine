@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://21yxowo6t1da"]
+
+[ext_resource type="Script" uid="uid://bw2vhfa56oy5g" path="res://game/ui/options/choice_row.gd" id="1_row"]
+
+[node name="ChoiceRow" type="HBoxContainer" unique_id=88109]
+custom_minimum_size = Vector2(0, 48)
+theme_override_constants/separation = 16
+script = ExtResource("1_row")
+
+[node name="Name" type="Label" parent="." unique_id=96028]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+theme_type_variation = &"RowName"
+text = "Setting"
+vertical_alignment = 1
+
+[node name="Choices" type="HBoxContainer" parent="." unique_id=103947]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
