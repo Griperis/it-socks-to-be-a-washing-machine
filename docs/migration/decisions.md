@@ -1,4 +1,4 @@
-Next free Q number: Q2513 (update this line whenever a round of questions is asked)
+Next free Q number: Q2518 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -427,3 +427,8 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2510: the old furniture is placed as the old house had it, moved with the rooms to the 0.5 m grid (house/04; designer, 2026-11-23).
 - Q2511: nothing outside the house: no lawn, plinth, step or ramp; the player starts inside, at the old spawn (house/04; designer, 2026-11-23).
 - Q2512: the house is lit by the zoo's noon light plus each old room lamp's light as the old house had it (house/04; designer, 2026-11-23).
+- Q2513: a Cabinet under its dust sheet cannot be aimed at, as the old game (no outline, no prompt, no click), built in assets/07 before its merge (designer, 2026-11-23).
+- Q2514: until the exterior ticket the house's front and garage doors stay shut (cannot be opened), so no one walks out into nothing (house/04; designer, 2026-11-23).
+- Q2515: the old house's lamp rules (all but the basement's off by day; each floor lit only by its own lights) are ported in a follow-up ticket; house/04 merges with every lamp lit (designer, 2026-11-23).
+- Q2516: the Mess comes into the house in its own ticket, so the main scene (F5) plays the core loop with Socks at the old game's places (designer, 2026-11-23).
+- Q2517: one base level scene holds the full game setup (environment, player, co-op and Mess nodes); the house, the zoo and any new level inherit it, so a new level is authored by adding only its geometry and content (designer, 2026-11-23).
