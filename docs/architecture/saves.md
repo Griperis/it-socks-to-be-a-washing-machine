@@ -24,7 +24,11 @@ Socks at the return spot, every absent player's Hands dropped at their Roster sp
 `SceneChanger.change_to(path, heading, setup)` (`LevelRuntime.world`, `from_title`, `launch`). `LevelNet.start()`
 loads it (`Autosave.restore()`) before the player enters: alone `Session.enter_alone()` writes the player into its
 own Roster by its profile's player id (the core/57 gap: Hands and Coins are keyed by player id, never the peer
-number), a Host `Session.host()` does the same; the body stands at its Roster spot.
+number), a Host `Session.host()` does the same; the body stands at its Roster spot. The Roster lives in the game link (`game/net/game_link.gd`, core/62),
+outside the level, but the level's Parts read through to the link's, so `Parts.save_snapshot()` and the file's
+`"parts"` are one dictionary as before and the Roster keeps its id `Runtime/Session/Roster`. A load merges into the
+live Roster (`Part.restored()`, `Roster.restored()`): present players stay, standing where the save kept them;
+absent players' entries come back with their spot, colour and Hands.
 
 **Saving.** Within `autosave_seconds` of any applied answer (`Save.write_later()`: the data copied on the main
 thread, the text and the write on `WorkerThreadPool`); at once on Back to title, Quit game, End session, the window's
