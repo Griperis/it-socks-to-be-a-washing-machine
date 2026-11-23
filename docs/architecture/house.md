@@ -1,7 +1,7 @@
 # The house level
 
 `game/house/house.tscn` (house/04, Q2503, Q2509-Q2512): the game's level and the project's main scene
-until menus exist. Shell and furniture only: no game functions yet (M3 brings the core loop in).
+until menus exist. Shell, furniture, Cabinets and the starting Mess: F5 plays the core loop (house/05).
 
 ## What it holds
 
@@ -19,6 +19,12 @@ until menus exist. Shell and furniture only: no game functions yet (M3 brings th
   StaticBody3D, no Part) in the doorways' wall line, so nothing can open them and nobody walks out (Q2514), until
   the exterior ticket brings the door entities.
 - The zoo's noon light: `Environment` (`game/look/noon_environment.tres`), `Sun`, `Picture`.
+- `Cabinets/<Spot>`: the old eight Cabinet spots (the old layout's `cabinet_spots`, moved to the plan as a piece
+  is), each its old default Collection, unlocked, 2 Rows, wired to the runtime's `Hands` and `Coins` (house/05).
+- `Washer`: a marker at the old washer (the generators' thinning, until the machine exists).
+- `SockGenerators/<Floor>`: the Mess of each floor (house/05, `docs/architecture/sock-generator.md`): the old
+  stage's Pairs (basement 50, ground 160, first 150, attic 130) of the floor's Cabinets' Collections, in Heaps,
+  and the stair trails (6 up the ground floor's stair, 3 on each other), lying at the start.
 - `Spawn` at the old spawn (room.gd `spawn_pos`, `spawn_yaw`: the laundry, facing its doorway);
   `ReturnSpot` there too (unturned).
 - `Runtime`, the one instance of the level runtime (`game/level/level_runtime.tscn`, core/51, Q2517;

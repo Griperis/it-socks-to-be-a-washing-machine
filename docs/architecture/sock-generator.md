@@ -53,6 +53,12 @@ generated Socks land, how the preview draws, or how the start and a regeneration
   all its places).
 - A hidden Sock whose hidden places are all full goes to open floor (the old rule); the report counts it
   (`hidden_to_floor`). A Sock with no place at all is left out and named in the log (never forced).
-- The kit's stairs collide as a ramp: a trail's Socks lie leaned on the ramp, not on the drawn treads.
+- The kit's stairs collide as a ramp for the player and the Mess; each stair piece also has a `Treads` body (a thin
+  box on every step and landing, layer `SockTrail.LAYER_TREADS`, 128) that only a trail looks at: a trail Sock over a
+  tread lies flat on it, its middle on the tread's middle line, its box inside the tread, and its house test leaves
+  out the stair's own `Body` (the ramp passes over the tread). With no tread under it, it leans on the ramp (house/05,
+  Q2530). A woken or falling Sock still meets the ramp.
 - The zoo's station (`game/zoo/stations/sock_generator.tscn`, its button and sign in `game/zoo/sock_generator/`)
-  sets `scan` to its root; a level sets it to the level. Areas in the house are house/05's.
+  sets `scan` to its root; a level sets it to the level. The house (house/05) has one generator per floor under `SockGenerators`, each
+  its floor's two Cabinets' Collections and one `Floor` area (the old stage's Pairs, Heaps on), the stair trails
+  under the floor they start from; the whole house lays in one start-up frame (about 1.7 s for 990 Socks, headless).

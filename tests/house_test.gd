@@ -103,6 +103,12 @@ func cases() -> Array[Dictionary]:
 				"title": "real path (Q2514): the front door and the garage door stay shut: aimed at, no prompt and no outline, the use button opens nothing, and the player walking at the front door stops at it"},
 		{"name": "real_path_spawn_to_every_floor", "method": "case_real_path_spawn_to_every_floor", "world": false,
 				"title": "real path: in the house the player starts at the old spawn in the laundry, walks through the doorway to the stair lobby and climbs the U stair to the ground, first and attic floors"},
+		{"name": "h05_mess", "method": "case_h05_mess", "world": false,
+				"title": "house/05: each floor's Sock generator lays the old stage's Pairs (50, 160, 150, 130) of its floor's two Cabinets' Collections on every kind of place, each Sock on its floor; the old eight Cabinets stand at the old spots; the laying time is measured"},
+		{"name": "h05_stair_treads", "method": "case_h05_stair_treads", "world": false,
+				"title": "house/05 (Q2530): the stair trails' Socks lie flat on the steps' treads, never leaned on the ramp; the player does not meet the treads"},
+		{"name": "real_path_kitchen_loop", "method": "case_real_path_kitchen_loop", "world": false,
+				"title": "real path (house/05): in the house the player picks a Sock in the kitchen, picks its mate into a Pair, shelves it in the kitchen's Cabinet with a click and earns Coins"},
 		{"name": "real_path_front_door_to_attic", "method": "case_real_path_front_door_to_attic", "world": false,
 				"title": "real path: in the shell the player walks in from the front door (no ground outside, Q2503), is stopped by the hall's partition, and climbs the U stair to the first floor and on to the attic"},
 	]
@@ -908,6 +914,15 @@ func case_h04_coop() -> void:
 	var ha := LevelRuntime.of(host).avatars
 	var ga := LevelRuntime.of(guest).avatars
 	await _until(func() -> bool: return ha.of(g_id) != null and ga.of(1) != null, "each house to show the other's avatar")
+	# house/05: the Guest sees the Host's Mess, the generated Socks where the Host laid them.
+	var hm := LevelRuntime.of(host).mess
+	var gm := LevelRuntime.of(guest).mess
+	await _until(func() -> bool: return gm.count() == hm.count(), "the guest's Mess to have the host's Socks")
+	var differ := 0
+	for sock in hm.count():
+		if gm.designs[sock] != hm.designs[sock] or not gm.pose_of(sock).origin.is_equal_approx(hm.pose_of(sock).origin):
+			differ += 1
+	_check(hm.count() > 900 and differ == 0, "the guest sees the host's %d Socks, each its Design where it lies (%d differ)" % [hm.count(), differ])
 	_drop_branches()
 
 
@@ -939,3 +954,223 @@ func _drop_branches() -> void:
 		node.free()
 		get_tree().set_multiplayer(null, path)
 	_branches.clear()
+
+
+# --- The Mess in the house (house/05) -----------------------------------------------------------
+
+## Each floor's generator: its floor height, the old stage's Pairs (stages.json "pairs") and the
+## Collections of the floor's two Cabinets (stages.json "floors").
+const GENERATORS := {
+	"Basement": [-3.0, 50, [&"simple", &"sport"]], "Ground": [0.0, 160, [&"food", &"patterns"]],
+	"First": [3.0, 150, [&"animals", &"superhero"]], "Attic": [6.0, 130, [&"winter", &"space"]],
+}
+## The old cabinet_spots (house_layout.json) moved to the plan: name, Collection, x, floor, z, yaw.
+const CABINETS: Array[Array] = [
+	["Laundry", &"simple", 1.42, -3.0, 8.15, PI], ["Garage", &"sport", 10.15, -3.0, 7.30, -PI / 2],
+	["Kitchen", &"food", 0.35, 0.0, 4.99, PI / 2], ["Living", &"patterns", 10.15, 0.0, 2.08, -PI / 2],
+	["KidsNorth", &"animals", 7.84, 3.0, 3.81, 0.0], ["KidsEast", &"superhero", 10.15, 3.0, 5.38, -PI / 2],
+	["LoftWest", &"winter", 0.35, 6.0, 4.26, PI / 2], ["LoftEast", &"space", 10.15, 6.0, 4.26, -PI / 2],
+]
+## The kitchen's inside faces (house-kit-plan.md "Rooms").
+const KITCHEN := Rect2(0.1, 0.1, 3.84, 8.3)
+## The player's own collision layer (furniture's PlayerBody, docs/architecture/furniture.md).
+const PLAYER_BODY := 8
+
+
+func _generator(house: Node3D, floor_name: String) -> SockGenerator:
+	return house.get_node("SockGenerators/" + floor_name) as SockGenerator
+
+
+func case_h05_mess() -> void:
+	var house := await _level_up()
+	var mess := LevelRuntime.of(house).mess
+	var cat := mess.catalogue
+	var total := 0
+	var all_kinds: Dictionary[int, int] = {}
+	for floor_name: String in GENERATORS:
+		var want: Array = GENERATORS[floor_name]
+		var gen := _generator(house, floor_name)
+		var made := gen.get_node("Generated") as GeneratedSocks
+		var trail := 0
+		for node in gen.get_children():
+			if node is SockTrail:
+				trail += (node as SockTrail).socks
+		var area := gen.get_node("Floor") as SockArea
+		_same(area.pairs, want[1], "%s: the old stage's %d Pairs" % [floor_name, want[1]])
+		_check(area.heap, "%s: its floor Socks gather in Heaps, as on the old game's every floor" % floor_name)
+		var asked := area.pairs * 2 + trail
+		_check(made.socks >= asked - 2 and made.socks % 2 == 0,
+				"%s: its Socks lie (%d of %d asked, %s)" % [floor_name, made.socks, asked, gen.last_report])
+		total += made.socks
+		var wrong_floor := 0
+		var wrong_design := 0
+		for sock in range(made.first, made.first + made.socks):
+			var y := mess.pose_of(sock).origin.y
+			if y < float(want[0]) - 0.05 or y > float(want[0]) + 3.0:
+				wrong_floor += 1
+			if not (want[2] as Array).has(cat.design(mess.designs[sock]).collection):
+				wrong_design += 1
+		_check(wrong_floor == 0, "%s: every Sock lies on its floor or its stair (%d do not)" % [floor_name, wrong_floor])
+		_check(wrong_design == 0, "%s: every Sock is of its floor's Cabinets' Collections %s (%d are not)" % [floor_name, want[2], wrong_design])
+		var laying := gen.lay(made.seed, mess.lying_boxes(made.first, made.first + made.socks))
+		var kinds: Dictionary[int, int] = {}
+		for row: Dictionary in laying.rows:
+			kinds[int(row["kind"])] = kinds.get(int(row["kind"]), 0) + 1
+		for k: int in [SockArea.Kind.FLOOR, SockArea.Kind.TOP]:
+			_check(kinds.get(k, 0) > 0, "%s: Socks on %s places (%s; %s)" % [floor_name, SockArea.Kind.keys()[k], kinds, gen.last_report])
+		# Hidden: inside and under furniture (the attic's trunks' insides float over their floors: none there yet).
+		var hidden: int = kinds.get(SockArea.Kind.INSIDE, 0) + kinds.get(SockArea.Kind.UNDER, 0)
+		_check(hidden > 0, "%s: Socks hidden inside and under furniture (%s; %s)" % [floor_name, kinds, gen.last_report])
+		for k: int in kinds:
+			all_kinds[k] = all_kinds.get(k, 0) + kinds[k]
+	for k: int in SockArea.Kind.values():
+		_check(all_kinds.get(k, 0) > 0, "the house has Socks on %s places (%d)" % [SockArea.Kind.keys()[k], all_kinds.get(k, 0)])
+	Log.info("house", "house/05: the house's Socks by kind %s" % [all_kinds])
+	# The laying time of the whole house in one frame (core/52's [later]): every generator again.
+	var t0 := Time.get_ticks_usec()
+	for floor_name: String in GENERATORS:
+		var made := _generator(house, floor_name).get_node("Generated") as GeneratedSocks
+		_generator(house, floor_name).records(made.seed, cat, mess.lying_boxes(made.first, made.first + made.socks))
+	var ms := (Time.get_ticks_usec() - t0) / 1000.0
+	Log.info("house", "house/05: the house's %d generated Socks are laid in %.0f ms" % [total, ms])
+	_check(total > 900, "the house's floors hold %d Socks, laid in %.0f ms in one frame" % [total, ms])
+	for c: Array in CABINETS:
+		var root := house.get_node_or_null("Cabinets/" + String(c[0])) as Node3D
+		var cab := root.get_node_or_null("Cabinet") as Cabinet if root != null else null
+		_check(cab != null and cab.collection == c[1], "the %s Cabinet holds %s" % [c[0], c[1]])
+		if root != null:
+			_check(root.global_position.distance_to(Vector3(c[2], c[3], c[4])) < 0.01 and absf(angle_difference(root.rotation.y, c[5])) < 0.01,
+					"the %s Cabinet stands at the old spot, its back to the wall (%s)" % [c[0], root.global_position])
+		if cab != null:
+			_check(cab.hands == LevelRuntime.of(house).hands and cab.coins != null, "the %s Cabinet shelves through the house's Hands and pays its Coins" % c[0])
+
+
+func case_h05_stair_treads() -> void:
+	var house := await _level_up()
+	var mess := LevelRuntime.of(house).mess
+	var trails := 0
+	var flat := 0
+	for floor_name: String in GENERATORS:
+		var gen := _generator(house, floor_name)
+		var made := gen.get_node("Generated") as GeneratedSocks
+		var laying := gen.lay(made.seed, mess.lying_boxes(made.first, made.first + made.socks))
+		for row: Dictionary in laying.rows:
+			if int(row["kind"]) != SockArea.Kind.TRAIL:
+				continue
+			trails += 1
+			var pose: Transform3D = row["pose"]
+			var hit := PhysicsQueries.ray(house, pose.origin + Vector3.UP * 0.01, pose.origin + Vector3.DOWN * 0.02, SockTrail.LAYER_TREADS)
+			if pose.basis.y.normalized().dot(Vector3.UP) > 0.999 and not hit.is_empty():
+				flat += 1
+	_same(trails, 12, "the stairs hold the old 6 trail Socks and 6 more on single steps")
+	_same(flat, trails, "every one lies flat on a tread")
+	var player := LevelRuntime.of(house).player
+	_check(player.collision_mask & SockTrail.LAYER_TREADS == 0, "the player does not collide with the treads: it walks the ramp")
+	var tread := house.get_node("Shell/Ground/Stair/StairU/Treads") as StaticBody3D
+	_check(tread.collision_layer == SockTrail.LAYER_TREADS and tread.collision_mask == 0, "the stair's treads are on their own layer only")
+
+
+## Whether the lying Sock `sock` is open to the eye: nothing of the house or another Sock over it.
+func _open_sock(mess: Mess, sock: int) -> bool:
+	if mess.state_of(sock) != Mess.State.LYING:
+		return false
+	var at := mess.pose_of(sock).origin
+	return PhysicsQueries.ray(mess, at + Vector3.UP * 0.06, at + Vector3.UP * 2.2, Mess.LAYER_HOUSE | Mess.LAYER_LYING).is_empty()
+
+
+## A place 1-1.6 m from `target` on the ground floor where the player stands and sees it, or INF.
+func _spot_seeing(mess: Mess, target: Vector3) -> Vector3:
+	var probe := BoxShape3D.new()
+	probe.size = Vector3(0.6, 1.5, 0.6)
+	for r: float in [1.0, 1.3, 1.6]:
+		for k in 12:
+			var a := TAU * k / 12.0
+			var at := Vector3(target.x + cos(a) * r, 0.0, target.z + sin(a) * r)
+			var floor_hit := PhysicsQueries.ray(mess, at + Vector3.UP * 1.0, at + Vector3.DOWN * 0.3, Mess.LAYER_HOUSE)
+			if floor_hit.is_empty() or absf((floor_hit["position"] as Vector3).y) > 0.05:
+				continue
+			if not PhysicsQueries.overlap_rids(mess, probe, Transform3D(Basis.IDENTITY, at + Vector3.UP * 0.85), Mess.LAYER_HOUSE | PLAYER_BODY, 1).is_empty():
+				continue
+			if PhysicsQueries.ray(mess, at + Vector3.UP * 1.5, target, Mess.LAYER_HOUSE).is_empty():
+				return at
+	return Vector3.INF
+
+
+func case_real_path_kitchen_loop() -> void:
+	var house := await _level_up()
+	var runtime := LevelRuntime.of(house)
+	var mess := runtime.mess
+	var hands := runtime.hands
+	var player := runtime.player
+	var made := _generator(house, "Ground").get_node("Generated") as GeneratedSocks
+	# A food Sock lying open in the kitchen whose mate lies open too, each with a place to stand and see it.
+	var first := -1
+	var mate := -1
+	var spots: Array[Vector3] = []
+	for sock in range(made.first, made.first + made.socks):
+		var at := mess.pose_of(sock).origin
+		if mess.design_of(sock).collection != &"food" or not KITCHEN.has_point(Vector2(at.x, at.z)) or not _open_sock(mess, sock):
+			continue
+		var other := -1
+		for o in range(made.first, made.first + made.socks):
+			if o != sock and mess.designs[o] == mess.designs[sock]:
+				other = o
+		if other < 0 or not _open_sock(mess, other):
+			continue
+		var s1 := _spot_seeing(mess, _sock_centre(mess, sock))
+		var s2 := _spot_seeing(mess, _sock_centre(mess, other))
+		if s1 != Vector3.INF and s2 != Vector3.INF:
+			first = sock
+			mate = other
+			spots = [s1, s2]
+			break
+	_check(first >= 0, "a food Pair lies open in the kitchen (%d, %d)" % [first, mate])
+	if first < 0:
+		return
+	player.capture_mouse()   # the mouse is the player's: buttons act (R01)
+	_stand_player(player, spots[0])
+	await _aim_player(player, _sock_centre(mess, first))
+	await _press_action(&"pick")
+	await _until(func() -> bool: return hands.active_of(1) == first, "the kitchen Sock to be in the Hands")
+	await _physics_ticks(25)
+	_stand_player(player, spots[1])
+	await _aim_player(player, _sock_centre(mess, mate))
+	await _press_action(&"pick")
+	await _until(func() -> bool: return mess.is_pair(first) or mess.is_pair(mate), "its mate to fuse into a Pair")
+	var pair := first if mess.is_pair(first) else mate
+	var root := house.get_node("Cabinets/Kitchen") as Node3D
+	var cab := root.get_node("Cabinet") as Cabinet
+	_stand_player(player, root.global_transform * Vector3(0.0, 0.0, 1.2))
+	var front := root.get_node("Drawer1/Looks/Slide/Front") as Node3D
+	await _aim_player(player, front.global_position + root.global_basis.z * 0.02)
+	await _press_action(&"pick")
+	await _until(func() -> bool: return cab.contents(0).has(pair), "the Pair to be shelved in the kitchen's Cabinet")
+	_check(mess.state_of(pair) == Mess.State.SHELVED and hands.items_of(1).is_empty(), "the Pair is shelved and the Hands are empty")
+	_check(runtime.coins.of_player(1) > 0, "the player earned Coins (%d)" % runtime.coins.of_player(1))
+
+
+func _sock_centre(mess: Mess, sock: int) -> Vector3:
+	return mess.pose_of(sock) * Vector3(0.0, SockDress.box(mess.design_of(sock)).y * 0.5, 0.0)
+
+
+func _stand_player(player: Player, at: Vector3) -> void:
+	player.global_position = at
+	player.velocity = Vector3.ZERO
+	player.reset_physics_interpolation()
+
+
+## Turns the body to `target` and pitches the head at it, as the mouse would.
+func _aim_player(player: Player, target: Vector3) -> void:
+	var head := player.get_node("Head") as Node3D
+	var to := target - player.global_position
+	player.rotation.y = atan2(-to.x, -to.z)
+	var up := target - head.global_position
+	head.rotation.x = atan2(up.y, Vector2(up.x, up.z).length())
+	await _physics_ticks(2)
+
+
+func _press_action(action: StringName) -> void:
+	Input.action_press(action)
+	await _physics_ticks(2)
+	Input.action_release(action)
+	await _physics_ticks(2)

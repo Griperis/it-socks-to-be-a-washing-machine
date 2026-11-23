@@ -22,6 +22,11 @@ const ROOMS := "res://game/zoo/house_kit/rooms"
 const LAYER_HOUSE := 1
 ## How deep a stair's walking ramp is under its top.
 const RAMP_DEPTH := 0.3
+## A stair's treads (house/05, Q2530): thin boxes on each step's top, in a body "Treads" on their own
+## physics layer (SockTrail.LAYER_TREADS) that only the Sock generator's stair trail looks at, so its Socks
+## lie flat on the steps while the player and everything else still meet the walking ramps.
+const LAYER_TREADS := 128
+const TREAD_DEPTH := 0.02
 ## The material slots of a wall-like piece: its inside (+Z) face, its outside (-Z) face, trim, glass.
 const A := 0
 const B := 1
@@ -75,6 +80,8 @@ var _st: Array[SurfaceTool] = []
 var _paints: Array[String] = []
 var _shapes: Array[Transform3D] = []
 var _shape_sizes: Array[Vector3] = []
+## The piece's treads (a stair's), each a box: its "Treads" body.
+var _treads: Array[AABB] = []
 ## Slots counted from `base` (the dormer's slab is a roof slab whose slots 0 and 1 are its 4 and 5).
 var _offset := 0
 ## `--only=<prefix>`: the pieces written (empty: all, and the rooms).
@@ -487,6 +494,7 @@ func _flight(file: String, steps: int) -> void:
 	_begin(["wood"])
 	for i in steps:
 		_box(_aabb(0, w, -s.sink, (i + 1) * r, i * g, (i + 1) * g), 0)
+		_tread(_aabb(0, w, -s.sink, (i + 1) * r, i * g, (i + 1) * g))
 	var top := steps * r
 	var run := steps * g
 	_ramp(Vector3(w / 2, r / 2, 0.0), Vector3(w / 2, top, run - g / 2), w, false)
@@ -515,10 +523,13 @@ func _u_stair(file: String, solid: bool) -> void:
 	for k in range(1, 8):
 		var top := k * r
 		_box(_aabb(west.x, west.y, _step_bottom(top, solid), top, (k - 1) * g, k * g), 0)
+		_tread(_aabb(west.x, west.y, _step_bottom(top, solid), top, (k - 1) * g, k * g))
 		top = half + k * r
 		_box(_aabb(east.x, east.y, _step_bottom(top, solid), top, land_z - k * g, land_z - (k - 1) * g), 0)
+		_tread(_aabb(east.x, east.y, _step_bottom(top, solid), top, land_z - k * g, land_z - (k - 1) * g))
 	var landing := _aabb(f, s.stair_well.x - f, -s.sink if solid else half - 0.2, half, land_z, back)
 	_box(landing, 0)
+	_tread(landing)
 	var newel := _aabb(mid - n / 2, mid + n / 2, -s.sink, s.storey - s.sink, 0, land_z)
 	_box(newel, 1)
 	_ramp(Vector3((west.x + west.y) / 2, 0.0, -g), Vector3((west.x + west.y) / 2, half, land_z), west.y - west.x, true)
@@ -925,6 +936,7 @@ func _begin(paints: Array[String]) -> void:
 		_st.append(st)
 	_shapes.clear()
 	_shape_sizes.clear()
+	_treads.clear()
 	_offset = 0
 
 
@@ -934,6 +946,11 @@ func _begin_offset(base: int) -> void:
 
 func _end_offset() -> void:
 	_offset = 0
+
+
+## A tread on the step whose top is `box`'s (only its top TREAD_DEPTH is kept).
+func _tread(box: AABB) -> void:
+	_treads.append(AABB(Vector3(box.position.x, box.end.y - TREAD_DEPTH, box.position.z), Vector3(box.size.x, TREAD_DEPTH, box.size.z)))
 
 
 func _col(box: AABB) -> void:
@@ -1084,6 +1101,22 @@ func _save(file: String) -> void:
 		shape.transform = _shapes[i]
 		body.add_child(shape)
 		shape.owner = root
+	if not _treads.is_empty():
+		var treads := StaticBody3D.new()
+		treads.name = "Treads"
+		treads.collision_layer = LAYER_TREADS
+		treads.collision_mask = 0
+		root.add_child(treads)
+		treads.owner = root
+		for i in _treads.size():
+			var shape := CollisionShape3D.new()
+			shape.name = "Tread%d" % (i + 1)
+			var box := BoxShape3D.new()
+			box.size = _treads[i].size
+			shape.shape = box
+			shape.position = _treads[i].get_center()
+			treads.add_child(shape)
+			shape.owner = root
 	var path := PIECES.path_join(file + ".tscn")
 	var uid := ResourceLoader.get_resource_uid(path) if FileAccess.file_exists(path) else ResourceUID.INVALID_ID
 	var packed := PackedScene.new()
