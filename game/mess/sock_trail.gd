@@ -1,10 +1,15 @@
 ## A trail of Socks up a flight of stairs (core/52, Q2528, the old stair trail, Q441): `socks` Socks
 ## spread evenly from this node (the foot) to `to` (the top, in its own space), each laid across the
-## line on whatever the house has under it. A child of a SockGenerator (at any depth). Its Socks are not
-## part of any area's count. In the editor it draws its line.
+## line on whatever the house has under it: flat on a step where the stair piece has treads (house/05,
+## Q2530), else on the walking ramp, leaned with it. A child of a SockGenerator (at any depth). Its Socks
+## are not part of any area's count. In the editor it draws its line.
 @tool
 class_name SockTrail
 extends Node3D
+
+## The physics layer of a stair piece's treads (its `Treads` body, tools/house_kit_build.gd): thin boxes
+## on the steps' tops that only a trail's Socks rest on; the player and the Mess meet the walking ramps.
+const LAYER_TREADS := 128
 
 ## How many Socks lie on the trail.
 @export_range(0, 200, 1) var socks := 6:

@@ -111,7 +111,12 @@ func case_keep_out() -> void:
 		var a: Dictionary = laying.rows[i]
 		var ca := _centre(a["pose"], box)
 		var lifted := Transform3D(ca.basis, ca.origin + (a["pose"] as Transform3D).basis.y * 0.004)
-		if not PhysicsQueries.overlap_colliders(gen, probe, lifted, Mess.LAYER_HOUSE, 1).is_empty():
+		# A trail's Sock on a stair's tread lies under the stair's walking ramp (house/05, Q2530): that one body is not counted.
+		var skip: Array[RID] = []
+		var tread := PhysicsQueries.ray(gen, ca.origin, ca.origin + Vector3.DOWN * 0.1, SockTrail.LAYER_TREADS)
+		if int(a["kind"]) == SockArea.Kind.TRAIL and not tread.is_empty():
+			skip.append(((tread["collider"] as Node).get_parent().get_node("Body") as CollisionObject3D).get_rid())
+		if not PhysicsQueries.overlap_colliders(gen, probe, lifted, Mess.LAYER_HOUSE, 1, skip).is_empty():
 			in_house += 1
 		for k: Array in keep_out:
 			if MessBodies.boxes_meet(box, ca, k[0], k[1]):

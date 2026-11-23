@@ -19,6 +19,8 @@ const ENDS := 0.85
 const ALONG_JITTER := 0.2
 ## A Heap's Socks may press this deep into each other (Jolt's slop, Q2499); a flat area's none.
 const HEAP_PRESS := 0.02
+## How far a Sock on a stair's tread may reach past its front or back edge (over the nosing).
+const TREAD_SLACK := 0.01
 
 var tuning: SockGeneratorTuning
 ## What the queries ask through (a node in the level's world).
@@ -120,7 +122,11 @@ func lay_trail(trail: SockTrail, seed: int, keep_out: Array[Array]) -> void:
 			var off := 0.0 if t == 0 else _rng.randf_range(-trail.spread, trail.spread)
 			var p := at + across * off
 			var yaw := atan2(-across.z, across.x) + _rng.randf_range(-0.15, 0.15) + (PI if _rng.randf() < 0.5 else 0.0)
-			pose = _rest(p + Vector3.UP * 1.0, p + Vector3.DOWN * 1.0, yaw, NAN, keep_out, false, true)
+			var tread := PhysicsQueries.ray(node, p + Vector3.UP * 1.0, p + Vector3.DOWN * 1.0, SockTrail.LAYER_TREADS)
+			if tread.is_empty():
+				pose = _rest(p + Vector3.UP * 1.0, p + Vector3.DOWN * 1.0, yaw, NAN, keep_out, false, true)
+			else:
+				pose = _rest_on_tread(tread, p, yaw, keep_out)
 			if pose != null:
 				break
 		if pose == null:
@@ -288,6 +294,49 @@ func _rest(from: Vector3, to: Vector3, yaw: float, rest: float, keep_out: Array[
 		return _fail("sock")
 	_add_box(tuning.place_box, centre)
 	_mark(bucket, basis, pose)
+	return pose
+
+
+## Rests a trail's Sock turned `yaw` flat on the tread `hit` found under `p` (house/05, Q2530): its middle
+## on the tread's middle line across the flight, at `p`'s place across it. Its pose, or null when it would
+## stick out of the tread, meet the house (but the stair's own walking ramps, which pass over the
+## treads), a box kept clear or another Sock.
+func _rest_on_tread(hit: Dictionary, p: Vector3, yaw: float, keep_out: Array[Array]) -> Variant:
+	var body := hit.get("collider") as CollisionObject3D
+	if body == null:
+		return _fail("no_tread")
+	var owner_id := body.shape_find_owner(int(hit.get("shape", 0)))
+	var tread := body.shape_owner_get_owner(owner_id) as CollisionShape3D
+	if tread == null or not (tread.shape is BoxShape3D):
+		return _fail("no_tread")
+	var size := (tread.shape as BoxShape3D).size
+	var xf := tread.global_transform
+	var local := xf.affine_inverse() * p
+	var at := xf * Vector3(local.x, size.y * 0.5, 0.0)
+	var basis := Basis(Vector3.UP, yaw)
+	var half := tuning.place_box * 0.5
+	for sx: float in [-1.0, 1.0]:
+		for sz: float in [-1.0, 1.0]:
+			var corner := xf.affine_inverse() * (at + basis * Vector3(half.x * sx, 0.0, half.z * sz))
+			if absf(corner.x) > size.x * 0.5 or absf(corner.z) > size.z * 0.5 + TREAD_SLACK:
+				return _fail("off_tread")
+	var pose := Transform3D(basis, at + Vector3.UP * tuning.gap)
+	var centre := pose * Transform3D(Basis.IDENTITY, Vector3(0.0, half.y, 0.0))
+	var skip: Array[RID] = []
+	var ramps := body.get_parent().get_node_or_null(^"Body") as CollisionObject3D if body.get_parent() != null else null
+	if ramps != null:
+		skip.append(ramps.get_rid())
+	_box.size = tuning.place_box - Vector3(0.004, 0.004, 0.004)
+	var lifted := Transform3D(centre.basis, centre.origin + Vector3.UP * 0.003)
+	if not PhysicsQueries.overlap_colliders(node, _box, lifted, Mess.LAYER_HOUSE, 1, skip).is_empty():
+		return _fail("house")
+	for k: Array in keep_out:
+		if MessBodies.boxes_meet(tuning.place_box, centre, k[0], k[1]):
+			return _fail("kept_out")
+	if _meets_laid(centre, false):
+		return _fail("sock")
+	_add_box(tuning.place_box, centre)
+	_mark(roundi(at.y * 10.0), basis, pose)
 	return pose
 
 

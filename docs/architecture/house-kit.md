@@ -64,7 +64,9 @@ An opening sits in the middle of its wall piece (one off-centre door piece, Q235
 The U stair (`stair_u`, `stair_u_solid` for the lowest storey) has its origin on the well's corner:
 x 0 on the west partition's centre line, z 0 on the first riser; the flights collide through two
 ramps a centimetre over the nosings, the landing and the newel through boxes. The attic has
-`stair_newel_top` and `stair_balustrade` at the same origin. Roof pieces have their origin on the
+`stair_newel_top` and `stair_balustrade` at the same origin. Every stair piece (`stair_full`, `stair_half`,
+`stair_u`, `stair_u_solid`) also has a `Treads` body: a 2 cm box on each step's top and the landing, on layer
+128 only, where the Sock generator's stair trail lays its Socks flat (house/05, Q2530); nothing else meets it. Roof pieces have their origin on the
 outer wall's centre line at the attic floor; the far slope is the same piece turned half round,
 its origin on the far wall line; `roof_verge_w` / `_e` end a slope at a gable. The dormer is placed
 like a far-slope piece (turned half round) between its cheeks' centre lines.

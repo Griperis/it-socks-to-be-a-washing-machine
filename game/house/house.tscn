@@ -65,6 +65,11 @@
 [ext_resource type="PackedScene" uid="uid://c4shutfrontdr" path="res://game/house/shut_front_door.tscn" id="78_shut_front_door"]
 [ext_resource type="PackedScene" uid="uid://c4shutgaragdr" path="res://game/house/shut_garage_door.tscn" id="79_shut_garage_door"]
 [ext_resource type="PackedScene" uid="uid://q0tm1ywugfrf" path="res://game/level/level_runtime.tscn" id="80_runtime"]
+[ext_resource type="PackedScene" uid="uid://h3610c6dred6" path="res://game/entities/cabinet/cabinet.tscn" id="81_cabinet"]
+[ext_resource type="Script" uid="uid://cyhr6nx34vjq0" path="res://game/mess/sock_generator.gd" id="82_generator"]
+[ext_resource type="Script" uid="uid://cub70qrwflqk1" path="res://game/mess/sock_area.gd" id="83_area"]
+[ext_resource type="Script" uid="uid://c76hgi71q4k4g" path="res://game/mess/sock_trail.gd" id="84_trail"]
+[ext_resource type="Script" uid="uid://co2u54sk1yir8" path="res://game/mess/generated_socks.gd" id="85_generated"]
 
 [node name="House" type="Node3D" unique_id=1892225822]
 
@@ -460,3 +465,182 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.68, -3, 5.87)
 
 [node name="Runtime" parent="." unique_id=715124708 instance=ExtResource("80_runtime")]
 mess_bounds = AABB(-2, -5, -2, 14.5, 17, 12.5)
+
+[node name="Cabinets" type="Node3D" parent="." unique_id=1977464650]
+
+[node name="Laundry" parent="Cabinets" unique_id=1126269557 instance=ExtResource("81_cabinet")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.42, -3, 8.15)
+
+[node name="Cabinet" parent="Cabinets/Laundry" index="0" node_paths=PackedStringArray("hands", "coins")]
+hands = NodePath("../../../Runtime/Socks/Hands")
+coins = NodePath("../../../Runtime/Socks/Coins")
+collection = &"simple"
+
+[node name="Garage" parent="Cabinets" unique_id=15423979 instance=ExtResource("81_cabinet")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, -3, 7.3)
+
+[node name="Cabinet" parent="Cabinets/Garage" index="0" node_paths=PackedStringArray("hands", "coins")]
+hands = NodePath("../../../Runtime/Socks/Hands")
+coins = NodePath("../../../Runtime/Socks/Coins")
+collection = &"sport"
+
+[node name="Kitchen" parent="Cabinets" unique_id=759235581 instance=ExtResource("81_cabinet")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.35, 0, 4.99)
+
+[node name="Cabinet" parent="Cabinets/Kitchen" index="0" node_paths=PackedStringArray("hands", "coins")]
+hands = NodePath("../../../Runtime/Socks/Hands")
+coins = NodePath("../../../Runtime/Socks/Coins")
+collection = &"food"
+
+[node name="Living" parent="Cabinets" unique_id=946583941 instance=ExtResource("81_cabinet")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 0, 2.08)
+
+[node name="Cabinet" parent="Cabinets/Living" index="0" node_paths=PackedStringArray("hands", "coins")]
+hands = NodePath("../../../Runtime/Socks/Hands")
+coins = NodePath("../../../Runtime/Socks/Coins")
+collection = &"patterns"
+
+[node name="KidsNorth" parent="Cabinets" unique_id=32228217 instance=ExtResource("81_cabinet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.84, 3, 3.81)
+
+[node name="Cabinet" parent="Cabinets/KidsNorth" index="0" node_paths=PackedStringArray("hands", "coins")]
+hands = NodePath("../../../Runtime/Socks/Hands")
+coins = NodePath("../../../Runtime/Socks/Coins")
+collection = &"animals"
+
+[node name="KidsEast" parent="Cabinets" unique_id=2075620364 instance=ExtResource("81_cabinet")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 3, 5.38)
+
+[node name="Cabinet" parent="Cabinets/KidsEast" index="0" node_paths=PackedStringArray("hands", "coins")]
+hands = NodePath("../../../Runtime/Socks/Hands")
+coins = NodePath("../../../Runtime/Socks/Coins")
+collection = &"superhero"
+
+[node name="LoftWest" parent="Cabinets" unique_id=1701359047 instance=ExtResource("81_cabinet")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.35, 6, 4.26)
+
+[node name="Cabinet" parent="Cabinets/LoftWest" index="0" node_paths=PackedStringArray("hands", "coins")]
+hands = NodePath("../../../Runtime/Socks/Hands")
+coins = NodePath("../../../Runtime/Socks/Coins")
+collection = &"winter"
+
+[node name="LoftEast" parent="Cabinets" unique_id=1484615176 instance=ExtResource("81_cabinet")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 6, 4.26)
+
+[node name="Cabinet" parent="Cabinets/LoftEast" index="0" node_paths=PackedStringArray("hands", "coins")]
+hands = NodePath("../../../Runtime/Socks/Hands")
+coins = NodePath("../../../Runtime/Socks/Coins")
+collection = &"space"
+
+[node name="Washer" type="Marker3D" parent="." unique_id=173957773]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.46, -3, 5.21)
+
+[node name="SockGenerators" type="Node3D" parent="." unique_id=1278909355]
+
+[node name="Basement" type="Node3D" parent="SockGenerators" node_paths=PackedStringArray("washer", "scan") unique_id=1769423610]
+script = ExtResource("82_generator")
+collections = Array[StringName]([&"simple", &"sport"])
+washer = NodePath("../../Washer")
+scan = NodePath("../..")
+
+[node name="Floor" type="Node3D" parent="SockGenerators/Basement" unique_id=134333549]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, -3, 4.25)
+script = ExtResource("83_area")
+size = Vector3(10.3, 2.4, 8.3)
+pairs = 50
+heap = true
+
+[node name="StairWestBasement" type="Node3D" parent="SockGenerators/Basement" unique_id=1705360162]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.625, -3, 5.5)
+script = ExtResource("84_trail")
+socks = 1
+to = Vector3(0, 1.5, 2)
+
+[node name="StairEastBasement" type="Node3D" parent="SockGenerators/Basement" unique_id=897287480]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.875, -1.5, 7.5)
+script = ExtResource("84_trail")
+socks = 2
+to = Vector3(0, 1.5, -2)
+
+[node name="Generated" type="Node" parent="SockGenerators/Basement" node_paths=PackedStringArray("mess", "generator") unique_id=739529423]
+script = ExtResource("85_generated")
+mess = NodePath("../../../Runtime/Socks/Mess")
+generator = NodePath("..")
+
+[node name="Ground" type="Node3D" parent="SockGenerators" node_paths=PackedStringArray("washer", "scan") unique_id=827901271]
+script = ExtResource("82_generator")
+collections = Array[StringName]([&"food", &"patterns"])
+washer = NodePath("../../Washer")
+scan = NodePath("../..")
+
+[node name="Floor" type="Node3D" parent="SockGenerators/Ground" unique_id=577076592]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 0, 4.25)
+script = ExtResource("83_area")
+size = Vector3(10.3, 2.4, 8.3)
+pairs = 160
+heap = true
+
+[node name="StairWestGround" type="Node3D" parent="SockGenerators/Ground" unique_id=1104021169]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.625, 0, 5.5)
+script = ExtResource("84_trail")
+socks = 3
+to = Vector3(0, 1.5, 2)
+
+[node name="StairEastGround" type="Node3D" parent="SockGenerators/Ground" unique_id=1097008351]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.875, 1.5, 7.5)
+script = ExtResource("84_trail")
+socks = 3
+to = Vector3(0, 1.5, -2)
+
+[node name="Generated" type="Node" parent="SockGenerators/Ground" node_paths=PackedStringArray("mess", "generator") unique_id=1342893363]
+script = ExtResource("85_generated")
+mess = NodePath("../../../Runtime/Socks/Mess")
+generator = NodePath("..")
+
+[node name="First" type="Node3D" parent="SockGenerators" node_paths=PackedStringArray("washer", "scan") unique_id=1297027466]
+script = ExtResource("82_generator")
+collections = Array[StringName]([&"animals", &"superhero"])
+washer = NodePath("../../Washer")
+scan = NodePath("../..")
+
+[node name="Floor" type="Node3D" parent="SockGenerators/First" unique_id=1523843390]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 3, 4.25)
+script = ExtResource("83_area")
+size = Vector3(10.3, 2.4, 8.3)
+pairs = 150
+heap = true
+
+[node name="StairWestFirst" type="Node3D" parent="SockGenerators/First" unique_id=1365621519]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.625, 3, 5.5)
+script = ExtResource("84_trail")
+socks = 2
+to = Vector3(0, 1.5, 2)
+
+[node name="StairEastFirst" type="Node3D" parent="SockGenerators/First" unique_id=1031272169]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.875, 4.5, 7.5)
+script = ExtResource("84_trail")
+socks = 1
+to = Vector3(0, 1.5, -2)
+
+[node name="Generated" type="Node" parent="SockGenerators/First" node_paths=PackedStringArray("mess", "generator") unique_id=1654040943]
+script = ExtResource("85_generated")
+mess = NodePath("../../../Runtime/Socks/Mess")
+generator = NodePath("..")
+
+[node name="Attic" type="Node3D" parent="SockGenerators" node_paths=PackedStringArray("washer", "scan") unique_id=2043012127]
+script = ExtResource("82_generator")
+collections = Array[StringName]([&"winter", &"space"])
+washer = NodePath("../../Washer")
+scan = NodePath("../..")
+
+[node name="Floor" type="Node3D" parent="SockGenerators/Attic" unique_id=2097351030]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, 6, 4.25)
+script = ExtResource("83_area")
+size = Vector3(10.3, 2.4, 8.3)
+pairs = 130
+heap = true
+
+[node name="Generated" type="Node" parent="SockGenerators/Attic" node_paths=PackedStringArray("mess", "generator") unique_id=1461965443]
+script = ExtResource("85_generated")
+mess = NodePath("../../../Runtime/Socks/Mess")
+generator = NodePath("..")
