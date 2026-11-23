@@ -9,7 +9,8 @@
   colours to sRGB, double-sided as culling off, emission strength as energy). It never overwrites a file:
   the `.tres` are the truth, edited in the inspector.
 - The fab_* cloths had glTF sheen in the old models; StandardMaterial3D has no sheen and the old import
-  dropped it, so they are ported without it (Q2390). A soft sheen is a later look change.
+  dropped it (old value: sheen 0.1, `fkit.py`). assets/06 (Q2390) gives every fab_* file a soft sheen as
+  StandardMaterial3D rim (`rim_enabled`, `rim` 0.35, `rim_tint` 0.6; placeholder values).
 - The zoo's Materials station (`game/zoo/stations/materials.tscn`): `MaterialBoard` hangs every file on a
   sphere, built from the folder at load (Q2337); `MaterialBoardLayout` its spacing. A folder
   `candidates/<name>/` (several files of one name) shows as its own row. Shots: the set `materials`.
