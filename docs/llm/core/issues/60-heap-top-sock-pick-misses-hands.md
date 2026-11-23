@@ -41,3 +41,4 @@ and run it alone.
   names the target. The kitchen real-path case is back on a Heap's top Sock and checks the crosshair.
 - Files: tests/house_test.gd, tests/save_test.gd
 - Verified: PASS 543 checks, 48 cases (`run.sh --touched`); PASS rules
+- Merged: 83c69fef (2026-11-23, branch core/60-heap-top-sock-pick-misses-hands)
