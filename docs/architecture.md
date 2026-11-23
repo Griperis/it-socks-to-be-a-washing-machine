@@ -65,6 +65,7 @@ How this game is built, unless a decision record says otherwise. They are the ga
 | The house kit | `docs/architecture/house-kit.md` | you add or change a kit piece, a library material or the kit's sizes |
 | The material library | `docs/architecture/materials.md` | you add, pick or change a shared material, or a model uses one |
 | Furniture | `docs/architecture/furniture.md` | you place, change or add a furniture piece, its openings, collision or Sock spots, or a device (opening sounds, the piano, the mirror, the dust sheet) |
+| The house level | `docs/architecture/house.md` | you change the house scene: its shell, furniture, lights, spawn or what it holds |
 
 A ticket that adds a subsystem adds its row here and its file.
 
@@ -79,9 +80,13 @@ A ticket that adds a subsystem adds its row here and its file.
 debug or release). The game's refusals go through `Log` with an area; only the command line's and the benchmark's
 terminal output stays a plain `print()`.
 
-The main scene is the zoo (`game/zoo/zoo.tscn`): `ZooStations` joins every station's Socks to the zoo's one Mess
-before anything binds, `Parts.bind` registers every Part by its node path, and `ZooNet` hosts or joins on
-`--host` / `--join=`.
+The main scene is the house (`game/house/house.tscn`, house/04, Q2509: F5 and a plain launch start there until
+menus exist): the shell, the old furniture, the lamps, the player and the same shared-state path as the zoo;
+`Parts.bind` registers every Part by its node path and `LevelNet` (`game/net/level_net.gd`) hosts or joins on
+`--host` / `--join=`. The zoo (`game/zoo/zoo.tscn`) starts with `-- --zoo` or F6 in the editor: `ZooStations`
+joins every station's Socks to the zoo's one Mess before anything binds, and `ZooNet` is its `LevelNet` (the
+zoo's word and its stand-in Teammate). Shots load the zoo unless a set line gives `--scene=`
+(`tools/shot_hooks.gd` `SCENE`).
 
 **A frame.** `player.gd` moves the body, looks the aim up once (`AimFinder`), feeds the outline, the prompts and the
 HUD, then reads the buttons. On the Host, `MessMoving.tick` checks hits, picks' columns, Door and drawer sweeps and
@@ -103,7 +108,7 @@ admits it, writes it into the `Roster` Part (keyed by player id: peer, name, col
 which the Guest writes with `Parts.load_snapshot`. `Avatars` spawns by the Roster on the Host (an `Avatar` per player: its pose, position, yaw, pitch and crouch, goes from its owner every network frame and is checked in its setters where it lands; elsewhere it eases to it, its `AvatarLooks` derives the waddle, bend, squash and pupils, a worn `HeldView` hangs its Hands at the HoldPoint, where a Teammate's Throw leaves, and `TeammateSteps` plays its steps at its body; `Hearing` plays a Teammate's cues with `Sounds.play_from` at 1.2 m over their feet); thrown Socks come
 through the zoo's `FlightSpawner`, each with its stamped row (`FlightRow`); a Guest's own actions show at once
 as looks-only guesses (`GuestGhosts`) until the Host's answer, matched by the Command's `seq`. A leaver: `Parts.left` drops their Hands where they stood (`Hands.left`) and the
-Roster keeps that place. `ZooNet` reads `--host`, `--join=`, `--profile=` and puts the toasts on the HUD.
+Roster keeps that place. `LevelNet` reads `--host`, `--join=`, `--profile=` and puts the toasts on the HUD.
 
 **A knockdown (coop/10).** `Knockdowns` (`game/knockdown/`, one Part under `Socks`, keyed by peer) holds who is down
 (their fall, a serial), who drags whom and the struggle presses. On the Host it tests every full-charge Throw in the

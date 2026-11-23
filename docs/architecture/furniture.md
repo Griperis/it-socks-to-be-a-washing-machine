@@ -60,7 +60,7 @@ The old house's 67 pieces, each a scene in `game/furniture/<piece>.tscn` (Q2151)
 
 ## The station
 
-`game/zoo/stations/furniture.tscn`, at (75.5, 0, 9.5) east of the two old houses on its own ground, inside the
+`game/zoo/stations/furniture.tscn`, at (21.5, 0, 9.5) on its own ground right east of the zoo floor (moved in from x 75.5 when the old houses that led to it left the zoo, house/04), inside the
 zoo's Mess bounds (Q2396): `FurnitureLineUp` puts
 every scene of `game/furniture/` in rows by name, built from the folder at load (Q2337); in front, on the right, the
 sheeted Cabinet and its switch (assets/07). Shots: the sets `furniture` and `furniture-devices`; `furniture:old_<view>` shows the old models in place, read from the reference at run time.

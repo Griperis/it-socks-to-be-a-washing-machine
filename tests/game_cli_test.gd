@@ -1,6 +1,7 @@
 ## The game's command line (core/35, GameCli): no arguments change nothing, --help lists the
 ## commands, an unknown flag is code 2, a release build refuses every command, and the game
-## started as a child process with `-- --bench=mess` / `-- --scene=heap` does what it says.
+## started as a child process with `-- --bench=mess` / `-- --scene=heap` / `-- --zoo` does what it
+## says; started plainly it plays the house (house/04, Q2509).
 extends TestSuite
 
 
@@ -10,6 +11,8 @@ func cases() -> Array[Dictionary]:
 				"title": "Real path: the game started with -- --bench=mess --only=idle_500 --headless prints the BENCH line, the verdict and BENCH saved <path>, writes the report there and exits 0"},
 		{"name": "scene", "method": "case_scene", "world": false,
 				"title": "the game started with -- --scene=heap starts the heap station"},
+		{"name": "zoo_and_house", "method": "case_zoo_and_house", "world": false,
+				"title": "the game started plainly plays the house, alone; started with -- --zoo it starts the zoo instead"},
 		{"name": "none", "method": "case_none", "world": false,
 				"title": "no arguments (and engine flags alone) start the game as before"},
 		{"name": "help", "method": "case_help", "world": false,
@@ -56,6 +59,20 @@ func case_scene() -> void:
 	var text: String = r["text"]
 	_check(text.contains("GameCli: scene res://game/zoo/stations/heap.tscn"), "the heap station is named")
 	_check(not text.contains("SCRIPT ERROR") and not text.contains("cannot start"), "it started without an error")
+
+
+func case_zoo_and_house() -> void:
+	_same(String(ProjectSettings.get_setting("application/run/main_scene")), "res://game/house/house.tscn", "the house is the main scene")
+	var plain := _game(PackedStringArray(["--headless", "--audio-driver", "Dummy", "--quit-after", "40"]), PackedStringArray())
+	var text: String = plain["text"]
+	_check(not text.contains("GameCli: scene"), "a plain start swaps no scene")
+	_check(not text.contains("SCRIPT ERROR"), "the house starts without an error")
+	var zoo := _game(PackedStringArray(["--headless", "--audio-driver", "Dummy", "--quit-after", "40"]), PackedStringArray(["--zoo"]))
+	text = zoo["text"]
+	_check(text.contains("GameCli: scene res://game/zoo/zoo.tscn"), "-- --zoo starts the zoo")
+	_check(not text.contains("SCRIPT ERROR") and not text.contains("cannot start"), "the zoo started without an error")
+	var p := GameCli.plan(PackedStringArray(["--zoo", "--host"]), true)
+	_same(p["scene"], "res://game/zoo/zoo.tscn", "--zoo with --host: the zoo, the co-op flag passed on")
 
 
 func case_none() -> void:

@@ -1,6 +1,16 @@
 ## What this game adds to shots (kit/docs/TESTING.md "The shot harness").
 extends RefCounted
 
+## The scene a shot loads unless its line gives --scene=: the zoo, where every shot set before
+## house/04 was made. The project's main scene is the house since house/04 (Q2509).
+const SCENE := "res://game/zoo/zoo.tscn"
+
+
+## Before the harness reads the shot's arguments: the zoo is the default scene. The harness has no
+## setting for it (kit/tools/shot.gd reads the main scene into `_scene`, then --scene=).
+static func setup(shot: Node) -> void:
+	shot.set("_scene", SCENE)
+
 
 ## The game's own --do actions. Return true when `what` was handled.
 static func act(world: Node, what: String, arg: String) -> bool:
@@ -123,20 +133,21 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.look_at(station.to_global(view[1]))
 			cam.make_current()
 			return true
-		"old_house":
-			# house/03: the zoo's player in house A or B as the old game's looks-baseline tour stood
-			# (docs/migration/baseline/views_baseline.json), for stills old beside new. arg "a,<view>"
-			# or "b,<view>". The old numbers are moved +0.1 m on x and z (the plan's frame) and the
-			# old floors (-2.9, 0, 2.9, 5.8) become the new (-3, 0, 3, 6); every other station hides.
-			var station := world.get_node("Stations/OldHouse" + arg.get_slice(",", 0).to_upper()) as Node3D
-			var house := station.get_node("House") as Node3D
-			for other: Node in world.get_node("Stations").get_children():
-				(other as Node3D).visible = other == station
+		"house":
+			# house/04: the player in the house (the main scene: a set line gives
+			# --scene=res://game/house/house.tscn) where the old game's looks-baseline tour stood
+			# (docs/migration/baseline/views_baseline.json), for stills old beside new. arg "<view>": a
+			# room ("room-kitchen") or an outside view ("exterior-front", "exterior-high", from a camera:
+			# the house has no ground round it). The old numbers are moved +0.1 m on x and z (the plan's
+			# frame) and the old floors (-2.9, 0, 2.9, 5.8) become the new (-3, 0, 3, 6). "roof-south" looks
+			# at the south slope from close by (D09).
+			var house := world.get_node("Shell") as Node3D
 			var player := world.get_node("Player") as Player
 			var head := player.get_node("%Head") as Node3D
-			var view := arg.get_slice(",", 1)
+			var view := arg
 			var outside := {"exterior-front": [Vector3(5.0, 3.0, 22.0), Vector3(5.0, 3.5, 4.0)],
-					"exterior-high": [Vector3(22.0, 9.0, 18.0), Vector3(5.0, 2.0, 4.0)]}
+					"exterior-high": [Vector3(22.0, 9.0, 18.0), Vector3(5.0, 2.0, 4.0)],
+					"roof-south": [Vector3(5.0, 8.5, 13.0), Vector3(5.0, 7.5, 8.0)]}
 			# name: x, z, yaw, the old floor (the old views' pitch is 0.12 down).
 			var rooms := {"workshop": [0.60, 0.60, -2.241, -2.9], "laundry": [0.60, 3.88, -2.515, -2.9],
 					"boiler": [4.55, 0.60, -2.244, -2.9], "stair_lobby": [4.55, 2.70, -2.527, -2.9],
@@ -150,11 +161,13 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			var shift := Vector3(0.1, 0.0, 0.1)
 			if outside.has(view):
 				var o: Array = outside[view]
-				player.global_position = house.to_global((o[0] as Vector3) + shift)
-				player.rotation = Vector3.ZERO
-				var dir := (house.to_global((o[1] as Vector3) + shift) - head.global_position).normalized()
-				player.rotation = Vector3(0.0, atan2(-dir.x, -dir.z), 0.0)
-				head.rotation.x = asin(dir.y)
+				var cam := Camera3D.new()
+				world.add_child(cam)
+				cam.fov = 75.0
+				cam.global_position = house.to_global((o[0] as Vector3) + shift)
+				cam.look_at(house.to_global((o[1] as Vector3) + shift))
+				cam.make_current()
+				player.process_mode = Node.PROCESS_MODE_DISABLED
 			else:
 				var r: Array = rooms[view.trim_prefix("room-")]
 				var floor_y: float = roundf(float(r[3]) / 2.9) * 3.0
@@ -583,7 +596,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			return true
 		"sign":
 			# core/33: arg "<Station>" stands 3 m in front of that station's Name label at eye height
-			# and looks at it ("<Station>:north" stands on its north side, as the old houses' sign faces
+			# and looks at it ("<Station>:north" stands on its north side, as the old houses' sign faced
 			# the door); arg "wide" looks over the zoo from the start spot.
 			var cam := Camera3D.new()
 			world.add_child(cam)
