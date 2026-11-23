@@ -874,3 +874,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | none |
 
 ---
+
+| Ticket | coop/11, a Guest's own Throw looked weaker and jumped (from the designer's play): the ghost aimed from the first-person hand, its body had no physics material (died on the first touch), and the Host's flight time read a step ahead; merged (main 70c6eb5) |
+| Planned vs actual | 0 planned (from play), 1 actual |
+| Redo count | 0 |
+| Corrections | stopped when the session ended and resumed from its worktree |
+| Cost | 8,268,483, 64 tool calls, 11h11m (Opus) |
+| Time | see cost |
+| Surprises | ghost 0.50 m off the Host's flight before, 0.0000 m after; the two-window check is the designer's |
+| Stop rules | none hit |
+| Looks | none |
+| Decisions | Q2221, Q2481 |
+
+---
