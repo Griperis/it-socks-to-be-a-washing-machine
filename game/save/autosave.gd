@@ -16,7 +16,8 @@ extends Node
 const FAILED := "Could not save the game"
 
 @export var parts: Parts
-@export var session: Session
+## The game link's Session (LevelRuntime sets it as it enters the tree: it lives outside the level).
+var session: Session
 @export var tuning: SaveTuning
 
 ## The World this level plays; null saves nothing (LevelRuntime sets it from its own).

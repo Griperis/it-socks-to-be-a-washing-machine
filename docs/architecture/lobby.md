@@ -1,6 +1,8 @@
 # The Lobby
 
-**Status: designed, as decided (Q2582-Q2587); nothing built.** Findings: `docs/migration/m4-lists/02-lobby.md` (74
+**Status: designed, as decided (Q2582-Q2587); core/62 (the game link) built, the rest not.** The saved id of the
+Roster is `Runtime/Session/Roster` (the runtime instance is named `Runtime` in every level): the link's Parts prefix
+their ids with `Runtime/` so it does not change. Findings: `docs/migration/m4-lists/02-lobby.md` (74
 lines of the old Lobby). Written against core/58 as merged to `main` (`docs/architecture/saves.md` "As built",
 `game/save/`, `game/ui/title/`, `game/level/`, `game/parts/session.gd`). The first ticket (core/62) changes the co-op
 code; read its section first.

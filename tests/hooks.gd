@@ -6,8 +6,16 @@ extends RefCounted
 const WORLD := "res://main/main.tscn"
 
 
-## Between cases, after the runner's own resets: the settings and the sounds back to a fresh start.
-static func scrub(_tree: SceneTree) -> void:
+## Between cases, after the runner's own resets: no game link left, the settings and the sounds back
+## to a fresh start.
+static func scrub(tree: SceneTree) -> void:
+	# core/62: a game link a case made (a title's, a test's) goes with its session; a level's own goes
+	# with its level.
+	for node in tree.get_nodes_in_group(GameLink.GROUP):
+		var link := node as GameLink
+		if link != null and not link.is_private() and link.get_parent() != null:
+			link.get_parent().remove_child(link)
+			link.free()
 	Settings.autosave = false
 	Settings.reset_to_defaults()
 	Sounds.reset()

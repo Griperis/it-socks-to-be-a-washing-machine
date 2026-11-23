@@ -93,6 +93,13 @@ func upgrade_save(state: Dictionary, _from: int) -> Dictionary:
 	return state
 
 
+## The Host, as a save loads: the state to write, made from the saved one (at this part's version)
+## and what the part holds now. The saved state as it is by default; the Roster merges (core/62).
+## Never writes state.
+func restored(saved: Dictionary) -> Dictionary:
+	return saved
+
+
 ## The Host, after a save is loaded: what a load resets (Q2559), as grant(...); {} for nothing. Kept
 ## beside the thing it resets (a Door shuts, absent players' Socks drop). `host`: the Host's player id.
 func loaded(_host: String) -> Dictionary:
