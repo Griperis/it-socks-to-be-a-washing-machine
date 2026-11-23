@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: needs-info
 kind: build
 area: house
 feature: house
@@ -35,3 +35,9 @@ and sound (Q2277). Mark open choices as questions. Stop and report.
 - Real path: in the house, aim at a Door, click: it swings open with its sound and pushes a Sock in its way; a Guest
   sees the swing and the Sock move; a late joiner sees the Door as it stands.
 - Strip for the designer: a Door shut, mid-swing and open, and the station (`builds/review-house-08/`).
+
+## Open follow-ups
+- [blocking] Step 1's questions Q1-Q7 at the end of `docs/migration/m06-lists/06-room-doors.md` wait for the designer (ground floor doorways, sweep only or the old push too, the laundry-garage Doors open, shut at the start silent, the leaf's Looks, the leaf's size, old details).
+
+## Built log
+- 2026-11-23: Step 1 only. Changed: wrote the behaviour list (54 rows, 7 questions with recommendations). Files: `docs/migration/m06-lists/06-room-doors.md`, this ticket. Verified: docs only, no suite run.
