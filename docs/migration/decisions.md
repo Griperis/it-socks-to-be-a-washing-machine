@@ -1,4 +1,4 @@
-Next free Q number: Q2564 (update this line whenever a round of questions is asked)
+Next free Q number: Q2568 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -478,3 +478,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2561: until the Lobby piece, Solo continues or starts the Solo World and Host the last co-op World, straight into the house; the World list, Continue/New Game and Delete come with the Lobby (M9; designer, 2026-11-23).
 - Q2562: the first menus-and-saves build holds the title, Options, Licence, loading screen, cursor, menu sounds, ESC menu and saves; the studio intro and the encyclopedia key come later (M10; designer, 2026-11-23).
 - Q2563: house/07 merges as its strips show (designer, 2026-11-23).
+- Q2564: saves sync by Steam Auto-Cloud (set on the Steamworks site, no Steam code), written through a small `SaveStore` layer with a local-file backend so another store or the Steam API can replace it (C1, docs/research/steam-cloud-saves.md; designer, 2026-11-23).
+- Q2565: Worlds and the profile sync between PCs; settings (graphics, resolution and the like) stay on each PC (C2; designer, 2026-11-23).
+- Q2566: each Steam account on a PC has its own Worlds, under `user://worlds/<player id>/` (C3; designer, 2026-11-23).
+- Q2567: the save folder (`use_custom_user_dir`) is "It Socks", set now with menus and saves (C4; designer, 2026-11-23).

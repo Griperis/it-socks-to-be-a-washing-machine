@@ -1,13 +1,13 @@
 ---
 type: ticket
-status: needs-info
+status: ready-for-agent
 kind: build
 area: core
 feature: frame
 priority: now
 created: 2026-11-23
 done:
-blocked_by: [research: docs/research/steam-cloud-saves.md]
+blocked_by: []
 notes: ["M4's first piece; design core/57, Q2553-Q2562; list docs/migration/m4-lists/01-main-menu-and-saves.md"]
 terms: [Host, Guest, Mess, Part, Hands]
 ---
@@ -32,6 +32,14 @@ intro, key remapping, the encyclopedia key.
 - First fix the port gap core/57 found: alone, Hands keys the player by peer number, not player id.
 - The kit save template's follow-up (a broken file may replace a good backup): fix in the game's copy and note it for
   the lead to propose upstream.
+
+## Steam Cloud readiness (Q2564-Q2567, `docs/research/steam-cloud-saves.md`)
+- Every save read and write goes through a `SaveStore` (read, write, list, delete of named files, batch begin and end)
+  with a local-file backend and an in-memory one for tests; no other code touches save files.
+- Worlds at `user://worlds/<player id>/<slot>.json` (Q2566); the profile synced, settings local (Q2565); temp, backup
+  and damaged files named outside the Auto-Cloud pattern; a test ties every saved file name to the pattern written in
+  the doc (`docs/architecture/saves.md` gets the Steamworks Auto-Cloud settings to enter).
+- `use_custom_user_dir` "It Socks" in project.godot (Q2567; `--allow-project`).
 
 ## Acceptance
 - Real path: launch, the title, Solo, the house loads behind the loading screen, pick and pair a Sock, quit to the
