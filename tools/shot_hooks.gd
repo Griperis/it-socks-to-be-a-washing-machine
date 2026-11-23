@@ -900,44 +900,85 @@ static func _knockdown(world: Node, arg: String) -> bool:
 	return true
 
 
-## core/42: the Hand-off station. Arg "give": this player holds the Brown Sock whose mate the stand-in
-## (peer 6) holds, standing 1.5 m in front of it, its own view on (the Outline); "side": a camera from the
-## side over both; "tap": a short right click's Command, the Hand-off; "pair": this player holds the
-## Forest Pair instead (the stand-in has no room); "throw": a Throw at 0.6 of the ring at the stand-in's
-## chest from 1.2 m (caught when this player holds the Brown Sock).
+## core/42: the Hand-off station. Arg "give" (the Brown Sock whose mate the stand-in, peer 6, holds),
+## "odd" (a Charcoal Sock, not its mate) or "pair" (the Forest Pair; the stand-in has no room): this
+## player holds it, standing 1.5 m in front of the stand-in, its own view on (the Outline). "quiet": every
+## Label3D in the zoo hidden (station signs, name tags). "close": a camera low at the side, near, framing
+## this player's hand, the way between and the stand-in's Hands. "tap": a short right click's Command,
+## the Hand-off. "throw": a Throw at 0.6 of the ring at the stand-in's chest from 1.2 m. "full": this
+## player holds three items (full) in front of the empty-handed stand-in (peer 7), which hands it the
+## Forest Pair (the receiver's "Hands full", the Pair laid at this player's feet; this player then steps
+## back off it so it shows), framed from the side.
 static func _hand_off(world: Node, arg: String) -> bool:
 	var player := LevelRuntime.of(world).player
 	var hands := LevelRuntime.of(world).hands
 	var station := world.get_node("Stations/HandOff") as Node3D
 	var mate := station.get_node("Holder/6") as Avatar
+	var open := station.get_node("Open/7") as Avatar
 	var me := player.player_id()
 	match arg:
-		"give", "pair":
+		"give", "odd", "pair":
 			var picks: Array[String] = ["Mate"]
 			if arg == "pair":
 				picks = ["PairA", "PairB"]
-			for spot: String in picks:
-				var sock := (station.get_node("Spots/" + spot) as SockSpot).sock
-				hands.grabbed_at.clear()
-				player.global_position = hands.mess.pose_of(sock).origin + Vector3(0.0, 0.0, 0.8)
-				hands.pick(me, sock)
+			elif arg == "odd":
+				picks = ["Odd"]
+			_pick_spots(player, hands, station, picks)
 			_face_point(player, mate.global_position + Vector3(0.0, 0.0, 1.5), mate.global_position + Vector3.UP * 1.1)
 			player.capture_mouse()
 			player.camera().make_current()
-		"side":
-			var cam := Camera3D.new()
-			world.add_child(cam)
-			cam.fov = 50.0
-			var mid := mate.global_position + Vector3(0.0, 1.0, 0.75)
-			cam.global_position = mid + Vector3(-2.6, 0.5, 1.2)
-			cam.look_at(mid)
-			cam.make_current()
+		"quiet":
+			for node in world.find_children("*", "Label3D", true, false):
+				(node as Label3D).visible = false
+		"close", "side":
+			_side_camera(world, mate.global_position, player.global_position, 1.3, Vector3(-1.9, 0.1, 0.0), 45.0)
 		"tap":
 			hands.hand_off(me, mate.peer())
 		"throw":
 			_face_point(player, mate.global_position + Vector3(0.0, 0.0, 1.2), mate.global_position + Vector3.UP * 1.1)
 			hands.throw(me, player.aim_dir(), 0.6)
+		"full":
+			# The Forest Pair goes to the empty-handed stand-in first, then this player fills its three places.
+			_pick_spots(player, hands, station, ["PairA", "PairB"])
+			var pair := (station.get_node("Spots/PairA") as SockSpot).sock
+			_face_point(player, open.global_position + Vector3(0.0, 0.0, 1.5), open.global_position + Vector3.UP * 1.1)
+			hands.hand_off(me, open.peer())
+			_pick_spots(player, hands, station, ["Mate", "Odd"])
+			var third := (world.get_node("Stations/Knockdown/Spots/SockA") as SockSpot).sock
+			hands.grabbed_at.clear()
+			player.global_position = hands.mess.pose_of(third).origin + Vector3(0.0, 0.0, 0.8)
+			hands.pick(me, third)
+			_face_point(player, open.global_position + Vector3(0.0, 0.0, 1.5), open.global_position + Vector3.UP * 1.1)
+			player.capture_mouse()
+			hands.hand_off(open.peer(), me)
+			# A step back off the Pair laid at the feet, so it shows beside the body.
+			player.global_position += Vector3(0.6, 0.0, 0.5)
+			player.reset_physics_interpolation()
+			_side_camera(world, open.global_position, player.global_position, 0.3, Vector3(-1.9, 1.3, 0.3), 55.0)
+			if hands.mess.state_of(pair) != Mess.State.LYING:
+				push_warning("hand_off full: the Pair did not lie down")
 	return true
+
+
+## This player picks the Socks of the station's spots `names`, standing by each.
+static func _pick_spots(player: Player, hands: Hands, station: Node3D, names: Array[String]) -> void:
+	for spot: String in names:
+		var sock := (station.get_node("Spots/" + spot) as SockSpot).sock
+		hands.grabbed_at.clear()
+		player.global_position = hands.mess.pose_of(sock).origin + Vector3(0.0, 0.0, 0.8)
+		hands.pick(player.player_id(), sock)
+
+
+## A camera at the side of the line between the bodies standing at `a` and `b`, `off` from its middle
+## `height` over the floor and looking at that middle, the 1.5 m between them across the picture.
+static func _side_camera(world: Node, a: Vector3, b: Vector3, height: float, off: Vector3, fov: float) -> void:
+	var cam := Camera3D.new()
+	world.add_child(cam)
+	cam.fov = fov
+	var mid := (a + b) * 0.5 + Vector3.UP * height
+	cam.global_position = mid + off
+	cam.look_at(mid)
+	cam.make_current()
 
 
 ## Stands `player` at `feet` looking at `target`.
