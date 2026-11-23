@@ -14,7 +14,8 @@
 ## Collection: the refusal tells it (C11).
 ##
 ## A Cabinet that wears a dust sheet (a DustSheet child of its root) shows it draped while it is locked
-## and pulled off when it is unlocked (assets/07).
+## and pulled off when it is unlocked (assets/07); while sheeted neither it nor its drawers can be aimed
+## at (Q2513: no outline, no prompt, no click).
 ##
 ## Its Looks and its drawers' Looks are its Collection's (assets/02, K01): `looks_<collection>.tscn`
 ## in this folder and in the drawer's, swapped in by dress() when the Cabinet is ready and whenever
@@ -208,6 +209,16 @@ static func of(part: Part) -> Cabinet:
 	if part == null or part.get_parent() == null or part.get_parent().get_parent() == null:
 		return null
 	return Parts.part_of(part.get_parent().get_parent()) as Cabinet
+
+
+## Whether it stands under its dust sheet: a DustSheet child and locked (assets/07).
+func sheeted() -> bool:
+	return locked and get_node_or_null(DUST_SHEET) is DustSheet
+
+
+## Under its dust sheet the crosshair passes it by (Q2513, the old cabinet.gd set_covered).
+func aimable() -> bool:
+	return not sheeted()
 
 
 ## How many drawers it has (its Drawer1..N).

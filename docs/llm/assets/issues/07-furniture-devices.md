@@ -94,7 +94,9 @@ and number of the old code (Q2277). Old sources: `game/house/openable.gd` (CUE_S
   quadratic) in 0.5 s, fading over the last 40%, then it is gone [d03_real_path].
 - D04 The reveal sounds 1 m over the Cabinet once the pull is done (0.5 s, and at least the old reveal_delay 0.5 s):
   cabinet_reveal, no old pick, so the drawer_open pool's first (laleksic drawer open) [d03_real_path].
-- D05 While sheeted the Cabinet is locked: its drawers stay shut [d01_drape].
+- D05 While sheeted the Cabinet is locked: its drawers stay shut, and neither it nor its drawers can be aimed at: no
+  outline, no prompt, a click or the use key asks nothing; once the sheet is off, the drawers aim as usual (Q2513, the
+  old set_covered) [d01_drape, d05_unaimable].
 - D06 A state arriving whole shows it as it stands, no pull or sound; locked again, it drapes at once [d06_now].
 - D07 At the Furniture station a sheeted Sport Cabinet and a switch: the switch's use asks the Host, whose answer is the
   Cabinet's lock patch, for every player [d03_real_path].
@@ -109,15 +111,14 @@ and number of the old code (Q2277). Old sources: `game/house/openable.gd` (CUE_S
 - A strip in `builds/review-furniture-devices/`: the mirror, the piano, the dust sheet's pull-off, old beside new.
 
 ## Answers
+- Q2513 (2026-11-23): see D05; the other three [later] items stay as built (placeholders).
 - Q2505-Q2508 (2026-11-23): see V02-V05.
 - Q2502 (2026-11-23): all five devices as the old game, the behaviour list written in full from the old code.
 - Q2504 (2026-11-23): built to the end with no stop at the first still; a before and after strip for the designer's batch review before the merge.
 
 ## Open follow-ups
-- [later] For the designer before the merge (a dropped old detail, Q2277): the old covered Cabinet's drawers could not be
-  aimed at or clicked at all (`cabinet.gd` set_covered: no outline, no prompt). Here the sheet is looks only: aiming
-  through it outlines a drawer and shows "Sport Cabinet Drawer", and a click is refused "Cabinet locked". Port the old
-  way (drawers off the aim while sheeted) with the Cabinet locks of M4, or now?
+- Answered (Q2513, 2026-11-23): a Cabinet under its dust sheet cannot be aimed at, as the old game (no outline, no
+  prompt, no click while sheeted; once the sheet is off the drawers aim as usual). Built: D05.
 - [later] Look: the dust sheet's floor spill is the old geometry (it spreads up to 0.9 m to the sides and slides 0.2 m
   past its length); on the station's pad it reaches well out in front. Placeholder: as old.
 - [later] Look: the station's wall mirror stands on the floor in the line-up (wall-hung pieces are lifted where they are
@@ -140,4 +141,9 @@ and number of the old code (Q2277). Old sources: `game/house/openable.gd` (CUE_S
     tests/{sounds,furniture}_test.gd, tools/{shot_hooks.gd,piano_keys_from_old.py,shots/sets/furniture-devices.txt}.
     Strip: builds/review-furniture-devices/furniture-devices-strip.png.
   - Verified: suite: PASS 17437 checks, 469 cases (every suite: the audio files cannot be placed); PASS rules; PASS asset_lint.
+- 2026-11-23 (Q2513)
+  - Changed: a Cabinet under its dust sheet and its drawers are passed by the crosshair (Part.aimable(),
+    Cabinet.sheeted(), Player.aimed_part()): no outline, no prompt, no click; aimed as usual once unsheeted.
+  - Files: game/parts/part.gd, game/entities/cabinet/cabinet.gd, game/player/player.gd, tests/furniture_devices_test.gd.
+  - Verified: suite: PASS 17446 checks, 470 cases (--touched); PASS rules.
 

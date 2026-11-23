@@ -398,7 +398,7 @@ func mirror_body() -> AvatarLooks:
 ## What interact does: uses the Part it aims at, unless the left click alone uses it (a piano key).
 func interact() -> Part:
 	_aim.force_raycast_update()
-	var part := part_of(_aim.get_collider() as Node)
+	var part := aimed_part()
 	if part != null and part.click_only():
 		return null
 	return use_aimed()
@@ -408,7 +408,7 @@ func interact() -> Part:
 ## Cabinet's drawer is clicked through its Cabinet (core/04: with Pairs held the click shelves).
 func use_aimed() -> Part:
 	_aim.force_raycast_update()
-	var part := part_of(_aim.get_collider() as Node)
+	var part := aimed_part()
 	if part != null:
 		var cabinet := Cabinet.of(part)
 		if cabinet != null and cabinet != part:
@@ -654,7 +654,7 @@ func _update_screen(h: Hands) -> void:
 	var part: Part = null
 	if sock < 0:
 		_aim.force_raycast_update()
-		part = part_of(_aim.get_collider() as Node)
+		part = aimed_part()
 	var target := Prompts.target(part, _hud.pad)
 	if aimed_body >= 0:
 		target.clear()
@@ -718,7 +718,7 @@ func _outline(mess: Mess, sock: int) -> void:
 func _aimed_outline(mess: Mess, sock: int, lying: bool) -> Outline:
 	if sock >= 0:
 		return Outline.of(mess.flight_of(sock)) if not lying and mess != null else null
-	return Outline.of(_aim.get_collider() as Node)
+	return Outline.of(_aim.get_collider() as Node) if _aim_open() else null
 
 
 ## O01-O04: the thing the crosshair rests on shows its Outline and the one aimed before hides its own.
@@ -785,6 +785,21 @@ func _knock_news(ev: Dictionary) -> void:
 				KNOCKED_YOU, kd.tuning.message_time)
 	elif kind == Knockdowns.GRAB and int(ev.get("by", 0)) == player_id() and not _grab_held:
 		kd.let_go(player_id())
+
+
+## The Part the crosshair rests on now, or null: none, or one that may not be aimed at now (a Cabinet
+## or its drawer under the dust sheet, Q2513).
+func aimed_part() -> Part:
+	return part_of(_aim.get_collider() as Node) if _aim_open() else null
+
+
+## Whether what the aim ray meets may be aimed at: its Part, and that drawer's Cabinet, say so.
+func _aim_open() -> bool:
+	var part := part_of(_aim.get_collider() as Node)
+	if part == null:
+		return true
+	var cabinet := Cabinet.of(part)
+	return part.aimable() and (cabinet == null or cabinet.aimable())
 
 
 ## The Part of the thing `node` belongs to: the first part of the closest entity root above it

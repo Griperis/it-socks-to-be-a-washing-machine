@@ -56,6 +56,8 @@ func cases() -> Array[Dictionary]:
 				"title": "M08, real path: the player walks up to the wall mirror: it reflects, the player's full body shows only in it, the belly, held items and Mess Socks stay out, Teammates stay in"},
 		{"name": "d01_drape", "method": "case_d01_drape", "world": false,
 				"title": "D01, D02, D05: the locked Cabinet at the station wears an off-white sheet over its top, down its front and sides to the floor, no collision; its drawers stay shut"},
+		{"name": "d05_unaimable", "method": "case_d05_unaimable", "world": false,
+				"title": "D05 (Q2513), real path: under its sheet the Cabinet and its drawers cannot be aimed at (no outline, no prompt, a click asks nothing); unsheeted, a drawer aims as usual"},
 		{"name": "d03_real_path", "method": "case_d03_real_path", "world": false,
 				"title": "D03, D04, D07, real path: the player uses the station's switch: the Cabinet unlocks for everyone, the sheet slides forward, fades and is gone in 0.5 s, then the reveal sounds over it"},
 		{"name": "d06_now", "method": "case_d06_now", "world": false,
@@ -370,6 +372,41 @@ func case_d01_drape() -> void:
 	cabinet.click(1, 0)
 	await _frames(1)
 	_check(not drawer.open, "under it, the drawers stay shut")
+	_check(cabinet.sheeted() and not cabinet.aimable(), "it says it is sheeted, not to be aimed at")
+
+
+func case_d05_unaimable() -> void:
+	await _zoo_up()
+	var player := _zoo.get_node("Player") as Player
+	var cabinet_root := _zoo.get_node(STATION + "/SheetedCabinet") as Node3D
+	var cabinet := cabinet_root.get_node("Cabinet") as Cabinet
+	var drawer := cabinet_root.get_node("Drawer1") as Node3D
+	var asked: Array[Dictionary] = []
+	cabinet.parts.applied.connect(func(ev: Dictionary) -> void: asked.append(ev))
+	_stand(player, cabinet_root.to_global(Vector3(0.0, 0.0, 1.0)))
+	await _physics_ticks(3)
+	player.capture_mouse()
+	await _aim(player, drawer.to_global(Vector3(0.0, 0.12, 0.25)))
+	await _physics_ticks(2)
+	var hit := Player.part_of((player.get_node("Head/Aim") as RayCast3D).get_collider() as Node)
+	_check(hit != null and Cabinet.of(hit) == cabinet, "the aim ray meets the Cabinet (%s)" % hit)
+	_check(cabinet.sheeted() and player.aimed_part() == null, "sheeted, the crosshair rests on nothing")
+	_check(player.aimed_outline == null, "no outline")
+	_check(Prompts.target(player.aimed_part()).is_empty(), "no prompt")
+	Input.action_press(&"pick")
+	await _physics_ticks(2)
+	Input.action_release(&"pick")
+	Input.action_press(&"interact")
+	await _physics_ticks(2)
+	Input.action_release(&"interact")
+	await _physics_ticks(2)
+	_check(asked.is_empty(), "a click and the use key ask nothing (%d answers)" % asked.size())
+	cabinet.parts.load_snapshot(cabinet.lock_patch(false, cabinet.rows))
+	await _physics_ticks(3)
+	var aimed := player.aimed_part()
+	_check(not cabinet.sheeted() and aimed != null and Cabinet.of(aimed) == cabinet, "unsheeted, its drawer is aimed (%s)" % aimed)
+	_check(player.aimed_outline != null and player.aimed_outline.shown, "with its outline")
+	_check(not Prompts.target(aimed).is_empty(), "and its prompt")
 
 
 func case_d03_real_path() -> void:
