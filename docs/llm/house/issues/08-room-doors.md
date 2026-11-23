@@ -1,13 +1,13 @@
 ---
 type: ticket
-status: needs-info
+status: in-progress
 kind: build
 area: house
 feature: house
 priority: now
 created: 2026-11-23
 done:
-blocked_by: [house/05-mess-in-the-house]
+blocked_by: []
 notes: ["Q2532; M3"]
 terms: [Mess, Sock, Host, Guest, Part]
 ---
@@ -37,7 +37,14 @@ and sound (Q2277). Mark open choices as questions. Stop and report.
 - Strip for the designer: a Door shut, mid-swing and open, and the station (`builds/review-house-08/`).
 
 ## Open follow-ups
-- [blocking] Step 1's questions Q1-Q7 at the end of `docs/migration/m06-lists/06-room-doors.md` wait for the designer (ground floor doorways, sweep only or the old push too, the laundry-garage Doors open, shut at the start silent, the leaf's Looks, the leaf's size, old details).
+
+## Answers (step 1)
+- Q2568 no Doors in the 2 open ground-floor doorways; Q2569 the physics sweep only; Q2570 the start-shut Doors already
+  shut and silent; Q2571 the real leaf now, ported from `make_house.py`'s Door_<doorway> geometry as a Looks scene
+  (the front and garage doors' leaves match it). Kept as the old (lead, from the list): LaundryLobby and LobbyGarage
+  always open; the quiet walk-through and the nudge of a standing player; the Cat opening Doors waits for the Cat.
+  Leaf size from the kit's real openings. Build step 2 to the end; strip to builds/review-house-08/ for the
+  designer's review before the merge.
 
 ## Built log
 - 2026-11-23: Step 1 only. Changed: wrote the behaviour list (54 rows, 7 questions with recommendations). Files: `docs/migration/m06-lists/06-room-doors.md`, this ticket. Verified: docs only, no suite run.
