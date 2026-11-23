@@ -106,3 +106,4 @@ The house is the game's own scene, not a zoo station (Q2503). Shell and furnitur
 - Files: game/house/shut_front_door.tscn, shut_garage_door.tscn, house.tscn, tools/house_from_old.py,
   tests/house_test.gd, docs/architecture/house.md, this ticket.
 - Verified: `PASS 16365 checks, 456 cases` (--touched); house 15 cases incl. real_path_doors_shut.
+- Merged: 0f69fb9a (2026-11-23, branch house/04-shell-details)

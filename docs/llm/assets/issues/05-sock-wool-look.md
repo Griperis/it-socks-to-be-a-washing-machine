@@ -64,3 +64,4 @@ ticket by Q2153; shaped and asked when assets/01 has merged.
   game/sock/sock_knit.gd(.uid), game/sock/sock_knit.tres, game/sock/sock_look.gd, game/sock/sock_pattern.gdshader,
   tests/sock_looks_test.gd (w01, w01_real_path), tools/shot_hooks.gd, tools/shots/sets/sock-wool.txt
 - Verified: PASS 16302 checks, 411 cases
+- Merged: 96840ee7 (2026-11-23, branch assets/05-sock-wool-look)

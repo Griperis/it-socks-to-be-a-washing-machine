@@ -146,4 +146,4 @@ and number of the old code (Q2277). Old sources: `game/house/openable.gd` (CUE_S
     Cabinet.sheeted(), Player.aimed_part()): no outline, no prompt, no click; aimed as usual once unsheeted.
   - Files: game/parts/part.gd, game/entities/cabinet/cabinet.gd, game/player/player.gd, tests/furniture_devices_test.gd.
   - Verified: suite: PASS 17446 checks, 470 cases (--touched); PASS rules.
-
+- Merged: 711108e7 (2026-11-23, branch assets/07-furniture-devices)

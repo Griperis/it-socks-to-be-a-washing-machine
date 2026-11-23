@@ -6,7 +6,7 @@ area: assets
 feature: assets
 priority: now
 created: 2026-11-21
-done:
+done: 2026-11-23
 blocked_by: []
 notes: []
 terms: []
@@ -43,3 +43,4 @@ in the shared material library. Its own ticket by Q2153; shaped with stills afte
 - Files: `game/materials/fab_*.tres`, `tools/shots/sets/fabric-sheen.txt`, `docs/architecture/materials.md`.
 - Strip: `builds/review-assets-06/strip.png` (bed and sheeted sofa, before and after).
 - Verified: suite PASS (agent_finish), asset_lint and grep_rules below.
+- Merged: 4ab2f1f6 (2026-11-23, branch assets/06-fabric-sheen)
