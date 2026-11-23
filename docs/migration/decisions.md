@@ -1,4 +1,4 @@
-Next free Q number: Q2518 (update this line whenever a round of questions is asked)
+Next free Q number: Q2529 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -431,4 +431,15 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2514: until the exterior ticket the house's front and garage doors stay shut (cannot be opened), so no one walks out into nothing (house/04; designer, 2026-11-23).
 - Q2515: the old house's lamp rules (all but the basement's off by day; each floor lit only by its own lights) are ported in a follow-up ticket; house/04 merges with every lamp lit (designer, 2026-11-23).
 - Q2516: the Mess comes into the house in its own ticket, so the main scene (F5) plays the core loop with Socks at the old game's places (designer, 2026-11-23).
-- Q2517: one base level scene holds the full game setup (environment, player, co-op and Mess nodes); the house, the zoo and any new level inherit it, so a new level is authored by adding only its geometry and content (designer, 2026-11-23).
+- Q2517: the full game setup (player, co-op and Mess nodes) is one runtime scene that every level instances as a child (composition, not an inherited scene); a level holds only its own geometry, look (environment, sun) and a Spawn marker, so a new level is authored by adding its content and one instance (designer, 2026-11-23).
+- Q2518: the Sock generator's area is one `SockArea` box dropped over a room or a floor; it finds every landing place under it by itself (open floor, furniture tops, insides, under-gaps), tints them by kind in the viewport, and furniture inside it joins automatically (core/52; designer, 2026-11-23).
+- Q2519: furniture pieces bring their own landing places, their insides (hiding spots) and under-gaps included, so moving a piece moves its Socks (core/52; designer, 2026-11-23).
+- Q2520: an area has one Pair count, split by each place's size times a weight per kind (open floor, top, inside, under) set on the area; a furniture piece may override its own weight; no exact pinned counts for now (core/52; designer, 2026-11-23).
+- Q2521: rarity no longer decides hiding; every Design hides alike, and the hidden share (inside and under furniture) is one number on the area, 0.3 by default (core/52; designer, 2026-11-23).
+- Q2522: the viewport preview shows the landing points as dots, tinted by kind (core/52; designer, 2026-11-23).
+- Q2523: generated Socks appear already lying where the preview showed, all at once, with no fall and no sound, as the old game (core/52; designer, 2026-11-23).
+- Q2524: the level's seed by default (the same Mess each start, as the preview shows), with a switch for a new seed each New Game saved with the game (core/52; designer, 2026-11-23).
+- Q2525: a Pair's mates lie the old 0.4 m to 6 m apart, measured in a straight line; improving it (walked distance or better) is its own ticket (core/52; designer, 2026-11-23).
+- Q2526: Heaps are an area option: an area flagged "heap" piles its floor Socks into mounds by the old roll-down rule; otherwise Socks lie flat, spaced, never overlapping (core/52; designer, 2026-11-23).
+- Q2527: exclusions are the old rules as numbers on the area (0.28 m from walls, off furniture footprints, not where a crouching player cannot reach, not in stair holes, clear in front of Cabinets) plus `SockExclusion` boxes placed by hand (core/52; designer, 2026-11-23).
+- Q2528: core/52 brings these old details now: the under-furniture edge strips, the thinning away from the washer (from a marker until the machine exists), the stair trail, and about a third of the room doors shut at a New Game (once the house has room doors); the rest wait for their feature, none dropped (core/52; designer, 2026-11-23).

@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://crnvtwpwbx2ud" path="res://game/zoo/furniture/furniture_line_up.gd" id="1_line_up"]
 [ext_resource type="Resource" uid="uid://bagumvnvvmy5b" path="res://game/zoo/furniture/furniture_line_up_layout.tres" id="2_layout"]
+[ext_resource type="PackedScene" uid="uid://h3610c6dred6" path="res://game/entities/cabinet/cabinet.tscn" id="3_cabinet"]
+[ext_resource type="PackedScene" uid="uid://dqcr0t6aah51x" path="res://game/devices/dust_sheet.tscn" id="4_sheet"]
+[ext_resource type="PackedScene" uid="uid://cofkkgaxtkdat" path="res://game/zoo/furniture/cabinet_lock_switch.tscn" id="5_switch"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.58, 0.6, 0.56, 1)
@@ -30,7 +33,7 @@ shape = SubResource("BoxShape3D_ground")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1.2, 2)
 pixel_size = 0.004
 billboard = 2
-text = "Furniture: every piece of the old house (game/furniture, built from the folder). Its doors, drawers and lids open and shut"
+text = "Furniture: every piece of the old house (game/furniture, built from the folder). Its doors, drawers and lids open and shut with their sounds; open the piano's lid and left click its keys; the wall mirror reflects. On the right: a locked Cabinet under its dust sheet; the switch unlocks it"
 vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
@@ -38,3 +41,18 @@ width = 700.0
 [node name="LineUp" type="Node3D" parent="." unique_id=327414505]
 script = ExtResource("1_line_up")
 layout = ExtResource("2_layout")
+
+[node name="SheetedCabinet" parent="." instance=ExtResource("3_cabinet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.2, 0, 0.95)
+
+[node name="Cabinet" parent="SheetedCabinet" index="0"]
+collection = &"sport"
+locked = true
+
+[node name="DustSheet" parent="SheetedCabinet" instance=ExtResource("4_sheet")]
+
+[node name="SheetSwitch" parent="." instance=ExtResource("5_switch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 0, 1.1)
+
+[node name="CabinetLockSwitch" parent="SheetSwitch" index="0" node_paths=PackedStringArray("cabinet")]
+cabinet = NodePath("../../SheetedCabinet/Cabinet")

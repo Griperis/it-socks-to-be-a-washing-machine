@@ -293,6 +293,9 @@ func _new_instance(mesh: Mesh, shape: StringName) -> MultiMeshInstance3D:
 	# flying rows closing up) was drawn for a tick smeared between two Socks' places. A lying Sock
 	# does not move, and the flying rows are written every frame from poses already interpolated.
 	node.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
+	# On the Mess Socks' render layer alone, which a wall mirror leaves out (assets/07, Q2505); every
+	# other camera draws all layers.
+	node.layers = Mirror.MESS_SOCKS
 	_root.add_child(node)
 	return node
 

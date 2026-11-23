@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://idx5bbg1708p"]
+
+[ext_resource type="Script" uid="uid://j7ucdvox7b8i" path="res://game/devices/mirror.gd" id="1_mirror"]
+[ext_resource type="Resource" uid="uid://cua0tv2q1edee" path="res://game/devices/mirror_tuning.tres" id="2_tuning"]
+[ext_resource type="Shader" uid="uid://dyg34ww13wl16" path="res://game/devices/mirror.gdshader" id="3_shader"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_glass"]
+size = Vector2(0.6, 1.1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glass"]
+render_priority = 0
+shader = ExtResource("3_shader")
+
+[node name="Mirror" type="Node3D"]
+script = ExtResource("1_mirror")
+tuning = ExtResource("2_tuning")
+
+[node name="Glass" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.002)
+layers = 4096
+cast_shadow = 0
+mesh = SubResource("QuadMesh_glass")
+material_override = SubResource("ShaderMaterial_glass")
+
+[node name="Reflection" type="SubViewport" parent="."]
+use_hdr_2d = true
+audio_listener_enable_3d = false
+gui_disable_input = true
+positional_shadow_atlas_size = 0
+size = Vector2i(140, 256)
+render_target_update_mode = 0
+
+[node name="MirrorCamera" type="Camera3D" parent="Reflection"]
+cull_mask = 1027071
+current = true
+projection = 2

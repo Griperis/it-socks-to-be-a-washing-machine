@@ -1,0 +1,9 @@
+# assets/07: the furniture devices at the Furniture station, as the zoo's player sees them: the wall mirror
+# (its own body in the reflection), the piano with its lid open and three keys just played, the locked
+# Cabinet under its dust sheet, then its pull-off (0.1 s and 0.3 s in) and the bare Cabinet after.
+mirror  --size=1280x720 --do='30:devices:mirror' --shots=50
+piano  --size=1280x720 --do='30:devices:piano;70:devices:keys' --shots=72
+sheet  --size=1280x720 --do='30:devices:sheet' --shots=40
+pull_a  --size=1280x720 --do='30:devices:pull' --shots=37 --warm=1
+pull_b  --size=1280x720 --do='30:devices:pull' --shots=49 --warm=1
+pull_after  --size=1280x720 --do='30:devices:pull' --shots=90

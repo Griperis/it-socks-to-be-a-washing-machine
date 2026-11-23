@@ -35,7 +35,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "labels", "method": "case_labels", "world": false,
 				"title": "core/33: every station's Name label hangs between 0.8 and 2.2 m, outside every other station's pad, and all share one look"},
 		{"name": "labels_walk", "method": "case_labels_walk", "world": false,
-				"title": "core/33, real path: the player walks from the start spot round to old house A's front door and the house's name is on screen, upright and whole, on the way"},
+				"title": "core/33, real path: the player walks from the start spot over to the Furniture station beside the zoo floor and its name is on screen, upright and whole, on the way"},
 		{"name": "alone", "method": "case_alone", "world": false,
 				"title": "each station scene runs on its own, and two zoos hold the same stations in the same order"},
 		{"name": "coop", "method": "case_coop", "world": false,
@@ -202,22 +202,24 @@ func case_labels_walk() -> void:
 	await _zoo_up()
 	var player := _zoo.get_node("Player") as Player
 	var camera := player.camera()
-	var house := _zoo.get_node("Stations/OldHouseA") as Node3D
-	var label := house.get_node("Name") as Label3D
+	# The old houses that stood here went to the house level (house/04); the Furniture station stands
+	# on its own ground east of the zoo floor, its name at its south end.
+	var station := _zoo.get_node("Stations/Furniture") as Node3D
+	var label := station.get_node("Name") as Label3D
 	player.capture_mouse()
 	var seen: Array[int] = [0]
 	var near_label := func() -> void:
 		if player.global_position.distance_to(label.global_position) < 6.0:
 			_check(_label_whole(camera, label), "on the way %s sees the house's name whole" % player.global_position)
 			seen[0] += 1
-	# From the start spot north past the stations, round the house's west end, then to stand square before the name on its north side.
+	# From the start spot east past the stations, over onto the station's ground, then to stand square
+	# before the name on its north side.
 	await _walk_to(Vector3(4.0, 0.0, 1.0))
 	await _walk_to(Vector3(18.0, 0.0, -2.5))
-	await _walk_to(Vector3(18.5, 0.0, -17.0))
-	await _walk_to(house.to_global(Vector3(2.5, 0.0, -8.0)))
-	await _walk_to(house.to_global(Vector3(2.5, 0.0, -5.0)), near_label)
+	await _walk_to(station.to_global(Vector3(6.0, 0.0, -8.0)))
+	await _walk_to(station.to_global(Vector3(6.0, 0.0, -3.4)), near_label)
 	_check(seen[0] > 0, "the name was checked on the way")
-	_check(_label_whole(camera, label), "3 m in front of it the name is whole in view")
+	_check(_label_whole(camera, label), "5 m in front of it, over the first row, the name is whole in view")
 	_check(label.billboard == BaseMaterial3D.BILLBOARD_FIXED_Y, "and upright")
 
 

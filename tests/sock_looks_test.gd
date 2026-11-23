@@ -47,6 +47,10 @@ func cases() -> Array[Dictionary]:
 				"title": "S04: the Mess's instance material is the same shader and fit; the look data is MessDrawing.look_data()"},
 		{"name": "s04_tiers", "method": "case_s04_tiers", "world": false,
 				"title": "S04: a lying Sock's instance and its lent Looks are the same mesh, place and look; a held and a flying Sock's Looks draw the same"},
+		{"name": "w01", "method": "case_w01", "world": false,
+				"title": "assets/05 W01: every Sock material, held, ball and lying, tiles the one knit texture at its cloth's stitch and strength, faded with distance"},
+		{"name": "w01_real_path", "method": "case_w01_real_path", "world": false,
+				"title": "assets/05 W01, real path: the player picks a Sock with the button; the Sock in their hand and the heap lying round it are drawn with the knit"},
 		{"name": "s05", "method": "case_s05", "world": false,
 				"title": "S05: the old hand-made LODs fold into one mesh per model, within the old budgets (sock 320, ball 540)"},
 	]
@@ -54,6 +58,7 @@ func cases() -> Array[Dictionary]:
 
 func _before_case() -> void:
 	Input.action_release(&"move_forward")
+	Input.action_release(&"pick")
 	for n in _nodes:
 		if is_instance_valid(n):
 			n.free()
@@ -348,3 +353,69 @@ func _contract(looks: Node3D, what: String) -> void:
 	SockDress.play(looks, SockDress.HELD)
 	_check((looks.get_node("Outline") as Node3D).get(&"shown") == false, "%s hides it when held" % what)
 	remove_child(looks)
+
+
+# --- assets/05: the knit ------------------------------------------------------------------------
+
+func case_w01() -> void:
+	var knit := SockLook.KNIT
+	_check(knit.texture != null and knit.texture.get_width() == knit.texture.get_height(), "the knit tile is a square texture")
+	var tex := knit.texture.get_image()
+	_check(tex.has_mipmaps(), "the knit tile has mipmaps: it flattens with distance, no shimmer")
+	var cat := _catalogue()
+	var collections: Dictionary[StringName, int] = {}
+	for id in cat.size():
+		var d := cat.design(id)
+		if d != null and not collections.has(d.collection):
+			collections[d.collection] = id
+	for c: StringName in collections:
+		var d := cat.design(collections[c])
+		var fabric := SockLook.TABLE.fabric_of(c)
+		for m: ShaderMaterial in [SockLook.material(d), SockLook.material(d, true), SockLook.instance_material(c), SockLook.instance_material(c, true)]:
+			_check(m.get_shader_parameter(&"knit") == knit.texture
+					and is_equal_approx(float(m.get_shader_parameter(&"knit_strength")), knit.strength_of(fabric))
+					and m.get_shader_parameter(&"knit_stitch") == knit.stitch_of(fabric)
+					and m.get_shader_parameter(&"knit_fade") == knit.fade_distance
+					and is_equal_approx(float(m.get_shader_parameter(&"knit_cavity")), knit.cavity),
+					"%s: its Sock, ball and lying materials tile the knit at its cloth's numbers" % c)
+	_check(knit.strength_of(1) > 0.0 and knit.stitch_of(1).x > knit.stitch_of(0).x, "wool shows the knit, with bigger stitches than cotton")
+	_check(knit.fade_distance.x < knit.fade_distance.y, "the knit fades out over a span of distance")
+
+
+func case_w01_real_path() -> void:
+	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
+	add_child(_zoo)
+	var player := _zoo.get_node("Player") as Player
+	await _until(func() -> bool: return player.is_on_floor(), "the player to stand", 600)
+	player.capture_mouse()   # the mouse is the player's: buttons act (R01)
+	var station := _zoo.get_node("Stations/Handling") as Node3D
+	var mess := _zoo.get_node("Socks/Mess") as Mess
+	var sock := (station.get_node("Spots/Floor") as SockSpot).sock
+	# The player stands before the handling station's floor Sock, looking down at it.
+	var target := mess.pose_of(sock).origin
+	player.global_position = target + Vector3(0.0, 0.0, 1.3)
+	player.velocity = Vector3.ZERO
+	player.rotation.y = 0.0
+	var head := player.get_node("Head") as Node3D
+	head.rotation.x = atan2(target.y - head.global_position.y, 1.3)
+	player.reset_physics_interpolation()
+	await _until(func() -> bool: return player.aimed_sock == sock, "the floor Sock to be aimed", 60)
+	var lying := SockLook.instance_material(mess.design_of(sock).collection)
+	_check(float(lying.get_shader_parameter(&"knit_strength")) == SockLook.KNIT.strength_of(SockLook.TABLE.fabric_of(mess.design_of(sock).collection)),
+			"the lying Sock's MultiMesh material carries the knit")
+	Input.action_press(&"pick")
+	await _physics_ticks(2)
+	Input.action_release(&"pick")
+	var view := player.held_view()
+	await _until(func() -> bool: return view.looks_of(sock) != null, "the picked Sock to be drawn in the hand", 60)
+	var looks := view.looks_of(sock)
+	var meshes := looks.get_node("Body").find_children("*", "MeshInstance3D", true, false)
+	var drawn := 0
+	for node in meshes:
+		var mi := node as MeshInstance3D
+		if mi.is_in_group(Outline.COPY):
+			continue
+		var m := mi.material_override as ShaderMaterial
+		if m != null and m.get_shader_parameter(&"knit") == SockLook.KNIT.texture and float(m.get_shader_parameter(&"knit_strength")) > 0.0:
+			drawn += 1
+	_check(drawn > 0 and looks.is_visible_in_tree(), "the Sock in the hand is drawn with the knit (%d meshes)" % drawn)

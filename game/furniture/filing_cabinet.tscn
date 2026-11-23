@@ -105,6 +105,8 @@ shape = SubResource("BoxShape3D_mtifx")
 
 [node name="Openable" type="Node" parent="Drawer_1" unique_id=794629069]
 script = ExtResource("2_k55my")
+open_sound = &"drawer_open"
+close_sound = &"drawer_close"
 metadata/kind = "drawer"
 
 [node name="Looks" parent="Drawer_1" unique_id=1128299989 instance=ExtResource("3_1lvtv")]
@@ -124,6 +126,8 @@ shape = SubResource("BoxShape3D_hx1cs")
 
 [node name="Openable" type="Node" parent="Drawer_2" unique_id=725709489]
 script = ExtResource("2_k55my")
+open_sound = &"drawer_open"
+close_sound = &"drawer_close"
 metadata/kind = "drawer"
 
 [node name="Looks" parent="Drawer_2" unique_id=748471297 instance=ExtResource("4_kkrak")]
@@ -143,6 +147,8 @@ shape = SubResource("BoxShape3D_n2wkn")
 
 [node name="Openable" type="Node" parent="Drawer_3" unique_id=1692713721]
 script = ExtResource("2_k55my")
+open_sound = &"drawer_open"
+close_sound = &"drawer_close"
 metadata/kind = "drawer"
 
 [node name="Looks" parent="Drawer_3" unique_id=1019260430 instance=ExtResource("5_ysmyk")]

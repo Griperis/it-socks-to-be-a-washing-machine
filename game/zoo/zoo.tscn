@@ -28,8 +28,6 @@
 [ext_resource type="PackedScene" path="res://game/zoo/stations/icons.tscn" id="30_icons"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/screen.tscn" id="31_screen"]
 [ext_resource type="Resource" path="res://game/zoo/screen/zoo_upgrades.tres" id="32_upgrades"]
-[ext_resource type="PackedScene" uid="uid://cxdl2ou7emvsm" path="res://game/zoo/stations/old_house_a.tscn" id="33_old_house_a"]
-[ext_resource type="PackedScene" uid="uid://c47w01e8dt8aq" path="res://game/zoo/stations/old_house_b.tscn" id="34_old_house_b"]
 [ext_resource type="PackedScene" uid="uid://c3p6luowfkhuw" path="res://game/zoo/stations/materials.tscn" id="35_materials"]
 [ext_resource type="PackedScene" uid="uid://sv5wba3wf252" path="res://game/zoo/stations/furniture.tscn" id="36_furniture"]
 [ext_resource type="Script" uid="uid://cabdnviw3m0oh" path="res://game/net/roster.gd" id="37_roster"]
@@ -131,17 +129,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -6)
 [node name="Screen" parent="Stations" unique_id=1700095128 instance=ExtResource("31_screen")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 4)
 
-[node name="OldHouseA" parent="Stations" unique_id=1700111011 instance=ExtResource("33_old_house_a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 0, -10)
-
-[node name="OldHouseB" parent="Stations" unique_id=1700103047 instance=ExtResource("34_old_house_b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 0, -10)
-
 [node name="Materials" parent="Stations" unique_id=1700126849 instance=ExtResource("35_materials")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, 17.5)
 
 [node name="Furniture" parent="Stations" unique_id=1700134768 instance=ExtResource("36_furniture")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 75.5, 0, 9.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.5, 0, 9.5)
 
 [node name="Avatar" parent="Stations" unique_id=1700142687 instance=ExtResource("39_avatar")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -2)

@@ -1,0 +1,23 @@
+# house/04: the house (game/house/house.tscn), furnished and lit, from the old looks-baseline views (docs/migration/baseline/tour-sandbox/)
+exterior-front  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:exterior-front' --shots=70
+exterior-high  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:exterior-high' --shots=70
+roof-south  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:roof-south' --shots=70
+room-workshop  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-workshop' --shots=70
+room-laundry  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-laundry' --shots=70
+room-boiler  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-boiler' --shots=70
+room-stair_lobby  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-stair_lobby' --shots=70
+room-garage  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-garage' --shots=70
+room-stairs_basement  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-stairs_basement' --shots=70
+room-kitchen  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-kitchen' --shots=70
+room-kitchen-b  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-kitchen-b' --shots=70
+room-hall  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-hall' --shots=70
+room-living  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-living' --shots=70
+room-living-b  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-living-b' --shots=70
+room-stairs_ground  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-stairs_ground' --shots=70
+room-office  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-office' --shots=70
+room-bedroom  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-bedroom' --shots=70
+room-landing  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-landing' --shots=70
+room-bathroom  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-bathroom' --shots=70
+room-kids  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-kids' --shots=70
+room-stairs_first  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-stairs_first' --shots=70
+room-loft  --scene=res://game/house/house.tscn --size=1280x720 --do='30:house:room-loft' --shots=70

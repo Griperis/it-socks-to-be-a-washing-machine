@@ -217,6 +217,8 @@ shape = SubResource("BoxShape3D_7cvks")
 
 [node name="Openable" type="Node" parent="Flap" unique_id=1495498135]
 script = ExtResource("2_ikfwc")
+open_sound = &"litter_flap_open"
+close_sound = &"litter_flap_close"
 metadata/kind = "litter_flap"
 
 [node name="Looks" parent="Flap" unique_id=343111546 instance=ExtResource("3_b32o7")]

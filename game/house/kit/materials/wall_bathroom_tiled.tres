@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://b5fc5c7uweqe"]
+
+[ext_resource type="Shader" uid="uid://d1srfh5uxbukq" path="res://game/house/kit/wainscot.gdshader" id="1_2hbt6"]
+[ext_resource type="Texture2D" uid="uid://by2xbak8gds3g" path="res://game/house/kit/textures/wall_tiles.png" id="2_ax5y1"]
+
+[resource]
+resource_name = "wall_bathroom_tiled"
+render_priority = 0
+shader = ExtResource("1_2hbt6")
+shader_parameter/paint = Color(0.8, 0.91, 0.88, 1)
+shader_parameter/paint_roughness = 0.9
+shader_parameter/tiles = ExtResource("2_ax5y1")
+shader_parameter/tile_repeat = 0.6
+shader_parameter/tile_roughness = 0.3
+shader_parameter/top = 1.2
+shader_parameter/band = 0.035
+shader_parameter/band_colour = Color(0.98, 0.96, 0.91, 1)
+shader_parameter/band_roughness = 0.55

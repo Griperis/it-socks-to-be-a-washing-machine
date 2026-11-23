@@ -7,7 +7,7 @@ feature: house
 priority: now
 created: 2026-11-23
 done:
-blocked_by: [core/51-level-base-scene, core/52-sock-generator]
+blocked_by: [core/51-level-runtime-scene, core/52-sock-generator]
 notes: ["Q2516"]
 terms: [Mess, Sock, Pair, Cabinet, Hands]
 ---

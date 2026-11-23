@@ -23,6 +23,38 @@
 [ext_resource type="AudioStream" uid="uid://cyqixh0hpku02" path="res://assets/audio/land__qubodup_jumpland.ogg" id="21_7fcml"]
 [ext_resource type="Script" uid="uid://dla4npa6bg5ot" path="res://game/audio/sound_catalogue.gd" id="23_7apgx"]
 [ext_resource type="AudioStream" uid="uid://bcpoohpp2d6b5" path="res://assets/audio/knockdown__a.ogg" id="24_knock"]
+[ext_resource type="AudioStream" uid="uid://bc34ctawd4er7" path="res://assets/audio/fridge_open__rubberduck_microwave_open.ogg" id="101_dev"]
+[ext_resource type="AudioStream" uid="uid://8tlcydreuyx1" path="res://assets/audio/fridge_close__rubberduck_microwave_close.ogg" id="102_dev"]
+[ext_resource type="AudioStream" uid="uid://dkoq8enshbhuv" path="res://assets/audio/oven_open__rubberduck_metal_open.ogg" id="103_dev"]
+[ext_resource type="AudioStream" uid="uid://dwlnuj5gscdi6" path="res://assets/audio/oven_close__rubberduck_metal_close.ogg" id="104_dev"]
+[ext_resource type="AudioStream" uid="uid://6yhevkhbptto" path="res://assets/audio/basket_open__kenney_creak3.ogg" id="105_dev"]
+[ext_resource type="AudioStream" uid="uid://cp3ub86q70014" path="res://assets/audio/basket_close__rubberduck_wood_misc2.ogg" id="106_dev"]
+[ext_resource type="AudioStream" uid="uid://4b2jg20iuxnp" path="res://assets/audio/cupboard_open__kenney_door_open1.ogg" id="107_dev"]
+[ext_resource type="AudioStream" uid="uid://f6b70yuq0or2" path="res://assets/audio/cupboard_close__kenney_door_close4.ogg" id="108_dev"]
+[ext_resource type="Script" uid="uid://dodhp81ag7cfd" path="res://game/audio/instrument.gd" id="109_dev"]
+[ext_resource type="AudioStream" uid="uid://pied4o3sstkr" path="res://assets/audio/piano/piano_remeau_21.ogg" id="110_dev"]
+[ext_resource type="AudioStream" uid="uid://ck4ivqvu5dcv2" path="res://assets/audio/piano/piano_remeau_24.ogg" id="111_dev"]
+[ext_resource type="AudioStream" uid="uid://dcpc2cdwrx2l3" path="res://assets/audio/piano/piano_remeau_28.ogg" id="112_dev"]
+[ext_resource type="AudioStream" uid="uid://cxwlbbv2v012p" path="res://assets/audio/piano/piano_remeau_33.ogg" id="113_dev"]
+[ext_resource type="AudioStream" uid="uid://ub1irbvhq18l" path="res://assets/audio/piano/piano_remeau_36.ogg" id="114_dev"]
+[ext_resource type="AudioStream" uid="uid://bbk5o110ejdo" path="res://assets/audio/piano/piano_remeau_40.ogg" id="115_dev"]
+[ext_resource type="AudioStream" uid="uid://cm2phwn1wsoa3" path="res://assets/audio/piano/piano_remeau_45.ogg" id="116_dev"]
+[ext_resource type="AudioStream" uid="uid://fybq5ypymqpl" path="res://assets/audio/piano/piano_remeau_48.ogg" id="117_dev"]
+[ext_resource type="AudioStream" uid="uid://bsn84fev3c830" path="res://assets/audio/piano/piano_remeau_52.ogg" id="118_dev"]
+[ext_resource type="AudioStream" uid="uid://c5pgx53bl8phe" path="res://assets/audio/piano/piano_remeau_57.ogg" id="119_dev"]
+[ext_resource type="AudioStream" uid="uid://k552aepbqxjt" path="res://assets/audio/piano/piano_remeau_60.ogg" id="120_dev"]
+[ext_resource type="AudioStream" uid="uid://cydwehvcytshc" path="res://assets/audio/piano/piano_remeau_64.ogg" id="121_dev"]
+[ext_resource type="AudioStream" uid="uid://bjrsfftjh76ln" path="res://assets/audio/piano/piano_remeau_69.ogg" id="122_dev"]
+[ext_resource type="AudioStream" uid="uid://brlo1ox5clg44" path="res://assets/audio/piano/piano_remeau_72.ogg" id="123_dev"]
+[ext_resource type="AudioStream" uid="uid://crk303xc1sb5o" path="res://assets/audio/piano/piano_remeau_76.ogg" id="124_dev"]
+[ext_resource type="AudioStream" uid="uid://chsqt5glqkqrq" path="res://assets/audio/piano/piano_remeau_81.ogg" id="125_dev"]
+[ext_resource type="AudioStream" uid="uid://bgfx2gss7m3fh" path="res://assets/audio/piano/piano_remeau_84.ogg" id="126_dev"]
+[ext_resource type="AudioStream" uid="uid://be4otigwqr5mo" path="res://assets/audio/piano/piano_remeau_88.ogg" id="127_dev"]
+[ext_resource type="AudioStream" uid="uid://drgmjaitqhecc" path="res://assets/audio/piano/piano_remeau_93.ogg" id="128_dev"]
+[ext_resource type="AudioStream" uid="uid://b5unknfh73qa7" path="res://assets/audio/piano/piano_remeau_96.ogg" id="129_dev"]
+[ext_resource type="AudioStream" uid="uid://bxk4dxbtuvwhn" path="res://assets/audio/piano/piano_remeau_100.ogg" id="130_dev"]
+[ext_resource type="AudioStream" uid="uid://da4gca7gn2ljx" path="res://assets/audio/piano/piano_remeau_105.ogg" id="131_dev"]
+[ext_resource type="AudioStream" uid="uid://cpfkxmdjedjus" path="res://assets/audio/piano/piano_remeau_108.ogg" id="132_dev"]
 
 [sub_resource type="Resource" id="Resource_5vpok"]
 script = ExtResource("1_76itk")
@@ -190,7 +222,98 @@ volume_db = -4.0
 spatial = true
 note = "PLACEHOLDER (coop/10): the old game's placeholder pick, the pick-up rustle cc0/owlish_cloth5, until a scrape is made; at a dragged body's feet."
 
+[sub_resource type="Resource" id="Resource_fridge_open"]
+script = ExtResource("1_76itk")
+event = &"fridge_open"
+clips = Array[AudioStream]([ExtResource("101_dev")])
+spatial = true
+note = "Old pick cc0/rubberduck_microwave_open (the fridge's doors, assets/07 V01)."
+
+[sub_resource type="Resource" id="Resource_fridge_close"]
+script = ExtResource("1_76itk")
+event = &"fridge_close"
+clips = Array[AudioStream]([ExtResource("102_dev")])
+spatial = true
+note = "Old pick cc0/rubberduck_microwave_close (assets/07 V01)."
+
+[sub_resource type="Resource" id="Resource_oven_open"]
+script = ExtResource("1_76itk")
+event = &"oven_open"
+clips = Array[AudioStream]([ExtResource("103_dev")])
+spatial = true
+note = "Old pick cc0/rubberduck_metal_open (the oven's door, assets/07 V01)."
+
+[sub_resource type="Resource" id="Resource_oven_close"]
+script = ExtResource("1_76itk")
+event = &"oven_close"
+clips = Array[AudioStream]([ExtResource("104_dev")])
+spatial = true
+note = "Old pick cc0/rubberduck_metal_close (assets/07 V01)."
+
+[sub_resource type="Resource" id="Resource_basket_open"]
+script = ExtResource("1_76itk")
+event = &"basket_open"
+clips = Array[AudioStream]([ExtResource("105_dev")])
+spatial = true
+note = "Old pick cc0/kenney_creak3 (the laundry basket's lid, assets/07 V01)."
+
+[sub_resource type="Resource" id="Resource_basket_close"]
+script = ExtResource("1_76itk")
+event = &"basket_close"
+clips = Array[AudioStream]([ExtResource("106_dev")])
+spatial = true
+note = "Old pick cc0/rubberduck_wood_misc2 (assets/07 V01)."
+
+[sub_resource type="Resource" id="Resource_litter_flap_open"]
+script = ExtResource("1_76itk")
+event = &"litter_flap_open"
+clips = Array[AudioStream]([ExtResource("107_dev")])
+volume_db = -6.0
+spatial = true
+note = "The old game had no pick: it played the cupboard pool's first, cc0/kenney_door_open1, 6 dB under (audio.json litter_flap_gain_db, cat/15, Q2012; assets/07 V01)."
+
+[sub_resource type="Resource" id="Resource_litter_flap_close"]
+script = ExtResource("1_76itk")
+event = &"litter_flap_close"
+clips = Array[AudioStream]([ExtResource("108_dev")])
+volume_db = -6.0
+spatial = true
+note = "The old game had no pick: the cupboard pool's first, cc0/kenney_door_close4, 6 dB under (cat/15, Q2012; assets/07 V01)."
+
+[sub_resource type="Resource" id="Resource_piano_lid_open"]
+script = ExtResource("1_76itk")
+event = &"piano_lid_open"
+clips = Array[AudioStream]([ExtResource("107_dev")])
+spatial = true
+note = "The old game had no pick: it played the cupboard pool's first, cc0/kenney_door_open1 (house/28; assets/07 V01)."
+
+[sub_resource type="Resource" id="Resource_piano_lid_close"]
+script = ExtResource("1_76itk")
+event = &"piano_lid_close"
+clips = Array[AudioStream]([ExtResource("108_dev")])
+spatial = true
+note = "The old game had no pick: the cupboard pool's first, cc0/kenney_door_close4 (house/28; assets/07 V01)."
+
+[sub_resource type="Resource" id="Resource_cabinet_reveal"]
+script = ExtResource("1_76itk")
+event = &"cabinet_reveal"
+clips = Array[AudioStream]([ExtResource("12_o8a3p")])
+spatial = true
+note = "A locked Cabinet's dust sheet comes off (progression/03, Q719; assets/07 D04). The old game had no pick: it played the drawer_open pool's first, cc0/laleksic_drawer_open."
+
+[sub_resource type="Resource" id="Resource_piano_instrument"]
+script = ExtResource("109_dev")
+roots = PackedFloat32Array(20.87, 23.78, 28.02, 32.81, 35.88, 39.93, 44.91, 47.92, 51.93, 56.92, 59.9, 63.92, 68.94, 71.96, 76.0, 80.86, 83.99, 87.87, 92.94, 96.03, 100.15, 105.29, 108.18)
+
+[sub_resource type="Resource" id="Resource_piano"]
+script = ExtResource("1_76itk")
+event = &"piano"
+clips = Array[AudioStream]([ExtResource("110_dev"), ExtResource("111_dev"), ExtResource("112_dev"), ExtResource("113_dev"), ExtResource("114_dev"), ExtResource("115_dev"), ExtResource("116_dev"), ExtResource("117_dev"), ExtResource("118_dev"), ExtResource("119_dev"), ExtResource("120_dev"), ExtResource("121_dev"), ExtResource("122_dev"), ExtResource("123_dev"), ExtResource("124_dev"), ExtResource("125_dev"), ExtResource("126_dev"), ExtResource("127_dev"), ExtResource("128_dev"), ExtResource("129_dev"), ExtResource("130_dev"), ExtResource("131_dev"), ExtResource("132_dev")])
+spatial = true
+note = "The piano (house/28, assets/07 P04): the old first instrument, cc0/piano_remeau, a Remeau upright in a living room by Sadiquecat (freesound, CC0): 23 recorded notes A0 to C8, each clip's measured MIDI note in the instrument's roots. Played by Sounds.play_note(), never play_at()."
+instrument = SubResource("Resource_piano_instrument")
+
 [resource]
 script = ExtResource("23_7apgx")
-events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape")])
+events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape"), SubResource("Resource_fridge_open"), SubResource("Resource_fridge_close"), SubResource("Resource_oven_open"), SubResource("Resource_oven_close"), SubResource("Resource_basket_open"), SubResource("Resource_basket_close"), SubResource("Resource_litter_flap_open"), SubResource("Resource_litter_flap_close"), SubResource("Resource_piano_lid_open"), SubResource("Resource_piano_lid_close"), SubResource("Resource_cabinet_reveal"), SubResource("Resource_piano")])
 muffling_scenes = Array[String](["res://game/entities/door/door.tscn"])

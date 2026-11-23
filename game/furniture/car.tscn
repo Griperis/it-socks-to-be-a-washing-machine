@@ -539,6 +539,8 @@ shape = SubResource("BoxShape3D_at472")
 
 [node name="Openable" type="Node" parent="Cabin" unique_id=733353786]
 script = ExtResource("2_7482v")
+open_sound = &"cupboard_open"
+close_sound = &"cupboard_close"
 metadata/kind = "cupboard"
 
 [node name="Looks" parent="Cabin" unique_id=276610007 instance=ExtResource("3_kwkco")]
@@ -558,6 +560,8 @@ shape = SubResource("BoxShape3D_lbeps")
 
 [node name="Openable" type="Node" parent="Boot" unique_id=341653985]
 script = ExtResource("2_7482v")
+open_sound = &"cupboard_open"
+close_sound = &"cupboard_close"
 metadata/kind = "cupboard"
 
 [node name="Looks" parent="Boot" unique_id=1998357380 instance=ExtResource("4_nfne1")]

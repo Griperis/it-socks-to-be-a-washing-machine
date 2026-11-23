@@ -308,6 +308,8 @@ func case_f02_materials() -> void:
 	for path in FurnitureLineUp.pieces():
 		var piece := _scene(path)
 		for mi: Node in piece.find_children("*", "MeshInstance3D", true, false):
+			if mi.get_parent() is Mirror:
+				continue  # the wall mirror's glass is the device's own shader (assets/07)
 			var mesh := (mi as MeshInstance3D).mesh
 			for s in mesh.get_surface_count():
 				var mat := mesh.surface_get_material(s)

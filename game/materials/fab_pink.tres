@@ -5,4 +5,7 @@ resource_name = "fab_pink"
 cull_mode = 2
 albedo_color = Color(0.92, 0.6, 0.55, 1)
 roughness = 0.9
+rim_enabled = true
+rim = 0.35
+rim_tint = 0.0
 metadata/old_pieces = PackedStringArray("coat_nook", "double_bed", "dresser", "floor_lamp", "ironing_board", "kids_shelf", "laundry_shelf", "living_rug", "nightstand", "side_table", "sofa", "towel_rail", "trunk", "wall_mirror")

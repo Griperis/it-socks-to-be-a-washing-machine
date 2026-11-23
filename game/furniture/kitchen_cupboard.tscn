@@ -193,6 +193,8 @@ shape = SubResource("BoxShape3D_24e3x")
 
 [node name="Openable" type="Node" parent="Drawer_1" unique_id=572370492]
 script = ExtResource("2_dssq7")
+open_sound = &"drawer_open"
+close_sound = &"drawer_close"
 metadata/kind = "drawer"
 
 [node name="Looks" parent="Drawer_1" unique_id=1868015115 instance=ExtResource("3_0umfv")]
@@ -212,6 +214,8 @@ shape = SubResource("BoxShape3D_7jp3j")
 
 [node name="Openable" type="Node" parent="Door" unique_id=1677261965]
 script = ExtResource("2_dssq7")
+open_sound = &"cupboard_open"
+close_sound = &"cupboard_close"
 metadata/kind = "cupboard"
 
 [node name="Looks" parent="Door" unique_id=372437482 instance=ExtResource("4_cef0k")]

@@ -42,6 +42,16 @@ uniform vec2 calf_body = vec2(0.14, 0.82);
 uniform vec2 patch_split = vec2(0.5, 0.5);
 // Metres of cloth per unit of UV0: x along the Sock (U), y around it (V); sizes the stitches.
 uniform vec2 cloth_size = vec2(0.30, 0.18);
+// The knit (assets/05, SockKnit): one seamless tile, RG its normal (x around, y along toward the toe),
+// B its roughness, A its cavity (assets_src/generate/sock/make_knit.py). Its mipmaps flatten it with
+// distance, so it never shimmers; it fades out to the plain cloth between knit_fade.x and .y metres.
+uniform sampler2D knit : hint_default_white, filter_linear_mipmap_anisotropic, repeat_enable;
+// Stitches across and down one tile, and one stitch's size in metres (around, along).
+uniform vec2 knit_tile_stitches = vec2(8.0, 8.0);
+uniform vec2 knit_stitch = vec2(0.0045, 0.004);
+uniform float knit_strength = 0.0;
+uniform float knit_cavity = 0.5;
+uniform vec2 knit_fade = vec2(3.0, 8.0);
 
 varying vec4 v_color;
 // flat: the look is whole numbers (patch, pattern, Dirty flag, packed colours); interpolated across a
@@ -80,15 +90,6 @@ float value_noise(vec2 p) {
 			mix(hash12(i + vec2(0.0, 1.0)), hash12(i + vec2(1.0, 1.0)), f.x), f.y);
 }
 
-// One knitted V stitch in cell space (x around, y along the Sock): two slanted legs.
-float stitch(vec2 c) {
-	vec2 f = fract(c) - 0.5;
-	vec2 q = vec2(abs(f.x) - 0.22, f.y);
-	q = vec2(q.x * 0.82 - q.y * 0.57, q.x * 0.57 + q.y * 0.82);
-	float r = length(q / vec2(0.19, 0.44));
-	return max(0.0, 1.0 - r * r);
-}
-
 // The cloth's surface detail: xy the slope (U, V) for NORMAL_MAP, z an albedo shade (1 = none).
 // Detail fades out where it would shimmer (far away, in the Mess): each fade reaches zero by 0.3 to 0.6
 // cycles per pixel, before the Nyquist limit of 0.5 where a point-sampled pattern turns to moire
@@ -97,7 +98,6 @@ vec3 cloth(vec2 uv, float rib) {
 	vec2 m = uv * cloth_size;          // metres along and around
 	vec2 slope = vec2(0.0);
 	float shade = 1.0;
-	float e = 0.06;
 	// Ribbing: lengthwise ridges around the cuff, about 5 mm apart (wool 8 mm), a whole number
 	// around so the seam is invisible.
 	if (rib > 0.01) {
@@ -110,22 +110,14 @@ vec3 cloth(vec2 uv, float rib) {
 		slope.y += fade * -3.14159 * sin(6.2831853 * cv) * 0.6;
 		shade *= 1.0 - 0.09 * fade * (1.0 - h);
 	}
-	// Cotton jersey (fabric 0) is too fine to draw: smooth apart from its ribbed cuff.
-	float body = 1.0 - rib;
+	// The stitches themselves are the knit texture (knit_at); here only what each yarn adds.
 	if (fabric > 0.5 && fabric < 1.5) {
-		// Wool: big chunky stitches and a heathered, slightly fuzzy yarn.
-		vec2 c = vec2(uv.y * round(cloth_size.y / 0.009), m.x / 0.008);
-		float fw = length(fwidth(c));
-		float fade = body * (1.0 - smoothstep(0.2, 0.5, fw));
-		if (fade > 0.0) {
-			float h0 = stitch(c);
-			slope += fade * 0.35 * vec2(stitch(c + vec2(0.0, e)) - h0, stitch(c + vec2(e, 0.0)) - h0) / e;
-			shade *= 1.0 - 0.1 * fade * (1.0 - h0);
-		}
+		// Wool: a heathered, slightly fuzzy yarn.
 		float fwn = length(fwidth(m * 260.0));
 		shade *= 0.95 + 0.1 * mix(0.5, value_noise(m * 260.0), 1.0 - smoothstep(0.25, 0.6, fwn));
 	} else if (fabric > 1.5) {
-		// Fuzzy pile: soft blotchy nap, no stitches.
+		// Fuzzy pile: soft blotchy nap over faint stitches.
+		float e = 0.06;
 		float n0 = value_noise(m * 140.0);
 		float fw = length(fwidth(m * 140.0));
 		float fade = 1.0 - smoothstep(0.25, 0.6, fw);
@@ -133,6 +125,19 @@ vec3 cloth(vec2 uv, float rib) {
 		shade *= 0.93 + 0.12 * mix(0.5, n0, fade);
 	}
 	return vec3(slope, shade);
+}
+
+// The knit tile at this point: xy the slope (U, V) as cloth() gives it, z the cavity, w the roughness;
+// `amount` is the knit's strength already faded with distance.
+vec4 knit_at(vec2 uv, float amount) {
+	// A whole number of tiles around the tube, so the seam at V = 0 / 1 never shows.
+	vec2 tile = knit_tile_stitches * knit_stitch;
+	vec2 k = vec2(uv.y * max(1.0, round(cloth_size.y / tile.x)), uv.x * cloth_size.x / tile.y);
+	vec4 t = texture(knit, k);
+	vec2 n = t.rg * 2.0 - 1.0;
+	// The tile's normal leans away from the slope: x around (V), y along (U).
+	return vec4(-n.y * amount, -n.x * amount, mix(1.0, t.a, knit_cavity * clamp(amount, 0.0, 1.0)),
+			mix(0.95, t.b, clamp(amount, 0.0, 1.0)));
 }
 
 // One atlas cell at local (0..1, top-left origin), with the derivatives of the unwrapped
@@ -272,12 +277,14 @@ void fragment() {
 		col = sock_print(col, lk, uv, trim, accent);
 	}
 	vec3 cl = cloth(uv, 1.0 - UV2.y);
-	col *= cl.z;
+	float knit_amount = knit_strength * (1.0 - smoothstep(knit_fade.x, knit_fade.y, length(VERTEX)));
+	vec4 kn = knit_at(uv, knit_amount);
+	col *= cl.z * kn.z;
 	// Cloth bumps: tangent space, x along U and y along V (the mesh tangents follow UV0).
-	vec2 s = clamp(cl.xy * 0.15, vec2(-0.8), vec2(0.8));
+	vec2 s = clamp(cl.xy * 0.15 + kn.xy, vec2(-0.8), vec2(0.8));
 	NORMAL_MAP = vec3(0.5 - 0.5 * s.x, 0.5 - 0.5 * s.y, 1.0);
 	NORMAL_MAP_DEPTH = 1.0;
-	ROUGHNESS = 0.95;
+	ROUGHNESS = kn.w;
 	// Soft fabric sheen: light catches the fuzz at grazing angles; wool and fuzzy pile catch more.
 	float fuzz = fabric > 1.5 ? 1.0 : (fabric > 0.5 ? 0.45 : 0.0);
 	float fres = pow(1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0), 2.0);

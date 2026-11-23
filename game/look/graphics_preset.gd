@@ -1,7 +1,7 @@
 ## One graphics preset of the old game (data/tuning/graphics.json): low, medium or high, one .tres each in
 ## game/look/presets/. The project setting `it_socks/graphics/preset` names the one in force until the Options menu
-## exists. Only the settings the zoo's picture has today are here; the old preset's mess, lamp and mirror lines come with
-## their features.
+## exists. Only the settings the zoo's picture has today are here (the mirror's came with assets/07); the old preset's mess and
+## lamp lines come with their features.
 class_name GraphicsPreset
 extends Resource
 
@@ -29,6 +29,8 @@ const FOLDER := "res://game/look/presets/"
 @export_range(32, 2048, 1) var sky_radiance := 256 # placeholder: the old preset
 ## The colour grade and the vignette (the old "amb_grade").
 @export var grade := true # placeholder: the old preset
+## The wall mirrors draw a real reflection; off, their glass shows a soft gradient (assets/07, Q2505).
+@export var mirror := true # placeholder: the old preset (Low: off)
 
 
 ## The preset the project setting names; "high" when it names none that exists.

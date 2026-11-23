@@ -40,6 +40,18 @@ func prompt_title() -> String:
 	return ""
 
 
+## Whether the crosshair may rest on this thing now: false hides it from the aim (no outline, no
+## prompt, no use), as a Cabinet under its dust sheet (Q2513).
+func aimable() -> bool:
+	return true
+
+
+## Whether this thing is used by the left click alone (a piano key, the old game's click-only
+## Station): the use key does nothing on it and its prompt shows the left button.
+func click_only() -> bool:
+	return false
+
+
 ## What the player's use button does to this thing: it asks (parts.ask), never writes.
 func use(_by: int) -> void:
 	pass

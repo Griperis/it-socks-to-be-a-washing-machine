@@ -4,6 +4,9 @@
 class_name SoundSpot
 extends Part
 
+## The note an instrument's button plays (the old sound bench's).
+const MIDDLE_C := 60
+
 ## The catalogue name it plays.
 @export var event: StringName = &""
 
@@ -15,7 +18,9 @@ func use(_by: int) -> void:
 ## Plays the event now, from where this spot stands when it is a world event.
 func play() -> void:
 	var e := Sounds.catalogue.find(event)
-	if e != null and e.spatial:
+	if e != null and e.instrument != null:
+		Sounds.play_note(event, MIDDLE_C, (get_parent() as Node3D).global_position)  # an instrument plays its middle C
+	elif e != null and e.spatial:
 		Sounds.play_at(event, (get_parent() as Node3D).global_position)
 	else:
 		Sounds.play(event)

@@ -1,6 +1,16 @@
 ## What this game adds to shots (kit/docs/TESTING.md "The shot harness").
 extends RefCounted
 
+## The scene a shot loads unless its line gives --scene=: the zoo, where every shot set before
+## house/04 was made. The project's main scene is the house since house/04 (Q2509).
+const SCENE := "res://game/zoo/zoo.tscn"
+
+
+## Before the harness reads the shot's arguments: the zoo is the default scene. The harness has no
+## setting for it (kit/tools/shot.gd reads the main scene into `_scene`, then --scene=).
+static func setup(shot: Node) -> void:
+	shot.set("_scene", SCENE)
+
 
 ## The game's own --do actions. Return true when `what` was handled.
 static func act(world: Node, what: String, arg: String) -> bool:
@@ -85,6 +95,14 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# from the reference's glb with its own materials (IT_SOCKS_REFERENCE, else res://reference/it-socks).
 			_furniture_shot(world, arg)
 			return true
+		"devices":
+			# assets/07: the furniture devices, seen by the zoo's player at the Furniture station. arg
+			# "mirror": the wall mirror lifted to its old hang (0.9 m) and the player before it (its own
+			# body in the reflection); "piano": the player at the keys opens the lid; "keys": C4, E4 and G4 played;
+			# "sheet": the locked Cabinet under its dust sheet; "pull": its switch used, so the sheet is
+			# pulled off (shoot a few frames later for the slide, 30 frames later for the bare Cabinet).
+			_devices_shot(world, arg)
+			return true
 		"house_kit":
 			# A camera on the house kit station (house/02): "lineup" (every piece from above), "walls",
 			# "openings", "floors", "roof_pieces" (rows of the line-up), "room" (the U room from
@@ -115,20 +133,21 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.look_at(station.to_global(view[1]))
 			cam.make_current()
 			return true
-		"old_house":
-			# house/03: the zoo's player in house A or B as the old game's looks-baseline tour stood
-			# (docs/migration/baseline/views_baseline.json), for stills old beside new. arg "a,<view>"
-			# or "b,<view>". The old numbers are moved +0.1 m on x and z (the plan's frame) and the
-			# old floors (-2.9, 0, 2.9, 5.8) become the new (-3, 0, 3, 6); every other station hides.
-			var station := world.get_node("Stations/OldHouse" + arg.get_slice(",", 0).to_upper()) as Node3D
-			var house := station.get_node("House") as Node3D
-			for other: Node in world.get_node("Stations").get_children():
-				(other as Node3D).visible = other == station
+		"house":
+			# house/04: the player in the house (the main scene: a set line gives
+			# --scene=res://game/house/house.tscn) where the old game's looks-baseline tour stood
+			# (docs/migration/baseline/views_baseline.json), for stills old beside new. arg "<view>": a
+			# room ("room-kitchen") or an outside view ("exterior-front", "exterior-high", from a camera:
+			# the house has no ground round it). The old numbers are moved +0.1 m on x and z (the plan's
+			# frame) and the old floors (-2.9, 0, 2.9, 5.8) become the new (-3, 0, 3, 6). "roof-south" looks
+			# at the south slope from close by (D09).
+			var house := world.get_node("Shell") as Node3D
 			var player := world.get_node("Player") as Player
 			var head := player.get_node("%Head") as Node3D
-			var view := arg.get_slice(",", 1)
+			var view := arg
 			var outside := {"exterior-front": [Vector3(5.0, 3.0, 22.0), Vector3(5.0, 3.5, 4.0)],
-					"exterior-high": [Vector3(22.0, 9.0, 18.0), Vector3(5.0, 2.0, 4.0)]}
+					"exterior-high": [Vector3(22.0, 9.0, 18.0), Vector3(5.0, 2.0, 4.0)],
+					"roof-south": [Vector3(5.0, 8.5, 13.0), Vector3(5.0, 7.5, 8.0)]}
 			# name: x, z, yaw, the old floor (the old views' pitch is 0.12 down).
 			var rooms := {"workshop": [0.60, 0.60, -2.241, -2.9], "laundry": [0.60, 3.88, -2.515, -2.9],
 					"boiler": [4.55, 0.60, -2.244, -2.9], "stair_lobby": [4.55, 2.70, -2.527, -2.9],
@@ -142,11 +161,13 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			var shift := Vector3(0.1, 0.0, 0.1)
 			if outside.has(view):
 				var o: Array = outside[view]
-				player.global_position = house.to_global((o[0] as Vector3) + shift)
-				player.rotation = Vector3.ZERO
-				var dir := (house.to_global((o[1] as Vector3) + shift) - head.global_position).normalized()
-				player.rotation = Vector3(0.0, atan2(-dir.x, -dir.z), 0.0)
-				head.rotation.x = asin(dir.y)
+				var cam := Camera3D.new()
+				world.add_child(cam)
+				cam.fov = 75.0
+				cam.global_position = house.to_global((o[0] as Vector3) + shift)
+				cam.look_at(house.to_global((o[1] as Vector3) + shift))
+				cam.make_current()
+				player.process_mode = Node.PROCESS_MODE_DISABLED
 			else:
 				var r: Array = rooms[view.trim_prefix("room-")]
 				var floor_y: float = roundf(float(r[3]) / 2.9) * 3.0
@@ -416,6 +437,31 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.make_current()
 			(station.get_node("More/HeapButton") as HeapButton).use(player.player_id())
 			return true
+		"held_zoom":
+			# assets/05: the zoo's player turns side-on to the handling station (its sign out of the
+			# view) and holds the zoom button, so the held Sock is seen up close.
+			var player := world.get_node("Player") as Player
+			player.rotation.y = PI / 2.0
+			(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-20.0)
+			player.reset_physics_interpolation()
+			player.capture_mouse()
+			Input.action_press(&"zoom")
+			return true
+		"heap_view":
+			# assets/05: a camera on the heap station's lying heap, after `heap_more` has poured it.
+			# Arg "close": under a metre from the Socks; "far": 5 m away.
+			var station := world.get_node("Stations/Heap") as Node3D
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 50.0
+			var target := station.to_global(Vector3(0.0, 0.05, 0.0))
+			if arg == "close":
+				cam.global_position = station.to_global(Vector3(-0.55, 0.65, -0.5))
+			else:
+				cam.global_position = target + (station.to_global(Vector3(-2.8, 1.5, -4.0)) - target).normalized() * 5.0
+			cam.look_at(target)
+			cam.make_current()
+			return true
 		"outline":
 			# core/11: the zoo's player stands before a thing of the outline station and aims at it, so
 			# its own aim shows the outline. arg "<thing>_<near|far>": thing sock, box, drawer (the
@@ -550,7 +596,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			return true
 		"sign":
 			# core/33: arg "<Station>" stands 3 m in front of that station's Name label at eye height
-			# and looks at it ("<Station>:north" stands on its north side, as the old houses' sign faces
+			# and looks at it ("<Station>:north" stands on its north side, as the old houses' sign faced
 			# the door); arg "wide" looks over the zoo from the start spot.
 			var cam := Camera3D.new()
 			world.add_child(cam)
@@ -610,6 +656,44 @@ static func _furniture_shot(world: Node, arg: String) -> void:
 		cam.look_at(line_up.to_global(Vector3(6.0, 0.0, -13.0)))
 	cam.reset_physics_interpolation()
 	cam.make_current()
+
+
+## The devices' views (assets/07): see "devices" in act().
+static func _devices_shot(world: Node, arg: String) -> void:
+	var station := world.get_node("Stations/Furniture") as Node3D
+	var line_up := station.get_node("LineUp") as FurnitureLineUp
+	var player := world.get_node("Player") as Player
+	var head := player.get_node("%Head") as Node3D
+	(station.get_node("Name") as Node3D).visible = false
+	var stand := func(at: Vector3, look: Vector3) -> void:
+		player.velocity = Vector3.ZERO
+		player.global_position = at
+		var to := look - at
+		player.rotation = Vector3(0.0, atan2(-to.x, -to.z), 0.0)
+		var up := look - (at + Vector3.UP * head.position.y)
+		head.rotation.x = atan2(up.y, Vector2(up.x, up.z).length())
+		player.reset_physics_interpolation()
+	match arg:
+		"mirror":
+			var piece := line_up.piece("wall_mirror")
+			piece.position.y = 0.9
+			var glass := piece.get_node("Mirror") as Node3D
+			stand.call(piece.to_global(Vector3(0.25, -0.9, 1.1)), glass.global_position + Vector3(0.0, -0.15, 0.0))
+		"piano":
+			var piano := line_up.piece("piano")
+			var lid := piano.get_node("Lid/Openable") as Openable
+			stand.call(piano.to_global(Vector3(0.1, 0.0, 0.95)), piano.to_global(Vector3(0.0, 0.7, 0.15)))
+			lid.use(player.player_id())
+		"keys":
+			var piano := line_up.piece("piano")
+			for note: int in [60, 64, 67]:
+				var key := piano.get_node("Keys/Key_%d/Key" % note) as PianoKey
+				key.use(player.player_id())
+		"sheet", "pull":
+			var cabinet := station.get_node("SheetedCabinet") as Node3D
+			stand.call(cabinet.to_global(Vector3(-0.7, 0.0, 1.2)), cabinet.to_global(Vector3(0.0, 0.5, 0.2)))
+			if arg == "pull":
+				(station.get_node("SheetSwitch/CabinetLockSwitch") as Part).use(player.player_id())
 
 
 ## Puts the old game's model of every piece in the line-up in place of its Looks (a review still).
