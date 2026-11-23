@@ -1069,3 +1069,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2576, Q2581 |
 
 ---
+
+| Ticket | core/58, M4's first build: title (Solo, Multiplayer, Options, Quit; Zoo in debug builds, Q2580), Options, Licence, ESC menu, one loading screen ("Loading the house...", Q2579; "Joining..." for a Guest) driven by house/09's laying, saves through the `SaveStore` seam (local file and memory backends, Steam Auto-Cloud ready), autosave; Solo/Host go straight into the house until the Lobby (Q2561); merged (main 67c76a3) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 2 (Q2579: the loading text always; the ESC still retaken after the laying) |
+| Corrections | none |
+| Cost | about 577k subagent tokens |
+| Time | about 3 h with the waits on house/09 |
+| Surprises | S01 aimed at the wrong kitchen Sock after house/09 (see core/60) |
+| Stop rules | none hit |
+| Looks | builds/review-menus/ |
+| Decisions | Q2540, Q2553-Q2563, Q2575, Q2579, Q2580 |
+
+---
