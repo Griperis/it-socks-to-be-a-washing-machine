@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: needs-info
+status: done
 kind: design
 area: core
 feature: voice
 priority: next
 created: 2026-11-23
-done:
+done: 2026-11-23
 blocked_by: []
 notes: ["Q2535: designed first, before the washer, the Old Tree and the cutscenes (M5)"]
 terms: []
@@ -46,3 +46,10 @@ End with the choices for the designer, 2-3 options each with a recommendation.
   deciding lines in co-op, subtitle keys in a CSV from the start, a Voice zoo station sketch; choices V1-V8.
 - Files: docs/migration/voice-findings.md, docs/architecture/voice.md
 - Verified: docs only, no suite (agent_finish --no-test).
+
+## Answers
+- V1-V8 answered by Q2545-Q2552 (designer, 2026-11-23): the Host decides every speaker; a baked Animation per line;
+  several takes picked at random; priority cutscene > washer > Old Tree, lower dropped except waiting story beats; a
+  Voice bus with its slider, music ducking only in cutscenes; the old subtitle look with the speaker's icon, no name;
+  text transcribed from the recording, corrected in the string table; subtitles shown within earshot through Doors.
+  `docs/architecture/voice.md` is the agreed design; the build tickets come with the washer and the Old Tree (M5).

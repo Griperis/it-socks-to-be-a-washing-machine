@@ -126,6 +126,11 @@ and the Voice bus has a playing voice.
 - A line's id is its file name: renaming a line breaks a save or a Command that names it; rename with the bake's
   `--rename`.
 
+## Decided (Q2545-Q2552, 2026-11-23)
+V1 a (the Host); V2 a (baked Animation); V3 b (several takes, random); V4 a (priority, lower dropped); V5 b (Voice bus,
+cutscene-only duck); V6 the old look with the speaker's icon, no name; V7 a (from the recording); V8 a (shown in
+earshot). Where the text above assumed another option, these win.
+
 ## Choices for the designer
 
 Each with 2-3 options; **(rec)** marks the recommendation.
