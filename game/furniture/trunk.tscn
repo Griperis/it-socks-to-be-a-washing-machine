@@ -53,6 +53,7 @@ metadata/height = 0.493
 metadata/rooms = ["Junk loft"]
 metadata/plan_spot = "Trunk (x2)"
 metadata/note = "A domed travel trunk; the Lid hinges at its back edge. Used twice in the loft."
+metadata/sock_weight = 4.0
 
 [node name="Looks" parent="." unique_id=1065243593 instance=ExtResource("1_gwivp")]
 

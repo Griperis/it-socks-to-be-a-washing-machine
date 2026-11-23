@@ -16,6 +16,8 @@ var _before: Array[Array] = []
 var _planned := 0
 var _asked := 0
 var _done := false
+## The slices' clock: the longest unit timed so far carries from slice to slice.
+var _clock := SliceClock.new()
 
 
 func _init(of_mess: Mess, gens: Array[GeneratedSocks]) -> void:
@@ -47,25 +49,26 @@ func progress() -> float:
 	return 0.1 + 0.9 * float(tried) / float(maxi(1, _asked))
 
 
-## Works until all is laid or the clock (Time.get_ticks_usec()) passes `until` (below 0: no limit).
-## Returns whether every generator's records are made (reveal() then puts them in the Mess).
+## Works in units, each only when it fits before `until` (Time.get_ticks_usec(); below 0: no limit) by
+## the longest unit timed so far (SliceClock). Returns whether every generator's records are made
+## (reveal() then puts them in the Mess).
 func step(until: int) -> bool:
 	if _done:
 		return true
+	var clock: SliceClock = null
+	if until >= 0:
+		_clock.start(until)
+		clock = _clock
 	while _planned < _jobs.size():
-		if not _jobs[_planned].plan(until):
+		if not _jobs[_planned].plan(clock):
 			return false
 		_planned += 1
-		if _past(until):
-			return false
 	while _made.size() < _jobs.size():
 		var job := _jobs[_made.size()]
-		if not job.lay(_before, until) or not job.records(mess.catalogue, until):
+		if not job.lay(_before, clock) or not job.records(mess.catalogue, clock) or not SliceClock.fits(clock, &"boxes", true):
 			return false
 		_made.append(job.made)
 		_before.append_array(_boxes(job.made))
-		if _made.size() < _jobs.size() and _past(until):
-			return false
 	_done = true
 	return true
 
@@ -85,7 +88,3 @@ func _boxes(made: Dictionary) -> Array[Array]:
 		var size := SockDress.box(mess.catalogue.design(designs[i]) if mess.catalogue != null else null)
 		out.append([size, Mess.unpack(poses, i) * Transform3D(Basis.IDENTITY, Vector3(0.0, size.y * 0.5, 0.0))])
 	return out
-
-
-static func _past(until: int) -> bool:
-	return until >= 0 and Time.get_ticks_usec() >= until

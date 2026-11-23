@@ -62,34 +62,25 @@ func _init(of_area: SockArea, with: SockGeneratorTuning, in_level: Node, from_wa
 	_nx = maxi(1, floori(area.size.x / tuning.floor_grid))
 	_nz = maxi(1, floori(area.size.z / tuning.floor_grid))
 	if at_once:
-		step(-1)
+		step(null)
 
 
-## How much finding there is (a floor cell or a node each), and how much is done.
-func work() -> int:
-	return _nx * _nz + _nodes.size()
-
-
-func done_work() -> int:
-	return _cell + _node
-
-
-## Finds places, the floor cells first, then the furniture's, until all are found or the clock
-## (Time.get_ticks_usec()) passes `until` (below 0: no limit). Returns whether all are found.
-func step(until: int) -> bool:
+## Finds places, the floor cells first, then the furniture's, while `clock` has room for one more
+## (null: no limit). Returns whether all are found.
+func step(clock: SliceClock) -> bool:
 	while _cell < _nx * _nz:
+		if not SliceClock.fits(clock, &"cell"):
+			return false
 		_try_cell(_cell / _nz, _cell % _nz)
 		_cell += 1
-		if until >= 0 and Time.get_ticks_usec() >= until:
-			return false
 	while _node < _nodes.size():
 		var node: Object = _nodes[_node]
 		# A node made and gone meanwhile (a slice per frame: a toast, a body) is no place.
 		if is_instance_valid(node):
+			if not SliceClock.fits(clock, &"node"):
+				return false
 			_look_at(node as Node)
 		_node += 1
-		if until >= 0 and Time.get_ticks_usec() >= until:
-			return _node >= _nodes.size()
 	return true
 
 

@@ -22,6 +22,10 @@ const ALONG_JITTER := 0.2
 const HEAP_PRESS := 0.02
 ## How far a Sock on a stair's tread may reach past its front or back edge (over the nosing).
 const TREAD_SLACK := 0.01
+## A Sock's tries (lay_try()): its places picked and fitted, then the open floor's.
+const PICK := 0
+const TRIES := 1
+const FLOOR := 2
 
 var tuning: SockGeneratorTuning
 ## What the queries ask through (a node in the level's world).
@@ -59,6 +63,14 @@ var _open_places: Array[Dictionary] = []
 var _open_sums: PackedFloat64Array
 var _hidden_sums: PackedFloat64Array
 var _heaps: Array[Vector3] = []
+## The Sock being laid a try at a time (lay_try()): which tries it is at (a place picked and its
+## tries, then the open floor's), how many of each, its pose so far (null: none yet) and its place.
+var _phase := PICK
+var _pick := 0
+var _try := 0
+var _floor_try := 0
+var _pose: Variant = null
+var _place: Dictionary = {}
 ## restack_from()'s index: each row's reach, the widest reach of a row or a box, and the rows and the
 ## boxes before by HASH cell.
 var _reach_of := PackedFloat32Array()
@@ -90,6 +102,12 @@ func begin_area(area: SockArea, places: SockPlaces, seed: int) -> void:
 	_socks = area.pairs * 2
 	_next = 0
 	_missed = 0
+	_phase = PICK
+	_pick = 0
+	_try = 0
+	_floor_try = 0
+	_pose = null
+	_place = {}
 	asked += _socks
 	_hidden = roundi(_socks * area.hidden_share) if not places.hidden_places.is_empty() else 0
 	_open_places = places.top_places.duplicate()
@@ -109,45 +127,82 @@ func begin_area(area: SockArea, places: SockPlaces, seed: int) -> void:
 func lay_next() -> bool:
 	if _area == null:
 		return false
-	if _next >= _socks:
-		if _missed > 0:
-			left_out[String(_area.name)] = _missed
-		_area = null
-		_places = null
+	var at := _next
+	while lay_try():
+		if _next > at and _phase == PICK:
+			return true
+	return false
+
+
+## One try of the area's Sock being laid (a point fitted, or a Heap's roll), or the step that ends it
+## or the area (house/09: the unit of a slice; a Sock may take many). The tries and their dice are the
+## same however they are cut. Returns whether anything is left in the area.
+func lay_try() -> bool:
+	if _area == null:
 		return false
-	var area := _area
-	var places := _places
-	var i := _next
-	_next += 1
-	var pose: Variant = null
-	var place: Dictionary = {}
-	var group: Array[Dictionary] = places.hidden_places if i < _hidden else _open_places
-	var sums := _hidden_sums if i < _hidden else _open_sums
-	# Its place, then other places of its own kind of place (hidden or open), each tried a few times.
-	for pick in tuning.repicks + 1:
-		if pose != null or sums.is_empty():
-			break
-		place = group[_weighted(sums)]
-		var in_heap: bool = place["kind"] == SockArea.Kind.FLOOR and not _heaps.is_empty() and _rng.randf() < tuning.heap_share
-		if in_heap:
-			pose = _lay_in_heap(area, places, _heaps[_rng.randi_range(0, _heaps.size() - 1)])
-		for t in tuning.tries:
-			if pose != null:
-				break
-			pose = _fit(area, places, place, area.heap and place["kind"] == SockArea.Kind.FLOOR)
-	# No room in its place: the open floor of its area, at an even draw.
-	var floor_try := 0
-	while pose == null and floor_try < tuning.floor_tries and not places.floor_places.is_empty():
-		floor_try += 1
-		place = places.floor_places[_rng.randi_range(0, places.floor_places.size() - 1)]
-		pose = _fit(area, places, place, area.heap)
-	if pose == null:
-		_missed += 1
-		return true
-	if i < _hidden and place["kind"] == SockArea.Kind.FLOOR:
-		hidden_to_floor[String(area.name)] = hidden_to_floor.get(String(area.name), 0) + 1
-	rows.append({"pose": pose, "kind": place["kind"], "ground": _ground})
+	while true:
+		if _phase == PICK and _pick == 0:
+			# A new Sock, or the area's end.
+			if _next >= _socks:
+				if _missed > 0:
+					left_out[String(_area.name)] = _missed
+				_area = null
+				_places = null
+				return false
+		var hidden := _next < _hidden
+		var group: Array[Dictionary] = _places.hidden_places if hidden else _open_places
+		var sums := _hidden_sums if hidden else _open_sums
+		match _phase:
+			PICK:
+				# Its place, then other places of its own kind of place (hidden or open), each tried a few times.
+				if _pose != null or sums.is_empty() or _pick > tuning.repicks:
+					_phase = FLOOR
+					continue
+				_place = group[_weighted(sums)]
+				_pick += 1
+				_try = 0
+				_phase = TRIES
+				var in_heap: bool = _place["kind"] == SockArea.Kind.FLOOR and not _heaps.is_empty() and _rng.randf() < tuning.heap_share
+				if in_heap:
+					_pose = _lay_in_heap(_area, _places, _heaps[_rng.randi_range(0, _heaps.size() - 1)])
+					return true
+			TRIES:
+				if _pose != null or _try >= tuning.tries:
+					_phase = PICK
+					continue
+				_try += 1
+				# Inside a piece Socks lie on the ones laid there before, as the old game's computed
+				# stacking did (house/09, Q2576: about 5 in a trunk; flat, one beside another, it holds 2).
+				var stacks: bool = (_area.heap and _place["kind"] == SockArea.Kind.FLOOR) or _place["kind"] == SockArea.Kind.INSIDE
+				_pose = _fit(_area, _places, _place, stacks)
+				return true
+			FLOOR:
+				# No room in its place: the open floor of its area, at an even draw.
+				if _pose == null and _floor_try < tuning.floor_tries and not _places.floor_places.is_empty():
+					_floor_try += 1
+					_place = _places.floor_places[_rng.randi_range(0, _places.floor_places.size() - 1)]
+					_pose = _fit(_area, _places, _place, _area.heap)
+					return true
+				_end_sock(hidden)
+				return true
 	return true
+
+
+## The Sock being laid is done: its row, or one more left out; the next Sock starts.
+func _end_sock(hidden: bool) -> void:
+	if _pose == null:
+		_missed += 1
+	else:
+		if hidden and _place["kind"] == SockArea.Kind.FLOOR:
+			hidden_to_floor[String(_area.name)] = hidden_to_floor.get(String(_area.name), 0) + 1
+		rows.append({"pose": _pose, "kind": _place["kind"], "ground": _ground})
+	_next += 1
+	_phase = PICK
+	_pick = 0
+	_try = 0
+	_floor_try = 0
+	_pose = null
+	_place = {}
 
 
 ## How many of the area's Socks are tried so far (lay_next()), of `asked` in all.
@@ -390,6 +445,9 @@ func _rest_on_tread(hit: Dictionary, p: Vector3, yaw: float, keep_out: Array[Arr
 		return _fail("sock")
 	_add_box(tuning.place_box, centre)
 	_mark(roundi(at.y * 10.0), basis, pose)
+	# It lies on the tread: its ground (house/09: a stale one from the last Sock let restack bring it down
+	# under the stair, where it hung and fell at the first tick).
+	_ground = at.y + tuning.gap
 	return pose
 
 
@@ -428,13 +486,13 @@ var _ground := 0.0
 ## a row not laid), or to its ground; x, z and its turn stay. A row only ever comes down (its boxes lie
 ## inside the place box), so it meets nothing it did not meet before.
 func restack(parts: Array[Array]) -> void:
-	restack_from(parts, 0, -1)
+	restack_from(parts, 0, null)
 
 
-## restack() a slice at a time (house/09): the rows from `first` on, until all are done or the clock
-## (Time.get_ticks_usec()) passes `until` (below 0: no limit). Returns the next row to restack
-## (rows.size(): all done). Start at 0; go on with the same `parts`.
-func restack_from(parts: Array[Array], first: int, until: int) -> int:
+## restack() a slice at a time (house/09): the rows from `first` on, while `clock` has room for one
+## more (null: no limit). Returns the next row to restack (rows.size(): all done). Start at 0; go on
+## with the same `parts`.
+func restack_from(parts: Array[Array], first: int, clock: SliceClock) -> int:
 	# house/09: a row looks only at the rows and boxes near it (by HASH cell, within both reaches:
 	# farther apart they cannot meet), so the house's Heaps restack in a few ms, not a third of a second.
 	# The height is the highest of what it lies over, so the order they are looked at in does not matter.
@@ -445,7 +503,7 @@ func restack_from(parts: Array[Array], first: int, until: int) -> int:
 	var row_cells := _row_cells
 	var box_cells := _box_cells
 	for i in range(first, rows.size()):
-		if i > first and until >= 0 and Time.get_ticks_usec() >= until:
+		if not SliceClock.fits(clock, &"restack"):
 			return i
 		var pose: Transform3D = rows[i]["pose"]
 		var ground: float = rows[i]["ground"]

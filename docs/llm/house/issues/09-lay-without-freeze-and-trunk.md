@@ -29,21 +29,24 @@ From house/05 (2026-11-23):
   house with its Socks; a Guest joining mid-lay waits and gets the full Mess.
 - The same seed gives the same Socks laid in 1 frame and over many (a case).
 - The attic has Socks inside its trunk; a still for the designer (`builds/review-house-09/`), with the loading screen.
+- (The lead's review) every slice of laying stops before the budget by design; the timing case passes 10 runs of
+  10 in a row. The stair trails' Socks stay lying on their treads through 120 ticks (a case).
+- (Q2576) each attic trunk holds about 5 Socks, as the old game, through the trunk's own weight override (Q2520),
+  the floor's total kept; the trunk stills retaken.
 
 ## Open follow-ups
-- [later] The old loading screen's looks are not ported (a placeholder on the game's Theme; M4 restyles it): the
-  old cream card, the tumbling sock spinner over the text, and the fade into play from the backdrop's colour
-  after the screen goes (Q1262, Q1265). The bar follows the old rule exactly: empty while the places are found
-  (about a third of the laying), then 0.1, then the share laid. For the designer to keep or drop.
-- [later] The reveal (990 Socks join the Mess, get their bodies and drawings) is one frame of about 30 ms, behind
+- [later] The loading screen's old look (card, spinner, fade into play) is core/58's (Q2575); the placeholder stays.
+- [later] The reveal (990 Socks join the Mess, get their bodies and drawings) is one frame of about 40 ms, behind
   the screen (the old game did the same: its deep review's B3); spreading it means splitting the Mess's _show.
-- [later] The trunks hide 1 and 2 Socks (the old game 5 each): the hidden share (0.3) is spread by place weight
-  over every inside and under-gap of the attic.
-- [later] A trail Sock laid flat on a stair's tread lies under the walking ramp; the Mess's first tick finds nothing
-  under it (it looks at the house layer, not the treads) and lets it fall onto the ramp, so in play the stair trails
-  lean on the ramps as before (house/05's [later] "only the trail sees the treads"; found here comparing one frame
-  with many).
+- [later] The treads' layer (128, `SockTrail.LAYER_TREADS`) is also a standing player's Mate capsule's
+  (`Ragdoll.MATE_LAYER`): the support rule tells them apart by the body's name; the trail's own tread ray does not,
+  so a Teammate standing on a stair during a reseed could be taken for a tread. One of them could move layer.
 - [later] The new furniture case checks each Inside's bottom only, not its shelves (`shelves_y`).
+- [later] Stacking inside (Q2576) is for every piece's inside, as the old game's was: a crowded cupboard or drawer
+  now holds Socks on Socks too; only the trunk's weight changed. The designer sees it in play.
+- [later] The kitchen real path now picks a Sock lying on the floor itself: with the new layout it first chose the
+  top Sock of a kitchen Heap (open to the eye), aimed at it, pressed pick, and that Sock never reached the Hands.
+  Not looked into (a pick in a Heap takes its column, core rule?); worth a look.
 
 ## Built log
 - 2026-11-23
@@ -70,3 +73,23 @@ From house/05 (2026-11-23):
     the house sets; docs/architecture.md, architecture/sock-generator.md, house.md, furniture.md.
   - Stills: builds/review-house-09/ (house-09-loading.png, house-09-trunk-a.png, house-09-trunk-b.png).
   - Verified: PASS 17901 checks, 465 cases (`kit/tools/run.sh --touched` before merging main; FLAKY mess_settle:real_path_2 and _3, core/54's); after merging main PASS 373 checks, 21 cases (house) and agent_finish's --touched; PASS rules
+- 2026-11-23 (the lead's review, Q2576)
+  - Changed: (1) Slices stop before the budget: `SliceClock` (game/mess/slice_clock.gd) is asked before every
+    unit of work (a floor cell, a furniture node, an area's places, one try of a Sock, a trail, a restacked row,
+    the Designs dealt, the records) and lets it start only when twice the longest unit of its kind so far, and at
+    least 3 ms more than it, still fits; a Sock is now laid a try at a time (`SockLaying.lay_try()`, the same
+    dice in the same order). (2) The stair trails stay on their treads: the trail's row kept a stale `ground` from
+    the Sock before it, so the restack (core/55) brought it down under the stair, where the support rule found
+    nothing and it fell; `_rest_on_tread` now sets its ground, and `MessBodies.supported()` counts a tread
+    (a body named `Treads`, `SockTrail.TREADS`) as holding a Sock up. (3) Q2576: the trunk's root has
+    `sock_weight` 4.0 (Q2520), and Socks inside a piece lie on the ones laid there before, as the old game's
+    computed stacking did: flat, side by side, the trunk holds only 2 (its place box is 0.375 x 0.225 m on a
+    0.82 x 0.42 m floor), so the weight alone moved none (1 and 1). The attic's total is unchanged (260).
+  - Measured: `h09_slices_within_budget` (perf, a slice may not pass 14 ms): passed 10 runs of 10 in a row (`kit/tools/run.sh --only=house:h09_slices_within_budget`, each "ok": 3 of 3 of its timing runs, 30 in all); the longest slice of laying
+    11.1 ms in `real_path_loading_screen` (114 frames), the reveal 31.4 ms (its own frame, behind the screen). Trunks: 6 and 5 Socks inside (`h05_mess`).
+  - Files: game/mess/slice_clock.gd (new), sock_laying.gd, sock_laying_job.gd, sock_places.gd, starting_socks.gd,
+    sock_generator.gd, mess_bodies.gd, sock_trail.gd; game/furniture/trunk.tscn; tests/house_test.gd (new case
+    h09_trail_stays_on_treads; the timing case strict at 14 ms; the kitchen case picks a floor Sock);
+    docs/architecture/sock-generator.md.
+  - Stills: builds/review-house-09/house-09-trunk-a.png, house-09-trunk-b.png (retaken).
+  - Verified: PASS rules; the touched suites by agent_finish (its suite: line is in the report to the lead)

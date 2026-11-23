@@ -60,8 +60,8 @@ static func of(node: Node) -> SockGenerator:
 ## middle's transform] each, the Socks already lying). Returns the laying (its rows and report).
 func lay(with_seed: int, before: Array[Array] = []) -> SockLaying:
 	var job := SockLayingJob.new(self, with_seed)
-	job.plan(-1)
-	job.lay(before, -1)
+	job.plan(null)
+	job.lay(before, null)
 	return job.laying
 
 

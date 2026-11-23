@@ -17,6 +17,7 @@ generated Socks land, how the preview draws, or how the start and a regeneration
 | `sock_laying.gd` (`SockLaying`) | One laying: per Sock a place by size x weight (and the washer's thinning), tries a point, rests it by rays (middle and ends) and an overlap test with the house, the kept-out boxes and the Socks laid before; a Heap's roll-down and stacking; the Pairs (`pair_up`, Q2525); the report (`fails`, `left_out`, `hidden_to_floor`) |
 | `sock_laying_job.gd` (`SockLayingJob`) | One generator's laying from one seed cut into slices (house/09): `plan()`, `lay()`, `records()`, each until a deadline; `SockGenerator.lay()` and `records()` run it whole |
 | `starting_socks.gd` (`StartingSocks`) | A level's starting Socks: every generator of a Mess laid in order, a slice at a time (`step()`, `progress()` for the loading bar) or at once, then `reveal()` into the Mess |
+| `slice_clock.gd` (`SliceClock`) | A slice's clock: before each unit of work (a floor cell, a try, a restacked row ...) `room(kind)` says whether twice the longest of that kind so far (at least 3 ms over it) still fits, so a slice stops before its budget, never after |
 | `sock_preview.gd` (`SockPreview`) | The editor's looks: translucent boxes, a trail's line, dots tinted by kind (blue floor, yellow top, green inside, magenta under, orange trail), drawn through the furniture |
 | `sock_generator_tuning.gd` + `.tres` (`SockGeneratorTuning`) | The level's numbers: the place box, tries, rest slack, the grid, Mates, Heaps, thinning, strips |
 | `generated_socks.gd` (`GeneratedSocks`, the Part, the generator's `Generated` child) | State: `seed`, `first`, `socks` (which Mess records are the generator's). `start()` and `took()` at the start; `regenerate` (Guest-allowed, rate 2, within `reach`) |
@@ -58,8 +59,9 @@ generated Socks land, how the preview draws, or how the start and a regeneration
 - **Dice per area.** Each area draws from `hash([seed, area name])`, each trail from its name, the Pairs from
   `hash([seed, "mates"])`: a change to one area moves no other area's Socks (a later area only avoids the ones laid
   before it, in tree order).
-- **Height in a Heap only.** x, z and the turn of every Sock are exact; a stacked Heap Sock lies at its
-  dot's height or lower (above).
+- **Height in a Heap or an inside only.** x, z and the turn of every Sock are exact; a stacked Heap Sock, or a
+  Sock inside a piece lying on the ones laid there before (house/09, Q2576: the old computed stacking), lies at
+  its dot's height or lower (above). The trunk's `sock_weight` (4) brings it about 5 Socks, as the old game.
 - **Same queries.** Every ray and overlap goes through `PhysicsQueries` (also in the editor: the edited scene's
   world); nothing steps physics. The game's laying also avoids the Mess's other lying Socks (`Mess.lying_boxes`);
   the editor knows no Mess, so a SockSpot inside an area shows no gap in the preview.
@@ -80,7 +82,9 @@ generated Socks land, how the preview draws, or how the start and a regeneration
   box on every step and landing, layer `SockTrail.LAYER_TREADS`, 128) that only a trail looks at: a trail Sock over a
   tread lies flat on it, its middle on the tread's middle line, its box inside the tread, and its house test leaves
   out the stair's own `Body` (the ramp passes over the tread). With no tread under it, it leans on the ramp (house/05,
-  Q2530). A woken or falling Sock still meets the ramp.
+  Q2530). A Sock lying on a tread (a body named `Treads`, `SockTrail.TREADS`: the layer is shared with a
+  player's Mate capsule) counts as held up (`MessBodies.supported`, house/09) and the row's ground is the
+  tread, so the restack leaves it there. A woken or falling Sock still meets the ramp.
 - The zoo's station (`game/zoo/stations/sock_generator.tscn`, its button and sign in `game/zoo/sock_generator/`)
   sets `scan` to its root; a level sets it to the level. The house (house/05) has one generator per floor under `SockGenerators`, each
   its floor's two Cabinets' Collections and one `Floor` area (the old stage's Pairs, Heaps on), the stair trails
