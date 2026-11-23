@@ -29,6 +29,10 @@ static func act(world: Node, what: String, arg: String) -> bool:
 				_:
 					(world as TitleScreen).show_page(arg)
 			return true
+		"name":
+			# core/64: types `arg` in the title's "Your name" field (Multiplayer page).
+			((world as TitleScreen).get_node("%NameField") as LineEdit).text = arg
+			return true
 		"throw_charge":
 			# The zoo's player steps onto the handling station, takes its first Sock and holds the
 			# drop button: the Throw's ring starts filling after the tap (core/08).
