@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://tpy7lw8wo55m" path="res://game/furniture/looks/looks_car.tscn" id="1_jdeot"]
 [ext_resource type="Script" uid="uid://bilshnr7wp5ir" path="res://game/parts/openable.gd" id="2_7482v"]
 [ext_resource type="PackedScene" uid="uid://x054l0k0tw7i" path="res://game/furniture/parts/looks_car_door_l.tscn" id="3_kwkco"]
-[ext_resource type="PackedScene" uid="uid://p6j13x85ccpvw" path="res://game/furniture/parts/looks_car_door_r.tscn" id="5_drr09"]
+[ext_resource type="PackedScene" uid="uid://pwkqqk42i7uu" path="res://game/furniture/parts/looks_car_door_r.tscn" id="5_drr09"]
 [ext_resource type="PackedScene" uid="uid://cj78c1mjphb5" path="res://game/furniture/parts/looks_car_boot.tscn" id="4_nfne1"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ar327"]
