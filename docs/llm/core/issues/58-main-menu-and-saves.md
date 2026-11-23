@@ -97,3 +97,4 @@ intro, key remapping, the encyclopedia key.
 - Files: game/level/loading_screen.{gd,tscn}, loading_tuning.gd, game/scenes/scene_changer.gd,
   game/level/level_runtime.gd, game/mess/mess.gd, tests/menus_test.gd, tests/house_test.gd.
 - Verified: agent_finish's full run; still builds/review-menus/menus-loading.png retaken.
+- Merged: 3647abf9 (2026-11-23, branch core/58-main-menu-and-saves)
