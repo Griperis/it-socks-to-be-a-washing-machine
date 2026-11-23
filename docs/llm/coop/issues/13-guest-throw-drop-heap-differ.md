@@ -112,3 +112,4 @@ causes for an earlier version of item 1: read it).
 - Files: `game/mess/mess.gd`, `game/mess/mess_tuning.gd`, `tests/coop_hands_test.gd`,
   `docs/architecture/mess.md`.
 - Verified: `coop_hands:throw_drop_pour_real_path` PASS 26 checks; `run.sh --touched` by agent_finish below.
+- Merged: 2c99b6c9 (2026-11-23, branch coop/13-guest-throw-drop-heap-differ)
