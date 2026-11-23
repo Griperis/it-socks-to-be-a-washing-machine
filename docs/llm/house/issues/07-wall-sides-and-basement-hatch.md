@@ -6,7 +6,7 @@ area: house
 feature: house
 priority: now
 created: 2026-11-23
-done:
+done: 2026-11-23
 blocked_by: []
 notes: ["designer's house walk, 2026-11-23"]
 terms: []
@@ -56,3 +56,4 @@ unless a wall fix cannot be made in the shell, and then only the lines needed.
   trim-close-up.png. Files: tools/house_kit_build.gd, tools/house_shell_build.gd, game/house/shell.tscn,
   game/house/kit/{pieces,meshes}/wainscot_trim_*, game/house/kit/materials/wall_bathroom_tiled.tres,
   tools/shots/sets/house-07-trim.txt.
+- Merged: 5db5b975 (2026-11-23, branch house/07-wall-sides-and-basement-hatch)
