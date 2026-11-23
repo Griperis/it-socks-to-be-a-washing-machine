@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="MirrorTuning" format=3 uid="uid://cua0tv2q1edee"]
+
+[ext_resource type="Script" uid="uid://ctk2vnh3xhm62" path="res://game/devices/mirror_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")

@@ -13,6 +13,9 @@
 ## (T05); any other touch asks nothing and the body bounces (T06, T07). No icon shows the
 ## Collection: the refusal tells it (C11).
 ##
+## A Cabinet that wears a dust sheet (a DustSheet child of its root) shows it draped while it is locked
+## and pulled off when it is unlocked (assets/07).
+##
 ## Its Looks and its drawers' Looks are its Collection's (assets/02, K01): `looks_<collection>.tscn`
 ## in this folder and in the drawer's, swapped in by dress() when the Cabinet is ready and whenever
 ## its state shows; a Collection without its own Looks keeps the one in the scene.
@@ -44,6 +47,9 @@ const LOOKS := &"Looks"
 ## How a shelving flight lands in its slot: the falling Pair's squash, hop and roll (core/27 P10).
 const BALL_LANDING := preload("res://game/sock/ball_landing_tuning.tres")
 
+## A sheeted Cabinet's dust sheet (assets/07, Q2507): a DustSheet child of its root by this name,
+## draped while it is locked and pulled off on the unlock.
+const DUST_SHEET := ^"../DustSheet"
 ## Links the wiring check lets stay empty: a Cabinet finds the level's Hands and Coins by group.
 const WIRING_OPTIONAL := ["hands", "coins"]
 
@@ -448,6 +454,9 @@ func _is_drawer_front(node: Node) -> bool:
 func _show(now: bool) -> void:
 	if get_parent().is_node_ready():
 		dress()
+	var sheet := get_node_or_null(DUST_SHEET) as DustSheet
+	if sheet != null and sheet.is_node_ready():
+		sheet.follow(locked, now)
 	var mess := mess_of()
 	if _slots.size() != drawer_count():
 		_find_slots()

@@ -108,8 +108,8 @@ func case_s01() -> void:
 	_check(not cat.has(&"no_such_sound"), "a name it does not know is not found")
 	# Every name the code and the scenes ask for is in it.
 	var names := {}
-	var re := RegEx.create_from_string("Sounds\\.(?:play|play_at|start_loop|stop_loop)\\(&\"([a-z0-9_]+)\"")
-	var re_scene := RegEx.create_from_string("event = &\"([a-z0-9_]+)\"")
+	var re := RegEx.create_from_string("Sounds\\.(?:play|play_at|play_note|start_loop|stop_loop)\\(&\"([a-z0-9_]+)\"")
+	var re_scene := RegEx.create_from_string("(?:event|open_sound|close_sound) = &\"([a-z0-9_]+)\"")
 	for path in _files("res://game", [".gd", ".tscn"]):
 		if path.begins_with("res://game/audio/sounds.gd"):
 			continue

@@ -230,6 +230,8 @@ shape = SubResource("BoxShape3D_kelbd")
 
 [node name="Openable" type="Node" parent="Door" unique_id=1779946244]
 script = ExtResource("2_0p506")
+open_sound = &"oven_open"
+close_sound = &"oven_close"
 metadata/kind = "oven"
 
 [node name="Looks" parent="Door" unique_id=1906145233 instance=ExtResource("3_w8kyw")]

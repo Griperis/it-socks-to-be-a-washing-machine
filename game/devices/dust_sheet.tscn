@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dqcr0t6aah51x"]
+
+[ext_resource type="Script" uid="uid://bd4pby0t32p3n" path="res://game/devices/dust_sheet.gd" id="1_sheet"]
+[ext_resource type="Resource" uid="uid://y6oonw5qb2eu" path="res://game/devices/dust_sheet_tuning.tres" id="2_tuning"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sheet"]
+cull_mode = 2
+albedo_color = Color(0.9254902, 0.89411765, 0.83137256, 1)
+roughness = 1.0
+
+[node name="DustSheet" type="MeshInstance3D"]
+material_override = SubResource("StandardMaterial3D_sheet")
+script = ExtResource("1_sheet")
+tuning = ExtResource("2_tuning")

@@ -7,7 +7,8 @@
 ## A play picks one of the event's clips at random and jitters its pitch, through Godot's
 ## AudioStreamRandomizer. A world sound fades with distance (unit size 3 m, gone at 20 m) and plays
 ## muffled (the Muffled* buses: -9 dB, 900 Hz low-pass) when a shut Door lies between the listener's
-## camera and it. Eight flat and eight world voices are used in turn, as in the old game.
+## camera and it. Eight flat and eight world voices are used in turn, as in the old game. An
+## instrument's notes (the piano: `Sounds.play_note(&"piano", 60, where)`) ring on voices of their own.
 ##
 ## Buses are default_bus_layout.tres: Master, SFX, Ambient, Music, UI (their mix is the layout's
 ## volume) and Muffled copies of the last three that send into them. The player's volume per bus is
@@ -54,6 +55,9 @@ var _randomizers: Dictionary[StringName, AudioStream] = {}
 var _mix_db: Dictionary[StringName, float] = {}
 ## The voice last started, for a test and for whoever wants to watch it.
 var last_voice: Node = null
+## Each instrument's voices, by event name: {"players": Array[AudioStreamPlayer3D], "notes": the MIDI
+## note each rings (-1 free), "fades": each one's fade Tween, "next": the voice the next note takes}.
+var _instruments: Dictionary[StringName, Dictionary] = {}
 
 
 func _ready() -> void:
@@ -128,6 +132,87 @@ func _play_world(e: SoundEvent, name: StringName, where: Vector3, strength: floa
 	played.emit(name, true, where, voice.bus)
 
 
+## Plays MIDI `note` of instrument event `name` (the piano) at `where`: the clip whose root is nearest,
+## pitched to the note (no jitter), on the instrument's next voice; a voice still ringing the same
+## note fades out over `restrike` first. It rings `hold` seconds at full, then fades to silence over
+## `release` (easing in) and stops. Muffled behind a shut Door like any world sound.
+func play_note(name: StringName, note: int, where: Vector3) -> void:
+	var e := _asked(name, true)
+	if e == null:
+		return
+	var inst := e.instrument
+	if inst == null or inst.roots.size() != e.clips.size():
+		Log.error("sounds", "'%s' is not an instrument (its clips and roots differ)" % name)
+		return
+	var pool := _pool_of(e)
+	var players: Array = pool["players"]
+	var notes: Array = pool["notes"]
+	for i in players.size():
+		if int(notes[i]) == note and (players[i] as AudioStreamPlayer3D).playing:
+			_fade_note(pool, i, 0.0, inst.restrike)
+	var at := int(pool["next"])
+	pool["next"] = (at + 1) % players.size()
+	var voice := players[at] as AudioStreamPlayer3D
+	var clip := inst.nearest(note)
+	voice.stream = e.clips[clip]
+	voice.pitch_scale = inst.pitch_of(clip, note)
+	voice.bus = MUFFLED + e.bus if is_muffled(where) and AudioServer.get_bus_index(MUFFLED + e.bus) >= 0 else e.bus
+	voice.volume_db = e.volume_db
+	voice.global_position = where
+	voice.play()
+	notes[at] = note
+	_fade_note(pool, at, inst.hold, inst.release)
+	last_voice = voice
+	played.emit(name, true, where, voice.bus)
+
+
+## The voice of instrument `name` ringing MIDI `note` now, or null.
+func note_voice(name: StringName, note: int) -> AudioStreamPlayer3D:
+	var pool: Dictionary = _instruments.get(name, {})
+	var players: Array = pool.get("players", [])
+	for i in players.size():
+		if int(pool["notes"][i]) == note and (players[i] as AudioStreamPlayer3D).playing:
+			return players[i] as AudioStreamPlayer3D
+	return null
+
+
+## The instrument's voices, made on its first note.
+func _pool_of(e: SoundEvent) -> Dictionary:
+	if _instruments.has(e.event):
+		return _instruments[e.event]
+	var players: Array[AudioStreamPlayer3D] = []
+	var notes: Array[int] = []
+	var fades: Array[Tween] = []
+	for i in maxi(e.instrument.voices, 1):
+		var voice := AudioStreamPlayer3D.new()
+		voice.name = "%s%d" % [String(e.event).to_pascal_case(), i]
+		voice.unit_size = e.instrument.unit_size
+		voice.max_distance = catalogue.max_distance
+		add_child(voice)
+		players.append(voice)
+		notes.append(-1)
+		fades.append(null)
+	var pool := {"players": players, "notes": notes, "fades": fades, "next": 0}
+	_instruments[e.event] = pool
+	return pool
+
+
+## Lets voice `i` ring `hold` seconds more, then fades it to -60 dB over `release` and stops it.
+func _fade_note(pool: Dictionary, i: int, hold: float, release: float) -> void:
+	var fades: Array = pool["fades"]
+	if fades[i] != null:
+		(fades[i] as Tween).kill()
+	var voice := pool["players"][i] as AudioStreamPlayer3D
+	var t := create_tween()
+	if hold > 0.0:
+		t.tween_interval(hold)
+	t.tween_property(voice, "volume_db", -60.0, maxf(release, 0.01)).set_ease(Tween.EASE_IN)
+	t.tween_callback(func() -> void:
+		voice.stop()
+		pool["notes"][i] = -1)
+	fades[i] = t
+
+
 ## Starts a flat looping event (an ambience) and returns its player; the same name again returns the
 ## one already playing.
 func start_loop(name: StringName) -> AudioStreamPlayer:
@@ -198,6 +283,13 @@ func reset() -> void:
 		voice.stop()
 	for voice: AudioStreamPlayer3D in _world:
 		voice.stop()
+	for pool: Dictionary in _instruments.values():
+		for i in (pool["players"] as Array).size():
+			if pool["fades"][i] != null:
+				(pool["fades"][i] as Tween).kill()
+			(pool["players"][i] as AudioStreamPlayer3D).stop()
+			pool["notes"][i] = -1
+		pool["next"] = 0
 	_next_flat = 0
 	_next_world = 0
 	last_voice = null

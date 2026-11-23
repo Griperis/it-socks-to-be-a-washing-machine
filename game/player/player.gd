@@ -65,6 +65,9 @@ const FULL_OUTLINE := preload("res://game/outline/full.tres")
 @onready var _camera: Camera3D = %Camera
 @onready var _shape: CollisionShape3D = %Shape
 @onready var _own_body: AvatarLooks = %OwnBody
+## The player's full body as a wall mirror shows it (assets/07, Q2505): hidden, and on a render layer
+## this player's camera skips, while no mirror renders.
+@onready var _mirror_body: AvatarLooks = %MirrorBody
 @onready var _aim: RayCast3D = %Aim
 @onready var _held_view: HeldView = %HeldView
 @onready var _hud: Hud = %Hud
@@ -375,6 +378,11 @@ func _process(delta: float) -> void:
 func _drive_own_body(delta: float) -> void:
 	_own_body.look_pitch = _head.rotation.x
 	_own_body.set_crouch(move_toward(_own_body.crouch, 1.0 if crouching else 0.0, delta * _own_body.tuning.crouch_follow))
+	if _mirror_body.visible:
+		_mirror_body.look_pitch = _own_body.look_pitch
+		_mirror_body.set_crouch(_own_body.crouch)
+		if _mirror_body.colour != _own_body.colour:
+			_mirror_body.colour = _own_body.colour
 
 
 ## The player's own body seen from their eyes (the sock creature's Looks in first person).
@@ -382,8 +390,17 @@ func own_body() -> AvatarLooks:
 	return _own_body
 
 
-## What interact does: uses the Part it aims at.
+## The player's full body that only a wall mirror shows (Mirror).
+func mirror_body() -> AvatarLooks:
+	return _mirror_body
+
+
+## What interact does: uses the Part it aims at, unless the left click alone uses it (a piano key).
 func interact() -> Part:
+	_aim.force_raycast_update()
+	var part := part_of(_aim.get_collider() as Node)
+	if part != null and part.click_only():
+		return null
 	return use_aimed()
 
 

@@ -36,6 +36,11 @@ unique_name_in_owner = true
 physics_interpolation_mode = 2
 first_person = true
 
+[node name="MirrorBody" parent="." instance=ExtResource("10_own_body")]
+unique_name_in_owner = true
+visible = false
+physics_interpolation_mode = 2
+
 [node name="Head" type="Node3D" parent="." unique_id=888082870]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
@@ -43,6 +48,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 [node name="Camera" type="Camera3D" parent="Head" unique_id=1931129010]
 unique_name_in_owner = true
 physics_interpolation_mode = 2
+cull_mask = 1046527
 top_level = true
 current = true
 

@@ -25,3 +25,14 @@ The old game's picks for the core events (ported, Q2319). CC0 or public domain, 
 | step_wood__kenney_footstep00.ogg | cc0/kenney_footstep00 | Kenney | CC0 | https://opengameart.org/content/50-rpg-sound-effects |
 | step_tile__owlish_hard1.ogg | cc0/owlish_hard1 | OwlishMedia | CC0 | https://opengameart.org/content/sound-effects-pack |
 | land__qubodup_jumpland.ogg | cc0/qubodup_jumpland | qubodup | CC0 | https://opengameart.org/content/jump-landing-sound |
+| fridge_open__rubberduck_microwave_open.ogg | cc0/rubberduck_microwave_open | rubberduck | CC0 | https://opengameart.org/content/100-cc0-sfx |
+| fridge_close__rubberduck_microwave_close.ogg | cc0/rubberduck_microwave_close | rubberduck | CC0 | https://opengameart.org/content/100-cc0-sfx |
+| oven_open__rubberduck_metal_open.ogg | cc0/rubberduck_metal_open | rubberduck | CC0 | https://opengameart.org/content/100-cc0-metal-and-wood-sfx |
+| oven_close__rubberduck_metal_close.ogg | cc0/rubberduck_metal_close | rubberduck | CC0 | https://opengameart.org/content/100-cc0-metal-and-wood-sfx |
+| basket_open__kenney_creak3.ogg | cc0/kenney_creak3 | Kenney | CC0 | https://opengameart.org/content/50-rpg-sound-effects |
+| basket_close__rubberduck_wood_misc2.ogg | cc0/rubberduck_wood_misc2 | rubberduck | CC0 | https://opengameart.org/content/100-cc0-metal-and-wood-sfx |
+| cupboard_open__kenney_door_open1.ogg | cc0/kenney_door_open1 | Kenney | CC0 | https://opengameart.org/content/50-rpg-sound-effects |
+| cupboard_close__kenney_door_close4.ogg | cc0/kenney_door_close4 | Kenney | CC0 | https://opengameart.org/content/50-rpg-sound-effects |
+| piano/piano_remeau_<n>.ogg (23 notes) | cc0/piano_remeau | Sadiquecat | CC0 | https://freesound.org/people/Sadiquecat/sounds/794367/ and the pack's 22 other notes (the old candidates.json lists each page) |
+
+assets/07 brought the furniture devices' clips: the old picks, or for an event with no pick the pool's first candidate (the litter flap and the piano lid play the cupboard pool's first, Kenney's door open1 and close4). The piano is the old first instrument, its notes' measured roots in the catalogue's `piano` instrument.
