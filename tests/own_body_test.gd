@@ -25,7 +25,7 @@ func cases() -> Array[Dictionary]:
 func _before_case() -> void:
 	Input.action_release(&"crouch")
 	if _zoo != null:
-		var session := _zoo.get_node_or_null("Session") as Session
+		var session := LevelRuntime.of(_zoo).session
 		if session != null:
 			session.close()
 		_zoo.free()
@@ -35,7 +35,7 @@ func _before_case() -> void:
 func _build() -> Player:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	await _until(func() -> bool: return player.is_on_floor(), "the player to stand on the floor")
 	await _frames(2)
 	return player
@@ -74,7 +74,7 @@ func case_look_down() -> void:
 		_check(foot.is_visible_in_tree() and camera.is_position_in_frustum(foot.global_position), "the camera sees %s" % foot.name)
 		_check(foot.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_OFF, "%s casts no shadow" % foot.name)
 	_check(belly.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_OFF, "the belly casts no shadow")
-	var colour := (_zoo.get_node("Session/Roster") as Roster).tuning.colour(0)
+	var colour := LevelRuntime.of(_zoo).roster.tuning.colour(0)
 	for i: int in belly.mesh.get_surface_count():
 		var paint := belly.get_surface_override_material(i) as BaseMaterial3D
 		_check(paint != null and paint.cull_mode == BaseMaterial3D.CULL_BACK, "belly surface %d draws its outside only" % i)
@@ -127,16 +127,16 @@ func case_cut() -> void:
 
 func case_no_double() -> void:
 	var player := await _build()
-	var session := _zoo.get_node("Session") as Session
+	var session := LevelRuntime.of(_zoo).session
 	session.port = 0
 	session.profile = PlayerProfile.fresh()
-	_check((_zoo.get_node("Net") as ZooNet).start(["--host"]) == OK, "the zoo hosts")
-	var avatars := _zoo.get_node("Avatars") as Avatars
+	_check(LevelRuntime.of(_zoo).net.start(["--host"]) == OK, "the zoo hosts")
+	var avatars := LevelRuntime.of(_zoo).avatars
 	await _until(func() -> bool: return avatars.of(multiplayer.get_unique_id()) != null, "the local player's avatar to spawn")
 	await _frames(2)
 	var mine := avatars.of(multiplayer.get_unique_id())
 	_check(not mine.is_visible_in_tree(), "the local player's network Avatar is hidden here")
-	var roster := _zoo.get_node("Session/Roster") as Roster
+	var roster := LevelRuntime.of(_zoo).roster
 	var colour := roster.colour_of(multiplayer.get_unique_id())
 	var paint := player.own_body().body().get_surface_override_material(0) as BaseMaterial3D
 	_check(paint != null and paint.albedo_color == colour, "the own body wears this machine's Roster colour")

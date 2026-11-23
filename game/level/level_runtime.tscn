@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://q0tm1ywugfrf"]
+
+[ext_resource type="Script" uid="uid://q8deh60iwibu" path="res://game/level/level_runtime.gd" id="0_runtime"]
+[ext_resource type="Script" uid="uid://bq3k03tw0pu2k" path="res://game/parts/parts.gd" id="1_parts"]
+[ext_resource type="PackedScene" uid="uid://k2c0o5v1yu3r" path="res://game/player/player.tscn" id="2_player"]
+[ext_resource type="Script" uid="uid://bq8jis41s6u7e" path="res://game/parts/session.gd" id="3_session"]
+[ext_resource type="Script" uid="uid://cdi6pnkd82hwo" path="res://game/parts/avatar/avatars.gd" id="4_avatars"]
+[ext_resource type="PackedScene" uid="uid://d2u50k5e57ccb" path="res://game/parts/avatar/avatar.tscn" id="5_avatar"]
+[ext_resource type="Script" uid="uid://2hleeyffro51" path="res://game/net/level_net.gd" id="6_net"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="7_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="8_hands"]
+[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="9_coins"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="10_designs"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="11_tuning"]
+[ext_resource type="Script" uid="uid://cabdnviw3m0oh" path="res://game/net/roster.gd" id="14_roster"]
+[ext_resource type="Resource" uid="uid://b0moa0fsavwjb" path="res://game/net/coop_tuning.tres" id="15_coop"]
+[ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="16_knockdowns"]
+[ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="17_knock_tuning"]
+
+[node name="LevelRuntime" type="Node3D" unique_id=573781402]
+script = ExtResource("0_runtime")
+
+[node name="Player" parent="." unique_id=1502210363 instance=ExtResource("2_player")]
+
+[node name="Spots" type="Node3D" parent="." unique_id=1999085043]
+
+[node name="Lying" type="Node3D" parent="." unique_id=655752018]
+
+[node name="Flights" type="Node3D" parent="." unique_id=113584815]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=1852212849]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="." unique_id=970226274]
+
+[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights") unique_id=161512457]
+script = ExtResource("7_mess")
+catalogue = ExtResource("10_designs")
+tuning = ExtResource("11_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+
+[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess") unique_id=567136988]
+script = ExtResource("8_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("11_tuning")
+
+[node name="Knockdowns" type="Node" parent="Socks" node_paths=PackedStringArray("hands") unique_id=2063851314]
+script = ExtResource("16_knockdowns")
+tuning = ExtResource("17_knock_tuning")
+hands = NodePath("../Hands")
+
+[node name="Coins" type="Node" parent="Socks" unique_id=916480979]
+script = ExtResource("9_coins")
+
+[node name="Parts" type="Node" parent="." unique_id=427637761]
+script = ExtResource("1_parts")
+
+[node name="Players" type="Node3D" parent="." unique_id=464476505]
+
+[node name="Avatars" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("local_body", "roster") unique_id=1885243291]
+spawn_path = NodePath("../Players")
+script = ExtResource("4_avatars")
+avatar_scene = ExtResource("5_avatar")
+local_body = NodePath("../Player")
+roster = NodePath("../Session/Roster")
+
+[node name="Session" type="Node" parent="." node_paths=PackedStringArray("parts", "roster") unique_id=1170416455]
+script = ExtResource("3_session")
+parts = NodePath("../Parts")
+roster = NodePath("Roster")
+tuning = ExtResource("15_coop")
+
+[node name="Roster" type="Node" parent="Session" unique_id=684302146]
+script = ExtResource("14_roster")
+tuning = ExtResource("15_coop")
+
+[node name="Net" type="Node" parent="." node_paths=PackedStringArray("session", "avatars") unique_id=432951409]
+script = ExtResource("6_net")
+session = NodePath("../Session")
+avatars = NodePath("../Avatars")
+
+[node name="Hud" type="CanvasLayer" parent="Net" unique_id=1153874506]
+
+[node name="Mode" type="Label" parent="Net/Hud" unique_id=1250551748]
+unique_name_in_owner = true
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 600.0
+offset_bottom = 34.0

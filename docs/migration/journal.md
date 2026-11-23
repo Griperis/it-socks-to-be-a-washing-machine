@@ -939,3 +939,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2503, Q2509-Q2512, Q2514, Q2515 |
 
 ---
+
+| Ticket | core/51, the level runtime scene: the player, co-op and Mess nodes in one sealed `level_runtime.tscn` that the house, the zoo and a one-box example level each instance (Q2517, by composition); ZooNet folded into LevelNet; merged (main 3607fed) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 0 |
+| Corrections | none |
+| Cost | 224k subagent tokens, 109 tool calls, 25 min (Opus) |
+| Time | see cost |
+| Surprises | about 280 test path lookups changed to LevelRuntime.of(); Part ids now Runtime/Socks/...; ReturnSpot stays in each level |
+| Stop rules | none hit |
+| Looks | builds/review-level-runtime/level-runtime-before-after.png (0 px differ) |
+| Decisions | Q2517 |
+
+---

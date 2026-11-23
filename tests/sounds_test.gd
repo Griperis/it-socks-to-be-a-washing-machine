@@ -215,7 +215,7 @@ func case_s05_kind() -> void:
 
 func case_s06() -> void:
 	await _zoo_up()
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	_stand(player, STATION + DOOR + Vector3(0.0, 0.0, 2.5))
 	await _physics_ticks(3)
 	await _frames(2)
@@ -269,7 +269,7 @@ func case_r7() -> void:
 
 func case_r8_door() -> void:
 	await _zoo_up()
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	_stand(player, STATION + DOOR + Vector3(0.0, 0.0, 2.5))
 	await _physics_ticks(3)
 	await _frames(2)
@@ -290,7 +290,7 @@ func _line_hits_door(player: Player, spot: Vector3) -> bool:
 
 func case_s07() -> void:
 	await _zoo_up()
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	_stand(player, Vector3(17.0, 0.0, 18.0))   # open zoo floor, clear of every station pad
 	await _physics_ticks(4)
 	_heard.clear()
@@ -316,7 +316,7 @@ func case_s07() -> void:
 
 func case_s07_land() -> void:
 	await _zoo_up()
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	_stand(player, Vector3(-8.0, 0.1, 8.0))
 	await _physics_ticks(2)
 	await _until(func() -> bool: return player.is_on_floor() and player.global_position.y < 0.05, "a short drop to land")
@@ -347,7 +347,7 @@ func case_s10() -> void:
 			continue
 		var spot := station.buttons.get_node_or_null("%s/Spot" % e.event) as SoundSpot
 		_check(spot != null and spot.event == e.event, "the station has a button for %s" % e.event)
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	var flat := _front_row(station, false)
 	await _press_button(player, station, flat)
 	_check(_count(flat) == 1, "use on the %s button plays it (%d)" % [flat, _count(flat)])
@@ -375,7 +375,7 @@ func case_core30_button_scene() -> void:
 				and label.scene_file_path == "res://game/zoo/zoo_label.tscn", "its name is a zoo label")
 	var title := station.buttons.get_node_or_null("Group_%s" % station.groups()[0])
 	_check(title != null and title.scene_file_path == "res://game/zoo/zoo_label.tscn", "a group's name is a zoo label")
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	var flat := _front_row(station, false)
 	await _press_button(player, station, flat)
 	_check(_count(flat) == 1, "the player's use on the %s button plays it (%d)" % [flat, _count(flat)])
@@ -500,7 +500,7 @@ func case_d04() -> void:
 func _zoo_up() -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	await _until(func() -> bool: return player.is_on_floor(), "the zoo's player to stand")
 	await _frames(2)
 	_heard.clear()

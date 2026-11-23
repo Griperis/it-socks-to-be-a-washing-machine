@@ -509,10 +509,11 @@ func _body_of(by: int) -> Array[RID]:
 func _avatar_of(by: int) -> Avatar:
 	if not is_inside_tree():
 		return null
+	var level := LevelRuntime.level_of(self)
 	for node in get_tree().get_nodes_in_group(Avatar.GROUP):
 		var avatar := node as Avatar
 		if avatar != null and avatar.peer() == by and not avatar.is_queued_for_deletion() \
-				and (owner == null or owner.is_ancestor_of(avatar)):
+				and (level == null or level.is_ancestor_of(avatar)):
 			return avatar
 	return null
 

@@ -44,8 +44,8 @@ func _before_case() -> void:
 func case_real_path() -> void:
 	await _zoo_up()
 	var mess := _mess()
-	var player := _zoo.get_node("Player") as Player
-	var hands := _zoo.get_node("Socks/Hands") as Hands
+	var player := LevelRuntime.of(_zoo).player
+	var hands := LevelRuntime.of(_zoo).hands
 	var spout := _spout()
 	var before := mess.count()
 	var more := _station().get_node("More") as Node3D
@@ -128,7 +128,7 @@ func case_h02() -> void:
 func case_h03() -> void:
 	await _zoo_up()
 	var mess := _mess()
-	var hands := _zoo.get_node("Socks/Hands") as Hands
+	var hands := LevelRuntime.of(_zoo).hands
 	var spout := _small()
 	var base := mess.count()
 	_ask(&"more")
@@ -136,7 +136,7 @@ func case_h03() -> void:
 	# The player holds one of the heap's Socks (the last record) as Respill is pressed.
 	var held := mess.count() - 1
 	_stand(Vector3(mess.pose_of(held).origin.x, _station().global_position.y, mess.pose_of(held).origin.z + 1.0))
-	_zoo.get_node("Parts").ask(Command.new(&"pick", 1, hands.id, {"sock": held}))
+	LevelRuntime.of(_zoo).parts.ask(Command.new(&"pick", 1, hands.id, {"sock": held}))
 	await _until(func() -> bool: return hands.active_of(1) == held, "a heap Sock to be held")
 	var respill := _station().get_node("Respill") as Node3D
 	_stand(respill.global_position + _station().global_basis * Vector3(0.0, -0.5, -1.5))
@@ -210,7 +210,7 @@ func case_r4() -> void:
 func case_h07() -> void:
 	await _zoo_up()
 	var mess := _mess()
-	var parts := _zoo.get_node("Parts") as Parts
+	var parts := LevelRuntime.of(_zoo).parts
 	var spout := _small()
 	var row := Mess.pack(Transform3D(Basis.IDENTITY, _station().global_position + Vector3.UP))
 	var args := {"designs": PackedInt32Array([0]), "poses": row, "vels": PackedVector3Array([Vector3.ZERO]), "spins": PackedVector3Array([Vector3.ZERO])}
@@ -224,11 +224,11 @@ func case_h07() -> void:
 	# A late joiner: a fresh zoo takes the Host's snapshot whole.
 	var late := (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(late)
-	await _until(func() -> bool: return (late.get_node("Socks/Mess") as Mess).body_count() > 0, "the late zoo to bind")
-	var late_parts := late.get_node("Parts") as Parts
+	await _until(func() -> bool: return LevelRuntime.of(late).mess.body_count() > 0, "the late zoo to bind")
+	var late_parts := LevelRuntime.of(late).parts
 	late_parts.load_snapshot(snap)
 	await _physics_ticks(2)
-	var late_mess := late.get_node("Socks/Mess") as Mess
+	var late_mess := LevelRuntime.of(late).mess
 	_same(late_mess.state(), mess.state(), "the late joiner's Mess is the Host's")
 	_check(late_mess.body_count() == mess.body_count(), "the late joiner has a lying body for every heap Sock (%d, %d)" % [late_mess.body_count(), mess.body_count()])
 	var late_spout := late_parts.of(spout.id) as HeapSpout
@@ -281,14 +281,14 @@ func _zoo_up() -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
 	var mess := _mess()
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	await _until(func() -> bool: return player.is_on_floor() and mess.looks_of(mess.count() - 1) != null, "the player to stand and every Sock to lie", 600)
 	mess.return_looks(mess.count() - 1)
 	player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 
 
 func _mess() -> Mess:
-	return _zoo.get_node("Socks/Mess") as Mess
+	return LevelRuntime.of(_zoo).mess
 
 
 func _station() -> Node3D:
@@ -310,7 +310,7 @@ func _small() -> HeapSpout:
 
 ## The Host's own press of a button's verb (rule cases; the real path clicks).
 func _ask(verb: StringName) -> void:
-	var parts := _zoo.get_node("Parts") as Parts
+	var parts := LevelRuntime.of(_zoo).parts
 	_stand(_station().to_global(Vector3(0.0, 0.0, -4.5)))
 	parts.ask(Command.new(verb, 1, _spout().id, {}))
 
@@ -340,14 +340,14 @@ func _lying(from: int, to: int) -> int:
 
 
 func _stand(at: Vector3) -> void:
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	player.global_position = at
 	player.velocity = Vector3.ZERO
 	player.reset_physics_interpolation()
 
 
 func _aim(target: Vector3) -> void:
-	var player := _zoo.get_node("Player") as Player
+	var player := LevelRuntime.of(_zoo).player
 	var head := player.get_node("Head") as Node3D
 	var to := target - player.global_position
 	player.rotation.y = atan2(-to.x, -to.z)

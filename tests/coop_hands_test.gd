@@ -337,25 +337,25 @@ func case_guest_pairs_and_shelves() -> void:
 func case_late_join_mid_throw() -> void:
 	var host := _branch("Host")
 	await _frames(2)
-	var hs := host.get_node("Session") as Session
+	var hs := LevelRuntime.of(host).session
 	hs.port = 0
 	hs.profile = PlayerProfile.fresh()
-	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
+	_check(LevelRuntime.of(host).net.start(["--host"]) == OK, "the host zoo hosts")
 	_lag(host, LAG_MS)
 	var hm := _mess(host)
 	var sock := _handling_sock(host, "Floor")
 	var from := Vector3(0.0, 1.5, 8.0)
-	var parts := host.get_node("Parts") as Parts
+	var parts := LevelRuntime.of(host).parts
 	parts.apply({"ok": true, "kind": &"throw", "by": Parts.HOST, "to": hm.id,
 			"changes": {hm.id: hm.thrown_patch(sock, Transform3D(Basis.IDENTITY, from), Vector3(0.0, 6.0, 1.5), Vector3(1.0, 2.0, 0.5), Parts.HOST)}})
 	var guest := _branch("Guest")
 	await _frames(2)
-	var gs := guest.get_node("Session") as Session
+	var gs := LevelRuntime.of(guest).session
 	gs.profile = PlayerProfile.fresh()
-	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
+	_check(LevelRuntime.of(guest).net.start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
 	_lag(guest, LAG_MS)
 	var gm := _mess(guest)
-	await _wait(func() -> bool: return (guest.get_node("Net") as ZooNet).mode_text().begins_with("Joined") and gm.count() == hm.count(),
+	await _wait(func() -> bool: return LevelRuntime.of(guest).net.mode_text().begins_with("Joined") and gm.count() == hm.count(),
 			"the Guest to be welcomed", FPS * 10)
 	_check(hm.state_of(sock) == Mess.State.FLYING, "the Throw is still in the air at the welcome")
 	await _wait(func() -> bool: return gm.moving_body(sock) != null, "the late Guest's copy of the Throw", FPS * 2)
@@ -489,20 +489,20 @@ func _pair(lag_ms: int) -> Array[Node3D]:
 	var host := _branch("Host")
 	var guest := _branch("Guest")
 	await _frames(2)
-	var hs := host.get_node("Session") as Session
-	var gs := guest.get_node("Session") as Session
+	var hs := LevelRuntime.of(host).session
+	var gs := LevelRuntime.of(guest).session
 	hs.port = 0
 	hs.profile = PlayerProfile.fresh()
 	gs.profile = PlayerProfile.fresh()
-	_check((host.get_node("Net") as ZooNet).start(["--host"]) == OK, "the host zoo hosts")
+	_check(LevelRuntime.of(host).net.start(["--host"]) == OK, "the host zoo hosts")
 	_lag(host, lag_ms)
-	_check((guest.get_node("Net") as ZooNet).start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
+	_check(LevelRuntime.of(guest).net.start(["--join=127.0.0.1:%d" % hs.port]) == OK, "the other zoo joins it")
 	_lag(guest, lag_ms)
 	var hm := _mess(host)
 	var gm := _mess(guest)
-	await _wait(func() -> bool: return (guest.get_node("Net") as ZooNet).mode_text().begins_with("Joined") and gm.count() == hm.count(),
+	await _wait(func() -> bool: return LevelRuntime.of(guest).net.mode_text().begins_with("Joined") and gm.count() == hm.count(),
 			"the guest zoo to be welcomed with the Host's Mess", FPS * 10)
-	var parts := guest.get_node("Parts") as Parts
+	var parts := LevelRuntime.of(guest).parts
 	var up := parts.relay
 	parts.relay = func(cmd: Command) -> void:
 		if _withhold:
@@ -532,7 +532,7 @@ func _guest_holds(_host: Node3D, guest: Node3D, sock: int) -> int:
 func _aim_at(zoo: Node3D, target: Vector3, aside := Vector3.ZERO) -> void:
 	var player := _player(zoo)
 	for other: Node in _branches:
-		var p := other.get_node_or_null("View/Zoo/Player") as Player
+		var p := _in_branch(other).player
 		if p != null and p != player:
 			p.set("_captured", false)
 	player.capture_mouse()
@@ -611,15 +611,15 @@ func _paced_ticks(n: int) -> void:
 
 
 func _mess(zoo: Node3D) -> Mess:
-	return zoo.get_node("Socks/Mess") as Mess
+	return LevelRuntime.of(zoo).mess
 
 
 func _hands(zoo: Node3D) -> Hands:
-	return zoo.get_node("Socks/Hands") as Hands
+	return LevelRuntime.of(zoo).hands
 
 
 func _player(zoo: Node3D) -> Player:
-	return zoo.get_node("Player") as Player
+	return LevelRuntime.of(zoo).player
 
 
 func _avatar(zoo: Node3D, peer: int) -> Avatar:
@@ -708,7 +708,7 @@ func _branch(label: String) -> Node3D:
 
 func _drop_branches() -> void:
 	for node in _branches:
-		var session := node.get_node_or_null("View/Zoo/Session") as Session
+		var session := _in_branch(node).session
 		if session != null:
 			session.close()
 		var path := node.get_path()
@@ -717,3 +717,8 @@ func _drop_branches() -> void:
 		get_tree().set_multiplayer(null, path)
 	_branches.clear()
 
+
+## The level runtime of the zoo in branch `node` (a machine of its own), or null.
+func _in_branch(node: Node) -> LevelRuntime:
+	var zoo := node.get_node_or_null("View/Zoo")
+	return LevelRuntime.of(zoo) if zoo != null else null

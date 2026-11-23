@@ -234,7 +234,7 @@ func case_m04() -> void:
 	# The Mess's own nodes (Q2392): the zoo's Socks (the Mess, the Hands, the Coins) and the Mess's
 	# lying and flying Socks; the rest of the zoo (the old houses' pieces) is not the Mess's.
 	var nodes := 0
-	for root: Node in [_zoo.get_node("Socks"), _mess.lying, _mess.flights]:
+	for root: Node in [LevelRuntime.of(_zoo).socks, _mess.lying, _mess.flights]:
 		nodes += 1 + root.find_children("*", "", true, false).size()
 	_check(nodes < 8000, "the Mess with every Sock keeps a few thousand nodes (%d; 48,000 with a node a Sock)" % nodes)
 	var station := _zoo.get_node(EVERY)
@@ -411,10 +411,10 @@ func _build() -> void:
 func _zoo_up() -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	add_child(_zoo)
-	_mess = _zoo.get_node("Socks/Mess") as Mess
-	_hands = _zoo.get_node("Socks/Hands") as Hands
-	_parts = _zoo.get_node("Parts") as Parts
-	_player = _zoo.get_node("Player") as Player
+	_mess = LevelRuntime.of(_zoo).mess
+	_hands = LevelRuntime.of(_zoo).hands
+	_parts = LevelRuntime.of(_zoo).parts
+	_player = LevelRuntime.of(_zoo).player
 	_player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 	await _until(func() -> bool: return _player.is_on_floor() and _mess.looks_of(_mess.count() - 1) != null, "the player to stand and every Sock to lie", 600)
 
