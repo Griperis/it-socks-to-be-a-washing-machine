@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="SockGeneratorTuning" format=3 uid="uid://s0oluilrylxy"]
+
+[ext_resource type="Script" uid="uid://bk3ta6li3b1p7" path="res://game/mess/sock_generator_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")

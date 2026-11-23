@@ -192,6 +192,34 @@ func _ready() -> void:
 	for holder in holders:
 		if holder != null:
 			_add_spots(holder)
+	# The Sock generators' starting Socks (core/52), after the SockSpots, in tree order.
+	for node in get_tree().get_nodes_in_group(GeneratedSocks.GROUP):
+		var gen := node as GeneratedSocks
+		if gen != null and gen.mess == self:
+			_add_generated(gen)
+
+
+## A generator's starting Socks become records, lying, as the SockSpots do (Q2523: no fall, no sound).
+func _add_generated(gen: GeneratedSocks) -> void:
+	var made := gen.make(lying_boxes())
+	var add_designs: PackedInt32Array = made["designs"]
+	designs.append_array(add_designs)
+	for i in add_designs.size():
+		states.append(State.LYING)
+		mates.append(-1)
+	poses.append_array(made["poses"] as PackedFloat32Array)
+
+
+## Every lying Sock's box as [its size, its middle's transform] (what a generator's new Socks avoid),
+## the records from `skip_from` up to `skip_to` left out (the Socks a regeneration replaces).
+func lying_boxes(skip_from := -1, skip_to := -1) -> Array[Array]:
+	var out: Array[Array] = []
+	for sock in count():
+		if states[sock] != State.LYING or (sock >= skip_from and sock < skip_to):
+			continue
+		var size := SockDress.box(design_of(sock))
+		out.append([size, pose_of(sock) * Transform3D(Basis.IDENTITY, Vector3(0.0, size.y * 0.5, 0.0))])
+	return out
 
 
 func _add_spots(holder: Node3D) -> void:
@@ -756,10 +784,19 @@ func _decide_rest(args: Dictionary) -> Dictionary:
 
 ## `add` (Host-only): "designs" (PackedInt32Array), "poses" (PackedFloat32Array, POSE floats each),
 ## "vels" and "spins" (PackedVector3Array, one each): new FLYING records at the end, launched at
-## once with that push (a throw by NOBODY).
+## once with that push (a throw by NOBODY). With "lying": true (core/52, Q2523) they are LYING
+## records where their poses say, with no launch ("vels" and "spins" not needed).
 func _decide_add(args: Dictionary) -> Dictionary:
 	var ds: Variant = args.get("designs")
 	var ps: Variant = args.get("poses")
+	if args.get("lying", false) == true:
+		if not (ds is PackedInt32Array) or not (ps is PackedFloat32Array) or (ds as PackedInt32Array).is_empty() \
+				or (ps as PackedFloat32Array).size() != (ds as PackedInt32Array).size() * POSE:
+			return refuse("wrong")
+		for design: int in ds:
+			if catalogue == null or catalogue.design(design) == null:
+				return refuse("wrong")
+		return grant(added_lying_patch(ds, ps))
 	var vs: Variant = args.get("vels")
 	var ss: Variant = args.get("spins")
 	if not (ds is PackedInt32Array) or not (ps is PackedFloat32Array) or not (vs is PackedVector3Array) \
@@ -793,6 +830,50 @@ func _decide_take_out(args: Dictionary) -> Dictionary:
 	var named: Variant = args.get("socks")
 	if not (named is PackedInt32Array):
 		return refuse("wrong")
+	var p := taken_out_patch(named)
+	if p.is_empty():
+		return refuse("already")
+	return grant(p)
+
+
+## New LYING records at the end (after the patch so far, which may have cut records off): `add_designs`
+## each at its pose in `add_poses` (POSE floats each), unpaired, with no launch (core/52, Q2523).
+func added_lying_patch(add_designs: PackedInt32Array, add_poses: PackedFloat32Array, onto := {}) -> Dictionary:
+	var p := _rows_onto(onto)
+	var start := int(p.get(ROW_COUNT, count()))
+	var rows: PackedInt32Array = p[ROWS]
+	var d: PackedInt32Array = p[ROW_DESIGNS]
+	var s: PackedByteArray = p[ROW_STATES]
+	var m: PackedInt32Array = p[ROW_MATES]
+	var o: PackedFloat32Array = p[ROW_POSES]
+	for i in add_designs.size():
+		var sock := start + i
+		var at := rows.find(sock)
+		if at >= 0:
+			# A record cut off earlier in this patch comes back as a new one.
+			d[at] = add_designs[i]
+			s[at] = State.LYING
+			m[at] = -1
+			for k in POSE:
+				o[at * POSE + k] = add_poses[i * POSE + k]
+			(p[LAUNCHES] as Dictionary).erase(sock)
+			continue
+		rows.append(sock)
+		d.append(add_designs[i])
+		s.append(State.LYING)
+		m.append(-1)
+		o.append_array(add_poses.slice(i * POSE, i * POSE + POSE))
+	p[ROWS] = rows
+	p[ROW_DESIGNS] = d
+	p[ROW_STATES] = s
+	p[ROW_MATES] = m
+	p[ROW_POSES] = o
+	p[ROW_COUNT] = start + add_designs.size()
+	return p
+
+
+## The change that takes Socks `named` out (as `take_out`, added to the patch so far); {} when none goes.
+func taken_out_patch(named: PackedInt32Array, onto := {}) -> Dictionary:
 	var asked: Dictionary[int, bool] = {}
 	for sock: int in named:
 		asked[sock] = true
@@ -807,18 +888,18 @@ func _decide_take_out(args: Dictionary) -> Dictionary:
 		if mate >= 0:
 			gone[mate] = true
 	if gone.is_empty():
-		return refuse("already")
+		return {}
 	var keep := count()
 	while keep > 0 and (gone.has(keep - 1) or states[keep - 1] == State.GONE):
 		keep -= 1
-	var p := _rows_onto({})
+	var p := _rows_onto(onto)
 	for sock: int in gone:
 		if sock < keep:
 			_set_state(p, _row(p, sock), State.GONE)
 			(p[LAUNCHES] as Dictionary).erase(sock)
 	if keep != count():
 		p[ROW_COUNT] = keep
-	return grant(p)
+	return p
 
 
 ## The lying Socks touching lying Sock `sock`, at most the tuning's wake_count (T11).

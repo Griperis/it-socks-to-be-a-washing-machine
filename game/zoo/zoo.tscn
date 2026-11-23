@@ -5,22 +5,23 @@
 [ext_resource type="Environment" uid="uid://ducjspjkhsl37" path="res://game/look/noon_environment.tres" id="15_env"]
 [ext_resource type="PackedScene" uid="uid://btvcn1t085d2p" path="res://game/look/picture.tscn" id="16_picture"]
 [ext_resource type="PackedScene" uid="uid://ckkmqe7lqy056" path="res://game/zoo/stations/cabinet.tscn" id="20_cabinet"]
-[ext_resource type="PackedScene" path="res://game/zoo/stations/every_sock.tscn" id="21_every_sock"]
-[ext_resource type="PackedScene" path="res://game/zoo/stations/handling.tscn" id="22_handling"]
-[ext_resource type="PackedScene" path="res://game/zoo/stations/heap.tscn" id="23_heap"]
+[ext_resource type="PackedScene" uid="uid://bl2r0biff4s8a" path="res://game/zoo/stations/every_sock.tscn" id="21_every_sock"]
+[ext_resource type="PackedScene" uid="uid://dl206w7fbm08c" path="res://game/zoo/stations/handling.tscn" id="22_handling"]
+[ext_resource type="PackedScene" uid="uid://b40wqgc1eb8pb" path="res://game/zoo/stations/heap.tscn" id="23_heap"]
 [ext_resource type="PackedScene" uid="uid://bdri2mp6dmyc6" path="res://game/zoo/stations/house_kit.tscn" id="24_house_kit"]
-[ext_resource type="PackedScene" path="res://game/zoo/stations/movement.tscn" id="25_movement"]
-[ext_resource type="PackedScene" path="res://game/zoo/stations/openables.tscn" id="26_openables"]
-[ext_resource type="PackedScene" path="res://game/zoo/stations/sounds.tscn" id="27_sounds"]
+[ext_resource type="PackedScene" uid="uid://sa08efw687oe" path="res://game/zoo/stations/movement.tscn" id="25_movement"]
+[ext_resource type="PackedScene" uid="uid://b2u1g7oswx66l" path="res://game/zoo/stations/openables.tscn" id="26_openables"]
+[ext_resource type="PackedScene" uid="uid://p25cpu7d3mbb" path="res://game/zoo/stations/sounds.tscn" id="27_sounds"]
 [ext_resource type="PackedScene" uid="uid://dvh4amgapflsc" path="res://game/zoo/stations/outline.tscn" id="28_outline"]
 [ext_resource type="PackedScene" uid="uid://c3oefe5hwybf0" path="res://game/zoo/stations/sock_looks.tscn" id="29_sock_looks"]
-[ext_resource type="PackedScene" path="res://game/zoo/stations/icons.tscn" id="30_icons"]
-[ext_resource type="PackedScene" path="res://game/zoo/stations/screen.tscn" id="31_screen"]
-[ext_resource type="Resource" path="res://game/zoo/screen/zoo_upgrades.tres" id="32_upgrades"]
+[ext_resource type="PackedScene" uid="uid://bia8qy2uew74e" path="res://game/zoo/stations/icons.tscn" id="30_icons"]
+[ext_resource type="PackedScene" uid="uid://q216ydccycux" path="res://game/zoo/stations/screen.tscn" id="31_screen"]
+[ext_resource type="Resource" uid="uid://do11bnjgc3rph" path="res://game/zoo/screen/zoo_upgrades.tres" id="32_upgrades"]
 [ext_resource type="PackedScene" uid="uid://c3p6luowfkhuw" path="res://game/zoo/stations/materials.tscn" id="35_materials"]
 [ext_resource type="PackedScene" uid="uid://sv5wba3wf252" path="res://game/zoo/stations/furniture.tscn" id="36_furniture"]
 [ext_resource type="PackedScene" uid="uid://b7tq2avatarst" path="res://game/zoo/stations/avatar.tscn" id="39_avatar"]
 [ext_resource type="PackedScene" uid="uid://chiexs1bn5bo5" path="res://game/zoo/stations/knockdown.tscn" id="40_knockdown"]
+[ext_resource type="PackedScene" uid="uid://c6s728lc0yqao" path="res://game/zoo/stations/sock_generator.tscn" id="52_sock_generator"]
 [ext_resource type="PackedScene" uid="uid://q0tm1ywugfrf" path="res://game/level/level_runtime.tscn" id="43_runtime"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
@@ -120,6 +121,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -2)
 
 [node name="Knockdown" parent="Stations" unique_id=1700150606 instance=ExtResource("40_knockdown")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 0, 3.5)
+
+[node name="SockGenerator" parent="Stations" instance=ExtResource("52_sock_generator")]
 
 [node name="ReturnSpot" type="Marker3D" parent="." unique_id=1397039282]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.5)

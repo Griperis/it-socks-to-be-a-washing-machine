@@ -13,6 +13,10 @@ Socks lie, are drawn, move or wake.
 | `mess_moving.gd` (`MessMoving`) | The flights (`flight.tscn`, `ball_flight.tscn`): on the Host the budget, the wait queue, starts and rests, hits, picks' column wakes, Door and drawer sweeps; on a Guest its looks-only bodies and its own sweeps (`tick_looks`, coop/08) |
 | `mess_tuning.gd` + `.tres` (`MessTuning`) | The numbers of the above |
 
+- Records also come from a level's Sock generator at the start (`GeneratedSocks`, read in `_ready` after the
+  SockSpots) and from its `regenerate` answer (`taken_out_patch`, `added_lying_patch`); `add` with `"lying": true`
+  appends LYING records with no launch (core/52, Q2523). `docs/architecture/sock-generator.md`.
+
 ## The tiers
 
 - LYING: a server body on `Mess.LAYER_LYING` (two boxes, leg and foot; a Pair a sphere) and one

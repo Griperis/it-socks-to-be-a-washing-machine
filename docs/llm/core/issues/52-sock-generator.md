@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: mess
 priority: now
 created: 2026-11-23
-done:
+done: 2026-11-23
 blocked_by: []
 notes: ["designer, 2026-11-23: port the old Sock generator; authorable with a viewport preview of where Socks can land"]
 terms: [Mess, Sock, Pair, Design]
@@ -65,9 +65,19 @@ spacing), the seed, how they appear (at rest, poured, dropped), what a late join
   preview and the game agree; the full old shape-cast stacking is not ported (Finding 5).
 
 ## Open follow-ups
-- [blocking] Step 1 is done: the behaviour list `docs/migration/m06-lists/05-sock-generator.md` waits for the designer's
-  approval and its 12 questions (area shape, furniture tops, counts, Designs, Mates, preview, at rest or poured, seed,
-  rest computation, exclusions, old details to keep, rows over the network). Step 2 starts after the answers.
+- [later] Doors shut at a New Game (Q2528, old row 70): once the house has room doors; not built.
+- [later] A full floor (about 1200 Socks) is laid in the start-up frame with no worker thread or slicing (old row 6);
+  the station's 110 take part of one frame. Measure in the house (house/05) and slice if it hitches.
+- [later] The kit's stairs collide as a ramp: a SockTrail's Socks lie leaned on the ramp line, up to a riser over the
+  drawn treads (the station's stills show it). Steps that collide as steps would let them lie flat.
+- [later] The "editor viewport" stills are the editor's preview drawn in the game by the same code (`show_preview`),
+  not a screenshot of the editor; the editor itself was run headless on the station and drew the same 110 dots
+  with the same report.
+- [later] The editor preview knows no Mess: a SockSpot inside an area shows no gap there (the game avoids it).
+  Furniture moves are not watched: "Refresh preview" on the generator.
+- [later] Q2525 read literally: Mates 0.4 to 6 m with no Rarity factor; mates across levels parked (old row 64).
+  Better distances: core/53.
+- [later] Placing areas in the house is house/05.
 
 ## Built log
 - 2026-11-23
@@ -76,3 +86,23 @@ spacing), the seed, how they appear (at rest, poured, dropped), what a late join
     lines with refs, invariants, numbers, what the port already has, findings for the rework and 12 questions.
   - Files: docs/migration/m06-lists/05-sock-generator.md, docs/llm/core/issues/52-sock-generator.md
   - Verified: docs only (agent_finish --no-test).
+- 2026-11-23
+  - Changed: Step 2 built to Q2518-Q2528. `SockGenerator` (`@tool`) with `SockArea`, `SockExclusion`, `SockTrail`
+    children; `SockPlaces` finds open floor, tops, insides, under-gaps (edge strips) and the kept-out boxes;
+    `SockLaying` rests each Sock by rays and overlap tests (no physics step), a dice per area, Heaps as an area option,
+    the washer marker's thinning, the stair trail, Pairs 0.4-6 m apart; `SockPreview` draws boxes and dots tinted by
+    kind in the editor; `GeneratedSocks` (the Part) lays the records at the start (Mess `_ready`, after the SockSpots)
+    and answers `regenerate` with the Mess's patch; the Mess gained `add` with "lying", `added_lying_patch`,
+    `taken_out_patch`, `lying_boxes`; `PhysicsQueries.overlap_colliders`. The zoo station
+    `game/zoo/stations/sock_generator.tscn` (three areas, an exclusion, a trail, a Cabinet, six furniture pieces, a
+    washer marker, "New seed", a seed sign); the shot action `sock_generator` and the set `sock-generator`; the behaviour
+    list folded with the answers; `docs/architecture/sock-generator.md`.
+  - Files: game/mess/sock_generator.gd, sock_area.gd, sock_area_rules.gd (+ .tres), sock_exclusion.gd, sock_trail.gd,
+    sock_places.gd, sock_laying.gd, sock_preview.gd, sock_generator_tuning.gd (+ .tres), generated_socks.gd, mess.gd;
+    game/hands/physics_queries.gd; game/zoo/sock_generator/regenerate_button.gd, seed_sign.gd;
+    game/zoo/stations/sock_generator.tscn; game/zoo/zoo.tscn; tests/sock_generator_test.gd, tests/zoo_test.gd;
+    tools/shot_hooks.gd, tools/shots/sets/sock-generator.txt; docs/architecture.md, docs/architecture/sock-generator.md,
+    mess.md, furniture.md; docs/migration/m06-lists/05-sock-generator.md.
+  - Stills: builds/review-sock-generator/ (sock-generator-preview, -preview-top: the preview; -game, -game-top, -game-low:
+    the station after the start; -both-low: the preview over the Socks).
+  - Verified: PASS 17697 checks, 453 cases (`kit/tools/run.sh --touched`); PASS rules.

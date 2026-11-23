@@ -1,0 +1,7 @@
+# core/52: the Sock generator station. "preview" is the editor's preview drawn in the game (the areas' boxes, the red exclusion, the trail's line, a dot per landing point: open floor blue, tops yellow, insides green, unders magenta, the trail orange); "game" is the same view after the start, the Socks lying where the dots were.
+preview  --size=1280x720 --do='20:sock_generator:preview' --shots=40
+game  --size=1280x720 --do='20:sock_generator:game' --shots=40
+preview-top  --size=1280x720 --do='20:sock_generator:preview:top' --shots=40
+game-top  --size=1280x720 --do='20:sock_generator:game:top' --shots=40
+both-low  --size=1280x720 --do='20:sock_generator:both:low' --shots=40
+game-low  --size=1280x720 --do='20:sock_generator:game:low' --shots=40

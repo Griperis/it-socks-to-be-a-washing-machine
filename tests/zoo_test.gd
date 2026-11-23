@@ -384,7 +384,12 @@ func case_z02() -> void:
 			_check(mess.state_of(spot.sock) == Mess.State.LYING and mess.designs[spot.sock] == spot.design
 					and mess.pose_of(spot.sock).origin.distance_to(spot.global_position) < 0.001 and mess.looks_of(spot.sock) != null,
 					"it lies where %s/%s places it, as its Design" % [station.name, spot.name])
-	_check(mess.count() == spots and spots > 0, "every SockSpot of every station is one record (%d records, %d spots)" % [mess.count(), spots])
+	# A station's Sock generator (core/52) adds its own records after the SockSpots.
+	var generated := 0
+	for node in _zoo.get_tree().get_nodes_in_group(GeneratedSocks.GROUP):
+		if (node as GeneratedSocks).mess == mess:
+			generated += (node as GeneratedSocks).socks
+	_check(mess.count() == spots + generated and spots > 0, "every SockSpot of every station is one record, and every generated Sock one more (%d records, %d spots, %d generated)" % [mess.count(), spots, generated])
 	var cabinet := _zoo.get_node("Stations/Cabinet/Cabinet/Cabinet") as Cabinet
 	_check(cabinet.hands_of() == hands and cabinet.coins_of() == coins and cabinet.mess_of() == mess,
 			"the Cabinet takes from the zoo's Hands and Mess and pays into the zoo's Coins")
@@ -400,6 +405,9 @@ func case_z03() -> void:
 		if mess != null:
 			with_socks += 1
 			var spots := mess.spots.get_children().filter(func(n: Node) -> bool: return n is SockSpot).size()
+			for node in station.find_children("*", "Node", true, false):
+				if node is GeneratedSocks:
+					spots += (node as GeneratedSocks).socks
 			_check(mess.count() == spots, "%s alone: its own Mess holds its %d Socks (%d)" % [path, spots, mess.count()])
 			var hands := station.get_node(^"Socks/Hands") as Hands
 			_check(hands.mess == mess, "%s alone: its own Hands take from its own Mess" % path)
