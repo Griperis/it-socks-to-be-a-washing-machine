@@ -1056,3 +1056,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2573, Q2577 |
 
 ---
+
+| Ticket | house/09, laying without a freeze: the house's Socks are laid in timed slices behind the loading card (`SliceClock`, longest slice 11.1 ms of 14), stair-trail Socks stay on their treads (a tread counts as support), trunks hold 6 and 5 (Socks stack inside any piece, Q2581); merged (main d6810de) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 1 (the review's fixes: flaky slice timing, trail Socks falling, trunks) |
+| Corrections | none |
+| Cost | about 500k subagent tokens (Opus), fixes round |
+| Time | about 95 min, fixes round |
+| Surprises | the kitchen real-path case's Heap pick never reached the Hands (core/60); tread layer 128 shared with the Mate capsule |
+| Stop rules | none hit |
+| Looks | builds/review-house-09/ |
+| Decisions | Q2576, Q2581 |
+
+---
