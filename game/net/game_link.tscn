@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://8uelrzdks94op"]
+
+[ext_resource type="Script" uid="uid://m8u7l8z579f0z" path="res://game/net/game_link.gd" id="1_link"]
+[ext_resource type="Script" uid="uid://bq3k03tw0pu2k" path="res://game/parts/parts.gd" id="2_parts"]
+[ext_resource type="Script" uid="uid://bq8jis41s6u7e" path="res://game/parts/session.gd" id="3_session"]
+[ext_resource type="Script" uid="uid://cabdnviw3m0oh" path="res://game/net/roster.gd" id="4_roster"]
+[ext_resource type="Resource" uid="uid://b0moa0fsavwjb" path="res://game/net/coop_tuning.tres" id="5_coop"]
+
+[node name="GameLink" type="Node" unique_id=174521561]
+script = ExtResource("1_link")
+
+[node name="Parts" type="Node" parent="." unique_id=1765833904]
+script = ExtResource("2_parts")
+id_prefix = "Runtime/"
+
+[node name="Session" type="Node" parent="." node_paths=PackedStringArray("link_parts", "roster") unique_id=1852015953]
+script = ExtResource("3_session")
+link_parts = NodePath("../Parts")
+roster = NodePath("Roster")
+tuning = ExtResource("5_coop")
+
+[node name="Roster" type="Node" parent="Session" unique_id=959618610]
+script = ExtResource("4_roster")
+tuning = ExtResource("5_coop")

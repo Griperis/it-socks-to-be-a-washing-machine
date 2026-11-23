@@ -181,6 +181,30 @@ func save_state() -> Dictionary:
 	return {"players": all}
 
 
+## A save loads into the live Roster (core/62: the Roster lives for the whole game, so players may be
+## in it before the house loads): the present players stay as they are, each standing where the save
+## kept them (Q296); every saved player not here comes back with their spot, colour and Hands; an
+## entry the save does not name stays.
+func restored(saved: Dictionary) -> Dictionary:
+	var kept: Dictionary = saved.get("players", {}) if saved.get("players") is Dictionary else {}
+	var all := players.duplicate(true)
+	for pid: Variant in kept:
+		if not (kept[pid] is Dictionary):
+			continue
+		var was: Dictionary = kept[pid]
+		var now: Dictionary = all.get(pid, {})
+		if int(now.get("peer", 0)) == 0:
+			var back := was.duplicate(true)
+			back["peer"] = 0
+			all[pid] = back
+		else:
+			if was.has("at"):
+				now["at"] = was["at"]
+			if was.has("yaw"):
+				now["yaw"] = was["yaw"]
+	return {"players": all}
+
+
 ## The Session is over on this machine (alone again): nobody is in it. Returns the answer.
 func cleared() -> Dictionary:
 	var ev := grant({"players": {}})

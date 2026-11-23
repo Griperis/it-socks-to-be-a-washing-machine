@@ -800,9 +800,12 @@ func case_h01_main_scene() -> void:
 	_check(shell != null and shell.scene_file_path == SHELL and shell.transform == Transform3D.IDENTITY, "the shell stands at the origin, the house's frame")
 	var runtime := LevelRuntime.of(house)
 	_check(runtime != null and runtime.scene_file_path == RUNTIME and runtime.get_parent() == house, "the house has one instance of the level runtime")
-	for n: String in ["Player", "Parts", "Session", "Session/Roster", "Socks/Mess", "Socks/Hands", "Socks/Knockdowns", "Socks/Coins",
+	for n: String in ["Player", "Parts", "Socks/Mess", "Socks/Hands", "Socks/Knockdowns", "Socks/Coins",
 			"Avatars", "FlightSpawner", "Net", "Net/Hud/Mode"]:
 		_check(runtime.get_node_or_null(n) != null, "the house has its %s, as the zoo" % n)
+	# core/62: the Session and its Roster are the game link's (a private one when nothing started a game).
+	for n: String in ["Session", "Session/Roster"]:
+		_check(runtime.link != null and runtime.link.get_node_or_null(n) != null, "the house has its %s, as the zoo" % n)
 	var net := runtime.net
 	_check(net is LevelNet, "its co-op start is the game's LevelNet")
 	_same((net as LevelNet).place_name(), "house", "which names the house")
