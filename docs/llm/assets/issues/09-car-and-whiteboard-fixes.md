@@ -60,3 +60,4 @@ openings as the other openables (Part, Openable; one opening per door), by the k
   - Verified: run.sh --touched: PASS 12894 checks, 290 cases (new real path furniture_devices:car_doors_real_path:
     a left click on each door opens only it with cupboard_open, a click again shuts it with cupboard_close);
     grep_rules PASS; asset_lint PASS.
+- Merged: 1444b48d (2026-11-23, branch assets/09-car-and-whiteboard-fixes)
