@@ -5,18 +5,19 @@
 ## meanwhile, and it goes when told.
 ##
 ## Once the Host's body exists here (the stamped copy of a Throw, or a drop's own local body), the
-## ghost stays drawn on its own body all the way, moved only by how the Host's body differs at the same
-## moment of the flight (G03, G05): each tick its offset moves `1 - exp(-3 dt / predict_blend)` of the
-## way to that difference, position and turn (G04, G11). When the Host's body has come to rest, the
+## ghost flies on its own body, full physics, compared with the Host's at the same moment of the flight
+## (G03, G05, Q2573). Once the two part (farther than `part_distance` or turned more than `part_turn`),
+## it is corrected to the Host's from then on: each tick its drawn offset moves
+## `1 - exp(-3 dt / predict_blend)` of the way to that difference, position and turn (G04, G11). Until
+## then it is drawn right on its body. When the Host's body has come to rest, the
 ## ghost eases onto the rest pose, nearer than `settle_close` or after `settle_wait` (G07); then its
 ## cloth lies flat first (at most `flat_wait`; it flattens by itself under the cloth's `flat_speed`,
 ## G09, being a falling body's Looks), the Mess draws the Sock and the ghost's Looks stays
 ## `keep_frames` more frames, so no frame is blank and nothing pops (G08).
 ##
-## A Throw's ghost body flies the Host's launch: from where the Host draws the Sock on the thrower's
-## avatar, with the velocity the Host aims from there (Hands.avatar_hand_of(), coop/11). It is drawn
-## from the first-person hand (the launch's "shown" pose), that lead easing away over `hand_over_time`
-## (Q2481), so what the Guest sees is on the Host's flight by then and has nothing left to catch up.
+## A Throw's ghost body flies the Host's launch (the same body, shape, mass, material, damping and
+## numbers: coop/11), from the first-person hand, where the Host lets the Guest's Throw go too
+## (Hands.start_of(), coop/13): it is the Host's flight until something only one of them meets.
 class_name ThrowGhost
 extends Node3D
 
@@ -49,10 +50,12 @@ var _born := 0
 ## The drawn offset from the ghost's body: a move and a turn.
 var _off := Vector3.ZERO
 var _turn := Quaternion.IDENTITY
-## Where it is drawn from at release (the first-person hand) less its body's start: eased away over
-## `hand_over_time` (Q2481).
-var _lead := Vector3.ZERO
-var _lead_turn := Quaternion.IDENTITY
+## Whether it has parted from the Host's body (Q2573): from then on it is corrected to it.
+var _parted := false
+## Its body's place and speed the tick before: a step Jolt pushed it into the floor by is undone, as a
+## flight's (MessMoving.undo_push(), core/50; coop/13).
+var _was := Transform3D.IDENTITY
+var _was_speed := 0.0
 ## When the Host's local body (a drop's) was first seen, in this ghost's age.
 var _ref_seen := -1.0
 ## Easing onto the Host's rest: the time it has eased, or -1 before.
@@ -112,12 +115,9 @@ func _launch(launch: Dictionary) -> void:
 	if not pair:
 		_body.inertia = MessMoving.turn_inertia(_body.mass, SockDress.box(design), t.turn_weight)
 	_body.transform = launch["from"]
+	_was = launch["from"]
+	_was_speed = _body.linear_velocity.length()
 	_born = Engine.get_physics_frames() + (0 if Engine.is_in_physics_frame() else 1)
-	if launch.get("shown") is Transform3D:
-		var shown := (launch["shown"] as Transform3D).orthonormalized()
-		var from := (launch["from"] as Transform3D).orthonormalized()
-		_lead = shown.origin - from.origin
-		_lead_turn = (shown.basis.get_rotation_quaternion() * from.basis.get_rotation_quaternion().inverse()).normalized()
 	add_child(_body)
 	_body.reset_physics_interpolation()
 	_looks = SockDress.make(design, SockDress.LYING, pair)
@@ -185,6 +185,10 @@ func _physics_process(delta: float) -> void:
 		_wait_flat(delta)
 		return
 	_age = maxf(0.0, float(Engine.get_physics_frames() - _born) / float(Engine.physics_ticks_per_second))
+	if not _body.freeze:
+		var back: Variant = MessMoving.undo_push(self, _body, _was, _was_speed, delta, mess.bodies_tuning())
+		_was = back if back is Transform3D else _body.global_transform
+		_was_speed = _body.linear_velocity.length()
 	MessMoving.switch_ccd(_body, _body.linear_velocity.length(), mess.bodies_tuning())
 	_poses.append([_age, _body.global_transform])
 	while _poses.size() > tuning.keep_poses:
@@ -208,9 +212,13 @@ func _physics_process(delta: float) -> void:
 		if at >= 0.0 and mine is Transform3D:
 			var host := ref.global_transform.orthonormalized()
 			var own := (mine as Transform3D).orthonormalized()
-			_off = _off.lerp(host.origin - own.origin, k)
 			var diff := (host.basis.get_rotation_quaternion() * own.basis.get_rotation_quaternion().inverse()).normalized()
-			_turn = _turn.slerp(diff, k)
+			if not _parted and (host.origin.distance_to(own.origin) > tuning.part_distance \
+					or rad_to_deg(diff.get_angle()) > tuning.part_turn):
+				_parted = true
+			if _parted:
+				_off = _off.lerp(host.origin - own.origin, k)
+				_turn = _turn.slerp(diff, k)
 	_draw(delta)
 
 
@@ -272,12 +280,15 @@ func _wait_flat(delta: float) -> void:
 	_keep = tuning.keep_frames
 
 
-## The ghost's body pose with the offset and what is left of the hand's lead on it.
+## The ghost's body pose with the offset on it.
 func _drawn_pose() -> Transform3D:
 	var own := _body.global_transform.orthonormalized()
-	var w := 1.0 - smoothstep(0.0, maxf(tuning.hand_over_time, 0.001), _age)
-	var turn := _turn * Quaternion.IDENTITY.slerp(_lead_turn, w)
-	return Transform3D(Basis(turn) * own.basis, own.origin + _off + _lead * w)
+	return Transform3D(Basis(_turn) * own.basis, own.origin + _off)
+
+
+## Whether it has parted from the Host's body and is corrected to it (Q2573; tests read it).
+func parted() -> bool:
+	return _parted
 
 
 func _draw(delta: float) -> void:

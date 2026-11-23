@@ -152,7 +152,7 @@ func hold_point() -> Node3D:
 
 
 ## Where the HoldPoint is as an avatar of this body draws it: the first-person body's own is set
-## back by `belly_back` with the Body (coop/11: a Guest's Throw starts where the Host's avatar holds it).
+## back by `belly_back` with the Body (a Teammate's Throw is drawn from where their avatar holds it: Hands.worn_start_of()).
 func avatar_hold() -> Transform3D:
 	var at := hold_point().global_transform
 	if not first_person:

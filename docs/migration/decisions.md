@@ -1,4 +1,4 @@
-Next free Q number: Q2575 (update this line whenever a round of questions is asked)
+Next free Q number: Q2581 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -489,3 +489,9 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2572: house/06 merges as built; the old basement's warm daytime fill (0.35, #ffd4a0) is ported in its own ticket (house/10) (designer, 2026-11-23).
 - Q2573: a Guest's own Throw is predicted on the Guest with full physics (the same Jolt body and numbers as the Host's, so it flies the real arc), the Host stays authoritative, and the Guest's body is corrected smoothly to the Host's stream when they part (designer's M0.6 run, 2026-11-23).
 - Q2574: the basement stays as bright as the rest of the house; the old warm daytime fill is not ported (replaces Q2572's "port it later"; house/10 closed) (designer, 2026-11-23).
+- Q2575: the old loading screen's look (the cream card, the tumbling sock, the bar, the fade into play) is ported in core/58 with the menus; house/09 merges with its placeholder (designer, 2026-11-23).
+- Q2576: the attic trunks get about 5 Socks each, as the old, through their own weight override (Q2520); the floor's total stays (house/09; designer, 2026-11-23).
+- Q2577: while a heap settles, a Guest's own falling copies glide onto the Host's rest pose over about 0.2 s (a typed Resource number) instead of snapping; no extra traffic (coop/13; designer, 2026-11-23).
+- Q2578: core/58's screens merge as shown; a follow-up puts an ESC close button at the top right of every dialogue, always (core/59) (designer, 2026-11-23).
+- Q2579: the loading card reads "Loading the house..." (core/58; designer, 2026-11-23).
+- Q2580: the title's "Zoo" button shows in debug builds only, gone in a release build, as the zoo itself (core/58; designer, 2026-11-23).

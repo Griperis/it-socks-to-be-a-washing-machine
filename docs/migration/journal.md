@@ -1043,3 +1043,16 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2515, Q2572 |
 
 ---
+
+| Ticket | coop/13, from the designer's M0.6 run: the Host let a Guest's Throw and drop go from the avatar's hand 0.6 m under the Guest's view (no arc, a slide down); now every Throw and drop leaves the thrower's own hand (within 2 mm of the Host's flight), the Guest's drops keep core/50's floor guard, settling heaps glide 0.2 s onto the Host's rest (Q2577); merged (main 682f8f6) |
+| Planned vs actual | 0 planned (from play), 1 actual |
+| Redo count | 1 (Q2577: the glide) |
+| Corrections | none |
+| Cost | about 565k subagent tokens (Opus) |
+| Time | about 35 min |
+| Surprises | equal heaps at rest were already met: the difference was mid-settle; Host 63.9 KB/s and 17.7 ms mean during a 2,000-Sock pour |
+| Stop rules | none hit |
+| Looks | none |
+| Decisions | Q2573, Q2577 |
+
+---
