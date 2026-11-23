@@ -72,3 +72,4 @@ throws and shelves in the house as in the zoo.
   - Stills: builds/review-house-05/ (house-mess-room-*.png per floor; house-05-old-beside-new.png: the old baseline
     views beside the new, two rooms a floor and the ground floor's stair).
   - Verified: PASS 17807 checks, 456 cases (`kit/tools/run.sh --touched`; FLAKY mess_settle:real_path_4, core/54's known flake); PASS rules
+- Merged: 6d28532a (2026-11-23, branch house/05-mess-in-the-house)
