@@ -297,6 +297,8 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			return true
 		"knockdown":
 			return _knockdown(world, arg)
+		"hand_off":
+			return _hand_off(world, arg)
 		"wheel":
 			# The next held item becomes active, as a wheel step does.
 			var player := LevelRuntime.of(world).player
@@ -896,3 +898,54 @@ static func _knockdown(world: Node, arg: String) -> bool:
 			player.capture_mouse()
 			player.camera().make_current()
 	return true
+
+
+## core/42: the Hand-off station. Arg "give": this player holds the Brown Sock whose mate the stand-in
+## (peer 6) holds, standing 1.5 m in front of it, its own view on (the Outline); "side": a camera from the
+## side over both; "tap": a short right click's Command, the Hand-off; "pair": this player holds the
+## Forest Pair instead (the stand-in has no room); "throw": a Throw at 0.6 of the ring at the stand-in's
+## chest from 1.2 m (caught when this player holds the Brown Sock).
+static func _hand_off(world: Node, arg: String) -> bool:
+	var player := LevelRuntime.of(world).player
+	var hands := LevelRuntime.of(world).hands
+	var station := world.get_node("Stations/HandOff") as Node3D
+	var mate := station.get_node("Holder/6") as Avatar
+	var me := player.player_id()
+	match arg:
+		"give", "pair":
+			var picks: Array[String] = ["Mate"]
+			if arg == "pair":
+				picks = ["PairA", "PairB"]
+			for spot: String in picks:
+				var sock := (station.get_node("Spots/" + spot) as SockSpot).sock
+				hands.grabbed_at.clear()
+				player.global_position = hands.mess.pose_of(sock).origin + Vector3(0.0, 0.0, 0.8)
+				hands.pick(me, sock)
+			_face_point(player, mate.global_position + Vector3(0.0, 0.0, 1.5), mate.global_position + Vector3.UP * 1.1)
+			player.capture_mouse()
+			player.camera().make_current()
+		"side":
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 50.0
+			var mid := mate.global_position + Vector3(0.0, 1.0, 0.75)
+			cam.global_position = mid + Vector3(-2.6, 0.5, 1.2)
+			cam.look_at(mid)
+			cam.make_current()
+		"tap":
+			hands.hand_off(me, mate.peer())
+		"throw":
+			_face_point(player, mate.global_position + Vector3(0.0, 0.0, 1.2), mate.global_position + Vector3.UP * 1.1)
+			hands.throw(me, player.aim_dir(), 0.6)
+	return true
+
+
+## Stands `player` at `feet` looking at `target`.
+static func _face_point(player: Player, feet: Vector3, target: Vector3) -> void:
+	player.global_position = feet
+	var to := target - feet
+	player.rotation.y = atan2(-to.x, -to.z)
+	var head := player.get_node("Head") as Node3D
+	var up := target - (feet + Vector3.UP * head.position.y)
+	head.rotation.x = atan2(up.y, Vector2(up.x, up.z).length())
+	player.reset_physics_interpolation()

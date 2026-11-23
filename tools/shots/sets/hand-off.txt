@@ -1,0 +1,23 @@
+# core/42: the Hand-off in the zoo's Hand-off station. The giver's own view on the stand-in holding the
+# Brown Sock's mate (its Outline, the crosshair, the corner's Drop); then from the side the Sock flying from
+# the hand into the stand-in's Hands over 0.3 s on its 0.18 m arc, the Pair made there with its small
+# sparkle; a Pair handed to the full stand-in lying at its feet; a Throw under the full ring caught into
+# a Pair, flying in from where it hit. 60 frames a second; the item is held from frame 20, the Hand-off or the Throw is asked at frame 90.
+aim         --size=1280x720 --do='20:hand_off:give' --shots=85
+flight-088  --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:tap' --shots=88
+flight-092  --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:tap' --shots=92
+flight-096  --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:tap' --shots=96
+flight-100  --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:tap' --shots=100
+flight-104  --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:tap' --shots=104
+flight-108  --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:tap' --shots=108
+flight-112  --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:tap' --shots=112
+flight-130  --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:tap' --shots=130
+no-room-088 --size=1280x720 --do='20:hand_off:pair;22:hand_off:side;90:hand_off:tap' --shots=88
+no-room-130 --size=1280x720 --do='20:hand_off:pair;22:hand_off:side;90:hand_off:tap' --shots=130
+catch-094   --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:throw' --shots=94
+catch-098   --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:throw' --shots=98
+catch-102   --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:throw' --shots=102
+catch-106   --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:throw' --shots=106
+catch-110   --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:throw' --shots=110
+catch-114   --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:throw' --shots=114
+catch-140   --size=1280x720 --do='20:hand_off:give;22:hand_off:side;90:hand_off:throw' --shots=140

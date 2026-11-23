@@ -135,7 +135,7 @@ Roster keeps that place; the leaver's machine (every Guest's, when the Host quit
 **A knockdown (coop/10).** `Knockdowns` (`game/knockdown/`, one Part under `Socks`, keyed by peer) holds who is down
 (their fall, a serial), who drags whom and the struggle presses. On the Host it tests every full-charge Throw in the
 air (the launch carries its `charge`) against each player's body every tick and asks `knock`, a Host-only verb whose
-answer also drops the knocked player's Hands through `Hands.left`; `grab`, `let_go` and `struggle` are players'.
+answer also drops the knocked player's Hands through `Hands.left`; `grab`, `let_go` and `struggle` are players'. The same test on a weaker Throw (core/42) asks the Hands' Host-only `catch` when the Hand-off's rule lets the hit player take it, else bounces it off.
 `down` counts on each machine's own clock. Each `Avatar` follows it every frame: its `Ragdoll` child
 (`game/parts/avatar/ragdoll.tscn`: a Skeleton3D, a PhysicalBoneSimulator3D and four PhysicalBone3D, never drawn, the
 Host its multiplayer authority) is simulated on the Host and streams one stamped 84-byte pose on its own Sync;
