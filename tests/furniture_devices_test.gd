@@ -21,8 +21,9 @@ const OLD_CLIPS := {
 	&"piano_lid_open": "cupboard_open__kenney_door_open1.ogg", &"piano_lid_close": "cupboard_close__kenney_door_close4.ogg",
 	&"cabinet_reveal": "drawer_open__laleksic_drawer_open.ogg",
 }
-## The old container kinds of the 28 openings and how many of each (the old manifest).
-const KINDS := {"drawer": 12, "cupboard": 10, "fridge": 2, "oven": 1, "basket": 1, "litter_flap": 1, "piano_lid": 1}
+## The old container kinds of the 29 openings and how many of each (the old manifest; the car's old Cabin
+## is one opening per door since assets/09).
+const KINDS := {"drawer": 12, "cupboard": 11, "fridge": 2, "oven": 1, "basket": 1, "litter_flap": 1, "piano_lid": 1}
 const ACTIONS: Array[StringName] = [&"move_forward", &"interact", &"pick"]
 
 var _zoo: Node3D = null
@@ -42,6 +43,8 @@ func cases() -> Array[Dictionary]:
 				"title": "V01a-g: every opening plays <kind>_open and <kind>_close, world sounds from the catalogue with the old clips (the litter flap 6 dB under)"},
 		{"name": "v01_real_path", "method": "case_v01_real_path", "world": false,
 				"title": "V01h, real path: the player uses the fridge's door in the Furniture station: fridge_open sounds at it as it swings, fridge_close as it shuts"},
+		{"name": "car_doors_real_path", "method": "case_car_doors_real_path", "world": false,
+				"title": "assets/09, real path: the player aims at each of the car's doors in the Furniture station and left-clicks: only that door opens, with cupboard_open at it; a click again shuts it with cupboard_close"},
 		{"name": "v01_once", "method": "case_v01_once", "world": false,
 				"title": "V01h: a granted open sounds once; a refused one and a state arriving whole sound nothing"},
 		{"name": "m01_reflection", "method": "case_m01_reflection", "world": false,
@@ -154,6 +157,51 @@ func case_v01_real_path() -> void:
 	Input.action_release(&"interact")
 	await _until(func() -> bool: return not openable.open, "the fridge door to shut")
 	_check(_count(&"fridge_close") == 1, "fridge_close sounded once as it shuts")
+
+
+func case_car_doors_real_path() -> void:
+	await _zoo_up()
+	var player := LevelRuntime.of(_zoo).player
+	var car := _piece("car")
+	var doors := {-1.0: car.get_node("DoorL") as Node3D, 1.0: car.get_node("DoorR") as Node3D}
+	for sx: float in doors:
+		var door := doors[sx] as Node3D
+		var other := doors[-sx] as Node3D
+		var openable := door.get_node("Openable") as Openable
+		var other_openable := other.get_node("Openable") as Openable
+		var leaf := openable.movers()[0]
+		var other_leaf := other_openable.movers()[0]
+		# An event's min_gap counts wall seconds and the runner runs faster than that: the first door's
+		# sounds would hold back the second's.
+		Sounds.reset()
+		_heard.clear()
+		# Beside the bonnet, ahead of the door's hinge, so the door swings away from the player.
+		_stand(player, car.to_global(Vector3(sx * 1.4, 0.0, 1.5)))
+		await _physics_ticks(3)
+		player.capture_mouse()
+		# The door's middle, just inside its panel.
+		var middle := Vector3(-sx * 0.03, 0.3, -0.6)
+		await _aim(player, leaf.to_global(middle))
+		_check(player.aimed_part() == openable, "the crosshair rests on %s (%s)" % [door.name, player.aimed_part()])
+		Input.action_press(&"pick")
+		await _physics_ticks(2)
+		Input.action_release(&"pick")
+		await _until(func() -> bool: return openable.open, "%s to open" % door.name)
+		_check(not other_openable.open, "%s stays shut while %s opens" % [other.name, door.name])
+		_check(_count(&"cupboard_open") == 1, "cupboard_open sounded once (%d)" % _count(&"cupboard_open"))
+		var h := _last(&"cupboard_open")
+		_check(not h.is_empty() and (h["at"] as Vector3).distance_to(door.global_position) < 0.01, "at %s's place" % door.name)
+		await _until(func() -> bool: return not openable.is_moving(), "%s's swing to end" % door.name, 120)
+		_near(absf(leaf.rotation.y), deg_to_rad(70.0), 0.01, "%s stands open by 70 degrees" % door.name)
+		_near(other_leaf.rotation.y, 0.0, 0.001, "%s's leaf has not moved" % other.name)
+		await _aim(player, leaf.to_global(middle))
+		Input.action_press(&"pick")
+		await _physics_ticks(2)
+		Input.action_release(&"pick")
+		await _until(func() -> bool: return not openable.open, "%s to shut" % door.name)
+		_check(_count(&"cupboard_close") == 1, "cupboard_close sounded once as %s shuts" % door.name)
+		await _until(func() -> bool: return not openable.is_moving(), "%s's swing back to end" % door.name, 120)
+		_near(leaf.rotation.y, 0.0, 0.01, "%s is shut again" % door.name)
 
 
 func case_v01_once() -> void:
