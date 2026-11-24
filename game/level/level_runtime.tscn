@@ -17,6 +17,9 @@
 [ext_resource type="Resource" uid="uid://bdk0j4fv51es5" path="res://game/save/save_tuning.tres" id="19_save_tuning"]
 [ext_resource type="PackedScene" uid="uid://xjx2cc6moh4d" path="res://game/ui/esc_menu/esc_menu.tscn" id="20_esc_menu"]
 [ext_resource type="PackedScene" uid="uid://b0s58u22waxoe" path="res://game/level/loading_screen.tscn" id="21_loading"]
+[ext_resource type="Script" uid="uid://bf87f1xinusc0" path="res://game/ping/pings.gd" id="22_pings"]
+[ext_resource type="Resource" uid="uid://e3fid8403c2f" path="res://game/ping/ping_tuning.tres" id="23_ping_tuning"]
+[ext_resource type="Script" uid="uid://tmma7k3a2ybj" path="res://game/ping/ping_marks.gd" id="24_marks"]
 
 [node name="LevelRuntime" type="Node3D" unique_id=573781402]
 script = ExtResource("0_runtime")
@@ -55,6 +58,15 @@ hands = NodePath("../Hands")
 
 [node name="Coins" type="Node" parent="Socks" unique_id=916480979]
 script = ExtResource("9_coins")
+
+[node name="Pings" type="Node" parent="." node_paths=PackedStringArray("mess") unique_id=1460313001]
+script = ExtResource("22_pings")
+tuning = ExtResource("23_ping_tuning")
+mess = NodePath("../Socks/Mess")
+
+[node name="Marks" type="Node3D" parent="Pings" node_paths=PackedStringArray("pings") unique_id=1460313002]
+script = ExtResource("24_marks")
+pings = NodePath("..")
 
 [node name="Parts" type="Node" parent="." unique_id=427637761]
 script = ExtResource("1_parts")

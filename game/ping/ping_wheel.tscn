@@ -1,0 +1,156 @@
+[gd_scene format=3 uid="uid://bgma7k1j0iwkv"]
+
+[ext_resource type="Script" uid="uid://bmwnbvnvhaejd" path="res://game/ping/ping_wheel.gd" id="1_wheel"]
+[ext_resource type="Resource" uid="uid://e3fid8403c2f" path="res://game/ping/ping_tuning.tres" id="2_tuning"]
+[ext_resource type="Script" uid="uid://ftj7pj07q473" path="res://game/look/keycap_style.gd" id="3_keycap"]
+
+[sub_resource type="StyleBox" id="Keycap_plain"]
+script = ExtResource("3_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
+lip = 6
+radius = 16
+border = 3
+margin = 10
+
+[sub_resource type="StyleBox" id="Keycap_chosen"]
+script = ExtResource("3_keycap")
+face_colour = Color(0.94902, 0.607843, 0.294118, 1)
+shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
+lip = 6
+radius = 16
+border = 3
+margin = 10
+
+[node name="PingWheel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_wheel")
+tuning = ExtResource("2_tuning")
+plain = SubResource("Keycap_plain")
+chosen_style = SubResource("Keycap_chosen")
+
+[node name="Slice0" type="PanelContainer" parent="."]
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Keycap_plain")
+
+[node name="Column" type="VBoxContainer" parent="Slice0"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Icon" type="TextureRect" parent="Slice0/Column"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Slice0/Column"]
+layout_mode = 2
+theme_type_variation = &"OutlinedLabel"
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+
+[node name="Slice1" type="PanelContainer" parent="."]
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Keycap_plain")
+
+[node name="Column" type="VBoxContainer" parent="Slice1"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Icon" type="TextureRect" parent="Slice1/Column"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Slice1/Column"]
+layout_mode = 2
+theme_type_variation = &"OutlinedLabel"
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+
+[node name="Slice2" type="PanelContainer" parent="."]
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Keycap_plain")
+
+[node name="Column" type="VBoxContainer" parent="Slice2"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Icon" type="TextureRect" parent="Slice2/Column"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Slice2/Column"]
+layout_mode = 2
+theme_type_variation = &"OutlinedLabel"
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+
+[node name="Slice3" type="PanelContainer" parent="."]
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Keycap_plain")
+
+[node name="Column" type="VBoxContainer" parent="Slice3"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Icon" type="TextureRect" parent="Slice3/Column"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Slice3/Column"]
+layout_mode = 2
+theme_type_variation = &"OutlinedLabel"
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+
+[node name="Slice4" type="PanelContainer" parent="."]
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("Keycap_plain")
+
+[node name="Column" type="VBoxContainer" parent="Slice4"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Icon" type="TextureRect" parent="Slice4/Column"]
+custom_minimum_size = Vector2(56, 56)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Name" type="Label" parent="Slice4/Column"]
+layout_mode = 2
+theme_type_variation = &"OutlinedLabel"
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1

@@ -215,6 +215,9 @@ var knockdowns: Knockdowns:
 	get: return get_node(^"Socks/Knockdowns") as Knockdowns
 var coins: Coins:
 	get: return get_node(^"Socks/Coins") as Coins
+## The co-op pings (core/43) and how this machine draws them.
+var pings: Pings:
+	get: return get_node(^"Pings") as Pings
 var spots: Node3D:
 	get: return get_node(^"Spots") as Node3D
 var lying: Node3D:

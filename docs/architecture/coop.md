@@ -20,13 +20,10 @@ in `docs/architecture.md` say what happens in order; this file says who owns wha
 | A Guest's guesses | `game/hands/guest_ghosts.gd`, `throw_ghost.gd`, `ghost_tuning.tres` | Looks only: a pick, drop, Throw or wheel shown at once and matched to the Host's answer by `seq`; a Throw or drop flies its own body from the hand the Host lets it go from, corrected once it parts (Q2573) |
 | Throws in the air | `game/sock/flight_row.gd` | A Throw's body streams stamped rows to every Guest; the Guest plays them 0.1 s behind |
 | The Mess in co-op | `game/mess/mess.gd`, `mess_moving.gd` | Every machine starts its own body for a flying Sock; a Guest's are looks only on `Mess.LAYER_LOOKS`; the Host's `rest` snaps them |
-<<<<<<< HEAD
-| Knockdown | `game/knockdown/knockdowns.gd` | Who is down, who drags whom, struggles; Host-only `knock` |
-| Stacking | `game/stacking/` (`back.gd`, `player_stack.gd`, `stacks.gd`, `stacking_tuning.tres`) | Nothing decided: each Avatar's `Back` is a plain disc where the body is drawn on this machine; the local player's `Stack` meets, rides (moving its own body by what the back moved), climbs onto one, halves its pace while a Teammate's pose says they ride it; the soft push. The pose carries `pose_riding` and `pose_ride_offset` (Q2592): every other machine draws a rider at its carrier's drawn feet plus the offset, and `pose_jumps` (Q2593): each new one plays `jump` at the body (`TeammateSteps`) |
-=======
 | Knockdown | `game/knockdown/knockdowns.gd` | Who is down, who drags whom, struggles; Host-only `knock`; the one hit test of every Throw at a body (a full charge knocks, a weaker one is a catch or a bounce) |
+| Stacking | `game/stacking/` (`back.gd`, `player_stack.gd`, `stacks.gd`, `stacking_tuning.tres`) | Nothing decided: each Avatar's `Back` is a plain disc where the body is drawn on this machine; the local player's `Stack` meets, rides (moving its own body by what the back moved), climbs onto one, halves its pace while a Teammate's pose says they ride it; the soft push. The pose carries `pose_riding` and `pose_ride_offset` (Q2592): every other machine draws a rider at its carrier's drawn feet plus the offset, and `pose_jumps` (Q2593): each new one plays `jump` at the body (`TeammateSteps`) |
 | The Hand-off | `game/hands/hands.gd` (`hand_off`, Host-only `catch`), `hand_off_tuning.gd/.tres`, `AimFinder.mate()` | The active item given to an aimed Teammate (core/42): a Pair always, a loose Sock only completing a Pair there; no room, it lies at their feet; never to a knocked-down one. A Guest guesses nothing and waits (2 s, then "refuse"); the receiver's HeldView flies the item in from the giver's hand as drawn on each machine (`HeldView.fly_from`) |
->>>>>>> refs/heads/main
+| Pings | `game/ping/` (`Pings`, `PingAim`, `PingMarks`, `PingMark`, `PingWheel`, `ping_tuning.tres`), `game/player/pinger.gd`, `game/ui/hint_arrows.gd` | One standing ping per player (core/43), a Part under the runtime (`Runtime/Pings`): any player's `ping` names a Mess Sock, a Teammate, a thing with an Outline by its path from the level, or a spot; the Host falls back to the spot for what is gone. Each machine counts it down on its own clock; not saved, not in the join snapshot (`whole_state()` empty; a standing ping first seen in a later answer never shows). A Guest guesses nothing (Q2590). `PingMarks` draws it on every machine (outline through walls, ring, bubble, the copy beside the pinger's head) and feeds the HUD's `HintArrows`, whose open source list takes the X-rays and Mate Radar in M4 |
 | Teammates heard | `game/audio/hearing.gd`, `teammate_steps.gd` | A Teammate's cues and steps at their body (`Sounds.play_from`) |
 
 ## Rules that hold everywhere
@@ -67,7 +64,7 @@ ENet on 127.0.0.1, `tests/support/lag_peer.gd` for a one-way delay; frames paced
 where the network matters. In a test every Host listens on a port the system picks (`Session.free_port`, set
 by `tests/hooks.gd`), so parallel runs never clash. The real paths run at 0 and 50 ms one way:
 `coop_join:join`, `teammates:walk_crouch`, `coop_mess:pour_real_path`, `coop_hands:guest_pick_throw_real_path`
-and `guest_throw_ghost_on_host_flight`, `coop_knockdown:real_path`, `coop_hand_off:hand_off` and `catch`. The guards: `coop_guard` (bad shape, flood,
+and `guest_throw_ghost_on_host_flight`, `coop_knockdown:real_path`, `coop_hand_off:hand_off` and `catch`, `coop_pings:real_path` and `same_on_both`. The guards: `coop_guard` (bad shape, flood,
 forged pose and knockdown), `scene_parts:guard`, `coop_knockdown:forged`, `teammates:forged`.
 
 ## The cost

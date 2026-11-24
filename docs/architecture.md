@@ -98,7 +98,7 @@ before anything binds. Shots load the zoo unless a set line gives `--scene=`
 
 **A level (core/51, Q2517).** Every level shares one game setup, `game/level/level_runtime.tscn` (`LevelRuntime`):
 the Player, Players and Avatars, Session and Roster, Net (`LevelNet`), Parts, Socks (Mess, Hands, Knockdowns, Coins),
-Spots, Lying, Flights, the FlightSpawner and the LoadingScreen (house/09), wired inside it. It is sealed: a level instances it once, as a child of
+Spots, Lying, Flights, the FlightSpawner, Pings (core/43, with its Marks) and the LoadingScreen (house/09), wired inside it. It is sealed: a level instances it once, as a child of
 its root named `Runtime`, and overrides nothing inside it (no editable children). What differs per level is set on
 that instance: `spawn` and `return_spot` (empty: the level's children `Spawn` and `ReturnSpot`, the return spot
 falling back to the spawn), `mess_bounds`, the player's `hands_tuning` and `upgrades`, and `place_name` (the corner's

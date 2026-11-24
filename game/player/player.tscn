@@ -16,6 +16,11 @@
 [ext_resource type="PackedScene" uid="uid://cn3a05m85kv70" path="res://game/knockdown/vignette.tscn" id="13_vignette"]
 [ext_resource type="Script" uid="uid://c03n4n25hntrc" path="res://game/stacking/player_stack.gd" id="14_stack"]
 [ext_resource type="Resource" uid="uid://b4e3r68bxti0n" path="res://game/stacking/stacking_tuning.tres" id="15_stack_tuning"]
+[ext_resource type="Script" uid="uid://bsucridbv85rx" path="res://game/ui/hint_arrows.gd" id="19_arrows"]
+[ext_resource type="Resource" uid="uid://o0q2l0dhm8qp" path="res://game/ui/hint_arrow_tuning.tres" id="20_arrow_tuning"]
+[ext_resource type="PackedScene" uid="uid://bgma7k1j0iwkv" path="res://game/ping/ping_wheel.tscn" id="21_wheel"]
+[ext_resource type="Script" uid="uid://tiy0agr0vohh" path="res://game/player/pinger.gd" id="22_pinger"]
+[ext_resource type="Resource" uid="uid://e3fid8403c2f" path="res://game/ping/ping_tuning.tres" id="23_ping_tuning"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -164,6 +169,19 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("5_ring")
 
+[node name="HintArrows" type="Control" parent="Hud" unique_id=1460313011]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("19_arrows")
+tuning = ExtResource("20_arrow_tuning")
+
+[node name="PingWheel" parent="Hud" unique_id=1460313012 instance=ExtResource("21_wheel")]
+
 [node name="Footsteps" type="Node" parent="." unique_id=1954666980]
 script = ExtResource("6_steps")
 tuning = ExtResource("7_steps_tuning")
@@ -177,3 +195,9 @@ tuning = ExtResource("12_ghost_tuning")
 unique_name_in_owner = true
 script = ExtResource("14_stack")
 tuning = ExtResource("15_stack_tuning")
+
+[node name="Pinger" type="Node" parent="." node_paths=PackedStringArray("wheel") unique_id=1460313013]
+unique_name_in_owner = true
+script = ExtResource("22_pinger")
+tuning = ExtResource("23_ping_tuning")
+wheel = NodePath("../Hud/PingWheel")

@@ -1,0 +1,135 @@
+[gd_scene format=3 uid="uid://bg8lkqbbiv0lh"]
+
+[ext_resource type="PackedScene" uid="uid://d2u50k5e57ccb" path="res://game/parts/avatar/avatar.tscn" id="1_avatar"]
+[ext_resource type="Script" uid="uid://c3keykqyp2rbl" path="res://game/zoo/hand_off/hand_off_stand_in.gd" id="2_stand_in"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="3_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="4_hands"]
+[ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="5_spot"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="6_designs"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="7_tuning"]
+[ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="8_knockdowns"]
+[ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="9_knock_tuning"]
+[ext_resource type="Script" uid="uid://cmtjvu0rm3m0" path="res://game/zoo/pings/ping_numbers.gd" id="10_numbers"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="11_outline"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.45, 0.4, 0.52, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_pad")
+size = Vector2(6, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.78, 0.74, 0.68, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(3, 2, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall"]
+size = Vector3(3, 2, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_box"]
+albedo_color = Color(0.72, 0.62, 0.5, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_box"]
+material = SubResource("StandardMaterial3D_box")
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_box"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="Pings" type="Node3D" unique_id=1460313100]
+
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=1460313101]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Name" type="Label3D" parent="." unique_id=1460313102]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 2, -2.6)
+pixel_size = 0.004
+billboard = 2
+text = "Pings: tap the middle button to highlight what the crosshair points at (a Sock, the Teammate, the box, else a ring on the floor), in your colour, through the wall. Hold it for the emoji wheel, steer with the mouse and let go to put that emoji over it. Turn away: an arrow at the screen's edge points to your ping"
+vertical_alignment = 2
+autowrap_mode = 3
+width = 700.0
+
+[node name="Numbers" type="Node3D" parent="." unique_id=1460313103]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.01, 1.6)
+script = ExtResource("10_numbers")
+
+[node name="Wall" type="StaticBody3D" parent="." unique_id=1460313104]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, -0.6)
+
+[node name="Mesh" type="MeshInstance3D" parent="Wall" unique_id=1460313105]
+mesh = SubResource("BoxMesh_wall")
+
+[node name="Shape" type="CollisionShape3D" parent="Wall" unique_id=1460313106]
+shape = SubResource("BoxShape3D_wall")
+
+[node name="Box" type="StaticBody3D" parent="." unique_id=1460313107]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 2.2, 0.25, -1.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Box" unique_id=1460313108]
+mesh = SubResource("BoxMesh_box")
+
+[node name="Shape" type="CollisionShape3D" parent="Box" unique_id=1460313109]
+shape = SubResource("BoxShape3D_box")
+
+[node name="Outline" type="Node3D" parent="Box" unique_id=1460313110]
+visible = false
+script = ExtResource("11_outline")
+
+[node name="Mate" type="Node3D" parent="." unique_id=1460313111 node_paths=PackedStringArray("avatar")]
+script = ExtResource("2_stand_in")
+avatar = NodePath("9")
+colour = Color(0.31, 0.702, 0.663, 1)
+
+[node name="9" parent="Mate" unique_id=1460313112 instance=ExtResource("1_avatar")]
+pose_position = Vector3(-2, 0, -1.3)
+pose_yaw = 3.1415927
+
+[node name="Spots" type="Node3D" parent="." unique_id=1460313113]
+
+[node name="Near" type="Marker3D" parent="Spots" unique_id=1460313114]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0.8)
+script = ExtResource("5_spot")
+design = 3
+
+[node name="Behind" type="Marker3D" parent="Spots" unique_id=1460313115]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1.5)
+script = ExtResource("5_spot")
+design = 8
+
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=1460313116]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
+
+[node name="Lying" type="Node3D" parent="." unique_id=1460313117]
+
+[node name="Flights" type="Node3D" parent="." unique_id=1460313118]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=1460313119]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="." unique_id=1460313120]
+
+[node name="Mess" type="Node" parent="Socks" unique_id=1460313121 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+script = ExtResource("3_mess")
+catalogue = ExtResource("6_designs")
+tuning = ExtResource("7_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+bounds = AABB(-8, -2, -8, 16, 8, 16)
+return_spot = NodePath("../../ReturnSpot")
+
+[node name="Hands" type="Node" parent="Socks" unique_id=1460313122 node_paths=PackedStringArray("mess")]
+script = ExtResource("4_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("7_tuning")
+
+[node name="Knockdowns" type="Node" parent="Socks" unique_id=1460313123 node_paths=PackedStringArray("hands")]
+script = ExtResource("8_knockdowns")
+tuning = ExtResource("9_knock_tuning")
+hands = NodePath("../Hands")
