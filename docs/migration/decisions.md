@@ -1,4 +1,4 @@
-Next free Q number: Q2644 (update this line whenever a round of questions is asked)
+Next free Q number: Q2647 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -558,3 +558,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2641: the washer's subtitle icon is a flat drawn icon in the UI icons' style, its own look ticket (W8, core/73; designer, 2026-11-24).
 - Q2642: the knockdown wash (a knocked player dragged into the drum) is batch A, the washer's last ticket (W9, core/73; designer, 2026-11-24).
 - Q2643: GLOSSARY: the Final wash and Laundry bin entries name no Part ("the run's last Fix"); "Laundry day" added: the time after the last Fix when the bins are washed (core/72; designer, 2026-11-24).
+- Q2644: the Lobby's captions under Ready and Start stay at their size (about 11 px) (core/67; designer, 2026-11-24).
+- Q2645: the pad's selection ring not showing in the Lobby is a later follow-up (ticket core/75; core/67; designer, 2026-11-24).
+- Q2646: the Lobby's status line stays hidden until something holds Start (e.g. Steam, batch D) (core/67; designer, 2026-11-24).
