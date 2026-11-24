@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="StackingTuning" format=3 uid="uid://b4e3r68bxti0n"]
+
+[ext_resource type="Script" uid="uid://gc2hscwi60pw" path="res://game/stacking/stacking_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")

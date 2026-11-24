@@ -299,6 +299,12 @@ func case_inside() -> void:
 	var host: Node3D = zoos[0]
 	var guest: Node3D = zoos[1]
 	var g := _player(guest).player_id()
+	# The soft push (core/41) would part two players 0.25 m apart before the knock; this case is about the
+	# falling body, so both stand still where they are put.
+	for zoo: Node3D in [host, guest]:
+		var stack := _player(zoo).stack()
+		stack.tuning = stack.tuning.duplicate() as StackingTuning
+		stack.tuning.push_rate = 0.0
 	for d: float in [0.25, 1.5]:
 		_place(host, GUEST_AT, GUEST_AT + Vector3(0.0, 1.6, -3.0))
 		_place(guest, GUEST_AT + Vector3(d, 0.0, 0.0), GUEST_AT + Vector3(d, 1.6, -3.0))

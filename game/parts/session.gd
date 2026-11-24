@@ -58,7 +58,7 @@ signal ended(text: String)
 ## synchronized property, a spawnable scene or the shape of a Command, an event, a snapshot or the
 ## gate's word changes. The word's first 4 bytes (the PROTOCOL) never move, so any two builds can
 ## tell they differ.
-const PROTOCOL := 16  # 14: core/62, the game link: the layout leaves the gate's word for house_ready, the link's snapshot; 15: core/63, LobbyState in the link; 16: core/42, the Hands' hand_off verb and its answer
+const PROTOCOL := 17  # 17: core/41, an avatar's Back and riding pose (pose_riding, pose_ride_offset), its jump count (pose_jumps), a child Back in the avatar scene; 14: core/62, the game link: the layout leaves the gate's word for house_ready, the link's snapshot; 15: core/63, LobbyState in the link; 16: core/42, the Hands' hand_off verb and its answer
 ## The gate's answers: one byte, and after REFUSED one byte saying why.
 const ACCEPTED := 1
 const REFUSED := 0

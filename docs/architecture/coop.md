@@ -20,8 +20,13 @@ in `docs/architecture.md` say what happens in order; this file says who owns wha
 | A Guest's guesses | `game/hands/guest_ghosts.gd`, `throw_ghost.gd`, `ghost_tuning.tres` | Looks only: a pick, drop, Throw or wheel shown at once and matched to the Host's answer by `seq`; a Throw or drop flies its own body from the hand the Host lets it go from, corrected once it parts (Q2573) |
 | Throws in the air | `game/sock/flight_row.gd` | A Throw's body streams stamped rows to every Guest; the Guest plays them 0.1 s behind |
 | The Mess in co-op | `game/mess/mess.gd`, `mess_moving.gd` | Every machine starts its own body for a flying Sock; a Guest's are looks only on `Mess.LAYER_LOOKS`; the Host's `rest` snaps them |
+<<<<<<< HEAD
+| Knockdown | `game/knockdown/knockdowns.gd` | Who is down, who drags whom, struggles; Host-only `knock` |
+| Stacking | `game/stacking/` (`back.gd`, `player_stack.gd`, `stacks.gd`, `stacking_tuning.tres`) | Nothing decided: each Avatar's `Back` is a plain disc where the body is drawn on this machine; the local player's `Stack` meets, rides (moving its own body by what the back moved), climbs onto one, halves its pace while a Teammate's pose says they ride it; the soft push. The pose carries `pose_riding` and `pose_ride_offset` (Q2592): every other machine draws a rider at its carrier's drawn feet plus the offset, and `pose_jumps` (Q2593): each new one plays `jump` at the body (`TeammateSteps`) |
+=======
 | Knockdown | `game/knockdown/knockdowns.gd` | Who is down, who drags whom, struggles; Host-only `knock`; the one hit test of every Throw at a body (a full charge knocks, a weaker one is a catch or a bounce) |
 | The Hand-off | `game/hands/hands.gd` (`hand_off`, Host-only `catch`), `hand_off_tuning.gd/.tres`, `AimFinder.mate()` | The active item given to an aimed Teammate (core/42): a Pair always, a loose Sock only completing a Pair there; no room, it lies at their feet; never to a knocked-down one. A Guest guesses nothing and waits (2 s, then "refuse"); the receiver's HeldView flies the item in from the giver's hand as drawn on each machine (`HeldView.fly_from`) |
+>>>>>>> refs/heads/main
 | Teammates heard | `game/audio/hearing.gd`, `teammate_steps.gd` | A Teammate's cues and steps at their body (`Sounds.play_from`) |
 
 ## Rules that hold everywhere
@@ -80,6 +85,10 @@ The heavy part is the pour (each rest batch is a reliable answer); at rest only 
 The designer's two windows are the reference for frame times.
 
 ## Gotchas
+- A `Back` is moved in `_physics_process` (priority -10, before any player) and also told to the physics
+  server at once (`body_set_state`): a node's new transform reaches the server only at the next flush, so a
+  rider moving the same tick would meet the disc where it was. A player standing still on a back gets no
+  slide collision (it only snaps), so `PlayerStack` keeps the back while the feet are still on it.
 - Every Throw and drop leaves the thrower's own first-person hand (`Hands.start_of`, from their eyes and aim) on
   every machine, so a Guest's ghost flies the Host's flight; Teammates see it drawn from the thrower's avatar's
   hand, easing onto the body in 0.2 s (`Mess._leads`; coop/13).
