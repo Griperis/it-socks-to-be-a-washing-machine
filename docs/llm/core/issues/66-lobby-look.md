@@ -27,10 +27,12 @@ card (Q2584).
 
 ## Answers
 - Look work stops at its first still (project rule).
+- Q2596: go on building in this direction.
+- Q2597: a World's row name is the members' names (`Worlds.name_form` MEMBERS, the default); the NUMBERED swap stays.
+- Q2598: the "Ada," cut in a drawer row and the drawer row's small details line stay `[later]`; the yellow name beside the gold Ready tick stays as it is.
 
 ## Open follow-ups
-- [later] Members-form row names clip in the drawer ("Ada," for three names); the numbered form does not (Q2587 judgement).
-- [later] A free place's silhouette is a flat dark grey (backdrop 35 % toward grey); the Ready tick on a yellow name sits close to the gold mark.
+- [later] The "Ada," cut in a drawer row and the row's small details line (Q2598).
 - `WorldRow` carries a new `members` list (the "i" page's names); no wire change, PROTOCOL untouched.
 
 ## Built log
@@ -41,3 +43,6 @@ Changed: `LobbyStage` (SubViewport, own World3D, 4 pedestals, AvatarLooks, free 
 beside the World card; `Worlds.name_form` (MEMBERS or NUMBERED, L7) and `members` in rows; shot scene `tools/shot_lobby.tscn` and set `lobby-look`.
 Files: game/lobby/lobby_*.gd/tscn/tres, who_page.*, lobby.gd/tscn, game/save/worlds.gd, tools/shot_lobby.*, tools/shots/sets/lobby-look.txt, tests/lobby_test.gd (k10).
 Stills: builds/review-lobby/. Verified: see commit.
+
+### 2026-11-24 (second round)
+Changed: Answers Q2596-Q2598 recorded; the look is unchanged (designer: keep as is). Fresh stills of the same set in builds/review-lobby/. Verified: see commit.
