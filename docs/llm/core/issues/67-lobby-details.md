@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: core
 feature: frame
 priority: next
 created: 2026-11-23
-done:
+done: 2026-11-24
 blocked_by: [core/65, core/66]
 notes: ["M4's Lobby, design core/61: docs/architecture/lobby.md, list docs/migration/m4-lists/02-lobby.md", "Q2277", "suggested model: sonnet"]
 terms: [Host, Guest, World, Part, Roster]
@@ -25,15 +25,15 @@ transport can invite). Then walk the list `02-lobby.md` line by line and report 
 - A walkthrough note in the Built log: every line of `02-lobby.md`, its state.
 
 ## Open follow-ups
-- [later] The status line (`LobbyScreen.status_text()`) is built and hidden while empty. The old game used it only for the Group lock
-  ("<names> cannot play this World", dropped by Q2554) and "slots full". The port has no reason to put there yet. Designer: which, if any?
-- [later] The captions come out small (the Theme's `ThinLabel`, about 11 px on 1280x720); the old list says 24 px thin for the Host's wait line,
-  nothing for the captions. Judge at the still (`captions`).
-- [later] The pad's selection ring is not visible in the stills (`pad-first`, `pad-drawer`); the Theme's focus look for `KeycapButton` is the
-  designer's call (the old UiBits had its own "focus" boxes).
-- [later] The pad's selection on a place only turns the pedestal gold (as the mouse does); the old Wardrobe key after the own figure is the
-  Wardrobe piece's (Q2584).
 - No wire message changed: PROTOCOL stays 21.
+- The pad's selection on a place only turns the pedestal gold (as the mouse does); the old Wardrobe key after the own figure is the Wardrobe piece's (Q2584).
+
+## Answers
+- Look work stops at its first still (project rule).
+- Q2644: the captions stay at their size.
+- Q2645: the pad's selection ring is a later follow-up, filed as core/75.
+- Q2646: the status line stays hidden (`status_text()` empty until a reason exists).
+- Merge go: designer, 2026-11-24
 
 ## Built log
 - 2026-11-24 (stops at its first still, `ready-for-human`). Changed: `LobbyWords` is the one place of the Lobby's wording (no `text =` is left in
