@@ -1,0 +1,198 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/lobby/world_drawer.gd" id="1_drawer"]
+[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="2_close"]
+
+[node name="WorldDrawer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_drawer")
+
+[node name="Panel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(520, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -520.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_type_variation = &"TitlePanel"
+
+[node name="Box" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Spacer" type="Control" parent="Panel/Box"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Heading" type="Label" parent="Panel/Box"]
+layout_mode = 2
+theme_type_variation = &"Heading1"
+text = "World settings"
+horizontal_alignment = 1
+
+[node name="WorldLabel" type="Label" parent="Panel/Box"]
+layout_mode = 2
+theme_type_variation = &"InkLabel"
+text = "World"
+
+[node name="Scroll" type="ScrollContainer" parent="Panel/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Rows" type="VBoxContainer" parent="Panel/Box/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="NewGame" type="Button" parent="Panel/Box"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "New game"
+
+[node name="Key" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 60)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -308.0
+offset_top = 24.0
+offset_right = -48.0
+offset_bottom = 84.0
+grow_horizontal = 0
+theme_type_variation = &"KeycapButton"
+text = "World settings"
+
+[node name="DeleteAsk" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="DeleteAsk"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.168627, 0.129412, 0.109804, 0.8)
+
+[node name="Center" type="CenterContainer" parent="DeleteAsk"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="DeleteAsk/Center"]
+custom_minimum_size = Vector2(640, 0)
+layout_mode = 2
+theme_type_variation = &"TitlePanel"
+
+[node name="Box" type="VBoxContainer" parent="DeleteAsk/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Heading" type="Label" parent="DeleteAsk/Center/Panel/Box"]
+layout_mode = 2
+theme_type_variation = &"Heading1"
+text = "Delete World"
+horizontal_alignment = 1
+
+[node name="Question" type="Label" parent="DeleteAsk/Center/Panel/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"InkLabel"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Keys" type="HBoxContainer" parent="DeleteAsk/Center/Panel/Box"]
+layout_mode = 2
+alignment = 1
+
+[node name="AskDelete" type="Button" parent="DeleteAsk/Center/Panel/Box/Keys"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 72)
+layout_mode = 2
+theme_type_variation = &"ExitButton"
+text = "Delete"
+
+[node name="AskClose" parent="DeleteAsk/Center/Panel" instance=ExtResource("2_close")]
+unique_name_in_owner = true
+
+[node name="Full" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="Full"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.168627, 0.129412, 0.109804, 0.8)
+
+[node name="Center" type="CenterContainer" parent="Full"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Full/Center"]
+custom_minimum_size = Vector2(720, 0)
+layout_mode = 2
+theme_type_variation = &"TitlePanel"
+
+[node name="Box" type="VBoxContainer" parent="Full/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Heading" type="Label" parent="Full/Center/Panel/Box"]
+layout_mode = 2
+theme_type_variation = &"Heading1"
+text = "New game"
+horizontal_alignment = 1
+
+[node name="FullLine" type="Label" parent="Full/Center/Panel/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"InkLabel"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="FullRows" type="VBoxContainer" parent="Full/Center/Panel/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="FullClose" parent="Full/Center/Panel" instance=ExtResource("2_close")]
+unique_name_in_owner = true

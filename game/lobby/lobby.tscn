@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://2pk3orkw4k3z4" path="res://game/lobby/lobby.gd" id="1_lobby"]
 [ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
 
+[ext_resource type="PackedScene" path="res://game/lobby/world_drawer.tscn" id="drawer"]
+
 [node name="Lobby" type="Control" unique_id=965929202]
 layout_mode = 3
 anchors_preset = 15
@@ -136,6 +138,9 @@ text = "New Game"
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 mouse_filter = 2
+
+[node name="Drawer" parent="." instance=ExtResource("drawer")]
+unique_name_in_owner = true
 
 [node name="Ask" type="Control" parent="." unique_id=1322529948]
 unique_name_in_owner = true

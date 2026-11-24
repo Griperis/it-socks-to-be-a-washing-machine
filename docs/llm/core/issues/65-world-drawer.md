@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: frame
@@ -35,3 +35,4 @@ view; `Worlds.pick_slot`, `row_details` and `display_name` (the one place a row'
 ## Open follow-ups
 
 ## Built log
+- 2026-11-24: Changed: the World drawer in the Lobby (`world_drawer.tscn/.gd`, `world_row.tscn/.gd`, `world_drawer_tuning.tres`, slide 0.25 s placeholder): Host open at start, Guest shut, Choose, Delete with its question (close key, no Cancel), New game, the full page; Guest read-only list from `LobbyState.worlds` (new State field and `worlds` verb, Host-only; PROTOCOL 18); `Worlds.display_name` (was `row_name`), `member_colours`; `Save.read(name, keep_damaged)`: the Lobby's reads leave a damaged World in place so it stays used until deleted. Files: game/lobby/*, game/save/{worlds,save}.gd, game/parts/session.gd, tests/lobby_test.gd (k07-k09), docs/architecture/lobby.md. Verified: see commit.

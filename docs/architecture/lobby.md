@@ -32,7 +32,7 @@ Wardrobe piece), Steam (the M4 Steam piece), or the "Pairs per Drawer" slider (Q
 - The title picks a `WorldSlot` (`Worlds.pick_solo()`, `pick_host()`) and hands it to the house through
   `SceneChanger.change_to(path, heading, setup)`: `LevelRuntime.world`, `from_title`, `launch` (`--host`, `--join=`).
 - `Worlds` has what a World list needs and nothing calls it yet: `rows()` (`slot`, `name`, `details`, `damaged`,
-  `last_played`; the Solo World first, co-op Worlds newest first), `delete(slot)`, `free_coop_slot()`, `FULL`, `row_name()`,
+  `last_played`; the Solo World first, co-op Worlds newest first), `delete(slot)`, `free_coop_slot()`, `FULL`, `display_name()` (was `row_name()`),
   the rule that the Solo World played with a Guest becomes a co-op World.
 - `Session` (the one RPC node), `Roster` (a Part, saved id `Session/Roster`), `Avatars`, `LevelNet`, `Autosave`, `EscMenu`
   are nodes of `level_runtime.tscn`; a machine is in a Session only while a house is loaded. `Session` exports `parts`
@@ -167,7 +167,7 @@ It uses `Worlds` as it is (`rows`, `delete`, `free_coop_slot`, `FULL`) plus `pic
 behind it, close on a click outside, Esc) are `[later]` for the look ticket's still.
 
 **L7 a World's name:** `Worlds.display_name(slot, record)` is the one place that makes a row's name (and the card's title);
-today it returns `row_name()` (the members' names, "No Group yet" while none). Changing it to "World <n>" plus the World's
+today it returns the members' names ("No Group yet" while none). Changing it to "World <n>" plus the World's
 state details is one function and its test; the look ticket's first still shows both and the designer judges.
 
 ## Core/66: the Lobby look (look work)
