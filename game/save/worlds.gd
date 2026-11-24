@@ -18,6 +18,12 @@ const FULL := "All %d co-op Worlds are used: delete one first"
 ## A row's words (the old title's). placeholder: the old wording.
 const SOLO_WORLD := "Solo World"
 const NO_GROUP := "No Group yet"
+const NUMBERED_WORLD := "World %d"
+## The two forms of a co-op World's row name (Q2587): the members' names, or "World <n>" (the details and the
+## members' colours sit under it). The Lobby look's first still shows both; the designer judges.
+enum NameForm {MEMBERS, NUMBERED}
+## The form in use; placeholder until the designer judges the still.
+static var name_form := NameForm.MEMBERS
 const DAMAGED_WORLD := "Damaged World"
 
 var tuning: SaveTuning = preload("res://game/save/save_tuning.tres")
@@ -133,11 +139,11 @@ func rows() -> Array[Dictionary]:
 			continue
 		var got := Save.read(file_of(slot), false)
 		if not got["ok"]:
-			(solo if slot == SOLO else coop).append({"slot": slot, "name": DAMAGED_WORLD, "details": "", "damaged": true, "last_played": 0, "colours": []})
+			(solo if slot == SOLO else coop).append({"slot": slot, "name": DAMAGED_WORLD, "details": "", "damaged": true, "last_played": 0, "colours": [], "members": []})
 			continue
 		var rec := WorldRecord.from_dict(_world_of(got))
 		var row := {"slot": slot, "name": display_name(slot, rec), "details": row_details(rec), "damaged": false,
-				"last_played": rec.last_played, "colours": member_colours(rec)}
+				"last_played": rec.last_played, "colours": member_colours(rec), "members": Array(member_names(rec))}
 		(solo if slot == SOLO else coop).append(row)
 	coop.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a["last_played"]) > int(b["last_played"]))
 	return solo + coop
@@ -149,10 +155,18 @@ func rows() -> Array[Dictionary]:
 static func display_name(slot: String, rec: WorldRecord) -> String:
 	if slot == SOLO:
 		return SOLO_WORLD
+	if name_form == NameForm.NUMBERED:
+		return NUMBERED_WORLD % (int(slot.trim_prefix("coop")) if slot.begins_with("coop") else 0)
+	var names := member_names(rec)
+	return ", ".join(names) if not names.is_empty() else NO_GROUP
+
+
+## The names of a World's members, in order (the "i" page lists them).
+static func member_names(rec: WorldRecord) -> PackedStringArray:
 	var names := PackedStringArray()
 	for pid: Variant in rec.members:
 		names.append(String((rec.members[pid] as Dictionary).get("name", PlayerProfile.NAME)))
-	return ", ".join(names) if not names.is_empty() else NO_GROUP
+	return names
 
 
 ## The colour index of each member of a World, in the order of their names (a row's swatches).

@@ -1,0 +1,11 @@
+# core/66: the Lobby's look, a Host with made-up players (tools/shot_lobby.gd). 16:9 and narrower, free place,
+# long name, focus, the drawer, the "i" page, the row names in both forms.
+four        --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:four' --shots=60
+free        --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:three' --shots=60
+long-name   --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:long_name' --shots=60
+narrow      --scene=res://tools/shot_lobby.tscn --size=960x720 --do='30:call:four' --shots=60
+focus       --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:focus_two' --shots=60
+drawer      --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:drawer_open' --shots=60
+who         --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:who' --shots=60
+form-members --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:drawer_open;31:call:members_form' --shots=60
+form-numbered --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:drawer_open;31:call:numbered_form' --shots=60
