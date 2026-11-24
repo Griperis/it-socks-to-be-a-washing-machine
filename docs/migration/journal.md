@@ -1196,3 +1196,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | maintenance/04, session.gd split before batch A: Session keeps every RPC and PROTOCOL (20); the work moves to SessionPeer, SessionGate, SessionHouse, SessionGuard, SessionRelay; `coop.md` "Adding a verb"; no behaviour change |
 | Cost | about 133k subagent tokens |
 | Surprises | session.gd 842 to 337 lines; helpers resuming after an await now check the Session still exists |
+
+---
+
+| Ticket | core/70, a Sock pushed under the floor drawn for a frame: not seen (0 of 306 drawn frames with 4 pushes; the push lands at the next tick's start and the Mess puts it back in that tick); a drawn-frame floor watch added to mess_settle; no game change |
+| Cost | about 125k subagent tokens |
+| Surprises | t01_heap no longer gets a push on main; reproduced on the thin-floor pour |
