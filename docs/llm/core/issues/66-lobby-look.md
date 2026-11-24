@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: core
 feature: frame
@@ -29,5 +29,15 @@ card (Q2584).
 - Look work stops at its first still (project rule).
 
 ## Open follow-ups
+- [later] Members-form row names clip in the drawer ("Ada," for three names); the numbered form does not (Q2587 judgement).
+- [later] A free place's silhouette is a flat dark grey (backdrop 35 % toward grey); the Ready tick on a yellow name sits close to the gold mark.
+- `WorldRow` carries a new `members` list (the "i" page's names); no wire change, PROTOCOL untouched.
 
 ## Built log
+
+### 2026-11-24 (first still, stops for the designer)
+Changed: `LobbyStage` (SubViewport, own World3D, 4 pedestals, AvatarLooks, free silhouettes, camera 16:9 / narrower rule),
+`LobbyPlace` (HOST mark, name in colour, Ready mark, "Waiting for a player", focus), `WhoPage`, `LobbyTuning` (placeholders), the "i" key
+beside the World card; `Worlds.name_form` (MEMBERS or NUMBERED, L7) and `members` in rows; shot scene `tools/shot_lobby.tscn` and set `lobby-look`.
+Files: game/lobby/lobby_*.gd/tscn/tres, who_page.*, lobby.gd/tscn, game/save/worlds.gd, tools/shot_lobby.*, tools/shots/sets/lobby-look.txt, tests/lobby_test.gd (k10).
+Stills: builds/review-lobby/. Verified: see commit.

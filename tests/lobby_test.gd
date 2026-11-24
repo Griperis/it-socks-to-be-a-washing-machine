@@ -38,6 +38,8 @@ func cases() -> Array[Dictionary]:
 				"title": "real path: the Host's drawer starts open and a Guest's shut; Choose clears Ready; the Host shuts it (it slides), deletes the chosen World through the question (the close key backs out) and the Lobby lands on the last-played World on both machines; chooses the Solo World; New game takes the first free slot; the Guest's drawer is the same list read-only with the chosen one ticked"},
 		{"name": "k09_drawer_full", "method": "case_k09", "world": false,
 				"title": "five co-op Worlds used: New game and choosing the Solo World show the full page (\"All 5 co-op Worlds are used: delete one first\"); deleting one there goes on at once; a damaged World has only Delete; Solo has no drawer"},
+		{"name": "k10_join_fills_place", "method": "case_k10", "world": false,
+				"title": "real path: a Guest's join fills a place on both screens: the free place's silhouette and \"Waiting for a player\" give way to an Avatar in the Guest's colour, its name in that colour under the pedestal, on the Host's Lobby and the Guest's own"},
 	]
 
 
@@ -149,6 +151,25 @@ func case_k03() -> void:
 	await _until(func() -> bool: return _did.has("Guest:title:" + Session.HOST_QUIT), "the Guest to go to its title with the reason", 900, 20.0)
 	_check(_did.has("Host:title:"), "the Host to its title with no notice (%s)" % [_did])
 	_check(not hlobby.link.session.is_online() and not globby.link.session.is_online(), "the session is over on both")
+
+
+# --- K10 ------------------------------------------------------------------------------------------
+
+func case_k10() -> void:
+	var host := _machine("Host")
+	var guest := _machine("Guest")
+	var hlobby := await _lobby(host, LobbyScreen.Mode.HOST, _host_world())
+	await _until(func() -> bool: return hlobby.link.session.is_online(), "the Host's Lobby to listen", 900, 20.0)
+	_check(hlobby.stage().is_free(1) and hlobby.places()[1].is_free() and hlobby.place_texts()[1] == LobbyScreen.WAITING_PLAYER,
+			"before the join place 2 is a silhouette that waits (%s)" % [hlobby.place_texts()])
+	var globby := await _lobby(guest, LobbyScreen.Mode.JOIN, null, "127.0.0.1:%d" % hlobby.link.session.port)
+	await _until(func() -> bool: return hlobby.link.roster.peers().size() == 2 and not globby.stage().is_free(1) and not hlobby.stage().is_free(1),
+			"the Guest's place to fill on both screens", 900, 20.0)
+	for lobby: LobbyScreen in [hlobby, globby]:
+		var colour := lobby.link.roster.colour_of(lobby.link.roster.peers()[1])
+		_check(not lobby.places()[1].is_free() and lobby.stage().figure(1).colour == colour, "an Avatar in the Guest's colour stands there")
+		_check(lobby.place_texts()[1].begins_with(PlayerProfile.NAME) and lobby.place_texts()[2] == LobbyScreen.WAITING_PLAYER,
+				"its name is under the pedestal, the next place waits (%s)" % [lobby.place_texts()])
 
 
 # --- K04 ------------------------------------------------------------------------------------------

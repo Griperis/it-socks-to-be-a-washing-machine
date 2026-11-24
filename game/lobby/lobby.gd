@@ -1,7 +1,8 @@
 ## The Lobby (docs/architecture/lobby.md "Core/63", Q2582, Q2583): where the players of a game gather
 ## before the house, its own scene over the title's backdrop, no house. A view of the link's LobbyState
-## and Roster: a key asks (Parts.ask), never writes. A plain stand-in look (core/66 makes the look): the
-## World's card, the places as a list of names in their colours, the status line and the bottom bar.
+## and Roster: a key asks (Parts.ask), never writes. Its look (core/66): the 3D stage behind the keys
+## (LobbyStage: pedestals, Avatars, silhouettes), a place under each pedestal (LobbyPlace), the World's
+## card with its "i" page (WhoPage), the status line and the bottom bar.
 ##
 ## - Solo (a Host of one, nothing listening): one place, no Ready; Back, Continue (hidden with no save)
 ##   and New Game (asks before a saved game is overwritten: the question's close key or Esc cancels,
@@ -19,6 +20,7 @@ extends Control
 
 const SCENE := "res://game/lobby/lobby.tscn"
 const TITLE := "res://game/ui/title/title.tscn"
+const PLACE := preload("res://game/lobby/lobby_place.tscn")
 const JOINING_CARD := preload("res://game/level/loading_screen.tscn")
 
 enum Mode {SOLO, HOST, JOIN}
@@ -64,10 +66,14 @@ const NEW_GAME_PENDING := "+new"
 var _going := false
 var _pending := ""
 var _joining_card: LoadingScreen = null
+var _place_nodes: Array[LobbyPlace] = []
 
 @onready var _card_title: Label = %CardTitle
 @onready var _card_line: Label = %CardLine
-@onready var _places: VBoxContainer = %Places
+@onready var _stage: LobbyStage = %Stage
+@onready var _places: Control = %Places
+@onready var _who_key: Button = %WhoKey
+@onready var _who: WhoPage = %Who
 @onready var _back: Button = %Back
 @onready var _ready_key: Button = %Ready
 @onready var _start: Button = %Start
@@ -95,6 +101,15 @@ func _ready() -> void:
 	_new_game.pressed.connect(new_game)
 	_ask_yes.pressed.connect(_new_game_over_save)
 	_ask_close.pressed.connect(func() -> void: _show_ask(false))
+	_who_key.pressed.connect(open_who)
+	_who.closed.connect(_sync_focus)
+	for i in LobbyStage.PLACES:
+		var place := PLACE.instantiate() as LobbyPlace
+		place.index = i
+		place.tuning = _stage.tuning
+		_places.add_child(place)
+		place.focus_changed.connect(_sync_focus)
+		_place_nodes.append(place)
 	_drawer.visible = mode != Mode.SOLO
 	_drawer.set_open(mode == Mode.HOST, true)
 	_drawer.choose_world.connect(choose_world)
@@ -108,6 +123,13 @@ func _ready() -> void:
 	_show_ask(false)
 	_refresh()
 	_begin.call_deferred()
+
+
+## Every frame the places follow where their figures fall on the screen.
+func _process(_delta: float) -> void:
+	for place in _place_nodes:
+		if place.visible:
+			place.lay_out(_stage.box_of(place.index), _stage.tuning.label_gap)
 
 
 func _exit_tree() -> void:
@@ -278,15 +300,34 @@ func asking() -> bool:
 ## The places' lines as shown (the HOST mark, the name, the Ready mark; a free place's words), top down.
 func place_texts() -> PackedStringArray:
 	var out := PackedStringArray()
-	for row in _places.get_children():
-		if row.is_queued_for_deletion():
-			continue
-		var words := PackedStringArray()
-		for label in row.get_children():
-			if label is Label and (label as Label).visible and (label as Label).text != "":
-				words.append((label as Label).text)
-		out.append(" ".join(words))
+	for place in _place_nodes:
+		if place.visible:
+			out.append(place.texts())
 	return out
+
+
+## The places, one node each (a free one too), left to right; only the first `count` show.
+func places() -> Array[LobbyPlace]:
+	return _place_nodes
+
+
+## The 3D stage.
+func stage() -> LobbyStage:
+	return _stage
+
+
+## The "i" page of the chosen World: who was in it.
+func open_who() -> void:
+	var names := _members_of(link.lobby.world)
+	if names.is_empty():
+		return
+	_who.open(link.lobby.title, names)
+	_sync_focus()
+
+
+## Whether the "i" page lies over the Lobby.
+func who_open() -> bool:
+	return _who.visible
 
 
 ## Whether the Lobby has gone on into the house (its keys locked).
@@ -305,6 +346,7 @@ func _new_game_over_save() -> void:
 
 func _show_ask(on: bool) -> void:
 	_ask.visible = on
+	_sync_focus()
 	if on:
 		_ask_yes.grab_focus()
 
@@ -361,6 +403,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 	if asking():
 		_show_ask(false)
+	elif _who.visible:
+		_who.close()
 	elif _drawer.close_dialog():
 		pass
 	else:
@@ -380,6 +424,7 @@ func _refresh() -> void:
 	_card_title.text = lobby.title
 	_card_line.text = lobby.line
 	_card_line.visible = lobby.line != ""
+	_who_key.visible = mode != Mode.SOLO and not _members_of(lobby.world).is_empty()
 	_fill_places()
 	var solo := mode == Mode.SOLO
 	var me_ready := lobby.is_ready(_me())
@@ -403,34 +448,47 @@ func _in_game() -> bool:
 
 
 func _fill_places() -> void:
-	for row in _places.get_children():
-		_places.remove_child(row)
-		row.queue_free()
 	var roster := link.roster
 	var count := 1 if mode == Mode.SOLO else roster.tuning.max_players
+	count = mini(count, LobbyStage.PLACES)
+	_stage.set_places(count)
 	var peers := roster.peers()
-	for i in count:
-		var row := HBoxContainer.new()
-		row.alignment = BoxContainer.ALIGNMENT_CENTER
-		row.add_theme_constant_override(&"separation", 16)
-		_places.add_child(row)
+	for i in LobbyStage.PLACES:
+		var place := _place_nodes[i]
+		place.visible = i < count
+		if i >= count:
+			continue
 		if i >= peers.size():
-			row.add_child(_label(WAITING_PLAYER, &"ThinLabel", Color.TRANSPARENT))
+			place.show_free()
+			_stage.show_free(i)
 			continue
 		var peer := peers[i]
-		if peer == Roster.HOST and mode != Mode.SOLO:
-			row.add_child(_label(HOST_MARK, &"RowLabel", Color.TRANSPARENT))
-		var name_label := _label(roster.name_of(peer), &"RowName", roster.colour_of(peer))
-		name_label.name = "Name"
-		row.add_child(name_label)
-		if mode != Mode.SOLO:
-			row.add_child(_label(READY_ON if link.lobby.is_ready(peer) else NOT_READY_MARK, &"RowLabel", Color.TRANSPARENT))
+		var colour := roster.colour_of(peer)
+		place.show_player(roster.name_of(peer), colour, peer == Roster.HOST and mode != Mode.SOLO,
+				mode != Mode.SOLO, link.lobby.is_ready(peer))
+		_stage.show_player(i, colour)
+	_sync_focus()
 
 
-func _label(text: String, variation: StringName, colour: Color) -> Label:
-	var l := Label.new()
-	l.text = text
-	l.theme_type_variation = variation
-	if colour.a > 0.0:
-		l.add_theme_color_override(&"font_color", colour)
-	return l
+## The focused place (the mouse over its figure or the pad's selection) turns its pedestal gold; a page over the
+## Lobby takes the focus away.
+func _sync_focus() -> void:
+	if not is_node_ready():
+		return
+	var blocked := asking() or _who.visible
+	var at := -1
+	for place in _place_nodes:
+		place.set_blocked(blocked)
+		if place.visible and place.focused():
+			at = place.index
+	_stage.set_focus(at)
+
+
+## The names of the Group of the World in `slot`, as the Host's rows say them.
+func _members_of(slot: String) -> PackedStringArray:
+	var out := PackedStringArray()
+	for row: Variant in link.lobby.worlds:
+		if String((row as Dictionary).get("slot", "")) == slot:
+			for who: Variant in (row as Dictionary).get("members", []):
+				out.append(String(who))
+	return out
