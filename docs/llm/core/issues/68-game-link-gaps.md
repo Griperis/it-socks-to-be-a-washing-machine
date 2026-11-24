@@ -46,3 +46,7 @@ terms: [Host, Guest, Session, Roster]
     game/parts/avatar/avatars.gd, game/net/game_link.gd, game/net/roster.gd, game/level/level_runtime.gd,
     tests/game_link_test.gd (l07, l08 real path, l09, each at 0 and 50 ms), docs/architecture/coop.md, lobby.md
   - Verified: PASS 18826 checks, 540 cases (--touched)
+- 2026-11-24 (main merged again: core/41)
+  - Changed: main merged; `PROTOCOL` 18 (main 17); the avatar keeps core/41's Back and riding pose beside the Gate.
+  - Files: game/parts/session.gd, this ticket
+  - Verified: PASS 19009 checks, 551 cases (--touched)
