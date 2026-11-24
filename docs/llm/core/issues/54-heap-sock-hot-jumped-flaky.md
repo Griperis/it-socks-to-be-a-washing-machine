@@ -82,3 +82,4 @@ A flaky test is a defect to rework (kit/docs/TESTING.md "Flaky cases"), never a 
   - Verified: after merging main (a6e1955 and later), the scratch sweep (the real path poured 5 times a case, 0 to 4
     extra records, 27 runs in order and reversed): 1350 pours, 0 faults, 0 jitter. `--touched` (coop/07's and coop/08's suites included): `PASS 18784 checks, 536
     cases`, no FLAKY; `PASS rules: 9 rules, no new hit`.
+  - The drive refused this entry's commit; `git_repair.sh` folded its six files into the merge of main (5e5d41f).
