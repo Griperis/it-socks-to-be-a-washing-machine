@@ -8,9 +8,6 @@ extends PanelContainer
 signal choose
 signal delete
 
-const CHOOSE := "Choose"
-const CHOSEN := "✓ Chosen"
-
 var slot := ""
 
 @onready var _swatches: HBoxContainer = %Swatches
@@ -39,7 +36,7 @@ func fill(row: Dictionary, chosen: String, host: bool, choosable: bool, tuning: 
 		_swatches.add_child(swatch)
 	_tick.visible = is_chosen and not host
 	_choose.visible = host and choosable and not bool(row.get("damaged", false))
-	_choose.text = CHOSEN if is_chosen else CHOOSE
+	_choose.text = LobbyWords.CHOSEN if is_chosen else LobbyWords.CHOOSE
 	_choose.disabled = is_chosen
 	_delete.visible = host and slot != Worlds.SOLO
 	var box := StyleBoxFlat.new()
@@ -50,5 +47,15 @@ func fill(row: Dictionary, chosen: String, host: bool, choosable: bool, tuning: 
 
 
 func _ready() -> void:
+	_tick.text = LobbyWords.CHOSEN_TICK
 	_choose.pressed.connect(choose.emit)
 	_delete.pressed.connect(delete.emit)
+
+
+## The Choose key and the Delete key.
+func choose_key() -> Button:
+	return _choose
+
+
+func delete_key() -> Button:
+	return _delete

@@ -40,6 +40,14 @@ func cases() -> Array[Dictionary]:
 				"title": "five co-op Worlds used: New game and choosing the Solo World show the full page (\"All 5 co-op Worlds are used: delete one first\"); deleting one there goes on at once; a damaged World has only Delete; Solo has no drawer"},
 		{"name": "k10_join_fills_place", "method": "case_k10", "world": false,
 				"title": "real path: a Guest's join fills a place on both screens: the free place's silhouette and \"Waiting for a player\" give way to an Avatar in the Guest's colour, its name in that colour under the pedestal, on the Host's Lobby and the Guest's own"},
+		{"name": "k11_pad_route", "method": "case_k11", "world": false,
+				"title": "real path: the pad's first press selects the \"i\" key (Back when the World has no one to list, Solo's too); Down goes to the figures, Right walks them, Right of the last goes into the open drawer, Left comes back, Down reaches the bottom keys and Up returns"},
+		{"name": "k12_captions_ready_tick", "method": "case_k12", "world": false,
+				"title": "real path: the captions \"press again to un-ready\" and \"when everyone is Ready\" show as the list says and keep their line; the Ready key ticks (hover) and does not click, every other key clicks"},
+		{"name": "k13_invite_hook", "method": "case_k13", "world": false,
+				"title": "ENet cannot invite: the Host's \"Invite friends\" key is hidden; a test transport that can shows it, in the Host's drawer only, and the key asks that transport"},
+		{"name": "k14_words_one_place_narrow_camera", "method": "case_k14", "world": false,
+				"title": "the Lobby's scenes carry no text of their own (LobbyWords is the one place); the status line is empty and hidden; a narrower-than-16:9 stage keeps the width a 16:9 one sees"},
 	]
 
 
@@ -145,7 +153,7 @@ func case_k03() -> void:
 	var globby := await _lobby(guest, LobbyScreen.Mode.JOIN, null, "127.0.0.1:%d" % hlobby.link.session.port)
 	await _until(func() -> bool: return hlobby.link.roster.peers().size() == 2 and globby.place_texts()[1].contains(PlayerProfile.NAME),
 			"the Guest in both Lobbies", 900, 20.0)
-	_check((hlobby.get_node("%Back") as Button).text == LobbyScreen.BACK, "the Host's key reads Back")
+	_check((hlobby.get_node("%Back") as Button).text == LobbyWords.BACK, "the Host's key reads Back")
 	globby.visible = false
 	await _click(hlobby.get_node("%Back") as Control)
 	await _until(func() -> bool: return _did.has("Guest:title:" + Session.HOST_QUIT), "the Guest to go to its title with the reason", 900, 20.0)
@@ -160,7 +168,7 @@ func case_k10() -> void:
 	var guest := _machine("Guest")
 	var hlobby := await _lobby(host, LobbyScreen.Mode.HOST, _host_world())
 	await _until(func() -> bool: return hlobby.link.session.is_online(), "the Host's Lobby to listen", 900, 20.0)
-	_check(hlobby.stage().is_free(1) and hlobby.places()[1].is_free() and hlobby.place_texts()[1] == LobbyScreen.WAITING_PLAYER,
+	_check(hlobby.stage().is_free(1) and hlobby.places()[1].is_free() and hlobby.place_texts()[1] == LobbyWords.WAITING_PLAYER,
 			"before the join place 2 is a silhouette that waits (%s)" % [hlobby.place_texts()])
 	var globby := await _lobby(guest, LobbyScreen.Mode.JOIN, null, "127.0.0.1:%d" % hlobby.link.session.port)
 	await _until(func() -> bool: return hlobby.link.roster.peers().size() == 2 and not globby.stage().is_free(1) and not hlobby.stage().is_free(1),
@@ -168,7 +176,7 @@ func case_k10() -> void:
 	for lobby: LobbyScreen in [hlobby, globby]:
 		var colour := lobby.link.roster.colour_of(lobby.link.roster.peers()[1])
 		_check(not lobby.places()[1].is_free() and lobby.stage().figure(1).colour == colour, "an Avatar in the Guest's colour stands there")
-		_check(lobby.place_texts()[1].begins_with(PlayerProfile.NAME) and lobby.place_texts()[2] == LobbyScreen.WAITING_PLAYER,
+		_check(lobby.place_texts()[1].begins_with(PlayerProfile.NAME) and lobby.place_texts()[2] == LobbyWords.WAITING_PLAYER,
 				"its name is under the pedestal, the next place waits (%s)" % [lobby.place_texts()])
 
 
@@ -182,9 +190,9 @@ func case_k04() -> void:
 	hl.session.profile = PlayerProfile.fresh()
 	_check(hl.session.host() == OK, "the Host listens")
 	var globby := await _lobby(guest, LobbyScreen.Mode.JOIN, null, "127.0.0.1:%d" % hl.session.port)
-	await _until(func() -> bool: return hl.roster.peers().size() == 2 and globby.place_texts().size() == 4 and globby.place_texts()[1] != LobbyScreen.WAITING_PLAYER,
+	await _until(func() -> bool: return hl.roster.peers().size() == 2 and globby.place_texts().size() == 4 and globby.place_texts()[1] != LobbyWords.WAITING_PLAYER,
 			"the Guest in the Lobby", 900, 20.0)
-	_check((globby.get_node("%Back") as Button).text == LobbyScreen.LEAVE, "a Guest's key reads Leave")
+	_check((globby.get_node("%Back") as Button).text == LobbyWords.LEAVE, "a Guest's key reads Leave")
 	await _key(&"ui_cancel")
 	await _until(func() -> bool: return _did.has("Guest:title:"), "Esc to take the Guest to its title", 900, 20.0)
 	await _until(func() -> bool: return hl.roster.peers().size() == 1, "the Host to forget the Guest", 900, 20.0)
@@ -250,7 +258,7 @@ func case_k06() -> void:
 	_check(not (lobby.get_node("%Ready") as Control).visible and not (lobby.get_node("%Start") as Control).visible
 			and not (lobby.get_node("%Waiting") as Control).visible, "no Ready, no Start")
 	_check(not (lobby.get_node("%Continue") as Control).visible and (lobby.get_node("%NewGame") as Control).visible, "no save: Continue hidden")
-	_check((lobby.get_node("%CardTitle") as Label).text == LobbyScreen.SOLO_TITLE, "the card says Solo")
+	_check((lobby.get_node("%CardTitle") as Label).text == LobbyWords.SOLO_TITLE, "the card says Solo")
 	await _click(lobby.get_node("%NewGame") as Control)
 	_check(not lobby.asking() and _into.size() == 3, "New Game with no save goes in at once")
 	_check(_world_of(_into).is_new and _world_of(_into).slot == Worlds.SOLO, "with a New Game in the Solo slot")
@@ -345,7 +353,7 @@ func case_k08() -> void:
 	await _click(_choose_key(hd, "coop1"))
 	await _until(func() -> bool: return globby.link.lobby.world == "coop1" and (globby.get_node("%CardTitle") as Label).text == "Ann", "the Guest to follow the Host to Ann's World", 900, 20.0)
 	_check(hlobby.link.lobby.readied.is_empty() and globby.link.lobby.readied.is_empty(), "Choose clears Ready on every machine")
-	await _until(func() -> bool: return _chosen_label(hd, "coop1") == WorldRow.CHOSEN, "the chosen row to read Chosen", 900, 20.0)
+	await _until(func() -> bool: return _chosen_label(hd, "coop1") == LobbyWords.CHOSEN, "the chosen row to read Chosen", 900, 20.0)
 	# The drawer slides shut (not at once) and open again.
 	hd.toggle()
 	_check(not hd.is_open() and not hd.is_settled(), "shutting it slides")
@@ -368,7 +376,7 @@ func case_k08() -> void:
 	_check((globby.get_node("%CardTitle") as Label).text == Worlds.SOLO_WORLD, "the card says Solo World")
 	await _click(hd.get_node("%NewGame") as Control)
 	await _until(func() -> bool: return globby.link.lobby.world == "coop1", "New game to take the first free slot", 900, 20.0)
-	_check((globby.get_node("%CardTitle") as Label).text == LobbyScreen.NEW_WORLD and hlobby.world.is_new, "a New Game in coop1 (card \"New World\")")
+	_check((globby.get_node("%CardTitle") as Label).text == LobbyWords.NEW_WORLD and hlobby.world.is_new, "a New Game in coop1 (card \"New World\")")
 
 
 # --- K09 ------------------------------------------------------------------------------------------
@@ -454,6 +462,158 @@ func _world_of(into: Array) -> WorldSlot:
 	return w
 
 
+# --- K11 to K14: core/67, the Lobby's details ---------------------------------------------------------
+
+func case_k11() -> void:
+	_write_world("coop1", {"a": {"name": "Ann", "colour": 0}}, 100)
+	_write_world("coop2", {}, 50)
+	var host := _machine("Host")
+	var guest := _machine("Guest")
+	var hlobby := await _lobby(host, LobbyScreen.Mode.HOST, _host_world())
+	await _until(func() -> bool: return hlobby.link.session.is_online(), "the Host's Lobby to listen", 900, 20.0)
+	var globby := await _lobby(guest, LobbyScreen.Mode.JOIN, null, "127.0.0.1:%d" % hlobby.link.session.port)
+	await _until(func() -> bool: return hlobby.link.roster.peers().size() == 2 and (hlobby.get_node("%WhoKey") as Control).visible,
+			"the Guest in and the \"i\" key shown", 900, 20.0)
+	globby.visible = false
+	await _frames(3)
+	var who := hlobby.get_node("%WhoKey") as Control
+	var drawer := hlobby.drawer()
+	_check(hlobby.selected() == null, "nothing is selected before the pad is used")
+	await _key(&"ui_right")
+	_check(hlobby.selected() == who and hlobby.first_selection() == who, "the first press selects the \"i\" key")
+	await _key(&"ui_right")
+	_check(hlobby.selected() == drawer.key(), "Right goes to the World settings key")
+	await _key(&"ui_left")
+	await _key(&"ui_down")
+	_check(hlobby.selected() == hlobby.places()[0] and hlobby.places()[0].focused(), "Down from the top row goes to the first figure, and its place is focused")
+	await _key(&"ui_right")
+	_check(hlobby.selected() == hlobby.places()[1], "Right walks to the second figure")
+	await _key(&"ui_left")
+	_check(hlobby.selected() == hlobby.places()[0], "Left walks back")
+	await _key(&"ui_left")
+	_check(hlobby.selected() == hlobby.places()[0], "and stops at the first (no wrap)")
+	await _key(&"ui_right")
+	await _key(&"ui_right")
+	_check(drawer.is_open() and drawer.is_ancestor_of(hlobby.selected()), "Right of the last figure goes into the open drawer (%s)" % [hlobby.selected()])
+	await _key(&"ui_left")
+	_check(hlobby.selected() == hlobby.places()[1], "Left comes back out to the last figure")
+	await _key(&"ui_down")
+	var bottom: Array[Control] = [hlobby.get_node("%Back"), hlobby.get_node("%Ready")]
+	_check(bottom.has(hlobby.selected()), "Down reaches a bottom key (%s)" % [hlobby.selected()])
+	await _key(&"ui_up")
+	_check(hlobby.selected() is LobbyPlace, "Up returns to a figure")
+	# The drawer shut: Right of the last figure goes nowhere.
+	await _click(drawer.key())
+	await _until(func() -> bool: return not drawer.is_open() and drawer.is_settled(), "the drawer to shut", 300, 0.0)
+	hlobby.places()[1].grab_focus()
+	await _key(&"ui_right")
+	_check(hlobby.selected() == hlobby.places()[1], "with the drawer shut Right of the last figure stays")
+	# Solo has no "i": the first selection is Back.
+	_drop_branches()
+	var m := _machine("Solo")
+	var lobby := await _lobby(m, LobbyScreen.Mode.SOLO, Worlds.pick_solo())
+	await _frames(3)
+	_check(not (lobby.get_node("%WhoKey") as Control).visible and lobby.first_selection() == lobby.get_node("%Back"), "Solo has no \"i\": the first selection is Back")
+	await _key(&"ui_down")
+	_check(lobby.selected() == lobby.get_node("%Back"), "the pad's first press selects Back")
+
+
+func case_k12() -> void:
+	_write_world("coop1", {}, 100)
+	var host := _machine("Host")
+	var guest := _machine("Guest")
+	var hlobby := await _lobby(host, LobbyScreen.Mode.HOST, _host_world())
+	await _until(func() -> bool: return hlobby.link.session.is_online(), "the Host's Lobby to listen", 900, 20.0)
+	var globby := await _lobby(guest, LobbyScreen.Mode.JOIN, null, "127.0.0.1:%d" % hlobby.link.session.port)
+	await _until(func() -> bool: return hlobby.link.roster.peers().size() == 2 and globby.link.roster.peers().size() == 2, "both in", 900, 20.0)
+	globby.visible = false
+	await _frames(3)
+	var heard: Array[StringName] = []
+	Sounds.played.connect(func(n: StringName, _s: bool, _w: Vector3, _b: StringName) -> void: heard.append(n))
+	var ready_key := hlobby.get_node("%Ready") as Button
+	var ready_cap := hlobby.get_node("%ReadyCaption") as Label
+	var start := hlobby.get_node("%Start") as Button
+	var start_cap := hlobby.get_node("%StartCaption") as Label
+	_check(ready_cap.text == LobbyWords.READY_CAPTION and start_cap.text == LobbyWords.START_CAPTION, "the captions' words")
+	_check(ready_cap.modulate.a == 0.0 and start_cap.modulate.a == 1.0 and start.disabled, "not Ready: no un-ready caption, Start greyed with its caption")
+	var rect_ready := ready_cap.get_global_rect()
+	var rect_start := start_cap.get_global_rect()
+	var key_rect := ready_key.get_global_rect()
+	await _click(ready_key)
+	await _until(func() -> bool: return hlobby.link.lobby.is_ready(1), "the Host's Ready", 900, 20.0)
+	_check(ready_key.text == LobbyWords.READY_ON and ready_cap.modulate.a == 1.0, "Ready: the key reads the tick, the caption \"press again to un-ready\" shows")
+	_check(ready_cap.get_global_rect() == rect_ready and ready_key.get_global_rect() == key_rect, "the caption keeps its line: nothing moved")
+	_check(heard.count(&"ui_click") == 0 and heard.count(&"ui_hover") >= 1, "the Ready key ticked and did not click (%s)" % [heard])
+	_check(start_cap.modulate.a == 1.0 and start.disabled, "the Guest is not Ready: Start still held")
+	globby.toggle_ready()
+	await _until(func() -> bool: return hlobby.link.lobby.all_ready() and not start.disabled, "everyone Ready: Start pressable", 900, 20.0)
+	_check(start_cap.modulate.a == 0.0 and start_cap.get_global_rect() == rect_start, "everyone Ready: the Start caption hides and keeps its line")
+	await _click(ready_key)
+	await _until(func() -> bool: return not hlobby.link.lobby.is_ready(1), "the second press un-readies", 900, 20.0)
+	_check(ready_cap.modulate.a == 0.0 and ready_key.text == LobbyWords.READY and start.disabled and start_cap.modulate.a == 1.0, "pressed again: back as before")
+	heard.clear()
+	await _click(hlobby.get_node("%Back") as Control)
+	_check(heard.has(&"ui_click"), "the other keys click (%s)" % [heard])
+
+
+func case_k13() -> void:
+	_write_world("coop1", {}, 100)
+	var host := _machine("Host")
+	var hlobby := await _lobby(host, LobbyScreen.Mode.HOST, _host_world())
+	await _until(func() -> bool: return hlobby.link.session.is_online(), "the Host's Lobby to listen", 900, 20.0)
+	_check(not hlobby.link.session.transport.can_invite(), "ENet cannot invite")
+	_check(not (hlobby.drawer().get_node("%Invite") as Control).visible, "ENet: the \"Invite friends\" key is hidden")
+	_drop_branches()
+	var steam_like := InvitingTransport.new()
+	var host2 := _machine("Host2")
+	var lobby2 := await _lobby(host2, LobbyScreen.Mode.HOST, _host_world(), "", 0, steam_like)
+	await _until(func() -> bool: return lobby2.link.session.is_online(), "the second Host to listen", 900, 20.0)
+	await _frames(3)
+	var key := lobby2.drawer().get_node("%Invite") as Button
+	_check(key.visible and key.text == LobbyWords.INVITE, "a transport that can invite shows the key")
+	await _click(key)
+	_check(steam_like.invited == 1, "the key asks the transport (%d)" % steam_like.invited)
+	_drop_branches()
+	var m := _machine("Solo")
+	var solo := await _lobby(m, LobbyScreen.Mode.SOLO, Worlds.pick_solo(), "", 0, InvitingTransport.new())
+	await _frames(3)
+	_check(not (solo.drawer().get_node("%Invite") as Control).is_visible_in_tree(), "Solo has no drawer, so no key")
+
+
+func case_k14() -> void:
+	var dir := DirAccess.open("res://game/lobby")
+	var texty: Array[String] = []
+	for f in dir.get_files():
+		if f.ends_with(".tscn"):
+			for line in FileAccess.get_file_as_string("res://game/lobby/" + f).split("\n"):
+				if line.begins_with("text = ") or line.begins_with("placeholder_text = "):
+					texty.append("%s: %s" % [f, line])
+	_check(texty.is_empty(), "no Lobby scene carries a word of its own (%s)" % [texty])
+	var m := _machine("Solo")
+	var lobby := await _lobby(m, LobbyScreen.Mode.SOLO, Worlds.pick_solo())
+	await _frames(3)
+	_check(lobby.status_text() == "" and not (lobby.get_node("%Status") as Control).visible, "the status line is empty and hidden: nothing holds the game")
+	_check((lobby.get_node("%NewGame") as Button).text == LobbyWords.NEW_GAME_SOLO and (lobby.get_node("%Back") as Button).text == LobbyWords.BACK, "the keys read LobbyWords")
+	# The narrower camera: 16:9 keeps the height; a narrower screen keeps the width a 16:9 one sees.
+	var stage := (load("res://game/lobby/lobby_stage.tscn") as PackedScene).instantiate() as LobbyStage
+	stage.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	stage.size = Vector2(1600, 900)
+	add_child(stage)
+	await _frames(2)
+	var camera := stage.get_node("%Camera") as Camera3D
+	var wide_fov := camera.fov
+	_check(camera.keep_aspect == Camera3D.KEEP_HEIGHT, "16:9 keeps the height")
+	var wide_half_width := tan(deg_to_rad(wide_fov) * 0.5) * LobbyStage.WIDE
+	stage.size = Vector2(900, 900)
+	await _frames(2)
+	_check(camera.keep_aspect == Camera3D.KEEP_WIDTH and absf(tan(deg_to_rad(camera.fov) * 0.5) - wide_half_width) < 0.001,
+			"narrower: keeps the width a 16:9 screen sees (fov %.1f)" % camera.fov)
+	stage.size = Vector2(2400, 900)
+	await _frames(2)
+	_check(camera.keep_aspect == Camera3D.KEEP_HEIGHT and is_equal_approx(camera.fov, wide_fov), "wider keeps the height")
+	stage.free()
+
+
 # --- Machines -------------------------------------------------------------------------------------
 
 func _machine(label: String) -> Node:
@@ -477,8 +637,10 @@ func _link_in(machine: Node) -> GameLink:
 
 
 ## A Lobby in `machine` (its link made beside it, as the title does), its ways out noted.
-func _lobby(machine: Node, mode: LobbyScreen.Mode, world: WorldSlot, address := "", lag_ms := 0) -> LobbyScreen:
+func _lobby(machine: Node, mode: LobbyScreen.Mode, world: WorldSlot, address := "", lag_ms := 0, transport: NetTransport = null) -> LobbyScreen:
 	var link := _link_in(machine)
+	if transport != null:
+		link.session.transport = transport
 	if mode == LobbyScreen.Mode.JOIN:
 		link.session.profile = PlayerProfile.fresh()  # one process: each Guest its own player
 	var lobby := (load(LobbyScreen.SCENE) as PackedScene).instantiate() as LobbyScreen

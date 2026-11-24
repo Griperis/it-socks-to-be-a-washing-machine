@@ -9,3 +9,7 @@ drawer      --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:dr
 who         --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:who' --shots=60
 form-members --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:drawer_open;31:call:members_form' --shots=60
 form-numbered --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:drawer_open;31:call:numbered_form' --shots=60
+# core/67: the captions under Ready and Start, the pad's selection.
+captions    --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:details' --shots=60
+pad-first   --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:pad_first' --shots=60
+pad-drawer  --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:pad_drawer' --shots=60

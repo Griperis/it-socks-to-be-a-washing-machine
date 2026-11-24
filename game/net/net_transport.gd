@@ -28,3 +28,14 @@ var peer: MultiplayerPeer = null
 ## The number Guests reach this Host on, when the transport has one (ENet's port); 0 otherwise.
 func local_port() -> int:
 	return 0
+
+
+## Whether this transport can invite a friend into the Host's game (Steam's friends list). ENet cannot: the
+## Lobby's "Invite friends" key stays hidden until a transport says it can (docs/architecture/lobby.md "Core/67").
+func can_invite() -> bool:
+	return false
+
+
+## Asks the transport to invite a friend (opens its own invite overlay). Nothing for a transport that cannot.
+func invite() -> void:
+	pass

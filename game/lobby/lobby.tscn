@@ -89,7 +89,6 @@ offset_left = 16.0
 offset_right = 72.0
 offset_bottom = 56.0
 theme_type_variation = &"KeycapButton"
-text = "i"
 
 [node name="Gap" type="Control" parent="Margin/Column"]
 layout_mode = 2
@@ -111,7 +110,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(240, 72)
 layout_mode = 2
 theme_type_variation = &"ExitButton"
-text = "Back"
 
 [node name="Middle" type="HBoxContainer" parent="Margin/Column/Bar" unique_id=634428824]
 layout_mode = 2
@@ -119,27 +117,45 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 24
 alignment = 1
 
-[node name="Ready" type="Button" parent="Margin/Column/Bar/Middle" unique_id=168750240]
+[node name="ReadyBox" type="VBoxContainer" parent="Margin/Column/Bar/Middle"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Ready" type="Button" parent="Margin/Column/Bar/Middle/ReadyBox" unique_id=168750240]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 72)
 layout_mode = 2
 theme_type_variation = &"KeycapButton"
-text = "Ready"
+metadata/no_ui_sound = true
 
-[node name="Start" type="Button" parent="Margin/Column/Bar/Middle" unique_id=1784924981]
+[node name="ReadyCaption" type="Label" parent="Margin/Column/Bar/Middle/ReadyBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ThinLabel"
+horizontal_alignment = 1
+
+[node name="StartBox" type="VBoxContainer" parent="Margin/Column/Bar/Middle"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Start" type="Button" parent="Margin/Column/Bar/Middle/StartBox" unique_id=1784924981]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 72)
 layout_mode = 2
 theme_type_variation = &"KeycapButton"
 disabled = true
-text = "Start"
+
+[node name="StartCaption" type="Label" parent="Margin/Column/Bar/Middle/StartBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ThinLabel"
+horizontal_alignment = 1
 
 [node name="Waiting" type="Label" parent="Margin/Column/Bar/Middle" unique_id=1359065653]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 72)
 layout_mode = 2
 theme_type_variation = &"ThinLabel"
-text = "Waiting for the Host to start"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -148,14 +164,12 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 72)
 layout_mode = 2
 theme_type_variation = &"KeycapButton"
-text = "Continue"
 
 [node name="NewGame" type="Button" parent="Margin/Column/Bar/Middle" unique_id=1819326539]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 72)
 layout_mode = 2
 theme_type_variation = &"KeycapButton"
-text = "New Game"
 
 [node name="Balance" type="Control" parent="Margin/Column/Bar" unique_id=1612564385]
 custom_minimum_size = Vector2(240, 0)
@@ -213,13 +227,11 @@ theme_override_constants/separation = 18
 [node name="Heading" type="Label" parent="Ask/Center/Panel/Box" unique_id=1881563111]
 layout_mode = 2
 theme_type_variation = &"Heading1"
-text = "New game"
 horizontal_alignment = 1
 
 [node name="Question" type="Label" parent="Ask/Center/Panel/Box" unique_id=284816666]
 layout_mode = 2
 theme_type_variation = &"InkLabel"
-text = "Start a new game? The saved game is lost."
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -233,7 +245,6 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(240, 72)
 layout_mode = 2
 theme_type_variation = &"ExitButton"
-text = "New game"
 
 [node name="AskClose" parent="Ask/Center/Panel" instance=ExtResource("close_btn")]
 unique_name_in_owner = true

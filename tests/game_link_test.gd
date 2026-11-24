@@ -278,10 +278,10 @@ func _from_title(lag_ms: int) -> void:
 	var g_peer := globby.link.session.me()
 	_check(globby.place_texts()[0].contains("Hostess") and hlobby.place_texts()[0].contains("Hostess"),
 			"the Guest's Lobby shows the name typed on the Host's Multiplayer page (%s)" % [globby.place_texts()])
-	_check(hlobby.place_texts()[0].begins_with(LobbyScreen.HOST_MARK) and hlobby.place_texts()[3] == LobbyScreen.WAITING_PLAYER,
+	_check(hlobby.place_texts()[0].begins_with(LobbyWords.HOST_MARK) and hlobby.place_texts()[3] == LobbyWords.WAITING_PLAYER,
 			"the Host's place first with its mark, a free place waits (%s)" % [hlobby.place_texts()])
 	_check((globby.get_node("%Waiting") as Control).visible and not (globby.get_node("%Start") as Control).visible
-			and (globby.get_node("%Back") as Button).text == LobbyScreen.LEAVE, "the Guest waits for the Host to start, its Back reads Leave")
+			and (globby.get_node("%Back") as Button).text == LobbyWords.LEAVE, "the Guest waits for the Host to start, its Back reads Leave")
 	_check((hlobby.get_node("%Start") as Button).disabled, "Start is greyed while nobody is Ready")
 	# Ready from both: the Guest's click asks the Host.
 	await _click(globby.get_node("%Ready") as Control)
@@ -292,7 +292,7 @@ func _from_title(lag_ms: int) -> void:
 	await _click(hlobby.get_node("%Ready") as Control)
 	await _until(func() -> bool: return not (hlobby.get_node("%Start") as Button).disabled and globby.link.lobby.all_ready(),
 			"everyone Ready on both machines", 900, 20.0)
-	_check((globby.get_node("%Ready") as Button).text == LobbyScreen.READY_ON, "the Guest's key says it is Ready")
+	_check((globby.get_node("%Ready") as Button).text == LobbyWords.READY_ON, "the Guest's key says it is Ready")
 	# The Host's Start: both machines load the house behind the loading screen.
 	await _click(hlobby.get_node("%Start") as Control)
 	await _until(func() -> bool: return _level_of(host) != null and _level_of(guest) != null, "Start to load the house on both machines", 900, 30.0)

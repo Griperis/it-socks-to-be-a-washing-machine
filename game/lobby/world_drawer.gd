@@ -12,16 +12,14 @@ signal choose_world(slot: String)
 signal new_game_pressed
 ## The Host answered "Delete" to the question.
 signal delete_confirmed(slot: String)
+## The Host pressed Invite friends (shown only when the transport can invite).
+signal invite_pressed
+## The drawer opened or shut (pressed or set): the pad's route changes with it.
+signal open_changed
 ## The full page was closed without a delete (its close key or Esc).
 signal full_closed
 
 const ROW := preload("res://game/lobby/world_row.tscn")
-
-const HEADING := "World settings"
-const NEW_GAME := "New game"
-const NEW_GAME_ON := "✓ New game"
-const DELETE_ASK := "Delete %s? It cannot be brought back."
-const FULL_LINE := "All %d co-op Worlds are used: delete one first"
 
 @export var tuning: WorldDrawerTuning = preload("res://game/lobby/world_drawer_tuning.tres")
 
@@ -38,6 +36,7 @@ var _delete_slot := ""
 @onready var _panel: Control = %Panel
 @onready var _list: VBoxContainer = %Rows
 @onready var _new: Button = %NewGame
+@onready var _invite: Button = %Invite
 @onready var _ask: Control = %DeleteAsk
 @onready var _ask_question: Label = %Question
 @onready var _ask_yes: Button = %AskDelete
@@ -49,7 +48,9 @@ var _delete_slot := ""
 
 
 func _ready() -> void:
+	_words()
 	_panel.custom_minimum_size.x = tuning.width
+	_invite.pressed.connect(invite_pressed.emit)
 	_key.pressed.connect(toggle)
 	_new.pressed.connect(new_game_pressed.emit)
 	_ask_yes.pressed.connect(_confirm_delete)
@@ -62,6 +63,38 @@ func _ready() -> void:
 	_settle()
 
 
+func _words() -> void:
+	_key.text = LobbyWords.DRAWER_HEADING
+	($Panel/Box/Heading as Label).text = LobbyWords.DRAWER_HEADING
+	($Panel/Box/WorldLabel as Label).text = LobbyWords.DRAWER_WORLD
+	_new.text = LobbyWords.NEW_GAME
+	_invite.text = LobbyWords.INVITE
+	($DeleteAsk/Center/Panel/Box/Heading as Label).text = LobbyWords.DELETE_HEADING
+	_ask_yes.text = LobbyWords.DELETE
+	($Full/Center/Panel/Box/Heading as Label).text = LobbyWords.NEW_GAME_HEADING
+
+
+## Whether the Host's "Invite friends" key shows (the transport can invite and this is the Host's drawer).
+func set_can_invite(on: bool) -> void:
+	_invite.visible = on
+
+
+## The World settings key (the pad's route starts the drawer's column there).
+func key() -> Button:
+	return _key
+
+
+## The pad's rows inside the open drawer, top to bottom: each World row's keys, New game, Invite friends.
+## Only the ones on the route (visible and enabled).
+func pad_rows() -> Array:
+	var out: Array = []
+	for row in row_nodes():
+		out.append(LobbyPad.live([row.choose_key(), row.delete_key()]))
+	out.append(LobbyPad.live([_new]))
+	out.append(LobbyPad.live([_invite]))
+	return out.filter(func(r: Variant) -> bool: return not (r as Array).is_empty())
+
+
 ## Whether the drawer is open (or sliding open).
 func is_open() -> bool:
 	return _open
@@ -69,7 +102,10 @@ func is_open() -> bool:
 
 ## Opens or shuts it with the slide from where it is; `instant`: at once (the Lobby's start).
 func set_open(on: bool, instant := false) -> void:
+	var changed := _open != on
 	_open = on
+	if changed:
+		open_changed.emit.call_deferred()
 	if _tween != null:
 		_tween.kill()
 		_tween = null
@@ -113,12 +149,12 @@ func show_rows(rows: Array, chosen: String, host: bool, locked: bool, colour_of:
 	var in_rows := rows.any(func(r: Variant) -> bool: return String((r as Dictionary)["slot"]) == chosen)
 	_new.visible = host
 	_new.disabled = locked
-	_new.text = NEW_GAME_ON if chosen != "" and not in_rows else NEW_GAME
+	_new.text = LobbyWords.NEW_GAME_ON if chosen != "" and not in_rows else LobbyWords.NEW_GAME
 
 
 ## The "full" page over the Lobby: the co-op Worlds to delete one of; `coop_slots` is how many there are.
 func show_full(coop_slots: int) -> void:
-	_full_line.text = FULL_LINE % coop_slots
+	_full_line.text = LobbyWords.FULL_LINE % coop_slots
 	_full.visible = true
 	_fill(_full_list, true)
 
@@ -182,7 +218,7 @@ func _fill(into: VBoxContainer, coop_only: bool) -> void:
 
 func _ask_delete(slot: String, row_name: String) -> void:
 	_delete_slot = slot
-	_ask_question.text = DELETE_ASK % row_name
+	_ask_question.text = LobbyWords.DELETE_ASK % row_name
 	_show_ask(true)
 
 
