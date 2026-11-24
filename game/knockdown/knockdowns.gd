@@ -12,6 +12,10 @@
 ## fall: push, high, side; where the feet stood, the yaw), drops the knocked player's Hands as a leaver's
 ## (Hands.left, Q2485, Q2486) and ends a drag the knocked player held.
 ##
+## The catch (core/42, Q2588): the same hit test serves every Throw below full charge. One the hit
+## Teammate may take (Hands.take_refusal()) asks the Hands' Host-only `catch`; one they may not
+## bounces back off the body at the Hand-off's `bounce` of its speed, upwards kept, with no Command.
+##
 ## Down (E, G): `down` counts on every machine's own clock (left_of()), from `seconds`; from `rise_time`
 ## left the body gets up, played by every machine itself (Ragdoll.rise()); there is no immunity after
 ## (Q2487). The ragdoll is the avatar's (Avatar follows this Part each frame).
@@ -77,6 +81,9 @@ var _spent: Dictionary[int, bool] = {}
 var _held_once: Dictionary[int, bool] = {}
 ## How many knocks the Host asked (a test reads it).
 var knocks := 0
+## How many Throws below full charge the Host asked a catch for, and bounced off a body (core/42).
+var catches := 0
+var bounces := 0
 
 
 func _enter_tree() -> void:
@@ -448,12 +455,13 @@ func _hits() -> void:
 	var bodies := _bodies()
 	if bodies.size() < 2:
 		return
+	var asks: Array[Command] = []
 	for key: Variant in mess.throws:
 		var sock := int(key)
 		var launch: Dictionary = mess.throws[key]
-		if _spent.has(sock) or mess.state_of(sock) != Mess.State.FLYING or not mess.is_throw(sock) \
-				or float(launch.get("charge", 0.0)) < tuning.min_charge:
+		if _spent.has(sock) or mess.state_of(sock) != Mess.State.FLYING or not mess.is_throw(sock):
 			continue
+		var full := float(launch.get("charge", 0.0)) >= tuning.min_charge
 		var body := mess.moving_body(sock)
 		if body == null:
 			continue
@@ -467,6 +475,18 @@ func _hits() -> void:
 				continue
 			_spent[sock] = true
 			var v := body.linear_velocity
+			if not full:
+				# core/42 F33-F36: the same hit, below full charge, is a catch by the Hand-off's rule.
+				var why := hands.take_refusal(peer, sock)
+				if why != "":
+					# F35: refused, it bounces back off the body, upwards kept, and falls on; no word.
+					var k := hands.hand_off_numbers().bounce
+					body.linear_velocity = Vector3(-v.x * k, v.y * k, -v.z * k)
+					bounces += 1
+				else:
+					catches += 1
+					asks.append(Command.new(Hands.CATCH, Parts.HOST, hands.id, {"sock": sock, "to": peer, "at": at}))
+				break
 			var flat := Vector3(v.x, 0.0, v.z)
 			var push := flat.normalized() if flat.length() > 0.0001 else Vector3.FORWARD
 			var off := Vector3(at.x - feet.x, 0.0, at.z - feet.z)
@@ -475,9 +495,13 @@ func _hits() -> void:
 			# C27: it bounces back off the body, sideways only, and falls.
 			body.linear_velocity = -flat * tuning.bounce
 			knocks += 1
-			parts.ask(Command.new(KNOCK, Parts.HOST, id, {"target": peer, "thrower": int(launch.get("by", 0)),
+			asks.append(Command.new(KNOCK, Parts.HOST, id, {"target": peer, "thrower": int(launch.get("by", 0)),
 					"push": push, "high": high, "side": side, "at": at}))
 			break
+	# Asked once the walk over the Throws is done: an answer changes the Throws (a catch ends one, a
+	# knock lets the knocked player's Hands fall).
+	for cmd in asks:
+		parts.ask(cmd)
 
 
 ## Every player's standing body here: [peer, feet in the world, height].

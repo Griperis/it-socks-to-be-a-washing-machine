@@ -4,8 +4,9 @@
 ## at once; the Zoo key in the corner is a debug build's only (Q2580). The look is the scene's, on the Theme; code fills data and reacts to presses.
 ##
 ## - Solo: the Lobby (core/63, Q2583) with the Solo World (Worlds.pick_solo()), alone, nothing listening.
-## - Multiplayer: Host (the Lobby on the last-played co-op World, or a New Game in a free slot;
-##   listening) and Join (name and address, kept in the profile; the Host's Lobby or house).
+## - Multiplayer: one "Your name" field above Host and Join (kept in the profile; Q2585), Host (the Lobby on
+##   the last-played co-op World, or a New Game in a free slot; listening) and Join (address, kept in the
+##   profile; the Host's Lobby or house).
 ## - Options, Licence: their pages. Quit closes the game.
 ## - Each way into the game (Solo, Host, Join) makes the game link (GameLink, core/62) beside the title,
 ##   which the level then plays through and a scene change keeps; back at the title the game is over
@@ -70,7 +71,7 @@ func _ready() -> void:
 		_zoo_key = null
 	_close.pressed.connect(back_out)
 	var p := Worlds.profile()
-	_name.text = p.name if p.name != PlayerProfile.NAME else ""
+	_name.text = p.shown_name()
 	_address.text = p.address
 	_status.text = Worlds.take_notice()
 	show_page(HOME)
@@ -80,6 +81,8 @@ func _ready() -> void:
 ## Shows page `which` alone (no slide, no fade); the corner keys only on home. Leaving the Join page
 ## keeps what was typed in the profile.
 func show_page(which: String) -> void:
+	if page == MULTIPLAYER and which != MULTIPLAYER:
+		_keep_name()
 	if page == JOIN and which != JOIN:
 		_keep_join_fields()
 	if is_instance_valid(_page_node):
@@ -125,6 +128,7 @@ func solo() -> void:
 
 ## Host: the Lobby on the Host's World, listening. `from_command_line`: the `--host` rule.
 func host(from_command_line := false) -> void:
+	_keep_name()
 	var w := Worlds.pick_host(from_command_line)
 	if w == null:
 		_status.text = Worlds.take_notice()
@@ -134,6 +138,7 @@ func host(from_command_line := false) -> void:
 
 ## Join: the Host's Lobby (or its house) at the typed address (the remembered one when empty).
 func join(where := "") -> void:
+	_keep_name()
 	_keep_join_fields()
 	var address := where if where != "" else _address.text.strip_edges()
 	if address == "":
@@ -159,11 +164,20 @@ func _to_lobby(mode: LobbyScreen.Mode, w: WorldSlot, address: String) -> void:
 
 func _keep_join_fields() -> void:
 	var p := Worlds.profile()
-	var typed := PlayerProfile.clean_name(_name.text)
 	var address := _address.text.strip_edges().left(PlayerProfile.ADDRESS_MAX)
-	if typed != p.name or address != p.address:
-		p.name = typed
+	if address != p.address:
 		p.address = address
+		p.save()
+
+
+## The one "Your name" field (Multiplayer page, for Host and Join): kept in the profile.
+func _keep_name() -> void:
+	var p := Worlds.profile()
+	var typed := PlayerProfile.clean_name(_name.text)
+	if _name.text.strip_edges() == p.shown_name():
+		return  # untouched (a suggestion shown is not a typed name)
+	if typed != p.name:
+		p.name = typed
 		p.save()
 
 
@@ -180,9 +194,9 @@ func _first_focus(which: String) -> Control:
 		HOME:
 			return _solo
 		MULTIPLAYER:
-			return _host
-		JOIN:
 			return _name
+		JOIN:
+			return _address
 	return null
 
 

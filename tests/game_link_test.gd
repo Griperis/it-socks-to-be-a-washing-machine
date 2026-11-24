@@ -250,13 +250,15 @@ func _from_title(lag_ms: int) -> void:
 	var guest := _machine("Guest")
 	await _frames(1)
 	_open_title(host, false, lag_ms)
-	_open_title(guest, true, lag_ms)
+	_open_title(guest, true, lag_ms, func() -> String:
+		return PlayerProfile.clean_name((guest.get_node("Title") as TitleScreen).get_node("%NameField").text) if guest.has_node("Title") else PlayerProfile.NAME)
 	await _frames(2)
 	var ht := host.get_node("Title") as TitleScreen
 	var gt := guest.get_node("Title") as TitleScreen
 	# Both screens lie over each other in this one window: only the one clicked shows.
 	gt.visible = false
 	await _click(ht.get_node("%MultiplayerKey") as Control)
+	(ht.get_node("%NameField") as LineEdit).text = "Hostess"  # typed in the one field, then Host
 	await _click(ht.get_node("%Host") as Control)
 	await _until(func() -> bool: return _lobby_of(host) != null, "the Host's title to open the Lobby", 900, 20.0)
 	var hlobby := _lobby_of(host)
@@ -265,14 +267,17 @@ func _from_title(lag_ms: int) -> void:
 	hlobby.visible = false
 	gt.visible = true
 	await _click(gt.get_node("%MultiplayerKey") as Control)
+	(gt.get_node("%NameField") as LineEdit).text = "Visitor"
 	await _click(gt.get_node("%JoinKey") as Control)
 	(gt.get_node("%AddressField") as LineEdit).text = "127.0.0.1:%d" % hs.port
 	await _click(gt.get_node("%JoinGo") as Control)
 	await _until(func() -> bool: return _lobby_of(guest) != null, "the Guest's title to open the Lobby", 900, 20.0)
 	var globby := _lobby_of(guest)
-	await _until(func() -> bool: return (globby.place_texts().size() == 4 and globby.place_texts()[1].contains(PlayerProfile.NAME)
-			and hlobby.place_texts()[1].contains(PlayerProfile.NAME)), "both Lobbies to show both players", 900, 20.0)
+	await _until(func() -> bool: return (globby.place_texts().size() == 4 and globby.place_texts()[1].contains("Visitor")
+			and hlobby.place_texts()[1].contains("Visitor")), "both Lobbies to show both players", 900, 20.0)
 	var g_peer := globby.link.session.me()
+	_check(globby.place_texts()[0].contains("Hostess") and hlobby.place_texts()[0].contains("Hostess"),
+			"the Guest's Lobby shows the name typed on the Host's Multiplayer page (%s)" % [globby.place_texts()])
 	_check(hlobby.place_texts()[0].begins_with(LobbyScreen.HOST_MARK) and hlobby.place_texts()[3] == LobbyScreen.WAITING_PLAYER,
 			"the Host's place first with its mark, a free place waits (%s)" % [hlobby.place_texts()])
 	_check((globby.get_node("%Waiting") as Control).visible and not (globby.get_node("%Start") as Control).visible
@@ -300,6 +305,8 @@ func _from_title(lag_ms: int) -> void:
 	await _until(func() -> bool: return hr.loading.is_lifted() and hr.parts.is_settled(), "the Host's house to be laid", 3000, 60.0)
 	await _until(func() -> bool: return gr.net.mode_text().begins_with("Joined"), "the Guest to be welcomed into the house", 3000, 60.0)
 	_check(gr.session.me() == g_peer and gr.session.is_online(), "the same connection, no reconnect")
+	_check(hr.roster.name_of(Roster.HOST) == "Hostess" and gr.roster.name_of(Roster.HOST) == "Hostess" and hr.roster.name_of(g_peer) == "Visitor",
+			"the names typed on the title carry into the house")
 	await _until(func() -> bool: return hr.avatars.of(g_peer) != null and gr.avatars.of(1) != null, "each to see the other's avatar", 900, 20.0)
 	# Both stand at their Roster spots: the Host where its body is, the Guest beside it.
 	var h_at: Variant = hr.roster.entry_of(1).get("at")
@@ -557,7 +564,7 @@ func _linked_pair(lag_ms: int) -> Array[Node]:
 ## The title in `machine`; its way in puts the Lobby under the machine and the level in the machine's
 ## view; the ways back to the title only note it. With `lag_ms`, the machine's peer is wrapped once the
 ## Lobby has started its session.
-func _open_title(machine: Node, guest: bool, lag_ms: int) -> void:
+func _open_title(machine: Node, guest: bool, lag_ms: int, guest_name := func() -> String: return PlayerProfile.NAME) -> void:
 	var t := (load(TITLE) as PackedScene).instantiate() as TitleScreen
 	t.name = "Title"
 	t.go_into = func(path: String, _heading: String, setup: Callable) -> void:
@@ -569,7 +576,10 @@ func _open_title(machine: Node, guest: bool, lag_ms: int) -> void:
 		if lobby != null:
 			if guest:
 				# One process, one profile file: the Guest plays as another player.
-				GameLink.of(machine).session.profile = PlayerProfile.fresh()
+				# (it keeps the name typed on its title's field).
+				var other := PlayerProfile.fresh()
+				other.name = guest_name.call()
+				GameLink.of(machine).session.profile = other
 			lobby.go_to_title = func(notice: String) -> void: _went_titles.append("%s:%s" % [machine.name, notice])
 			var title := machine.get_node_or_null("Title")
 			if title != null:

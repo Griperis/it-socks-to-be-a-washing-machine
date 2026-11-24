@@ -1113,3 +1113,15 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2582-Q2587 |
 
 ---
+
+| Ticket | core/64, the name field on the Multiplayer page for Host and Join, cut at 16, ready for a Steam name (Q2585); merged (main 98b1500) |
+| Cost | about 105k subagent tokens |
+
+---
+
+| Ticket | core/42, the Hand-off: right-click Hand-off with the pairing rule, "Not their mate" / "Hands full", the flight into the receiver's Hands with a sparkle, the catch by Throw (Q2588), a knocked-down Teammate refused (Q2589), Guest timeout 2 s, PROTOCOL 16; merged (main a6e1955) |
+| Cost | about 444k subagent tokens (Opus) |
+| Surprises | the Host's reach guard (new, technical); lines needing later pieces logged [later], none dropped |
+| Looks | builds/review-hand-off/ |
+
+---
