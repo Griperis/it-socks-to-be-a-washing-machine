@@ -61,3 +61,4 @@ core/67 added the Lobby's pad route, but in its stills (`builds/review-lobby-det
 - Stills: `builds/review-lobby-pad-ring/lit-*.png` (title home, name, join, options slider and choice, licence link, licence key, ESC menu, lobby "i", drawer, drawer Delete row).
 - Files: game/ui/pad_focus.gd, pad_focus_tuning.gd/.tres, game/audio/ui_sounds.gd, game/look/theme.tres, game/lobby/world_row.gd, game/ui/licence/licence_link.tscn, tests/lobby_test.gd, tools/shot_lobby.gd, tools/shot_hooks.gd, docs/architecture/saves.md
 - Verified: PASS 19777 checks, 615 cases; PASS rules.
+- Merged: f37a2c45 (2026-11-25, branch core/75-lobby-pad-ring)
