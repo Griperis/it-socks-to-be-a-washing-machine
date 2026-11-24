@@ -50,3 +50,4 @@ terms: [Host, Guest, Session, Roster]
   - Changed: main merged; `PROTOCOL` 18 (main 17); the avatar keeps core/41's Back and riding pose beside the Gate.
   - Files: game/parts/session.gd, this ticket
   - Verified: PASS 19009 checks, 551 cases (--touched)
+- Merged: 0a871bfe (2026-11-24, branch core/68-game-link-gaps)
