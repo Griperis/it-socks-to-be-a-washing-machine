@@ -3,7 +3,8 @@
 ## _enter_tree() on every machine before the Sync child enters the tree. The Sync (a
 ## MultiplayerSynchronizer) carries the pose (position, yaw, pitch, crouch) from the owner to everyone
 ## else every network frame, unreliably (Q2223): the next pose replaces a lost one, and a lost packet
-## never holds up the Commands (which are reliable). A late Guest gets the pose with the spawn.
+## never holds up the Commands (which are reliable). A late Guest gets the pose with the spawn. Its
+## Gate (an empty MultiplayerSynchronizer the Host owns) decides who is sent the spawn (core/68).
 ##
 ## On every machine that receives a pose, a pose that is not finite or lies outside the tuning's area
 ## is dropped in its setter: the old value stays (the Host's copy included, so a forged pose goes no
@@ -111,6 +112,12 @@ var _ride_drawn := Vector3.INF
 func _enter_tree() -> void:
 	add_to_group(GROUP)
 	set_multiplayer_authority(String(name).to_int())
+	# The Gate stays the Host's (core/68): Godot sends a spawn to whoever one of the Host's own
+	# synchronizers on the avatar shows it to, and ignores the owner's Sync for that, so the Gate (with
+	# the level's house filter, LevelRuntime) is what keeps a Guest still loading from getting it.
+	var gate := get_node_or_null(^"Gate")
+	if gate != null:
+		gate.set_multiplayer_authority(Parts.HOST)
 
 
 ## A spawn sets the pose before _ready: stand there at once instead of gliding from the origin.

@@ -5,7 +5,8 @@
 ## after its player leaves, for the Session: the same id coming back stands where it left and keeps its
 ## colour while that is free (Q2448). It is in the join snapshot; the Avatars spawner spawns by it.
 ##
-## Only the Host's answers write it: joined() when the gate admitted a player, left() when one went.
+## Only the Host's answers write it: joined() when the gate admitted a player, left() when one went,
+## hands_said() when a Lobby joiner's house was ready.
 ## No Guest may ask anything of it (accepts() is empty).
 class_name Roster
 extends Part
@@ -13,6 +14,8 @@ extends Part
 ## The kinds of its answers, for the HUD's toasts and the Avatars.
 const JOINED := &"joined"
 const LEFT := &"left"
+## A player's Hands numbers, said with their house_ready (core/68).
+const HANDS := &"hands"
 ## The Host's peer id.
 const HOST := 1
 
@@ -236,6 +239,20 @@ func placed() -> Dictionary:
 		return {}
 	var ev := grant({"players": all})
 	ev.merge({"kind": &"placed", "by": HOST, "to": id})
+	return ev
+
+
+## The Host: the player on `peer` said their Hands' numbers (`hands`, as the Host clamped them) once
+## their house was ready, having said none at the gate (they joined in the Lobby, with no Player yet:
+## core/68). Returns the answer, or {} when that player is not here or the numbers are already these.
+func hands_said(peer: int, hands: Dictionary) -> Dictionary:
+	var pid := id_of(peer)
+	if pid == "" or hands.is_empty() or (players[pid] as Dictionary).get("hands") == hands:
+		return {}
+	var all := players.duplicate(true)
+	(all[pid] as Dictionary)["hands"] = hands.duplicate()
+	var ev := grant({"players": all})
+	ev.merge({"kind": HANDS, "by": HOST, "to": id, "player": pid})
 	return ev
 
 
