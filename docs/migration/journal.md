@@ -1182,3 +1182,11 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Surprises | the "Ada," cut and the drawer row's tiny details line stay [later] (Q2598) |
 | Looks | builds/review-lobby/ |
 | Decisions | Q2596-Q2598 |
+
+---
+
+| Ticket | core/67, the Lobby details: captions under Ready and Start, the pad route, UI hover sound, an invite hook on the transport, the Lobby's words in one place; merged (main 9be8097) |
+| Cost | about 168k subagent tokens |
+| Surprises | the pad's focus ring does not show (core/75, later, Q2645); captions stay 11 px (Q2644) |
+| Looks | builds/review-lobby-details/ |
+| Decisions | Q2644-Q2646 |
