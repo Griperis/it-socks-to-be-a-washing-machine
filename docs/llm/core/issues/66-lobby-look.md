@@ -47,3 +47,4 @@ Stills: builds/review-lobby/. Verified: see commit.
 
 ### 2026-11-24 (second round)
 Changed: Answers Q2596-Q2598 recorded; the look is unchanged (designer: keep as is). Fresh stills of the same set in builds/review-lobby/. Verified: see commit.
+- Merged: 7c7c2d50 (2026-11-24, branch core/66-lobby-look)
