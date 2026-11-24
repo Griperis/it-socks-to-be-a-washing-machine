@@ -1,0 +1,144 @@
+[gd_scene format=3 uid="uid://bq03emocqql0c"]
+
+[ext_resource type="PackedScene" uid="uid://bmwqvdc4bsecs" path="res://game/entities/door/room_door.tscn" id="1_door"]
+[ext_resource type="PackedScene" uid="uid://1jfxjkr05r4r" path="res://game/entities/door/room_door_flipped.tscn" id="2_door_flipped"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="3_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="4_hands"]
+[ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="5_spot"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="6_designs"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="7_tuning"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.46, 0.42, 0.34, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_pad")
+size = Vector2(6, 5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.9, 0.86, 0.78, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_side"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(0.12, 3, 1.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_side"]
+size = Vector3(0.12, 3, 1.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_mid"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(0.12, 3, 1.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_mid"]
+size = Vector3(0.12, 3, 1.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lintel"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(0.12, 0.9, 0.9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lintel"]
+size = Vector3(0.12, 0.9, 0.9)
+
+[node name="Doors" type="Node3D" unique_id=1460421770]
+
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=1460421771]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Name" type="Label3D" parent="." unique_id=1460421772]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 2.1, 0)
+pixel_size = 0.004
+billboard = 2
+text = "Doors: a room Door in a doorway of the house's size, one of each hand (the hinge at either jamb); both swing into the room (to the left). Two Socks lie in the near Door's way: opening it pushes them. Shut, a Door muffles what is behind it."
+vertical_alignment = 2
+autowrap_mode = 3
+width = 700.0
+
+[node name="Wall" type="StaticBody3D" parent="." unique_id=1460421773]
+collision_mask = 0
+
+[node name="EndS" type="MeshInstance3D" parent="Wall" unique_id=1460421774]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -1.975)
+mesh = SubResource("BoxMesh_wall_side")
+
+[node name="EndSShape" type="CollisionShape3D" parent="Wall" unique_id=1460421775]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -1.975)
+shape = SubResource("BoxShape3D_wall_side")
+
+[node name="Mid" type="MeshInstance3D" parent="Wall" unique_id=1460421776]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_wall_mid")
+
+[node name="MidShape" type="CollisionShape3D" parent="Wall" unique_id=1460421777]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_wall_mid")
+
+[node name="EndN" type="MeshInstance3D" parent="Wall" unique_id=1460421778]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 1.975)
+mesh = SubResource("BoxMesh_wall_side")
+
+[node name="EndNShape" type="CollisionShape3D" parent="Wall" unique_id=1460421779]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 1.975)
+shape = SubResource("BoxShape3D_wall_side")
+
+[node name="LintelS" type="MeshInstance3D" parent="Wall" unique_id=1460421780]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.55, -1)
+mesh = SubResource("BoxMesh_lintel")
+
+[node name="LintelSShape" type="CollisionShape3D" parent="Wall" unique_id=1460421781]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.55, -1)
+shape = SubResource("BoxShape3D_lintel")
+
+[node name="LintelN" type="MeshInstance3D" parent="Wall" unique_id=1460421782]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.55, 1)
+mesh = SubResource("BoxMesh_lintel")
+
+[node name="LintelNShape" type="CollisionShape3D" parent="Wall" unique_id=1460421783]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.55, 1)
+shape = SubResource("BoxShape3D_lintel")
+
+[node name="Plain" parent="." unique_id=1460421784 instance=ExtResource("1_door")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.04, 0, -1)
+
+[node name="Flipped" parent="." unique_id=1460421785 instance=ExtResource("2_door_flipped")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.04, 0, 1)
+
+[node name="Spots" type="Node3D" parent="." unique_id=1460421786]
+
+[node name="SockA" type="Marker3D" parent="Spots" unique_id=1460421787]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -1)
+script = ExtResource("5_spot")
+design = 6
+
+[node name="SockB" type="Marker3D" parent="Spots" unique_id=1460421788]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 0, -1.28)
+script = ExtResource("5_spot")
+design = 7
+
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=1460421789]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0, 0)
+
+[node name="Lying" type="Node3D" parent="." unique_id=1460421790]
+
+[node name="Flights" type="Node3D" parent="." unique_id=1460421791]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=1460421792]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="." unique_id=1460421793]
+
+[node name="Mess" type="Node" parent="Socks" unique_id=1460421794 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+script = ExtResource("3_mess")
+catalogue = ExtResource("6_designs")
+tuning = ExtResource("7_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+bounds = AABB(-8, -2, -8, 16, 8, 16)
+return_spot = NodePath("../../ReturnSpot")
+
+[node name="Hands" type="Node" parent="Socks" unique_id=1460421795 node_paths=PackedStringArray("mess")]
+script = ExtResource("4_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("7_tuning")

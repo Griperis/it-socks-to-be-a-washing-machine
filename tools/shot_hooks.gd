@@ -455,6 +455,42 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.look_at(thing.global_transform * Vector3(0.0, 0.9, 0.0))
 			cam.make_current()
 			return true
+		"doors":
+			# house/08: the Doors station (zoo). arg "view": a camera in the room, both Doors ahead, the
+			# Socks in the near one's way; "use": the player's use on the near Door (the one with the Socks),
+			# "use_far": on the other hand's.
+			var station := world.get_node("Stations/Doors") as Node3D
+			var player := LevelRuntime.of(world).player
+			if arg == "view":
+				player.global_position = station.to_global(Vector3(-2.0, 0.0, -0.2))
+				player.reset_physics_interpolation()
+				var cam := Camera3D.new()
+				world.add_child(cam)
+				cam.fov = 62.0
+				cam.global_position = station.to_global(Vector3(-2.7, 1.55, 0.15))
+				cam.look_at(station.to_global(Vector3(0.0, 0.95, -0.2)))
+				cam.make_current()
+			elif arg == "use":
+				(station.get_node("Plain/Openable") as Openable).use(player.player_id())
+			else:
+				(station.get_node("Flipped/Openable") as Openable).use(player.player_id())
+			return true
+		"door_house":
+			# house/08: the first-person view of a Door of the house from its room: arg is "<Doorway>:<x>:<z>:<yaw
+			# degrees>" (where the player stands, on that Door's floor, and the way it looks); "use" in a later action
+			# is "door_use:<Doorway>".
+			var parts := arg.split(":")
+			var door := world.get_node("Doors/%s" % parts[0]) as Node3D
+			var player := LevelRuntime.of(world).player
+			player.global_position = Vector3(float(parts[1]), door.global_position.y, float(parts[2]))
+			player.rotation.y = deg_to_rad(float(parts[3]))
+			(player.get_node("Head") as Node3D).rotation.x = deg_to_rad(-8.0)
+			player.reset_physics_interpolation()
+			return true
+		"door_use":
+			var player := LevelRuntime.of(world).player
+			(world.get_node("Doors/%s/Openable" % arg) as Openable).use(player.player_id())
+			return true
 		"drawer_view", "drawer_use":
 			# core/09 D12: the zoo's player looks at the Cabinet station's bottom drawer from the
 			# side; `drawer_use` opens or shuts it, as a click with empty Hands does.
