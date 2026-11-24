@@ -55,3 +55,4 @@ Why slow: the co-op suites are paced to 60 frames a wall second so ENet and the 
 Tried and reverted: coop_hands, coop_hand_off at 2x (3 FAIL, see follow-ups).
 Files: tests/coop_knockdown_test.gd, tests/room_doors_test.gd
 Verified: knockdown PASS 162 checks, 8 cases (x3); room_doors PASS 194 checks, 6 cases (x3). Full suite NOT under 120 s: see follow-ups.
+- Merged: fa635d07 (2026-11-24, branch maintenance/02-suite-time)
