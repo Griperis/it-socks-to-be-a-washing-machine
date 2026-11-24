@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: bug
 area: core
 feature: mess
 priority: later
 created: 2026-11-24
-done:
+done: 2026-11-24
 blocked_by: []
 notes: ["suggested model: opus (physics debugging)", "found by core/69"]
 terms: [Sock, Mess]
@@ -31,3 +31,25 @@ terms: [Sock, Mess]
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-24
+- Changed: reproduced on main. `flight_start:t01_heap` in suite order no longer gets a push (0 steps put back in 3
+  runs, forward and reversed). So the check runs on `mess_settle:real_path_thin_floor`: the player clicks More at the
+  heap with the zoo floor's margin at 1 mm, and there Jolt pushes poured Socks under the floor in every pour.
+  A per-frame log, taken after every `_process` (after the Mess placed its flying drawings, before the draw), saw
+  4 pushes (Socks at y -0.035 to -0.083 when the physics tick starts, each put back by the Mess in that tick) and
+  0 frames out of 306 with a flying Sock drawn under the floor. That holds for the MultiMesh rows and for bodies with
+  a Looks. At 120 ticks a second (two steps a frame) the result was the same: 1 push, 0 frames.
+- **Cannot be seen. Why:** Godot sends a body's place after a step to its node only at the sync at the start of the
+  next physics tick. Right after that sync, in the same tick, the Mess's `_physics_process` puts the push back and
+  resets its interpolation (`MessMoving.undo_push()`, core/50). A frame is drawn only after the ticks of an iteration,
+  so it shows the place before the push or the put-back, never the push. Frames drawn between ticks interpolate
+  between two places the node held, and neither is the pushed one. Checked the other way too: with the put-back
+  switched off, the new check failed with 146 frames drawn under the floor, the first one tick after the push.
+- Kept as a guard: `real_path_thin_floor` now also checks, every frame as drawn, that no flying Sock is drawn under the
+  floor, and that the pour had at least one push (the case still tests what its title says)
+  (`tests/drawn_floor_watch.gd`). No game code or number changed.
+- Not this ticket: with physics at 30 ticks a second (the game runs at 60), Socks sat with a shape middle in the floor
+  that the push rule does not count as a push (its motion explains them). Seen only in the probe.
+- Files: tests/drawn_floor_watch.gd, tests/drawn_floor_watch.gd.uid, tests/mess_settle_test.gd
+- Verified: touched `PASS 286 checks, 31 cases`; rules `PASS rules: 9 rules, no new hit`

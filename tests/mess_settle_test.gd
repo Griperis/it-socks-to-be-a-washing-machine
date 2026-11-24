@@ -8,6 +8,7 @@ extends TestSuite
 const ZOO := "res://game/zoo/zoo.tscn"
 const LEVEL := "res://game/debug/mess_bench_level.tscn"
 const PLAN: MessBenchPlan = preload("res://game/debug/mess_bench_plan.tres")
+const DRAWN_FLOOR_WATCH := preload("res://tests/drawn_floor_watch.gd")
 const HEAP := "Stations/Heap"
 ## A small heap for the rule cases (the shipped 500 is the real path's).
 const SMALL := 60
@@ -44,7 +45,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "real_path_4", "method": "case_real_path_4", "world": false,
 				"title": "core/49: the same real path with 4 more Sock records in the zoo: no Sock is made inside another"},
 		{"name": "real_path_thin_floor", "method": "case_real_path_thin_floor", "world": false,
-				"title": "core/50: the same real path with the zoo floor's collision margin at 1 mm (there Jolt pushes a poured Sock through the floor in every pour): no Sock goes under the floor, none is lifted at its rest or rests moving"},
+				"title": "core/50: the same real path with the zoo floor's collision margin at 1 mm (there Jolt pushes a poured Sock through the floor in every pour): no Sock goes under the floor, none is lifted at its rest or rests moving; core/70: no frame draws a pushed Sock under the floor"},
 		{"name": "pushed_in", "method": "case_pushed_in", "world": false,
 				"title": "core/50: a falling Sock that one step moves down into the floor, more than its motion explains, is put back over the floor at once and rests on it, not lifted; one that moves only as it flies is left alone"},
 		{"name": "slept_turning", "method": "case_slept_turning", "world": false,
@@ -116,12 +117,13 @@ func case_real_path_4() -> void:
 ## core/50: a floor margin of 1 mm makes Jolt's wrong push happen in every pour (with the zoo's own
 ## margin it came in about one pour of 30); the floor's shape is a copy, the scene file is untouched.
 func case_real_path_thin_floor() -> void:
-	await _real_path(0, 0.001)
+	await _real_path(0, 0.001, true)
 
 
 ## The player clicks More at the heap station, with `extra` more Sock records lying in the zoo before
 ## the heap's (core/49: their count once decided whether two poured Socks rested inside each other).
-func _real_path(extra: int, floor_margin := -1.0) -> void:
+## `drawn`: every frame is also looked at as drawn (core/70).
+func _real_path(extra: int, floor_margin := -1.0, drawn := false) -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	if floor_margin >= 0.0:
 		var floor_shape := _zoo.get_node("Floor/Shape") as CollisionShape3D
@@ -147,6 +149,11 @@ func _real_path(extra: int, floor_margin := -1.0) -> void:
 	_watch.first = before
 	_watch.floor_y = station.global_position.y
 	_zoo.add_child(_watch)
+	var frames: DRAWN_FLOOR_WATCH = null
+	if drawn:
+		frames = DRAWN_FLOOR_WATCH.new()
+		frames.mess = mess
+		add_child(frames)
 	var more := station.get_node("More") as Node3D
 	player.global_position = more.global_position + station.global_basis * Vector3(0.0, -0.5, -1.5)
 	player.velocity = Vector3.ZERO
@@ -171,6 +178,12 @@ func _real_path(extra: int, floor_margin := -1.0) -> void:
 			"every poured Sock lies (%d of %d)" % [mess.states.slice(before).count(Mess.State.LYING), spout.tuning.batch])
 	_check(int(r["moving"]) == 0 and int(r["waiting"]) == 0, "no Sock moves or waits (%d, %d)" % [r["moving"], r["waiting"]])
 	_no_faults(r)
+	if frames != null:
+		var pushed := mess._moving.pushed_in
+		_check(pushed > 0, "Jolt pushed a poured Sock into the floor at least once (%d steps put back)" % pushed)
+		_check(frames.under == 0, "no frame of %d drew a flying Sock under the floor (%d; %d steps put back) %s"
+				% [frames.frames, frames.under, pushed, frames.notes])
+		frames.free()
 	_check(_interpolated(LevelRuntime.of(_zoo).lying) == 0, "no MultiMesh of the Mess is physics-interpolated (%d)" % _interpolated(LevelRuntime.of(_zoo).lying))
 
 
