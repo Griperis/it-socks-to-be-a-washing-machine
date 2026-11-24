@@ -1,4 +1,4 @@
-Next free Q number: Q2596 (update this line whenever a round of questions is asked)
+Next free Q number: Q2599 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -510,3 +510,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2593: the old jump and land sounds are ported now with stacking, for every jump, climbs included, on every machine (core/41; designer, 2026-11-23).
 - Q2594: the jump stays silent as the old game (its jump event had no clip; candidates kenney_cloth3, artisticdude_swish9, haeldb_leather1 sit in the old folder); only the landing sounds; a clip may be picked later from play (designer, 2026-11-24).
 - Q2595: the room Door's sound plays 1 m up as the old game (`Openable.sound_height`, 0 for every other Openable); no Sock laid behind an open leaf and the leaf's 4 mm bevel stay [later], seen by the designer (designer, 2026-11-24).
+- Q2596: the Lobby look of core/66's first still is the direction: players on plinths with their names, the World card at the top, World settings in a drawer on the right (designer, 2026-11-24).
+- Q2597: a co-op World is named by its members' names (`Worlds.name_form` MEMBERS), not "World 1"; settles Q2587 (core/66; designer, 2026-11-24).
+- Q2598: the members' name cut to "Ada," in a drawer row and the drawer row's tiny details line stay [later]; a yellow player's name beside the gold Ready tick stays as it is (core/66; designer, 2026-11-24).
