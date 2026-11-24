@@ -13,6 +13,8 @@ const KEEP := ["Knockdown"]
 const STATION := "Stations/Knockdown"
 const NET_WAIT_S := 20.0
 const FPS := 60
+## The game clock runs this many times faster than the wall clock, one frame per physics tick (runner.gd puts it back after each case).
+const PACE_SPEED := 2.0
 const LAG_MS := 50
 ## Where the Guest stands in the real path, and the Host throws from.
 const GUEST_AT := Vector3(-18.5, 0.0, 3.0)
@@ -20,6 +22,7 @@ const HOST_AT := Vector3(-18.5, 0.0, 4.3)
 
 var _branches: Array[Node] = []
 var _pace_next := 0
+var _speed := 1.0
 ## Every spatial sound played: [name, where, frame].
 var _heard: Array[Array] = []
 ## Why each drag the Guest saw end ended (case_drag_ends).
@@ -53,6 +56,8 @@ func _enter_tree() -> void:
 
 func _before_case() -> void:
 	wait_floor_s = NET_WAIT_S
+	_speed = PACE_SPEED
+	Engine.time_scale = _speed
 	for a: StringName in [&"pick", &"drop_throw", &"jump", &"move_back"]:
 		Input.action_release(a)
 	_heard.clear()
@@ -407,6 +412,9 @@ func _bones_except(rag: Ragdoll, body: CollisionObject3D) -> bool:
 
 
 func case_pose_bytes() -> void:
+	# bytes a second of wall time: the game clock runs at its own speed here
+	_speed = 1.0
+	Engine.time_scale = 1.0
 	for lag: int in [0, LAG_MS]:
 		var zoos := await _pair(lag)
 		var host: Node3D = zoos[0]
@@ -535,7 +543,7 @@ func _paced() -> void:
 	var now := Time.get_ticks_usec()
 	if _pace_next == 0 or now - _pace_next > 100000:
 		_pace_next = now
-	_pace_next += 1000000 / FPS
+	_pace_next += int(1000000 / (FPS * _speed))
 	if now < _pace_next:
 		OS.delay_usec(_pace_next - now)
 
