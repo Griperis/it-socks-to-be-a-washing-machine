@@ -63,3 +63,4 @@ JSON per speaker instead of a Resource per line). Batch A is then built unattend
     docs/llm/core/issues/71-*, 72-*, 73-*, 74-*, 76-* .. 99-*, docs/llm/assets/issues/10-* .. 15-*,
     docs/migration/milestones.md, docs/migration/batch-a-review.md, docs/migration/m4-lists/03-*, 04-*, 05-*
   - Verified: docs only, no game code (`agent_finish.sh --no-test`)
+- Merged: a1631b9c (2026-11-24, branch core/74-batch-a-build-plan)
