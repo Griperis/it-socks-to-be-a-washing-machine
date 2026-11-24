@@ -117,6 +117,18 @@ text = "Multiplayer"
 horizontal_alignment = 1
 
 
+[node name="NameLabel" type="Label" parent="Pages/Center/Column/Panel/Stack/Multiplayer" unique_id=689953]
+layout_mode = 2
+theme_type_variation = &"InkLabel"
+text = "Your name"
+
+[node name="NameField" type="LineEdit" parent="Pages/Center/Column/Panel/Stack/Multiplayer" unique_id=697872]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MenuField"
+placeholder_text = "Player"
+max_length = 16
+
 [node name="Host" type="Button" parent="Pages/Center/Column/Panel/Stack/Multiplayer" unique_id=650358]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 72)
@@ -145,18 +157,6 @@ layout_mode = 2
 theme_type_variation = &"Heading1"
 text = "Join"
 horizontal_alignment = 1
-
-[node name="NameLabel" type="Label" parent="Pages/Center/Column/Panel/Stack/Join" unique_id=689953]
-layout_mode = 2
-theme_type_variation = &"InkLabel"
-text = "Your name"
-
-[node name="NameField" type="LineEdit" parent="Pages/Center/Column/Panel/Stack/Join" unique_id=697872]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"MenuField"
-placeholder_text = "Player"
-max_length = 16
 
 [node name="AddressLabel" type="Label" parent="Pages/Center/Column/Panel/Stack/Join" unique_id=705791]
 layout_mode = 2

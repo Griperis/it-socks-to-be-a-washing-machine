@@ -24,7 +24,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "real_path_alone", "method": "case_real_path_alone", "world": false,
 				"title": "coop/10 real path alone: pick a Sock at the station, hold the right button to a full ring, release at the stand-in: it falls as a ragdoll (A1, A2, E39-E42, E61, E64), the item bounces back (C27), knockdown is heard at the hit (M148), it stands up 5.5 s later where it lies, facing its way (G79-G86), and can be knocked again at once (G87)"},
 		{"name": "weak_throw", "method": "case_weak_throw", "world": false,
-				"title": "coop/10 A1: a Throw under the full ring hits the stand-in and knocks nobody down"},
+				"title": "coop/10 A1: a Throw under the full ring hits the stand-in and knocks nobody down; holding no mate, the stand-in bounces it off (core/42 F35)"},
 		{"name": "drag_alone", "method": "case_drag_alone", "world": false,
 				"title": "coop/10 H91-H96 (the Outline, Q2498), H99, H103, H104: aim at the lying stand-in with empty Hands: Hold: Drag; the held left button drags it by the feet at 0.6 of the pace, scraping; let go it lies; a drag ends as it rises"},
 		{"name": "commands", "method": "case_commands", "world": false,
@@ -108,13 +108,10 @@ func case_weak_throw() -> void:
 	await _pick(sock)
 	await _stand_facing(mate.global_position + Vector3(0.0, 0.0, 1.0), mate.global_position + Vector3.UP * 1.3)
 	await _throw(0.6)
-	var passed := false
-	for _i in 90:
-		await _physics_ticks(1)
-		var b := _mess().moving_body(sock)
-		if b != null and Knockdowns.touches(b.global_position, 0.15, mate.global_position, 1.7, 0.3):
-			passed = true
-	_check(passed, "the weaker Throw passes through the stand-in's body")
+	# core/42 F35: the same hit test asks the Hand-off's rule; the empty-handed stand-in holds no mate,
+	# so the loose Sock bounces off its body.
+	await _until(func() -> bool: return kd.bounces == 1, "the weaker Throw hits the stand-in's body and bounces (core/42)", 90)
+	await _physics_ticks(30)
 	_check(not kd.is_down(MATE) and kd.knocks == 0, "A1: a weaker Throw never knocks down")
 
 

@@ -58,7 +58,7 @@ signal ended(text: String)
 ## synchronized property, a spawnable scene or the shape of a Command, an event, a snapshot or the
 ## gate's word changes. The word's first 4 bytes (the PROTOCOL) never move, so any two builds can
 ## tell they differ.
-const PROTOCOL := 15  # 15: core/41, an avatar's Back and riding pose (riding, ride_offset); a jump cue. 14: core/62, the game link: the layout leaves the gate's word for house_ready, the link's snapshot
+const PROTOCOL := 17  # 17: core/41, an avatar's Back and riding pose (pose_riding, pose_ride_offset), its jump count (pose_jumps), a child Back in the avatar scene; 14: core/62, the game link: the layout leaves the gate's word for house_ready, the link's snapshot; 15: core/63, LobbyState in the link; 16: core/42, the Hands' hand_off verb and its answer
 ## The gate's answers: one byte, and after REFUSED one byte saying why.
 const ACCEPTED := 1
 const REFUSED := 0
@@ -123,6 +123,9 @@ var _guests: Dictionary[int, bool] = {}
 var _in_house: Dictionary[int, bool] = {}
 ## The Host: Guests whose house_ready waits for this machine's level to settle.
 var _house_waiting: Dictionary[int, bool] = {}
+## The Host: Guests whose house_ready came while this machine had no level (its house still loading
+## after Start): {peer: layout}, answered when a level attaches.
+var _house_early: Dictionary[int, String] = {}
 ## A Guest: it has the link snapshot.
 var _in_game := false
 ## A Guest: the level whose house_ready was sent (or is waiting to be), so it is sent once.
@@ -253,6 +256,7 @@ func close() -> void:
 	_guests.clear()
 	_in_house.clear()
 	_house_waiting.clear()
+	_house_early.clear()
 	_in_game = false
 	_house_asked = null
 	_rates.clear()
@@ -280,6 +284,12 @@ func attach_level(p: Parts) -> void:
 	if not multiplayer.is_server():
 		p.relay = _send_up
 		_house_step()
+	else:
+		var early := _house_early.duplicate()
+		_house_early.clear()
+		for peer: int in early:
+			if _guests.has(peer):
+				_take_house(peer, early[peer])
 
 
 ## A level goes (LevelRuntime, as it leaves the tree): the link's Parts are in use again. The Host
@@ -506,19 +516,29 @@ func _house_ready(protocol_said: Variant, layout: Variant) -> void:
 	if not (protocol_said is int) or not (layout is String) or String(layout).length() > 128:
 		_drop(peer, "house", "an unreadable house_ready")
 		return
-	if _in_house.has(peer) or _house_waiting.has(peer) or level_parts == null:
+	if _in_house.has(peer) or _house_waiting.has(peer):
 		return
 	if int(protocol_said) != PROTOCOL:
 		_drop(peer, "protocol", "%d at house_ready, not %d" % [int(protocol_said), PROTOCOL])
 		_house_refused.rpc_id(peer, WHY_VERSION)
 		return
+	if level_parts == null:
+		# This machine's house is still loading (both load at Start, core/63): it is answered when it comes.
+		_house_early[peer] = String(layout)
+		return
+	_take_house(peer, String(layout))
+
+
+## The Host: Guest `peer`'s house is ready with `layout`, and this machine has a level: once that level
+## is bound its layout is checked, and once it is settled the Guest is taken in.
+func _take_house(peer: int, layout: String) -> void:
 	var level := level_parts
 	_house_waiting[peer] = true
 	while not level.is_bound:
 		await level.bound
 		if not _house_waiting.has(peer) or level_parts != level or not is_inside_tree():
 			return
-	if String(layout) != layout_of(level):
+	if layout != layout_of(level):
 		_house_waiting.erase(peer)
 		_drop(peer, "layout", "another level layout at house_ready")
 		_house_refused.rpc_id(peer, WHY_VERSION)
@@ -552,6 +572,7 @@ func _house_left() -> void:
 		_drop(peer, "not in the game", "")
 		return
 	_house_waiting.erase(peer)
+	_house_early.erase(peer)
 	if _in_house.erase(peer):
 		house_changed.emit(peer)
 
@@ -635,6 +656,7 @@ func _on_peer_left(peer: int) -> void:
 	_waiting.erase(peer)
 	_in_house.erase(peer)
 	_house_waiting.erase(peer)
+	_house_early.erase(peer)
 	if _guests.erase(peer):
 		parts.left(peer)
 		_note("%d left" % peer, false)

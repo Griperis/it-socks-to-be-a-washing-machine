@@ -21,6 +21,9 @@
 ## and a pairing there plays no moment: the ball flies in from where the picked mate lay and, as it
 ## reaches the hand, a small sparkle burst and ring play there (MateSparkle, behaviour 60).
 ##
+## Handed over or caught (core/42): the item flies in the same way, from where pick_from() says (the
+## giver's hand as drawn on this machine, or where the Throw hit), flat and turned at random.
+##
 ## A Guest's guesses (coop/09, GuestGhosts asks them): a pick's ghost flies up from where the Sock lay
 ## to the active place (or to its held mate) at once and becomes the held item on the Host's answer
 ## with no pop, or flies back (F01-F03); a Throw's or a drop's item is hidden at once and shown again
@@ -118,6 +121,9 @@ var _fly_in_from: Dictionary[int, Transform3D] = {}
 var _hidden: Dictionary[int, bool] = {}
 ## A Guest's turn of the wheel not answered yet: the active index shown, or -1 (E06).
 var _guess_active := -1
+## Items handed over or caught into these Hands since the last refresh: where each flies in from, in
+## the level, by Sock id (core/42).
+var _pick_from: Dictionary[int, Vector3] = {}
 
 
 func _enter_tree() -> void:
@@ -201,6 +207,7 @@ func refresh(delta := 0.0) -> void:
 			moment.transform = looks.transform
 			_place_fly_in(sock, moment)
 	_place_ghosts(items, delta)
+	_pick_from.clear()
 
 
 ## Whether every held item is at its place: no glide or flight under way.
@@ -345,10 +352,34 @@ func _finish(rest: Transform3D, is_active: bool, sock: int) -> Transform3D:
 	return still.interpolate_with(_zoomed(Transform3D(turned.basis.scaled(Vector3.ONE * grow), at), k), z)
 
 
-## Where Sock `sock` lay in the level, drawn at its Size: where a pick flies from.
+## Where Sock `sock` lay in the level, drawn at its Size: where a pick flies from. An item handed over
+## or caught (core/42 lines 25, 26, 34) flies from where pick_from() said instead, flat, turned at
+## random about the up axis.
 func _lay_pose(sock: int) -> Transform3D:
 	var design := hands.mess.design_of(sock)
-	return hands.mess.pose_of(sock).scaled_local(Vector3.ONE * (design.size_scale() if design != null else 1.0))
+	var size := design.size_scale() if design != null else 1.0
+	if _pick_from.has(sock):
+		var at: Vector3 = _pick_from[sock]
+		_pick_from.erase(sock)
+		return Transform3D(Basis(Vector3.UP, randf() * TAU).scaled(Vector3.ONE * size), at)
+	return hands.mess.pose_of(sock).scaled_local(Vector3.ONE * size)
+
+
+## core/42: item `sock` comes into these Hands from `at` in the level (a Teammate's hand, where a
+## Throw hit), not from where it lay: told before the next refresh, which flies it from there.
+func pick_from(sock: int, at: Vector3) -> void:
+	_pick_from[sock] = at
+
+
+## core/42: tells every HeldView of `hands` that shows player `me`'s Hands on this machine (their own,
+## or their worn one on their avatar) that item `sock` comes in from `at`.
+static func fly_from(hands: Hands, me: int, sock: int, at: Vector3) -> void:
+	if hands == null or not hands.is_inside_tree():
+		return
+	for node in hands.get_tree().get_nodes_in_group(GROUP):
+		var view := node as HeldView
+		if view != null and view.hands == hands and view.me == me:
+			view.pick_from(sock, at)
 
 
 ## Moves a picked item along its fly-up: from where it lay to its place (which follows the view) in

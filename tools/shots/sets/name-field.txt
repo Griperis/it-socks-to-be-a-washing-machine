@@ -1,0 +1,4 @@
+# core/64: the Multiplayer page's one name field: empty, typed, and too long (cut at 16 as it is typed).
+empty  --scene=res://game/ui/title/title.tscn --size=1920x1080 --do='10:menu:multiplayer' --shots=30
+typed  --scene=res://game/ui/title/title.tscn --size=1920x1080 --do='10:menu:multiplayer;12:name:Sockmaster' --shots=30
+long  --scene=res://game/ui/title/title.tscn --size=1920x1080 --do='10:menu:multiplayer;12:name:AVeryLongSockmasterNameIndeed' --shots=30

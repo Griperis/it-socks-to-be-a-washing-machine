@@ -12,7 +12,8 @@
 ##   rumble at once (G01); granted, the ghost follows the Host's body to its rest (G03-G13); refused,
 ##   the ghost goes and the item is back in the Hands at once (Q2476).
 ## - The wheel turns at once and back silently on a refusal (Q2475).
-## - No answer after `answer_timeout`: back as refused, with "refuse" (Q2477).
+## - A Hand-off (core/42) is never guessed: it only waits on its answer.
+## - No answer after `answer_timeout`: back as refused, with "refuse" (Q2477; a Hand-off: "refuse" only).
 ##
 ## Looks only (I2): nothing here writes the Hands or the Mess.
 class_name GuestGhosts
@@ -111,6 +112,17 @@ func drop(point: Vector3, normal: Vector3) -> void:
 	h.drop(_me(), point, normal, seq)
 
 
+## The Guest hands its active item to Teammate `to` (core/42): nothing is guessed (line 10), the
+## Hands change on the Host's answer; with none after `answer_timeout`, "refuse" only (Q2477, Q2482).
+func hand_off(to: int) -> void:
+	var h := _hands()
+	if h == null or _shown_active(h) < 0:
+		return
+	var seq := h.parts.next_seq()
+	_waiting[seq] = {"kind": Hands.HAND_OFF, "sock": -1, "age": 0.0}
+	h.hand_off(_me(), to, seq)
+
+
 ## The Guest turns the wheel by `step`.
 func cycle(step: int) -> void:
 	var h := _hands()
@@ -192,6 +204,9 @@ func _physics_process(delta: float) -> void:
 				_view().show_item(sock)
 			&"cycle":
 				_view().clear_guess()
+			Hands.HAND_OFF:
+				# core/42 line 42: the item never left; "refuse" only.
+				Sounds.play(&"refuse")
 	for sock: int in _flying.keys():
 		var g := _flying[sock]
 		if g == null or not is_instance_valid(g) or g.is_done():

@@ -1105,3 +1105,23 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Surprises | a title-started Host cannot reach an F5 `--join=` Guest (different Session paths); 3+ players: a loading Guest still gets another Guest's avatar spawn (both [later], for core/63) |
 
 ---
+
+| Ticket | core/63, the Lobby scene and `LobbyState`: Solo (one place, Back / Continue / New Game, Q2583), Host and Join through the Lobby, Ready and Start, Start loads the house for all, the shared ESC key on Solo's question; stand-in view (the look is core/66); merged (main bf6c265) |
+| Cost | about 266k subagent tokens (Opus) |
+| Surprises | core/62's two gaps and a Lobby Guest's Hands numbers left over (core/68) |
+| Looks | builds/review-lobby/ |
+| Decisions | Q2582-Q2587 |
+
+---
+
+| Ticket | core/64, the name field on the Multiplayer page for Host and Join, cut at 16, ready for a Steam name (Q2585); merged (main 98b1500) |
+| Cost | about 105k subagent tokens |
+
+---
+
+| Ticket | core/42, the Hand-off: right-click Hand-off with the pairing rule, "Not their mate" / "Hands full", the flight into the receiver's Hands with a sparkle, the catch by Throw (Q2588), a knocked-down Teammate refused (Q2589), Guest timeout 2 s, PROTOCOL 16; merged (main a6e1955) |
+| Cost | about 444k subagent tokens (Opus) |
+| Surprises | the Host's reach guard (new, technical); lines needing later pieces logged [later], none dropped |
+| Looks | builds/review-hand-off/ |
+
+---

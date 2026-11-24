@@ -40,3 +40,37 @@ static func find(node: Node, mess: Mess, from: Vector3, dir: Vector3, reach: flo
 	if best["lying"] and mess.is_pair(best["sock"]):
 		best["point"] = mess.pose_of(best["sock"]).origin + Vector3.UP * SockDress.ball_radius(mess.design_of(best["sock"]))
 	return best
+
+
+## The Teammate a Hand-off from `from` along unit `dir` would go to (core/42 lines 1, 4, 5; Q2589):
+## the one whose body the line meets first within `reach`, shortened by the first wall it meets. A
+## body is the segment from `numbers.feet_lift` over their feet to the top of their height as drawn
+## here (crouch counts), `numbers.body_radius` round; the point where the line enters it counts, not
+## its middle. Not player `me`, not one `kd` says is knocked down, only avatars in `node`'s level.
+## {"peer": their peer, or -1; "along": how far along the line it enters them, or INF}.
+static func mate(node: Node, from: Vector3, dir: Vector3, reach: float, me: int, numbers: HandOffTuning,
+		kd: Knockdowns, exclude: Array[RID]) -> Dictionary:
+	var best := {"peer": -1, "along": INF}
+	if node == null or not node.is_inside_tree() or numbers == null:
+		return best
+	var wall := PhysicsQueries.ray(node, from, from + dir * reach, Mess.LAYER_HOUSE, exclude)
+	var far := from.distance_to(wall["position"]) if not wall.is_empty() else reach
+	var level := LevelRuntime.level_of(node)
+	var r := numbers.body_radius
+	for n in node.get_tree().get_nodes_in_group(Avatar.GROUP):
+		var a := n as Avatar
+		if a == null or a.peer() == me or a.is_queued_for_deletion() or not a.is_visible_in_tree() \
+				or (level != null and not level.is_ancestor_of(a)):
+			continue
+		if kd != null and kd.is_down(a.peer()):
+			continue
+		var t := a.tuning if a.tuning != null else AvatarTuning.new()
+		var feet := a.global_position
+		var top := feet + Vector3.UP * lerpf(t.stand_height, t.crouch_height, a.crouch)
+		var hit := Knockdowns.closest_on_segments(from, from + dir * far, feet + Vector3.UP * numbers.feet_lift, top)
+		if hit[0] > r:
+			continue
+		var along := maxf(0.0, hit[1] - sqrt(r * r - hit[0] * hit[0]))
+		if along < float(best["along"]):
+			best = {"peer": a.peer(), "along": along}
+	return best

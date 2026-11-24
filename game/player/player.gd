@@ -20,6 +20,12 @@
 ## back only from above, rides one it stands on (staying crouched, so it cannot jump off), climbs onto one
 ## with a jump near it (tucked into a crouch), walks at carry_speed with anyone on its own back and stands
 ## up only with room for them; and the soft push between standing players (Q263).
+##
+## The Hand-off (core/42): holding something, a Teammate under the crosshair in reach (AimFinder.mate(),
+## nearer than the aimed Sock) is aimed: their avatar shows its Outline, the crosshair is never red,
+## the corner still says "Drop", and a short right click asks to hand them the active item instead of
+## a drop. What the Host answers shows here: "Not their mate" to the giver, "Paired!" or "Hands full"
+## to the receiver.
 class_name Player
 extends CharacterBody3D
 
@@ -49,6 +55,8 @@ const HANDS_PREV := &"hands_prev"
 ## What a refusal says (the old game's words).
 const HANDS_FULL := "Hands full"
 const CANT_DROP := "Can't drop there"
+## What the giver reads when a loose Sock completes no Pair in the Teammate's Hands (the old game.gd NOT_MATE).
+const NOT_THEIR_MATE := "Not their mate"
 ## What the message row says when a pick completes a Pair (the old game.gd, core/16 P02).
 const PAIRED := "Paired!"
 ## What the knocked player reads (the old teammate_news_installer.gd, Q2494): the thrower's name, then this.
@@ -128,6 +136,8 @@ var charge := 0.0
 var _knockdowns: Knockdowns
 var knocked := false
 var aimed_body := -1
+## core/42: the Teammate (a peer) a short right click would hand the active item to now, or -1.
+var aimed_mate := -1
 var _grab_held := false
 var _eye_reach := INF
 
@@ -496,14 +506,19 @@ func _update_hands(delta: float) -> void:
 	var holding := h.active_of(me) >= 0
 	var kd := knockdowns()
 	aimed_body = kd.aimed_body(eyes(), aim_dir(), me) if kd != null and not holding and _acting() else -1
-	# H91, Q2498: a lying body under the crosshair wins over a Sock or a thing, and shows its Outline.
-	aimed_sock = found["sock"] if aimed_body < 0 else -1
+	aimed_mate = _mate_aimed(h, found, kd) if holding and _acting() else -1
+	# H91, Q2498: a lying body under the crosshair wins over a Sock or a thing, and shows its Outline;
+	# core/42 line 30: so does a Teammate a Hand-off would go to.
+	aimed_sock = found["sock"] if aimed_body < 0 and aimed_mate < 0 else -1
 	_outline(h.mess, aimed_sock)
-	var body := kd.avatar_of(aimed_body) if aimed_body >= 0 else null
+	var body := kd.avatar_of(aimed_body) if aimed_body >= 0 and kd != null else null
+	if aimed_mate >= 0:
+		body = _avatar_here(aimed_mate)
 	_outline_thing(Outline.of(body) if body != null else _aimed_outline(h.mess, aimed_sock, found["lying"]))
 	_tick_spot = {}
 	_tick_refusal = ""
-	if holding:
+	if holding and aimed_mate < 0:
+		# Line 31: with a Teammate aimed the crosshair is never red (a Hand-off is possible).
 		_tick_spot = drop_spot(found)
 		_tick_refusal = _refusal_of(h, _tick_spot)
 	drop_refused = _tick_refusal != ""
@@ -545,6 +560,8 @@ func _update_hands(delta: float) -> void:
 		_drop_down_at = -1.0
 		if charging:
 			_throw(h)
+		elif tapped and aimed_mate >= 0:
+			_hand_off(h, aimed_mate)
 		elif tapped:
 			_drop(h)
 
@@ -616,6 +633,37 @@ func _drop(h: Hands) -> void:
 		_ghosts.drop(spot["point"], spot["normal"])
 	else:
 		h.drop(player_id(), spot["point"], spot["normal"])
+
+
+## core/42 lines 6-10: hands the active item to Teammate `to`, never also a drop. A Guest's waits for
+## the Host's answer with nothing shown (no guess, line 10), back to "refuse" after the timeout.
+func _hand_off(h: Hands, to: int) -> void:
+	if h.active_of(player_id()) < 0:
+		return
+	if _ghosts.active():
+		_ghosts.hand_off(to)
+	else:
+		h.hand_off(player_id(), to)
+
+
+## core/42 lines 1-5: the Teammate under the crosshair a Hand-off would go to, nearer than the Sock
+## the crosshair is on (line 2), or -1.
+func _mate_aimed(h: Hands, found: Dictionary, kd: Knockdowns) -> int:
+	var mate := AimFinder.mate(self, eyes(), aim_dir(), hands_tuning.reach, player_id(), h.hand_off_numbers(), kd, [get_rid()])
+	var peer := int(mate["peer"])
+	if peer >= 0 and int(found["sock"]) >= 0 and eyes().distance_to(found["point"]) < float(mate["along"]):
+		return -1
+	return peer
+
+
+## Teammate `peer`'s avatar in this player's level, or null.
+func _avatar_here(peer: int) -> Avatar:
+	var level := LevelRuntime.level_of(self)
+	for node in get_tree().get_nodes_in_group(Avatar.GROUP):
+		var a := node as Avatar
+		if a != null and a.peer() == peer and not a.is_queued_for_deletion() and (level == null or level.is_ancestor_of(a)):
+			return a
+	return null
 
 
 ## Why a drop where the crosshair is would be refused now, or "" (the Host's own check).
@@ -801,6 +849,7 @@ func _on_applied(ev: Dictionary) -> void:
 	if _hands != null:
 		Hearing.applied(ev, player_id(), _hands.parts, _ghosts.answered(ev))
 	_knock_news(ev)
+	_hand_off_news(ev)
 	if ev.get("ok", false) and int(ev.get("by", 0)) == player_id() and ev.has("paired") \
 			and StringName(ev.get("kind", &"")) == &"pick":
 		say_paired()
@@ -820,6 +869,32 @@ func _on_applied(ev: Dictionary) -> void:
 		Hands.NO_SPOT, Hands.FAR:
 			if StringName(ev.get("kind", &"")) == &"drop":
 				say(CANT_DROP)
+
+
+## core/42: a Hand-off or a catch answered. The item's flight into the receiver's Hands starts where it
+## left (line 25: the giver's hand as drawn here; line 34: where a Throw hit), on every machine; the
+## receiver reads "Paired!" (line 20) or "Hands full" (lines 23, 36); the giver of a refused loose Sock
+## reads "Not their mate" (line 14). Nobody else reads anything (lines 23, 35, 43).
+func _hand_off_news(ev: Dictionary) -> void:
+	var kind := StringName(ev.get("kind", &""))
+	if _hands == null or StringName(ev.get("to", &"")) != _hands.id or not (kind in [Hands.HAND_OFF, Hands.CATCH]):
+		return
+	var me := player_id()
+	if not ev.get("ok", false):
+		if kind == Hands.HAND_OFF and int(ev.get("by", 0)) == me and String(ev.get("reason", "")) == Hands.NOT_MATE:
+			say(NOT_THEIR_MATE)
+		return
+	var item := int(ev.get("item", -1))
+	if not ev.get("full", false) and item >= 0:
+		var at: Variant = ev.get("at")
+		var from: Vector3 = at if kind == Hands.CATCH and at is Vector3 else _hands.handed_from(int(ev.get("giver", -1)), item)
+		HeldView.fly_from(_hands, int(ev.get("receiver", 0)), item, from)
+	if int(ev.get("receiver", 0)) != me:
+		return
+	if ev.get("full", false):
+		say(HANDS_FULL)
+	elif ev.has("paired"):
+		say_paired()
 
 
 ## coop/10: "<Name> knocked you down" for the knocked player alone (F78, Q2494); a grab granted after
