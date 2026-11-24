@@ -462,7 +462,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			var station := world.get_node("Stations/Doors") as Node3D
 			var player := LevelRuntime.of(world).player
 			if arg == "view":
-				player.global_position = station.to_global(Vector3(-2.2, 0.0, 2.4))
+				player.global_position = station.to_global(Vector3(-2.0, 0.0, -0.2))
 				player.reset_physics_interpolation()
 				var cam := Camera3D.new()
 				world.add_child(cam)
