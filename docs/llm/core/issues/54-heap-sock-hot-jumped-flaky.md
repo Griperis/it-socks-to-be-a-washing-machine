@@ -83,3 +83,4 @@ A flaky test is a defect to rework (kit/docs/TESTING.md "Flaky cases"), never a 
     extra records, 27 runs in order and reversed): 1350 pours, 0 faults, 0 jitter. `--touched` (coop/07's and coop/08's suites included): `PASS 18784 checks, 536
     cases`, no FLAKY; `PASS rules: 9 rules, no new hit`.
   - The drive refused this entry's commit; `git_repair.sh` folded its six files into the merge of main (5e5d41f).
+- Merged: d6f741b4 (2026-11-24, branch core/54-heap-sock-hot-jumped-flaky)
