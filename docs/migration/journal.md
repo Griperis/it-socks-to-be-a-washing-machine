@@ -1130,3 +1130,29 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Surprises | the plain collider drew the rider behind on other screens, fixed by the riding offset; the merge stopped twice on editor uid re-saves |
 | Looks | builds/review-player-stacking/ |
 | Decisions | Q2581, Q2591-Q2594 |
+
+---
+
+| Ticket | core/54, the heap's flaky Sock: an asleep-while-tipping Sock woken, `pressure_spin` 1.5 rad/s, `push_slack` 0.02, "jumped" measured from the rest tick, jitter counted only for a wake that moves the Sock (5 mm / 3 degrees); 0 faults in 1350 pours; merged (main e7615b9) |
+| Cost | about 246k subagent tokens (Opus) |
+| Surprises | `flight_start:t01_heap` began failing in the full suite after this merge (core/69) |
+
+---
+
+| Ticket | core/68, the game link's gaps: a third player's spawn reaches only Guests in the house (a Host-owned Gate synchronizer), the F5 `--join=` path, a Lobby Guest's Hands numbers in `house_ready`, PROTOCOL 18; merged (main 83dd055) |
+| Cost | about 224k subagent tokens (Opus) |
+| Surprises | `session.gd` at 842 lines, a split left [later] |
+
+---
+
+| Ticket | house/08, the room Doors: leaves swing on the hinge, the laundry Door in the house, the Door's sound 1 m up (Q2595); merged (main 9752669) |
+| Cost | about 432k subagent tokens |
+| Surprises | 31 typed uids fixed with the new uid check; no Sock behind an open leaf and the leaf bevel stay [later] |
+| Looks | builds/review-house-08/ |
+| Decisions | Q2595 |
+
+---
+
+| Ticket | core/65, the World drawer and its pages in the Lobby, the Host's World list to Guests (`LobbyState.worlds`), a damaged World kept in place, PROTOCOL 19; merged (main becc751) |
+| Cost | about 157k subagent tokens |
+| Surprises | its merge of main was blocked by the moved kit pin; commit.sh now lets main's pin ride along |
