@@ -1,4 +1,4 @@
-Next free Q number: Q2599 (update this line whenever a round of questions is asked)
+Next free Q number: Q2614 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -513,3 +513,18 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2596: the Lobby look of core/66's first still is the direction: players on plinths with their names, the World card at the top, World settings in a drawer on the right (designer, 2026-11-24).
 - Q2597: a co-op World is named by its members' names (`Worlds.name_form` MEMBERS), not "World 1"; settles Q2587 (core/66; designer, 2026-11-24).
 - Q2598: the members' name cut to "Ada," in a drawer row and the drawer row's tiny details line stay [later]; a yellow player's name beside the gold Ready tick stays as it is (core/66; designer, 2026-11-24).
+- Q2599: not ported: the splitter, the Lost Sock Grotto (and its lantern), the F1 debug menu (core/44 closed), the pairing machine, Hampers. Kept: the Sock vacuum, the Backpack vacuum and the filter nozzle, the Sock detector (designer, 2026-11-24).
+- Q2600: Secrets are not ported; they are designed later, after the run and progression. The litterbox stays, its Socks placed by the Sock generator instead of the old fixed three. The studio intro and the guide card stay (designer, 2026-11-24).
+- Q2601: kept and ported: the Drum finale, the Cat, the X-rays, the Elevator (designer, 2026-11-24).
+- Q2602: dropped for good: the parked graybox machines (Sorter, chute, clothesline, launcher, back devices), wash cycles, proximity voice chat. Achievements stay planned (designer, 2026-11-24).
+- Q2603: how the rest is ported: per milestone the lead writes a proposal list per piece (the old behaviour, design uncertainties, how it is authored); the designer is grilled on the proposals in one sitting; once approved, agents build it unattended in the most efficient order, merged to main on full passing runs; the designer reviews the whole batch in play (designer, 2026-11-24).
+- Q2604: an open choice an agent meets in an unattended batch takes the old game's answer (or the nearest) and is listed in the batch's review sheet for the designer to confirm or change in play (designer, 2026-11-24).
+- Q2605: one batch is a whole milestone, reviewed in one play session (designer, 2026-11-24).
+- Q2606: the first batch is the run plus the washer: Stages and floors, the First wash, the Laundry day (bins, Final wash), the Final screen, the voice system and the talking washing machine (designer, 2026-11-24).
+- Q2607: progression is the same game made authorable: the old rules first, each Upgrade, Gift, Wardrobe piece and Stage a Resource tuned in the inspector and shown in a zoo station; improvements are proposed on top one by one for the designer to pick (designer, 2026-11-24).
+- Q2608: a voiced line is authored by dropping its recording into the speaker's folder; a tool makes the line Resource, subtitle key and animation; its trigger is picked from a list in the inspector; a Voice station plays every line (designer, 2026-11-24).
+- Q2609: the speakers are the washing machine, the Old Tree and cutscenes 1-6; the washer and the Old Tree both talk in cutscene 3 (the lead's reading of "will talk in 3", to confirm in the proposal); no plot NPC (designer, 2026-11-24).
+- Q2610: two currencies as the old game: personal Coins to whoever shelves a Pair, the team's Drawers per Cabinet Drawer filled; names, icons and payouts tunable Resources (designer, 2026-11-24).
+- Q2611: Upgrades are bought at the Old Tree, which opens the Upgrade menu (designer, 2026-11-24).
+- Q2612: rewards: a filled Drawer flies in its Coins and Drawers and nothing else; Gifts come as Stage presents under the Old Tree when a Stage ends, opened together (fixes the old all-at-once burst, old ticket 72) (designer, 2026-11-24).
+- Q2613: the Upgrade menu stays the old grid of icon buttons with levels and prerequisites; each Upgrade a Resource (icon, levels, prices, needs, effect), all shown in a zoo station (designer, 2026-11-24).

@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-triage
+status: wontfix
 kind: build
 area: tools
 feature: core
@@ -25,3 +25,6 @@ Port of the old game's F1 debug menu in debug builds: stuck test, X-ray of all l
 ## Open follow-ups
 
 ## Built log
+
+## Answers
+- Not ported (Q2599, 2026-11-24).
