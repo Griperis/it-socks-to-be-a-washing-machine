@@ -13,7 +13,8 @@ key types, its flows, its gotchas) and update it in the same commit as the code.
     (one script that owns the state and its checks). Nothing else is needed.
   - **planned or undecided, scene parts:** shared state lives on `Part` nodes in each thing's scene
     (`game/parts/`): asked by a Command, decided by the part's own `decide()` on the Host, written
-    only by `Parts`; netcode is one `Session` node. A player alone is a Host of one, so co-op adds
+    only by `Parts`; netcode is one `Session` node (its work in `session_*.gd` helpers beside it; a new verb:
+    `docs/architecture/coop.md` "Adding a verb"). A player alone is a Host of one, so co-op adds
     no rework. A placed thing is never renamed or moved once a build is shared
     (`kit/skills/multiplayer-game-dev/templates/scene_parts/README.md`).
   - **planned or undecided, the Command seam:** netcode lives in one folder and talks to the rules
@@ -121,7 +122,7 @@ the held Socks; `SockCloth` ranks and bends the held and nearest flying Socks. N
 **A change (pick, drop, Throw, shelve, open).** The asker builds a `Command` and calls `Parts.ask`. On the Host (or
 alone) `Parts.answer` runs the target Part's `decide()`, which reads only and returns patches for one or more Parts or
 a refusal; `Parts.apply` writes them (`Part.write`, then `_show`) and emits `applied`. A Guest's `ask` goes up through
-`Session` (packet guards, rate), and the Host's `Session` sends each applied answer to every Guest, who applies it the
+`Session` (packet guards, rate: `SessionGuard`), and the Host's `Session` sends each applied answer (`SessionRelay`) to every Guest, who applies it the
 same way. The Player passes each answer to the HUD's words and `Hearing` (sound, rumble).
 
 **A join.** `Session.join(where)` connects through its `NetTransport` (`game/net/`: `EnetTransport` is the only

@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: maintenance
 feature: net
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-24
 blocked_by: []
 notes: ["suggested model: opus (big refactor of the one RPC node)", "from core/68's [later]; before batch A (designer, 2026-11-24)"]
 terms: [Session, Part, Host, Guest]
@@ -34,3 +34,15 @@ code map too.
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-24
+- Changed: `session.gd` (842 lines) split with no change of behaviour: it keeps the public calls, signals,
+  `PROTOCOL` (still 20) and the gate's constants, every `@rpc` (same names, one line each into a helper) and the
+  session's life (337 lines). The work moved into five plain `RefCounted` helpers beside it: `SessionPeer`
+  (open, join, close), `SessionGate` (the gate, a Guest coming in and going, Hands numbers), `SessionHouse`
+  (the house handshake), `SessionGuard` (a Guest's Command checked, drops counted), `SessionRelay` (answers
+  down, Commands up). No test edited. `coop.md` has "The session's files" and "Adding a verb";
+  `architecture.md` points to them.
+- Files: game/parts/session.gd, session_peer.gd, session_gate.gd, session_house.gd, session_guard.gd,
+  session_relay.gd (+ .uid), docs/architecture/coop.md, docs/architecture.md
+- Verified: PASS 19661 checks, 576 cases (`run.sh --touched`: 60 of 66 suites, every co-op suite)

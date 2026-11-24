@@ -11,7 +11,7 @@ in `docs/architecture.md` say what happens in order; this file says who owns wha
 | Piece | Files | Owns |
 |---|---|---|
 | The game link | `game/net/game_link.gd/.tscn` | Lives for the whole game beside the current scene (core/62, Q2582): holds the `Session`, its `Roster` and the link's `Parts` (ids prefixed `Runtime/`, so the Roster stays `Runtime/Session/Roster`). The title makes it beside itself (under the root in the game; SceneChanger leaves it alone) and frees it when the game is back at the title; a level with none (F5, the zoo, `--scene=`, tests) makes a private one, beside itself when it is the scene the machine runs (F5: the title's path, core/68), else under its runtime. Found with `GameLink.of(node)`; `LevelRuntime` hands its Session and Roster to the Net, Avatars, Autosave and ESC menu |
-| The session | `game/parts/session.gd` | The only node with RPCs: the gate (PROTOCOL, player id, name, Hands numbers, and the layout hash when the Guest already has a level), the guards, Commands up, answers down, the link snapshot at connect (`linked`), the house handshake (`house_ready` with PROTOCOL, layout and Hands numbers; the level snapshot once the Host's level is settled: `welcomed`), a leaver, the Host quitting. Works with the link's Parts and the attached level's (`attach_level`/`detach_level`; the level's read through to the link's) |
+| The session | `game/parts/session.gd` and its helpers `session_peer.gd`, `session_gate.gd`, `session_house.gd`, `session_guard.gd`, `session_relay.gd` (maintenance/04) | The only node with RPCs: the gate (PROTOCOL, player id, name, Hands numbers, and the layout hash when the Guest already has a level), the guards, Commands up, answers down, the link snapshot at connect (`linked`), the house handshake (`house_ready` with PROTOCOL, layout and Hands numbers; the level snapshot once the Host's level is settled: `welcomed`), a leaver, the Host quitting. Works with the link's Parts and the attached level's (`attach_level`/`detach_level`; the level's read through to the link's). `session.gd` keeps the public calls, `PROTOCOL`, every `@rpc` (one line each) and the session's life; the work is in the helpers (see "The session's files") |
 | The transport | `game/net/net_transport.gd`, `enet_transport.gd` | How a machine reaches the others; the only file that names ENet or reads an address (Steam comes as another transport at M4) |
 | Start and words | `game/net/level_net.gd` | `--host`, `--join=`, `--profile=`; the HUD's toasts and mode line |
 | Who plays | `game/net/roster.gd`, `player_profile.gd`, `coop_tuning.gd/.tres` | The Roster Part (by player id: peer, name, colour, place, Hands numbers; alone too, the player in its own Roster through `Session.enter_alone()`, core/58, so Hands and Coins are keyed by player id); the long random id in `user://profile[_<tag>].json`; max players, colours, timeouts |
@@ -26,10 +26,35 @@ in `docs/architecture.md` say what happens in order; this file says who owns wha
 | Pings | `game/ping/` (`Pings`, `PingAim`, `PingMarks`, `PingMark`, `PingWheel`, `ping_tuning.tres`), `game/player/pinger.gd`, `game/ui/hint_arrows.gd` | One standing ping per player (core/43), a Part under the runtime (`Runtime/Pings`): any player's `ping` names a Mess Sock, a Teammate, a thing with an Outline by its path from the level, or a spot; the Host falls back to the spot for what is gone. Each machine counts it down on its own clock; not saved, not in the join snapshot (`whole_state()` empty; a standing ping first seen in a later answer never shows). A Guest guesses nothing (Q2590). `PingMarks` draws it on every machine (outline through walls, ring, bubble, the copy beside the pinger's head) and feeds the HUD's `HintArrows`, whose open source list takes the X-rays and Mate Radar in M4 |
 | Teammates heard | `game/audio/hearing.gd`, `teammate_steps.gd` | A Teammate's cues and steps at their body (`Sounds.play_from`) |
 
+## The session's files
+`Session` is one node and the only one with RPCs (Godot finds an RPC by node path and name). Its work is in
+plain helper classes beside it (`RefCounted`, one per file, made by the Session with itself as `_s`); they read
+and write the Session's own fields and call its RPCs, and nothing else holds them.
+
+| File | Its one job |
+|---|---|
+| `session.gd` | Public calls (`host`, `join`, `close`, `enter_alone`, `attach_level`, `sees_house`, ...), signals, `PROTOCOL` and the gate's constants, every `@rpc` as one line into a helper, `_guests`, `_end`, `_note` |
+| `session_peer.gd` (`SessionPeer`) | Opening (`host`, `join`) and closing the peer: the SceneMultiplayer signals, the auth callback, every helper's `clear()` on close |
+| `session_gate.gd` (`SessionGate`) | The gate word both ways, the refusals, a Guest taken into the Roster with the link snapshot (`joined`), a leaver (`left`), the Hands numbers a player brings (`clamped_hands`, `own_hands`) |
+| `session_house.gd` (`SessionHouse`) | The house handshake both ways: `house_ready`, the level snapshot, who is in (`_houses`), a level attached or detached |
+| `session_guard.gd` (`SessionGuard`) | A Guest's Command checked in the guards' order, then answered; `drop`/`count` (`Session.dropped`, `stats`), the rate |
+| `session_relay.gd` (`SessionRelay`) | Which Parts the Session listens to, which Guests hear each answer (`on_applied`), a Guest's way up (`send_up`), `is_link_part` |
+
+### Adding a verb
+- **A verb on a Part** (nearly every one: a new action, the run's state): the Part declares it in `accepts()` (its
+  args, a `"rate"` if 10 a second is wrong) and answers it in `decide()`; a Guest's `Parts.ask` reaches it through
+  `SessionGuard.command` unchanged. Session needs no edit; bump `PROTOCOL` (a new Command shape) in `session.gd`,
+  one line. A Host-only verb is left out of `accepts()`.
+- **A new message that is not a Command** (rare: a handshake step, a one-off snapshot): one `@rpc` function in
+  `session.gd`, one line calling a method on the helper whose job it is (or a new `session_<concern>.gd` helper
+  for a new concern, made beside the others in `session.gd`), its packet checked in that helper before anything
+  reads it (`_guard.drop` with a reason added to `Session.dropped`'s list), and `PROTOCOL` bumped.
+- Never a second node with RPCs, and never an RPC's body in `session.gd` beyond its one line.
+
 ## Rules that hold everywhere
 - **Only the Host decides.** A Guest's `Parts.ask` goes up through `Session._command`; nothing on a Guest
   writes a Part but the Host's answer (`_event`, an `authority` RPC Godot refuses from anyone else).
-- **The guards, in order** (`Session._command`): sender admitted; wire shape (`Command.shape_error`); the
+- **The guards, in order** (`Session._command`, worked in `SessionGuard.command`): sender admitted; wire shape (`Command.shape_error`); the
   target is a bound Part; the Part accepts the verb; the args match exactly (`Command.args_error`); the
   verb's rate (`"rate"` in `accepts()`, else `Session.RATE`, 10 a second). A drop is counted in `dropped`
   (per player and reason), logged at most once a second, and never kicks anyone. Host-only verbs (`knock`,
@@ -100,3 +125,5 @@ The designer's two windows are the reference for frame times.
 - In one process both machines poll in one frame, so at 0 ms an answer can come back within the click's
   own frame: a case judging "before the answer" uses a delay.
 - `Session.close()` runs on `_exit_tree` too; then it writes nothing (`_leaving`).
+- A helper's `await` (a level's `bound` or `settled`) checks the Session is still valid and in the tree when it
+  resumes: the helper may outlive its node for that one step.
