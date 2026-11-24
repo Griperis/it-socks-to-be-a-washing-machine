@@ -28,6 +28,8 @@ properties/3/path = NodePath(".:pose_crouch")
 properties/3/spawn = true
 properties/3/replication_mode = 1
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gate"]
+
 [node name="Avatar" type="Node3D" unique_id=1939724661]
 physics_interpolation_mode = 2
 script = ExtResource("1_avatar")
@@ -61,3 +63,6 @@ shape = SubResource("CapsuleShape3D_mate")
 
 [node name="Sync" type="MultiplayerSynchronizer" parent="." unique_id=1692978382]
 replication_config = SubResource("SceneReplicationConfig_pose")
+
+[node name="Gate" type="MultiplayerSynchronizer" parent="." unique_id=1692978383]
+replication_config = SubResource("SceneReplicationConfig_gate")

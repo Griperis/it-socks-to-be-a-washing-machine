@@ -109,8 +109,18 @@ func _follow_roster() -> void:
 			child.queue_free()
 
 
-func _on_house_changed(_peer: int) -> void:
+## Guest `peer` came in or left: its avatar comes or goes, and every avatar's Gate (core/68) shows or
+## hides it now, so the spawns go before the Session tells the other Guests (who then send it their
+## own poses: it has the avatars by then).
+func _on_house_changed(peer: int) -> void:
 	_follow_roster()
+	var players := get_node_or_null(spawn_path)
+	if players == null:
+		return
+	for child in players.get_children():
+		var gate := child.get_node_or_null(^"Gate") as MultiplayerSynchronizer
+		if gate != null and gate.is_inside_tree() and gate.is_multiplayer_authority():
+			gate.update_visibility(peer)
 
 
 func _add(id: int) -> void:

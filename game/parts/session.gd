@@ -25,7 +25,8 @@
 ## token before (Q2449).
 ##
 ## The house handshake (core/62): when a Guest's level is bound and its starting state made, it sends
-## `house_ready` with its PROTOCOL and its level's layout hash (a Guest that joined from inside the
+## `house_ready` with its PROTOCOL, its level's layout hash and its Hands' numbers (core/68: a Guest
+## that joined in the Lobby had no Player to say them at the gate; the Host clamps them into the Roster) (a Guest that joined from inside the
 ## Host's level, its layout in its gate word, has said it at the gate and is welcomed once the Host's
 ## level is settled). The Host refuses a mismatch ("Another
 ## version of the game", the Guest goes alone), else waits until its own level is settled and sends
@@ -58,7 +59,7 @@ signal ended(text: String)
 ## synchronized property, a spawnable scene or the shape of a Command, an event, a snapshot or the
 ## gate's word changes. The word's first 4 bytes (the PROTOCOL) never move, so any two builds can
 ## tell they differ.
-const PROTOCOL := 15  # 14: core/62, the game link: the layout leaves the gate's word for house_ready, the link's snapshot; 15: core/63, LobbyState in the link
+const PROTOCOL := 16  # 14: core/62, the game link: the layout leaves the gate's word for house_ready, the link's snapshot; 15: core/63, LobbyState in the link; 16: core/68, house_ready carries the Hands numbers, the avatar's Gate
 ## The gate's answers: one byte, and after REFUSED one byte saying why.
 const ACCEPTED := 1
 const REFUSED := 0
@@ -126,6 +127,12 @@ var _house_waiting: Dictionary[int, bool] = {}
 ## The Host: Guests whose house_ready came while this machine had no level (its house still loading
 ## after Start): {peer: layout}, answered when a level attaches.
 var _house_early: Dictionary[int, String] = {}
+## The Host: the Hands numbers each Guest said with its house_ready (as sent), written into the Roster
+## as it is taken in (core/68: a Guest that joined in the Lobby had no Player to say them at the gate).
+var _house_hands: Dictionary[int, Dictionary] = {}
+## A Guest: the other Guests the Host says are in its house (`_houses`), the only ones this machine's
+## own avatar is synchronized to (a Guest still loading has nowhere to put it: core/68).
+var _houses_seen: Dictionary[int, bool] = {}
 ## A Guest: it has the link snapshot.
 var _in_game := false
 ## A Guest: the level whose house_ready was sent (or is waiting to be), so it is sent once.
@@ -257,6 +264,8 @@ func close() -> void:
 	_in_house.clear()
 	_house_waiting.clear()
 	_house_early.clear()
+	_house_hands.clear()
+	_houses_seen.clear()
 	_in_game = false
 	_house_asked = null
 	_rates.clear()
@@ -303,20 +312,26 @@ func detach_level(p: Parts) -> void:
 	p.relay = Callable()
 	_listen(parts)
 	if multiplayer.is_server():
+		var had := not _in_house.is_empty()
 		_in_house.clear()
 		_house_waiting.clear()
+		if had:
+			_tell_houses()
 	else:
 		_house_asked = null
 		if _in_game and is_inside_tree():
 			_house_left.rpc_id(1)
 
 
-## The Host: whether this machine may send Guest `peer` anything of its level (its house_ready was
-## handled). True on a Guest and alone: a Guest sends its own avatar to the Host, who has a house.
-## LevelRuntime's visibility filter on every synchronizer of the level asks it.
+## Whether this machine may send `peer` anything of its level: on the Host, once that Guest's
+## house_ready was handled; on a Guest (its own avatar), to the Host always and to another Guest once
+## the Host said that one is in its house (core/68). True alone. LevelRuntime's visibility filter on
+## every synchronizer of the level asks it.
 func sees_house(peer: int) -> bool:
-	if _peer == null or not multiplayer.is_server() or peer == Parts.HOST:
+	if _peer == null or peer == Parts.HOST:
 		return true
+	if not multiplayer.is_server():
+		return _houses_seen.has(peer)
 	return _in_house.has(peer)
 
 
@@ -497,6 +512,7 @@ func _on_peer_joined(peer: int) -> void:
 	_guests[peer] = true
 	var snap := link_parts.snapshot() if link_parts != null else {}
 	_linked.rpc_id(peer, snap)
+	_houses.rpc_id(peer, PackedInt32Array(_in_house.keys()))
 	_note("%d joined (%s, colour %d, link snapshot %d bytes)" % [peer, String(who["id"]).left(12),
 			roster.colour_index_of(peer) if roster != null else -1, var_to_bytes(snap).size()], false)
 	if in_level:
@@ -508,16 +524,19 @@ func _on_peer_joined(peer: int) -> void:
 ## settled (its Socks laid, house/09), it gets the level's whole state and from now on everything of
 ## it.
 @rpc("any_peer", "call_remote", "reliable")
-func _house_ready(protocol_said: Variant, layout: Variant) -> void:
+func _house_ready(protocol_said: Variant, layout: Variant, hands: Variant) -> void:
 	var peer := multiplayer.get_remote_sender_id()
 	if not multiplayer.is_server() or not _guests.has(peer):
 		_drop(peer, "not in the game", "")
 		return
-	if not (protocol_said is int) or not (layout is String) or String(layout).length() > 128:
+	if not (protocol_said is int) or not (layout is String) or String(layout).length() > 128 \
+			or not (hands is Dictionary) or (hands as Dictionary).size() > Command.ARGS_MAX:
 		_drop(peer, "house", "an unreadable house_ready")
 		return
 	if _in_house.has(peer) or _house_waiting.has(peer):
 		return
+	if not (hands as Dictionary).is_empty():
+		_house_hands[peer] = hands
 	if int(protocol_said) != PROTOCOL:
 		_drop(peer, "protocol", "%d at house_ready, not %d" % [int(protocol_said), PROTOCOL])
 		_house_refused.rpc_id(peer, WHY_VERSION)
@@ -557,10 +576,25 @@ func _take_into_house(peer: int, level: Parts) -> void:
 	if not _guests.has(peer) or _in_house.has(peer):
 		return
 	_in_house[peer] = true
+	var hands: Dictionary = _house_hands.get(peer, {})
+	_house_hands.erase(peer)
+	if roster != null and not hands.is_empty():
+		var said := roster.hands_said(peer, _clamped_hands(hands))
+		if not said.is_empty():
+			parts.apply(said)
 	var snap := level.snapshot()
 	_welcome.rpc_id(peer, snap)
 	house_changed.emit(peer)
+	_tell_houses()
 	_note("%d is in the level (snapshot %d bytes)" % [peer, var_to_bytes(snap).size()], false)
+
+
+## The Host: every Guest hears who is in this machine's house (after the spawns that Guest's coming in
+## sent: house_changed comes first), so a Guest's own avatar goes only to the Guests that can show it.
+func _tell_houses() -> void:
+	var inside := PackedInt32Array(_in_house.keys())
+	for peer: int in _guests:
+		_houses.rpc_id(peer, inside)
 
 
 ## A Guest's level went (a scene change): it is sent nothing of this machine's level until its next
@@ -573,8 +607,10 @@ func _house_left() -> void:
 		return
 	_house_waiting.erase(peer)
 	_house_early.erase(peer)
+	_house_hands.erase(peer)
 	if _in_house.erase(peer):
 		house_changed.emit(peer)
+		_tell_houses()
 
 
 ## A Guest's Command: checked (see the top), then answered for the Guest who sent it (first to
@@ -654,10 +690,13 @@ func _on_peer_left(peer: int) -> void:
 	_rates.erase(peer)
 	_said.erase(peer)
 	_waiting.erase(peer)
-	_in_house.erase(peer)
 	_house_waiting.erase(peer)
 	_house_early.erase(peer)
+	_house_hands.erase(peer)
+	var was_in := _in_house.erase(peer)
 	if _guests.erase(peer):
+		if was_in:
+			_tell_houses()
 		parts.left(peer)
 		_note("%d left" % peer, false)
 	_players.erase(peer)
@@ -730,6 +769,16 @@ func _welcome(snap: Dictionary) -> void:
 	welcomed.emit()
 
 
+## The Guests in the Host's house now (the Host's `_tell_houses`).
+@rpc("authority", "call_remote", "reliable")
+func _houses(inside: Variant) -> void:
+	_houses_seen.clear()
+	if not (inside is PackedInt32Array) or (inside as PackedInt32Array).size() > tuning.max_players:
+		return
+	for peer in inside as PackedInt32Array:
+		_houses_seen[peer] = true
+
+
 ## The Host refused this Guest's house (another PROTOCOL or level layout).
 @rpc("authority", "call_remote", "reliable")
 func _house_refused(why: int) -> void:
@@ -752,7 +801,7 @@ func _house_step() -> void:
 			return
 	if _peer == null or level_parts != level:
 		return
-	_house_ready.rpc_id(1, protocol, layout_of(level))
+	_house_ready.rpc_id(1, protocol, layout_of(level), _own_hands())
 
 
 func _on_host_gone() -> void:
@@ -783,6 +832,11 @@ func _note(text: String, warning: bool) -> void:
 
 
 func _exit_tree() -> void:
+	leave()
+
+
+## Closes as the node leaving the tree does: nothing is written on the way (its link goes too).
+func leave() -> void:
 	_leaving = true
 	close()
 	_leaving = false
