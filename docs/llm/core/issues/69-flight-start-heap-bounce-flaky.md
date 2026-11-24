@@ -47,3 +47,4 @@ terms: [Sock, Heap]
   No game number changed.
 - Files: tests/flight_start_test.gd
 - Verified: `--only=flight_start` 10 runs, each `PASS 48 checks, 7 cases`; touched `PASS 123 checks, 16 cases`
+- Merged: 725b4997 (2026-11-24, branch core/69-flight-start-heap-bounce-flaky)
