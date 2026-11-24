@@ -196,7 +196,8 @@ func case_d03_real_path() -> void:
 	var played := _heard.filter(func(h: Dictionary) -> bool: return h["event"] == &"door_open")
 	_same(played.size(), 1, "door_open plays once")
 	if not played.is_empty():
-		_check((played[0]["at"] as Vector3).distance_to(openable.get_parent().global_position) < 1.5, "from where the Door stands")
+		var foot := (openable.get_parent() as Node3D).global_position
+		_check(((played[0]["at"] as Vector3) - foot).is_equal_approx(Vector3.UP * 1.0), "from 1 m over where the Door stands (the old game's)")
 	await _until(func() -> bool: return not openable.is_moving() and mess.moving_count() == 0, "the swing and the Socks to end")
 	var box := _leaf_box(openable)
 	for i in socks.size():

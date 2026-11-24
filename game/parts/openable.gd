@@ -25,6 +25,9 @@ const GROUP := &"openables"
 ## "door_close"); empty is silent. A state arriving whole (a load, a late Guest) makes no sound.
 @export var open_sound: StringName = &""
 @export var close_sound: StringName = &""
+## How far over the thing's place the sounds come from, in metres (a room Door sounds 1 m up, where its leaf is
+## held, as the old game's did; 0, the thing's own place, for the rest).
+@export_range(0.0, 3.0, 0.05, "suffix:m") var sound_height := 0.0
 ## What the player's prompt calls it while it is shut or open: "Open the <noun>", "Shut the <noun>"
 ## (the old room Door, core/15 A03). Empty, the prompt is its title.
 @export var noun := ""
@@ -129,7 +132,7 @@ func _make_sound() -> void:
 	var event := open_sound if open else close_sound
 	var spot := get_parent() as Node3D
 	if event != &"" and spot != null and spot.is_inside_tree():
-		Sounds.play_at(event, spot.global_position)
+		Sounds.play_at(event, spot.global_position + Vector3.UP * sound_height)
 
 
 ## With a Looks that has its own "shut" (a drawer easing out both ways, core/09 D12): plays "open"
