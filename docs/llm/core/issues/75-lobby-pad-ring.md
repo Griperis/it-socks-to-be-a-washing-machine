@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: bug
 area: core
 feature: frame
 priority: later
 created: 2026-11-24
-done:
+done: 2026-11-24
 blocked_by: []
 notes: ["suggested model: sonnet", "from core/67's first still (Q2645)"]
 terms: []
@@ -23,6 +23,14 @@ core/67 added the Lobby's pad route, but in its stills (`builds/review-lobby-det
 - The pad route's case checks the focus style is drawn, not only that focus moved.
 
 
+
+## Answers
+
+- Q2647: drop the ring; port the old lit look (lift 5 px, grow 1.08 over 0.1 s, gold glow), numbers in a typed tuning Resource, every focusable control, focus style empty.
+- Q2648: only a pad or keyboard selection lights a control, never a mouse click.
+- Q2649: Licence links take pad and keyboard focus like any button.
+- Q2650: the World row's Delete keeps full width with its text; the row name is cut with "...".
+- Q2598: the "Ada," row name stays a [later].
 
 ## Open follow-ups
 
