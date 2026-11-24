@@ -14,6 +14,9 @@ extends Resource
 ## A pose further than this from the last one, in one update, is a jump: the body stands there at
 ## once (Q2451).
 @export_range(0.1, 10.0, 0.1, "suffix:m") var snap := 1.0
+## The farthest a rider's sent place may be from the feet of the player they ride (core/41, Q2592); a
+## pose further off is dropped.
+@export_range(0.5, 5.0, 0.1, "suffix:m") var ride_reach := 2.5 # placeholder: the designer's number (a guard: a stack of three is 1.4 m a step)
 ## The area a pose may name: the zoo's floor (x and z) widened by `margin` on every side, and this
 ## height range. A pose outside it, or not a finite number, is dropped where it arrives.
 @export var area := Rect2(-20.0, -60.0, 40.0, 80.0)

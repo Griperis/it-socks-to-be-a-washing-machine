@@ -14,13 +14,15 @@
 [ext_resource type="Script" uid="uid://o2nt8eeij1by" path="res://game/hands/guest_ghosts.gd" id="11_ghosts"]
 [ext_resource type="Resource" uid="uid://5buhkrgy1c5z" path="res://game/hands/ghost_tuning.tres" id="12_ghost_tuning"]
 [ext_resource type="PackedScene" uid="uid://cn3a05m85kv70" path="res://game/knockdown/vignette.tscn" id="13_vignette"]
+[ext_resource type="Script" uid="uid://c03n4n25hntrc" path="res://game/stacking/player_stack.gd" id="14_stack"]
+[ext_resource type="Resource" uid="uid://b4e3r68bxti0n" path="res://game/stacking/stacking_tuning.tres" id="15_stack_tuning"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
 height = 1.7
 
 [node name="Player" type="CharacterBody3D" unique_id=2071597669]
-collision_mask = 73
+collision_mask = 329
 floor_constant_speed = true
 script = ExtResource("1_player")
 tuning = ExtResource("2_tuning")
@@ -170,3 +172,8 @@ tuning = ExtResource("7_steps_tuning")
 unique_name_in_owner = true
 script = ExtResource("11_ghosts")
 tuning = ExtResource("12_ghost_tuning")
+
+[node name="Stack" type="Node" parent="." unique_id=1730582942]
+unique_name_in_owner = true
+script = ExtResource("14_stack")
+tuning = ExtResource("15_stack_tuning")

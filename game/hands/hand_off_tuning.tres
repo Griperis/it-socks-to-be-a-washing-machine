@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="HandOffTuning" format=3 uid="uid://uorn4zgzqzkg7"]
+[gd_resource type="Resource" script_class="HandOffTuning" format=3 uid="uid://bdqb6puqwy6oe"]
 
 [ext_resource type="Script" uid="uid://n96t9v82a1nec" path="res://game/hands/hand_off_tuning.gd" id="1_tuning"]
 
