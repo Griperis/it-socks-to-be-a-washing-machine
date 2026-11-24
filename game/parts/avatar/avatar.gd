@@ -22,6 +22,10 @@
 ## rise, stands at the end; meanwhile its Looks copies the ragdoll and its Mate capsule (what a falling
 ## ragdoll bumps on a standing player) is off. A body lying with a dragger plays "drag_scrape" at its
 ## feet each `scrape_every` they slide, and lets the dragger walk through it.
+##
+## Its Back (core/41) is its player's back on this machine: the disc a Teammate climbs and stands on,
+## where the body is drawn here. Riding (Q2592): the pose says whose back its player stands on and where
+## from their feet; every other machine draws it at that player's drawn feet plus the offset.
 class_name Avatar
 extends Node3D
 
@@ -54,6 +58,21 @@ const GROUP := &"avatars"
 	set(value):
 		if _takes(is_finite(value) and value >= 0.0 and value <= 1.0):
 			pose_crouch = value
+## The player whose back its player stands on (their peer id), -1 for none (core/41, Q2592).
+@export var pose_riding := -1:
+	set(value):
+		if _takes(value >= -1):
+			pose_riding = value
+## Where its player stands from the feet of the player they ride, as drawn on its owner's machine.
+@export var pose_ride_offset := Vector3.ZERO:
+	set(value):
+		if _takes(value.is_finite() and value.length() <= _tuning().ride_reach):
+			pose_ride_offset = value
+## How many jumps its player has made (climbs too): each new one is heard at its body (Q2593).
+@export var pose_jumps := 0:
+	set(value):
+		if _takes(value >= 0):
+			pose_jumps = value
 @export_group("")
 
 ## On the owner's machine: the local player's body this avatar copies every frame. Set by Avatars.
@@ -82,6 +101,12 @@ var scrapes := 0
 @onready var held := get_node_or_null(^"Held") as HeldView
 @onready var ragdoll := get_node_or_null(^"Ragdoll") as Ragdoll
 @onready var mate := get_node_or_null(^"Mate") as CollisionObject3D
+## While its player rides another here: where it is drawn from that player's drawn feet, easing toward
+## the sent offset (INF: not riding here).
+var _ride_drawn := Vector3.INF
+
+## Its player's back, which Teammates stand on (core/41; it places itself each physics frame).
+@onready var back := get_node_or_null(^"Back") as Back
 
 
 func _enter_tree() -> void:
@@ -130,11 +155,16 @@ func _process(delta: float) -> void:
 		crouch = pose_crouch
 		_follow_knockdown()
 		return
-	if _jumped:
+	var k := minf(1.0, tuning.follow * delta)
+	var carrier := carrier_here()
+	if carrier != null:
+		_ride(carrier, k)
+	elif _jumped:
 		_snap()
 	else:
-		var k := minf(1.0, tuning.follow * delta)
+		_ride_drawn = Vector3.INF
 		position = position.lerp(pose_position, k)
+	if carrier != null or not _jumped:
 		rotation.y = lerp_angle(rotation.y, pose_yaw, k)
 		pitch = lerpf(pitch, pose_pitch, k)
 	crouch = move_toward(crouch, pose_crouch, tuning.crouch_follow * delta)
@@ -143,6 +173,27 @@ func _process(delta: float) -> void:
 		looks.set_crouch(crouch)
 		looks.watch = nearest_eyes()
 	_follow_knockdown()
+
+
+# --- Riding (core/41, Q2592) -----------------------------------------------------------------------
+
+## The avatar of the player its player rides, when that player has one here beside it; else null.
+func carrier_here() -> Avatar:
+	if pose_riding < 0 or pose_riding == peer() or get_parent() == null:
+		return null
+	var a := get_parent().get_node_or_null(str(pose_riding)) as Avatar
+	return a if a != null and not a.is_queued_for_deletion() else null
+
+
+## Drawn on the carrier's back: the carrier's drawn feet plus an offset that eases toward the sent one,
+## so the rider moves with the carrier at once and only its own steps on the back glide.
+func _ride(carrier: Avatar, k: float) -> void:
+	var base := Stacks.feet(carrier)
+	if _ride_drawn == Vector3.INF:
+		_ride_drawn = global_position - base
+	_ride_drawn = _ride_drawn.lerp(pose_ride_offset, k)
+	global_position = base + _ride_drawn
+	_jumped = false
 
 
 # --- Knocked down (coop/10) ----------------------------------------------------------------------
@@ -303,6 +354,14 @@ func _copy_follow() -> void:
 	var player := follow as Player
 	if player != null:
 		pose_crouch = 1.0 if player.crouching else 0.0
+		pose_jumps = player.jumps
+		var ride := player.stack().ride if player.stack() != null else null
+		if ride != null and is_instance_valid(ride) and ride.avatar != null:
+			pose_riding = ride.avatar.peer()
+			pose_ride_offset = follow.global_position - Stacks.feet(ride.avatar)
+		else:
+			pose_riding = -1
+			pose_ride_offset = Vector3.ZERO
 
 
 ## Stands at the pose at once. With physics interpolation on, a jump needs reset_physics_interpolation().

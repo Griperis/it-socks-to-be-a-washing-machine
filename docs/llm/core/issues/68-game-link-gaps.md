@@ -41,7 +41,7 @@ terms: [Host, Guest, Session, Roster]
     shows (F5, `--scene=`) makes its own link beside itself at the machine's root (`GameLink.machine_root`,
     `is_shown_by`, `made_by`), the title's path, and closes and frees it as it leaves (`Session.leave()`).
     `house_ready` carries the Guest's Hands numbers; the Host clamps them into the Roster (`Roster.hands_said`,
-    kind `hands`) as it takes the Guest in. PROTOCOL 17 (main 16). No save id or Part id changed.
+    kind `hands`) as it takes the Guest in. PROTOCOL 18 (main 17 after core/41). No save id or Part id changed.
   - Files: game/parts/session.gd, game/parts/avatar/avatar.gd, game/parts/avatar/avatar.tscn,
     game/parts/avatar/avatars.gd, game/net/game_link.gd, game/net/roster.gd, game/level/level_runtime.gd,
     tests/game_link_test.gd (l07, l08 real path, l09, each at 0 and 50 ms), docs/architecture/coop.md, lobby.md

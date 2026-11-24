@@ -396,8 +396,13 @@ func _squash_jump(delta: float) -> void:
 			_squash_speed = 0.0
 		_fall = 0.0
 	var w := TAU * tuning.squash_freq
-	_squash_speed += (-w * w * _squash - 2.0 * tuning.squash_damping * w * _squash_speed) * delta
-	_squash += _squash_speed * delta
+	# In steps of at most 1/60 s: one long frame (a slow machine, a software renderer) would make the
+	# spring blow up instead of settle.
+	var steps := ceili(delta * 60.0)
+	var dt := delta / steps
+	for i in steps:
+		_squash_speed += (-w * w * _squash - 2.0 * tuning.squash_damping * w * _squash_speed) * dt
+		_squash += _squash_speed * dt
 	var tall := 1.0 + _squash
 	var wide := 1.0 / sqrt(tall)
 	scale = Vector3(wide, tall, wide) if absf(_squash) > 0.0005 else Vector3.ONE
