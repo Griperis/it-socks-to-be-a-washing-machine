@@ -58,7 +58,11 @@ var go_to_title := func(notice: String) -> void:
 ## The game link (found as the Lobby enters the tree; made beside it when it has none: F5 on the scene).
 var link: GameLink = null
 
+## What the "full" page goes on with once a World is deleted: a slot to choose, or NEW_GAME.
+const NEW_GAME_PENDING := "+new"
+
 var _going := false
+var _pending := ""
 var _joining_card: LoadingScreen = null
 
 @onready var _card_title: Label = %CardTitle
@@ -70,6 +74,7 @@ var _joining_card: LoadingScreen = null
 @onready var _waiting: Label = %Waiting
 @onready var _continue: Button = %Continue
 @onready var _new_game: Button = %NewGame
+@onready var _drawer: WorldDrawer = %Drawer
 @onready var _ask: Control = %Ask
 @onready var _ask_yes: Button = %AskYes
 @onready var _ask_close: CloseButton = %AskClose
@@ -90,6 +95,12 @@ func _ready() -> void:
 	_new_game.pressed.connect(new_game)
 	_ask_yes.pressed.connect(_new_game_over_save)
 	_ask_close.pressed.connect(func() -> void: _show_ask(false))
+	_drawer.visible = mode != Mode.SOLO
+	_drawer.set_open(mode == Mode.HOST, true)
+	_drawer.choose_world.connect(choose_world)
+	_drawer.new_game_pressed.connect(new_world)
+	_drawer.delete_confirmed.connect(delete_world)
+	_drawer.full_closed.connect(func() -> void: _pending = "")
 	link.lobby.changed.connect(_refresh)
 	link.roster.changed.connect(_refresh)
 	link.session.linked.connect(_on_linked)
@@ -125,6 +136,7 @@ func _begin() -> void:
 					go_to_title.call(CANNOT_HOST % s.port)
 					return
 			_choose_world()
+			_publish_worlds()
 		Mode.JOIN:
 			_joining_card = JOINING_CARD.instantiate() as LoadingScreen
 			_joining_card.free_when_faded = true
@@ -141,13 +153,80 @@ func _begin() -> void:
 func _choose_world() -> void:
 	if world == null:
 		return
-	var heading := SOLO_TITLE if mode == Mode.SOLO else (NEW_WORLD if world.is_new else Worlds.row_name(world.slot, world.record))
+	var heading := SOLO_TITLE if mode == Mode.SOLO else (NEW_WORLD if world.is_new else Worlds.display_name(world.slot, world.record))
 	var line := ""
 	if not world.is_new:
 		line = Worlds.row_details(world.record)
 		if mode == Mode.SOLO:
 			line = "%s · %s" % [Worlds.SOLO_WORLD, line]
 	_ask_lobby(link.lobby.world_command(_me(), world.record.level, heading, line, world.slot))
+
+
+## The Host's Worlds, as the drawers list them (Worlds.rows()), through the Host's answer.
+func _publish_worlds() -> void:
+	if mode == Mode.HOST:
+		_ask_lobby(link.lobby.worlds_command(_me(), Worlds.rows()))
+
+
+# --- The drawer's keys (the Host's) -------------------------------------------------------------------
+
+## Choose: the World in `slot` is the one this game plays (Ready clears on every machine). The Solo World
+## with every co-op slot used asks to delete one first: a Guest would make it a co-op World (Q1738).
+func choose_world(slot: String) -> void:
+	if _going or mode != Mode.HOST:
+		return
+	if slot == Worlds.SOLO and Worlds.free_coop_slot() == "":
+		_ask_to_delete(slot)
+		return
+	var picked := Worlds.pick_slot(slot, true)
+	if picked == null:
+		return
+	world = picked
+	_choose_world()
+
+
+## New game: a New Game in the first free co-op slot; with every one used the full page asks to delete one.
+func new_world() -> void:
+	if _going or mode != Mode.HOST:
+		return
+	var free := Worlds.free_coop_slot()
+	if free == "":
+		_ask_to_delete(NEW_GAME_PENDING)
+		return
+	world = Worlds.pick_slot(free, true, true)
+	_choose_world()
+
+
+## Delete (after its question): the World's files go; the chosen World gone puts the Lobby on the
+## last-played co-op World, else a New Game; the full page goes on at once with what it was asked for.
+func delete_world(slot: String) -> void:
+	if _going or mode != Mode.HOST:
+		return
+	Worlds.delete(slot)
+	var chosen_gone := world != null and world.slot == slot
+	var pending := _pending
+	_pending = ""
+	_drawer.hide_full()
+	if pending == NEW_GAME_PENDING:
+		new_world()
+	elif pending != "":
+		choose_world(pending)
+	elif chosen_gone:
+		var next := Worlds.pick_host()
+		if next != null:
+			world = next
+			_choose_world()
+	_publish_worlds()
+
+
+func _ask_to_delete(pending: String) -> void:
+	_pending = pending
+	_drawer.show_full(Worlds.coop_slots().size())
+
+
+## The drawer (read-only for a Guest).
+func drawer() -> WorldDrawer:
+	return _drawer
 
 
 # --- Keys -------------------------------------------------------------------------------------------
@@ -282,6 +361,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 	if asking():
 		_show_ask(false)
+	elif _drawer.close_dialog():
+		pass
 	else:
 		back()
 
@@ -295,6 +376,7 @@ func _refresh() -> void:
 	var guest := mode == Mode.JOIN
 	if lobby.started and not _going and mode != Mode.SOLO and (not guest or _in_game()):
 		_into_house.call_deferred()
+	_drawer.show_rows(lobby.worlds, lobby.world, mode == Mode.HOST, _going, link.roster.tuning.colour)
 	_card_title.text = lobby.title
 	_card_line.text = lobby.line
 	_card_line.visible = lobby.line != ""

@@ -32,6 +32,12 @@ func cases() -> Array[Dictionary]:
 				"title": "the late joiner with 50 ms each way"},
 		{"name": "k06_solo_bar", "method": "case_k06", "world": false,
 				"title": "Solo's Lobby: one place, no Ready or Start; no save: Continue hidden and New Game goes in at once; a save: Continue goes on with it, New Game asks \"Start a new game? The saved game is lost.\" (the close key at its top right or Esc stays, Q2578; New game goes in with a New Game)"},
+		{"name": "k07_display_name", "method": "case_k07", "world": false,
+				"title": "display_name is the one maker of a row's name (Q2587): \"Solo World\", a co-op World's members' names in order, \"No Group yet\"; Worlds.rows() uses it; pick_slot picks the World in a slot"},
+		{"name": "k08_drawer_real_path", "method": "case_k08", "world": false,
+				"title": "real path: the Host's drawer starts open and a Guest's shut; Choose clears Ready; the Host shuts it (it slides), deletes the chosen World through the question (the close key backs out) and the Lobby lands on the last-played World on both machines; chooses the Solo World; New game takes the first free slot; the Guest's drawer is the same list read-only with the chosen one ticked"},
+		{"name": "k09_drawer_full", "method": "case_k09", "world": false,
+				"title": "five co-op Worlds used: New game and choosing the Solo World show the full page (\"All 5 co-op Worlds are used: delete one first\"); deleting one there goes on at once; a damaged World has only Delete; Solo has no drawer"},
 	]
 
 
@@ -265,6 +271,158 @@ func case_k06() -> void:
 	await _click(lobby.get_node("%NewGame") as Control)
 	await _click(lobby.get_node("%AskYes") as Control)
 	_check(_into.size() == 3 and _world_of(_into).is_new and _world_of(_into).slot == Worlds.SOLO, "New game after asking: a New Game over the Solo World")
+
+
+# --- K07 ------------------------------------------------------------------------------------------
+
+func case_k07() -> void:
+	var rec := WorldRecord.new()
+	rec.kind = WorldRecord.COOP
+	_check(Worlds.display_name("coop1", rec) == Worlds.NO_GROUP, "no members: \"No Group yet\"")
+	rec.members = {"a": {"name": "Ada", "colour": 1}, "b": {"name": "Mia", "colour": 2}}
+	_check(Worlds.display_name("coop1", rec) == "Ada, Mia", "the members' names, in order (%s)" % Worlds.display_name("coop1", rec))
+	_check(Worlds.display_name(Worlds.SOLO, rec) == Worlds.SOLO_WORLD, "the Solo World's name")
+	_check(Worlds.member_colours(rec) == [1, 2], "their colours, in the same order")
+	_write_world("coop1", {"a": {"name": "Ada", "colour": 1}}, 100)
+	var rows := Worlds.rows()
+	_check(rows.size() == 1 and rows[0]["name"] == "Ada" and rows[0]["colours"] == [1], "rows() names through display_name (%s)" % [rows])
+	var picked := Worlds.pick_slot("coop1", true)
+	_check(picked.slot == "coop1" and picked.hosting and not picked.is_new, "pick_slot: the saved World, hosted")
+	_check(Worlds.pick_slot("coop2", true, true).is_new, "pick_slot fresh: a New Game")
+
+
+# --- K08 ------------------------------------------------------------------------------------------
+
+func case_k08() -> void:
+	_write_world(Worlds.SOLO, {}, 50)
+	_write_world("coop1", {"a": {"name": "Ann", "colour": 0}}, 100)
+	_write_world("coop2", {"b": {"name": "Bob", "colour": 1}}, 200)
+	var host := _machine("Host")
+	var guest := _machine("Guest")
+	var hlobby := await _lobby(host, LobbyScreen.Mode.HOST, _host_world())
+	await _until(func() -> bool: return hlobby.link.session.is_online(), "the Host's Lobby to listen", 900, 20.0)
+	var globby := await _lobby(guest, LobbyScreen.Mode.JOIN, null, "127.0.0.1:%d" % hlobby.link.session.port)
+	var hd := hlobby.drawer()
+	var gd := globby.drawer()
+	await _until(func() -> bool: return gd.row_nodes().size() == 3 and hd.row_nodes().size() == 3, "both drawers to list three Worlds", 900, 20.0)
+	_check(_slots(hd) == ["solo", "coop2", "coop1"] and _slots(gd) == ["solo", "coop2", "coop1"],
+			"the Solo World first, the co-op Worlds newest first, on both (%s / %s)" % [_slots(hd), _slots(gd)])
+	_check(hd.is_open() and not gd.is_open(), "the Host's drawer starts open, the Guest's shut")
+	_check(hd.panel_x() < hd.size.x - 400.0 and gd.panel_x() >= gd.size.x - 1.0, "the open one shows its width, the shut one is off the edge")
+	_check((globby.get_node("%CardTitle") as Label).text == "Bob", "the card says Bob")
+	# The Guest's list: read-only, the chosen one ticked, every World.
+	var g_rows := gd.row_nodes()
+	_check(g_rows.all(func(r: WorldRow) -> bool: return not (r.get_node("%Choose") as Button).visible and not (r.get_node("%Delete") as Button).visible),
+			"a Guest's rows have no Choose and no Delete")
+	_check((g_rows[1].get_node("%Tick") as Label).visible and not (g_rows[0].get_node("%Tick") as Label).visible and not (g_rows[2].get_node("%Tick") as Label).visible,
+			"the chosen one is ticked")
+	_check(g_rows[1].find_children("*", "ColorRect", true, false).size() == 1, "a swatch per Group member")
+	# Ready, then the drawer's Choose clears it.
+	globby.visible = false
+	await _click(hlobby.get_node("%Ready") as Control)
+	await _until(func() -> bool: return globby.link.lobby.readied.size() == 1, "the Host's Ready on both", 900, 20.0)
+	await _click(_choose_key(hd, "coop1"))
+	await _until(func() -> bool: return globby.link.lobby.world == "coop1" and (globby.get_node("%CardTitle") as Label).text == "Ann", "the Guest to follow the Host to Ann's World", 900, 20.0)
+	_check(hlobby.link.lobby.readied.is_empty() and globby.link.lobby.readied.is_empty(), "Choose clears Ready on every machine")
+	await _until(func() -> bool: return _chosen_label(hd, "coop1") == WorldRow.CHOSEN, "the chosen row to read Chosen", 900, 20.0)
+	# The drawer slides shut (not at once) and open again.
+	hd.toggle()
+	_check(not hd.is_open() and not hd.is_settled(), "shutting it slides")
+	await _until(func() -> bool: return hd.is_settled() and hd.panel_x() >= hd.size.x - 1.0, "the drawer to settle shut", 900, 0.0)
+	await _click(hd.get_node("%Key") as Control)
+	await _until(func() -> bool: return hd.is_settled() and is_equal_approx(hd.panel_x(), hd.size.x - 520.0), "the key to open it again", 900, 0.0)
+	# Delete the chosen World: the question first, the close key backs out.
+	await _click(_delete_key(hd, "coop1"))
+	_check(hd.ask_text() == "Delete Ann? It cannot be brought back." and Save.has(Worlds.file_of("coop1")), "Delete asks first")
+	await _click((hd.get_node("%AskClose") as CloseButton).key())
+	_check(hd.ask_text() == "" and Save.has(Worlds.file_of("coop1")), "its close key leaves the World alone")
+	await _click(_delete_key(hd, "coop1"))
+	await _click(hd.get_node("%AskDelete") as Control)
+	_check(not Save.has(Worlds.file_of("coop1")), "the World's file is gone")
+	await _until(func() -> bool: return gd.row_nodes().size() == 2 and globby.link.lobby.world == "coop2", "the Guest to see the list and the Lobby land on Bob's World", 900, 20.0)
+	_check((hlobby.get_node("%CardTitle") as Label).text == "Bob" and hlobby.world.slot == "coop2", "the Host's Lobby is on the last-played co-op World")
+	# The Solo World, then New game.
+	await _click(_choose_key(hd, "solo"))
+	await _until(func() -> bool: return globby.link.lobby.world == "solo", "the Guest to see the Solo World chosen", 900, 20.0)
+	_check((globby.get_node("%CardTitle") as Label).text == Worlds.SOLO_WORLD, "the card says Solo World")
+	await _click(hd.get_node("%NewGame") as Control)
+	await _until(func() -> bool: return globby.link.lobby.world == "coop1", "New game to take the first free slot", 900, 20.0)
+	_check((globby.get_node("%CardTitle") as Label).text == LobbyScreen.NEW_WORLD and hlobby.world.is_new, "a New Game in coop1 (card \"New World\")")
+
+
+# --- K09 ------------------------------------------------------------------------------------------
+
+func case_k09() -> void:
+	for i in 5:
+		_write_world("coop%d" % (i + 1), {"p%d" % i: {"name": "P%d" % i, "colour": i}}, 100 + i)
+	_write_world(Worlds.SOLO, {}, 50)
+	Save.store.write(Worlds.file_of("coop3"), "not a world {", false)
+	var host := _machine("Host")
+	var hlobby := await _lobby(host, LobbyScreen.Mode.HOST, Worlds.pick_slot("coop5", true))
+	await _until(func() -> bool: return hlobby.link.session.is_online(), "the Host's Lobby to listen", 900, 20.0)
+	var hd := hlobby.drawer()
+	await _until(func() -> bool: return hd.row_nodes().size() == 6, "six Worlds listed", 900, 20.0)
+	var damaged := _row_of(hd, "coop3")
+	_check(not (damaged.get_node("%Choose") as Button).visible and (damaged.get_node("%Delete") as Button).visible
+			and (damaged.get_node("%Title") as Label).text == Worlds.DAMAGED_WORLD, "a damaged World shows only Delete")
+	var solo_row := hd.row_nodes()[0]
+	_check(not (solo_row.get_node("%Delete") as Button).visible and (solo_row.get_node("%Choose") as Button).visible, "the Solo World cannot be deleted")
+	# New game with five used: the full page.
+	await _click(hd.get_node("%NewGame") as Control)
+	_check(hd.dialog_open() and (hd.get_node("%FullLine") as Label).text == "All 5 co-op Worlds are used: delete one first", "New game: the full page asks to delete one")
+	_check(hd.row_nodes(true).size() == 5, "it lists the five co-op Worlds")
+	await _key(&"ui_cancel")
+	_check(not hd.dialog_open() and hlobby.world.slot == "coop5", "Esc closes it, nothing changed")
+	# The Solo World with every slot used asks the same.
+	await _click(_choose_key(hd, "solo"))
+	_check(hd.dialog_open() and hlobby.world.slot == "coop5", "choosing the Solo World asks to delete one first")
+	await _click(_delete_key(hd, "coop2", true))
+	await _click(hd.get_node("%AskDelete") as Control)
+	await _until(func() -> bool: return not hd.dialog_open() and hlobby.link.lobby.world == Worlds.SOLO, "the delete to go on with the Solo World at once", 900, 20.0)
+	_check(not Save.has(Worlds.file_of("coop2")) and hlobby.world.slot == Worlds.SOLO, "coop2 is gone and the Solo World is chosen")
+	# Full again, New game: goes on with a New Game in the freed slot.
+	_write_world("coop2", {"q": {"name": "Q", "colour": 0}}, 300)
+	_check(Worlds.free_coop_slot() == "", "five used again")
+	await _click(hd.get_node("%NewGame") as Control)
+	await _click(_delete_key(hd, "coop4", true))
+	await _click(hd.get_node("%AskDelete") as Control)
+	await _until(func() -> bool: return hlobby.link.lobby.world == "coop4", "New game to go on in the freed slot", 900, 20.0)
+	_check(hlobby.world.is_new and not hd.dialog_open(), "a New Game in coop4, the page gone")
+	# Solo has no drawer.
+	_drop_branches()
+	var m := _machine("Solo")
+	var solo := await _lobby(m, LobbyScreen.Mode.SOLO, Worlds.pick_solo())
+	_check(not solo.drawer().visible, "Solo's Lobby has no drawer")
+
+
+func _write_world(slot: String, members: Dictionary, last: int) -> void:
+	var rec := WorldRecord.new()
+	rec.kind = WorldRecord.SOLO if slot == Worlds.SOLO else WorldRecord.COOP
+	rec.level = Worlds.LEVEL
+	rec.members = members
+	rec.last_played = last
+	rec.floor_name = "Basement"
+	Save.write_now(Worlds.file_of(slot), {"world": rec.to_dict(), "parts": {}, "versions": {}})
+
+
+func _slots(drawer: WorldDrawer) -> Array:
+	return drawer.row_nodes().map(func(r: WorldRow) -> String: return r.slot)
+
+
+func _row_of(drawer: WorldDrawer, slot: String, in_full := false) -> WorldRow:
+	return drawer.row_nodes(in_full).filter(func(r: WorldRow) -> bool: return r.slot == slot)[0]
+
+
+func _choose_key(drawer: WorldDrawer, slot: String) -> Control:
+	return _row_of(drawer, slot).get_node("%Choose") as Control
+
+
+func _delete_key(drawer: WorldDrawer, slot: String, in_full := false) -> Control:
+	return _row_of(drawer, slot, in_full).get_node("%Delete") as Control
+
+
+func _chosen_label(drawer: WorldDrawer, slot: String) -> String:
+	return (_row_of(drawer, slot).get_node("%Choose") as Button).text
 
 
 func _world_of(into: Array) -> WorldSlot:

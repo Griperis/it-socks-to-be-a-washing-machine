@@ -16,6 +16,7 @@ extends Part
 const READY := &"ready"
 const START := &"start"
 const WORLD := &"world"
+const WORLDS := &"worlds"
 ## The most `ready` one Guest may ask in a second (a flood is dropped by the Session).
 const READY_RATE := 5
 
@@ -37,6 +38,9 @@ signal changed
 @export var line := ""
 ## The chosen World's slot (the Host's own save; a Guest only shows it).
 @export var world := ""
+## The Host's Worlds as the drawer lists them: Worlds.rows() (slot, name, details, damaged, colours);
+## the Host's only (`worlds`), so a Guest's drawer shows every World read-only (core/65, Q2587).
+@export var worlds: Array = []
 @export_group("")
 
 
@@ -63,6 +67,11 @@ func decide(cmd: Command) -> Dictionary:
 					return refuse("wrong")
 			return grant({"level": a["level"], "title": a["title"], "line": a["line"], "world": a["world"],
 					"readied": PackedStringArray()})
+		WORLDS:
+			var rows: Variant = cmd.args.get("rows")
+			if not (rows is Array) or not (rows as Array).all(func(r: Variant) -> bool: return r is Dictionary):
+				return refuse("wrong")
+			return grant({"worlds": rows})
 	return refuse("wrong")
 
 
@@ -143,3 +152,8 @@ func start_command(by: int) -> Command:
 ## The Host's Command to choose a World: the house scene, the card's title and line, the slot.
 func world_command(by: int, p_level: String, p_title: String, p_line: String, slot: String) -> Command:
 	return Command.new(WORLD, by, id, {"level": p_level, "title": p_title, "line": p_line, "world": slot})
+
+
+## The Host's Command to say its Worlds (the rows the drawers list).
+func worlds_command(by: int, rows: Array) -> Command:
+	return Command.new(WORLDS, by, id, {"rows": rows})

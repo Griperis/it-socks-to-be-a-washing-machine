@@ -99,8 +99,9 @@ func wait() -> Dictionary:
 
 
 ## File `name`'s data, migrated to `version`: {"ok", "reason", "data", "saved_at", "from_backup",
-## "missing" (no file), "damaged" (a file that read neither way, now kept as `.damaged`), "newer"}.
-func read(name: String) -> Dictionary:
+## "missing" (no file), "damaged" (a file that read neither way, now kept as `.damaged` unless `keep_damaged`
+## is false: the Lobby's list only looks, a damaged World stays used until it is deleted), "newer"}.
+func read(name: String, keep_damaged := true) -> Dictionary:
 	wait()
 	var got := store.read(name)
 	var first := decode(String(got["text"])) if got["ok"] else _no(String(got["reason"]))
@@ -112,7 +113,8 @@ func read(name: String) -> Dictionary:
 		back["from_backup"] = true
 		return back
 	if got["ok"]:
-		store.keep_damaged(name)
+		if keep_damaged:
+			store.keep_damaged(name)
 		first["damaged"] = true
 		Log.warn("save", "%s reads neither way: kept as %s" % [name, name + SaveStore.DAMAGED])
 	elif back_file["ok"]:
