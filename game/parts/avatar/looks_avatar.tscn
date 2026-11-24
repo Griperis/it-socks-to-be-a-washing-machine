@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c5i2jlrgmcseh" path="res://game/parts/avatar/avatar_looks.gd" id="1_looks"]
 [ext_resource type="PackedScene" uid="uid://ociuf17dwty7" path="res://assets/avatar/avatar.glb" id="2_model"]
-[ext_resource type="Resource" uid="uid://i4jw6ewnf4chb" path="res://game/parts/avatar/avatar_tuning.tres" id="3_tuning"]
+[ext_resource type="Resource" uid="uid://bep60a25bpkxr" path="res://game/parts/avatar/avatar_tuning.tres" id="3_tuning"]
 
 [node name="AvatarLooks" type="Node3D" unique_id=7225576]
 script = ExtResource("1_looks")
