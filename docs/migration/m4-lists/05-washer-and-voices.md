@@ -1,6 +1,8 @@
 > Draft behaviour list for batch A's washer and voice piece (core/73), written from the reference on 2026-11-24; for
 > the designer to approve. The proposals built on it: `docs/architecture/voice.md` (the build plan) and
 > `docs/architecture/washer.md`. The voice findings it extends: `docs/migration/voice-findings.md` (core/56).
+> Answered 2026-11-24: W1-W10 as Q2633-Q2642 (cutscene_5 and _6 whole, no level adjustment, the bake a command, a drawn
+> icon), and lines as one JSON per speaker (Q2640). Filed by core/74 (core/84-88, core/98, assets/14, assets/15).
 
 # Batch A piece: the talking washing machine and the voice system
 

@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: needs-info
+status: done
 kind: design
 area: core
 feature: frame
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-24
 blocked_by: []
 notes: ["suggested model: opus", "batch A (Q2606, Q2614)"]
 terms: [Stage, Floor, Cabinet, Row, Coins, World]
@@ -48,38 +48,22 @@ the build (Q2604 is only the fallback).
 - The choices are `[blocking]` Open follow-ups here, 2-3 options each with a recommendation; `docs/migration/decisions.md` read first, nothing answered asked again.
 - No game code changed.
 
+## Answers
+Answered in one sitting, 2026-11-24 (`docs/migration/decisions.md`); `docs/architecture/stages.md` is written to them.
+- S1 A Stage's new Socks are spread in even shares over every open floor, as the old code (Q2617, 2026-11-24).
+- S2 In batch A each Cabinet spot keeps the Collection placed in the house today; the room pools come with batch B's
+  unlocking (Q2618, 2026-11-24).
+- S3 No Stage Coins bonuses in batch A; batch B's Coins and Drawers piece decides them (Q2619, 2026-11-24).
+- S4 A Cabinet's new Drawer appears at once when its floor opens, seen or not, as v0.1.1 played; replaces Q824
+  (Q2620, 2026-11-24).
+- S5 Between a Stage's completion and its Fix the bar stays full, as the old; the bar's text is authorable per phase
+  (Q2621, 2026-11-24).
+- S6 The Stage bar names floors as the old: "Basement", "Ground", "First", "Attic" (Q2622, 2026-11-24).
+- S7 The attic, batch A's last Stage, counts only its own Cabinets (Winter and Space), as the old last-Stage code
+  (Q2623, 2026-11-24).
+
 ## Open follow-ups
-Each choice is written into `docs/architecture/stages.md` for its recommended answer; the behaviour list is
-`docs/migration/m4-lists/03-stages-and-floors.md`. Nothing here is answered in `decisions.md` (Q2599-Q2616 read).
-- [blocking] S1 Where a Stage's new Socks lie. The old code spread them over every open floor (25 % each); the
-  designer's words at old ticket 92 say "the next Stage's Socks still appear on the floor that just opened" (Q1938).
-  (a) All on the floor just opened, laid by its own generator (Recommended: Q1938's words, and the floor is empty of
-  players when it is laid); (b) over every open floor in even shares, as the old code; (c) half on the new floor, the
-  rest over the open floors.
-- [blocking] S2 Which Collection stands at each Cabinet spot in batch A. The old game drew each spot from its room's pool
-  per New Game (Q1437) among the Profile's unlocked Collections (Q1439). (a) Each spot keeps the Collection placed in the
-  house today (Simple, Sport, Food, Patterns, Animals, Superhero, Winter, Space); the pools come with batch B's
-  Collections unlocking (Recommended: the pools draw from the unlocked set, which is batch B); (b) the pools now, from the
-  old first-game set, unlocking later.
-- [blocking] S3 The Stage's Coins bonuses: +100 Coins to every player when a floor opens, +50 to whoever fills all of a
-  Cabinet's current Rows (Q646, Q1248). Q2612 says a filled Drawer flies in its Coins and Drawers "and nothing else".
-  (a) Not paid in batch A; batch B's Coins and Drawers decides them (Recommended); (b) paid now as the old game.
-- [blocking] S4 A new Drawer added while nobody looks. Q824 decided it waits hidden until a player has its Cabinet in
-  view, then drops for everyone; the old game never built it (progression/31, priority later). (a) Drops at once on the
-  opening, seen or not, as v0.1.1 played; (b) waits until a player on its floor has the Cabinet in view, the Host
-  deciding, and takes no Pair until it has dropped (Recommended: the designer's own Q824).
-- [blocking] S5 What the HUD shows between a Stage's completion and its Fix. The old bar just stays full; only the
-  padlock's hint and the washer's lines point to the washer. (a) As the old: the bar stays full (Recommended: the old
-  game first, Q2607); (b) the bar's label reads "Bring the <Part> to the washing machine" until the Fix (wording a
-  placeholder).
-- [blocking] S6 The Stage bar's floor names. The old label capitalised the floor's id: "Stage 3: First  12/150". (a) The
-  Stage's own title: "Basement", "Ground floor", "First floor", "Attic" (Recommended: reads as a place); (b) as the old:
-  "Basement", "Ground", "First", "Attic".
-- [blocking] S7 The attic's (batch A's last) Stage bar. The old code counts only the last Stage's own Cabinets, a patch
-  for the Grotto's Lost Socks (old ticket 82); the rule for every other floor counts every unlocked Cabinet's unfilled
-  Rows, grown ones too (Q633, Q648). (a) The attic counts every unlocked Cabinet's unfilled Rows, as every floor
-  (Recommended: Q648; the Drum's Stage in batch D keeps its own patch); (b) the attic counts only Winter and Space, as
-  the old last-Stage code.
+None: answered and filed by core/74.
 
 ## Built log
 - 2026-11-24, core/71-stages-design: Changed: the behaviour list of Stages and floors (Stages, Rows and Drawers, a Stage's

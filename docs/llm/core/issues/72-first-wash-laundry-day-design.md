@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: needs-info
+status: done
 kind: design
 area: core
 feature: frame
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-24
 blocked_by: []
 notes: ["suggested model: opus", "batch A (Q2606, Q2614)"]
 terms: [Laundry day, Laundry bin, Final wash, Stage]
@@ -47,37 +47,26 @@ the build (Q2604 is only the fallback).
 - The choices are `[blocking]` Open follow-ups here, 2-3 options each with a recommendation; `docs/migration/decisions.md` read first, nothing answered asked again.
 - No game code changed.
 
+## Answers
+Answered in one sitting, 2026-11-24 (`docs/migration/decisions.md`); `docs/architecture/run-ends.md` is written to them.
+- R1 The World's bins stand full in their rooms from the New Game, refused until the last Fix, as the old (Q2624, 2026-11-24).
+- R2 Before the First wash a HUD goal line "Wash the laundry" stands in the Stage bar's place; the Guide card replaces it
+  in batch C (Q2625, 2026-11-24).
+- R3 The spray is decoration that vanishes; the first Stage's Socks lie in their usual places (Q2626, 2026-11-24).
+- R4 Loading a bin stays as the old (no Socks seen going in); a visible pour is a later polish ticket, core/99
+  (Q2627, 2026-11-24).
+- R5 A carried bin does not slow its carrier (Q2628, 2026-11-24).
+- R6 cutscene_6 plays whole, "You're alive!" included (Q2629, 2026-11-24).
+- R7 The Final screen has a column only for the players in the game at the end (Q2630, 2026-11-24).
+- R8 A finished World stays in the Lobby as a record ("Finished", play time), not continued; Start or New Game asks and
+  replaces it (Q2631, 2026-11-24).
+- R9 No "who did what" titles in batch A; asked again with batch B (Q2632, 2026-11-24).
+- The two "for the lead" notes: the Cutscene frame is one ticket, core/88, and the carrying seam one, core/78; the seams
+  were checked against core/71's and core/73's plans (core/74).
+- GLOSSARY: Final wash and Laundry bin name no Part ("the run's last Fix"); "Laundry day" added (Q2643, 2026-11-24).
+
 ## Open follow-ups
-Choices R1-R9 of `docs/architecture/run-ends.md` (recommendations followed in its text); none is answered in
-`docs/migration/decisions.md` (read to Q2616).
-- [blocking] R1 When do the World's bins stand in the house? a) (rec) from the New Game, all drawn bins full in their
-  rooms, refused at the machine until the last Fix, as the old; b) only the bin by the machine at first, the other drawn
-  bins appear when the last Fix is done.
-- [blocking] R2 What tells a new player the first goal before the First wash (the Guide card is batch C)? a) (rec) a HUD
-  goal line "Wash the laundry" in the Stage bar's slot until the First wash; b) nothing new until batch C.
-- [blocking] R3 The spray and the first Stage's Socks? a) (rec) as the old: the spray is decoration that vanishes, the
-  Socks lie in their usual places after; b) the spray's Socks stay as real first-Stage Socks in the laundry room.
-- [blocking] R4 The bin's pour (the Socks never seen going in, Q1907 "later")? a) (rec) as the old in batch A, a visible
-  pour as its own look ticket after the review (Q2153); b) the visible pour built into batch A.
-- [blocking] R5 Does a carried bin slow its carrier? a) (rec) no, as the old code; b) slower, no Sprint or jump, as the
-  Hamper.
-- [blocking] R6 `cutscene_6` opens "You're alive!", written for the return from the Drum (batch D). In batch A? a) (rec)
-  the whole line as the old; b) from its second subtitle line until the Drum is ported.
-- [blocking] R7 Who has a column on the Final screen? a) (rec) everyone who shelved a Pair or is in the game, a leaver
-  greyed "(left)"; b) as the old, only those in the game at the end.
-- [blocking] R8 What the Lobby offers for a finished World (core/61 L6, P36)? a) (rec) kept as a record ("Finished",
-  play time), not continued; Start / New Game asks and replaces it; b) Keep tidying: Continue loads the finished house to
-  play freely; c) deleted at Continue.
-- [blocking] R9 "Who did what" titles on the Final screen (P36)? a) (rec) not in batch A, asked again with batch B; b)
-  three titles (most Pairs, most bins loaded, most Socks thrown).
-- [later] For the lead: the Cutscene frame (shared camera, fade, Host skip, respawn, duck) is needed by core/71's Fix,
-  core/72's two washes and core/73's washer; `voice.md` gave it to "M5". Proposed as core/72's ticket 4; dedupe with
-  core/71's and core/73's lists when filing. Likewise ticket 1 (carried things in the Hands) with core/71's Parts.
-- [later] For the lead: the seams asked of core/71 (S1-S5) and core/73 (W1-W4, W6, W7) are listed in `run-ends.md`
-  "Seams this piece needs"; check them against their proposals before the sitting.
-- [later] GLOSSARY: "Laundry day" is no glossary term (the catalogue's own note); the **Final wash** and **Laundry bin**
-  entries still name the softener and the Drum as the last Fix; in batch A the last Fix is the fourth Stage's (Q2615).
-  The designer settles the wording.
+None: answered and filed by core/74.
 
 ## Built log
 ### 2026-11-24 (ticket agent)

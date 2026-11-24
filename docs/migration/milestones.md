@@ -9,15 +9,52 @@ M1 and M2 run beside M0.5 and M0.6, not after them.
 | M0 | Setup | The repository is set up from starter kit 8.0 (was 7.1) with the port pack on top; the checks pass; the reference clone at `v0.1.1` is in place; the first commit is pushed | done 2026-11-20 (pushed to origin by the designer) |
 | M0.5 | The core in a single-player zoo | In a flat graybox zoo scene (edited in the editor, one station per feature, the game's real entities): movement, handling Socks, pairing, one Cabinet. A true vertical slice of the core (Q2296): the core's sounds and rumble and its polish details are in it, as the old game has them. One player, but every change already goes through the shared-state path: the player is a Host of one (Q2207, Q2208, Q2211, Q2212) | built 2026-11-22; closing (Q2425): the designer's zoo run and code review are left |
 | M0.6 | The co-op zoo base | The same zoo with a Host, a Guest and a late joiner: avatars seen by the others every frame (Q2223), a Guest's pick and Throw as decided (Q2220-Q2222, Q2226), a long random player id in the profile (Q2224), and the full knockdown with Godot's own physical-bone ragdoll (Q2225) | started 2026-11-22: behaviour lists being drafted; batches below, proposed |
-| M1 | Assets | Models and UI art ported by the port rules; the core's models and the avatar rig first; a shared material library; things built by code become models or scenes. Approved in family batches, each with a before and after strip (Q2151-Q2153, Q2177, Q2178, Q2216) | planned, beside the zoo |
+| M1 | Assets | Models and UI art ported by the port rules; the core's models and the avatar rig first; a shared material library; things built by code become models or scenes. Approved in family batches, each with a before and after strip (Q2151-Q2153, Q2177, Q2178, Q2216) | mostly done: the families are built (assets/01-09); left: the exterior and the dusk and night skies; batch A adds its own models (assets/10-15) |
 | M1.1 | Sound | The sound system is built in M0.5 for the core (Q2296); M1.1 ports every other old sound and pad rumble, ported with the old clips and numbers, made plug-and-play: a sound is added or swapped by dropping in a file and naming it, with no code change. The list from the four merged pieces is in `old-details-backlog.md` (Q2278) | planned |
 | Polish | The polish pass | The core's polish details are done in M0.5 (Q2296); this pass holds those of later pieces | planned |
 | M2 | The house | Built by hand in the editor from a half-metre kit and the ported props; Play walks through it in first person (Q2154-Q2157, Q2175, Q2176) | planned, beside the zoo |
-| M3 | The core loop in the house | The Mess, Hands, Throws, Pairs and Cabinets (with Doors and Drawers) play in co-op in the house; the Mess bench is no slower than the old game's (Q2161, Q2168) | started 2026-11-23: house/05 (the Mess in the house), house/08 room Doors (Q2532), core/41 stacking, core/42 hand-off, core/43 pings (Q2533) |
-| M4 | The frame of a run | Stages, the Laundry day, menus, saves and the lobby, on Steam (its lobby, invites, relay and Steam IDs proven by its auth ticket, Q2456-Q2458; off Steam the proving token for the random id); screens are scenes on one Theme (Q2163) | planned |
-| M5 | Features by need | Each switched-off or planned feature (the vacuum devices, Hampers, the Grotto, Dirty Socks, the Cat, cutscenes, ...) is ported when the designer calls it, each first as a zoo station (Q2144, Q2214) | planned |
+| M3 | The core loop in the house | The Mess, Hands, Throws, Pairs and Cabinets (with Doors and Drawers) play in co-op in the house; the Mess bench is no slower than the old game's (Q2161, Q2168) | merged: house/05 (the Mess in the house), house/08 room Doors (Q2532), core/41 stacking, core/42 hand-off, core/43 pings (Q2533) |
+| M4 | The frame of a run | Stages, the Laundry day, menus, saves and the lobby, on Steam (its lobby, invites, relay and Steam IDs proven by its auth ticket, Q2456-Q2458; off Steam the proving token for the random id); screens are scenes on one Theme (Q2163) | started: the menus, saves and the Lobby are merged (core/58-68); the rest is the batches A-D below (Q2614); Steam comes with batch D, co-op stays on ENet behind its seam until then (Q2616) |
+| M5 | Features by need | Each switched-off or planned feature (the vacuum devices, Hampers, the Grotto, Dirty Socks, the Cat, cutscenes, ...) is ported when the designer calls it, each first as a zoo station (Q2144, Q2214) | folded into the batches B-D (Q2614); not ported: the splitter, the Grotto, Hampers, the pairing machine, the F1 menu (Q2599), Secrets (Q2600), the parked graybox machines, wash cycles, proximity chat (Q2602) |
 
 After M3, M4, M1.1 and M5 run in parallel wherever they can; the voicelines' architecture and authoring are designed first (core/56, Q2535).
+
+## The rest of the port: batches A-D (Q2603-Q2605, Q2614)
+Each batch is a milestone of its own: the lead writes a proposal per piece, the designer is grilled on them in one
+sitting, agents build it unattended in the order below, merged to `main` on full passing runs, and the designer reviews
+the whole batch in one play session (its review sheet). An open choice an agent meets takes the old game's answer and
+goes on the review sheet (Q2604).
+
+| Batch | What | State |
+|---|---|---|
+| A | The run and the washer: Stages and floors, the First wash, the Laundry day (bins, Final wash), the Final screen, the voice system and the talking washing machine (Q2606); the run ends after the fourth Stage (Q2615) | designed (core/71-73), answered (Q2617-Q2643), filed (core/74): building |
+| B | Progression: Coins and Drawers, the Old Tree and the Upgrade grid, Stage presents and Gifts, the Wardrobe, Collections unlocking, Profile and encyclopedia, Achievements | planned |
+| C | The lived-in house: exterior, Elevator, Cat and litterbox, X-rays, the vacuums, the detector, TV and Radio, the guide card | planned |
+| D | Finale and finish: the Drum finale, the other cutscenes, studio intro, M1.1's other sounds, controller, graphics presets, Steam | planned |
+
+## Batch A
+Filed by core/74 from the three designs (core/71 Stages `docs/architecture/stages.md`, core/72 run ends `run-ends.md`,
+core/73 washer and voices `washer.md`, `voice.md`). Review sheet: `docs/migration/batch-a-review.md`.
+
+Waves run side by side, at most 5 agents; a wave starts when the waves before it are merged. Within a wave no two
+tickets edit the same station scene, `house.tscn`, `cabinet.gd` or the Hands. Core tickets build on graybox Looks, so
+none waits for an asset's go; the asset tickets (except assets/11) stop at their first line-up, `ready-for-human`, and
+their Looks swap in when the designer says yes.
+
+| Wave | Tickets (suggested model) | Clash kept apart |
+|---|---|---|
+| 1 | core/76 Stages: the run's state and Rows (opus); core/78 Carried things in the Hands; core/84 Voice lines and the bake (opus); core/89 The spray; assets/11 Cabinets to six Drawers (opus) | core/76 makes the Stages station, core/89 the Laundry station |
+| 2 | core/77 A Stage's Socks; core/82 The Stage bar and its phases; core/85 Voices, Subtitles and the Voice station; core/90 The Laundry bin; assets/12 Machine Part models | core/90 alone on the Laundry station; core/77 and core/82 make no station change |
+| 3 | core/79 Machine Parts; core/81 The Cabinets grow; core/86 The washing machine entity and its comments; assets/10 Floor lock models (opus); assets/13 The Laundry bin model (opus) | core/79 alone on the Stages station; core/86 alone on `house.tscn` (the washer replaces the marker) |
+| 4 | core/80 Floor locks; core/83 Tallies, record, Whiteboard and Tab; core/87 The broken washer's looks; core/88 The Cutscene frame (opus); assets/15 The washer's subtitle icon | core/80 alone on the Stages station; core/83 after core/81 on `cabinet.gd`; core/88 alone on the washer station |
+| 5 | core/91 The house's run; core/95 The Final screen; core/98 The knockdown wash; assets/14 The washing machine's model (opus) | core/91 alone on `house.tscn` |
+| 6 | core/92 The Fix scene; core/93 The Laundry day | core/93 alone on `house.tscn` (the bins); core/92 only the house plan `.tres` |
+| 7 | core/94 The First wash (opus) | |
+| 8 | core/96 The Final wash | |
+| 9 | core/97 Back to the Lobby | |
+| later | core/99 The visible pour (`needs-info`, after the review, Q2627) | |
+
+The designer plays batch A after wave 9 (the asset tickets' line-ups may be judged at the same sitting).
 
 ## M0.5 batches (Q2296)
 Each batch is one theme, tested in one sitting at one or two stations, ending with a short play session and the
