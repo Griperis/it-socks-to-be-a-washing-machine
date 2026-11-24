@@ -32,6 +32,8 @@ const KEPT: Array[String] = ["LaundryLobby", "LobbyGarage"]
 var _zoo: Node3D = null
 var _house: Node3D = null
 var _branches: Array[Node] = []
+## The game clock runs this many times faster than the wall clock, one frame per physics tick (runner.gd puts it back after each case).
+const PACE_SPEED := 2.0
 var _pace_next := 0
 ## The sounds heard since the case started: {"event", "at", "bus"}.
 var _heard: Array[Dictionary] = []
@@ -56,6 +58,7 @@ func cases() -> Array[Dictionary]:
 
 func _before_case() -> void:
 	wait_floor_s = NET_WAIT_S
+	Engine.time_scale = PACE_SPEED
 	Input.action_release(Player.INTERACT)
 	_heard.clear()
 	_drop_branches()
@@ -393,7 +396,7 @@ func _paced() -> void:
 	var now := Time.get_ticks_usec()
 	if _pace_next == 0 or now - _pace_next > 100000:
 		_pace_next = now
-	_pace_next += 1000000 / FPS
+	_pace_next += int(1000000 / (FPS * PACE_SPEED))
 	if now < _pace_next:
 		OS.delay_usec(_pace_next - now)
 
