@@ -1190,3 +1190,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Surprises | the pad's focus ring does not show (core/75, later, Q2645); captions stay 11 px (Q2644) |
 | Looks | builds/review-lobby-details/ |
 | Decisions | Q2644-Q2646 |
+
+---
+
+| Ticket | maintenance/04, session.gd split before batch A: Session keeps every RPC and PROTOCOL (20); the work moves to SessionPeer, SessionGate, SessionHouse, SessionGuard, SessionRelay; `coop.md` "Adding a verb"; no behaviour change |
+| Cost | about 133k subagent tokens |
+| Surprises | session.gd 842 to 337 lines; helpers resuming after an await now check the Session still exists |
