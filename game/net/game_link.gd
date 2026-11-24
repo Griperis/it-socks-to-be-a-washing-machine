@@ -6,8 +6,11 @@
 ## Not an autoload: a test runs two or three machines in one process, so whoever starts a game makes
 ## one (the title, beside itself: under the tree's root in the game, which SceneChanger leaves alone)
 ## and code finds it with `GameLink.of(node)`. A level with no link (F5, the zoo, `--scene=`, a test)
-## makes a private one under its runtime (LevelRuntime), so a level is never without one. Back at the
-## title the game is over: the title frees the link it finds beside itself.
+## makes a private one (LevelRuntime), so a level is never without one: beside itself when it is the
+## scene the machine runs (F5, `--scene=`: under the tree's root, where a title puts its link, so an
+## F5'd house and a title-started one have their Session at the same path and can talk, core/68),
+## else under its runtime; it goes with its level. Back at the title the game is over: the title frees
+## the link it finds beside itself.
 ##
 ## The link's Parts name their parts as they were named inside the level runtime (`Runtime/` and the
 ## path from the link: the Roster is `Runtime/Session/Roster`), so the saved ids and the save's shape
@@ -22,6 +25,9 @@ const NAME := &"GameLink"
 const ID_PREFIX := "Runtime/"
 ## Every link in the tree (the test hooks free the ones a case left).
 const GROUP := &"game_links"
+
+## The level runtime that made this link as its own (see the top), or null.
+var made_by: Node = null
 
 var session: Session:
 	get: return get_node(^"Session") as Session
@@ -86,7 +92,31 @@ static func close_beside(node: Node) -> void:
 
 ## Whether this link is a level's own (made by its runtime), not one made by whoever started the game.
 func is_private() -> bool:
-	return get_parent() is LevelRuntime
+	return made_by != null or get_parent() is LevelRuntime
+
+
+## The node a machine's scenes hang under: the root of `node`'s MultiplayerAPI (each machine of a test
+## has its own branch), else the tree's root. RPC paths are read from it, so a link right under it
+## sits at the same path on every machine. `node` is in the tree.
+static func machine_root(node: Node) -> Node:
+	var root := node.get_tree().root
+	var mp := node.multiplayer as SceneMultiplayer
+	if mp != null and not mp.root_path.is_empty():
+		var top := root.get_node_or_null(mp.root_path)
+		if top != null:
+			return top
+	return root
+
+
+## Whether `node` is the scene machine root `home` runs: nothing stands between them but viewports
+## (in the game the current scene, right under the root; in a test a machine's level in its own view).
+static func is_shown_by(node: Node, home: Node) -> bool:
+	var up := node.get_parent()
+	while up != null and up != home:
+		if not (up is Viewport):
+			return false
+		up = up.get_parent()
+	return up == home
 
 
 static func _usable(link: GameLink, asker: Node) -> bool:

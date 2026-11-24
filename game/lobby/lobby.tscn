@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://aqr7myiixfj7s"]
+[gd_scene format=3 uid="uid://qr7myiixfj7s"]
 
-[ext_resource type="Script" uid="uid://2pk3orkw4k3z4" path="res://game/lobby/lobby.gd" id="1_lobby"]
+[ext_resource type="Script" uid="uid://np0kd4555ypr" path="res://game/lobby/lobby.gd" id="1_lobby"]
 [ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
 
 [ext_resource type="PackedScene" path="res://game/lobby/world_drawer.tscn" id="drawer"]

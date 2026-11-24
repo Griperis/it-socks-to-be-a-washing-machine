@@ -39,6 +39,18 @@ func cases() -> Array[Dictionary]:
 				"title": "real path (core/63): title Host into the Lobby, a Guest's title joins its Lobby by address, Ready from both, the Host's Start loads the house for both through the link, each stands at its Roster spot, both see each other's avatar and the Guest's pick (its key) lands on the Host"},
 		{"name": "l06_real_path_title_50ms", "method": "case_l06_50ms", "world": false,
 				"title": "real path from the title with 50 ms each way"},
+		{"name": "l07_third_player", "method": "case_l07", "world": false,
+				"title": "core/68: three machines: a Guest whose house is still loading is sent no avatar, not even another Guest's; once its house is ready all three see each other's avatars"},
+		{"name": "l07_third_player_50ms", "method": "case_l07_50ms", "world": false,
+				"title": "three machines with 50 ms each way"},
+		{"name": "l08_f5_join", "method": "case_l08", "world": false,
+				"title": "core/68 real path: a title Host starts the house from its Lobby; a Guest that F5'd the house joins it with --join=, is welcomed, both see each other's avatar and the Guest's pick (its key) lands on the Host"},
+		{"name": "l08_f5_join_50ms", "method": "case_l08_50ms", "world": false,
+				"title": "an F5 Guest joining a title Host with 50 ms each way"},
+		{"name": "l09_lobby_hands", "method": "case_l09", "world": false,
+				"title": "core/68: a Guest who joined with no level (the Lobby) sends its Hands numbers with house_ready; the Host clamps them into the Roster and holds that Guest by them, not by its own"},
+		{"name": "l09_lobby_hands_50ms", "method": "case_l09_50ms", "world": false,
+				"title": "a Lobby Guest's Hands numbers with 50 ms each way"},
 	]
 
 
@@ -307,10 +319,14 @@ func _from_title(lag_ms: int) -> void:
 				"the Guest stands at its spot (%s, %s)" % [gr.player.global_position, g_at])
 	await _frames(5)
 	_check(_lobby_of(host) == null and _lobby_of(guest) == null, "the Lobby does not come back")
-	# The Guest picks a Sock by its key; the Host's Hands hold it for the Guest.
+	await _guest_picks(hr, gr, g_peer, _level_of(guest))
+
+
+## The Guest picks a Sock by its key; the Host's Hands hold it for the Guest.
+func _guest_picks(hr: LevelRuntime, gr: LevelRuntime, g_peer: int, guest_level: Node) -> void:
 	hr.player.set_input_blocked(true)
 	var mess := gr.mess
-	var pair_of := _kitchen_pair(mess, _level_of(guest))
+	var pair_of := _kitchen_pair(mess, guest_level)
 	_check(not pair_of.is_empty(), "a Sock lies open in the kitchen")
 	if pair_of.is_empty():
 		return
@@ -324,6 +340,171 @@ func _from_title(lag_ms: int) -> void:
 	await _press(&"pick")
 	await _until(func() -> bool: return hr.hands.active_of(g_peer) == sock, "the Guest's pick to land on the Host", 900, 20.0)
 	await _until(func() -> bool: return gr.hands.active_of(g_peer) == sock, "and come back to the Guest", 900, 20.0)
+
+
+# --- L07 ------------------------------------------------------------------------------------------
+
+func case_l07() -> void:
+	await _third_player(0)
+
+
+func case_l07_50ms() -> void:
+	await _third_player(50)
+
+
+func _third_player(lag_ms: int) -> void:
+	var pair := await _linked_pair(lag_ms)
+	var host: Node = pair[0]
+	var b: Node = pair[1]
+	var hs := GameLink.of(host).session
+	var b_peer := GameLink.of(b).session.me()
+	var hr := LevelRuntime.of(await _level_in(host))
+	var br := LevelRuntime.of(await _level_in(b))
+	await _until(func() -> bool: return hr.avatars.of(b_peer) != null and br.avatars.of(1) != null,
+			"the Host and the first Guest to see each other", 900, 20.0)
+	# The third machine joins and loads its level, which holds its starting state back: its house is not ready.
+	var c := _machine("Third")
+	var cl := _link_in(c)
+	await _frames(2)
+	cl.session.profile = PlayerProfile.fresh()
+	var linked: Array[bool] = []
+	cl.session.linked.connect(func() -> void: linked.append(true))
+	var welcomed: Array[bool] = []
+	cl.session.welcomed.connect(func() -> void: welcomed.append(true))
+	_check(cl.session.join("127.0.0.1:%d" % hs.port) == OK, "the third machine's link joins")
+	if lag_ms > 0:
+		_lag(c, lag_ms)
+	await _until(func() -> bool: return not linked.is_empty() and hs.roster.peers().size() == 3, "the third player to be in the game", 900, 20.0)
+	var c_peer := cl.session.me()
+	var clevel := (load(ONE_BOX) as PackedScene).instantiate()
+	var cr := LevelRuntime.of(clevel)
+	cr.parts.unsettle(self)
+	await _level_in(c, clevel)
+	await _physics_ticks(20)
+	await _wall(300 + lag_ms * 3)  # time for a spawn to travel, were it sent
+	_check(not hs.in_house(c_peer) and welcomed.is_empty(), "the third player's house is not ready yet")
+	_check(cr.avatars.of(b_peer) == null, "no avatar of the other Guest is sent to a house still loading")
+	_check(cr.avatars.of(1) == null, "nor the Host's")
+	_check(hr.avatars.of(c_peer) == null and br.avatars.of(c_peer) == null, "nobody has the loading player's avatar")
+	cr.parts.settle(self)
+	await _until(func() -> bool: return not welcomed.is_empty() and hs.in_house(c_peer), "the third player to be welcomed", 900, 20.0)
+	await _until(func() -> bool: return cr.avatars.of(1) != null and cr.avatars.of(b_peer) != null,
+			"the third player to see the Host and the other Guest", 900, 20.0)
+	await _until(func() -> bool: return hr.avatars.of(c_peer) != null and br.avatars.of(c_peer) != null,
+			"both others to see the third player", 900, 20.0)
+	_check(cr.avatars.of(c_peer) != null and not cr.avatars.of(c_peer).visible, "its own avatar is there and hidden")
+	# The Guests' own poses reach each other once both are in.
+	var b_at := br.player.global_position + Vector3(0.6, 0.0, 0.4)
+	var c_at := cr.player.global_position + Vector3(-0.6, 0.0, 0.4)
+	br.player.global_position = b_at
+	cr.player.global_position = c_at
+	await _until(func() -> bool: return (cr.avatars.of(b_peer).pose_position.distance_to(b_at) < 0.2
+			and br.avatars.of(c_peer).pose_position.distance_to(c_at) < 0.2), "each Guest to see where the other stands", 900, 20.0)
+	_check(hs.dropped.is_empty(), "nothing dropped (%s)" % hs.dropped)
+
+
+# --- L08 ------------------------------------------------------------------------------------------
+
+func case_l08() -> void:
+	await _f5_join(0)
+
+
+func case_l08_50ms() -> void:
+	await _f5_join(50)
+
+
+func _f5_join(lag_ms: int) -> void:
+	var host := _machine("Host")
+	var guest := _machine("Guest")
+	await _frames(1)
+	_open_title(host, false, lag_ms)
+	await _frames(2)
+	var ht := host.get_node("Title") as TitleScreen
+	await _click(ht.get_node("%MultiplayerKey") as Control)
+	await _click(ht.get_node("%Host") as Control)
+	await _until(func() -> bool: return _lobby_of(host) != null, "the Host's title to open the Lobby", 900, 20.0)
+	var hlobby := _lobby_of(host)
+	var hs := hlobby.link.session
+	await _until(func() -> bool: return hs.is_online(), "the Host's Lobby to listen", 900, 20.0)
+	await _click(hlobby.get_node("%Ready") as Control)
+	await _until(func() -> bool: return not (hlobby.get_node("%Start") as Button).disabled, "Start to be offered", 900, 20.0)
+	await _click(hlobby.get_node("%Start") as Control)
+	await _until(func() -> bool: return _level_of(host) != null, "Start to load the Host's house", 900, 30.0)
+	var hr := LevelRuntime.of(_level_of(host))
+	_check(hr.link == GameLink.of(host) and hr.link.get_parent() == host, "the Host's house plays through the link its title made, under the machine")
+	await _until(func() -> bool: return hr.loading.is_lifted() and hr.parts.is_settled(), "the Host's house to be laid", 3000, 60.0)
+	# The Guest F5'd the house: no title, no link but the one its level makes (the house is what the
+	# machine shows, as the current scene under the tree's root in the game).
+	_check(GameLink.of(guest) == null, "the Guest has no link before its house")
+	var house := (load(Worlds.LEVEL) as PackedScene).instantiate()
+	_view(guest).add_child(house)
+	var gr := LevelRuntime.of(house)
+	await _until(func() -> bool: return gr.parts.is_bound and gr.parts.is_settled(), "the Guest's house to be laid", 3000, 60.0)
+	_check(gr.link != null and gr.link.is_private() and gr.link.get_parent() == guest,
+			"the Guest's house made its own link, where a title would have put it")
+	var gs := gr.session
+	var ended: Array[String] = []
+	gs.ended.connect(func(text: String) -> void: ended.append(text))
+	_check(gr.net.start(PackedStringArray(["--join=127.0.0.1:%d" % hs.port])) == OK, "the Guest's house joins as `--join=` says")
+	if lag_ms > 0:
+		_lag(guest, lag_ms)
+	await _until(func() -> bool: return gr.net.mode_text().begins_with("Joined") or not ended.is_empty(),
+			"the F5 Guest to be welcomed into the Host's house", 3000, 60.0)
+	_check(ended.is_empty(), "its session did not end (%s)" % [ended])
+	_check(gr.net.mode_text().begins_with("Joined"), "the Guest's corner says it joined (%s)" % gr.net.mode_text())
+	var g_peer := gs.me()
+	await _until(func() -> bool: return hr.avatars.of(g_peer) != null and gr.avatars.of(1) != null, "each to see the other's avatar", 900, 20.0)
+	await _guest_picks(hr, gr, g_peer, house)
+	# The F5 house goes: its own link goes with it.
+	var glink := gr.link
+	_view(guest).remove_child(house)
+	house.queue_free()
+	await _frames(2)
+	_check(not is_instance_valid(glink) or not glink.is_inside_tree(), "the F5 house's link went with it")
+
+
+# --- L09 ------------------------------------------------------------------------------------------
+
+func case_l09() -> void:
+	await _lobby_hands(0)
+
+
+func case_l09_50ms() -> void:
+	await _lobby_hands(50)
+
+
+func _lobby_hands(lag_ms: int) -> void:
+	var pair := await _linked_pair(lag_ms)
+	var host: Node = pair[0]
+	var guest: Node = pair[1]
+	var hl := GameLink.of(host)
+	var gs := GameLink.of(guest).session
+	var g_peer := gs.me()
+	_check(not hl.roster.entry_of(g_peer).has("hands"), "a Guest with no level said no Hands numbers at the gate")
+	var hr := LevelRuntime.of(await _level_in(host))
+	var welcomed: Array[bool] = []
+	gs.welcomed.connect(func() -> void: welcomed.append(true))
+	var glevel := (load(ONE_BOX) as PackedScene).instantiate()
+	var gr := LevelRuntime.of(glevel)
+	gr.parts.unsettle(self)
+	await _level_in(guest, glevel)
+	# The Guest's own Hands hold two (an Upgrade's) and reach further than the Host lets anyone's.
+	var own := hr.hands.own_tuning()
+	var mine := gr.player.hands_tuning.duplicate() as HandsTuning
+	mine.capacity = 2
+	mine.reach = own.reach_most + 3.0
+	gr.player.hands_tuning = mine
+	_check(own.capacity != 2, "the Host's own Hands hold another number (%d)" % own.capacity)
+	gr.parts.settle(self)
+	await _until(func() -> bool: return not welcomed.is_empty(), "the Guest to be welcomed", 900, 20.0)
+	await _until(func() -> bool: return hl.roster.entry_of(g_peer).has("hands"), "the Host's Roster to have the Guest's Hands numbers", 900, 20.0)
+	var sent: Dictionary = hl.roster.entry_of(g_peer).get("hands", {})
+	_check(int(sent.get("capacity", 0)) == 2, "its capacity as it sent it (%s)" % sent)
+	_check(is_equal_approx(float(sent.get("reach", 0.0)), maxf(own.reach, own.reach_most)), "its reach clamped to what Upgrades can make it (%s)" % sent)
+	_check(hr.hands.tuning_of(g_peer).capacity == 2, "the Host holds that Guest by its own numbers")
+	var gl := GameLink.of(guest)
+	await _until(func() -> bool: return gl.roster.entry_of(g_peer).has("hands"), "the Guest's Roster to hear it", 900, 20.0)
+	_check(hl.session.dropped.is_empty(), "nothing dropped (%s)" % hl.session.dropped)
 
 
 # --- Machines -------------------------------------------------------------------------------------
@@ -353,7 +534,7 @@ func _link_in(machine: Node) -> GameLink:
 ## A level (the one-box one, or `level`) in the machine's view; awaits its Parts bound.
 func _level_in(machine: Node, level: Node = null) -> Node:
 	var l := level if level != null else (load(ONE_BOX) as PackedScene).instantiate()
-	(machine.get_node("View") as Node).add_child(l)
+	_view(machine).add_child(l)
 	var rt := LevelRuntime.of(l)
 	await _until(func() -> bool: return rt.parts.is_bound, "the level's Parts to bind")
 	return l
@@ -415,7 +596,7 @@ func _open_title(machine: Node, guest: bool, lag_ms: int, guest_name := func() -
 		if before != null:
 			machine.remove_child(before)
 			before.queue_free()
-		(machine.get_node("View") as Node).add_child(root)
+		_view(machine).add_child(root)
 	machine.add_child(t)
 
 
@@ -424,9 +605,17 @@ func _lobby_of(machine: Node) -> LobbyScreen:
 	return l if l != null and not l.is_queued_for_deletion() else null
 
 
+## Where the machine's levels go: its View.
+func _view(machine: Node) -> Node:
+	return machine.get_node("View")
+
+
+## The machine's level (a scene with a LevelRuntime of its own), or null.
 func _level_of(machine: Node) -> Node:
-	var view := machine.get_node("View")
-	return view.get_child(0) if view.get_child_count() > 0 else null
+	for child in _view(machine).get_children():
+		if child is Node3D and not child.is_queued_for_deletion() and child.get_node_or_null(^"Runtime") is LevelRuntime:
+			return child
+	return null
 
 
 func _drop_branches() -> void:

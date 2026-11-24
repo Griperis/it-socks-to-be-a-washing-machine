@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bx2esfl7c8ibt"]
 
 [ext_resource type="PackedScene" uid="uid://d2u50k5e57ccb" path="res://game/parts/avatar/avatar.tscn" id="1_avatar"]
-[ext_resource type="Script" uid="uid://1azmiwah39zt6" path="res://game/zoo/hand_off/hand_off_stand_in.gd" id="2_stand_in"]
+[ext_resource type="Script" uid="uid://c3keykqyp2rbl" path="res://game/zoo/hand_off/hand_off_stand_in.gd" id="2_stand_in"]
 [ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="3_mess"]
 [ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="4_hands"]
 [ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="5_spot"]
@@ -9,7 +9,7 @@
 [ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="7_tuning"]
 [ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="8_knockdowns"]
 [ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="9_knock_tuning"]
-[ext_resource type="Script" uid="uid://idp3dgpkcusvg" path="res://game/zoo/hand_off/hand_off_numbers.gd" id="11_numbers"]
+[ext_resource type="Script" uid="uid://mwc6cu17g2dw" path="res://game/zoo/hand_off/hand_off_numbers.gd" id="11_numbers"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.42, 0.47, 0.4, 1)
