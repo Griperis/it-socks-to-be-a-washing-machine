@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c4shutgaragdr"]
 
-[ext_resource type="Material" uid="uid://rppq22t483na0" path="res://game/entities/door/materials/front_door.tres" id="1_kahbi"]
-[ext_resource type="Material" uid="uid://5yto28rdhrohs" path="res://game/entities/door/materials/steel.tres" id="2_l26mk"]
+[ext_resource type="Material" uid="uid://b83apt540a48x" path="res://game/entities/door/materials/front_door.tres" id="1_kahbi"]
+[ext_resource type="Material" uid="uid://dwylxucljdj6g" path="res://game/entities/door/materials/steel.tres" id="2_l26mk"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_urbck"]
 material = ExtResource("1_kahbi")

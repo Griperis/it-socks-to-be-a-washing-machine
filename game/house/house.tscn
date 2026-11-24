@@ -71,10 +71,10 @@
 [ext_resource type="Script" uid="uid://c76hgi71q4k4g" path="res://game/mess/sock_trail.gd" id="84_trail"]
 [ext_resource type="Script" path="res://game/house/house_lights.gd" id="86_lights"]
 [ext_resource type="Script" uid="uid://co2u54sk1yir8" path="res://game/mess/generated_socks.gd" id="85_generated"]
-[ext_resource type="PackedScene" uid="uid://7j6plso4tfeew" path="res://game/entities/door/room_door.tscn" id="86_door"]
-[ext_resource type="PackedScene" uid="uid://6xsenywsjrr6v" path="res://game/entities/door/room_door_flipped.tscn" id="87_door_flipped"]
-[ext_resource type="Script" uid="uid://c8doorshuts0n2" path="res://game/house/door_shuts.gd" id="88_door_shuts"]
-[ext_resource type="Resource" uid="uid://c8doorshutres3" path="res://game/house/door_shut_rules.tres" id="89_door_rules"]
+[ext_resource type="PackedScene" uid="uid://bmwqvdc4bsecs" path="res://game/entities/door/room_door.tscn" id="86_door"]
+[ext_resource type="PackedScene" uid="uid://1jfxjkr05r4r" path="res://game/entities/door/room_door_flipped.tscn" id="87_door_flipped"]
+[ext_resource type="Script" uid="uid://u22gclb5j8x6" path="res://game/house/door_shuts.gd" id="88_door_shuts"]
+[ext_resource type="Resource" uid="uid://u22gclb5im37" path="res://game/house/door_shut_rules.tres" id="89_door_rules"]
 
 [node name="House" type="Node3D" unique_id=1892225822]
 

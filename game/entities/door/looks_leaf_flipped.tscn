@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://6ryfxkam8y018"]
+[gd_scene format=3 uid="uid://upg73wmqd0y4"]
 
-[ext_resource type="Material" uid="uid://8l8i3xrcvqko2" path="res://game/entities/door/materials/door.tres" id="1_bh0lf"]
-[ext_resource type="Material" uid="uid://aebw8rx071c8d" path="res://game/entities/door/materials/brass.tres" id="2_midpw"]
+[ext_resource type="Material" uid="uid://coykeifcd4kmx" path="res://game/entities/door/materials/door.tres" id="1_bh0lf"]
+[ext_resource type="Material" uid="uid://ebw8rx071c8d" path="res://game/entities/door/materials/brass.tres" id="2_midpw"]
 [ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="3_78xim"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_giaju"]

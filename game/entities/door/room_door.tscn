@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://7j6plso4tfeew"]
+[gd_scene format=3 uid="uid://bmwqvdc4bsecs"]
 
 [ext_resource type="Script" uid="uid://bilshnr7wp5ir" path="res://game/parts/openable.gd" id="1_qegq8"]
-[ext_resource type="PackedScene" uid="uid://lbmq8pdi7fnrw" path="res://game/entities/door/looks_leaf.tscn" id="2_yaayx"]
+[ext_resource type="PackedScene" uid="uid://dks02li020wae" path="res://game/entities/door/looks_leaf.tscn" id="2_yaayx"]
 
 [node name="RoomDoor" type="Node3D" unique_id=1481466129]
 

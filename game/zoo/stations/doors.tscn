@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://c8doorsstation5"]
+[gd_scene format=3 uid="uid://bq03emocqql0c"]
 
-[ext_resource type="PackedScene" uid="uid://7j6plso4tfeew" path="res://game/entities/door/room_door.tscn" id="1_door"]
-[ext_resource type="PackedScene" uid="uid://6xsenywsjrr6v" path="res://game/entities/door/room_door_flipped.tscn" id="2_door_flipped"]
+[ext_resource type="PackedScene" uid="uid://bmwqvdc4bsecs" path="res://game/entities/door/room_door.tscn" id="1_door"]
+[ext_resource type="PackedScene" uid="uid://1jfxjkr05r4r" path="res://game/entities/door/room_door_flipped.tscn" id="2_door_flipped"]
 [ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="3_mess"]
 [ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="4_hands"]
 [ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="5_spot"]
