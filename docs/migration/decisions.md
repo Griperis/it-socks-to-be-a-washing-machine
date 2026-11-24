@@ -1,4 +1,4 @@
-Next free Q number: Q2617 (update this line whenever a round of questions is asked)
+Next free Q number: Q2644 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -531,3 +531,30 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2614: the batches, each a milestone reviewed in one play session, in this order: A the run + the washer; B progression (Coins and Drawers, the Old Tree and the Upgrade grid, Stage presents and Gifts, the Wardrobe, Collections unlocking, Profile and encyclopedia, Achievements); C the lived-in house (exterior, Elevator, Cat and litterbox, X-rays, the vacuums, the detector, TV and Radio, the guide card); D finale and finish (Drum finale, the other cutscenes, studio intro, M1.1's other sounds, controller, graphics presets, Steam) (designer, 2026-11-24).
 - Q2615: the Drum finale is in batch D; batch A's run ends after the fourth Stage with the Laundry day and the Final screen (designer, 2026-11-24).
 - Q2616: Steam comes in batch D; co-op stays on the direct connection (ENet) behind its seam until then (designer, 2026-11-24).
+- Q2617: a Stage's new Socks are spread in even shares over every open floor, as the old code (S1, core/71; designer, 2026-11-24).
+- Q2618: in batch A each Cabinet spot keeps the Collection placed in the house today; the room pools come with batch B's unlocking (S2, core/71; designer, 2026-11-24).
+- Q2619: no Stage Coins bonuses in batch A; batch B's Coins and Drawers piece decides them (S3, core/71; designer, 2026-11-24).
+- Q2620: a Cabinet's new Drawer appears at once when its floor opens, seen or not, as v0.1.1 played (replaces Q824's wait-until-seen) (S4, core/71; designer, 2026-11-24).
+- Q2621: between a Stage's completion and its Fix the Stage bar stays full, as the old; the bar's text is authorable per phase so later phases plug in, e.g. the phase after the Drum reads "Wash clothes N/M" (in batch A the Laundry day after the fourth Fix, the lead's reading) (S5, core/71; designer, 2026-11-24).
+- Q2622: the Stage bar names floors as the old: "Basement", "Ground", "First", "Attic" (S6, core/71; designer, 2026-11-24).
+- Q2623: batch A's last Stage (the attic) counts only its own Cabinets (Winter and Space), as the old last-Stage code (S7, core/71; designer, 2026-11-24).
+- Q2624: the World's Laundry bins stand full in their rooms from the New Game, refused at the machine until the last Fix, as the old (R1, core/72; designer, 2026-11-24).
+- Q2625: before the First wash a HUD goal line "Wash the laundry" stands in the Stage bar's place; the guide card replaces it in batch C (R2, core/72; designer, 2026-11-24).
+- Q2626: the First wash's spray of Socks is decoration that vanishes, as the old; the first Stage's Socks lie in their usual places (R3, core/72; designer, 2026-11-24).
+- Q2627: loading a Laundry bin stays as the old (no Socks seen going in); a visible pour is a later polish ticket (R4, core/72; the designer first chose the pour now, then "keep it as it was"; designer, 2026-11-24).
+- Q2628: a carried Laundry bin does not slow its carrier, as the old (R5, core/72; designer, 2026-11-24).
+- Q2629: cutscene_6 plays whole in batch A, "You're alive!" included (R6/W4, core/72, core/73; designer, 2026-11-24).
+- Q2630: the Final screen has a column only for the players in the game at the end, as the old (R7, core/72; designer, 2026-11-24).
+- Q2631: a finished World stays in the Lobby as a record ("Finished", play time), not continued; Start or New Game asks and replaces it (R8, core/72, core/61 L6; designer, 2026-11-24).
+- Q2632: no "who did what" titles on the Final screen in batch A; asked again with batch B (R9, core/72; designer, 2026-11-24).
+- Q2633: batch A plays cutscene_3 with the washer's recording alone; the Old Tree's line joins it in batch B by its file and trigger, no code (confirms Q2609's reading) (W1, core/73; designer, 2026-11-24).
+- Q2634: cutscene_5 plays whole at the fourth Fix in batch A; the voiceovers will change, so swapping a recording must be easy (W2, core/73; designer, 2026-11-24).
+- Q2635: the washer's comment set during the Laundry day is customisable; by default Stage 4's set goes on (W3, core/73; designer, 2026-11-24).
+- Q2636: the washer is silent until the First wash breaks it (W10, core/73; designer, 2026-11-24).
+- Q2637: every speaker picks a fitting line, never the last one, each fitting line once before any repeats (W5, core/73; designer, 2026-11-24).
+- Q2638: voice levels are not adjusted by the game or the bake; the recordings are fixed at the source (W6, core/73; designer, 2026-11-24).
+- Q2639: the voice bake is a command (agents and the designer run it); no editor entry or automatic bake needed (W7, core/73; designer, 2026-11-24).
+- Q2640: voice lines are written in one JSON file per speaker (each line's id, trigger, text, recording files), checked and built by the bake command; replaces Q2608's Resource per line (the drop-a-recording flow and the Voice station stay) (core/73; designer, 2026-11-24).
+- Q2641: the washer's subtitle icon is a flat drawn icon in the UI icons' style, its own look ticket (W8, core/73; designer, 2026-11-24).
+- Q2642: the knockdown wash (a knocked player dragged into the drum) is batch A, the washer's last ticket (W9, core/73; designer, 2026-11-24).
+- Q2643: GLOSSARY: the Final wash and Laundry bin entries name no Part ("the run's last Fix"); "Laundry day" added: the time after the last Fix when the bins are washed (core/72; designer, 2026-11-24).
