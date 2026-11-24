@@ -94,3 +94,30 @@ func rows(numbered: bool) -> void:
 	l.title = (list[1] as Dictionary)["name"]
 	l.line = (list[1] as Dictionary)["details"]
 	l.changed.emit()
+
+
+## core/67: the bar's captions (the Host is Ready, so "press again to un-ready" shows and Start is held with its
+## caption), and the pad's selection on the Ready key.
+func details() -> void:
+	rows(false)
+	make(4, false, 1)
+	lobby.get_node("%Ready").grab_focus()
+
+
+## The pad's first selection: the "i" key.
+func pad_first() -> void:
+	rows(false)
+	make(4, false, 1)
+	lobby.first_selection().grab_focus()
+
+
+## The pad inside the open drawer.
+func pad_drawer() -> void:
+	rows(false)
+	make(3, false, 1)
+	await get_tree().process_frame
+	lobby.drawer().set_open(true, true)
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var rows_on: Array = lobby.drawer().pad_rows()
+	((rows_on[0] as Array)[0] as Control).grab_focus()

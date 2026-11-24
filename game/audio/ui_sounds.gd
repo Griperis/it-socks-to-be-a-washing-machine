@@ -22,6 +22,11 @@ func _on_node_added(node: Node) -> void:
 	b.mouse_entered.connect(_hover.bind(b))
 
 
+## The hover tick on its own: a key that ticks and does not click (the Lobby's Ready) plays it when pressed.
+func hover() -> void:
+	Sounds.play(HOVER)
+
+
 func _click() -> void:
 	Sounds.play(CLICK)
 

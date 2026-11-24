@@ -6,8 +6,6 @@ extends Control
 
 signal closed
 
-const HEADING := "Who was in %s"
-
 @onready var _heading: Label = %Heading
 @onready var _names: VBoxContainer = %Names
 @onready var _close: CloseButton = %Close
@@ -20,7 +18,7 @@ func _ready() -> void:
 
 ## Opens it for `world_name` with `names`.
 func open(world_name: String, names: PackedStringArray) -> void:
-	_heading.text = HEADING % world_name
+	_heading.text = LobbyWords.WHO_HEADING % world_name
 	for n in _names.get_children():
 		_names.remove_child(n)
 		n.queue_free()

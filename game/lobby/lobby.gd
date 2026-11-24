@@ -25,19 +25,6 @@ const JOINING_CARD := preload("res://game/level/loading_screen.tscn")
 
 enum Mode {SOLO, HOST, JOIN}
 
-## The Lobby's words. placeholder: the old wording (02-lobby.md "Words and refusals"), core/67 owns it.
-const BACK := "Back"
-const LEAVE := "Leave"
-const READY := "Ready"
-const READY_ON := "✓ Ready"
-const START := "Start"
-const WAITING_HOST := "Waiting for the Host to start"
-const WAITING_PLAYER := "Waiting for a player"
-const HOST_MARK := "HOST"
-const NOT_READY_MARK := "-"
-const SOLO_TITLE := "Solo"
-const NEW_WORLD := "New World"
-const CANNOT_HOST := "Could not host on port %d"
 ## Back and Leave say nothing on the title.
 const NO_NOTICE := ""
 
@@ -77,6 +64,9 @@ var _place_nodes: Array[LobbyPlace] = []
 @onready var _back: Button = %Back
 @onready var _ready_key: Button = %Ready
 @onready var _start: Button = %Start
+@onready var _ready_caption: Label = %ReadyCaption
+@onready var _start_caption: Label = %StartCaption
+@onready var _status: Label = %Status
 @onready var _waiting: Label = %Waiting
 @onready var _continue: Button = %Continue
 @onready var _new_game: Button = %NewGame
@@ -94,8 +84,10 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	_words()
 	_back.pressed.connect(back)
 	_ready_key.pressed.connect(toggle_ready)
+	_ready_key.pressed.connect(UiSounds.hover)  # Ready ticks and does not click (it has no_ui_sound)
 	_start.pressed.connect(start)
 	_continue.pressed.connect(continue_world)
 	_new_game.pressed.connect(new_game)
@@ -116,6 +108,8 @@ func _ready() -> void:
 	_drawer.new_game_pressed.connect(new_world)
 	_drawer.delete_confirmed.connect(delete_world)
 	_drawer.full_closed.connect(func() -> void: _pending = "")
+	_drawer.open_changed.connect(link_pad)
+	_drawer.invite_pressed.connect(func() -> void: link.session.transport.invite())
 	link.lobby.changed.connect(_refresh)
 	link.roster.changed.connect(_refresh)
 	link.session.linked.connect(_on_linked)
@@ -123,6 +117,22 @@ func _ready() -> void:
 	_show_ask(false)
 	_refresh()
 	_begin.call_deferred()
+
+
+## Every static word of the screen, from LobbyWords (the scene carries none).
+func _words() -> void:
+	_who_key.text = LobbyWords.WHO_KEY
+	_back.text = LobbyWords.BACK
+	_ready_key.text = LobbyWords.READY
+	_ready_caption.text = LobbyWords.READY_CAPTION
+	_start.text = LobbyWords.START
+	_start_caption.text = LobbyWords.START_CAPTION
+	_waiting.text = LobbyWords.WAITING_HOST
+	_continue.text = LobbyWords.CONTINUE
+	_new_game.text = LobbyWords.NEW_GAME_SOLO
+	($Ask/Center/Panel/Box/Heading as Label).text = LobbyWords.NEW_GAME_HEADING
+	($Ask/Center/Panel/Box/Question as Label).text = LobbyWords.NEW_GAME_ASK
+	_ask_yes.text = LobbyWords.NEW_GAME
 
 
 ## Every frame the places follow where their figures fall on the screen.
@@ -155,7 +165,7 @@ func _begin() -> void:
 			if not s.is_online():
 				var err := s.host()
 				if err != OK:
-					go_to_title.call(CANNOT_HOST % s.port)
+					go_to_title.call(LobbyWords.CANNOT_HOST % s.port)
 					return
 			_choose_world()
 			_publish_worlds()
@@ -175,7 +185,7 @@ func _begin() -> void:
 func _choose_world() -> void:
 	if world == null:
 		return
-	var heading := SOLO_TITLE if mode == Mode.SOLO else (NEW_WORLD if world.is_new else Worlds.display_name(world.slot, world.record))
+	var heading := LobbyWords.SOLO_TITLE if mode == Mode.SOLO else (LobbyWords.NEW_WORLD if world.is_new else Worlds.display_name(world.slot, world.record))
 	var line := ""
 	if not world.is_new:
 		line = Worlds.row_details(world.record)
@@ -397,6 +407,17 @@ func _on_ended(text: String) -> void:
 	go_to_title.call(text)
 
 
+func _input(event: InputEvent) -> void:
+	# The pad's first press with nothing selected selects the first key and takes the press (no key is pressed by it).
+	if _going or not is_visible_in_tree() or selected() != null:
+		return
+	for action: StringName in [&"ui_left", &"ui_right", &"ui_up", &"ui_down", &"ui_accept"]:
+		if event.is_action_pressed(action):
+			first_selection().grab_focus()
+			get_viewport().set_input_as_handled()
+			return
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed(&"ui_cancel"):
 		return
@@ -428,18 +449,27 @@ func _refresh() -> void:
 	_fill_places()
 	var solo := mode == Mode.SOLO
 	var me_ready := lobby.is_ready(_me())
-	_back.text = LEAVE if guest else BACK
+	_back.text = LobbyWords.LEAVE if guest else LobbyWords.BACK
 	_ready_key.visible = not solo
-	_ready_key.text = READY_ON if me_ready else READY
+	_ready_key.text = LobbyWords.READY_ON if me_ready else LobbyWords.READY
 	_start.visible = mode == Mode.HOST
 	_start.disabled = not lobby.all_ready() or lobby.level == ""
 	_waiting.visible = guest
+	_ready_key.get_parent().visible = _ready_key.visible
+	_start.get_parent().visible = _start.visible
+	# A caption keeps its line (it fades, never hides) so nothing under the keys jumps.
+	_ready_caption.modulate.a = 1.0 if me_ready and not solo else 0.0
+	_start_caption.modulate.a = 1.0 if _start.disabled and not _going else 0.0
+	_drawer.set_can_invite(mode == Mode.HOST and link.session.transport.can_invite())
+	_status.text = status_text()
+	_status.visible = _status.text != ""
 	_continue.visible = solo and world != null and not world.is_new
 	_new_game.visible = solo
 	for key: Button in [_back, _ready_key, _start, _continue, _new_game]:
 		if _going:
 			key.disabled = true
 	_ready_key.disabled = _going or (guest and not _in_game())
+	link_pad.call_deferred()
 
 
 ## Whether this machine plays in the game: the Host and Solo always, a Guest once it has the link's snapshot.
@@ -482,6 +512,60 @@ func _sync_focus() -> void:
 		if place.visible and place.focused():
 			at = place.index
 	_stage.set_focus(at)
+
+
+## The status line's words: why the game cannot go on, "" when nothing holds it. The Group lock that held Start
+## in the old game is dropped (Q2554), so nothing holds it yet: this is the one place a reason would be said.
+func status_text() -> String:
+	return ""
+
+
+## The pad's route (LobbyPad): the "i" key and the World settings key; the figures left to right; the bottom keys;
+## the open drawer a column on the right, entered by Right of the last figure and left by Left.
+func link_pad() -> void:
+	if not is_node_ready() or not is_inside_tree():
+		return
+	var top := LobbyPad.live([_who_key, _drawer.key()])
+	var figures := LobbyPad.live(_place_nodes)
+	var bottom := LobbyPad.live([_back, _ready_key, _start, _continue, _new_game])
+	LobbyPad.clear([_who_key, _drawer.key(), _back, _ready_key, _start, _continue, _new_game])
+	LobbyPad.clear(_place_nodes)
+	var side: Array = _drawer.pad_rows() if _drawer.is_open() and _drawer.is_visible_in_tree() else []
+	for row: Variant in side:
+		LobbyPad.clear(row as Array)
+	var rows: Array = [top, figures, bottom]
+	LobbyPad.link_rows(rows)
+	if side.is_empty():
+		return
+	LobbyPad.link_rows(side)
+	var first: Control = (side[0] as Array)[0]
+	var last: Control = (side[side.size() - 1] as Array)[0]
+	var beside: Control = figures[figures.size() - 1] if not figures.is_empty() else (bottom[bottom.size() - 1] if not bottom.is_empty() else null)
+	if beside != null:
+		beside.focus_neighbor_right = beside.get_path_to(first)
+		for row: Variant in side:
+			for c: Control in row:
+				c.focus_neighbor_left = c.get_path_to(beside)
+	if not bottom.is_empty():
+		var foot: Control = bottom[bottom.size() - 1]
+		foot.focus_neighbor_right = foot.get_path_to(last)
+		for c: Control in (side[side.size() - 1] as Array):
+			c.focus_neighbor_bottom = c.get_path_to(foot)
+	var key := _drawer.key()
+	if LobbyPad.on_route(key):
+		key.focus_neighbor_bottom = key.get_path_to(first)
+		for c: Control in (side[0] as Array):
+			c.focus_neighbor_top = c.get_path_to(key)
+
+
+## The control the pad's selection starts on: the "i" key when there is one, else Back.
+func first_selection() -> Control:
+	return _who_key if LobbyPad.on_route(_who_key) else _back
+
+
+## The control with the pad's selection, null when none.
+func selected() -> Control:
+	return get_viewport().gui_get_focus_owner()
 
 
 ## The names of the Group of the World in `slot`, as the Host's rows say them.

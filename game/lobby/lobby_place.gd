@@ -11,8 +11,6 @@ extends Control
 signal focus_changed
 
 const MARK_PX := 34
-const READY_TICK := "✓"
-const NOT_READY_DASH := "–"
 
 ## Which pedestal of the stage this place is.
 var index := 0
@@ -31,6 +29,8 @@ var _blocked := false
 
 
 func _ready() -> void:
+	_host.text = LobbyWords.HOST_MARK
+	_waiting.text = LobbyWords.WAITING_PLAYER
 	mouse_entered.connect(_hover.bind(true))
 	mouse_exited.connect(_hover.bind(false))
 	focus_entered.connect(focus_changed.emit)
@@ -48,7 +48,7 @@ func show_player(who: String, colour: Color, is_host: bool, with_ready: bool, is
 	_waiting.visible = false
 	_mark.visible = with_ready
 	_mark.add_theme_stylebox_override(&"panel", _circle(is_ready))
-	_tick.text = READY_TICK if is_ready else NOT_READY_DASH
+	_tick.text = LobbyWords.READY_TICK if is_ready else LobbyWords.NOT_READY_DASH
 	_tick.add_theme_color_override(&"font_color", Color(0.13, 0.1, 0.08) if is_ready else Color(0.75, 0.68, 0.58))
 	_apply_focus_rules()
 
