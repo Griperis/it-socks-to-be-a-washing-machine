@@ -76,3 +76,4 @@ Port of the old game's stacking on a teammate's back (catalogue B07, `game/playe
 - Changed: main merged in (core/42 hand-off, core/63, core/64): PROTOCOL 17 (main's 16 + 1); the Player's header keeps both the stacking and the Hand-off notes; the zoo holds both new stations.
 - Files: `game/parts/session.gd`, `game/player/player.gd`, `game/zoo/zoo.tscn` (the merge), this ticket.
 - Verified: see the commit's `suite:` line.
+- Merged: 1b83da97 (2026-11-24, branch core/41-player-stacking)
