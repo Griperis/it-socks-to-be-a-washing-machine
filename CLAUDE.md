@@ -124,5 +124,7 @@ through that feature's own rules object. Otherwise they go through the co-op sha
 - **A zoo station that shows game data is built from that data at load** (designer, Q2337): a new Design, sound
   or other entry appears in its station with no other change.
 - **A journal line per merged ticket** in `docs/migration/journal.md`.
+- **Nobody but the designer pushes** (designer, 2026-11-24): the lead and agents never run `git push`, for the game or the
+  kit; the lead says what is ready to push and in what order (the kit before the game).
 - **No commit message carries a Claude (or any AI assistant) `Co-Authored-By` line** (designer, 2026-11-20);
   `kit/tools/commit.sh` refuses one.
