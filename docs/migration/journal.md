@@ -1125,3 +1125,8 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Looks | builds/review-hand-off/ |
 
 ---
+
+| Ticket | core/41, Player stacking: a Sock stands on a Teammate's back disc (a plain collider, Q2591), inside any piece (Q2581), riding offset in the synced pose so others draw the rider glued on (Q2592), reach 2.5 m, the land sound on every machine and a silent jump (Q2593, Q2594), PROTOCOL 17; merged (main 1b83da9) |
+| Surprises | the plain collider drew the rider behind on other screens, fixed by the riding offset; the merge stopped twice on editor uid re-saves |
+| Looks | builds/review-player-stacking/ |
+| Decisions | Q2581, Q2591-Q2594 |
