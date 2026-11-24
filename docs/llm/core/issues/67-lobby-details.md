@@ -59,3 +59,4 @@ transport can invite). Then walk the list `02-lobby.md` line by line and report 
   - Solo: Continue, New Game and its question: S (core/63, k06); New Game page with the slider: W (Stages).
   - Worlds and Groups: S (core/58, 63, 65); the Group lock dropped by Q2554; row names Q2597.
   - After an ending, Steam's part: W (the ending's piece, the Steam piece). Words: B now (`LobbyWords`); refusals are the Session's (S).
+- Merged: 0017da92 (2026-11-24, branch core/67-lobby-details)
