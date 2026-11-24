@@ -478,6 +478,10 @@ metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Doors" type="Node3D" parent="." unique_id=1264190857]
 
+[node name="DoorShuts" type="Node" parent="Doors" unique_id=881000020]
+script = ExtResource("88_door_shuts")
+rules = ExtResource("89_door_rules")
+
 [node name="FrontDoor" parent="Doors" unique_id=88310427 instance=ExtResource("78_shut_front_door")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, 0, 0)
 
@@ -531,10 +535,6 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.54, 3, 4.75)
 
 [node name="Openable" parent="Doors/KidsLanding" parent_id_path=PackedInt32Array(881000008) index="0" unique_id=99892436]
 open = true
-
-[node name="DoorShuts" type="Node" parent="Doors" unique_id=881000020]
-script = ExtResource("88_door_shuts")
-rules = ExtResource("89_door_rules")
 
 [node name="Spawn" type="Marker3D" parent="." unique_id=1502210364]
 transform = Transform3D(0.6042, 0, 0.7968, 0, 1, 0, -0.7968, 0, 0.6042, 1.68, -3, 5.87)

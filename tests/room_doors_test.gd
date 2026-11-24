@@ -213,6 +213,7 @@ func case_d03_real_path() -> void:
 	await _until(func() -> bool: return not openable.open and not openable.is_moving(), "the Door to shut")
 	var closed := _heard.filter(func(h: Dictionary) -> bool: return h["event"] == &"door_close")
 	_same(closed.size(), 1, "door_close plays once")
+	await _aim(Vector3(-1.7, 0.0, 0.0), _leaf_point(openable))
 	_check(Sounds.is_muffled(behind), "shut again, it muffles")
 	Sounds.played.disconnect(_on_played)
 
