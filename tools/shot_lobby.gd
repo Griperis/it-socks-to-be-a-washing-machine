@@ -106,6 +106,7 @@ func details() -> void:
 
 ## The pad's first selection: the "i" key.
 func pad_first() -> void:
+	pad_press()
 	rows(false)
 	make(4, false, 1)
 	lobby.first_selection().grab_focus()
@@ -121,3 +122,25 @@ func pad_drawer() -> void:
 	await get_tree().process_frame
 	var rows_on: Array = lobby.drawer().pad_rows()
 	((rows_on[0] as Array)[0] as Control).grab_focus()
+
+
+## core/75: a pad press, so the selection ring shows (the shot has no real pad).
+func pad_press() -> void:
+	var ev := InputEventJoypadButton.new()
+	ev.button_index = JOY_BUTTON_DPAD_DOWN
+	ev.pressed = true
+	PadFocus.on_input(ev)
+
+
+## The pad inside the open drawer, a row key selected (the ring shows).
+func pad_drawer_key() -> void:
+	pad_press()
+	await pad_drawer()
+
+
+## core/75, Q2650: the drawer with a World row's Delete key selected (full width, with its text).
+func pad_drawer_delete() -> void:
+	pad_press()
+	await pad_drawer()
+	var row: WorldRow = lobby.drawer().row_nodes()[1]
+	row.get_node("%Delete").grab_focus()

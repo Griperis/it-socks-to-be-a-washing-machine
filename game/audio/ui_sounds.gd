@@ -2,6 +2,7 @@
 ## in every menu is hooked as it enters the tree: a soft click (`ui_click`) when it is pressed, a very
 ## quiet tick (`ui_hover`) when the mouse comes over an enabled one; both are SoundEvents of the
 ## catalogue on the UI bus. A button with the metadata `no_ui_sound` stays silent.
+## It also feeds the pad's lit look (`PadFocus`) the window's input (core/75).
 extends Node
 
 const CLICK := &"ui_click"
@@ -12,6 +13,9 @@ const SILENT := &"no_ui_sound"
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	get_tree().node_added.connect(_on_node_added)
+	# core/75: a key or pad selection lights a control, a mouse click does not (PadFocus).
+	get_tree().root.window_input.connect(PadFocus.on_input)
+	get_tree().root.gui_focus_changed.connect(PadFocus.on_focus_changed)
 
 
 func _on_node_added(node: Node) -> void:

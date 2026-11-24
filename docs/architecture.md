@@ -69,6 +69,7 @@ How this game is built, unless a decision record says otherwise. They are the ga
 | Furniture | `docs/architecture/furniture.md` | you place, change or add a furniture piece, its openings, collision or Sock spots, or a device (opening sounds, the piano, the mirror, the dust sheet) |
 | The house level | `docs/architecture/house.md` | you change the house scene: its shell, furniture, lights, spawn or what it holds |
 | Saves and the menus | `docs/architecture/saves.md` | you change what is saved or loaded, the save file, Worlds, the title, Options, Licence, the loading screen or the ESC menu |
+| Menus and UI | `docs/architecture/ui.md` | you add a button, slider or field, or change how the pad's or keyboard's selection looks |
 | Stages and floors (build plan, batch A) | `docs/architecture/stages.md` | you change the run's Stages, a Cabinet's Rows, a Stage's Socks, the washing machine's Parts, the floor locks, the Stage bar and its phases, the Whiteboard or the Tab tallies |
 | The run's ends (build plan, batch A) | `docs/architecture/run-ends.md` | you change the First wash, the Laundry bins, the Laundry day, the Final wash, the Final screen, Continue to the Lobby, the spray, or the Cutscene frame |
 | The washing machine (build plan, batch A) | `docs/architecture/washer.md` | you change the washer entity, its Looks contract, how broken it looks, its comments, its shots, or the knockdown wash |

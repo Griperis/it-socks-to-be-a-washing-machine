@@ -481,6 +481,16 @@ func case_k11() -> void:
 	_check(hlobby.selected() == null, "nothing is selected before the pad is used")
 	await _key(&"ui_right")
 	_check(hlobby.selected() == who and hlobby.first_selection() == who, "the first press selects the \"i\" key")
+	_check(PadFocus.is_lit(who) and who.get_theme_stylebox(&"focus") is StyleBoxEmpty, "the selected key is lit after a pad press, and its focus style is empty")
+	await _until(func() -> bool: return is_equal_approx(who.scale.x, 1.08), "the lit key to grow to 1.08 over its tween", 60, 0.0)
+	var back := hlobby.get_node("%Back") as Button
+	back.grab_focus()
+	_check(PadFocus.is_lit(back) and not PadFocus.is_lit(who), "the light moves with the selection")
+	await _until(func() -> bool: return is_equal_approx(back.scale.x, 1.08), "the lit key to grow", 60, 0.0)
+	(back.get_parent() as Container).queue_sort()
+	await _frames(3)
+	_check(is_equal_approx(back.scale.x, 1.08), "the lit key keeps its size across a re-layout of its container")
+	who.grab_focus()
 	await _key(&"ui_right")
 	_check(hlobby.selected() == drawer.key(), "Right goes to the World settings key")
 	await _key(&"ui_left")
@@ -504,6 +514,8 @@ func case_k11() -> void:
 	_check(hlobby.selected() is LobbyPlace, "Up returns to a figure")
 	# The drawer shut: Right of the last figure goes nowhere.
 	await _click(drawer.key())
+	_check(not PadFocus.is_lit(who) and not PadFocus.pad_used, "a mouse click puts the light out")
+	_check(not PadFocus.is_lit(drawer.key()), "and the key the mouse pressed is not lit")
 	await _until(func() -> bool: return not drawer.is_open() and drawer.is_settled(), "the drawer to shut", 300, 0.0)
 	hlobby.places()[1].grab_focus()
 	await _key(&"ui_right")
@@ -735,6 +747,7 @@ func _click(control: Control) -> void:
 		ev.position = at
 		ev.global_position = at
 		ev.pressed = pressed
+		get_tree().root.window_input.emit(ev)
 		control.get_viewport().push_input(ev, true)
 	await _frames(2)
 
@@ -744,5 +757,8 @@ func _key(action: StringName) -> void:
 		var ev := InputEventAction.new()
 		ev.action = action
 		ev.pressed = pressed
+		# A real key or pad press reaches the window's `window_input` first (the selection ring listens there);
+		# a parsed event does not, so it is told too.
+		get_tree().root.window_input.emit(ev)
 		Input.parse_input_event(ev)
 		await _frames(2)

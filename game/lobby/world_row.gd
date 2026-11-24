@@ -38,6 +38,7 @@ func fill(row: Dictionary, chosen: String, host: bool, choosable: bool, tuning: 
 	_choose.visible = host and choosable and not bool(row.get("damaged", false))
 	_choose.text = LobbyWords.CHOSEN if is_chosen else LobbyWords.CHOOSE
 	_choose.disabled = is_chosen
+	_delete.text = LobbyWords.DELETE
 	_delete.visible = host and slot != Worlds.SOLO
 	var box := StyleBoxFlat.new()
 	box.bg_color = Color(1.0, 0.8, 0.2, tuning.chosen_tint) if is_chosen else Color(0.0, 0.0, 0.0, 0.08)
