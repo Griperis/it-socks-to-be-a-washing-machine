@@ -1,4 +1,4 @@
-Next free Q number: Q2614 (update this line whenever a round of questions is asked)
+Next free Q number: Q2617 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -528,3 +528,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2611: Upgrades are bought at the Old Tree, which opens the Upgrade menu (designer, 2026-11-24).
 - Q2612: rewards: a filled Drawer flies in its Coins and Drawers and nothing else; Gifts come as Stage presents under the Old Tree when a Stage ends, opened together (fixes the old all-at-once burst, old ticket 72) (designer, 2026-11-24).
 - Q2613: the Upgrade menu stays the old grid of icon buttons with levels and prerequisites; each Upgrade a Resource (icon, levels, prices, needs, effect), all shown in a zoo station (designer, 2026-11-24).
+- Q2614: the batches, each a milestone reviewed in one play session, in this order: A the run + the washer; B progression (Coins and Drawers, the Old Tree and the Upgrade grid, Stage presents and Gifts, the Wardrobe, Collections unlocking, Profile and encyclopedia, Achievements); C the lived-in house (exterior, Elevator, Cat and litterbox, X-rays, the vacuums, the detector, TV and Radio, the guide card); D finale and finish (Drum finale, the other cutscenes, studio intro, M1.1's other sounds, controller, graphics presets, Steam) (designer, 2026-11-24).
+- Q2615: the Drum finale is in batch D; batch A's run ends after the fourth Stage with the Laundry day and the Final screen (designer, 2026-11-24).
+- Q2616: Steam comes in batch D; co-op stays on the direct connection (ENet) behind its seam until then (designer, 2026-11-24).
