@@ -1,4 +1,4 @@
-Next free Q number: Q2647 (update this line whenever a round of questions is asked)
+Next free Q number: Q2651 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -561,3 +561,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2644: the Lobby's captions under Ready and Start stay at their size (about 11 px) (core/67; designer, 2026-11-24).
 - Q2645: the pad's selection ring not showing in the Lobby is a later follow-up (ticket core/75; core/67; designer, 2026-11-24).
 - Q2646: the Lobby's status line stays hidden until something holds Start (e.g. Steam, batch D) (core/67; designer, 2026-11-24).
+- Q2647: the pad or keyboard selection mark is the old game's lit look, not a ring: the selected control lifts 5 px, grows to 1.08 over 0.1 s and a soft gold glow (#f6c443, alpha 0.85, size 16) fades in behind it (old `game/ui/pad_focus.gd`, `data/tuning/pad.json`), numbers in a tuning Resource; on every focusable control of every screen; a Lobby player's plinth lights as the old (core/75; designer, 2026-11-24).
+- Q2648: only a pad or keyboard selection lights a control; a mouse click never does (core/75; designer, 2026-11-24).
+- Q2649: the Licence page's links take pad and keyboard focus like any button (core/75; designer, 2026-11-24).
+- Q2650: a World row's Delete button keeps its full width and its text; the row name is cut with "..." instead (core/75; designer, 2026-11-24).
