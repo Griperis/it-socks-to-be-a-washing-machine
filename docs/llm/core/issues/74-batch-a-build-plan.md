@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: design
 area: core
 feature: frame
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-24
 blocked_by: []
 notes: ["suggested model: opus", "batch A (Q2606, Q2614); answers Q2617-Q2643"]
 terms: [Stage, Laundry day, Final wash, Voice line]
@@ -41,5 +41,25 @@ JSON per speaker instead of a Resource per line). Batch A is then built unattend
 - Every Q2617-Q2643 lands in the doc it changes; every proposal draft is a filed ticket or named as merged into one.
 
 ## Open follow-ups
+- [later] For the lead: assets/11 (Cabinets to six Drawers) is written not to stop at its strip (a port of the old
+  segments, no look change intended) because core/81 waits on it; give its agent a `Look work:` line if you want it to
+  stop.
+- [later] For the lead: the review sheet lists three readings to confirm in play: voice at 0 dB with no game gain
+  (Q2638), the Laundry day's bar text "Wash clothes n/m" (Q2621's example), the Part taking core/42's Hand-off.
 
 ## Built log
+- 2026-11-24
+  - Changed: the four architecture files made build plans to Q2617-Q2643 (stages: even shares, drop at once, old floor
+    names, the attic's own Cabinets, `StageBarPhase`s; run-ends: the answers R1-R9, the one Cutscene frame merged from
+    core/72 and core/73; voice: lines as one JSON per speaker, the bake a command, no gain; washer: the answers W1-W10);
+    `GLOSSARY.md` per Q2643 (Laundry day added); core/71-73 answers moved under `## Answers`, `done`; 24 core tickets
+    (core/76-99; core/75 is taken on main) and 6 assets tickets (assets/10-15) filed from the drafts, the carrying seam
+    (core/78) and the Cutscene frame (core/88) deduplicated, the run record merged into the tallies (core/83), a Fix
+    scene ticket (core/92) added for the seam no draft owned, the pour `priority: later`, `needs-info`; to avoid file
+    clashes the Fix and First-wash waits are derived from data (no `house.tscn` switch) and only three tickets edit the
+    Stages station; `milestones.md` corrected (M1, M3, M4, M5) with the batches A-D and the Batch A waves; the review
+    sheet stub; `docs/architecture.md` rows; the m4-lists' headers note the answers.
+  - Files: docs/architecture/stages.md, run-ends.md, voice.md, washer.md, docs/architecture.md, GLOSSARY.md,
+    docs/llm/core/issues/71-*, 72-*, 73-*, 74-*, 76-* .. 99-*, docs/llm/assets/issues/10-* .. 15-*,
+    docs/migration/milestones.md, docs/migration/batch-a-review.md, docs/migration/m4-lists/03-*, 04-*, 05-*
+  - Verified: docs only, no game code (`agent_finish.sh --no-test`)

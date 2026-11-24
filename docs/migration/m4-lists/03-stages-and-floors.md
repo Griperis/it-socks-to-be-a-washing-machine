@@ -1,6 +1,9 @@
 > Draft behaviour list for batch A's first piece, Stages and floors (core/71), written from the reference on
 > 2026-11-24; for the designer to approve. The proposal built on it: `docs/architecture/stages.md` (its choices are
 > core/71's Open follow-ups S1-S7).
+> Answered 2026-11-24: S1 even shares over every open floor (Q2617); S2 the placed Collections (Q2618); S3 no bonuses in
+> batch A (Q2619); S4 at once, seen or not (Q2620); S5 the bar stays full, text per phase (Q2621); S6 the old names
+> (Q2622); S7 the attic counts only its own Cabinets (Q2623). Filed by core/74 (core/76-83, core/91, core/92).
 
 # Batch A piece: Stages and floors
 

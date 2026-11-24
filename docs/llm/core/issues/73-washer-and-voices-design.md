@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: needs-info
+status: done
 kind: design
 area: core
 feature: voice
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-24
 blocked_by: []
 notes: ["suggested model: opus", "batch A (Q2606, Q2614)", "voice system decided: docs/architecture/voice.md, Q2545-Q2552, Q2608, Q2609"]
 terms: [Stage, Voice line]
@@ -51,39 +51,25 @@ the build (Q2604 is only the fallback).
 - The choices are `[blocking]` Open follow-ups here, 2-3 options each with a recommendation; `docs/migration/decisions.md` read first, nothing answered asked again.
 - No game code changed.
 
+## Answers
+Answered in one sitting, 2026-11-24 (`docs/migration/decisions.md`); `docs/architecture/voice.md` and `washer.md` are
+written to them.
+- W1 cutscene_3 plays the washer's recording alone in batch A; the Old Tree's line joins it in batch B by its file and
+  trigger, no code (Q2633, 2026-11-24).
+- W2 cutscene_5 plays whole at the fourth Fix; swapping a recording must be easy (Q2634, 2026-11-24).
+- W3 The washer's comment set in the Laundry day is customisable; by default Stage 4's (Q2635, 2026-11-24).
+- W4 cutscene_6 plays whole (Q2629, 2026-11-24).
+- W5 Every speaker picks a fitting line, never the last one, each fitting line once before any repeats (Q2637, 2026-11-24).
+- W6 Voice levels are not adjusted by the game or the bake; the recordings are fixed at the source (Q2638, 2026-11-24).
+- W7 The voice bake is a command; no editor entry or automatic bake (Q2639, 2026-11-24).
+- Lines are written in one JSON file per speaker, checked and built by the bake; replaces Q2608's Resource per line
+  (Q2640, 2026-11-24).
+- W8 The subtitle icon is a flat drawn icon in the UI icons' style, its own look ticket, assets/15 (Q2641, 2026-11-24).
+- W9 The knockdown wash is batch A, the washer's last ticket, core/98 (Q2642, 2026-11-24).
+- W10 The washer is silent until the First wash breaks it (Q2636, 2026-11-24).
+
 ## Open follow-ups
-Choices for the designer (W1-W10), each with 2-3 options; **(rec)** is the recommendation. The build plan follows the
-recommendations (`docs/architecture/voice.md`, `docs/architecture/washer.md`); another answer changes one paragraph.
-- [blocking] W1 (Q2609's reading, to confirm) The Old Tree in cutscene 3? a) **(rec)** Yes, as two lines of one
-  cutscene: batch A plays cutscene_3 as the washer's recording alone; the Old Tree's line is written and recorded in
-  batch B and joins it by its file and trigger, no code. b) Both from batch A: a placeholder tree line synthesised now
-  (the old Piper tool). c) The reading is wrong: the tree is in no cutscene (the designer says what "3" meant).
-- [blocking] W2 cutscene_5 at batch A's fourth Fix (its second half sends the players to "an ancient complex cave
-  system", the Drum, batch D)? a) **(rec)** Cut at 6.88 s ("...I'll take care of...") by the line's `end_at`; the whole
-  line comes back with the Drum. b) Whole, as recorded. c) No cutscene at the fourth Fix in batch A.
-- [blocking] W3 The washer's comments during batch A's Laundry day (after the fourth Fix, before the Final wash; the old
-  stage_5 set is about the dungeon)? a) **(rec)** Stage 4's set goes on. b) Silent until the Final wash. c) The
-  stage_5 set, as the old.
-- [blocking] W4 cutscene_6 opens "You're alive! And you've got the last ingredient!" (the old return from the Drum): in
-  batch A? a) **(rec)** As recorded. b) Start it after "You're alive!" (about 1 s in) until the Drum comes.
-- [blocking] W5 How the washer picks among its lines? a) **(rec)** One rule for every speaker: a line fitting the
-  trigger, never the last one, each fitting line once before any repeats. b) The old washer rule: fitting the trigger,
-  never the last one, otherwise at random.
-- [blocking] W6 Loudness of the recordings (the old clips peak near -5.9 dBFS, so comments ran at +6 dB)? a) **(rec)**
-  The bake matches every take to one loudness (a gain stored with the take, the wav untouched); the speaker's level is
-  a trim at 0 dB. b) Keep the files as recorded and the old levels (comments +6 dB, cutscenes 0 dB).
-- [blocking] W7 How the designer runs the bake after dropping a recording? a) **(rec)** A "Bake voices" entry in the
-  editor and the same command for agents; transcription runs only for new lines. b) The editor bakes by itself when a
-  recording appears in a speaker folder (transcription in the background). c) The command only.
-- [blocking] W8 The washer's subtitle icon (Q2550)? a) **(rec)** A round crop of a render of the washer's face
-  (porthole and brows) from its model, made by the model ticket; until then a grey disc with a porthole ring in the
-  Theme's colours. b) A flat drawn icon in the UI icons' style, its own look ticket.
-- [blocking] W9 The knockdown wash (drag a knocked player into the drum; Q2437 waits for the washing machine)? a)
-  **(rec)** Batch A, as the washer's last ticket (the drag is already in play). b) Batch C, with the Cat's and the
-  Radio's loads (one drum rule for all).
-- [blocking] W10 Comments before the First wash breaks the machine (the old game let a stare at the machine that still
-  looks fine say "I don't wanna talk to you!")? a) **(rec)** Silent until the First wash breaks it. b) As the old:
-  comments from the New Game on.
+None: answered and filed by core/74.
 
 ## Built log
 ### 2026-11-24

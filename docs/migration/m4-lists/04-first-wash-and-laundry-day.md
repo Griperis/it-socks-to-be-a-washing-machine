@@ -1,6 +1,8 @@
 > Draft behaviour list for batch A's run ends (core/72): the First wash, the Laundry day (the Laundry bins and the Final
 > wash) and the Final screen, written from the reference on 2026-11-24; for the designer to approve. The proposal built
 > on it: `docs/architecture/run-ends.md` (its choices R1-R9 are core/72's `[blocking]` follow-ups).
+> Answered 2026-11-24: R1-R9 as Q2624-Q2632 (R7: only the players in the game at the end, as the old; R4: the visible
+> pour later, core/99; the rest as recommended). Filed by core/74 (core/78, core/83, core/88-90, core/93-97).
 
 # M4 piece: the First wash, the Laundry day and the Final screen
 

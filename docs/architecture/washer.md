@@ -1,7 +1,7 @@
 # The washing machine (build plan)
 
-**Status: build plan for batch A (core/73, Q2606), waiting on the designer's answers W1-W10 (core/73's Open
-follow-ups).** The behaviour list: `docs/migration/m4-lists/05-washer-and-voices.md`; the voice system it talks
+**Status: build plan for batch A (designed in core/73; W1-W10 answered Q2633-Q2642; filed by core/74 as core/86-88
+and core/98, assets/14 and assets/15).** The behaviour list: `docs/migration/m4-lists/05-washer-and-voices.md`; the voice system it talks
 through: `docs/architecture/voice.md`. core/71 (Stages) and core/72 (First wash, Laundry day, Final screen) are designed
 beside it; this file names what the washer needs from them ("Seams"), not their parts.
 
@@ -11,7 +11,7 @@ The basement washing machine as an entity: where it stands, its body, its outlin
 brows, lean, bob, drum light), how broken it looks (sparks, smoke, buzz, the drum light's dim flicker), its comments
 (the triggers it senses and the Host's director), its acting in cutscenes, its two camera shots, and what its rig
 offers the washes (drum spin, door, laundry pile). It does not own the Fix (core/71), the washes and the spit (core/72),
-the cutscene frame (see "The cutscene frame") or the lines themselves (voice).
+the cutscene frame (`run-ends.md` "The Cutscene frame", core/88) or the lines themselves (voice).
 
 ## The entity (behaviour plus Looks, Q2213, Q2251-Q2253)
 
@@ -23,8 +23,9 @@ the cutscene frame (see "The cutscene frame") or the lines themselves (voice).
     `PlayerBody` on `Player.BLOCK_LAYER` as the furniture's.
   - **`Washer` Part** (`washer.gd`, extends Part): the speaker's Part. Command `talk {trigger}` (any machine; a Guest's
     stare); its `decide()` is the Host's comment director: the speaker's cooldown (120 s), no comment while
-    `Voices.cutscene_playing()` or before the run has broken the machine (W10), the trigger's chance, the Stage's set
-    (core/71's current Stage number), `VoicePicker`; it answers `{line, take}` or a silent no. `applied` on every machine:
+    `Voices.cutscene_playing()` or before the First wash has broken the machine (silent until then, Q2636), the
+    trigger's chance, the run's comment set (`Stage.comment_set` of the current Stage, or
+    `StagePlan.laundry_day_comment_set` in the Laundry day, Stage 4's by default, Q2635), `VoicePicker` (Q2637); it answers `{line, take}` or a silent no. `applied` on every machine:
     `Voices.say(line, take, looks)`. Command `say_line {line}`: granted only in the zoo (the Voice and washer stations).
     State on the Part: none saved (the old saved none); the director's memory is the Host's and starts fresh on a load.
   - **`WasherSenses`** (`washer_senses.gd`, a child node, looks only): this machine's stare (4 s, 8 m, 12 degrees at the
@@ -91,25 +92,14 @@ the cutscene frame (see "The cutscene frame") or the lines themselves (voice).
 - It offers the frame its two shots (`Shots/Wide`, `Shots/Close`) and the cut rule: the wide shot for the first segment,
   then at each `segment_changed` the close and the wide in turn (`shot = 0 if index < 1 else index % 2`, the old rule).
 - Batch A's cutscenes: `cutscene_first_wash` (cutscene_1), `cutscene_fix_1..3` (cutscene_2..4), `cutscene_fix_4`
-  (cutscene_5, W2), `cutscene_final_wash` (cutscene_6, W4). cutscene_3 with the Old Tree is W1.
+  (cutscene_5, whole, Q2634), `cutscene_final_wash` (cutscene_6, whole, Q2629). cutscene_3 plays the washer's line alone;
+  the Old Tree's joins it in batch B by its file and trigger (Q2633).
 
-## The cutscene frame (shared; the lead places it)
+## The cutscene frame
 
-Every batch A cutscene needs one frame: core/71's Fix, core/72's First wash and Final wash. The old frame was
-`RogueMachine` (weak: four jobs in one class). Proposed here as its own ticket (draft 5), so core/71 and core/72 call it
-rather than each build one; if core/72's proposal also designs it, the lead keeps one of the two.
-
-- **`CutsceneState`** (a Part in the level runtime, Host-authoritative): `playing` (the trigger), `takes`, `lead` (s of
-  the sequence's own part before the line: core/72's wash), `ends` (the respawn, or core/72's Final screen). Started by
-  the sequence's answer, ended by the Host's timeline or skip (a `skip` Command from the Host only, Q751). A late joiner
-  during it spawns after it at the laundry (Q864): the snapshot carries `playing`.
-- **On every machine** (looks only): input off and the HUD hidden; Socks, Pairs, items, Laundry bins and bodies not drawn
-  (Q1425, Q1426); open menus closed; the camera at the washer's wide shot; out of black over the shared fade (0.5 s);
-  `lead` seconds for the sequence's beats; then the lines with the cuts; 0.9 s tail; fade to black; the Host's end
-  respawns everyone at `Spawns`, every knockdown ended (Q745, Q759); the HUD and input back; fade in. The "[Space] Skip"
-  keycap at the bottom right on the Host's screen only (Q862, Q1395); the pad's Start too.
-- Without a voice line: the wide shot for the old fixed length (5 to 10 s by level).
-- The music duck is `Voices`' (it knows the cutscene channel).
+Every batch A cutscene plays on one frame, core/88, designed in `run-ends.md` "The Cutscene frame" (core/72's and
+core/73's proposals merged; the old `RogueMachine` did four jobs in one class). The washer gives it the shots and
+spawns above, its cut rule, its `cutscene_looks`, and the no-voice lengths (5 to 10 s by level).
 
 ## Seams: the triggers this needs from core/71 and core/72
 
@@ -122,7 +112,7 @@ Named, not designed; each is a read of their Part or an answer of their Command.
 | core/71 | the Fix: a Part clicked into the washer, its answer naming the Stage's `fix_cutscene: VoiceTrigger` and the takes; the cutscene frame plays it; after Fix 1-3, core/72's spit follows | cutscene_2..5, the mood one step calmer |
 | core/71 | the Parts fitted and the Parts in the run (read) | mood level and repair |
 | core/71 | whether the level is a staged run | the senses on or off |
-| core/72 | `broken` (false until the First wash breaks the machine) | it looks fine; no comments before (W10) |
+| core/72 | `broken` (`LaundryDay.first_wash` past PENDING: the First wash has broken it; core/94) | it looks fine; no comments before (Q2636) |
 | core/72 | the First wash's beats: the calm wash (`spin`, `bubbles`), the break (spin stops, damage on), then `cutscene_first_wash`, then the spit (`door` open 0.4 s, shut over the last 0.6 s) | the washer's looks in its cutscene |
 | core/72 | a Laundry bin loaded (k of n) | `pile` grows a step |
 | core/72 | the Final wash: its wash (`spin` 0.8, `bubbles`), `cutscene_final_wash` after it (spin easing to 0.12), the frame's end going to the Final screen | the washer's looks in its cutscene |
@@ -131,7 +121,7 @@ Named, not designed; each is a read of their Part or an answer of their Command.
 What the washer gives them: `Washer.is_washer(node)`, the `Door` and `Porthole` points, `WasherLooks` properties
 (`door`, `spin`, `pile`, `bubbles`), the shots and spawns, and the cutscene triggers' files.
 
-## The model and rig (M1 asset work: its own ticket, draft 6)
+## The model and rig (M1 asset work: assets/14)
 
 Ported by the port rules (Q2151-Q2153: technical improvements only; a before/after strip proves the looks unchanged):
 `reference/it-socks/assets_src/blender/washing_machine.blend` to `assets_src/blender/appliance/washing_machine.blend`,
@@ -141,15 +131,18 @@ actions, a collider, the shared materials (Q2177), and `looks_washer.tscn` built
 and properties stay in the Looks scene, not in the glb. Look work: it stops at its first line-up (the old and the port
 side by side, each mood pose, the mouth open) for the designer's go; assets are approved per family batch.
 
+The subtitle icon is not a render of the model: a flat drawn icon in the UI icons' style, its own look ticket, assets/15
+(Q2641).
+
 ## Numbers (`washer_tuning.tres`, `washer.tres` speaker; every one a placeholder, as the old)
 
 Senses: stare 4 s, 8 m, 12 degrees, 0.5 m up, chance 0.5 (the trigger's); idle 60 s; hit 1.4 m; cooldown 120 s. Hearing:
-unit 6 m, max 30 m, earshot 12 m, level band 2 m, comment +6 dB, cutscene 0 dB (W6 may change both), lead-in 0.6 s, tail
+unit 6 m, max 30 m, earshot 12 m, level band 2 m, voice 0 dB for comments and cutscenes (no game gain, Q2638), lead-in 0.6 s, tail
 0.9 s (0.3 of it for a comment), linger 0.25 s, mood blend 0.4 s. Face: glow angry (1, 0.02, 0.005) 3.0, calming (1, 0.45,
 0.12) 2.0, entitled (0.5, 0.06, 1) 2.4, surprised (0.95, 0.8, 0.55) 1.2, idle (0.9, 0.75, 0.5) 0.6; light 0.6, range
 0.45; repair dim 0.3, flicker 0.8 at 70 ms; rumble -36 to -12 dB. Washes: wash spin 0.8, after spin 0.12. Broken: sparks
 6-40, every 2.4-0.5 s, smoke 0.8-4, buzz -22 to -6 dB, cutscene shares 1, 0.8, 0.6, 0.4, 0.2, 0, calm 0.15. No-voice
-cutscene: 5, 5.5, 6.5, 7.5, 8.5, 10 s. Knockdown wash (W9): reach 1.5 m, 3 s, 1.2 turns/s, slide 0.35 s, out 2 s, tilt 70,
+cutscene: 5, 5.5, 6.5, 7.5, 8.5, 10 s. Knockdown wash (batch A, Q2642): reach 1.5 m, 3 s, 1.2 turns/s, slide 0.35 s, out 2 s, tilt 70,
 2.5 m/s out, 1.5 m/s up, twist 0.4, door open 1 s, fade out 0.4 s, in 0.6 s.
 
 ## The washer station (`game/zoo/stations/washer.tscn`)
@@ -160,48 +153,31 @@ zoo's "Mood"), "Break it" and "Fix it" (core/72's `broken`), and one per cutscen
 the cutscene frame, a zoo-only start); the senses on, so a stare or a thrown Sock at it comments. Built from the data:
 the cutscene pillars come from the CUTSCENE triggers found at load (Q2337).
 
-## Batch A's tickets for the voice system and the washer (drafts, `ready-for-agent` once W1-W10 are answered)
+## Tickets (filed by core/74)
 
-In build order. Drafts 1, 2, 3 run one after another; 4 and 5 in parallel after 3; 6 from the start beside them (it
-meets the others only at the Looks contract); 7 after 3 if W9 says batch A. The lead files them with their numbers.
+| Draft | Ticket |
+|---|---|
+| 1 Voice data and the bake | core/84 (lines as one JSON per speaker, Q2640; the bake a command, Q2639; no gain, Q2638) |
+| 2 Voices, Subtitles and the Voice station | core/85 |
+| 3 The washer entity and its comments | core/86 |
+| 4 The broken washer's looks | core/87 |
+| 5 The cutscene frame | core/88 (merged with core/72's draft 4) |
+| 6 The washing machine's model, rig and animations | assets/14 |
+| 7 The knockdown wash | core/98 (batch A, Q2642) |
+| W8 the subtitle icon | assets/15 (Q2641) |
 
-1. **Voice data and the bake** (core, voice; model: sonnet). The voice Resources (`VoiceLine`, `VoiceTake`,
-   `VoiceSegment`, `VoiceMoodKey`, `VoiceSpeaker`, `VoiceActing`, `VoiceTrigger`), `VoiceBook` with its load checks, the
-   bake (`tools/voice_bake.gd`, `.sh`, the editor entry per W7) and `tools/voice_transcribe.py`; the 21 washer recordings
-   copied to `assets/voice/washer/` and baked; the CSV with the old corrected texts (Q1382, Q1473), triggers and Stages
-   set as the old tags and sets; `washer.tres` and `washer_acting.tres` with the old numbers; batch A's trigger files; the
-   CSV registered in Localization. Real-path case: the designer's path: a fixture wav dropped into a speaker folder and
-   the bake run headless gives a `VoiceLine` the VoiceBook lists at the next load, with a take whose acting opens the
-   mouth on the loud parts and hand-set fields kept on a second bake. Acceptance: the 21 lines load with no VoiceBook
-   error; every key has CSV text; no game behaviour changes.
-2. **Voices, Subtitles and the Voice station** (core, voice; sonnet). `Voices` (channels, priority, `waits`, the Voice and
-   new MuffledVoice bus, earshot and level band, `display/subtitles`, the cutscene duck, `play_cutscene`, the signals),
-   `VoicePicker` (W5), `VoiceSource`, `subtitles.tscn` on the Theme with the speaker's icon (W8's placeholder), the Voice
-   station built from the VoiceBook with a zoo-only stand-in source. Real-path case: in the Voice station the player
-   presses E at a washer line's pillar; the Subtitles row shows the line's first segment text with the washer's icon and
-   the stand-in's AnimationPlayer plays the take's acting; behind the shut Door the row still shows and the voice is on
-   MuffledVoice. Blocked by 1.
-3. **The washer entity and its comments** (core, washer; sonnet). `washer.tscn` with the `Washer` Part, `WasherSenses`,
-   `WasherLooks`, the contract, `looks_graybox.tscn`, shots, spawns and points; it replaces the house's `Washer` marker
-   (paths kept); the washer station (moods via a stand-in until core/71's run Part exists). Real-path case: in the main
-   scene the player looks at the washing machine for 4 s from 3 m (the stare's chance set to 1 in the case's tuning); a
-   `stage_1` stare line's subtitle shows and the door bone opens; a Guest's stare plays the same line on both machines.
-   Blocked by 2.
-4. **The broken washer's looks** (core, washer; sonnet). Mood level and repair from core/71 and core/72 (stand-ins until
-   they land), the damage effects and buzz, the drum light's idle glow, mood colour, dim and flicker, the angry rumble
-   under the voice, the riding body. Real-path case: in the washer station the player presses E on the "angriest" pillar;
-   the sparks emit, the buzz plays and the drum light's energy is 0.3 of its idle; on "calm" none emit and the light is
-   steady. Blocked by 3; the numbers are the old ones, judged in batch A's play review (Q2421: no test of a look number).
-5. **The cutscene frame** (core, cutscene; opus: co-op timing). `CutsceneState` and the frame as above, the washer's shots
-   and cuts, `cutscene_looks`, the respawn, the Host's skip, a late joiner after it; core/71's Fix and core/72's washes
-   call it. Real-path case: in the washer station the player presses E on "Play cutscene_fix_1"; the current camera is the
-   washer's wide shot, the subtitle shows cutscene_2's first segment, at its second segment the camera is the close shot;
-   the Host presses Space and the player stands at a spawn with input back and the HUD shown. Blocked by 3.
-6. **The washing machine's model, rig and animations** (assets, M1; opus: Blender). As "The model and rig" above. Look
-   work: stops at its first line-up, `ready-for-human`. No real-path case (a look ticket, Q2421); the Looks contract test
-   passes on `looks_washer.tscn`. Not blocked.
-7. **The knockdown wash** (core, knockdown; sonnet), if W9 says batch A: a let-go body at the door slides in, spins 3 s
-   with the spinning view, bursts out knocked down; one at a time; a cutscene's end or a leaver ends it; not saved; the
-   old numbers. Real-path case: in the knockdown station with the washer, the player drags the knocked Teammate to the
-   door and lets go; the Teammate's body is hidden, their view spins, and after 3 s they lie knocked down in front of the
-   door. Blocked by 3.
+The Fix as a cutscene (core/71's `part_fitted` played on the frame with the washer's new mood) is core/92. The order and
+waves: `docs/migration/milestones.md` "Batch A".
+
+## Answers (W1-W10, 2026-11-24)
+
+- W1 cutscene_3 plays the washer's recording alone; the Old Tree's line joins it in batch B, no code (Q2633).
+- W2 cutscene_5 plays whole at the fourth Fix; swapping a recording must be easy (Q2634).
+- W3 The Laundry day's comment set is customisable, Stage 4's by default (Q2635).
+- W4 cutscene_6 plays whole (Q2629).
+- W5 One picker for every speaker: fitting, never the last, each once before repeats (Q2637).
+- W6 No level adjustment by the game or the bake; the recordings are fixed at the source (Q2638).
+- W7 The bake is a command only (Q2639). And lines are one JSON per speaker (Q2640).
+- W8 The subtitle icon is a flat drawn icon, its own look ticket (Q2641).
+- W9 The knockdown wash is batch A, the washer's last ticket (Q2642).
+- W10 Silent until the First wash breaks it (Q2636).
