@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: in-progress
+status: done
 kind: maintenance
 area: tools
 feature: maintenance
 priority: next
 created: 2026-11-24
-done:
+done: 2026-11-24
 blocked_by: []
 notes: ["suggested model: sonnet", "the SLOW procedure: the lead-integrator skill, step 9"]
 terms: []
@@ -28,13 +28,13 @@ terms: []
 - If a cut needs a kit change (the runner, parallel suites), stop with a [blocking] follow-up: the kit is the lead's.
 
 ## Open follow-ups
-- [blocking] The full run cannot be judged against 120 s while other agents' runs share the machine: the slot pool is
+- -> maintenance/03 (designer, 2026-11-24: merge part, measure later) [blocking] The full run cannot be judged against 120 s while other agents' runs share the machine: the slot pool is
   machine-wide (8 slots), and my full runs printed `waited 52s..89s for a test slot` (176 s and 230 s walls). The
   per-suite times sum to about 600 s of process time, so 8 slots give a floor near 75 s only on an idle machine.
   Needs the lead: a measurement on an idle machine, and perhaps a bigger pool (half the cores = 8 of 16 today) - kit.
-- [blocking] `run.py` prints only the 3 slowest cases of the whole run; per-case seconds need a kit option (a
+- -> maintenance/03 (designer, 2026-11-24: merge part, measure later) [blocking] `run.py` prints only the 3 slowest cases of the whole run; per-case seconds need a kit option (a
   `--slowest=N` or a times file with case ids).
-- [later] Not cut, needs a decision: coop_hands and coop_hand_off at 2x clock failed on wall-time-shaped checks
+- -> maintenance/03 (designer, 2026-11-24: merge part, measure later) [later] Not cut, needs a decision: coop_hands and coop_hand_off at 2x clock failed on wall-time-shaped checks
   (`refusals: it still flies before 2 s`, `guest_waits: nothing before 2 s`, `throw_drop_pour_real_path` no-pop
   step); coop_mess, coop_flight, coop_respill measure bytes or ticks per wall second, so a faster clock changes
   what they print; coop_stacking's loops are LOOP_S wall seconds (18.5 s a case, the slowest in the run).
