@@ -3,8 +3,9 @@
 ## from 3 m to 20 m, muffled behind a shut Door). Read from how the drawn body moves, so nothing more
 ## is sent: a step every `step_distance` metres walked along the floor (`step_<surface>` by the floor
 ## under it, as the local Footsteps), `land` when a fall of `land_speed` or more stops. A move over
-## `teleport` in one frame is a jump of the pose, not a walk. On the owner's own machine it is silent
-## (their own Footsteps play there).
+## `teleport` in one frame is a jump of the pose, not a walk. Each jump they make (the count in their
+## pose, Q2593) plays `jump` at their body. On the owner's own machine it is silent (their own Footsteps
+## and jump play there).
 class_name TeammateSteps
 extends Node
 
@@ -19,12 +20,15 @@ extends Node
 ## How many steps and landings it played (for the tests).
 var steps := 0
 var lands := 0
+var jumps := 0
 
 var _body: Avatar
 var _last := Vector3.INF
 var _stride := 0.0
 var _rise := 0.0
 var _fall := 0.0
+## The jump count of the pose last heard (-1: none yet; the first pose is not a jump).
+var _jumps_heard := -1
 
 
 func _ready() -> void:
@@ -37,6 +41,10 @@ func _process(delta: float) -> void:
 	if _body == null or delta <= 0.0 or _body.is_multiplayer_authority():
 		return
 	var at := _body.global_position
+	if _jumps_heard >= 0 and _body.pose_jumps != _jumps_heard:
+		jumps += 1
+		Sounds.play_from(&"jump", at)
+	_jumps_heard = _body.pose_jumps
 	if _last == Vector3.INF or at.distance_to(_last) > teleport:
 		_last = at
 		_rise = 0.0

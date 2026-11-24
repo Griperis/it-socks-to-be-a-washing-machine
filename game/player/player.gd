@@ -16,6 +16,11 @@
 ## lying Teammate under the crosshair wins the left button over a Sock or a thing (Q2493): held, it drags
 ## them by the feet at drag_speed of the pace, let go it drops them.
 ##
+## Stacking (core/41): its Stack (PlayerStack) does its side of standing on a Teammate's back: it meets a
+## back only from above, rides one it stands on (staying crouched, so it cannot jump off), climbs onto one
+## with a jump near it (tucked into a crouch), walks at carry_speed with anyone on its own back and stands
+## up only with room for them; and the soft push between standing players (Q263).
+##
 ## The Hand-off (core/42): holding something, a Teammate under the crosshair in reach (AimFinder.mate(),
 ## nearer than the aimed Sock) is aimed: their avatar shows its Outline, the crosshair is never red,
 ## the corner still says "Drop", and a short right click asks to hand them the active item instead of
@@ -29,7 +34,8 @@ extends CharacterBody3D
 
 ## The input actions it reads (project.godot [input]), named once: a misspelt one is one line to fix.
 ## The physics layer only players meet (assets/04, Q2397): furniture's coarse player boxes, which Socks
-## pass through to the pieces' own shapes. The player's mask is the house layer and this.
+## pass through to the pieces' own shapes. The player's mask is the house layer, this, the ragdolls'
+## and the Teammates' backs (Back.LAYER, core/41).
 const BLOCK_LAYER := 8
 const MOVE_LEFT := &"move_left"
 const MOVE_RIGHT := &"move_right"
@@ -87,6 +93,8 @@ const FULL_OUTLINE := preload("res://game/outline/full.tres")
 @onready var _ghosts: GuestGhosts = %Ghosts
 ## The knocked view's vignette (Q2490).
 @onready var _vignette: ColorRect = %Vignette
+## Its side of stacking and the soft push (core/41).
+@onready var _stack: PlayerStack = %Stack
 ## The middle button's pings and the emoji wheel (core/43).
 @onready var _pinger: Pinger = %Pinger
 
@@ -100,6 +108,8 @@ var _captured := false
 var _swallow_press := false
 ## True while crouched (C01).
 var crouching := false
+## How many times it has jumped (climbs too): its Avatar's pose carries it, so Teammates hear each one.
+var jumps := 0
 ## The lying Sock the crosshair rests on, or -1; the one drawn outlined.
 var aimed_sock := -1
 var _outlined := -1
@@ -139,6 +149,8 @@ var _eye_reach := INF
 
 func _ready() -> void:
 	_aim.add_exception(self)
+	# A Teammate's back carries a rider by what it moved (PlayerStack), never as a moving floor.
+	platform_floor_layers = platform_floor_layers & ~Back.LAYER
 	# Each body sizes its own capsule: the scene's shapes are shared between instances.
 	_shape.shape = _shape.shape.duplicate()
 	_camera.fov = tuning.fov
@@ -252,23 +264,27 @@ func _physics_process(delta: float) -> void:
 	if down != knocked:
 		_set_knocked(down)
 	if knocked:
+		_stack.drop()
 		_lie(kd)
 		_time += delta
 		_update_hands(delta)
 		return
+	_stack.before_move()
 	var walk := Vector2.ZERO if _input_blocked else Input.get_vector(MOVE_LEFT, MOVE_RIGHT, MOVE_FORWARD, MOVE_BACK)
 	_update_crouch(not _input_blocked and Input.is_action_pressed(CROUCH))
 	if not is_on_floor():
 		velocity.y -= tuning.gravity * delta
 	elif not _input_blocked and not crouching and Input.is_action_just_pressed(JUMP):
-		velocity.y = tuning.jump_speed
-	var pace := tuning.walk_speed * (tuning.crouch_speed_factor if crouching else 1.0)
+		_jump()
+	var pace := tuning.walk_speed * (tuning.crouch_speed_factor if crouching else 1.0) * _stack.carry
 	if kd != null and kd.dragging_of(player_id()) >= 0:
 		pace *= kd.tuning.drag_speed  # H95
 	var direction := global_basis * Vector3(walk.x, 0.0, walk.y)
-	velocity.x = direction.x * pace
-	velocity.z = direction.z * pace
+	var extra := _stack.extra_velocity()
+	velocity.x = direction.x * pace + extra.x
+	velocity.z = direction.z * pace + extra.z
 	move_and_slide()
+	_stack.after_move()
 	_time += delta
 	if not _input_blocked and Input.is_action_just_pressed(INTERACT):
 		interact()
@@ -362,13 +378,44 @@ func _let_go_body() -> void:
 		kd.let_go(player_id())
 
 
-## C01, C02: down at once; up only when the crouched body could move up into the standing height.
+## A jump from the floor (heard as "jump", flat; Teammates hear it at its body); near a Teammate's back it is a climb (core/41, lists 13-15): fast enough to
+## clear the back, tucked into a crouch at once, steered over the back until it lands.
+func _jump() -> void:
+	velocity.y = tuning.jump_speed
+	jumps += 1
+	Sounds.play(&"jump")  # every jump, a climb too (Q2593); its Avatar's pose carries the count
+	var to := _stack.climb_target()
+	if to != null:
+		velocity.y = _stack.climb_speed(to)
+		_stack.climb_to = to
+		crouching = true
+		_apply_height(tuning.crouch_height)
+
+
+## C01, C02: down at once; up only when the crouched body could move up into the standing height, with
+## the stack on its back too (core/41, list 29). A rider or a climber stays crouched (list 22).
 func _update_crouch(want: bool) -> void:
-	if not want and crouching and test_move(global_transform, Vector3.UP * (tuning.stand_height - tuning.crouch_height)):
+	if not want and crouching and (_stack.keeps_crouched() or test_move(global_transform,
+			Vector3.UP * (tuning.stand_height - tuning.crouch_height + _stack.load_height))):
 		want = true
 	if want != crouching:
 		crouching = want
 		_apply_height(tuning.crouch_height if crouching else tuning.stand_height)
+
+
+## How tall the body is now (crouched or standing), from the feet.
+func body_height() -> float:
+	return (_shape.shape as CapsuleShape3D).height
+
+
+## Whether it stands on a Teammate's back now (core/41).
+func riding() -> bool:
+	return _stack.ride != null
+
+
+## Its side of stacking (core/41).
+func stack() -> PlayerStack:
+	return _stack
 
 
 ## Sizes the capsule and the eyes for a body `height` tall, the origin at the feet.
