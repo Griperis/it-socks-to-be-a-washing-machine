@@ -1,169 +1,239 @@
-# Voice (proposal)
+# Voice (build plan)
 
-**Status: proposal for the designer (core/56, Q2535). Nothing here is built.** The findings it rests on:
-`docs/migration/voice-findings.md`. Choices for the designer are at the end (V1-V8); the design below follows the
-recommended option of each, and names where another option would change it.
+**Status: build plan for batch A (core/73, Q2606, Q2614), waiting on the designer's answers W1-W10 (core/73's Open
+follow-ups).** It turns core/56's proposal into what is built. Decided: Q2545-Q2552 (V1-V8), Q2608 (authoring), Q2609
+(speakers). The findings: `docs/migration/voice-findings.md`; the washer's behaviour list:
+`docs/migration/m4-lists/05-washer-and-voices.md`; the washer as an entity: `docs/architecture/washer.md`, which also
+holds the batch's ticket drafts. Where the text follows a W recommendation it says so; another answer changes only
+that paragraph.
 
 ## What it owns
 
-Every spoken line of the game: the washer's comments, its drum comments and its cutscene lines, the Old Tree's lines
-and calls, and whatever speaker comes later (the plot's NPC, P32). It owns how a line is stored, picked, played,
-heard and subtitled. It does not own the cutscene's camera, fade or skip (the cutscene feature, M5), nor the face
-rigs (each speaker's Looks).
+Every spoken line: how it is stored (a Resource per line, made by the bake), picked (one picker), triggered (a list of
+triggers picked in the inspector), played (one autoload, one channel per speaker, the priority rule), heard (the Voice
+bus, muffling, earshot), subtitled (one scene on the Theme) and shown in the zoo (the Voice station, built from the
+lines at load). It does not own a speaker's body or face (each speaker's Looks plays the line's acting Animation), the
+cutscene frame (camera, freeze, fade, skip, respawn: the sequence that plays the cutscene, see "Cutscenes"), nor when a
+game moment happens (the feature that owns the moment fires the trigger).
+
+## Decided
+
+V1 the Host decides every speaker's line (Q2545). V2 a baked Animation per take, played by the speaker's Looks
+AnimationPlayer with the audio (Q2546). V3 several takes, one at random (Q2547). V4 cutscene > washer > Old Tree, the
+higher cuts the lower, lower ones dropped except story beats that wait (Q2548). V5 a Voice bus with its slider, the
+music ducks only in cutscenes (Q2549). V6 the old subtitle look on the Theme, one row per speaker, the speaker's icon,
+no name (Q2550). V7 the text from transcribing the recording, corrected in the string table (Q2551). V8 a subtitle
+shows within earshot, through a shut Door too (Q2552). Q2608: drop the recording into the speaker's folder; a tool
+makes the line Resource, subtitle key and animation; the trigger is picked from a list in the inspector; a Voice
+station plays every line. Q2609: the speakers are the washer, the Old Tree and cutscenes 1-6, no plot NPC.
+
+## Folder layout
+
+| Path | What | Who writes it |
+|---|---|---|
+| `assets/voice/<speaker>/<line>.wav` | the recordings, 16-bit PCM wav; `<line>_b.wav`, `_c.wav` are more takes of `<line>` | the designer drops them |
+| `game/voice/` | the code: `voice_line.gd`, `voice_take.gd`, `voice_segment.gd`, `voice_mood_key.gd`, `voice_speaker.gd`, `voice_acting.gd`, `voice_trigger.gd`, `voice_book.gd`, `voice_picker.gd`, `voices.gd` (autoload), `voice_source.gd`, `subtitles.tscn` | agents |
+| `game/voice/speakers/<speaker>.tres` | one `VoiceSpeaker` per speaker folder: `washer.tres` (batch A), `old_tree.tres` (batch B) | made once per speaker, edited in the inspector |
+| `game/voice/speakers/<speaker>_acting.tres` | the speaker's `VoiceActing`: how the bake turns loudness and moods into its rig's tracks | made once per speaker |
+| `game/voice/triggers/<trigger>.tres` | one `VoiceTrigger` per game moment that may speak (the trigger list) | see "Triggers" |
+| `game/voice/lines/<speaker>/<line>.tres` | one `VoiceLine` per line: the bake makes it, the designer edits its triggers, Stages, moods, order and note in the inspector | the bake, then the designer |
+| `game/voice/lines/<speaker>/acting/<line>[_b].tres` | one Animation per take (mouth, brows, lean, wiggle, glow), the bake's alone | the bake |
+| `game/voice/voice_lines.csv` | the string table of every subtitle: `keys,en`, key `VO_<LINE>_<n>`; registered under Project Settings, Localization (one `project.godot` change, in the first ticket) | the bake adds rows; the designer corrects the text |
+| `tools/voice_bake.gd`, `tools/voice_bake.sh` | the bake (Godot, headless or in the editor) | agents |
+| `tools/voice_transcribe.py` | the transcription step (faster-whisper `small.en`, offline once its model is downloaded, as the old `voiceover.py`) | agents |
+| `game/zoo/stations/voice.tscn` | the Voice station | agents |
+
+`assets/voice/` holds only recordings; Godot imports them (their `.import` committed, compressed as QOA for the game). The
+lines live under `game/voice/` because they are game data a designer edits (Q2167: game apart from assets).
 
 ## Key types
 
-All typed Resources edited in the inspector, beside the code in `game/voice/`.
+All typed, edited in the inspector, one class per file (Q2251-Q2253).
 
-- **`VoiceLine`** (Resource, one `.tres` per line):
-  - `id: StringName` (the file's name, `washer_stare_03`), `speaker: VoiceSpeaker`;
-  - `takes: Array[AudioStream]` (one plays; normally one, more when the designer keeps alternatives, V3);
-  - `moments: Array[StringName]` (what it suits: `stare`, `idle`, `progress`, `cutscene_fix_2`, `tree_greet`;
-    empty suits any moment of its speaker);
-  - `when: Array[StringName]` (optional gates by game state, e.g. `stage_3`, `washer_broken`: the old "comment set"
-    of the file name made explicit);
-  - `priority: int` (default from the speaker; a cutscene line is highest);
-  - `segments: Array[VoiceSegment]` (start, end, `key`: the string-table key of its subtitle text);
-  - `acting: Animation` (the baked mouth, brows, moods and wiggle for the speaker's Looks, V2), may be null;
-  - `placeholder: bool` and `note` (what it waits for: a recording, the designer's wording).
-- **`VoiceSegment`** (Resource): `start`, `end`, `key`. The English text is the string table's, not the Resource's.
-- **`VoiceSpeaker`** (Resource, one per speaker: `washer.tres`, `old_tree.tres`): display name key (for a subtitle
-  label, V6), default priority, positional or flat, unit size, max distance, earshot, level band, voice dB, cooldown,
-  the subtitle colour; numbers marked `# placeholder:` until set.
-- **`VoiceBook`** (built at load, not hand-listed): every `VoiceLine` found under `game/voice/lines/` grouped by
-  speaker and moment. It replaces the old `file_exists` probing and the tuning lists; an unknown moment asked by code
-  or a line whose speaker is missing is an error a test catches, as with unknown sound names (core/17 S01).
-- **`VoicePicker`** (RefCounted, rules only): the one picker every speaker uses: the lines fit for (speaker, moment,
-  state gates), never the last one, each played once before any repeats (the tree's rule, now everyone's), seeded
-  RNG for tests. Cooldowns and chances stay with the speaker's director (washer, drum, tree), which ask it.
-- **`Voices`** (autoload, looks only): plays a chosen line: `say(line_id, from: Node3D)`. It holds one channel per
-  speaker and the priority rule across speakers (V4), drives the subtitle, the Voice bus and ducking, and emits
-  `started(line)` / `finished(line, skipped)` for cutscenes and directors.
-- **`Subtitles`** (a scene on the one Theme, `game/ui/subtitles.tscn`): a bottom panel with one row per speaker
-  talking now (so two speakers never overlap on one label), speaker name optional (V6), text through `tr(key)`.
+- **`VoiceLine`** (Resource): `id: StringName` (the file stem, `stage_1_voice_A`); `speaker: VoiceSpeaker`;
+  `takes: Array[VoiceTake]` (one plays, at random, Q2547); `triggers: Array[VoiceTrigger]` (picked in the inspector; empty
+  = it never plays in a game, the station still plays it and marks it "no trigger"); `stages: PackedInt32Array` (the Stage
+  numbers it may play in, empty = any: the old comment sets made a field); `moods: Array[VoiceMoodKey]` (hand-set, kept by
+  the bake; seeded with the speaker's default mood); `order: int` (its place within a cutscene, see "Cutscenes");
+  `waits: bool` (a story beat that waits instead of being dropped, V4; the Old Tree's, batch B); `end_at: float` (seconds,
+  0 = the whole take: cuts every take there, W2); `placeholder: bool`; `note: String`.
+- **`VoiceTake`** (Resource, inside the line's `.tres`): `stream: AudioStream`; `source_md5: String` (the bake re-bakes a
+  take whose wav changed); `duration: float`; `gain_db: float` (the bake's loudness match, W6); `segments:
+  Array[VoiceSegment]`; `acting: Animation` (the external acting file).
+- **`VoiceSegment`** (Resource): `start`, `end` (s), `key: StringName` (the CSV key). Every take of a line has the same keys
+  in the same order; their times are the take's own.
+- **`VoiceMoodKey`** (Resource): `at: float` (s), `mood: StringName` (one of the speaker's `VoiceActing.moods`).
+- **`VoiceSpeaker`** (Resource): `id`; `icon: Texture2D` (the subtitle's, V6); `priority: int` (cutscene 30, washer 20,
+  Old Tree 10, V4); `positional: bool`; `unit_size`, `max_distance` (m); `earshot`, `level_band` (m, the subtitle's reach,
+  V8); `voice_db`; `cooldown` (s, between two lines of this speaker given by a trigger); `default_mood`; `acting:
+  VoiceActing`; `tail` (s after the last word); `linger` (s a segment stays past its end). Washer values are the old ones
+  (`docs/architecture/washer.md` "Numbers"), each marked `# placeholder:` as in the old tuning.
+- **`VoiceActing`** (Resource): what the bake writes for this speaker's rig: the mouth bone and its open angle, the
+  loudness window (20 ms), smoothing (0.6), gate (8 %), keys a second (30); the moods with each one's lean and brow pose;
+  the brow acting's flick sizes; the mood blend (0.4 s); the property tracks (`wiggle`, `glow_colour`, `glow_energy`) and
+  each mood's glow. The washer's carries the old `voiceover.py` and `brows.py` numbers. The Old Tree's (batch B) has its
+  rustle instead of brows; the bake's code is the same, the profile differs.
+- **`VoiceTrigger`** (Resource): `id: StringName`; `speaker: VoiceSpeaker`; `kind` (COMMENT: a line picked by the
+  speaker's director with cooldown and chance; CUTSCENE: every line with this trigger, in `order`, played as a cutscene);
+  `chance: float` (1 but the stare's 0.5); `ignores_cooldown: bool`; `note` (what fires it: the seam, for the designer).
+- **`VoiceBook`** (RefCounted, built at load): every `VoiceLine` under `game/voice/lines/`, grouped by speaker and trigger.
+  A line whose speaker or trigger file is missing, a take whose segments differ in keys from the first take's, or a key
+  missing from the CSV is a load error a test catches.
+- **`VoicePicker`** (RefCounted, rules only): the lines of (speaker, trigger, Stage); fit first (a line with the trigger;
+  when none fits, any line of the speaker's Stage set: the old washer fallback); never the last line; each fitting line
+  once before any repeats (W5: one rule for every speaker); seeded RNG for tests. The take is picked here too, so the
+  Host's answer carries both.
+- **`Voices`** (autoload, looks only, as `Sounds`): `say(line, take, source: VoiceSource, as_cutscene := false)`;
+  `stop(speaker)`; `talking(speaker) -> bool`; `cutscene_playing() -> bool`; signals `started(line, take)`,
+  `segment_changed(line, index)`, `finished(line, skipped)`. It owns one channel per speaker and one for cutscenes, the
+  priority rule, the 3D and flat players, the bus choice, the music duck and the Subtitles.
+- **`VoiceSource`** (Node3D script, on a speaker's Looks): where the voice sounds from (its own position) and the
+  speaker's face: `act(take)` plays the take's acting Animation on the Looks' AnimationPlayer from its start, `rest()`
+  goes back to the basic pose. The washer's Looks has one (`docs/architecture/washer.md`); a cutscene line plays its
+  acting on the speaker's source while the sound is flat.
+- **`Subtitles`** (`game/voice/subtitles.tscn`, a Control on the one Theme, under the HUD's layer, on top in cutscenes):
+  one row per speaker talking now (an icon and a Label), bottom centre, the old look made Theme styles (`SubtitleLabel`:
+  cream, black outline 10 at 0.85, 30 px at 1080p; 160 px side margins); text through `tr(key)`. Rows stack in priority
+  order, the highest at the bottom.
 
-## Authoring: adding or swapping a line
+## The bake: adding or swapping a line (Q2608 made concrete)
 
-The aim of Q2296 carried over: drop a file, name it, done.
+1. **Drop** `my_line.wav` into `assets/voice/washer/` (the folder names the speaker; a new folder needs its
+   `speakers/<folder>.tres`, which the bake makes from a copy of the washer's and reports).
+2. **Bake**: press "Bake voices" in the editor (an `EditorScript` run from the Script editor's File menu, or a small dock;
+   W7) or run `tools/voice_bake.sh`. It does, for every wav whose take is new or whose `source_md5` changed:
+   - reads the PCM, measures its loudness and writes `gain_db` (W6);
+   - runs `tools/voice_transcribe.py` on it when the line has no CSV rows yet (new line) or with `--retranscribe`: the
+     segments' times and English text; without whisper installed it writes one segment over the voiced span and the text
+     `TODO`, and says so;
+   - times an extra take or a re-recording against the line's existing keys (whisper's segments matched by order; a
+     count that differs is reported and the station marks the line);
+   - writes the take's acting Animation from the loudness, the segments' text (`?` and `!`), the line's moods and the
+     speaker's `VoiceActing` (the old `voiceover.py` door curve and `brows.py` acting, ported into GDScript);
+   - writes or updates `game/voice/lines/<speaker>/<line>.tres` through `ResourceSaver` (so the file has its `uid=`, in
+     the editor's own format, Q2268), keeping every hand-set field (triggers, Stages, moods, order, waits, end_at,
+     placeholder, note);
+   - adds the CSV rows `VO_<LINE>_<n>,<text>` for a new line; never touches an existing row's text.
+3. **Pick the trigger** in the line's inspector (the `triggers` array's picker lists every `VoiceTrigger` file), and the
+   Stages it may play in; correct the subtitle text in `voice_lines.csv`.
+4. **See it** in the Voice station at the next load (Q2337): its pillar, its subtitle, its acting on the stand-in face.
 
-1. Drop `washer_stare_03.wav` (or `.ogg`) into `assets/voice/washer/`. The name is `<speaker>_<moment>_<nn>`;
-   cutscene lines `washer_cutscene_<name>`.
-2. Run `python3 tools/voice/bake.py` (the old `voiceover.py` and `brows.py`, ported): for each new or changed
-   recording it writes `game/voice/lines/washer/washer_stare_03.tres` (speaker and moment from the name, the take,
-   the acting Animation from the loudness and the mood keys) and adds the subtitle rows to the string table
-   `game/voice/voice_lines.csv` (key `VO_WASHER_STARE_03_1`, English from the transcript, V7). A rerun keeps
-   hand edits: the text in the CSV, the moments, gates, moods and priority in the `.tres`.
-3. Open the `.tres` in the inspector to add a moment, a gate or a second take; correct the text in the CSV.
-4. The zoo's Voice station shows it at the next load (Q2337).
+Swapping a recording: replace the wav, bake; id, text, triggers and moods stay; timing and acting are remade. A second
+take: drop `my_line_b.wav`, bake. Removing a line: delete its wav, its `.tres` and acting; the bake lists orphaned CSV
+rows and `.tres` files without a wav (it deletes nothing). Renaming: `tools/voice_bake.sh --rename old new` moves the
+wav, the `.tres`, the acting and the CSV keys together (a line id appears in no save, so nothing else breaks).
 
-Swapping a recording: replace the wav, rerun the bake; the line's id, text and moments stay. A placeholder voice
-(the tree's synthesised one, `tools/voice/old_tree_voice.py`) writes into the same folder with `placeholder = true`;
-a real recording of the same name replaces it.
+The bake's tests (in the bake ticket): a fixture wav (a generated tone pattern, committed under `tests/fixtures/voice/`)
+bakes to a line whose take has the right duration, a door track that opens on the loud parts and is shut at the end, and
+whose hand-set fields survive a second bake.
 
-Takes (V3): `washer_stare_03_b.wav` beside `_03.wav` becomes a second take of the same line; whether the game picks
-one at random or the designer marks one is the choice.
+## Triggers: the list, and how one is added
 
-## How it fits the sound system (core/17)
+A trigger is a file in `game/voice/triggers/`, so "the list in the inspector" is the folder. The game fires a trigger
+by its file: the code that owns the moment holds it as a typed export (or `preload` in a rules class), so a missing
+file is a parse or load error, not silence.
 
-- Voices are not SoundEvents: a line has text, timing and acting a SoundEvent has not. But they share the mixer:
-  a new **Voice bus** (V5) in `default_bus_layout.tres`, its volume a setting `audio/voice_volume` beside the others,
-  and a **MuffledVoice** bus (-9 dB, 900 Hz, as the others) so a speaker behind a shut Door is muffled by the same
-  `Sounds.is_muffled(where)` rule.
-- Ducking (V5): Godot's own `AudioEffectCompressor` on the Music bus with `sidechain = "Voice"` ducks the music
-  whenever anyone speaks, no code; the old cutscene-only duck is the other option.
-- A speaker's other sounds (the washer's angry rumble under its voice) stay SoundEvents the speaker's Looks starts and
-  stops on `Voices.started` / `finished`.
+- **A new line for an existing moment:** no trigger work: pick the trigger in the line's inspector.
+- **A new moment a feature already announces** (a Stage starting, a Part fitted, a cutscene of a new Stage): make the
+  trigger file (copy one, set `speaker` and `kind`) and set it where the moment's data names its voice. Batch A's
+  data-driven seams: core/71's Stage Resource names its Fix cutscene trigger, so a new Stage with a new cutscene is a
+  new trigger file, a recording and the Stage's field; no code.
+- **A moment nothing announces yet** (say, "a player falls down the stairs"): a trigger file plus one line of code in
+  the feature that owns the moment, `washer.talk(trigger)` (or the speaker's own Part's Command). That code change is
+  the only one, and it belongs to that feature's ticket.
 
-## Playing, heard only when audible, priority
+Batch A's triggers (the washer's; the Old Tree's come with batch B):
 
-- Positional speakers play from an `AudioStreamPlayer3D` in their Looks; cutscene lines play flat.
-- **Heard and subtitled agree:** the subtitle shows while the local listener is within the speaker's earshot and level
-  band (the old rule, Q1587), behind a shut Door too (V8 asks whether a muffled line should hide it). A speaker's sound
-  reach (max distance) and its earshot sit side by side in its VoiceSpeaker, so the gap between them (old: 30 m sound,
-  12 m subtitle) is visible and set on purpose.
-- **Priority across speakers (V4):** cutscene > washer > Old Tree. A higher line cuts a lower one; a lower line asked
-  while a higher one plays is dropped, except a line marked `waits` (the tree's story beats), which waits up to its
-  hold time. Same speaker: the new line replaces the old one (the old behaviour).
+| Trigger | Kind | Fired by | Seam owner |
+|---|---|---|---|
+| `washer_stare` | comment, chance 0.5 | the washer's stare sensing, on each machine for its own player (4 s, 8 m, 12 degrees) | core/73 |
+| `washer_progress` | comment | the Host on a Pair shelved (the Mess's Pair answer, exists) or a Cabinet filled | core/71 (Cabinet filled) |
+| `washer_hit` | comment | the Host on a thrown thing's landing within 1.4 m (the Throw's landing answer, exists) | core/73 |
+| `washer_idle` | comment | the Host after 60 s with no Pair shelved, while a comment could play | core/73 |
+| `cutscene_first_wash` | cutscene | core/72's First wash, when the machine breaks (cutscene_1) | core/72 |
+| `cutscene_fix_1` .. `cutscene_fix_4` | cutscene | core/71's Fix of each floor's Part (cutscene_2 .. _5), named by the Stage Resource | core/71 |
+| `cutscene_final_wash` | cutscene | core/72's Final wash, after its wash (cutscene_6) | core/72 |
+
+The comment set (stage_1 .. stage_4) is each line's `stages` field, read against core/71's current Stage number (a
+read of its run Part). The Laundry day's set (after the fourth Fix) is W3; stage_5's lines wait for the Drum (D).
+
+## Playing
+
+- **Positional** speakers (the washer's comments) play on an `AudioStreamPlayer3D` that follows the `VoiceSource`, with
+  the speaker's unit size, max distance and `voice_db + gain_db`, on the **Voice** bus, or on **MuffledVoice** (a new
+  bus, -9 dB, 900 Hz low-pass, sending into Voice, as the other Muffled buses) when `Sounds.is_muffled(where)` says a shut
+  Door lies between; re-checked as the other world sounds are.
+- **Cutscene** lines play flat on the Voice bus, heard and subtitled by everyone; their acting still plays on the
+  speaker's `VoiceSource`.
+- **Heard and subtitled:** a positional line's subtitle row shows while the local camera is within the speaker's earshot
+  and level band (12 m and 2 m for the washer), checked every frame, through a shut Door too (Q2552); `display/subtitles`
+  off hides every row.
+- **Priority (V4):** a line asked on a channel of lower priority than one playing is dropped (or waits up to its speaker's
+  hold time when `waits`); a higher one cuts the lower (its `finished(skipped = true)` fires, the lower speaker rests).
+  The same speaker: the new line replaces the old.
+- **The music duck (V5):** while the cutscene channel plays, the Music bus fades to 0.25 of its level over 0.5 s and back
+  after (an `AudioEffectAmplify` on Music driven by `Voices`, as the old `MusicDuck`; the numbers on `VoiceTuning`
+  `game/voice/voice_tuning.tres`, placeholders).
+- **Tail:** a cutscene line counts as finished 0.9 s after its last word; a comment 0.27 s after (the old 0.3 of the tail).
+- **Segments:** the showing segment is the one begun and not ended, lingering 0.25 s; `segment_changed` fires when the
+  index moves (the cutscene camera cuts on it).
+
+## Cutscenes
+
+A cutscene, for the voice system, is a trigger of kind CUTSCENE: every line with that trigger plays in `order`, one after
+the other, on the cutscene channel; a line of another speaker in the same trigger plays on that speaker's source (Q2609:
+the washer and the Old Tree in one cutscene is two lines, two `order`s; W1). `Voices.play_cutscene(trigger, takes)`
+plays them and emits `segment_changed` and `finished`; the Host's answer that starts the cutscene carries the take
+index of each line so every machine plays the same takes.
+
+The cutscene frame (camera, freeze, hiding Socks and bodies, fades, the Host's skip, the respawn) is not the voice
+system's: it is the sequence that plays the cutscene. Every batch A cutscene is the washer's, played inside core/71's
+Fix or core/72's First and Final wash, so the frame is one shared piece; `docs/architecture/washer.md` "The cutscene
+frame" names what the washer gives it (its two shots, its line's segments) and proposes who builds it.
 
 ## Co-op (scene parts, `docs/migration/coop-structure-for-the-port.md`)
 
-- **The Host decides what is said.** A comment or a drum line is asked as a Command to the speaker's Part (the
-  washer's Part); its `decide()` runs the director (cooldown, chance, picker) and the answer carries the line id. On
-  `Parts.applied` every machine calls `Voices.say(id, washer)`. Same line everywhere, nothing decided on a Guest.
-- **Each machine decides who hears it.** Distance, the floor, muffling and the subtitle are local (looks only).
-- **Cutscenes:** the cutscene feature's Part starts it on the Host; every machine plays the same line; the skip
-  follows the cutscene's own rule (the Host's, as the old rogue sequence).
-- **The Old Tree (V1):** its moments are about one player (near, what they can afford, their tips). Either the Host
-  decides them too, with the player's id in the Command (one model for every speaker), or each machine decides for
-  its own player as the old game did. It is reworked later (Q2506); the voice system supports both.
-- Nothing about voice is saved except what a director must keep (tips said, the tree's `met`), which lives on its Part.
+- **The Host decides what is said (V1).** A comment is a Command to the speaker's Part (`Washer`): `talk {trigger}`; its
+  `decide()` runs the cooldown, the cutscene block, the chance and the picker and answers `{line, take}` or nothing (a
+  silent no, no Refusal shown). On `Parts.applied` every machine calls `Voices.say`. A Guest's stare sends the Command; the
+  Host's own triggers run the same `decide()` locally.
+- A cutscene's lines and takes ride the answer of the sequence's Command that starts it (core/71's Fix, core/72's
+  washes); every machine plays the same.
+- **Each machine decides who hears it:** distance, floor, muffling and the subtitle are local (looks only).
+- **Not saved:** a line playing, the cooldown and the picker's memory (as the old: a load starts quiet). A late joiner
+  hears the next line; a comment playing as they join is not replayed.
+
+## The Voice station (`game/zoo/stations/voice.tscn`, Q2608, Q2337)
+
+Built from the VoiceBook at load: no line is listed by hand.
+- A stand-in speaker per `VoiceSpeaker`: the washer's graybox Looks (its real Looks once the asset ticket lands, the
+  same scene the house uses), 4 m apart, a shut Door with a pillar behind it to hear the muffle and see the subtitle stay.
+- One pillar per line, in rows per speaker and trigger; using a pillar (E, through the player's own use wiring) asks the
+  speaker's Part to say that line (a station-only Command `say_line {line}` the Part grants in the zoo alone), so the line
+  plays through the real path: Part, `Voices`, the Looks' acting, the subtitle. A label over each pillar: the line id, its
+  triggers and Stages, its takes, and the marks "no trigger", "placeholder", "keys differ", "text TODO".
+- One pillar per CUTSCENE trigger plays the whole cutscene flat (no frame: the station has no cutscene camera) with a
+  radio stand-in playing music to hear the duck.
+- One pillar per COMMENT trigger fires the trigger as the game does (cooldown and chance included), to see the picker.
+
+## Tests (the first ticket's)
+
+- Real path: in the Voice station, the player walks to a washer line's pillar and presses E; within the line's lead the
+  Subtitles row shows the line's first segment text (through `tr`) with the washer's icon, and `Voices.talking(washer)`;
+  the washer Looks' AnimationPlayer plays the take's acting.
+- Rules: the picker (fit, fallback, never the last, each once before repeats, seeded takes); the priority rule (a higher
+  cuts, a lower is dropped, a `waits` line waits); earshot and level band; the CSV key check; the VoiceBook load errors.
+- Co-op: a Guest's `talk` is decided on the Host; both machines play the same line and take.
 
 ## Localisation, later
 
-- Every subtitle is a key in `game/voice/voice_lines.csv` from the first line (shipping-basics: text through `tr()`
-  from the start). One language today; a translator adds a column.
-- Dubbed audio, if ever: Godot's Localization Remaps swap a take per locale; segments are re-timed per locale by a
-  remapped `VoiceLine`. Not built until a language is asked for.
-- Subtitle text scale follows the Theme's text-scale setting when that exists.
-
-## The zoo station (sketch)
-
-`game/zoo/stations/voice.tscn`, built from the VoiceBook at load (Q2337):
-- a stand-in washer box and a stand-in tree box (grey, with a hinged "mouth" lid that the acting Animation drives),
-  4 m apart on the floor, and a shut Door with a pillar behind it;
-- a row of pillars, one per speaker and moment; using one makes that speaker say a line of that moment through the
-  real path (`Voices.say` via the Part's Command), with its subtitle;
-- a "cutscene" pillar plays a cutscene line flat, with music on a radio stand-in to hear the duck;
-- a label over each pillar: the moment and how many lines it has (placeholders marked).
-
-The real-path case for the build ticket: the player uses a pillar; the line's subtitle shows on the Subtitles panel
-and the Voice bus has a playing voice.
+Every subtitle is a key in `voice_lines.csv` from the first line. A translator adds a column. Dubbed audio, if ever:
+Localization Remaps swap a take's stream per locale and a remapped line carries its segment times. Not built until a
+language is asked for. The subtitle's size follows the Theme.
 
 ## Gotchas
 
-- The bake owns the `.tres` acting and timing; hand edits go in the fields it keeps (moments, gates, moods, priority,
-  takes) and in the CSV, never in the Animation.
-- A line's id is its file name: renaming a line breaks a save or a Command that names it; rename with the bake's
-  `--rename`.
-
-## Decided (Q2545-Q2552, 2026-11-23)
-V1 a (the Host); V2 a (baked Animation); V3 b (several takes, random); V4 a (priority, lower dropped); V5 b (Voice bus,
-cutscene-only duck); V6 the old look with the speaker's icon, no name; V7 a (from the recording); V8 a (shown in
-earshot). Where the text above assumed another option, these win.
-
-## Choices for the designer
-
-Each with 2-3 options; **(rec)** marks the recommendation.
-
-- **V1. Who decides the Old Tree's lines in co-op?**
-  a) **(rec)** The Host, as the washer: the Command names the player; one model for every speaker, testable in one way.
-  b) Each machine for its own player, as the old game (no network traffic; two models).
-- **V2. How a line drives the speaker's face (mouth, brows, moods, wiggle)?**
-  a) **(rec)** The bake writes an Animation per line, played by the speaker's Looks' AnimationPlayer with the audio
-     (the port's rule: state plays an AnimationPlayer in Looks).
-  b) Keep the old 30 Hz curves in the line, sampled by code each frame (the old way, a direct port).
-- **V3. Takes: more than one recording of a line?**
-  a) **(rec)** One take per line; a new take replaces the file (the old way; simplest).
-  b) Several takes per line, one picked at random each time (variety for short, frequent lines).
-  c) Several takes kept, the designer marks the one used (a picking aid while recording).
-- **V4. When two speakers would talk at once?**
-  a) **(rec)** Fixed priority cutscene > washer > Old Tree; the higher cuts the lower; lower ones are dropped except
-     story beats that wait (the old behaviour, made one rule).
-  b) The same, but a dropped line is queued and said afterwards (if still fitting, within a few seconds).
-  c) Speakers may overlap; only the same speaker replaces itself.
-- **V5. The mix: a Voice bus and music ducking?**
-  a) **(rec)** A Voice bus with its own volume slider; the music ducks under every voice line (a sidechain compressor).
-  b) A Voice bus with its own slider; the music ducks only in cutscenes (the old duck, Q1867).
-  c) Voices stay on SFX as before; cutscene-only duck.
-- **V6. Subtitle look?**
-  a) **(rec)** The old look (cream, black outline, bottom centre) on the Theme, one row per speaker, no name.
-  b) The same with the speaker's name in their colour ("Washer:", "Old Tree:").
-  c) The same with a dark band behind the text for readability.
-- **V7. Where a line's text is first written?**
-  a) **(rec)** From the recording: the bake transcribes (whisper, as before), the text is corrected in the string
-     table.
-  b) From a script: the designer writes the lines first (a `lines.md` per speaker, as the Old Tree's), the bake reads
-     the text from it and only times it against the recording.
-- **V8. Subtitle of a line heard through a shut Door?**
-  a) **(rec)** Shown while within earshot, Door or not (the old rule; deaf or hard-of-hearing players still get it).
-  b) Hidden when the line is muffled (subtitle follows exactly what is clearly heard).
+- The bake owns the acting files and each take's timing and gain; hand edits go in the line's own fields and the CSV.
+- A take's segments must match the first take's keys; the station marks a line whose takes differ.
+- The bake runs headless in the agent's runs and inside the editor for the designer; both are the same `tools/voice_bake.gd`.
+- `Voices` decides nothing: a line reaches it only from a Part's answer (or the station's zoo-only Command).
