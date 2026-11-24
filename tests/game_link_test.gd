@@ -398,8 +398,8 @@ func _third_player(lag_ms: int) -> void:
 	var c_at := cr.player.global_position + Vector3(-0.6, 0.0, 0.4)
 	br.player.global_position = b_at
 	cr.player.global_position = c_at
-	await _until(func() -> bool: return cr.avatars.of(b_peer).pose_position.distance_to(b_at) < 0.2
-			and br.avatars.of(c_peer).pose_position.distance_to(c_at) < 0.2, "each Guest to see where the other stands", 900, 20.0)
+	await _until(func() -> bool: return (cr.avatars.of(b_peer).pose_position.distance_to(b_at) < 0.2
+			and br.avatars.of(c_peer).pose_position.distance_to(c_at) < 0.2), "each Guest to see where the other stands", 900, 20.0)
 	_check(hs.dropped.is_empty(), "nothing dropped (%s)" % hs.dropped)
 
 

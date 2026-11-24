@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: in-progress
+status: done
 kind: bug
 area: core
 feature: core
 priority: next
 created: 2026-11-23
-done:
+done: 2026-11-24
 blocked_by: [core/63-lobby-scene-and-state]
 notes: ["from core/62's and core/63's [later] follow-ups (2026-11-23)", "model: opus (netcode)"]
 terms: [Host, Guest, Session, Roster]
@@ -27,5 +27,22 @@ terms: [Host, Guest, Session, Roster]
 - No save id or Part id changes; PROTOCOL raised once if the wire changes.
 
 ## Open follow-ups
+- [later] `game/parts/session.gd` is now 842 lines (core/62's note asked for a split when next touched); not split here
+  while core/41 and core/42 touch it. For the lead to ticket.
 
 ## Built log
+- 2026-11-24
+  - Changed: each gap reproduced first (l07: the third machine got the other Guest's avatar spawn and its Sync with
+    no house to put them in; l08: the F5 Guest's RPCs missed `GameLink/Session` and it ended "Could not reach"; l09: the
+    Lobby Guest's Roster entry had no Hands numbers), then fixed. Every avatar has a Host-owned empty `Gate`
+    synchronizer under the house filter, so a spawn goes only to Guests in the house; the Host tells every Guest who is
+    in its house (`_houses`), and a Guest's own avatar syncs only to those (`sees_house` on a Guest); the Avatars
+    update the Gates at `house_changed` so the spawns go first. A level with no link that is the scene its machine
+    shows (F5, `--scene=`) makes its own link beside itself at the machine's root (`GameLink.machine_root`,
+    `is_shown_by`, `made_by`), the title's path, and closes and frees it as it leaves (`Session.leave()`).
+    `house_ready` carries the Guest's Hands numbers; the Host clamps them into the Roster (`Roster.hands_said`,
+    kind `hands`) as it takes the Guest in. PROTOCOL 17 (main 16). No save id or Part id changed.
+  - Files: game/parts/session.gd, game/parts/avatar/avatar.gd, game/parts/avatar/avatar.tscn,
+    game/parts/avatar/avatars.gd, game/net/game_link.gd, game/net/roster.gd, game/level/level_runtime.gd,
+    tests/game_link_test.gd (l07, l08 real path, l09, each at 0 and 50 ms), docs/architecture/coop.md, lobby.md
+  - Verified: PASS 18826 checks, 540 cases (--touched)
