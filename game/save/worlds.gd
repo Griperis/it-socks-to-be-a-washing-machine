@@ -88,7 +88,7 @@ func pick_host(from_command_line := false) -> WorldSlot:
 	var newest := ""
 	var newest_at := -1
 	for slot in coop_slots():
-		var got := Save.read(file_of(slot))
+		var got := Save.read(file_of(slot), false)
 		if got["ok"]:
 			var rec := WorldRecord.from_dict(_world_of(got))
 			if rec.last_played > newest_at:
@@ -124,33 +124,43 @@ func delete(slot: String) -> void:
 
 
 ## Each World's row for a menu (the Lobby piece shows them): {"slot", "name", "details", "damaged",
-## "last_played"}, the Solo World first, then the co-op Worlds newest first.
+## "last_played", "colours"}, the Solo World first, then the co-op Worlds newest first.
 func rows() -> Array[Dictionary]:
 	var solo: Array[Dictionary] = []
 	var coop: Array[Dictionary] = []
 	for slot: String in [SOLO] + Array(coop_slots()):
 		if not Save.has(file_of(slot)):
 			continue
-		var got := Save.read(file_of(slot))
+		var got := Save.read(file_of(slot), false)
 		if not got["ok"]:
-			(solo if slot == SOLO else coop).append({"slot": slot, "name": DAMAGED_WORLD, "details": "", "damaged": true, "last_played": 0})
+			(solo if slot == SOLO else coop).append({"slot": slot, "name": DAMAGED_WORLD, "details": "", "damaged": true, "last_played": 0, "colours": []})
 			continue
 		var rec := WorldRecord.from_dict(_world_of(got))
-		var row := {"slot": slot, "name": row_name(slot, rec), "details": row_details(rec), "damaged": false,
-				"last_played": rec.last_played}
+		var row := {"slot": slot, "name": display_name(slot, rec), "details": row_details(rec), "damaged": false,
+				"last_played": rec.last_played, "colours": member_colours(rec)}
 		(solo if slot == SOLO else coop).append(row)
 	coop.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a["last_played"]) > int(b["last_played"]))
 	return solo + coop
 
 
-## A row's name: "Solo World", or a co-op World's players' names (or "No Group yet").
-static func row_name(slot: String, rec: WorldRecord) -> String:
+## The one place a World's row name is made (the drawer's rows, the Lobby's card; Q2587): "Solo World",
+## or a co-op World's players' names (or "No Group yet"). Judged at the Lobby look's first still: the
+## likely other form is "World <n>" with the World's state details, which changes this function only.
+static func display_name(slot: String, rec: WorldRecord) -> String:
 	if slot == SOLO:
 		return SOLO_WORLD
 	var names := PackedStringArray()
 	for pid: Variant in rec.members:
 		names.append(String((rec.members[pid] as Dictionary).get("name", PlayerProfile.NAME)))
 	return ", ".join(names) if not names.is_empty() else NO_GROUP
+
+
+## The colour index of each member of a World, in the order of their names (a row's swatches).
+static func member_colours(rec: WorldRecord) -> Array:
+	var out := []
+	for pid: Variant in rec.members:
+		out.append(int((rec.members[pid] as Dictionary).get("colour", 0)))
+	return out
 
 
 ## A row's details: "<floor> · played <h>h <mm>m · last <date time>".

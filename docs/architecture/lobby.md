@@ -32,7 +32,7 @@ Wardrobe piece), Steam (the M4 Steam piece), or the "Pairs per Drawer" slider (Q
 - The title picks a `WorldSlot` (`Worlds.pick_solo()`, `pick_host()`) and hands it to the house through
   `SceneChanger.change_to(path, heading, setup)`: `LevelRuntime.world`, `from_title`, `launch` (`--host`, `--join=`).
 - `Worlds` has what a World list needs and nothing calls it yet: `rows()` (`slot`, `name`, `details`, `damaged`,
-  `last_played`; the Solo World first, co-op Worlds newest first), `delete(slot)`, `free_coop_slot()`, `FULL`, `row_name()`,
+  `last_played`; the Solo World first, co-op Worlds newest first), `delete(slot)`, `free_coop_slot()`, `FULL`, `display_name()` (was `row_name()`),
   the rule that the Solo World played with a Guest becomes a co-op World.
 - `Session` (the one RPC node), `Roster` (a Part, saved id `Session/Roster`), `Avatars`, `LevelNet`, `Autosave`, `EscMenu`
   are nodes of `level_runtime.tscn`; a machine is in a Session only while a house is loaded. `Session` exports `parts`
@@ -54,8 +54,10 @@ and owned by whoever starts a game and found with `GameLink.of(node)` (as `Level
 - **Made** by the title when Solo, Host or Join is pressed (a Solo player is a Host of one, `Session.enter_alone()`), kept
   by the `SceneChanger` across `change_to` (it is added under the tree's root, which a scene change leaves alone), freed
   when a game ends: Back to title, End session, Leave, the Host quitting (`Session.ended`), the window closing.
-- **No link yet** (F5 on a level, the zoo, `--scene=`, every existing test): `LevelRuntime` makes a private one under the
-  level, exactly the nodes it has today. So a level is never without one and `level_runtime.tscn` loses only the two
+- **No link yet** (F5 on a level, the zoo, `--scene=`, every existing test): `LevelRuntime` makes a private one, exactly
+  the nodes it has today: beside the level when the level is the scene the machine runs (F5, `--scene=`: under the root,
+  where a title puts its link, so an F5'd house with `--join=` reaches a title-started Host and the reverse, core/68),
+  else under the level's runtime; it goes with the level. So a level is never without one and `level_runtime.tscn` loses only the two
   nodes it hands over.
 
 ### What changes in the coop code
@@ -76,7 +78,9 @@ and owned by whoever starts a game and found with `GameLink.of(node)` (as `Level
    scene the Host named (`LobbyState.level`) with `SceneChanger` behind the loading screen; the machine's `Session` keeps
    its peer.
 2. When a machine's house is bound (Parts bound, Socks laid on the Host: `parts.is_settled()`), a Guest sends `house_ready`
-   (reliable RPC on `Session`) with the hash of its level's Part ids and `PROTOCOL`.
+   (reliable RPC on `Session`) with the hash of its level's Part ids, `PROTOCOL` and its Hands numbers (a Guest that
+   joined in the Lobby had no Player to say them at the gate: the Host clamps them into the Roster, `Roster.hands_said()`,
+   core/68).
 3. The Host answers a mismatch with the existing `WRONG_BUILD` refusal and the Guest goes to its title; otherwise it waits
    for its own house to be settled, then sends `parts.snapshot()` of the level (what `_on_peer_joined` sends today) and the
    Guest shows the house at once (`load_snapshot`, `_show(now = true)`).
@@ -167,7 +171,7 @@ It uses `Worlds` as it is (`rows`, `delete`, `free_coop_slot`, `FULL`) plus `pic
 behind it, close on a click outside, Esc) are `[later]` for the look ticket's still.
 
 **L7 a World's name:** `Worlds.display_name(slot, record)` is the one place that makes a row's name (and the card's title);
-today it returns `row_name()` (the members' names, "No Group yet" while none). Changing it to "World <n>" plus the World's
+today it returns the members' names ("No Group yet" while none). Changing it to "World <n>" plus the World's
 state details is one function and its test; the look ticket's first still shows both and the designer judges.
 
 ## Core/66: the Lobby look (look work)

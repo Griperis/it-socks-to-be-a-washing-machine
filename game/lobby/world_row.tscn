@@ -1,0 +1,53 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/lobby/world_row.gd" id="1_row"]
+
+[node name="WorldRow" type="PanelContainer"]
+script = ExtResource("1_row")
+
+[node name="Box" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Top" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Swatches" type="HBoxContainer" parent="Box/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 4
+
+[node name="Tick" type="Label" parent="Box/Top"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"InkLabel"
+text = "✓"
+
+[node name="Title" type="Label" parent="Box/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"InkLabel"
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Choose" type="Button" parent="Box/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "Choose"
+
+[node name="Delete" type="Button" parent="Box/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ExitButton"
+text = "Delete"
+
+[node name="Details" type="Label" parent="Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"ThinLabel"
+clip_text = true
+text_overrun_behavior = 3

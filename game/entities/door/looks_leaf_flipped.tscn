@@ -1,0 +1,166 @@
+[gd_scene format=3 uid="uid://upg73wmqd0y4"]
+
+[ext_resource type="Material" uid="uid://coykeifcd4kmx" path="res://game/entities/door/materials/door.tres" id="1_bh0lf"]
+[ext_resource type="Material" uid="uid://ebw8rx071c8d" path="res://game/entities/door/materials/brass.tres" id="2_midpw"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="3_78xim"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_giaju"]
+material = ExtResource("1_bh0lf")
+size = Vector3(0.866, 2.075, 0.04)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rnv01"]
+size = Vector3(0.866, 2.075, 0.04)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7113l"]
+material = ExtResource("1_bh0lf")
+size = Vector3(0.646, 0.75, 0.006)
+
+[sub_resource type="BoxMesh" id="BoxMesh_8jlgj"]
+material = ExtResource("1_bh0lf")
+size = Vector3(0.646, 0.82, 0.006)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_7kyka"]
+material = ExtResource("2_midpw")
+top_radius = 0.03
+bottom_radius = 0.03
+height = 0.012
+radial_segments = 16
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_l0phv"]
+material = ExtResource("2_midpw")
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.05
+radial_segments = 16
+rings = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_2qdo4"]
+material = ExtResource("2_midpw")
+size = Vector3(0.13, 0.018, 0.018)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s7x4s"]
+material = ExtResource("1_bh0lf")
+size = Vector3(0.646, 0.75, 0.006)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ic0o8"]
+material = ExtResource("1_bh0lf")
+size = Vector3(0.646, 0.82, 0.006)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mkcsw"]
+material = ExtResource("2_midpw")
+top_radius = 0.03
+bottom_radius = 0.03
+height = 0.012
+radial_segments = 16
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_uegsh"]
+material = ExtResource("2_midpw")
+top_radius = 0.009
+bottom_radius = 0.009
+height = 0.05
+radial_segments = 16
+rings = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_flmre"]
+material = ExtResource("2_midpw")
+size = Vector3(0.13, 0.018, 0.018)
+
+[sub_resource type="Animation" id="Animation_uu7ho"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hinge:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_3qbsq"]
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hinge:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(-2, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.5707964, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_er3bm"]
+_data = {
+&"RESET": SubResource("Animation_uu7ho"),
+&"open": SubResource("Animation_3qbsq")
+}
+
+[node name="LooksLeafFlipped" type="Node3D" unique_id=1395624419]
+
+[node name="Hinge" type="AnimatableBody3D" parent="." unique_id=1217777161]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.433, 0, 0)
+collision_mask = 0
+
+[node name="Leaf" type="MeshInstance3D" parent="Hinge" unique_id=1413628015]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.433, 1.0455, 0)
+mesh = SubResource("BoxMesh_giaju")
+
+[node name="LeafShape" type="CollisionShape3D" parent="Hinge" unique_id=2016083173]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.433, 1.0455, 0)
+shape = SubResource("BoxShape3D_rnv01")
+
+[node name="PanelFront1" type="MeshInstance3D" parent="Hinge" unique_id=482918935]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.433, 0.575, 0.023)
+mesh = SubResource("BoxMesh_7113l")
+
+[node name="PanelFront2" type="MeshInstance3D" parent="Hinge" unique_id=1662434202]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.433, 1.51, 0.023)
+mesh = SubResource("BoxMesh_8jlgj")
+
+[node name="RoseFront" type="MeshInstance3D" parent="Hinge" unique_id=588131199]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.791, 1, 0.026)
+mesh = SubResource("CylinderMesh_7kyka")
+
+[node name="SpindleFront" type="MeshInstance3D" parent="Hinge" unique_id=1690273492]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.791, 1, 0.045)
+mesh = SubResource("CylinderMesh_l0phv")
+
+[node name="LeverFront" type="MeshInstance3D" parent="Hinge" unique_id=1140043815]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.726, 1, 0.069)
+mesh = SubResource("BoxMesh_2qdo4")
+
+[node name="PanelBack1" type="MeshInstance3D" parent="Hinge" unique_id=624462309]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.433, 0.575, -0.023)
+mesh = SubResource("BoxMesh_s7x4s")
+
+[node name="PanelBack2" type="MeshInstance3D" parent="Hinge" unique_id=1351885181]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.433, 1.51, -0.023)
+mesh = SubResource("BoxMesh_ic0o8")
+
+[node name="RoseBack" type="MeshInstance3D" parent="Hinge" unique_id=34863761]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.791, 1, -0.026)
+mesh = SubResource("CylinderMesh_mkcsw")
+
+[node name="SpindleBack" type="MeshInstance3D" parent="Hinge" unique_id=1673062580]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.791, 1, -0.045)
+mesh = SubResource("CylinderMesh_uegsh")
+
+[node name="LeverBack" type="MeshInstance3D" parent="Hinge" unique_id=1730945736]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.726, 1, -0.069)
+mesh = SubResource("BoxMesh_flmre")
+
+[node name="Outline" type="Node3D" parent="." unique_id=2122836861]
+visible = false
+script = ExtResource("3_78xim")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1007911466]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_er3bm")

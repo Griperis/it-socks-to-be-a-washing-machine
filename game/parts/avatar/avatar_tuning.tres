@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="AvatarTuning" format=3 uid="uid://i4jw6ewnf4chb"]
+[gd_resource type="Resource" script_class="AvatarTuning" format=3 uid="uid://bep60a25bpkxr"]
 
 [ext_resource type="Script" uid="uid://c22js4pe1cebt" path="res://game/parts/avatar/avatar_tuning.gd" id="1_tuning"]
 

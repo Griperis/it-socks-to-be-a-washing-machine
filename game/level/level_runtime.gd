@@ -4,8 +4,10 @@
 ## it. What differs per level is set on the instance (below).
 ##
 ## The Session and its Roster are the game link's (GameLink, core/62): the one whoever started the
-## game made (the title), found with GameLink.of(), else a private one this runtime makes under itself
-## (F5, the zoo, `--scene=`, a test), so a level is never without one. The level's Parts read through
+## game made (the title), found with GameLink.of(), else a private one this runtime makes (F5, the zoo,
+## `--scene=`, a test), so a level is never without one: beside the level when the level is the scene
+## the machine runs (F5: where a title puts its link, so the Session's path is the same, core/68), else
+## under this runtime; it goes when the level does. The level's Parts read through
 ## to the link's, and the Session uses them while the level is in the tree.
 ##
 ## Before any of its nodes is ready it puts the player on the level's spawn, points the Mess at the
@@ -110,6 +112,12 @@ func _exit_tree() -> void:
 		tree.node_added.disconnect(_on_node_added)
 	if link != null and is_instance_valid(link):
 		link.session.detach_level(parts)
+		if link.made_by == self and link.get_parent() != self:
+			# Its own link beside the level goes with it, under another name at once: a level that comes
+			# in this frame makes or finds a link of its own at that path.
+			link.name = &"GameLinkGone"
+			link.session.leave()
+			link.queue_free()
 
 
 ## The link: the game's (GameLink.of()), else a private one under this runtime. Its Session takes the
@@ -119,8 +127,14 @@ func _take_link() -> void:
 		link = GameLink.of(self)
 	if link == null:
 		link = GameLink.make()
-		add_child(link)
-		move_child(link, 0)  # the first child leaves the tree last: the Autosave saves through it first
+		link.made_by = self
+		var level := get_parent()
+		var home := GameLink.machine_root(self)
+		if GameLink.is_shown_by(level, home) and not home.has_node(NodePath(GameLink.NAME)):
+			home.add_child(link)
+		if link.get_parent() == null:
+			add_child(link)
+			move_child(link, 0)  # the first child leaves the tree last: the Autosave saves through it first
 	var s := link.session
 	avatars.roster = link.roster
 	avatars.session = s

@@ -22,6 +22,7 @@
 [ext_resource type="PackedScene" uid="uid://b7tq2avatarst" path="res://game/zoo/stations/avatar.tscn" id="39_avatar"]
 [ext_resource type="PackedScene" uid="uid://chiexs1bn5bo5" path="res://game/zoo/stations/knockdown.tscn" id="40_knockdown"]
 [ext_resource type="PackedScene" uid="uid://c6s728lc0yqao" path="res://game/zoo/stations/sock_generator.tscn" id="52_sock_generator"]
+[ext_resource type="PackedScene" uid="uid://bq03emocqql0c" path="res://game/zoo/stations/doors.tscn" id="53_doors"]
 [ext_resource type="PackedScene" uid="uid://bx2esfl7c8ibt" path="res://game/zoo/stations/hand_off.tscn" id="53_hand_off"]
 [ext_resource type="PackedScene" uid="uid://b3p4lgjwxx4ru" path="res://game/zoo/stations/stacking.tscn" id="54_stacking"]
 [ext_resource type="PackedScene" uid="uid://bg8lkqbbiv0lh" path="res://game/zoo/stations/pings.tscn" id="55_pings"]
@@ -126,6 +127,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, -2)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 0, 3.5)
 
 [node name="SockGenerator" parent="Stations" instance=ExtResource("52_sock_generator")]
+
+[node name="Doors" parent="Stations" instance=ExtResource("53_doors")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, 6)
 
 [node name="HandOff" parent="Stations" unique_id=1700158525 instance=ExtResource("53_hand_off")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 3.5)

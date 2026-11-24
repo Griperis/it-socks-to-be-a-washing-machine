@@ -30,6 +30,14 @@ Cabinets/LoftWest/Cabinet
 Cabinets/LoftWest/Drawer1/Openable
 Cabinets/LoftWest/Drawer2/Openable
 Cabinets/LoftWest/Drawer3/Openable
+Doors/BathroomLanding/Openable
+Doors/BedroomLanding/Openable
+Doors/BoilerLobby/Openable
+Doors/KidsLanding/Openable
+Doors/LaundryLobby/Openable
+Doors/LobbyGarage/Openable
+Doors/OfficeLanding/Openable
+Doors/WorkshopLobby/Openable
 Furniture/Car/Boot/Openable
 Furniture/Car/DoorL/Openable
 Furniture/Car/DoorR/Openable

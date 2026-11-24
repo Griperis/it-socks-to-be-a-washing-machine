@@ -1,4 +1,4 @@
-Next free Q number: Q2595 (update this line whenever a round of questions is asked)
+Next free Q number: Q2596 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -509,3 +509,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2592: the rider's synced pose carries the old game's riding offset (riding on whom, at what spot on the back), so every machine draws the rider on the carrier's back; built because the plain collider drew the rider 0.44-0.67 m behind on the carrier's machine (replaces Q2591's no-id; core/41; designer, 2026-11-23).
 - Q2593: the old jump and land sounds are ported now with stacking, for every jump, climbs included, on every machine (core/41; designer, 2026-11-23).
 - Q2594: the jump stays silent as the old game (its jump event had no clip; candidates kenney_cloth3, artisticdude_swish9, haeldb_leather1 sit in the old folder); only the landing sounds; a clip may be picked later from play (designer, 2026-11-24).
+- Q2595: the room Door's sound plays 1 m up as the old game (`Openable.sound_height`, 0 for every other Openable); no Sock laid behind an open leaf and the leaf's 4 mm bevel stay [later], seen by the designer (designer, 2026-11-24).

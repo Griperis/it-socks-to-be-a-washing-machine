@@ -47,6 +47,8 @@ func cases() -> Array[Dictionary]:
 				"title": "core/50: the same real path with the zoo floor's collision margin at 1 mm (there Jolt pushes a poured Sock through the floor in every pour): no Sock goes under the floor, none is lifted at its rest or rests moving"},
 		{"name": "pushed_in", "method": "case_pushed_in", "world": false,
 				"title": "core/50: a falling Sock that one step moves down into the floor, more than its motion explains, is put back over the floor at once and rests on it, not lifted; one that moves only as it flies is left alone"},
+		{"name": "slept_turning", "method": "case_slept_turning", "world": false,
+				"title": "core/54: a Sock the physics puts to sleep while it still turns is woken to go on, not written lying mid-turn; asleep after a still step, it rests"},
 		{"name": "wave_places", "method": "case_wave_places", "world": false,
 				"title": "core/49: two Sock boxes crossed or stacked into each other meet, apart or side by side they do not; the spout never picks a place that meets another of its wave"},
 		{"name": "switch", "method": "case_switch", "world": false,
@@ -58,7 +60,9 @@ func cases() -> Array[Dictionary]:
 		{"name": "flip", "method": "case_flip", "world": false,
 				"title": "B3: a moving Sock turning faster than the flip limit is counted as flipping, once"},
 		{"name": "jitter", "method": "case_jitter", "world": false,
-				"title": "B3: a Sock woken again and again is counted as jittering; each wake is counted"},
+				"title": "B3: a Sock woken again and again, resting moved each time, is counted as jittering; each wake is counted"},
+		{"name": "jitter_unmoved", "method": "case_jitter_unmoved", "world": false,
+				"title": "core/54: a Sock woken again and again that rests each time where it lay (a landing hit that did not move it) is not counted as jittering; each wake is"},
 		{"name": "survey", "method": "case_survey", "world": false,
 				"title": "B3: a lying Sock under the floor is counted sunk, one overlapping another deeper than Jolt's slop is counted inside it, one within the slop pressed (Q2499); a clean stack has none"},
 		{"name": "made_inside", "method": "case_made_inside", "world": false,
@@ -170,7 +174,39 @@ func _real_path(extra: int, floor_margin := -1.0) -> void:
 	_check(_interpolated(LevelRuntime.of(_zoo).lying) == 0, "no MultiMesh of the Mess is physics-interpolated (%d)" % _interpolated(LevelRuntime.of(_zoo).lying))
 
 
-# --- core/50: pushed into the floor --------------------------------------------------------------
+# --- core/54: put to sleep mid-turn ---------------------------------------------------------------
+
+## A Sock lies flying on the benchmark level's floor and is set turning; Jolt putting it to sleep then
+## (as it did to a Sock tipping over in the heap, its motion zeroed) does not make it rest: it is woken
+## and goes on, and rests once still. Put to sleep again after a still step, it rests at once.
+func case_slept_turning() -> void:
+	await _level_up(MessBenchScenario.Kind.IDLE, 4, 0)
+	var mess := _level.mess
+	_level.parts.apply({"ok": true, "kind": &"throw", "by": 1, "to": mess.id, "changes": {mess.id:
+			mess.thrown_patch(0, Transform3D(Basis.IDENTITY, Vector3(4.0, 0.02, 4.0)), Vector3.ZERO, Vector3.ZERO, 1)}})
+	await _until(func() -> bool: return mess.moving_body(0) != null, "the Sock to fly")
+	var body := mess.moving_body(0)
+	await _physics_ticks(12)
+	body.angular_velocity = Vector3(0.0, 6.0, 0.0)
+	await _physics_ticks(2)
+	_check(body.angular_velocity.length() > 1.0, "the Sock turns (%.2f rad/s)" % body.angular_velocity.length())
+	body.sleeping = true
+	await _physics_ticks(2)
+	_check(mess.state_of(0) == Mess.State.FLYING, "put to sleep while turning, it is not written lying")
+	_check(not body.sleeping, "it is woken to go on")
+	await _until(func() -> bool: return mess.state_of(0) == Mess.State.LYING, "the Sock to come to rest", 600)
+	_check(_watch.hot == 0, "it did not rest turning (hot %d)" % _watch.hot)
+	_level.parts.apply({"ok": true, "kind": &"throw", "by": 1, "to": mess.id, "changes": {mess.id:
+			mess.thrown_patch(1, Transform3D(Basis.IDENTITY, Vector3(5.0, 0.02, 4.0)), Vector3.ZERO, Vector3.ZERO, 1)}})
+	await _until(func() -> bool: return mess.moving_body(1) != null, "the second Sock to fly")
+	var still := mess.moving_body(1)
+	await _physics_ticks(12)
+	still.sleeping = true
+	await _physics_ticks(2)
+	_check(mess.state_of(1) == Mess.State.LYING, "put to sleep after a still step, it rests at once")
+
+
+# --- core/50: pushed into the floor--------------------------------------------------------------
 
 ## A Sock falls flat onto the benchmark level's floor (0.2 m thick, its top at 0). Just before it
 ## lands, its body is moved down to 0.12 m inside the floor, as Jolt's position solve moved one in the
@@ -313,10 +349,32 @@ func case_jitter() -> void:
 	var times := PLAN.checks.jitter_wakes
 	for i in times:
 		_level.parts.ask(Command.new(&"wake", Parts.HOST, mess.id, {"sock": 0}))
-		await _until(func() -> bool: return mess.state_of(0) == Mess.State.FLYING, "the Sock to wake")
+		await _until(func() -> bool: return mess.moving_body(0) != null, "the Sock to wake")
+		# Each time it is moved (core/54: only a wake after which it rests moved is jitter).
+		var body := mess.moving_body(0)
+		body.global_position += Vector3(0.06, 0.04, 0.0)
+		body.reset_physics_interpolation()
 		await _until(func() -> bool: return mess.state_of(0) == Mess.State.LYING, "the Sock to rest again")
 		await _physics_ticks(1)
 		_check(_watch.jittering() == (1 if i == times - 1 else 0), "woken %d times: %d Socks jitter" % [i + 1, _watch.jittering()])
+	_check(_watch.wakes == times, "each wake was counted (%d of %d)" % [_watch.wakes, times])
+
+
+## core/54 (the lead): a Sock woken again and again that rests each time where it lay (as a landing hit
+## under a pour leaves it: the wake rule stays as ported) is not jittering; each wake is still counted.
+func case_jitter_unmoved() -> void:
+	await _level_up(MessBenchScenario.Kind.IDLE, 4, 0)
+	var mess := _level.mess
+	var times := PLAN.checks.jitter_wakes + 1
+	var lay := mess.pose_of(0)
+	for i in times:
+		_level.parts.ask(Command.new(&"wake", Parts.HOST, mess.id, {"sock": 0}))
+		await _until(func() -> bool: return mess.state_of(0) == Mess.State.FLYING, "the Sock to wake")
+		await _until(func() -> bool: return mess.state_of(0) == Mess.State.LYING, "the Sock to rest again")
+		await _physics_ticks(1)
+	_check(mess.pose_of(0).origin.distance_to(lay.origin) < PLAN.checks.jitter_move,
+			"it rests where it lay (%.1f mm)" % (mess.pose_of(0).origin.distance_to(lay.origin) * 1000.0))
+	_check(_watch.jittering() == 0, "woken %d times, never moved: no Sock jitters (%d)" % [times, _watch.jittering()])
 	_check(_watch.wakes == times, "each wake was counted (%d of %d)" % [_watch.wakes, times])
 
 
@@ -472,6 +530,9 @@ func _settled() -> void:
 func _no_faults(r: Dictionary) -> void:
 	for key in FAULTS:
 		_check(int(r[key]) == 0, "no Sock %s (%d)" % [key, r[key]])
+	if _watch != null:
+		for line in _watch.notes:
+			print("mess_settle fault: ", line)
 	for key in COUNTED:
 		_check(r.has(key), "Socks that %s are counted" % key)
 	print("mess_settle: %d Socks rested; counted and not yet held at none: flips %d (fastest turn %.1f rad/s), sunk %d (deepest %.0f mm), pressed %d (deepest %.1f mm), inside %d (deepest %.1f mm)"

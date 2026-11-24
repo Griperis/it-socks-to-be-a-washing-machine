@@ -71,6 +71,10 @@
 [ext_resource type="Script" uid="uid://c76hgi71q4k4g" path="res://game/mess/sock_trail.gd" id="84_trail"]
 [ext_resource type="Script" path="res://game/house/house_lights.gd" id="86_lights"]
 [ext_resource type="Script" uid="uid://co2u54sk1yir8" path="res://game/mess/generated_socks.gd" id="85_generated"]
+[ext_resource type="PackedScene" uid="uid://bmwqvdc4bsecs" path="res://game/entities/door/room_door.tscn" id="86_door"]
+[ext_resource type="PackedScene" uid="uid://1jfxjkr05r4r" path="res://game/entities/door/room_door_flipped.tscn" id="87_door_flipped"]
+[ext_resource type="Script" uid="uid://u22gclb5j8x6" path="res://game/house/door_shuts.gd" id="88_door_shuts"]
+[ext_resource type="Resource" uid="uid://u22gclb5im37" path="res://game/house/door_shut_rules.tres" id="89_door_rules"]
 
 [node name="House" type="Node3D" unique_id=1892225822]
 
@@ -474,11 +478,63 @@ metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Doors" type="Node3D" parent="." unique_id=1264190857]
 
+[node name="DoorShuts" type="Node" parent="Doors" unique_id=881000020]
+script = ExtResource("88_door_shuts")
+rules = ExtResource("89_door_rules")
+
 [node name="FrontDoor" parent="Doors" unique_id=88310427 instance=ExtResource("78_shut_front_door")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.75, 0, 0)
 
 [node name="GarageDoor" parent="Doors" unique_id=1693022485 instance=ExtResource("79_shut_garage_door")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.25, -3, 0)
+
+[node name="WorkshopLobby" parent="Doors" unique_id=881000001 instance=ExtResource("87_door_flipped")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.96, -3, 2.75)
+
+[node name="Openable" parent="Doors/WorkshopLobby" parent_id_path=PackedInt32Array(881000001) index="0" unique_id=1481328664]
+open = true
+
+[node name="LaundryLobby" parent="Doors" unique_id=881000002 instance=ExtResource("86_door")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.96, -3, 4.1)
+
+[node name="Openable" parent="Doors/LaundryLobby" parent_id_path=PackedInt32Array(881000002) index="0" unique_id=99892436]
+open = true
+
+[node name="BoilerLobby" parent="Doors" unique_id=881000003 instance=ExtResource("87_door_flipped")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 5.25, -3, 1.96)
+
+[node name="Openable" parent="Doors/BoilerLobby" parent_id_path=PackedInt32Array(881000003) index="0" unique_id=1481328664]
+open = true
+
+[node name="LobbyGarage" parent="Doors" unique_id=881000004 instance=ExtResource("87_door_flipped")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 6.46, -3, 4.75)
+
+[node name="Openable" parent="Doors/LobbyGarage" parent_id_path=PackedInt32Array(881000004) index="0" unique_id=1481328664]
+open = true
+
+[node name="OfficeLanding" parent="Doors" unique_id=881000005 instance=ExtResource("87_door_flipped")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.96, 3, 2.75)
+
+[node name="Openable" parent="Doors/OfficeLanding" parent_id_path=PackedInt32Array(881000005) index="0" unique_id=1481328664]
+open = true
+
+[node name="BedroomLanding" parent="Doors" unique_id=881000006 instance=ExtResource("86_door")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.96, 3, 4.1)
+
+[node name="Openable" parent="Doors/BedroomLanding" parent_id_path=PackedInt32Array(881000006) index="0" unique_id=99892436]
+open = true
+
+[node name="BathroomLanding" parent="Doors" unique_id=881000007 instance=ExtResource("86_door")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.54, 3, 2.75)
+
+[node name="Openable" parent="Doors/BathroomLanding" parent_id_path=PackedInt32Array(881000007) index="0" unique_id=99892436]
+open = true
+
+[node name="KidsLanding" parent="Doors" unique_id=881000008 instance=ExtResource("86_door")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.54, 3, 4.75)
+
+[node name="Openable" parent="Doors/KidsLanding" parent_id_path=PackedInt32Array(881000008) index="0" unique_id=99892436]
+open = true
 
 [node name="Spawn" type="Marker3D" parent="." unique_id=1502210364]
 transform = Transform3D(0.6042, 0, 0.7968, 0, 1, 0, -0.7968, 0, 0.6042, 1.68, -3, 5.87)

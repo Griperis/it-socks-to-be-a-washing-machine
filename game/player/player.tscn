@@ -12,7 +12,7 @@
 [ext_resource type="Resource" path="res://game/ui/hud_tuning.tres" id="9_hud_tuning"]
 [ext_resource type="PackedScene" uid="uid://c6ggi6fh377si" path="res://game/parts/avatar/looks_avatar.tscn" id="10_own_body"]
 [ext_resource type="Script" uid="uid://o2nt8eeij1by" path="res://game/hands/guest_ghosts.gd" id="11_ghosts"]
-[ext_resource type="Resource" uid="uid://5buhkrgy1c5z" path="res://game/hands/ghost_tuning.tres" id="12_ghost_tuning"]
+[ext_resource type="Resource" uid="uid://5buhkrgy1c50" path="res://game/hands/ghost_tuning.tres" id="12_ghost_tuning"]
 [ext_resource type="PackedScene" uid="uid://cn3a05m85kv70" path="res://game/knockdown/vignette.tscn" id="13_vignette"]
 [ext_resource type="Script" uid="uid://c03n4n25hntrc" path="res://game/stacking/player_stack.gd" id="14_stack"]
 [ext_resource type="Resource" uid="uid://b4e3r68bxti0n" path="res://game/stacking/stacking_tuning.tres" id="15_stack_tuning"]
