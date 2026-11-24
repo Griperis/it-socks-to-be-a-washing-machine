@@ -1,8 +1,6 @@
 [gd_resource type="Resource" script_class="SoundCatalogue" format=3 uid="uid://xh8dpnn6yna8"]
 
 [ext_resource type="Script" uid="uid://ctri35gdd3a6l" path="res://game/audio/sound_event.gd" id="1_76itk"]
-[ext_resource type="AudioStream" path="res://assets/audio/ui_click__qubodup_click1.ogg" id="200_ui"]
-[ext_resource type="AudioStream" path="res://assets/audio/ui_hover__kenney_rollover2.ogg" id="201_ui"]
 [ext_resource type="AudioStream" uid="uid://b6wajjjn6vlr7" path="res://assets/audio/pick__owlish_cloth5.ogg" id="2_wjh0y"]
 [ext_resource type="AudioStream" uid="uid://c8uwiwg612put" path="res://assets/audio/drop__kenney_drop_leather.ogg" id="3_4rodq"]
 [ext_resource type="AudioStream" uid="uid://d2ux00h2u8h7b" path="res://assets/audio/cycle__a.ogg" id="4_4mx4k"]
@@ -58,6 +56,8 @@
 [ext_resource type="AudioStream" uid="uid://da4gca7gn2ljx" path="res://assets/audio/piano/piano_remeau_105.ogg" id="131_dev"]
 [ext_resource type="AudioStream" uid="uid://cpfkxmdjedjus" path="res://assets/audio/piano/piano_remeau_108.ogg" id="132_dev"]
 [ext_resource type="AudioStream" uid="uid://brkbljhd7tmub" path="res://assets/audio/ping__d.ogg" id="140_ping"]
+[ext_resource type="AudioStream" uid="uid://bkkgwmxcfqpld" path="res://assets/audio/ui_click__qubodup_click1.ogg" id="200_ui"]
+[ext_resource type="AudioStream" uid="uid://cu5i6rjh67ey4" path="res://assets/audio/ui_hover__kenney_rollover2.ogg" id="201_ui"]
 
 [sub_resource type="Resource" id="Resource_5vpok"]
 script = ExtResource("1_76itk")

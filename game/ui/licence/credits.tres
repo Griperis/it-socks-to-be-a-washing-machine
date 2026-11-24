@@ -10,7 +10,6 @@ what = "Godot Engine"
 author = "Juan Linietsky, Ariel Manzur and the Godot Engine contributors"
 source = "https://godotengine.org"
 licence = "MIT"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_1"]
 script = ExtResource("2_entry")
@@ -19,7 +18,6 @@ what = "Open Sans SemiBold (Godot's default interface font, every text in the ga
 author = "The Open Sans Project Authors"
 source = "https://github.com/googlefonts/opensans"
 licence = "SIL Open Font License 1.1"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_2"]
 script = ExtResource("2_entry")
@@ -28,7 +26,6 @@ what = "Patrick Hand (the Collection board's lettering)"
 author = "Patrick Wagesreiter"
 source = "https://fonts.google.com/specimen/Patrick+Hand"
 licence = "SIL Open Font License 1.1"
-covers = PackedStringArray("assets/fonts/patrickhand/*")
 
 [sub_resource type="Resource" id="Entry_3"]
 script = ExtResource("2_entry")
@@ -37,7 +34,6 @@ what = "The Old Tree's voice (Piper en_US \"norman\" medium, aged by tools/voice
 author = "Voice data: LibriVox volunteer readers (librivox.org); model trained by Bryce Beattie (brycebeattie.com/files/tts/); Piper (Rhasspy / Open Home Foundation)"
 source = "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/norman/medium/MODEL_CARD"
 licence = "Public domain (dataset: LibriVox recordings, https://librivox.org; per the model card)"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_4"]
 script = ExtResource("2_entry")
@@ -46,7 +42,6 @@ what = "10 Clicks and Switches"
 author = "StarNinjas"
 source = "https://opengameart.org/content/10-clicks-and-switches"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_5"]
 script = ExtResource("2_entry")
@@ -55,7 +50,6 @@ what = "100 CC0 metal and wood SFX"
 author = "rubberduck"
 source = "https://opengameart.org/content/100-cc0-metal-and-wood-sfx"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/basket_close__rubberduck_wood_misc2.ogg", "assets/audio/oven_close__rubberduck_metal_close.ogg", "assets/audio/oven_open__rubberduck_metal_open.ogg")
 
 [sub_resource type="Resource" id="Entry_6"]
 script = ExtResource("2_entry")
@@ -64,7 +58,6 @@ what = "100 CC0 SFX"
 author = "rubberduck"
 source = "https://opengameart.org/content/100-cc0-sfx"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/fridge_close__rubberduck_microwave_close.ogg", "assets/audio/fridge_open__rubberduck_microwave_open.ogg")
 
 [sub_resource type="Resource" id="Entry_7"]
 script = ExtResource("2_entry")
@@ -73,7 +66,6 @@ what = "100 CC0 SFX #2"
 author = "rubberduck"
 source = "https://opengameart.org/content/100-cc0-sfx-2"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_8"]
 script = ExtResource("2_entry")
@@ -82,7 +74,6 @@ what = "1000Hz.ogg"
 author = "Denelson83"
 source = "https://commons.wikimedia.org/wiki/File:1000Hz.ogg"
 licence = "Public domain"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_9"]
 script = ExtResource("2_entry")
@@ -91,7 +82,6 @@ what = "12 Coin Sound Effects"
 author = "StarNinjas"
 source = "https://opengameart.org/content/12-coin-sound-effects"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_10"]
 script = ExtResource("2_entry")
@@ -100,7 +90,6 @@ what = "Cat Purr & Meow"
 author = "kerzoven"
 source = "https://opengameart.org/content/cat-purr-meow"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_11"]
 script = ExtResource("2_entry")
@@ -109,7 +98,6 @@ what = "Kitten Mew"
 author = "antumdeluge"
 source = "https://opengameart.org/content/kitten-mew"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_12"]
 script = ExtResource("2_entry")
@@ -118,7 +106,6 @@ what = "Meow"
 author = "ignasd"
 source = "https://opengameart.org/content/meow"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_13"]
 script = ExtResource("2_entry")
@@ -127,7 +114,6 @@ what = "cat sfx (the Cat's hiss)"
 author = "Dan Knoflicek"
 source = "https://opengameart.org/content/cat-sfx"
 licence = "CC-BY 3.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_14"]
 script = ExtResource("2_entry")
@@ -136,7 +122,6 @@ what = "Steam release sounds"
 author = "bart"
 source = "https://opengameart.org/content/steam-release-sounds"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_15"]
 script = ExtResource("2_entry")
@@ -145,7 +130,6 @@ what = "202 More Sound Effects"
 author = "OwlishMedia"
 source = "https://opengameart.org/content/202-more-sound-effects"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/pair__owlish_cloth4.ogg", "assets/audio/pick__owlish_cloth5.ogg")
 
 [sub_resource type="Resource" id="Entry_16"]
 script = ExtResource("2_entry")
@@ -154,7 +138,6 @@ what = "3 Pop Sounds"
 author = "wubitog"
 source = "https://opengameart.org/content/3-pop-sounds"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/pop__wubitog_pop1.ogg")
 
 [sub_resource type="Resource" id="Entry_17"]
 script = ExtResource("2_entry")
@@ -163,7 +146,6 @@ what = "30 CC0 SFX loops"
 author = "rubberduck"
 source = "https://opengameart.org/content/30-cc0-sfx-loops"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_18"]
 script = ExtResource("2_entry")
@@ -172,7 +154,6 @@ what = "4 Door Closes"
 author = "StarNinjas"
 source = "https://opengameart.org/content/4-door-closes"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/wardrobe_close__starninjas_door2.ogg")
 
 [sub_resource type="Resource" id="Entry_19"]
 script = ExtResource("2_entry")
@@ -181,7 +162,6 @@ what = "430 Hz sine wave.wav"
 author = "Schminnte"
 source = "https://commons.wikimedia.org/wiki/File:430_Hz_sine_wave.wav"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_20"]
 script = ExtResource("2_entry")
@@ -190,7 +170,6 @@ what = "50 RPG sound effects"
 author = "Kenney"
 source = "https://opengameart.org/content/50-rpg-sound-effects"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/basket_open__kenney_creak3.ogg", "assets/audio/cupboard_close__kenney_door_close4.ogg", "assets/audio/cupboard_open__kenney_door_open1.ogg", "assets/audio/drop__kenney_drop_leather.ogg", "assets/audio/shelve__kenney_book_place1.ogg", "assets/audio/step_wood__kenney_footstep00.ogg")
 
 [sub_resource type="Resource" id="Entry_21"]
 script = ExtResource("2_entry")
@@ -199,7 +178,6 @@ what = "51 UI sound effects (buttons, switches and clicks)"
 author = "Kenney"
 source = "https://opengameart.org/content/51-ui-sound-effects-buttons-switches-and-clicks"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/ui_hover__kenney_rollover2.ogg")
 
 [sub_resource type="Resource" id="Entry_22"]
 script = ExtResource("2_entry")
@@ -208,7 +186,6 @@ what = "6 user interface ding clicks"
 author = "qubodup"
 source = "https://opengameart.org/content/6-user-interface-ding-clicks"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_23"]
 script = ExtResource("2_entry")
@@ -217,7 +194,6 @@ what = "75 CC0 breaking / falling / hit sfx"
 author = "rubberduck"
 source = "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_24"]
 script = ExtResource("2_entry")
@@ -226,7 +202,6 @@ what = "80 CC0 RPG SFX"
 author = "rubberduck"
 source = "https://opengameart.org/content/80-cc0-rpg-sfx"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_25"]
 script = ExtResource("2_entry")
@@ -235,7 +210,6 @@ what = "Air whoosh"
 author = "pyranostudios"
 source = "https://opengameart.org/content/air-whoosh"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_26"]
 script = ExtResource("2_entry")
@@ -244,7 +218,6 @@ what = "Ambient Bird Sounds"
 author = "isaiah658"
 source = "https://opengameart.org/content/ambient-bird-sounds"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_27"]
 script = ExtResource("2_entry")
@@ -253,7 +226,6 @@ what = "Button Click Sound Effect (CC0/Public Domain)"
 author = "qubodup"
 source = "https://opengameart.org/content/button-click-sound-effect-cc0public-domain"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/ui_click__qubodup_click1.ogg")
 
 [sub_resource type="Resource" id="Entry_28"]
 script = ExtResource("2_entry")
@@ -262,7 +234,6 @@ what = "Ceremonial Fanfare (Concert Band)"
 author = "United States Air Force Heritage of America Band"
 source = "https://commons.wikimedia.org/wiki/File:Ceremonial_Fanfare_-_Concert_Band_-_United_States_Air_Force_Heritage_of_America_Band.mp3"
 licence = "Public domain (US federal government work)"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_29"]
 script = ExtResource("2_entry")
@@ -271,7 +242,6 @@ what = "Chill lofi inspired [loop edit]"
 author = "qubodup"
 source = "https://opengameart.org/content/chill-lofi-inspired-loop-edit"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_30"]
 script = ExtResource("2_entry")
@@ -280,7 +250,6 @@ what = "Coin Drop"
 author = "Vinrax"
 source = "https://opengameart.org/content/coin-drop"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_31"]
 script = ExtResource("2_entry")
@@ -289,7 +258,6 @@ what = "Correct Bell"
 author = "Fupi"
 source = "https://opengameart.org/content/correct-bell"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_32"]
 script = ExtResource("2_entry")
@@ -298,7 +266,6 @@ what = "Cozy Puzzle Jingle & Result"
 author = "MintoDog"
 source = "https://opengameart.org/content/cozy-puzzle-jingle-result"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_33"]
 script = ExtResource("2_entry")
@@ -307,7 +274,6 @@ what = "Creaky Door Hinge Spooky"
 author = "w.forster.1@gmail.com"
 source = "https://opengameart.org/content/creaky-door-hinge-spooky"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_34"]
 script = ExtResource("2_entry")
@@ -316,7 +282,6 @@ what = "Different steps on wood, stone, leaves, gravel and mud"
 author = "TinyWorlds"
 source = "https://opengameart.org/content/different-steps-on-wood-stone-leaves-gravel-and-mud"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_35"]
 script = ExtResource("2_entry")
@@ -325,7 +290,6 @@ what = "Door Open SFX"
 author = "Oiboo"
 source = "https://opengameart.org/content/door-open-sfx"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/wardrobe_open__oiboo_door_open.ogg")
 
 [sub_resource type="Resource" id="Entry_36"]
 script = ExtResource("2_entry")
@@ -334,7 +298,6 @@ what = "Door Open, Door Close Set"
 author = "qubodup"
 source = "https://opengameart.org/content/door-open-door-close-set"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/cupboard_close__qubodup_door_close1.ogg", "assets/audio/cupboard_open__qubodup_door_open1.ogg")
 
 [sub_resource type="Resource" id="Entry_37"]
 script = ExtResource("2_entry")
@@ -343,7 +306,6 @@ what = "Elevator Music"
 author = "Pro Sensory"
 source = "https://opengameart.org/content/elevator-music"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_38"]
 script = ExtResource("2_entry")
@@ -352,7 +314,6 @@ what = "Footsteps Leather, Cloth, Armor"
 author = "HaelDB"
 source = "https://opengameart.org/content/footsteps-leather-cloth-armor"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_39"]
 script = ExtResource("2_entry")
@@ -361,7 +322,6 @@ what = "Frequency Static Sound Effects"
 author = "bretbernhoft"
 source = "https://opengameart.org/content/frequency-static-sound-effects"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_40"]
 script = ExtResource("2_entry")
@@ -370,7 +330,6 @@ what = "Fridge Loop 1"
 author = "Kresiek The Furry"
 source = "https://opengameart.org/content/fridge-loop-1"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_41"]
 script = ExtResource("2_entry")
@@ -379,7 +338,6 @@ what = "Hush Hamlet"
 author = "Zane Little Music"
 source = "https://opengameart.org/content/hush-hamlet"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_42"]
 script = ExtResource("2_entry")
@@ -388,7 +346,6 @@ what = "Interface Sounds"
 author = "Kenney"
 source = "https://opengameart.org/content/interface-sounds"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/refuse__kenney_error6.ogg")
 
 [sub_resource type="Resource" id="Entry_43"]
 script = ExtResource("2_entry")
@@ -397,7 +354,6 @@ what = "Interface Sounds (kenney.nl)"
 author = "Kenney"
 source = "https://kenney.nl/assets/interface-sounds"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_44"]
 script = ExtResource("2_entry")
@@ -406,7 +362,6 @@ what = "Jubilant Fanfare"
 author = "United States Navy Band"
 source = "https://commons.wikimedia.org/wiki/File:Jubilant_Fanfare.mp3"
 licence = "Public domain (US federal government work)"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_45"]
 script = ExtResource("2_entry")
@@ -415,7 +370,6 @@ what = "Jump Landing"
 author = "Macro"
 source = "https://opengameart.org/content/jump-landing"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_46"]
 script = ExtResource("2_entry")
@@ -424,7 +378,6 @@ what = "Jump Landing Sound"
 author = "qubodup"
 source = "https://opengameart.org/content/jump-landing-sound"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/land__qubodup_jumpland.ogg")
 
 [sub_resource type="Resource" id="Entry_47"]
 script = ExtResource("2_entry")
@@ -433,7 +386,6 @@ what = "Light Switch Turn On And Off SFX"
 author = "FunnyDude"
 source = "https://opengameart.org/content/light-switch-turn-on-and-off-sfx-0"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_48"]
 script = ExtResource("2_entry")
@@ -442,7 +394,6 @@ what = "Opening and Closing a Map Sounds"
 author = "Spring Spring"
 source = "https://opengameart.org/content/opening-and-closing-a-map-sounds"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_49"]
 script = ExtResource("2_entry")
@@ -451,7 +402,6 @@ what = "Park ambiences"
 author = "Thimras"
 source = "https://opengameart.org/content/park-ambiences"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_50"]
 script = ExtResource("2_entry")
@@ -460,7 +410,6 @@ what = "Pleasing Bell Sound Effect"
 author = "Spring Spring"
 source = "https://opengameart.org/content/pleasing-bell-sound-effect"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_51"]
 script = ExtResource("2_entry")
@@ -469,7 +418,6 @@ what = "Plingy Coin"
 author = "Fupi"
 source = "https://opengameart.org/content/plingy-coin"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_52"]
 script = ExtResource("2_entry")
@@ -478,7 +426,6 @@ what = "Pop sounds"
 author = "EZduzziteh"
 source = "https://opengameart.org/content/pop-sounds-0"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_53"]
 script = ExtResource("2_entry")
@@ -487,7 +434,6 @@ what = "Pop sounds"
 author = "cogitollc"
 source = "https://opengameart.org/content/pop-sounds"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/pop__cogitollc_pop1.ogg")
 
 [sub_resource type="Resource" id="Entry_54"]
 script = ExtResource("2_entry")
@@ -496,7 +442,6 @@ what = "Radio Noise 1"
 author = "Kresiek The Furry"
 source = "https://opengameart.org/content/radio-noise-1"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_55"]
 script = ExtResource("2_entry")
@@ -505,7 +450,6 @@ what = "Relaxing Music For Chandler"
 author = "Pro Sensory"
 source = "https://opengameart.org/content/relaxing-music-for-chandler"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_56"]
 script = ExtResource("2_entry")
@@ -514,7 +458,6 @@ what = "RPG Sound Pack"
 author = "artisticdude"
 source = "https://opengameart.org/content/rpg-sound-pack"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_57"]
 script = ExtResource("2_entry")
@@ -523,7 +466,6 @@ what = "Shopping Time!"
 author = "SkyleTheFrench"
 source = "https://opengameart.org/content/shopping-time"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_58"]
 script = ExtResource("2_entry")
@@ -532,7 +474,6 @@ what = "Silly song"
 author = "Timopy"
 source = "https://opengameart.org/content/silly-song"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_59"]
 script = ExtResource("2_entry")
@@ -541,7 +482,6 @@ what = "Sound Blip Echo"
 author = "Jetxp"
 source = "https://opengameart.org/content/sound-blip-echo"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_60"]
 script = ExtResource("2_entry")
@@ -550,7 +490,6 @@ what = "Sound Effects Pack"
 author = "OwlishMedia"
 source = "https://opengameart.org/content/sound-effects-pack"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/bounce__owlish_fruit2.ogg", "assets/audio/step_tile__owlish_hard1.ogg")
 
 [sub_resource type="Resource" id="Entry_61"]
 script = ExtResource("2_entry")
@@ -559,7 +498,6 @@ what = "Static"
 author = "xhunterko"
 source = "https://opengameart.org/content/static"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_62"]
 script = ExtResource("2_entry")
@@ -568,7 +506,6 @@ what = "stove switch"
 author = "TinyWorlds"
 source = "https://opengameart.org/content/stove-switch"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_63"]
 script = ExtResource("2_entry")
@@ -577,7 +514,6 @@ what = "Swishes Sound Pack"
 author = "artisticdude"
 source = "https://opengameart.org/content/swishes-sound-pack"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/throw__artisticdude_swish1.ogg")
 
 [sub_resource type="Resource" id="Entry_64"]
 script = ExtResource("2_entry")
@@ -586,7 +522,6 @@ what = "The Shop"
 author = "LEGIT Audio"
 source = "https://opengameart.org/content/the-shop"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_65"]
 script = ExtResource("2_entry")
@@ -595,7 +530,6 @@ what = "Ticking clock."
 author = "bart"
 source = "https://opengameart.org/content/ticking-clock"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_66"]
 script = ExtResource("2_entry")
@@ -604,7 +538,6 @@ what = "Toy Soldiers"
 author = "Zane Little Music"
 source = "https://opengameart.org/content/toy-soldiers"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_67"]
 script = ExtResource("2_entry")
@@ -613,7 +546,6 @@ what = "Two Left Socks"
 author = "congusbongus"
 source = "https://opengameart.org/content/two-left-socks"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_68"]
 script = ExtResource("2_entry")
@@ -622,7 +554,6 @@ what = "UI Sound Effects (Button Clicks, User Feedback, Notifications)"
 author = "Robin Lamb"
 source = "https://opengameart.org/content/ui-sound-effects-button-clicks-user-feedback-notifications"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_69"]
 script = ExtResource("2_entry")
@@ -631,7 +562,6 @@ what = "Various Sound Effects"
 author = "laleksic"
 source = "https://opengameart.org/content/various-sound-effects"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/drawer_close__laleksic_drawer_close.ogg", "assets/audio/drawer_open__laleksic_drawer_open.ogg")
 
 [sub_resource type="Resource" id="Entry_70"]
 script = ExtResource("2_entry")
@@ -640,7 +570,6 @@ what = "Vacuum Cleaner switch on, run, switch off 2 (Freesound)"
 author = "DJ Burnham"
 source = "https://freesound.org/people/DJ%20Burnham/sounds/141682/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_71"]
 script = ExtResource("2_entry")
@@ -649,7 +578,6 @@ what = "vacuum cleaner 1 (Freesound)"
 author = "5ro4"
 source = "https://freesound.org/people/5ro4/sounds/701271/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_72"]
 script = ExtResource("2_entry")
@@ -658,7 +586,6 @@ what = "washing machine rinse .wav (Freesound)"
 author = "afnan808"
 source = "https://freesound.org/people/afnan808/sounds/384121/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_73"]
 script = ExtResource("2_entry")
@@ -667,7 +594,6 @@ what = "2023-07-15-washing-machine.wav (Freesound)"
 author = "ilmari_freesound"
 source = "https://freesound.org/people/ilmari_freesound/sounds/696045/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_74"]
 script = ExtResource("2_entry")
@@ -676,7 +602,6 @@ what = "Washing machine (Freesound)"
 author = "vialgames"
 source = "https://freesound.org/people/vialgames/sounds/554124/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_75"]
 script = ExtResource("2_entry")
@@ -685,7 +610,6 @@ what = "Washing machine (Freesound)"
 author = "avreference"
 source = "https://freesound.org/people/avreference/sounds/588364/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_76"]
 script = ExtResource("2_entry")
@@ -694,7 +618,6 @@ what = "Metal Clank (Wobbling) (Freesound)"
 author = "Mish7913"
 source = "https://freesound.org/people/Mish7913/sounds/741356/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_77"]
 script = ExtResource("2_entry")
@@ -703,7 +626,6 @@ what = "Metal clanking (Freesound)"
 author = "TheGims"
 source = "https://freesound.org/people/TheGims/sounds/864409/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_78"]
 script = ExtResource("2_entry")
@@ -712,7 +634,6 @@ what = "metal-clanking-light.mp3 (Freesound)"
 author = "tomoisace"
 source = "https://freesound.org/people/tomoisace/sounds/524130/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_79"]
 script = ExtResource("2_entry")
@@ -721,7 +642,6 @@ what = "Very Big Whoosh (Freesound)"
 author = "Paul368"
 source = "https://freesound.org/people/Paul368/sounds/237980/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_80"]
 script = ExtResource("2_entry")
@@ -730,7 +650,6 @@ what = "H5_washing-machine.mp3 (Freesound)"
 author = "Iamgiorgio"
 source = "https://freesound.org/people/Iamgiorgio/sounds/371816/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_81"]
 script = ExtResource("2_entry")
@@ -739,7 +658,6 @@ what = "Washing Machine.m4a (Freesound)"
 author = "chris.t"
 source = "https://freesound.org/people/chris.t/sounds/452889/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_82"]
 script = ExtResource("2_entry")
@@ -748,7 +666,6 @@ what = "Whoosh.wav (Freesound)"
 author = "huw2k8"
 source = "https://freesound.org/people/huw2k8/sounds/459941/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_83"]
 script = ExtResource("2_entry")
@@ -757,7 +674,6 @@ what = "Small Hand Vacuum Cleaner (Freesound)"
 author = "SaintOche"
 source = "https://freesound.org/people/SaintOche/sounds/706109/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_84"]
 script = ExtResource("2_entry")
@@ -766,7 +682,6 @@ what = "Piano notes: Remeau upright in a living room (Freesound pack)"
 author = "Sadiquecat"
 source = "https://freesound.org/people/Sadiquecat/packs/43099/"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/piano/piano_remeau_21.ogg", "assets/audio/piano/piano_remeau_24.ogg", "assets/audio/piano/piano_remeau_28.ogg", "assets/audio/piano/piano_remeau_33.ogg", "assets/audio/piano/piano_remeau_36.ogg", "assets/audio/piano/piano_remeau_40.ogg", "assets/audio/piano/piano_remeau_45.ogg", "assets/audio/piano/piano_remeau_48.ogg", "assets/audio/piano/piano_remeau_52.ogg", "assets/audio/piano/piano_remeau_57.ogg", "assets/audio/piano/piano_remeau_60.ogg", "assets/audio/piano/piano_remeau_64.ogg", "assets/audio/piano/piano_remeau_69.ogg", "assets/audio/piano/piano_remeau_72.ogg", "assets/audio/piano/piano_remeau_76.ogg", "assets/audio/piano/piano_remeau_81.ogg", "assets/audio/piano/piano_remeau_84.ogg", "assets/audio/piano/piano_remeau_88.ogg", "assets/audio/piano/piano_remeau_93.ogg", "assets/audio/piano/piano_remeau_96.ogg", "assets/audio/piano/piano_remeau_100.ogg", "assets/audio/piano/piano_remeau_105.ogg", "assets/audio/piano/piano_remeau_108.ogg")
 
 [sub_resource type="Resource" id="Entry_85"]
 script = ExtResource("2_entry")
@@ -775,7 +690,6 @@ what = "Piano notes: Choiseul upright (Freesound pack)"
 author = "beskhu"
 source = "https://freesound.org/people/beskhu/packs/17088/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_86"]
 script = ExtResource("2_entry")
@@ -784,7 +698,6 @@ what = "Piano notes: Piano with a long reverb (Freesound pack)"
 author = "TEDAgame"
 source = "https://freesound.org/people/TEDAgame/packs/25405/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_87"]
 script = ExtResource("2_entry")
@@ -793,7 +706,6 @@ what = "Piano notes: Detuned old upright (Freesound pack)"
 author = "Sadiquecat"
 source = "https://freesound.org/people/Sadiquecat/packs/46231/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_88"]
 script = ExtResource("2_entry")
@@ -802,7 +714,6 @@ what = "Suburban Garden (day sky)"
 author = "Dimitrios Savva (photography), Jarod Guest (processing)"
 source = "https://polyhaven.com/a/suburban_garden"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/sky/suburban_garden_2k.hdr")
 
 [sub_resource type="Resource" id="Entry_89"]
 script = ExtResource("2_entry")
@@ -811,7 +722,6 @@ what = "Stuttgart Suburbs (dusk sky)"
 author = "Andreas Mischok"
 source = "https://polyhaven.com/a/stuttgart_suburbs"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_90"]
 script = ExtResource("2_entry")
@@ -820,34 +730,27 @@ what = "Street Lamp (night sky)"
 author = "Greg Zaal"
 source = "https://polyhaven.com/a/street_lamp"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_91"]
 script = ExtResource("2_entry")
 section = "Made for It Socks"
 what = "3D models: the house (and the flat it grew from), the outside, the Cabinets, the washer, the pairing machine, the Sock vacuum, the Wardrobe Station, the clock, the Socks and sock balls, the sock creature and its Wardrobe, the TV and the radio, the black cat, the house furniture, the assets modelled through MCP"
 author = "It Socks (tools/blender)"
-source = ""
 licence = "Part of the game"
-covers = PackedStringArray("assets/flat/*", "assets/house/*", "assets/blender_assets/*", "assets/exterior/*", "assets/cabinet/*", "assets/washing_machine/*", "assets/pairing_machine/*", "assets/sock_vacuum/*", "assets/wardrobe_station/*", "assets/clock/*", "assets/sock/*.glb", "assets/avatar/*", "assets/tv/*", "assets/radio/*.glb", "assets/parts/*", "assets/laundry_bin/*", "assets/cat/*", "assets/grotto_lantern/*", "assets/encyclopedia_book/*", "assets/hamper/*", "assets/sock_detector/*", "assets/vacuum_devices/*", "assets/furniture/*", "assets/blender_assets.json", "assets/sock/knit.png")
 
 [sub_resource type="Resource" id="Entry_92"]
 script = ExtResource("2_entry")
 section = "Made for It Socks"
 what = "Sock prints (the print atlas)"
 author = "It Socks (tools/gen_prints.py, tools/pack_prints.gd)"
-source = ""
 licence = "Part of the game"
-covers = PackedStringArray("assets/sock/prints.*")
 
 [sub_resource type="Resource" id="Entry_93"]
 script = ExtResource("2_entry")
 section = "Made for It Socks"
 what = "Icons and keycaps"
 author = "It Socks (tools/gen_icons.py)"
-source = ""
 licence = "Part of the game"
-covers = PackedStringArray("assets/ui/*", "assets/look/*")
 
 [sub_resource type="Resource" id="Entry_94"]
 script = ExtResource("2_entry")
@@ -856,25 +759,20 @@ what = "Guide card print (line drawings; captions set in DejaVu Sans, Bitstream 
 author = "It Socks (tools/guide_card.py)"
 source = "https://dejavu-fonts.github.io"
 licence = "Part of the game"
-covers = PackedStringArray("assets/guide/*")
 
 [sub_resource type="Resource" id="Entry_95"]
 script = ExtResource("2_entry")
 section = "Made for It Socks"
 what = "Synthesised sounds and music (no samples)"
 author = "It Socks (tools/gen_sounds.py)"
-source = ""
 licence = "Part of the game"
-covers = PackedStringArray("assets/audio/synth/*", "assets/audio/cycle__a.ogg", "assets/audio/throw_charge__b.ogg", "assets/audio/knockdown__a.ogg", "assets/audio/ping__d.ogg")
 
 [sub_resource type="Resource" id="Entry_96"]
 script = ExtResource("2_entry")
 section = "Made for It Socks"
 what = "Source notes"
 author = "It Socks"
-source = ""
 licence = "Part of the game"
-covers = PackedStringArray("assets/*/SOURCES.md")
 
 [sub_resource type="Resource" id="Entry_97"]
 script = ExtResource("2_entry")
@@ -883,7 +781,6 @@ what = "Cozy Puzzle Title (radio, Theme)"
 author = "MintoDog"
 source = "https://opengameart.org/content/cozy-puzzle-title"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_98"]
 script = ExtResource("2_entry")
@@ -892,7 +789,6 @@ what = "Cozy Puzzle In-Game 1 (radio, Theme)"
 author = "MintoDog"
 source = "https://opengameart.org/content/cozy-puzzle-in-game-1"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_99"]
 script = ExtResource("2_entry")
@@ -901,7 +797,6 @@ what = "Cozy Puzzle Stage Select (radio, Theme)"
 author = "MintoDog"
 source = "https://opengameart.org/content/cozy-puzzle-stage-select"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_100"]
 script = ExtResource("2_entry")
@@ -910,7 +805,6 @@ what = "A cup of tea (radio, Lo-fi)"
 author = "TAD"
 source = "https://opengameart.org/content/lofi-compilation"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_101"]
 script = ExtResource("2_entry")
@@ -919,7 +813,6 @@ what = "Mocha Frapp (radio, Lo-fi)"
 author = "Pro Sensory"
 source = "https://opengameart.org/content/mocha-frapp"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_102"]
 script = ExtResource("2_entry")
@@ -928,7 +821,6 @@ what = "lofi hip hop (radio, Lo-fi)"
 author = "omfgdude"
 source = "https://opengameart.org/content/lofi-hip-hop"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_103"]
 script = ExtResource("2_entry")
@@ -937,7 +829,6 @@ what = "At the Jazz Band Ball (1918) (radio, Jazz 78s)"
 author = "Original Dixieland Jazz Band"
 source = "https://commons.wikimedia.org/wiki/File:At_the_jazz_band_ball_(1918_sound_recording).mp3"
 licence = "Public domain (US)"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_104"]
 script = ExtResource("2_entry")
@@ -946,7 +837,6 @@ what = "Farewell Blues (1923) (radio, Jazz 78s)"
 author = "The Virginians"
 source = "https://commons.wikimedia.org/wiki/File:Farewell_Blues_(1923_sound_recording).mp3"
 licence = "Public domain (US)"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_105"]
 script = ExtResource("2_entry")
@@ -955,7 +845,6 @@ what = "Dippermouth Blues (1923) (radio, Jazz 78s)"
 author = "King Oliver's Creole Jazz Band"
 source = "https://commons.wikimedia.org/wiki/File:Dippermouth_Blues_-_KING_OLIVER%27S_JAZZ_BAND.flac"
 licence = "Public domain (US)"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_106"]
 script = ExtResource("2_entry")
@@ -964,7 +853,6 @@ what = "Funked Up (radio, Funk)"
 author = "Joth"
 source = "https://opengameart.org/content/funked-up"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_107"]
 script = ExtResource("2_entry")
@@ -973,7 +861,6 @@ what = "Raspberry Jam (radio, Funk)"
 author = "congusbongus"
 source = "https://opengameart.org/content/raspberry-jam"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_108"]
 script = ExtResource("2_entry")
@@ -982,7 +869,6 @@ what = "Funky Disco Beats to Boogie/Woogie to (radio, Funk)"
 author = "Fupi"
 source = "https://opengameart.org/content/funky-disco-beats-to-boogiewoogie-to"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_109"]
 script = ExtResource("2_entry")
@@ -991,7 +877,6 @@ what = "Heavy Battle 1 (radio, Metal)"
 author = "MintoDog"
 source = "https://opengameart.org/content/heavy-battle-1"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_110"]
 script = ExtResource("2_entry")
@@ -1000,7 +885,6 @@ what = "Boss Battle #9 [Metal] (radio, Metal)"
 author = "nene"
 source = "https://opengameart.org/content/boss-battle-9-metal"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_111"]
 script = ExtResource("2_entry")
@@ -1009,7 +893,6 @@ what = "Unholy Surge (radio, Metal)"
 author = "vitalezzz"
 source = "https://opengameart.org/content/unholy-surge"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_112"]
 script = ExtResource("2_entry")
@@ -1018,7 +901,6 @@ what = "Unchained Destiny [Rock] (radio, Rock)"
 author = "nene"
 source = "https://opengameart.org/content/unchained-destiny-rock"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_113"]
 script = ExtResource("2_entry")
@@ -1027,7 +909,6 @@ what = "Action Track (radio, Rock)"
 author = "LushoGames"
 source = "https://opengameart.org/content/action-track"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [sub_resource type="Resource" id="Entry_114"]
 script = ExtResource("2_entry")
@@ -1036,11 +917,7 @@ what = "Fast Cheerful punk rock lo-fi (radio, Rock)"
 author = "annandistance"
 source = "https://opengameart.org/content/fast-cheerful-punk-rock-lo-fi"
 licence = "CC0 1.0"
-covers = PackedStringArray()
 
 [resource]
 script = ExtResource("1_credits")
-game_lines = PackedStringArray("It Socks", "A game by Zdenek Dolezal", "Built with Godot Engine")
 entries = Array[ExtResource("2_entry")]([SubResource("Entry_0"), SubResource("Entry_1"), SubResource("Entry_2"), SubResource("Entry_3"), SubResource("Entry_4"), SubResource("Entry_5"), SubResource("Entry_6"), SubResource("Entry_7"), SubResource("Entry_8"), SubResource("Entry_9"), SubResource("Entry_10"), SubResource("Entry_11"), SubResource("Entry_12"), SubResource("Entry_13"), SubResource("Entry_14"), SubResource("Entry_15"), SubResource("Entry_16"), SubResource("Entry_17"), SubResource("Entry_18"), SubResource("Entry_19"), SubResource("Entry_20"), SubResource("Entry_21"), SubResource("Entry_22"), SubResource("Entry_23"), SubResource("Entry_24"), SubResource("Entry_25"), SubResource("Entry_26"), SubResource("Entry_27"), SubResource("Entry_28"), SubResource("Entry_29"), SubResource("Entry_30"), SubResource("Entry_31"), SubResource("Entry_32"), SubResource("Entry_33"), SubResource("Entry_34"), SubResource("Entry_35"), SubResource("Entry_36"), SubResource("Entry_37"), SubResource("Entry_38"), SubResource("Entry_39"), SubResource("Entry_40"), SubResource("Entry_41"), SubResource("Entry_42"), SubResource("Entry_43"), SubResource("Entry_44"), SubResource("Entry_45"), SubResource("Entry_46"), SubResource("Entry_47"), SubResource("Entry_48"), SubResource("Entry_49"), SubResource("Entry_50"), SubResource("Entry_51"), SubResource("Entry_52"), SubResource("Entry_53"), SubResource("Entry_54"), SubResource("Entry_55"), SubResource("Entry_56"), SubResource("Entry_57"), SubResource("Entry_58"), SubResource("Entry_59"), SubResource("Entry_60"), SubResource("Entry_61"), SubResource("Entry_62"), SubResource("Entry_63"), SubResource("Entry_64"), SubResource("Entry_65"), SubResource("Entry_66"), SubResource("Entry_67"), SubResource("Entry_68"), SubResource("Entry_69"), SubResource("Entry_70"), SubResource("Entry_71"), SubResource("Entry_72"), SubResource("Entry_73"), SubResource("Entry_74"), SubResource("Entry_75"), SubResource("Entry_76"), SubResource("Entry_77"), SubResource("Entry_78"), SubResource("Entry_79"), SubResource("Entry_80"), SubResource("Entry_81"), SubResource("Entry_82"), SubResource("Entry_83"), SubResource("Entry_84"), SubResource("Entry_85"), SubResource("Entry_86"), SubResource("Entry_87"), SubResource("Entry_88"), SubResource("Entry_89"), SubResource("Entry_90"), SubResource("Entry_91"), SubResource("Entry_92"), SubResource("Entry_93"), SubResource("Entry_94"), SubResource("Entry_95"), SubResource("Entry_96"), SubResource("Entry_97"), SubResource("Entry_98"), SubResource("Entry_99"), SubResource("Entry_100"), SubResource("Entry_101"), SubResource("Entry_102"), SubResource("Entry_103"), SubResource("Entry_104"), SubResource("Entry_105"), SubResource("Entry_106"), SubResource("Entry_107"), SubResource("Entry_108"), SubResource("Entry_109"), SubResource("Entry_110"), SubResource("Entry_111"), SubResource("Entry_112"), SubResource("Entry_113"), SubResource("Entry_114")])
-licence_names = PackedStringArray("The Godot Engine licence", "Blender")
-licence_links = PackedStringArray("https://godotengine.org/license", "https://www.blender.org/about/license/")
