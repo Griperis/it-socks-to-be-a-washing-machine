@@ -53,3 +53,4 @@ terms: [Sock, Mess]
   that the push rule does not count as a push (its motion explains them). Seen only in the probe.
 - Files: tests/drawn_floor_watch.gd, tests/drawn_floor_watch.gd.uid, tests/mess_settle_test.gd
 - Verified: touched `PASS 286 checks, 31 cases`; rules `PASS rules: 9 rules, no new hit`
+- Merged: 9f53ce79 (2026-11-25, branch core/70-sock-under-floor-frame)
