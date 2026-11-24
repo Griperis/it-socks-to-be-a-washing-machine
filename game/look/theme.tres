@@ -19,6 +19,23 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_focus_ring"]
+draw_center = false
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.94, 0.82, 1)
+corner_radius_top_left = 17
+corner_radius_top_right = 17
+corner_radius_bottom_right = 17
+corner_radius_bottom_left = 17
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
+anti_aliasing = true
+
 [sub_resource type="StyleBox" id="Keycap_panel"]
 script = ExtResource("1_keycap")
 face_colour = Color(1, 0.956863, 0.878431, 1)
@@ -289,7 +306,7 @@ KeycapButton/styles/hover = SubResource("Keycap_KeycapButton_hover")
 KeycapButton/styles/pressed = SubResource("Keycap_KeycapButton_pressed")
 KeycapButton/styles/hover_pressed = SubResource("Keycap_KeycapButton_pressed")
 KeycapButton/styles/disabled = SubResource("Keycap_KeycapButton_disabled")
-KeycapButton/styles/focus = SubResource("Keycap_KeycapButton_hover")
+KeycapButton/styles/focus = SubResource("StyleBoxFlat_focus_ring")
 ExitButton/base_type = &"Button"
 ExitButton/colors/font_color = Color(1, 1, 1, 1)
 ExitButton/colors/font_pressed_color = Color(1, 1, 1, 1)
@@ -307,7 +324,7 @@ ExitButton/styles/hover = SubResource("Keycap_ExitButton_hover")
 ExitButton/styles/pressed = SubResource("Keycap_ExitButton_pressed")
 ExitButton/styles/hover_pressed = SubResource("Keycap_ExitButton_pressed")
 ExitButton/styles/disabled = SubResource("Keycap_ExitButton_disabled")
-ExitButton/styles/focus = SubResource("Keycap_ExitButton_hover")
+ExitButton/styles/focus = SubResource("StyleBoxFlat_focus_ring")
 CornerKey/base_type = &"KeycapButton"
 CornerKey/constants/icon_max_width = 40
 EscButton/base_type = &"Button"

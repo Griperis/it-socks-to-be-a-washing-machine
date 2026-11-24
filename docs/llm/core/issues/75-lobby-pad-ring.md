@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: bug
 area: core
 feature: frame
@@ -25,3 +25,10 @@ core/67 added the Lobby's pad route, but in its stills (`builds/review-lobby-det
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-24 (stopped at the first still, for the designer)
+- Reproduced: the Theme's `focus` style of KeycapButton and ExitButton was the hover face (a slightly lighter keycap), so a pad-selected button looked like any other (`pad-ring-before-crop.png`).
+- Changed: `focus` of KeycapButton and ExitButton is now a ring (cream, 4 px, 5 px out, rounded; `StyleBoxFlat_focus_ring` in `game/look/theme.tres`, placeholder look). Note: a mouse-clicked button keeps focus too, so it shows the ring after a click.
+- Still: `builds/review-lobby-details`-style, now `builds/review-lobby-pad-ring/pad-ring-after-first.png` (the "i" key selected).
+- Not yet done: the focus-style-drawn assertion in the pad route's case, a drawer still with a selected drawer button, ChoiceButton/ChoiceOnButton (options screens) left as they are. Waits for the designer's go on the ring's look.
+- Files: game/look/theme.tres
