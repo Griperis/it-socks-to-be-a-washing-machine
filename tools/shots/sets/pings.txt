@@ -1,0 +1,9 @@
+# core/43: pings in the zoo's Pings station, the signs and name tags hidden ("quiet"), seen through the
+# player's own eyes. A highlight on the box made from its side, seen from the front through the wall (the
+# outline in the player's colour); the emoji wheel open with the pointer on Help; Help on the Near Sock and
+# the stand-in Teammate's Nice on the box (its copy beside its head); a Here ping behind the player, the
+# hint arrow at the screen's edge pointing to it. 60 frames a second; the ping is made at frame 30.
+highlight   --size=1280x720 --do='20:ping:quiet;30:ping:highlight' --shots=60
+wheel       --size=1280x720 --do='20:ping:quiet;30:ping:wheel' --shots=45
+emoji       --size=1280x720 --do='20:ping:quiet;30:ping:emoji' --shots=60
+arrow       --size=1280x720 --do='20:ping:quiet;30:ping:away' --shots=60

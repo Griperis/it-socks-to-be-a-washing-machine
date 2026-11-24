@@ -14,6 +14,8 @@ extends Node3D
 const SKIP := &"no_outline"
 ## The copies it makes are in this group (never outlined themselves).
 const COPY := &"outline_copy"
+## A ping's Outline beside a thing's own (core/43): Outline.of() never returns it.
+const PING := &"ping_outline"
 ## The copies' node name.
 const COPY_NAME := &"OutlineCopy"
 ## The style when none is set: the crosshair's warm white.
@@ -67,7 +69,7 @@ static func of(node: Node) -> Outline:
 
 static func _child_outline(node: Node) -> Outline:
 	for child in node.get_children():
-		if child is Outline:
+		if child is Outline and not child.is_in_group(PING):
 			return child as Outline
 	return null
 

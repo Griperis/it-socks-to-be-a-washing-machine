@@ -13,6 +13,8 @@ const TURN := "Turn"
 const CYCLE := "Cycle"
 const JUMP := "Jump"
 const CROUCH := "Crouch"
+## Pinging works (core/43 line 56, Q2590: only this one, no hold hint).
+const PING := "Ping"
 ## A lying Teammate under the crosshair, and a dragged player's one hint (coop/10, the old prompts.gd, Q2489).
 const DRAG := "Hold: Drag"
 const STRUGGLE := "Mash: Struggle"
@@ -64,8 +66,9 @@ static func verb_title(open: bool, noun: String) -> String:
 
 
 ## The corner's key hints: what each key does now (A04-A07, Q2361, Q2365). `held` is how many items
-## the Hands hold; a held item is always a Sock or a Pair today, so it can zoom and turn.
-static func hints(held: int, pad := false) -> Array[Prompt]:
+## the Hands hold; a held item is always a Sock or a Pair today, so it can zoom and turn. With `ping`
+## (pinging works) "Ping" stands after "Cycle", before "Jump" (core/43 line 56).
+static func hints(held: int, pad := false, ping := false) -> Array[Prompt]:
 	var out: Array[Prompt] = []
 	if held > 0:
 		out.append(Prompt.of(DROP_THROW, keys(Player.DROP_THROW, pad)))
@@ -73,6 +76,8 @@ static func hints(held: int, pad := false) -> Array[Prompt]:
 		out.append(Prompt.of(TURN, keys(Player.TURN, pad)))
 	if held > 1:
 		out.append(Prompt.of(CYCLE, keys(Player.HANDS_NEXT, pad)))
+	if ping:
+		out.append(Prompt.of(PING, keys(Pinger.CLICK_MIDDLE, pad)))
 	out.append(Prompt.of(JUMP, keys(Player.JUMP, pad)))
 	out.append(Prompt.of(CROUCH, keys(Player.CROUCH, pad)))
 	return out

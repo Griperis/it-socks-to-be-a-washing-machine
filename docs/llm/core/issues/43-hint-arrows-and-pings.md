@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: in-progress
 kind: build
 area: ui
 feature: core

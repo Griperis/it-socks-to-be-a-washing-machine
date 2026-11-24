@@ -21,6 +21,9 @@
 ## the corner still says "Drop", and a short right click asks to hand them the active item instead of
 ## a drop. What the Host answers shows here: "Not their mate" to the giver, "Paired!" or "Hands full"
 ## to the receiver.
+##
+## Pings (core/43): its Pinger reads the middle button (a tap pings, a hold opens the emoji wheel);
+## while the wheel is open the mouse and the right stick steer its pointer, not the view.
 class_name Player
 extends CharacterBody3D
 
@@ -84,6 +87,8 @@ const FULL_OUTLINE := preload("res://game/outline/full.tres")
 @onready var _ghosts: GuestGhosts = %Ghosts
 ## The knocked view's vignette (Q2490).
 @onready var _vignette: ColorRect = %Vignette
+## The middle button's pings and the emoji wheel (core/43).
+@onready var _pinger: Pinger = %Pinger
 
 ## True while a menu has the player's input (set_input_blocked()).
 var _input_blocked := false
@@ -202,6 +207,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed(LET_MOUSE_GO):
 		_captured = false
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	elif event is InputEventMouseMotion and _captured and _pinger.steering():
+		_pinger.steer((event as InputEventMouseMotion).relative)  # core/43 line 4: the wheel, not the view
 	elif event is InputEventMouseMotion and _captured:
 		var motion := event as InputEventMouseMotion
 		var step := tuning.look_sensitivity * Settings.get_float(Settings.MOUSE_SPEED) * zoom_slow()
@@ -382,7 +389,10 @@ func _process(delta: float) -> void:
 		return
 	if not _input_blocked:
 		var stick := Input.get_vector(LOOK_LEFT, LOOK_RIGHT, LOOK_UP, LOOK_DOWN)
-		if stick != Vector2.ZERO:
+		if _pinger.steering():
+			if _hud.pad:
+				_pinger.aim_stick(stick)  # core/43 line 8: the right stick steers the wheel
+		elif stick != Vector2.ZERO:
 			var step := deg_to_rad(tuning.pad_look_speed) * Settings.get_float(Settings.PAD_SPEED) * delta * zoom_slow()
 			_turn(-stick.x * step, -stick.y * step * _y_sign())
 	_drive_own_body(delta)
@@ -478,6 +488,7 @@ func _update_hands(delta: float) -> void:
 	_held_view.me = me
 	_held_view.turning = _acting() and Input.is_action_pressed(TURN)
 	_update_screen(h)
+	_pinger.tick(delta, _acting() and not _swallow_press)
 	if not _acting():
 		# A menu opening or the mouse let go mid-charge drops the charge without a throw.
 		_drop_down_at = -1.0
@@ -715,7 +726,7 @@ func _update_screen(h: Hands) -> void:
 	_hud.show_target(target)
 	var items := h.items_of(me) if h != null else PackedInt32Array()
 	var capacity := h.tuning_of(me).capacity if h != null else 0
-	var hints := Prompts.hints(items.size(), _hud.pad)
+	var hints := Prompts.hints(items.size(), _hud.pad, _pinger.can_ping())
 	var kd := knockdowns()
 	if kd != null and kd.dragger_of(me) >= 0:
 		hints.clear()
@@ -736,6 +747,11 @@ func _update_screen(h: Hands) -> void:
 
 static func _first(list: Array[String]) -> String:
 	return list[0] if not list.is_empty() else ""
+
+
+## The middle button's pings (core/43).
+func pinger() -> Pinger:
+	return _pinger
 
 
 ## A Guest's guesses of its own actions (coop/09).

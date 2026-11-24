@@ -303,6 +303,8 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			return _knockdown(world, arg)
 		"hand_off":
 			return _hand_off(world, arg)
+		"ping":
+			return _ping(world, arg)
 		"wheel":
 			# The next held item becomes active, as a wheel step does.
 			var player := LevelRuntime.of(world).player
@@ -962,6 +964,60 @@ static func _hand_off(world: Node, arg: String) -> bool:
 			if hands.mess.state_of(pair) != Mess.State.LYING:
 				push_warning("hand_off full: the Pair did not lie down")
 	return true
+
+
+## core/43, the zoo's Pings station. "highlight": a tap's ping on the box, made from its side, seen from
+## the front through the wall (its outline in this player's colour). "wheel": the emoji wheel open over the
+## Near Sock with the pointer on Help. "emoji": Help on the Near Sock, and the stand-in Teammate's Nice on
+## the box (its copy beside the stand-in's head). "away": a Here ping on the floor, then this player turned
+## away from it: the hint arrow at the screen's edge. "quiet": every Label3D hidden.
+static func _ping(world: Node, arg: String) -> bool:
+	var runtime := LevelRuntime.of(world)
+	var player := runtime.player
+	var pings := runtime.pings
+	var station := world.get_node("Stations/Pings") as Node3D
+	var box := station.get_node("Box") as Node3D
+	var near := (station.get_node("Spots/Near") as SockSpot).sock
+	match arg:
+		"quiet":
+			for node in world.find_children("*", "Label3D", true, false):
+				(node as Label3D).visible = false
+		"highlight":
+			_face_point(player, box.global_position + Vector3(1.6, -0.25, 0.0), box.global_position)
+			_ping_aimed(player, pings, Pings.HIGHLIGHT)
+			_face_point(player, station.global_position + Vector3(0.6, 0.0, 2.6), box.global_position)
+			player.capture_mouse()
+		"wheel", "emoji":
+			var at := runtime.mess.box_of(near).get_center()
+			_face_point(player, Vector3(at.x + 0.6, 0.0, at.z + 2.2), at)
+			player.capture_mouse()
+			if arg == "wheel":
+				player.hud().wheel().open()
+				player.hud().wheel().steer(Vector2(140.0, -50.0))
+			else:
+				_ping_aimed(player, pings, Pings.EMOJIS.find("help"))
+				# The stand-in pings the floor in front of it, as a Teammate's answer would arrive.
+				var stand_in := {"sock": -1, "mate": -1, "path": "", "at": station.global_position + Vector3(-1.6, 0.0, -0.4),
+						"normal": Vector3.UP, "emoji": Pings.EMOJIS.find("nice"), "seconds": pings.tuning.seconds, "n": pings.serial + 1}
+				pings.parts.apply(pings.grant({"pings": pings.pings.merged({9: stand_in}), "serial": pings.serial + 1}))
+				_face_point(player, Vector3(at.x + 0.9, 0.0, at.z + 1.9), at + Vector3(-0.6, 0.7, -1.0))
+		"away":
+			var floor_at := station.global_position + Vector3(0.6, 0.0, 1.2)
+			_face_point(player, floor_at + Vector3(0.0, 0.0, 2.0), floor_at)
+			_ping_aimed(player, pings, Pings.EMOJIS.find("here"))
+			_face_point(player, floor_at + Vector3(0.0, 0.0, 2.0), floor_at + Vector3(-6.0, 1.2, 5.0))
+			player.capture_mouse()
+	return true
+
+
+## `player` pings what its crosshair points at now, as its middle button would.
+static func _ping_aimed(player: Player, pings: Pings, emoji: int) -> void:
+	var aim := PingAim.find(player, pings.mess, player.eyes(), player.aim_dir(), pings.tuning, player.player_id(),
+			player.hands().hand_off_numbers(), player.knockdowns(), [player.get_rid()])
+	if aim.is_empty():
+		push_warning("ping: the crosshair points at nothing")
+		return
+	pings.ping(player.player_id(), aim, emoji)
 
 
 ## This player picks the Socks of the station's spots `names`, standing by each.

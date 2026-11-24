@@ -14,6 +14,11 @@
 [ext_resource type="Script" uid="uid://o2nt8eeij1by" path="res://game/hands/guest_ghosts.gd" id="11_ghosts"]
 [ext_resource type="Resource" uid="uid://5buhkrgy1c5z" path="res://game/hands/ghost_tuning.tres" id="12_ghost_tuning"]
 [ext_resource type="PackedScene" uid="uid://cn3a05m85kv70" path="res://game/knockdown/vignette.tscn" id="13_vignette"]
+[ext_resource type="Script" uid="uid://bsucridbv85rx" path="res://game/ui/hint_arrows.gd" id="14_arrows"]
+[ext_resource type="Resource" uid="uid://o0q2l0dhm8qp" path="res://game/ui/hint_arrow_tuning.tres" id="15_arrow_tuning"]
+[ext_resource type="PackedScene" uid="uid://bgma7k1j0iwkv" path="res://game/ping/ping_wheel.tscn" id="16_wheel"]
+[ext_resource type="Script" uid="uid://tiy0agr0vohh" path="res://game/player/pinger.gd" id="17_pinger"]
+[ext_resource type="Resource" uid="uid://e3fid8403c2f" path="res://game/ping/ping_tuning.tres" id="18_ping_tuning"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -162,6 +167,19 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("5_ring")
 
+[node name="HintArrows" type="Control" parent="Hud" unique_id=1460313011]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("14_arrows")
+tuning = ExtResource("15_arrow_tuning")
+
+[node name="PingWheel" parent="Hud" unique_id=1460313012 instance=ExtResource("16_wheel")]
+
 [node name="Footsteps" type="Node" parent="." unique_id=1954666980]
 script = ExtResource("6_steps")
 tuning = ExtResource("7_steps_tuning")
@@ -170,3 +188,9 @@ tuning = ExtResource("7_steps_tuning")
 unique_name_in_owner = true
 script = ExtResource("11_ghosts")
 tuning = ExtResource("12_ghost_tuning")
+
+[node name="Pinger" type="Node" parent="." node_paths=PackedStringArray("wheel") unique_id=1460313013]
+unique_name_in_owner = true
+script = ExtResource("17_pinger")
+tuning = ExtResource("18_ping_tuning")
+wheel = NodePath("../Hud/PingWheel")

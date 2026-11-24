@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="HintArrowTuning" format=3 uid="uid://o0q2l0dhm8qp"]
+
+[ext_resource type="Script" uid="uid://bovf8x8osdn6h" path="res://game/ui/hint_arrow_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")

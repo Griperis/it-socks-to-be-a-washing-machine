@@ -52,6 +52,9 @@ var hands_tuning: HandsTuning
 @onready var _held: HBoxContainer = $HeldInfo
 @onready var _message_row: Control = $MessageRow
 @onready var _message: Label = $MessageRow/Message
+## The off-screen hint arrows and the ping's emoji wheel (core/43).
+@onready var _arrows: HintArrows = $HintArrows
+@onready var _wheel: PingWheel = $PingWheel
 
 var _sig: Dictionary[String, String] = {"prompt": "", "aimed": "", "sense": "", "held": "", "hints": ""}
 var _text: Dictionary[String, String] = {"prompt": "", "aimed": "", "sense": "", "held": "", "hints": ""}
@@ -70,6 +73,7 @@ func _ready() -> void:
 	if tuning == null:
 		tuning = HudTuning.new()
 	_crosshair.modulate = CROSSHAIR_OK
+	_arrows.keep_clear = keep_clear
 
 
 ## The last input decides keyboard or pad keycaps (the old Controls.pad_active).
@@ -82,6 +86,30 @@ func _input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	_place_held()
+	_arrows.camera = camera
+
+
+## The hint arrows (core/43 lines 44-55): pieces add their sources there.
+func hint_arrows() -> HintArrows:
+	return _arrows
+
+
+## The ping's emoji wheel (core/43 lines 9-15).
+func wheel() -> PingWheel:
+	return _wheel
+
+
+## The parts of the screen a hint arrow keeps clear of (line 51), in pixels: the crosshair's prompt, the
+## aimed Sock's row, the message, the held readout and the key hints, each while it shows something.
+func keep_clear() -> Array[Rect2]:
+	var out: Array[Rect2] = []
+	for box: Control in [_prompts, _aimed, _sense, _held, _hints]:
+		if box.is_visible_in_tree() and box.get_child_count() > 0 and box.size.x > 0.0:
+			out.append(box.get_global_rect())
+	for line: Control in [_message, _named]:
+		if line != null and line.is_visible_in_tree():
+			out.append(line.get_global_rect())
+	return out
 
 
 # --- What the player tells it ----------------------------------------------------------------------

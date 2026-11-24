@@ -5,7 +5,8 @@
 ## a cycle is the player's own). A Pair shelved is heard in the world at its drawer by everyone, and a
 ## leaver's dropped Hands at their last place. A knockdown (coop/10) is heard by everyone at the hit
 ## point and buzzes the knocked player's pad; a grab buzzes the dragged player's. A Hand-off or a catch
-## (core/42) is the giver's drop and the receiver's pick or pair. Refusals are said by Player.say(),
+## (core/42) is the giver's drop and the receiver's pick or pair. A ping (core/43) is one blip at its spot
+## for everyone. Refusals are said by Player.say(),
 ## which plays "refuse".
 ## Looks only: it reads the answer and decides nothing.
 class_name Hearing
@@ -66,6 +67,11 @@ static func applied(ev: Dictionary, me: int, parts: Parts, guessed := false) -> 
 				PadRumble.play(PadRumble.KNOCK)
 		&"hand_off", &"catch":
 			_handed(ev, me, parts)
+		&"ping":
+			# core/43 lines 41, 43: one soft blip at the spot on every machine, the pinger's and the
+			# pinged Teammate's too, the same for a highlight and every emoji.
+			if ev.get("at") is Vector3:
+				Sounds.play_at(&"ping", ev["at"])
 		&"shelve", &"thrown_shelve":
 			_shelved(ev, parts)
 		&"left":
