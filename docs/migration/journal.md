@@ -1162,3 +1162,23 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/43, hint arrows and pings: the ping wheel, ping marks seen by every player, the hint arrows at the screen edge, PROTOCOL 20; merged (main 725052d) |
 | Cost | about 460k subagent tokens |
 | Surprises | its merge of main met two clashes (sound catalogue, PROTOCOL), both resolved; `git merge` twice failed reading a tree it had just written, a retry went through; the X-ray, Mate Radar and Laundry bin arrow sources stay [later] for M4/M5 |
+
+---
+
+| Ticket | core/69, the flight_start heap flake: earlier cases change Jolt's body order and one poured Sock is pushed under the floor for a step before the Mess puts it back; the case now reads heights after the put-back; no game number changed; merged (main 0783a6a) |
+| Cost | about 121k subagent tokens |
+| Surprises | follow-up core/70: whether that Sock can be drawn under the floor for one frame (designer, 2026-11-24) |
+
+---
+
+| Ticket | maintenance/02, the suite's time: coop_knockdown and room_doors run the game clock at 2x (knockdown about 77 s to 35 s); merged on the designer's word with the rest in maintenance/03 (main 87c1c85) |
+| Cost | about 86k subagent tokens |
+| Surprises | the full run was 146-149 s after it (235-258 s before, partly other agents' runs sharing the 8 slots); coop_hands and coop_hand_off fail at 2x |
+
+---
+
+| Ticket | core/66, the Lobby look: players on plinths with their names, the World card at the top, the World settings drawer, World rows named by members (Q2596-Q2598); merged (main d506f7f) |
+| Cost | about 174k subagent tokens |
+| Surprises | the "Ada," cut and the drawer row's tiny details line stay [later] (Q2598) |
+| Looks | builds/review-lobby/ |
+| Decisions | Q2596-Q2598 |
