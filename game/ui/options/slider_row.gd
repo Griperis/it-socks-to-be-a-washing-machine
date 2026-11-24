@@ -23,9 +23,18 @@ func _ready() -> void:
 	_slider.min_value = min_value
 	_slider.max_value = max_value
 	_slider.step = step
+	# A slider draws no focus style of its own: the row draws the Theme's selection ring round it (core/75).
+	_slider.focus_entered.connect(queue_redraw)
+	_slider.focus_exited.connect(queue_redraw)
+	_slider.get_theme_stylebox(&"focus").changed.connect(queue_redraw)
 	_slider.value_changed.connect(func(v: float) -> void:
 		_value.text = words(v)
 		picked.emit(key, v))
+
+
+func _draw() -> void:
+	if _slider != null and _slider.has_focus():
+		draw_style_box(_slider.get_theme_stylebox(&"focus"), Rect2(_slider.position, _slider.size))
 
 
 ## Shows `value` (no signal).

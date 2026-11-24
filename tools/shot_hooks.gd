@@ -29,6 +29,18 @@ static func act(world: Node, what: String, arg: String) -> bool:
 				_:
 					(world as TitleScreen).show_page(arg)
 			return true
+		"pad":
+			# core/75: a pad press, then the first control named `arg` (anywhere under the scene, or the
+			# ESC menu's layer) takes the selection, so its ring shows.
+			var ev := InputEventJoypadButton.new()
+			ev.button_index = JOY_BUTTON_DPAD_DOWN
+			ev.pressed = true
+			FocusRingStyle.on_input(ev)
+			var found := world.find_child(arg, true, false) as Control
+			if found == null:
+				found = LevelRuntime.of(world).esc_menu.find_child(arg, true, false) as Control
+			found.grab_focus()
+			return true
 		"name":
 			# core/64: types `arg` in the title's "Your name" field (Multiplayer page).
 			((world as TitleScreen).get_node("%NameField") as LineEdit).text = arg

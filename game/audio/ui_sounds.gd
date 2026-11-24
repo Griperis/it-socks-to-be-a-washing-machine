@@ -2,6 +2,7 @@
 ## in every menu is hooked as it enters the tree: a soft click (`ui_click`) when it is pressed, a very
 ## quiet tick (`ui_hover`) when the mouse comes over an enabled one; both are SoundEvents of the
 ## catalogue on the UI bus. A button with the metadata `no_ui_sound` stays silent.
+## It also feeds the selection ring (`FocusRingStyle`) the window's input (core/75).
 extends Node
 
 const CLICK := &"ui_click"
@@ -12,6 +13,8 @@ const SILENT := &"no_ui_sound"
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	get_tree().node_added.connect(_on_node_added)
+	# core/75: the selection ring shows after a key or pad press and hides after a mouse click.
+	get_tree().root.window_input.connect(FocusRingStyle.on_input)
 
 
 func _on_node_added(node: Node) -> void:

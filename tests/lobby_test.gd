@@ -481,6 +481,7 @@ func case_k11() -> void:
 	_check(hlobby.selected() == null, "nothing is selected before the pad is used")
 	await _key(&"ui_right")
 	_check(hlobby.selected() == who and hlobby.first_selection() == who, "the first press selects the \"i\" key")
+	_check(who.get_theme_stylebox(&"focus") is FocusRingStyle and FocusRingStyle.shown, "the selected key's focus style is the ring, and the ring is shown after a pad press")
 	await _key(&"ui_right")
 	_check(hlobby.selected() == drawer.key(), "Right goes to the World settings key")
 	await _key(&"ui_left")
@@ -504,6 +505,7 @@ func case_k11() -> void:
 	_check(hlobby.selected() is LobbyPlace, "Up returns to a figure")
 	# The drawer shut: Right of the last figure goes nowhere.
 	await _click(drawer.key())
+	_check(not FocusRingStyle.shown, "a mouse click hides the ring")
 	await _until(func() -> bool: return not drawer.is_open() and drawer.is_settled(), "the drawer to shut", 300, 0.0)
 	hlobby.places()[1].grab_focus()
 	await _key(&"ui_right")
@@ -735,6 +737,7 @@ func _click(control: Control) -> void:
 		ev.position = at
 		ev.global_position = at
 		ev.pressed = pressed
+		get_tree().root.window_input.emit(ev)
 		control.get_viewport().push_input(ev, true)
 	await _frames(2)
 
@@ -744,5 +747,8 @@ func _key(action: StringName) -> void:
 		var ev := InputEventAction.new()
 		ev.action = action
 		ev.pressed = pressed
+		# A real key or pad press reaches the window's `window_input` first (the selection ring listens there);
+		# a parsed event does not, so it is told too.
+		get_tree().root.window_input.emit(ev)
 		Input.parse_input_event(ev)
 		await _frames(2)
