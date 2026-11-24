@@ -94,6 +94,7 @@ func start(args: PackedStringArray) -> Error:
 
 ## The Host in this level: the avatars by the Roster, the corner counting players.
 func _host_here() -> void:
+	_place_everyone()
 	avatars.host()
 	for sig: Signal in [multiplayer.peer_connected, multiplayer.peer_disconnected]:
 		if not sig.is_connected(_on_players_changed):
@@ -133,7 +134,19 @@ func _enter_alone() -> void:
 	if session.is_online():
 		return
 	session.enter_alone()
+	_place_everyone()
 	_stand_where_kept()
+
+
+## The Host: players who came in through the Lobby (where nobody stands) get their spots in this level
+## (Roster.placed()), the Host where its body stands and the others beside it.
+func _place_everyone() -> void:
+	var roster := session.roster
+	if roster == null:
+		return
+	var ev := roster.placed()
+	if not ev.is_empty():
+		session.parts.apply(ev)
 
 
 ## The local body stands where the Roster keeps this machine's player (a loaded World's spot, Q296);

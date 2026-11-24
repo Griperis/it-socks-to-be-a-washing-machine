@@ -18,8 +18,14 @@ extends Resource
 @export_group("A flight")
 ## A moving Sock turning faster than this flips (Jolt's own limit is about 47 rad/s).
 @export_range(1.0, 60.0, 0.5, "suffix:rad/s") var flip_spin := 25.0 # placeholder: until the designer has seen the benchmark's report
-## A Sock woken this many times or more in one run jitters between lying and moving.
+## A Sock woken this many times or more in one run jitters between lying and moving. Only a wake after
+## which it rests moved counts (core/54, the lead: a landing hit that wakes a Sock and leaves it where it
+## lay, as the ported wake rule does under a pour, is no jitter).
 @export_range(2, 50, 1) var jitter_wakes := 3 # placeholder: until the designer has seen the benchmark's report
+## A wake counts toward jitter when the Sock rests again farther than this from where it lay...
+@export_range(0.0, 0.1, 0.001, "suffix:m") var jitter_move := 0.005 # placeholder: core/54, a few mm (the lead), until the designer has seen the benchmark's report
+## ...or turned more than this.
+@export_range(0.0, 45.0, 0.5, "suffix:deg") var jitter_turn := 3.0 # placeholder: core/54, a small angle (the lead), until the designer has seen the benchmark's report
 
 ## A moving Sock with the middle of its leg or foot more than this under the floor went under it
 ## (core/50: Jolt pushed a Sock 0.2 m into the zoo's 0.2 m floor in one step): a fault. Less deep is a

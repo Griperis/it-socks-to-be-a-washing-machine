@@ -1,6 +1,6 @@
 # The Lobby
 
-**Status: designed, as decided (Q2582-Q2587); core/62 (the game link) built, the rest not.** The saved id of the
+**Status: designed, as decided (Q2582-Q2587); core/62 (the game link) and core/63 (the Lobby scene, LobbyState) built, the rest not.** The saved id of the
 Roster is `Runtime/Session/Roster` (the runtime instance is named `Runtime` in every level): the link's Parts prefix
 their ids with `Runtime/` so it does not change. Findings: `docs/migration/m4-lists/02-lobby.md` (74
 lines of the old Lobby). Written against core/58 as merged to `main` (`docs/architecture/saves.md` "As built",
@@ -126,6 +126,21 @@ once: Host into a Lobby, Join into the Host's Lobby or house).
 
 **While the Host is in the Lobby, a Guest sees** the same Lobby (the same model) and the loading card "Joining..." until the
 link snapshot arrives; **between Start and play** the loading card, as the Host.
+
+### As built (core/63)
+
+- `game/lobby/lobby_state.gd` (`LobbyState`, the link's `LobbyState` node, id `Runtime/LobbyState`): the Ready list is
+  `readied` (a `PackedStringArray` of player ids; `ready` is Node's own signal). Verbs: `ready` {"on": bool} (the
+  only Guest verb, rate 5), `start` and `world` {level, title, line, world} (the Host's). `PROTOCOL` 15.
+- `game/lobby/lobby.tscn` (`LobbyScreen`): mode SOLO, HOST or JOIN set by the title's setup with the WorldSlot or the
+  address; the Lobby starts the session itself (`enter_alone`, `host`, `join`) and hands `go_into` on from the title.
+  The places are a plain list (HOST mark, name in colour, "✓ Ready" or "-"); a Guest shows the loading card
+  "Joining..." until the link snapshot. Solo's New Game uses `Worlds.pick_slot(slot, hosting, fresh)`.
+- Spots: a player who joins in the Lobby has no `at` in the Roster (nobody stands there); as the house comes in the
+  Host's `LevelNet` answers `Roster.placed()` (the Host where its body stands, the others beside it), so each stands
+  at its Roster spot at the welcome.
+- A Guest's `house_ready` that arrives while the Host's house is still loading after Start is kept and answered when
+  the Host's level attaches (`Session._house_early`).
 
 ## Core/64: the name field
 

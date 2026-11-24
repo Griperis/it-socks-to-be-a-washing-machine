@@ -8,7 +8,9 @@
 ## - rests, and of them: lost (written lying far from where its body was: it came back at the
 ##   return spot), jumped (snapped farther than `jump` from where its body was when the Mess judged
 ##   it), hot (written lying while still turning or moving fast at its last tick seen moving);
-## - wakes (a lying Sock that moves again), and Socks that jitter (woken `jitter_wakes` times or more);
+## - wakes (a lying Sock that moves again), and Socks that jitter (woken `jitter_wakes` times or more,
+##   each time resting again moved by more than `jitter_move` or turned by more than `jitter_turn`;
+##   core/54: a wake that leaves it where it lay is no jitter);
 ## - Socks that flip (turning faster than `flip_spin` while moving);
 ## - Socks under the floor: the middle of a moving Sock's leg or foot (a Pair's ball) more than `under`
 ##   under `floor_y` (core/50: Jolt's position solve pushed one through the zoo's 0.2 m floor);
@@ -70,6 +72,8 @@ var _spin: Dictionary[int, float] = {}
 ## The Socks that lay at some time while watched (a body starting for one of them is a wake).
 var _lay: Dictionary[int, bool] = {}
 var _woken: Dictionary[int, int] = {}
+## Where each woken Sock lay when it was woken (its record then), until it rests again.
+var _woke_from: Dictionary[int, Transform3D] = {}
 var _flipped: Dictionary[int, bool] = {}
 var _under: Dictionary[int, bool] = {}
 ## The deepest a moving Sock's leg or foot middle went under the floor, in m.
@@ -133,6 +137,7 @@ func restart() -> void:
 	watched = 0.0
 	quiet_for = 0.0
 	_woken.clear()
+	_woke_from.clear()
 	_flipped.clear()
 	_since_series = 0.0
 	notes = PackedStringArray()
@@ -177,10 +182,8 @@ func _physics_process(delta: float) -> void:
 			made.append(sock)
 		if not _flying.has(sock) and _lay.has(sock):
 			wakes += 1
-			_woken[sock] = int(_woken.get(sock, 0)) + 1
+			_woke_from[sock] = mess.pose_of(sock)
 			_tell(sock, "woken at %.2f s at %s" % [watched, body.global_position])
-			if _woken[sock] == checks.jitter_wakes:
-				notes.append("Sock %d jitters: %s" % [sock, " | ".join(_story[sock])])
 		if not _flying.has(sock):
 			_track[sock] = PackedStringArray()
 		_note_tick(sock, body)
@@ -260,8 +263,24 @@ func _rested(sock: int) -> void:
 		hot += 1
 		faults.append("hot")
 	_tell(sock, "rested at %.2f s at %s (snap %.3f m, speed %.2f m/s, turn %.2f rad/s)" % [watched, mess.pose_of(sock).origin, snap, _speed[sock], _spin[sock]])
+	if _woke_from.has(sock):
+		if _moved_since_woken(sock):
+			_woken[sock] = int(_woken.get(sock, 0)) + 1
+			if _woken[sock] == checks.jitter_wakes:
+				notes.append("Sock %d jitters: %s" % [sock, " | ".join(_story[sock])])
+		_woke_from.erase(sock)
 	if not faults.is_empty():
 		notes.append("Sock %d %s: rested at %s, snap %.3f m | track: %s" % [sock, " and ".join(faults), mess.pose_of(sock).origin, snap, " | ".join(_track.get(sock, PackedStringArray()))])
+
+
+## Whether woken Sock `sock` rests moved from where it lay when woken: farther than `jitter_move` or
+## turned more than `jitter_turn`.
+func _moved_since_woken(sock: int) -> bool:
+	var was := _woke_from[sock].orthonormalized()
+	var now := mess.pose_of(sock).orthonormalized()
+	if was.origin.distance_to(now.origin) > checks.jitter_move:
+		return true
+	return rad_to_deg(was.basis.get_rotation_quaternion().angle_to(now.basis.get_rotation_quaternion())) > checks.jitter_turn
 
 
 ## One tick of moving Sock `sock`'s track: time, place, speed, turn, contacts, asleep.

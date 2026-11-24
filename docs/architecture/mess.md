@@ -213,7 +213,8 @@ build, so the exclusion is for size and for not shipping the benchmark, not for 
 Faults (`MessWatch`): never (still moving at the limit), lost (came back at the return spot), hot (written lying
 while turning or moving fast at its last tick seen moving), jumped (snapped at its rest, from its body's place
 the tick the Mess rested it, core/54), flips (turned faster than `flip_spin`), jitter (woken
-`jitter_wakes` times or more), sunk (lowest point under the floor), inside (its leg or foot overlapping another
+`jitter_wakes` times or more, each time resting moved past `jitter_move` or `jitter_turn`; a wake that left it where it
+lay is none, core/54), sunk (lowest point under the floor), inside (its leg or foot overlapping another
 Sock's deeper than `inside`, 22 mm; from `pressed`, 6 mm, it is counted as pressed, Q2499), made_inside (a new Sock
 made overlapping a moving one, core/49), under (a moving Sock's leg or foot middle more than `under`, 50 mm,
 under the floor, core/50). Each fault leaves a line in `MessWatch.notes` (the Sock and its last ticks), which

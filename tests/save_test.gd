@@ -22,12 +22,13 @@ const FRIDGE := "Furniture/Fridge/Door_Top/Openable"
 var _level: Node = null
 var _levels: Array[Node] = []
 var _title: TitleScreen = null
+var _lobby: LobbyScreen = null
 
 
 func cases() -> Array[Dictionary]:
 	return [
 		{"name": "s01_real_path_round_trip", "method": "case_s01", "world": false,
-				"title": "S01 real path: the title's Solo loads the house behind the loading screen; a picked Pair shelved for Coins, a Sock in the Hands and an open fridge; Esc, Back to title, Solo again: the Mess, Hands, Cabinets and Coins are as left, the fridge shut (Q2559) and the player where they stood"},
+				"title": "S01 real path: the title's Solo opens the Lobby (one place, no Ready, Continue hidden with no save), its New Game loads the house behind the loading screen; a picked Pair shelved for Coins, a Sock in the Hands and an open fridge; Esc, Back to title, Solo, the Lobby's Continue: the Mess, Hands, Cabinets and Coins are as left, the fridge shut (Q2559) and the player where they stood"},
 		{"name": "s02_host_alone_by_player_id", "method": "case_s02", "world": false,
 				"title": "S02 (core/57 gap): alone the player is in its own Roster by its profile's player id, and its Hands and Coins are kept under that id, never the peer number"},
 		{"name": "s03_coop_world_saves_guest_sees_it", "method": "case_s03", "world": false,
@@ -73,6 +74,7 @@ func _before_case() -> void:
 	await _frames(2)
 	_level = null
 	_title = null
+	_lobby = null
 
 
 # --- S01 ------------------------------------------------------------------------------------------
@@ -80,7 +82,14 @@ func _before_case() -> void:
 func case_s01() -> void:
 	_open_title()
 	await _click(_title.get_node("%Solo") as Control)
-	await _until(func() -> bool: return _level != null, "the title's Solo to load the house")
+	await _until(func() -> bool: return _lobby != null, "the title's Solo to open the Lobby")
+	await _frames(3)
+	_check(_lobby.place_texts().size() == 1 and not (_lobby.get_node("%Ready") as Control).visible
+			and not (_lobby.get_node("%Start") as Control).visible, "Solo's Lobby: one place, no Ready, no Start (%s)" % [_lobby.place_texts()])
+	_check(not (_lobby.get_node("%Continue") as Control).visible and (_lobby.get_node("%NewGame") as Control).visible,
+			"no save: Continue hidden, New Game there")
+	await _click(_lobby.get_node("%NewGame") as Control)
+	await _until(func() -> bool: return _level != null, "New Game to load the house")
 	var runtime := LevelRuntime.of(_level)
 	await _until(func() -> bool: return runtime.loading.is_lifted(), "the house's Socks to be laid behind the loading screen", 3000)
 	await _until(func() -> bool: return runtime.autosave.saves() and runtime.player.is_on_floor(), "the Solo World to be loaded and the player to stand")
@@ -141,9 +150,14 @@ func case_s01() -> void:
 	await _click(menu.get_node("%BackToTitle") as Control)
 	await _until(func() -> bool: return _title != null and _level == null, "Back to title to bring the title back")
 	_check((Save.store as MemoryStore).writes > writes, "Back to title saved first")
-	# Solo again.
+	# Solo again: the Lobby's Continue.
 	await _click(_title.get_node("%Solo") as Control)
-	await _until(func() -> bool: return _level != null, "Solo to load the saved house")
+	await _until(func() -> bool: return _lobby != null, "Solo to open the Lobby")
+	await _frames(3)
+	_check((_lobby.get_node("%Continue") as Control).visible and (_lobby.get_node("%CardLine") as Label).text.begins_with(Worlds.SOLO_WORLD),
+			"a save: Continue shows, the card says the Solo World (%s)" % (_lobby.get_node("%CardLine") as Label).text)
+	await _click(_lobby.get_node("%Continue") as Control)
+	await _until(func() -> bool: return _level != null, "Continue to load the saved house")
 	runtime = LevelRuntime.of(_level)
 	await _until(func() -> bool: return runtime.autosave.saves(), "the saved World to be loaded")
 	_check(not runtime.autosave.world.is_new, "Solo continues the Solo World")
@@ -580,11 +594,17 @@ func _open_title() -> void:
 				_free(root)
 				_level = null
 				_open_title.call_deferred()
-		_level = root
-		add_child(root)
 		if _title != null:
 			_title.queue_free()
 		_title = null
+		if _lobby != null:
+			_lobby.queue_free()
+		_lobby = null
+		if root is LobbyScreen:
+			_lobby = root as LobbyScreen
+		else:
+			_level = root
+		add_child(root)
 	add_child(_title)
 
 

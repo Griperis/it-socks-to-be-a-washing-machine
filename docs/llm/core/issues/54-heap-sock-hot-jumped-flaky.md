@@ -31,7 +31,9 @@ A flaky test is a defect to rework (kit/docs/TESTING.md "Flaky cases"), never a 
 - coop/07's and coop/08's co-op cases and budgets still pass.
 
 ## Open follow-ups
-- [later] One rarer fault is left, not seen in the 50 suite runs: a Sock "jitters" (woken 3 times) in about 1 of
+- [answered, the lead, technical, 2026-11-23: the wake rule stays as ported; the watch counts as jitter only a
+  wake after which the Sock rests moved (over a few mm or a small angle)] One rarer fault is left, not seen in the
+  50 suite runs: a Sock "jitters" (woken 3 times) in about 1 of
   600 sweep pours. The Sock lies still on the heap's floor or top and is woken about every 0.3 s to 0.5 s while
   the pour still lands Socks on it (a hit at the wake speed wakes it and up to 8 touching, T11), then rests again
   where it was. That is the ported wake rule doing what it says, not a rest fault; whether a Sock woken by a hit
@@ -68,3 +70,15 @@ A flaky test is a defect to rework (kit/docs/TESTING.md "Flaky cases"), never a 
   - Verified: after merging main, 50 runs of the whole `mess_settle` suite (25 in order, 25 reversed,
     reruns off): `PASS 204 checks, 21 cases` each, no FAIL, no FLAKY. `--touched` (51 suites, coop/07's and coop/08's included): `PASS 18362 checks, 511 cases`, no FLAKY;
     `PASS rules: 9 rules, no new hit`.
+- 2026-11-24 (the lead's answer on jitter)
+  - Changed: `MessWatch` counts a wake toward jitter only when the Sock rests again moved from where it lay when
+    woken: farther than `MessChecks.jitter_move` (5 mm) or turned more than `jitter_turn` (3 degrees), both
+    placeholders. Every wake is still counted in `wakes`; the jitter note is written at the rest that makes the
+    count. `jitter` now moves the Sock at each wake; new case `jitter_unmoved` (woken 4 times, never moved: no
+    jitter, 4 wakes; the old count fails it). The benchmark report's jitter line names the two limits. Merged
+    main twice (core/55 to core/64, house/09, core/42).
+  - Files: `game/debug/mess_watch.gd`, `game/debug/mess_checks.gd`, `game/debug/mess_bench_report.gd`,
+    `tests/mess_settle_test.gd`, `docs/architecture/mess.md`.
+  - Verified: after merging main (a6e1955 and later), the scratch sweep (the real path poured 5 times a case, 0 to 4
+    extra records, 27 runs in order and reversed): 1350 pours, 0 faults, 0 jitter. `--touched` (coop/07's and coop/08's suites included): `PASS 18784 checks, 536
+    cases`, no FLAKY; `PASS rules: 9 rules, no new hit`.

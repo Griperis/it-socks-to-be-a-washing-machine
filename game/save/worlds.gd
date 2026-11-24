@@ -104,6 +104,12 @@ func pick_host(from_command_line := false) -> WorldSlot:
 	return _pick(newest, true)
 
 
+## The World in `slot` as a Solo player (`hosting` false) or a Host plays it; `fresh`: a New Game there
+## whatever is saved (the Lobby's New Game, after it asked). null when it cannot be played.
+func pick_slot(slot: String, hosting: bool, fresh := false) -> WorldSlot:
+	return _pick(slot, hosting, fresh)
+
+
 ## A co-op slot with no file, or "" when every one is used.
 func free_coop_slot() -> String:
 	for slot in coop_slots():
@@ -154,7 +160,7 @@ static func row_details(rec: WorldRecord) -> String:
 	return "%s · played %dh %02dm · last %s" % [rec.floor_name if rec.floor_name != "" else "-", mins / 60, mins % 60, when]
 
 
-func _pick(slot: String, hosting: bool) -> WorldSlot:
+func _pick(slot: String, hosting: bool, fresh := false) -> WorldSlot:
 	var w := WorldSlot.new()
 	w.slot = slot
 	w.file = file_of(slot)
@@ -162,7 +168,7 @@ func _pick(slot: String, hosting: bool) -> WorldSlot:
 	w.profile = profile()
 	w.record.kind = WorldRecord.SOLO if slot == SOLO else WorldRecord.COOP
 	w.record.level = LEVEL
-	if new_game:
+	if new_game or fresh:
 		return w
 	var got := Save.read(w.file)
 	if got["ok"]:

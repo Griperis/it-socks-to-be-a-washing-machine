@@ -118,7 +118,7 @@ static func text(runs: Array[Dictionary], plan: MessBenchPlan) -> String:
 	lines.append("- hot: a Sock written lying while turning faster than %.1f rad/s or moving faster than %.2f m/s." % [c.hot_spin, c.hot_speed])
 	lines.append("- jumped: a Sock written lying more than %.0f mm from where its body was." % (c.jump * 1000.0))
 	lines.append("- flips: a moving Sock that turned faster than %.0f rad/s." % c.flip_spin)
-	lines.append("- jitter: a Sock woken %d times or more in the scenario." % c.jitter_wakes)
+	lines.append("- jitter: a Sock woken %d times or more in the scenario, resting moved each time (over %.0f mm or %.1f deg)." % [c.jitter_wakes, c.jitter_move * 1000.0, c.jitter_turn])
 	lines.append("- sunk: a lying Sock whose lowest point is more than %.0f mm under the floor." % (c.sunk * 1000.0))
 	lines.append("- inside another: a lying Sock whose leg or foot overlaps another lying Sock's more than %.0f mm deep (from %.0f mm it is pressed: allowed, Q2499)." % [c.inside * 1000.0, c.pressed * 1000.0])
 	lines.append("- made_inside: a new Sock made overlapping a moving one more than %.0f mm deep." % (c.made_inside * 1000.0))
