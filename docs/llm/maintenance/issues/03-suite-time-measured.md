@@ -28,6 +28,12 @@ the true suite time is unknown. The designer will make a pass of their own too (
   and a bigger or per-checkout slot pool.
 
 ## Open follow-ups
-- [blocking] The idle measurement (the lead) and the designer's own pass.
+- [blocking] The designer's own pass (the idle measurement is done, 140 s).
 
 ## Built log
+
+### 2026-11-24 (the lead)
+- Measured on a quiet machine (no agent running, main e2aa43e): 140 s for the whole suite (141 s wall), PASS 19770 checks,
+  615 cases; 74 processes for 66 suites, 8 at a time; the longest process coop_hands part 1 of 3, 34 s. Slowest
+  cases: coop_stacking carried_loop 18.6 s and carried_loop_seen 18.5 s, coop_hands guest_throw_ghost_on_host_flight
+  17.6 s. Memory at most 3.6 GB of a 7.6 GB budget. The idle measurement follow-up is done; the designer's pass is next.
