@@ -68,6 +68,7 @@ How this game is built, unless a decision record says otherwise. They are the ga
 | Furniture | `docs/architecture/furniture.md` | you place, change or add a furniture piece, its openings, collision or Sock spots, or a device (opening sounds, the piano, the mirror, the dust sheet) |
 | The house level | `docs/architecture/house.md` | you change the house scene: its shell, furniture, lights, spawn or what it holds |
 | Saves and the menus | `docs/architecture/saves.md` | you change what is saved or loaded, the save file, Worlds, the title, Options, Licence, the loading screen or the ESC menu |
+| Stages and floors (proposal, core/71) | `docs/architecture/stages.md` | you change the run's Stages, a Cabinet's Rows, a Stage's Socks, the washing machine's Parts, the floor locks, the Stage bar, the Whiteboard or the Tab tallies |
 | Co-op | `docs/architecture/coop.md` | you touch the Session, the transport, the Roster, avatars, a Guest's guesses, a Throw's stream, knockdown, or anything a Guest sees or sends |
 
 A ticket that adds a subsystem adds its row here and its file.
