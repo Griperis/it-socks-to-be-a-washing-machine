@@ -1,7 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://llswt73vtefy"]
 
 [ext_resource type="Script" uid="uid://ftj7pj07q473" path="res://game/look/keycap_style.gd" id="1_keycap"]
-[ext_resource type="Script" path="res://game/look/focus_ring_style.gd" id="3_ring"]
 [ext_resource type="Texture2D" path="res://assets/look/slider_knob.svg" id="2_knob"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_size_box"]
@@ -19,9 +18,6 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBox" id="FocusRing"]
-script = ExtResource("3_ring")
 
 [sub_resource type="StyleBox" id="Keycap_panel"]
 script = ExtResource("1_keycap")
@@ -293,7 +289,7 @@ KeycapButton/styles/hover = SubResource("Keycap_KeycapButton_hover")
 KeycapButton/styles/pressed = SubResource("Keycap_KeycapButton_pressed")
 KeycapButton/styles/hover_pressed = SubResource("Keycap_KeycapButton_pressed")
 KeycapButton/styles/disabled = SubResource("Keycap_KeycapButton_disabled")
-KeycapButton/styles/focus = SubResource("FocusRing")
+KeycapButton/styles/focus = SubResource("StyleBoxEmpty_esc")
 ExitButton/base_type = &"Button"
 ExitButton/colors/font_color = Color(1, 1, 1, 1)
 ExitButton/colors/font_pressed_color = Color(1, 1, 1, 1)
@@ -311,7 +307,7 @@ ExitButton/styles/hover = SubResource("Keycap_ExitButton_hover")
 ExitButton/styles/pressed = SubResource("Keycap_ExitButton_pressed")
 ExitButton/styles/hover_pressed = SubResource("Keycap_ExitButton_pressed")
 ExitButton/styles/disabled = SubResource("Keycap_ExitButton_disabled")
-ExitButton/styles/focus = SubResource("FocusRing")
+ExitButton/styles/focus = SubResource("StyleBoxEmpty_esc")
 CornerKey/base_type = &"KeycapButton"
 CornerKey/constants/icon_max_width = 40
 EscButton/base_type = &"Button"
@@ -329,7 +325,7 @@ EscButton/styles/normal = SubResource("StyleBoxEmpty_esc")
 EscButton/styles/hover = SubResource("StyleBoxEmpty_esc")
 EscButton/styles/pressed = SubResource("StyleBoxEmpty_esc")
 EscButton/styles/hover_pressed = SubResource("StyleBoxEmpty_esc")
-EscButton/styles/focus = SubResource("FocusRing")
+EscButton/styles/focus = SubResource("StyleBoxEmpty_esc")
 CloseButton/base_type = &"Button"
 CloseButton/colors/icon_normal_color = Color(1, 1, 1, 1)
 CloseButton/colors/icon_pressed_color = Color(1, 1, 1, 1)
@@ -341,7 +337,7 @@ CloseButton/styles/normal = SubResource("StyleBoxEmpty_esc")
 CloseButton/styles/hover = SubResource("StyleBoxEmpty_esc")
 CloseButton/styles/pressed = SubResource("StyleBoxEmpty_esc")
 CloseButton/styles/hover_pressed = SubResource("StyleBoxEmpty_esc")
-CloseButton/styles/focus = SubResource("FocusRing")
+CloseButton/styles/focus = SubResource("StyleBoxEmpty_esc")
 ChoiceButton/base_type = &"Button"
 ChoiceButton/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
 ChoiceButton/colors/font_pressed_color = Color(0.231373, 0.164706, 0.133333, 1)
@@ -357,7 +353,7 @@ ChoiceButton/styles/disabled = SubResource("Keycap_ChoiceButton_normal")
 ChoiceButton/styles/hover = SubResource("Keycap_ChoiceButton_hover")
 ChoiceButton/styles/pressed = SubResource("Keycap_ChoiceButton_pressed")
 ChoiceButton/styles/hover_pressed = SubResource("Keycap_ChoiceButton_pressed")
-ChoiceButton/styles/focus = SubResource("FocusRing")
+ChoiceButton/styles/focus = SubResource("StyleBoxEmpty_esc")
 ChoiceOnButton/base_type = &"Button"
 ChoiceOnButton/colors/font_color = Color(1, 1, 1, 1)
 ChoiceOnButton/colors/font_pressed_color = Color(1, 1, 1, 1)
@@ -373,7 +369,7 @@ ChoiceOnButton/styles/disabled = SubResource("Keycap_ChoiceOnButton_normal")
 ChoiceOnButton/styles/hover = SubResource("Keycap_ChoiceOnButton_hover")
 ChoiceOnButton/styles/pressed = SubResource("Keycap_ChoiceOnButton_pressed")
 ChoiceOnButton/styles/hover_pressed = SubResource("Keycap_ChoiceOnButton_pressed")
-ChoiceOnButton/styles/focus = SubResource("FocusRing")
+ChoiceOnButton/styles/focus = SubResource("StyleBoxEmpty_esc")
 MenuSlider/base_type = &"HSlider"
 MenuSlider/icons/grabber = ExtResource("2_knob")
 MenuSlider/icons/grabber_highlight = ExtResource("2_knob")
@@ -381,14 +377,14 @@ MenuSlider/icons/grabber_disabled = ExtResource("2_knob")
 MenuSlider/styles/slider = SubResource("StyleBoxFlat_track")
 MenuSlider/styles/grabber_area = SubResource("StyleBoxFlat_fill")
 MenuSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_fill")
-MenuSlider/styles/focus = SubResource("FocusRing")
+MenuSlider/styles/focus = SubResource("StyleBoxEmpty_esc")
 MenuField/base_type = &"LineEdit"
 MenuField/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
 MenuField/colors/font_placeholder_color = Color(0.231373, 0.164706, 0.133333, 0.4)
 MenuField/colors/caret_color = Color(0.231373, 0.164706, 0.133333, 1)
 MenuField/font_sizes/font_size = 28
 MenuField/styles/normal = SubResource("StyleBoxFlat_field")
-MenuField/styles/focus = SubResource("FocusRing")
+MenuField/styles/focus = SubResource("StyleBoxEmpty_esc")
 InkLabel/base_type = &"Label"
 InkLabel/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
 InkLabel/font_sizes/font_size = 24
@@ -405,7 +401,7 @@ LicenceLink/colors/font_hover_color = Color(0.94902, 0.607843, 0.294118, 1)
 LicenceLink/colors/font_pressed_color = Color(0.94902, 0.607843, 0.294118, 1)
 LicenceLink/colors/font_focus_color = Color(0.788235, 0.466667, 0.184314, 1)
 LicenceLink/font_sizes/font_size = 20
-LicenceLink/styles/focus = SubResource("FocusRing")
+LicenceLink/styles/focus = SubResource("StyleBoxEmpty_esc")
 LoadingBar/base_type = &"ProgressBar"
 LoadingBar/styles/background = SubResource("StyleBoxFlat_bar_back")
 LoadingBar/styles/fill = SubResource("StyleBoxFlat_bar_fill")

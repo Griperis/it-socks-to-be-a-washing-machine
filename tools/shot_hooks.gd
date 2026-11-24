@@ -35,10 +35,12 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			var ev := InputEventJoypadButton.new()
 			ev.button_index = JOY_BUTTON_DPAD_DOWN
 			ev.pressed = true
-			FocusRingStyle.on_input(ev)
+			PadFocus.on_input(ev)
 			var found := world.find_child(arg, true, false) as Control
 			if found == null:
 				found = LevelRuntime.of(world).esc_menu.find_child(arg, true, false) as Control
+			if found.has_focus():
+				found.release_focus()
 			found.grab_focus()
 			return true
 		"name":
