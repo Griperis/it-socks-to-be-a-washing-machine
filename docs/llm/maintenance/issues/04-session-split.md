@@ -46,3 +46,4 @@ code map too.
 - Files: game/parts/session.gd, session_peer.gd, session_gate.gd, session_house.gd, session_guard.gd,
   session_relay.gd (+ .uid), docs/architecture/coop.md, docs/architecture.md
 - Verified: PASS 19661 checks, 576 cases (`run.sh --touched`: 60 of 66 suites, every co-op suite)
+- Merged: 1f17014a (2026-11-25, branch maintenance/04-session-split)
