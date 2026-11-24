@@ -92,7 +92,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "k14_no_z_fight", "method": "case_k14_no_z_fight", "world": false,
 				"title": "K14: the shell has no two faces facing the same way in one plane where they can be seen"},
 		{"name": "h01_main_scene", "method": "case_h01_main_scene", "world": false,
-				"title": "the house is the project's main scene: the shell, the player, the shared-state path, the zoo's noon light, and nothing of game/zoo/"},
+				"title": "the house is the level the title's Solo and Host play (core/58): the shell, the player, the shared-state path, the zoo's noon light, and nothing of game/zoo/"},
 		{"name": "h02_furniture", "method": "case_h02_furniture", "world": false,
 				"title": "the old furniture stands where the old house had it, moved to the plan, each piece on its floor inside its room"},
 		{"name": "h03_lights", "method": "case_h03_lights", "world": false,
@@ -108,7 +108,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "h05_stair_treads", "method": "case_h05_stair_treads", "world": false,
 				"title": "house/05 (Q2530): the stair trails' Socks lie flat on the steps' treads, never leaned on the ramp; the player does not meet the treads"},
 		{"name": "real_path_loading_screen", "method": "case_real_path_loading_screen", "world": false,
-				"title": "real path (house/09, Q2542): F5 shows the loading screen (\"The washer bursts open...\", a filling bar) while the Socks are laid a slice per frame, the player held at the spawn though walk is pressed; then every Socks appears at once and the player walks"},
+				"title": "real path (house/09, Q2542): F5 shows the loading screen (\"Loading the house...\", Q2579, a filling bar) while the Socks are laid a slice per frame, the player held at the spawn though walk is pressed; then every Socks appears at once and the player walks"},
 		{"name": "h09_slices_within_budget", "method": "case_h09_slices_within_budget", "world": false, "perf": true,
 				"title": "house/09: no frame's slice of laying the house runs past the loading screen's slice budget: each unit of work runs only when the longest of its kind still fits"},
 		{"name": "h09_same_seed_sliced", "method": "case_h09_same_seed_sliced", "world": false,
@@ -116,7 +116,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "h09_trail_stays_on_treads", "method": "case_h09_trail_stays_on_treads", "world": false,
 				"title": "house/09 (Q2530): the stair trails' Socks laid flat on the treads stay lying there through 120 ticks of play (a tread holds a Sock up)"},
 		{"name": "real_path_kitchen_loop", "method": "case_real_path_kitchen_loop", "world": false,
-				"title": "real path (house/05): in the house the player picks a Sock in the kitchen, picks its mate into a Pair, shelves it in the kitchen's Cabinet with a click and earns Coins"},
+				"title": "real path (house/05, core/60): in the house the player picks the top Sock of a kitchen Heap, picks its mate into a Pair, shelves it in the kitchen's Cabinet with a click and earns Coins"},
 		{"name": "real_path_front_door_to_attic", "method": "case_real_path_front_door_to_attic", "world": false,
 				"title": "real path: in the shell the player walks in from the front door (no ground outside, Q2503), is stopped by the hall's partition, and climbs the U stair to the first floor and on to the attic"},
 	]
@@ -793,15 +793,19 @@ static func _needs(path: String, seen: Dictionary) -> void:
 
 
 func case_h01_main_scene() -> void:
-	_same(String(ProjectSettings.get_setting("application/run/main_scene")), HOUSE, "the house is the project's main scene (F5, a plain launch)")
+	_same(String(ProjectSettings.get_setting("application/run/main_scene")), "res://game/ui/title/title.tscn", "the title is the project's main scene and Solo plays the house (core/58)")
+	_same(Worlds.LEVEL, HOUSE, "Solo and Host go into the house")
 	var house := await _level_up()
 	var shell := house.get_node_or_null("Shell") as Node3D
 	_check(shell != null and shell.scene_file_path == SHELL and shell.transform == Transform3D.IDENTITY, "the shell stands at the origin, the house's frame")
 	var runtime := LevelRuntime.of(house)
 	_check(runtime != null and runtime.scene_file_path == RUNTIME and runtime.get_parent() == house, "the house has one instance of the level runtime")
-	for n: String in ["Player", "Parts", "Session", "Session/Roster", "Socks/Mess", "Socks/Hands", "Socks/Knockdowns", "Socks/Coins",
+	for n: String in ["Player", "Parts", "Socks/Mess", "Socks/Hands", "Socks/Knockdowns", "Socks/Coins",
 			"Avatars", "FlightSpawner", "Net", "Net/Hud/Mode"]:
 		_check(runtime.get_node_or_null(n) != null, "the house has its %s, as the zoo" % n)
+	# core/62: the Session and its Roster are the game link's (a private one when nothing started a game).
+	for n: String in ["Session", "Session/Roster"]:
+		_check(runtime.link != null and runtime.link.get_node_or_null(n) != null, "the house has its %s, as the zoo" % n)
 	var net := runtime.net
 	_check(net is LevelNet, "its co-op start is the game's LevelNet")
 	_same((net as LevelNet).place_name(), "house", "which names the house")
@@ -996,6 +1000,12 @@ const CABINETS: Array[Array] = [
 const KITCHEN := Rect2(0.1, 0.1, 3.84, 8.3)
 ## The player's own collision layer (furniture's PlayerBody, docs/architecture/furniture.md).
 const PLAYER_BODY := 8
+## The player's eyes over its feet, and how far its crosshair reaches (the Hands' reach), for the aim probe.
+const EYE_HEIGHT := 1.6
+const AIM_REACH := 2.5
+## A Heap's top Sock in the kitchen lies on another Sock: over the floor, under any counter (core/60).
+const HEAP_TOP_LOWEST := 0.01
+const HEAP_TOP_HIGHEST := 0.3
 
 
 func _generator(house: Node3D, floor_name: String) -> SockGenerator:
@@ -1105,16 +1115,21 @@ func case_h05_stair_treads() -> void:
 	_check(tread.collision_layer == SockTrail.LAYER_TREADS and tread.collision_mask == 0, "the stair's treads are on their own layer only")
 
 
-## Whether the lying Sock `sock` is open to the eye: nothing of the house or another Sock over it.
+## Whether the lying Sock `sock` is open to the eye: no other Sock rests over it (a Heap's top) and no
+## piece of the house is over it. core/60: the probe once started 6 cm over the Sock's origin, inside the
+## Sock stacked on it in a Heap, so a covered Sock passed for a top one.
 func _open_sock(mess: Mess, sock: int) -> bool:
-	if mess.state_of(sock) != Mess.State.LYING:
+	if mess.state_of(sock) != Mess.State.LYING or not mess.resting_on(mess.box_of(sock)).is_empty():
 		return false
-	var at := mess.pose_of(sock).origin
-	return PhysicsQueries.ray(mess, at + Vector3.UP * 0.06, at + Vector3.UP * 2.2, Mess.LAYER_HOUSE | Mess.LAYER_LYING).is_empty()
+	var box := mess.box_of(sock)
+	var top := Vector3(box.get_center().x, box.end.y + 0.002, box.get_center().z)
+	return PhysicsQueries.ray(mess, top, top + Vector3.UP * 2.2, Mess.LAYER_HOUSE | Mess.LAYER_LYING).is_empty()
 
 
-## A place 1-1.6 m from `target` on the ground floor where the player stands and sees it, or INF.
-func _spot_seeing(mess: Mess, target: Vector3) -> Vector3:
+## A place 1-1.6 m from Sock `sock` on the ground floor where the player stands and the crosshair,
+## aimed at its middle, rests on it (AimFinder: no other Sock in front), or INF.
+func _spot_aiming(mess: Mess, sock: int) -> Vector3:
+	var target := _sock_centre(mess, sock)
 	var probe := BoxShape3D.new()
 	probe.size = Vector3(0.6, 1.5, 0.6)
 	for r: float in [1.0, 1.3, 1.6]:
@@ -1126,7 +1141,8 @@ func _spot_seeing(mess: Mess, target: Vector3) -> Vector3:
 				continue
 			if not PhysicsQueries.overlap_rids(mess, probe, Transform3D(Basis.IDENTITY, at + Vector3.UP * 0.85), Mess.LAYER_HOUSE | PLAYER_BODY, 1).is_empty():
 				continue
-			if PhysicsQueries.ray(mess, at + Vector3.UP * 1.5, target, Mess.LAYER_HOUSE).is_empty():
+			var eye := at + Vector3.UP * EYE_HEIGHT
+			if AimFinder.find(mess, mess, eye, (target - eye).normalized(), AIM_REACH, [])["sock"] == sock:
 				return at
 	return Vector3.INF
 
@@ -1138,36 +1154,38 @@ func case_real_path_kitchen_loop() -> void:
 	var hands := runtime.hands
 	var player := runtime.player
 	var made := _generator(house, "Ground").get_node("Generated") as GeneratedSocks
-	# A food Sock lying open in the kitchen whose mate lies open too, each with a place to stand and see it.
+	# A food Sock on top of a Heap in the kitchen (core/60: lying on another Sock, none over it) whose
+	# mate lies open too, each with a place to stand where the crosshair rests on it.
 	var first := -1
 	var mate := -1
 	var spots: Array[Vector3] = []
 	for sock in range(made.first, made.first + made.socks):
 		var at := mess.pose_of(sock).origin
-		# On the floor itself (house/09: not on another Sock of a Heap, where a pick may take the column).
-		if mess.design_of(sock).collection != &"food" or not KITCHEN.has_point(Vector2(at.x, at.z)) or at.y > 0.01 or not _open_sock(mess, sock):
+		if mess.design_of(sock).collection != &"food" or not KITCHEN.has_point(Vector2(at.x, at.z)) \
+				or at.y <= HEAP_TOP_LOWEST or at.y > HEAP_TOP_HIGHEST or not _open_sock(mess, sock):
 			continue
 		var other := -1
 		for o in range(made.first, made.first + made.socks):
 			if o != sock and mess.designs[o] == mess.designs[sock]:
 				other = o
-		if other < 0 or mess.pose_of(other).origin.y > 0.01 or not _open_sock(mess, other):
+		if other < 0 or not _open_sock(mess, other):
 			continue
-		var s1 := _spot_seeing(mess, _sock_centre(mess, sock))
-		var s2 := _spot_seeing(mess, _sock_centre(mess, other))
+		var s1 := _spot_aiming(mess, sock)
+		var s2 := _spot_aiming(mess, other)
 		if s1 != Vector3.INF and s2 != Vector3.INF:
 			first = sock
 			mate = other
 			spots = [s1, s2]
 			break
-	_check(first >= 0, "a food Pair lies open in the kitchen (%d, %d)" % [first, mate])
+	_check(first >= 0, "a food Sock lies on top of a kitchen Heap, its mate open (%d, %d)" % [first, mate])
 	if first < 0:
 		return
 	player.capture_mouse()   # the mouse is the player's: buttons act (R01)
 	_stand_player(player, spots[0])
 	await _aim_player(player, _sock_centre(mess, first))
+	_check(player.aimed_sock == first, "the crosshair rests on the Heap's top Sock (%d, aimed %d)" % [first, player.aimed_sock])
 	await _press_action(&"pick")
-	await _until(func() -> bool: return hands.active_of(1) == first, "the kitchen Sock to be in the Hands")
+	await _until(func() -> bool: return hands.active_of(1) == first, "the Heap's top Sock to be in the Hands")
 	await _physics_ticks(25)
 	_stand_player(player, spots[1])
 	await _aim_player(player, _sock_centre(mess, mate))
@@ -1214,8 +1232,8 @@ func _press_action(action: StringName) -> void:
 
 # --- Laid without a freeze (house/09) ------------------------------------------------------------
 
-## The loading screen's words (the old main.gd's, Q2542).
-const LOADING_TEXT := "The washer bursts open..."
+## The loading screen's words (Q2579: "Loading the house...", a New Game too).
+const LOADING_TEXT := "Loading the house..."
 
 
 func case_real_path_loading_screen() -> void:
@@ -1366,3 +1384,4 @@ func _on_treads(mess: Mess) -> Array[int]:
 		if not hit.is_empty() and (hit["collider"] as Node).name == SockTrail.TREADS:
 			out.append(sock)
 	return out
+

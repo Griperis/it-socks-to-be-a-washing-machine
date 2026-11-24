@@ -12,10 +12,14 @@ const NAME := "Player"
 const NAME_MAX := 16
 ## The id's bytes: 128 bits.
 const ID_BYTES := 16
+## The longest address kept.
+const ADDRESS_MAX := 128
 
 ## The player id: 32 hex characters off Steam.
 var id := ""
 var name := NAME
+## The last Host's address typed on the title's Join page ("" for none).
+var address := ""
 ## The file it was read from and is kept in; "" for one made only in memory.
 var path := ""
 
@@ -29,6 +33,7 @@ static func load_or_make(tag: String) -> PlayerProfile:
 	if data is Dictionary and is_id((data as Dictionary).get("id")):
 		p.id = String(data["id"])
 		p.name = clean_name(data.get("name", NAME))
+		p.address = String(data.get("address", "")).strip_edges().left(ADDRESS_MAX) if data.get("address") is String else ""
 		return p
 	p.id = new_id()
 	p.save()
@@ -73,6 +78,21 @@ static func clean_name(v: Variant) -> String:
 	return text if text != "" else NAME
 
 
+## A name the platform suggests for the field (Steam's persona name at M4, Q2585); "" for none. A
+## typed name wins (shown_name). The one seam where a Steam name fills the field.
+func suggested_name() -> String:
+	return ""
+
+
+## What the Multiplayer page's field shows: the typed name, else the suggestion, else "" (the
+## field's placeholder says "Player").
+func shown_name() -> String:
+	if name != NAME:
+		return name
+	var s := suggested_name().strip_edges().left(NAME_MAX)
+	return s if s != NAME else ""
+
+
 func save() -> void:
 	if path == "":
 		return
@@ -80,4 +100,4 @@ func save() -> void:
 	if f == null:
 		Log.warn("net", "cannot write the profile %s (%s)" % [path, error_string(FileAccess.get_open_error())])
 		return
-	f.store_string(JSON.stringify({"id": id, "name": name}, "\t"))
+	f.store_string(JSON.stringify({"id": id, "name": name, "address": address}, "\t"))

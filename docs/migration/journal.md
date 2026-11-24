@@ -1069,3 +1069,59 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Decisions | Q2576, Q2581 |
 
 ---
+
+| Ticket | core/58, M4's first build: title (Solo, Multiplayer, Options, Quit; Zoo in debug builds, Q2580), Options, Licence, ESC menu, one loading screen ("Loading the house...", Q2579; "Joining..." for a Guest) driven by house/09's laying, saves through the `SaveStore` seam (local file and memory backends, Steam Auto-Cloud ready), autosave; Solo/Host go straight into the house until the Lobby (Q2561); merged (main 67c76a3) |
+| Planned vs actual | 1 planned, 1 actual |
+| Redo count | 2 (Q2579: the loading text always; the ESC still retaken after the laying) |
+| Corrections | none |
+| Cost | about 577k subagent tokens |
+| Time | about 3 h with the waits on house/09 |
+| Surprises | S01 aimed at the wrong kitchen Sock after house/09 (see core/60) |
+| Stop rules | none hit |
+| Looks | builds/review-menus/ |
+| Decisions | Q2540, Q2553-Q2563, Q2575, Q2579, Q2580 |
+
+---
+
+| Ticket | core/59, the ESC close key at the top right of every dialogue (Options, Licence, ESC menu, Multiplayer, Join) replacing the bottom-left Back; the End-session question's Cancel removed (Q2578); merged (main c86b0e5) |
+| Cost | about 104k subagent tokens |
+| Surprises | a lead mistake: the first merge's worktree was removed while it still ran; rerun clean |
+| Looks | builds/review-esc-close/ |
+
+---
+
+| Ticket | core/61, the Lobby design: 74 old details (`m4-lists/02-lobby.md`), `docs/architecture/lobby.md`, build tickets core/62-67 (Q2582-Q2587); merged (main 7961957) |
+| Cost | about 234k subagent tokens |
+
+---
+
+| Ticket | core/60, the Heap's top Sock "never reached the Hands": the pick was fine; the tests' open-Sock probe started inside the Sock above; the kitchen real path aims at a Heap top again; merged (main bfb77e6) |
+| Cost | about 97k subagent tokens (Opus) |
+
+---
+
+| Ticket | core/62, the game link: Session and Roster moved out of the level to a `GameLink` beside the current scene (Q2582), save ids kept (`Runtime/Session/Roster`), Guests spawned after their house handshake, synchronizers filtered for a loading Guest, PROTOCOL 14; merged (main ed98062) |
+| Cost | about 312k subagent tokens (Opus) |
+| Surprises | a title-started Host cannot reach an F5 `--join=` Guest (different Session paths); 3+ players: a loading Guest still gets another Guest's avatar spawn (both [later], for core/63) |
+
+---
+
+| Ticket | core/63, the Lobby scene and `LobbyState`: Solo (one place, Back / Continue / New Game, Q2583), Host and Join through the Lobby, Ready and Start, Start loads the house for all, the shared ESC key on Solo's question; stand-in view (the look is core/66); merged (main bf6c265) |
+| Cost | about 266k subagent tokens (Opus) |
+| Surprises | core/62's two gaps and a Lobby Guest's Hands numbers left over (core/68) |
+| Looks | builds/review-lobby/ |
+| Decisions | Q2582-Q2587 |
+
+---
+
+| Ticket | core/64, the name field on the Multiplayer page for Host and Join, cut at 16, ready for a Steam name (Q2585); merged (main 98b1500) |
+| Cost | about 105k subagent tokens |
+
+---
+
+| Ticket | core/42, the Hand-off: right-click Hand-off with the pairing rule, "Not their mate" / "Hands full", the flight into the receiver's Hands with a sparkle, the catch by Throw (Q2588), a knocked-down Teammate refused (Q2589), Guest timeout 2 s, PROTOCOL 16; merged (main a6e1955) |
+| Cost | about 444k subagent tokens (Opus) |
+| Surprises | the Host's reach guard (new, technical); lines needing later pieces logged [later], none dropped |
+| Looks | builds/review-hand-off/ |
+
+---

@@ -1,0 +1,234 @@
+[gd_scene format=3 uid="uid://bxrt6mc7avpbb"]
+
+[ext_resource type="Script" uid="uid://b3wywv0rpp3om" path="res://game/ui/title/title.gd" id="1_title"]
+[ext_resource type="Texture2D" uid="uid://bs3bl1gik15y" path="res://assets/ui/menu_play.svg" id="2_play"]
+[ext_resource type="Texture2D" uid="uid://dorr2kbhdghig" path="res://assets/ui/menu_coop.svg" id="3_coop"]
+[ext_resource type="Texture2D" uid="uid://dft3tg0kq0vvb" path="res://assets/ui/menu_options.svg" id="4_options"]
+[ext_resource type="Texture2D" uid="uid://cptq4se7vvdh5" path="res://assets/ui/menu_exit.svg" id="5_exit"]
+[ext_resource type="Texture2D" uid="uid://bsaunnyq7oikd" path="res://assets/ui/menu_licence.svg" id="6_licence"]
+[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
+
+[node name="Title" type="Control" unique_id=531573]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_title")
+
+[node name="Backdrop" type="ColorRect" parent="." unique_id=539492]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.168627, 0.129412, 0.109804, 1)
+
+[node name="Pages" type="Control" parent="." unique_id=547411]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Center" type="CenterContainer" parent="Pages" unique_id=555330]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Column" type="VBoxContainer" parent="Pages/Center" unique_id=563249]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Panel" type="PanelContainer" parent="Pages/Center/Column" unique_id=571168]
+custom_minimum_size = Vector2(760, 0)
+layout_mode = 2
+theme_type_variation = &"TitlePanel"
+
+[node name="Stack" type="VBoxContainer" parent="Pages/Center/Column/Panel" unique_id=579087]
+layout_mode = 2
+
+[node name="Home" type="VBoxContainer" parent="Pages/Center/Column/Panel/Stack" unique_id=587006]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Heading" type="Label" parent="Pages/Center/Column/Panel/Stack/Home" unique_id=594925]
+layout_mode = 2
+theme_type_variation = &"TitleHeading"
+text = "It Socks"
+horizontal_alignment = 1
+
+
+[node name="Solo" type="Button" parent="Pages/Center/Column/Panel/Stack/Home" unique_id=602844]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "Solo"
+icon = ExtResource("2_play")
+
+
+[node name="MultiplayerKey" type="Button" parent="Pages/Center/Column/Panel/Stack/Home" unique_id=610763]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "Multiplayer"
+icon = ExtResource("3_coop")
+
+
+[node name="OptionsKey" type="Button" parent="Pages/Center/Column/Panel/Stack/Home" unique_id=618682]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "Options"
+icon = ExtResource("4_options")
+
+
+[node name="Quit" type="Button" parent="Pages/Center/Column/Panel/Stack/Home" unique_id=626601]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_type_variation = &"ExitButton"
+text = "Quit"
+icon = ExtResource("5_exit")
+
+[node name="Multiplayer" type="VBoxContainer" parent="Pages/Center/Column/Panel/Stack" unique_id=634520]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Heading" type="Label" parent="Pages/Center/Column/Panel/Stack/Multiplayer" unique_id=642439]
+layout_mode = 2
+theme_type_variation = &"Heading1"
+text = "Multiplayer"
+horizontal_alignment = 1
+
+
+[node name="NameLabel" type="Label" parent="Pages/Center/Column/Panel/Stack/Multiplayer" unique_id=689953]
+layout_mode = 2
+theme_type_variation = &"InkLabel"
+text = "Your name"
+
+[node name="NameField" type="LineEdit" parent="Pages/Center/Column/Panel/Stack/Multiplayer" unique_id=697872]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MenuField"
+placeholder_text = "Player"
+max_length = 16
+
+[node name="Host" type="Button" parent="Pages/Center/Column/Panel/Stack/Multiplayer" unique_id=650358]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "Host"
+icon = ExtResource("3_coop")
+
+
+[node name="JoinKey" type="Button" parent="Pages/Center/Column/Panel/Stack/Multiplayer" unique_id=658277]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "Join"
+icon = ExtResource("2_play")
+
+[node name="Join" type="VBoxContainer" parent="Pages/Center/Column/Panel/Stack" unique_id=674115]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Heading" type="Label" parent="Pages/Center/Column/Panel/Stack/Join" unique_id=682034]
+layout_mode = 2
+theme_type_variation = &"Heading1"
+text = "Join"
+horizontal_alignment = 1
+
+[node name="AddressLabel" type="Label" parent="Pages/Center/Column/Panel/Stack/Join" unique_id=705791]
+layout_mode = 2
+theme_type_variation = &"InkLabel"
+text = "The host's address"
+
+[node name="AddressRow" type="HBoxContainer" parent="Pages/Center/Column/Panel/Stack/Join" unique_id=713710]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="AddressField" type="LineEdit" parent="Pages/Center/Column/Panel/Stack/Join/AddressRow" unique_id=721629]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MenuField"
+placeholder_text = "192.168.1.20"
+
+[node name="JoinGo" type="Button" parent="Pages/Center/Column/Panel/Stack/Join/AddressRow" unique_id=729548]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "Join"
+
+[node name="Firewall" type="Label" parent="Pages/Center/Column/Panel/Stack/Join" unique_id=737467]
+custom_minimum_size = Vector2(680, 0)
+layout_mode = 2
+theme_type_variation = &"InkLabel"
+text = "The host's firewall must let It Socks through on UDP port 24680"
+autowrap_mode = 3
+
+[node name="Status" type="Label" parent="Pages/Center/Column" unique_id=753305]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(760, 0)
+layout_mode = 2
+theme_type_variation = &"StatusLabel"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="LicenceKey" type="Button" parent="." unique_id=761224]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -96.0
+offset_top = -96.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+tooltip_text = "Licence"
+theme_type_variation = &"CornerKey"
+icon = ExtResource("6_licence")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ZooKey" type="Button" parent="." unique_id=769143]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -96.0
+offset_right = 134.0
+offset_bottom = -24.0
+grow_vertical = 0
+theme_type_variation = &"KeycapButton"
+text = "Zoo"
+
+[node name="Close" parent="Pages/Center/Column/Panel" instance=ExtResource("close_btn")]
+unique_name_in_owner = true

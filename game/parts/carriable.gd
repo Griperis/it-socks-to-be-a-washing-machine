@@ -86,6 +86,11 @@ func left(by: int) -> Dictionary:
 	return grant({"holder": 0}) if holder == by else {}
 
 
+## The Host, after a load: nobody holds it (nothing is held offline); it lies where it was.
+func loaded(_host: String) -> Dictionary:
+	return grant({"holder": 0}) if holder != 0 else {}
+
+
 ## The holder owns the thing's motion (the Host while it lies); placed where it lies. While held it
 ## stays where the holder's hands put it.
 func _show(_now: bool) -> void:

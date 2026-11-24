@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://q8deh60iwibu" path="res://game/level/level_runtime.gd" id="0_runtime"]
 [ext_resource type="Script" uid="uid://bq3k03tw0pu2k" path="res://game/parts/parts.gd" id="1_parts"]
 [ext_resource type="PackedScene" uid="uid://k2c0o5v1yu3r" path="res://game/player/player.tscn" id="2_player"]
-[ext_resource type="Script" uid="uid://bq8jis41s6u7e" path="res://game/parts/session.gd" id="3_session"]
 [ext_resource type="Script" uid="uid://cdi6pnkd82hwo" path="res://game/parts/avatar/avatars.gd" id="4_avatars"]
 [ext_resource type="PackedScene" uid="uid://d2u50k5e57ccb" path="res://game/parts/avatar/avatar.tscn" id="5_avatar"]
 [ext_resource type="Script" uid="uid://2hleeyffro51" path="res://game/net/level_net.gd" id="6_net"]
@@ -12,11 +11,12 @@
 [ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="9_coins"]
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="10_designs"]
 [ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="11_tuning"]
-[ext_resource type="Script" uid="uid://cabdnviw3m0oh" path="res://game/net/roster.gd" id="14_roster"]
-[ext_resource type="Resource" uid="uid://b0moa0fsavwjb" path="res://game/net/coop_tuning.tres" id="15_coop"]
 [ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="16_knockdowns"]
 [ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="17_knock_tuning"]
-[ext_resource type="PackedScene" uid="uid://b0s58u22waxoe" path="res://game/level/loading_screen.tscn" id="18_loading"]
+[ext_resource type="Script" uid="uid://bqdsblq5wlstm" path="res://game/save/autosave.gd" id="18_autosave"]
+[ext_resource type="Resource" uid="uid://bdk0j4fv51es5" path="res://game/save/save_tuning.tres" id="19_save_tuning"]
+[ext_resource type="PackedScene" uid="uid://xjx2cc6moh4d" path="res://game/ui/esc_menu/esc_menu.tscn" id="20_esc_menu"]
+[ext_resource type="PackedScene" uid="uid://b0s58u22waxoe" path="res://game/level/loading_screen.tscn" id="21_loading"]
 
 [node name="LevelRuntime" type="Node3D" unique_id=573781402]
 script = ExtResource("0_runtime")
@@ -61,27 +61,16 @@ script = ExtResource("1_parts")
 
 [node name="Players" type="Node3D" parent="." unique_id=464476505]
 
-[node name="Avatars" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("local_body", "roster") unique_id=1885243291]
+[node name="Avatars" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("local_body") unique_id=1885243291]
 spawn_path = NodePath("../Players")
 script = ExtResource("4_avatars")
 avatar_scene = ExtResource("5_avatar")
 local_body = NodePath("../Player")
-roster = NodePath("../Session/Roster")
 
-[node name="Session" type="Node" parent="." node_paths=PackedStringArray("parts", "roster") unique_id=1170416455]
-script = ExtResource("3_session")
-parts = NodePath("../Parts")
-roster = NodePath("Roster")
-tuning = ExtResource("15_coop")
-
-[node name="Roster" type="Node" parent="Session" unique_id=684302146]
-script = ExtResource("14_roster")
-tuning = ExtResource("15_coop")
-
-[node name="Net" type="Node" parent="." node_paths=PackedStringArray("session", "avatars") unique_id=432951409]
+[node name="Net" type="Node" parent="." node_paths=PackedStringArray("avatars", "autosave") unique_id=432951409]
 script = ExtResource("6_net")
-session = NodePath("../Session")
 avatars = NodePath("../Avatars")
+autosave = NodePath("../Autosave")
 
 [node name="Hud" type="CanvasLayer" parent="Net" unique_id=1153874506]
 
@@ -92,7 +81,16 @@ offset_top = 8.0
 offset_right = 600.0
 offset_bottom = 34.0
 
-[node name="LoadingScreen" parent="." node_paths=PackedStringArray("mess", "parts", "player") unique_id=1739204816 instance=ExtResource("18_loading")]
+[node name="Autosave" type="Node" parent="." node_paths=PackedStringArray("parts") unique_id=1731902455]
+script = ExtResource("18_autosave")
+parts = NodePath("../Parts")
+tuning = ExtResource("19_save_tuning")
+
+[node name="EscMenu" parent="." node_paths=PackedStringArray("autosave", "net") unique_id=1093755214 instance=ExtResource("20_esc_menu")]
+autosave = NodePath("../Autosave")
+net = NodePath("../Net")
+
+[node name="LoadingScreen" parent="." node_paths=PackedStringArray("mess", "parts", "player") unique_id=1739204816 instance=ExtResource("21_loading")]
 mess = NodePath("../Socks/Mess")
 parts = NodePath("../Parts")
 player = NodePath("../Player")

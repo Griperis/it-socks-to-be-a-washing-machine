@@ -2,12 +2,19 @@
 ## and saves. On the Host (and alone: a Host of one) it answers Commands and applies the answers;
 ## on a Guest it sends Commands up (`relay`) and applies the answers that come down. No feature has
 ## save or net code of its own.
+##
+## Two kinds (core/62): a level's, and the game link's (GameLink), which binds the Parts that outlive a
+## scene (the Roster). A level's Parts reads through to its `link`: of(), find(), ids(), the snapshots,
+## the saves, left() and went_alone() see the link's parts as its own, and an answer for one of them is
+## applied here like any other. So the save's "parts" dictionary is one, as it was.
 class_name Parts
 extends Node
 
 ## An answer was applied here (granted or refused). The Host's Session sends it on to the Guests;
 ## sounds and the HUD may listen. Never decide anything in a handler of it.
 signal applied(ev: Dictionary)
+## bind() found every part (the level is ready): a save may be loaded now.
+signal bound
 ## The last unsettle() was settled: the level's starting state is whole (house/09).
 signal settled
 
@@ -21,6 +28,13 @@ const ENTITY_META := &"scene_part"
 const WIRING_OPTIONAL := ["level"]
 ## The level whose Parts these are; empty means this node's parent.
 @export var level: Node
+## What every id this Parts gives starts with: the link's is GameLink.ID_PREFIX, so its parts keep the
+## ids they had inside the level runtime (a save's ids do not change).
+@export var id_prefix := ""
+
+## The game link's Parts, read through by a level's (see the top); null for the link's own and for a
+## Parts with no link (a test's).
+var link: Parts = null
 
 ## A Guest's way up to the Host (Session sets it). Empty on the Host and when playing alone.
 var relay: Callable
@@ -28,6 +42,8 @@ var relay: Callable
 ## reach check in decide() (near()). Unset, every player is near everything.
 var where: Callable
 var _by_id: Dictionary[StringName, Part] = {}
+## bind() has run.
+var is_bound := false
 ## The last seq this machine gave a Command (next_seq()).
 var _seq := 0
 ## Who still makes the level's starting state (unsettle()), by node.
@@ -66,14 +82,16 @@ func bind(root: Node) -> void:
 		if is_instance_valid(old) and old.get_parent() != null:
 			old.get_parent().remove_meta(ENTITY_META)
 	_by_id.clear()
-	for part in _walk(root, []):
-		part.id = StringName(String(root.get_path_to(part)))
+	for part in _walk(root, root, []):
+		part.id = StringName(id_prefix + String(root.get_path_to(part)))
 		part.parts = self
 		_by_id[part.id] = part
 		var thing := part.get_parent()
 		if thing != null and not thing.has_meta(ENTITY_META):
 			thing.set_meta(ENTITY_META, part)
 		part._show(true)
+	is_bound = true
+	bound.emit()
 
 
 ## The part of the thing `node` belongs to (what the player's use button on `node` means): the first
@@ -90,9 +108,17 @@ static func part_of(node: Node) -> Part:
 	return null
 
 
-## The part with this id, or null.
+## The part with this id (the link's included), or null.
 func of(id: StringName) -> Part:
-	return _by_id.get(id)
+	var part: Part = _by_id.get(id)
+	if part == null and _has_link():
+		part = link.of(id)
+	return part
+
+
+## Whether the part with this id is the link's (it outlives the level), not the level's own.
+func is_link_part(id: StringName) -> bool:
+	return not _by_id.has(id) and _has_link() and link.of(id) != null
 
 
 ## The first part for which `test` says true, or null ("what does player 7 carry"). A linear scan,
@@ -101,7 +127,7 @@ func find(test: Callable) -> Part:
 	for part: Part in _by_id.values():
 		if test.call(part):
 			return part
-	return null
+	return link.find(test) if _has_link() else null
 
 
 ## Whether player `by` stands within `reach` of `thing` (where()); true while `where` is unset or
@@ -168,13 +194,13 @@ func apply(ev: Dictionary) -> void:
 
 ## This machine stopped being a Guest: every part takes over what it showed as looks only (coop/12).
 func went_alone() -> void:
-	for part: Part in _by_id.values():
+	for part: Part in _all():
 		part.went_alone()
 
 
 ## The Host: player `by` left; each part says what that does to it (a carried thing drops).
 func left(by: int) -> void:
-	for part: Part in _by_id.values():
+	for part: Part in _all():
 		var ev := part.left(by)
 		if not ev.is_empty():
 			ev.merge({"kind": &"left", "by": by, "to": part.id})
@@ -185,14 +211,62 @@ func left(by: int) -> void:
 ## what a save keeps.
 func snapshot() -> Dictionary:
 	var d := {}
-	for id: StringName in _by_id:
-		d[id] = _by_id[id].whole_state()
+	for part: Part in _all():
+		d[part.id] = part.whole_state()
 	return d
 
 
-## Every part's id.
+## What a save keeps of every part (Part.save_state()), by id as a String; a part that keeps nothing
+## is left out.
+func save_snapshot() -> Dictionary:
+	var d := {}
+	for part: Part in _all():
+		var s := part.save_state()
+		if not s.is_empty():
+			d[String(part.id)] = s
+	return d
+
+
+## Each saved part's save_version(), by id as a String.
+func save_versions() -> Dictionary:
+	var d := {}
+	for part: Part in _all():
+		d[String(part.id)] = part.save_version()
+	return d
+
+
+## The Host: a save loaded (Parts.save_snapshot() and save_versions() as they were written): each
+## part's state is brought to its own version (Part.upgrade_save()), written whole and shown at once;
+## an id this level no longer has is skipped (logged). A part merges what was saved into what it
+## holds now (Part.restored(): the Roster keeps who is here). Then every part's loaded() reset is
+## applied, `host` being the Host's player id.
+func load_save(saved: Dictionary, versions: Dictionary, host: String) -> void:
+	var snap := {}
+	for id: Variant in saved:
+		var part := of(StringName(id))
+		if part == null or not (saved[id] is Dictionary):
+			Log.warn("save", "the save has a part %s this level does not" % id)
+			continue
+		var state: Dictionary = saved[id]
+		var v := int(versions.get(id, 1))
+		while v < part.save_version():
+			state = part.upgrade_save(state, v)
+			v += 1
+		snap[id] = part.restored(state)
+	load_snapshot(snap)
+	for part: Part in _all():
+		var ev := part.loaded(host)
+		if not ev.is_empty():
+			ev.merge({"kind": &"loaded", "by": HOST, "to": part.id})
+			apply(ev)
+
+
+## Every part's id (the link's included).
 func ids() -> Array[StringName]:
-	return _by_id.keys()
+	var out: Array[StringName] = _by_id.keys()
+	if _has_link():
+		out.append_array(link.ids())
+	return out
 
 
 ## A late Guest, or a save loaded: every part takes its state whole, shown at once.
@@ -203,9 +277,25 @@ func load_snapshot(snap: Dictionary) -> void:
 			part.write(snap[id], true)
 
 
-func _walk(node: Node, into: Array[Part]) -> Array[Part]:
+## Every part under `node`; a game link under the level (a level's private one) binds its own.
+func _walk(node: Node, root: Node, into: Array[Part]) -> Array[Part]:
+	if node is GameLink and node != root:
+		return into
 	if node is Part:
 		into.append(node)
 	for child in node.get_children():
-		_walk(child, into)
+		_walk(child, root, into)
 	return into
+
+
+## This Parts' own parts, then the link's.
+func _all() -> Array[Part]:
+	var out: Array[Part] = []
+	out.assign(_by_id.values())
+	if _has_link():
+		out.append_array(link._all())
+	return out
+
+
+func _has_link() -> bool:
+	return link != null and is_instance_valid(link) and link != self

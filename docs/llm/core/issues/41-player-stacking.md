@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-triage
+status: ready-for-agent
 kind: build
 area: core
 feature: core
@@ -8,7 +8,7 @@ priority: next
 created: 2026-11-21
 done:
 blocked_by: []
-notes: ["tracked, not planned (Q2430); the catalogue's milestone: M3", "triaged to M3, soon (Q2533, 2026-11-23); to shape with its behaviour list"]
+notes: ["tracked, not planned (Q2430); the catalogue's milestone: M3", "triaged to M3, soon (Q2533, 2026-11-23)", "suggested model: opus (co-op, physics)"]
 terms: []
 ---
 
@@ -17,11 +17,42 @@ terms: []
 Port of the old game's stacking on a teammate's back (catalogue B07, `game/player/rig_stack.gd`; leftovers P27).
 
 ## Acceptance
-- To be shaped when it is planned (the `migration-port` skill: behaviour list first).
+- Built from `docs/migration/m3-lists/01-player-stacking.md` as answered (Q2590, Q2591).
+- A BACK layer and a back disc per player: radius 0.3 m, 0.1 m thick, top 0.3 m under the top of the body, following crouch and stand; off while its player is knocked down, in the drum, or at the top of a stack of 3 (lines 1-8).
+- Walking on from a surface as high as the back, and the climb jump within 0.9 m with room for a crouched body (lines 9-19, 12-17): clears the back by 0.15 m, tucks into a crouch, steers over the middle until landing.
+- A rider moves with the disc, stays crouched, walks off the edge and falls, with the land sound (lines 20-26, 35-38); a carrier walks at 0.5 pace and stands up only with room for the stack (lines 28-34).
+- The soft push between standing players (lines 45-50): 0.6 m, 8 per second, lower id steps aside, skipped at different heights.
+- No riding id or offset in the pose (Q2591): each machine moves its own body on the disc.
+- Climb and ride have no sound, look or animation of their own (lines 18, 44), as the old game.
+- Real-path case (kit/docs/TESTING.md "The real path"): two players in the zoo station: player B's pressed jump action near player A's back, through the Player's own wiring, ends with B standing on A's disc (B's feet at A's back height) and moving with A when A walks; A's pace is halved.
+- Co-op cases at 0 ms and 50 ms one way (two machines in one process): B climbs onto A and A walks a loop; on each machine B's drawn position stays within a typed bound of A's on-screen back, with no jitter step larger than a typed bound (at 50 ms too). If the 50 ms case shows the rider jittering, STOP and report: adding a riding offset goes to the designer first (Q2591).
+- Small details kept (Q2277): every numbered line of the list is built, or named in the ticket as dropped by the designer; each carries a typed Resource number marked `# placeholder`. Look and feel numbers get no test (Q2421); its station shows them.
+- A zoo station for the feature (the `zoo-design` skill), then it lands in the main scene; `kit/tools/run.sh --touched` ends PASS.
 
 ## Answers
 - Tracked as a ticket, not planned yet (Q2430, 2026-11-21).
+- Q2588-Q2589 do not touch this ticket. Q2590: every recommended answer stands: a rider stays crouched; no rider jump; the carrier may jump and a knockdown drops the rider; carry pace 0.5 and 3 players at most; no climb/ride look or sound; the rider's waddle as old; the disc has no soft edge; solo high spots stay in M6 (P27).
+- Q2591: the stack is a plain collider (the back disc), each machine moving its own body on it; no riding id in the pose; an offset only if the 50 ms case shows jitter, and then the designer first (2026-11-23).
 
 ## Open follow-ups
+- [answered, see Answers] The rider's crouch (list 01, line 22). Old: a rider stays crouched on a back even where the ceiling lets them stand. Options: (a) keep (recommended: stacks fit under 2.6-2.7 m ceilings, no new rule); (b) the rider stands where there is room; (c) a deeper crouch (a new avatar shape).
+- [answered, see Answers] A rider's jump (line 22). Old: none (a crouched player cannot jump), so a rider walks off and cannot climb to a third. Options: (a) keep (recommended); (b) a rider may jump off, or climb onto a third back with the same rule.
+- [answered, see Answers] The carrier's jump and a knockdown (lines 31-32). Old: the carrier may jump with a rider (they ride along), a knockdown drops the rider. Options: (a) keep (recommended); (b) forbid the carrier's jump while carrying.
+- [answered, see Answers] Carry pace and stack size (lines 6, 28). Old: pace 0.5 for every carrier, at most 3 players. Options: (a) keep both numbers (recommended; typed Resource placeholders); (b) a slower pace for a taller stack; (c) two players at most.
+- [answered, see Answers] Climb and ride look and sound (lines 18, 44). Old: only the jump and land sounds; no tuck, push-off, riding pose or cue (spec follow-up 0, never built). Options: (a) keep (recommended; a later look ticket may add); (b) add a tuck and a push-off sound now; (c) add a riding pose for the rider's avatar.
+- [answered, see Answers] The rider's waddle while carried (line 43). Old: the avatar waddles on other machines. Options: (a) keep (recommended: as old); (b) hold the waddle still while riding.
+- [answered, see Answers] The disc's edge (line 23). Old: a 0.6 m disc with no rim; riders walk off by accident. Options: (a) keep (recommended); (b) a wider disc for the rider's feet; (c) a soft edge that slows the rider.
+- [answered, see Answers] Solo high spots, P27 (line 53). Old: none (Q664: alone the Sock is placed reachable). Options: (a) leave to M6 as the catalogue says (recommended); (b) add a jump Upgrade now.
+- [answered, see Answers] How a stack is decided across machines (co-op section). Old: nothing is decided state; each machine runs its own body and the pose carries the riding id and offset. Options: (a) keep, as a pose property of the avatar's synchronizer (recommended: same feel, no new Command); (b) a Host-decided Stack Part (fixes the climb-onto-a-moving-Teammate lag, costs a trip and a refusal path).
+- [later] If the 50 ms case jitters: the riding offset (Q2591), to the designer before it is built.
 
 ## Built log
+### 2026-11-23
+- Changed: step 1 only, the behaviour list `docs/migration/m3-lists/01-player-stacking.md` (54 details, each with its old file:line, the weak points, the Host/Guest split, what is already in the port). The soft push (Q263, lines 45-50) is in the list too. Nine open choices. No game code.
+- Files: `docs/migration/m3-lists/01-player-stacking.md`, this ticket.
+- Verified: docs only, no suite run. The list is for the designer to approve; the ticket stays `needs-info` until the [blocking] questions are answered.
+
+### 2026-11-23 (shaped)
+- Changed: shaped for building after Q2588-Q2591: answers, checkable Acceptance, model, status ready-for-agent. Docs only.
+- Files: this ticket.
+- Verified: docs only.

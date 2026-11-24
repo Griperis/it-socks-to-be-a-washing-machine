@@ -1,4 +1,4 @@
-Next free Q number: Q2582 (update this line whenever a round of questions is asked)
+Next free Q number: Q2594 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -496,3 +496,15 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2579: the loading card reads "Loading the house..." (core/58; designer, 2026-11-23).
 - Q2580: the title's "Zoo" button shows in debug builds only, gone in a release build, as the zoo itself (core/58; designer, 2026-11-23).
 - Q2581: inside any piece (trunks, cupboards, drawers) laid Socks stack on the ones laid there before, as the old game computed it; trunks hold about 5 to 6 (house/09; designer, 2026-11-23).
+- Q2582: the Lobby is its own scene; Session and Roster move out of the level to an object that lives for the whole game, so the connection carries from the Lobby into the house with no reconnect; Start has the Host load the house for everyone behind the one loading screen; the World can be chosen in the Lobby, so the old World drawer comes back (core/61 L1; designer, 2026-11-23).
+- Q2583: Solo goes through the Lobby as the old game: one pedestal and Start (core/61 L2; designer, 2026-11-23).
+- Q2584: the Wardrobe page and the stats card are split out to the Wardrobe piece; the first Lobby shows Avatars in their colour (core/61 L3; designer, 2026-11-23).
+- Q2585: the name is typed in one field on the Multiplayer page, for Host and Join, built so a Steam name can fill it later (core/61 L4; designer, 2026-11-23).
+- Q2586: the drawer's "Pairs per Drawer" slider waits for the Stages piece (core/61 L5; designer, 2026-11-23).
+- Q2587: a co-op World's row name is made in one swappable place, easy to change; first the members' names, with "World 1", "World 2" plus details on the World's state as the likely simpler form, judged at the Lobby look's first still; no Guest is limited to Worlds they belong to (core/61 L7; designer, 2026-11-23).
+- Q2588: the catch by Throw is part of the Hand-off ticket: one rule and one hit test for Hand-off, catch and knockdown (core/42; designer, 2026-11-23).
+- Q2589: a knocked-down Teammate cannot be handed a Sock, as the other knockdown exemptions (a change from the old; core/42; designer, 2026-11-23).
+- Q2590: every other recommended answer in core/41, core/42 and core/43's Open follow-ups stands (mostly as the old; a Guest's Hand-off times out after 2 s per Q2477; a ping outlines anything with the Outline component; the hint arrow is built now with pings as its first source); the stack's sync is asked again (designer, 2026-11-23).
+- Q2591: a stack is a plain collider: the back disc that a player can jump onto, each machine moving its own body on it as on a moving platform; no riding id in the pose. Only if the co-op case at 50 ms shows the rider jittering on other machines is a riding offset added, and that goes to the designer first (core/41; designer, 2026-11-23).
+- Q2592: the rider's synced pose carries the old game's riding offset (riding on whom, at what spot on the back), so every machine draws the rider on the carrier's back; built because the plain collider drew the rider 0.44-0.67 m behind on the carrier's machine (replaces Q2591's no-id; core/41; designer, 2026-11-23).
+- Q2593: the old jump and land sounds are ported now with stacking, for every jump, climbs included, on every machine (core/41; designer, 2026-11-23).

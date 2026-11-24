@@ -10,16 +10,18 @@ in `docs/architecture.md` say what happens in order; this file says who owns wha
 
 | Piece | Files | Owns |
 |---|---|---|
-| The link | `game/parts/session.gd` | The only node with RPCs: the gate (PROTOCOL, layout hash, player id, Hands numbers), the guards, Commands up, answers down, the snapshot to a joiner, a leaver, the Host quitting |
+| The game link | `game/net/game_link.gd/.tscn` | Lives for the whole game beside the current scene (core/62, Q2582): holds the `Session`, its `Roster` and the link's `Parts` (ids prefixed `Runtime/`, so the Roster stays `Runtime/Session/Roster`). The title makes it beside itself (under the root in the game; SceneChanger leaves it alone) and frees it when the game is back at the title; a level with none (F5, the zoo, `--scene=`, tests) makes a private one under its runtime. Found with `GameLink.of(node)`; `LevelRuntime` hands its Session and Roster to the Net, Avatars, Autosave and ESC menu |
+| The session | `game/parts/session.gd` | The only node with RPCs: the gate (PROTOCOL, player id, name, Hands numbers, and the layout hash when the Guest already has a level), the guards, Commands up, answers down, the link snapshot at connect (`linked`), the house handshake (`house_ready` with PROTOCOL and layout; the level snapshot once the Host's level is settled: `welcomed`), a leaver, the Host quitting. Works with the link's Parts and the attached level's (`attach_level`/`detach_level`; the level's read through to the link's) |
 | The transport | `game/net/net_transport.gd`, `enet_transport.gd` | How a machine reaches the others; the only file that names ENet or reads an address (Steam comes as another transport at M4) |
 | Start and words | `game/net/level_net.gd` | `--host`, `--join=`, `--profile=`; the HUD's toasts and mode line |
-| Who plays | `game/net/roster.gd`, `player_profile.gd`, `coop_tuning.gd/.tres` | The Roster Part (by player id: peer, name, colour, place, Hands numbers); the long random id in `user://profile[_<tag>].json`; max players, colours, timeouts |
+| Who plays | `game/net/roster.gd`, `player_profile.gd`, `coop_tuning.gd/.tres` | The Roster Part (by player id: peer, name, colour, place, Hands numbers; alone too, the player in its own Roster through `Session.enter_alone()`, core/58, so Hands and Coins are keyed by player id); the long random id in `user://profile[_<tag>].json`; max players, colours, timeouts |
 | The rules | `game/parts/part.gd`, `parts.gd`, `command.gd` | Every shared thing is a Part; `decide()` on the Host only; `Parts.apply` the one writer; the Command's wire shape and arg checks |
 | Bodies seen | `game/parts/avatar/` | `Avatars` spawns one `Avatar` per Roster entry; the pose goes from its owner on a MultiplayerSynchronizer, checked in its setters; `AvatarLooks` derives every motion; `Ragdoll` the knockdown body |
 | A Guest's guesses | `game/hands/guest_ghosts.gd`, `throw_ghost.gd`, `ghost_tuning.tres` | Looks only: a pick, drop, Throw or wheel shown at once and matched to the Host's answer by `seq`; a Throw or drop flies its own body from the hand the Host lets it go from, corrected once it parts (Q2573) |
 | Throws in the air | `game/sock/flight_row.gd` | A Throw's body streams stamped rows to every Guest; the Guest plays them 0.1 s behind |
 | The Mess in co-op | `game/mess/mess.gd`, `mess_moving.gd` | Every machine starts its own body for a flying Sock; a Guest's are looks only on `Mess.LAYER_LOOKS`; the Host's `rest` snaps them |
-| Knockdown | `game/knockdown/knockdowns.gd` | Who is down, who drags whom, struggles; Host-only `knock` |
+| Knockdown | `game/knockdown/knockdowns.gd` | Who is down, who drags whom, struggles; Host-only `knock`; the one hit test of every Throw at a body (a full charge knocks, a weaker one is a catch or a bounce) |
+| The Hand-off | `game/hands/hands.gd` (`hand_off`, Host-only `catch`), `hand_off_tuning.gd/.tres`, `AimFinder.mate()` | The active item given to an aimed Teammate (core/42): a Pair always, a loose Sock only completing a Pair there; no room, it lies at their feet; never to a knocked-down one. A Guest guesses nothing and waits (2 s, then "refuse"); the receiver's HeldView flies the item in from the giver's hand as drawn on each machine (`HeldView.fly_from`) |
 | Teammates heard | `game/audio/hearing.gd`, `teammate_steps.gd` | A Teammate's cues and steps at their body (`Sounds.play_from`) |
 
 ## Rules that hold everywhere
@@ -40,6 +42,16 @@ in `docs/architecture.md` say what happens in order; this file says who owns wha
   lets each Part take over what it showed as looks only (`Mess.went_alone`: each looks-only body and frozen
   Throw copy becomes its own body where it is, so every flying Sock rests; coop/12). `GuestGhosts` drops its
   guesses.
+- **The house handshake** (core/62). Until a Guest's `house_ready` is handled the Host sends it nothing of the
+  level: no answer about a level Part, no level synchronizer (LevelRuntime's visibility filter asks
+  `Session.sees_house()`), no avatar (the Avatars spawn a Guest's only once it is in: Godot sends a spawn whose
+  synchronizer belongs to another peer to everyone); a Command for a level Part is dropped as `not_ready`
+  (counted, never printed). A wrong layout at `house_ready` is refused with "Another version of the game".
+  A Guest joining from inside its level (the command line, the title's Join today) names its layout in its gate
+  word: a different one is refused at the gate (it never enters the Roster), a matching one counts as its
+  `house_ready`, so it gets the link and level snapshots together once the Host's level is settled.
+  Known limit: with three or more players, a Guest still loading its level is sent the spawn of another Guest's
+  avatar (core/63's Start must load the Guests before it matters).
 - **The wire's version.** `Session.PROTOCOL` goes up with any change to an RPC, a synchronized property, a
   spawnable scene, or the shape of a Command, event, snapshot or gate word.
 
@@ -49,7 +61,7 @@ ENet on 127.0.0.1, `tests/support/lag_peer.gd` for a one-way delay; frames paced
 where the network matters. In a test every Host listens on a port the system picks (`Session.free_port`, set
 by `tests/hooks.gd`), so parallel runs never clash. The real paths run at 0 and 50 ms one way:
 `coop_join:join`, `teammates:walk_crouch`, `coop_mess:pour_real_path`, `coop_hands:guest_pick_throw_real_path`
-and `guest_throw_ghost_on_host_flight`, `coop_knockdown:real_path`. The guards: `coop_guard` (bad shape, flood,
+and `guest_throw_ghost_on_host_flight`, `coop_knockdown:real_path`, `coop_hand_off:hand_off` and `catch`. The guards: `coop_guard` (bad shape, flood,
 forged pose and knockdown), `scene_parts:guard`, `coop_knockdown:forged`, `teammates:forged`.
 
 ## The cost

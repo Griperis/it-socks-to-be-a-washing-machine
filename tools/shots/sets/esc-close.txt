@@ -1,0 +1,7 @@
+# core/59: every dialogue with the ESC close key at its top right (the house waits for its loading screen to lift).
+multiplayer  --scene=res://game/ui/title/title.tscn --size=1920x1080 --do='10:menu:multiplayer' --shots=30
+join  --scene=res://game/ui/title/title.tscn --size=1920x1080 --do='10:menu:join' --shots=30
+options  --scene=res://game/ui/title/title.tscn --size=1920x1080 --do='10:menu:options' --shots=30
+licence  --scene=res://game/ui/title/title.tscn --size=1920x1080 --do='10:menu:licence' --shots=30
+esc-menu  --scene=res://game/house/house.tscn --size=1920x1080 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;60:menu:esc' --shots=90
+esc-options  --scene=res://game/house/house.tscn --size=1920x1080 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;60:menu:esc_options' --shots=100

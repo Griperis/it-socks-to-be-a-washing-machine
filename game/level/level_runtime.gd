@@ -1,11 +1,19 @@
 ## The full game setup every level shares (Q2517): the player, the Mess with its Hands, Knockdowns and
-## Coins, the Parts, the Session and its Roster, the Avatars and the Net, in one sealed scene
-## (`level_runtime.tscn`). A level is its own geometry and look, a `Spawn` marker and one instance of
-## it; no level overrides a node inside it. What differs per level is set on the instance (below).
+## Coins, the Parts, the Avatars and the Net, in one sealed scene (`level_runtime.tscn`). A level is
+## its own geometry and look, a `Spawn` marker and one instance of it; no level overrides a node inside
+## it. What differs per level is set on the instance (below).
+##
+## The Session and its Roster are the game link's (GameLink, core/62): the one whoever started the
+## game made (the title), found with GameLink.of(), else a private one this runtime makes under itself
+## (F5, the zoo, `--scene=`, a test), so a level is never without one. The level's Parts read through
+## to the link's, and the Session uses them while the level is in the tree.
 ##
 ## Before any of its nodes is ready it puts the player on the level's spawn, points the Mess at the
-## level's return spot, gives the Parts the whole level to bind and the Net the level's word.
-## Code finds these nodes through it: `LevelRuntime.of(node)` from the level or anything in it.
+## level's return spot, gives the Parts the whole level to bind, the Net the level's word and the
+## nodes that need the Session or the Roster the link's (an export cannot name a node outside its
+## scene). On the Host every synchronizer of the level shows a Guest nothing until that Guest's house
+## is ready (Session.sees_house()). Code finds these nodes through it: `LevelRuntime.of(node)` from the
+## level or anything in it.
 class_name LevelRuntime
 extends Node3D
 
@@ -26,8 +34,21 @@ extends Node3D
 ## Q2542); off: all in the start-up frame (the zoo's few).
 @export var load_screen := false
 
+## The World this level plays (core/58), set by the title before the level enters the tree; null
+## plays the level as built and saves nothing (F5, the zoo, tests, `--scene=`).
+var world: WorldSlot = null
+## Started from the title (not the command line): how the Net starts (`--host`, `--join=<where>`,
+## or nothing for alone), and a Guest whose session ends goes back to the title.
+var from_title := false
+var launch := PackedStringArray()
+
 const SPAWN := ^"Spawn"
 const RETURN_SPOT := ^"ReturnSpot"
+## The metadata a synchronizer of the level carries once it has the house filter.
+const HOUSE_GATE := &"house_gate"
+
+## The game link this level plays through (set as it enters the tree).
+var link: GameLink = null
 
 
 ## The runtime of the level `node` is in (`node` is the level, the runtime or anything under the
@@ -66,8 +87,86 @@ func _enter_tree() -> void:
 	mess.return_spot = back if back != null else start
 	mess.bounds = mess_bounds
 	mess.lay_in_slices = load_screen
+	# A loaded World's Socks come from its save: the generators lay nothing (Q2579).
+	mess.skip_generated = world != null and not world.is_new
+	if has_node(^"LoadingScreen") and (launch_joins() or (not from_title and _joins_by_command_line())):
+		loading.set_heading(LoadingScreen.JOINING)
 	parts.level = level
 	net.place = place_name
+	autosave.world = world
+	_take_link()
+	var tree := get_tree()
+	if not tree.node_added.is_connected(_on_node_added):
+		tree.node_added.connect(_on_node_added)
+
+
+func _ready() -> void:
+	_gate_synchronizers(get_parent())
+
+
+func _exit_tree() -> void:
+	var tree := get_tree()
+	if tree.node_added.is_connected(_on_node_added):
+		tree.node_added.disconnect(_on_node_added)
+	if link != null and is_instance_valid(link):
+		link.session.detach_level(parts)
+
+
+## The link: the game's (GameLink.of()), else a private one under this runtime. Its Session takes the
+## level's Parts, and the nodes that need it are pointed at it.
+func _take_link() -> void:
+	if link == null or not is_instance_valid(link) or link.is_queued_for_deletion():
+		link = GameLink.of(self)
+	if link == null:
+		link = GameLink.make()
+		add_child(link)
+		move_child(link, 0)  # the first child leaves the tree last: the Autosave saves through it first
+	var s := link.session
+	avatars.roster = link.roster
+	avatars.session = s
+	net.session = s
+	autosave.session = s
+	esc_menu.session = s
+	s.attach_level(parts)
+
+
+## Every synchronizer of the level, now and later, asks the Session whether a Guest may see it.
+func _gate_synchronizers(node: Node) -> void:
+	if node is MultiplayerSynchronizer:
+		_gate(node as MultiplayerSynchronizer)
+	for child in node.get_children():
+		_gate_synchronizers(child)
+
+
+func _on_node_added(node: Node) -> void:
+	if node is MultiplayerSynchronizer and is_inside_tree() and get_parent().is_ancestor_of(node):
+		_gate(node as MultiplayerSynchronizer)
+
+
+func _gate(sync: MultiplayerSynchronizer) -> void:
+	if sync.has_meta(HOUSE_GATE):
+		return
+	sync.set_meta(HOUSE_GATE, true)
+	sync.add_visibility_filter(_sees_house)
+
+
+func _sees_house(peer: int) -> bool:
+	return link == null or not is_instance_valid(link) or link.session.sees_house(peer)
+
+
+func _joins_by_command_line() -> bool:
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--join="):
+			return true
+	return false
+
+
+## Whether the title started this level as a Guest (launch has `--join=`).
+func launch_joins() -> bool:
+	for arg in launch:
+		if arg.begins_with("--join="):
+			return true
+	return false
 
 
 ## The local body.
@@ -78,14 +177,19 @@ var players: Node3D:
 	get: return get_node(^"Players") as Node3D
 var avatars: Avatars:
 	get: return get_node(^"Avatars") as Avatars
+## The link's Session and Roster (null before the level enters the tree).
 var session: Session:
-	get: return get_node(^"Session") as Session
+	get: return link.session if link != null and is_instance_valid(link) else null
 var roster: Roster:
-	get: return get_node(^"Session/Roster") as Roster
+	get: return link.roster if link != null and is_instance_valid(link) else null
 var net: LevelNet:
 	get: return get_node(^"Net") as LevelNet
 var parts: Parts:
 	get: return get_node(^"Parts") as Parts
+var autosave: Autosave:
+	get: return get_node(^"Autosave") as Autosave
+var esc_menu: EscMenu:
+	get: return get_node(^"EscMenu") as EscMenu
 ## The node the Mess, Hands, Knockdowns and Coins are under (ZooStations joins stations' to it).
 var socks: Node:
 	get: return get_node(^"Socks")

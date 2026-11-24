@@ -11,6 +11,16 @@
 ##
 ## The refusals the player sees before asking (the crosshair's red, "Hands full", "Can't drop
 ## there") come from the same checks decide() makes: pick_refusal() and drop_refusal().
+##
+## The Hand-off (core/42, list 02 approved with Q2588-Q2590): `hand_off` gives the active item to a
+## Teammate the giver aims at; the Host-only `catch` is the same rule for a Throw below full charge
+## that hits a Teammate (Knockdowns' hit test asks it). A Pair always goes over; a loose Sock only when
+## it completes a Pair in the receiver's Hands (take_refusal(): "Not their mate" to the giver, the
+## Sock stays; a refused catch bounces off, with no Command). Taken, it goes in as a pick does (a Pair
+## made there leads at the end of the Hands, active); with no room it lies at the receiver's feet
+## ("full": the receiver reads "Hands full"). Nobody takes from another's Hands (Q244); a knocked-down
+## Teammate is never handed to (Q2589). The answer names the "giver" (-1 for a catch), the
+## "receiver" and the "item".
 class_name Hands
 extends Part
 
@@ -26,6 +36,17 @@ const FULL := "full"
 const SOON := "soon"
 const NOTHING := "nothing"
 const NO_SPOT := "no_spot"
+## Why a Hand-off or a catch is refused: the loose Sock completes no Pair there, the receiver is
+## knocked down, the giver aimed at themselves.
+const NOT_MATE := "not_mate"
+const DOWN := "down"
+const SELF := "self"
+## The Hand-off's verbs: a player's, and the Host's own for a Throw that hits a Teammate.
+const HAND_OFF := &"hand_off"
+const CATCH := &"catch"
+## How far over and under a receiver's feet the Host looks for the floor an item laid there lies on.
+const FLOOR_PROBE := 0.5
+const HAND_OFF_DEFAULT := preload("res://game/hands/hand_off_tuning.tres")
 ## How far over and under a drop's spot the Host looks for the top it would rest on.
 const SPOT_PROBE := 0.05
 ## How far along the aim a Throw looks for the point the crosshair is on.
@@ -37,6 +58,8 @@ var _probe := _make_probe()
 @export var mess: Mess
 ## The numbers of a player the Hands cannot find a tuning for (a Guest's, until M0.6).
 @export var tuning: HandsTuning
+## The Hand-off's numbers (hand_off_tuning.tres when empty).
+@export var hand_off_tuning: HandOffTuning
 
 @export_group("State")
 ## Each player's held Sock ids, newest last: {key: PackedInt32Array}. The key is the player id from the
@@ -58,6 +81,8 @@ var _ids: Dictionary[int, String] = {}
 var _teammate_tuning: Dictionary[String, HandsTuning] = {}
 var _teammate_sent: Dictionary[String, Dictionary] = {}
 var _teammate_base: HandsTuning
+## The level's Knockdowns (who is down), found once among the Parts.
+var _knockdowns: Knockdowns
 
 ## The Host's clock in seconds (physics time since the level started): what the grab interval is
 ## measured on. Only the Host reads it.
@@ -173,6 +198,11 @@ func throw(by: int, dir: Vector3, charge: float, seq := 0) -> void:
 	_ask(Command.new(&"throw", by, id, {"dir": dir, "charge": charge}), seq)
 
 
+## The player asks to hand their active item to Teammate `to` (a peer number), whom they aim at.
+func hand_off(by: int, to: int, seq := 0) -> void:
+	_ask(Command.new(HAND_OFF, by, id, {"to": to}), seq)
+
+
 func _ask(cmd: Command, seq: int) -> void:
 	cmd.seq = seq
 	parts.ask(cmd)
@@ -193,6 +223,7 @@ func accepts() -> Dictionary[StringName, Dictionary]:
 		&"drop": {"args": {"point": TYPE_VECTOR3, "normal": {"type": TYPE_VECTOR3, "min": -1.01, "max": 1.01}}},
 		&"throw": {"args": {"dir": {"type": TYPE_VECTOR3, "min": -1.01, "max": 1.01},
 				"charge": {"type": TYPE_FLOAT, "min": 0.0, "max": 1.0}}, "rate": _own_tuning().throw_rate},
+		HAND_OFF: {"args": {"to": {"type": TYPE_INT, "min": 1, "max": 2147483647}}},
 	}
 
 
@@ -292,7 +323,210 @@ func decide(cmd: Command) -> Dictionary:
 			if active_of(cmd.by) < 0:
 				return refuse(NOTHING)
 			return _let_go(cmd.by, launch_of(cmd.by, (dir as Vector3).normalized(), charge), false)
+		HAND_OFF:
+			var to: Variant = cmd.args.get("to")
+			if not (to is int):
+				return refuse("wrong")
+			var why := hand_off_refusal(cmd.by, to)
+			if why != "":
+				return refuse(why)
+			return _give(cmd.by, to, active_of(cmd.by), _feet_of(cmd.by))
+		CATCH:
+			return _decide_catch(cmd)
 	return refuse("wrong")
+
+
+# --- The Hand-off (core/42) ----------------------------------------------------------------------
+
+## The Hand-off's numbers (a default when none is set).
+func hand_off_numbers() -> HandOffTuning:
+	if hand_off_tuning == null:
+		hand_off_tuning = HAND_OFF_DEFAULT
+	return hand_off_tuning
+
+
+## Why player `by` may not hand their active item to `to` now, or "" when they may (lines 11-17, 40,
+## Q2589): something held, `to` another player this level can place, not knocked down, within reach
+## (the Host's view of a Guest is a little old: the slack and the body's radius over the reach), and
+## the item one `to` may take (take_refusal()).
+func hand_off_refusal(by: int, to: int) -> String:
+	var sock := active_of(by)
+	if sock < 0:
+		return NOTHING
+	if to == by:
+		return SELF
+	var at: Variant = _feet_or_null(to)
+	if not (at is Vector3):
+		return GONE
+	if is_down(to):
+		return DOWN
+	var t := tuning_of(by)
+	if not parts.near_point(by, at, t.reach + t.reach_slack + hand_off_numbers().body_radius):
+		return FAR
+	return take_refusal(to, sock)
+
+
+## Why player `to` may not be given item `sock` (a held or flying Sock or Pair), or "" when they may:
+## a Pair always goes over (Q663); a loose Sock only when it completes a Pair there, their loose mate
+## held (Q652, Q658). Room is not asked here: with none it lies at their feet.
+func take_refusal(to: int, sock: int) -> String:
+	if mess == null or sock < 0 or sock >= mess.count():
+		return GONE
+	if mess.is_pair(sock) or mate_held(to, sock) >= 0:
+		return ""
+	return NOT_MATE
+
+
+## Whether player `to` has room for item `sock` in their Hands (line 18): a Pair needs a free place;
+## a loose Sock pairs with its held mate or needs a free place.
+func can_take(to: int, sock: int) -> bool:
+	if not mess.is_pair(sock) and mate_held(to, sock) >= 0:
+		return true
+	return items_of(to).size() < tuning_of(to).capacity
+
+
+## Whether player `peer` is knocked down now (the level's Knockdowns; never, with none).
+func is_down(peer: int) -> bool:
+	var kd := _knockdowns_of()
+	return kd != null and kd.is_down(peer)
+
+
+func _knockdowns_of() -> Knockdowns:
+	if _knockdowns != null and is_instance_valid(_knockdowns):
+		return _knockdowns
+	if parts == null:
+		return null
+	_knockdowns = parts.find(func(part: Part) -> bool: return part is Knockdowns) as Knockdowns
+	return _knockdowns
+
+
+## The Host-only catch (line 33-36): Throw `sock` below full charge hit Teammate `to` at `at` (the
+## hit test of Knockdowns asks it only when take_refusal() allows it; a refused one bounces there).
+func _decide_catch(cmd: Command) -> Dictionary:
+	var sock: Variant = cmd.args.get("sock")
+	var to: Variant = cmd.args.get("to")
+	var at: Variant = cmd.args.get("at")
+	if cmd.by != Parts.HOST or not (sock is int) or not (to is int) or not (at is Vector3) or not (at as Vector3).is_finite():
+		return refuse("wrong")
+	if mess == null or sock < 0 or sock >= mess.count() or mess.state_of(sock) != Mess.State.FLYING or not mess.is_throw(sock):
+		return refuse(GONE)
+	var thrower := int((mess.throws[sock] as Dictionary).get("by", Mess.NOBODY))
+	if to == thrower:
+		return refuse(SELF)
+	if not (_feet_or_null(to) is Vector3):
+		return refuse(GONE)
+	if is_down(to):
+		return refuse(DOWN)
+	var why := take_refusal(to, sock)
+	if why != "":
+		return refuse(why)
+	var from: Variant = _feet_or_null(thrower)
+	var ev := _give(Mess.NOBODY, to, sock, from if from is Vector3 else at)
+	ev["thrower"] = thrower
+	ev["at"] = at
+	return ev
+
+
+## The answer that gives item `sock` to player `to`, out of `giver`'s Hands (Mess.NOBODY: a caught
+## Throw), `toward` where it came from (lines 18-24): pairing with their held loose mate (the Pair
+## leads at the end of their Hands, active: "paired" names it), or into a free place at the end,
+## active; with no room it lies at their feet, square to where it came from ("full", "laid_at").
+func _give(giver: int, to: int, sock: int, toward: Vector3) -> Dictionary:
+	var ev := {"ok": true, "giver": giver, "receiver": to, "item": sock}
+	var p := {"held": held.duplicate(), "active": active.duplicate()}
+	if giver != Mess.NOBODY:
+		var left_items := items_of(giver).duplicate()
+		left_items.remove_at(left_items.find(sock))
+		_set_items(p, giver, left_items)
+	var changes := {id: p}
+	var lead := mate_held(to, sock)
+	if lead >= 0:
+		var to_items := items_of(to).duplicate()
+		to_items.remove_at(to_items.find(lead))
+		to_items.append(lead)
+		_set_items(p, to, to_items)
+		changes[mess.id] = mess.paired_patch(lead, sock)
+		ev["paired"] = lead
+	elif can_take(to, sock):
+		var to_items := items_of(to).duplicate()
+		to_items.append(sock)
+		_set_items(p, to, to_items)
+		if mess.state_of(sock) != Mess.State.HELD:
+			changes[mess.id] = mess.held_patch(sock)
+	else:
+		var pose := lay_pose(to, sock, toward)
+		changes[mess.id] = mess.lying_patch(sock, pose)
+		ev["full"] = true
+		ev["laid_at"] = pose.origin
+	if changes.has(mess.id):
+		# A caught Throw is over (a pick's or pairing's row keeps its record's launch).
+		((changes[mess.id] as Dictionary)[Mess.LAUNCHES] as Dictionary).erase(sock)
+	ev["changes"] = changes
+	return ev
+
+
+## Where item `sock` lies when laid at player `to`'s feet (lines 23, 24): flat on the floor under
+## them, turned across the way from `toward` to them as a drop lies across the view (no turn button,
+## Q2304), by the Mess's rule for something put down (Mess.put_down()).
+func lay_pose(to: int, sock: int, toward: Vector3) -> Transform3D:
+	var at: Variant = _feet_or_null(to)
+	var feet: Vector3 = at if at is Vector3 else toward
+	var hit := PhysicsQueries.ray(self, feet + Vector3.UP * FLOOR_PROBE, feet + Vector3.DOWN * FLOOR_PROBE, Mess.LAYER_HOUSE)
+	if not hit.is_empty():
+		feet = hit["position"]
+	var way := feet - toward
+	way.y = 0.0
+	var yaw := atan2(-way.x, -way.z) if way.length() > 0.001 else 0.0
+	var lift := Vector3.UP * SockDress.ball_radius(mess.design_of(sock)) if mess.is_pair(sock) else Vector3.ZERO
+	var put := mess.put_down(sock, Transform3D(Basis(Vector3.UP, yaw), feet + lift))
+	return put["pose"]
+
+
+## Where player `by` stands as this machine knows it (Parts.where), or null when it cannot place them.
+func _feet_or_null(by: int) -> Variant:
+	if parts == null or not parts.where.is_valid():
+		var player := _player_of(by)
+		return player.global_position if player != null else null
+	return parts.where.call(by)
+
+
+## Where player `by` stands, or the origin when this machine cannot place them.
+func _feet_of(by: int) -> Vector3:
+	var at: Variant = _feet_or_null(by)
+	return at if at is Vector3 else Vector3.ZERO
+
+
+## Sets player `by`'s held items to `items` in patch `p` ({"held", "active"}), the newest active (as
+## _patch() does for one player).
+func _set_items(p: Dictionary, by: int, items: PackedInt32Array) -> void:
+	var key: Variant = key_of(by)
+	var h: Dictionary = p["held"]
+	var a: Dictionary = p["active"]
+	h.erase(by)
+	a.erase(by)
+	if items.is_empty():
+		h.erase(key)
+		a.erase(key)
+	else:
+		h[key] = items
+		a[key] = items.size() - 1
+
+
+## Where the item player `by` handed off was drawn on this machine as it left their Hands (line 25),
+## in the level: their own first-person hand or their worn Hands on their avatar here (each HeldView
+## still draws it until its next refresh), else their avatar's HoldPoint, else their eyes.
+func handed_from(by: int, sock: int) -> Vector3:
+	if is_inside_tree():
+		for node in get_tree().get_nodes_in_group(HeldView.GROUP):
+			var view := node as HeldView
+			if view != null and view.hands == self and view.me == by:
+				var at: Variant = view.drawn_of(sock)
+				if at is Transform3D:
+					return (at as Transform3D).origin
+	var worn: Variant = worn_start_of(by, sock)
+	if worn is Transform3D:
+		return (worn as Transform3D).origin
+	return eyes_of(by)
 
 
 ## The answer that lets player `by`'s active item go with `launch` (launch_of() or drop_of()): it flies
@@ -326,6 +560,43 @@ func left(by: int) -> Dictionary:
 	return {"ok": true, "dropped_at": feet, "changes": {
 		mess.id: dropped,
 		id: _patch(by, PackedInt32Array(), -1)}}
+
+
+## What a save keeps: who holds what and which is active; not the Host's clock (`grabbed_at`).
+func save_state() -> Dictionary:
+	return {"held": held, "active": active}
+
+
+## The Host, after a load (Q2559, Q295): nobody holds anything offline, so every player's Hands but
+## the Host's (`host`, its player id) drop where that player last stood (their Roster spot), as a
+## leaver's do; they come back empty-handed.
+func loaded(host: String) -> Dictionary:
+	var r := _roster_of()
+	var keep_held := {}
+	var keep_active := {}
+	var dropped := {}
+	var t := _own_tuning()
+	var gone := false
+	for key: Variant in held:
+		if String(key) == host or (key is int and int(key) == Parts.HOST):
+			keep_held[key] = held[key]
+			if active.has(key):
+				keep_active[key] = active[key]
+			continue
+		gone = true
+		var items: PackedInt32Array = held[key]
+		var entry: Dictionary = r.players.get(String(key), {}) if r != null else {}
+		var feet: Vector3 = entry.get("at", mess.return_pose(items[0]).origin if not items.is_empty() else Vector3.ZERO)
+		for i in items.size():
+			var round_feet := Vector3(cos(i * 2.4), 0.0, sin(i * 2.4)) * (t.leave_spread if i > 0 else 0.0)
+			var pose := Transform3D(Basis(Vector3.UP, i * 2.4), feet + round_feet + Vector3.UP * t.leave_height)
+			dropped = mess.thrown_patch(items[i], pose, Vector3.ZERO, Vector3.ZERO, Mess.NOBODY, true, dropped)
+	if not gone:
+		return {}
+	var changes := {id: {"held": keep_held, "active": keep_active, "grabbed_at": {}}}
+	if not dropped.is_empty():
+		changes[mess.id] = dropped
+	return {"ok": true, "changes": changes}
 
 
 ## The change that takes Socks `socks` out of player `by`'s Hands, the others kept in their order and

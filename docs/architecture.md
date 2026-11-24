@@ -67,23 +67,29 @@ How this game is built, unless a decision record says otherwise. They are the ga
 | The material library | `docs/architecture/materials.md` | you add, pick or change a shared material, or a model uses one |
 | Furniture | `docs/architecture/furniture.md` | you place, change or add a furniture piece, its openings, collision or Sock spots, or a device (opening sounds, the piano, the mirror, the dust sheet) |
 | The house level | `docs/architecture/house.md` | you change the house scene: its shell, furniture, lights, spawn or what it holds |
+| Saves and the menus | `docs/architecture/saves.md` | you change what is saved or loaded, the save file, Worlds, the title, Options, Licence, the loading screen or the ESC menu |
 | Co-op | `docs/architecture/coop.md` | you touch the Session, the transport, the Roster, avatars, a Guest's guesses, a Throw's stream, knockdown, or anything a Guest sees or sends |
 
 A ticket that adds a subsystem adds its row here and its file.
 
 ## Key flows
 
-**Boot.** `project.godot` loads six autoloads in order: `Log`, `ProfilerBoot` (F3, debug builds), `GameCliBoot`
+**Boot.** `project.godot` loads ten autoloads in order: `Log`, `ProfilerBoot` (F3, debug builds), `GameCliBoot`
 (`game/debug/game_cli.gd`: reads the arguments after `--`; a bench or `--scene=` swaps the scene after one frame),
-`Profily`, `Settings` (`game/settings/settings.gd`, `user://settings.json`) and `Sounds` (`game/audio/sounds.gd`).
+`Profily`, `Settings` (`game/settings/settings.gd`, `user://settings.json`, the Options keys), `Sounds`
+(`game/audio/sounds.gd`), `Save` and `Worlds` (`game/save/`), `SceneChanger` (`game/scenes/`) and `UiSounds`
+(every menu button's click and hover). `user://` is the "It Socks" folder (`use_custom_user_dir`, Q2567).
 **The log.** `Log` (`game/log/log.gd`, the kit's log template) is the one stream: the game's lines
 (`Log.info/warn/error(area, text)`) and every engine or script error with its script calls, in `user://logs/game.log`
 (this run; `game.1.log` the run before, five kept). The file starts with the build line (name, version, Godot,
 debug or release). The game's refusals go through `Log` with an area; only the command line's and the benchmark's
 terminal output stays a plain `print()`.
 
-The main scene is the house (`game/house/house.tscn`, house/04, Q2509: F5 and a plain launch start there until
-menus exist): the shell, the old furniture, the lamps and one level runtime. `Parts.bind` registers every Part by its
+The main scene is the title (`game/ui/title/title.tscn`, core/58): Solo, Multiplayer (Host, Join), Options, Licence
+and Quit; a choice goes through `SceneChanger.change_to()` behind the loading screen into the house
+(`game/house/house.tscn`), handing its `LevelRuntime` the World (`world`, `from_title`, `launch`); `--host` and
+`--join=` on the command line act on the title at once, `--scene=` still starts the house alone. The house holds the
+shell, the old furniture, the lamps and one level runtime. `Parts.bind` registers every Part by its
 node path from the level's root (so the runtime's are `Runtime/Socks/Mess` and the like) and `LevelNet`
 (`game/net/level_net.gd`) hosts or joins on `--host` / `--join=`. The zoo (`game/zoo/zoo.tscn`) starts with
 `-- --zoo` or F6 in the editor: `ZooStations` joins every station's Socks to the zoo's one Mess (its runtime's)
@@ -129,7 +135,7 @@ Roster keeps that place; the leaver's machine (every Guest's, when the Host quit
 **A knockdown (coop/10).** `Knockdowns` (`game/knockdown/`, one Part under `Socks`, keyed by peer) holds who is down
 (their fall, a serial), who drags whom and the struggle presses. On the Host it tests every full-charge Throw in the
 air (the launch carries its `charge`) against each player's body every tick and asks `knock`, a Host-only verb whose
-answer also drops the knocked player's Hands through `Hands.left`; `grab`, `let_go` and `struggle` are players'.
+answer also drops the knocked player's Hands through `Hands.left`; `grab`, `let_go` and `struggle` are players'. The same test on a weaker Throw (core/42) asks the Hands' Host-only `catch` when the Hand-off's rule lets the hit player take it, else bounces it off.
 `down` counts on each machine's own clock. Each `Avatar` follows it every frame: its `Ragdoll` child
 (`game/parts/avatar/ragdoll.tscn`: a Skeleton3D, a PhysicalBoneSimulator3D and four PhysicalBone3D, never drawn, the
 Host its multiplayer authority) is simulated on the Host and streams one stamped 84-byte pose on its own Sync;
@@ -139,5 +145,11 @@ The knocked `Player` freezes its input, stays at its ragdoll's feet, puts the ca
 the vignette (`game/knockdown/vignette.tscn`); a lying body under the crosshair shows its Outline (a child of the
 avatar's Looks) and wins the left button for a drag.
 
-**A save.** Not built yet: saving starts at the first outside play-test. The seam is the same snapshot
-(`Parts.snapshot` / `load_snapshot`); settings are saved on their own by `Settings`.
+**A save (core/58, `docs/architecture/saves.md`).** The join snapshot written to a file per World:
+`Autosave` (a node of the level runtime, the Host or a player alone only) writes `Parts.save_snapshot()` (each
+Part's `save_state()`) with the World's record through `Save` and its `SaveStore` to
+`user://worlds/<player id>/<slot>.json`, within 2 s of an applied answer (the text on a worker thread) and at once on
+every way out (the ESC menu's Back to title, Quit game, End session; the window's close). `LevelNet.start()` loads
+the World before the player enters (`Parts.load_save()`: each Part's own version stepped, then its `loaded()`
+reset); alone the player is in its own Roster by its player id (`Session.enter_alone()`). Esc in play opens the ESC
+menu (`game/ui/esc_menu/`), which never pauses. Settings are saved on their own by `Settings`, per machine.
