@@ -1156,3 +1156,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/65, the World drawer and its pages in the Lobby, the Host's World list to Guests (`LobbyState.worlds`), a damaged World kept in place, PROTOCOL 19; merged (main becc751) |
 | Cost | about 157k subagent tokens |
 | Surprises | its merge of main was blocked by the moved kit pin; commit.sh now lets main's pin ride along |
+
+---
+
+| Ticket | core/43, hint arrows and pings: the ping wheel, ping marks seen by every player, the hint arrows at the screen edge, PROTOCOL 20; merged (main 725052d) |
+| Cost | about 460k subagent tokens |
+| Surprises | its merge of main met two clashes (sound catalogue, PROTOCOL), both resolved; `git merge` twice failed reading a tree it had just written, a retry went through; the X-ray, Mate Radar and Laundry bin arrow sources stay [later] for M4/M5 |
