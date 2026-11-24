@@ -154,18 +154,31 @@ func case_t01_heap() -> void:
 	LevelRuntime.of(_zoo).parts.ask(Command.new(&"more", 1, spout.id, {}))
 	var rises: Dictionary[int, float] = {}
 	var lows: Dictionary[int, float] = {}
+	# A bounce is a body flying back up. A tick's heights are sampled after Jolt's step and before the
+	# Mess's tick, which puts back a step Jolt's position solve pushed into the floor (core/50) and counts
+	# it (core/69: a Sock pushed 0.22 m under the floor and put back read as a 0.233 m bounce). So each
+	# tick's heights count one tick later, and not at all when the Mess put a push back in between.
+	var held: Dictionary[int, float] = {}
+	var undone: Array[int] = [_mess._moving.pushed_in, 0]
 	await _watch(func() -> bool:
+		if _mess._moving.pushed_in == undone[0]:
+			for sock: int in held:
+				lows[sock] = minf(lows.get(sock, INF), held[sock])
+				rises[sock] = maxf(rises.get(sock, 0.0), held[sock] - lows[sock])
+		else:
+			undone[1] += _mess._moving.pushed_in - undone[0]
+			undone[0] = _mess._moving.pushed_in
+		held.clear()
 		for sock in range(first, _mess.count()):
 			var body := _mess.flight_of(sock)
 			if body != null:
-				lows[sock] = minf(lows.get(sock, INF), body.global_position.y)
-				rises[sock] = maxf(rises.get(sock, 0.0), body.global_position.y - lows[sock])
+				held[sock] = body.global_position.y
 		return _mess.count() - first == 60 and _mess.moving_count() == 0 and _mess.waiting_count() == 0, "60 poured Socks to rest", 2400)
 	var rise := 0.0
 	for sock: int in rises:
 		rise = maxf(rise, rises[sock])
 	_check(_faults.is_empty(), "every poured Sock turns smoothly and rests where it is (worst %.1f deg a tick) %s" % [_worst_turn, _faults.slice(0, 3)])
-	_check(rise < 0.08, "none bounces back up off the heap or the floor (most %.3f m)" % rise)
+	_check(rise < 0.08, "none bounces back up off the heap or the floor (most %.3f m; %d steps into the floor put back)" % [rise, undone[1]])
 
 
 func case_t01_every() -> void:
