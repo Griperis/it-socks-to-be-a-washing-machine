@@ -62,7 +62,9 @@ Socks lie, are drawn, move or wake.
   is judged of a flight, `MessMoving._pushed_in` compares its place with the tick before: moved farther
   than its speed and turn explain by more than `push_slack`, with the middle of its leg or foot inside
   the house, it goes back there `push_lift` higher (at the very same place Jolt pushes it again), its
-  fall and turn stopped. A pressure rest (`_relieve`) never moves a Sock: one that `put_down` would lift
+  fall and turn stopped. Within `push_slack`, a step that took a middle into the house from outside it is
+  undone too (core/100: Jolt pressed a Sock under one it pushed through the floor 13-18 mm down in the same
+  step). A pressure rest (`_relieve`) never moves a Sock: one that `put_down` would lift
   or push flies on, and one moving at the pressure speed or turning at `pressure_spin`, now or the step
   before, is not taken (core/54).
 - Put to sleep mid-turn (core/54): Jolt can put a slow Sock to sleep while it still tips over (2 rad/s the
