@@ -21,8 +21,8 @@ const BY_DOOR := Vector3(1.0, 0.0, -0.2)
 const BY_SWITCHES := Vector3(1.0, 0.0, 0.0)
 ## The hints with empty Hands, one item and two (A04-A07).
 const HINTS_EMPTY := "[SPACE] Jump  [CTRL] Crouch"
-const HINTS_ONE := "[RMB] Drop / hold: Throw  [G] Zoom  [R] Turn  [SPACE] Jump  [CTRL] Crouch"
-const HINTS_TWO := "[RMB] Drop / hold: Throw  [G] Zoom  [R] Turn  [WHEEL] Cycle  [SPACE] Jump  [CTRL] Crouch"
+const HINTS_ONE := "[RMB] Drop / hold: Throw  [Q] Zoom  [R] Turn  [SPACE] Jump  [CTRL] Crouch"
+const HINTS_TWO := "[RMB] Drop / hold: Throw  [Q] Zoom  [R] Turn  [WHEEL] Cycle  [SPACE] Jump  [CTRL] Crouch"
 
 var _level: Node3D = null
 var _station: Node3D = null
@@ -46,7 +46,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "a04_drop_throw", "method": "case_a04", "world": false,
 				"title": "A04: with something in the Hands the corner shows \"Drop / hold: Throw\" [RMB]"},
 		{"name": "a05_zoom_turn", "method": "case_a05", "world": false,
-				"title": "A05: a held Sock or Pair adds \"Zoom\" [G] and \"Turn\" [R]"},
+				"title": "A05: a held Sock or Pair adds \"Zoom\" [Q] and \"Turn\" [R]"},
 		{"name": "a06_cycle", "method": "case_a06", "world": false,
 				"title": "A06: with 2 or more items the corner shows \"Cycle\" [Wheel]"},
 		{"name": "a07_jump_crouch", "method": "case_a07", "world": false,
@@ -206,7 +206,7 @@ func case_a05() -> void:
 	await _take(SOCK)
 	await _take(MATE)
 	_check(_mess.is_pair(_hands.active_of(1)), "a Pair is active")
-	await _until(func() -> bool: return _hud.hints_text().contains("[G] Zoom  [R] Turn"), "a held Pair zooms and turns too")
+	await _until(func() -> bool: return _hud.hints_text().contains("[Q] Zoom  [R] Turn"), "a held Pair zooms and turns too")
 
 
 func case_a06() -> void:
