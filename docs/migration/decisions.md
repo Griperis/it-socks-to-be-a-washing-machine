@@ -1,4 +1,4 @@
-Next free Q number: Q2651 (update this line whenever a round of questions is asked)
+Next free Q number: Q2652 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -565,3 +565,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2648: only a pad or keyboard selection lights a control; a mouse click never does (core/75; designer, 2026-11-24).
 - Q2649: the Licence page's links take pad and keyboard focus like any button (core/75; designer, 2026-11-24).
 - Q2650: a World row's Delete button keeps its full width and its text; the row name is cut with "..." instead (core/75; designer, 2026-11-24).
+- Q2651: core/100 (a Sock drawn about 1 cm under the floor on slow frames) is settled before batch A starts; what to do with it is asked in a later grilling (designer, 2026-11-25).
