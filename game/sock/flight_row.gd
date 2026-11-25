@@ -40,6 +40,9 @@ var born := -1.0
 var _first := -1.0
 ## The Host's tick the body was last put at (flight_time()).
 var _played := -1.0
+## A Guest: the Host body's velocity at the moment it was last put at (the copy is frozen: its own
+## linear_velocity stays zero; a Pair's landing reads this, coop/14).
+var velocity := Vector3.ZERO
 ## The hits seen in the rows, not heard yet: [Host tick, speed before the hit].
 var _hits: Array[Array] = []
 
@@ -124,6 +127,8 @@ func _feed(value: Variant) -> void:
 		_rows.pop_front()
 	if is_inside_tree() and _rows.size() == 1:
 		_show()
+		# Put there outside a tick: not drawn sliding from where the spawn made it (coop/14).
+		(get_parent() as Node3D).reset_physics_interpolation()
 
 
 func _physics_process(_delta: float) -> void:
@@ -133,7 +138,9 @@ func _physics_process(_delta: float) -> void:
 
 ## The Host's tick this machine plays now: its own tick less the delay and the lag.
 func _play_at() -> float:
-	var offset := mess.stream_offset if mess != null and mess.stream_offset < INF else 0.0
+	var offset := 0.0
+	if mess != null:
+		offset = mess.play_offset if mess.play_offset < INF else (mess.stream_offset if mess.stream_offset < INF else 0.0)
 	var lag := mess.ghost_tuning().stream_lag if mess != null else 0.1
 	return tick() - offset - lag * _tps()
 
@@ -147,6 +154,7 @@ func _show() -> void:
 	var pose: Variant = _sample_tick(at)
 	if pose is Transform3D:
 		body.global_transform = pose
+	velocity = _velocity_at(at)
 	while not _hits.is_empty() and float(_hits[0][0]) <= at:
 		var hit: Array = _hits.pop_front()
 		_bounce(body.global_position, float(hit[1]))
@@ -183,6 +191,22 @@ func flight_time() -> float:
 
 
 ## Where the Host's body was `t` seconds into its flight, or null when no row is kept from then.
+## The Host body's velocity at Host tick `at` from the rows kept (between two rows; the oldest's or the
+## newest's outside them).
+func _velocity_at(at: float) -> Vector3:
+	if _rows.is_empty():
+		return Vector3.ZERO
+	if at <= float(_rows[0][0]):
+		return _rows[0][3]
+	for i in range(_rows.size() - 1):
+		var q: Array = _rows[i + 1]
+		if at <= float(q[0]):
+			var p: Array = _rows[i]
+			var w := (at - float(p[0])) / maxf(float(q[0]) - float(p[0]), 0.0001)
+			return (p[3] as Vector3).lerp(q[3], w)
+	return _rows[-1][3]
+
+
 ## The newest row's velocity and spin, [Vector3, Vector3]; zeros before any row (coop/12: a Guest
 ## left alone starts its own body from them).
 func last_motion() -> Array:

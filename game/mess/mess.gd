@@ -66,6 +66,13 @@ const LOOKS_MASK := LAYER_HOUSE | LAYER_LYING | LAYER_LOOKS
 ## A Guest's own Throw or drop ghost (coop/09, ThrowGhost, I3): it touches the static house only.
 const LAYER_GHOST := 32
 const AIM_MASK := LAYER_HOUSE | LAYER_LYING
+## A Teammate's drop is drawn on its body once this near (m) what is under it, and eases off their
+## avatar's hand by time alone when it starts nearer; at the latest after LEAD_LONGEST s (_ease_leads()).
+const LEAD_LEAST_GAP := 0.05
+const LEAD_LONGEST := 2.0
+## A Guest's Throw copy whose answer comes this late (s of its flight played) still leaves the hand;
+## a copy farther on is a late joiner's, drawn where it is.
+const LEAD_LATE := 0.5
 ## What the crosshair looks for a Sock in: a lying one or a moving one (a woken or thrown body, as the
 ## old game's SOCK_LIVE; a Guest's own body too), never a wall (R03).
 const SOCK_MASK := LAYER_LYING | LAYER_FLIGHT | LAYER_LOOKS
@@ -164,6 +171,10 @@ var _flying_drawn := false
 ## A Guest: the smallest (this machine's tick - the Host's stamp) seen in any Throw's row: the one-way
 ## delay estimate every streamed body plays by (FlightRow); a whole state written sets it back.
 var stream_offset := INF
+## A Guest: the delay every streamed body plays by now (coop/14). It follows `stream_offset` but never
+## jumps down to it: a row come quicker than any before used to move every copy a whole tick on in one
+## frame (a snap); now the play catches up by `GhostTuning.stream_catch_up` of a tick a tick.
+var play_offset := INF
 ## The Socks this machine's ghosts draw themselves (GuestGhosts): the Mess does not draw them, lying or
 ## flying, until let go (hold_back()).
 var _held_back: Dictionary[int, bool] = {}
@@ -172,8 +183,10 @@ var _held_back: Dictionary[int, bool] = {}
 var worn_start: Callable
 ## A Teammate's Throws and drops on this machine (coop/13, Q2439): each leaves its thrower's own hand
 ## (Hands.start_of()) but is drawn from their avatar's hand, easing onto its body over the ghosts'
-## `hand_over_time`: {Sock id: [the move, the turn, the tick it was let go, its Looks' own transform
-## or null]}.
+## `hand_over_time` (_ease_leads()): {Sock id: [the move, the turn, when it started (a tick; a Guest's
+## copy: the moment of the Host's flight),
+## its Looks' own transform or null, a drop's height over what was under it then (-1 before), what
+## was left of it the tick before and this tick, the thrower, whether it is a drop]}.
 var _leads: Dictionary[int, Array] = {}
 ## A Guest's Socks gliding from where their own falling copy was onto the Host's rest pose (Q2577):
 ## {Sock id: [the pose it glides from, seconds glided]}. Only the drawing glides.
@@ -404,7 +417,7 @@ func drawn_flight_of(sock: int) -> Variant:
 		return looks.global_transform
 	var at := body.global_transform
 	if _leads.has(sock):
-		at = _led(sock, body, at.orthonormalized())
+		at = _led(sock, at.orthonormalized())
 	return at * _sized(design_of(sock))
 
 
@@ -705,6 +718,7 @@ func write(patch: Dictionary, now: bool) -> void:
 		patch = _unpacked(patch)
 	if not patch.has(ROWS):
 		stream_offset = INF
+		play_offset = INF
 		starting = null
 		layer = null
 		super.write(patch, now)
@@ -1207,7 +1221,19 @@ func _physics_process(delta: float) -> void:
 	else:
 		_laid_since.clear()
 		_freed_since.clear()
+		_follow_offset()
 		_moving.tick_looks(delta)
+
+
+## A Guest, once a tick: `play_offset` moves toward `stream_offset` (at once when it is set first or
+## grows, as after a whole state).
+func _follow_offset() -> void:
+	if stream_offset == INF:
+		play_offset = INF
+	elif play_offset == INF or stream_offset > play_offset:
+		play_offset = stream_offset
+	else:
+		play_offset = move_toward(play_offset, stream_offset, ghost_tuning().stream_catch_up)
 
 
 ## The Host, once a tick (core/55, Q2531): every Sock a generator laid since the last tick (its start,
@@ -1242,7 +1268,7 @@ func _process(delta: float) -> void:
 	var of: Dictionary[StringName, Array] = {}
 	for sock: int in _flight_by_sock:
 		var body := _flight_by_sock[sock]
-		if _flight_looks.has(body) or body.is_queued_for_deletion() or _held_back.has(sock):
+		if _flight_looks.has(body) or body.is_queued_for_deletion() or _held_back.has(sock) or _early_copy(sock):
 			continue
 		var design := design_of(sock)
 		var shape: StringName = _flight_shape.get(sock, &"")
@@ -1253,7 +1279,7 @@ func _process(delta: float) -> void:
 			poses[shape] = []
 			of[shape] = []
 		var pose := body.get_global_transform_interpolated().orthonormalized()
-		poses[shape].append(_led(sock, body, pose) if _leads.has(sock) else pose)
+		poses[shape].append(_led(sock, pose) if _leads.has(sock) else pose)
 		of[shape].append(design)
 	_drawing.draw_flying(poses, of)
 	_flying_drawn = not poses.is_empty()
@@ -1403,8 +1429,9 @@ func _glide(delta: float) -> void:
 
 ## A Teammate's Throw or drop of Sock `sock` just let go here (coop/13, Q2439): it is drawn from where
 ## their avatar holds it, easing onto its body. Nothing for a Sock with no thrower (woken, poured), one
-## of a player on this machine (the Host's own, a Guest's ghost), or a body already in flight (a late
-## joiner's).
+## of a player on this machine (the Host's own, a Guest's ghost), or a body long in flight (a late
+## joiner's). A Guest's copy may come before the answer that lets the Sock go (the two are separate
+## messages, coop/14): it is not drawn till then (_early_copy()), and its lead starts from the answer.
 func _lead_from_hand(sock: int) -> void:
 	if _leads.has(sock) or not worn_start.is_valid() or _held_back.has(sock) or not throws.has(sock):
 		return
@@ -1416,58 +1443,113 @@ func _lead_from_hand(sock: int) -> void:
 	var row := FlightRow.of(body)
 	if (row == null or row.host_side) and body.global_position.distance_to(from.origin) > 0.001:
 		return
-	if row != null and not row.host_side and row.flight_time() > 0.0:
+	var copy := row != null and not row.host_side
+	if copy and row.flight_time() > LEAD_LATE:
 		return
 	var hand: Variant = worn_start.call(by, sock)
 	if not (hand is Transform3D):
 		return
-	var at := hand as Transform3D
-	_leads[sock] = [at.origin - from.origin,
-			(at.basis.get_rotation_quaternion() * from.basis.get_rotation_quaternion().inverse()).normalized(),
-			FlightRow.tick(), null]
+	_leads[sock] = [Vector3.ZERO, Quaternion.IDENTITY, maxf(0.0, row.flight_time()) if copy else FlightRow.tick(),
+			null, -1.0, 1.0, 1.0, by, bool((throws[sock] as Dictionary).get("drop", false))]
+	_take_hand(sock, body.global_transform.orthonormalized() if copy else from, hand as Transform3D)
 	_place_lead(sock, body)
 
 
-## How much of Sock `sock`'s lead from the hand is left: 1 at the let-go, 0 after `hand_over_time` of
-## its flight (a Guest's copy counts the Host's flight as it plays it).
-func _lead_left(sock: int, body: RigidBody3D) -> float:
-	var row := FlightRow.of(body)
-	var t := (FlightRow.tick() - float(_leads[sock][2])) / float(Engine.physics_ticks_per_second)
-	if row != null and not row.host_side:
-		t = maxf(0.0, row.flight_time())
-	return 1.0 - smoothstep(0.0, maxf(ghost_tuning().hand_over_time, 0.001), t)
+## Sock `sock`'s lead is from `hand` (where the avatar holds it now) to its body at `from`.
+func _take_hand(sock: int, from: Transform3D, hand: Transform3D) -> void:
+	var lead: Array = _leads[sock]
+	lead[0] = hand.origin - from.origin
+	lead[1] = (hand.basis.get_rotation_quaternion() * from.basis.get_rotation_quaternion().inverse()).normalized()
+
+
+## How much of Sock `sock`'s lead from the hand is left now: 1 at the let-go, 0 once eased away
+## (_ease_leads()); between two ticks, as far between as the bodies are drawn.
+func _lead_left(sock: int) -> float:
+	var lead: Array = _leads[sock]
+	if Engine.is_in_physics_frame():
+		return float(lead[6])
+	return lerpf(float(lead[5]), float(lead[6]), Engine.get_physics_interpolation_fraction())
 
 
 ## Pose `at` of Sock `sock`'s body with what is left of its lead from the hand on it.
-func _led(sock: int, body: RigidBody3D, at: Transform3D) -> Transform3D:
+func _led(sock: int, at: Transform3D) -> Transform3D:
 	var lead: Array = _leads[sock]
-	var w := _lead_left(sock, body)
+	var w := _lead_left(sock)
 	return Transform3D(Basis(Quaternion.IDENTITY.slerp(lead[1], w)) * at.basis, at.origin + (lead[0] as Vector3) * w)
 
 
-## Once a tick: each led Sock's Looks (a body with one) is drawn with what is left of its lead; a lead
-## eased away goes, its Looks on its body again.
+## Once a tick (coop/14): each lead eases on. A Guest's copy of a Throw that has not started playing
+## yet (the stream plays 0.1 s behind, Q2439) stays in the avatar's hand as it moves, so the Sock
+## leaves the hand when its flight starts here, never hanging still where the hand was. From the
+## flight's start what is left of a Throw's is `(1 - u)^2`, u its share of `hand_over_time` gone: it
+## leaves the hand moving onto its arc, with no stop and no surge midway. A drop's is its body's height
+## over what is under it (less LEAD_LEAST_GAP) as a share of that height at the start: it falls onto
+## its spot, never up first (a Throw passes over furniture, so its height says nothing). Neither grows
+## back. A lead eased away goes, its Looks on its body again.
 func _ease_leads() -> void:
+	var tps := float(Engine.physics_ticks_per_second)
 	for sock: int in _leads.keys():
 		var body := moving_body(sock)
 		if body == null:
-			_leads.erase(sock)
+			_end_lead(sock)
 			continue
-		if _place_lead(sock, body) <= 0.0:
-			_leads.erase(sock)
+		var lead: Array = _leads[sock]
+		var row := FlightRow.of(body)
+		var copy := row != null and not row.host_side
+		if copy and row.flight_time() <= 0.0:
+			var hand: Variant = worn_start.call(int(lead[7]), sock) if worn_start.is_valid() else null
+			if hand is Transform3D:
+				_take_hand(sock, body.global_transform.orthonormalized(), hand as Transform3D)
+			lead[2] = 0.0
+			_place_lead(sock, body)
+			continue
+		var t := maxf(0.0, row.flight_time() - float(lead[2])) if copy else (FlightRow.tick() - float(lead[2])) / tps
+		var u := clampf(t / maxf(ghost_tuning().hand_over_time, 0.001), 0.0, 1.0)
+		var w := (1.0 - u) * (1.0 - u)
+		if bool(lead[8]):
+			var gap := _gap_under(body) - LEAD_LEAST_GAP
+			if float(lead[4]) < 0.0:
+				lead[4] = gap
+			w = clampf(gap / float(lead[4]), 0.0, 1.0) if float(lead[4]) > LEAD_LEAST_GAP else w
+			if t > LEAD_LONGEST:
+				w = 0.0
+		w = minf(float(lead[6]), w)
+		lead[5] = lead[6]
+		lead[6] = w
+		if float(lead[5]) <= 0.0:
+			_end_lead(sock)
+			continue
+		_place_lead(sock, body)
 
 
-## Sock `sock`'s Looks (its body has one) drawn with what is left of its lead; returns what is left.
-func _place_lead(sock: int, body: RigidBody3D) -> float:
+## How high `body` is over what is under it (the house or a lying Sock), or INF over nothing.
+func _gap_under(body: RigidBody3D) -> float:
+	var at := body.global_position
+	var hit := PhysicsQueries.ray(self, at, at + Vector3.DOWN * 50.0, AIM_MASK)
+	return at.y - (hit["position"] as Vector3).y if not hit.is_empty() else INF
+
+
+## Sock `sock`'s lead goes; its Looks (a body with one) rides on its body again.
+func _end_lead(sock: int) -> void:
+	var lead: Array = _leads[sock]
+	_leads.erase(sock)
+	var body: RigidBody3D = _flight_by_sock.get(sock)
+	var looks := body.get_node_or_null(LOOKS) as Node3D if body != null and is_instance_valid(body) else null
+	if looks != null and lead[3] != null:
+		looks.transform = lead[3]
+
+
+## Sock `sock`'s Looks (its body has one) drawn with what is left of its lead, once a tick (the engine
+## draws it between ticks as it draws the body).
+func _place_lead(sock: int, body: RigidBody3D) -> void:
 	var lead: Array = _leads[sock]
 	var looks := body.get_node_or_null(LOOKS) as Node3D
-	if looks != null and lead[3] == null:
+	if looks == null:
+		return
+	if lead[3] == null:
 		lead[3] = looks.transform
-	var w := _lead_left(sock, body)
-	if looks != null:
-		var at := body.global_transform.orthonormalized()
-		looks.transform = at.affine_inverse() * _led(sock, body, at) * (lead[3] as Transform3D)
-	return w
+	var at := body.global_transform.orthonormalized()
+	looks.transform = at.affine_inverse() * _led(sock, at) * (lead[3] as Transform3D)
 
 
 ## Every machine: while fewer than the cloth's flying_cap flights have a Looks (core/09), the
@@ -1482,7 +1564,7 @@ func give_looks() -> void:
 		return
 	var without: Array[RigidBody3D] = []
 	for body in _flight_nodes():
-		if not _flight_looks.has(body):
+		if not _flight_looks.has(body) and not _early_copy(_sock_of_flight(body)):
 			without.append(body)
 	if without.is_empty():
 		return
@@ -1508,6 +1590,13 @@ func give_looks() -> void:
 		_flight_looks[body] = true
 		if _leads.has(sock):
 			_place_lead(sock, body)
+
+
+## A Guest: whether Sock `sock`'s Throw copy came before the answer that lets it go (the spawn and
+## the rows patch are two messages): until then the avatar still holds it, and the copy is not drawn
+## (coop/14: it was drawn a frame at the launch pose beside the held one).
+func _early_copy(sock: int) -> bool:
+	return not _is_host() and state_of(sock) != State.FLYING
 
 
 ## Where a Throw's body goes (the spawner's path in co-op).

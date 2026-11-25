@@ -9,6 +9,9 @@ extends Resource
 @export_range(0.0, 0.5, 0.01, "suffix:s") var stream_lag := 0.1 # placeholder: the old flight.gd STREAM_LAG
 ## Past the newest row a Guest's copy goes on along its velocity at most this long.
 @export_range(0.0, 0.5, 0.01, "suffix:s") var stream_extrapolate := 0.1 # placeholder: coop/01's spike
+## When a row comes quicker than any before, the play moves on this much of a tick a tick until it
+## plays by the new delay, instead of a whole tick at once (coop/14): 0.05 is 5 per cent faster.
+@export_range(0.01, 1.0, 0.01) var stream_catch_up := 0.05 # placeholder: coop/14, technical (no look of its own)
 
 @export_group("Answer")
 ## A pick, drop or Throw with no answer after this long goes back, with "refuse" (Q2477).
