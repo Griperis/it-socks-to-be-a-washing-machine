@@ -45,7 +45,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "real_path_4", "method": "case_real_path_4", "world": false,
 				"title": "core/49: the same real path with 4 more Sock records in the zoo: no Sock is made inside another"},
 		{"name": "real_path_thin_floor", "method": "case_real_path_thin_floor", "world": false,
-				"title": "core/50: the same real path with the zoo floor's collision margin at 1 mm (there Jolt pushes a poured Sock through the floor in every pour): no Sock goes under the floor, none is lifted at its rest or rests moving; core/70: no frame draws a pushed Sock under the floor"},
+				"title": "core/50: the same real path with the zoo floor's collision margin at 1 mm (there Jolt pushes a poured Sock through the floor in every pour): no Sock goes under the floor, none is lifted at its rest or rests moving; core/70: no frame draws a pushed Sock under the floor (core/100: a Sock sunk within Jolt's slop, its middle less than the rest rule's `sunk` under, is not counted, Q2604)"},
 		{"name": "pushed_in", "method": "case_pushed_in", "world": false,
 				"title": "core/50: a falling Sock that one step moves down into the floor, more than its motion explains, is put back over the floor at once and rests on it, not lifted; one that moves only as it flies is left alone"},
 		{"name": "pressed_in", "method": "case_pressed_in", "world": false,
@@ -124,7 +124,9 @@ func case_real_path_thin_floor() -> void:
 
 ## The player clicks More at the heap station, with `extra` more Sock records lying in the zoo before
 ## the heap's (core/49: their count once decided whether two poured Socks rested inside each other).
-## `drawn`: every frame is also looked at as drawn (core/70).
+## `drawn`: every frame is also looked at as drawn (core/70); a Sock pressed under the heap within Jolt's
+## default 0.02 m penetration slop, its middle less than the rest rule's `sunk` under the floor's top, is
+## not counted (core/100, Q2604: the old game kept Jolt's default); only a push the Mess missed is.
 func _real_path(extra: int, floor_margin := -1.0, drawn := false) -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	if floor_margin >= 0.0:

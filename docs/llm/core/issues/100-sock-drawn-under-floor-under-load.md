@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: needs-info
+status: done
 kind: bug
 area: core
 feature: mess
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-25
 blocked_by: []
 notes: ["suggested model: opus (physics debugging)", "ledger: tests/flaky/ledger.md, mess_settle:real_path_thin_floor (3 lines, 2026-11-25)", "reopens core/70's finding"]
 terms: [Sock, Mess]
@@ -28,20 +28,7 @@ slow frame may see it. A flaky case is a defect to rework (kit/docs/TESTING.md "
 - The watch passes in the full suite 10 runs in a row; no FLAKY line.
 
 ## Open follow-ups
-- [blocking] The rest of the fix is Jolt's penetration slop, an engine number in `project.godot`
-  (`physics/jolt_physics_3d/simulation/penetration_slop`, Jolt's default 0.02 m, not set in the project). Jolt leaves
-  a contact up to that deep unresolved, and a Sock's leg box is 26 mm thick, so a Sock pressed by the heap on it rests
-  with its leg's middle up to about 7 mm under the floor's top (its bottom up to 20 mm in): that Sock is drawn sunk
-  into the floor, flying and then lying (the rest rule's `sunk` 0.02 m keeps it there, P13). This is in every heap
-  pour, also on the game's own floors with their normal margin: with the frame watch turned on in the five
-  `real_path` cases (normal floor), 2 to 61 such frames per pour, 0 pushes. Set to 0.005 m, together with this
-  branch's rule, no frame drew a flying Sock under the floor in any of 8 orders (suite, reversed, the shards that
-  failed in the ledger, the case alone), the thin floor and all five normal floors, and every other mess_settle check
-  passed. It changes every body's contacts in the game (Socks in each other too: Q2499 accepted 20 mm because of this
-  default), so the full suite must judge it. Does the designer let the project set Jolt's penetration slop to 0.005 m
-  (or another value), or keep Jolt's 0.02 m and accept a Sock sunk up to about 1 cm into the floor under a heap
-  (then the watch counts only the core/70 push, as the rest rule does)?
-- [later] The acceptance's "full suite 10 runs in a row" is the lead's run (a ticket agent runs `--touched` only).
+- [later] Jolt's penetration slop 0.005 m instead of the default 0.02 m: Socks under a heap would not sink up to about 1 cm into the floor; it alters every contact (core/100 measured 0 bad frames in 8 suite orders at 0.005). Settled for now by the old game (Q2604; reference/it-socks/project.godot sets no slop): kept Jolt's default; row in docs/migration/batch-a-review.md.
 
 ## Answers
 - What to do with a Sock drawn about 1 cm under the floor on slow frames: fix it, no look or feel number changed (Q2652, 2026-11-25). It merges before batch A starts (Q2653, 2026-11-25).
@@ -69,3 +56,13 @@ slow frame may see it. A flaky case is a defect to rework (kit/docs/TESTING.md "
 - Files: game/mess/mess_moving.gd, game/mess/mess_tuning.gd (comment only), tests/mess_settle_test.gd,
   docs/architecture/mess.md, this ticket
 - Verified: touched `FAIL 1 of 19674 checks, 577 cases` (only `real_path_thin_floor`, part (2), the shard's known frames); `pressed_in` PASS, and FAIL before the fix; rules `PASS rules: 9 rules, no new hit`
+- Changed (the lead's decision, Q2604: the old game kept Jolt's default slop, reference/it-socks/project.godot:257-260
+  sets none): the slop stays at 0.02 m, `project.godot` untouched. `real_path_thin_floor`'s frame watch now counts
+  a flying Sock's middle only inside a wall or under a floor's top by the rest rule's `sunk` or more (P13); a Sock
+  sunk within Jolt's slop under the heap is not counted. With the put-back switched off the watch still fails (113
+  frames). The question is [later]; a row in docs/migration/batch-a-review.md "Settled by the old game".
+- Files: tests/drawn_floor_watch.gd, tests/mess_settle_test.gd, docs/architecture/mess.md,
+  docs/migration/batch-a-review.md, this ticket
+- Verified: `--suite=mess_settle --part=2/2` `PASS 117 checks, 15 cases`; `--part=3/3` `PASS 82 checks, 11 cases`;
+  the full suite 10 runs in a row, each `PASS 19788 checks, 616 cases`, no FLAKY line (each printed SLOW, the whole
+  suite 122-125 s, over 120 s)

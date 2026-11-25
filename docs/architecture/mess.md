@@ -64,7 +64,9 @@ Socks lie, are drawn, move or wake.
   the house, it goes back there `push_lift` higher (at the very same place Jolt pushes it again), its
   fall and turn stopped. Within `push_slack`, a step that took a middle into the house from outside it is
   undone too (core/100: Jolt pressed a Sock under one it pushed through the floor 13-18 mm down in the same
-  step). A pressure rest (`_relieve`) never moves a Sock: one that `put_down` would lift
+  step). A Sock pressed under a heap still sinks within Jolt's default 0.02 m penetration slop (kept, as the old
+  game did, Q2604), its middle up to about 1 cm under the floor's top, flying and lying (the rest rule's `sunk`);
+  `real_path_thin_floor`'s frame watch counts only a middle deeper than `sunk`, a push. A pressure rest (`_relieve`) never moves a Sock: one that `put_down` would lift
   or push flies on, and one moving at the pressure speed or turning at `pressure_spin`, now or the step
   before, is not taken (core/54).
 - Put to sleep mid-turn (core/54): Jolt can put a slow Sock to sleep while it still tips over (2 rad/s the
