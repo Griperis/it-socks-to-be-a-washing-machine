@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="FinalTotalList" format=3]
+
+[ext_resource type="Script" path="res://game/ui/final_screen/final_total_list.gd" id="1_list"]
+[ext_resource type="Script" path="res://game/ui/final_screen/final_total.gd" id="2_total"]
+
+[sub_resource type="Resource" id="Resource_time"]
+script = ExtResource("2_total")
+caption = "Play time"
+source = &"play_time"
+format = 1
+
+[sub_resource type="Resource" id="Resource_coins"]
+script = ExtResource("2_total")
+caption = "Coins earned"
+source = &"coins_earned"
+
+[sub_resource type="Resource" id="Resource_stages"]
+script = ExtResource("2_total")
+caption = "Stages"
+source = &"stages"
+
+[resource]
+script = ExtResource("1_list")
+totals = Array[ExtResource("2_total")]([SubResource("Resource_time"), SubResource("Resource_coins"), SubResource("Resource_stages")])

@@ -22,6 +22,8 @@
 [ext_resource type="AudioStream" uid="uid://cx4pf1qrjtf5c" path="res://assets/audio/step_tile__owlish_hard1.ogg" id="20_bd74q"]
 [ext_resource type="AudioStream" uid="uid://cyqixh0hpku02" path="res://assets/audio/land__qubodup_jumpland.ogg" id="21_7fcml"]
 [ext_resource type="AudioStream" path="res://assets/audio/part_pop__rubberduck_plop1_pop.ogg" id="201_partpop"]
+[ext_resource type="AudioStream" path="res://assets/audio/coins__starninjas_coin1.ogg" id="203_coins"]
+[ext_resource type="AudioStream" path="res://assets/audio/match__a.ogg" id="204_match"]
 [ext_resource type="AudioStream" path="res://assets/audio/part_fit__rubberduck_v2_lock_open_fit.ogg" id="202_partfit"]
 [ext_resource type="Script" uid="uid://dla4npa6bg5ot" path="res://game/audio/sound_catalogue.gd" id="23_7apgx"]
 [ext_resource type="AudioStream" uid="uid://bcpoohpp2d6b5" path="res://assets/audio/knockdown__a.ogg" id="24_knock"]
@@ -369,7 +371,35 @@ clips = Array[AudioStream]([ExtResource("202_partfit")])
 spatial = true
 note = "A Machine Part goes into the washing machine (core/79). Old pick cc0/rubberduck_v2_lock_open_fit."
 
+[sub_resource type="Resource" id="Resource_final_pop"]
+script = ExtResource("1_76itk")
+event = &"final_pop"
+clips = Array[AudioStream]([ExtResource("6_gx20l"), ExtResource("7_qhhf7")])
+volume_db = 3.0
+note = "PLACEHOLDER (core/95): a Pair pops into its column on the Final screen. The old game played its pop cue (wubitog_pop1, cogitollc_pop1, +3 dB)."
+min_gap = 0.07
+
+[sub_resource type="Resource" id="Resource_final_tick"]
+script = ExtResource("1_76itk")
+event = &"final_tick"
+clips = Array[AudioStream]([ExtResource("203_coins")])
+note = "PLACEHOLDER (core/95): the score counts up on the Final screen. The old game played its coins cue (cc0/starninjas_coin1)."
+min_gap = 0.12
+
+[sub_resource type="Resource" id="Resource_final_rare"]
+script = ExtResource("1_76itk")
+event = &"final_rare"
+clips = Array[AudioStream]([ExtResource("204_match")])
+volume_db = -8.0
+note = "PLACEHOLDER (core/95): a rare Pair (or piece) pops on the Final screen. The old game played its match cue, which had no pick (the first synth candidate played, -8 dB)."
+
+[sub_resource type="Resource" id="Resource_final_sting"]
+script = ExtResource("1_76itk")
+event = &"final_sting"
+clips = Array[AudioStream]([ExtResource("12_o8a3p")])
+note = "PLACEHOLDER (core/95): the finale's sting on the Final screen. The old game played its cabinet_reveal cue (the drawer_open pool's first, laleksic_drawer_open)."
+
 [resource]
 script = ExtResource("23_7apgx")
-events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_jump"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape"), SubResource("Resource_fridge_open"), SubResource("Resource_fridge_close"), SubResource("Resource_oven_open"), SubResource("Resource_oven_close"), SubResource("Resource_drawer_thunk"), SubResource("Resource_basket_open"), SubResource("Resource_basket_close"), SubResource("Resource_litter_flap_open"), SubResource("Resource_litter_flap_close"), SubResource("Resource_piano_lid_open"), SubResource("Resource_piano_lid_close"), SubResource("Resource_cabinet_reveal"), SubResource("Resource_piano"), SubResource("Resource_ui_click"), SubResource("Resource_ui_hover"), SubResource("Resource_ping"), SubResource("Resource_part_pop"), SubResource("Resource_part_fit")])
+events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_jump"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape"), SubResource("Resource_fridge_open"), SubResource("Resource_fridge_close"), SubResource("Resource_oven_open"), SubResource("Resource_oven_close"), SubResource("Resource_drawer_thunk"), SubResource("Resource_basket_open"), SubResource("Resource_basket_close"), SubResource("Resource_litter_flap_open"), SubResource("Resource_litter_flap_close"), SubResource("Resource_piano_lid_open"), SubResource("Resource_piano_lid_close"), SubResource("Resource_cabinet_reveal"), SubResource("Resource_piano"), SubResource("Resource_ui_click"), SubResource("Resource_ui_hover"), SubResource("Resource_ping"), SubResource("Resource_part_pop"), SubResource("Resource_part_fit"), SubResource("Resource_final_pop"), SubResource("Resource_final_tick"), SubResource("Resource_final_rare"), SubResource("Resource_final_sting")])
 muffling_scenes = Array[String](["res://game/entities/door/door.tscn", "res://game/entities/door/room_door.tscn", "res://game/entities/door/room_door_flipped.tscn"])

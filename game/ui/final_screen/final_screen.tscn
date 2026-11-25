@@ -1,0 +1,65 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/final_screen/final_screen.gd" id="1_screen"]
+[ext_resource type="Resource" path="res://game/ui/final_screen/final_screen_tuning.tres" id="2_tuning"]
+[ext_resource type="Resource" path="res://game/ui/final_screen/final_totals.tres" id="3_totals"]
+[ext_resource type="Resource" path="res://game/sock/designs.tres" id="4_designs"]
+
+[node name="FinalScreen" type="CanvasLayer"]
+process_mode = 3
+layer = 20
+script = ExtResource("1_screen")
+tuning = ExtResource("2_tuning")
+totals = ExtResource("3_totals")
+catalogue = ExtResource("4_designs")
+
+[node name="Panel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"TitlePanel"
+
+[node name="Box" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Panel/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Heading1"
+text = "Every sock has its mate"
+horizontal_alignment = 1
+
+[node name="Columns" type="HBoxContainer" parent="Panel/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="Totals" type="HBoxContainer" parent="Panel/Box"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 34
+alignment = 1
+
+[node name="Unlocked" type="VBoxContainer" parent="Panel/Box"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="Continue" type="Button" parent="Panel/Box"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"KeycapButton"
+theme_override_font_sizes/font_size = 30
+text = "Continue"

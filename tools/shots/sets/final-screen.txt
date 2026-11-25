@@ -1,0 +1,8 @@
+# core/95: the Final screen on a made-up record (the station's pillars, the shot hook final): 1, 2 and 4 players and a long
+# name at the totals, then 4 players part-way through the pops, then the record where a player left.
+1-player  --size=1920x1080 --do='30:final:1 player' --shots=45
+2-players  --size=1920x1080 --do='30:final:2 players' --shots=45
+4-players  --size=1920x1080 --do='30:final:4 players' --shots=45
+long-name  --size=1920x1080 --do='30:final:long name' --shots=45
+4-players-popping  --size=1920x1080 --do='30:final:4 players,4.0' --shots=40
+player-left  --size=1920x1080 --do='30:final:left' --shots=45

@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: ui
@@ -47,3 +47,8 @@ placeholder recordings. The Final screen station (`game/zoo/stations/final_scree
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-25
+- Changed: the Final screen (`final_screen.tscn`, `final_column.tscn` on the Theme): a column per player in the game at the end, Sock stage per column (one MultiMesh per Collection), the slow-then-fast pop schedule with the rare pause and sparkle, the score count-up and "+N bonus", totals from `final_totals.tres` (`play_time`, `coins_earned`, `stages`), finale bursts and sting, any key skips to the totals, Esc swallowed, player held and mouse freed, empty pieces and unlock strips (hidden), Continue waiting (`continue_pressed`). `FinalSummary.make/of` builds the data from RunRecord, RunTallies, Stages and play time (core/96 calls `of`). Station `final_screen.tscn` at zoo x 116 with pillars for 1, 2, 4 players, a leaver and a long name, built from the catalogue. Sounds `final_pop`, `final_tick`, `final_rare`, `final_sting` with two copied old clips (`coins`, `match`) and their credits. Seven rows added to "Settled by the old game". Stills in `builds/review-final-screen/` (1, 2, 4 players, long name, popping, leaver); shot set `final-screen`. The signal is `taken_down`, not `closed`, so the menus suite does not count it as a dialogue needing an Esc key.
+- Files: `game/ui/final_screen/*`, `game/zoo/final_screen/*`, `game/zoo/stations/final_screen.tscn`, `game/zoo/zoo.tscn`, `game/audio/sound_catalogue.tres`, `assets/audio/{coins__starninjas_coin1,match__a}.ogg`, `assets/audio/SOURCES.md`, `game/ui/licence/credits.tres`, `tools/shot_hooks.gd`, `tools/shots/sets/final-screen.txt`, `tests/final_screen_test.gd`, `docs/migration/batch-a-review.md`.
+- Verified: PASS 21987 checks, 654 cases (`--touched`, 74 suites since the zoo scene changed).

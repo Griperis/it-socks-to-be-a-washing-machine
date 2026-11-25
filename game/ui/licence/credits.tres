@@ -91,7 +91,7 @@ what = "12 Coin Sound Effects"
 author = "StarNinjas"
 source = "https://opengameart.org/content/12-coin-sound-effects"
 licence = "CC0 1.0"
-covers = PackedStringArray()
+covers = PackedStringArray("assets/audio/coins__starninjas_coin1.ogg")
 
 [sub_resource type="Resource" id="Entry_10"]
 script = ExtResource("2_entry")
@@ -865,7 +865,7 @@ what = "Synthesised sounds and music (no samples)"
 author = "It Socks (tools/gen_sounds.py)"
 source = ""
 licence = "Part of the game"
-covers = PackedStringArray("assets/audio/synth/*", "assets/audio/cycle__a.ogg", "assets/audio/throw_charge__b.ogg", "assets/audio/knockdown__a.ogg", "assets/audio/ping__d.ogg")
+covers = PackedStringArray("assets/audio/synth/*", "assets/audio/cycle__a.ogg", "assets/audio/throw_charge__b.ogg", "assets/audio/knockdown__a.ogg", "assets/audio/ping__d.ogg", "assets/audio/match__a.ogg")
 
 [sub_resource type="Resource" id="Entry_96"]
 script = ExtResource("2_entry")
