@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: bug
 area: core
 feature: final-screen
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-25
 blocked_by: []
 notes: ["suggested model: sonnet", "designer 2026-11-25: the patches covering the Socks on the Final screen look weird"]
 terms: [Final screen]
