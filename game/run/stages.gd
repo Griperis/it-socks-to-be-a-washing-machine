@@ -369,7 +369,7 @@ func decide(cmd: Command) -> Dictionary:
 				return refuse("already")
 			return _open_answer([])
 		&"lay_first":
-			return _lay_first_answer()
+			return lay_first_answer()
 		&"land":
 			return _land_answer(cmd.args)
 		&"zoo_complete":
@@ -402,7 +402,7 @@ func start_answer(per: int) -> Dictionary:
 
 ## `lay_first` (the First wash at its spit, core/72): Stage 1's Socks held at the New Game lie in the Mess
 ## now, where they were laid; if they are not laid yet they land in the Mess as soon as they are.
-func _lay_first_answer() -> Dictionary:
+func lay_first_answer() -> Dictionary:
 	if stage != 0 or not holding:
 		return refuse("already")
 	var patch := {"holding": false}

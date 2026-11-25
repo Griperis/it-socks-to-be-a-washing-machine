@@ -334,6 +334,32 @@ gravity = Vector3(0, 0.1, 0)
 scale_min = 0.6
 scale_max = 1.6
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bubbles"]
+transparency = 1
+albedo_color = Color(0.85, 0.95, 1, 0.45)
+metallic_specular = 1.0
+roughness = 0.05
+rim_enabled = true
+rim = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_bubbles"]
+material = SubResource("StandardMaterial3D_bubbles")
+radius = 0.025
+height = 0.05
+radial_segments = 8
+rings = 4
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bubbles"]
+emission_shape = 1
+emission_sphere_radius = 0.12
+direction = Vector3(0, 1, 1)
+spread = 40.0
+initial_velocity_min = 0.2
+initial_velocity_max = 0.6
+gravity = Vector3(0, 0.25, 0)
+scale_min = 0.5
+scale_max = 1.4
+
 [node name="Looks" type="Node3D" unique_id=1902507154 node_paths=PackedStringArray("rig", "loops", "spinner", "lining", "drum_light", "pile_node", "bubbles_node", "player")]
 script = ExtResource("1_pdi0t")
 tuning = ExtResource("2_ftxp0")
@@ -528,6 +554,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 [node name="Bubbles" type="GPUParticles3D" parent="." unique_id=837189408]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0.36)
 emitting = false
+amount = 40
+lifetime = 2.2
+process_material = SubResource("ParticleProcessMaterial_bubbles")
+draw_pass_1 = SubResource("SphereMesh_bubbles")
 
 [node name="Outline" type="Node3D" parent="." unique_id=949872608]
 visible = false

@@ -43,6 +43,11 @@ var night := false:
 
 ## The levels (bits, by level index) whose lamps stay off: the locked floors (core/80).
 var dark_levels := 0
+## The washing machine's flicker (core/94; the old room.gd:184-188, :326): the lamps within `flicker_range` (m)
+## of `flicker_at` light at `flicker` (0..1) of their level; a range of 0 flickers none.
+var flicker := 1.0
+var flicker_at := Vector3.ZERO
+var flicker_range := 0.0
 ## Level -> the clock (seconds of this node's frames) when its reveal began.
 var _reveals: Dictionary[int, float] = {}
 var _clock := 0.0
@@ -153,6 +158,22 @@ func _process(delta: float) -> void:
 		set_process(false)
 
 
+## The lamps within `range` of `at` light at `level` of their level (the First wash's break); a `range` of 0
+## ends it.
+func set_flicker(at: Vector3, range: float, level: float) -> void:
+	if is_equal_approx(level, flicker) and at.is_equal_approx(flicker_at) and is_equal_approx(range, flicker_range):
+		return
+	flicker = level
+	flicker_at = at
+	flicker_range = range
+	_switch()
+
+
+## Whether `light` is one the flicker reaches now.
+func flickers(light: Light3D) -> bool:
+	return flicker_range > 0.0 and light.global_position.distance_to(flicker_at) < flicker_range
+
+
 ## Sets each light's cull mask from its levels, and shows it by the hour, the locks and the reveals.
 func _switch() -> void:
 	for node in get_children():
@@ -174,6 +195,8 @@ func _switch() -> void:
 			if r > 0.0 and not on:
 				lit = r  # a lamp the hour keeps off: the reveal fades it in and out
 				on = true
+		if is_inside_tree() and flickers(light):
+			lit *= flicker
 		var energy := base * lit
 		if not is_equal_approx(light.light_energy, energy):
 			light.light_energy = energy

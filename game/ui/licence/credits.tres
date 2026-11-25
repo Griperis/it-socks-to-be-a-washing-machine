@@ -712,7 +712,7 @@ what = "metal-clanking-light.mp3 (Freesound)"
 author = "tomoisace"
 source = "https://freesound.org/people/tomoisace/sounds/524130/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
+covers = PackedStringArray("assets/audio/machine_break__tomoisace_clanking.ogg")
 
 [sub_resource type="Resource" id="Entry_79"]
 script = ExtResource("2_entry")
@@ -730,7 +730,7 @@ what = "H5_washing-machine.mp3 (Freesound)"
 author = "Iamgiorgio"
 source = "https://freesound.org/people/Iamgiorgio/sounds/371816/"
 licence = "CC0 1.0"
-covers = PackedStringArray()
+covers = PackedStringArray("assets/audio/wash_calm__iamgiorgio_wash.ogg")
 
 [sub_resource type="Resource" id="Entry_81"]
 script = ExtResource("2_entry")

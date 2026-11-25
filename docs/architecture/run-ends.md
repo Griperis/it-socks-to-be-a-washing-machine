@@ -2,7 +2,7 @@
 
 **Status: build plan for batch A (designed in core/72; R1-R9 answered Q2624-Q2632; filed by core/74 as core/78,
 core/83, core/88-90 and core/93-97, assets/13, and the later pour core/99). Built so far: the cutscene frame, the spray, the
-bin, the Laundry day ("As built" notes below).** Findings:
+bin, the Laundry day, the First wash ("As built" notes below).** Findings:
 `docs/migration/m4-lists/04-first-wash-and-laundry-day.md` (73 old lines). The answers are listed at the end. Written
 beside core/71 (Stages, `docs/architecture/stages.md`) and core/73 (the washer and voices, `washer.md`, `voice.md`):
 this file names the seams it needs from them and designs none of their parts, except the Cutscene frame, which is
@@ -96,7 +96,7 @@ As built (core/93, `game/laundry/laundry_day.gd`, instanced in `house.tscn` besi
   `zoo_last_fix` and `zoo_final`. The answer carries `bin`; every machine's `_on_applied` tips it and plays `socks_pour`.
 - **Reads:** `bins()`, `used_bins()`, `total()`, `fixed()`, `offers(carriable)` (the "Load the washing machine" row, built by
   `Player`), `pile_of(n, of)`; it is in `StageBarPhase.SOURCES` as `laundry_bins` and emits `bar_changed`.
-- **Not here:** `wants_first_wash` and the first-wash group (core/94); the Final wash's start (core/96).
+- **Not here:** the Final wash's start (core/96). The First wash's parts are below (core/94).
 
 ## The First wash
 
@@ -124,6 +124,27 @@ in its carrier's Hands, full (Q1848).
 by the washer (Q745). It emits `first_wash_done` for B's Old Tree calls and C's Guide flip. With cutscenes off (tests,
 the zoo's knob) start and end are one answer. **The first goal** (Q2625): until DONE the Stage bar shows its
 `goal_phase`, "Wash the laundry" (placeholder wording; C's Guide card replaces it).
+
+As built (core/94):
+- **`LaundryDay`:** `first_wash` is PENDING at a New Game (`wants_first_wash()`, group `first_wash_wanters`: Stages holds
+  Stage 1; `goal_pending()`, group `stage_bar_goal`: the bar's goal until DONE; neither in the zoo). A `load` while PENDING
+  is the start (`_first_wash_answer`: refused only `busy` or an empty bin): one answer with Stages' `lay_first_answer()`,
+  `Cutscenes.start(first_wash.tres)` and `first_wash = PLAYING` (DONE at once with `cutscene` off: the zoo's station, a
+  test). The answer carries `first_wash: true`, so no tip and no pour. While PLAYING a bin is refused `busy`. The Host asks
+  `first_wash_end` (Host only) once the frame plays nothing: its timeline, its skip, or a load mid-cutscene (the frame is
+  not saved). `first_wash_done` on every machine that sees DONE arrive. Save version 2 (the zoo's held Socks).
+- **`first_wash.tres`** (`game/laundry/`): `calm_wash("$bubbles")` at 0, `wash_break` at "$wash_seconds", `spray` after the
+  line; `numbers` is `first_wash_tuning.tres` (`FirstWashTuning`), `lead_from` its `wash_seconds` (`CutsceneScript.value()`
+  and `lead_seconds()` read them).
+- **`WasherLooks`:** `calm_wash(count)` (the drum to `wash_spin` over `wash_ramp`, the bubbles, the `wash_calm` loop at the
+  machine, the damage held calm, `shot_bob()` for the frame's wide shot), `wash_break()` (`machine_break`, all of it stops,
+  the damage released, `room_flickering()`), `door_open(s)`, `door_close(s)`; `set_cutscene(null)` ends them. The graybox's
+  `Bubbles` has the old bubble look.
+- **The room's flicker:** `Washer` sets `HouseLights.set_flicker(at, room_flicker_range, looks.flicker())` while the Looks
+  flickers (the old room.gd fields `flicker`, `flicker_at`, `flicker_range`).
+- **`Washer.is_broken()`:** outside the zoo, the level's `first_wash` past PENDING; in the zoo its `broken` switch.
+- **The Laundry station:** the "First wash" pillar (`zoo_first_wash`): PENDING, six Socks held in `zoo_held_designs` /
+  `zoo_held_poses` round the washer box, let in by the next `load`; the station's Laundry day starts DONE, cutscene off.
 
 **The spray** (`SockSpray`, `sock_spray.tscn`): 500 real Sock meshes (LOD0), Designs drawn from the catalogue with
 `seed`, one MultiMesh per Collection, no physics (the old FS step: gravity, bounce 0.35, lie flat when slow); every

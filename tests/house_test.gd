@@ -186,7 +186,21 @@ func _level_up() -> Node3D:
 	var player := rt.player
 	await _until(rt.loading.is_lifted, "the house's Socks to be laid", 900, LAYING_S)
 	await _until(func() -> bool: return player.is_on_floor(), "the player to stand in the house")
+	await _first_wash_done(_level)
 	return _level
+
+
+## The First wash is over (core/94, played in tests/first_wash_test.gd): the held Stage 1 Socks lie and the
+## Laundry day is DONE, as the Host's answers leave them, so the run reads as before it.
+func _first_wash_done(house: Node3D) -> void:
+	var rt := LevelRuntime.of(house)
+	var stages := house.get_node("Run/Stages") as Stages
+	var day := house.get_node("LaundryDay/Day") as LaundryDay
+	# With start_all the generators lay the starting Mess and the run's spawner stays idle (core/77).
+	await _until(func() -> bool: return stages.stage == 0 and (SockGenerator.start_all or stages.due.is_empty()), "Stage 1's Socks to be laid and held", 3000, 20.0)
+	if stages.holding:
+		rt.parts.apply(stages.lay_first_answer())
+	rt.parts.apply({"ok": true, "changes": {day.id: {"first_wash": LaundryDay.FirstWash.DONE}}})
 
 
 func _pieces(house: Node) -> Array[MeshInstance3D]:
@@ -1542,6 +1556,8 @@ func case_r02_new_game_lays_stage1() -> void:
 		await get_tree().process_frame
 		frames += 1
 	_check(rt.loading.is_lifted() and filled > 0.1, "Stage 1 laid behind the screen, its bar filling (to %.2f over %d frames)" % [filled, frames])
+	_check(stages.holding and rt.mess.count() == 0, "held for the First wash: none lie yet (%d)" % rt.mess.count())
+	await _first_wash_done(house)
 	_check(stages.stage == 0 and stages.first_laid and stages.due.is_empty(), "Stage 1 began and landed (stage %d, laid %s, due %d)" % [stages.stage, stages.first_laid, stages.due.size()])
 	var by := _socks_by_place(rt.mess)
 	var least := stages.plan.pairs_of(0, stages.pairs_per_drawer) * 2
@@ -1556,6 +1572,7 @@ func case_r03_high_spots_two_players() -> void:
 		(h.get_node("Run/StageSpawner") as StageSpawner).present = func() -> int: return 2)
 	var rt := LevelRuntime.of(house)
 	await _until(rt.loading.is_lifted, "Stage 1 to be laid", 6000, LAYING_S)
+	await _first_wash_done(house)
 	var by := _socks_by_place(rt.mess)
 	var stages := house.get_node("Run/Stages") as Stages
 	var share := stages.plan.high_share
@@ -1645,6 +1662,7 @@ func case_real_path_new_game_from_title() -> void:
 	await _until(rt.loading.is_lifted, "Stage 1 to be laid behind the loading screen", 6000, LAYING_S)
 	await _until(func() -> bool: return rt.player.is_on_floor(), "the player to stand in the house")
 	var house := _level
+	await _first_wash_done(house)
 	var stages := house.get_node("Run/Stages") as Stages
 	var mess := rt.mess
 	_check(stages.stage == 0 and stages.pairs_per_drawer == per, "the run began at Stage 1 with the slider's %d Pairs per Drawer (%d)" % [per, stages.pairs_per_drawer])

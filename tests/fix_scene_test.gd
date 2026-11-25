@@ -201,6 +201,12 @@ func _house() -> void:
 	var rt := LevelRuntime.of(_level)
 	await _until(rt.loading.is_lifted, "the house's Stage 1 to be laid", 900, LAYING_S)
 	await _until(func() -> bool: return rt.player.is_on_floor() and _stages().stage == 0, "the player to stand and the run to start")
+	# The First wash is over (core/94's suite plays it): the held Socks lie, the Laundry day DONE.
+	var day := _level.get_node("LaundryDay/Day") as LaundryDay
+	await _until(func() -> bool: return _stages().due.is_empty(), "Stage 1's Socks to be laid and held", 3000, LAYING_S)
+	if _stages().holding:
+		rt.parts.apply(_stages().lay_first_answer())
+	rt.parts.apply({"ok": true, "changes": {day.id: {"first_wash": LaundryDay.FirstWash.DONE}}})
 
 
 func _stages() -> Stages:

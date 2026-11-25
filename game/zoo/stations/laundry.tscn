@@ -133,6 +133,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
 [node name="Day" parent="LaundryDay" index="0" node_paths=PackedStringArray("spots")]
 spots = NodePath("../..")
 zoo = true
+cutscene = false
+first_wash = 2
 
 [node name="LastFixPillar" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.5, 3)
@@ -172,6 +174,26 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 pixel_size = 0.004
 billboard = 2
 text = "Final wash"
+
+[node name="FirstWashPillar" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, 3)
+
+[node name="LaundryPillar" type="Node" parent="FirstWashPillar" node_paths=PackedStringArray("day")]
+script = ExtResource("6_pillar")
+day = NodePath("../../LaundryDay/Day")
+kind = 2
+
+[node name="Mesh" type="MeshInstance3D" parent="FirstWashPillar"]
+mesh = SubResource("BoxMesh_button")
+
+[node name="Shape" type="CollisionShape3D" parent="FirstWashPillar"]
+shape = SubResource("BoxShape3D_button")
+
+[node name="Label" type="Label3D" parent="FirstWashPillar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+pixel_size = 0.004
+billboard = 2
+text = "First wash"
 
 [node name="Tally" type="Label3D" parent="." node_paths=PackedStringArray("day")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -3)

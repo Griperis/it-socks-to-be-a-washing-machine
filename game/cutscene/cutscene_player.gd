@@ -141,6 +141,7 @@ func _process(delta: float) -> void:
 func _tick(delta: float) -> void:
 	elapsed += delta
 	_run_beats()
+	_bob()
 	if voiced and not _voice_started and elapsed >= voice_at:
 		_voice_started = true
 		Voices.play_cutscene(script_now.voice, Array(_cutscenes.takes), _sources())
@@ -170,11 +171,11 @@ func _begin(cutscenes: Cutscenes) -> void:
 	var line_seconds := _voice_seconds(s, cutscenes.takes)
 	voiced = line_seconds > 0.0
 	if voiced:
-		voice_at = s.lead + tuning.lead_in
+		voice_at = s.lead_seconds() + tuning.lead_in
 		voice_end = voice_at + line_seconds
 	else:
 		voice_at = -1.0
-		voice_end = maxf(s.no_voice_seconds - tuning.fade_seconds, s.lead)
+		voice_end = maxf(s.no_voice_seconds - tuning.fade_seconds, s.lead_seconds())
 	length = voice_end + s.after_voice_seconds + tuning.fade_seconds
 	_hide(true)
 	_washer_look(s)
@@ -301,6 +302,20 @@ func _cut(which: int) -> void:
 		camera.fov = (marker as WasherShot).fov
 
 
+## The wide shot rides the washer Looks' `shot_bob()` (the First wash's calm wash: 1 cm up and down, the old
+## rogue_machine.gd:340); the close shot holds still.
+func _bob() -> void:
+	if shot != WIDE:
+		return
+	var washer := Washer.of_level(self)
+	var looks: Node = washer.looks if washer != null else null
+	if looks == null or not looks.has_method(&"shot_bob"):
+		return
+	var marker := washer.get_parent().get_node_or_null(SHOTS[WIDE]) as Node3D
+	if marker != null:
+		camera.global_transform = marker.global_transform.translated(Vector3.UP * float(looks.call(&"shot_bob")))
+
+
 ## The cut rule (washer.md): the wide shot for a line's first segment, then `index % 2`.
 func _on_segment(_line: VoiceLine, index: int) -> void:
 	if phase != Phase.PLAYING:
@@ -316,11 +331,15 @@ func _run_beats() -> void:
 		if beat.size() < 2:
 			_beats_done[i] = true
 			continue
-		var at: float = voice_end if str(beat[0]) == CutsceneScript.AFTER_VOICE else float(beat[0])
+		var at: float = voice_end if str(beat[0]) == CutsceneScript.AFTER_VOICE else float(script_now.value(beat[0]))
 		if elapsed < at:
 			continue
 		_beats_done[i] = true
-		_beat(StringName(str(beat[1])), beat[2] if beat.size() > 2 and beat[2] is Array else [])
+		var args: Array = []
+		if beat.size() > 2 and beat[2] is Array:
+			for a: Variant in beat[2]:
+				args.append(script_now.value(a))
+		_beat(StringName(str(beat[1])), args)
 
 
 ## A beat calls the washer's Looks (W2), or the washer itself for what is not its face (the spray, core/92);
