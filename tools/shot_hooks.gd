@@ -149,6 +149,47 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.reset_physics_interpolation()
 			cam.make_current()
 			return true
+		"machine_parts":
+			# assets/12: arg "old" or "port": the four Machine Parts (filter, motor, drum belt,
+			# detergent) in a row on a plain floor far from the stations, seen from a little above.
+			# "old" is the old PartView's tree (a "Part" holding the glb as "Model", unturned); "port"
+			# is each MachinePartKind's Looks with its `lying` playing from the start.
+			var stage := Node3D.new()
+			world.add_child(stage)
+			stage.global_position = Vector3(0.0, 0.0, 400.0)
+			var floor := MeshInstance3D.new()
+			var plane := PlaneMesh.new()
+			plane.size = Vector2(6.0, 6.0)
+			var grey := StandardMaterial3D.new()
+			grey.albedo_color = Color(0.55, 0.55, 0.53)
+			plane.material = grey
+			floor.mesh = plane
+			stage.add_child(floor)
+			var kinds: Array[String] = ["filter", "motor", "drum_belt", "detergent"]
+			for i in kinds.size():
+				var at := Vector3((i - 1.5) * 0.36, 0.0, 0.0)
+				if arg == "old":
+					var part := Node3D.new()
+					part.name = "Part"
+					var model := (load("res://assets/parts/%s.glb" % kinds[i]) as PackedScene).instantiate() as Node3D
+					model.name = "Model"
+					part.add_child(model)
+					part.position = at
+					stage.add_child(part)
+				else:
+					var kind := load("res://game/entities/machine_part/part_%s.tres" % kinds[i]) as MachinePartKind
+					var looks := kind.looks.instantiate() as Node3D
+					looks.position = at
+					stage.add_child(looks)
+					(looks.get_node("AnimationPlayer") as AnimationPlayer).play(&"lying")
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 30.0
+			cam.global_position = stage.to_global(Vector3(0.0, 0.42, 1.15))
+			cam.look_at(stage.to_global(Vector3(0.0, 0.09, 0.0)))
+			cam.reset_physics_interpolation()
+			cam.make_current()
+			return true
 		"materials":
 			# assets/04 F01: a camera on the Materials station's board. arg "overview" looks at the
 			# whole board; arg <row> ("oak", "singles_1") hides every other row and stands before that

@@ -8,5 +8,6 @@ extends Resource
 @export var id := &""
 ## What the readout names it ("New filter"). placeholder: the old wording (T:parts)
 @export var name := ""
-## Its Looks scene (core/79); empty draws nothing.
+## Its Looks scene (`looks_<id>.tscn` here, assets/12): `Part` turned and bobbed by its `lying`, the model
+## and its `Outline` under it.
 @export var looks: PackedScene

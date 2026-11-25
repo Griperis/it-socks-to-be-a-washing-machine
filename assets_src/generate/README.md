@@ -12,6 +12,7 @@ collision, its Sock spots and its settings live in the Godot scenes and are neve
 | Cabinets (17) | `cabinet/make_cabinets.py` (+ `cabinet_art.py`, the front art; `appliance_family.py`, shared helpers) | `assets_src/blender/cabinet/cabinet_<collection>.blend` | `assets/cabinet/<collection>.glb` |
 | Furniture (67) | `furniture/fkit.py` (+ `kit.py`, the look; the group files `basement.py`, `ground.py`, `first.py`, `attic.py`, `plants.py`, `grotto.py`, one function per piece) | `assets_src/blender/furniture/<piece>.blend` | `assets/furniture/<piece>.glb` |
 | Avatar (2) | `avatar/make_avatar.py` (the old script unchanged but its header; its own export keeps the glTF extras and the Crouch key, no root object, facing -z as the old game; not in `blender_assets.json`, coop/04) | `assets_src/blender/avatar/avatar.blend` | `assets/avatar/avatar.glb`, `assets/avatar/feet.glb` |
+| Machine Parts (4) | none yet: the old `tools/blender/make_part_*.py` build on `washer_parts.py`, the washer's (assets/14); the old `.blend` and glb came over unchanged (assets/12) | `assets_src/blender/parts/part_<old name>.blend` (`part_belt` is the drum belt) | `assets/parts/<kind>.glb` |
 | House shell | `house/make_house.py`, `house/make_flat.py`: kept to read, not run (see `house/README.md`) | none | none |
 
 `assets/blender_assets.json` lists every source (`source`, relative to `assets_src/blender/`) and its glb.
