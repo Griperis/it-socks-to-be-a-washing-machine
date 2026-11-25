@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: refactor
 area: core
 feature: ui
@@ -38,3 +38,12 @@ and voice player pools, the Whiteboard's viewport-texture material, the outline 
 ## Open follow-ups
 
 ## Built log
+
+- 2026-11-25: Changed: the spark is `final_spark.tscn` (CPUParticles3D, unit quad, unshaded billboard material, fade
+  Gradient, today's values); `_spark()` instances it and sets amount, scale_amount (size), lifetime, velocity, tint.
+  The four Lobby pedestals are `Pedestal0..3` nodes in `lobby_stage.tscn` (cylinder 0.75 x 0.3, own material each);
+  code keeps the colour per place and the silhouette. The pedestal size is now the scene's, no longer read from
+  `LobbyTuning.pedestal_radius/height` (those two now only feed `box_of`). Files: game/ui/final_screen/final_column.gd,
+  final_spark.tscn, game/lobby/lobby_stage.gd, lobby_stage.tscn, docs/migration/batch-a-review.md. Stills before/after in
+  builds/review-core-109/ (lobby-look and final-screen sets: 0 differing pixels on four, focus and popping).
+  Verified: PASS 22772 checks, 712 cases.

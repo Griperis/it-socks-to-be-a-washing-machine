@@ -14,7 +14,7 @@ const PPM := 220.0
 const CAMERA_HEIGHT := 3.0
 const PAD := 12.0
 
-static var _spark_material: StandardMaterial3D = null
+const SPARK := preload("res://game/ui/final_screen/final_spark.tscn")
 
 var tuning: FinalScreenTuning = null
 ## The player's colour, name and Pairs ([[Design id, Coins paid], ...]) and the Coins they earned.
@@ -291,33 +291,16 @@ func _sparkle(at: Vector3, tint: Color, scale: float) -> void:
 	_spark(at, 18, 0.03 * scale, 0.5 * scale, 0.7, tint.lerp(Color(1.0, 0.8, 0.4), 0.6))
 
 
-## One-shot bits thrown from `at`, drawn flat to the camera; they free themselves.
+## One-shot bits thrown from `at`, drawn flat to the camera; they free themselves. The look is the scene's.
 func _spark(at: Vector3, count: int, size: float, spread: float, life: float, tint: Color) -> void:
-	if _spark_material == null:
-		_spark_material = StandardMaterial3D.new()
-		_spark_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		_spark_material.vertex_color_use_as_albedo = true
-		_spark_material.billboard_mode = BaseMaterial3D.BILLBOARD_PARTICLES
-		_spark_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	var bits := CPUParticles3D.new()
-	var quad := QuadMesh.new()
-	quad.size = Vector2.ONE * size * 2.0
-	quad.material = _spark_material
-	bits.mesh = quad
+	var bits := SPARK.instantiate() as CPUParticles3D
 	bits.amount = count
-	bits.one_shot = true
-	bits.explosiveness = 1.0
+	bits.scale_amount_min = size * 2.0  # the scene's quad is one metre wide
+	bits.scale_amount_max = size * 2.0
 	bits.lifetime = life
-	bits.direction = Vector3(0, 1, 0)
-	bits.spread = 180.0
 	bits.initial_velocity_min = spread * 0.4
 	bits.initial_velocity_max = spread
-	bits.gravity = Vector3.ZERO
 	bits.color = tint
-	var fade := Gradient.new()
-	fade.set_color(0, Color.WHITE)
-	fade.set_color(1, Color(1, 1, 1, 0))
-	bits.color_ramp = fade
 	bits.position = at + Vector3(0, 0.2, 0)
 	_root.add_child(bits)
 	bits.emitting = true
