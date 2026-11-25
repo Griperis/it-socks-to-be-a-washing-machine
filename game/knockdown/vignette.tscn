@@ -10,6 +10,7 @@ shader_parameter/start = 0.45
 [node name="Vignette" type="ColorRect" unique_id=1460311760]
 visible = false
 material = SubResource("ShaderMaterial_vignette")
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: bug
 area: core
 feature: lobby
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-25
 blocked_by: []
 notes: ["suggested model: opus", "designer 2026-11-25, playing the Windows debug build from main d2f9e45 (builds/review-windows-1125/)"]
 terms: [Lobby]
@@ -47,5 +47,20 @@ not the real path. Since the designer last saw the figures, core/109 made the pe
 - The full suite passes.
 
 ## Open follow-ups
+- [later] With the Host's World drawer open (it opens that way), the drawer covers the fourth pedestal at every window
+  size (stills in `builds/review-core-113/`, editor and build alike). Is that wanted, or should the row make room for it?
 
 ## Built log
+
+### 2026-11-25
+- Changed: Reproduced on the real path (title, then Host, then Lobby) in the exported Linux build at 1920x1080, 1280x720,
+  2560x1440 and 1600x900 (resized after start): no pedestals, no figures, and the name rows piled in the top-left corner.
+  The editor project was fine. Cause, measured: `lobby_stage.tscn`'s root (the Stage SubViewportContainer) stored its anchors
+  but no `layout_mode`, and neither did its instance in `lobby.tscn`. The export laid it out at size 0, so its 3D view
+  was 2x2 and `box_of()` projected every place to 0,0. Either line alone fixes the build; both are now there, as the editor
+  writes them. `vignette`, `focus_glow` and `stage_bar` had the same root fault and now store `layout_mode = 3`.
+  The export filter was not the cause. The stage camera no longer uses physics interpolation, which ends the first frame's
+  `p.d == 0` errors from `box_of()`.
+- Files: game/lobby/lobby_stage.tscn, game/lobby/lobby.tscn, game/knockdown/vignette.tscn, game/ui/focus_glow.tscn,
+  game/ui/stage_bar.tscn, tests/lobby_test.gd (k16 title Host at four window sizes, k17 Guest joined, k18 the layout_mode check)
+- Verified: `kit/tools/run.sh --touched` (90 of 96 suites): PASS 22929 checks, 722 cases; exported Linux build before and after the fix, stills and a line-up in `builds/review-core-113/`

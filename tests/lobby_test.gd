@@ -8,6 +8,9 @@ extends TestSuite
 
 const ONE_BOX := "res://game/level/one_box_level.tscn"
 const LagPeer := preload("res://tests/support/lag_peer.gd")
+const TITLE := "res://game/ui/title/title.tscn"
+## The window sizes a player's screen may have; the last is set after the Lobby is up.
+const SIZES: Array[Vector2i] = [Vector2i(1920, 1080), Vector2i(1280, 720), Vector2i(2560, 1440), Vector2i(1600, 900)]
 
 var _branches: Array[Node] = []
 ## What the Lobbies did: ["<machine>:title:<notice>"], ["<machine>:into:<path>"].
@@ -50,6 +53,12 @@ func cases() -> Array[Dictionary]:
 				"title": "the Lobby's scenes carry no text of their own (LobbyWords is the one place); the status line is empty and hidden; a narrower-than-16:9 stage keeps the width a 16:9 one sees"},
 		{"name": "k15_pairs_slider", "method": "case_k15", "world": false,
 				"title": "core/91 (Q668, Q2586): a debug build's Host drawer shows the Pairs per Drawer slider while New game is chosen (a Guest's read-only); moving it sets the New Game's Pairs on every machine and clears everyone's Ready; it hides for a saved World"},
+		{"name": "k16_title_host_figure_on_pedestal", "method": "case_k16", "world": false,
+				"title": "core/113, real path: the title's Multiplayer and Host keys open the Lobby, its stage fills the screen (its 3D view the same size) at 1920x1080, 1280x720, 2560x1440 and 1600x900 set after start, and the local player's figure stands on its pedestal: an Avatar under the stage's row, visible, in the player's colour, not a silhouette"},
+		{"name": "k17_title_host_guest_on_pedestal", "method": "case_k17", "world": false,
+				"title": "core/113, real path: on the Lobby the title's Host key opened, a Guest that joins stands on the second pedestal in its colour, the Host's figure stays on the first"},
+		{"name": "k18_control_scenes_keep_layout_mode", "method": "case_k18", "world": false,
+				"title": "core/113: every game scene whose root is an anchored Control stores the root's layout_mode (the editor writes 3): an exported 4.7 build gives an instance of such a root, with no layout_mode on it either, size 0 (the Lobby's stage drew nothing in the build)"},
 	]
 
 
@@ -837,3 +846,110 @@ func _mouse_press() -> InputEventMouseButton:
 	ev.button_index = MOUSE_BUTTON_LEFT
 	ev.pressed = true
 	return ev
+
+
+# --- K16-K18: core/113, the figures on their pedestals ------------------------------------------
+
+
+func case_k16() -> void:
+	var host := _machine("Host")
+	var lobby := await _title_host(host)
+	var stage := lobby.stage()
+	var me := lobby.link.session.me()
+	var window := get_tree().root
+	var was := window.size
+	for at in SIZES:
+		window.size = at
+		await _frames(3)
+		var view := stage.get_node("%View") as SubViewport
+		_check(stage.size.x > 2.0 and stage.size.is_equal_approx(lobby.size) and lobby.size.is_equal_approx(lobby.get_viewport_rect().size),
+				"%s: the stage fills the Lobby and the screen (stage %s, Lobby %s, screen %s)" % [at, stage.size, lobby.size, lobby.get_viewport_rect().size])
+		_check(Vector2(view.size).is_equal_approx(stage.size), "%s: the 3D view is the stage's size (%s)" % [at, view.size])
+	window.size = was
+	await _frames(2)
+	_stands_on(lobby, 0, lobby.link.roster.colour_of(me), "the local player")
+
+
+func case_k17() -> void:
+	var host := _machine("Host")
+	var guest := _machine("Guest")
+	var hlobby := await _title_host(host)
+	await _until(func() -> bool: return hlobby.link.session.is_online(), "the Host's Lobby to listen", 900, 20.0)
+	await _lobby(guest, LobbyScreen.Mode.JOIN, null, "127.0.0.1:%d" % hlobby.link.session.port)
+	await _until(func() -> bool: return hlobby.link.roster.peers().size() == 2 and not hlobby.stage().is_free(1),
+			"the Guest to stand on the Host's stage", 900, 20.0)
+	var roster := hlobby.link.roster
+	_stands_on(hlobby, 0, roster.colour_of(roster.peers()[0]), "the Host")
+	_stands_on(hlobby, 1, roster.colour_of(roster.peers()[1]), "the Guest")
+	_check(roster.colour_of(roster.peers()[0]) != roster.colour_of(roster.peers()[1]), "two colours")
+	_check(hlobby.stage().is_free(2), "the third place is still a silhouette")
+
+
+func case_k18() -> void:
+	var missing: Array[String] = []
+	for path in _scenes_under("res://game"):
+		var state := (load(path) as PackedScene).get_state()
+		if state.get_node_count() == 0 or not ClassDB.is_parent_class(String(state.get_node_type(0)), &"Control"):
+			continue
+		var names: Array[StringName] = []
+		for p in state.get_node_property_count(0):
+			names.append(state.get_node_property_name(0, p))
+		var anchored := names.any(func(n: StringName) -> bool: return String(n).begins_with("anchor"))
+		if anchored and not names.has(&"layout_mode"):
+			missing.append(path)
+	_check(missing.is_empty(), "every Control scene root with anchors stores its layout_mode (%s)" % [missing])
+
+
+## The title, its Multiplayer key, then Host, the way a player goes; the Lobby it opens.
+func _title_host(machine: Node) -> LobbyScreen:
+	var title := (load(TITLE) as PackedScene).instantiate() as TitleScreen
+	title.name = "Title"
+	title.go_into = func(path: String, _heading: String, setup: Callable) -> void:
+		var root := (load(path) as PackedScene).instantiate()
+		if setup.is_valid():
+			setup.call(root)
+		var lobby := root as LobbyScreen
+		lobby.name = "Lobby"
+		lobby.go_to_title = func(notice: String) -> void: _did.append("%s:title:%s" % [machine.name, notice])
+		lobby.go_into = func(p: String, _h: String, _s: Callable) -> void: _did.append("%s:into:%s" % [machine.name, p])
+		machine.remove_child(title)
+		title.queue_free()
+		machine.add_child(lobby)
+	machine.add_child(title)
+	await _frames(2)
+	await _click(title.get_node("%MultiplayerKey") as Control)
+	await _click(title.get_node("%Host") as Control)
+	await _until(func() -> bool: return machine.get_node_or_null("Lobby") != null, "the title's Host key to open the Lobby", 900, 20.0)
+	var lobby := machine.get_node("Lobby") as LobbyScreen
+	await _until(func() -> bool: return lobby.link.roster.peers().size() >= 1 and not lobby.stage().is_free(0),
+			"the local player to stand in the Lobby", 900, 20.0)
+	return lobby
+
+
+## Place `i` of the Lobby's stage shows a player: their Avatar under the row, visible, on its pedestal, in `colour`.
+func _stands_on(lobby: LobbyScreen, i: int, colour: Color, who: String) -> void:
+	var stage := lobby.stage()
+	var figure := stage.figure(i)
+	var pedestal := stage.get_node("%Row").get_node("Pedestal%d" % i) as MeshInstance3D
+	_check(figure.get_parent() == stage.get_node("%Row") and figure.is_visible_in_tree() and pedestal.is_visible_in_tree(),
+			"%s: the figure and its pedestal show on the stage" % who)
+	_check(is_equal_approx(figure.position.x, pedestal.position.x) and is_zero_approx(figure.position.y),
+			"%s: the figure stands on its pedestal (%s on %s)" % [who, figure.position, pedestal.position])
+	_check(not stage.is_free(i) and figure.colour == colour, "%s: an Avatar in the player's colour (%s, not %s)" % [who, figure.colour, colour])
+	var dressed := true
+	for mi: Node in figure.find_children("*", "MeshInstance3D", true, false):
+		dressed = dressed and (mi as MeshInstance3D).material_override == null
+	_check(dressed, "%s: not a silhouette" % who)
+
+
+func _scenes_under(dir_path: String) -> Array[String]:
+	var found: Array[String] = []
+	var dir := DirAccess.open(dir_path)
+	if dir == null:
+		return found
+	for f in dir.get_files():
+		if f.ends_with(".tscn"):
+			found.append(dir_path.path_join(f))
+	for d in dir.get_directories():
+		found.append_array(_scenes_under(dir_path.path_join(d)))
+	return found

@@ -29,6 +29,7 @@ color = Color(0.168627, 0.129412, 0.109804, 1)
 
 [node name="Stage" parent="." instance=ExtResource("stage")]
 unique_name_in_owner = true
+layout_mode = 1
 
 [node name="Margin" type="MarginContainer" parent="." unique_id=641550200]
 layout_mode = 1
