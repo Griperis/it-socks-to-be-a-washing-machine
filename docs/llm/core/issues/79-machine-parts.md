@@ -27,8 +27,12 @@ Batch A is built unattended (Q2603): an open choice this ticket does not settle 
 
 ## How it is authored
 
-Each `MachinePartKind` names its Looks; `MachinePartTuning` (ahead 1.5 m, pop 0.7 s, arc 0.6 m, spin 1 rad/s, bob
-3.5 cm at 2.2 Hz, glow colour), all placeholders; `part_pop` and `part_fit` in `sound_catalogue.tres` with the old
+Each `MachinePartKind` names its Looks; `MachinePartTuning` (ahead 1.5 m, pop 0.7 s, arc 0.6 m, glow colour), all
+placeholders. The lying spin (1 rad/s) and bob (3.5 cm at 2.2 rad/s, the old rate; not Hz) are keys of the Looks'
+`lying` animation, not tuning numbers (an entity's state plays in its Looks). Every Looks, the graybox ones too,
+follows assets/12's contract: nodes `Part`, `Model`, `Outline`, `AnimationPlayer`, animation `lying`
+(`game/entities/machine_part/looks_contract.json` on the waiting branch `assets/12-machine-part-models`; its models
+swap in on the designer's yes); `part_pop` and `part_fit` in `sound_catalogue.tres` with the old
 picks. The Stages station's mini run gets the slot box and the Parts lie beside the plan's labels from the data.
 
 ## Acceptance

@@ -1245,3 +1245,21 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Cost | about 157k subagent tokens |
 | Looks | builds/review-assets-11/ |
 | Surprises | a missing blob in the git store on first commit, rewritten; shot_hooks.gd 1160 lines |
+
+---
+
+| Ticket | core/82, the Stage bar and its phases: provider words and icons from Stages, the fold with its pop, the group `stage_bar_goal` for the First wash; merged (main b17c17c) |
+| Cost | about 167k subagent tokens |
+| Surprises | one bar for every phase (the old had two boxes) |
+
+---
+
+| Ticket | core/85, Voices and Subtitles: the Voices autoload, VoiceChannel, SubtitleRow, the picker, the muffle and the music duck; the Voice station at x 78; merged (main b17c17c) |
+| Cost | about 263k subagent tokens |
+| Surprises | none |
+
+---
+
+| Ticket | core/90, the Laundry bin entity: graybox heap scaled by fill, the tip, `handable` on (the old way), hooks for core/86, core/88, core/93; merged (main b17c17c) |
+| Cost | about 153k subagent tokens |
+| Surprises | none |
