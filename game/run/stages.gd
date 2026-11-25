@@ -506,8 +506,15 @@ func fit_answer() -> Dictionary:
 		return refuse("already")
 	var events := [[&"part_fitted", stage]]
 	var s := current()
-	if s != null and s.get("fix_cutscene") != null:
-		return {"ok": true, "changes": {id: {"phase": Phase.FIXING}}, EVENTS: events}
+	var frame := Cutscenes.of(self) if is_inside_tree() else null
+	if s != null and s.fix_cutscene != null and frame != null:
+		var path := s.fix_script.resource_path if s.fix_script != null else s.fix_cutscene.resource_path
+		var scene := frame.start(path)
+		if not scene.get("ok", false):
+			return scene
+		var changes: Dictionary = {id: {"phase": Phase.FIXING}}
+		changes.merge(scene["changes"] as Dictionary)
+		return {"ok": true, "changes": changes, EVENTS: events}
 	return _open_answer(events)
 
 
@@ -600,6 +607,20 @@ func _show(_now: bool) -> void:
 		parts.applied.connect(_on_applied)
 	if not parts.bound.is_connected(_on_bound):
 		parts.bound.connect(_on_bound, CONNECT_ONE_SHOT)
+	_follow_fix_scene()
+
+
+## The Host asks `open_floor` when the Fix scene fades out, so the new Stage's Socks land under its black
+## (core/92); a skip ends the scene at once and fades too.
+func _follow_fix_scene() -> void:
+	var frame := Cutscenes.of(self) if is_inside_tree() else null
+	if frame != null and frame.player != null and not frame.player.fading.is_connected(_on_fix_fade):
+		frame.player.fading.connect(_on_fix_fade)
+
+
+func _on_fix_fade() -> void:
+	if parts != null and parts.is_host() and stage >= 0 and phase == Phase.FIXING:
+		parts.ask(Command.new(&"open_floor", Parts.HOST, id, {}))
 
 
 ## After everything the level starts with (LevelNet.start() loads the World first: it was deferred

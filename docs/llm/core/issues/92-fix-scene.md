@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: frame
@@ -45,3 +45,13 @@ trigger, a recording and the Stage's fields (`docs/architecture/voice.md` "Trigg
 ## Open follow-ups
 
 ## Built log
+- 2026-11-25
+  - Changed: the house plan's four Stages name `fix_cutscene` and `fix_script` (`game/run/fix_scenes/fix_scene_1..4.tres`:
+    Fixes 1-3 spray, Fix 4 does not); `Stages.fit_answer()` starts the scene (phase FIXING); the Host's `Stages` asks
+    `open_floor` when `CutscenePlayer.fading` (new signal; the timeline's fade or a skip); `Washer.busy()` and the
+    `spray` beat (a `SockSpray` in `washer.tscn`, the door's swing, cleaned up at the end); `MachinePartSlot.busy()` reads
+    the real washer. No `house.tscn` change. Three rows under "Settled by the old game" in `batch-a-review.md`.
+  - Files: `game/run/stage.gd`, `stages.gd`, `house_stage_plan.tres`, `fix_scenes/`, `game/entities/washer/washer.{gd,tscn}`,
+    `game/entities/machine_part/machine_part_slot.gd`, `game/cutscene/cutscene_player.gd`, `tests/fix_scene_test.gd`,
+    `tests/coop_fix_scene_test.gd`, docs.
+  - Verified: `kit/tools/run.sh --touched`: PASS 22498 checks, 690 cases; grep_rules PASS.

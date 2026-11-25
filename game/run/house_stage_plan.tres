@@ -8,12 +8,23 @@
 [ext_resource type="Resource" path="res://game/entities/machine_part/part_drum_belt.tres" id="6_part"]
 [ext_resource type="Resource" path="res://game/entities/machine_part/part_detergent.tres" id="7_part"]
 
+[ext_resource type="Resource" path="res://game/voice/triggers/cutscene_fix_1.tres" id="11_trigger"]
+[ext_resource type="Resource" path="res://game/run/fix_scenes/fix_scene_1.tres" id="21_scene"]
+[ext_resource type="Resource" path="res://game/voice/triggers/cutscene_fix_2.tres" id="12_trigger"]
+[ext_resource type="Resource" path="res://game/run/fix_scenes/fix_scene_2.tres" id="22_scene"]
+[ext_resource type="Resource" path="res://game/voice/triggers/cutscene_fix_3.tres" id="13_trigger"]
+[ext_resource type="Resource" path="res://game/run/fix_scenes/fix_scene_3.tres" id="23_scene"]
+[ext_resource type="Resource" path="res://game/voice/triggers/cutscene_fix_4.tres" id="14_trigger"]
+[ext_resource type="Resource" path="res://game/run/fix_scenes/fix_scene_4.tres" id="24_scene"]
+
 [sub_resource type="Resource" id="Resource_stage1"]
 script = ExtResource("2_stage")
 title = "Basement"
 pairs = 50
 part = ExtResource("4_part")
 comment_set = 1
+fix_cutscene = ExtResource("11_trigger")
+fix_script = ExtResource("21_scene")
 
 [sub_resource type="Resource" id="Resource_stage2"]
 script = ExtResource("2_stage")
@@ -22,6 +33,8 @@ floor = 1
 pairs = 160
 part = ExtResource("5_part")
 comment_set = 2
+fix_cutscene = ExtResource("12_trigger")
+fix_script = ExtResource("22_scene")
 
 [sub_resource type="Resource" id="Resource_stage3"]
 script = ExtResource("2_stage")
@@ -30,6 +43,8 @@ floor = 2
 pairs = 150
 part = ExtResource("6_part")
 comment_set = 3
+fix_cutscene = ExtResource("13_trigger")
+fix_script = ExtResource("23_scene")
 
 [sub_resource type="Resource" id="Resource_stage4"]
 script = ExtResource("2_stage")
@@ -39,6 +54,8 @@ pairs = 130
 part = ExtResource("7_part")
 counts_only_own = true
 comment_set = 4
+fix_cutscene = ExtResource("14_trigger")
+fix_script = ExtResource("24_scene")
 
 [sub_resource type="Resource" id="Resource_goal"]
 script = ExtResource("3_phase")

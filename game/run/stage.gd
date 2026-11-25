@@ -16,3 +16,9 @@ extends Resource
 @export var counts_only_own := false
 ## The washing machine's comment set while it is current (docs/architecture/voice.md).
 @export_range(0, 16, 1) var comment_set := 0
+## The cutscene its Part's Fix plays (a CUTSCENE trigger: `cutscene_fix_1..4`, core/92). A Stage that names none
+## opens its floor at once (the zoo's mini plan, tests); one that names one waits for the scene.
+@export var fix_cutscene: VoiceTrigger
+## The sequence that plays it (a `CutsceneScript` whose `voice` is `fix_cutscene`: the spit after a Fix that opens
+## a floor, none after the last); none: the trigger's lines alone.
+@export var fix_script: CutsceneScript

@@ -74,6 +74,13 @@ answer (never on a load or a join). The Host asks `complete` after any applied a
 zoo's switches (`game/zoo/stages/stages_switch.gd`) ask their own `switch` verb and answer with
 `zoo_complete_answer()` / `zoo_fit_now_answer()`. a debug build's launch option `--pairs-per-drawer=N` sets a New Game's Drawer size (the slider, core/91, rides it).
 
+**Built (core/92).** `Stage.fix_cutscene` (the CUTSCENE trigger, also the "waits for a scene" switch) and
+`Stage.fix_script` (a `CutsceneScript` of `game/run/fix_scenes/`, its `voice` the same trigger: Fixes 1-3 carry the
+`spray` beat and `after_voice_seconds` 3.6, Fix 4 none) are set on the house plan's four Stages. `fit_answer()` of a
+Stage that names one is the `fit` answer plus `Cutscenes.start()`'s patch (phase `FIXING`, the scene playing; refused
+"busy" while one plays). Every machine's `CutscenePlayer.fading` (the timeline's fade, or the Host's skip) makes the
+Host's `Stages` ask `open_floor`; the washer's `busy()` (a cutscene plays or someone is in its drum) is the slot's.
+
 A load between `FIXING` and `open_floor` (the Fix scene cut short) opens the floor in the run's `loaded()`, as the old
 `step()` did. A load with `due` not empty lays those Designs again (old `redo_due`: the ones now held, lying or shelved
 are dropped from the list).
