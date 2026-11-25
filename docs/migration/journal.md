@@ -1389,3 +1389,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | assets/10 floor locks, assets/12 Machine Parts, assets/13 the Laundry bin: the old models in place of the grayboxes, on the designer's yes on the line-ups (Q2655); core/109 the Final screen sparkles and the Lobby pedestals as scene nodes (Q2656); merged (main d765dba). |
 | Cost | about 75k subagent tokens for core/109 (the asset tickets were built in batch A) |
 | Surprises | the merge's full suite took 604 s with three agents testing at once; core/109 left the pedestal size in the scene and in `LobbyTuning` (core/111 makes it one) |
+
+---
+
+| Ticket | core/107 zoo-only code out of the game scripts (washer, Laundry day, Stages: zoo stand-ins under game/zoo/); core/110 anyone out of the map is put back at the washer (Guests and knocked-down players too); core/111 UI authored in nodes (no Control or StyleBox built in code); fast lanes: only Tab or a pad lights a selection (Q2654), the house's washer faces into the laundry room, a Guest's pose is taken over the whole zoo floor; merged (main 73f9afb). |
+| Cost | about 243k (core/107), 244k (core/110, two agents), 160k (core/111) subagent tokens |
+| Surprises | a "damaged" commit read back whole after about 45 s: the object was on disk but unreadable (maintenance/05); the old game never caught a fallen player; core/107's stand-ins make the washer's and Laundry day's run link untyped (a Part) |

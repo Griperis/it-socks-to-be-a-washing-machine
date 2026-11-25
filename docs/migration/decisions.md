@@ -1,4 +1,4 @@
-Next free Q number: Q2661 (update this line whenever a round of questions is asked)
+Next free Q number: Q2662 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -583,3 +583,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   or a debug menu, not dropped (designer, 2026-11-25).
 - Q2660: the damaged commits are most likely the Docker sandbox's virtiofs mount; maintenance/05 reproduces it in a
   lab repo and proposes settings (designer, 2026-11-25).
+- Q2661: the washing machine with its shadow fix (assets/14) and the subtitle icon without brows (assets/15) are yes
+  and merge (designer, 2026-11-25, "lgtm"); the sun's shadow resolution stays as it is unless the designer asks.
