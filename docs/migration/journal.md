@@ -1214,3 +1214,34 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/100, a Sock drawn under the floor: bound to suite order, not load; a Sock pressed 13-18 mm into the floor under one Jolt pushed through is now put back; the drawn-frame watch counts only a push (Jolt's 0.02 m slop kept, the old game's, Q2604; 0.005 m a [later] question); merged (main bb48b63) |
 | Cost | about 336k subagent tokens |
 | Surprises | the ticket's guess (several steps a frame) was wrong; 10 full runs in a row passed |
+
+---
+
+| Ticket | core/76, Stages: the run's state and Rows; a New Game starts at Stage 1; the Stages station; the Run in house.tscn (no play change yet); debug --pairs-per-drawer; PROTOCOL 21; merged (main 987dd2b) |
+| Cost | about 283k subagent tokens |
+| Surprises | a dust_sheet timer fired on a freed Cabinet (fixed); cabinet.gd 641 lines |
+
+---
+
+| Ticket | core/78, carried things in the Hands: a Part and a bin take the whole Hands, go down at the crosshair, `handable` switch for Hand-off (on, the old way); merged (main 987dd2b) |
+| Cost | about 275k subagent tokens |
+| Surprises | Hands.loaded() crashed on a number key (fixed); hands.gd and player.gd over 600 lines |
+
+---
+
+| Ticket | core/84, voice lines as one JSON per speaker and the bake by command; VoiceMood, marks, optional per-recording timing; the washer's 21 lines carry the old times; merged (main 032e49e) |
+| Cost | about 258k subagent tokens |
+| Surprises | untagged old comments given all four triggers, as the old picker did |
+
+---
+
+| Ticket | core/89, the spray of Socks out of the washer's door; the Laundry station (moved to x 60, z 7 at merge, clear of Stages); merged (main 032e49e) |
+| Cost | about 154k subagent tokens |
+| Surprises | none |
+
+---
+
+| Ticket | assets/11, the 17 Collection Cabinets to six Drawers, pixel-identical to the old stack at 2 and 6 Rows; Segments 4-6 hidden until core/81; merged (main 032e49e) |
+| Cost | about 157k subagent tokens |
+| Looks | builds/review-assets-11/ |
+| Surprises | a missing blob in the git store on first commit, rewritten; shot_hooks.gd 1160 lines |
