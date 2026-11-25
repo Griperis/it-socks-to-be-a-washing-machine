@@ -40,7 +40,53 @@ becomes a ticket. The asset line-ups are in `builds/review-assets-<NN>/`.
 - Voice level (Q2638): no game gain, so every line plays at 0 dB; the old comments were +6 dB because the clips are
   quiet. They will sound quieter than the old until the recordings are fixed at the source.
 - The Laundry day's bar text "Wash clothes n/m" (Q2621's example taken as batch A's wording).
-- The Machine Part goes into a Teammate's Hands by core/42's Hand-off too; the bin does not (core/71's proposal).
+- The Machine Part goes into a Teammate's Hands by core/42's Hand-off too. The bin does too, as the old game had it
+  (core/78's `handable`, on), not as core/71's proposal said (see the questions below).
+
+## Questions for the designer (end of batch A, 2026-11-25)
+Collected while the batch built unattended. Each is answered in play or here; a change becomes a ticket.
+
+**Choices**
+1. core/100: Jolt's penetration slop stays at the default 0.02 m (the old game's), so Socks under a heap can sink up
+   to about 1 cm into the floor. 0.005 m gave no bad frames in 8 test orders but changes every contact. Keep, or try 0.005?
+2. core/78, core/90: the Laundry bin can be handed to a Teammate (the old way), not as the proposal said. Keep?
+3. core/94, core/96: in the old game the room lamps never visibly flickered in the washes. The port's First wash
+   flicker follows the washer's drum light; the happy wash's lamps stay steady. Should the lamps flicker in the washes?
+4. core/79: the old game kept a Machine Part's pop spot clear of gift boxes. There are no Gifts until batch B, so it
+   is carried into batch B's Gift ticket, not dropped. OK?
+5. core/76: the old "campaign off, every Cabinet has all its Drawers" mode is not built (zoo Cabinets keep 2 Rows).
+   Port it, or leave it?
+6. core/98: the player who let go of a knocked body is let through it as it bursts out of the washer (otherwise it
+   flew off at about 20 m/s). Does it feel right?
+7. core/91: the floor lock door swings the other way and the gate hangs on its other post, to keep the old swing with
+   the chain on the players' side. OK?
+
+**Line-ups waiting for your yes** (their Looks swap in on a yes)
+- assets/10 floor locks: `builds/review-assets-10/` (the gate has 9 spindles, the old 8, as the flight is 1.13 m).
+- assets/12 Machine Parts: `builds/review-assets-12/`.
+- assets/13 Laundry bin: `builds/review-assets-13/` (the white is the shared library's, a bit creamier).
+- assets/14 washing machine: `builds/review-assets-14/washer-lineup-strip.png` and 12 stills.
+- assets/15 the washer's subtitle icon: `builds/review-assets-15/`.
+- Also look at: assets/11 Cabinets at six Drawers (merged): `builds/review-assets-11/`; core/95 Final screen:
+  `builds/review-final-screen/`.
+
+**Try once yourself**
+- core/84: drop a wav into a speaker's folder, run the bake, edit the JSON, bake again.
+
+**Play with a Guest** (tested on one machine only)
+- core/77 Socks on high spots; core/80 a Guest watching a floor lock open; core/83 a Guest's tallies and a leaver's
+  row; core/93 the Laundry day.
+- core/93's seven bin spots were placed by eye.
+
+**Health, for your OK after batch A**
+- Commits came out "damaged" (a blob lost from the shared git store between staging and commit) about 6 times with 5
+  agents at once; each was repaired, and a full check finds main sound. A maintenance ticket to find the cause?
+- The disk filled once: the kit's test copies in /tmp are never deleted (about 110 x 150 MB). Change the kit to clean
+  them? (kit change, needs your OK.) A test run also once hung 25 min holding perf.lock (kit).
+- The full suite takes 137-180 s now (limit 120). Your speed pass, and/or mine.
+- tools/shot_hooks.gd is over 1160 lines: a split ticket.
+- Filed for after batch A: core/105 (the Stage bar drops a change mid pop-in), core/106 (engine errors when a Guest's
+  house goes before the Host's).
 
 ## Settled by the old game (Q2604)
 Each agent adds a line here for an open choice it met and settled by the old game's answer (or the nearest): the

@@ -1377,3 +1377,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/96, the Final wash: the happy wash, the push-in, cutscene_6 whole, the Final screen on every machine (FinalSummary), the World recorded as finished; a co-op case; merged (main dd925bb) |
 | Cost | about 215k subagent tokens |
 | Surprises | the old happy wash's lamps sat under the flicker at level 1.0, so nothing visible (a question for the designer) |
+
+---
+
+| Ticket | core/97, back to the Lobby: Continue from a Guest, the finished World kept as a record, Start asks before replacing it, the Host waits for its Guests to leave; merged (main a541cde). Batch A complete. |
+| Cost | about 196k subagent tokens |
+| Surprises | two engine errors when a Guest's house goes first (core/106) |
