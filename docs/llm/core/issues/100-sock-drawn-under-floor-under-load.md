@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: needs-info
+status: ready-for-agent
 kind: bug
 area: core
 feature: mess
@@ -28,6 +28,8 @@ slow frame may see it. A flaky case is a defect to rework (kit/docs/TESTING.md "
 - The watch passes in the full suite 10 runs in a row; no FLAKY line.
 
 ## Open follow-ups
-- [blocking] What to do with a Sock drawn about 1 cm under the floor on slow frames: fix it, accept a small depth and set the watch to it, or park it; asked in a later grilling, settled before batch A (Q2651).
+
+## Answers
+- What to do with a Sock drawn about 1 cm under the floor on slow frames: fix it, no look or feel number changed (Q2652, 2026-11-25). It merges before batch A starts (Q2653, 2026-11-25).
 
 ## Built log
