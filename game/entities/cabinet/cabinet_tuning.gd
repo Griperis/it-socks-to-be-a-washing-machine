@@ -25,6 +25,18 @@ extends Resource
 @export_range(0.0, 0.5, 0.01, "suffix:s") var flight_step := 0.06 # placeholder: the old campaign_installer.gd's constant
 @export_range(0.0, 2.0, 0.01, "suffix:m") var flight_arc := 0.22 # placeholder: the old cloth.json
 
+@export_group("Drawer drop")
+## A floor opening grows a Cabinet: after `drop_delay` each new Drawer module falls `drop_height` in
+## `drop_time` (quad, ease in), `drop_gap` after the last; on landing a dust puff of this colour and
+## this many particles bursts from its seam (core/81, the old locks.json).
+@export_range(0.0, 5.0, 0.05, "suffix:s") var drop_delay := 0.8 # placeholder: the old locks.json
+@export_range(0.05, 3.0, 0.01, "suffix:s") var drop_time := 0.35 # placeholder: the old locks.json
+@export_range(0.0, 3.0, 0.05, "suffix:m") var drop_height := 0.8 # placeholder: the old locks.json
+@export_range(0.0, 2.0, 0.01, "suffix:s") var drop_gap := 0.25 # placeholder: the old locks.json
+@export var dust_colour := Color("#cbbfa8") # placeholder: the old locks.json
+@export_range(1, 200, 1) var dust_amount := 24 # placeholder: the old locks.json
+@export_group("")
+
 
 ## The Coins one Pair of a Design of rarity `rarity` pays.
 func pay_for(rarity: int) -> int:

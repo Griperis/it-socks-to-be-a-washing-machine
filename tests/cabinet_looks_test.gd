@@ -30,6 +30,8 @@ const OLD_SEGMENT_H := 0.30
 const SEGMENTS := 6
 ## The Rows the Cabinet scene stands at today (its three drawers; core/81 shows `rows` of six).
 const STANDING_ROWS := 3
+## The Rows a Cabinet in a level stands at (the scene's `rows`; core/81 shows that many of six).
+const SHOWN_ROWS := 2
 
 var _level: Node3D = null
 var _station: Node3D = null
@@ -112,7 +114,7 @@ func case_real_path() -> void:
 	_check(cabinet.drawer(0).open, "the drawer slid open")
 	_check(_coins.of_player(1) > 0, "the player is paid (%d)" % _coins.of_player(1))
 	_check(_hands.items_of(1).is_empty(), "the Hands are empty")
-	_check(_stands_at(root.get_node("Looks") as Node3D, STANDING_ROWS), "the Patterns Cabinet still stands at its three segments, the top on them")
+	_check(_stands_at(root.get_node("Looks") as Node3D, SHOWN_ROWS), "the Patterns Cabinet stands at its two Rows' segments, the top on them")
 
 
 # --- K01 -----------------------------------------------------------------------------------------
@@ -154,7 +156,7 @@ func case_k01_dress() -> void:
 		_level.add_child(root)
 		var part := root.get_node("Cabinet") as Cabinet
 		_check((root.get_node("Looks") as Node3D).scene_file_path == Cabinet.looks_path(c, false), "a %s Cabinet wears its Looks" % c)
-		_check(part.drawer_count() == 3, "it keeps its 3 drawers (%d)" % part.drawer_count())
+		_check(part.drawer_count() == 6, "it keeps its 6 drawers (%d)" % part.drawer_count())
 		for i in part.drawer_count():
 			var looks := root.get_node("Drawer%d/Looks" % (i + 1)) as Node3D
 			_check(looks.scene_file_path == Cabinet.looks_path(c, true), "its drawer %d wears its Looks" % (i + 1))

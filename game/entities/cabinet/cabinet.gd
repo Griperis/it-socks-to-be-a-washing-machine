@@ -89,6 +89,8 @@ var _found := false
 ## The run's Stages of its level (they set it as they enter), or null in a level with no run: the Row's
 ## capacity is then the tuning's `drawer_capacity`.
 var stages: Stages = null
+## How it stands at its Rows and drops a new Drawer in (core/81).
+var growth := CabinetGrowth.new(self)
 
 
 func _enter_tree() -> void:
@@ -519,6 +521,7 @@ func _is_drawer_front(node: Node) -> bool:
 func _show(now: bool) -> void:
 	if get_parent().is_node_ready():
 		dress()
+		growth.follow(rows, now)
 	var sheet := get_node_or_null(DUST_SHEET) as DustSheet
 	if sheet != null and sheet.is_node_ready():
 		sheet.follow(locked, now)

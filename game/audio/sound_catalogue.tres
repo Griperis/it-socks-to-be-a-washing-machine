@@ -258,6 +258,13 @@ clips = Array[AudioStream]([ExtResource("104_dev")])
 spatial = true
 note = "Old pick cc0/rubberduck_metal_close (assets/07 V01)."
 
+[sub_resource type="Resource" id="Resource_drawer_thunk"]
+script = ExtResource("1_76itk")
+event = &"drawer_thunk"
+clips = Array[AudioStream]([ExtResource("104_dev")])
+spatial = true
+note = "A new Drawer drops onto a Cabinet (core/81); shares the oven-close clip, as the old sound bank."
+
 [sub_resource type="Resource" id="Resource_basket_open"]
 script = ExtResource("1_76itk")
 event = &"basket_open"
@@ -348,5 +355,5 @@ note = "PLACEHOLDER (core/43, Q2590): the old ping, one soft bubble (synth/ping_
 
 [resource]
 script = ExtResource("23_7apgx")
-events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_jump"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape"), SubResource("Resource_fridge_open"), SubResource("Resource_fridge_close"), SubResource("Resource_oven_open"), SubResource("Resource_oven_close"), SubResource("Resource_basket_open"), SubResource("Resource_basket_close"), SubResource("Resource_litter_flap_open"), SubResource("Resource_litter_flap_close"), SubResource("Resource_piano_lid_open"), SubResource("Resource_piano_lid_close"), SubResource("Resource_cabinet_reveal"), SubResource("Resource_piano"), SubResource("Resource_ui_click"), SubResource("Resource_ui_hover"), SubResource("Resource_ping")])
+events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_jump"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape"), SubResource("Resource_fridge_open"), SubResource("Resource_fridge_close"), SubResource("Resource_oven_open"), SubResource("Resource_oven_close"), SubResource("Resource_drawer_thunk"), SubResource("Resource_basket_open"), SubResource("Resource_basket_close"), SubResource("Resource_litter_flap_open"), SubResource("Resource_litter_flap_close"), SubResource("Resource_piano_lid_open"), SubResource("Resource_piano_lid_close"), SubResource("Resource_cabinet_reveal"), SubResource("Resource_piano"), SubResource("Resource_ui_click"), SubResource("Resource_ui_hover"), SubResource("Resource_ping")])
 muffling_scenes = Array[String](["res://game/entities/door/door.tscn", "res://game/entities/door/room_door.tscn", "res://game/entities/door/room_door_flipped.tscn"])
