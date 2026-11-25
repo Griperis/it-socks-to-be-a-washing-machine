@@ -66,3 +66,4 @@ slow frame may see it. A flaky case is a defect to rework (kit/docs/TESTING.md "
 - Verified: `--suite=mess_settle --part=2/2` `PASS 117 checks, 15 cases`; `--part=3/3` `PASS 82 checks, 11 cases`;
   the full suite 10 runs in a row, each `PASS 19788 checks, 616 cases`, no FLAKY line (each printed SLOW, the whole
   suite 122-125 s, over 120 s)
+- Merged: b2de5927 (2026-11-25, branch core/100-sock-drawn-under-floor-under-load)
