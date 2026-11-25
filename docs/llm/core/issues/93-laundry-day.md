@@ -76,3 +76,4 @@ placeholders. The Laundry station gets "Last Fix done" and "Final wash" (all but
   game/ui/licence/credits.tres, tests/laundry_day_test.gd, tests/house_test.gd, tests/saves/*, docs.
 - Verified: `kit/tools/run.sh --touched` PASS (laundry_day 5 cases, 57 checks; house 26 cases); grep_rules PASS.
   Not covered: a co-op Guest case (the Parts path is generic; the wait and snapshot are checked on the Host).
+- Merged: 93a63cf7 (2026-11-25, branch core/93-laundry-day)
