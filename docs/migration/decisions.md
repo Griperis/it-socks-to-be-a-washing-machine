@@ -1,4 +1,4 @@
-Next free Q number: Q2663 (update this line whenever a round of questions is asked)
+Next free Q number: Q2665 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -588,3 +588,9 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2662: the game repo sets `core.createObject rename` (applied by the designer, 2026-11-25): on the virtiofs mount,
   git's default link-then-unlink left fresh objects unreadable for minutes (maintenance/05: 1-4% of commits
   damaged by default, 0 of 5000 with rename).
+- Q2663: Q zooms to the held Sock and G is freed; R stays Turn (designer, 2026-11-25; the old game's G is changed on
+  purpose; core/116).
+- Q2664: fixes from the designer's Windows build (2026-11-25): the subtitle icon at the left of its text; quit and
+  leave keys at the bottom of a dialogue; the Esc close key not lit orange; the Stage bar fill rounded (core/115); the
+  washer's broken-look sparks (core/117); a mid-air pickup's held pose and the flickery flop (core/118); the faint
+  outline (core/119); the Guest's flight (coop/14).
