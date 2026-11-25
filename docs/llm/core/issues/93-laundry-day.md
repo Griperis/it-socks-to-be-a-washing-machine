@@ -33,6 +33,7 @@ placeholders. The Laundry station gets "Last Fix done" and "Final wash" (all but
 `loaded/total` label.
 
 ## Acceptance
+- The bins are placed, their `used` and `full` written and `tip()` called through core/90's `LaundryBin` API.
 - Real path: in the house with the last Fix set by the zoo knob, the player carries a bin to the washing machine and clicks: the bar reads "Wash clothes 1/3", the bin is empty in the Hands, a second click is refused "That bin is empty".
 - Before the last Fix a bin is refused "Fix the washing machine first"; during the wait "The washing machine is busy".
 - Every machine draws the same bins from the seed; saved and in the join snapshot (loaded bins, pile, the wait).

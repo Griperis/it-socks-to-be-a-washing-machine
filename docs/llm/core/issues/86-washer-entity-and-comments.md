@@ -34,6 +34,7 @@ in the editor. The washer station: the real `washer.tscn`, pillars for the mood 
 Command on `Stages`), "Break it"/"Fix it", and the senses on; core/87 makes the pillars show.
 
 ## Acceptance
+- The washing machine joins group `washer` (core/90's bin `tip()` leans toward it).
 - A test compares the bone rests in `washer_acting.tres` (core/84) with the washer's skeleton, so a new model can't drift from them.
 - Real path: in the washer station (senses on, broken) the player looks at the washing machine for 4 s from 3 m (the stare's chance 1 in the case's tuning); a `stage_1` stare line's subtitle shows and the door bone opens; a Guest's stare plays the same line on both machines.
 - In the main scene the washing machine stands at the old place, outlined and named "Washing machine"; E does nothing at it.

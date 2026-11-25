@@ -33,6 +33,7 @@ the washer's markers. The washer station gets one pillar per CUTSCENE trigger fo
 the frame.
 
 ## Acceptance
+- Hiding for a cutscene calls `LaundryBin.set_drawn()` on group `laundry_bins` (core/90's hook).
 - Real path: in the washer station the player presses E on "Play cutscene_fix_1"; the camera is the washer's wide shot, the subtitle shows cutscene_2's first segment, at its second segment the camera is the close shot; the Host presses Space and the player stands at a spawn with input back and the HUD shown.
 - Co-op (0 and 50 ms): the Guest sees the same cutscene, cannot skip, and respawns at the Host's end; a late joiner during it spawns after it at the laundry.
 - Without a voice line it holds the wide shot for its no-voice length.
