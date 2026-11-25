@@ -98,11 +98,15 @@ const FULL_OUTLINE := preload("res://game/outline/full.tres")
 ## The middle button's pings and the emoji wheel (core/43).
 @onready var _pinger: Pinger = %Pinger
 
-## True while a menu (set_input_blocked()) or a cutscene (set_cutscene(), core/88) has the player's input.
+## True while a menu (set_input_blocked()), a cutscene (set_cutscene(), core/88) or a washing machine's
+## drum (set_washed(), core/98) has the player's input.
 var _input_blocked: bool:
-	get: return _menu_blocked or _cutscene
+	get: return _menu_blocked or _cutscene or _washed
 var _menu_blocked := false
 var _cutscene := false
+## In a washing machine's drum (core/98): held still at `_wash_hold`, out of play.
+var _washed := false
+var _wash_hold := Vector3.ZERO
 ## True while this player has the mouse captured (L03): the look turns only then. Kept here as well as
 ## in Input.mouse_mode, which a headless run does not hold.
 var _captured := false
@@ -191,10 +195,33 @@ func set_input_blocked(on: bool) -> void:
 ## gives none back), a charge is dropped, a drag let go, and the HUD hidden; off, both come back.
 func set_cutscene(on: bool) -> void:
 	_cutscene = on
-	_hud.visible = not on
+	_hud.visible = not on and not _washed
 	if on:
 		_set_charge(false)
 		_let_go_body()
+
+
+## In a washing machine's drum (core/98, the washer's `WashView`): the body is held still at `hold`, out of
+## the way, the input and the HUD are off (Q991); off, the HUD comes back (a cutscene's keeps it off).
+## The view is the WashView's own camera meanwhile.
+func set_washed(on: bool, hold := Vector3.ZERO) -> void:
+	_washed = on
+	_wash_hold = hold
+	_hud.visible = not on and not _cutscene
+	if on:
+		_set_charge(false)
+		_let_go_body()
+		_stack.drop()
+		crouching = false
+		_apply_height(tuning.stand_height)
+		velocity = Vector3.ZERO
+		global_position = hold
+		reset_physics_interpolation()
+
+
+## Whether this player spins in a drum now.
+func is_washed() -> bool:
+	return _washed
 
 
 ## Whether a cutscene has this player's input.
@@ -300,6 +327,11 @@ func _physics_process(delta: float) -> void:
 	var down := kd != null and kd.is_down(player_id())
 	if down != knocked:
 		_set_knocked(down)
+	if _washed:
+		velocity = Vector3.ZERO
+		global_position = _wash_hold
+		_time += delta
+		return
 	if knocked:
 		_stack.drop()
 		_lie(kd)

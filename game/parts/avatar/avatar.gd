@@ -196,6 +196,24 @@ func _ride(carrier: Avatar, k: float) -> void:
 	_jumped = false
 
 
+# --- In a washing machine's drum (core/98) -------------------------------------------------------
+
+## Whether its player spins in a drum now, set by the washer's `WashView` on every machine.
+var washed := false
+
+
+## Out of play in the drum (on) or back (off): the body is not drawn, its Mate capsule and Back are off.
+## Out, it stands drawn again (the owner's own copy stays hidden at its body) and the Mate and Back are
+## back unless it lies down.
+func set_washed(on: bool) -> void:
+	washed = on
+	visible = not on and not is_multiplayer_authority()
+	if mate != null:
+		mate.collision_layer = 0 if on or is_down() else Ragdoll.MATE_LAYER
+	if back != null:
+		back.collision_layer = 0 if on else Back.LAYER
+
+
 # --- Knocked down (coop/10) ----------------------------------------------------------------------
 
 ## Whether its player lies down now (getting up included) on this machine.
@@ -216,15 +234,21 @@ func _follow_knockdown() -> void:
 			if looks != null:
 				looks.end_ragdoll()
 			if mate != null:
-				mate.collision_layer = Ragdoll.MATE_LAYER
+				mate.collision_layer = 0 if washed else Ragdoll.MATE_LAYER
 		return
 	var n := int(e.get("n", 0))
 	if ragdoll.phase == Ragdoll.Phase.UP or ragdoll.serial != n:
 		ragdoll.knock(n, Transform3D(Basis(Vector3.UP, float(e.get("yaw", 0.0))), e.get("at", Vector3.ZERO)),
-				e.get("push", Vector3.FORWARD), float(e.get("high", 0.5)), float(e.get("side", 0.0)))
+				e.get("push", Vector3.FORWARD), float(e.get("high", 0.5)), float(e.get("side", 0.0)),
+				deg_to_rad(float(e.get("tilt", 0.0))), e.get("launch", Vector3.ZERO), float(e.get("speed", -1.0)))
 		if e.get("pose") is PackedByteArray:
 			ragdoll.take(e["pose"])
-		_let_through_inside()
+		_let_through_inside(e.get("at", global_position))
+		if e.has("launch"):
+			# A tumble out of a washing machine (core/98): the one who let go of the body stands by the door and
+			# is no more in its way than they were as it was dragged.
+			for body in _walking_bodies_of(int(e.get("by", -1)), kd):
+				ragdoll.except_with(body)
 		if mate != null:
 			mate.collision_layer = 0
 		_last_feet = Vector3.INF
@@ -237,8 +261,8 @@ func _follow_knockdown() -> void:
 
 
 ## E53, E54: the falling body never bumps its own player's walking body, nor a Teammate who stood inside
-## it when it was hit (within 2 body radii sideways and the body's height up).
-func _let_through_inside() -> void:
+## it when it was hit (within 2 body radii sideways of where it fell from, `at`, and the body's height up).
+func _let_through_inside(at: Vector3) -> void:
 	var own := follow as CollisionObject3D
 	if own != null:
 		ragdoll.except_with(own)
@@ -250,7 +274,7 @@ func _let_through_inside() -> void:
 		var other := node as Avatar
 		if other == null or other == self or other.mate == null:
 			continue
-		var d := other.global_position - global_position
+		var d := other.global_position - at
 		if Vector2(d.x, d.z).length() <= reach and absf(d.y) <= tuning.stand_height:
 			ragdoll.except_with(other.mate)
 			var body := other.follow as CollisionObject3D
@@ -268,17 +292,24 @@ func _set_dragger(by: int, kd: Knockdowns) -> void:
 	_dragger = by
 	if by < 0 or kd == null:
 		return
-	var a := kd.avatar_of(by)
-	if a != null and a.mate != null:
-		_drag_bodies.append(a.mate)
-	if a != null and a.follow is CollisionObject3D:
-		_drag_bodies.append(a.follow as CollisionObject3D)
-	for node in get_tree().get_nodes_in_group(Hands.PLAYERS):
-		var player := node as Player
-		if player != null and player.player_id() == by and player.multiplayer == multiplayer and not _drag_bodies.has(player):
-			_drag_bodies.append(player)
+	_drag_bodies.append_array(_walking_bodies_of(by, kd))
 	for body in _drag_bodies:
 		ragdoll.except_with(body)
+
+
+## Player `by`'s walking bodies here: their avatar's Mate and followed body, and the Player on this machine.
+func _walking_bodies_of(by: int, kd: Knockdowns) -> Array[CollisionObject3D]:
+	var out: Array[CollisionObject3D] = []
+	var a := kd.avatar_of(by)
+	if a != null and a.mate != null:
+		out.append(a.mate)
+	if a != null and a.follow is CollisionObject3D:
+		out.append(a.follow as CollisionObject3D)
+	for node in get_tree().get_nodes_in_group(Hands.PLAYERS):
+		var player := node as Player
+		if player != null and player.player_id() == by and player.multiplayer == multiplayer and not out.has(player):
+			out.append(player)
+	return out
 
 
 ## H103: a dragged body's feet scrape the floor: "drag_scrape" there each scrape_every they slide.

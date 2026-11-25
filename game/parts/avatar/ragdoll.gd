@@ -110,10 +110,14 @@ func decides() -> bool:
 ## Lies down from knock `p_serial` at `feet` (the player's feet, turned their way). The Host simulates,
 ## each bone set moving along `push` (unit, along the floor) at push_speed times its height over the top,
 ## harder the higher it was hit (`high`, 0 to 1), and turning about the up axis by `side` (-1 to 1).
-func knock(p_serial: int, feet: Transform3D, push: Vector3, high: float, side: float) -> void:
+## A tumble out of the washing machine (core/98) also tips the body `tilt` radians forward from upright, adds
+## `launch` to every bone's velocity and pushes at `speed` instead of the tuning's (negative: the tuning's).
+func knock(p_serial: int, feet: Transform3D, push: Vector3, high: float, side: float, tilt := 0.0,
+		launch := Vector3.ZERO, speed := -1.0) -> void:
 	serial = p_serial
 	phase = Phase.DOWN
 	_rise_t = 0.0
+	feet = feet * Transform3D(Basis(Vector3.RIGHT, -tilt), Vector3.ZERO)
 	_have_pose = _fresh and not decides()
 	_fresh = false
 	for b in BONES:
@@ -130,7 +134,7 @@ func knock(p_serial: int, feet: Transform3D, push: Vector3, high: float, side: f
 		var pb := _bodies[b]
 		pb.global_transform = _world[b] * pb.body_offset
 		var h := clampf((pb.global_position.y - feet.origin.y) / tuning.top, 0.0, 1.0)
-		pb.linear_velocity = push * tuning.push_speed * h * kick
+		pb.linear_velocity = push * (tuning.push_speed if speed < 0.0 else speed) * h * kick + launch
 		pb.angular_velocity = Vector3.UP * tuning.spin * clampf(side, -1.0, 1.0)
 	simulating = true
 	_send()

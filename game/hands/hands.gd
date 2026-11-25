@@ -440,10 +440,11 @@ func can_take(to: int, sock: int) -> bool:
 	return items_of(to).size() < tuning_of(to).capacity
 
 
-## Whether player `peer` is knocked down now (the level's Knockdowns; never, with none).
+## Whether player `peer` is knocked down now (the level's Knockdowns; never, with none), or out of play
+## in a washing machine's drum (core/98): nothing is handed or caught to them.
 func is_down(peer: int) -> bool:
 	var kd := _knockdowns_of()
-	return kd != null and kd.is_down(peer)
+	return kd != null and (kd.is_down(peer) or kd.is_washed(peer))
 
 
 func _knockdowns_of() -> Knockdowns:

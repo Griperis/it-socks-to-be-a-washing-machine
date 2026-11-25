@@ -3,7 +3,7 @@
 ## serial that moves with every start. Host-authoritative: a sequence's own Command starts it (core/92's Fix,
 ## core/94's First wash, core/96's Final wash; the washer station's pillars in the zoo) by returning `start()`'s
 ## patch from its `decide()`; the Host's timeline (`end`) or its skip (`skip`) ends it, both Host-only verbs a
-## Guest's Session drops. The end also ends every knockdown and drag (Q745, Q759).
+## Guest's Session drops. The end also ends every knockdown, drag and knockdown wash (Q745, Q759).
 ##
 ## In the join snapshot: a late joiner during it holds black and spawns after it at the laundry (Q864). Not
 ## saved: a load mid-cutscene runs the sequence's own load rule. Its `CutscenePlayer` shows it on every machine.
@@ -104,6 +104,11 @@ func _ended() -> Dictionary:
 	var ev := grant({"playing": "", "takes": PackedInt32Array()})
 	if knockdowns != null and not (knockdowns.down.is_empty() and knockdowns.drags.is_empty()):
 		ev["changes"][knockdowns.id] = {"down": {}, "drags": {}, "struggles": {}}
+	# Every knockdown wash ends too (Q759, core/98): out of the drum with no tumble, the respawn puts them down.
+	for wash in WasherWash.in_level(self):
+		var cleared := wash.clear()
+		if not cleared.is_empty():
+			ev["changes"][wash.id] = cleared
 	return ev
 
 
