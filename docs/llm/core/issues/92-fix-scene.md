@@ -6,7 +6,7 @@ area: core
 feature: frame
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/79, core/87, core/88, core/89, core/91]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [Fix, Part, Stage, Voice line]
@@ -55,3 +55,4 @@ trigger, a recording and the Stage's fields (`docs/architecture/voice.md` "Trigg
     `game/entities/machine_part/machine_part_slot.gd`, `game/cutscene/cutscene_player.gd`, `tests/fix_scene_test.gd`,
     `tests/coop_fix_scene_test.gd`, docs.
   - Verified: `kit/tools/run.sh --touched`: PASS 22498 checks, 690 cases; grep_rules PASS.
+- Merged: 2d73d593 (2026-11-25, branch core/92-fix-scene)
