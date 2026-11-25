@@ -1,0 +1,478 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/entities/washer/washer_looks.gd" id="1_pdi0t"]
+[ext_resource type="Resource" path="res://game/entities/washer/washer_tuning.tres" id="2_ftxp0"]
+[ext_resource type="Resource" path="res://game/voice/speakers/washer.tres" id="3_56xsg"]
+[ext_resource type="Script" path="res://game/outline/outline.gd" id="4_cv3rm"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_csn8x"]
+albedo_color = Color(0.6, 0.85, 0.75, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s281n"]
+size = Vector3(0.7, 0.95, 0.7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6ux50"]
+size = Vector3(0.7, 0.1, 0.7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sv7ou"]
+albedo_color = Color(0.2, 0.25, 0.3, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_raonw"]
+top_radius = 0.24
+bottom_radius = 0.24
+height = 0.04
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flxta"]
+albedo_color = Color(0.12, 0.1, 0.1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0d4cl"]
+size = Vector3(0.2, 0.03, 0.03)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3fti3"]
+size = Vector3(0.2, 0.03, 0.03)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hba7v"]
+albedo_color = Color(0.12, 0.1, 0.1, 1)
+emission_enabled = true
+emission = Color(0.9, 0.75, 0.5, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_7dnfu"]
+top_radius = 0.2
+bottom_radius = 0.2
+height = 0.06
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xbhde"]
+albedo_color = Color(0.1, 0.1, 0.12, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3fmyi"]
+size = Vector3(0.1, 0.07, 0.04)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hfp7l"]
+size = Vector3(0.1, 0.07, 0.04)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s2ge0"]
+size = Vector3(0.1, 0.07, 0.04)
+
+[sub_resource type="Animation" id="Animation_6rp4q"]
+length = 0.1
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("face_rig:lean")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0.043619387, 0, 0, 0.99904823)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("face_rig:brow_left_pivot")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, -0.115, 0.72499996, 0.311)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("face_rig:brow_left_pivot")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, 0, -0.2079117, 0.9781476)
+tracks/3/type = "position_3d"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("face_rig:brow_right_pivot")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0, 1, 0.115, 0.72499996, 0.311)
+tracks/4/type = "rotation_3d"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("face_rig:brow_right_pivot")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0, 1, 0, 0, 0.2079117, 0.9781476)
+
+[sub_resource type="Animation" id="Animation_fgxau"]
+length = 0.1
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("face_rig:lean")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("face_rig:brow_left_pivot")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, -0.115, 0.741, 0.311)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("face_rig:brow_left_pivot")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+tracks/3/type = "position_3d"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("face_rig:brow_right_pivot")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0, 1, 0.115, 0.741, 0.311)
+tracks/4/type = "rotation_3d"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("face_rig:brow_right_pivot")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_8gpok"]
+length = 0.1
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("face_rig:lean")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, -0.043619387, 0, 0, 0.99904823)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("face_rig:brow_left_pivot")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, -0.115, 0.719, 0.311)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("face_rig:brow_left_pivot")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, 0, -0.104528464, 0.9945219)
+tracks/3/type = "position_3d"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("face_rig:brow_right_pivot")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0, 1, 0.115, 0.78099996, 0.311)
+tracks/4/type = "rotation_3d"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("face_rig:brow_right_pivot")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0, 1, 0, 0, -0.05233596, 0.9986295)
+
+[sub_resource type="Animation" id="Animation_vvuua"]
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("face_rig:door_hinge")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 1, 1, 0, -0.34202012, 0, 0.9396926)
+
+[sub_resource type="Animation" id="Animation_cwrtw"]
+length = 0.1
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("face_rig:lean")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, -0.017452406, 0, 0, 0.9998477)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("face_rig:brow_left_pivot")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, -0.115, 0.764, 0.311)
+tracks/2/type = "rotation_3d"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("face_rig:brow_left_pivot")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, 0, 0.08715574, 0.9961947)
+tracks/3/type = "position_3d"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("face_rig:brow_right_pivot")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0, 1, 0.115, 0.764, 0.311)
+tracks/4/type = "rotation_3d"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("face_rig:brow_right_pivot")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0, 1, 0, 0, -0.08715574, 0.9961947)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bpner"]
+_data = {
+&"angry": SubResource("Animation_6rp4q"),
+&"calming": SubResource("Animation_fgxau"),
+&"entitled": SubResource("Animation_8gpok"),
+&"mouth": SubResource("Animation_vvuua"),
+&"surprised": SubResource("Animation_cwrtw")
+}
+
+[sub_resource type="Animation" id="Animation_d4e7t"]
+length = 0.12
+loop_mode = 1
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("face_rig:bob")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.03, 1, 0.004, 0.002, 0, 0.06, 1, -0.003, -0.002, 0.003, 0.09, 1, 0.002, 0.003, -0.003, 0.12, 1, 0, 0, 0)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("face_rig:bob")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.06, 1, 0, 0, -0.004999979, 0.9999875, 0.12, 1, 0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_xuuxd"]
+length = 0.5
+loop_mode = 1
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("face_rig:bob")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.125, 1, 0, 0.006, 0, 0.25, 1, 0, 0, 0, 0.375, 1, 0, 0.006, 0, 0.5, 1, 0, 0, 0)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("face_rig:bob")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.25, 1, 0.005999964, 0, 0, 0.999982, 0.5, 1, 0, 0, 0, 1)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_x8423"]
+_data = {
+&"rumble": SubResource("Animation_d4e7t"),
+&"talk": SubResource("Animation_xuuxd")
+}
+
+[sub_resource type="Animation" id="Animation_pj2tw"]
+loop_mode = 1
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("face_rig:drum_spin")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.25, 1, 0, 0, 0.70710677, 0.70710677, 0.5, 1, 0, 0, 1, -4.371139e-08, 0.75, 1, 0, 0, 0.70710677, -0.70710677, 1, 1, 0, 0, -8.742278e-08, -1)
+tracks/1/type = "rotation_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("face_rig:laundry_tumble")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.25, 1, 0, 0, -0.70710677, 0.70710677, 0.5, 1, 0, 0, -1, -4.371139e-08, 0.75, 1, 0, 0, -0.70710677, -0.70710677, 1, 1, 0, 0, 8.742278e-08, -1)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_36dp7"]
+_data = {
+&"spin": SubResource("Animation_pj2tw")
+}
+
+[node name="Looks" type="Node3D" unique_id=1902507154 node_paths=PackedStringArray("rig", "loops", "spinner", "lining", "drum_light", "pile_node", "bubbles_node", "player")]
+script = ExtResource("1_pdi0t")
+tuning = ExtResource("2_ftxp0")
+rig = NodePath("face_rig")
+loops = NodePath("Loops")
+spinner = NodePath("Spin")
+lining = NodePath("face_rig/On_drum_spin/Lining")
+drum_light = NodePath("face_rig/On_drum_spin/DrumLight")
+pile_node = NodePath("face_rig/On_laundry_tumble/Pile")
+bubbles_node = NodePath("Bubbles")
+speaker = ExtResource("3_56xsg")
+player = NodePath("AnimationPlayer")
+
+[node name="face_rig" type="Skeleton3D" parent="." unique_id=549574783]
+bones/0/name = "lean"
+bones/0/parent = -1
+bones/0/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+bones/0/enabled = true
+bones/0/position = Vector3(0, 0, 0)
+bones/0/rotation = Quaternion(0, 0, 0, 1)
+bones/0/scale = Vector3(1, 1, 1)
+bones/1/name = "bob"
+bones/1/parent = 0
+bones/1/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+bones/1/enabled = true
+bones/1/position = Vector3(0, 0, 0)
+bones/1/rotation = Quaternion(0, 0, 0, 1)
+bones/1/scale = Vector3(1, 1, 1)
+bones/2/name = "door_hinge"
+bones/2/parent = 0
+bones/2/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.262, 0.42, 0.318)
+bones/2/enabled = true
+bones/2/position = Vector3(-0.262, 0.42, 0.318)
+bones/2/rotation = Quaternion(0, 0, 0, 1)
+bones/2/scale = Vector3(1, 1, 1)
+bones/3/name = "brow_left_pivot"
+bones/3/parent = 0
+bones/3/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.115, 0.729, 0.311)
+bones/3/enabled = true
+bones/3/position = Vector3(-0.115, 0.729, 0.311)
+bones/3/rotation = Quaternion(0, 0, 0, 1)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/name = "brow_right_pivot"
+bones/4/parent = 0
+bones/4/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.115, 0.729, 0.311)
+bones/4/enabled = true
+bones/4/position = Vector3(0.115, 0.729, 0.311)
+bones/4/rotation = Quaternion(0, 0, 0, 1)
+bones/4/scale = Vector3(1, 1, 1)
+bones/5/name = "drum_spin"
+bones/5/parent = 0
+bones/5/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0.28)
+bones/5/enabled = true
+bones/5/position = Vector3(0, 0.42, 0.28)
+bones/5/rotation = Quaternion(0, 0, 0, 1)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/name = "laundry_tumble"
+bones/6/parent = 1
+bones/6/rest = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0.26)
+bones/6/enabled = true
+bones/6/position = Vector3(0, 0.42, 0.26)
+bones/6/rotation = Quaternion(0, 0, 0, 1)
+bones/6/scale = Vector3(1, 1, 1)
+
+[node name="On_bob" type="BoneAttachment3D" parent="face_rig" unique_id=597947092]
+bone_name = "bob"
+
+[node name="Body" type="MeshInstance3D" parent="face_rig/On_bob" unique_id=1993875334]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.475, 0)
+material_override = SubResource("StandardMaterial3D_csn8x")
+mesh = SubResource("BoxMesh_s281n")
+
+[node name="RidingBody" type="AnimatableBody3D" parent="face_rig/On_bob" unique_id=224574550]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="face_rig/On_bob/RidingBody" unique_id=1439655303]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_6ux50")
+
+[node name="On_door_hinge" type="BoneAttachment3D" parent="face_rig" unique_id=1742402581]
+bone_name = "door_hinge"
+
+[node name="DoorDisc" type="MeshInstance3D" parent="face_rig/On_door_hinge" unique_id=1913476353]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.262, 0, 0.04)
+material_override = SubResource("StandardMaterial3D_sv7ou")
+mesh = SubResource("CylinderMesh_raonw")
+
+[node name="On_brow_left_pivot" type="BoneAttachment3D" parent="face_rig" unique_id=1796815957]
+bone_name = "brow_left_pivot"
+
+[node name="Brow" type="MeshInstance3D" parent="face_rig/On_brow_left_pivot" unique_id=1007804526]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.04)
+material_override = SubResource("StandardMaterial3D_flxta")
+mesh = SubResource("BoxMesh_0d4cl")
+
+[node name="On_brow_right_pivot" type="BoneAttachment3D" parent="face_rig" unique_id=148694833]
+bone_name = "brow_right_pivot"
+
+[node name="Brow" type="MeshInstance3D" parent="face_rig/On_brow_right_pivot" unique_id=1719545629]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.04)
+material_override = SubResource("StandardMaterial3D_flxta")
+mesh = SubResource("BoxMesh_3fti3")
+
+[node name="On_drum_spin" type="BoneAttachment3D" parent="face_rig" unique_id=972902528]
+bone_name = "drum_spin"
+
+[node name="Lining" type="MeshInstance3D" parent="face_rig/On_drum_spin" unique_id=2141077001]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+layers = 524289
+material_override = SubResource("StandardMaterial3D_hba7v")
+mesh = SubResource("CylinderMesh_7dnfu")
+
+[node name="DrumLight" type="OmniLight3D" parent="face_rig/On_drum_spin" unique_id=328971227]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.05)
+visible = false
+light_cull_mask = 524288
+omni_range = 0.45
+
+[node name="On_laundry_tumble" type="BoneAttachment3D" parent="face_rig" unique_id=2097875743]
+bone_name = "laundry_tumble"
+
+[node name="Pile" type="Node3D" parent="face_rig/On_laundry_tumble" unique_id=1950515461]
+visible = false
+
+[node name="Lump0" type="MeshInstance3D" parent="face_rig/On_laundry_tumble/Pile" unique_id=997694597]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08, -0.1, 0)
+layers = 524289
+material_override = SubResource("StandardMaterial3D_xbhde")
+mesh = SubResource("BoxMesh_3fmyi")
+
+[node name="Lump1" type="MeshInstance3D" parent="face_rig/On_laundry_tumble/Pile" unique_id=1598200324]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07, -0.12, 0)
+layers = 524289
+material_override = SubResource("StandardMaterial3D_xbhde")
+mesh = SubResource("BoxMesh_hfp7l")
+
+[node name="Lump2" type="MeshInstance3D" parent="face_rig/On_laundry_tumble/Pile" unique_id=629970676]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+layers = 524289
+material_override = SubResource("StandardMaterial3D_xbhde")
+mesh = SubResource("BoxMesh_s2ge0")
+
+[node name="Damage" type="Node3D" parent="." unique_id=927350419]
+
+[node name="SparksBack" type="GPUParticles3D" parent="Damage" unique_id=496597626]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -0.34)
+emitting = false
+
+[node name="SparksCable" type="GPUParticles3D" parent="Damage" unique_id=389647849]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.2, 0)
+emitting = false
+
+[node name="Smoke" type="GPUParticles3D" parent="Damage" unique_id=385347053]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, -0.3)
+emitting = false
+
+[node name="Flash" type="OmniLight3D" parent="Damage" unique_id=1055525696]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -0.4)
+visible = false
+
+[node name="Buzz" type="AudioStreamPlayer3D" parent="Damage" unique_id=458271294]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Rumble" type="AudioStreamPlayer3D" parent="Damage" unique_id=1437467141]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Bubbles" type="GPUParticles3D" parent="." unique_id=837189408]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0.36)
+emitting = false
+
+[node name="Outline" type="Node3D" parent="." unique_id=949872608]
+visible = false
+script = ExtResource("4_cv3rm")
+style = null
+meshes = Array[NodePath]([])
+shown = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=907597603]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_bpner")
+
+[node name="Loops" type="AnimationPlayer" parent="." unique_id=1860594478]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_x8423")
+
+[node name="Spin" type="AnimationPlayer" parent="." unique_id=1045046225]
+callback_mode_process = 0
+libraries/ = SubResource("AnimationLibrary_36dp7")
