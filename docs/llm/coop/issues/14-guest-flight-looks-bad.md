@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: bug
 area: coop
 feature: flight
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-25
 blocked_by: []
 suites: [coop_hands, coop_flight, flight_start, throw, teammates]
 notes: ["suggested model: opus", "designer 2026-11-25, Windows build: 'on guest, still the flight looks bad' (after coop/11 and coop/13)"]
