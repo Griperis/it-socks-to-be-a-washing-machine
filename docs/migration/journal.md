@@ -1275,3 +1275,15 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/81, the Cabinets grow: the new Drawers drop in at once with a thunk and dust (Q2620); only the current Rows' Drawers shown; CabinetGrowth split out of cabinet.gd; merged (main 74260a4) |
 | Cost | about 161k subagent tokens |
 | Surprises | coop_knockdown:real_path went FLAKY in a run (core/101) |
+
+---
+
+| Ticket | core/79, Machine Parts: the Part pops from the Cabinet that took the last Pair, lies turning and bobbing in its Looks (assets/12's contract, graybox until the designer's yes), fits in the washer's slot; "Fit the new filter"; merged (main f9d5177) |
+| Cost | about 264k subagent tokens |
+| Surprises | the old bob rate is 2.2 rad/s, not Hz; the pop spot kept clear of gift boxes waits for batch B's Gifts |
+
+---
+
+| Ticket | core/86, the washing machine entity and its comments: it replaces the house marker, stare comments silent before the First wash (Q2636), comment sets by Stage; the Washer station at x 98; merged (main f528b6b) |
+| Cost | about 319k subagent tokens |
+| Surprises | its looks contract broke the asset lint's shape and its station lay outside the zoo's Mess bounds (both fixed at merge); the disk filled with test mirrors mid-merge |
