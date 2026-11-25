@@ -93,3 +93,4 @@ func case_zoo() -> void:
 	rt.player.global_position = Vector3(0.0, -900.0, 0.0)
 	await _until(func() -> bool: return rt.player.global_position.y > -10.0, "the player to be put back", 90)
 	_check(rt.player.global_position.distance_to((at as Transform3D).origin) < 0.5, "at the respawn point")
+

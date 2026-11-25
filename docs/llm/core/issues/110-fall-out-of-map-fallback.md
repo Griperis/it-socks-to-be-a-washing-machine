@@ -39,11 +39,11 @@ Today nothing catches a player who falls through the floor or is flung far away.
 - The full suite passes, nothing flaky.
 
 ## Open follow-ups
-- [later] Co-op case not written: each machine runs the same Player check on its own body with its Roster place (`LevelRuntime.respawn_point`), but no two-house case proves a Guest's catch is seen by the Host.
-- [later] A knocked-down player is not caught while down (their body follows the ragdoll and only the Host can end a knockdown); they are caught the moment they rise. A fall during a knockdown needs a Knockdowns command to end it.
 - [later] A real NaN body makes the engine log render errors for a tick, so the case judges NaN/inf as values (`FallRescue`), and the real path uses y = -500, 5000 m away and -1e9.
-- [later] Things (Socks, Parts, held objects) falling out: the old game could not be read (reference/it-socks is not checked out in the worktree); the Mess already returns a Sock that leaves `mess_bounds` to the return spot (mess.gd `bounds`).
-- [later] The real-path case only checks the spawn within 0.5 m horizontally; the washer's turn on main was not in this branch, so rebase and recheck the player stands after the catch.
+- [later] Things falling out, by the old game (read in reference/it-socks): it caught things, not players. Its host's lost-item rule (maintenance/06) puts a settled Mess Sock or floor Pair outside the flat (`FlatLayout.is_lost()`: through a wall, out of a window, under or above a floor) back in front of the washer, and pushes one sunk into a floor slab up onto its floor (`sunk_floor`); it also runs on load (saves.gd), for the Radio, the Beeper and Guide cards, and for a Flight in the air (`flight_rules.check_flights`, put down). Ways a thing leaves the map today here: a Sock thrown or dropped through a hole in a floor, a Part or held object released out of a window or wall, a Flight that never lands. Here only the Mess returns a Sock that leaves `mess_bounds`; Parts, Flights and held objects have no catch. A ticket for them would port the lost-item rule.
+- [later] A Guest's poses are dropped by `AvatarTuning.holds` outside x -50..50, z -90..50 (area plus margin, a zoo-sized placeholder). If the house reaches past that, a Guest there is not drawn on the Host (the case moves the washer station inside it). Not checked against the house's extents.
+- [later] The Host takes a Guest's `stand` Command on trust that they are down (no check that their ragdoll is out of the map); the worst a forged one does is end the sender's own knockdown early.
+- [later] The single-machine house has no ragdoll for the player (alone it has none, so it cannot be knocked), so the knocked-down catch is proven in co-op only (`tests/coop_fall_test.gd`).
 
 ## Built log
 
@@ -51,3 +51,8 @@ Today nothing catches a player who falls through the floor or is flung far away.
 - Changed: a body out of the map (below the Mess volume's floor by 50 m, over 1000 m from its centre on any axis, or not finite) is stood at the washer's Spawns by its Roster place, else the level's Spawn, still and standing; logged as a warning with where it was. The cutscene's respawn now shares that spawn choice.
 - Files: game/player/fall_rescue.gd, game/player/player.gd, game/player/move_tuning.gd (fall_depth, fall_reach), game/level/level_runtime.gd (respawn_point, map_frame), game/cutscene/cutscene_player.gd, tests/fall_rescue_test.gd, docs/migration/batch-a-review.md row.
 - Verified: fall_rescue 22 checks pass; touched run otherwise green.
+
+### 2026-11-25 (second pass)
+- Changed: merged main (the washer turned 90 degrees; the catch still stands the player at a spawn in the laundry room and they walk on). A knocked-down player whose ragdoll falls out of the map asks the Host for the new `Knockdowns.STAND` Command, answered as a leave is (knockdown and drags end, why "fell"), so the ragdoll stands at once on every machine as at a cutscene's end; the player is then put back by the usual check. `Knockdowns.left` takes the why. Co-op: a Guest at y = -500 is put back on its own machine and the Host's Avatar of it stands at the spawn; a knocked-down Guest whose ragdoll (the Host simulates it) falls out is ended and put back the same.
+- Files: game/knockdown/knockdowns.gd, game/player/player.gd, tests/coop_fall_test.gd (+ .uid), docs/migration/batch-a-review.md row.
+- Verified: fall_rescue and coop_fall pass; touched run otherwise green.
