@@ -1,4 +1,4 @@
-Next free Q number: Q2665 (update this line whenever a round of questions is asked)
+Next free Q number: Q2667 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -594,3 +594,8 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   leave keys at the bottom of a dialogue; the Esc close key not lit orange; the Stage bar fill rounded (core/115); the
   washer's broken-look sparks (core/117); a mid-air pickup's held pose and the flickery flop (core/118); the faint
   outline (core/119); the Guest's flight (coop/14).
+- Q2665: workflow (designer, 2026-11-25, after the time breakdown of 23-25 Nov): kit changes: agents run tests in the
+  foreground, no poll loops; agent_finish reuses a green run of the same files; agent_start points at the main
+  checkout's copy of an empty submodule (the old game). The shared append-only lists stay as they are for now; no
+  old-beside-port tool for now.
+- Q2666: an agent does the suite speed pass (maintenance/06), under 120 s without weakening a test.
