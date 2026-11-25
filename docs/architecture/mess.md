@@ -94,7 +94,11 @@ Socks lie, are drawn, move or wake.
   `[position, rotation, velocity, spin, the Host's tick]`; then one row a network frame, unreliable, about
   5.6 KB/s a body. A Guest's spawned copy (no `SOCK_META`) is frozen (kinematic, on the looks layer) and gets
   its Row as it enters (`_on_flight_in`); the Row plays it `GhostTuning.stream_lag` (0.1 s) behind the Host's
-  clock, mapped by the smallest delay seen (`Mess.stream_offset`). Only Throws come over the spawner.
+  clock, mapped by the smallest delay seen (`Mess.stream_offset`); a smaller delay seen later is taken up
+  by `GhostTuning.stream_catch_up` of a tick a tick (`Mess.play_offset`), never a whole tick in one frame
+  (coop/14). A copy that comes before the answer letting the Sock go is not drawn till then
+  (`Mess._early_copy`). A Pair's landing reads the copy's played velocity (`FlightRow.velocity`), the copy
+  being frozen. Only Throws come over the spawner.
 - A Guest's own pick, drop, Throw and wheel are looks-only guesses (`GuestGhosts`, a child of the Player,
   `ThrowGhost` on `Mess.LAYER_GHOST` touching the house only, the HeldView's pick ghost): every Command carries a
   `seq` the answer echoes; while a ghost draws a Sock, `Mess.hold_back(sock, true)` keeps the Mess from drawing
@@ -104,8 +108,11 @@ Socks lie, are drawn, move or wake.
   `part_distance` or `part_turn`; from then the difference eases in over `predict_blend`. It eases onto the
   Host's rest. Its body undoes a push into the floor as a flight does (`MessMoving.undo_push`, core/50).
 - A Teammate's Throw or drop (any let-go Sock whose thrower plays on another machine) is drawn from where their
-  avatar holds it (`Hands.worn_start_of`, through `Mess.worn_start`), easing onto its body over
-  `GhostTuning.hand_over_time` (`Mess._leads`, the MultiMesh row or the body's Looks; coop/13, Q2439).
+  avatar holds it (`Hands.worn_start_of`, through `Mess.worn_start`), easing onto its body (`Mess._leads`,
+  `_ease_leads`, the MultiMesh row or the body's Looks; coop/13, Q2439). On a Guest a copy not yet playing
+  stays in the avatar's live hand. A Throw's lead eases as `(1 - u)^2` over `GhostTuning.hand_over_time`
+  (it leaves the hand moving, no surge midway); a drop's as its height over what is under it (it falls
+  onto its spot, never up first; coop/14).
 - A flight flies as the same leg and foot boxes it lies on (`MessBodies.parts_at`), with
   `MessTuning.turn_weight` times its flat box's inertia (a 50 g board's own spins to Jolt's cap on an
   edge landing), and sweeps (CCD) only from 1 m/s (core/23). Poured and dropped Socks fly as woken ones.
