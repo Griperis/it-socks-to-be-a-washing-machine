@@ -2,9 +2,9 @@
 
     blender -b -P assets_src/generate/build.py -- <family> [--only a,b] [--out <dir>] [--save] [--no-export]
 
-  <family>     sock | cabinet | furniture | avatar
+  <family>     sock | cabinet | furniture | lock | avatar
   --only       only these: Sock shapes (ankle, crew ...) and balls (ball_crew_plain ...), Collections
-               (food, space ...) or furniture pieces (sofa, piano ...)
+               (food, space ...), furniture pieces (sofa, piano ...) or locks (lock_door, lock_gate)
   --out        write the glbs under <dir> (same relative paths as in the game) instead of over the
                game's own files; compare with glb_compare.py before you copy one in
   --save       also save the built scene as the family's .blend source(s) in assets_src/blender/<family>/
@@ -143,6 +143,22 @@ def furniture(a, manifest, lines):
         finish([pid], a, {pid: {"glb": f"assets/furniture/{pid}.glb"}}, lines)
 
 
+def lock(a, manifest, lines):
+    """The floor locks (assets/10): lock_door and lock_gate, one source each."""
+    sys.path.insert(0, os.path.join(HERE, "lock"))
+    import make_locks
+    for kind in make_locks.KINDS:
+        name = "lock_" + kind
+        if a["only"] and name not in a["only"]:
+            continue
+        empty_scene()
+        print(make_locks.build(kind))
+        if a["save"]:
+            os.makedirs(os.path.join(SRC, "lock"), exist_ok=True)
+            bpy.ops.wm.save_as_mainfile(filepath=os.path.join(SRC, "lock", name + ".blend"), compress=True)
+        finish([name], a, manifest, lines)
+
+
 def avatar(a, manifest, lines):
     """The player avatar: avatar.glb and feet.glb from one scene, with the old script's own export
     (no root object, glTF extras and the Crouch shape key kept; coop/04), not export_root()."""
@@ -168,9 +184,9 @@ def avatar(a, manifest, lines):
 
 def main():
     a = args()
-    fn = {"sock": sock, "cabinet": cabinet, "furniture": furniture, "avatar": avatar}.get(a["family"])
+    fn = {"sock": sock, "cabinet": cabinet, "furniture": furniture, "lock": lock, "avatar": avatar}.get(a["family"])
     if fn is None:
-        raise SystemExit("FAIL build: name a family: sock | cabinet | furniture | avatar")
+        raise SystemExit("FAIL build: name a family: sock | cabinet | furniture | lock | avatar")
     manifest = json.load(open(os.path.join(REPO, "assets", "blender_assets.json"), encoding="utf-8"))["assets"]
     lines = []
     fn(a, manifest, lines)

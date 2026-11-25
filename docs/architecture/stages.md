@@ -266,6 +266,11 @@ locked)` as the lock stands. `Stages._open_answer` writes `{open true, locked fa
 whose `floor` is the new Stage's (`Stages.floor_locks()`); the dust sheet follows its Cabinet's own unlock. A swapped
 Looks (assets/10) keeps the node names and the two animations, and puts the model's leaf mesh under a `leaf` body.
 `LockSwitch` (the Stages station's Locks pillar) opens and re-locks the locks by answer.
+The models (assets/10): `assets/lock/lock_door.glb` and `lock_gate.glb`, built by `assets_src/generate/lock/make_locks.py`.
+Under the root, each a pivot: `frame` (posts, the door's head, the chain's eyes; the gate's caps), `panel` (the door's
+wall panel up to the ceiling), `leaf` (origin on its pin, the s = 0 end, players' side), `chain` (origin at its
+lowest middle point) and `padlock` (origin at its body's middle). The root sits on the opening's middle line at the
+floor, the players' side towards +z; the leaf opens about +y. The Looks scenes instance these and key the nodes.
 
 ### The Stage bar
 `game/ui/stage_bar.tscn`, a child of the HUD, hidden in a level with no run: the old panel and layout (behaviour list
