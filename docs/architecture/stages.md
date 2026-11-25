@@ -188,6 +188,20 @@ Part or the bin. Both go into a Teammate's empty Hands by a right click aimed at
 full"), as the old. The bin refuses core/42's Hand-off; a Part allows it: `Carriable.handable` (export), as
 core/71 proposed.
 
+As built (core/78): `Carriable` (`game/parts/carriable.gd`) has the exports `slot` (a `HoldSlot`,
+`game/hands/hold_slot.gd`: `at` from the feet in the body frame, `turn`, `floor_clearance`, `put_seconds`; the bin's is
+`game/hands/hold_slot_bin.tres`), `handable` (on: the right click aimed at a Teammate is the verb `hand_off`, into their
+empty Hands or at their feet with "full"; off: that click is a plain drop at the crosshair) and `title` (the crosshair's
+name, aimed or carried). Its verbs: `pick` (the left click, `click_only()`; refused `full` while the Hands hold a Sock
+or carry), `drop` (`at` in the thing's parent's space, `yaw`, `normal`: the place is checked by `Hands.spot_refusal()`,
+the drop's own check) and `hand_off` (`to`; at their feet it keeps the turn it last lay, as the old). `Hands.carries(by)` names the carried thing (the `carriables`
+group); while carrying, a Sock pick is refused `full` and a Sock handed or caught lies at the carrier's feet
+(`can_take()`). Every machine draws a carried thing at its carrier's slot each frame (`Hands.body_frame()`: its own
+player's drawn body, a Teammate's avatar), so it has no synchronizer; its shapes are off while carried. Put down, its
+`Looks` child eases from the Hands to where it lies over `put_seconds`. `left()` lays it at the leaver's feet;
+`loaded()` where it last lay. The zoo's stand-in is `game/zoo/handling/crate.tscn` on the Handling station. A thing that
+is a Carriable plus another Part (the bin) declares the Carriable first, so the left click reaches it.
+
 ### The floor locks
 `game/run/floor_lock.tscn`: the leaf is the Door entity (`Openable`, `locked` in its State) with its own Looks,
 `looks_lock_door.tscn` (the plank door with ledges and a Z brace) or `looks_lock_gate.tscn` (the painted baby gate),

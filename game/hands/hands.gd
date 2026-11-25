@@ -21,6 +21,12 @@
 ## ("full": the receiver reads "Hands full"). Nobody takes from another's Hands (Q244); a knocked-down
 ## Teammate is never handed to (Q2589). The answer names the "giver" (-1 for a catch), the
 ## "receiver" and the "item".
+##
+## Carried things (core/78): a Carriable takes the whole Hands. carries() names the one player `by`
+## carries; while they carry it no Sock or Pair comes in (a pick is refused "full", a Hand-off or a
+## catch lies at their feet), and a carried thing's put down is checked as a drop's place
+## (spot_refusal()). body_frame() is where a carrier's body is drawn on this machine (its hold slot
+## rides it).
 class_name Hands
 extends Part
 
@@ -47,6 +53,8 @@ const CATCH := &"catch"
 ## How far over and under a receiver's feet the Host looks for the floor an item laid there lies on.
 const FLOOR_PROBE := 0.5
 const HAND_OFF_DEFAULT := preload("res://game/hands/hand_off_tuning.tres")
+## A Teammate's stand and crouch heights (their own MoveTuning is on their machine).
+const MOVE_DEFAULT := preload("res://game/player/move_tuning.tres")
 ## How far over and under a drop's spot the Host looks for the top it would rest on.
 const SPOT_PROBE := 0.05
 ## How far along the aim a Throw looks for the point the crosshair is on.
@@ -238,7 +246,7 @@ func pick_refusal(by: int, sock: int) -> String:
 		return SOON
 	if not parts.near_point(by, mess.where_of(sock), t.reach + t.reach_slack):
 		return FAR
-	if items_of(by).size() >= t.capacity and mate_held(by, sock) < 0:
+	if carries(by) != null or (items_of(by).size() >= t.capacity and mate_held(by, sock) < 0):
 		return FULL
 	return ""
 
@@ -259,6 +267,12 @@ func mate_held(by: int, sock: int) -> int:
 func drop_refusal(by: int, point: Vector3, normal: Vector3) -> String:
 	if active_of(by) < 0:
 		return NOTHING
+	return spot_refusal(by, point, normal)
+
+
+## Why nothing player `by` holds may be put down at `point` (a top whose up is `normal`), or "": within
+## reach, a top flat enough, and a top really there (a Sock's drop and a carried thing's put down).
+func spot_refusal(by: int, point: Vector3, normal: Vector3) -> String:
 	var t := tuning_of(by)
 	if not point.is_finite() or not normal.is_finite() or normal.is_zero_approx():
 		return NO_SPOT
@@ -336,6 +350,36 @@ func decide(cmd: Command) -> Dictionary:
 	return refuse("wrong")
 
 
+# --- Carried things (core/78) -------------------------------------------------------------------
+
+## The thing player `by` carries in these Hands' level, or null. A carried thing takes the whole Hands.
+func carries(by: int) -> Carriable:
+	if not is_inside_tree() or parts == null:
+		return null
+	for node in get_tree().get_nodes_in_group(Carriable.GROUP):
+		var c := node as Carriable
+		if c != null and c.holder == by and c.parts == parts:
+			return c
+	return null
+
+
+## Where player `by`'s body is drawn on this machine: {"feet" (the level's), "yaw" (radians, the way
+## the body faces), "drop" (how far a Crouch lowers it now, metres)}; their own player's as drawn this
+## frame (between physics ticks, turned by the look as it is now), a Teammate's avatar's here; {} when
+## this machine draws no body of theirs.
+func body_frame(by: int) -> Dictionary:
+	var player := _player_of(by)
+	if player != null:
+		var mt := player.tuning if player.tuning != null else MOVE_DEFAULT
+		return {"feet": player.get_global_transform_interpolated().origin, "yaw": player.global_rotation.y,
+				"drop": player.own_body().crouch * (mt.stand_height - mt.crouch_height)}
+	var avatar := _avatar_of(by)
+	if avatar != null:
+		return {"feet": avatar.global_position, "yaw": avatar.global_rotation.y,
+				"drop": avatar.crouch * (MOVE_DEFAULT.stand_height - MOVE_DEFAULT.crouch_height)}
+	return {}
+
+
 # --- The Hand-off (core/42) ----------------------------------------------------------------------
 
 ## The Hand-off's numbers (a default when none is set).
@@ -380,6 +424,8 @@ func take_refusal(to: int, sock: int) -> String:
 ## Whether player `to` has room for item `sock` in their Hands (line 18): a Pair needs a free place;
 ## a loose Sock pairs with its held mate or needs a free place.
 func can_take(to: int, sock: int) -> bool:
+	if carries(to) != null:
+		return false
 	if not mess.is_pair(sock) and mate_held(to, sock) >= 0:
 		return true
 	return items_of(to).size() < tuning_of(to).capacity
@@ -578,14 +624,14 @@ func loaded(host: String) -> Dictionary:
 	var t := _own_tuning()
 	var gone := false
 	for key: Variant in held:
-		if String(key) == host or (key is int and int(key) == Parts.HOST):
+		if str(key) == host or (key is int and int(key) == Parts.HOST):
 			keep_held[key] = held[key]
 			if active.has(key):
 				keep_active[key] = active[key]
 			continue
 		gone = true
 		var items: PackedInt32Array = held[key]
-		var entry: Dictionary = r.players.get(String(key), {}) if r != null else {}
+		var entry: Dictionary = r.players.get(str(key), {}) if r != null else {}
 		var feet: Vector3 = entry.get("at", mess.return_pose(items[0]).origin if not items.is_empty() else Vector3.ZERO)
 		for i in items.size():
 			var round_feet := Vector3(cos(i * 2.4), 0.0, sin(i * 2.4)) * (t.leave_spread if i > 0 else 0.0)

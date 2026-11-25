@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: hands
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: []
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [Hands, Part, Laundry bin, Teammate]
@@ -46,3 +46,16 @@ ahead); the Handling station gets a stand-in crate with a `Carriable` and its sl
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-25
+- Changed: a `Carriable` takes the whole Hands: picked by the left click into empty Hands only ("Hands full"
+  otherwise; while carried a Sock pick is refused and a Sock handed or caught lies at the carrier's feet). Every
+  machine draws it at its carrier's `HoldSlot` (body frame, down with Crouch to 0.25 m, the drawn body); the right
+  click lays it at the crosshair at the turn it was held ("Can't drop there" by the drop's place check), its Looks
+  easing from the Hands (the shared put); aimed at a Teammate (`handable`) into their empty Hands, else at their feet
+  with "Hands full" for them; a leaver lays it where they stood; a load where it last lay. No slow walk. Corner
+  "Drop", crosshair name. Stand-in crate on the Handling station. `Hands.loaded()` no longer errors on an int key.
+- Files: game/parts/carriable.gd, game/hands/hold_slot.gd, game/hands/hold_slot_bin.tres, game/hands/hands.gd,
+  game/player/player.gd, game/ui/prompts.gd, game/zoo/handling/crate.tscn, game/zoo/stations/handling.tscn,
+  tests/carry_test.gd, tests/coop_carry_test.gd
+- Verified: `kit/tools/run.sh --touched` (agent_finish's run, PASS); carry 43 checks, coop_carry 16 checks.
