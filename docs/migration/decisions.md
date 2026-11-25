@@ -1,4 +1,4 @@
-Next free Q number: Q2654 (update this line whenever a round of questions is asked)
+Next free Q number: Q2657 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -568,3 +568,10 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2651: core/100 (a Sock drawn about 1 cm under the floor on slow frames) is settled before batch A starts; what to do with it is asked in a later grilling (designer, 2026-11-25).
 - Q2652: core/100 is fixed: no drawn frame shows a Sock under the floor, with no look or feel number changed (designer, 2026-11-25).
 - Q2653: core/100 is fixed and merged first; batch A starts after it (designer, 2026-11-25).
+- Q2654: a menu's selection lights only after Tab, Shift+Tab or a pad press; with keyboard and mouse play (Esc,
+  moving, a click) nothing shows as selected (designer, 2026-11-25; narrows Q2648; fast lane in `game/ui/pad_focus.gd`).
+- Q2655: the line-ups: floor locks (assets/10), Machine Parts (assets/12) and the Laundry bin (assets/13) are yes
+  and merge; the washing machine (assets/14) is yes once its shadow artifacts are gone; the subtitle icon
+  (assets/15) loses its eyebrows (designer, 2026-11-25).
+- Q2656: the clean-ups after batch A: zoo-only code leaves the game scripts (core/107), the washer's wash beats
+  become animation clips (core/108), particles and fixed nodes become scene nodes (core/109) (designer, 2026-11-25).
