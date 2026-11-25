@@ -1395,3 +1395,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/107 zoo-only code out of the game scripts (washer, Laundry day, Stages: zoo stand-ins under game/zoo/); core/110 anyone out of the map is put back at the washer (Guests and knocked-down players too); core/111 UI authored in nodes (no Control or StyleBox built in code); fast lanes: only Tab or a pad lights a selection (Q2654), the house's washer faces into the laundry room, a Guest's pose is taken over the whole zoo floor; merged (main 73f9afb). |
 | Cost | about 243k (core/107), 244k (core/110, two agents), 160k (core/111) subagent tokens |
 | Surprises | a "damaged" commit read back whole after about 45 s: the object was on disk but unreadable (maintenance/05); the old game never caught a fallen player; core/107's stand-ins make the washer's and Laundry day's run link untyped (a Part) |
+
+---
+
+| Ticket | assets/14 the washing machine's model, rig and animations (shadow stripes fixed: weighted normals, the 1-2 cm raised parts cast no shadow) and assets/15 its subtitle icon without brows, on the designer's yes (Q2661); merged (main 5a8ea66). The house has no graybox washer any more. |
+| Cost | about 181k (assets/14 shadow send-back) and 70k (assets/15 send-back) subagent tokens |
+| Surprises | five clashes with the other merged assets (asset list, build families, credits, shot hooks); the open drum's shadow edge is the sun's shadow resolution, left as it is (Q2661) |
