@@ -71,6 +71,12 @@ static func fit_prompt(carried: Carriable, pad := false) -> Prompt:
 	return Prompt.of("Fit the %s" % carried.prompt_title().to_lower(), keys(Player.PICK, pad))
 
 
+## The crosshair's row for the washing machine while a full Laundry bin is carried after the last Fix (core/93,
+## the old prompts.gd): "Load the washing machine" with the click key.
+static func load_prompt(pad := false) -> Prompt:
+	return Prompt.of("Load the washing machine", keys(Player.PICK, pad))
+
+
 ## An openable's prompt (target()).
 static func openable_prompt(openable: Openable, pad := false) -> Prompt:
 	var use := keys(Player.INTERACT, pad)

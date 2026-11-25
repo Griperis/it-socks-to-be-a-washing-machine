@@ -879,6 +879,10 @@ func _update_screen(h: Hands) -> void:
 		target = Prompts.carry_target(part as Carriable, carried, items.is_empty() and carried == null, _hud.pad)
 		if carried != null and part is MachinePartSlot:
 			target.append(Prompts.fit_prompt(carried, _hud.pad))  # core/79: the click that fits the Part
+		elif carried != null and part is Washer:
+			var day := LaundryDay.of(self)
+			if day != null and day.offers(carried):
+				target.append(Prompts.load_prompt(_hud.pad))  # core/93: the click that loads the machine
 	if aimed_body >= 0:
 		target.clear()
 		target.append(Prompts.drag_prompt(_hud.pad))
@@ -993,6 +997,11 @@ func _on_applied(ev: Dictionary) -> void:
 		var words := String(MachinePartSlot.SAYS.get(String(ev.get("reason", "")), ""))
 		if words != "":
 			say(words)
+		return
+	if to is LaundryDay:
+		var said := String(LaundryDay.SAYS.get(String(ev.get("reason", "")), ""))
+		if said != "":
+			say(said)
 		return
 	if StringName(ev.get("to", &"")) != _hands.id:
 		return

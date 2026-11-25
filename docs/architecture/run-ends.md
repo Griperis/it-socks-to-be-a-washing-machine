@@ -1,7 +1,8 @@
 # The run's ends: the First wash, the Laundry day and the Final screen
 
 **Status: build plan for batch A (designed in core/72; R1-R9 answered Q2624-Q2632; filed by core/74 as core/78,
-core/83, core/88-90 and core/93-97, assets/13, and the later pour core/99). Nothing here is built.** Findings:
+core/83, core/88-90 and core/93-97, assets/13, and the later pour core/99). Built so far: the cutscene frame, the spray, the
+bin, the Laundry day ("As built" notes below).** Findings:
 `docs/migration/m4-lists/04-first-wash-and-laundry-day.md` (73 old lines). The answers are listed at the end. Written
 beside core/71 (Stages, `docs/architecture/stages.md`) and core/73 (the washer and voices, `washer.md`, `voice.md`):
 this file names the seams it needs from them and designs none of their parts, except the Cutscene frame, which is
@@ -85,6 +86,17 @@ change in the inspector.)
 
 **The ending's wait:** the Host counts `ending_left` down in `_physics_process` and asks `final_wash` (Host-only) at 0;
 saved, so a load mid-wait asks again.
+
+As built (core/93, `game/laundry/laundry_day.gd`, instanced in `house.tscn` beside `LaundryBins`):
+- **State:** `first_wash` (DONE until core/94), `drawn`, `loaded_bins` (not `loaded`: a Part's `loaded()` is the load reset),
+  `ending_left`, `final_started` (the stub core/96 replaces with its cutscene and `ended`), `zoo_fixed` (the station's
+  stand-in for the last Fix; read only with no `stages`). `whole_state()` carries the Host's live wait.
+- **Verbs:** `load` (any player, the washer's click: `Washer.use` asks it; refusals `not_carried`, `first_wash`, `unfixed`,
+  `empty`, `busy`, `far`; the three with words are `LaundryDay.SAYS`), `draw` and `final_wash` (Host only), the zoo's
+  `zoo_last_fix` and `zoo_final`. The answer carries `bin`; every machine's `_on_applied` tips it and plays `socks_pour`.
+- **Reads:** `bins()`, `used_bins()`, `total()`, `fixed()`, `offers(carriable)` (the "Load the washing machine" row, built by
+  `Player`), `pile_of(n, of)`; it is in `StageBarPhase.SOURCES` as `laundry_bins` and emits `bar_changed`.
+- **Not here:** `wants_first_wash` and the first-wash group (core/94); the Final wash's start (core/96).
 
 ## The First wash
 

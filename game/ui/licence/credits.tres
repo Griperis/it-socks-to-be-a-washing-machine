@@ -235,7 +235,7 @@ what = "Air whoosh"
 author = "pyranostudios"
 source = "https://opengameart.org/content/air-whoosh"
 licence = "CC0 1.0"
-covers = PackedStringArray()
+covers = PackedStringArray("assets/audio/socks_pour__pyrano_whoosh_pour.ogg")
 
 [sub_resource type="Resource" id="Entry_26"]
 script = ExtResource("2_entry")

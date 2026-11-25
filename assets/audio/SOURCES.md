@@ -45,3 +45,4 @@ assets/07 brought the furniture devices' clips: the old picks, or for an event w
 core/87 brought the broken washer's sounds, synthesised in the old game (`tools/gen_sounds.py`): washer_buzz__synth_a.ogg and washer_buzz__synth_c.ogg (the old `washer_buzz` picks) and washer_rumble__synth_a.ogg (the old `rogue_rumble`, no pick, its first candidate).
 
 core/98 brought the knockdown wash's two sounds, synthesised in the old game (`tools/gen_sounds.py`, no pick, the first candidate of each): wash_slosh__synth_a.ogg (the old `wash_slosh`, loops at the machine while someone spins) and wash_slam__synth_a.ogg (the old `wash_slam`, the door's slam as the body goes in and as it bursts out).
+| socks_pour__pyrano_whoosh_pour.ogg | cc0/pyrano_whoosh_pour | pyranostudios | CC0 | https://opengameart.org/content/air-whoosh (core/93: the old `socks_pour` first pick; none chosen by the designer) |

@@ -1329,14 +1329,17 @@ func case_h09_slices_within_budget() -> void:
 
 
 func case_h09_same_seed_sliced() -> void:
+	# The Laundry day's draw (core/93) switches the unused bins' shapes off; it lands before the sliced laying but
+	# after the laying at once, which would move the Socks. This case is about the laying, so neither house draws.
 	var at_once := _house_view("AtOnce", func(house: Node3D) -> void:
+		house.get_node("LaundryDay").free()
 		(house.get_node("Runtime") as LevelRuntime).load_screen = false)
 	var a := LevelRuntime.of(at_once)
 	_check(not a.mess.is_laying() and not a.loading.is_showing(), "with no loading screen the Socks are laid before the level is ready")
 	# As laid, before a tick of the Mess (a Sock with nothing under it falls at the next tick, core/55).
 	var a_designs := a.mess.designs.duplicate()
 	var a_poses := a.mess.poses.duplicate()
-	var sliced := _house_view("Sliced", func(_house: Node3D) -> void: pass)
+	var sliced := _house_view("Sliced", func(house: Node3D) -> void: house.get_node("LaundryDay").free())
 	var b := LevelRuntime.of(sliced)
 	# Its screen's slices (8 ms, more frames than its own 14), taken here so the records are read the moment the last is laid.
 	b.loading.set_process(false)
@@ -1669,11 +1672,13 @@ func case_real_path_new_game_from_title() -> void:
 	var first := -1
 	var mate := -1
 	var spots: Array[Vector3] = []
+	# A Sock the crosshair can rest on from a standing place is reachable (`_spot_aiming`); a roof over it (a shelf, a
+	# table) is no matter, so a layout moved by another solid in the room (the Laundry bins, core/93) still has a Pair.
 	for sock in mess.count():
-		if mess.state_of(sock) != Mess.State.LYING or not _open_sock(mess, sock):
+		if mess.state_of(sock) != Mess.State.LYING:
 			continue
 		for o in mess.count():
-			if o != sock and mess.designs[o] == mess.designs[sock] and mess.state_of(o) == Mess.State.LYING and _open_sock(mess, o):
+			if o != sock and mess.designs[o] == mess.designs[sock] and mess.state_of(o) == Mess.State.LYING:
 				var s1 := _spot_aiming(mess, sock, FLOORS[0])
 				var s2 := _spot_aiming(mess, o, FLOORS[0])
 				if s1 != Vector3.INF and s2 != Vector3.INF:

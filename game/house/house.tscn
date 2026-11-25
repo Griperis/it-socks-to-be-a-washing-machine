@@ -87,6 +87,8 @@
 [ext_resource type="Resource" path="res://game/entities/machine_part/part_detergent.tres" id="99_detergent"]
 [ext_resource type="PackedScene" uid="uid://dqcr0t6aah51x" path="res://game/devices/dust_sheet.tscn" id="100_sheet"]
 [ext_resource type="Script" path="res://game/entities/machine_part/machine_part_slot.gd" id="101_slot"]
+[ext_resource type="PackedScene" path="res://game/entities/laundry_bin/laundry_bin.tscn" id="102_bin"]
+[ext_resource type="PackedScene" path="res://game/laundry/laundry_day.tscn" id="103_day"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_part_slot"]
 size = Vector3(0.72, 0.97, 0.72)
@@ -694,6 +696,39 @@ transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 4.625, 3, 5.4)
 
 [node name="FloorLock" parent="FloorLocks/Attic/Padlock" index="0"]
 floor = 3
+
+[node name="LaundryBins" type="Node3D" parent="."]
+metadata/note = "The seven candidate spots of the Laundry bins (core/93, the old layout's laundry_bins; judged by eye). A World uses bins_per_world of them (the Laundry day's draw): the one by the washer always. A new spot is a new instance, no code."
+
+[node name="Laundry" parent="LaundryBins" instance=ExtResource("102_bin")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.5, -3, 4.15)
+
+[node name="LaundryBin" parent="LaundryBins/Laundry" index="3"]
+always = true
+
+[node name="Bathroom" parent="LaundryBins" instance=ExtResource("102_bin")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.45, 3, 0.45)
+
+[node name="Bedroom" parent="LaundryBins" instance=ExtResource("102_bin")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.45, 3, 7.78)
+
+[node name="Kids" parent="LaundryBins" instance=ExtResource("102_bin")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 9.55, 3, 3.73)
+
+[node name="Kitchen" parent="LaundryBins" instance=ExtResource("102_bin")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.45, 0, 1.2)
+
+[node name="Living" parent="LaundryBins" instance=ExtResource("102_bin")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.55, 0, 0.45)
+
+[node name="Loft" parent="LaundryBins" instance=ExtResource("102_bin")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 9.6, 6, 7.8)
+
+[node name="LaundryDay" parent="." instance=ExtResource("103_day")]
+
+[node name="Day" parent="LaundryDay" index="0" node_paths=PackedStringArray("spots", "stages")]
+spots = NodePath("../../LaundryBins")
+stages = NodePath("../../Run/Stages")
 
 [node name="Washer" parent="." unique_id=173957773 instance=ExtResource("92_washer")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.46, -3, 5.21)
