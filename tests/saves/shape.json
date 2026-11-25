@@ -60,6 +60,18 @@
 		},
 		"version": 1
 	},
+	"res://game/run/run_record.gd": {
+		"fields": {
+			"shelved": "Array"
+		},
+		"version": 1
+	},
+	"res://game/run/run_tallies.gd": {
+		"fields": {
+			"rows": "Dictionary"
+		},
+		"version": 1
+	},
 	"res://game/run/stages.gd": {
 		"fields": {
 			"bar": "Array",

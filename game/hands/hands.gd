@@ -298,19 +298,28 @@ func decide(cmd: Command) -> Dictionary:
 				return refuse(why)
 			var stamp := {"grabbed_at": _with(_without(grabbed_at, cmd.by), key_of(cmd.by), clock)}
 			var lead := mate_held(cmd.by, sock)
+			# The run's tallies (core/83): a Sock out of the Mess is picked, and made when it fused a Pair.
+			var tallies := RunTallies.of(self)
+			var loose := 0 if mess.is_pair(sock) else 1
 			if lead >= 0:
 				# R04: the Pair goes to the end of the Hands and is the active item.
 				var held_items := items_of(cmd.by).duplicate()
 				held_items.remove_at(held_items.find(lead))
 				held_items.append(lead)
-				return {"ok": true, "paired": lead, "changes": {
+				var fused := {"ok": true, "paired": lead, "changes": {
 					mess.id: mess.paired_patch(lead, sock),
 					id: _patch(cmd.by, held_items, held_items.size() - 1, stamp)}}
+				if tallies != null:
+					fused["changes"][tallies.id] = tallies.picked_patch(cmd.by, loose, 1)
+				return fused
 			var items := items_of(cmd.by).duplicate()
 			items.append(sock)
-			return {"ok": true, "changes": {
+			var taken := {"ok": true, "changes": {
 				mess.id: mess.held_patch(sock),
 				id: _patch(cmd.by, items, items.size() - 1, stamp)}}
+			if tallies != null:
+				taken["changes"][tallies.id] = tallies.picked_patch(cmd.by, loose, 0)
+			return taken
 		&"cycle":
 			var step: Variant = cmd.args.get("step")
 			if not (step is int) or step == 0:

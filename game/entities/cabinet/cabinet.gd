@@ -461,6 +461,7 @@ func _shelve(leads: PackedInt32Array, aimed: int, by: int, from_hands: bool) -> 
 	var taken := PackedInt32Array()
 	var paid: Array[Dictionary] = []
 	var total := 0
+	var entries := []
 	for lead in leads:
 		var index := next_drawer(aimed, counts)
 		if index < 0:
@@ -472,6 +473,7 @@ func _shelve(leads: PackedInt32Array, aimed: int, by: int, from_hands: bool) -> 
 		taken.append(lead)
 		var coins_for := t.pay_for(int(mess.design_of(lead).rarity))
 		total += coins_for
+		entries.append([mess.designs[lead], coins_for])
 		if paid.is_empty() or int(paid.back()["drawer"]) != index:
 			paid.append({"drawer": index, "coins": 0})
 		paid.back()["coins"] = int(paid.back()["coins"]) + coins_for
@@ -482,6 +484,13 @@ func _shelve(leads: PackedInt32Array, aimed: int, by: int, from_hands: bool) -> 
 	var bank := coins_of()
 	if bank != null and total > 0:
 		changes[bank.id] = bank.paid_patch(by, total)
+	# The run's tallies and record (core/83): the same answer counts them.
+	var tallies := RunTallies.of(self)
+	if tallies != null and not taken.is_empty():
+		changes[tallies.id] = tallies.shelved_patch(by, taken.size(), total if bank != null else 0)
+	var record := RunRecord.of(self)
+	if record != null and not taken.is_empty():
+		changes[record.id] = record.shelved_patch(tallies.key_of(by) if tallies != null else by, entries)
 	for p in paid:
 		var openable := drawer(int(p["drawer"]))
 		if openable != null and not openable.open:

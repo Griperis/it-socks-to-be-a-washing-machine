@@ -171,6 +171,11 @@ func _ready() -> void:
 	_hud.hands_tuning = hands_tuning
 
 
+## Whether a menu holds the player's input now (the Tab overlay stays shut while one does).
+func input_blocked() -> bool:
+	return _input_blocked
+
+
 ## A menu over the game (the pause template tells the group `local_input`): while blocked the
 ## player reads no walk, jump, look, use or Hands input; it still falls and still holds what it holds.
 func set_input_blocked(on: bool) -> void:
