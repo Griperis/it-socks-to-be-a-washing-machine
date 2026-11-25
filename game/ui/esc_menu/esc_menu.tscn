@@ -46,6 +46,14 @@ text = "Menu"
 horizontal_alignment = 1
 
 
+[node name="Options" type="Button" parent="Dim/Center/Panel/Pages/Menu" unique_id=484059]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "Options"
+icon = ExtResource("3_options")
+
 [node name="BackToTitle" type="Button" parent="Dim/Center/Panel/Pages/Menu" unique_id=452383]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 72)
@@ -53,16 +61,6 @@ layout_mode = 2
 theme_type_variation = &"ExitButton"
 text = "Back to title"
 icon = ExtResource("2_exit")
-
-
-[node name="QuitGame" type="Button" parent="Dim/Center/Panel/Pages/Menu" unique_id=460302]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 72)
-layout_mode = 2
-theme_type_variation = &"ExitButton"
-text = "Quit game"
-icon = ExtResource("2_exit")
-
 
 [node name="EndSession" type="Button" parent="Dim/Center/Panel/Pages/Menu" unique_id=468221]
 unique_name_in_owner = true
@@ -73,7 +71,6 @@ theme_type_variation = &"ExitButton"
 text = "End session"
 icon = ExtResource("2_exit")
 
-
 [node name="Leave" type="Button" parent="Dim/Center/Panel/Pages/Menu" unique_id=476140]
 unique_name_in_owner = true
 visible = false
@@ -83,14 +80,13 @@ theme_type_variation = &"ExitButton"
 text = "Leave"
 icon = ExtResource("2_exit")
 
-
-[node name="Options" type="Button" parent="Dim/Center/Panel/Pages/Menu" unique_id=484059]
+[node name="QuitGame" type="Button" parent="Dim/Center/Panel/Pages/Menu" unique_id=460302]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
-theme_type_variation = &"KeycapButton"
-text = "Options"
-icon = ExtResource("3_options")
+theme_type_variation = &"ExitButton"
+text = "Quit game"
+icon = ExtResource("2_exit")
 
 [node name="Ask" type="VBoxContainer" parent="Dim/Center/Panel/Pages" unique_id=499897]
 unique_name_in_owner = true

@@ -38,7 +38,7 @@ var folds := 0
 @onready var _icons: Control = %Icons
 @onready var _label: Label = %Label
 @onready var _track: Panel = %Track
-@onready var _fill: ColorRect = %Fill
+@onready var _fill: Panel = %Fill
 
 var _stages: Stages = null
 var _phase: StageBarPhase = null
@@ -58,7 +58,6 @@ func _ready() -> void:
 		tuning = StageBarTuning.new()
 	offset_top = tuning.top_gap
 	_track.custom_minimum_size = tuning.track_size
-	_fill.color = tuning.fill_colour
 	_fill.position = Vector2(tuning.fill_inset, tuning.fill_inset)
 	_fill.size = Vector2(0.0, tuning.track_size.y - 2.0 * tuning.fill_inset)
 	visible = false

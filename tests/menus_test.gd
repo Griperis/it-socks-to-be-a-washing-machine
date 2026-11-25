@@ -60,6 +60,8 @@ func cases() -> Array[Dictionary]:
 				"title": "E02: a Host's End session asks \"Everyone will be sent back to the menu.\"; End saves, ends the session and goes to the title; a Guest's Leave goes to the title; a title Guest whose Host ended goes to the title with the reason"},
 		{"name": "e03_options_in_esc", "method": "case_e03", "world": false,
 				"title": "E03: Options opens from the ESC menu; Esc closes it first"},
+		{"name": "e04_order_and_close_key", "method": "case_e04", "world": false,
+				"title": "E04 real path: Esc opens the ESC menu with Options first and Quit game last of the visible keys; the close key, even with the focus on it, is not lit (the hover look is the mouse's)"},
 		{"name": "n01_name_suggestion", "method": "case_n01", "world": false,
 				"title": "N01: the Multiplayer page's one name field: a suggested name fills an empty field, a typed name wins, an untouched suggestion is not kept; a name is cut at 16, empty is Player"},
 		{"name": "x01_close_key_title", "method": "case_x01", "world": false,
@@ -408,6 +410,26 @@ func case_e01() -> void:
 	if menu.is_open():
 		await _key(&"ui_cancel")
 	_check(not menu.is_open() and runtime.player.get("_input_blocked") == false, "Esc closes it and gives the input back")
+
+
+func case_e04() -> void:
+	var level := await _level(Worlds.pick_solo(), [])
+	var menu := LevelRuntime.of(level).esc_menu
+	await _key(&"ui_cancel")
+	_check(menu.is_open(), "Esc opens the ESC menu")
+	var keys: Array[Button] = []
+	for c in menu.get_node("%Menu").get_children():
+		if c is Button and (c as Button).visible:
+			keys.append(c)
+	_check(keys.size() == 3 and keys[0].name == &"Options" and keys[-1].name == &"QuitGame", "Options first, Quit game last (%s)" % [keys.map(func(b: Button) -> String: return b.name)])
+	var close := (menu.get_node("%Back") as CloseButton).key()
+	PadFocus.pad_used = false  # the test's action event stands for the Esc key, which a real keyboard does not count as a pad press
+	close.grab_focus()
+	await get_tree().process_frame
+	_check(close.has_focus() and not PadFocus.is_lit(close), "the close key has the focus without the selection light")
+	_check(close.get_theme_color(&"icon_focus_color") == close.get_theme_color(&"icon_normal_color"), "and its icon is the unpressed colour, not the orange")
+	_check(close.get_theme_color(&"icon_hover_color") != close.get_theme_color(&"icon_normal_color"), "the mouse's hover look is still the orange")
+	await _key(&"ui_cancel")
 
 
 func case_e02() -> void:

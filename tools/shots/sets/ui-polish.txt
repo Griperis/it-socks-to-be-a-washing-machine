@@ -1,0 +1,9 @@
+# core/115: subtitle rows, the Esc menu and its close key, a title page, the Stage bar's fill at 5%, 50% and 100%.
+sub-short  --scene=res://tools/shot_ui_nodes.tscn --size=1920x1080 --do='10:call:subtitles_short' --shots=30
+sub-two-rows  --scene=res://tools/shot_ui_nodes.tscn --size=1920x1080 --do='10:call:subtitles_two_rows' --shots=30
+sub-long  --scene=res://tools/shot_ui_nodes.tscn --size=1920x1080 --do='10:call:subtitles_long' --shots=30
+esc-menu  --scene=res://game/house/house.tscn --size=1920x1080 --do='1:wait:Runtime/LoadingScreen.is_lifted,1500;60:menu:esc' --shots=90
+title  --scene=res://game/ui/title/title.tscn --size=1920x1080 --shots=30
+bar-05  --scene=res://tools/shot_ui_nodes.tscn --size=1280x720 --do='10:call:fill_05' --shots=30
+bar-50  --scene=res://tools/shot_ui_nodes.tscn --size=1280x720 --do='10:call:fill_50' --shots=30
+bar-100  --scene=res://tools/shot_ui_nodes.tscn --size=1280x720 --do='10:call:fill_100' --shots=30
