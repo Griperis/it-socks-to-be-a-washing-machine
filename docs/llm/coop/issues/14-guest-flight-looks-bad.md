@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-human
+status: in-progress
 kind: bug
 area: coop
 feature: flight
@@ -33,15 +33,11 @@ throw ghost) and coop/13 (a Guest's throw, drop and heap differ) worked on this 
 - The co-op flight and throw suites pass, nothing flaky. The network cost (kit/tools/net_shot.sh or coop_cost.sh)
   is no worse, or the change is named.
 
+## Answers
+- A Teammate's Throw on the other machine is drawn from the real launch point: the Sock pops from the avatar's belly
+  to head height at release; no easing rise out of the avatar's hand (option C). (Q2685, 2026-11-25)
+
 ## Open follow-ups
-- [blocking] For the designer (look): a Teammate's Throw is still drawn rising out of their avatar's hand. Since
-  coop/13 every Throw leaves the thrower's first-person hand, about 1.4 m up; their avatar holds the Sock at about
-  0.75 m, so on the other machine the Sock is drawn from the avatar's hand easing up onto the real arc: it rises
-  0.4 m in the first 0.2 s where the real Throw never rises (`builds/review-coop-14/chart_throw.png`). This is most
-  likely the "looks bad". Options: (A) keep it (the ease's shape is now a toss, below); (B) the avatar lifts the held
-  Sock to the eye-line throw point while charging (a wind-up), so the gap at release is small; (C) draw it from the
-  real launch point (a pop from the belly to head height at release); (D) a longer `hand_over_time` (0.2 s today,
-  Q2481's number): the rise is the same height but slower.
 - [later] For the designer (look): the ease of a Teammate's Throw changed shape from smoothstep (it left the hand flat,
   then surged up mid-ease, 2 cm a frame of extra change) to `(1 - u)^2` (it leaves the hand moving up and eases
   onto the arc, 0.8 cm a frame). One line in `Mess._ease_leads` to put back if the old one looked better.

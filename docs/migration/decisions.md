@@ -1,4 +1,4 @@
-Next free Q number: Q2685 (update this line whenever a round of questions is asked)
+Next free Q number: Q2687 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -633,3 +633,8 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   a commit runs no tests, the batch's whole run is the gate), one record per ticket, the contradicting rules
   fixed, unused tools removed, what every agent reads shrunk, the damaged-commit machinery retired after a clean
   week. Not now: splitting shared append files, grouping small suites into shared processes.
+- Q2685: a Teammate's Throw seen on the other machine is drawn from the real launch point: the Sock pops from the
+  avatar's belly to head height at release, no easing rise out of the avatar's hand (designer, 2026-11-25; coop/14
+  option C).
+- Q2686: `kit/tools/session_stats.py` is deleted; the run report and the research scripts cover its job (designer,
+  2026-11-25; Q2684 item 5).
