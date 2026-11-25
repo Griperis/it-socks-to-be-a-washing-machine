@@ -1263,3 +1263,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/90, the Laundry bin entity: graybox heap scaled by fill, the tip, `handable` on (the old way), hooks for core/86, core/88, core/93; merged (main b17c17c) |
 | Cost | about 153k subagent tokens |
 | Surprises | none |
+
+---
+
+| Ticket | core/77, a Stage's Socks: only open floors hold Socks, even shares after each Fix, a high-spot pass with two players; Stage 1 laid behind the loading screen; held records until the First wash; merged (main 8f19925) |
+| Cost | about 279k subagent tokens |
+| Surprises | the high-spot pass never placed a Sock in a station (no top over 1.7 m), left to core/91's house case |

@@ -37,3 +37,6 @@ addons/**/*.png binary
 # appended at one place. The driver is kit/tools/input_actions.py, registered in this clone's git
 # config by `python3 kit/tools/setup.py --init` (or --plugin); without it git merges the file as text.
 project.godot merge=godot-project
+
+# Agents append rows to the batch review sheet side by side; keep every row on a merge.
+docs/migration/batch-a-review.md merge=union
