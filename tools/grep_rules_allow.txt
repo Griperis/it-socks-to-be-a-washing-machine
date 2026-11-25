@@ -21,3 +21,6 @@ exempt json_parse game/net/player_profile.gd
 # core/84: the voice bake (a command, headless, not the game) reads the designer's own lines JSON files, the
 # transcription step's output and its string table: plain strings and numbers, read with JSON.parse_string, which builds no object.
 exempt json_parse tools/voice_baker.gd
+# assets/14: the washer glb's import script (the editor's import, not the game) reads the game's own
+# looks_contract.json for its players: plain names, read with JSON.parse_string, which builds no object.
+exempt json_parse game/entities/washer/washer_model_import.gd

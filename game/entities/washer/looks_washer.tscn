@@ -1,0 +1,105 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/appliance/washing_machine.glb" id="1_bkyda"]
+[ext_resource type="Script" path="res://game/entities/washer/washer_looks.gd" id="2_vyr34"]
+[ext_resource type="Resource" path="res://game/entities/washer/washer_tuning.tres" id="3_eo7fo"]
+[ext_resource type="Resource" path="res://game/voice/speakers/washer.tres" id="4_imwwl"]
+[ext_resource type="Script" path="res://game/outline/outline.gd" id="5_i1b01"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glow"]
+resource_name = "drum_glow"
+cull_mode = 2
+albedo_color = Color(0, 0, 0, 1)
+emission_enabled = true
+emission = Color(0.9, 0.75, 0.5, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_top"]
+size = Vector3(0.7, 0.1, 0.7)
+
+[node name="Looks" unique_id=1477019531 node_paths=PackedStringArray("rig", "loops", "spinner", "lining", "drum_light", "pile_node", "bubbles_node", "player") instance=ExtResource("1_bkyda")]
+script = ExtResource("2_vyr34")
+tuning = ExtResource("3_eo7fo")
+rig = NodePath("face_rig")
+loops = NodePath("Loops")
+spinner = NodePath("Spin")
+lining = NodePath("face_rig/Lining")
+drum_light = NodePath("face_rig/On_drum_spin/DrumLight")
+pile_node = NodePath("face_rig/laundry_tumble/Pile")
+bubbles_node = NodePath("Bubbles")
+speaker = ExtResource("4_imwwl")
+player = NodePath("AnimationPlayer")
+metadata/note = "The washing machine's model (assets/14): assets/appliance/washing_machine.glb, shaped by washer_model_import.gd, to looks_contract.json."
+
+[node name="Pile" parent="face_rig/laundry_tumble" parent_id_path=PackedInt32Array(399769826) index="0" unique_id=1179806787]
+visible = false
+layers = 524289
+
+[node name="drum" parent="face_rig" parent_id_path=PackedInt32Array(1883161555) index="7" unique_id=1536406379]
+layers = 524289
+
+[node name="Lining" parent="face_rig" parent_id_path=PackedInt32Array(1883161555) index="8" unique_id=1806275406]
+layers = 524289
+material_override = SubResource("StandardMaterial3D_glow")
+
+[node name="On_bob" type="BoneAttachment3D" parent="face_rig" parent_id_path=PackedInt32Array(1883161555) index="9" unique_id=694454553]
+bone_name = "bob"
+
+[node name="RidingBody" type="AnimatableBody3D" parent="face_rig/On_bob" index="0" unique_id=1328128285]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="face_rig/On_bob/RidingBody" index="0" unique_id=2006465763]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_top")
+
+[node name="On_drum_spin" type="BoneAttachment3D" parent="face_rig" parent_id_path=PackedInt32Array(1883161555) index="10" unique_id=1102935582]
+bone_name = "drum_spin"
+
+[node name="DrumLight" type="OmniLight3D" parent="face_rig/On_drum_spin" index="0" unique_id=2058851075]
+visible = false
+light_cull_mask = 524288
+omni_range = 0.45
+
+[node name="AnimationPlayer" parent="." index="1" unique_id=993429473]
+callback_mode_process = 0
+
+[node name="Loops" parent="." index="2" unique_id=85393208]
+callback_mode_process = 0
+
+[node name="Spin" parent="." index="3" unique_id=1763214953]
+callback_mode_process = 0
+
+[node name="Damage" type="Node3D" parent="." index="4" unique_id=713070771]
+
+[node name="SparksBack" type="GPUParticles3D" parent="Damage" index="0" unique_id=294197012]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -0.34)
+emitting = false
+
+[node name="SparksCable" type="GPUParticles3D" parent="Damage" index="1" unique_id=1778197726]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.2, 0)
+emitting = false
+
+[node name="Smoke" type="GPUParticles3D" parent="Damage" index="2" unique_id=706690284]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, -0.3)
+emitting = false
+
+[node name="Flash" type="OmniLight3D" parent="Damage" index="3" unique_id=1841871972]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -0.4)
+visible = false
+
+[node name="Buzz" type="AudioStreamPlayer3D" parent="Damage" index="4" unique_id=1808175363]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Rumble" type="AudioStreamPlayer3D" parent="Damage" index="5" unique_id=1884502626]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Bubbles" type="GPUParticles3D" parent="." index="5" unique_id=92682186]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0.36)
+emitting = false
+
+[node name="Outline" type="Node3D" parent="." index="6" unique_id=1804641464]
+visible = false
+script = ExtResource("5_i1b01")
+style = null
+meshes = Array[NodePath]([])
+shown = false

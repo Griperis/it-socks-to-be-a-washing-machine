@@ -12,6 +12,7 @@ collision, its Sock spots and its settings live in the Godot scenes and are neve
 | Cabinets (17) | `cabinet/make_cabinets.py` (+ `cabinet_art.py`, the front art; `appliance_family.py`, shared helpers) | `assets_src/blender/cabinet/cabinet_<collection>.blend` | `assets/cabinet/<collection>.glb` |
 | Furniture (67) | `furniture/fkit.py` (+ `kit.py`, the look; the group files `basement.py`, `ground.py`, `first.py`, `attic.py`, `plants.py`, `grotto.py`, one function per piece) | `assets_src/blender/furniture/<piece>.blend` | `assets/furniture/<piece>.glb` |
 | Avatar (2) | `avatar/make_avatar.py` (the old script unchanged but its header; its own export keeps the glTF extras and the Crouch key, no root object, facing -z as the old game; not in `blender_assets.json`, coop/04) | `assets_src/blender/avatar/avatar.blend` | `assets/avatar/avatar.glb`, `assets/avatar/feet.glb` |
+| Washing machine (1) | `appliance/make_washing_machine_face.py` (the old face script, applied to the model in its `.blend`; its own export: no root object, the eight actions, assets/14) | `assets_src/blender/appliance/washing_machine.blend` | `assets/appliance/washing_machine.glb` |
 | House shell | `house/make_house.py`, `house/make_flat.py`: kept to read, not run (see `house/README.md`) | none | none |
 
 `assets/blender_assets.json` lists every source (`source`, relative to `assets_src/blender/`) and its glb.
@@ -22,7 +23,7 @@ Blender is the kit's pinned one (`kit/tools/blender.sh`, 5.3). From the reposito
 
     blender -b -P assets_src/generate/build.py -- <family> [--only a,b] [--out <dir>] [--save] [--no-export]
 
-- `<family>`: `sock`, `cabinet`, `furniture` or `avatar`. `--only` takes shapes and balls (`crew`, `ball_crew_plain`),
+- `<family>`: `sock`, `cabinet`, `furniture`, `avatar` or `appliance`. `--only` takes shapes and balls (`crew`, `ball_crew_plain`),
   Collections (`food`) or pieces (`sofa`).
 - Without `--out` the glbs are written **over the game's own files**. Write to a scratch folder first and compare.
 - `--save` also rewrites the family's `.blend` sources from the script.

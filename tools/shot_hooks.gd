@@ -149,6 +149,15 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.reset_physics_interpolation()
 			cam.make_current()
 			return true
+		"washer_lineup":
+			# assets/14: arg "<pose>,<old|port>": the washing machine alone on a plain floor far from the
+			# stations, from its front three-quarter, its laundry shown. <pose> is neutral, angry, calming,
+			# entitled, surprised or mouth (the door open, neutral). "port" is looks_washer.tscn, posed by
+			# its own AnimationPlayer and lit with washer_acting.tres's glow; "old" is the old game's glb
+			# (reference/it-socks/assets/washing_machine/washing_machine.glb, unchanged), posed by its own
+			# actions and lit with its MOOD_GLOW and a light as its washer_face.gd made. Shoot after 1.5 s.
+			_washer_lineup(world, arg)
+			return true
 		"materials":
 			# assets/04 F01: a camera on the Materials station's board. arg "overview" looks at the
 			# whole board; arg <row> ("oak", "singles_1") hides every other row and stands before that
@@ -1158,3 +1167,108 @@ static func _face_point(player: Player, feet: Vector3, target: Vector3) -> void:
 	var up := target - (feet + Vector3.UP * head.position.y)
 	head.rotation.x = atan2(up.y, Vector2(up.x, up.z).length())
 	player.reset_physics_interpolation()
+
+
+## assets/14: the old game's drum glow per pose (make_washing_machine_face.py MOOD_GLOW: linear colour, strength).
+const OLD_WASHER_GLOW := {
+	"angry": [Color(1.0, 0.02, 0.005), 3.0], "calming": [Color(1.0, 0.45, 0.12), 2.0],
+	"entitled": [Color(0.50, 0.06, 1.0), 2.4], "surprised": [Color(0.95, 0.8, 0.55), 1.2],
+	"neutral": [Color(0.9, 0.75, 0.5), 0.6]}
+## The light in the drum's energy per glow strength and its reach (old voice.json light, light_range).
+const OLD_WASHER_LIGHT := [0.6, 0.45]
+const WASHER_LIT_LAYER := 1 << 19
+
+
+## The washer line-up (see "washer_lineup" in act()).
+static func _washer_lineup(world: Node, arg: String) -> void:
+	var q := arg.split(",")
+	var pose := q[0]
+	var mood := pose if pose != "mouth" else "neutral"
+	var stage := Node3D.new()
+	world.add_child(stage)
+	stage.global_position = Vector3(0.0, 0.0, 400.0)
+	var floor := MeshInstance3D.new()
+	var plane := PlaneMesh.new()
+	plane.size = Vector2(12.0, 12.0)
+	var grey := StandardMaterial3D.new()
+	grey.albedo_color = Color(0.55, 0.55, 0.53)
+	plane.material = grey
+	floor.mesh = plane
+	stage.add_child(floor)
+	if q[1] == "old":
+		_old_washer(stage, pose, mood)
+	else:
+		var looks := (load("res://game/entities/washer/looks_washer.tscn") as PackedScene).instantiate() as WasherLooks
+		stage.add_child(looks)
+		looks.pile = 1.0
+		if pose == "mouth":
+			looks.door = 1.0
+		elif mood != "neutral":
+			for m: VoiceMood in (load("res://game/voice/speakers/washer_acting.tres") as VoiceActing).moods:
+				if String(m.id) == mood:
+					looks.glow_colour = m.glow_colour
+					looks.glow_energy = m.glow_energy
+			looks.lit = true
+			# After the Looks' first frames (its door seek plays `mouth` once), the mood's held pose.
+			looks.get_tree().create_timer(0.3).timeout.connect(func() -> void:
+				looks.player.play(StringName(mood))
+				looks.player.seek(0.0, true)
+				looks.player.pause())
+	var cam := Camera3D.new()
+	world.add_child(cam)
+	cam.fov = 35.0
+	cam.global_position = stage.to_global(Vector3(0.75, 1.15, 2.0))
+	cam.look_at(stage.to_global(Vector3(0.0, 0.5, 0.0)))
+	cam.reset_physics_interpolation()
+	cam.make_current()
+
+
+## The old game's washer glb on the stage, posed and lit as its washer_face.gd did.
+static func _old_washer(stage: Node3D, pose: String, mood: String) -> void:
+	var root := OS.get_environment("IT_SOCKS_REFERENCE")
+	if root.is_empty():
+		root = ProjectSettings.globalize_path("res://reference/it-socks")
+	var doc := GLTFDocument.new()
+	var state := GLTFState.new()
+	if doc.append_from_file(root.path_join("assets/washing_machine/washing_machine.glb"), state) != OK:
+		push_warning("washer shot: no old model under %s" % root)
+		return
+	var model := doc.generate_scene(state) as Node3D
+	stage.add_child(model)
+	var glow: Array = OLD_WASHER_GLOW[mood]
+	var mat: StandardMaterial3D = null
+	for n: Node in model.find_children("*", "", true, false):
+		if String(n.name).contains("colonly") and n is Node3D:
+			(n as Node3D).visible = false
+		var mi := n as MeshInstance3D
+		if mi == null or mi.mesh == null:
+			continue
+		if mi.name in [&"drum", &"laundry"]:
+			mi.layers |= WASHER_LIT_LAYER
+		for s in mi.mesh.get_surface_count():
+			var m := mi.get_active_material(s)
+			if m != null and m.resource_name == "drum_glow" and m is StandardMaterial3D:
+				if mat == null:
+					mat = (m as StandardMaterial3D).duplicate() as StandardMaterial3D
+					mat.emission_enabled = true
+					mat.emission = glow[0]
+					mat.emission_energy_multiplier = glow[1]
+				mi.set_surface_override_material(s, mat)
+	var rig := model.find_children("*", "Skeleton3D", true, false)[0] as Skeleton3D
+	var player := model.find_children("*", "AnimationPlayer", true, false)[0] as AnimationPlayer
+	if pose == "neutral":
+		rig.reset_bone_poses()
+	else:
+		player.play(StringName(pose))
+		player.seek(player.current_animation_length if pose == "mouth" else 0.0, true)
+		player.pause()
+	if mood != "neutral":
+		var at := BoneAttachment3D.new()
+		at.bone_name = "drum_spin"
+		rig.add_child(at)
+		var light := OmniLight3D.new()
+		light.omni_range = OLD_WASHER_LIGHT[1]
+		light.light_cull_mask = WASHER_LIT_LAYER
+		light.light_color = glow[0]
+		light.light_energy = float(OLD_WASHER_LIGHT[0]) * float(glow[1])
+		at.add_child(light)

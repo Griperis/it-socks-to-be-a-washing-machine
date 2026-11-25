@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://game/entities/washer/washer.gd" id="1_washer"]
 [ext_resource type="Script" path="res://game/entities/washer/washer_senses.gd" id="2_senses"]
 [ext_resource type="Script" path="res://game/entities/washer/washer_shot.gd" id="3_shot"]
-[ext_resource type="PackedScene" path="res://game/entities/washer/looks_graybox.tscn" id="4_looks"]
+[ext_resource type="PackedScene" path="res://game/entities/washer/looks_washer.tscn" id="4_looks"]
 [ext_resource type="Resource" path="res://game/entities/washer/washer_tuning.tres" id="5_tuning"]
 [ext_resource type="Resource" path="res://game/voice/speakers/washer.tres" id="6_speaker"]
 

@@ -642,6 +642,12 @@
       "colliders": 0,
       "source": "furniture/workbench",
       "glb": "assets/furniture/workbench.glb"
+    },
+    "washing_machine": {
+      "class": "appliance",
+      "colliders": 1,
+      "source": "appliance/washing_machine",
+      "glb": "assets/appliance/washing_machine.glb"
     }
   }
 }

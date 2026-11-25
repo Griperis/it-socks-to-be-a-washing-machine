@@ -3,7 +3,7 @@
 	"paths": ["Damage/SparksBack", "Damage/SparksCable", "Damage/Smoke", "Damage/Flash", "Damage/Buzz", "Damage/Rumble"],
 	"named": ["DrumLight", "RidingBody", "Lining", "Pile"],
 	"bones": ["lean", "bob", "door_hinge", "brow_left_pivot", "brow_right_pivot", "drum_spin", "laundry_tumble"],
-	"parents": {"bob": "lean", "door_hinge": "lean", "brow_left_pivot": "lean", "brow_right_pivot": "lean", "drum_spin": "lean", "laundry_tumble": "bob"},
+	"parents": {"bob": "lean", "door_hinge": "bob", "brow_left_pivot": "bob", "brow_right_pivot": "bob", "drum_spin": "bob", "laundry_tumble": "bob"},
 	"animations": ["angry", "calming", "entitled", "surprised", "mouth", "talk", "rumble", "spin"],
 	"players": {"AnimationPlayer": ["angry", "calming", "entitled", "surprised", "mouth"], "Loops": ["talk", "rumble"], "Spin": ["spin"]},
 	"properties": ["wiggle", "angry", "glow_colour", "glow_energy", "door", "spin", "pile", "repair", "damage", "lit"],

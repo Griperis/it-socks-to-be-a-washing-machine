@@ -1,0 +1,15 @@
+# assets/14: the washing machine, the old game's model (old) beside the port's Looks (port), each pose: neutral, the four
+# moods (their held pose and drum glow, the drum light on) and the mouth open; alone on a plain floor, front three-quarter
+# (the shot hook washer_lineup). Old needs reference/it-socks (or IT_SOCKS_REFERENCE). Strip: --pairs, old | port.
+neutral-old  --size=720x720 --do='30:washer_lineup:neutral,old' --shots=120
+neutral-port  --size=720x720 --do='30:washer_lineup:neutral,port' --shots=120
+angry-old  --size=720x720 --do='30:washer_lineup:angry,old' --shots=120
+angry-port  --size=720x720 --do='30:washer_lineup:angry,port' --shots=120
+calming-old  --size=720x720 --do='30:washer_lineup:calming,old' --shots=120
+calming-port  --size=720x720 --do='30:washer_lineup:calming,port' --shots=120
+entitled-old  --size=720x720 --do='30:washer_lineup:entitled,old' --shots=120
+entitled-port  --size=720x720 --do='30:washer_lineup:entitled,port' --shots=120
+surprised-old  --size=720x720 --do='30:washer_lineup:surprised,old' --shots=120
+surprised-port  --size=720x720 --do='30:washer_lineup:surprised,port' --shots=120
+mouth-old  --size=720x720 --do='30:washer_lineup:mouth,old' --shots=120
+mouth-port  --size=720x720 --do='30:washer_lineup:mouth,port' --shots=120
