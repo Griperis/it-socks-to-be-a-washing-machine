@@ -94,6 +94,10 @@ func _real_path_round(lag_ms: int) -> void:
 	await _pick(host, sock)
 	await _paced_ticks(20)
 	var target := _avatar(host, g)
+	# The Host's hit test stands the Guest at its newest pose (Knockdowns.place_of), and the Host aims at
+	# the avatar it draws: wait until both are where the Guest stands (core/104: a late pose).
+	await _wait(func() -> bool: return _flat(hk.place_of(g), GUEST_AT) < 0.05 and _flat(target.global_position, GUEST_AT) < 0.05,
+			"the Host to have the Guest where it stands, judged and drawn", FPS * 3)
 	await _aim(host, HOST_AT, target.global_position + Vector3.UP * 1.25)
 	var yaw := gp.global_rotation.y
 	var heard_from := Engine.get_process_frames()
@@ -158,8 +162,8 @@ func case_drag_and_struggle() -> void:
 	await _paced_ticks(20)
 	_knock(host, Parts.HOST, g)
 	await _wait(func() -> bool: return gk.is_down(Parts.HOST) and hp.knocked, "the Host to lie down", FPS * 2)
-	await _paced_ticks(70)
 	var body := _avatar(guest, Parts.HOST)
+	await _lain(body.ragdoll)
 	var mid := body.ragdoll.point_at(0.8)
 	await _aim(guest, Vector3(mid.x + 1.4, 0.0, mid.z), mid)
 	await _wait(func() -> bool: return gp.aimed_body == Parts.HOST, "H92: the Guest aims at the lying Host", FPS)
@@ -171,7 +175,12 @@ func case_drag_and_struggle() -> void:
 	Input.action_press(&"move_back")
 	await _paced_ticks(40)
 	Input.action_release(&"move_back")
-	var moved := _avatar(host, Parts.HOST).ragdoll.feet().distance_to(feet_from)
+	# The Host pulls toward where it last heard the Guest stands (Knockdowns.hold_of): wait until that is
+	# where it stopped (core/104: a late pose), then for the feet.
+	await _host_has(gp, gp.global_position)
+	var host_body := _avatar(host, Parts.HOST).ragdoll
+	await _wait(func() -> bool: return host_body.feet().distance_to(feet_from) > 0.4, "H99: the Host's feet follow the Guest", FPS * 2)
+	var moved := host_body.feet().distance_to(feet_from)
 	_check(moved > 0.4, "H99: the Host's feet are pulled after the Guest (%.2f m)" % moved)
 	for i in 10:
 		Input.action_press(&"jump")
@@ -186,7 +195,7 @@ func case_drag_and_struggle() -> void:
 	# H104: a drag ends at the rise.
 	_knock(host, Parts.HOST, g)
 	await _wait(func() -> bool: return gk.is_down(Parts.HOST), "the Host down again", FPS * 2)
-	await _paced_ticks(70)
+	await _lain(body.ragdoll)
 	mid = body.ragdoll.point_at(0.8)
 	await _aim(guest, Vector3(mid.x + 1.4, 0.0, mid.z), mid)
 	await _wait(func() -> bool: return gp.aimed_body == Parts.HOST, "the Guest aims again", FPS)
@@ -383,20 +392,30 @@ func _on_guest_applied(ev: Dictionary) -> void:
 
 
 ## The Host knocks itself down (as by the Guest) and the Guest, standing at its feet, grabs it as its
-## held button does.
+## held button does. The Guest walks up as the Host falls, so a late pose (core/104) is on its way while
+## the body falls, not after it: the drag must start, hold and end before the rise.
 func _down_and_grabbed(host: Node3D, guest: Node3D) -> void:
 	var gp := _player(guest)
 	var g := gp.player_id()
+	var hk := _kd(host)
+	var stands := _player(host).global_position
+	_place(guest, stands + Vector3(0.8, 0.0, 0.0), stands)
 	_knock(host, Parts.HOST, g)
 	await _wait(func() -> bool: return _kd(guest).is_down(Parts.HOST) and _player(host).knocked, "the Host to lie down", FPS * 2)
-	await _paced_ticks(70)
 	var rag := _avatar(guest, Parts.HOST).ragdoll
+	await _lain(rag)
 	_place(guest, rag.feet() + Vector3(0.8, 0.0, 0.0), rag.feet())
-	await _paced_ticks(int(LAG_MS * 3 * FPS / 1000.0) + 4)
+	# The Host grants the grab when, where it last heard the Guest stands (Parts.near_point), the body's
+	# feet or middle are within reach (Knockdowns._decide_grab): wait for that.
+	var reach := hk.tuning.grab_reach + Knockdowns.REACH_SLACK
+	var host_rag := hk.ragdoll_of(Parts.HOST)
+	var host_parts := _parts(host)
+	await _wait(func() -> bool: return host_parts.near_point(g, host_rag.feet(), reach) or host_parts.near_point(g, host_rag.frames()[2].origin, reach),
+			"the Host to have the Guest within reach of the body", FPS * 2)
 	gp.capture_mouse()
 	gp.set("_grab_held", true)
 	_parts(guest).ask(Command.new(Knockdowns.GRAB, g, _kd(guest).id, {"target": Parts.HOST}))
-	await _wait(func() -> bool: return _kd(host).dragger_of(Parts.HOST) == g and _kd(guest).dragger_of(Parts.HOST) == g,
+	await _wait(func() -> bool: return hk.dragger_of(Parts.HOST) == g and _kd(guest).dragger_of(Parts.HOST) == g,
 			"the Guest drags the Host", FPS * 2)
 
 
@@ -501,12 +520,23 @@ func _aim(zoo: Node3D, feet: Vector3, target: Vector3) -> void:
 	await _paced_ticks(2)
 	# The Host judges reach by where it last heard this player stands (LevelNet.where()): a click sent
 	# before the pose got there is refused as too far (core/101). Wait until the Host has it here.
+	await _host_has(player, feet)
+
+
+## Waits until the Host's LevelNet.where() has `player` within 0.1 m of `feet` across the floor.
+func _host_has(player: Player, feet: Vector3) -> void:
 	var host_net := LevelRuntime.of(_branches[0].get_node("View/Zoo")).net
 	var me := player.player_id()
-	await _wait(func() -> bool:
-		var at: Variant = host_net.where(me)
-		return at is Vector3 and Vector2((at as Vector3).x - feet.x, (at as Vector3).z - feet.z).length() < 0.1,
-			"the Host to have the player where it stands", FPS * 2)
+	await _wait(func() -> bool: return _flat(host_net.where(me), feet) < 0.1, "the Host to have the player where it stands", FPS * 2)
+
+
+## The distance across the floor from `at` (a Vector3 or a Transform3D; else INF) to `to`.
+func _flat(at: Variant, to: Vector3) -> float:
+	if at is Transform3D:
+		at = (at as Transform3D).origin
+	if not (at is Vector3):
+		return INF
+	return Vector2((at as Vector3).x - to.x, (at as Vector3).z - to.z).length()
 
 
 func _place(zoo: Node3D, feet: Vector3, target: Vector3) -> void:
@@ -519,6 +549,17 @@ func _place(zoo: Node3D, feet: Vector3, target: Vector3) -> void:
 	var up := target - (feet + Vector3.UP * head.position.y)
 	head.rotation.x = clampf(atan2(up.y, Vector2(up.x, up.z).length()), -1.5, 1.5)
 	player.reset_physics_interpolation()
+
+
+## Waits until the knocked body `rag` (as the Guest sees it) has fallen and lies still, instead of a fixed
+## wait: the grab must come before the rise, and a late pose (core/104) eats into that time.
+func _lain(rag: Ragdoll) -> void:
+	var was: Array[Vector3] = [Vector3.INF]
+	await _wait(func() -> bool:
+		var feet := rag.feet()
+		var still := feet.distance_to(was[0]) < 0.01
+		was[0] = feet
+		return _topple(rag) > 60.0 and still, "the body to lie still", FPS * 3)
 
 
 func _topple(rag: Ragdoll) -> float:
