@@ -239,6 +239,38 @@ var final_screen: FinalScreen:
 	get: return get_node(^"FinalScreen") as FinalScreen
 
 
+## Where the local player is put back: the washer's `Spawns` marker of its place in the Roster, else
+## the level's own `Spawn`. Null where the level has neither.
+func respawn_point() -> Variant:
+	var washer := Washer.of_level(self)
+	var thing := washer.get_parent() if washer != null else null
+	var spawns := thing.get_node_or_null(^"Spawns") if thing != null else null
+	if spawns != null:
+		var markers: Array[Node3D] = []
+		for child in spawns.get_children():
+			if child is Node3D:
+				markers.append(child as Node3D)
+		if not markers.is_empty():
+			var peers := roster.peers() if roster != null else PackedInt32Array()
+			var place := maxi(peers.find(player.player_id()), 0)
+			return markers[place % markers.size()].global_transform
+	var start := _marker(spawn, SPAWN)
+	return start.global_transform if start != null and start.is_inside_tree() else null
+
+
+## The lowest floor's height and the centre the level is measured from, in the world: the Mess's
+## volume when it has one, else the spawn.
+func map_frame() -> Dictionary:
+	if mess_bounds.has_volume():
+		var box := global_transform * mess_bounds
+		return {"floor": box.position.y, "centre": box.get_center()}
+	var at := global_position
+	var start := _marker(spawn, SPAWN)
+	if start != null and start.is_inside_tree():
+		at = start.global_position
+	return {"floor": at.y, "centre": at}
+
+
 ## The marker at `path` (from this node), else the level's child named `fallback`, or null.
 func _marker(path: NodePath, fallback: NodePath) -> Marker3D:
 	if not path.is_empty():

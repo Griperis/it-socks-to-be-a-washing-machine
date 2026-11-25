@@ -20,3 +20,7 @@ extends Resource
 @export_range(0.0, 0.5, 0.05, "suffix:m") var eye_below_top := 0.1 # placeholder: the designer's number (today's value from the old game)
 @export_range(0.1, 1.0, 0.05, "suffix:m") var radius := 0.35 # placeholder: the designer's number (today's value from the old game)
 @export_range(30.0, 120.0, 1.0, "suffix:°") var fov := 75.0 # placeholder: the designer's number (today's value from the old game)
+## How far below the level's lowest floor the body may be before it is put back (FallRescue).
+@export_range(1.0, 500.0, 1.0, "suffix:m") var fall_depth := 50.0 # placeholder: the designer's number (the ticket's guess)
+## How far from the level's centre, on any axis, the body may be before it is put back.
+@export_range(10.0, 10000.0, 10.0, "suffix:m") var fall_reach := 1000.0 # placeholder: the designer's number (the ticket's guess)

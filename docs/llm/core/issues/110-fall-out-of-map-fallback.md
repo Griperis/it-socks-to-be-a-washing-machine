@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: in-progress
 kind: feature
 area: core
 feature: player
@@ -39,5 +39,15 @@ Today nothing catches a player who falls through the floor or is flung far away.
 - The full suite passes, nothing flaky.
 
 ## Open follow-ups
+- [later] Co-op case not written: each machine runs the same Player check on its own body with its Roster place (`LevelRuntime.respawn_point`), but no two-house case proves a Guest's catch is seen by the Host.
+- [later] A knocked-down player is not caught while down (their body follows the ragdoll and only the Host can end a knockdown); they are caught the moment they rise. A fall during a knockdown needs a Knockdowns command to end it.
+- [later] A real NaN body makes the engine log render errors for a tick, so the case judges NaN/inf as values (`FallRescue`), and the real path uses y = -500, 5000 m away and -1e9.
+- [later] Things (Socks, Parts, held objects) falling out: the old game could not be read (reference/it-socks is not checked out in the worktree); the Mess already returns a Sock that leaves `mess_bounds` to the return spot (mess.gd `bounds`).
+- [later] The real-path case only checks the spawn within 0.5 m horizontally; the washer's turn on main was not in this branch, so rebase and recheck the player stands after the catch.
 
 ## Built log
+
+### 2026-11-25
+- Changed: a body out of the map (below the Mess volume's floor by 50 m, over 1000 m from its centre on any axis, or not finite) is stood at the washer's Spawns by its Roster place, else the level's Spawn, still and standing; logged as a warning with where it was. The cutscene's respawn now shares that spawn choice.
+- Files: game/player/fall_rescue.gd, game/player/player.gd, game/player/move_tuning.gd (fall_depth, fall_reach), game/level/level_runtime.gd (respawn_point, map_frame), game/cutscene/cutscene_player.gd, tests/fall_rescue_test.gd, docs/migration/batch-a-review.md row.
+- Verified: fall_rescue 22 checks pass; touched run otherwise green.
