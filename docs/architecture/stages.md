@@ -152,8 +152,9 @@ export). It waits for the Fix scene only when the Stage names a `fix_cutscene`, 
 Designs left (Simple's sixth: 5); its full height is the Collection's Designs over the Pairs per Drawer, rounded up.
 The Cabinet scene holds the most Drawers any Collection needs (Simple: 6) and shows `rows` of them (a locked one
 `start_rows`), the rest hidden and out of reach (collision off, Openable locked). Each Collection's Looks gets
-Segment1..6 (asset ticket assets/11: the old models were a base, a segment, a top and a drawer stacked in code; the port's
-Looks contract today is Segment1..3).
+Segment1..6 (assets/11: the old models were a base, a segment, a top and a drawer stacked in code; Segment i stands at
+the old `0.10 + (i - 1) * 0.30`). The Looks stands at 3 Rows as authored (Segment4..6 hidden, Top at 1.0); the Cabinet
+shows Segment1..`rows` and puts Top at `0.10 + rows * 0.30` (core/81).
 
 The drop: when `rows` grows in an answer (not on a load or a join), each new Drawer module falls in on top with the
 old timings, a `drawer_thunk` at its seam and `dust_puff.tscn` (a one-shot particles scene) bursting from it: a Tween

@@ -1,7 +1,7 @@
 ## The 17 Cabinets (assets/02): each Collection's Cabinet wears the old game's model as a Looks of
 ## the one Cabinet entity and its drawers (K01), the Cabinet station lines up every Collection's
 ## Cabinet, built from the catalogue at load (K02, Q2337), and the drawers' collision and Sock spots
-## are the old models' (K03). The real path: the player shelves a Patterns Pair into the Patterns
+## are the old models' (K03); each Cabinet Looks has six segments stacked as the old code did (assets/11). The real path: the player shelves a Patterns Pair into the Patterns
 ## Cabinet of the line-up and sees its ball in that Cabinet's own drawer.
 extends TestSuite
 
@@ -23,6 +23,13 @@ const FRONT_AT := Vector3(0.0, 0.14, 0.23)
 const SHELL_X := 0.75
 const SHELL_Z := Vector2(-0.25, 0.21)
 const OLD_SLOT_01 := Vector3(-0.585, 0.085, -0.15)
+## The old stacking (old cabinet.gd BASE_H, SEGMENT_H): segment i (1 the bottom) stands at
+## BASE_H + (i - 1) * SEGMENT_H, the top at BASE_H + rows * SEGMENT_H (assets/11).
+const OLD_BASE_H := 0.10
+const OLD_SEGMENT_H := 0.30
+const SEGMENTS := 6
+## The Rows the Cabinet scene stands at today (its three drawers; core/81 shows `rows` of six).
+const STANDING_ROWS := 3
 
 var _level: Node3D = null
 var _station: Node3D = null
@@ -44,6 +51,8 @@ func cases() -> Array[Dictionary]:
 				"title": "K02: the Cabinet station shows every Collection's Cabinet once, each in its own Looks, on its pad and inside its Mess bounds"},
 		{"name": "k02_from_data", "method": "case_k02_from_data", "world": false,
 				"title": "K02 (Q2337): a new Collection in the catalogue gets a Cabinet in the line-up with no other change"},
+		{"name": "k04_six_segments", "method": "case_k04_six_segments", "world": false,
+				"title": "assets/11: every Collection's Cabinet Looks has six segments stacked as the old code stacked them, the same segment mesh, the three the Cabinet stands at shown, the top on them"},
 		{"name": "k03_collision_spots", "method": "case_k03", "world": false,
 				"title": "K03: every Collection's drawer front, shell and 25 slot points are the old models'"},
 	]
@@ -103,6 +112,7 @@ func case_real_path() -> void:
 	_check(cabinet.drawer(0).open, "the drawer slid open")
 	_check(_coins.of_player(1) > 0, "the player is paid (%d)" % _coins.of_player(1))
 	_check(_hands.items_of(1).is_empty(), "the Hands are empty")
+	_check(_stands_at(root.get_node("Looks") as Node3D, STANDING_ROWS), "the Patterns Cabinet still stands at its three segments, the top on them")
 
 
 # --- K01 -----------------------------------------------------------------------------------------
@@ -164,6 +174,38 @@ func case_k01_dress() -> void:
 	_check(root.get_node("Drawer1/Looks").scene_file_path == Cabinet.looks_path(&"space", true), "the drawer wears the Space Looks")
 	_check(is_equal_approx(slide.position.z, 0.4), "the new Looks shows the drawer open (z %.3f)" % slide.position.z)
 	_check(is_zero_approx((root.get_node("Drawer2/Looks/Slide") as Node3D).position.z), "a shut drawer stays shut")
+
+
+# --- assets/11 -----------------------------------------------------------------------------------
+
+func case_k04_six_segments() -> void:
+	for c in collections():
+		var path := Cabinet.looks_path(c, false)
+		if path.is_empty():
+			continue
+		var looks := (load(path) as PackedScene).instantiate() as Node3D
+		var first := looks.get_node_or_null(^"Segment1") as MeshInstance3D
+		for i in range(1, SEGMENTS + 1):
+			var seg := looks.get_node_or_null(NodePath("Segment%d" % i)) as MeshInstance3D
+			_check(seg != null, "%s has Segment%d" % [path.get_file(), i])
+			if seg == null or first == null:
+				continue
+			var y := OLD_BASE_H + (i - 1) * OLD_SEGMENT_H
+			_check(seg.position.is_equal_approx(Vector3(0.0, y, 0.0)) and seg.basis.is_equal_approx(Basis.IDENTITY),
+					"%s Segment%d stands at y %.2f as the old stack (%s)" % [path.get_file(), i, y, seg.position])
+			_check(seg.mesh == first.mesh and seg.mesh != null, "%s Segment%d draws the segment mesh" % [path.get_file(), i])
+		_check(_stands_at(looks, STANDING_ROWS), "%s stands at the Cabinet's %d Rows: those segments shown, the rest hidden, the top on them" % [path.get_file(), STANDING_ROWS])
+		looks.free()
+
+
+## Whether a Cabinet Looks shows `rows` segments, hides the rest and has its top on them.
+func _stands_at(looks: Node3D, rows: int) -> bool:
+	for i in range(1, SEGMENTS + 1):
+		var seg := looks.get_node_or_null(NodePath("Segment%d" % i)) as Node3D
+		if seg == null or seg.visible != (i <= rows):
+			return false
+	var top := looks.get_node_or_null(^"Top") as Node3D
+	return top != null and top.visible and is_equal_approx(top.position.y, OLD_BASE_H + rows * OLD_SEGMENT_H)
 
 
 # --- K02 -----------------------------------------------------------------------------------------
