@@ -64,3 +64,4 @@ not the real path. Since the designer last saw the figures, core/109 made the pe
 - Files: game/lobby/lobby_stage.tscn, game/lobby/lobby.tscn, game/knockdown/vignette.tscn, game/ui/focus_glow.tscn,
   game/ui/stage_bar.tscn, tests/lobby_test.gd (k16 title Host at four window sizes, k17 Guest joined, k18 the layout_mode check)
 - Verified: `kit/tools/run.sh --touched` (90 of 96 suites): PASS 22929 checks, 722 cases; exported Linux build before and after the fix, stills and a line-up in `builds/review-core-113/`
+- Merged: 985cba64 (2026-11-25, branch core/113-lobby-figures-in-build)
