@@ -98,7 +98,9 @@ func box_of(i: int) -> Rect2:
 	var x := _pedestals[i].position.x
 	var half := tuning.figure_width * 0.5
 	var top := _camera.unproject_position(Vector3(x, tuning.figure_height, 0.0))
-	var foot := _camera.unproject_position(Vector3(x, -tuning.pedestal_height, tuning.pedestal_radius))
+	# The pedestal's front-bottom edge: its mesh is the one source of its size (lobby_stage.tscn).
+	var mesh := _pedestals[i].mesh as CylinderMesh
+	var foot := _camera.unproject_position(Vector3(x, _pedestals[i].position.y - mesh.height * 0.5, mesh.bottom_radius))
 	var left := _camera.unproject_position(Vector3(x - half, 0.0, 0.0))
 	var right := _camera.unproject_position(Vector3(x + half, 0.0, 0.0))
 	return Rect2(left.x, top.y, right.x - left.x, foot.y - top.y)

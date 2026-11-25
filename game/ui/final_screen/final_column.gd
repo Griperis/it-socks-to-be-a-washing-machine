@@ -68,13 +68,8 @@ func setup(entry: Dictionary, size_of_stage: Vector2, tune: FinalScreenTuning, d
 
 
 func _ready() -> void:
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(colour, 0.22)
-	style.border_color = colour
-	style.set_border_width_all(4)
-	style.set_corner_radius_all(16)
-	style.set_content_margin_all(8)
-	add_theme_stylebox_override("panel", style)
+	# The frame's fill and border are white in the Theme (FinalColumnFrame); the player's colour tints them.
+	self_modulate = colour
 	custom_minimum_size.x = stage_size.x + PAD * 2.0
 	_name.text = player_name
 	(%Coins as TextureRect).texture = UiIcons.texture("coins")

@@ -12,6 +12,8 @@ class_name PadFocus
 extends RefCounted
 
 const TUNING := preload("res://game/ui/pad_focus_tuning.tres")
+## The glow behind a lit control: a Panel with its own style (game/ui/focus_glow.tscn, edited in the inspector).
+const GLOW_SCENE := preload("res://game/ui/focus_glow.tscn")
 const GLOW := "FocusGlow"
 const META_T := &"pad_lit_t"
 const META_APPLIED := &"pad_lit_applied"
@@ -70,18 +72,7 @@ static func _prepare(c: Control) -> void:
 		return
 	c.set_meta(META_T, 0.0)
 	c.set_meta(META_APPLIED, 0.0)
-	var glow := Panel.new()
-	glow.name = GLOW
-	glow.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	glow.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	glow.show_behind_parent = true
-	glow.modulate.a = 0.0
-	var box := StyleBoxFlat.new()
-	box.bg_color = Color(0, 0, 0, 0)
-	box.set_corner_radius_all(TUNING.glow_radius)
-	box.shadow_color = Color(TUNING.glow_colour, TUNING.glow_alpha)
-	box.shadow_size = TUNING.glow_size
-	glow.add_theme_stylebox_override(&"panel", box)
+	var glow := GLOW_SCENE.instantiate()
 	c.add_child(glow, false, Node.INTERNAL_MODE_FRONT)
 	var parent := c.get_parent() as Container
 	if parent != null and not parent.has_meta(META_PARENT):

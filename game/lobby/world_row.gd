@@ -8,6 +8,11 @@ extends PanelContainer
 signal choose
 signal delete
 
+## The theme variations of the row (game/look/theme.tres): the chosen World's gold tint, or the plain one.
+const CHOSEN := &"WorldRowChosen"
+const PLAIN := &"WorldRowPlain"
+const SWATCH := preload("res://game/lobby/world_swatch.tscn")
+
 var slot := ""
 
 @onready var _swatches: HBoxContainer = %Swatches
@@ -20,7 +25,7 @@ var slot := ""
 
 ## Shows `row` (a Worlds.rows() entry). `chosen`: the chosen World's slot. `host`: the keys show (Choose
 ## only with `choosable`); `colour_of`: the Player colour of an index.
-func fill(row: Dictionary, chosen: String, host: bool, choosable: bool, tuning: WorldDrawerTuning, colour_of: Callable) -> void:
+func fill(row: Dictionary, chosen: String, host: bool, choosable: bool, colour_of: Callable) -> void:
 	slot = String(row["slot"])
 	var is_chosen := slot == chosen
 	_title.text = String(row["name"])
@@ -30,8 +35,7 @@ func fill(row: Dictionary, chosen: String, host: bool, choosable: bool, tuning: 
 		_swatches.remove_child(c)
 		c.queue_free()
 	for i: Variant in row.get("colours", []):
-		var swatch := ColorRect.new()
-		swatch.custom_minimum_size = Vector2(14, 14)
+		var swatch := SWATCH.instantiate() as ColorRect
 		swatch.color = colour_of.call(int(i))
 		_swatches.add_child(swatch)
 	_tick.visible = is_chosen and not host
@@ -40,11 +44,7 @@ func fill(row: Dictionary, chosen: String, host: bool, choosable: bool, tuning: 
 	_choose.disabled = is_chosen
 	_delete.text = LobbyWords.DELETE
 	_delete.visible = host and slot != Worlds.SOLO
-	var box := StyleBoxFlat.new()
-	box.bg_color = Color(1.0, 0.8, 0.2, tuning.chosen_tint) if is_chosen else Color(0.0, 0.0, 0.0, 0.08)
-	box.set_corner_radius_all(8)
-	box.set_content_margin_all(10)
-	add_theme_stylebox_override(&"panel", box)
+	theme_type_variation = CHOSEN if is_chosen else PLAIN
 
 
 func _ready() -> void:

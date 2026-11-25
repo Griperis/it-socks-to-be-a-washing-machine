@@ -139,6 +139,25 @@ theme_override_colors/font_color = Color(0.95, 0.25, 0.2, 1)
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Named" type="HBoxContainer" parent="Hud/MessageRow"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"HudRow"
+
+[node name="Who" type="Label" parent="Hud/MessageRow/Named"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"RowLabel"
+
+[node name="Rest" type="Label" parent="Hud/MessageRow/Named"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"RowLabel"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
 [node name="Hints" type="HBoxContainer" parent="Hud" unique_id=1431974908]
 anchors_preset = 3
 anchor_left = 1.0
