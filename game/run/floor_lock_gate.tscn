@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/parts/openable.gd" id="1_openable"]
+[ext_resource type="PackedScene" path="res://game/run/looks_lock_gate.tscn" id="2_looks"]
+[ext_resource type="Script" path="res://game/run/floor_lock.gd" id="3_lock"]
+[ext_resource type="Resource" path="res://game/run/floor_lock_tuning.tres" id="4_tuning"]
+[ext_resource type="Script" path="res://game/outline/outline.gd" id="5_outline"]
+
+[sub_resource type="BoxShape3D" id="Shape_aim"]
+size = Vector3(0.2, 0.24, 0.14)
+
+[sub_resource type="BoxShape3D" id="Shape_blocker"]
+size = Vector3(1.13, 2.7, 0.1)
+
+[node name="FloorLockGate" type="Node3D"]
+
+[node name="Openable" type="Node" parent="."]
+script = ExtResource("1_openable")
+noun = "Gate"
+sound_height = 1.0
+quiet_when_locked = true
+keeps_open_on_load = true
+one_way = true
+locked = true
+
+[node name="Looks" parent="." instance=ExtResource("2_looks")]
+
+[node name="Padlock" type="Node3D" parent="."]
+
+[node name="FloorLock" type="Node" parent="Padlock" node_paths=PackedStringArray("aim", "outline", "blocker")]
+script = ExtResource("3_lock")
+tuning = ExtResource("4_tuning")
+aim = NodePath("../Aim")
+outline = NodePath("../Outline")
+blocker = NodePath("../../Blocker")
+
+[node name="Aim" type="StaticBody3D" parent="Padlock"]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Padlock/Aim"]
+shape = SubResource("Shape_aim")
+
+[node name="Outline" type="Node3D" parent="Padlock"]
+visible = false
+script = ExtResource("5_outline")
+
+[node name="Blocker" type="StaticBody3D" parent="."]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Blocker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+shape = SubResource("Shape_blocker")

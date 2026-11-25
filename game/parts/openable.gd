@@ -18,6 +18,10 @@ const LOOKS := ^"../Looks"
 ## Every Openable is in this group: the Mess sweeps the Socks in the way of the moving ones (core/13, M09).
 const GROUP := &"openables"
 
+## Looks only: the state was shown. `now`: it arrived whole (no animation, no sound). `unlocked`: this
+## show is the turn from locked to unlocked (a floor lock's padlock pops).
+signal shown(locked: bool, now: bool, unlocked: bool)
+
 ## How far from the thing a player may stand to use it, in metres (Parts.near(); checked only once
 ## the game sets Parts.where).
 @export var reach := 4.0
@@ -33,6 +37,14 @@ const GROUP := &"openables"
 @export var noun := ""
 ## Its own name on the prompt ("Cupboard A Drawer", Q2388); empty, the name of the thing it is on.
 @export var title := ""
+## While locked it shows no prompt and no outline and cannot be aimed (a floor lock's leaf: the padlock
+## speaks for it, core/80; the old LockedDoor's `quiet`). The leaf still stops the crosshair.
+@export var quiet_when_locked := false
+## It stays as it was on a load (a floor's open leaf), instead of sliding shut with the things that rode out.
+@export var keeps_open_on_load := false
+## Once open it cannot be shut by use and shows no prompt (the old LockedDoor's `toggleable = false`:
+## a floor never locks again).
+@export var one_way := false
 
 @export_group("State")
 ## Open or shut. Tick it to place the thing open; while playing only the Host's answer changes it.
@@ -45,6 +57,8 @@ var _looks: Node
 var _animator: AnimationPlayer
 ## Whether the state was open when it was last shown: a sound plays only when it turns over.
 var _was_open := false
+## Whether the state was locked when it was last shown: the unlocking is told once.
+var _was_locked := false
 
 
 func _enter_tree() -> void:
@@ -77,7 +91,12 @@ func use(by: int) -> void:
 ## The Host, after a load (Q2559): it starts shut, so what rode out in an open drawer slides back with
 ## it as on any shut. A locked one stays locked.
 func loaded(_host: String) -> Dictionary:
-	return grant({"open": false}) if open else {}
+	return grant({"open": false}) if open and not keeps_open_on_load else {}
+
+
+## Whether the crosshair may rest on it: not while it is quiet (locked, or open and one way).
+func aimable() -> bool:
+	return not ((quiet_when_locked and locked) or (one_way and open))
 
 
 ## A Guest sends the wanted value, at most 5 presses a second.
@@ -93,7 +112,7 @@ func decide(cmd: Command) -> Dictionary:
 		return refuse("far")
 	if locked:
 		return refuse("locked")
-	if to == open:
+	if to == open or (one_way and open):
 		return refuse("already")
 	return grant({"open": to})
 
@@ -101,6 +120,13 @@ func decide(cmd: Command) -> Dictionary:
 ## Plays "open" forwards or backwards from wherever the pose is now, so a toggle mid-swing turns
 ## back smoothly; `now` jumps to the end pose with no animation.
 func _show(now: bool) -> void:
+	var unlocked := not now and _was_locked and not locked
+	_was_locked = locked
+	_swing_to_state(now)
+	shown.emit(locked, now, unlocked)
+
+
+func _swing_to_state(now: bool) -> void:
 	# A patch that leaves `open` as it was (a lock, say) replays no swing and no sound.
 	if not now and open == _was_open:
 		return

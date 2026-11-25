@@ -246,6 +246,20 @@ the washing machine" with no key. A moving leaf sweeps Socks as the room Doors d
 lamps: `HouseLights` gains `reveal(floor)` (fade in 0.6 s, lit 6 s, fade 1.2 s back to the day rule) and keeps a
 locked floor's lamps off.
 
+**Built (core/80).** `game/run/floor_lock.tscn` (the door) and `floor_lock_gate.tscn` (the gate, with its `Blocker`): the
+root holds the leaf's `Openable` (`locked`, and the new exports `quiet_when_locked`, `keeps_open_on_load`, `one_way`),
+the `Looks` (`looks_lock_door.tscn` / `looks_lock_gate.tscn`: graybox on the model's node names `frame`, `panel`, `leaf`
+(an AnimatableBody3D itself: a body moves with the physics only when its own transform is keyed, not its parent's), `chain`, `padlock`; two AnimationPlayers, `AnimationPlayer` with `open` and
+`UnlockPlayer` with `unlock`) and a `Padlock` node, the padlock's own entity: `FloorLock` (`floor_lock.gd`, a Part with no
+state, `floor`, `FloorLockTuning`), an `Aim` body at the padlock's rest spot (layer 1, off once open) and its `Outline`
+(the meshes under the Looks' `padlock`, found at ready). `Openable` emits `shown(locked, now, unlocked)` after every
+show; `FloorLock` plays `unlock`, the three sounds (timed from the tuning, not method tracks, so a swapped Looks needs no
+sound keys), `HouseLights.reveal(floor)`, and keeps the aim body, the blocker and `HouseLights.set_level_dark(floor,
+locked)` as the lock stands. `Stages._open_answer` writes `{open true, locked false}` on the leaf of every `FloorLock`
+whose `floor` is the new Stage's (`Stages.floor_locks()`); the dust sheet follows its Cabinet's own unlock. A swapped
+Looks (assets/10) keeps the node names and the two animations, and puts the model's leaf mesh under a `leaf` body.
+`LockSwitch` (the Stages station's Locks pillar) opens and re-locks the locks by answer.
+
 ### The Stage bar
 `game/ui/stage_bar.tscn`, a child of the HUD, hidden in a level with no run: the old panel and layout (behaviour list
 "The Stage bar"), on the Theme's `StagePanel` variation. It reads `Stages` (by group) and the bar's Cabinets; it

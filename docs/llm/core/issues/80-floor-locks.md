@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: frame
@@ -44,3 +44,23 @@ The Stages station gets a ground door and a gate with an Open/Lock pillar, and t
 ## Open follow-ups
 
 ## Built log
+- 2026-11-25
+  - Changed: `floor_lock.tscn` (door) and `floor_lock_gate.tscn` (gate + blocker to the ceiling) with the leaf's `Openable`
+    (new exports `quiet_when_locked`, `keeps_open_on_load`, `one_way`; signal `shown`), `FloorLock` (the padlock as its own
+    aim target, hint "Please the washing machine" with no key via `Part.prompt_has_key()`, its Outline and aim body),
+    graybox `looks_lock_door.tscn` / `looks_lock_gate.tscn` on the model's node names (`frame`, `panel`, `leaf`, `chain`,
+    `padlock`; `unlock` and `open` keyed with the old numbers), `FloorLockTuning`, `padlock_pop` / `chain_drop` /
+    `lock_door_open` in the catalogue, `HouseLights.reveal()` / `set_level_dark()`, `Stages._open_answer` unlocks the
+    floor's locks (`Stages.floor_locks()`), the zoo's Door, Gate (on the platform, walled either side) and Locks pillar
+    (`LockSwitch`). The dust sheet already follows its Cabinet's unlock: covered by a case, no new wiring.
+  - Files: `game/run/floor_lock*`, `game/run/looks_lock_*.tscn`, `game/run/stages.gd`, `game/parts/openable.gd`,
+    `game/parts/part.gd`, `game/ui/prompts.gd`, `game/house/house_lights.gd`, `game/audio/sound_catalogue.tres`,
+    `game/zoo/stages/lock_switch.*`, `game/zoo/stations/stages.tscn`, `tests/floor_lock_test.gd`, docs.
+  - Verified: see the report (`tests/floor_lock_test.gd` 6 cases pass; touched run).
+
+## Follow-ups handed on
+- core/91 places the locks in the house: `floor` on each, turned so the leaf swings over the flight; `HouseLights` is found
+  by group, so nothing else to wire.
+- At the assets/10 merge: its Looks must keep `leaf` as an AnimatableBody3D (physics follows only a body's own keyed
+  transform), the two animation players, and `docs/architecture/stages.md` will conflict where both add a paragraph.
+- Not tested: a co-op Guest watching the opening (the lock only shows the leaf's answer, as Doors do).
