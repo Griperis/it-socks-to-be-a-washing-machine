@@ -21,6 +21,7 @@ height = 0.3
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pedestal3"]
 
 [node name="Stage" type="SubViewportContainer"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -41,6 +42,7 @@ render_target_update_mode = 4
 
 [node name="Camera" type="Camera3D" parent="View"]
 unique_name_in_owner = true
+physics_interpolation_mode = 2
 environment = SubResource("Environment_stage")
 current = true
 fov = 30.0
