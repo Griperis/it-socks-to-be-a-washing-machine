@@ -231,6 +231,9 @@ var cutscenes: Cutscenes:
 	get: return get_node(^"Cutscenes") as Cutscenes
 var cutscene_player: CutscenePlayer:
 	get: return get_node(^"CutscenePlayer") as CutscenePlayer
+## The Final screen the Laundry day opens when the run ends (core/96).
+var final_screen: FinalScreen:
+	get: return get_node(^"FinalScreen") as FinalScreen
 
 
 ## The marker at `path` (from this node), else the level's child named `fallback`, or null.

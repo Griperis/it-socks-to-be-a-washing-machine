@@ -32,6 +32,8 @@ const SKIP_WORDS := "Skip"
 const WIDE := 0
 const CLOSE := 1
 const SHOTS: Array[NodePath] = [^"Shots/Wide", ^"Shots/Close"]
+## Where the Final wash's push-in ends: 1 m before the face (core/96).
+const PUSH := ^"Shots/Push"
 const SPAWNS := ^"Spawns"
 
 enum Phase {
@@ -179,6 +181,7 @@ func _begin(cutscenes: Cutscenes) -> void:
 	length = voice_end + s.after_voice_seconds + tuning.fade_seconds
 	_hide(true)
 	_washer_look(s)
+	_tell_voiced(voiced)
 	_take_view()
 	_skip.visible = _is_host()
 	_key.texture = _skip_texture()
@@ -278,6 +281,13 @@ func _washer_look(s: CutsceneScript) -> void:
 	washer.looks.call(&"set_cutscene", look)
 
 
+## Tells the washer's Looks whether the cutscene plays a line (the Final wash's unvoiced look is the fallback).
+func _tell_voiced(on: bool) -> void:
+	var washer := Washer.of_level(self)
+	if washer != null and washer.looks != null and washer.looks.has_method(&"set_voiced"):
+		washer.looks.call(&"set_voiced", on)
+
+
 ## The cutscene's camera takes the view at the wide shot, black over it.
 func _take_view() -> void:
 	if _fade_tween != null:
@@ -312,8 +322,16 @@ func _bob() -> void:
 	if looks == null or not looks.has_method(&"shot_bob"):
 		return
 	var marker := washer.get_parent().get_node_or_null(SHOTS[WIDE]) as Node3D
-	if marker != null:
-		camera.global_transform = marker.global_transform.translated(Vector3.UP * float(looks.call(&"shot_bob")))
+	if marker == null:
+		return
+	var at := marker.global_transform.translated(Vector3.UP * float(looks.call(&"shot_bob")))
+	# The Final wash pushes in on the face over the first share of the wash (core/96).
+	var push := float(looks.call(&"shot_push")) if looks.has_method(&"shot_push") else 0.0
+	var end := washer.get_parent().get_node_or_null(PUSH) as Node3D
+	if push > 0.0 and end != null:
+		var to := end.global_transform.translated(Vector3.UP * float(looks.call(&"shot_bob")) * 0.5)
+		at = Transform3D(at.basis.slerp(to.basis, push), at.origin.lerp(to.origin, push))
+	camera.global_transform = at
 
 
 ## The cut rule (washer.md): the wide shot for a line's first segment, then `index % 2`.

@@ -12,7 +12,9 @@ func _process(_delta: float) -> void:
 	var wait := "no wait"
 	if day.wait_left() >= 0.0:
 		wait = "wait %.1f s" % day.wait_left()
+	elif day.ended:
+		wait = "run ended"
 	elif day.final_started:
-		wait = "Final wash asked"
+		wait = "Final wash begun"
 	var first: String = ["pending", "playing", "done"][clampi(day.first_wash, 0, 2)]
 	text = "Laundry day %d/%d loaded, last Fix %s, %s, First wash %s" % [day.loaded_bins, day.total(), "done" if day.fixed() else "not done", wait, first]

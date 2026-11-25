@@ -251,7 +251,7 @@ func _spit_end() -> void:
 ## Whether a comment for `trigger` (any when null) may be given now: it is broken, no cutscene plays and
 ## the cooldown has passed. The senses ask it before they ask for an idle comment.
 func could_speak(trigger: VoiceTrigger = null) -> bool:
-	if not is_broken() or Voices.cutscene_playing():
+	if not is_broken() or Voices.cutscene_playing() or ending():
 		return false
 	return trigger != null and trigger.ignores_cooldown or _now() - last_at >= speaker.cooldown
 
@@ -293,8 +293,16 @@ func mood_total() -> int:
 	return maxi(stages.plan.size(), 1)
 
 
+## Whether the Final wash has begun in this level (core/96): the senses are off and it comments no more.
+func ending() -> bool:
+	var day := LaundryDay.of(self) if is_inside_tree() else null
+	return day != null and day.final_started
+
+
 ## Whether the senses are on: the zoo's washer station always, else a staged run (core/71) is under way.
 func senses_on() -> bool:
+	if ending():
+		return false
 	return zoo or (stages != null and stages.stage >= 0)
 
 

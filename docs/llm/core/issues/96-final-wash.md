@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: laundry
@@ -40,5 +40,9 @@ The sequence is `final_wash.tres`; the happy wash's numbers in `washer_tuning.tr
 - A finished World is kept as a record (Q2631, 2026-11-24).
 
 ## Open follow-ups
+- [later] The room's lamps in the Final wash stay at level 1.0 (steady) as the old did; if the designer wants a visible flicker in the happy wash, it is a number (`room_flickering()` at a repair under 1). Row in batch-a-review.md.
 
 ## Built log
+- 2026-11-25 Changed: `final_wash` begins the Final wash (door shut, `final_wash.tres`: happy wash with push-in, cutscene_6 whole with the drum easing, hold black, no respawn); the Host's `final_wash_end` ends the run (`LaundryDay.ended`, `play_seconds`, `WorldRecord.finished`, play time stopped); every machine releases the black and opens the Final screen (`FinalSummary.of`, new `LevelRuntime.final_screen`); a load or join after it began ends it at once; the washer's senses and comments are off (`Washer.ending()`); the room's lamps follow the happy wash and are cleared at its end; the old unvoiced happy look is the no-voice fallback. Replaced core/93's `final_started` stub (now the real "begun"). Added the `Shots/Push` marker and the `happy_*` placeholders in `washer_tuning.tres`.
+  Files: game/laundry/laundry_day.gd, game/laundry/final_wash.tres, game/entities/washer/{washer.gd,washer.tscn,washer_looks.gd,washer_tuning.gd}, game/cutscene/cutscene_player.gd, game/level/level_runtime.{gd,tscn}, game/save/{autosave.gd,world_record.gd}, game/zoo/laundry/laundry_label.gd, tests/{final_wash_test.gd,coop_final_wash_test.gd,laundry_day_test.gd}, docs.
+  Verified: see the commit's suite line.

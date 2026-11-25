@@ -22,6 +22,7 @@
 [ext_resource type="Script" uid="uid://tmma7k3a2ybj" path="res://game/ping/ping_marks.gd" id="24_marks"]
 [ext_resource type="Script" path="res://game/cutscene/cutscenes.gd" id="25_cutscenes"]
 [ext_resource type="PackedScene" path="res://game/cutscene/cutscene_player.tscn" id="26_cutscene_player"]
+[ext_resource type="PackedScene" path="res://game/ui/final_screen/final_screen.tscn" id="27_final_screen"]
 
 [node name="LevelRuntime" type="Node3D" unique_id=573781402]
 script = ExtResource("0_runtime")
@@ -76,6 +77,8 @@ knockdowns = NodePath("../Socks/Knockdowns")
 player = NodePath("../CutscenePlayer")
 
 [node name="CutscenePlayer" parent="." instance=ExtResource("26_cutscene_player")]
+
+[node name="FinalScreen" parent="." instance=ExtResource("27_final_screen")]
 
 [node name="Parts" type="Node" parent="." unique_id=427637761]
 script = ExtResource("1_parts")

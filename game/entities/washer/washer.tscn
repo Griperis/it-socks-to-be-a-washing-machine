@@ -62,6 +62,11 @@ transform = Transform3D(0.996815, -0.0388692, 0.0696311, 0, 0.873169, 0.487417, 
 script = ExtResource("3_shot")
 fov = 60.0
 
+[node name="Push" type="Marker3D" parent="Shots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.63, 1.3)
+script = ExtResource("3_shot")
+fov = 60.0
+
 [node name="Spawns" type="Node3D" parent="."]
 
 [node name="1" type="Marker3D" parent="Spawns"]
