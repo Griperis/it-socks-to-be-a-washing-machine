@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: bug
 area: coop
 feature: net
@@ -40,3 +40,12 @@ visible in the build and is easy to miss: the hint is only on the zoo's title li
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-25
+Changed: new `ProfileLock` (port of the old game's lock): a debug build without `--profile=` takes the first free profile
+("", 2, 3.. up to 8) by a `<profile>.lock` file (pid and stamp, renewed every 2 s, free after 30 s, removed on quit);
+window title shows "(Player N)". `Worlds.profile()` uses it; `PlayerProfile.file_of`/`load_or_make` take a folder.
+Case `second_copy_joins` in teammates_test (two Worlds on one folder, crash takes back, then Host/Guest join).
+Files: game/net/profile_lock.gd(+.uid), game/net/player_profile.gd, game/save/worlds.gd, tests/teammates_test.gd,
+docs/migration/batch-a-review.md.
+Verified: PASS 23011 checks, 755 cases
