@@ -55,8 +55,8 @@ Old Tree and cutscenes 1-6, no plot NPC. Batch A's answers:
 | `game/voice/baked/<speaker>.tres` | the speaker's `VoiceBank`: every line's takes with their timing, the bake's alone | the bake |
 | `game/voice/baked/<speaker>/<file>.anim.tres` | one acting Animation per take (mouth, brows, lean, wiggle, glow), the bake's alone | the bake |
 | `game/voice/voice_lines.csv` | the string table of every subtitle (`keys,en`, key `VO_<LINE>_<n>`), written by the bake from the JSON texts; registered under Project Settings, Localization (one `project.godot` change, core/84) | the bake |
-| `game/voice/*.gd` | the code: `voice_speaker.gd`, `voice_acting.gd`, `voice_trigger.gd`, `voice_bank.gd`, `voice_line.gd`, `voice_take.gd`, `voice_segment.gd`, `voice_book.gd`, `voice_picker.gd`, `voices.gd` (autoload), `voice_source.gd`, `subtitles.tscn` | agents |
-| `tools/voice_bake.gd`, `tools/voice_bake.sh` | the bake command (Godot, headless) | agents |
+| `game/voice/*.gd` | the code: `voice_speaker.gd`, `voice_acting.gd`, `voice_trigger.gd`, `voice_mood.gd`, `voice_bank.gd`, `voice_line.gd`, `voice_take.gd`, `voice_segment.gd`, `voice_book.gd`, `voice_picker.gd`, `voices.gd` (autoload), `voice_source.gd`, `subtitles.tscn` | agents |
+| `tools/voice_bake.gd`, `tools/voice_bake.sh` | the bake command (Godot, headless; `voice_bake.gd` is the entry, `voice_baker.gd` (`VoiceBaker`) the bake, `voice_lipsync.gd` (`VoiceLipsync`) the acting math, `voice_files.gd` (`VoiceFiles`) the JSON, CSV and resource text) | agents |
 | `tools/voice_transcribe.py` | the transcription step (faster-whisper `small.en`, offline once its model is downloaded, as the old `voiceover.py`) | agents |
 | `game/zoo/stations/voice.tscn` | the Voice station | agents |
 
@@ -81,13 +81,15 @@ The lines live under `game/voice/` because they are game data a designer edits (
       "order": 0,
       "waits": false,
       "placeholder": false,
-      "note": ""
+      "note": "",
+      "timing": {"stage_1_voice_A.wav": [[0.0, 1.44]]}
     }
   ]
 }
 ```
 
-- `id`: the line's name (the first recording's file stem by default); the CSV keys are `VO_<ID>_<n>`.
+- `id`: the line's name (the first recording's file stem by default; letters, digits and `_`); the CSV keys are
+  `VO_<ID>_<n>`, the id in capitals, n from 1.
 - `triggers`: trigger ids, each the stem of a file in `game/voice/triggers/`; empty = it never plays in a game (the
   station still plays it, marked "no trigger"). An unknown id is a bake error that names the known ones.
 - `sets`: the comment sets it may play in (the old stage_1..stage_5 files made a field); empty = any. A set is a number
@@ -97,6 +99,9 @@ The lines live under `game/voice/` because they are game data a designer edits (
 - `moods`: `[seconds, mood]` keys (a mood of the speaker's `VoiceActing.moods`); seeded with the speaker's default mood.
 - `order`: its place within a cutscene trigger; `waits`: a story beat that waits instead of being dropped (V4; the Old
   Tree's, batch B); `placeholder`, `note`: for the designer.
+- `timing` (optional, core/84, settled by the old game): per recording, each segment's `[start, end]` in seconds, set by
+  hand; it wins over the bake's own timing. The washer's lines carry the old game's corrected times. Swapping a
+  recording: change or drop its `timing` too (the bake reports a count that differs from `text`).
 
 ## Key types
 
@@ -111,15 +116,20 @@ triggers; the rest the bake writes.
 - **`VoiceActing`** (Resource): what the bake writes for this speaker's rig: the mouth bone and its open angle, the
   loudness window (20 ms), smoothing (0.6), gate (8 %), keys a second (30); the moods with each one's lean and brow pose;
   the brow acting's flick sizes; the mood blend (0.4 s); the property tracks (`wiggle`, `glow_colour`, `glow_energy`) and
-  each mood's glow. The washer's carries the old `voiceover.py` and `brows.py` numbers. The Old Tree's (batch B) has its
+  each mood's glow. The washer's carries the old `voiceover.py` and `brows.py` numbers. Each mood is a **`VoiceMood`**
+  (lean, brow pose, the brow acting's flick sizes, glow). The acting Animation's tracks are paths from the Looks root:
+  `face_rig:door_hinge` (rotation), `face_rig:brow_left_pivot` and `face_rig:brow_right_pivot` (rotation and
+  position), `face_rig:lean` (rotation and position), `.:wiggle`, `.:angry`, `.:glow_colour`, `.:glow_energy`. A bone
+  track keys the whole pose, so the profile holds each bone's rest, which must be the Looks skeleton's. The Old Tree's (batch B) has its
   rustle instead of brows; the bake's code is the same, the profile differs.
 - **`VoiceTrigger`** (Resource): `id: StringName`; `speaker: VoiceSpeaker`; `kind` (COMMENT: a line picked by the
   speaker's director with cooldown and chance; CUTSCENE: every line with this trigger, of every speaker, in `order`,
   played as a cutscene); `chance: float` (1 but the stare's 0.5); `ignores_cooldown: bool`; `note` (what fires it: the
   seam, for the designer).
-- **`VoiceBank`** (Resource, the bake's): `speaker`, `lines: Array[VoiceLine]`.
+- **`VoiceBank`** (Resource, the bake's): `speaker`, `lines: Array[VoiceLine]`, `lines_md5` (the JSON it was baked from).
 - **`VoiceLine`** (Resource inside the bank, the bake's copy of a JSON entry): `id`, `triggers: Array[VoiceTrigger]`,
-  `sets`, `keys: PackedStringArray`, `takes: Array[VoiceTake]`, `order`, `waits`, `placeholder`.
+  `sets`, `keys: PackedStringArray`, `takes: Array[VoiceTake]`, `order`, `waits`, `placeholder`, `marks` ("text TODO",
+  "keys differ", "timing guessed": what the station shows).
 - **`VoiceTake`**: `stream: AudioStream`; `source_md5` (the bake re-bakes a take whose wav changed); `duration`;
   `segments: Array[VoiceSegment]`; `acting: Animation` (the external acting file). No gain field (Q2638).
 - **`VoiceSegment`**: `start`, `end` (s), `key: StringName`. Every take of a line has the same keys in the same order;
@@ -154,9 +164,10 @@ triggers; the rest the bake writes.
    - a wav named in no line gets a new line in the JSON: `id` its stem, `recordings` [it], `triggers` empty, `text` from
      `tools/voice_transcribe.py` (the segments' times and English text; without whisper installed one segment over the
      voiced span with the text `TODO`, said in the output);
-   - a wav whose take is new or whose `source_md5` changed is timed again: whisper's segments matched to the line's
-     `text` by order (a count that differs is reported and the station marks the line), or, with `--retranscribe`, its
-     `text` replaced;
+   - each take's segment times come from the line's `timing` when it has them, else the bank's when the wav's
+     `source_md5` is unchanged, else whisper's segments matched to the line's `text` by order (a count that differs is
+     reported and the station marks the line), else the voiced span shared by the texts' lengths ("timing guessed");
+     with `--retranscribe` the `text` is replaced (and `timing` dropped);
    - the take's acting Animation is written from the loudness, the segment texts (`?` and `!`), the line's moods and the
      speaker's `VoiceActing` (the old `voiceover.py` door curve and `brows.py` acting, ported into GDScript);
    - the JSON is checked (unknown triggers, a recording that is missing, a mood the speaker lacks) and the bake stops on

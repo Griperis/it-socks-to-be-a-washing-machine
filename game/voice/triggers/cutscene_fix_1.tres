@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="VoiceTrigger" format=3 uid="uid://065dcqng2efe"]
+
+[ext_resource type="Script" uid="uid://k1g7mn7jdf7a" path="res://game/voice/voice_trigger.gd" id="1_o2vdp"]
+[ext_resource type="Resource" uid="uid://v7tirw0tssx0" path="res://game/voice/speakers/washer.tres" id="2_ahc3a"]
+
+[resource]
+script = ExtResource("1_o2vdp")
+id = &"cutscene_fix_1"
+speaker = ExtResource("2_ahc3a")
+kind = 1
+note = "core/92's Fix of the first floor's Part (cutscene_2), named by its Stage Resource."

@@ -18,3 +18,6 @@ exempt print game/debug/game_cli.gd
 exempt print game/debug/mess_bench.gd
 # coop/03: the player profile reads back its own file (an id and a name, read with JSON.parse_string, which builds no object; both checked).
 exempt json_parse game/net/player_profile.gd
+# core/84: the voice bake (a command, headless, not the game) reads the designer's own lines JSON files, the
+# transcription step's output and its string table: plain strings and numbers, read with JSON.parse_string, which builds no object.
+exempt json_parse tools/voice_baker.gd
