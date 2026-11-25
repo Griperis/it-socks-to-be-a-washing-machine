@@ -6,7 +6,7 @@ extends Resource
 ## The side of a button's box.
 @export var button_size := 0.3
 ## Buttons in a row.
-@export var per_row := 9
+@export var per_row := 10
 ## From one button to the next in a row, and from one row to the row behind it.
 @export var column_pitch := 0.75
 @export var row_pitch := 0.8

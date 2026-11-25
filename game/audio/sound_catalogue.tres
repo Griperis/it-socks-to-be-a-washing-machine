@@ -21,6 +21,8 @@
 [ext_resource type="AudioStream" uid="uid://bbrbmyon08han" path="res://assets/audio/step_wood__kenney_footstep00.ogg" id="19_cfsws"]
 [ext_resource type="AudioStream" uid="uid://cx4pf1qrjtf5c" path="res://assets/audio/step_tile__owlish_hard1.ogg" id="20_bd74q"]
 [ext_resource type="AudioStream" uid="uid://cyqixh0hpku02" path="res://assets/audio/land__qubodup_jumpland.ogg" id="21_7fcml"]
+[ext_resource type="AudioStream" path="res://assets/audio/part_pop__rubberduck_plop1_pop.ogg" id="201_partpop"]
+[ext_resource type="AudioStream" path="res://assets/audio/part_fit__rubberduck_v2_lock_open_fit.ogg" id="202_partfit"]
 [ext_resource type="Script" uid="uid://dla4npa6bg5ot" path="res://game/audio/sound_catalogue.gd" id="23_7apgx"]
 [ext_resource type="AudioStream" uid="uid://bcpoohpp2d6b5" path="res://assets/audio/knockdown__a.ogg" id="24_knock"]
 [ext_resource type="AudioStream" uid="uid://bc34ctawd4er7" path="res://assets/audio/fridge_open__rubberduck_microwave_open.ogg" id="101_dev"]
@@ -353,7 +355,21 @@ clips = Array[AudioStream]([ExtResource("140_ping")])
 spatial = true
 note = "PLACEHOLDER (core/43, Q2590): the old ping, one soft bubble (synth/ping_d, 0 dB), the same for a highlight and every emoji; heard at the spot by every machine, the pinger too. A sound per emoji is tracked to M1.1."
 
+[sub_resource type="Resource" id="Resource_part_pop"]
+script = ExtResource("1_76itk")
+event = &"part_pop"
+clips = Array[AudioStream]([ExtResource("201_partpop")])
+spatial = true
+note = "A Machine Part pops out of a Cabinet's top (core/79). Old pick cc0/rubberduck_plop1_pop."
+
+[sub_resource type="Resource" id="Resource_part_fit"]
+script = ExtResource("1_76itk")
+event = &"part_fit"
+clips = Array[AudioStream]([ExtResource("202_partfit")])
+spatial = true
+note = "A Machine Part goes into the washing machine (core/79). Old pick cc0/rubberduck_v2_lock_open_fit."
+
 [resource]
 script = ExtResource("23_7apgx")
-events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_jump"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape"), SubResource("Resource_fridge_open"), SubResource("Resource_fridge_close"), SubResource("Resource_oven_open"), SubResource("Resource_oven_close"), SubResource("Resource_drawer_thunk"), SubResource("Resource_basket_open"), SubResource("Resource_basket_close"), SubResource("Resource_litter_flap_open"), SubResource("Resource_litter_flap_close"), SubResource("Resource_piano_lid_open"), SubResource("Resource_piano_lid_close"), SubResource("Resource_cabinet_reveal"), SubResource("Resource_piano"), SubResource("Resource_ui_click"), SubResource("Resource_ui_hover"), SubResource("Resource_ping")])
+events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_jump"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape"), SubResource("Resource_fridge_open"), SubResource("Resource_fridge_close"), SubResource("Resource_oven_open"), SubResource("Resource_oven_close"), SubResource("Resource_drawer_thunk"), SubResource("Resource_basket_open"), SubResource("Resource_basket_close"), SubResource("Resource_litter_flap_open"), SubResource("Resource_litter_flap_close"), SubResource("Resource_piano_lid_open"), SubResource("Resource_piano_lid_close"), SubResource("Resource_cabinet_reveal"), SubResource("Resource_piano"), SubResource("Resource_ui_click"), SubResource("Resource_ui_hover"), SubResource("Resource_ping"), SubResource("Resource_part_pop"), SubResource("Resource_part_fit")])
 muffling_scenes = Array[String](["res://game/entities/door/door.tscn", "res://game/entities/door/room_door.tscn", "res://game/entities/door/room_door_flipped.tscn"])

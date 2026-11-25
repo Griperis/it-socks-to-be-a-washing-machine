@@ -60,6 +60,12 @@ static func carry_target(aimed: Carriable, carried: Carriable, empty: bool, pad 
 	return out
 
 
+## The crosshair's row for the washing machine's slot while a Machine Part is carried (core/79, the old
+## prompts.gd): "Fit the new filter" with the click key.
+static func fit_prompt(carried: Carriable, pad := false) -> Prompt:
+	return Prompt.of("Fit the %s" % carried.prompt_title().to_lower(), keys(Player.PICK, pad))
+
+
 ## An openable's prompt (target()).
 static func openable_prompt(openable: Openable, pad := false) -> Prompt:
 	var use := keys(Player.INTERACT, pad)

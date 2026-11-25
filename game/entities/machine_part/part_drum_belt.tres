@@ -1,8 +1,10 @@
 [gd_resource type="Resource" script_class="MachinePartKind" format=3]
 
 [ext_resource type="Script" path="res://game/entities/machine_part/machine_part_kind.gd" id="1_kind"]
+[ext_resource type="PackedScene" path="res://game/entities/machine_part/looks_drum_belt_graybox.tscn" id="2_looks"]
 
 [resource]
 script = ExtResource("1_kind")
 id = &"drum_belt"
 name = "Drum belt"
+looks = ExtResource("2_looks")

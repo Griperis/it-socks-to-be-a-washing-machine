@@ -217,6 +217,22 @@ player's drawn body, a Teammate's avatar), so it has no synchronizer; its shapes
 `loaded()` where it last lay. The zoo's stand-in is `game/zoo/handling/crate.tscn` on the Handling station. A thing that
 is a Carriable plus another Part (the bin) declares the Carriable first, so the left click reaches it.
 
+As built (core/79): `machine_part.tscn` (a StaticBody3D: `Looks`, `Glow`, `Sparkle`, `Burst`, a `Carriable` on
+`hold_slot_part.tres`, and `MachinePart`, `game/entities/machine_part/machine_part.gd`). `MachinePart` keeps **no
+state**: it is drawn and aimable only while `Stages.phase == PART_OUT` and its `kind` is the current Stage's Part
+(read every frame, so a load, a join and an answer show alike); where it lies and who holds it are the Carriable's.
+`Stages._complete_answer` adds the Part's `pop_changes(cabinet)` (`holder 0`, `at` `MachinePartTuning.ahead` m in
+front of the Cabinet's root, one ray down on the house layer); every machine plays the pop on `stage_completed`
+(`part_pop` at `top_of(cabinet)`, the Looks flown by `pop_pose()`, an 18-spark `Burst` on landing), a late Guest or a
+load sees it lying with no pop. `lying` plays only while it lies; `RESET` otherwise. Each kind's Looks
+(`MachinePartKind.looks`) takes the place of the scene's `Looks`; until assets/12 each is a graybox box
+(`looks_<kind>_graybox.tscn`) with the same nodes. `MachinePartSlot` (`machine_part_slot.gd`, on a box in the zoo,
+on the washer in the house) answers `fit` through `Stages.fit_answer()`: refused `not_carried`, or `busy`
+("The washing machine is busy") while a node of the group `washer` answers `busy()`; the answer hides the Part (its
+phase leaves PART_OUT), plays `part_fit`, and opens the floor at once while the Stage has no `fix_cutscene`
+(else the phase is FIXING and the Fix scene asks `open_floor`). The player's click on the slot while carrying reads
+"Fit the new filter" (`Prompts.fit_prompt`).
+
 ### The floor locks
 `game/run/floor_lock.tscn`: the leaf is the Door entity (`Openable`, `locked` in its State) with its own Looks,
 `looks_lock_door.tscn` (the plank door with ledges and a Z brace) or `looks_lock_gate.tscn` (the painted baby gate),

@@ -1,6 +1,6 @@
 ## The Stages station's list of a StagePlan, built from the data at load (Q2337): a label per Stage
 ## lying on the ground (its number, title, floor, fewest Pairs, its Part's name), its Part's Looks
-## lying beside it when the Part has one (core/79). A new Stage or Part shows with no other change.
+## lying beside it, turning and bobbing as in the game, when the Part has one (core/79). A new Stage or Part shows with no other change.
 class_name StagePlanBoard
 extends Node3D
 
@@ -32,3 +32,6 @@ func _ready() -> void:
 			looks.name = "Part%d" % (i + 1)
 			looks.position = row + LOOKS_AT
 			add_child(looks)
+			var player := looks.get_node_or_null(MachinePart.PLAYER) as AnimationPlayer
+			if player != null and player.has_animation(MachinePart.LYING):
+				player.play(MachinePart.LYING)  # it lies as it does in the game

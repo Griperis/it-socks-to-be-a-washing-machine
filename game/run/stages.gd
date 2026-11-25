@@ -462,11 +462,41 @@ func zoo_fit_now_answer() -> Dictionary:
 	return _open_answer(events)
 
 
-## Complete: `phase = PART_OUT` (core/79 adds its Machine Part at the pop spot to `changes`).
+## Complete: `phase = PART_OUT`, and the Stage's Machine Part laid at its pop spot in front of the Cabinet
+## that took the last Pair (core/79: `MachinePart.pop_changes()`; a level with no such Part adds nothing).
 func _complete_answer(cabinet: StringName, changes: Dictionary) -> Dictionary:
+	var last := _last_cabinet(cabinet)
+	var part := machine_part()
+	if part != null:
+		changes.merge(part.pop_changes(cabinet_of(last)), true)
 	changes[id] = {"phase": Phase.PART_OUT}
-	return {"ok": true, "changes": changes, "cabinet": _last_cabinet(cabinet),
-			EVENTS: [[&"stage_completed", stage, _last_cabinet(cabinet)]]}
+	return {"ok": true, "changes": changes, "cabinet": last,
+			EVENTS: [[&"stage_completed", stage, last]]}
+
+
+## The current Stage's Machine Part among the level's (by its kind), or null.
+func machine_part() -> MachinePart:
+	var s := current()
+	if s == null or s.part == null or not is_inside_tree():
+		return null
+	for node in get_tree().get_nodes_in_group(MachinePart.GROUP):
+		var part := node as MachinePart
+		if part != null and part.parts == parts and part.kind != null and part.kind.id == s.part.id:
+			return part
+	return null
+
+
+## The `fit` answer (the MachinePartSlot's, core/79): the Part is in the machine. With a Fix scene to
+## play (the Stage names a `fix_cutscene`, core/92) the phase is FIXING and the scene asks `open_floor`
+## at its fade; with none the floor opens at once. Refused unless the Stage's Part is out.
+func fit_answer() -> Dictionary:
+	if stage < 0 or phase != Phase.PART_OUT:
+		return refuse("already")
+	var events := [[&"part_fitted", stage]]
+	var s := current()
+	if s != null and s.get("fix_cutscene") != null:
+		return {"ok": true, "changes": {id: {"phase": Phase.FIXING}}, EVENTS: events}
+	return _open_answer(events)
 
 
 ## `cabinet` when it is one of the level's, else the bar's last Row's Cabinet ("" with no bar).
