@@ -9,6 +9,9 @@ extends Resource
 @export_range(0.0, 0.5, 0.01, "suffix:s") var stream_lag := 0.1 # placeholder: the old flight.gd STREAM_LAG
 ## Past the newest row a Guest's copy goes on along its velocity at most this long.
 @export_range(0.0, 0.5, 0.01, "suffix:s") var stream_extrapolate := 0.1 # placeholder: coop/01's spike
+## When a row comes quicker than any before, the play moves on this much of a tick a tick until it
+## plays by the new delay, instead of a whole tick at once (coop/14): 0.05 is 5 per cent faster.
+@export_range(0.01, 1.0, 0.01) var stream_catch_up := 0.05 # placeholder: coop/14, technical (no look of its own)
 
 @export_group("Answer")
 ## A pick, drop or Throw with no answer after this long goes back, with "refuse" (Q2477).
@@ -22,8 +25,8 @@ extends Resource
 ## Once parted, a ghost's drawn offset moves `1 - exp(-3 dt / predict_blend)` of the way to how the
 ## Host's body differs at the same moment of the flight: 95 per cent in this long (G04, G11, Q2573's ease).
 @export_range(0.01, 1.0, 0.01, "suffix:s") var predict_blend := 0.2 # placeholder: the old release.json predict_blend
-## A Teammate's Throw or drop leaves their own hand (Hands.start_of()) but is drawn on this machine from
-## their avatar's hand, easing onto its body in this long (coop/13; Q2439, Q2481's 0.2 s).
+## A Teammate's drop that starts within Mess.LEAD_LEAST_GAP of what is under it eases off their avatar's
+## hand in this long (coop/13, coop/14; Q2481's 0.2 s). A Teammate's Throw has no ease: it pops onto its arc (Q2685).
 @export_range(0.0, 1.0, 0.01, "suffix:s") var hand_over_time := 0.2 # placeholder: Q2481's 0.2 s
 ## The ghost lies at the Host's rest once nearer than this, or after `settle_wait` (G07).
 @export_range(0.0001, 0.05, 0.0001, "suffix:m") var settle_close := 0.002 # placeholder: the old thrown_item.gd

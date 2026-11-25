@@ -6,6 +6,108 @@ import math
 import sys
 
 
+def flight(host_log, guest_log):
+    """coop/14: each Sock's flight as drawn each frame on both machines (S lines) against the Host's
+    true body (T lines), at the delay that fits best: snaps (frames whose step differs from the true
+    body's step at the same moment by more than 2 cm), the largest such jump, the delay, and how far
+    off it is drawn (mean and worst)."""
+    seen = {"host": {}, "guest": {}}
+    true = {}
+    marks = []
+    for path, role in ((host_log, "host"), (guest_log, "guest")):
+        for line in open(path, errors="replace"):
+            p = line.split()
+            if len(p) == 8 and p[0] in ("S", "T"):
+                row = (float(p[2]), (float(p[4]), float(p[5]), float(p[6])), p[7])
+                (seen[role] if p[0] == "S" else true).setdefault(int(p[3]), []).append(row)
+            elif len(p) == 4 and p[0] == "MARK":
+                marks.append((float(p[2]), p[1] + ":" + p[3]))
+    if not seen["host"] and not seen["guest"]:
+        return
+    marks.sort()
+
+    def runs(rows):
+        out, cur = [], []
+        for r in rows:
+            if cur and r[0] - cur[-1][0] > 0.5:
+                out.append(cur)
+                cur = []
+            cur.append(r)
+        if cur:
+            out.append(cur)
+        return [r for r in out if len(r) > 5]
+
+    def at(rows, t):
+        if t <= rows[0][0]:
+            return rows[0][1]
+        if t >= rows[-1][0]:
+            return rows[-1][1]
+        lo, hi = 0, len(rows) - 1
+        while hi - lo > 1:
+            m = (lo + hi) // 2
+            if rows[m][0] <= t:
+                lo = m
+            else:
+                hi = m
+        a, b = rows[lo], rows[hi]
+        w = (t - a[0]) / max(b[0] - a[0], 1e-9)
+        return tuple(x + (y - x) * w for x, y in zip(a[1], b[1]))
+
+    def sub(a, b):
+        return tuple(x - y for x, y in zip(a, b))
+
+    def norm(a):
+        return math.sqrt(sum(x * x for x in a))
+
+    def judge(g, h, fixed=None):
+        # Only the frames while the true body flies (the lying tail after it is the rest's).
+        g = [r for r in g if r[2] != "lying"] or g
+        fit = None
+        for dms in ([fixed] if fixed is not None else range(-300, 400, 2)):
+            d = dms / 1000.0
+            err = sum(norm(sub(r[1], at(h, r[0] - d))) for r in g) / len(g)
+            if fit is None or err < fit[1]:
+                fit = (d, err)
+        d = fit[0]
+        # A snap: a frame whose change of step (what it moved this frame less what it moved the frame
+        # before) differs from the true body's at the same moments by more than 1 cm. A smooth ease
+        # (the lead from an avatar's hand) changes its step by millimetres a frame; a skipped tick or a
+        # pop by centimetres.
+        snaps, largest, worst = 0, 0.0, 0.0
+        for a, b, c in zip(g, g[1:], g[2:]):
+            dg = sub(sub(c[1], b[1]), sub(b[1], a[1]))
+            ha, hb, hc = at(h, a[0] - d), at(h, b[0] - d), at(h, c[0] - d)
+            j = norm(sub(dg, sub(sub(hc, hb), sub(hb, ha))))
+            largest = max(largest, j)
+            if j > 0.01:
+                snaps += 1
+        for r in g:
+            worst = max(worst, norm(sub(r[1], at(h, r[0] - d))))
+        return d, snaps, largest, fit[1], worst
+
+    print("FLIGHT  sock what            seen on  frames  delay ms  snaps  jump cm  off mean/worst cm  kinds")
+    for sock in sorted(set(seen["guest"]) | set(seen["host"])):
+        tr = runs(true.get(sock, []))
+        for role in ("host", "guest"):
+            for g in runs(seen[role].get(sock, [])):
+                label = "?"
+                for t, m in marks:
+                    if t <= g[0][0] + 0.05:
+                        label = m
+                h = None
+                for cand in tr:
+                    if cand[0][0] - 0.4 <= g[-1][0] and g[0][0] <= cand[-1][0] + 0.6:
+                        h = cand
+                        break
+                kinds = "/".join(sorted({r[2] for r in g}))
+                if h is None:
+                    print("FLIGHT  %4d %-15s %-6s %6d  no true run  kinds %s" % (sock, label, role, len(g), kinds))
+                    continue
+                d, snaps, largest, mean, worst = judge(g, h, 0 if role == "host" else None)
+                print("FLIGHT  %4d %-15s %-6s %6d  %7.0f  %5d  %7.1f  %6.1f/%-6.1f  %s" % (
+                    sock, label, role, len(g), d * 1000, snaps, largest * 100, mean * 100, worst * 100, kinds))
+
+
 def vec(s):
     return tuple(float(x) for x in s.split(","))
 
@@ -15,6 +117,7 @@ def dist(a, b):
 
 
 def main(host_log, guest_log):
+    flight(host_log, guest_log)
     host = {}
     finals = {"host": {}, "guest": {}}
     drawn = {"host": {}, "guest": {}}

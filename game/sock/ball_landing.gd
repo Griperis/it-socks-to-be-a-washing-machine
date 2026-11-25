@@ -59,7 +59,7 @@ func _ready() -> void:
 	_player.add_animation_library(&"", library)
 	_player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS
 	var body := _falling()
-	_last_vy = body.linear_velocity.y if body != null else 0.0
+	_last_vy = _vy(body) if body != null else 0.0
 	# With no falling body (a Cabinet flier moved by a tween) there is nothing to watch.
 	set_physics_process(body != null)
 
@@ -108,10 +108,19 @@ func land() -> void:
 func _physics_process(_delta: float) -> void:
 	var body := _falling()
 	if body != null:
-		var vy := body.linear_velocity.y
+		var vy := _vy(body)
 		if landings == 0 and _last_vy <= -tuning.touch_speed and vy - _last_vy >= tuning.touch_change:
 			land()
 		_last_vy = vy
+
+
+## How fast `body` falls: its own velocity, or on a Guest the Host's body's as its stamped copy plays
+## it (the copy is frozen, its own velocity zero: coop/14).
+static func _vy(body: RigidBody3D) -> float:
+	var row := FlightRow.of(body)
+	if row != null and not row.host_side:
+		return row.velocity.y
+	return body.linear_velocity.y
 
 
 ## The falling body its Looks rides on, or null (held, lying, in a drawer).
