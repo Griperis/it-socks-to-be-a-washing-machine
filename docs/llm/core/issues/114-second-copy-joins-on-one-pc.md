@@ -6,7 +6,7 @@ area: coop
 feature: net
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-25
 blocked_by: []
 notes: ["suggested model: sonnet", "designer 2026-11-25: hosting in one window of the build, the second window cannot join: 'You are already in this game'"]
 terms: [Host, Guest]
@@ -49,3 +49,4 @@ Case `second_copy_joins` in teammates_test (two Worlds on one folder, crash take
 Files: game/net/profile_lock.gd(+.uid), game/net/player_profile.gd, game/save/worlds.gd, tests/teammates_test.gd,
 docs/migration/batch-a-review.md.
 Verified: PASS 23011 checks, 755 cases
+- Merged: 69254346 (2026-11-25, branch core/114-second-copy-joins)
