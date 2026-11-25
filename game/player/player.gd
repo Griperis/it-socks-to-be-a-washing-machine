@@ -335,8 +335,12 @@ func _physics_process(delta: float) -> void:
 	if knocked:
 		_stack.drop()
 		_lie(kd)
+		_fall_while_down(kd)
 		_time += delta
 		_update_hands(delta)
+		return
+	if _out_of_map():
+		_put_back()
 		return
 	_stack.before_move()
 	var walk := Vector2.ZERO if _input_blocked else Input.get_vector(MOVE_LEFT, MOVE_RIGHT, MOVE_FORWARD, MOVE_BACK)
@@ -358,6 +362,37 @@ func _physics_process(delta: float) -> void:
 	if not _input_blocked and Input.is_action_just_pressed(INTERACT):
 		interact()
 	_update_hands(delta)
+
+
+# --- Out of the map ------------------------------------------------------------------------------
+
+## Whether the body is below the level's lowest floor by `fall_depth`, farther than `fall_reach` from
+## its centre on any axis, or not finite.
+func _out_of_map(at := global_position) -> bool:
+	var runtime := LevelRuntime.of(self)
+	if runtime == null:
+		return false
+	var frame := runtime.map_frame()
+	return FallRescue.out_of_map(at, frame["floor"], frame["centre"], tuning.fall_depth, tuning.fall_reach)
+
+
+## A knocked-down body (it follows its ragdoll) out of the map has its knockdown ended, as a cutscene's end
+## does; the body then stands and the check above puts it back.
+func _fall_while_down(kd: Knockdowns) -> void:
+	var rag := own_ragdoll()
+	var at := rag.feet() if rag != null and rag.phase != Ragdoll.Phase.UP else global_position
+	if _out_of_map(at) or _out_of_map():
+		kd.stand(player_id())
+
+
+## Puts the body back at the washer's spawn (the level's Spawn without one) and logs where it was.
+func _put_back() -> void:
+	var runtime := LevelRuntime.of(self)
+	var at: Variant = runtime.respawn_point()
+	if at == null:
+		return
+	Log.warn("player", "out of the map at %s: put back" % [global_position], {"from": global_position})
+	respawn_at(at as Transform3D)
 
 
 # --- Knocked down (coop/10) ----------------------------------------------------------------------

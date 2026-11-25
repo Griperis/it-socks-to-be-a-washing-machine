@@ -39,6 +39,8 @@ const GRAB := &"grab"
 const LET_GO := &"let_go"
 const STRUGGLE := &"struggle"
 const RELEASE := &"release"
+## A player fell out of the map while down: their knockdown ends at once (core/110).
+const STAND := &"stand"
 ## Why a drag ended (the old drags.gd's words).
 const DROP := "drop"
 const STRUGGLED := "struggle"
@@ -46,6 +48,8 @@ const UP := "up"
 const APART := "apart"
 const KNOCKED := "knocked"
 const LEAVE := "leave"
+## Why a knockdown ended at a fall out of the map.
+const FELL := "fell"
 ## A let go by the washing machine's door that sends the body in (core/98).
 const WASH := "wash"
 ## Why a Command is refused.
@@ -236,11 +240,18 @@ func struggle(by: int) -> void:
 	parts.ask(Command.new(STRUGGLE, by, id, {}))
 
 
+## Player `by` fell out of the map while down: their knockdown and any drag of theirs end at once, as a
+## cutscene's end ends them (core/110).
+func stand(by: int) -> void:
+	parts.ask(Command.new(STAND, by, id, {}))
+
+
 func accepts() -> Dictionary[StringName, Dictionary]:
 	return {
 		GRAB: {"args": {"target": {"type": TYPE_INT, "min": 1, "max": 2147483647}}},
 		LET_GO: {"args": {}},
 		STRUGGLE: {"args": {}, "rate": 30},
+		STAND: {"args": {}, "rate": 5},
 	}
 
 
@@ -265,6 +276,10 @@ func decide(cmd: Command) -> Dictionary:
 			return _released(int(cmd.args["target"]), String(cmd.args.get("why", UP)))
 		STRUGGLE:
 			return _decide_struggle(cmd)
+		STAND:
+			if not is_down(cmd.by):
+				return refuse(NOT_DOWN)
+			return left(cmd.by, FELL)
 	return refuse("wrong")
 
 
@@ -417,8 +432,8 @@ func _live_down() -> Dictionary:
 	return out
 
 
-## The Host: player `by` left. Their knockdown and any drag of theirs end ("leave").
-func left(by: int) -> Dictionary:
+## The Host: player `by` left (or fell out of the map: `why` FELL). Their knockdown and any drag of theirs end.
+func left(by: int, why := LEAVE) -> Dictionary:
 	if not down.has(by) and not drags.has(by) and not drags.values().has(by):
 		return {}
 	var now_down := _live_down()
@@ -430,7 +445,7 @@ func left(by: int) -> Dictionary:
 			now_drags.erase(k)
 			now_struggles.erase(k)
 	var ev := grant({"down": now_down, "drags": now_drags, "struggles": now_struggles})
-	ev["why"] = LEAVE
+	ev["why"] = why
 	return ev
 
 

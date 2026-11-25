@@ -399,20 +399,11 @@ func _sources() -> Dictionary:
 ## The local player stands at the washer's spawn of its place in the Roster, every knockdown over.
 func _respawn() -> void:
 	var runtime := LevelRuntime.of(self)
-	var washer := Washer.of_level(self)
-	var thing := washer.get_parent() if washer != null else null
-	var spawns := thing.get_node_or_null(SPAWNS) if thing != null else null
-	if runtime == null or spawns == null:
+	if runtime == null or Washer.of_level(self) == null:
 		return
-	var markers: Array[Node3D] = []
-	for child in spawns.get_children():
-		if child is Node3D:
-			markers.append(child as Node3D)
-	if markers.is_empty():
-		return
-	var peers := runtime.roster.peers() if runtime.roster != null else PackedInt32Array()
-	var place := maxi(peers.find(runtime.player.player_id()), 0)
-	runtime.player.respawn_at(markers[place % markers.size()].global_transform)
+	var at: Variant = runtime.respawn_point()
+	if at != null:
+		runtime.player.respawn_at(at as Transform3D)
 
 
 func _ask(kind: StringName) -> void:
