@@ -85,7 +85,8 @@ extends Resource
 ## leaving the middle of its leg or foot inside the house, was pushed there by Jolt's position solve, not
 ## flown (core/50: a Sock was so pushed 0.17 m to 0.24 m into the zoo's 0.2 m floor in one step, and
 ## then held under it by the floor's bottom face; core/54: a lying-still flight 33 mm down in one step,
-## its leg's middle 50 mm under the floor's top, slipped under 0.05).
+## its leg's middle 50 mm under the floor's top, slipped under 0.05). Within it, only a step that
+## took the middle into the house from outside is so judged (core/100).
 @export_range(0.0, 0.5, 0.005, "suffix:m") var push_slack := 0.02 # placeholder: core/50, 0.02 since core/54, until the designer plays it
 ## How far from its middle a turning Sock's ends move per radian, for that (about half its leg).
 @export_range(0.0, 1.0, 0.01, "suffix:m") var push_reach := 0.2 # placeholder: core/50, half a Sock's 0.35 m leg rounded up

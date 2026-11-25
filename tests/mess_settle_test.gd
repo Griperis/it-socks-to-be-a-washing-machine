@@ -45,9 +45,11 @@ func cases() -> Array[Dictionary]:
 		{"name": "real_path_4", "method": "case_real_path_4", "world": false,
 				"title": "core/49: the same real path with 4 more Sock records in the zoo: no Sock is made inside another"},
 		{"name": "real_path_thin_floor", "method": "case_real_path_thin_floor", "world": false,
-				"title": "core/50: the same real path with the zoo floor's collision margin at 1 mm (there Jolt pushes a poured Sock through the floor in every pour): no Sock goes under the floor, none is lifted at its rest or rests moving; core/70: no frame draws a pushed Sock under the floor"},
+				"title": "core/50: the same real path with the zoo floor's collision margin at 1 mm (there Jolt pushes a poured Sock through the floor in every pour): no Sock goes under the floor, none is lifted at its rest or rests moving; core/70: no frame draws a pushed Sock under the floor (core/100: a Sock sunk within Jolt's slop, its middle less than the rest rule's `sunk` under, is not counted, Q2604)"},
 		{"name": "pushed_in", "method": "case_pushed_in", "world": false,
 				"title": "core/50: a falling Sock that one step moves down into the floor, more than its motion explains, is put back over the floor at once and rests on it, not lifted; one that moves only as it flies is left alone"},
+		{"name": "pressed_in", "method": "case_pressed_in", "world": false,
+				"title": "core/100: a still Sock on the floor that one step presses 16 mm down, less than the push slack, its leg's middle into the floor, is put back (as Jolt pressed one under a pushed Sock in the same step); one whose middle was already in is left alone"},
 		{"name": "slept_turning", "method": "case_slept_turning", "world": false,
 				"title": "core/54: a Sock the physics puts to sleep while it still turns is woken to go on, not written lying mid-turn; asleep after a still step, it rests"},
 		{"name": "wave_places", "method": "case_wave_places", "world": false,
@@ -122,7 +124,9 @@ func case_real_path_thin_floor() -> void:
 
 ## The player clicks More at the heap station, with `extra` more Sock records lying in the zoo before
 ## the heap's (core/49: their count once decided whether two poured Socks rested inside each other).
-## `drawn`: every frame is also looked at as drawn (core/70).
+## `drawn`: every frame is also looked at as drawn (core/70); a Sock pressed under the heap within Jolt's
+## default 0.02 m penetration slop, its middle less than the rest rule's `sunk` under the floor's top, is
+## not counted (core/100, Q2604: the old game kept Jolt's default); only a push the Mess missed is.
 func _real_path(extra: int, floor_margin := -1.0, drawn := false) -> void:
 	_zoo = (load(ZOO) as PackedScene).instantiate() as Node3D
 	if floor_margin >= 0.0:
@@ -246,6 +250,38 @@ func case_pushed_in() -> void:
 	_check(_watch.jumped == 0 and _watch.hot == 0, "neither was lifted at its rest nor rested moving (jumped %d, hot %d)" % [_watch.jumped, _watch.hot])
 	_near(mess.pose_of(0).origin.y, 0.0, 0.025, "the Sock lies on the floor's top")
 	_check(mess._moving.pushed_in == 1, "the Sock thrown down at 8 m/s was never put back (%d)" % mess._moving.pushed_in)
+
+
+## A Sock lies flying, still, on the benchmark level's floor (its top at 0, the Sock's middle 13 mm
+## over it). Its body is moved 16 mm down in one step, less than `push_slack`, the middle 3 mm into the
+## floor: Jolt pressed a Sock so under one it pushed through the floor (core/100, suite order). The
+## Mess's next tick puts it back over the floor. One whose middle was in the floor the tick before (a
+## Sock pressed in by Jolt's slop, slowly) and moves 6 mm deeper is left alone, as before.
+func case_pressed_in() -> void:
+	await _level_up(MessBenchScenario.Kind.IDLE, 4, 0)
+	var mess := _level.mess
+	_level.parts.apply({"ok": true, "kind": &"throw", "by": 1, "to": mess.id, "changes": {mess.id:
+			mess.thrown_patch(0, Transform3D(Basis.IDENTITY, Vector3(4.0, 0.01, 4.0)), Vector3.ZERO, Vector3.ZERO, 1)}})
+	await _until(func() -> bool: return mess.moving_body(0) != null, "the Sock to fly")
+	var body := mess.moving_body(0)
+	await _physics_ticks(4)
+	var before := body.global_transform
+	_check(absf(before.origin.y) < 0.004, "the Sock lies on the floor's top (%.4f m)" % before.origin.y)
+	var undone := mess._moving.pushed_in
+	body.global_transform = before.translated(Vector3.DOWN * 0.016)
+	await _physics_ticks(2)
+	_check(mess._moving.pushed_in == undone + 1, "the 16 mm press into the floor was undone (%d)" % (mess._moving.pushed_in - undone))
+	_check(body.global_position.y > before.origin.y - 0.004, "the body is back over the floor (%.4f m, was %.4f m)" % [body.global_position.y, before.origin.y])
+	# Already in: the tick before saw it 14 mm down (its middle 1 mm in), now 20 mm.
+	await _physics_ticks(2)
+	undone = mess._moving.pushed_in
+	var low := before.translated(Vector3.DOWN * 0.014)
+	body.global_transform = low.translated(Vector3.DOWN * 0.006)
+	body.linear_velocity = Vector3.ZERO
+	body.angular_velocity = Vector3.ZERO
+	mess._moving._was[0] = low
+	await _physics_ticks(1)
+	_check(mess._moving.pushed_in == undone, "a Sock whose middle was already in the floor, 6 mm deeper, is left alone (%d)" % (mess._moving.pushed_in - undone))
 
 
 # --- core/49: a wave's places --------------------------------------------------------------------

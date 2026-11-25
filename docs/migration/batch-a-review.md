@@ -48,3 +48,4 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 
 | Ticket | The choice | What was done (the old answer) | Designer |
 |---|---|---|---|
+| core/100 | Jolt penetration slop (Socks under a heap sink up to about 1 cm) | kept Jolt's default 0.02 m, the watch counts only pushes | reference/it-socks/project.godot:257-260 (no slop set) |

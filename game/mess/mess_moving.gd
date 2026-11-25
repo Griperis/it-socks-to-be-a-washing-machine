@@ -256,9 +256,11 @@ func tick_looks(delta: float) -> void:
 ## more than `MessTuning.push_slack`, and left the middle of its leg or foot (a Pair's ball) inside the
 ## house, was Jolt's position solve, not a flight: a Sock touching the zoo's 0.2 m floor was so pushed
 ## 0.17 m to 0.24 m down in one step, past the floor's middle, and from there the floor's bottom face
-## held it under the floor. The body goes back to its place before the step, `push_lift` higher (at
+## held it under the floor. Within the slack, a step that took a middle into the house from outside it
+## is undone too (core/100: Jolt pressed a still Sock 13-18 mm down in the step it pushed the Sock on it
+## through the floor, its leg's middle into the floor); one already in is left alone. The body goes back to its place before the step, `push_lift` higher (at
 ## the same place Jolt pushes it again), with its fall and turn stopped; nothing else is judged of it
-## this tick. It costs one point query only for such a step.
+## this tick. It costs point queries only for a step its motion does not explain.
 func _pushed_in(sock: int, body: RigidBody3D, delta: float, t: MessTuning) -> bool:
 	var was: Transform3D = _was.get(sock, body.global_transform)
 	var back: Variant = undo_push(_mess, body, was, float(_speeds.get(sock, 0.0)), delta, t)
@@ -277,7 +279,11 @@ func _pushed_in(sock: int, body: RigidBody3D, delta: float, t: MessTuning) -> bo
 static func undo_push(near: Node, body: RigidBody3D, was: Transform3D, speed_before: float, delta: float, t: MessTuning) -> Variant:
 	var now := body.global_transform
 	var motion := speed_before + body.linear_velocity.length() + body.angular_velocity.length() * t.push_reach
-	if now.origin.distance_to(was.origin) <= motion * delta + t.push_slack or not _in_house(near, body):
+	var moved := now.origin.distance_to(was.origin)
+	if moved <= motion * delta or not _in_house(near, body):
+		return null
+	# Within the slack only a step that took a middle into the house (core/100): one already in stays.
+	if moved <= motion * delta + t.push_slack and _in_house(near, body, was * now.affine_inverse()):
 		return null
 	var back := was.translated(Vector3.UP * t.push_lift)
 	body.global_transform = back
@@ -288,11 +294,12 @@ static func undo_push(near: Node, body: RigidBody3D, was: Transform3D, speed_bef
 	return back
 
 
-## Whether the middle of one of `body`'s shapes (a leg, a foot, a Pair's ball) is inside the house.
-static func _in_house(near: Node, body: RigidBody3D) -> bool:
+## Whether the middle of one of `body`'s shapes (a leg, a foot, a Pair's ball) is inside the house;
+## `moved_by`: with the body moved so (at another place of it).
+static func _in_house(near: Node, body: RigidBody3D, moved_by := Transform3D.IDENTITY) -> bool:
 	for child in body.get_children():
 		var shape := child as CollisionShape3D
-		if shape != null and PhysicsQueries.inside(near, shape.global_position, Mess.LAYER_HOUSE):
+		if shape != null and PhysicsQueries.inside(near, moved_by * shape.global_position, Mess.LAYER_HOUSE):
 			return true
 	return false
 
