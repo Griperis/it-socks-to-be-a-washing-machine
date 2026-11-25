@@ -6,7 +6,7 @@ area: core
 feature: frame
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/76, assets/11]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [Cabinet, Row, Drawer, Stage]
@@ -46,3 +46,4 @@ at "Fit now".
 Changed: `cabinet.tscn` holds six Drawer modules (4 to 6 hidden, locked); the new `CabinetGrowth` (`cabinet_growth.gd`, split out of cabinet.gd) shows Segment1..`rows`, the Top at `0.10 + rows * 0.30`, hides the rest with collision off, fits the shell (its own shape per Cabinet) and drops each new module (delay, fall, gap) with `drawer_thunk` and `dust_puff.tscn`, at once on an answer, none on a load, a join or a first showing. `CabinetTuning` group "Drawer drop" (placeholders); `drawer_thunk` in the sound catalogue on the oven-close clip. Existing tests moved to six Drawers / two shown Rows; the sounds station's block may be up to 8 rows (one more event); house id list gained Drawer4..6 of the eight Cabinets. Three choices under "Settled by the old game" in batch-a-review.md.
 Files: game/entities/cabinet/{cabinet.gd,cabinet.tscn,cabinet_tuning.gd,cabinet_growth.gd,dust_puff.tscn}, game/audio/sound_catalogue.tres, tests/cabinet_growth_test.gd, tests/{cabinet,cabinet_looks,outline,sounds}_test.gd, tests/saves/house_ids.txt, docs/migration/batch-a-review.md.
 Verified: see the commit's `suite:` line.
+- Merged: 5592a11b (2026-11-25, branch core/81-cabinets-grow)
