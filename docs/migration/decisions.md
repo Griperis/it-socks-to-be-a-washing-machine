@@ -1,4 +1,4 @@
-Next free Q number: Q2662 (update this line whenever a round of questions is asked)
+Next free Q number: Q2663 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -585,3 +585,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   lab repo and proposes settings (designer, 2026-11-25).
 - Q2661: the washing machine with its shadow fix (assets/14) and the subtitle icon without brows (assets/15) are yes
   and merge (designer, 2026-11-25, "lgtm"); the sun's shadow resolution stays as it is unless the designer asks.
+- Q2662: the game repo sets `core.createObject rename` (applied by the designer, 2026-11-25): on the virtiofs mount,
+  git's default link-then-unlink left fresh objects unreadable for minutes (maintenance/05: 1-4% of commits
+  damaged by default, 0 of 5000 with rename).
