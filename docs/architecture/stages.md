@@ -63,7 +63,7 @@ Elevator's stops (batch C) read `floor_open(floor)`.
 | `open_floor` | Host: the washer at its Fix scene's fade (core/73), or the slot at once when the Stage names no `fix_cutscene` (the zoo's mini plan, tests; core/92) | the next Stage: `stage + 1`, `phase = PLAYING`, every unlocked Cabinet `+rows_per_stage` Rows to its full height, the new Stage's Cabinets unlocked at `start_rows`, the new bar, the floor's lock Openables `{open true, locked false}`, the new Stage's Designs into `due` and `spawned`. On the last Stage instead `phase = FIXED` |
 | `lay_first` | Host: the First wash at its spit (core/72) | releases the hold of a New Game that wanted a First wash: the held records join the Mess lying (`added_lying_patch`), `first_laid`; not yet laid, they land in the Mess when they are (core/77) |
 | `land` | Host: the StageSpawner | the laid records of the asked Designs join the Mess (`added_lying_patch`), or are held (`held_designs`, `held_poses`) while a New Game holds Stage 1's; the asked Designs leave `due`; `first_laid` for Stage 1's |
-| `zoo_complete`, `zoo_fit_now` | Host, the zoo station's switches only | complete the Stage outright; fit and open at once |
+| `complete_now`, `fit_now` | Host only: a test, or a switch's answer (the zoo's) | complete the Stage outright; fit and open at once, no Fix scene (core/107: the old Campaign's host-only `complete` and `open`) |
 
 **Built (core/76).** `game/run/run.tscn` (`Run`, a Node3D, its child `Stages` naming the plan) is in the house and
 in the Stages station. `Stages` finds the Cabinets under the Run's parent (group `cabinets`) and sets each one's
@@ -72,7 +72,7 @@ a Cabinet's Rows never pass its Drawers (`Stages.height_of`) until core/81 gives
 the run carries `stage_events` (`[[name, args...]]`), which each machine emits as the signals below as it applies the
 answer (never on a load or a join). The Host asks `complete` after any applied answer that leaves the bar full. The
 zoo's switches (`game/zoo/stages/stages_switch.gd`) ask their own `switch` verb and answer with
-`zoo_complete_answer()` / `zoo_fit_now_answer()`. a debug build's launch option `--pairs-per-drawer=N` sets a New Game's Drawer size (the slider, core/91, rides it).
+`complete_now_answer()` / `fit_now_answer()` (core/107). a debug build's launch option `--pairs-per-drawer=N` sets a New Game's Drawer size (the slider, core/91, rides it).
 
 **Built (core/92).** `Stage.fix_cutscene` (the CUTSCENE trigger, also the "waits for a scene" switch) and
 `Stage.fix_script` (a `CutsceneScript` of `game/run/fix_scenes/`, its `voice` the same trigger: Fixes 1-3 carry the

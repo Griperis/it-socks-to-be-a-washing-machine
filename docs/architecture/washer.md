@@ -26,13 +26,16 @@ the cutscene frame (`run-ends.md` "The Cutscene frame", core/88) or the lines th
     `Voices.cutscene_playing()` or before the First wash has broken the machine (silent until then, Q2636), the
     trigger's chance, the run's comment set (`Stage.comment_set` of the current Stage, or
     `StagePlan.laundry_day_comment_set` in the Laundry day, Stage 4's by default, Q2635), `VoicePicker` (Q2637); it answers `{line, take}` or a silent no. `applied` on every machine:
-    `Voices.say(line, take, looks)`. Command `say_line {line}`: granted only in the zoo (the Voice and washer stations).
+    `Voices.say(line, take, looks)`. It grants no other Command (core/107: the washer station's switches are its run
+    stand-in's, `game/zoo/washer/washer_run.gd`). Its run (`stages`) is any Part with the Stages reads
+    `wants_first_wash()`, `under_way()`, `comment_set()`, `parts_missing()`, `part_total()`, `last_pair_in()`: the house's
+    `Run/Stages`, or in the washer station the `WasherRun` stand-in, which owns broken, the mood and the Stage.
     State on the Part: none saved (the old saved none); the director's memory is the Host's and starts fresh on a load.
   - **`WasherSenses`** (`washer_senses.gd`, a child node, looks only): this machine's stare (4 s, 8 m, 12 degrees at the
     middle 0.5 m up, once per look) sends `talk washer_stare`; on the Host only, the progress (a Pair shelved answer from
     Mess, core/71's Cabinet filled), the hit (a Throw's landing answer within 1.4 m on the floor plane) and the idle clock
     (60 s since the last Pair, checked once a second, only when the director could speak). Off when the level is not a
-    staged run (core/71's flag) except in the washer station, where it is on. Nothing at the run's last Pair (Q1413).
+    staged run (its run's `under_way()`; the washer station's stand-in always is). Nothing at the run's last Pair (Q1413).
   - `Looks`: an instance of `looks_graybox.tscn` now, `looks_washer.tscn` once the asset ticket lands (the swap is the
     one line in `washer.tscn`).
   - `Outline` and the name "Washing machine" for the crosshair; no use of its own (E does nothing at it, as the old
@@ -144,7 +147,7 @@ Named, not designed; each is a read of their Part or an answer of their Command.
 | core/71 | the Fix: a Part clicked into the washer, its answer naming the Stage's `fix_cutscene: VoiceTrigger` and the takes; the cutscene frame plays it; after Fix 1-3, core/72's spit follows | cutscene_2..5, the mood one step calmer |
 | core/71 | the Parts fitted and the Parts in the run (read) | mood level and repair |
 | core/71 | whether the level is a staged run | the senses on or off |
-| core/72 | `is_broken()` (`LaundryDay.first_wash` past PENDING: the First wash has broken it; built by core/94; the zoo's `broken` switch in the zoo) | it looks fine; no comments before (Q2636) |
+| core/72 | `is_broken()` (not `Stages.wants_first_wash()`: the level's `LaundryDay.first_wash` past PENDING, the First wash has broken it; built by core/94, read through the run since core/107) | it looks fine; no comments before (Q2636) |
 | core/72 | the First wash's beats: the calm wash (`spin`, `bubbles`), the break (spin stops, damage on), then `cutscene_first_wash`, then the spit (`door` open 0.4 s, shut over the last 0.6 s) | the washer's looks in its cutscene |
 | core/72 | a Laundry bin loaded (k of n) | `pile` grows a step |
 | core/72 | the Final wash: its wash (`spin` 0.8, `bubbles`), `cutscene_final_wash` after it (spin easing to 0.12), the frame's end going to the Final screen | the washer's looks in its cutscene |

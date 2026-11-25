@@ -98,7 +98,7 @@ func case_s01() -> void:
 	_check(runtime.autosave.world.slot == Worlds.SOLO and runtime.autosave.world.is_new, "a New Game in the Solo slot")
 	# The kitchen's Cabinet unlocks with Stage 2 (core/91): the ground floor opened as its Fix would.
 	var stages := _level.get_node("Run/Stages") as Stages
-	runtime.parts.apply(stages.zoo_fit_now_answer())
+	runtime.parts.apply(stages.fit_now_answer())
 	var mess := runtime.mess
 	var hands := runtime.hands
 	var player := runtime.player

@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://game/zoo/washer/washer_station.gd" id="1_station"]
 [ext_resource type="PackedScene" path="res://game/entities/washer/washer.tscn" id="2_washer"]
 [ext_resource type="Resource" path="res://game/run/house_stage_plan.tres" id="3_plan"]
+[ext_resource type="Script" path="res://game/zoo/washer/washer_run.gd" id="4_run"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.55, 0.62, 0.6, 1)
@@ -21,9 +22,10 @@ albedo_color = Color(0.75, 0.74, 0.7, 1)
 material = SubResource("StandardMaterial3D_wall")
 size = Vector3(4, 2.4, 0.1)
 
-[node name="WasherStation" type="Node3D" node_paths=PackedStringArray("washer", "pad", "title")]
+[node name="WasherStation" type="Node3D" node_paths=PackedStringArray("washer", "run", "pad", "title")]
 script = ExtResource("1_station")
 washer = NodePath("Washer/Washer")
+run = NodePath("Run")
 pad = NodePath("Pad")
 title = NodePath("Name")
 
@@ -53,6 +55,10 @@ mesh = SubResource("BoxMesh_wall")
 
 [node name="Washer" parent="." instance=ExtResource("2_washer")]
 
-[node name="Washer" parent="Washer" index="0"]
-zoo = true
-zoo_plan = ExtResource("3_plan")
+[node name="Washer" parent="Washer" index="0" node_paths=PackedStringArray("stages")]
+stages = NodePath("../../Run")
+
+[node name="Run" type="Node" parent="." node_paths=PackedStringArray("washer")]
+script = ExtResource("4_run")
+washer = NodePath("../Washer/Washer")
+plan = ExtResource("3_plan")

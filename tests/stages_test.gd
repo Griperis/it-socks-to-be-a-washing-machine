@@ -178,7 +178,7 @@ func case_last_stage() -> void:
 	_check(_stages.stage == 1 and _stages.phase == Stages.Phase.FIXED, "the last Stage's Fix leaves the machine fixed (phase %d)" % _stages.phase)
 	_check(fixed[0] == 1, "machine_fixed fired once")
 	_check(_stages.fitted_count() == 2, "both Parts are in the machine")
-	var ev := _parts.answer(Command.new(&"zoo_fit_now", Parts.HOST, _stages.id))
+	var ev := _parts.answer(Command.new(&"fit_now", Parts.HOST, _stages.id))
 	_check(not ev["ok"], "nothing opens after the last Stage")
 
 
@@ -222,7 +222,7 @@ func case_guest_join() -> void:
 	await _until(func() -> bool: return hs.stage == 0, "the Host's run to start")
 	_check(_net(host).start(["--host", "--profile=%s" % TAGS[0]]) == OK, "the zoo hosts")
 	# The Host opens Stage 2 before the Guest comes.
-	LevelRuntime.of(host).parts.ask(Command.new(&"zoo_fit_now", Parts.HOST, hs.id))
+	LevelRuntime.of(host).parts.ask(Command.new(&"fit_now", Parts.HOST, hs.id))
 	_check(hs.stage == 1, "the Host's Fit now opened Stage 2")
 	_check(_net(guest).start(["--join=127.0.0.1:%d" % _session(host).port, "--profile=%s" % TAGS[1]]) == OK, "the Guest joins")
 	var gs := _stages_of(guest)
@@ -234,7 +234,7 @@ func case_guest_join() -> void:
 	_check(not gb.locked and gb.rows == hb.rows and ga.rows == 3 and not gb.sheeted(), "the Guest sees Cabinet B unlocked and A grown")
 	var heard: Array = []
 	gs.machine_fixed.connect(func() -> void: heard.append(true))
-	LevelRuntime.of(host).parts.ask(Command.new(&"zoo_fit_now", Parts.HOST, hs.id))
+	LevelRuntime.of(host).parts.ask(Command.new(&"fit_now", Parts.HOST, hs.id))
 	await _until(func() -> bool: return gs.phase == Stages.Phase.FIXED, "the Guest to see the machine fixed")
 	_check(heard.size() == 1, "the Guest's machine_fixed fired")
 
@@ -247,7 +247,7 @@ func case_floor_name() -> void:
 	var autosave := LevelRuntime.of(zoo).autosave
 	autosave.world = WorldSlot.new()
 	_check(String(autosave.collect()["world"]["floor"]) == "Basement", "the World's row names the basement")
-	LevelRuntime.of(zoo).parts.ask(Command.new(&"zoo_fit_now", Parts.HOST, s.id))
+	LevelRuntime.of(zoo).parts.ask(Command.new(&"fit_now", Parts.HOST, s.id))
 	_check(String(autosave.collect()["world"]["floor"]) == "Ground", "after the Fix, the Ground floor")
 	_check(WorldRecord.from_dict(autosave.collect()["world"]).floor_name == "Ground", "and it reads back from the file")
 

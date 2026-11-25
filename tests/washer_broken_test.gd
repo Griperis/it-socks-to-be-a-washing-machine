@@ -18,7 +18,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "real_path", "method": "case_real_path", "world": false,
 				"title": "real path: in the washer station the player presses E at the angriest mood pillar: sparks burst, the buzz plays, the drum light is 0.3 of its idle; at the calm pillar none show and the light is steady"},
 		{"name": "from_the_run", "method": "case_from_the_run", "world": false,
-				"title": "from the run: each Part fitted in a stand-in run makes the machine one step calmer (less damage, more repair); before the First wash it looks fine"},
+				"title": "from the run: each Part fitted in a Stages run makes the machine one step calmer (less damage, more repair); before the First wash (its level's Laundry day pending) it looks fine"},
 		{"name": "strength", "method": "case_strength", "world": false,
 				"title": "the effects scale with the mood: the buzz from -22 to -6 dB, the bursts' gap from 2.4 to 0.5 s; two machines burst together"},
 		{"name": "flicker", "method": "case_flicker", "world": false,
@@ -53,7 +53,7 @@ func case_real_path() -> void:
 	var station := _station()
 	var looks := w.looks as WasherLooks
 	await _press_pillar(station.pillars["mood 5"])
-	await _until(func() -> bool: return w.zoo_mood == 5, "the angriest pillar to set the level", 60)
+	await _until(func() -> bool: return station.run.mood == 5, "the angriest pillar to set the level", 60)
 	await _until(func() -> bool: return looks.sparking() and looks.buzzing(), "sparks to burst and the buzz to play", 600, 3.0)
 	_check(looks.broken_on(), "the broken look is on")
 	var idle := looks.tuning.glow_idle_energy
@@ -61,7 +61,7 @@ func case_real_path() -> void:
 	_check(looks.shown_energy() <= idle * 0.3 + 0.001, "so its energy is at most 0.3 of the idle (%.3f)" % looks.shown_energy())
 	_near(looks.buzz_db(), looks.tuning.buzz_db_max, 0.01, "the buzz is at its loudest")
 	await _press_pillar(station.pillars["mood 0"])
-	await _until(func() -> bool: return w.zoo_mood == 0 and not looks.buzzing(), "the calm pillar to still the buzz", 600, 1.0)
+	await _until(func() -> bool: return station.run.mood == 0 and not looks.buzzing(), "the calm pillar to still the buzz", 600, 1.0)
 	_check(not looks.broken_on(), "calm: no effects")
 	await _physics_ticks(30)
 	_near(looks.flicker(), 1.0, 0.0001, "calm: the light is steady")
@@ -73,16 +73,23 @@ func case_from_the_run() -> void:
 	var w := _washer()
 	var looks := w.looks as WasherLooks
 	var plan := load("res://game/run/house_stage_plan.tres") as StagePlan
+	# A run of the house's plan and a Laundry day, both in the station's level (the Run's parent).
+	var station := _station()
+	var run := Node.new()
+	run.name = "TestRun"
+	station.add_child(run)
 	var stages := Stages.new()
 	stages.plan = plan
-	w.zoo_mood = -1
+	run.add_child(stages)
+	var day := LaundryDay.new()
+	station.add_child(day)
 	w.stages = stages
 	stages.stage = 0
-	w.broken = false
 	await _physics_ticks(3)
+	_check(not w.is_broken(), "the Laundry day's First wash is pending: not broken")
 	_near(looks.damage, 0.0, 0.0001, "before the First wash it looks fine: no damage")
 	_near(looks.repair, 1.0, 0.0001, "and full repair")
-	w.broken = true
+	day.first_wash = LaundryDay.FirstWash.DONE
 	var last_damage := 2.0
 	for fitted in plan.size():
 		stages.stage = fitted
@@ -94,8 +101,9 @@ func case_from_the_run() -> void:
 	stages.phase = Stages.Phase.FIXED
 	await _until(func() -> bool: return w.mood_level() == 0 and looks.damage == 0.0, "fixed: calm", 60)
 	_near(looks.repair, 1.0, 0.0001, "fixed: full repair")
-	w.stages = null
-	stages.free()
+	w.stages = station.run
+	run.free()
+	day.free()
 
 
 func case_strength() -> void:

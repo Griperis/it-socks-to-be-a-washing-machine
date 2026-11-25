@@ -115,8 +115,8 @@ func case_late_joiner() -> void:
 
 ## The Host's washer station pillar's Command (the real path's press is cutscene_test's).
 func _play(host: Node3D, trigger: String) -> void:
-	var w := host.get_node(WASHER + "/Washer") as Washer
-	_rt(host).parts.ask(Command.new(Washer.ZOO_CUTSCENE, Parts.HOST, w.id, {"trigger": trigger}))
+	var run := host.get_node("Stations/WasherStation/Run") as WasherRun
+	_rt(host).parts.ask(Command.new(WasherRun.CUTSCENE, Parts.HOST, run.id, {"trigger": trigger}))
 
 
 func _spawn_of(zoo: Node3D, feet: Vector3) -> int:

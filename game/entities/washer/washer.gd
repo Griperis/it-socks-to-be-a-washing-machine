@@ -5,10 +5,10 @@
 ## `{line, take}` or a silent no. Every machine's `_show()` then plays it through `Voices` from the Looks.
 ##
 ## State on the Part is what everyone must see or hear the same: the last line said (`serial` moves with
-## every answer, so the same line twice is two answers), the zoo's switch for broken (outside the zoo the
-## First wash says it: `is_broken()`, core/94), and the zoo's two overrides. It keeps
-## nothing in a save (the old saved none); the director's memory (the picker, the clock of the last comment)
-## is the Host's and starts fresh on a load.
+## every answer, so the same line twice is two answers). Whether it is broken, how angry it is and which
+## comment set it draws from are read from its run (`stages`), never kept here. It keeps nothing in a save (the
+## old saved none); the director's memory (the picker, the clock of the last comment) is the Host's and starts
+## fresh on a load.
 ##
 ## Its Looks, `WasherLooks`, is never written by anything else: `_show()` and the run's changes only set
 ## its mood (`damage`, `repair`) for core/87's broken look.
@@ -17,29 +17,20 @@ extends Part
 
 ## Every washing machine is in this group (a Laundry bin's `tip()` leans toward it).
 const GROUP := &"washer"
-## Links the wiring check lets stay empty: the washer station has no run (`stages`), the zoo sets the Stage.
+## Links the wiring check lets stay empty: a level may have no run (`stages`).
 const WIRING_OPTIONAL := ["stages"]
 ## The prompt: the name for the crosshair; it has no use of its own.
 const TITLE := "Washing machine"
 const TALK := &"talk"
-const SAY_LINE := &"say_line"
-const ZOO_MOOD := &"zoo_mood"
-const ZOO_STAGE := &"zoo_stage"
-const ZOO_BROKEN := &"zoo_broken"
-## The washer station's cutscene pillars (core/88): a CUTSCENE trigger played plainly on the Cutscene frame.
-const ZOO_CUTSCENE := &"zoo_cutscene"
 
 ## Whose lines these are, its numbers, and its face.
 @export var speaker: VoiceSpeaker
 @export var tuning: WasherTuning
 @export var looks: WasherLooks
-## The run it reads the Stage and the Parts fitted from (the house's `Run/Stages`); none in the zoo's
-## washer station, which sets them by pillar.
-@export var stages: Stages
-## The plan the zoo's Stage pillars read the comment sets from (the station's; the run's own is `stages.plan`).
-@export var zoo_plan: StagePlan
-## In the zoo's washer station: the zoo-only Commands are granted and the senses are on.
-@export var zoo := false
+## The run it reads (the house's `Run/Stages`): any Part with the Stages reads `wants_first_wash()`,
+## `under_way()`, `comment_set()`, `parts_missing()`, `part_total()` and `last_pair_in()`. May be empty: then it is
+## broken, calm, draws from any set and its senses are off.
+@export var stages: Part
 ## The spray of Socks out of its door (the Fix scene's spit, core/92) and the door's middle it leaves from.
 @export var sock_spray: SockSpray
 @export var porthole: Marker3D
@@ -49,13 +40,6 @@ const ZOO_CUTSCENE := &"zoo_cutscene"
 @export var line: StringName = &""
 @export var take := 0
 @export var serial := 0
-## The zoo's switch: it is broken (the washer station's pillar). Outside the zoo the level's
-## `LaundryDay.first_wash` past PENDING says it (`is_broken()`, core/94).
-@export var broken := false
-## The zoo's mood level 0..`tuning.zoo_levels`, or -1 to read the run.
-@export var zoo_mood := -1
-## The zoo's Stage 0.., or one past the last for the Laundry day, or -1 to read the run.
-@export var zoo_stage := -1
 @export_group("")
 
 ## The Host's memory of what it said (no save keeps it): the picker and when the last comment was given,
@@ -135,50 +119,13 @@ func click_only() -> bool:
 
 
 func accepts() -> Dictionary[StringName, Dictionary]:
-	var trigger := {"type": TYPE_STRING, "max": 64}
-	var out: Dictionary[StringName, Dictionary] = {TALK: {"args": {"trigger": trigger}, "rate": 5}}
-	if zoo:
-		out[SAY_LINE] = {"args": {"line": trigger}, "rate": 5}
-		out[ZOO_MOOD] = {"args": {"level": {"type": TYPE_INT, "min": -1, "max": 64}}, "rate": 5}
-		out[ZOO_STAGE] = {"args": {"stage": {"type": TYPE_INT, "min": -1, "max": 64}}, "rate": 5}
-		out[ZOO_BROKEN] = {"args": {"on": TYPE_BOOL}, "rate": 5}
-		out[ZOO_CUTSCENE] = {"args": {"trigger": trigger}, "rate": 5}
-	return out
+	return {TALK: {"args": {"trigger": {"type": TYPE_STRING, "max": 64}}, "rate": 5}}
 
 
 func decide(cmd: Command) -> Dictionary:
-	if speaker == null:
+	if speaker == null or cmd.kind != TALK:
 		return refuse("wrong")
-	match cmd.kind:
-		TALK:
-			return _talk(StringName(str(cmd.args.get("trigger", ""))))
-		SAY_LINE:
-			if not zoo:
-				return refuse("wrong")
-			var said := Voices.book().find_line(speaker.id, StringName(str(cmd.args.get("line", ""))))
-			return refuse("wrong") if said == null else _said(said, picker.take_of(said))
-		ZOO_MOOD:
-			var level: Variant = cmd.args.get("level")
-			if not zoo or not (level is int) or level > _zoo_levels():
-				return refuse("wrong")
-			return grant({"zoo_mood": level})
-		ZOO_STAGE:
-			var stage: Variant = cmd.args.get("stage")
-			if not zoo or not (stage is int):
-				return refuse("wrong")
-			return grant({"zoo_stage": stage})
-		ZOO_BROKEN:
-			var on: Variant = cmd.args.get("on")
-			if not zoo or not (on is bool) or on == broken:
-				return refuse("wrong")
-			return grant({"broken": on})
-		ZOO_CUTSCENE:
-			var cutscene := trigger_of(StringName(str(cmd.args.get("trigger", ""))))
-			var frame := Cutscenes.of(self)
-			if not zoo or cutscene == null or cutscene.kind != VoiceTrigger.Kind.CUTSCENE or frame == null:
-				return refuse("wrong")
-			return frame.start(cutscene.resource_path)
-	return refuse("wrong")
+	return _talk(StringName(str(cmd.args.get("trigger", ""))))
 
 
 ## The comment director (the Host's): a grant with the line and take, or a silent no.
@@ -197,13 +144,11 @@ func _talk(trigger_id: StringName) -> Dictionary:
 	return _said(pick["line"], int(pick["take"]))
 
 
-## Whether the First wash has broken it (Q2636): before, the machine looks fine and says nothing. Outside the
-## zoo the level's `LaundryDay.first_wash` past PENDING (a level without one: broken); in the zoo its switch.
+## Whether the First wash has broken it (Q2636): before, the machine looks fine and says nothing. The run says
+## whether the First wash is still to come (its level's `LaundryDay.first_wash` PENDING); no run, or none to come:
+## broken.
 func is_broken() -> bool:
-	if zoo or not is_inside_tree():
-		return broken
-	var day := LaundryDay.of(self)
-	return day == null or day.first_wash != LaundryDay.FirstWash.PENDING
+	return not bool(_read(&"wants_first_wash", false))
 
 
 ## Whether the machine cannot take a Part or a body now: a cutscene plays or someone spins in its drum.
@@ -256,41 +201,34 @@ func could_speak(trigger: VoiceTrigger = null) -> bool:
 	return trigger != null and trigger.ignores_cooldown or _now() - last_at >= speaker.cooldown
 
 
-## The comment set the picker draws from: the zoo's Stage, else the run's current Stage's, or the Laundry
-## day's after the last Fix; 0 (any) when nothing says.
+## The comment set the picker draws from: the run's current Stage's, or the Laundry day's after the last Fix;
+## 0 (any) when nothing says.
 func comment_set() -> int:
-	var plan := _plan()
-	var at := zoo_stage
-	if at < 0 and stages != null and plan != null and stages.stage >= 0:
-		at = plan.size() if stages.phase == Stages.Phase.FIXED else stages.stage
-	if at < 0 or plan == null:
-		return 0
-	if at >= plan.size():
-		return plan.laundry_day_comment_set
-	var s := plan.stage(at)
-	return s.comment_set if s != null else 0
+	return int(_read(&"comment_set", 0))
 
 
-## The plan the comment sets come from: the run's, or the zoo's.
-func _plan() -> StagePlan:
-	return stages.plan if stages != null and stages.plan != null else zoo_plan
-
-
-## How angry it is, 0 calm to `mood_total()` the angriest: the zoo's pillar, else one per Part not yet
-## fitted once the First wash has broken it, none before and none once fixed.
+## How angry it is, 0 calm to `mood_total()` the angriest: the Parts the run still lacks once the First wash
+## has broken it, none before and none once fixed.
 func mood_level() -> int:
-	if zoo_mood >= 0:
-		return zoo_mood
-	if not is_broken() or stages == null or stages.plan == null:
-		return 0
-	return clampi(stages.plan.size() - stages.fitted_count(), 0, stages.plan.size())
+	return clampi(int(_read(&"parts_missing", 0)), 0, mood_total())
 
 
-## The number of steps the angriest level has.
+## The number of steps the angriest level has: the run's Parts.
 func mood_total() -> int:
-	if zoo_mood >= 0 or stages == null or stages.plan == null:
-		return _zoo_levels()
-	return maxi(stages.plan.size(), 1)
+	return maxi(int(_read(&"part_total", 1)), 1)
+
+
+## Whether the run's last Pair went in (the senses say nothing then, Q1413).
+func last_pair_in() -> bool:
+	return bool(_read(&"last_pair_in", false))
+
+
+## The run's answer to the read `what` (a method of Stages, or of the Part standing in for it), or `none` with
+## no run.
+func _read(what: StringName, none: Variant) -> Variant:
+	if stages == null or not is_inside_tree():
+		return none
+	return stages.call(what)
 
 
 ## Whether the Final wash has begun in this level (core/96): the senses are off and it comments no more.
@@ -299,11 +237,11 @@ func ending() -> bool:
 	return day != null and day.final_started
 
 
-## Whether the senses are on: the zoo's washer station always, else a staged run (core/71) is under way.
+## Whether the senses are on: a staged run (core/71) is under way, and the Final wash has not begun.
 func senses_on() -> bool:
 	if ending():
 		return false
-	return zoo or (stages != null and stages.stage >= 0)
+	return bool(_read(&"under_way", false))
 
 
 func _show(now: bool) -> void:
@@ -344,7 +282,7 @@ func _apply_mood() -> void:
 	if looks == null:
 		return
 	var level := mood_level()
-	var angry := (is_broken() or zoo_mood >= 0) and level > 0
+	var angry := level > 0
 	looks.damage = float(level) / float(mood_total()) if angry else 0.0
 	looks.repair = 1.0 - looks.damage
 
@@ -376,10 +314,6 @@ static func trigger_of(id: StringName) -> VoiceTrigger:
 
 func _said(said: VoiceLine, take_index: int) -> Dictionary:
 	return grant({"line": said.id, "take": take_index, "serial": serial + 1})
-
-
-func _zoo_levels() -> int:
-	return tuning.zoo_levels if tuning != null else 5
 
 
 func _now() -> float:

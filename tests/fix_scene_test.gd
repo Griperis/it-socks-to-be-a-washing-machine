@@ -98,7 +98,7 @@ func case_last_fix() -> void:
 	var rt := LevelRuntime.of(_level)
 	var stages := _stages()
 	for i in 3:
-		_ask(&"zoo_fit_now")
+		_ask(&"fit_now")
 		await _until(func() -> bool: return stages.stage == i + 1, "Stage %d to open" % (i + 2))
 	await _complete()
 	var fixed: Array = []
@@ -219,7 +219,7 @@ func _ask(verb: StringName) -> void:
 
 ## The current Stage completes (the run's own Host verb): its Part pops and lies.
 func _complete() -> void:
-	_ask(&"zoo_complete")
+	_ask(&"complete_now")
 	var stages := _stages()
 	await _until(func() -> bool: return stages.phase == Stages.Phase.PART_OUT, "the Stage to complete")
 	var part := stages.machine_part()

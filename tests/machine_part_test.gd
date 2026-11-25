@@ -273,7 +273,7 @@ func case_guest() -> void:
 	var hp := host.get_node("Stations/Stages/" + FILTER + "/MachinePart") as MachinePart
 	var popped: Array = []
 	gs.stage_completed.connect(func(_s: int, _c: StringName) -> void: popped.append(gp.popping()))
-	LevelRuntime.of(host).parts.ask(Command.new(&"zoo_complete", Parts.HOST, hs.id))
+	LevelRuntime.of(host).parts.ask(Command.new(&"complete_now", Parts.HOST, hs.id))
 	await _until(func() -> bool: return gp.out(), "the Guest to see the Part out", 600)
 	await _frames(1)
 	_check(gp.popping() or gp.lying(), "the Guest sees it pop or lie")
@@ -347,7 +347,7 @@ func _build() -> void:
 
 ## Completes the Stage outright (the zoo's own verb), as the Host.
 func _complete() -> void:
-	_parts.ask(Command.new(&"zoo_complete", Parts.HOST, _stages.id))
+	_parts.ask(Command.new(&"complete_now", Parts.HOST, _stages.id))
 	await _until(func() -> bool: return _stages.phase == Stages.Phase.PART_OUT, "the Stage to complete")
 
 

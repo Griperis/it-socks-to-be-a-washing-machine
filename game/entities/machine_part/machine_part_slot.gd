@@ -1,5 +1,5 @@
 ## Where a Machine Part goes in (core/79, docs/architecture/stages.md "Its verbs"): placed on the washing
-## machine (the zoo's stand-in is a box). A player carrying the current Stage's Part clicks it and the Part
+## machine, or on any thing that stands for it. A player carrying the current Stage's Part clicks it and the Part
 ## is fitted: the Part is put away, the machine is a Fix calmer and its floor opens (`Stages.fit_answer()`,
 ## at once while the Stage names no `fix_cutscene`: core/92's house plan names one). The washer is core/73's: while it is
 ## `busy()` (someone in its drum, a cutscene) the fit is refused "The washing machine is busy".
@@ -16,7 +16,7 @@ const NOT_CARRIED := "not_carried"
 const SAYS := {BUSY: "The washing machine is busy"}
 ## The washer is in this group: it answers `busy()`.
 const WASHER_GROUP := &"washer"
-## The zoo's box is aimed as itself: it needs no aim body.
+## A slot whose own thing is aimed needs no aim body.
 const WIRING_OPTIONAL := ["aim_body"]
 
 ## The run whose Part it takes.
@@ -25,7 +25,7 @@ const WIRING_OPTIONAL := ["aim_body"]
 @export var reach := 4.0
 ## A body over the machine that takes the crosshair only while the Stage's Part is out (the house's washer,
 ## core/91: the Washer, its first Part, is aimed the rest of the time); it is on `aim_layer` then, on none
-## otherwise. Unset: the slot's own thing is always aimed (the zoo's box).
+## otherwise. Unset: the slot's own thing is always aimed.
 @export var aim_body: CollisionObject3D
 @export_flags_3d_physics var aim_layer := Mess.LAYER_HOUSE
 
@@ -48,7 +48,7 @@ func _aim_now() -> void:
 		aim_body.collision_layer = want
 
 
-## On the washer (an aim body) it reads as the washer does, named with no key; the zoo's box reads nothing.
+## On the washer (an aim body) it reads as the washer does, named with no key; a thing aimed as itself reads nothing.
 func prompt_title() -> String:
 	return Washer.TITLE if aim_body != null else ""
 

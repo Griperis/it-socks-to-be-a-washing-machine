@@ -1,8 +1,8 @@
 ## A zoo switch at the Stages station (docs/architecture/stages.md "How it is authored"): "Complete"
 ## completes the mini run's Stage outright, "Fit now" fits its Part and opens the next floor at once
 ## (until core/79's MachinePartSlot, the way to open a floor). It holds no state: its use asks
-## `switch` and the Host answers with the run's own answer (Stages.zoo_complete_answer() or
-## zoo_fit_now_answer()), so every machine sees the run move and its signals fire. Its Looks' label
+## `switch` and the Host answers with the run's own answer (Stages.complete_now_answer() or
+## fit_now_answer()), so every machine sees the run move and its signals fire. Its Looks' label
 ## names it and says where the run stands.
 class_name StagesSwitch
 extends Part
@@ -43,7 +43,7 @@ func decide(cmd: Command) -> Dictionary:
 		return refuse("wrong")
 	if not parts.near(cmd.by, get_parent(), reach):
 		return refuse("far")
-	return stages.zoo_complete_answer() if does == Does.COMPLETE else stages.zoo_fit_now_answer()
+	return stages.complete_now_answer() if does == Does.COMPLETE else stages.fit_now_answer()
 
 
 ## Bound: the label says where the run stands now, and again after every answer.

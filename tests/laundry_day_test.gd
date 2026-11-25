@@ -241,7 +241,9 @@ func case_station() -> void:
 	var fix := station.get_node("LastFixPillar") as Node3D
 	await _stand_facing(player, fix.global_position + Vector3(0.0, -0.5, 1.4), fix.global_position)
 	await _press(&"interact")
-	await _until(func() -> bool: return day.zoo_fixed, "the Last Fix done pillar to set the switch", 60)
+	var run := station.get_node("Run") as LaundryRun
+	_check(day.stages == run, "the station's Laundry day reads its stand-in run")
+	await _until(func() -> bool: return run.fixed and day.fixed(), "the Last Fix done pillar to set the switch", 60)
 	await _physics_ticks(2)
 	_check(label.text.contains("last Fix done"), "the label says so (%s)" % label.text)
 	var final := station.get_node("FinalPillar") as Node3D
@@ -253,7 +255,8 @@ func case_station() -> void:
 	await _until(func() -> bool: return day.loaded_bins == 3 and day.wait_left() >= 0.0, "the next press to load the last and start the wait", 60)
 	await _until(func() -> bool: return day.final_started, "the wait to end in the Final wash", 200)
 	await _physics_ticks(2)
-	_check(label.text.contains("run ended"), "the label shows the zoo's end at once (%s)" % label.text)
+	_check(label.text.contains("run ended"), "the label shows the end at once (%s)" % label.text)
+	_check(not LevelRuntime.of(_zoo).final_screen.is_open(), "and no Final screen opens over the zoo")
 
 
 # --- Helpers -------------------------------------------------------------------------------------
