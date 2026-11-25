@@ -6,6 +6,8 @@ extends Control
 
 signal closed
 
+const NAME_ROW := preload("res://game/lobby/who_name.tscn")
+
 @onready var _heading: Label = %Heading
 @onready var _names: VBoxContainer = %Names
 @onready var _close: CloseButton = %Close
@@ -23,11 +25,8 @@ func open(world_name: String, names: PackedStringArray) -> void:
 		_names.remove_child(n)
 		n.queue_free()
 	for who in names:
-		var l := Label.new()
+		var l := NAME_ROW.instantiate() as Label
 		l.text = who
-		l.theme_type_variation = &"InkLabel"
-		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		l.add_theme_font_size_override(&"font_size", 28)
 		_names.add_child(l)
 	visible = true
 	_close.key().grab_focus()

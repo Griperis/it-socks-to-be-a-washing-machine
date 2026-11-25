@@ -1,0 +1,8 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/prompt_row.gd" id="1_row"]
+
+[node name="PromptRow" type="HBoxContainer"]
+mouse_filter = 2
+theme_type_variation = &"HudRow"
+script = ExtResource("1_row")

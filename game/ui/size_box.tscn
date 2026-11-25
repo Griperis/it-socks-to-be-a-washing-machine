@@ -1,0 +1,12 @@
+[gd_scene format=3]
+
+[node name="SizeBox" type="PanelContainer"]
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"SizeBox"
+
+[node name="Letter" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"SizeLetter"

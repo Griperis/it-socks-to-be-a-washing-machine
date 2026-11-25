@@ -12,8 +12,10 @@ extends CanvasLayer
 ## from it.
 const THEME := preload("res://game/look/theme.tres")
 ## Keys are drawn 1.5 times their text's size, icons 1.3.
-const KEY_SCALE := 1.5
-const ICON_SCALE := 1.3
+const KEY_SCALE := PromptRow.KEY_SCALE
+const ICON_SCALE := PromptRow.ICON_SCALE
+## The prompt row's scene, instanced per Prompt (core/111).
+const PROMPT_ROW := preload("res://game/ui/prompt_row.tscn")
 ## The theme variations of each text (game/look/theme.tres): prompts, rows, hints (the old HUD's 32,
 ## 28 and 24 pt).
 const PROMPT_LABEL := &"PromptLabel"
@@ -21,7 +23,7 @@ const ROW_LABEL := &"RowLabel"
 const HINT_LABEL := &"HintLabel"
 const SIZE_BOX := &"SizeBox"
 const SIZE_LETTER := &"SizeLetter"
-## The theme type holding the HUD's colours and the gap between a prompt's key, icon and name.
+## The theme type holding the HUD's colours.
 const HUD_TYPE := &"Hud"
 
 ## The crosshair where a drop may go, and where it may not (the theme's Hud `plain` and `refusal`:
@@ -52,6 +54,10 @@ var hands_tuning: HandsTuning
 @onready var _held: HBoxContainer = $HeldInfo
 @onready var _message_row: Control = $MessageRow
 @onready var _message: Label = $MessageRow/Message
+## A teammate's line: their name in their colour, then the rest in white.
+@onready var _named: HBoxContainer = $MessageRow/Named
+@onready var _named_name: Label = $MessageRow/Named/Who
+@onready var _named_rest: Label = $MessageRow/Named/Rest
 ## The off-screen hint arrows and the ping's emoji wheel (core/43).
 @onready var _arrows: HintArrows = $HintArrows
 @onready var _wheel: PingWheel = $PingWheel
@@ -63,10 +69,6 @@ var _blocked := false
 var _message_tween: Tween = null
 var _wobbling := false
 var _refusal := false
-## A teammate's line: their name in their colour, then the rest in white (made at its first use).
-var _named: HBoxContainer = null
-var _named_name: Label = null
-var _named_rest: Label = null
 
 
 func _ready() -> void:
@@ -107,7 +109,7 @@ func keep_clear() -> Array[Rect2]:
 		if box.is_visible_in_tree() and box.get_child_count() > 0 and box.size.x > 0.0:
 			out.append(box.get_global_rect())
 	for line: Control in [_message, _named]:
-		if line != null and line.is_visible_in_tree():
+		if line.is_visible_in_tree():
 			out.append(line.get_global_rect())
 	return out
 
@@ -133,8 +135,8 @@ func show_aimed(letter: String, key: String) -> void:
 	if letter == "":
 		return
 	if key != "":
-		_aimed.add_child(_icon(key, _font(ROW_LABEL) * KEY_SCALE))
-	_aimed.add_child(_size_box(letter))
+		_aimed.add_child(HudBits.icon(key, _font(ROW_LABEL) * KEY_SCALE))
+	_aimed.add_child(HudBits.size_box(letter))
 	_text["aimed"] = ("%s " % Prompt.cap_text(key) if key != "" else "") + "[%s]" % letter
 
 
@@ -162,7 +164,7 @@ func show_held(design: SockDesign, pair := false, count := "", wheel := false, s
 	if smarts:
 		_text["held"] = _fill_readout(_held, design, pair, count, wheel, true)
 	else:
-		_held.add_child(_size_box(design.size_letter()))
+		_held.add_child(HudBits.size_box(design.size_letter()))
 		_text["held"] = "[%s]" % design.size_letter()
 	_held.reset_size()
 	_place_held()
@@ -182,8 +184,7 @@ func show_hints(prompts: Array[Prompt]) -> void:
 ## red, turning to and fro about its middle and dying down (core/16 P01); anything else white,
 ## popping in (P02, Q2370).
 func say(text: String, refusal: bool) -> void:
-	if _named != null:
-		_named.visible = false
+	_named.visible = false
 	_message.text = text
 	_message.add_theme_color_override(&"font_color", MESSAGE_REFUSAL if refusal else MESSAGE_PLAIN)
 	_message.visible = true
@@ -211,17 +212,6 @@ func say(text: String, refusal: bool) -> void:
 func say_named(who: String, colour: Color, rest: String) -> void:
 	say(rest, false)
 	_message.visible = false
-	if _named == null:
-		_named = HBoxContainer.new()
-		_named.name = "Named"
-		_named.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_named.add_theme_constant_override(&"separation", THEME.get_constant(&"separation", HUD_TYPE))
-		_named_name = _label("", ROW_LABEL)
-		_named_rest = _label("", ROW_LABEL)
-		_named_rest.add_theme_color_override(&"font_color", MESSAGE_PLAIN)
-		_named.add_child(_named_name)
-		_named.add_child(_named_rest)
-		_message_row.add_child(_named)
 	_named_name.text = who
 	_named_name.add_theme_color_override(&"font_color", colour)
 	_named_rest.text = rest
@@ -254,20 +244,19 @@ func _centre_pivot() -> void:
 ## Hides the message row (its time is up).
 func hide_message() -> void:
 	_message.visible = false
-	if _named != null:
-		_named.visible = false
+	_named.visible = false
 
 
 ## What the message row says now, or "" when hidden.
 func message_text() -> String:
-	if _named != null and _named.visible:
+	if _named.visible:
 		return "%s %s" % [_named_name.text, _named_rest.text]
 	return _message.text if _message.visible else ""
 
 
 ## The colour of a teammate's name on the message row, or transparent when no teammate's line shows.
 func message_name_colour() -> Color:
-	if _named == null or not _named.visible:
+	if not _named.visible:
 		return Color.TRANSPARENT
 	return _named_name.get_theme_color(&"font_color")
 
@@ -373,16 +362,16 @@ func _changed(which: String, sig: String) -> bool:
 func _fill_readout(box: HBoxContainer, design: SockDesign, pair: bool, count: String, wheel: bool, with_size: bool) -> String:
 	var letter := design.size_letter()
 	if with_size:
-		box.add_child(_size_box(letter))
-	box.add_child(_icon(UiIcons.or_simple(String(design.collection)), _font(ROW_LABEL) * ICON_SCALE))
-	box.add_child(_label(design.name, ROW_LABEL))
-	box.add_child(_icon("ball" if pair else "sock", _font(ROW_LABEL) * ICON_SCALE))
-	box.add_child(_label(count, ROW_LABEL))
+		box.add_child(HudBits.size_box(letter))
+	box.add_child(HudBits.icon(UiIcons.or_simple(String(design.collection)), _font(ROW_LABEL) * ICON_SCALE))
+	box.add_child(HudBits.label(design.name, ROW_LABEL))
+	box.add_child(HudBits.icon("ball" if pair else "sock", _font(ROW_LABEL) * ICON_SCALE))
+	box.add_child(HudBits.label(count, ROW_LABEL))
 	var text := "[%s] %s %s %s (%s)" % [letter, "Pair" if pair else "Sock", count, design.name, design.collection]
 	if wheel:
 		var wheel_keys := Prompts.keys(Player.HANDS_NEXT, pad)
 		if not wheel_keys.is_empty():
-			box.add_child(_icon(wheel_keys[0], _font(ROW_LABEL) * KEY_SCALE))
+			box.add_child(HudBits.icon(wheel_keys[0], _font(ROW_LABEL) * KEY_SCALE))
 			text += " " + Prompt.cap_text(wheel_keys[0])
 	return text
 
@@ -395,49 +384,10 @@ static func _font(variation: StringName) -> int:
 ## One Prompt as KEY, ICON, Name in text `variation`; a Prompt with no keys and no icon is the bare name.
 func _prompt_row(p: Prompt, variation: StringName) -> Control:
 	if p.keys.is_empty() and p.icon == "":
-		return _label(p.title, variation)
-	var font := _font(variation)
-	var line := HBoxContainer.new()
-	line.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	line.add_theme_constant_override(&"separation", THEME.get_constant(&"separation", HUD_TYPE))
-	for k in p.keys:
-		line.add_child(_icon(k, font * KEY_SCALE))
-	if p.icon != "":
-		line.add_child(_icon(UiIcons.or_simple(p.icon), font * ICON_SCALE))
-	line.add_child(_label(p.title, variation))
+		return HudBits.label(p.title, variation)
+	var line := PROMPT_ROW.instantiate() as PromptRow
+	line.fill(p, variation, _font(variation))
 	return line
-
-
-func _icon(key: String, px: float) -> TextureRect:
-	var t := TextureRect.new()
-	t.name = "Icon_" + key
-	t.texture = UiIcons.texture(key)
-	t.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	t.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	t.custom_minimum_size = Vector2(px, px)
-	t.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	t.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	return t
-
-
-func _label(text: String, variation: StringName) -> Label:
-	var l := Label.new()
-	l.text = text
-	l.theme_type_variation = variation
-	l.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	return l
-
-
-## The Size letter in its small rounded box (the old UiBits.size_box at 28 pt).
-func _size_box(letter: String) -> PanelContainer:
-	var box := PanelContainer.new()
-	box.name = "SizeBox"
-	box.theme_type_variation = SIZE_BOX
-	box.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	box.add_child(_label(letter, SIZE_LETTER))
-	return box
 
 
 func _clear(box: Control) -> void:

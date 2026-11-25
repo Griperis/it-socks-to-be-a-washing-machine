@@ -10,7 +10,9 @@ extends Control
 ## The mouse came or went, or the pad's selection did: the Lobby looks again who is focused.
 signal focus_changed
 
-const MARK_PX := 34
+## The theme variations of the Ready mark (game/look/theme.tres): a gold disc with a tick, or an empty ring with a dash.
+const READY_ON := &"ReadyCircle"
+const READY_OFF := &"ReadyCircleOff"
 
 ## Which pedestal of the stage this place is.
 var index := 0
@@ -47,7 +49,7 @@ func show_player(who: String, colour: Color, is_host: bool, with_ready: bool, is
 	_name.add_theme_color_override(&"font_color", colour)
 	_waiting.visible = false
 	_mark.visible = with_ready
-	_mark.add_theme_stylebox_override(&"panel", _circle(is_ready))
+	_mark.theme_type_variation = READY_ON if is_ready else READY_OFF
 	_tick.text = LobbyWords.READY_TICK if is_ready else LobbyWords.NOT_READY_DASH
 	_tick.add_theme_color_override(&"font_color", Color(0.13, 0.1, 0.08) if is_ready else Color(0.75, 0.68, 0.58))
 	_apply_focus_rules()
@@ -108,15 +110,3 @@ func _apply_focus_rules() -> void:
 func _hover(on: bool) -> void:
 	_hovered = on and not _free
 	focus_changed.emit()
-
-
-## The Ready mark's circle: gold with a tick, or an empty ring with a dash.
-func _circle(is_ready: bool) -> StyleBoxFlat:
-	var box := StyleBoxFlat.new()
-	var gold := tuning.focus_colour if tuning != null else Color("f5c22e")
-	box.bg_color = gold if is_ready else Color(1.0, 1.0, 1.0, 0.0)
-	box.border_color = Color(0.13, 0.1, 0.08) if is_ready else Color(0.75, 0.68, 0.58)
-	box.set_border_width_all(3)
-	box.set_corner_radius_all(MARK_PX / 2)
-	box.anti_aliasing = true
-	return box

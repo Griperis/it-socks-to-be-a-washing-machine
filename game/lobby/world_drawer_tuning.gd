@@ -6,5 +6,3 @@ extends Resource
 @export_range(0.05, 2.0, 0.05, "suffix:s") var slide_seconds := 0.25 # placeholder: the old number, until the designer tunes it
 ## The drawer's width in pixels.
 @export_range(200.0, 900.0, 10.0, "suffix:px") var width := 520.0 # placeholder: the old number, until the designer tunes it
-## How strongly the chosen World's row is tinted gold.
-@export_range(0.0, 1.0, 0.05) var chosen_tint := 0.4 # placeholder: the old number, until the designer tunes it

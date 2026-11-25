@@ -24,7 +24,7 @@ const COLUMN_GAP := 14.0
 const CHROME := 430.0
 const MIN_STAGE_H := 160.0
 const MAX_STAGE_H := 760.0
-const INK := Color("#3b2a22")
+const TOTAL_CELL := preload("res://game/ui/final_screen/final_total_cell.tscn")
 const GOLD := Color(1.0, 0.8, 0.4)
 
 @export var tuning: FinalScreenTuning
@@ -86,13 +86,10 @@ func open(summary: FinalSummary) -> void:
 		end = maxf(end, c.end)
 	_totals_at = end + tuning.totals_delay
 	for total in totals.totals:
-		var cell := VBoxContainer.new()
-		cell.add_theme_constant_override("separation", 0)
-		var caption := _label(total.caption, 24)
-		var value := _label("", 44)
+		var cell := TOTAL_CELL.instantiate() as VBoxContainer
+		(cell.get_child(0) as Label).text = total.caption
+		var value := cell.get_child(1) as Label
 		value.name = "Total_%s" % total.source
-		cell.add_child(caption)
-		cell.add_child(value)
 		_total_labels.append(value)
 		_totals_row.add_child(cell)
 	_totals_row.modulate.a = 0.0
@@ -247,16 +244,6 @@ func _step_finale(delta: float) -> void:
 		for i in 3:
 			var at := Vector3((_rng.randf() - 0.5) * metres.x * 0.8, 0.0, (_rng.randf() - 0.5) * metres.y * 0.8)
 			c.burst(at, tuning.confetti, c.colour.lerp(GOLD, float(i) / 2.0), metres.x * 0.35)
-
-
-func _label(text: String, size: int) -> Label:
-	var label := Label.new()
-	label.text = text
-	label.theme_type_variation = &"PlainLabel"
-	label.add_theme_color_override(&"font_color", INK)
-	label.add_theme_font_size_override(&"font_size", size)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	return label
 
 
 func _clear() -> void:

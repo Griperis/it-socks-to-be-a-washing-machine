@@ -20,6 +20,9 @@ const GOAL_GROUP := &"stage_bar_goal"
 ## The sound of the fold (placeholder: the old rig's `pop`, Q1620), played as it begins.
 const FOLD_SOUND := &"pop"
 
+## One icon of the stack: a TextureRect scene (core/111).
+const ICON := preload("res://game/ui/ui_icon.tscn")
+
 @export var tuning: StageBarTuning
 
 ## A fold into another phase began.
@@ -272,11 +275,8 @@ func _set_icons(keys: Array[String], pop: bool) -> void:
 			else Vector2(side + tuning.icon_overlap * (keys.size() - 1), side)
 	_icons.visible = not keys.is_empty()
 	for i in keys.size():
-		var icon := TextureRect.new()
+		var icon := ICON.instantiate() as TextureRect
 		icon.texture = UiIcons.texture(keys[i])
-		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		icon.size = Vector2(side, side)
 		icon.position = Vector2(tuning.icon_overlap * i, 0.0)
 		icon.pivot_offset = icon.size * 0.5

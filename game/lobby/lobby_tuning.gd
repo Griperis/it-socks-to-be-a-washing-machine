@@ -10,9 +10,6 @@ extends Resource
 @export_range(10.0, 90.0, 1.0, "suffix:deg") var camera_fov := 30.0 # placeholder: the old number, until the designer tunes it
 ## Metres between two pedestals.
 @export_range(1.0, 4.0, 0.1, "suffix:m") var spacing := 2.1 # placeholder: the old number, until the designer tunes it
-## The pedestal (a plain cylinder for now, Q1768).
-@export_range(0.3, 1.5, 0.05, "suffix:m") var pedestal_radius := 0.75 # placeholder: the old number, until the designer tunes it
-@export_range(0.1, 1.0, 0.05, "suffix:m") var pedestal_height := 0.3 # placeholder: the old number, until the designer tunes it
 ## The box round a figure that takes the mouse and the pad's selection.
 @export_range(1.0, 3.0, 0.1, "suffix:m") var figure_height := 1.9 # placeholder: the old number, until the designer tunes it
 @export_range(0.5, 2.5, 0.1, "suffix:m") var figure_width := 1.3 # placeholder: the old number, until the designer tunes it

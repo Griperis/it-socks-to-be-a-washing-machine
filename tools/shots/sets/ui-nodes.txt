@@ -1,0 +1,13 @@
+# core/111: the screens whose pieces moved from code to nodes: HUD prompts, Stage bar, Final screen, Lobby, a lit key (before/after, 0 differing pixels).
+hud-sock  --size=1280x720 --do='40:screen:plain;60:screen:sock' --shots=70
+hud-smarts  --size=1280x720 --do='50:screen:mate;55:screen:take2' --shots=75
+hud-held-base  --size=1280x720 --do='40:screen:plain;50:screen:floor;55:screen:take' --shots=75
+stage-bar  --scene=res://tools/shot_ui_nodes.tscn --size=1280x720 --do='10:call:stage_bar' --shots=30
+lit-key  --scene=res://tools/shot_ui_nodes.tscn --size=1280x720 --do='10:call:lit_key' --shots=40
+final-4  --size=1920x1080 --do='30:final:4 players' --shots=45
+final-long  --size=1920x1080 --do='30:final:long name' --shots=45
+final-left  --size=1920x1080 --do='30:final:left' --shots=45
+lobby-four  --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:four' --shots=60
+lobby-drawer  --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:drawer_open' --shots=60
+lobby-who  --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:who' --shots=60
+lobby-focus  --scene=res://tools/shot_lobby.tscn --size=1280x720 --do='30:call:focus_two' --shots=60

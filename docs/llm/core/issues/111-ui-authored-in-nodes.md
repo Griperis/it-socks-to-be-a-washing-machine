@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: refactor
 area: core
 feature: ui
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-25
 blocked_by: [core/109]
 notes: ["suggested model: sonnet", "designer 2026-11-25 (Q2658): UI should ideally always be authored in nodes"]
 terms: []
@@ -45,3 +45,15 @@ Also from core/109: the Lobby pedestals' size is now in `lobby_stage.tscn`, but 
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-25
+Changed: every `Label.new()`, `TextureRect.new()`, box, Panel, ColorRect and StyleBoxFlat of `game/` (outside the zoo and
+`keycap_style.gd`) is a scene or a Theme variation: `prompt_row.tscn` (+ `HudBits`: `ui_icon`, `hud_label`, `size_box`),
+the named row in `player.tscn`, `final_total_cell.tscn`, `FinalColumnFrame` (tinted by `self_modulate`), `who_name.tscn`,
+`world_swatch.tscn`, `WorldRowChosen/Plain`, `ReadyCircle/Off`, `focus_glow.tscn`; the Stage bar's icons are `ui_icon.tscn`.
+`LobbyStage.box_of` reads the pedestal mesh. New suite `tests/ui_nodes_test.gd` (grep case + Who page real path); shot set
+`ui-nodes` (+ `tools/shot_ui_nodes`). Settled choices are rows in batch-a-review.md.
+Files: game/ui/*, game/lobby/*, game/look/theme.tres, game/player/player.tscn, tests/ui_nodes_test.gd, tools/.
+Verified: stills in builds/review-core-111/ui-nodes-before-after.png: HUD, Stage bar, lit key, Lobby (four, drawer, Who,
+focus) 0 differing pixels; the Final screen differs only in its 3D stages, which differ between two runs of the same code
+too (random, not the UI); `PASS 22784 checks, 714 cases`.

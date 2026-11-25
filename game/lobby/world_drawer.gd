@@ -224,7 +224,7 @@ func _fill(into: VBoxContainer, coop_only: bool) -> void:
 			continue
 		var node := ROW.instantiate() as WorldRow
 		into.add_child(node)
-		node.fill(row, _chosen, _host and not _locked, not coop_only, tuning, _colour_of)
+		node.fill(row, _chosen, _host and not _locked, not coop_only, _colour_of)
 		var slot := String(row["slot"])
 		node.choose.connect(func() -> void: choose_world.emit(slot))
 		node.delete.connect(func() -> void: _ask_delete(slot, String(row["name"])))

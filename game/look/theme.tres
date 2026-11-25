@@ -267,6 +267,70 @@ corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 anti_aliasing = true
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_world_chosen"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(1, 0.8, 0.2, 0.4)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_world_plain"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.08)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ready_on"]
+bg_color = Color(0.96, 0.76, 0.18, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.13, 0.1, 0.08, 1)
+corner_radius_top_left = 17
+corner_radius_top_right = 17
+corner_radius_bottom_right = 17
+corner_radius_bottom_left = 17
+anti_aliasing = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ready_off"]
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.75, 0.68, 0.58, 1)
+corner_radius_top_left = 17
+corner_radius_top_right = 17
+corner_radius_bottom_right = 17
+corner_radius_bottom_left = 17
+anti_aliasing = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_final_column"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 0.22)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
 [resource]
 Heading1/base_type = &"OutlinedLabel"
 Heading1/font_sizes/font_size = 44
@@ -276,7 +340,6 @@ HintLabel/base_type = &"OutlinedLabel"
 HintLabel/font_sizes/font_size = 24
 Hud/colors/plain = Color(1, 1, 1, 1)
 Hud/colors/refusal = Color(0.95, 0.25, 0.2, 1)
-Hud/constants/separation = 6
 OutlinedLabel/base_type = &"Label"
 OutlinedLabel/colors/font_color = Color(1, 1, 1, 1)
 OutlinedLabel/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
@@ -438,3 +501,22 @@ LoadingBar/base_type = &"ProgressBar"
 LoadingBar/styles/background = SubResource("StyleBoxFlat_bar_back")
 LoadingBar/styles/fill = SubResource("StyleBoxFlat_bar_fill")
 Backdrop/base_type = &"ColorRect"
+HudRow/base_type = &"HBoxContainer"
+HudRow/constants/separation = 6
+FinalCaption/base_type = &"PlainLabel"
+FinalCaption/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
+FinalCaption/font_sizes/font_size = 24
+FinalValue/base_type = &"FinalCaption"
+FinalValue/font_sizes/font_size = 44
+FinalColumnFrame/base_type = &"PanelContainer"
+FinalColumnFrame/styles/panel = SubResource("StyleBoxFlat_final_column")
+WhoName/base_type = &"InkLabel"
+WhoName/font_sizes/font_size = 28
+WorldRowChosen/base_type = &"PanelContainer"
+WorldRowChosen/styles/panel = SubResource("StyleBoxFlat_world_chosen")
+WorldRowPlain/base_type = &"PanelContainer"
+WorldRowPlain/styles/panel = SubResource("StyleBoxFlat_world_plain")
+ReadyCircle/base_type = &"PanelContainer"
+ReadyCircle/styles/panel = SubResource("StyleBoxFlat_ready_on")
+ReadyCircleOff/base_type = &"PanelContainer"
+ReadyCircleOff/styles/panel = SubResource("StyleBoxFlat_ready_off")
