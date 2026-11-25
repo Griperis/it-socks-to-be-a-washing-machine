@@ -59,3 +59,4 @@ ahead); the Handling station gets a stand-in crate with a `Carriable` and its sl
   game/player/player.gd, game/ui/prompts.gd, game/zoo/handling/crate.tscn, game/zoo/stations/handling.tscn,
   tests/carry_test.gd, tests/coop_carry_test.gd
 - Verified: `kit/tools/run.sh --touched` (agent_finish's run, PASS); carry 43 checks, coop_carry 16 checks.
+- Merged: 1688c2ec (2026-11-25, branch core/78-carried-things-in-the-hands)

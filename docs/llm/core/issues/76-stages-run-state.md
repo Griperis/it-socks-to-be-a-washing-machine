@@ -72,3 +72,4 @@ each floor; Socks for now from the station's SockSpots).
   game/zoo/stations/stages.tscn, game/zoo/stages/, game/house/house.tscn (the Run), tests/stages_test.gd,
   tests/saves/shape.json, house_ids.txt
 - Verified: `kit/tools/run.sh --touched`: PASS (586 cases) but for the zoo layout, fixed and rerun: `--only=zoo,every_sock,stages` PASS 5380 checks, 27 cases; grep_rules PASS
+- Merged: 6b3b9bd3 (2026-11-25, branch core/76-stages-run-state)
