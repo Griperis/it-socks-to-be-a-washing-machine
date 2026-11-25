@@ -87,6 +87,8 @@ GLASS_ALPHA = 0.07  # the clearer porthole glass (Q1401)
 LINING = "Lining"  # the Looks contract's names (game/entities/washer/looks_contract.json "named")
 PILE = "Pile"
 COLLIDER = "body-convcolonly"
+TRIM = "body_trim"  # the body's raised parts, out of the shell (split_trim)
+SHELL_MATERIAL = "mint"
 EYE = ["eye_white", "iris", "pupil", "eyelid_upper", "eyelid_lower"]
 X, Y, Z = Vector((1, 0, 0)), Vector((0, 1, 0)), Vector((0, 0, 1))
 
@@ -127,7 +129,10 @@ def _join(target, src):
     m = target.matrix_world.inverted() @ src.matrix_world
     slots = []
     for s in src.material_slots:
-        names = [t.material.name for t in target.material_slots]
+        if s.material is None:  # an emptied slot (the power light's, out of the body): no faces use it
+            slots.append(0)
+            continue
+        names = [t.material.name if t.material else "" for t in target.material_slots]
         if s.material.name not in names:
             target.data.materials.append(s.material)
             names.append(s.material.name)
@@ -219,6 +224,48 @@ def make_brows(parent, mat):
         sub.levels = sub.render_levels = 2
         out[name] = o
     return out
+
+
+def even_normals(obj):
+    """Each flat face's own normal at its corners (assets/14, Q2655): the model's big flat faces (the
+    front round the door hole, the panel) are long thin triangles whose corners shared smooth normals
+    with the bevels and the door gasket next to them, up to 46 degrees off the face. Shading and the
+    shadow's normal bias followed those bent normals across each triangle, so the body shadowed itself
+    in stripes fanning out round the door, the brows and the panel. A weighted-normal modifier
+    (applied at export, before the rig) lets the biggest face win each corner, keeping the sharp edges
+    the model marks."""
+    for m in [m for m in obj.modifiers if m.name == "even_normals"]:
+        obj.modifiers.remove(m)
+    mod = obj.modifiers.new("even_normals", "WEIGHTED_NORMAL")
+    mod.mode = "FACE_AREA"
+    mod.weight = 100
+    mod.keep_sharp = True
+    obj.modifiers.move(obj.modifiers.find(mod.name), 0)
+
+
+def split_trim(body):
+    """Takes every face of the body that is not its mint shell (the worktop, the panel, the ring round
+    the door, the gasket, the feet and the steel and brass bits) into its own mesh `body_trim`, skinned
+    to bob like the body (assets/14, Q2655). The game lets only the shell cast the body's shadow
+    (washer_model_import.gd): the trims stand a centimetre or two proud of the shell, and the sun's
+    shadow, as coarse as it is at that size, drew false stripes on the shell beside each of them. The
+    trims still take shadow. A saved build's trim is joined back first, so the split runs again."""
+    old = bpy.data.objects.get(TRIM)
+    if old is not None:
+        _join(body, old)
+    trim = body.copy()
+    trim.data = body.data.copy()
+    trim.name = trim.data.name = TRIM
+    for c in body.users_collection:
+        c.objects.link(trim)
+    shell = {i for i, sl in enumerate(body.material_slots) if sl.material and sl.material.name == SHELL_MATERIAL}
+    for o, drop in ((body, lambda f: f.material_index not in shell), (trim, lambda f: f.material_index in shell)):
+        bm = bmesh.new()
+        bm.from_mesh(o.data)
+        bmesh.ops.delete(bm, geom=[f for f in bm.faces if drop(f)], context="FACES")
+        bm.to_mesh(o.data)
+        bm.free()
+    return trim
 
 
 def remove_old_drum(body):
@@ -694,16 +741,21 @@ def build():
     make_lining(rig, lining_me, light_me, glow)
     for o in (body, bpy.data.objects["dial"], bpy.data.objects["detergent_drawer"]):
         _bake_transform(o)
+    trim = split_trim(body)
+    for o in (body, trim, bpy.data.objects["dial"], bpy.data.objects["detergent_drawer"]):
         skin(o, rig, "bob")
     skin(door, rig, BONE["door"])
     skin(drum, rig, BONE["drum"])
     hang(laundry, rig, BONE["laundry"], pile_at)
     for name, o in brows.items():
         skin(o, rig, BONE[name])
-    for s in [s for s in body.material_slots if s.material == glow]:
-        s.material = None  # the power light is in Lining now
-    while body.data.materials and body.data.materials[-1] is None:
-        body.data.materials.pop()
+    for o in (body, trim, door, bpy.data.objects["dial"], bpy.data.objects["detergent_drawer"]):
+        even_normals(o)
+    for o in (body, trim):
+        for s in [s for s in o.material_slots if s.material == glow]:
+            s.material = None  # the power light is in Lining now
+        while o.data.materials and o.data.materials[-1] is None:
+            o.data.materials.pop()
     gone = list(gone) + (["old drum and paddles (%d faces)" % paddles] if paddles else [])
     made = make_actions(rig)
     bpy.context.view_layer.update()

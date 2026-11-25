@@ -7,13 +7,19 @@
 ## - Godot's glTF import gives every animation a track at the rest for each bone it does not key; those go,
 ##   so each animation moves only the bones its Blender action keys and the Looks' players never fight;
 ## - the animations go to the players the contract's `players` names (AnimationPlayer, Loops, Spin), and
-##   the loops (talk, rumble, spin) loop.
+##   the loops (talk, rumble, spin) loop;
+## - the body's raised trims (`body_trim`: the worktop, the panel, the ring round the door, the gasket), the
+##   dial and the detergent drawer cast no shadow: only the body's shell does (Q2655). Standing a
+##   centimetre or two proud of the shell or the panel, they drew false stripes of the sun's coarse shadow
+##   beside them. They still take shadow; the door and the brows still cast theirs.
 @tool
 extends EditorScenePostImport
 
 const CONTRACT := "res://game/entities/washer/looks_contract.json"
 const RIG := "face_rig"
 const LOOPS: Array[StringName] = [&"talk", &"rumble", &"spin"]
+## The meshes that take shadow but cast none (see the header).
+const NO_SHADOW: Array[StringName] = [&"body_trim", &"dial", &"detergent_drawer"]
 
 
 func _post_import(scene: Node) -> Object:
@@ -25,6 +31,12 @@ func _post_import(scene: Node) -> Object:
 	if rig == null or player == null:
 		push_error("washer_model_import: no %s skeleton or AnimationPlayer in the glb" % RIG)
 		return scene
+	for mesh_name: StringName in NO_SHADOW:
+		var trim := rig.get_node_or_null(NodePath(mesh_name)) as GeometryInstance3D
+		if trim == null:
+			push_error("washer_model_import: no mesh %s in the glb" % mesh_name)
+		else:
+			trim.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	var all := {}
 	for name in player.get_animation_list():
 		all[StringName(name)] = _clean(player.get_animation(name), StringName(name), rig)
