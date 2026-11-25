@@ -8,7 +8,7 @@
 ## `FILL_RATE` a second, hidden when empty (the old laundry_view.gd _show_fills); `tip()` turns the
 ## Looks toward the washer and plays the `tip` animation; `set_drawn(false)` hides it from the draw
 ## (the Cutscene frame's, carried or lying); its crosshair words are "Laundry bin, dirty" / ", empty".
-## The graybox heap has no blend shape: it is scaled by the fill instead, until the model (assets/13).
+## The model's heap has the blend shape (assets/13); a Looks whose heap has none is scaled by the fill.
 class_name LaundryBin
 extends Part
 

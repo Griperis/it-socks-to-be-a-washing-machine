@@ -680,6 +680,12 @@
       "colliders": 0,
       "source": "parts/part_detergent",
       "glb": "assets/parts/detergent.glb"
+    },
+    "laundry_bin": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "laundry/laundry_bin",
+      "glb": "assets/laundry_bin/laundry_bin.glb"
     }
   }
 }

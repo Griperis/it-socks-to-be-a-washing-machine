@@ -1,0 +1,5 @@
+# assets/13: the Laundry bin's model in the game (the zoo's Laundry station), full and empty, from the side and from above.
+full  --size=960x720 --do='30:laundry_bin:full' --shots=40
+empty  --size=960x720 --do='30:laundry_bin:empty' --shots=40
+above_full  --size=960x720 --do='30:laundry_bin:above_full' --shots=40
+above_empty  --size=960x720 --do='30:laundry_bin:above_empty' --shots=40
