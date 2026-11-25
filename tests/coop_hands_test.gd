@@ -51,7 +51,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "guest_throw_ghost_on_host_flight", "method": "case_guest_throw_ghost_on_host_flight", "world": false,
 				"title": "coop/11, coop/13, Q2573, 0 and 50 ms: the Guest charges and releases a full and a half Throw: its ghost leaves the first-person hand with the Host's launch from there, and is drawn on the Host's flight as the Guest's stream shows it from its first frame, with no jump"},
 		{"name": "teammate_throw_seen_real_path", "method": "case_teammate_throw_seen_real_path", "world": false,
-				"title": "coop/14 real path, 50 ms one way: the Host throws by its own input; on the Guest the Sock leaves the Host avatar's hand when the copy's flight starts, moving at once, never surging, is on the copy after hand_over_time, and the copy plays one Host tick a tick"},
+				"title": "coop/14, Q2685, real path, 50 ms one way: the Host throws by its own input; on the Guest the Sock stays in the Host avatar's hand until the copy's flight plays, then pops onto the copy (the real arc) at once, and the copy plays one Host tick a tick"},
 		{"name": "throw_drop_pour_real_path", "method": "case_throw_drop_pour_real_path", "world": false,
 				"title": "coop/13 real path, 50 ms one way: the Guest throws (drawn on the Host's arc, no pop at the rest) and drops (never drawn under the floor) by its own input, the Host pours at the heap: no Sock on the Guest is ever under the floor, and once all lie every Sock lies and is drawn on the Guest where the Host's is (1 mm, 1 degree)"},
 	]
@@ -613,10 +613,10 @@ func case_throw_drop_pour_real_path() -> void:
 	_drop_branches()
 
 
-## coop/14, real path at 50 ms one way: the Host's player charges and releases a Throw by its own input;
-## on the Guest the Sock stays in the Host avatar's hand until the copy's flight starts playing there,
-## leaves that hand moving (never hanging still, never surging back), is drawn on the copy once
-## `hand_over_time` of its flight is gone, and the copy plays the Host's ticks one a tick (no skip).
+## coop/14, Q2685, real path at 50 ms one way: the Host's player charges and releases a Throw by its own
+## input; on the Guest the Sock is drawn in the Host avatar's hand until the copy's flight plays there,
+## then on the copy (its real launch point and arc) from that frame on, and the copy plays the Host's
+## ticks one a tick (no skip). The pop's size is printed.
 func case_teammate_throw_seen_real_path() -> void:
 	var zoos := await _pair(LAG_MS)
 	var host: Node3D = zoos[0]
@@ -636,18 +636,12 @@ func case_teammate_throw_seen_real_path() -> void:
 	await _paced_ticks(int(hp.hands_tuning.tap * FPS) + 2 + int(hp.hands_tuning.charge_time * FPS))
 	Input.action_release(&"drop_throw")
 	var gh := _hands(guest)
-	var ease := gm.ghost_tuning().hand_over_time
 	var first_off := INF
-	var still_frames := 0
-	var largest_change := 0.0
-	var on_body := INF
+	var off_body := 0.0
+	var pop := -1.0
 	var skips := 0.0
 	var played := -1.0
 	var last := Vector3.INF
-	var last_step := Vector3.INF
-	var copy_last := Vector3.INF
-	var copy_step := Vector3.INF
-	var moving := 0
 	var frames := 0
 	while frames < FPS * 4 and not (gm.state_of(sock) == Mess.State.LYING and gm.moving_body(sock) == null):
 		await _paced()
@@ -665,28 +659,16 @@ func case_teammate_throw_seen_real_path() -> void:
 		if played >= 0.0 and ft > 0.0:
 			skips = maxf(skips, absf(at - played - 1.0))
 		played = at
-		if ft > 0.0 and ft < ease and last != Vector3.INF and drawn.distance_to(last) < 0.001:
-			still_frames += 1
-		if ft >= ease + 2.0 / FPS and on_body == INF:
-			on_body = drawn.distance_to(copy.global_position)
-		# The change of step a frame over the copy's own (the release frame, whose kick leaves the hand, aside).
-		if last != Vector3.INF and copy_last != Vector3.INF:
-			var step := drawn - last
-			var cstep := copy.global_position - copy_last
-			if last_step != Vector3.INF and copy_step != Vector3.INF and moving > 1:
-				largest_change = maxf(largest_change, ((step - last_step) - (cstep - copy_step)).length())
-			if step.length() > 0.001:
-				moving += 1
-			last_step = step
-			copy_step = cstep
+		if ft > 0.0:
+			off_body = maxf(off_body, drawn.distance_to(copy.global_position))
+			if pop < 0.0 and last != Vector3.INF:
+				pop = drawn.distance_to(last)
 		last = drawn
-		copy_last = copy.global_position
-	print("HANDS coop/14 a Teammate's Throw on the Guest: first drawn %.4f m from the avatar's hand; still frames in flight %d; largest change of step over the copy's %.4f m; on the copy after %.2f s %.4f m; largest skip of the play %.3f tick" \
-			% [first_off, still_frames, largest_change, ease, on_body, skips])
+	print("HANDS coop/14 a Teammate's Throw on the Guest: first drawn %.4f m from the avatar's hand; the pop onto its arc %.4f m; drawn off the copy while it plays at most %.4f m; largest skip of the play %.3f tick" \
+			% [first_off, pop, off_body, skips])
 	_check(first_off >= 0.0 and first_off < 0.05, "Q2439: on the Guest the Host's Throw is first drawn at the Host avatar's hand (%.4f m)" % first_off)
-	_check(still_frames == 0, "Q2439: once its flight plays, it never hangs still where the hand was (%d frames)" % still_frames)
-	_check(largest_change < 0.015, "it never surges: no frame changes its step by 1.5 cm more than the copy's own (%.4f m; the old smoothstep ease surged 2 cm a frame midway)" % largest_change)
-	_check(on_body < 0.01, "after %.2f s of its flight it is drawn on the copy (%.4f m)" % [ease, on_body])
+	_check(pop > 0.3, "Q2685: as its flight plays it pops from the hand to the real launch point (%.4f m)" % pop)
+	_check(off_body < 0.005, "Q2685: from then on it is drawn on the copy, the real arc, no ease (%.4f m)" % off_body)
 	_check(skips < 0.2, "the copy plays the Host's ticks one a tick: no skip (%.3f tick)" % skips)
 	_check(gm.state_of(sock) == Mess.State.LYING, "it lies on the Guest")
 	_drop_branches()

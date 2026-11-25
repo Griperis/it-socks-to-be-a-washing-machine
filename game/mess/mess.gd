@@ -1427,8 +1427,9 @@ func _glide(delta: float) -> void:
 			_draw_lying(sock)
 
 
-## A Teammate's Throw or drop of Sock `sock` just let go here (coop/13, Q2439): it is drawn from where
-## their avatar holds it, easing onto its body. Nothing for a Sock with no thrower (woken, poured), one
+## A Teammate's drop of Sock `sock` just let go here (coop/13, Q2439): it is drawn from where their
+## avatar holds it, easing onto its body; a Teammate's Throw only on a Guest, while its copy waits to
+## play (Q2685: then it pops onto its arc). Nothing for a Sock with no thrower (woken, poured), one
 ## of a player on this machine (the Host's own, a Guest's ghost), or a body long in flight (a late
 ## joiner's). A Guest's copy may come before the answer that lets the Sock go (the two are separate
 ## messages, coop/14): it is not drawn till then (_early_copy()), and its lead starts from the answer.
@@ -1444,13 +1445,18 @@ func _lead_from_hand(sock: int) -> void:
 	if (row == null or row.host_side) and body.global_position.distance_to(from.origin) > 0.001:
 		return
 	var copy := row != null and not row.host_side
+	var drop := bool((throws[sock] as Dictionary).get("drop", false))
 	if copy and row.flight_time() > LEAD_LATE:
+		return
+	# Q2685: a Throw is drawn from its real launch point; only a Guest's copy not playing yet waits in
+	# the avatar's hand.
+	if not drop and not copy:
 		return
 	var hand: Variant = worn_start.call(by, sock)
 	if not (hand is Transform3D):
 		return
 	_leads[sock] = [Vector3.ZERO, Quaternion.IDENTITY, maxf(0.0, row.flight_time()) if copy else FlightRow.tick(),
-			null, -1.0, 1.0, 1.0, by, bool((throws[sock] as Dictionary).get("drop", false))]
+			null, -1.0, 1.0, 1.0, by, drop]
 	_take_hand(sock, body.global_transform.orthonormalized() if copy else from, hand as Transform3D)
 	_place_lead(sock, body)
 
@@ -1479,13 +1485,12 @@ func _led(sock: int, at: Transform3D) -> Transform3D:
 
 
 ## Once a tick (coop/14): each lead eases on. A Guest's copy of a Throw that has not started playing
-## yet (the stream plays 0.1 s behind, Q2439) stays in the avatar's hand as it moves, so the Sock
-## leaves the hand when its flight starts here, never hanging still where the hand was. From the
-## flight's start what is left of a Throw's is `(1 - u)^2`, u its share of `hand_over_time` gone: it
-## leaves the hand moving onto its arc, with no stop and no surge midway. A drop's is its body's height
-## over what is under it (less LEAD_LEAST_GAP) as a share of that height at the start: it falls onto
-## its spot, never up first (a Throw passes over furniture, so its height says nothing). Neither grows
-## back. A lead eased away goes, its Looks on its body again.
+## yet (the stream plays 0.1 s behind, Q2439) stays in the avatar's hand as it moves; once its flight
+## plays here the lead goes at once: the Sock pops from the hand to the real launch point and flies
+## its arc (Q2685). A drop's lead is its body's height over what is under it (less LEAD_LEAST_GAP) as
+## a share of that height at the start: it falls onto its spot, never up first; one starting nearer
+## than LEAD_LEAST_GAP eases `(1 - u)^2`, u its share of `hand_over_time` gone. It never grows back.
+## A lead eased away goes, its Looks on its body again.
 func _ease_leads() -> void:
 	var tps := float(Engine.physics_ticks_per_second)
 	for sock: int in _leads.keys():
@@ -1502,6 +1507,10 @@ func _ease_leads() -> void:
 				_take_hand(sock, body.global_transform.orthonormalized(), hand as Transform3D)
 			lead[2] = 0.0
 			_place_lead(sock, body)
+			continue
+		if not bool(lead[8]):
+			# Q2685: the Throw's flight plays here: it pops from the avatar's hand onto its arc at once.
+			_end_lead(sock)
 			continue
 		var t := maxf(0.0, row.flight_time() - float(lead[2])) if copy else (FlightRow.tick() - float(lead[2])) / tps
 		var u := clampf(t / maxf(ghost_tuning().hand_over_time, 0.001), 0.0, 1.0)
@@ -1537,6 +1546,8 @@ func _end_lead(sock: int) -> void:
 	var looks := body.get_node_or_null(LOOKS) as Node3D if body != null and is_instance_valid(body) else null
 	if looks != null and lead[3] != null:
 		looks.transform = lead[3]
+		# Where it is now, not drawn sliding there over a tick (Q2685's pop).
+		looks.reset_physics_interpolation()
 
 
 ## Sock `sock`'s Looks (its body has one) drawn with what is left of its lead, once a tick (the engine

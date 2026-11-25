@@ -25,8 +25,8 @@ extends Resource
 ## Once parted, a ghost's drawn offset moves `1 - exp(-3 dt / predict_blend)` of the way to how the
 ## Host's body differs at the same moment of the flight: 95 per cent in this long (G04, G11, Q2573's ease).
 @export_range(0.01, 1.0, 0.01, "suffix:s") var predict_blend := 0.2 # placeholder: the old release.json predict_blend
-## A Teammate's Throw or drop leaves their own hand (Hands.start_of()) but is drawn on this machine from
-## their avatar's hand, easing onto its body in this long (coop/13; Q2439, Q2481's 0.2 s).
+## A Teammate's drop that starts within Mess.LEAD_LEAST_GAP of what is under it eases off their avatar's
+## hand in this long (coop/13, coop/14; Q2481's 0.2 s). A Teammate's Throw has no ease: it pops onto its arc (Q2685).
 @export_range(0.0, 1.0, 0.01, "suffix:s") var hand_over_time := 0.2 # placeholder: Q2481's 0.2 s
 ## The ghost lies at the Host's rest once nearer than this, or after `settle_wait` (G07).
 @export_range(0.0001, 0.05, 0.0001, "suffix:m") var settle_close := 0.002 # placeholder: the old thrown_item.gd

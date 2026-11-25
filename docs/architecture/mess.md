@@ -107,12 +107,12 @@ Socks lie, are drawn, move or wake.
   it until it parts from the Host's body at the same moment of the flight (`FlightRow.flight_time`) by more than
   `part_distance` or `part_turn`; from then the difference eases in over `predict_blend`. It eases onto the
   Host's rest. Its body undoes a push into the floor as a flight does (`MessMoving.undo_push`, core/50).
-- A Teammate's Throw or drop (any let-go Sock whose thrower plays on another machine) is drawn from where their
+- A Teammate's drop (a let-go Sock whose thrower plays on another machine) is drawn from where their
   avatar holds it (`Hands.worn_start_of`, through `Mess.worn_start`), easing onto its body (`Mess._leads`,
-  `_ease_leads`, the MultiMesh row or the body's Looks; coop/13, Q2439). On a Guest a copy not yet playing
-  stays in the avatar's live hand. A Throw's lead eases as `(1 - u)^2` over `GhostTuning.hand_over_time`
-  (it leaves the hand moving, no surge midway); a drop's as its height over what is under it (it falls
-  onto its spot, never up first; coop/14).
+  `_ease_leads`, the MultiMesh row or the body's Looks; coop/13, Q2439). A Throw has no ease (Q2685): it is
+  drawn from its real launch point, popping there from the avatar's hand at release (on a Guest, a copy not
+  yet playing stays in the avatar's live hand until its flight plays). A drop eases by its height over what
+  is under it: it falls onto its spot, never up first (coop/14).
 - A flight flies as the same leg and foot boxes it lies on (`MessBodies.parts_at`), with
   `MessTuning.turn_weight` times its flat box's inertia (a 50 g board's own spins to Jolt's cap on an
   edge landing), and sweeps (CCD) only from 1 m/s (core/23). Poured and dropped Socks fly as woken ones.

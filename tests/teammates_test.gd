@@ -38,7 +38,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "cues", "method": "case_cues", "world": false,
 				"title": "the Host's pick, pair, drop and throw are heard on the Guest as loud as its own, in the world at 1.2 m over the Host avatar's feet; a leaver's drop is heard at its last place"},
 		{"name": "throw_hand", "method": "case_throw_hand", "world": false,
-				"title": "coop/13, Q2439, Q2573: a Guest's Throw leaves, on the Host, from the Guest's own hand (where its ghost leaves), drawn at once from the Guest avatar's HoldPoint where its Sock hangs, easing onto its body in 0.2 s"},
+				"title": "coop/13, Q2573, Q2685: a Guest's Throw leaves, on the Host, from the Guest's own hand (where its ghost leaves), and is drawn there at once: it pops from the Guest avatar's HoldPoint onto its arc, no ease"},
 		{"name": "station", "method": "case_station", "world": false,
 				"title": "the Avatar station in the zoo, played alone: its stand-in Teammate walks its loop through its pose and takes the station's Sock; the other stands still"},
 	]
@@ -382,16 +382,15 @@ func case_throw_hand() -> void:
 	await _until(func() -> bool: return started[0] != Vector3.INF, "the Host to answer the Guest's Throw")
 	_check((started[0] as Vector3).distance_to(own.origin) < 0.02,
 			"Q2573: the Sock leaves from the Guest's own hand, where its ghost leaves (%s, the Guest's hand %s)" % [started[0], own.origin])
-	_check((started[1] as Vector3).distance_to(drawn.origin) < 0.1,
-			"Q2439: on the Host it is drawn from the Guest avatar's hand at once (%s, hand %s)" % [started[1], drawn.origin])
-	var ease := hh.mess.ghost_tuning().hand_over_time
-	var until := Engine.get_physics_frames() + int(ease * Engine.physics_ticks_per_second) + 4
-	await _until(func() -> bool: return Engine.get_physics_frames() >= until, "%.1f s of the flight" % ease)
+	_check((started[1] as Vector3).distance_to(started[0]) < 0.01,
+			"Q2685: on the Host it is drawn at its real launch point at once, not at the Guest avatar's hand (%s, launch %s, hand %s)" % [started[1], started[0], drawn.origin])
+	var until := Engine.get_physics_frames() + 4
+	await _until(func() -> bool: return Engine.get_physics_frames() >= until, "a few ticks of the flight")
 	var body := hh.mess.moving_body(sock)
 	if body != null:
 		var shown := (hh.mess.drawn_flight_of(sock) as Transform3D).origin
 		_check(shown.distance_to(body.global_position) < 0.01,
-				"after %.1f s it is drawn on its body (%.4f m)" % [ease, shown.distance_to(body.global_position)])
+				"Q2685: it flies drawn on its body (%.4f m)" % shown.distance_to(body.global_position))
 	_drop_branches()
 
 

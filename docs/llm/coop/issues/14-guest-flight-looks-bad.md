@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: in-progress
+status: ready-for-human
 kind: bug
 area: coop
 feature: flight
@@ -8,6 +8,7 @@ priority: now
 created: 2026-11-25
 done:
 blocked_by: []
+suites: [coop_hands, coop_flight, flight_start, throw, teammates]
 notes: ["suggested model: opus", "designer 2026-11-25, Windows build: 'on guest, still the flight looks bad' (after coop/11 and coop/13)"]
 terms: [Host, Guest]
 ---
@@ -38,9 +39,9 @@ throw ghost) and coop/13 (a Guest's throw, drop and heap differ) worked on this 
   to head height at release; no easing rise out of the avatar's hand (option C). (Q2685, 2026-11-25)
 
 ## Open follow-ups
-- [later] For the designer (look): the ease of a Teammate's Throw changed shape from smoothstep (it left the hand flat,
-  then surged up mid-ease, 2 cm a frame of extra change) to `(1 - u)^2` (it leaves the hand moving up and eases
-  onto the arc, 0.8 cm a frame). One line in `Mess._ease_leads` to put back if the old one looked better.
+- [later] For the designer (look, Q2685 built): the pop at release is one frame of 0.69 m (the Host's Throw on a Guest,
+  a flat Throw from standing) and 0.48 m (a Throw down at the floor); stills in `builds/review-coop-14/`
+  (chart_throw.png, throw_frames.png).
 - [later] Not reproduced on the designer's Windows build: everything here is two headless processes (and a rendered
   pair under Xvfb, about 7 frames a second) on one Linux machine at 0 and 50 ms, 60 and 144 frames a second, and
   frames capped unevenly between 30 and 144 (`UNEVEN=1`). The Guest's own Throw, drop, knocked and poured Socks
