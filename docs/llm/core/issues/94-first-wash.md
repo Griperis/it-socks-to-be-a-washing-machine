@@ -73,3 +73,4 @@ data). The Laundry station's "First wash" pillar resets it and holds a few Socks
   tests/coop_first_wash_test.gd, tests/laundry_day_test.gd, tests/house_test.gd, tests/fix_scene_test.gd,
   tests/saves/shape.json, docs.
 - Verified: `kit/tools/run.sh --touched`: PASS 22694 checks, 703 cases (first_wash 7 cases, coop_first_wash 1); grep_rules PASS.
+- Merged: 312428fb (2026-11-25, branch core/94-first-wash)
