@@ -60,3 +60,4 @@ All placed things are edited on their instances in `house.tscn`; the plan is `ho
     `game/lobby/pairs_slider.*`, `game/lobby/{lobby,lobby_state,lobby_words,world_drawer}.*`, `tests/house_test.gd`
     (r01-r03, `real_path_new_game_from_title`), `tests/lobby_test.gd` (k06, k15), `tests/save_test.gd`, `tests/saves/`, docs.
   - Verified: `kit/tools/run.sh --touched`: PASS 21976 checks, 675 cases; grep_rules PASS.
+- Merged: d94ffee1 (2026-11-25, branch core/91-house-run)
