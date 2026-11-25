@@ -5,8 +5,9 @@
 ## its level (the Run's parent) by group, never by path, and gives each of them itself (Cabinet.stages:
 ## the Row's capacity is the World's Pairs per Drawer).
 ##
-## Its verbs are the Host's (none is a Guest's: `fit` is the MachinePartSlot's, core/79; the zoo's
-## switches ask their own verb and answer with zoo_complete_answer() or zoo_fit_now_answer()). Every
+## Its verbs are the Host's (none is a Guest's: `fit` is the MachinePartSlot's, core/79). `complete_now` and
+## `fit_now` are the Host's shortcuts past a Stage (a switch or a test asks them; complete_now_answer() and
+## fit_now_answer() are the same answers for a Part that asks its own verb). Every
 ## answer that moves the run carries `stage_events` and every machine emits them as the signals below
 ## when it applies the answer (never on a load or a join: a snapshot shows the state at once).
 class_name Stages
@@ -91,7 +92,7 @@ func _ready() -> void:
 	cabinets()
 
 
-## The level the run belongs to: the Run's parent (a zoo station's root, the house).
+## The level the run belongs to: the Run's parent (the house, or the scene it stands in).
 func level() -> Node:
 	var run := get_parent()
 	return run.get_parent() if run != null and run.get_parent() != null else run
@@ -145,6 +146,46 @@ func floor_open(floor: int) -> bool:
 ## How many Parts are in the machine (core/73's mood: angriest at none).
 func fitted_count() -> int:
 	return maxi(stage, 0) + (1 if phase == Phase.FIXING or phase == Phase.FIXED else 0)
+
+
+# --- What the washing machine and the Laundry day read (docs/architecture/washer.md "Seams") -------
+
+## Whether a staged run is under way (the washer's senses are on).
+func under_way() -> bool:
+	return stage >= 0
+
+
+## Whether the last Fix is done: the machine is fixed (the Laundry day's loads may start).
+func is_fixed() -> bool:
+	return stage >= 0 and phase == Phase.FIXED
+
+
+## How many Parts the run has (the washer's angriest mood).
+func part_total() -> int:
+	return plan.size() if plan != null else 0
+
+
+## How many Parts the broken machine still lacks (its mood): one per Part not yet fitted once the First wash
+## has broken it, none before (`wants_first_wash()`) and none once fixed.
+func parts_missing() -> int:
+	if plan == null or wants_first_wash():
+		return 0
+	return clampi(plan.size() - fitted_count(), 0, plan.size())
+
+
+## The comment set the washer picks from: the current Stage's, or the Laundry day's once fixed; 0 (any) before.
+func comment_set() -> int:
+	if plan == null or stage < 0:
+		return 0
+	if phase == Phase.FIXED or stage >= plan.size():
+		return plan.laundry_day_comment_set
+	var s := plan.stage(stage)
+	return s.comment_set if s != null else 0
+
+
+## Whether the run's last Pair went in: the last Stage's bar is full (Q1413).
+func last_pair_in() -> bool:
+	return plan != null and stage == plan.size() - 1 and bar_full()
 
 
 ## The Mess its Socks join (found once in the level), or null.
@@ -372,10 +413,10 @@ func decide(cmd: Command) -> Dictionary:
 			return lay_first_answer()
 		&"land":
 			return _land_answer(cmd.args)
-		&"zoo_complete":
-			return zoo_complete_answer()
-		&"zoo_fit_now":
-			return zoo_fit_now_answer()
+		&"complete_now":
+			return complete_now_answer()
+		&"fit_now":
+			return fit_now_answer()
 	return refuse("wrong")
 
 
@@ -454,16 +495,16 @@ func _land_answer(args: Dictionary) -> Dictionary:
 	return {"ok": true, "changes": changes}
 
 
-## The zoo's "Complete" switch: the Stage completes outright. Refused unless the bar counts.
-func zoo_complete_answer() -> Dictionary:
+## `complete_now` (the Host's shortcut): the Stage completes outright, full or not. Refused unless the bar counts.
+func complete_now_answer() -> Dictionary:
 	if stage < 0 or phase != Phase.PLAYING:
 		return refuse("already")
 	return _complete_answer(&"", {})
 
 
-## The zoo's "Fit now" switch: the Stage completes if it has not, its Part is fitted and its floor opens
-## at once. Refused before the run and once the machine is fixed.
-func zoo_fit_now_answer() -> Dictionary:
+## `fit_now` (the Host's shortcut): the Stage completes if it has not, its Part is fitted and its floor opens
+## at once, with no Fix scene. Refused before the run and once the machine is fixed.
+func fit_now_answer() -> Dictionary:
 	if stage < 0 or phase == Phase.FIXED:
 		return refuse("already")
 	var events := []

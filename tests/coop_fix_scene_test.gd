@@ -43,7 +43,7 @@ func case_guest_sees_the_fix() -> void:
 	await _wait(func() -> bool: return _rt(guest).net.mode_text().begins_with("Joined"), "the Guest to be welcomed", FPS * 40)
 	await _wait(func() -> bool: return _stages(guest).stage == 0, "the Guest to hold the run", FPS * 10)
 	# The Host's Stage completes and its Part is fitted (the slot's answer, as the click gives it).
-	_rt(host).parts.ask(Command.new(&"zoo_complete", Parts.HOST, _stages(host).id))
+	_rt(host).parts.ask(Command.new(&"complete_now", Parts.HOST, _stages(host).id))
 	await _wait(func() -> bool: return _stages(host).phase == Stages.Phase.PART_OUT and _stages(guest).phase == Stages.Phase.PART_OUT,
 			"both machines to see the Part out", FPS * 5)
 	_rt(host).parts.apply(_stages(host).fit_answer())

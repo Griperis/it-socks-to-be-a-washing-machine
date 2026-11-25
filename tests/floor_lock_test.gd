@@ -131,7 +131,7 @@ func case_swing_sweeps() -> void:
 	_check(leaf.is_in_group(Openable.GROUP) and movers.size() == 1, "the leaf is an Openable with one moving body")
 	var body := movers[0]
 	var before := body.global_transform
-	_parts.ask(Command.new(&"zoo_fit_now", Parts.HOST, _stages.id))
+	_parts.ask(Command.new(&"fit_now", Parts.HOST, _stages.id))
 	await _until(func() -> bool: return leaf.open, "the leaf to be told open", 60)
 	await _until(func() -> bool: return leaf.is_moving() and body.global_transform != before, "the leaf to start swinging")
 	# The hold: nothing swings for the first 0.8 s.
@@ -146,7 +146,7 @@ func case_swing_sweeps() -> void:
 func case_load_shows() -> void:
 	await _build()
 	var snap_locked := _parts.snapshot()
-	_parts.ask(Command.new(&"zoo_fit_now", Parts.HOST, _stages.id))
+	_parts.ask(Command.new(&"fit_now", Parts.HOST, _stages.id))
 	await _until(func() -> bool: return _stages.stage == 1 and not _lock(GATE).leaf().is_moving() and not _lock(DOOR).leaf().is_moving(),
 			"the floor to open and the leaves to stop", 600)
 	await _physics_ticks(60)
@@ -211,7 +211,7 @@ func case_floor_opens_all() -> void:
 	await _build()
 	var sheet := _station.get_node("CabinetB/DustSheet") as DustSheet
 	_check(sheet.visible and _lock(DOOR).is_locked() and _lock(GATE).is_locked(), "before: sheet draped, both locks shut")
-	_parts.ask(Command.new(&"zoo_fit_now", Parts.HOST, _stages.id))
+	_parts.ask(Command.new(&"fit_now", Parts.HOST, _stages.id))
 	await _until(func() -> bool: return _stages.stage == 1, "the floor to open", 60)
 	_check(not _lock(DOOR).is_locked() and not _lock(GATE).is_locked(), "both locks are open")
 	await _until(func() -> bool: return not sheet.visible, "the sheet to be pulled off", 300)

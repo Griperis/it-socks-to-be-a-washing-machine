@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://game/laundry/laundry_day.tscn" id="5_day"]
 [ext_resource type="Script" path="res://game/zoo/laundry/laundry_pillar.gd" id="6_pillar"]
 [ext_resource type="Script" path="res://game/zoo/laundry/laundry_label.gd" id="7_label"]
+[ext_resource type="Script" path="res://game/zoo/laundry/laundry_run.gd" id="8_run"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.62, 0.7, 0.78, 1)
@@ -130,18 +131,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
 
 [node name="LaundryDay" parent="." instance=ExtResource("5_day")]
 
-[node name="Day" parent="LaundryDay" index="0" node_paths=PackedStringArray("spots")]
+[node name="Day" parent="LaundryDay" index="0" node_paths=PackedStringArray("spots", "stages")]
 spots = NodePath("../..")
-zoo = true
+stages = NodePath("../../Run")
 cutscene = false
+opens_final_screen = false
 first_wash = 2
+drawn = true
+
+[node name="Run" type="Node" parent="." node_paths=PackedStringArray("day", "washer")]
+script = ExtResource("8_run")
+day = NodePath("../LaundryDay/Day")
+washer = NodePath("../Washer")
 
 [node name="LastFixPillar" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.5, 3)
 
-[node name="LaundryPillar" type="Node" parent="LastFixPillar" node_paths=PackedStringArray("day")]
+[node name="LaundryPillar" type="Node" parent="LastFixPillar" node_paths=PackedStringArray("run")]
 script = ExtResource("6_pillar")
-day = NodePath("../../LaundryDay/Day")
+run = NodePath("../../Run")
 
 [node name="Mesh" type="MeshInstance3D" parent="LastFixPillar"]
 mesh = SubResource("BoxMesh_button")
@@ -158,9 +166,9 @@ text = "Last Fix done"
 [node name="FinalPillar" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.5, 3)
 
-[node name="LaundryPillar" type="Node" parent="FinalPillar" node_paths=PackedStringArray("day")]
+[node name="LaundryPillar" type="Node" parent="FinalPillar" node_paths=PackedStringArray("run")]
 script = ExtResource("6_pillar")
-day = NodePath("../../LaundryDay/Day")
+run = NodePath("../../Run")
 kind = 1
 
 [node name="Mesh" type="MeshInstance3D" parent="FinalPillar"]
@@ -178,9 +186,9 @@ text = "Final wash"
 [node name="FirstWashPillar" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, 3)
 
-[node name="LaundryPillar" type="Node" parent="FirstWashPillar" node_paths=PackedStringArray("day")]
+[node name="LaundryPillar" type="Node" parent="FirstWashPillar" node_paths=PackedStringArray("run")]
 script = ExtResource("6_pillar")
-day = NodePath("../../LaundryDay/Day")
+run = NodePath("../../Run")
 kind = 2
 
 [node name="Mesh" type="MeshInstance3D" parent="FirstWashPillar"]

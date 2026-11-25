@@ -44,11 +44,11 @@ func cases() -> Array[Dictionary]:
 		{"name": "director", "method": "case_director", "world": false,
 				"title": "the director: no comment before it is broken, none during a cutscene, none within 120 s of the last, the chance, never the last line; a trigger it does not know is refused"},
 		{"name": "comment_set", "method": "case_comment_set", "world": false,
-				"title": "the comment set follows the Stage (the zoo's, the run's) and is the Laundry day's after the last Fix; every line given belongs to it"},
+				"title": "the comment set follows the Stage (the station's stand-in's, the run's) and is the Laundry day's after the last Fix; every line given belongs to it"},
 		{"name": "senses", "method": "case_senses", "world": false,
 				"title": "the senses: idle after the quiet spell, a progress comment on a shelved Pair, a hit within 1.4 m on the floor plane, nothing when the level is not a staged run"},
-		{"name": "zoo_only", "method": "case_zoo_only", "world": false,
-				"title": "say_line and the zoo's Commands are granted only to a washing machine in the washer station"},
+		{"name": "talk_only", "method": "case_talk_only", "world": false,
+				"title": "the washing machine grants only talk; the station's switches are its run stand-in's Commands, a Guest may ask them, a mood past the pillars is refused"},
 		{"name": "pillars", "method": "case_pillars", "world": false,
 				"title": "the station builds its pillars from the data: moods 0..5, a Stage each and the Laundry day, From the run, Break it, Fix it, a trigger each; a mood pillar sets damage and repair"},
 	]
@@ -90,11 +90,11 @@ func case_real_path() -> void:
 	await _build()
 	var w := _washer()
 	var station := _station()
-	_check(w.zoo and w.senses_on(), "the station's washing machine has its senses on")
+	_check(w.stages == station.run and w.senses_on(), "the station's washing machine reads the stand-in and has its senses on")
 	await _press_pillar(station.pillars["stage 1"])
-	await _until(func() -> bool: return w.zoo_stage == 0, "Stage 1 to be set by the pillar", 60)
+	await _until(func() -> bool: return station.run.at == 0, "Stage 1 to be set by the pillar", 60)
 	await _press_pillar(station.pillars["break"])
-	await _until(func() -> bool: return w.broken, "Break it to break the machine", 60)
+	await _until(func() -> bool: return w.is_broken(), "Break it to break the machine", 60)
 	_lucky(w)
 	var thing := w.get_parent() as Node3D
 	var door := w.looks.rig.find_bone(&"door_hinge")
@@ -123,9 +123,10 @@ func case_guest_stare() -> void:
 	var g_id := (guest["session"] as Session).me()
 	var hw := hp.of(&"WasherStation/Washer/Washer") as Washer
 	var gw := gp.of(&"WasherStation/Washer/Washer") as Washer
-	_check(hw != null and gw != null, "both machines have the washing machine's Part")
-	hp.ask(Command.new(Washer.ZOO_BROKEN, Parts.HOST, hw.id, {"on": true}))
-	await _until(func() -> bool: return hw.broken and gw.broken, "the break to reach both", 900, NET_WAIT_S)
+	var gr := gp.of(&"WasherStation/Run") as WasherRun
+	_check(hw != null and gw != null and gr != null, "both machines have the washing machine's Part and the stand-in")
+	gp.ask(Command.new(WasherRun.BROKEN, g_id, gr.id, {"on": true}))
+	await _until(func() -> bool: return hw.is_broken() and gw.is_broken(), "a Guest's Break it to reach both", 900, NET_WAIT_S)
 	_lucky(hw)
 	_started.clear()
 	gp.ask(Command.new(Washer.TALK, g_id, gw.id, {"trigger": "washer_stare"}))
@@ -371,13 +372,14 @@ func case_director() -> void:
 	await _build()
 	var w := _washer()
 	var parts := LevelRuntime.of(_zoo).parts
-	w.zoo_stage = 0
+	var run := _station().run
+	run.at = 0
 	_lucky(w)
 	var progress := Command.new(Washer.TALK, Parts.HOST, w.id, {"trigger": "washer_progress"})
 	var ans := parts.answer(progress)
 	_check(not ans["ok"] and ans["reason"] == "quiet", "not broken: a silent no")
-	parts.ask(Command.new(Washer.ZOO_BROKEN, Parts.HOST, w.id, {"on": true}))
-	_check(w.broken, "Break it breaks the machine")
+	parts.ask(Command.new(WasherRun.BROKEN, Parts.HOST, run.id, {"on": true}))
+	_check(w.is_broken(), "Break it breaks the machine")
 	# A trigger no file has, and a cutscene's.
 	_check(parts.answer(Command.new(Washer.TALK, Parts.HOST, w.id, {"trigger": "no_such"}))["reason"] == "wrong", "an unknown trigger is refused")
 	_check(parts.answer(Command.new(Washer.TALK, Parts.HOST, w.id, {"trigger": "cutscene_fix_1"}))["reason"] == "wrong", "a cutscene trigger is not a comment")
@@ -428,11 +430,12 @@ func case_comment_set() -> void:
 	await _build()
 	var w := _washer()
 	var parts := LevelRuntime.of(_zoo).parts
-	parts.ask(Command.new(Washer.ZOO_BROKEN, Parts.HOST, w.id, {"on": true}))
+	var run := _station().run
+	parts.ask(Command.new(WasherRun.BROKEN, Parts.HOST, run.id, {"on": true}))
 	_check(w.comment_set() == 0, "no Stage: any set")
 	var plan := load("res://game/run/house_stage_plan.tres") as StagePlan
 	for stage in plan.size() + 1:
-		w.zoo_stage = stage
+		run.at = stage
 		var want := plan.stage(stage).comment_set if stage < plan.size() else plan.laundry_day_comment_set
 		_check(w.comment_set() == want, "Stage %d draws from set %d (got %d)" % [stage + 1, want, w.comment_set()])
 		for i in 8:
@@ -446,13 +449,12 @@ func case_comment_set() -> void:
 	# The run's own Stage, as the house's Stages Part reads it.
 	var stages := Stages.new()
 	stages.plan = plan
-	w.zoo_stage = -1
 	w.stages = stages
 	stages.stage = 1
 	_check(w.comment_set() == plan.stage(1).comment_set, "the run's Stage 2 gives its set")
 	stages.phase = Stages.Phase.FIXED
 	_check(w.comment_set() == plan.laundry_day_comment_set, "a fixed machine gives the Laundry day's")
-	w.stages = null
+	w.stages = run
 	stages.free()
 
 
@@ -467,7 +469,8 @@ func case_senses() -> void:
 	# Not broken: even the idle clock says nothing.
 	await _frames(5)
 	_check(not Voices.talking(&"washer"), "not broken: quiet")
-	parts.ask(Command.new(Washer.ZOO_BROKEN, Parts.HOST, w.id, {"on": true}))
+	var run := _station().run
+	parts.ask(Command.new(WasherRun.BROKEN, Parts.HOST, run.id, {"on": true}))
 	w.last_at = -INF
 	await _until(func() -> bool: return w.serial > 0, "the idle comment after the quiet spell", 600, 6.0)
 	_check(Voices.book().find_line(&"washer", w.line) != null, "the idle comment is a real line (%s)" % w.line)
@@ -482,31 +485,33 @@ func case_senses() -> void:
 	_check(senses.landed_near(PackedVector3Array([at + Vector3(1.3, 3.0, 0.0)])), "a landing 1.3 m away (any height) is a hit")
 	_check(not senses.landed_near(PackedVector3Array([at + Vector3(1.5, 0.0, 0.0), at + Vector3(0.0, 0.0, -2.0)])), "1.5 m and 2 m away are not")
 	# Off in a level that is not a staged run: no ask at all.
-	w.zoo = false
+	var stages := Stages.new()
+	w.stages = stages
 	w.last_at = -INF
 	serial = w.serial
 	parts.applied.emit({"ok": true, "kind": &"shelve", "to": &"x", "changes": {}})
 	await _frames(10)
 	_check(w.serial == serial and not w.senses_on(), "not a staged run: the senses are off")
-	w.zoo = true
+	w.stages = run
+	stages.free()
 
 
-func case_zoo_only() -> void:
+func case_talk_only() -> void:
 	var scene := load(FOLDER + "washer.tscn") as PackedScene
 	var root := scene.instantiate() as Node3D
 	add_child(root)
 	var w := root.get_node("Washer") as Washer
-	_check(not w.zoo, "the washing machine is not a zoo's by default")
-	for cmd: Command in [Command.new(Washer.SAY_LINE, 1, w.id, {"line": "stage_1_a"}), Command.new(Washer.ZOO_MOOD, 1, w.id, {"level": 3}),
-			Command.new(Washer.ZOO_STAGE, 1, w.id, {"stage": 1}), Command.new(Washer.ZOO_BROKEN, 1, w.id, {"on": true})]:
-		_check(w.decide(cmd)["ok"] == false, "%s is refused outside the zoo" % cmd.kind)
-	var offered := w.accepts()
-	_check(offered.has(Washer.TALK) and not offered.has(Washer.SAY_LINE) and not offered.has(Washer.ZOO_BROKEN), "a Guest may only ask talk")
-	w.zoo = true
-	_check(w.decide(Command.new(Washer.ZOO_MOOD, 1, w.id, {"level": 3}))["ok"], "in the zoo the mood Command is granted")
-	_check(not w.decide(Command.new(Washer.ZOO_MOOD, 1, w.id, {"level": 99}))["ok"], "a level past the pillars is refused")
-	_check(w.accepts().has(Washer.SAY_LINE), "and a Guest may ask the zoo's Commands")
+	_check(w.accepts().size() == 1 and w.accepts().has(Washer.TALK), "a Guest may only ask talk of the washing machine")
+	for verb: StringName in [&"say_line", WasherRun.MOOD, WasherRun.STAGE, WasherRun.BROKEN, WasherRun.CUTSCENE]:
+		_check(w.decide(Command.new(verb, 1, w.id, {}))["ok"] == false, "%s is refused by the washing machine" % verb)
 	root.free()
+	await _build()
+	var run := _station().run
+	var offered := run.accepts()
+	_check(offered.has(WasherRun.MOOD) and offered.has(WasherRun.STAGE) and offered.has(WasherRun.BROKEN) and offered.has(WasherRun.CUTSCENE),
+			"the stand-in offers the station's switches to a Guest")
+	_check(run.decide(Command.new(WasherRun.MOOD, 1, run.id, {"level": 3}))["ok"], "a mood level is granted")
+	_check(not run.decide(Command.new(WasherRun.MOOD, 1, run.id, {"level": 99}))["ok"], "a level past the pillars is refused")
 
 
 func case_pillars() -> void:
@@ -525,21 +530,21 @@ func case_pillars() -> void:
 		_check(station.pillars.has("trigger %s" % trigger), "a pillar fires %s" % trigger)
 	_check(not station.pillars.has("trigger cutscene_fix_1"), "no pillar fires a cutscene here (core/88)")
 	await _press_pillar(station.pillars["mood 3"])
-	await _until(func() -> bool: return w.zoo_mood == 3, "the mood pillar to set the level", 60)
+	await _until(func() -> bool: return station.run.mood == 3, "the mood pillar to set the level", 60)
 	_near(w.looks.damage, 3.0 / 5.0, 0.001, "mood 3 of 5: damage 0.6")
 	_near(w.looks.repair, 0.4, 0.001, "and repair 0.4")
 	await _press_pillar(station.pillars["mood 0"])
-	await _until(func() -> bool: return w.zoo_mood == 0, "mood 0", 60)
+	await _until(func() -> bool: return station.run.mood == 0, "mood 0", 60)
 	_near(w.looks.damage, 0.0, 0.001, "mood 0: no damage")
 	_near(w.looks.repair, 1.0, 0.001, "and full repair")
 	await _press_pillar(station.pillars["break"])
-	await _until(func() -> bool: return w.broken, "Break it", 60)
+	await _until(func() -> bool: return w.is_broken(), "Break it", 60)
 	await _press_pillar(station.pillars["fix"])
-	await _until(func() -> bool: return not w.broken, "Fix it", 60)
+	await _until(func() -> bool: return not w.is_broken(), "Fix it", 60)
 	await _press_pillar(station.pillars["laundry_day"])
-	await _until(func() -> bool: return w.zoo_stage == plan.size(), "the Laundry day", 60)
+	await _until(func() -> bool: return w.comment_set() == plan.laundry_day_comment_set and station.run.at == plan.size(), "the Laundry day", 60)
 	await _press_pillar(station.pillars["run"])
-	await _until(func() -> bool: return w.zoo_stage == -1, "From the run", 60)
+	await _until(func() -> bool: return w.comment_set() == 0 and station.run.at == -1, "From the run", 60)
 
 
 # --- Helpers -------------------------------------------------------------------------------------

@@ -283,13 +283,14 @@ func case_station() -> void:
 	player.capture_mouse()
 	var day := station.get_node("LaundryDay/Day") as LaundryDay
 	_check(day.first_wash == LaundryDay.FirstWash.DONE and not day.cutscene, "the station starts DONE with the cutscene off")
-	_check(not day.wants_first_wash() and not day.goal_pending(), "the zoo's Laundry day holds nothing and shows no goal")
+	var run := station.get_node("Run") as LaundryRun
+	_check(day.stages == run and not day.wants_first_wash() and not day.goal_pending(), "the station's Laundry day reads its stand-in run, is not pending and shows no goal")
 	var before := rt.mess.count()
 	var pillar := station.get_node("FirstWashPillar") as Node3D
 	await _stand_facing(player, pillar.global_position + Vector3(0.0, -0.5, 1.4), pillar.global_position)
 	await _press(&"interact")
 	await _until(func() -> bool: return day.first_wash == LaundryDay.FirstWash.PENDING, "the pillar to reset the First wash", 60)
-	_check(day.zoo_held_designs.size() == LaundryDay.ZOO_HELD and rt.mess.count() == before, "a few Socks are held, none lie yet")
+	_check(run.held_designs.size() == LaundryRun.HELD and rt.mess.count() == before, "a few Socks are held, none lie yet")
 	var label := station.get_node("Tally") as Label3D
 	await _physics_ticks(2)
 	_check(label.text.contains("First wash pending"), "the label says so (%s)" % label.text)
@@ -299,7 +300,7 @@ func case_station() -> void:
 	await _physics_ticks(2)
 	rt.parts.ask(Command.new(LaundryDay.LOAD, 1, day.id))
 	await _until(func() -> bool: return day.first_wash == LaundryDay.FirstWash.DONE, "the bin to start the First wash", 60)
-	_check(rt.mess.count() == before + LaundryDay.ZOO_HELD and day.zoo_held_designs.is_empty(), "the held Socks lie (%d)" % rt.mess.count())
+	_check(rt.mess.count() == before + LaundryRun.HELD and run.held_designs.is_empty(), "the held Socks lie (%d)" % rt.mess.count())
 	_check(not rt.cutscenes.is_playing() and bin.full, "no cutscene, the bin still full")
 
 

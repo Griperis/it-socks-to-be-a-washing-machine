@@ -1456,7 +1456,7 @@ func _open_floors(house: Node) -> void:
 	var stages := house.get_node("Run/Stages") as Stages
 	await _until(func() -> bool: return stages.stage >= 0, "the run to start")
 	while stages.stage < stages.plan.size() - 1:
-		rt.parts.apply(stages.zoo_fit_now_answer())
+		rt.parts.apply(stages.fit_now_answer())
 	for lock in stages.floor_locks():
 		var anim := lock.leaf().animator()
 		await _until(func() -> bool: return not lock.is_locked() and (anim == null or not anim.is_playing()),

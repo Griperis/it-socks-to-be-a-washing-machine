@@ -14,7 +14,7 @@ class_name StageBar
 extends PanelContainer
 
 ## Nodes in this group answer `goal_pending() -> bool`: true while the First wash is still to come
-## (core/72's). None in the group (the zoo's mini run): the run starts at `stage_phase`.
+## (core/72's), among those in the run's level. None there: the run starts at `stage_phase`.
 const GOAL_GROUP := &"stage_bar_goal"
 
 ## The sound of the fold (placeholder: the old rig's `pop`, Q1620), played as it begins.
@@ -108,9 +108,12 @@ func folding() -> bool:
 	return _fold_tween != null and _fold_tween.is_valid()
 
 
-## Whether the First wash is still to come, by the group's nodes.
+## Whether the First wash is still to come, by the group's nodes in the run's level (as Stages asks its own).
 func _goal_pending() -> bool:
+	var root := _stages.level() if _stages != null and _stages.is_inside_tree() else null
 	for node in get_tree().get_nodes_in_group(GOAL_GROUP):
+		if root != null and not root.is_ancestor_of(node):
+			continue
 		if node.has_method(&"goal_pending") and bool(node.call(&"goal_pending")):
 			return true
 	return false

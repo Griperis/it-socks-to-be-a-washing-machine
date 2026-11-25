@@ -89,11 +89,13 @@ saved, so a load mid-wait asks again.
 
 As built (core/93, `game/laundry/laundry_day.gd`, instanced in `house.tscn` beside `LaundryBins`):
 - **State:** `first_wash` (DONE until core/94), `drawn`, `loaded_bins` (not `loaded`: a Part's `loaded()` is the load reset),
-  `ending_left`, `final_started` (the stub core/96 replaces with its cutscene and `ended`), `zoo_fixed` (the station's
-  stand-in for the last Fix; read only with no `stages`). `whole_state()` carries the Host's live wait.
+  `ending_left`, `final_started` (the stub core/96 replaces with its cutscene and `ended`). `whole_state()` carries the
+  Host's live wait. Its run (`stages`) is any Part with `is_fixed()` and `lay_first_answer()`: the house's `Run/Stages`,
+  or the Laundry station's `LaundryRun` stand-in (core/107), which owns the last Fix's switch and the held Socks.
+  `opens_final_screen` (on) lets the run's end open the Final screen; the station turns it off.
 - **Verbs:** `load` (any player, the washer's click: `Washer.use` asks it; refusals `not_carried`, `first_wash`, `unfixed`,
-  `empty`, `busy`, `far`; the three with words are `LaundryDay.SAYS`), `draw` and `final_wash` (Host only), the zoo's
-  `zoo_last_fix` and `zoo_final`. The answer carries `bin`; every machine's `_on_applied` tips it and plays `socks_pour`.
+  `empty`, `busy`, `far`; the three with words are `LaundryDay.SAYS`), `draw` and `final_wash` (Host only); the station's
+  pillars ask the stand-in's `last_fix` and `final` (core/107). The answer carries `bin`; every machine's `_on_applied` tips it and plays `socks_pour`.
 - **Reads:** `bins()`, `used_bins()`, `total()`, `fixed()`, `offers(carriable)` (the "Load the washing machine" row, built by
   `Player`), `pile_of(n, of)`; it is in `StageBarPhase.SOURCES` as `laundry_bins` and emits `bar_changed`.
 - **Not here:** the Final wash's start (core/96). The First wash's parts are below (core/94).
@@ -142,9 +144,11 @@ As built (core/94):
   `Bubbles` has the old bubble look.
 - **The room's flicker:** `Washer` sets `HouseLights.set_flicker(at, room_flicker_range, looks.flicker())` while the Looks
   flickers (the old room.gd fields `flicker`, `flicker_at`, `flicker_range`).
-- **`Washer.is_broken()`:** outside the zoo, the level's `first_wash` past PENDING; in the zoo its `broken` switch.
-- **The Laundry station:** the "First wash" pillar (`zoo_first_wash`): PENDING, six Socks held in `zoo_held_designs` /
-  `zoo_held_poses` round the washer box, let in by the next `load`; the station's Laundry day starts DONE, cutscene off.
+- **`Washer.is_broken()`:** not its run's `wants_first_wash()` (the level's `first_wash` past PENDING); the washer
+  station's stand-in answers from its `broken` switch (core/107).
+- **The Laundry station:** the "First wash" pillar (the stand-in's `first_wash`): PENDING, six Socks held in the stand-in's
+  `held_designs` / `held_poses` round the washer box, let in by the next `load`; the station's Laundry day starts DONE and
+  drawn, cutscene off, no Final screen.
 
 **The spray** (`SockSpray`, `sock_spray.tscn`): 500 real Sock meshes (LOD0), Designs drawn from the catalogue with
 `seed`, one MultiMesh per Collection, no physics (the old FS step: gravity, bounce 0.35, lie flat when slow); every
@@ -254,7 +258,7 @@ As built (core/88, `game/cutscene/`):
 - **Starting one** from a sequence's `decide()`: return (or merge the `changes` of) `LevelRuntime.of(self).cutscenes.start(path)`;
   it draws the takes and refuses while one plays. `path` is a `CutsceneScript` `.tres`, or a CUTSCENE trigger's file played
   plainly (`CutsceneScript.plain`: no beats, the washer's no-voice length for that trigger) as the washer station's
-  "Play <trigger>" pillars do (the washer's zoo-only `zoo_cutscene`). `Cutscenes.trigger()` names the one playing.
+  "Play <trigger>" pillars do (the station's run stand-in's `cutscene`, core/107). `Cutscenes.trigger()` names the one playing.
 - **The script** has one field more than above: `after_voice_seconds`, the length of the "after_voice" beats (the spray)
   before the fade. Timeline: voiced `lead + lead_in + Σ(line + tail) + after_voice_seconds + fade`; silent
   `no_voice_seconds + after_voice_seconds` (lead and fade inside). A beat is a method of the washer's Looks, called with

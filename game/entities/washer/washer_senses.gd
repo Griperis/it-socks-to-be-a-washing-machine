@@ -7,8 +7,8 @@
 ##          thrown thing landing within `hit_radius` of the machine on the floor plane, and
 ##          `idle_seconds` since the last Pair was shelved (checked once a second, only when a comment
 ##          could be given).
-## Nothing at the run's last Pair (Q1413). Off while the level is not a staged run, except in the washer
-## station (`Washer.senses_on()`).
+## Nothing at the run's last Pair (Q1413). Off while the level is not a staged run
+## (`Washer.senses_on()`).
 class_name WasherSenses
 extends Node
 
@@ -95,8 +95,7 @@ func _heard(ev: Dictionary) -> void:
 
 ## The run's last Pair went in: the last Stage's bar is full (Q1413).
 func _is_last_pair() -> bool:
-	var stages := washer.stages
-	return stages != null and stages.plan != null and stages.stage == stages.plan.size() - 1 and stages.bar_full()
+	return washer.last_pair_in()
 
 
 func _landed_near(mess: Mess, ev: Dictionary) -> bool:
