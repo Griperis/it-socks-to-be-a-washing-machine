@@ -216,7 +216,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# core/108: the washer's wash beats on a plain floor (before/after of the beats as clips). arg
 			# "stage,<graybox|port>,<cutscene trigger>": the Looks alone, under that cutscene's look, and a camera
 			# from its front three-quarter that rides `shot_bob()` and pushes in by `shot_push()` as the
-			# cutscene's wide shot does; "call,<method>[,<arg>]" calls a beat on it (an int, true/false or a float).
+			# cutscene's wide shot does; "call,<method>[,<arg>]" calls a beat on it (an int, true/false or a float); "set,<property>,<float>" sets one.
 			_washer_beat(world, arg)
 			return true
 		"materials":
@@ -1364,6 +1364,14 @@ static func _washer_beat(world: Node, arg: String) -> void:
 		if q.size() > 2:
 			args.append(true if q[2] == "true" else (false if q[2] == "false" else (int(q[2]) if q[2].is_valid_int() else float(q[2]))))
 		looks.callv(StringName(q[1]), args)
+		return
+	if q[0] == "set":
+		# "set,<property>,<float>": a Looks property (damage, repair) set on the stage's Looks (core/117).
+		var held := world.get_node_or_null("WasherBeatStage/Looks")
+		if held == null or q.size() < 3:
+			push_warning("washer_beat: no stage")
+			return
+		held.set(StringName(q[1]), float(q[2]))
 		return
 	var stage := Node3D.new()
 	stage.name = "WasherBeatStage"

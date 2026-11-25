@@ -6,6 +6,12 @@
 [ext_resource type="Resource" path="res://game/voice/speakers/washer.tres" id="4_imwwl"]
 [ext_resource type="Script" path="res://game/outline/outline.gd" id="5_i1b01"]
 
+[ext_resource type="Material" path="res://game/entities/washer/damage_spark_back.tres" id="dmg_back"]
+[ext_resource type="Material" path="res://game/entities/washer/damage_spark_cable.tres" id="dmg_cable"]
+[ext_resource type="Mesh" path="res://game/entities/washer/damage_spark_mesh.tres" id="dmg_spark"]
+[ext_resource type="Material" path="res://game/entities/washer/damage_smoke.tres" id="dmg_smoke"]
+[ext_resource type="Mesh" path="res://game/entities/washer/damage_smoke_mesh.tres" id="dmg_smoke_mesh"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glow"]
 resource_name = "drum_glow"
 cull_mode = 2
@@ -449,14 +455,36 @@ callback_mode_process = 0
 [node name="SparksBack" type="GPUParticles3D" parent="Damage" index="0" unique_id=294197012]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -0.34)
 emitting = false
+amount = 40
+lifetime = 0.35
+one_shot = true
+explosiveness = 0.9
+use_fixed_seed = true
+seed = 4241
+process_material = ExtResource("dmg_back")
+draw_pass_1 = ExtResource("dmg_spark")
 
 [node name="SparksCable" type="GPUParticles3D" parent="Damage" index="1" unique_id=1778197726]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.2, 0)
 emitting = false
+amount = 40
+lifetime = 0.35
+one_shot = true
+explosiveness = 0.9
+use_fixed_seed = true
+seed = 4242
+process_material = ExtResource("dmg_cable")
+draw_pass_1 = ExtResource("dmg_spark")
 
 [node name="Smoke" type="GPUParticles3D" parent="Damage" index="2" unique_id=706690284]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, -0.3)
 emitting = false
+amount = 16
+lifetime = 2.4
+use_fixed_seed = true
+seed = 977
+process_material = ExtResource("dmg_smoke")
+draw_pass_1 = ExtResource("dmg_smoke_mesh")
 
 [node name="Flash" type="OmniLight3D" parent="Damage" index="3" unique_id=1841871972]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -0.4)
