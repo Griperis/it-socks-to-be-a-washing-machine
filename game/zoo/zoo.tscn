@@ -29,6 +29,7 @@
 [ext_resource type="PackedScene" path="res://game/zoo/stations/laundry.tscn" id="89_laundry"]
 [ext_resource type="PackedScene" uid="uid://q0tm1ywugfrf" path="res://game/level/level_runtime.tscn" id="43_runtime"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/washer.tscn" id="92_washer_station"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/final_screen.tscn" id="95_final_screen"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/stages.tscn" id="56_stages"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/voice.tscn" id="91_voice"]
 
@@ -154,11 +155,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 78, 0, 2)
 [node name="WasherStation" parent="Stations" instance=ExtResource("92_washer_station")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 98, 0, 2)
 
+[node name="FinalScreen" parent="Stations" instance=ExtResource("95_final_screen")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0, 2)
+
 [node name="ReturnSpot" type="Marker3D" parent="." unique_id=1397039282]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.5)
 
 [node name="Runtime" parent="." unique_id=1728372765 instance=ExtResource("43_runtime")]
-mess_bounds = AABB(-20, -6, -60, 140, 20, 80)
+mess_bounds = AABB(-20, -6, -60, 180, 20, 80)
 hands_tuning = SubResource("Resource_zoo_hands")
 upgrades = ExtResource("32_upgrades")
 place_name = "zoo"

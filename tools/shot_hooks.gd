@@ -94,6 +94,20 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.reset_physics_interpolation()
 			cam.make_current()
 			return true
+		"final":
+			# core/95: arg "<pillar>[,<seconds>]" opens the Final screen station's screen on that pillar's made-up
+			# record ("1 player", "2 players", "4 players", "left", "long name"). With seconds the clock runs
+			# that long (Pairs mid-pop); without, it skips to the totals.
+			var q := arg.split(",")
+			var station := world.get_node("Stations/FinalScreen") as FinalScreenStation
+			station.pillars[q[0]].use(1)
+			station.screen.set_process(false)
+			if q.size() > 1:
+				station.screen.advance(float(q[1]))
+			else:
+				station.screen.skip()
+				station.screen.advance(0.05)
+			return true
 		"cabinet_rows":
 			# assets/11: arg "<collection>,<rows>,<old|port>": one Cabinet alone on a plain floor far from
 			# the stations, front on, standing at <rows> Rows. "port" is the Collection's Cabinet Looks
