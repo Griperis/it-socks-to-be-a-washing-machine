@@ -21,6 +21,9 @@ extends Node
 ## The cutscene began, and its view came back (or it ended on black: `hold_black`).
 signal began(script: CutsceneScript)
 signal ended
+## The timeline reached its fade to black (or the Host's skip ended it first): once per cutscene. The Fix scene's
+## floor opens here (core/92), under the black.
+signal fading
 
 ## The skip's input action (Space, the pad's Start: Q862, Q1395) and its words.
 const SKIP := &"skip_cutscene"
@@ -70,6 +73,7 @@ var _serial := -1
 var _voice_started := false
 var _beats_done: Dictionary[int, bool] = {}
 var _end_asked := -1
+var _faded := false
 var _fade_tween: Tween = null
 
 
@@ -144,6 +148,8 @@ func _tick(delta: float) -> void:
 	var opening := 1.0 - elapsed / fade
 	var closing := (elapsed - (length - fade)) / fade
 	_set_black(clampf(maxf(opening, closing), 0.0, 1.0))
+	if closing >= 0.0:
+		_fade_out()
 	if elapsed >= length:
 		_set_black(1.0)
 		phase = Phase.HOLDING
@@ -159,6 +165,7 @@ func _begin(cutscenes: Cutscenes) -> void:
 	elapsed = 0.0
 	cuts = 0
 	_voice_started = false
+	_faded = false
 	_beats_done.clear()
 	var line_seconds := _voice_seconds(s, cutscenes.takes)
 	voiced = line_seconds > 0.0
@@ -179,6 +186,12 @@ func _begin(cutscenes: Cutscenes) -> void:
 	began.emit(s)
 
 
+func _fade_out() -> void:
+	if not _faded:
+		_faded = true
+		fading.emit()
+
+
 func _hold_late(cutscenes: Cutscenes) -> void:
 	script_now = cutscenes.script_now()
 	phase = Phase.LATE
@@ -194,6 +207,8 @@ func _hold_late(cutscenes: Cutscenes) -> void:
 ## The Host's end: everyone respawns, then the view comes back (or stays black for `hold_black`).
 func _finish() -> void:
 	var was := phase
+	if was != Phase.LATE:
+		_fade_out()
 	if Voices.segment_changed.is_connected(_on_segment):
 		Voices.segment_changed.disconnect(_on_segment)
 	if _voice_started and Voices.cutscene_playing():
@@ -308,12 +323,15 @@ func _run_beats() -> void:
 		_beat(StringName(str(beat[1])), beat[2] if beat.size() > 2 and beat[2] is Array else [])
 
 
-## A beat calls the washer's Looks (W2); one it does not have is logged, not fatal.
+## A beat calls the washer's Looks (W2), or the washer itself for what is not its face (the spray, core/92);
+## one neither has is logged, not fatal.
 func _beat(beat: StringName, args: Array) -> void:
 	var washer := Washer.of_level(self)
 	var looks: Node = washer.looks if washer != null else null
 	if looks != null and looks.has_method(beat):
 		looks.callv(beat, args)
+	elif washer != null and washer.has_method(beat):
+		washer.callv(beat, args)
 	else:
 		Log.warn("cutscene", "the washer's Looks has no beat %s" % beat)
 

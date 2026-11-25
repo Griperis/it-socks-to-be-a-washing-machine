@@ -40,6 +40,9 @@ const ZOO_CUTSCENE := &"zoo_cutscene"
 @export var zoo_plan: StagePlan
 ## In the zoo's washer station: the zoo-only Commands are granted and the senses are on.
 @export var zoo := false
+## The spray of Socks out of its door (the Fix scene's spit, core/92) and the door's middle it leaves from.
+@export var sock_spray: SockSpray
+@export var porthole: Marker3D
 
 @export_group("State")
 ## What was said last: the line, its take, and a count that moves with every answer.
@@ -62,6 +65,8 @@ var last_at := -INF
 
 var _shown := 0
 var _look_key := ""
+var _spit: Tween = null
+var _following: CutscenePlayer = null
 
 
 func _enter_tree() -> void:
@@ -178,6 +183,47 @@ func _talk(trigger_id: StringName) -> Dictionary:
 	return _said(pick["line"], int(pick["take"]))
 
 
+## Whether the machine cannot take a Part or a body now: a cutscene plays or someone spins in its drum.
+func busy() -> bool:
+	var frame := Cutscenes.of(self) if is_inside_tree() else null
+	if frame != null and frame.is_playing():
+		return true
+	for wash in WasherWash.in_level(self):
+		if wash.get_parent() == get_parent() and wash.busy():
+			return true
+	return false
+
+
+## A cutscene beat (`spray`, core/92): the door swings open over `SockSprayTuning.door_open`, the Socks spray out of
+## it, and it shuts again over the last `door_close` of the spray's length (old FirstWashSpit; looks only, on every
+## machine). A skip ends it early (`_spit_end`).
+func spray() -> void:
+	if sock_spray == null or porthole == null or sock_spray.tuning == null:
+		return
+	var thing := get_parent() as Node3D
+	var t := sock_spray.tuning
+	sock_spray.play(porthole.global_position, porthole.global_basis.z, thing.global_position.y if thing != null else 0.0)
+	if looks == null:
+		return
+	if _spit != null:
+		_spit.kill()
+	_spit = create_tween()
+	_spit.tween_property(looks, "door", 1.0, t.door_open)
+	_spit.tween_interval(maxf(t.length - t.door_open - t.door_close, 0.0))
+	_spit.tween_property(looks, "door", 0.0, t.door_close)
+
+
+## The cutscene ended (maybe by the skip): the spray is gone and the door shut.
+func _spit_end() -> void:
+	if _spit != null:
+		_spit.kill()
+		_spit = null
+	if sock_spray != null:
+		sock_spray.stop()
+	if looks != null:
+		looks.door = 0.0
+
+
 ## Whether a comment for `trigger` (any when null) may be given now: it is broken, no cutscene plays and
 ## the cooldown has passed. The senses ask it before they ask for an idle comment.
 func could_speak(trigger: VoiceTrigger = null) -> bool:
@@ -229,6 +275,7 @@ func senses_on() -> bool:
 
 
 func _show(now: bool) -> void:
+	_follow_cutscenes()
 	_apply_mood()
 	if now or serial == _shown:
 		_shown = serial
@@ -236,6 +283,14 @@ func _show(now: bool) -> void:
 	_shown = serial
 	if line != &"" and looks != null:
 		Voices.say(Voices.book().find_line(speaker.id, line), take, looks)
+
+
+func _follow_cutscenes() -> void:
+	var frame := Cutscenes.of(self) if is_inside_tree() else null
+	var player: CutscenePlayer = frame.player if frame != null else null
+	if player != null and player != _following:
+		_following = player
+		player.ended.connect(_spit_end)
 
 
 func _process(_delta: float) -> void:

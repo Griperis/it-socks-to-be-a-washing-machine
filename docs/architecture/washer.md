@@ -95,6 +95,11 @@ the cutscene frame (`run-ends.md` "The Cutscene frame", core/88) or the lines th
   (cutscene_5, whole, Q2634), `cutscene_final_wash` (cutscene_6, whole, Q2629). cutscene_3 plays the washer's line alone;
   the Old Tree's joins it in batch B by its file and trigger (Q2633).
 
+**Built (core/92).** `Washer.busy()`; the `SockSpray` child of `washer.tscn` and the beat `spray` (a method of the
+`Washer` Part, which the frame calls when the Looks have no such beat): the door opens over `SockSprayTuning.door_open`,
+the Socks spray from the `Porthole` along its +Z, the door shuts over the last `door_close`; the frame's `ended` cleans
+it up after a skip. The Fix scenes are `game/run/fix_scenes/fix_scene_1..4.tres`, named by the Stages.
+
 ## The cutscene frame
 
 Every batch A cutscene plays on one frame, core/88, designed in `run-ends.md` "The Cutscene frame" (core/72's and

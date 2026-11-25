@@ -8,6 +8,7 @@
 [ext_resource type="Resource" path="res://game/voice/speakers/washer.tres" id="6_speaker"]
 [ext_resource type="Script" path="res://game/entities/washer/washer_wash.gd" id="7_wash"]
 [ext_resource type="Script" path="res://game/entities/washer/wash_view.gd" id="8_view"]
+[ext_resource type="PackedScene" path="res://game/laundry/sock_spray.tscn" id="9_spray"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_body"]
 size = Vector3(0.7, 0.95, 0.7)
@@ -22,11 +23,13 @@ metadata/footprint = [0.7, 0.7]
 metadata/height = 0.95
 metadata/note = "The basement washing machine: it talks (core/86), a solid box 0.7 x 0.95 x 0.7 m."
 
-[node name="Washer" type="Node" parent="." node_paths=PackedStringArray("looks")]
+[node name="Washer" type="Node" parent="." node_paths=PackedStringArray("looks", "sock_spray", "porthole")]
 script = ExtResource("1_washer")
 speaker = ExtResource("6_speaker")
 tuning = ExtResource("5_tuning")
 looks = NodePath("../Looks")
+sock_spray = NodePath("../SockSpray")
+porthole = NodePath("../Porthole")
 
 [node name="Senses" type="Node" parent="." node_paths=PackedStringArray("washer")]
 script = ExtResource("2_senses")
@@ -72,6 +75,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0, 1.2)
 
 [node name="4" type="Marker3D" parent="Spawns"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0, 1.2)
+
+[node name="SockSpray" parent="." instance=ExtResource("9_spray")]
 
 [node name="Door" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.35)

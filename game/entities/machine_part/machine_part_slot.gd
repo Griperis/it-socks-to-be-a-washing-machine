@@ -1,7 +1,7 @@
 ## Where a Machine Part goes in (core/79, docs/architecture/stages.md "Its verbs"): placed on the washing
 ## machine (the zoo's stand-in is a box). A player carrying the current Stage's Part clicks it and the Part
 ## is fitted: the Part is put away, the machine is a Fix calmer and its floor opens (`Stages.fit_answer()`,
-## at once while the Stage names no `fix_cutscene`: core/92 sets it). The washer is core/73's: while it is
+## at once while the Stage names no `fix_cutscene`: core/92's house plan names one). The washer is core/73's: while it is
 ## `busy()` (someone in its drum, a cutscene) the fit is refused "The washing machine is busy".
 ## It keeps no state; the answer's changes are the Part's (hidden) and the run's (its phase).
 class_name MachinePartSlot
@@ -73,6 +73,9 @@ func accepts() -> Dictionary[StringName, Dictionary]:
 func busy() -> bool:
 	if not is_inside_tree():
 		return false
+	var washer := Washer.of_level(self)
+	if washer != null and washer.busy():
+		return true
 	for node in get_tree().get_nodes_in_group(WASHER_GROUP):
 		if node.has_method(&"busy") and node.call(&"busy"):
 			return true
