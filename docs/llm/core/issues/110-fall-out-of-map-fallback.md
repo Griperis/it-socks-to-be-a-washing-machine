@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: in-progress
+status: done
 kind: feature
 area: core
 feature: player
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-25
 blocked_by: []
 notes: ["suggested model: sonnet", "designer 2026-11-25: a fallback that puts back anyone who drops out of the map"]
 terms: [Host, Guest]
