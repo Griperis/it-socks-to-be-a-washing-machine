@@ -288,6 +288,52 @@ _data = {
 &"spin": SubResource("Animation_pj2tw")
 }
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spark"]
+shading_mode = 0
+albedo_color = Color(0.75, 0.9, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_spark"]
+material = SubResource("StandardMaterial3D_spark")
+radius = 0.008
+height = 0.016
+radial_segments = 6
+rings = 3
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_back"]
+direction = Vector3(0, 1, 0.3)
+spread = 55.0
+initial_velocity_min = 1.0
+initial_velocity_max = 3.0
+gravity = Vector3(0, -6, 0)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cable"]
+direction = Vector3(1, 0.6, 0)
+spread = 55.0
+initial_velocity_min = 1.0
+initial_velocity_max = 3.0
+gravity = Vector3(0, -6, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_smoke"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.3, 0.3, 0.32, 0.8)
+
+[sub_resource type="SphereMesh" id="SphereMesh_smoke"]
+material = SubResource("StandardMaterial3D_smoke")
+radius = 0.04
+height = 0.08
+radial_segments = 8
+rings = 4
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_smoke"]
+direction = Vector3(0, 1, 0)
+spread = 20.0
+initial_velocity_min = 0.2
+initial_velocity_max = 0.4
+gravity = Vector3(0, 0.1, 0)
+scale_min = 0.6
+scale_max = 1.6
+
 [node name="Looks" type="Node3D" unique_id=1902507154 node_paths=PackedStringArray("rig", "loops", "spinner", "lining", "drum_light", "pile_node", "bubbles_node", "player")]
 script = ExtResource("1_pdi0t")
 tuning = ExtResource("2_ftxp0")
@@ -435,18 +481,43 @@ mesh = SubResource("BoxMesh_s2ge0")
 [node name="SparksBack" type="GPUParticles3D" parent="Damage" unique_id=496597626]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -0.34)
 emitting = false
+amount = 40
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+use_fixed_seed = true
+seed = 11
+process_material = SubResource("ParticleProcessMaterial_back")
+draw_pass_1 = SubResource("SphereMesh_spark")
 
 [node name="SparksCable" type="GPUParticles3D" parent="Damage" unique_id=389647849]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.2, 0)
 emitting = false
+amount = 40
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+use_fixed_seed = true
+seed = 23
+process_material = SubResource("ParticleProcessMaterial_cable")
+draw_pass_1 = SubResource("SphereMesh_spark")
 
 [node name="Smoke" type="GPUParticles3D" parent="Damage" unique_id=385347053]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, -0.3)
 emitting = false
+amount = 16
+lifetime = 2.0
+use_fixed_seed = true
+seed = 37
+process_material = SubResource("ParticleProcessMaterial_smoke")
+draw_pass_1 = SubResource("SphereMesh_smoke")
 
 [node name="Flash" type="OmniLight3D" parent="Damage" unique_id=1055525696]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -0.4)
 visible = false
+light_color = Color(0.75, 0.9, 1, 1)
+light_energy = 0.0
+omni_range = 1.8
 
 [node name="Buzz" type="AudioStreamPlayer3D" parent="Damage" unique_id=458271294]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

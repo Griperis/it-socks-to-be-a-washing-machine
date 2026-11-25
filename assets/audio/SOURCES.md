@@ -39,3 +39,5 @@ The old game's picks for the core events (ported, Q2319). CC0 or public domain, 
 | piano/piano_remeau_<n>.ogg (23 notes) | cc0/piano_remeau | Sadiquecat | CC0 | https://freesound.org/people/Sadiquecat/sounds/794367/ and the pack's 22 other notes (the old candidates.json lists each page) |
 
 assets/07 brought the furniture devices' clips: the old picks, or for an event with no pick the pool's first candidate (the litter flap and the piano lid play the cupboard pool's first, Kenney's door open1 and close4). The piano is the old first instrument, its notes' measured roots in the catalogue's `piano` instrument.
+
+core/87 brought the broken washer's sounds, synthesised in the old game (`tools/gen_sounds.py`): washer_buzz__synth_a.ogg and washer_buzz__synth_c.ogg (the old `washer_buzz` picks) and washer_rumble__synth_a.ogg (the old `rogue_rumble`, no pick, its first candidate).

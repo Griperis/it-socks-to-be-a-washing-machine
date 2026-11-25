@@ -48,6 +48,17 @@ extends Resource
 @export var buzz_db_min := -22.0 # placeholder: the old TB buzz
 @export var buzz_db_max := -6.0 # placeholder: the old TB buzz
 @export var cutscene_calm := 0.15 # placeholder: the old TB cutscene_calm
+## The flash that lights each burst of sparks, and how long it stays.
+@export_range(0.0, 8.0, 0.1) var flash_energy := 3.0 # placeholder: the old WD flash
+@export_range(0.01, 0.5, 0.01, "suffix:s") var flash_seconds := 0.08 # placeholder: the old WD flash
+## The sparks and smoke follow a cutscene line: how much of the share an angry stretch gives at the quietest
+## (the loudest gives 1), the wiggle below which it does not burst, and how fast the strength eases (a second).
+@export_range(0.0, 1.0, 0.05) var cutscene_quiet := 0.4 # placeholder: the old WD line_intensity
+@export_range(0.0, 1.0, 0.05) var cutscene_burst_wiggle := 0.15 # placeholder: the old WD burst gate
+@export_range(0.5, 20.0, 0.5) var intensity_rate := 4.0 # placeholder: the old WD ease
+## The rumble under an angry voice: its level at an anger times wiggle of 0 and of 1 (dB).
+@export var rumble_db_min := -36.0 # placeholder: the old TV rumble_db
+@export var rumble_db_max := -12.0 # placeholder: the old TV rumble_db
 ## How many levels the zoo's mood pillars offer (0 calm to this the angriest).
 @export_range(1, 12, 1) var zoo_levels := 5 # placeholder: the old five Parts
 
