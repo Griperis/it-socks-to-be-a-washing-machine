@@ -1,17 +1,17 @@
 [gd_scene format=3]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spark"]
-transparency = 1
-shading_mode = 0
-vertex_color_use_as_albedo = true
-billboard_mode = 3
+[ext_resource type="Material" path="res://game/hands/speck_material.tres" id="1_speck"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_spark"]
-material = SubResource("StandardMaterial3D_spark")
-size = Vector2(1, 1)
+[sub_resource type="Curve" id="Curve_shrink"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="Gradient" id="Gradient_fade"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="QuadMesh" id="QuadMesh_spark"]
+material = ExtResource("1_speck")
+size = Vector2(1, 1)
 
 [node name="FinalSpark" type="CPUParticles3D"]
 emitting = false
@@ -19,10 +19,16 @@ amount = 18
 lifetime = 0.7
 one_shot = true
 explosiveness = 1.0
+local_coords = true
 mesh = SubResource("QuadMesh_spark")
+emission_shape = 1
+emission_sphere_radius = 1.0
 direction = Vector3(0, 1, 0)
 spread = 180.0
-gravity = Vector3(0, 0, 0)
+gravity = Vector3(0, -1, 0)
 initial_velocity_min = 0.2
 initial_velocity_max = 0.5
+scale_amount_min = 0.6
+scale_amount_max = 1.2
+scale_amount_curve = SubResource("Curve_shrink")
 color_ramp = SubResource("Gradient_fade")

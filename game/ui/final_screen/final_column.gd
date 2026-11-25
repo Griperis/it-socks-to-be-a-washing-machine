@@ -286,17 +286,26 @@ func _sparkle(at: Vector3, tint: Color, scale: float) -> void:
 	_spark(at, 18, 0.03 * scale, 0.5 * scale, 0.7, tint.lerp(Color(1.0, 0.8, 0.4), 0.6))
 
 
-## One-shot bits thrown from `at`, drawn flat to the camera; they free themselves. The look is the scene's.
+## One-shot specks thrown from a sphere of radius `size` at `at`, as the old PairedMoment.burst: each `size` across
+## (0.6-1.2 times), slowed by damping, drawn down a little, shrinking to nothing, its colour mixed from `tint` up to
+## half toward white; they free themselves. The look (soft round speck, shrink, fade) is the scene's.
 func _spark(at: Vector3, count: int, size: float, spread: float, life: float, tint: Color) -> void:
 	var bits := SPARK.instantiate() as CPUParticles3D
 	bits.amount = count
-	bits.scale_amount_min = size * 2.0  # the scene's quad is one metre wide
-	bits.scale_amount_max = size * 2.0
 	bits.lifetime = life
+	bits.emission_sphere_radius = size
+	bits.scale_amount_min = size * 0.6  # the scene's quad is one metre across
+	bits.scale_amount_max = size * 1.2
 	bits.initial_velocity_min = spread * 0.4
 	bits.initial_velocity_max = spread
-	bits.color = tint
+	bits.gravity = Vector3.DOWN * spread * 0.6
+	bits.damping_min = spread * 1.2
+	bits.damping_max = spread * 2.0
+	var mix := Gradient.new()
+	mix.set_color(0, tint)
+	mix.set_color(1, tint.lerp(Color.WHITE, 0.5))
+	bits.color_initial_ramp = mix
 	bits.position = at + Vector3(0, 0.2, 0)
 	_root.add_child(bits)
 	bits.emitting = true
-	get_tree().create_timer(life + 0.2).timeout.connect(bits.queue_free)
+	bits.finished.connect(bits.queue_free)

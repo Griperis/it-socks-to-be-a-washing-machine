@@ -107,6 +107,12 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			else:
 				station.screen.skip()
 				station.screen.advance(0.05)
+			if q.size() > 2:
+				# core/112: "<pillar>,<seconds>,burst" also throws a finale burst and a rare-Pair sparkle in every column.
+				for c: FinalColumn in station.screen.columns:
+					var metres := c.stage_metres()
+					c.burst(Vector3(0.0, 0.0, 0.0), 40, c.colour.lerp(Color(1.0, 0.8, 0.4), 0.5), metres.x * 0.35)
+					c._sparkle(Vector3(0.0, 0.0, -metres.y * 0.3), c.colour, 0.9)
 			return true
 		"cabinet_rows":
 			# assets/11: arg "<collection>,<rows>,<old|port>": one Cabinet alone on a plain floor far from

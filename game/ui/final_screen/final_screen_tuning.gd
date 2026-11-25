@@ -27,4 +27,4 @@ extends Resource
 ## How long the finale's three waves of bursts last.
 @export_range(0.1, 10.0, 0.1, "suffix:s") var finale_time := 2.5 # placeholder: the old finale_time
 ## How many bits one burst of the finale throws.
-@export_range(1, 300, 1) var confetti := 70 # placeholder: the old confetti
+@export_range(1, 300, 1) var confetti := 40 # placeholder: the old confetti
