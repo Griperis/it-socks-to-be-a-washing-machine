@@ -6,7 +6,7 @@ area: core
 feature: frame
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/76, core/78]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [Part, Fix, Stage, Hands]
@@ -60,6 +60,7 @@ picks. The Stages station's mini run gets the slot box and the Parts lie beside 
   `game/ui/prompts.gd`, `game/zoo/`, `game/audio/sound_catalogue.tres`, `assets/audio/`, `tests/machine_part_test.gd`,
   `tests/support/busy_washer.gd`, docs.
 - Verified: PASS touched run (see report); sounds station per_row 9 to 10 and credits for the two clips
+- Merged: d49572ee (2026-11-25, branch core/79-machine-parts)
 
 ## Follow-ups handed on
 - Old detail left out: the pop spot is not pushed clear of gift boxes (no gifts until batch B's presents); listed in batch-a-review.
