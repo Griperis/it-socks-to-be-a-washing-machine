@@ -52,6 +52,12 @@ func click_only() -> bool:
 	return false
 
 
+## Whether this thing is only named and outlined for the crosshair: its prompt shows no key and the use
+## key does nothing on it (the washing machine, the old `hint_only`).
+func hint_only() -> bool:
+	return false
+
+
 ## What the player's use button does to this thing: it asks (parts.ask), never writes.
 func use(_by: int) -> void:
 	pass

@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: washer
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/85]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [Voice line, Stage]
@@ -47,5 +47,14 @@ Command on `Stages`), "Break it"/"Fix it", and the senses on; core/87 makes the 
 - The Laundry day's comment set is customisable, Stage 4's by default (Q2635, 2026-11-24).
 
 ## Open follow-ups
+- [later] The face's loops run on three AnimationPlayers (`AnimationPlayer` acting, poses, mouth; `Loops` talk/rumble; `Spin`), the bob weighted in `WasherLooks` by `mixer_applied`; the AnimationTree of washer.md "looks_contract.json" is not built (it cannot be authored headless). assets/14 may replace it in the editor if the lead wants one tree.
+- [later] Old details not built because they need assets or core/87: the angry rumble loop's level (-36 to -12 dB by anger x wiggle; the `Rumble` node exists, no `washer_rumble` sound is in the catalogue), the buzz, sparks, smoke, flash and the drum light's repair dim and flicker (`repair`/`damage` are set on the Looks; core/87 shows them). Lead: confirm these stay with core/87.
+- [later] The cutscene pillars of the station wait for core/88 (the frame); `cutscene_looks`, the shots and spawns are ready for it.
+- Additions nobody asked for: `Part.hint_only()` and its row in `Prompts.target` (a name with no key); `WasherShot` and `WasherCutsceneLook` scripts; `Washer.zoo_plan`.
 
 ## Built log
+
+### 2026-11-25
+- Changed: the washing machine is an entity that talks: `washer.tscn` replaces the house marker at its place; Washer Part (director: silent before broken, cutscene block, 120 s cooldown, chance, comment set by Stage or the Laundry day, picker), WasherSenses (stare, idle, progress, hit), WasherLooks and the graybox Looks with the contract, shots, spawns, Door, Porthole; the washer station with pillars built from data.
+- Files: game/entities/washer/, game/zoo/washer/, game/zoo/stations/washer.tscn, game/house/house.tscn, game/zoo/zoo.tscn, game/parts/part.gd, game/ui/prompts.gd, tests/washer_test.gd, docs/migration/batch-a-review.md.
+- Verified: washer suite PASS 233 checks, 12 cases (real path, co-op stare on both machines, house); `--touched` and save/zoo re-run PASS after fixing the label height and the empty save.
