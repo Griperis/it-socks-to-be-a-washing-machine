@@ -36,20 +36,30 @@ var notice := ""
 var new_game := false
 
 var _profile: PlayerProfile = null
+## Where the profile files are kept, and the process that claims one (a test sets both).
+var profile_folder := PlayerProfile.FOLDER
+var process_id := OS.get_process_id()
 
 
 func _ready() -> void:
 	new_game = OS.is_debug_build() and OS.get_cmdline_user_args().has("--new-game")
 
 
-## The player the Worlds are kept under: `user://profile.json`, or `--profile=<tag>`'s.
+## The player the Worlds are kept under: `--profile=<tag>`'s, else `user://profile.json`; in a debug build
+## a second copy on one PC takes `profile_2.json` and so on (ProfileLock, core/114).
 func profile() -> PlayerProfile:
 	if _profile == null:
 		var tag := ""
+		var given := false
 		for arg in OS.get_cmdline_user_args():
 			if arg.begins_with("--profile="):
 				tag = arg.trim_prefix("--profile=")
-		_profile = PlayerProfile.load_or_make(tag)
+				given = true
+		if not given and OS.is_debug_build():
+			tag = ProfileLock.pick(profile_folder, process_id, Time.get_unix_time_from_system())
+			if is_inside_tree():
+				ProfileLock.keep(get_tree(), tag, profile_folder)
+		_profile = PlayerProfile.load_or_make(tag, profile_folder)
 	return _profile
 
 

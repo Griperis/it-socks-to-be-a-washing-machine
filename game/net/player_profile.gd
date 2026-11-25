@@ -25,9 +25,9 @@ var path := ""
 
 
 ## The profile of `tag` ("" is the player's own): read from its file, or made and written there.
-static func load_or_make(tag: String) -> PlayerProfile:
+static func load_or_make(tag: String, folder := FOLDER) -> PlayerProfile:
 	var p := PlayerProfile.new()
-	p.path = file_of(tag)
+	p.path = file_of(tag, folder)
 	var text := FileAccess.get_file_as_string(p.path) if FileAccess.file_exists(p.path) else ""
 	var data: Variant = JSON.parse_string(text) if text != "" else null
 	if data is Dictionary and is_id((data as Dictionary).get("id")):
@@ -48,12 +48,12 @@ static func fresh() -> PlayerProfile:
 
 
 ## The file of `tag`: profile.json, or profile_<tag>.json (letters, digits, '-' and '_' kept).
-static func file_of(tag: String) -> String:
+static func file_of(tag: String, folder := FOLDER) -> String:
 	var safe := ""
 	for c in tag:
 		if (c >= "a" and c <= "z") or (c >= "A" and c <= "Z") or (c >= "0" and c <= "9") or c == "-" or c == "_":
 			safe += c
-	return FOLDER + ("profile.json" if safe == "" else "profile_%s.json" % safe)
+	return folder + ("profile.json" if safe == "" else "profile_%s.json" % safe)
 
 
 ## A new long random id.

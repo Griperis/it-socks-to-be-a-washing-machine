@@ -31,6 +31,8 @@ func cases() -> Array[Dictionary]:
 				"title": "on the Host, a Guest's pose that is out of the area, too high, not finite or an impossible pitch or crouch is dropped: the old pose stays"},
 		{"name": "follow", "method": "case_follow", "world": true,
 				"title": "a small move eases min(1, 12 * delta) of the way a frame, the crouch at 6 a second; a move over 1 m in one update stands there at once"},
+		{"name": "second_copy_joins", "method": "case_second_copy_joins", "world": false,
+				"title": "core/114: two copies of a debug build on one PC (one user folder): the first keeps profile.json, the second takes profile_2 and joins the first's game as a Guest with an id of its own; a copy that crashed (an old stamp) gives its profile back; --profile= wins"},
 		{"name": "steps", "method": "case_steps", "world": false,
 				"title": "real path: the Host walks and jumps: on the Guest a step plays at the Host avatar's body every 1.4 m walked and the landing there, in the world with the local clips (silent past 20 m, so nothing at 25 m)"},
 		{"name": "cues", "method": "case_cues", "world": false,
@@ -90,6 +92,50 @@ func _walk_crouch(lag_ms: int) -> void:
 	Input.action_release(Player.CROUCH)
 	await _until(func() -> bool: return looks.crouch == 0.0, "the avatar to stand again")
 	_drop_branches()
+
+
+func case_second_copy_joins() -> void:
+	var folder := "user://test_profiles_%d/" % Time.get_ticks_usec()
+	DirAccess.make_dir_recursive_absolute(folder)
+	var now := Time.get_unix_time_from_system()
+	var first := ProfileLock.pick(folder, 111, now)
+	var second := ProfileLock.pick(folder, 222, now)
+	_check(first == "" and second == "2", "the first copy keeps the profile, the second takes profile_2 (got '%s', '%s')" % [first, second])
+	_check(ProfileLock.pick(folder, 333, now) == "3", "a third takes profile_3")
+	# A crash: copy 2's stamp is old, so its profile is free again.
+	ProfileLock.stamp(ProfileLock.lock_of("2", folder), 222, now - ProfileLock.STALE - 5.0)
+	_check(ProfileLock.pick(folder, 444, now) == "2", "a profile whose stamp is old is taken back")
+	# The real path: each copy's Worlds picks its profile; the two then join as Host and Guest.
+	for f in DirAccess.get_files_at(folder):
+		DirAccess.remove_absolute(folder + f)
+	var worlds_a := _worlds_of(folder, 111)
+	var worlds_b := _worlds_of(folder, 222)
+	var pa: PlayerProfile = worlds_a.profile()
+	var pb: PlayerProfile = worlds_b.profile()
+	_check(pa.path.ends_with("profile.json") and pb.path.ends_with("profile_2.json") and pa.id != pb.id,
+			"two copies get profiles of their own (%s, %s)" % [pa.path, pb.path])
+	var host := _branch("Host")
+	var guest := _branch("Guest")
+	await _frames(2)
+	_session(host).profile = pa
+	_session(guest).profile = pb
+	_check(_net(host).start(["--host"]) == OK, "the Host hosts")
+	_net(guest).start(["--join=127.0.0.1:%d" % _session(host).port])
+	await _until(func() -> bool: return not _roster(guest).entry_of(1).is_empty() and _avatars(host).of(_session(guest).me()) != null,
+			"the second copy to join as a Guest")
+	_drop_branches()
+	worlds_a.free()
+	worlds_b.free()
+	for f in DirAccess.get_files_at(folder):
+		DirAccess.remove_absolute(folder + f)
+	DirAccess.remove_absolute(folder)
+
+
+func _worlds_of(folder: String, pid: int) -> Node:
+	var w: Node = (load("res://game/save/worlds.gd") as GDScript).new()
+	w.profile_folder = folder
+	w.process_id = pid
+	return w
 
 
 func case_colour_tag_late() -> void:
