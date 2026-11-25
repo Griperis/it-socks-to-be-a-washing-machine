@@ -37,7 +37,7 @@ never reads as the scene-parts `Part`.
 
 | Field | Meaning |
 |---|---|
-| `stage: int` | the current Stage (0 = the basement's) |
+| `stage: int` | the current Stage (0 = the basement's; -1 before a New Game's `start`, which the Host asks once the level is bound and its World loaded) |
 | `phase: int` | `PLAYING` (the bar counts), `PART_OUT` (complete; its Part lies or is carried), `FIXING` (the Part is in the machine; its Fix scene plays), `FIXED` (the last Part's Fix is over: the Laundry day's, core/72) |
 | `bar: Array` | the Rows the Stage counts: `[cabinet id, drawer]` each, fixed when the Stage begins |
 | `spawned: PackedInt32Array` | every Design spawned this run (each spawns once) |
@@ -64,6 +64,16 @@ Elevator's stops (batch C) read `floor_open(floor)`.
 | `lay_first` | Host: the First wash at its spit (core/72), or the run at a New Game's start when the level wants no First wash (no `LaundryDay`, or its `wants_first_wash()` false; core/94) | Stage 1's Designs into `due` |
 | `land` | Host: the StageSpawner | the laid records join the Mess (`added_lying_patch`), their Designs leave `due`, `first_laid` |
 | `zoo_complete`, `zoo_fit_now` | Host, the zoo station's switches only | complete the Stage outright; fit and open at once |
+
+**Built (core/76).** `game/run/run.tscn` (`Run`, a Node3D, its child `Stages` naming the plan) is in the house and
+in the Stages station. `Stages` finds the Cabinets under the Run's parent (group `cabinets`) and sets each one's
+`Cabinet.stages`, so a Row's capacity is the World's `pairs_per_drawer` (`Cabinet.row_capacity()`, `full_height()`);
+a Cabinet's Rows never pass its Drawers (`Stages.height_of`) until core/81 gives it six. Every answer that moves
+the run carries `stage_events` (`[[name, args...]]`), which each machine emits as the signals below as it applies the
+answer (never on a load or a join). The Host asks `complete` after any applied answer that leaves the bar full. The
+zoo's switches (`game/zoo/stages/stages_switch.gd`) ask their own `switch` verb and answer with
+`zoo_complete_answer()` / `zoo_fit_now_answer()`. `lay_first`, `land` and `stage_designs()` are stubs core/77 fills;
+a debug build's launch option `--pairs-per-drawer=N` sets a New Game's Drawer size (the slider, core/91, rides it).
 
 A load between `FIXING` and `open_floor` (the Fix scene cut short) opens the floor in the run's `loaded()`, as the old
 `step()` did. A load with `due` not empty lays those Designs again (old `redo_due`: the ones now held, lying or shelved

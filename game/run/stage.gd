@@ -1,0 +1,18 @@
+## One Stage of a run (docs/architecture/stages.md "How it is authored"): one floor, its title, the
+## fewest Pairs it spawns, the Machine Part it earns, whether its bar counts only its own Cabinets and
+## the washer's comment set while it is current. A fifth Stage is a fifth entry in the StagePlan.
+class_name Stage
+extends Resource
+
+## Its name on the Stage bar and the World's row ("Basement", Q2622).
+@export var title := ""
+## The floor it opens (an index into HouseLights.floors); Stage 1's is open from the start.
+@export_range(0, 16, 1) var floor := 0
+## The fewest Pairs it spawns, at 25 Pairs per Drawer (scaled by the World's size, Q668).
+@export_range(0, 1000, 1) var pairs := 50 # placeholder: the old T:stages pairs (balance round Q967)
+## The Part its completion pops (core/79).
+@export var part: MachinePartKind
+## Its bar counts only its own Cabinets (the attic's, Q2623).
+@export var counts_only_own := false
+## The washing machine's comment set while it is current (docs/architecture/voice.md).
+@export_range(0, 16, 1) var comment_set := 0

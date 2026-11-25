@@ -154,6 +154,7 @@ Furniture/TrunkA/Lid/Openable
 Furniture/TrunkB/Lid/Openable
 Furniture/Vanity/Doors/Openable
 Furniture/WallCupboard/Door/Openable
+Run/Stages
 Runtime/Session/Roster
 Runtime/Socks/Coins
 Runtime/Socks/Hands
