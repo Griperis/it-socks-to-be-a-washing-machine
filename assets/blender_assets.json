@@ -656,6 +656,30 @@
       "colliders": 0,
       "source": "furniture/workbench",
       "glb": "assets/furniture/workbench.glb"
+    },
+    "part_filter": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "parts/part_filter",
+      "glb": "assets/parts/filter.glb"
+    },
+    "part_motor": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "parts/part_motor",
+      "glb": "assets/parts/motor.glb"
+    },
+    "part_belt": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "parts/part_belt",
+      "glb": "assets/parts/drum_belt.glb"
+    },
+    "part_detergent": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "parts/part_detergent",
+      "glb": "assets/parts/detergent.glb"
     }
   }
 }

@@ -1,0 +1,12 @@
+# assets/12: the four Machine Parts (filter, motor, drum belt, detergent) in a row on a plain floor (the shot hook
+# machine_parts): the old PartView's tree (old) and each kind's Looks (port); then the port's lying (spin and bob)
+# frame by frame, 60 frames a second, from 31 to 202 (about 2.9 s: one bob, a sixth of a turn per second).
+old  --size=1280x480 --do='30:machine_parts:old' --shots=31
+port  --size=1280x480 --do='30:machine_parts:port' --shots=31
+lying55  --size=1280x480 --do='30:machine_parts:port' --shots=55
+lying79  --size=1280x480 --do='30:machine_parts:port' --shots=79
+lying103  --size=1280x480 --do='30:machine_parts:port' --shots=103
+lying127  --size=1280x480 --do='30:machine_parts:port' --shots=127
+lying151  --size=1280x480 --do='30:machine_parts:port' --shots=151
+lying175  --size=1280x480 --do='30:machine_parts:port' --shots=175
+lying199  --size=1280x480 --do='30:machine_parts:port' --shots=199
