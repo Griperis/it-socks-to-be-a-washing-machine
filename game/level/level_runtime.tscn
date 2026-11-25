@@ -20,6 +20,8 @@
 [ext_resource type="Script" uid="uid://bf87f1xinusc0" path="res://game/ping/pings.gd" id="22_pings"]
 [ext_resource type="Resource" uid="uid://e3fid8403c2f" path="res://game/ping/ping_tuning.tres" id="23_ping_tuning"]
 [ext_resource type="Script" uid="uid://tmma7k3a2ybj" path="res://game/ping/ping_marks.gd" id="24_marks"]
+[ext_resource type="Script" path="res://game/cutscene/cutscenes.gd" id="25_cutscenes"]
+[ext_resource type="PackedScene" path="res://game/cutscene/cutscene_player.tscn" id="26_cutscene_player"]
 
 [node name="LevelRuntime" type="Node3D" unique_id=573781402]
 script = ExtResource("0_runtime")
@@ -67,6 +69,13 @@ mess = NodePath("../Socks/Mess")
 [node name="Marks" type="Node3D" parent="Pings" node_paths=PackedStringArray("pings") unique_id=1460313002]
 script = ExtResource("24_marks")
 pings = NodePath("..")
+
+[node name="Cutscenes" type="Node" parent="." node_paths=PackedStringArray("knockdowns", "player")]
+script = ExtResource("25_cutscenes")
+knockdowns = NodePath("../Socks/Knockdowns")
+player = NodePath("../CutscenePlayer")
+
+[node name="CutscenePlayer" parent="." instance=ExtResource("26_cutscene_player")]
 
 [node name="Parts" type="Node" parent="." unique_id=427637761]
 script = ExtResource("1_parts")

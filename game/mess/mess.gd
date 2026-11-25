@@ -425,6 +425,20 @@ func is_drawn(sock: int) -> bool:
 	return _drawing != null and (_drawing.is_drawn(sock) or _lent.has(sock))
 
 
+## Looks only: draw every Sock and Pair of this Mess, lying or in the air, or none (a cutscene, core/88).
+## Nothing else changes: they still lie, fly and are aimed as before.
+func set_drawn(on: bool) -> void:
+	for holder: Node in [_container(lying), _container(flights), _bodies]:
+		if holder is Node3D:
+			(holder as Node3D).visible = on
+
+
+## Whether the Socks are drawn (set_drawn()).
+func drawn() -> bool:
+	var holder := _container(lying)
+	return not (holder is Node3D) or (holder as Node3D).visible
+
+
 ## The Looks scene of lying Sock `sock`, lent to it now if it had none (the outline plays there,
 ## M03): from now on it is drawn as that scene, not as an instance, until return_looks(). Null when
 ## the Sock does not lie.

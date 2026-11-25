@@ -98,8 +98,11 @@ const FULL_OUTLINE := preload("res://game/outline/full.tres")
 ## The middle button's pings and the emoji wheel (core/43).
 @onready var _pinger: Pinger = %Pinger
 
-## True while a menu has the player's input (set_input_blocked()).
-var _input_blocked := false
+## True while a menu (set_input_blocked()) or a cutscene (set_cutscene(), core/88) has the player's input.
+var _input_blocked: bool:
+	get: return _menu_blocked or _cutscene
+var _menu_blocked := false
+var _cutscene := false
 ## True while this player has the mouse captured (L03): the look turns only then. Kept here as well as
 ## in Input.mouse_mode, which a headless run does not hold.
 var _captured := false
@@ -174,9 +177,38 @@ func _ready() -> void:
 ## A menu over the game (the pause template tells the group `local_input`): while blocked the
 ## player reads no walk, jump, look, use or Hands input; it still falls and still holds what it holds.
 func set_input_blocked(on: bool) -> void:
-	_input_blocked = on
+	_menu_blocked = on
 	if on:
 		_let_go_body()  # H97: a menu lets go of a dragged body
+
+
+## A cutscene plays (core/88, the CutscenePlayer): the input is off as under a menu (a menu closing in it
+## gives none back), a charge is dropped, a drag let go, and the HUD hidden; off, both come back.
+func set_cutscene(on: bool) -> void:
+	_cutscene = on
+	_hud.visible = not on
+	if on:
+		_set_charge(false)
+		_let_go_body()
+
+
+## Whether a cutscene has this player's input.
+func in_cutscene() -> bool:
+	return _cutscene
+
+
+## Stands the body at `at` (a cutscene's respawn by the washer, core/88): still, standing, off any back,
+## looking along the marker's -Z with the head level.
+func respawn_at(at: Transform3D) -> void:
+	_stack.drop()
+	velocity = Vector3.ZERO
+	crouching = false
+	_apply_height(tuning.stand_height)
+	global_position = at.origin
+	var forward := -at.basis.z
+	rotation.y = atan2(-forward.x, -forward.z)
+	_head.rotation.x = 0.0
+	reset_physics_interpolation()
 
 
 ## This machine's player id: who its Commands come from.

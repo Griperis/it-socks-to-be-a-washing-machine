@@ -1,8 +1,9 @@
 ## The washer station (core/86, Q2337): the real `washer.tscn` on the zoo floor, its senses on, and pillars built
 ## from the game's data when it enters the tree: one per mood level 0..`zoo_levels` (core/87 makes them
 ## show), one per Stage of the house's plan and the Laundry day (the comment set the washer picks from),
-## "From the run" (the overrides off), "Break it" / "Fix it" (a stand-in for core/72's `broken`), and one
-## per comment trigger (fired as the game does). A new trigger or Stage appears with no other change.
+## "From the run" (the overrides off), "Break it" / "Fix it" (a stand-in for core/72's `broken`), one
+## per comment trigger (fired as the game does), and one per CUTSCENE trigger ("Play cutscene_fix_1": its lines
+## played plainly on the Cutscene frame, core/88). A new trigger or Stage appears with no other change.
 class_name WasherStation
 extends Node3D
 
@@ -20,7 +21,8 @@ const TRIGGERS := "res://game/voice/triggers"
 @export var row_pitch := 1.6
 
 var _built := false
-## By what each does: "mood 3", "stage 2", "laundry_day", "run", "break", "fix", "trigger washer_stare".
+## By what each does: "mood 3", "stage 2", "laundry_day", "run", "break", "fix", "trigger washer_stare",
+## "cutscene cutscene_fix_1".
 var pillars: Dictionary[String, WasherPillar] = {}
 
 
@@ -52,6 +54,10 @@ func build() -> void:
 	var triggers := _triggers()
 	for n in triggers.size():
 		_pillar(holder, "trigger %s" % triggers[n], "Fire %s" % triggers[n], Washer.TALK, {"trigger": String(triggers[n])}, row, n)
+	row += 1
+	var cutscenes := _triggers(VoiceTrigger.Kind.CUTSCENE)
+	for n in cutscenes.size():
+		_pillar(holder, "cutscene %s" % cutscenes[n], "Play %s" % cutscenes[n], Washer.ZOO_CUTSCENE, {"trigger": String(cutscenes[n])}, row, n)
 	var depth := (row + 3) * row_pitch + 8.0
 	var width := per_row * column_pitch + 4.0
 	(pad.mesh as PlaneMesh).size = Vector2(width, depth)
@@ -75,8 +81,8 @@ func _pillar(parent: Node3D, key: String, words: String, verb: StringName, args:
 	return part
 
 
-## Every comment trigger's id, sorted (the folder is the list).
-func _triggers() -> Array[StringName]:
+## Every trigger's id of `kind`, sorted (the folder is the list).
+func _triggers(kind := VoiceTrigger.Kind.COMMENT) -> Array[StringName]:
 	var out: Array[StringName] = []
 	var dir := DirAccess.open(TRIGGERS)
 	if dir == null:
@@ -87,6 +93,6 @@ func _triggers() -> Array[StringName]:
 		var name := f.trim_suffix(".remap")
 		if name.ends_with(".tres"):
 			var t := load("%s/%s" % [TRIGGERS, name]) as VoiceTrigger
-			if t != null and t.kind == VoiceTrigger.Kind.COMMENT:
+			if t != null and t.kind == kind:
 				out.append(t.id)
 	return out

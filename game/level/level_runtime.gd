@@ -226,6 +226,11 @@ var flights: Node3D:
 	get: return get_node(^"Flights") as Node3D
 var loading: LoadingScreen:
 	get: return get_node(^"LoadingScreen") as LoadingScreen
+## The cutscene playing (core/88) and how this machine shows it.
+var cutscenes: Cutscenes:
+	get: return get_node(^"Cutscenes") as Cutscenes
+var cutscene_player: CutscenePlayer:
+	get: return get_node(^"CutscenePlayer") as CutscenePlayer
 
 
 ## The marker at `path` (from this node), else the level's child named `fallback`, or null.

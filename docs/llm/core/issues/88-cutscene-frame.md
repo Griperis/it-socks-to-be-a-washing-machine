@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: cutscene
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/86]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: opus"]
 terms: [Host, Guest]
@@ -44,5 +44,18 @@ the frame.
 - cutscene_3 plays the washer's line alone in batch A (Q2633, 2026-11-24).
 
 ## Open follow-ups
+- For the lead before the merge (old details of the named lines this frame cannot build yet): "every knockdown wash
+  ended" at the respawn waits for the knockdown wash (not built; the end answer is where it belongs, `Cutscenes._ended`);
+  the First wash's 1 cm bob on the wide shot and its beats (`calm_wash`, `break`, `door_open`, `door_close`, `spray`) are
+  washer Looks methods core/94 adds, which the frame already calls by name.
 
 ## Built log
+- 2026-11-25. Changed: the Cutscene frame in `game/cutscene/` (`Cutscenes` Part in the level runtime with Host-only
+  `skip`/`end`, `CutsceneScript`, `CutscenePlayer` scene, `CutsceneTuning`); `Player.set_cutscene`/`respawn_at`;
+  `Mess.set_drawn`; the washer's zoo-only `zoo_cutscene` and `Washer.of_level`, no mood written while a cutscene plays;
+  the washer station's "Play <trigger>" pillars from the CUTSCENE triggers; input action `skip_cutscene` (Space, Start);
+  the WasherLooks `set_cutscene` call slots in when core/87 lands (has_method). Files: game/cutscene/*, game/player/player.gd,
+  game/mess/mess.gd, game/entities/washer/washer.gd, game/level/level_runtime.gd/.tscn, game/zoo/washer/washer_station.gd,
+  game/zoo/stations/washer.tscn, project.godot, tests/cutscene_test.gd, tests/coop_cutscene_test.gd,
+  tests/fixtures/cutscene_silent.tres, docs/architecture/run-ends.md, docs/migration/batch-a-review.md.
+  Verified: see the commit's `suite:` line (run.sh --touched PASS).

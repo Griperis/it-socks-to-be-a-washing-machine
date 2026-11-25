@@ -187,6 +187,22 @@ needs it now.
   the washer's `Spawns` with every knockdown and knockdown wash ended (Q745, Q759); the HUD, input and drawing come back;
   fade in. A Guest whose timeline ends first holds black until the Host's end.
 
+As built (core/88, `game/cutscene/`):
+- **Starting one** from a sequence's `decide()`: return (or merge the `changes` of) `LevelRuntime.of(self).cutscenes.start(path)`;
+  it draws the takes and refuses while one plays. `path` is a `CutsceneScript` `.tres`, or a CUTSCENE trigger's file played
+  plainly (`CutsceneScript.plain`: no beats, the washer's no-voice length for that trigger) as the washer station's
+  "Play <trigger>" pillars do (the washer's zoo-only `zoo_cutscene`). `Cutscenes.trigger()` names the one playing.
+- **The script** has one field more than above: `after_voice_seconds`, the length of the "after_voice" beats (the spray)
+  before the fade. Timeline: voiced `lead + lead_in + Σ(line + tail) + after_voice_seconds + fade`; silent
+  `no_voice_seconds + after_voice_seconds` (lead and fade inside). A beat is a method of the washer's Looks, called with
+  its args; a missing one is a warning.
+- **Numbers:** `cutscene_tuning.tres` (`fade_seconds` 0.5, `lead_in` 0.6); the tail is `VoiceTuning.cutscene_tail`.
+- **The player's side:** `Player.set_cutscene(on)` (input off apart from a menu's, HUD hidden), `Player.respawn_at(t)`;
+  `Mess.set_drawn(on)` hides every Sock and Pair; the camera's cull mask leaves out the first-person body and held items.
+  The washer's Looks gets `set_cutscene(WasherCutsceneLook or null)` when it has it (core/87), and `Washer` writes no mood
+  while a cutscene plays. `hold_black`: the end leaves black and input off until `CutscenePlayer.release()` (core/96).
+- **The skip** is the input action `skip_cutscene` (Space, the pad's Start).
+
 ## Seams this piece needs
 
 From **core/71** (Stages):
