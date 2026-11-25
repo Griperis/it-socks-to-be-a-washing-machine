@@ -1,0 +1,9 @@
+# core/112: the Final screen's sparkles (soft round specks as the old PairedMoment.burst): a Pair popping on the 2-player
+# and 4-player screens, and one burst at four moments (the hook "final" with seconds advances the clock in one step, the
+# specks then play out on real frames).
+2-players-popping  --size=1920x1080 --do='30:final:2 players,4.0,burst' --shots=36
+4-players-popping  --size=1920x1080 --do='30:final:4 players,4.0,burst' --shots=36
+burst-a  --size=1920x1080 --do='30:final:4 players,4.0,burst' --shots=32
+burst-b  --size=1920x1080 --do='30:final:4 players,4.0,burst' --shots=38
+burst-c  --size=1920x1080 --do='30:final:4 players,4.0,burst' --shots=46
+burst-d  --size=1920x1080 --do='30:final:4 players,4.0,burst' --shots=58
