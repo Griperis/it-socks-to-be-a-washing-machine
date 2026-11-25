@@ -57,3 +57,4 @@ Models built by `tools/blender/` scripts (build() safe to re-run); the shared ma
   - Line-up (old | port door, old | port gate): `builds/review-assets-10/lineup-front.png`, `lineup-back.png`,
     `lineup-locks-door.png`, `lineup-locks-gate.png`.
   - Verified: asset checks PASS both; glb_compare script vs .blend 2/2 the same; `PASS 20987 checks, 617 cases`; grep_rules PASS; asset_lint PASS.
+- Merged: 5012120d (2026-11-25, branch assets/10-floor-lock-models)

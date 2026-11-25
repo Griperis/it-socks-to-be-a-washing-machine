@@ -6,7 +6,7 @@ area: core
 feature: ui
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-25
 blocked_by: []
 notes: ["suggested model: sonnet", "designer 2026-11-25: particles and fixed nodes are scene nodes, not built in code"]
 terms: []
@@ -47,3 +47,4 @@ and voice player pools, the Whiteboard's viewport-texture material, the outline 
   final_spark.tscn, game/lobby/lobby_stage.gd, lobby_stage.tscn, docs/migration/batch-a-review.md. Stills before/after in
   builds/review-core-109/ (lobby-look and final-screen sets: 0 differing pixels on four, focus and popping).
   Verified: PASS 22772 checks, 712 cases.
+- Merged: 6c27943d (2026-11-25, branch core/109-nodes-not-code-built)

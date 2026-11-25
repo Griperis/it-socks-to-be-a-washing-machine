@@ -50,3 +50,4 @@ One Looks scene per kind; nothing else.
 - Files: `assets/parts/`, `assets_src/blender/parts/`, `assets/blender_assets.json`, `game/entities/machine_part/`,
   `tools/shot_hooks.gd`, `tools/shots/sets/machine-parts.txt`, `assets_src/generate/README.md`, `docs/migration/batch-a-review.md`
 - Verified: `PASS 20681 checks, 601 cases` (run.sh --touched); `PASS rules`, `PASS asset_lint`; stills `builds/review-assets-12/line-up-old-port.png`, `lying-strip.png`
+- Merged: 93089213 (2026-11-25, branch assets/12-machine-part-models)
