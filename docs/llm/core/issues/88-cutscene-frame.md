@@ -58,4 +58,4 @@ the frame.
   game/mess/mess.gd, game/entities/washer/washer.gd, game/level/level_runtime.gd/.tscn, game/zoo/washer/washer_station.gd,
   game/zoo/stations/washer.tscn, project.godot, tests/cutscene_test.gd, tests/coop_cutscene_test.gd,
   tests/fixtures/cutscene_silent.tres, docs/architecture/run-ends.md, docs/migration/batch-a-review.md.
-  Verified: see the commit's `suite:` line (run.sh --touched PASS).
+  Verified: suite: PASS 21813 checks, 693 cases (every suite ran); PASS rules.
