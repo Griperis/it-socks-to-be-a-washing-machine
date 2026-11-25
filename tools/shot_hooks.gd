@@ -1,4 +1,4 @@
-## What this game adds to shots (kit/docs/TESTING.md "The shot harness").
+## What this game adds to shots (kit/docs/TESTING-more.md "The shot harness").
 extends RefCounted
 
 ## The scene a shot loads unless its line gives --scene=: the zoo, where every shot set before
