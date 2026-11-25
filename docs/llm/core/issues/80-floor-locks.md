@@ -6,7 +6,7 @@ area: core
 feature: frame
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/76]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [Stage, Openable, Floor]
@@ -57,6 +57,7 @@ The Stages station gets a ground door and a gate with an Open/Lock pillar, and t
     `game/parts/part.gd`, `game/ui/prompts.gd`, `game/house/house_lights.gd`, `game/audio/sound_catalogue.tres`,
     `game/zoo/stages/lock_switch.*`, `game/zoo/stations/stages.tscn`, `tests/floor_lock_test.gd`, docs.
   - Verified: see the report (`tests/floor_lock_test.gd` 6 cases pass; touched run).
+- Merged: 9431ed5f (2026-11-25, branch core/80-floor-locks)
 
 ## Follow-ups handed on
 - core/91 places the locks in the house: `floor` on each, turned so the leaf swings over the flight; `HouseLights` is found

@@ -40,4 +40,4 @@ terms: []
 - Verified: forced 3.6 ms slice: laid in 1627 frames, the case passes; house suite 10 runs in a row under
   load (loadavg 4.5-11.6, reruns off; runs 3-10 without the unchanged timing case): every one
   `PASS`, no FLAKY line; `run.sh --touched`: see the commit
-
+- Merged: cdb0bb38 (2026-11-25, branch core/102-house-h09-trail-flaky)

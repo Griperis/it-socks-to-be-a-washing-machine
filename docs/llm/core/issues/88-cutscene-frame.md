@@ -59,3 +59,4 @@ the frame.
   game/zoo/stations/washer.tscn, project.godot, tests/cutscene_test.gd, tests/coop_cutscene_test.gd,
   tests/fixtures/cutscene_silent.tres, docs/architecture/run-ends.md, docs/migration/batch-a-review.md.
   Verified: suite: PASS 21813 checks, 693 cases (every suite ran); PASS rules.
+- Merged: d49b43a6 (2026-11-25, branch core/88-cutscene-frame)

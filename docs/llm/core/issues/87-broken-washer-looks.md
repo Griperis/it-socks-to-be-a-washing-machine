@@ -6,7 +6,7 @@ area: core
 feature: washer
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/86, core/76]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [Stage, Fix]
@@ -55,3 +55,4 @@ test of a look number). The washer station's mood pillars drive it.
   docs/migration/batch-a-review.md (four settled rows). Placeholders: the new tuning numbers (flash, cutscene, rumble)
   are marked in `washer_tuning.gd`. The old drum light flickered the room light within 4 m too; that line is in the
   First wash's beats (core/94/96), not here. Verified: see the commit's `suite:` line.
+- Merged: 3e244462 (2026-11-25, branch core/87-broken-washer-looks)
