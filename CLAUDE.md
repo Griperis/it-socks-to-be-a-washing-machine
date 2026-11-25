@@ -121,6 +121,8 @@ through that feature's own rules object. Otherwise they go through the co-op sha
   `kit/skills/`, `.claude/` (the agents' worktrees) today; a new folder of notes, sources or pictures gets one when it is made. Untracked files the
   editor makes inside `kit/` are ignored by the game's git (`.gitmodules` `ignore = untracked`), never committed
   into the kit.
+- **UI is authored in nodes** (designer, Q2658): screens, rows and styles are scenes, nodes and Theme variations;
+  code fills them and instances a row scene per item, and never builds a Control or StyleBox itself.
 - **A zoo station that shows game data is built from that data at load** (designer, Q2337): a new Design, sound
   or other entry appears in its station with no other change.
 - **A journal line per merged ticket** in `docs/migration/journal.md`.

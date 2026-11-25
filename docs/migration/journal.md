@@ -1383,3 +1383,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/97, back to the Lobby: Continue from a Guest, the finished World kept as a record, Start asks before replacing it, the Host waits for its Guests to leave; merged (main a541cde). Batch A complete. |
 | Cost | about 196k subagent tokens |
 | Surprises | two engine errors when a Guest's house goes first (core/106) |
+
+---
+
+| Ticket | assets/10 floor locks, assets/12 Machine Parts, assets/13 the Laundry bin: the old models in place of the grayboxes, on the designer's yes on the line-ups (Q2655); core/109 the Final screen sparkles and the Lobby pedestals as scene nodes (Q2656); merged (main d765dba). |
+| Cost | about 75k subagent tokens for core/109 (the asset tickets were built in batch A) |
+| Surprises | the merge's full suite took 604 s with three agents testing at once; core/109 left the pedestal size in the scene and in `LobbyTuning` (core/111 makes it one) |

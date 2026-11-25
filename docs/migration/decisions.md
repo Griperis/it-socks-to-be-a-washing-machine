@@ -1,4 +1,4 @@
-Next free Q number: Q2657 (update this line whenever a round of questions is asked)
+Next free Q number: Q2661 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -575,3 +575,11 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   (assets/15) loses its eyebrows (designer, 2026-11-25).
 - Q2656: the clean-ups after batch A: zoo-only code leaves the game scripts (core/107), the washer's wash beats
   become animation clips (core/108), particles and fixed nodes become scene nodes (core/109) (designer, 2026-11-25).
+- Q2657: the kit's test runs delete their own /tmp copy (also on failure) and a dead run's perf.lock is freed; a kit
+  change by the lead, proposed to the kit's repository (designer, 2026-11-25).
+- Q2658: UI is always authored in nodes: a screen, a row and a style are scenes, nodes and Theme variations edited in
+  the editor; code only fills them and instances a row scene per item (designer, 2026-11-25; core/111).
+- Q2659: the old "campaign off, every Cabinet has all its Drawers" mode is left for now; it comes back with free play
+  or a debug menu, not dropped (designer, 2026-11-25).
+- Q2660: the damaged commits are most likely the Docker sandbox's virtiofs mount; maintenance/05 reproduces it in a
+  lab repo and proposes settings (designer, 2026-11-25).
