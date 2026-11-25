@@ -750,6 +750,18 @@ func _aim_at(zoo: Node3D, target: Vector3, aside := Vector3.ZERO) -> void:
 		var up := target - head.global_position
 		head.rotation.x = clampf(atan2(up.y, Vector2(up.x, up.z).length()), -1.5, 1.5)
 	await _paced_ticks(2)
+	await _host_has(player)
+
+
+## The Host judges reach by where it last heard this player stands (LevelNet.where()): a click sent before the pose
+## got there is refused as too far (core/101, core/103). Waits until the Host has the player at `player`'s feet (all three axes: reach is 3D).
+func _host_has(player: Player) -> void:
+	var host_net := _in_branch(_branches[0]).net
+	var me := player.player_id()
+	await _wait(func() -> bool:
+		var at: Variant = host_net.where(me)
+		return at is Vector3 and (at as Vector3).distance_to(player.global_position) < 0.1,
+			"the Host to have the player where it stands", FPS * 2)
 
 
 func _stand_by(zoo: Node3D, target: Vector3) -> void:
