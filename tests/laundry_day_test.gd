@@ -24,7 +24,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "draw", "method": "case_draw", "world": false,
 				"title": "the house has seven spots under LaundryBins, the one by the washer always; a New Game draws bins_per_world of them from the seed, the same every time, clamped to 1..spots"},
 		{"name": "refusals", "method": "case_refusals", "world": false,
-				"title": "the load refuses in order: no bin carried, the last Fix not done, an empty bin, the ending's wait running (The washing machine is busy), the First wash pending"},
+				"title": "the load refuses in order: no bin carried, the First wash playing (busy), the last Fix not done, an empty bin, the ending's wait running (The washing machine is busy); while the First wash is pending the bin starts it (core/94)"},
 		{"name": "pile_and_wait", "method": "case_pile_and_wait", "world": false,
 				"title": "the pile behind the porthole is 0.4 after the first bin and grows evenly to 1; the last bin starts the wait, which the Host counts down and the snapshot carries, and at 0 the Final wash is asked once"},
 		{"name": "station", "method": "case_station", "world": false,
@@ -150,7 +150,9 @@ func case_refusals() -> void:
 	_check(day.decide(load_cmd).get("reason", "") == LaundryDay.NOT_CARRIED, "no bin carried: refused")
 	parts.apply({"ok": true, "changes": {bin.carriable.id: {"holder": 1}}})
 	parts.apply({"ok": true, "changes": {day.id: {"first_wash": LaundryDay.FirstWash.PENDING}}})
-	_check(day.decide(load_cmd).get("reason", "") == LaundryDay.FIRST_WASH, "the First wash pending: refused first")
+	_check(day.decide(load_cmd).get("ok", false) and day.decide(load_cmd).get("first_wash", false), "the First wash pending: the bin starts it")
+	parts.apply({"ok": true, "changes": {day.id: {"first_wash": LaundryDay.FirstWash.PLAYING}}})
+	_check(day.decide(load_cmd).get("reason", "") == LaundryDay.BUSY, "the First wash playing: busy")
 	parts.apply({"ok": true, "changes": {day.id: {"first_wash": LaundryDay.FirstWash.DONE}}})
 	_check(day.decide(load_cmd).get("reason", "") == LaundryDay.UNFIXED, "the last Fix not done: Fix the washing machine first")
 	var stages := _house.get_node("Run/Stages") as Stages
@@ -265,6 +267,8 @@ func _house_up() -> void:
 	await _until(runtime.loading.is_lifted, "the house's Socks to be laid", 900, 20.0)
 	await _until(func() -> bool: return runtime.player.is_on_floor(), "the player to stand in the house", 900)
 	runtime.player.capture_mouse()
+	# The Laundry day comes after the First wash (core/94's suite plays it).
+	runtime.parts.apply({"ok": true, "changes": {_day().id: {"first_wash": LaundryDay.FirstWash.DONE}}})
 
 
 func _day() -> LaundryDay:

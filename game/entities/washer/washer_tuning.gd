@@ -65,6 +65,15 @@ extends Resource
 @export_group("Washes")
 @export var wash_spin := 0.8 # placeholder: the old TW wash_spin (turns a second)
 @export var after_spin := 0.12 # placeholder: the old TW after_spin
+## The First wash's calm wash (core/94): the drum ramps up to `wash_spin` over `wash_ramp`; the wide shot bobs
+## `shot_bob` metres up and down at `shot_bob_rate` radians a second (the old rogue_machine.gd:340).
+@export_range(0.0, 5.0, 0.1, "suffix:s") var wash_ramp := 1.0 # placeholder: the old rogue_machine.gd:337 ramp
+@export_range(0.0, 0.1, 0.001, "suffix:m") var shot_bob := 0.01 # placeholder: the old rogue_machine.gd:340 bob
+@export_range(0.0, 10.0, 0.1) var shot_bob_rate := 2.2 # placeholder: the old rogue_machine.gd:340 bob
+## The break (core/94): the clanks play this high over the machine, and the room's lamps within
+## `room_flicker_range` flicker with its drum light until the cutscene ends (the old rogue_machine.gd:281-289).
+@export_range(0.0, 2.0, 0.05, "suffix:m") var break_height := 0.4 # placeholder: the old rogue_machine.gd:281
+@export_range(0.0, 20.0, 0.5, "suffix:m") var room_flicker_range := 4.0 # placeholder: the old rogue_machine.gd:289
 ## The cutscene's length when it has no voice, by level (cutscene_1 to _6).
 @export var no_voice_seconds: PackedFloat32Array = PackedFloat32Array([5.0, 5.5, 6.5, 7.5, 8.5, 10.0]) # placeholder: the old TR seconds
 ## How the machine looks in each cutscene (core/88 and core/87 read them).

@@ -5,8 +5,8 @@
 ## `{line, take}` or a silent no. Every machine's `_show()` then plays it through `Voices` from the Looks.
 ##
 ## State on the Part is what everyone must see or hear the same: the last line said (`serial` moves with
-## every answer, so the same line twice is two answers), whether it is broken (a stand-in for core/72's
-## `LaundryDay.first_wash`: core/94 gives it the First wash's state), and the zoo's two overrides. It keeps
+## every answer, so the same line twice is two answers), the zoo's switch for broken (outside the zoo the
+## First wash says it: `is_broken()`, core/94), and the zoo's two overrides. It keeps
 ## nothing in a save (the old saved none); the director's memory (the picker, the clock of the last comment)
 ## is the Host's and starts fresh on a load.
 ##
@@ -49,8 +49,8 @@ const ZOO_CUTSCENE := &"zoo_cutscene"
 @export var line: StringName = &""
 @export var take := 0
 @export var serial := 0
-## The First wash has broken it (a stand-in until core/94: `LaundryDay.first_wash` past PENDING). Before it
-## the machine looks fine and says nothing.
+## The zoo's switch: it is broken (the washer station's pillar). Outside the zoo the level's
+## `LaundryDay.first_wash` past PENDING says it (`is_broken()`, core/94).
 @export var broken := false
 ## The zoo's mood level 0..`tuning.zoo_levels`, or -1 to read the run.
 @export var zoo_mood := -1
@@ -67,6 +67,7 @@ var _shown := 0
 var _look_key := ""
 var _spit: Tween = null
 var _following: CutscenePlayer = null
+var _flickering := false
 
 
 func _enter_tree() -> void:
@@ -196,6 +197,15 @@ func _talk(trigger_id: StringName) -> Dictionary:
 	return _said(pick["line"], int(pick["take"]))
 
 
+## Whether the First wash has broken it (Q2636): before, the machine looks fine and says nothing. Outside the
+## zoo the level's `LaundryDay.first_wash` past PENDING (a level without one: broken); in the zoo its switch.
+func is_broken() -> bool:
+	if zoo or not is_inside_tree():
+		return broken
+	var day := LaundryDay.of(self)
+	return day == null or day.first_wash != LaundryDay.FirstWash.PENDING
+
+
 ## Whether the machine cannot take a Part or a body now: a cutscene plays or someone spins in its drum.
 func busy() -> bool:
 	var frame := Cutscenes.of(self) if is_inside_tree() else null
@@ -241,7 +251,7 @@ func _spit_end() -> void:
 ## Whether a comment for `trigger` (any when null) may be given now: it is broken, no cutscene plays and
 ## the cooldown has passed. The senses ask it before they ask for an idle comment.
 func could_speak(trigger: VoiceTrigger = null) -> bool:
-	if not broken or Voices.cutscene_playing():
+	if not is_broken() or Voices.cutscene_playing():
 		return false
 	return trigger != null and trigger.ignores_cooldown or _now() - last_at >= speaker.cooldown
 
@@ -271,7 +281,7 @@ func _plan() -> StagePlan:
 func mood_level() -> int:
 	if zoo_mood >= 0:
 		return zoo_mood
-	if not broken or stages == null or stages.plan == null:
+	if not is_broken() or stages == null or stages.plan == null:
 		return 0
 	return clampi(stages.plan.size() - stages.fitted_count(), 0, stages.plan.size())
 
@@ -309,9 +319,10 @@ func _follow_cutscenes() -> void:
 
 func _process(_delta: float) -> void:
 	# The run moves without this Part's state changing: keep the mood in step with it.
-	var key := "%d/%d/%s" % [mood_level(), mood_total(), broken]
+	var key := "%d/%d/%s" % [mood_level(), mood_total(), is_broken()]
 	if key != _look_key:
 		_apply_mood()
+	_flicker_room()
 
 
 ## Looks only: the mood into the Looks' damage and repair (core/87 shows them).
@@ -321,13 +332,32 @@ func _apply_mood() -> void:
 	var frame := Cutscenes.of(self) if is_inside_tree() else null
 	if frame != null and frame.is_playing():
 		return
-	_look_key = "%d/%d/%s" % [mood_level(), mood_total(), broken]
+	_look_key = "%d/%d/%s" % [mood_level(), mood_total(), is_broken()]
 	if looks == null:
 		return
 	var level := mood_level()
-	var angry := (broken or zoo_mood >= 0) and level > 0
+	var angry := (is_broken() or zoo_mood >= 0) and level > 0
 	looks.damage = float(level) / float(mood_total()) if angry else 0.0
 	looks.repair = 1.0 - looks.damage
+
+
+## Looks only: from the First wash's break to the cutscene's end the level's lamps within
+## `room_flicker_range` flicker with the drum light (the old rogue_machine.gd:284-289, room.gd:326).
+func _flicker_room() -> void:
+	var on := looks != null and looks.room_flickering()
+	if not on and not _flickering:
+		return
+	_flickering = on
+	var thing := get_parent() as Node3D
+	var runtime := LevelRuntime.of(self)
+	for node in get_tree().get_nodes_in_group(HouseLights.GROUP):
+		var lights := node as HouseLights
+		if lights == null or LevelRuntime.of(lights) != runtime or thing == null:
+			continue
+		if on:
+			lights.set_flicker(thing.global_position, tuning.room_flicker_range if tuning != null else 4.0, looks.flicker())
+		else:
+			lights.set_flicker(Vector3.ZERO, 0.0, 1.0)
 
 
 ## The trigger file `id`, or null.

@@ -26,6 +26,8 @@
 [ext_resource type="AudioStream" path="res://assets/audio/match__a.ogg" id="204_match"]
 [ext_resource type="AudioStream" path="res://assets/audio/part_fit__rubberduck_v2_lock_open_fit.ogg" id="202_partfit"]
 [ext_resource type="AudioStream" path="res://assets/audio/socks_pour__pyrano_whoosh_pour.ogg" id="206_pour"]
+[ext_resource type="AudioStream" path="res://assets/audio/wash_calm__iamgiorgio_wash.ogg" id="207_washcalm"]
+[ext_resource type="AudioStream" path="res://assets/audio/machine_break__tomoisace_clanking.ogg" id="208_break"]
 [ext_resource type="Script" uid="uid://dla4npa6bg5ot" path="res://game/audio/sound_catalogue.gd" id="23_7apgx"]
 [ext_resource type="AudioStream" uid="uid://bcpoohpp2d6b5" path="res://assets/audio/knockdown__a.ogg" id="24_knock"]
 [ext_resource type="AudioStream" uid="uid://bc34ctawd4er7" path="res://assets/audio/fridge_open__rubberduck_microwave_open.ogg" id="101_dev"]
@@ -385,6 +387,22 @@ clips = Array[AudioStream]([ExtResource("206_pour")])
 spatial = true
 note = "PLACEHOLDER (core/93): the Socks pouring out of the washing machine's porthole, a whoosh, and each Laundry bin's pour into it. The old first pick cc0/pyrano_whoosh_pour (none chosen). Pick and level on the Sounds bench."
 
+[sub_resource type="Resource" id="Resource_wash_calm"]
+script = ExtResource("1_76itk")
+event = &"wash_calm"
+clips = Array[AudioStream]([ExtResource("207_washcalm")])
+volume_db = -6.0
+spatial = true
+loop = true
+note = "PLACEHOLDER (core/94): the calm wash loop at the washing machine in the First wash, -6 dB. The old first pick cc0/iamgiorgio_wash (none chosen). Pick and level on the Sounds bench."
+
+[sub_resource type="Resource" id="Resource_machine_break"]
+script = ExtResource("1_76itk")
+event = &"machine_break"
+clips = Array[AudioStream]([ExtResource("208_break")])
+spatial = true
+note = "PLACEHOLDER (core/94): the washing machine breaking at the end of the First wash's calm wash, clanks and a rattle. The old first pick cc0/tomoisace_clanking (none chosen). Pick and level on the Sounds bench."
+
 [sub_resource type="Resource" id="Resource_padlock_pop"]
 script = ExtResource("1_76itk")
 event = &"padlock_pop"
@@ -467,5 +485,5 @@ note = "PLACEHOLDER (core/98): the old wash_slam, no pick, its first synthesised
 
 [resource]
 script = ExtResource("23_7apgx")
-events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_jump"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape"), SubResource("Resource_fridge_open"), SubResource("Resource_fridge_close"), SubResource("Resource_oven_open"), SubResource("Resource_oven_close"), SubResource("Resource_drawer_thunk"), SubResource("Resource_basket_open"), SubResource("Resource_basket_close"), SubResource("Resource_litter_flap_open"), SubResource("Resource_litter_flap_close"), SubResource("Resource_piano_lid_open"), SubResource("Resource_piano_lid_close"), SubResource("Resource_cabinet_reveal"), SubResource("Resource_piano"), SubResource("Resource_ui_click"), SubResource("Resource_ui_hover"), SubResource("Resource_ping"), SubResource("Resource_part_pop"), SubResource("Resource_part_fit"), SubResource("Resource_padlock_pop"), SubResource("Resource_chain_drop"), SubResource("Resource_lock_door_open"), SubResource("Resource_washer_buzz"), SubResource("Resource_washer_rumble"), SubResource("Resource_final_pop"), SubResource("Resource_final_tick"), SubResource("Resource_final_rare"), SubResource("Resource_final_sting"), SubResource("Resource_wash_slosh"), SubResource("Resource_wash_slam"), SubResource("Resource_socks_pour")])
+events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_jump"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape"), SubResource("Resource_fridge_open"), SubResource("Resource_fridge_close"), SubResource("Resource_oven_open"), SubResource("Resource_oven_close"), SubResource("Resource_drawer_thunk"), SubResource("Resource_basket_open"), SubResource("Resource_basket_close"), SubResource("Resource_litter_flap_open"), SubResource("Resource_litter_flap_close"), SubResource("Resource_piano_lid_open"), SubResource("Resource_piano_lid_close"), SubResource("Resource_cabinet_reveal"), SubResource("Resource_piano"), SubResource("Resource_ui_click"), SubResource("Resource_ui_hover"), SubResource("Resource_ping"), SubResource("Resource_part_pop"), SubResource("Resource_part_fit"), SubResource("Resource_padlock_pop"), SubResource("Resource_chain_drop"), SubResource("Resource_lock_door_open"), SubResource("Resource_washer_buzz"), SubResource("Resource_washer_rumble"), SubResource("Resource_final_pop"), SubResource("Resource_final_tick"), SubResource("Resource_final_rare"), SubResource("Resource_final_sting"), SubResource("Resource_wash_slosh"), SubResource("Resource_wash_slam"), SubResource("Resource_socks_pour"), SubResource("Resource_wash_calm"), SubResource("Resource_machine_break")])
 muffling_scenes = Array[String](["res://game/entities/door/door.tscn", "res://game/entities/door/room_door.tscn", "res://game/entities/door/room_door_flipped.tscn"])

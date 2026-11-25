@@ -144,7 +144,7 @@ Named, not designed; each is a read of their Part or an answer of their Command.
 | core/71 | the Fix: a Part clicked into the washer, its answer naming the Stage's `fix_cutscene: VoiceTrigger` and the takes; the cutscene frame plays it; after Fix 1-3, core/72's spit follows | cutscene_2..5, the mood one step calmer |
 | core/71 | the Parts fitted and the Parts in the run (read) | mood level and repair |
 | core/71 | whether the level is a staged run | the senses on or off |
-| core/72 | `broken` (`LaundryDay.first_wash` past PENDING: the First wash has broken it; core/94) | it looks fine; no comments before (Q2636) |
+| core/72 | `is_broken()` (`LaundryDay.first_wash` past PENDING: the First wash has broken it; built by core/94; the zoo's `broken` switch in the zoo) | it looks fine; no comments before (Q2636) |
 | core/72 | the First wash's beats: the calm wash (`spin`, `bubbles`), the break (spin stops, damage on), then `cutscene_first_wash`, then the spit (`door` open 0.4 s, shut over the last 0.6 s) | the washer's looks in its cutscene |
 | core/72 | a Laundry bin loaded (k of n) | `pile` grows a step |
 | core/72 | the Final wash: its wash (`spin` 0.8, `bubbles`), `cutscene_final_wash` after it (spin easing to 0.12), the frame's end going to the Final screen | the washer's looks in its cutscene |

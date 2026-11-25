@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CutsceneScript" format=3]
+
+[ext_resource type="Script" path="res://game/cutscene/cutscene_script.gd" id="1_script"]
+[ext_resource type="Resource" path="res://game/voice/triggers/cutscene_first_wash.tres" id="2_trigger"]
+[ext_resource type="Resource" path="res://game/laundry/first_wash_tuning.tres" id="3_numbers"]
+
+[resource]
+script = ExtResource("1_script")
+beats = Array[Array]([[0.0, "calm_wash", ["$bubbles"]], ["$wash_seconds", "wash_break", []], ["after_voice", "spray", []]])
+voice = ExtResource("2_trigger")
+numbers = ExtResource("3_numbers")
+lead_from = &"wash_seconds"
+after_voice_seconds = 3.6

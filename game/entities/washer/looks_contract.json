@@ -7,5 +7,5 @@
 	"animations": ["angry", "calming", "entitled", "surprised", "mouth", "talk", "rumble", "spin"],
 	"players": {"AnimationPlayer": ["angry", "calming", "entitled", "surprised", "mouth"], "Loops": ["talk", "rumble"], "Spin": ["spin"]},
 	"properties": ["wiggle", "angry", "glow_colour", "glow_energy", "door", "spin", "pile", "repair", "damage", "lit"],
-	"methods": ["act", "rest", "bubbles"]
+	"methods": ["act", "rest", "bubbles", "calm_wash", "wash_break", "door_open", "door_close", "shot_bob", "room_flickering"]
 }

@@ -12,6 +12,10 @@
 ## The broken look (core/87): the sparks, smoke, flash and buzz under `Damage` as strong as `damage`, bursts on a fixed
 ## clock with fixed seeds; the drum's light dimmed and flickering by `repair`; the rumble under an angry voice. A
 ## cutscene's `WasherCutsceneLook` (`set_cutscene`) takes both over from the run's mood.
+## The First wash's beats (core/94; the cutscene frame calls them by name from `first_wash.tres`): `calm_wash`
+## (the drum ramps up, bubbles, the `wash_calm` loop, the wide shot's 1 cm bob: `shot_bob()`, the damage held
+## calm), `wash_break` (the loop stops, `machine_break`, the bubbles and the drum stop, the damage released,
+## the room's lamps flicker: `room_flickering()`), and the door's `door_open` and `door_close`.
 ## Looks only: it never writes state.
 class_name WasherLooks
 extends VoiceSource
@@ -75,6 +79,14 @@ var _glow_energy_now := 0.0
 var _material: StandardMaterial3D = null
 var _bob_rest := Transform3D.IDENTITY
 
+## The First wash's calm wash: seconds since it began (-1: none), its loop, whether the damage is held calm
+## and whether the room's lamps flicker (from the break to the cutscene's end).
+var _wash_clock := -1.0
+var _wash_loop: AudioStreamPlayer3D = null
+var _calm := false
+var _room_flicker := false
+var _door_tween: Tween = null
+
 
 func _ready() -> void:
 	super._ready()
@@ -127,6 +139,7 @@ func bubbling() -> bool:
 
 func _process(delta: float) -> void:
 	_clock += delta
+	_washing(delta)
 	_loop()
 	_spin()
 	_door()
@@ -199,6 +212,8 @@ func shown_energy() -> float:
 
 ## The repair now: the cutscene's while one plays, else the run's.
 func shown_repair() -> float:
+	if _cut != null and _calm:
+		return 1.0
 	return clampf(_cut.repair if _cut != null else repair, 0.0, 1.0)
 
 
@@ -223,10 +238,113 @@ func _flicker_now() -> void:
 	_flicker = 1.0 - tuning.repair_flicker * (1.0 - shown_repair()) * _flicker_rng.randf()
 
 
-## A cutscene's look takes over the repair and the damage (null ends it, back to the run's mood).
+## A cutscene's look takes over the repair and the damage (null ends it, back to the run's mood, and ends
+## what the First wash's beats left running).
 func set_cutscene(look: WasherCutsceneLook) -> void:
 	_cut = look
 	_intensity = 0.0
+	if look == null:
+		_end_wash()
+		_calm = false
+		_room_flicker = false
+
+
+# --- The First wash's beats (core/94) --------------------------------------------------------------
+
+## The calm wash: the drum ramps up to `wash_spin` over `wash_ramp`, `count` bubbles rise out of the porthole,
+## the `wash_calm` loop plays at the machine, the wide shot bobs, and the damage is held calm until the break.
+func calm_wash(count: Variant = null) -> void:
+	_wash_clock = 0.0
+	_calm = true
+	if bubbles_node != null and count != null and int(count) > 0:
+		bubbles_node.amount = int(count)
+	bubbles(true)
+	if _wash_loop == null:
+		_wash_loop = AudioStreamPlayer3D.new()
+		_wash_loop.name = "WashCalm"
+		add_child(_wash_loop)
+	var e := Sounds.catalogue.find(&"wash_calm")
+	if e != null and not e.clips.is_empty():
+		var stream := e.clips[0].duplicate() as AudioStream
+		if "loop" in stream:
+			stream.set("loop", true)
+		_wash_loop.stream = stream
+		_wash_loop.bus = e.bus
+		_wash_loop.volume_db = e.volume_db
+		_wash_loop.unit_size = Sounds.catalogue.unit_size
+		_wash_loop.max_distance = Sounds.catalogue.max_distance
+		_wash_loop.position = Vector3.UP * (tuning.break_height if tuning != null else 0.4)
+		_wash_loop.play()
+
+
+## The break: the wash loop stops, the clanks play at the machine, the bubbles and the drum stop, the damage
+## shows (the cutscene's look, the angriest) and the room's lamps start to flicker.
+func wash_break() -> void:
+	_end_wash()
+	_calm = false
+	_room_flicker = true
+	Sounds.play_at(&"machine_break", global_position + Vector3.UP * (tuning.break_height if tuning != null else 0.4))
+
+
+## The door swings open over `seconds`.
+func door_open(seconds: Variant = 0.4) -> void:
+	_swing_door(1.0, float(seconds) if seconds != null else 0.4)
+
+
+## The door swings shut over `seconds`.
+func door_close(seconds: Variant = 0.6) -> void:
+	_swing_door(0.0, float(seconds) if seconds != null else 0.6)
+
+
+## The wide shot's height offset now, in metres: the calm wash's bob, 0 otherwise.
+func shot_bob() -> float:
+	if _wash_clock < 0.0 or tuning == null:
+		return 0.0
+	return sin(_wash_clock * tuning.shot_bob_rate) * tuning.shot_bob
+
+
+## Whether the calm wash runs (the drum turning, the loop).
+func calm_washing() -> bool:
+	return _wash_clock >= 0.0
+
+
+## Whether the damage is held calm (the calm wash, before its break).
+func held_calm() -> bool:
+	return _calm
+
+
+## Whether the room's lamps near the machine flicker now (from the break to the cutscene's end); the level
+## is `flicker()`.
+func room_flickering() -> bool:
+	return _room_flicker
+
+
+func wash_looping() -> bool:
+	return _wash_loop != null and _wash_loop.playing
+
+
+func _washing(delta: float) -> void:
+	if _wash_clock < 0.0:
+		return
+	_wash_clock += delta
+	var ramp := tuning.wash_ramp if tuning != null else 1.0
+	spin = (tuning.wash_spin if tuning != null else 0.8) * smoothstep(0.0, maxf(ramp, 0.001), _wash_clock)
+
+
+func _end_wash() -> void:
+	if _wash_clock >= 0.0:
+		spin = 0.0
+		bubbles(false)
+	_wash_clock = -1.0
+	if _wash_loop != null:
+		_wash_loop.stop()
+
+
+func _swing_door(to: float, seconds: float) -> void:
+	if _door_tween != null:
+		_door_tween.kill()
+	_door_tween = create_tween()
+	_door_tween.tween_property(self, "door", to, maxf(seconds, 0.001))
 
 
 func cutscene_playing() -> bool:
@@ -312,6 +430,8 @@ func _effects(delta: float) -> void:
 	if _cut != null:
 		var angry_stretch := lit and angry >= tuning.rumble_from
 		var goal := _cut.damage * (lerpf(tuning.cutscene_quiet, 1.0, clampf(wiggle, 0.0, 1.0)) if angry_stretch else tuning.cutscene_calm)
+		if _calm:
+			goal = 0.0
 		_intensity = move_toward(_intensity, goal, delta * tuning.intensity_rate)
 		_on = _intensity > 0.02
 		_strength = _intensity

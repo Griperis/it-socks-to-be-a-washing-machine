@@ -43,9 +43,11 @@
 			"final_started": "bool",
 			"first_wash": "int",
 			"loaded_bins": "int",
-			"zoo_fixed": "bool"
+			"zoo_fixed": "bool",
+			"zoo_held_designs": "PackedInt32Array",
+			"zoo_held_poses": "PackedFloat32Array"
 		},
-		"version": 1
+		"version": 2
 	},
 	"res://game/mess/generated_socks.gd": {
 		"fields": {

@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: laundry
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/77, core/87, core/88, core/89, core/93]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: opus"]
 terms: [First wash, Laundry bin, Stage]
@@ -50,3 +50,26 @@ data). The Laundry station's "First wash" pillar resets it and holds a few Socks
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-25
+- Changed: `LaundryDay.first_wash` PENDING at a New Game; it joins `first_wash_wanters` (`wants_first_wash()`: Stages
+  holds Stage 1) and `stage_bar_goal` (`goal_pending()`: "Wash the laundry" until DONE). A full bin used on the washer
+  while PENDING starts the First wash (refused only busy): one answer lets the held Socks in (`Stages.lay_first_answer`,
+  now public), starts `game/laundry/first_wash.tres` on the frame and sets PLAYING; the bin stays full in the Hands; the
+  Host ends it (DONE, `first_wash_done`) when the frame plays nothing (its end, the skip, a load mid-cutscene); `cutscene`
+  off makes it one answer. `FirstWashTuning` (3.0 s, 40 bubbles) drives the script through the new
+  `CutsceneScript.numbers` / `lead_from` ("$name" times and args). `WasherLooks`: `calm_wash`, `wash_break`,
+  `door_open`, `door_close`, `shot_bob()` (the frame's wide shot bobs 1 cm), `room_flickering()`; the graybox's Bubbles
+  got the old bubble look. `Washer.is_broken()` reads the First wash outside the zoo (silent and fine until it breaks);
+  the room's lamps within 4 m flicker from the break (`HouseLights.set_flicker`). `wash_calm` and `machine_break` sounds
+  (old first picks, credited). The Laundry station's "First wash" pillar holds six Socks; its Laundry day starts DONE,
+  cutscene off. LaundryDay save version 2. Nine rows under "Settled by the old game". House, fix-scene and Laundry day
+  suites finish the First wash before their checks.
+- Files: game/laundry/ (laundry_day.gd, first_wash.tres, first_wash_tuning.gd/.tres), game/cutscene/ (cutscene_player.gd,
+  cutscene_script.gd), game/entities/washer/ (washer.gd, washer_looks.gd, washer_tuning.gd, looks_graybox.tscn,
+  looks_contract.json), game/house/house_lights.gd, game/run/stages.gd, game/audio/sound_catalogue.tres,
+  game/ui/licence/credits.tres, assets/audio/wash_calm__iamgiorgio_wash.ogg, machine_break__tomoisace_clanking.ogg (+.import),
+  game/zoo/laundry/ (laundry_pillar.gd, laundry_label.gd), game/zoo/stations/laundry.tscn, tests/first_wash_test.gd,
+  tests/coop_first_wash_test.gd, tests/laundry_day_test.gd, tests/house_test.gd, tests/fix_scene_test.gd,
+  tests/saves/shape.json, docs.
+- Verified: `kit/tools/run.sh --touched`: PASS 22694 checks, 703 cases (first_wash 7 cases, coop_first_wash 1); grep_rules PASS.
