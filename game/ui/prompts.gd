@@ -8,6 +8,8 @@ extends RefCounted
 
 ## The corner's words (the old game's).
 const DROP_THROW := "Drop / hold: Throw"
+## What the right click does to a carried thing (the old prompts.gd's "Drop" for what is not thrown).
+const DROP := "Drop"
 const ZOOM := "Zoom"
 const TURN := "Turn"
 const CYCLE := "Cycle"
@@ -44,6 +46,20 @@ static func target(part: Part, pad := false) -> Array[Prompt]:
 	return out
 
 
+## The crosshair's row for a carried thing (core/78, the old prompts.gd's bin): `carried`'s name with
+## no key while it is carried; else the aimed lying `aimed`'s name with the click key when `empty`
+## Hands may pick it up, without it otherwise.
+static func carry_target(aimed: Carriable, carried: Carriable, empty: bool, pad := false) -> Array[Prompt]:
+	var out: Array[Prompt] = []
+	var no_key: Array[String] = []
+	if carried != null:
+		if carried.prompt_title() != "":
+			out.append(Prompt.of(carried.prompt_title(), no_key))
+	elif aimed != null and aimed.prompt_title() != "":
+		out.append(Prompt.of(aimed.prompt_title(), keys(Player.PICK, pad) if empty else no_key))
+	return out
+
+
 ## An openable's prompt (target()).
 static func openable_prompt(openable: Openable, pad := false) -> Prompt:
 	var use := keys(Player.INTERACT, pad)
@@ -68,8 +84,10 @@ static func verb_title(open: bool, noun: String) -> String:
 ## The corner's key hints: what each key does now (A04-A07, Q2361, Q2365). `held` is how many items
 ## the Hands hold; a held item is always a Sock or a Pair today, so it can zoom and turn. With `ping`
 ## (pinging works) "Ping" stands after "Cycle", before "Jump" (core/43 line 56).
-static func hints(held: int, pad := false, ping := false) -> Array[Prompt]:
+static func hints(held: int, pad := false, ping := false, carrying := false) -> Array[Prompt]:
 	var out: Array[Prompt] = []
+	if carrying:
+		out.append(Prompt.of(DROP, keys(Player.DROP_THROW, pad)))  # core/78: a carried thing only goes down
 	if held > 0:
 		out.append(Prompt.of(DROP_THROW, keys(Player.DROP_THROW, pad)))
 		out.append(Prompt.of(ZOOM, keys(Player.ZOOM, pad)))

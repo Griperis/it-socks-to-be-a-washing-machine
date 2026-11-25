@@ -485,6 +485,8 @@ func use_aimed() -> Part:
 		var cabinet := Cabinet.of(part)
 		if cabinet != null and cabinet != part:
 			cabinet.click(player_id(), cabinet.index_of(part))
+		elif part is Carriable:
+			_pick_carriable(part as Carriable)
 		else:
 			part.use(player_id())
 	return part
@@ -513,10 +515,13 @@ func _update_hands(delta: float) -> void:
 		return
 	var me := player_id()
 	var found := aim_found(h)
-	var holding := h.active_of(me) >= 0
+	# core/78: a carried thing takes the whole Hands; it is put down or handed over, never thrown.
+	var carried := h.carries(me)
+	var socks := h.active_of(me) >= 0
+	var holding := socks or carried != null
 	var kd := knockdowns()
 	aimed_body = kd.aimed_body(eyes(), aim_dir(), me) if kd != null and not holding and _acting() else -1
-	aimed_mate = _mate_aimed(h, found, kd) if holding and _acting() else -1
+	aimed_mate = _mate_aimed(h, found, kd) if holding and _acting() and (carried == null or carried.handable) else -1
 	# H91, Q2498: a lying body under the crosshair wins over a Sock or a thing, and shows its Outline;
 	# core/42 line 30: so does a Teammate a Hand-off would go to.
 	aimed_sock = found["sock"] if aimed_body < 0 and aimed_mate < 0 else -1
@@ -561,7 +566,12 @@ func _update_hands(delta: float) -> void:
 			use_aimed()
 	if Input.is_action_just_pressed(DROP_THROW):
 		_drop_down_at = _time
-	if _drop_down_at >= 0.0 and not charging and holding and _time - _drop_down_at >= hands_tuning.tap:
+	if carried != null:
+		if Input.is_action_just_released(DROP_THROW) and _drop_down_at >= 0.0:
+			_drop_down_at = -1.0
+			_put_carried(carried)
+		return
+	if _drop_down_at >= 0.0 and not charging and socks and _time - _drop_down_at >= hands_tuning.tap:
 		_set_charge(true)
 	if charging:
 		charge = minf(1.0, charge + delta / maxf(hands_tuning.charge_time, 0.01))
@@ -685,7 +695,33 @@ func drop_refusal(h: Hands) -> String:
 func _refusal_of(h: Hands, spot: Dictionary) -> String:
 	if spot.is_empty():
 		return Hands.NO_SPOT
+	if h.carries(player_id()) != null:
+		return h.spot_refusal(player_id(), spot["point"], spot["normal"])
 	return h.drop_refusal(player_id(), spot["point"], spot["normal"])
+
+
+## core/78: the carried thing's right click: aimed at a Teammate (when it may be handed over), into
+## their Hands; else down where the crosshair is, at the turn it is held, or "Can't drop there".
+func _put_carried(carried: Carriable) -> void:
+	var me := player_id()
+	if aimed_mate >= 0:
+		carried.hand_off(me, aimed_mate)
+		return
+	var spot := _tick_spot
+	if spot.is_empty() or _tick_refusal != "":
+		say(CANT_DROP)
+		return
+	carried.put_down(me, spot["point"], spot["normal"], carried.held_yaw(me))
+
+
+## core/78: a left click on a lying Carriable: with anything in the Hands "Hands full" at once (the
+## Host's own check), else it asks to pick it up.
+func _pick_carriable(carriable: Carriable) -> void:
+	var why := carriable.pick_refusal(player_id())
+	if why == Carriable.FULL:
+		say(HANDS_FULL)
+	elif why == "":
+		carriable.pick(player_id())
 
 
 ## The Sock or Pair under the crosshair, lying or moving (R02, R03): AimFinder.find()'s answer.
@@ -766,14 +802,18 @@ func _update_screen(h: Hands) -> void:
 	if sock < 0:
 		_aim.force_raycast_update()
 		part = aimed_part()
+	var items := h.items_of(me) if h != null else PackedInt32Array()
+	var carried := h.carries(me) if h != null else null
 	var target := Prompts.target(part, _hud.pad)
+	if part is Carriable or carried != null:
+		# core/78: a carried thing is named with no key; a lying one shows the click only to empty Hands.
+		target = Prompts.carry_target(part as Carriable, carried, items.is_empty() and carried == null, _hud.pad)
 	if aimed_body >= 0:
 		target.clear()
 		target.append(Prompts.drag_prompt(_hud.pad))
 	_hud.show_target(target)
-	var items := h.items_of(me) if h != null else PackedInt32Array()
 	var capacity := h.tuning_of(me).capacity if h != null else 0
-	var hints := Prompts.hints(items.size(), _hud.pad, _pinger.can_ping())
+	var hints := Prompts.hints(items.size(), _hud.pad, _pinger.can_ping(), carried != null)
 	var kd := knockdowns()
 	if kd != null and kd.dragger_of(me) >= 0:
 		hints.clear()
@@ -866,6 +906,7 @@ func _on_applied(ev: Dictionary) -> void:
 		Hearing.applied(ev, player_id(), _hands.parts, _ghosts.answered(ev))
 	_knock_news(ev)
 	_hand_off_news(ev)
+	_carry_news(ev)
 	if ev.get("ok", false) and int(ev.get("by", 0)) == player_id() and ev.has("paired") \
 			and StringName(ev.get("kind", &"")) == &"pick":
 		say_paired()
@@ -911,6 +952,28 @@ func _hand_off_news(ev: Dictionary) -> void:
 		say(HANDS_FULL)
 	elif ev.has("paired"):
 		say_paired()
+
+
+## core/78: a Carriable's answer. Refused to this player: "Hands full" for a pick into busy Hands, "Can't
+## drop there" for a put down the Host would not take. Handed to this player with no room: "Hands full"
+## (the giver reads nothing).
+func _carry_news(ev: Dictionary) -> void:
+	if _hands == null or _hands.parts == null or not (_hands.parts.of(StringName(ev.get("to", &""))) is Carriable):
+		return
+	var me := player_id()
+	var kind := StringName(ev.get("kind", &""))
+	if ev.get("ok", false):
+		if kind == Carriable.HAND_OFF and ev.get("full", false) and int(ev.get("receiver", 0)) == me:
+			say(HANDS_FULL)
+		return
+	if int(ev.get("by", 0)) != me:
+		return
+	match String(ev.get("reason", "")):
+		Carriable.FULL:
+			say(HANDS_FULL)
+		Hands.NO_SPOT, Hands.FAR:
+			if kind == &"drop":
+				say(CANT_DROP)
 
 
 ## coop/10: "<Name> knocked you down" for the knocked player alone (F78, Q2494); a grab granted after

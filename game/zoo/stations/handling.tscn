@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="5_designs"]
 [ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
 [ext_resource type="Script" uid="uid://bij0j4p250y1i" path="res://game/zoo/handling/lose_button.gd" id="7_lose"]
+[ext_resource type="PackedScene" path="res://game/zoo/handling/crate.tscn" id="8_crate"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.3, 0.5, 0.42, 1)
@@ -308,6 +309,9 @@ text = "Sink a Sock"
 
 [node name="ReturnSpot" type="Marker3D" parent="." unique_id=1523368637]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5)
+
+[node name="Crate" parent="." instance=ExtResource("8_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1, 0, 1.6)
 
 [node name="Lying" type="Node3D" parent="." unique_id=2068667678]
 

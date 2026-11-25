@@ -49,3 +49,7 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 | Ticket | The choice | What was done (the old answer) | Designer |
 |---|---|---|---|
 | core/100 | Jolt penetration slop (Socks under a heap sink up to about 1 cm) | kept Jolt's default 0.02 m, the watch counts only pushes | reference/it-socks/project.godot:257-260 (no slop set) |
+| core/78 | What `Carriable.handable` switches (the docs say the bin refuses core/42's Hand-off, yet its behaviour line says a right click at a Teammate puts it in their Hands) | built as the switch of that right click: on, into their empty Hands or at their feet ("Hands full" for them); off, a plain drop at the crosshair. On by default and on the stand-in crate, since the old game handed both a bin and a Part over that way (`game/campaign/laundry.gd:507-513` decide_drop, `game/player/rig_drop.gd:47-52`); core/72 sets the bin's | |
+| core/78 | A carried thing's crosshair row and corner hint | carried: its name with no key; lying: its name with the left-click key only for empty Hands; the corner says "Drop" with the right button (no Zoom, Turn, Throw) (`game/ui/prompts.gd:24-26`, `:101`) | |
+| core/78 | Which way a thing laid at a full Teammate's feet or by a leaver turns | at the turn it last lay, as the old (`game/campaign/laundry.gd:530-536`, `:746-755`) | |
+| core/78 | Where a thing put down rests | at the crosshair's point on the top (the drop's own place check); the old found the highest top under the thing's whole footprint (`game/world/landings.gd:190-223` landing_of) | |
