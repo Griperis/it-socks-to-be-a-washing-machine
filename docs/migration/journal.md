@@ -1329,3 +1329,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/95, the Final screen: a column per player, the Pairs popping in, the totals, the skip; FinalSummary for core/96; stills in builds/review-final-screen/; merged (main 917166b) |
 | Cost | about 261k subagent tokens |
 | Surprises | its station at x 116 took the zoo's Mess bounds to x 160 at merge; SOURCES rows moved back into the table |
+
+---
+
+| Ticket | core/98, the knockdown wash: drag a knocked Teammate to the door, the spin, the burst out, ending at the respawn; the dragger let through the tumbling body; merged (main 2d30223) |
+| Cost | about 283k subagent tokens |
+| Surprises | without letting the dragger through, the ragdoll flew off at ~20 m/s |

@@ -26,6 +26,7 @@ Batch A is built unattended (Q2603): an open choice this ticket does not settle 
 Models built by `tools/blender/` scripts (build() safe to re-run); the shared materials (Q2177).
 
 ## Acceptance
+- (core/91) Keep the placed locks' swing: the lock door opens to -90°, and the gate hangs on its other post (chain on the players' side).
 - (core/80) The Looks make `leaf` an AnimatableBody3D: physics follows only a body's own keyed transform. Fixed on the branch when the designer says yes.
 - Look work: stops at its first line-up (the old and the port side by side) in `builds/review-assets-10/`, `ready-for-human`; assets are approved per family batch.
 - No real-path case (a look ticket, Q2421); core/80's Looks names and animations still play on the models.
