@@ -1353,3 +1353,15 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/104, coop_knockdown with a late pose: real_path threw where the Host still had the Guest, drag_ends grabbed after the rise; both wait on the Host's view now; no game change; merged (main a3d74e1) |
 | Cost | about 121k subagent tokens |
 | Surprises | its commit came out damaged (repaired) |
+
+---
+
+| Ticket | core/92, the Fix scene: cutscene_2 to cutscene_5 each whole, the spray with the old socks_pour whoosh, a Guest sees the scene; fix_scene_1..4.tres; merged (main 6da2d24) |
+| Cost | about 230k subagent tokens |
+| Surprises | the spray was silent at first (no socks_pour event); the lead sent it back to port the old sound |
+
+---
+
+| Ticket | core/93, the Laundry day: the seven bin spots, the tip, the pile behind the porthole, the refusals, the Stage bar's "Wash clothes n/m"; merged (main abf5cfe) |
+| Cost | about 264k subagent tokens |
+| Surprises | it added socks_pour too (one copy kept at merge); no Guest case; the Stage bar can drop a number change mid pop-in ([later]) |
