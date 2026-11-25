@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: maintenance
 area: maintenance
 feature: git
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-25
 blocked_by: []
 notes: ["suggested model: opus", "designer 2026-11-25: most likely the virtiofs filesystem in the Docker sandbox; figure something out", "runs with no other agent committing"]
 terms: []
@@ -56,5 +56,29 @@ What is known:
 - The lab repo is deleted. No commits in the game's repo but the research note and the ticket.
 
 ## Open follow-ups
+- [blocking] Apply the fix (designer's OK, then the lead): in the main checkout run
+  `git config core.createObject rename` (repo config, shared by every worktree; Git for Windows already builds
+  with rename, so the host's git is unaffected). Proof and trade-offs: `docs/research/git-on-virtiofs.md`.
+- [blocking] Kit change for the lead: (a) `kit/tools/agent_start.sh` or `setup.py --check` sets or checks
+  `core.createObject=rename` when the repo is on a virtiofs mount (`findmnt -T .`); (b) `kit/tools/commit.sh` re-reads
+  a commit for about 3 s (0.5, 1, 2 s) before printing `COMMIT DAMAGED`, and treats "could not parse HEAD"
+  as part of the glitch (`GLITCH_RE` in `kit/tools/_agent_common.sh`). Not a long wait: lab waits of 192 s
+  still failed.
+- [later] For the designer, only if damage returns after the setting (a hypothesis, untested): a Windows
+  Defender folder exclusion for the repo and taking it out of the Search index; or clone mode (trade-offs in
+  the note).
+- [later] Up to a few raw-test files under `.claude/gitfs-lab/lt/` could not be opened or deleted from the
+  sandbox (link+unlink "ghosts"); if the folder is still there, delete it from Windows (see the Built log).
 
 ## Built log
+
+### 2026-11-25
+- Changed: investigation only, nothing in the game changed. Cause found: on the virtiofs mount, git's default
+  object finishing (`link(tmp, final)` then `unlink(tmp)`) sometimes leaves the new object listed but unopenable
+  (ENOENT) for anywhere from under 1 s to many minutes. Lab, per 1000 commits on the mount, default: 7-186 refused,
+  0-5 damaged, 6-36 noise; /tmp: 0. With `core.createObject=rename`: 0/0/0 over 5500 commits, no measurable cost.
+  fsync, `gc.auto=0` and `core.checkstat=default` don't help. Waiting with backoff up to 192 s still failed 15 times
+  out of 20. Nothing was lost: every object turned up later and fsck was clean. Git for Windows already builds with rename.
+- Files: docs/research/git-on-virtiofs.md
+- Verified: lab runs of 5 worktrees x 200-400 commits, and 1 x 500, plus raw link/rename tests (counts in the note);
+  `git fsck --full` clean on every lab repo; lab repos deleted (12 raw-test files on the mount left, see Open follow-ups).
