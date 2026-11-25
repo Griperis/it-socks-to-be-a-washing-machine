@@ -94,6 +94,61 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.reset_physics_interpolation()
 			cam.make_current()
 			return true
+		"cabinet_rows":
+			# assets/11: arg "<collection>,<rows>,<old|port>": one Cabinet alone on a plain floor far from
+			# the stations, front on, standing at <rows> Rows. "port" is the Collection's Cabinet Looks
+			# (its segments shown up to <rows>, the top on them) with a drawer Looks per Row; "old" is the
+			# old game's stack built as its cabinet.gd built it: the base, segment, top and drawer meshes
+			# of assets/cabinet/<collection>.glb (the old file, unchanged) at BASE_H + i * SEGMENT_H.
+			var q := arg.split(",")
+			var c := StringName(q[0])
+			var rows := int(q[1])
+			var stage := Node3D.new()
+			world.add_child(stage)
+			stage.global_position = Vector3(0.0, 0.0, 400.0)
+			var floor := MeshInstance3D.new()
+			var plane := PlaneMesh.new()
+			plane.size = Vector2(12.0, 12.0)
+			var grey := StandardMaterial3D.new()
+			grey.albedo_color = Color(0.55, 0.55, 0.53)
+			plane.material = grey
+			floor.mesh = plane
+			stage.add_child(floor)
+			if q[2] == "old":
+				var meshes := {}
+				var glb := (load("res://assets/cabinet/%s.glb" % c) as PackedScene).instantiate()
+				for n: Node in glb.find_children("*", "MeshInstance3D", true, false):
+					if [&"base", &"segment", &"top", &"drawer"].has(n.name):
+						meshes[String(n.name)] = (n as MeshInstance3D).mesh
+				glb.free()
+				var put := func(m: Mesh, y: float) -> void:
+					var mi := MeshInstance3D.new()
+					mi.mesh = m
+					mi.position = Vector3(0.0, y, 0.0)
+					stage.add_child(mi)
+				put.call(meshes["base"], 0.0)
+				for i in rows:
+					put.call(meshes["segment"], 0.10 + i * 0.30)
+					put.call(meshes["drawer"], 0.10 + i * 0.30 + 0.01)
+				put.call(meshes["top"], 0.10 + rows * 0.30)
+			else:
+				var looks := (load(Cabinet.looks_path(c, false)) as PackedScene).instantiate() as Node3D
+				stage.add_child(looks)
+				for i in range(1, 7):
+					(looks.get_node("Segment%d" % i) as Node3D).visible = i <= rows
+				(looks.get_node("Top") as Node3D).position.y = 0.10 + rows * 0.30
+				for i in rows:
+					var drawer := (load(Cabinet.looks_path(c, true)) as PackedScene).instantiate() as Node3D
+					drawer.position = Vector3(0.0, 0.11 + i * 0.30, 0.0)
+					stage.add_child(drawer)
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 40.0
+			cam.global_position = stage.to_global(Vector3(0.0, 1.15, 4.6))
+			cam.look_at(stage.to_global(Vector3(0.0, 1.0, 0.0)))
+			cam.reset_physics_interpolation()
+			cam.make_current()
+			return true
 		"materials":
 			# assets/04 F01: a camera on the Materials station's board. arg "overview" looks at the
 			# whole board; arg <row> ("oak", "singles_1") hides every other row and stands before that

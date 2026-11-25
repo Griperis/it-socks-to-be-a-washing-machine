@@ -309,7 +309,7 @@ func case_c14() -> void:
 	await _build()
 	var cabinet := _cabinet.get_parent() as Node3D
 	var looks := cabinet.get_node("Looks")
-	for n: String in ["Base", "Segment1", "Segment2", "Segment3", "Top"]:
+	for n: String in ["Base", "Segment1", "Segment2", "Segment3", "Segment4", "Segment5", "Segment6", "Top"]:
 		_check(looks.get_node_or_null(NodePath(n)) is MeshInstance3D, "the Looks has its %s" % n)
 	_check(_cabinet.drawer_count() == 3, "one drawer per segment (%d)" % _cabinet.drawer_count())
 	for i in 3:

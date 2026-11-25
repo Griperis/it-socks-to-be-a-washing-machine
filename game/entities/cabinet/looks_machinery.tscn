@@ -21,6 +21,21 @@ mesh = ExtResource("2_segment")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 mesh = ExtResource("2_segment")
 
+[node name="Segment4" type="MeshInstance3D" parent="." unique_id=1265524679]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
+mesh = ExtResource("2_segment")
+
+[node name="Segment5" type="MeshInstance3D" parent="." unique_id=1943054847]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+visible = false
+mesh = ExtResource("2_segment")
+
+[node name="Segment6" type="MeshInstance3D" parent="." unique_id=398976242]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+visible = false
+mesh = ExtResource("2_segment")
+
 [node name="Top" type="MeshInstance3D" parent="." unique_id=341117427]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = ExtResource("3_top")
