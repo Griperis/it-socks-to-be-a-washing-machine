@@ -77,3 +77,4 @@ The places today (grep `zoo`, case-insensitive):
     game/zoo/stages/stages_switch.gd, the two station scenes, tests (washer, washer_broken, first_wash, laundry_day,
     coop_cutscene, stages, fix_scene, machine_part, floor_lock, coop_fix_scene, house, save, saves/shape.json), docs.
   - Verified: `--touched` 87 of 93 suites, 22776 of 22777 checks (the save shape, then committed: `--only=save` PASS 101 checks, 17 cases); agent_finish re-runs `--touched`.
+- Merged: 879268f5 (2026-11-25, branch core/107-zoo-hooks-out)
