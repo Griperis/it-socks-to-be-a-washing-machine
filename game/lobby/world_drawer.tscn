@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://game/lobby/world_drawer.gd" id="1_drawer"]
 [ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="2_close"]
+[ext_resource type="PackedScene" path="res://game/lobby/pairs_slider.tscn" id="3_pairs"]
 
 [node name="WorldDrawer" type="Control"]
 layout_mode = 3
@@ -60,6 +61,11 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 theme_type_variation = &"KeycapButton"
+
+[node name="Pairs" parent="Panel/Box" instance=ExtResource("3_pairs")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
 
 [node name="Invite" type="Button" parent="Panel/Box"]
 unique_name_in_owner = true

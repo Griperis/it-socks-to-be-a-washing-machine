@@ -6,7 +6,8 @@
 ##
 ## - Solo (a Host of one, nothing listening): one place, no Ready; Back, Continue (hidden with no save)
 ##   and New Game (asks before a saved game is overwritten: the question's close key or Esc cancels,
-##   Q2578), then the house (the old Solo bar).
+##   Q2578), then the house (the old Solo bar). In a debug build New Game always opens that page, the New
+##   Game page, with the "Pairs per Drawer" slider (core/91, Q668); the Host's is in the World drawer.
 ## - Host: listening; four places; Back, Ready and Start (greyed until everyone present is Ready). Start
 ##   has every machine load the house behind the loading screen; the house handshake does the rest.
 ## - Guest: joins the Host's address behind the "Joining..." card until the link's snapshot comes; Leave,
@@ -74,6 +75,7 @@ var _place_nodes: Array[LobbyPlace] = []
 @onready var _ask: Control = %Ask
 @onready var _ask_yes: Button = %AskYes
 @onready var _ask_close: CloseButton = %AskClose
+@onready var _pairs: PairsSlider = %AskPairs
 
 
 func _enter_tree() -> void:
@@ -106,6 +108,8 @@ func _ready() -> void:
 	_drawer.set_open(mode == Mode.HOST, true)
 	_drawer.choose_world.connect(choose_world)
 	_drawer.new_game_pressed.connect(new_world)
+	_drawer.pairs_moved.connect(set_pairs)
+	_pairs.moved.connect(set_pairs)
 	_drawer.delete_confirmed.connect(delete_world)
 	_drawer.full_closed.connect(func() -> void: _pending = "")
 	_drawer.open_changed.connect(link_pad)
@@ -284,14 +288,31 @@ func continue_world() -> void:
 	_into_house()
 
 
-## Solo's New Game: at once with no save, else it asks first.
+## Solo's New Game: at once with no save, else it asks first; a debug build always opens the New Game page
+## (the question only over a save) with the "Pairs per Drawer" slider.
 func new_game() -> void:
 	if _going or mode != Mode.SOLO:
 		return
-	if world != null and not world.is_new:
+	var saved := world != null and not world.is_new
+	if saved or PairsSlider.in_build():
+		($Ask/Center/Panel/Box/Question as Label).visible = saved
+		_ask_yes.text = LobbyWords.NEW_GAME if saved else LobbyWords.NEW_GAME_GO
+		_pairs.visible = PairsSlider.in_build()
 		_show_ask(true)
 		return
 	_new_game_over_save()
+
+
+## The New Game's Pairs per Drawer (the debug slider, the Host's and Solo's): nobody is Ready any more.
+func set_pairs(value: int) -> void:
+	if _going or mode == Mode.JOIN:
+		return
+	_ask_lobby(link.lobby.pairs_command(_me(), value))
+
+
+## Solo's New Game page's slider (debug builds).
+func pairs_slider() -> PairsSlider:
+	return _pairs
 
 
 ## Back (Host, Solo) or Leave (Guest): the Host's ends the session for everyone, a Guest's leaves it.
@@ -387,6 +408,8 @@ func _into_house() -> void:
 			args.append("--join=%s" % address)
 	args.append_array(launch)
 	var w := world if mode != Mode.JOIN else null
+	if w != null and w.is_new and PairsSlider.in_build():
+		args.append("%s%d" % [Stages.PAIRS_ARG, link.lobby.pairs_per_drawer])
 	go_into.call(path, heading, func(root: Node) -> void:
 		var runtime := LevelRuntime.of(root)
 		if runtime != null:
@@ -441,7 +464,8 @@ func _refresh() -> void:
 	var guest := mode == Mode.JOIN
 	if lobby.started and not _going and mode != Mode.SOLO and (not guest or _in_game()):
 		_into_house.call_deferred()
-	_drawer.show_rows(lobby.worlds, lobby.world, mode == Mode.HOST, _going, link.roster.tuning.colour)
+	_drawer.show_rows(lobby.worlds, lobby.world, mode == Mode.HOST, _going, link.roster.tuning.colour, lobby.pairs_per_drawer)
+	_pairs.show_value(lobby.pairs_per_drawer, not _going)
 	_card_title.text = lobby.title
 	_card_line.text = lobby.line
 	_card_line.visible = lobby.line != ""

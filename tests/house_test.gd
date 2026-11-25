@@ -122,6 +122,14 @@ func cases() -> Array[Dictionary]:
 				"title": "real path (house/05, core/60): in the house the player picks the top Sock of a kitchen Heap, picks its mate into a Pair, shelves it in the kitchen's Cabinet with a click and earns Coins"},
 		{"name": "real_path_front_door_to_attic", "method": "case_real_path_front_door_to_attic", "world": false,
 				"title": "real path: in the shell the player walks in from the front door (no ground outside, Q2503), is stopped by the hall's partition, and climbs the U stair to the first floor and on to the attic"},
+		{"name": "r01_run_placed", "method": "case_r01_run_placed", "world": false,
+				"title": "core/91: the house's run is placed: Run with the house's plan, the three floor locks at the old places (the tops of the ground's and the first floor's flights shut by a door, the foot of the attic's by the gate, each with its floor), the Cabinets' unlock_stage (the garage's 2, sheeted), the generators' floors with lays_at_start off, the four Machine Parts, the washer's slot and the Stage bar"},
+		{"name": "r02_new_game_lays_stage1", "method": "case_r02_new_game_lays_stage1", "world": false,
+				"title": "core/91 (core/77): a house New Game lays Stage 1 behind the loading screen (the Stage spawner the Mess's layer, its bar filling): only Simple Pairs, all on the basement, alone with no high pass"},
+		{"name": "r03_high_spots_two_players", "method": "case_r03_high_spots_two_players", "world": false,
+				"title": "core/91 (core/77, Q664): with two players present at Stage 1's spawn a few of its Socks lie on a top at least 1.7 m over the basement"},
+		{"name": "real_path_new_game_from_title", "method": "case_real_path_new_game_from_title", "world": false,
+				"title": "real path (core/91): a house New Game from the title (Solo, the debug Pairs per Drawer slider on its New Game page): only the basement holds Socks, the garage Cabinet is sheeted, the player climbing the stair is stopped by the ground floor's door, and a Pair clicked into the laundry Cabinet moves the Stage bar"},
 	]
 
 
@@ -132,6 +140,11 @@ func _before_case() -> void:
 	if _level != null:
 		_level.free()
 		_level = null
+	for screen: Node in [_title, _lobby]:
+		if screen != null and is_instance_valid(screen):
+			screen.free()
+	_title = null
+	_lobby = null
 	_drop_branches()
 
 
@@ -764,6 +777,7 @@ func case_real_path_doors_shut() -> void:
 
 func case_real_path_spawn_to_every_floor() -> void:
 	var house := await _level_up()
+	await _open_floors(house)  # the floor locks stand open, as after the last Fix (core/91)
 	var player := LevelRuntime.of(house).player
 	var at := func() -> Vector3: return player.global_position
 	_check((at.call() as Vector3).distance_to(SPAWN) < 0.1, "the player starts at the old spawn in the laundry (%s)" % at.call())
@@ -1134,18 +1148,18 @@ func _open_sock(mess: Mess, sock: int) -> bool:
 	return PhysicsQueries.ray(mess, top, top + Vector3.UP * 2.2, Mess.LAYER_HOUSE | Mess.LAYER_LYING).is_empty()
 
 
-## A place 1-1.6 m from Sock `sock` on the ground floor where the player stands and the crosshair,
-## aimed at its middle, rests on it (AimFinder: no other Sock in front), or INF.
-func _spot_aiming(mess: Mess, sock: int) -> Vector3:
+## A place 1-1.6 m from Sock `sock` on the floor at `floor_y` (the ground floor's by default) where the
+## player stands and the crosshair, aimed at its middle, rests on it (AimFinder: no other Sock in front), or INF.
+func _spot_aiming(mess: Mess, sock: int, floor_y := 0.0) -> Vector3:
 	var target := _sock_centre(mess, sock)
 	var probe := BoxShape3D.new()
 	probe.size = Vector3(0.6, 1.5, 0.6)
 	for r: float in [1.0, 1.3, 1.6]:
 		for k in 12:
 			var a := TAU * k / 12.0
-			var at := Vector3(target.x + cos(a) * r, 0.0, target.z + sin(a) * r)
+			var at := Vector3(target.x + cos(a) * r, floor_y, target.z + sin(a) * r)
 			var floor_hit := PhysicsQueries.ray(mess, at + Vector3.UP * 1.0, at + Vector3.DOWN * 0.3, Mess.LAYER_HOUSE)
-			if floor_hit.is_empty() or absf((floor_hit["position"] as Vector3).y) > 0.05:
+			if floor_hit.is_empty() or absf((floor_hit["position"] as Vector3).y - floor_y) > 0.05:
 				continue
 			if not PhysicsQueries.overlap_rids(mess, probe, Transform3D(Basis.IDENTITY, at + Vector3.UP * 0.85), Mess.LAYER_HOUSE | PLAYER_BODY, 1).is_empty():
 				continue
@@ -1157,6 +1171,7 @@ func _spot_aiming(mess: Mess, sock: int) -> Vector3:
 
 func case_real_path_kitchen_loop() -> void:
 	var house := await _level_up()
+	await _open_floors(house)  # the kitchen's Cabinet unlocks with Stage 2 (core/91)
 	var runtime := LevelRuntime.of(house)
 	var mess := runtime.mess
 	var hands := runtime.hands
@@ -1394,3 +1409,301 @@ func _on_treads(mess: Mess) -> Array[int]:
 			out.append(sock)
 	return out
 
+
+
+# --- The house's run (core/91) -------------------------------------------------------------------
+
+## Unlock stages of the house's Cabinets (the old `hidden_until`: the garage with Stage 2; every other
+## Cabinet with its floor's Stage).
+const UNLOCK_STAGES := {"Laundry": 1, "Garage": 2, "Kitchen": 2, "Living": 2, "KidsNorth": 3, "KidsEast": 3,
+		"LoftWest": 4, "LoftEast": 4}
+## The floor locks: [node, the floor it shuts, its middle (x, y, z), the side players come from (+z or -z)].
+const LOCKS: Array[Array] = [
+	["Ground", 1, Vector3(5.875, 0.0, 5.45), 1.0],
+	["First", 2, Vector3(5.875, 3.0, 5.45), 1.0],
+	["Attic", 3, Vector3(4.625, 3.0, 5.4), -1.0],
+]
+const TITLE_SCENE := "res://game/ui/title/title.tscn"
+## A Sock lies on a high top at least this far over the basement floor (StagePlan.high_spot).
+const HIGH := 1.7
+const BASEMENT_TOP := -0.5
+
+var _title: TitleScreen = null
+var _lobby: LobbyScreen = null
+
+
+## Every floor opened as the Fixes would (the zoo's "Fit now" answer, the Host's), the locks' leaves
+## swung open.
+func _open_floors(house: Node) -> void:
+	var rt := LevelRuntime.of(house)
+	var stages := house.get_node("Run/Stages") as Stages
+	await _until(func() -> bool: return stages.stage >= 0, "the run to start")
+	while stages.stage < stages.plan.size() - 1:
+		rt.parts.apply(stages.zoo_fit_now_answer())
+	for lock in stages.floor_locks():
+		var anim := lock.leaf().animator()
+		await _until(func() -> bool: return not lock.is_locked() and (anim == null or not anim.is_playing()),
+				"floor %d's lock to swing open" % lock.floor, 900)
+
+
+func case_r01_run_placed() -> void:
+	var house := await _level_up()
+	var stages := house.get_node("Run/Stages") as Stages
+	_check(stages.plan == load("res://game/run/house_stage_plan.tres"), "Run/Stages reads the house's plan")
+	await _until(func() -> bool: return stages.stage == 0, "the house's run to start")
+	var locks := stages.floor_locks()
+	_check(locks.size() == LOCKS.size(), "the house has %d floor locks (%d)" % [LOCKS.size(), locks.size()])
+	for rec: Array in LOCKS:
+		var root := house.get_node_or_null("FloorLocks/" + String(rec[0])) as Node3D
+		_check(root != null, "FloorLocks/%s stands in the house" % rec[0])
+		if root == null:
+			continue
+		var lock := root.get_node("Padlock/FloorLock") as FloorLock
+		_check(lock.floor == int(rec[1]) and lock.is_locked(), "%s shuts floor %d and is locked (%d, %s)" % [rec[0], rec[1], lock.floor, lock.is_locked()])
+		var mid: Vector3 = rec[2]
+		_check(root.global_position.distance_to(mid) < 0.01, "%s stands at %s (%s)" % [rec[0], mid, root.global_position])
+		var side := float(rec[3])
+		for up: float in [0.5, 1.5]:
+			var from := mid + Vector3(0, up, 0.6 * side)
+			var hit := _hit(from, mid + Vector3(0, up, -0.6 * side))
+			_check(not hit.is_empty() and root.is_ancestor_of(hit["collider"] as Node),
+					"%s shuts the way %.1f m up (hit %s)" % [rec[0], up, (hit["collider"] as Node).get_path() if not hit.is_empty() else "nothing"])
+	var door := house.get_node("FloorLocks/Ground") as Node3D
+	var gate := house.get_node("FloorLocks/Attic") as Node3D
+	_check(door.scene_file_path.ends_with("floor_lock.tscn") and (house.get_node("FloorLocks/First") as Node).scene_file_path.ends_with("floor_lock.tscn")
+			and gate.scene_file_path.ends_with("floor_lock_gate.tscn"), "the ground's and the first floor's are doors, the attic's the gate")
+	for spot: String in UNLOCK_STAGES:
+		var cab := house.get_node("Cabinets/%s/Cabinet" % spot) as Cabinet
+		var want := int(UNLOCK_STAGES[spot])
+		_check(cab.unlock_stage == want and cab.locked == (want > 1), "%s unlocks with Stage %d (%d, locked %s)" % [spot, want, cab.unlock_stage, cab.locked])
+		_check(cab.sheeted() == (spot == "Garage"), "%s stands %s" % [spot, "sheeted" if spot == "Garage" else "unsheeted"])
+	for floor_name: String in GENERATORS:
+		var gen := _generator(house, floor_name)
+		_check(not gen.lays_at_start and gen.floor == FLOORS.find(float(FLOOR_Y[floor_name])), "%s's generator: floor %d, not laid at start" % [floor_name, gen.floor])
+	var kinds: Array[String] = []
+	for node in house.get_node("Run/MachineParts").get_children():
+		var part := node.get_node("MachinePart") as MachinePart
+		kinds.append(String(part.kind.id))
+	var want_kinds: Array[String] = []
+	for st: Stage in stages.plan.stages:
+		want_kinds.append(String(st.part.id))
+	_check(kinds == want_kinds, "the four Machine Parts lie under Run/MachineParts, one per Stage (%s)" % [kinds])
+	var slot := house.get_node("Washer/PartSlot/MachinePartSlot") as MachinePartSlot
+	_check(slot.stages == stages and slot.aim_body.collision_layer == 0, "the washer's MachinePartSlot reads the run; it takes no aim while no Part is out")
+	var bar := LevelRuntime.of(house).player.get_node("Hud/StageBar") as StageBar
+	_check(bar.visible and bar.text() == "Stage 1: Basement  0/%d" % stages.bar_numbers().y, "the HUD's Stage bar shows Stage 1 (%s)" % bar.text())
+
+
+## A house in this tree as a New Game of the Solo World (from the title): the run starts and lays
+## Stage 1. `setup` runs on it before it enters the tree.
+func _new_game_house(setup := Callable()) -> Node3D:
+	SockGenerator.start_all = false
+	_level = (load(HOUSE) as PackedScene).instantiate() as Node3D
+	var rt := LevelRuntime.of(_level)
+	rt.world = Worlds.pick_solo()
+	rt.from_title = true
+	if setup.is_valid():
+		setup.call(_level)
+	add_child(_level)
+	return _level
+
+
+## The Socks of the Mess, by where they lie: {"count", "basement", "simple", "high"} (high: over HIGH above
+## the basement floor and off the stair).
+func _socks_by_place(mess: Mess) -> Dictionary:
+	var out := {"count": 0, "basement": 0, "simple": 0, "high": 0}
+	for sock in mess.count():
+		if mess.state_of(sock) == Mess.State.GONE:
+			continue
+		var at := mess.pose_of(sock).origin
+		out["count"] += 1
+		if at.y < BASEMENT_TOP:
+			out["basement"] += 1
+		if mess.design_of(sock).collection == &"simple":
+			out["simple"] += 1
+		if at.y >= FLOORS[0] + HIGH and at.y < BASEMENT_TOP:
+			out["high"] += 1
+	return out
+
+
+func case_r02_new_game_lays_stage1() -> void:
+	var house := _new_game_house()
+	var rt := LevelRuntime.of(house)
+	var spawner := house.get_node("Run/StageSpawner") as StageSpawner
+	var stages := house.get_node("Run/Stages") as Stages
+	_check(rt.loading.is_showing() and rt.mess.layer == spawner, "the New Game shows the loading screen; Stage 1 is the Mess's layer")
+	var filled := 0.0
+	var frames := 0
+	while not rt.loading.is_lifted() and frames < 6000:
+		filled = maxf(filled, rt.mess.lay_progress())
+		await get_tree().process_frame
+		frames += 1
+	_check(rt.loading.is_lifted() and filled > 0.1, "Stage 1 laid behind the screen, its bar filling (to %.2f over %d frames)" % [filled, frames])
+	_check(stages.stage == 0 and stages.first_laid and stages.due.is_empty(), "Stage 1 began and landed (stage %d, laid %s, due %d)" % [stages.stage, stages.first_laid, stages.due.size()])
+	var by := _socks_by_place(rt.mess)
+	var least := stages.plan.pairs_of(0, stages.pairs_per_drawer) * 2
+	_check(int(by["count"]) >= least and int(by["count"]) == stages.spawned.size() * 2, "Stage 1's Pairs lie in the Mess (%d Socks, at least %d)" % [by["count"], least])
+	_check(by["basement"] == by["count"] and by["simple"] == by["count"], "every one Simple, on the basement (%s)" % [by])
+	_check(int(by["high"]) < roundi(stages.spawned.size() * stages.plan.high_share),
+			"alone, no high pass: fewer on a top over %.1f m than its share (%d)" % [HIGH, by["high"]])
+
+
+func case_r03_high_spots_two_players() -> void:
+	var house := _new_game_house(func(h: Node3D) -> void:
+		(h.get_node("Run/StageSpawner") as StageSpawner).present = func() -> int: return 2)
+	var rt := LevelRuntime.of(house)
+	await _until(rt.loading.is_lifted, "Stage 1 to be laid", 6000, LAYING_S)
+	var by := _socks_by_place(rt.mess)
+	var stages := house.get_node("Run/Stages") as Stages
+	var share := stages.plan.high_share
+	var want := roundi(stages.spawned.size() * share)
+	_check(want >= 1 and int(by["high"]) >= want and int(by["high"]) <= 2 * want + 2,
+			"with two players a few Socks lie on a top over %.1f m (%d of %d; the share's %d Pairs)" % [HIGH, by["high"], by["count"], want])
+	var on_top := 0
+	for sock in rt.mess.count():
+		var at := rt.mess.pose_of(sock).origin
+		if at.y >= FLOORS[0] + HIGH and at.y < BASEMENT_TOP:
+			var hit := _hit(at + Vector3.UP * 0.05, at + Vector3.DOWN * 0.5)
+			if not hit.is_empty():
+				on_top += 1
+	_check(on_top == by["high"], "each lies on something under it, not in the air (%d of %d)" % [on_top, by["high"]])
+
+
+## The title in this tree; its way in (and the Lobby's) put the scene here: the Lobby as `_lobby`, a level as `_level`.
+func _open_title() -> void:
+	_title = (load(TITLE_SCENE) as PackedScene).instantiate() as TitleScreen
+	_title.go_into = func(path: String, _heading: String, setup: Callable) -> void:
+		var root := (load(path) as PackedScene).instantiate()
+		if setup.is_valid():
+			setup.call(root)
+		if _title != null:
+			_title.queue_free()
+		_title = null
+		if _lobby != null:
+			_lobby.queue_free()
+		_lobby = null
+		if root is LobbyScreen:
+			_lobby = root as LobbyScreen
+			add_child(root)
+		else:
+			_level = root as Node3D
+			add_child(root)
+	add_child(_title)
+
+
+func _click(control: Control) -> void:
+	await _frames(2)
+	var at := control.get_global_rect().get_center()
+	await _click_at(control, at)
+
+
+func _click_at(control: Control, at: Vector2) -> void:
+	for pressed: bool in [true, false]:
+		var ev := InputEventMouseButton.new()
+		ev.button_index = MOUSE_BUTTON_LEFT
+		ev.position = at
+		ev.global_position = at
+		ev.pressed = pressed
+		control.get_viewport().push_input(ev, true)
+	await _frames(2)
+
+
+func _ui_key(action: StringName) -> void:
+	var ev := InputEventAction.new()
+	ev.action = action
+	ev.pressed = true
+	Input.parse_input_event(ev)
+	await _frames(2)
+	var up := InputEventAction.new()
+	up.action = action
+	Input.parse_input_event(up)
+	await _frames(2)
+
+
+func case_real_path_new_game_from_title() -> void:
+	SockGenerator.start_all = false
+	_open_title()
+	await _click(_title.get_node("%Solo") as Control)
+	await _until(func() -> bool: return _lobby != null, "the title's Solo to open the Lobby")
+	await _frames(3)
+	await _click(_lobby.get_node("%NewGame") as Control)
+	var pairs := _lobby.pairs_slider()
+	_check(_lobby.asking() and pairs.is_visible_in_tree(), "New Game opens the New Game page with the Pairs per Drawer slider (a debug build)")
+	# The slider by the mouse (its left end) and two steps of the arrow keys.
+	var track := pairs.slider().get_global_rect()
+	await _click_at(pairs.slider(), Vector2(track.position.x + 2.0, track.get_center().y))
+	await _ui_key(&"ui_right")
+	await _ui_key(&"ui_right")
+	var per := pairs.value()
+	_check(per >= 2 and per <= 5 and _lobby.link.lobby.pairs_per_drawer == per, "the slider is moved down to %d Pairs per Drawer (the Lobby's %d)" % [per, _lobby.link.lobby.pairs_per_drawer])
+	await _click(_lobby.get_node("%AskYes") as Control)
+	await _until(func() -> bool: return _level != null, "Start to load the house")
+	var rt := LevelRuntime.of(_level)
+	await _until(rt.loading.is_lifted, "Stage 1 to be laid behind the loading screen", 6000, LAYING_S)
+	await _until(func() -> bool: return rt.player.is_on_floor(), "the player to stand in the house")
+	var house := _level
+	var stages := house.get_node("Run/Stages") as Stages
+	var mess := rt.mess
+	_check(stages.stage == 0 and stages.pairs_per_drawer == per, "the run began at Stage 1 with the slider's %d Pairs per Drawer (%d)" % [per, stages.pairs_per_drawer])
+	var by := _socks_by_place(mess)
+	_check(int(by["count"]) > 0 and by["basement"] == by["count"], "only the basement holds Socks (%s)" % [by])
+	var garage := house.get_node("Cabinets/Garage/Cabinet") as Cabinet
+	_check(garage.locked and garage.sheeted() and (house.get_node("Cabinets/Garage/DustSheet") as Node3D).is_visible_in_tree(), "the garage Cabinet stands sheeted")
+	var bar := rt.player.get_node("Hud/StageBar") as StageBar
+	var takes := 2 * per
+	_check(bar.text() == "Stage 1: Basement  0/%d" % takes, "the Stage bar counts the laundry's two Rows (%s)" % bar.text())
+	# Up the stair: the ground floor's door stops the player at the top of the flight.
+	var player := rt.player
+	player.rotation.y = PI
+	await _go(player, Vector2(2.4, 4.1), "the player walks to the laundry's doorway")
+	await _go(player, Vector2(4.6, 4.1), "the player walks through it into the stair lobby")
+	await _walk(&"move_forward", func() -> bool: return player.global_position.z > 7.7 and player.is_on_floor(), "the player to climb to the half landing")
+	await _walk(&"move_left", func() -> bool: return player.global_position.x > 5.8, "the player to cross the landing")
+	var z := await _walk_to_stop(player, &"move_back", 2)
+	var eye := player.global_position + Vector3(0, 1.0, 0)
+	var ahead := _hit(eye, eye + Vector3(0, 0, -1.0))
+	var door := house.get_node("FloorLocks/Ground")
+	_check(z > 5.45 and player.global_position.y < -0.05 and not ahead.is_empty() and door.is_ancestor_of(ahead["collider"] as Node),
+			"the ground floor's door stops the player at the top of the flight (z %.2f, y %.2f, ahead %s)" % [z, player.global_position.y, (ahead["collider"] as Node).name if not ahead.is_empty() else "nothing"])
+	# Back down: a Pair of Stage 1 clicked into the laundry Cabinet.
+	var first := -1
+	var mate := -1
+	var spots: Array[Vector3] = []
+	for sock in mess.count():
+		if mess.state_of(sock) != Mess.State.LYING or not _open_sock(mess, sock):
+			continue
+		for o in mess.count():
+			if o != sock and mess.designs[o] == mess.designs[sock] and mess.state_of(o) == Mess.State.LYING and _open_sock(mess, o):
+				var s1 := _spot_aiming(mess, sock, FLOORS[0])
+				var s2 := _spot_aiming(mess, o, FLOORS[0])
+				if s1 != Vector3.INF and s2 != Vector3.INF:
+					first = sock
+					mate = o
+					spots = [s1, s2]
+				break
+		if first >= 0:
+			break
+	_check(first >= 0, "a Pair of Stage 1 lies open in the basement (%d, %d)" % [first, mate])
+	if first < 0:
+		return
+	var hands := rt.hands
+	var me := player.player_id()
+	player.capture_mouse()
+	_stand_player(player, spots[0])
+	await _aim_player(player, _sock_centre(mess, first))
+	await _press_action(&"pick")
+	await _until(func() -> bool: return hands.active_of(me) == first, "the first Sock to be in the Hands")
+	await _physics_ticks(25)
+	_stand_player(player, spots[1])
+	await _aim_player(player, _sock_centre(mess, mate))
+	await _press_action(&"pick")
+	await _until(func() -> bool: return mess.is_pair(first) or mess.is_pair(mate), "its mate to fuse into a Pair")
+	var pair := first if mess.is_pair(first) else mate
+	var root := house.get_node("Cabinets/Laundry") as Node3D
+	var cab := root.get_node("Cabinet") as Cabinet
+	_stand_player(player, root.global_transform * Vector3(0.0, 0.0, 1.2))
+	await _aim_player(player, (root.get_node("Drawer1/Looks/Slide/Front") as Node3D).global_position + root.global_basis.z * 0.02)
+	await _press_action(&"pick")
+	await _until(func() -> bool: return cab.shelved().has(pair), "the Pair to be shelved in the laundry Cabinet")
+	await _until(func() -> bool: return bar.text() == "Stage 1: Basement  1/%d" % takes, "the Stage bar to move to 1/%d" % takes)
+	_check(bar.ratio() > 0.0, "the bar's fill moved (%.2f)" % bar.ratio())

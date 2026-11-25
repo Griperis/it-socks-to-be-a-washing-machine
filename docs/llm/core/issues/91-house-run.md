@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: frame
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/76, core/77, core/79, core/80, core/81, core/82, core/86]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [Stage, Cabinet, Floor, World]
@@ -46,3 +46,17 @@ All placed things are edited on their instances in `house.tscn`; the plan is `ho
 ## Open follow-ups
 
 ## Built log
+- 2026-11-25
+  - Changed: the house plays the run: `FloorLocks/Ground`, `First` (doors, floors 1, 2, top of the east flight) and
+    `Attic` (the gate, floor 3, foot of the attic flight); the Cabinets' `unlock_stage` (garage, kitchen, living 2;
+    kids 3; loft 4), the garage under a `DustSheet`; four Machine Parts under `Run/MachineParts`; `Washer/PartSlot`
+    (a `MachinePartSlot` whose new `aim_body` takes the crosshair only while a Part is out). The door's `open` now
+    swings toward its chain (over the flight) and the gate's pin moved to its other post (out onto the first floor).
+    The debug "Pairs per Drawer" slider (`PairsSlider`): `LobbyState.pairs_per_drawer` and the Host verb `pairs`
+    (clears Ready), in the World drawer while New game is chosen and on Solo's New Game page; it rides the launch
+    (`--pairs-per-drawer=`). Old house cases open every floor first; save shape and ids updated; s14 allows a landing
+    on a lying Sock. Choices settled by the old game: `batch-a-review.md`, five core/91 rows.
+  - Files: `game/house/house.tscn`, `game/entities/machine_part/machine_part_slot.gd`, `game/run/looks_lock_*.tscn`,
+    `game/lobby/pairs_slider.*`, `game/lobby/{lobby,lobby_state,lobby_words,world_drawer}.*`, `tests/house_test.gd`
+    (r01-r03, `real_path_new_game_from_title`), `tests/lobby_test.gd` (k06, k15), `tests/save_test.gd`, `tests/saves/`, docs.
+  - Verified: `kit/tools/run.sh --touched`: PASS 21976 checks, 675 cases; grep_rules PASS.

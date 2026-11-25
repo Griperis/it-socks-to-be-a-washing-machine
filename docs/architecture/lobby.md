@@ -22,7 +22,8 @@ Wardrobe piece), Steam (the M4 Steam piece), or the "Pairs per Drawer" slider (Q
 - Q2583: Solo goes through the Lobby, one pedestal.
 - Q2584: the Wardrobe page and the stats card are split out; the first Lobby shows Avatars in their colour.
 - Q2585: the name is typed in one field on the Multiplayer page, built so a Steam name can fill it later.
-- Q2586: the drawer's "Pairs per Drawer" slider waits for the Stages piece.
+- Q2586: the drawer's "Pairs per Drawer" slider waits for the Stages piece (built by core/91: `PairsSlider`,
+  debug builds only; `docs/architecture/stages.md` "Built (core/91)").
 - Q2587: a co-op World's row name is made in one swappable place; first the members' names, with "World 1", "World 2" plus
   details of the World's state as the likely simpler form, judged at the Lobby look's first still; no Guest is limited to
   Worlds they belong to.

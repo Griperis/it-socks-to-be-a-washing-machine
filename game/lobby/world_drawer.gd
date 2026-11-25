@@ -14,6 +14,8 @@ signal new_game_pressed
 signal delete_confirmed(slot: String)
 ## The Host pressed Invite friends (shown only when the transport can invite).
 signal invite_pressed
+## The Host moved the New Game's "Pairs per Drawer" slider (debug builds, core/91).
+signal pairs_moved(value: int)
 ## The drawer opened or shut (pressed or set): the pad's route changes with it.
 signal open_changed
 ## The full page was closed without a delete (its close key or Esc).
@@ -37,6 +39,7 @@ var _delete_slot := ""
 @onready var _list: VBoxContainer = %Rows
 @onready var _new: Button = %NewGame
 @onready var _invite: Button = %Invite
+@onready var _pairs: PairsSlider = %Pairs
 @onready var _ask: Control = %DeleteAsk
 @onready var _ask_question: Label = %Question
 @onready var _ask_yes: Button = %AskDelete
@@ -53,6 +56,7 @@ func _ready() -> void:
 	_invite.pressed.connect(invite_pressed.emit)
 	_key.pressed.connect(toggle)
 	_new.pressed.connect(new_game_pressed.emit)
+	_pairs.moved.connect(pairs_moved.emit)
 	_ask_yes.pressed.connect(_confirm_delete)
 	_ask_close.pressed.connect(func() -> void: _show_ask(false))
 	_full_close.pressed.connect(close_full)
@@ -84,13 +88,14 @@ func key() -> Button:
 	return _key
 
 
-## The pad's rows inside the open drawer, top to bottom: each World row's keys, New game, Invite friends.
+## The pad's rows inside the open drawer, top to bottom: each World row's keys, New game, its slider, Invite friends.
 ## Only the ones on the route (visible and enabled).
 func pad_rows() -> Array:
 	var out: Array = []
 	for row in row_nodes():
 		out.append(LobbyPad.live([row.choose_key(), row.delete_key()]))
 	out.append(LobbyPad.live([_new]))
+	out.append(LobbyPad.live([_pairs.slider()]))
 	out.append(LobbyPad.live([_invite]))
 	return out.filter(func(r: Variant) -> bool: return not (r as Array).is_empty())
 
@@ -137,7 +142,8 @@ func panel_rect() -> Rect2:
 
 ## Shows the Worlds: `rows` (Worlds.rows() as the Host said them), the chosen slot, whether this is the
 ## Host's drawer (keys) and whether the keys are locked (the house is loading). `colour_of`: index -> Color.
-func show_rows(rows: Array, chosen: String, host: bool, locked: bool, colour_of: Callable) -> void:
+## `pairs`: the New Game's Pairs per Drawer, shown on the debug slider while New game is chosen.
+func show_rows(rows: Array, chosen: String, host: bool, locked: bool, colour_of: Callable, pairs := StagePlan.PAIRS_AT) -> void:
 	_rows = rows
 	_chosen = chosen
 	_host = host
@@ -149,7 +155,15 @@ func show_rows(rows: Array, chosen: String, host: bool, locked: bool, colour_of:
 	var in_rows := rows.any(func(r: Variant) -> bool: return String((r as Dictionary)["slot"]) == chosen)
 	_new.visible = host
 	_new.disabled = locked
-	_new.text = LobbyWords.NEW_GAME_ON if chosen != "" and not in_rows else LobbyWords.NEW_GAME
+	var new_chosen := chosen != "" and not in_rows
+	_new.text = LobbyWords.NEW_GAME_ON if new_chosen else LobbyWords.NEW_GAME
+	_pairs.visible = PairsSlider.in_build() and new_chosen
+	_pairs.show_value(pairs, host and not locked)
+
+
+## The New Game's "Pairs per Drawer" slider (shown in debug builds while New game is chosen).
+func pairs() -> PairsSlider:
+	return _pairs
 
 
 ## The "full" page over the Lobby: the co-op Worlds to delete one of; `coop_slots` is how many there are.

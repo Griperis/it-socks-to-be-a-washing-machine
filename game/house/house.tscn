@@ -78,6 +78,18 @@
 [ext_resource type="PackedScene" path="res://game/run/run.tscn" id="90_run"]
 [ext_resource type="Resource" path="res://game/run/house_stage_plan.tres" id="91_stage_plan"]
 [ext_resource type="PackedScene" path="res://game/entities/washer/washer.tscn" id="92_washer"]
+[ext_resource type="PackedScene" path="res://game/run/floor_lock.tscn" id="93_lock_door"]
+[ext_resource type="PackedScene" path="res://game/run/floor_lock_gate.tscn" id="94_lock_gate"]
+[ext_resource type="PackedScene" path="res://game/entities/machine_part/machine_part.tscn" id="95_part"]
+[ext_resource type="Resource" path="res://game/entities/machine_part/part_filter.tres" id="96_filter"]
+[ext_resource type="Resource" path="res://game/entities/machine_part/part_motor.tres" id="97_motor"]
+[ext_resource type="Resource" path="res://game/entities/machine_part/part_drum_belt.tres" id="98_belt"]
+[ext_resource type="Resource" path="res://game/entities/machine_part/part_detergent.tres" id="99_detergent"]
+[ext_resource type="PackedScene" uid="uid://dqcr0t6aah51x" path="res://game/devices/dust_sheet.tscn" id="100_sheet"]
+[ext_resource type="Script" path="res://game/entities/machine_part/machine_part_slot.gd" id="101_slot"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_part_slot"]
+size = Vector3(0.72, 0.97, 0.72)
 
 [node name="House" type="Node3D" unique_id=1892225822]
 
@@ -554,6 +566,33 @@ load_screen = true
 [node name="Stages" parent="Run" index="0"]
 plan = ExtResource("91_stage_plan")
 
+[node name="MachineParts" type="Node3D" parent="Run"]
+metadata/note = "The four Machine Parts, hidden under the house until their Stage completes (a Part's shapes are on until its first physics frame, so none stands where Socks are laid)."
+
+[node name="Filter" parent="Run/MachineParts" instance=ExtResource("95_part")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, -8, 6.3)
+
+[node name="MachinePart" parent="Run/MachineParts/Filter" index="6"]
+kind = ExtResource("96_filter")
+
+[node name="Motor" parent="Run/MachineParts" instance=ExtResource("95_part")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, -8, 6.3)
+
+[node name="MachinePart" parent="Run/MachineParts/Motor" index="6"]
+kind = ExtResource("97_motor")
+
+[node name="DrumBelt" parent="Run/MachineParts" instance=ExtResource("95_part")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, -8, 6.3)
+
+[node name="MachinePart" parent="Run/MachineParts/DrumBelt" index="6"]
+kind = ExtResource("98_belt")
+
+[node name="Detergent" parent="Run/MachineParts" instance=ExtResource("95_part")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, -8, 6.3)
+
+[node name="MachinePart" parent="Run/MachineParts/Detergent" index="6"]
+kind = ExtResource("99_detergent")
+
 [node name="Cabinets" type="Node3D" parent="." unique_id=1977464650]
 
 [node name="Laundry" parent="Cabinets" unique_id=1126269557 instance=ExtResource("81_cabinet")]
@@ -570,7 +609,11 @@ transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, -3, 7.3)
 [node name="Cabinet" parent="Cabinets/Garage" index="0" node_paths=PackedStringArray("hands", "coins")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 coins = NodePath("../../../Runtime/Socks/Coins")
+unlock_stage = 2
 collection = &"sport"
+locked = true
+
+[node name="DustSheet" parent="Cabinets/Garage" instance=ExtResource("100_sheet")]
 
 [node name="Kitchen" parent="Cabinets" unique_id=759235581 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.35, 0, 4.99)
@@ -578,7 +621,9 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.35, 0, 4.99)
 [node name="Cabinet" parent="Cabinets/Kitchen" index="0" node_paths=PackedStringArray("hands", "coins")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 coins = NodePath("../../../Runtime/Socks/Coins")
+unlock_stage = 2
 collection = &"food"
+locked = true
 
 [node name="Living" parent="Cabinets" unique_id=946583941 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 0, 2.08)
@@ -586,7 +631,9 @@ transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 0, 2.08)
 [node name="Cabinet" parent="Cabinets/Living" index="0" node_paths=PackedStringArray("hands", "coins")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 coins = NodePath("../../../Runtime/Socks/Coins")
+unlock_stage = 2
 collection = &"patterns"
+locked = true
 
 [node name="KidsNorth" parent="Cabinets" unique_id=32228217 instance=ExtResource("81_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.84, 3, 3.81)
@@ -594,7 +641,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.84, 3, 3.81)
 [node name="Cabinet" parent="Cabinets/KidsNorth" index="0" node_paths=PackedStringArray("hands", "coins")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 coins = NodePath("../../../Runtime/Socks/Coins")
+unlock_stage = 3
 collection = &"animals"
+locked = true
 
 [node name="KidsEast" parent="Cabinets" unique_id=2075620364 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 3, 5.38)
@@ -602,7 +651,9 @@ transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 3, 5.38)
 [node name="Cabinet" parent="Cabinets/KidsEast" index="0" node_paths=PackedStringArray("hands", "coins")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 coins = NodePath("../../../Runtime/Socks/Coins")
+unlock_stage = 3
 collection = &"superhero"
+locked = true
 
 [node name="LoftWest" parent="Cabinets" unique_id=1701359047 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.35, 6, 4.26)
@@ -610,7 +661,9 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.35, 6, 4.26)
 [node name="Cabinet" parent="Cabinets/LoftWest" index="0" node_paths=PackedStringArray("hands", "coins")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 coins = NodePath("../../../Runtime/Socks/Coins")
+unlock_stage = 4
 collection = &"winter"
+locked = true
 
 [node name="LoftEast" parent="Cabinets" unique_id=1484615176 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 6, 4.26)
@@ -618,13 +671,49 @@ transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 6, 4.26)
 [node name="Cabinet" parent="Cabinets/LoftEast" index="0" node_paths=PackedStringArray("hands", "coins")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 coins = NodePath("../../../Runtime/Socks/Coins")
+unlock_stage = 4
 collection = &"space"
+locked = true
+
+[node name="FloorLocks" type="Node3D" parent="."]
+
+[node name="Ground" parent="FloorLocks" instance=ExtResource("93_lock_door")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.875, 0, 5.45)
+
+[node name="FloorLock" parent="FloorLocks/Ground/Padlock" index="0"]
+floor = 1
+
+[node name="First" parent="FloorLocks" instance=ExtResource("93_lock_door")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.875, 3, 5.45)
+
+[node name="FloorLock" parent="FloorLocks/First/Padlock" index="0"]
+floor = 2
+
+[node name="Attic" parent="FloorLocks" instance=ExtResource("94_lock_gate")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 4.625, 3, 5.4)
+
+[node name="FloorLock" parent="FloorLocks/Attic/Padlock" index="0"]
+floor = 3
 
 [node name="Washer" parent="." unique_id=173957773 instance=ExtResource("92_washer")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.46, -3, 5.21)
 
 [node name="Washer" parent="Washer" index="0" node_paths=PackedStringArray("stages")]
 stages = NodePath("../../Run/Stages")
+
+[node name="PartSlot" type="StaticBody3D" parent="Washer"]
+collision_layer = 0
+collision_mask = 0
+metadata/note = "Where a Machine Part goes in (core/91): it takes the crosshair only while a Part is out (MachinePartSlot.aim_body), else the Washer is aimed."
+
+[node name="Shape" type="CollisionShape3D" parent="Washer/PartSlot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.485, 0)
+shape = SubResource("BoxShape3D_part_slot")
+
+[node name="MachinePartSlot" type="Node" parent="Washer/PartSlot" node_paths=PackedStringArray("stages", "aim_body")]
+script = ExtResource("101_slot")
+stages = NodePath("../../../Run/Stages")
+aim_body = NodePath("..")
 
 [node name="SockGenerators" type="Node3D" parent="." unique_id=1278909355]
 

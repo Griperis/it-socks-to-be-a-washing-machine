@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://game/lobby/lobby_stage.tscn" id="stage"]
 [ext_resource type="PackedScene" path="res://game/lobby/lobby_place.tscn" id="place"]
 [ext_resource type="PackedScene" path="res://game/lobby/who_page.tscn" id="who"]
+[ext_resource type="PackedScene" path="res://game/lobby/pairs_slider.tscn" id="pairs"]
 
 [node name="Lobby" type="Control" unique_id=965929202]
 layout_mode = 3
@@ -234,6 +235,11 @@ layout_mode = 2
 theme_type_variation = &"InkLabel"
 horizontal_alignment = 1
 autowrap_mode = 3
+
+[node name="AskPairs" parent="Ask/Center/Panel/Box" instance=ExtResource("pairs")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
 
 [node name="Keys" type="HBoxContainer" parent="Ask/Center/Panel/Box" unique_id=714696788]
 layout_mode = 2

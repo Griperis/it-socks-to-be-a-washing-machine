@@ -62,6 +62,9 @@ Doors/LaundryLobby/Openable
 Doors/LobbyGarage/Openable
 Doors/OfficeLanding/Openable
 Doors/WorkshopLobby/Openable
+FloorLocks/Attic/Openable
+FloorLocks/First/Openable
+FloorLocks/Ground/Openable
 Furniture/Car/Boot/Openable
 Furniture/Car/DoorL/Openable
 Furniture/Car/DoorR/Openable
@@ -178,6 +181,10 @@ Furniture/TrunkA/Lid/Openable
 Furniture/TrunkB/Lid/Openable
 Furniture/Vanity/Doors/Openable
 Furniture/WallCupboard/Door/Openable
+Run/MachineParts/Detergent/Carriable
+Run/MachineParts/DrumBelt/Carriable
+Run/MachineParts/Filter/Carriable
+Run/MachineParts/Motor/Carriable
 Run/RunRecord
 Run/RunTallies
 Run/Stages

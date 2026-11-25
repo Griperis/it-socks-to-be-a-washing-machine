@@ -297,6 +297,22 @@ first outside play-test). The Pairs per Drawer slider (Q668, Q2586): debug build
 game" is chosen and on the Solo New Game page, 1 to 25, each step clearing everyone's Ready (the old rule); the value
 rides the launch into `start`.
 
+**Built (core/91): the house's run.** `house.tscn` holds `Run` (the house's plan), `Run/MachineParts` (Filter, Motor,
+DrumBelt, Detergent, lying hidden under the house at y -8: a Part's shapes are on until its first physics frame, so none
+may stand where Socks are laid), `FloorLocks/Ground` and `FloorLocks/First` (doors, floors 1 and 2, across the top of the
+east flight at x 5.875, z 5.45) and `FloorLocks/Attic` (the gate, floor 3, at the foot of the attic flight, x 4.625,
+z 5.4, turned to face the first floor), each Cabinet's `unlock_stage` (garage, kitchen, living 2; the kids' 3; the
+loft's 4; the locked ones authored `locked`), a `DustSheet` on the garage, and `Washer/PartSlot`: a StaticBody3D a
+centimetre larger than the washer with the `MachinePartSlot`, whose `aim_body` puts it on the house layer only while the
+Part is out (the Washer, the washer's first Part, is aimed the rest of the time; the slot then reads "Washing machine"
+with no key). The door's `open` swings toward its chain's side (back over the flight); the gate's pin is on its right
+post (out onto the first floor). The Lobby's slider is `game/lobby/pairs_slider.tscn` (`PairsSlider`, debug builds
+only): `LobbyState.pairs_per_drawer` and its Host verb `pairs` (1 to 25; clears Ready), shown in the World drawer while
+New game is chosen (read-only on a Guest) and on Solo's New Game page (in a debug build New Game always opens it, the
+question only over a save); the Lobby adds `--pairs-per-drawer=N` to a New Game's launch, which `Stages.start` reads.
+House cases: `house_test.gd` r01-r03 and `real_path_new_game_from_title`; the old house cases open every floor first
+(`_open_floors`) where they walk the stair or use a later Cabinet.
+
 ## What core/58-68's code is reused
 
 As it is: `Parts`, `Command`, the Session and the snapshot, `Save`, `Autosave`, `WorldRecord` (its `floor_name` field
