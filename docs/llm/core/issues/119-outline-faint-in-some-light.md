@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: bug
 area: core
 feature: outline
@@ -39,5 +39,11 @@ some lighting.
   `ready-for-human` either way. The outline suite passes.
 
 ## Open follow-ups
+- [blocking] Designer's call: which fix? (A) a dark outline colour; (B) two-tone, warm-white inner shell and dark outer shells (needs a colour per shell in OutlineStyle); or keep warm white and make it opaque and wider. Stills: `builds/review-core-119/compare-drawer.png`, `compare-door.png`, `compare-sock.png` (now | A | B).
 
 ## Built log
+
+### 2026-11-25
+Changed: nothing in the game. Found why: the port is faithful (outline.gdshader, shells 0.003/0.006/0.0095 with opacity 0.9/0.45/0.2, colour (1,0.94,0.82), AgX 1.1 and the grade all equal the old game's). The outline is warm white and thin (a few px, outer two shells mostly transparent), and the furniture (drawers, cupboard, door) is cream/white: warm white on cream has almost no contrast, so it shows only against sky, floor and shadow. It is a design weakness of the original, not a port difference. Pulse is off for the aim outline, fog is not used, so neither is a cause (not separately shot: sunlit-vs-dark rooms are not in the zoo).
+Files: none in the repo (stills only: before-*, optA-dark-*, optB-twotone-*, compare-* in builds/review-core-119/).
+Verified: stills only, no code change; the temporary style edit for option shots was reverted.
