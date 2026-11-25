@@ -53,8 +53,9 @@ the cutscene frame (`run-ends.md` "The Cutscene frame", core/88) or the lines th
   trigger: its repair 0-1 and its damage share 1, 0.8, 0.6, 0.4, 0.2, 0, Q1427). All `# placeholder:` as in the old
   tuning ("Numbers" below).
 - **`looks_contract.json`**: what every washer Looks has (the graybox and the real one), checked by the Looks test and the kit's asset lint (`nodes` and `animations` are plain name lists for the lint; `paths` holds nested nodes, `players` which player has which animation):
-  - a `Skeleton3D` named `face_rig` with the bones `lean`, `bob` (under lean), `door_hinge`, `brow_left_pivot`,
-    `brow_right_pivot`, `drum_spin`, `laundry_tumble` (under bob), rests the neutral face;
+  - a `Skeleton3D` named `face_rig` with the bones `lean`, `bob` (under lean), and `door_hinge`, `brow_left_pivot`,
+    `brow_right_pivot`, `drum_spin`, `laundry_tumble` (all five under bob, as the old rig: the face and drum bob with the
+    body), rests the neutral face, each a move with no turn;
   - an `AnimationPlayer` with `angry`, `calming`, `entitled`, `surprised` (held poses), `talk`, `rumble`, `spin` (loops)
     and `mouth` (shut to 40 degrees open), and an `AnimationTree` made in the editor: the take's acting (a library the
     Looks fills at `act()`), the loops on `bob` weighted by the acting's `wiggle` (talk, or rumble by its `angry` share),
@@ -163,7 +164,12 @@ Ported by the port rules (Q2151-Q2153: technical improvements only; a before/aft
 `tools/blender/make_washing_machine_face.py` ported into `tools/blender/` (the brows, the lit drum, the laundry, the rig
 `face_rig` and its eight actions; build() safe to re-run), exported to `assets/appliance/washing_machine.glb` with the
 actions, a collider, the shared materials (Q2177), and `looks_washer.tscn` built to the contract. The game's AnimationTree
-and properties stay in the Looks scene, not in the glb. Look work: it stops at its first line-up (the old and the port
+and properties stay in the Looks scene, not in the glb. Built (assets/14): the script is
+`assets_src/generate/appliance/make_washing_machine_face.py`, run by `build.py -- appliance` (the generators' folder,
+assets_src/generate/README.md); the glb's import script `washer_model_import.gd` lifts the Skeleton3D to `face_rig`,
+drops the collider (washer.tscn's box collides), keeps only each action's own bones and splits the animations into the
+contract's three players; `looks_washer.tscn` inherits the glb. The lining and the power light are one mesh `Lining`
+(the mood glow on both), the laundry the mesh `Pile` on its bone. Look work: it stops at its first line-up (the old and the port
 side by side, each mood pose, the mouth open) for the designer's go; assets are approved per family batch.
 
 The subtitle icon is not a render of the model: a flat drawn icon in the UI icons' style, its own look ticket, assets/15

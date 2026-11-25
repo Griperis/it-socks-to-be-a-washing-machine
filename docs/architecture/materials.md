@@ -15,6 +15,11 @@
   sphere, built from the folder at load (Q2337); `MaterialBoardLayout` its spacing. A folder
   `candidates/<name>/` (several files of one name) shows as its own row. Shots: the set `materials`.
 
+- The washing machine (assets/14) maps brass and steel to the library (the same names). Its other materials stay in
+  its glb: `rubber` (dark blue-grey, roughness 0.75) differs from the library's, and `mint`, `cream`, `brow`,
+  `porthole_glass` are names the library has not got (it holds the old furniture's, which the Materials station's
+  tests count); the designer may pick (batch-a-review.md). `drum_glow` is the Looks' own, coloured per mood.
+
 ## The picks (Q2389)
 
 24 names were used by the old furniture with several sets of values. In each, the set the most old pieces

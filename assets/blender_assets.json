@@ -686,6 +686,12 @@
       "colliders": 0,
       "source": "laundry/laundry_bin",
       "glb": "assets/laundry_bin/laundry_bin.glb"
+    },
+    "washing_machine": {
+      "class": "appliance",
+      "colliders": 1,
+      "source": "appliance/washing_machine",
+      "glb": "assets/appliance/washing_machine.glb"
     }
   }
 }

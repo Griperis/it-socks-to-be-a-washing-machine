@@ -2,7 +2,7 @@
 
     blender -b -P assets_src/generate/build.py -- <family> [--only a,b] [--out <dir>] [--save] [--no-export]
 
-  <family>     sock | cabinet | furniture | lock | avatar
+  <family>     sock | cabinet | furniture | lock | avatar | appliance
   --only       only these: Sock shapes (ankle, crew ...) and balls (ball_crew_plain ...), Collections
                (food, space ...), furniture pieces (sofa, piano ...) or locks (lock_door, lock_gate)
   --out        write the glbs under <dir> (same relative paths as in the game) instead of over the
@@ -182,11 +182,30 @@ def avatar(a, manifest, lines):
         print(lines[-1])
 
 
+def appliance(a, manifest, lines):
+    """The washing machine (assets/14): the face script applied to its .blend (it starts from the old
+    model in that file, not from an empty scene), exported by the script's own export() (no root
+    object, the eight actions; not export_root())."""
+    sys.path.insert(0, os.path.join(HERE, "appliance"))
+    import make_washing_machine_face as wf
+    if a["only"] and "washing_machine" not in a["only"]:
+        return
+    bpy.ops.wm.open_mainfile(filepath=os.path.join(SRC, "appliance", "washing_machine.blend"))
+    print(wf.build())
+    if a["save"]:
+        bpy.ops.wm.save_mainfile(compress=True)
+    if a["export"]:
+        lines.append(wf.export(os.path.join(a["out"], manifest["washing_machine"]["glb"])))
+    else:
+        lines.append("BUILT washing_machine")
+    print(lines[-1])
+
+
 def main():
     a = args()
-    fn = {"sock": sock, "cabinet": cabinet, "furniture": furniture, "lock": lock, "avatar": avatar}.get(a["family"])
+    fn = {"sock": sock, "cabinet": cabinet, "furniture": furniture, "lock": lock, "avatar": avatar, "appliance": appliance}.get(a["family"])
     if fn is None:
-        raise SystemExit("FAIL build: name a family: sock | cabinet | furniture | lock | avatar")
+        raise SystemExit("FAIL build: name a family: sock | cabinet | furniture | lock | avatar | appliance")
     manifest = json.load(open(os.path.join(REPO, "assets", "blender_assets.json"), encoding="utf-8"))["assets"]
     lines = []
     fn(a, manifest, lines)

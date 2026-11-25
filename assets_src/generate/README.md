@@ -15,6 +15,7 @@ collision, its Sock spots and its settings live in the Godot scenes and are neve
 | Avatar (2) | `avatar/make_avatar.py` (the old script unchanged but its header; its own export keeps the glTF extras and the Crouch key, no root object, facing -z as the old game; not in `blender_assets.json`, coop/04) | `assets_src/blender/avatar/avatar.blend` | `assets/avatar/avatar.glb`, `assets/avatar/feet.glb` |
 | Machine Parts (4) | none yet: the old `tools/blender/make_part_*.py` build on `washer_parts.py`, the washer's (assets/14); the old `.blend` and glb came over unchanged (assets/12) | `assets_src/blender/parts/part_<old name>.blend` (`part_belt` is the drum belt) | `assets/parts/<kind>.glb` |
 | Laundry bin (1) | `tools/blender/laundry_bin.py` (the old `make_laundry_bin.py` with the bits of `washer_parts.py` it needs; builds, exports the root's children only, `--save` writes the source; no collider: the entity's box; assets/13) | `assets_src/blender/laundry/laundry_bin.blend` | `assets/laundry_bin/laundry_bin.glb` |
+| Washing machine (1) | `appliance/make_washing_machine_face.py` (the old face script, applied to the model in its `.blend`; its own export: no root object, the eight actions, assets/14) | `assets_src/blender/appliance/washing_machine.blend` | `assets/appliance/washing_machine.glb` |
 | House shell | `house/make_house.py`, `house/make_flat.py`: kept to read, not run (see `house/README.md`) | none | none |
 
 `assets/blender_assets.json` lists every source (`source`, relative to `assets_src/blender/`) and its glb.
@@ -25,7 +26,7 @@ Blender is the kit's pinned one (`kit/tools/blender.sh`, 5.3). From the reposito
 
     blender -b -P assets_src/generate/build.py -- <family> [--only a,b] [--out <dir>] [--save] [--no-export]
 
-- `<family>`: `sock`, `cabinet`, `furniture`, `lock` or `avatar`. `--only` takes shapes and balls (`crew`, `ball_crew_plain`),
+- `<family>`: `sock`, `cabinet`, `furniture`, `lock`, `avatar` or `appliance`. `--only` takes shapes and balls (`crew`, `ball_crew_plain`),
   Collections (`food`) or pieces (`sofa`).
 - Without `--out` the glbs are written **over the game's own files**. Write to a scratch folder first and compare.
 - `--save` also rewrites the family's `.blend` sources from the script.
