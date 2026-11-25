@@ -537,6 +537,14 @@ func case_k11() -> void:
 	await _click(drawer.key())
 	_check(not PadFocus.is_lit(who) and not PadFocus.pad_used, "a mouse click puts the light out")
 	_check(not PadFocus.is_lit(drawer.key()), "and the key the mouse pressed is not lit")
+	for pair: Array in [[KEY_ESCAPE, false], [KEY_W, false], [KEY_TAB, true]]:
+		var press := InputEventKey.new()
+		press.keycode = pair[0]
+		press.physical_keycode = pair[0]
+		press.pressed = true
+		PadFocus.on_input(press)
+		_check(PadFocus.pad_used == pair[1], "%s %s the selection light (Q2654: only Tab or a pad)" % [OS.get_keycode_string(pair[0]), "turns on" if pair[1] else "leaves off"])
+	PadFocus.on_input(_mouse_press())
 	await _until(func() -> bool: return not drawer.is_open() and drawer.is_settled(), "the drawer to shut", 300, 0.0)
 	hlobby.places()[1].grab_focus()
 	await _key(&"ui_right")
@@ -822,3 +830,10 @@ func case_k15() -> void:
 	await _click(_choose_key(hd, "coop1"))
 	await _until(func() -> bool: return not gd.pairs().visible, "the Guest's slider to hide with Ann's World chosen", 900, 20.0)
 	_check(not hd.pairs().visible, "and the Host's")
+
+
+func _mouse_press() -> InputEventMouseButton:
+	var ev := InputEventMouseButton.new()
+	ev.button_index = MOUSE_BUTTON_LEFT
+	ev.pressed = true
+	return ev

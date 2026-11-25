@@ -30,11 +30,16 @@ static func is_target(n: Node) -> bool:
 	return n is BaseButton or n is Slider or n is LineEdit
 
 
-## Sets `pad_used` from `event`: a key or pad press sets it, a mouse button clears it, a motion changes nothing.
+## Sets `pad_used` from `event`: Tab, Shift+Tab or a pad press sets it, a mouse button clears it; any other key (Esc,
+## the arrows, moving) and a motion change nothing (designer, Q2654: keyboard and mouse play shows no selection
+## until Tab is pressed).
 static func on_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		pad_used = false
-	elif (event is InputEventKey or event is InputEventJoypadButton or event is InputEventAction) and event.is_pressed():
+	elif event is InputEventKey and event.is_pressed():
+		if event.is_action(&"ui_focus_next") or event.is_action(&"ui_focus_prev"):
+			pad_used = true
+	elif (event is InputEventJoypadButton or event is InputEventAction) and event.is_pressed():
 		pad_used = true
 	elif event is InputEventJoypadMotion and absf((event as InputEventJoypadMotion).axis_value) > 0.5:
 		pad_used = true
