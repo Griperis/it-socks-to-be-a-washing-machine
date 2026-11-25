@@ -40,3 +40,4 @@ terms: []
   Changed: `_aim` waits until the Host has the player where it stands before the click. No number changed.
   Files: `tests/coop_knockdown_test.gd`. Verified: forced-late-pose repro PASS 608 checks; `--only=coop_knockdown`
   10 runs in a row, 3 at once beside batch A, reruns off: PASS 170 checks, 8 cases each; `--touched`: PASS 396 checks, 20 cases; `grep_rules.py`: PASS.
+- Merged: c3d0af91 (2026-11-25, branch core/101-coop-knockdown-real-path-flaky)
