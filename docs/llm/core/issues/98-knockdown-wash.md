@@ -6,7 +6,7 @@ area: core
 feature: knockdown
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/86, core/88]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [Teammate, Hands]
@@ -54,3 +54,4 @@ Files: game/entities/washer/{washer_wash,wash_view,washer_tuning}.gd, washer.tsc
 game/parts/avatar/{avatar,ragdoll}.gd; game/player/player.gd; game/cutscene/cutscenes.gd; game/audio/sound_catalogue.tres;
 game/ui/licence/credits.tres; game/zoo/stations/knockdown.tscn; assets/audio/wash_*; tests/wash_test.gd; docs.
 Verified: wash suite PASS 56 checks; knockdown and coop_knockdown PASS; `--touched` PASS (see commit line).
+- Merged: 800e5715 (2026-11-25, branch core/98-knockdown-wash)
