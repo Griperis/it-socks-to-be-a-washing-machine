@@ -9,6 +9,7 @@
 [ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="7_tuning"]
 [ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="8_knockdowns"]
 [ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="9_knock_tuning"]
+[ext_resource type="PackedScene" path="res://game/entities/washer/washer.tscn" id="10_washer"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.5, 0.4, 0.42, 1)
@@ -27,7 +28,7 @@ mesh = SubResource("PlaneMesh_pad")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 2.1, -1.6)
 pixel_size = 0.004
 billboard = 2
-text = "Knockdown: a Throw at full charge (hold until the ring is full) knocks the Teammate down; with empty Hands, hold the left button on the lying body to drag it by the feet. The Teammate is moved only as the network moves a real one"
+text = "Knockdown: a Throw at full charge (hold until the ring is full) knocks the Teammate down; with empty Hands, hold the left button on the lying body to drag it by the feet; let go of it within 1.5 m of the washing machine's door and it goes for a spin (core/98). The Teammate is moved only as the network moves a real one"
 vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
@@ -83,3 +84,6 @@ tuning = ExtResource("7_tuning")
 script = ExtResource("8_knockdowns")
 tuning = ExtResource("9_knock_tuning")
 hands = NodePath("../Hands")
+
+[node name="Washer" parent="." unique_id=1460311790 instance=ExtResource("10_washer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9, 0, 1.6)

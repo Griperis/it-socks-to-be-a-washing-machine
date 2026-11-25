@@ -101,6 +101,33 @@ Every batch A cutscene plays on one frame, core/88, designed in `run-ends.md` "T
 core/73's proposals merged; the old `RogueMachine` did four jobs in one class). The washer gives it the shots and
 spawns above, its cut rule, its `cutscene_looks`, and the no-voice lengths (5 to 10 s by level).
 
+## The knockdown wash (core/98)
+
+A knocked-down Teammate dragged to the door and let go goes for a spin (list 05 "The knockdown wash"; old `washes.gd`,
+`wash_view.gd`, `rig_wash.gd`). Inside `washer.tscn`, so it is in the house with no edit of the house:
+
+- **`Wash`** (`washer_wash.gd`, `WasherWash`, extends Part): State `peer` (who spins, 0 nobody), `spin_left`, `from` (where
+  the body lay), `by` (who let go), `serial`, `out_serial`; none saved. The start is not its own Command: the Host's answer to
+  the dragger's `let_go` (`Knockdowns._let_go_at`) finds the washer whose `Door` is within `wash_reach` (1.5 m on the floor
+  in front, 1 m up or down), and if it is free (nobody spinning, no cutscene) ends the body's knockdown and starts the wash
+  in the same answer (`why: "wash"`); a busy machine's door is no door, the body just lies there (Q758). The end is the
+  Host's `end {serial}` once every machine's own clock has run out `wash_seconds` (3 s, the slide in included), held while a
+  cutscene plays; its answer lays the player down at the door's front (0.2 m out, 0.3 up) by `Knockdowns.tumble()`: head
+  first (70 degrees tipped), every bone launched out of the door at 2.5 m/s and up at 1.5, a 0.4 twist, no push, down
+  2 s. A cutscene's end (`Cutscenes._ended`) and a leaver's `left()` end it with no tumble.
+- **Out of play** (`Knockdowns.is_washed(peer)`): the washed player is not down, so no grab finds them; no Throw hits them
+  (`_bodies()` leaves them out) and `Hands.is_down()` is true (nothing is handed or caught to them); their avatar is not
+  drawn and its Mate and Back are off (`Avatar.set_washed`); their own body is held still in the machine and their input
+  and HUD are off (`Player.set_washed`, Q991).
+- **`WashView`** (`wash_view.gd`, a child of the washer, looks only): the blob in their Player colour sliding in over 0.35 s
+  (squared), the door open then slammed (`wash_slam` at the porthole), `wash_slosh` looping at the porthole, the drum and
+  the face's `spin` at 1.2 turns a second, the blob tumbling behind the porthole for everyone but the washed player, whose
+  own camera sits in the drum (0, 0.42, 0.12) turning with it and lolling, black over the last 0.4 s; at the end the door
+  bursts open (slam), stands open 1 s, swings shut over 0.5 s, and their screen fades in over 0.6 s.
+- Numbers: `washer_tuning.tres` "Knockdown wash", all placeholders. The tumbling body starts where the ragdoll's own
+  `knock()` is given the entry's `tilt`, `launch` and `speed`; the one who let go is let through it (as in the drag).
+- Not in this ticket (batch C): the item loads (a Gift box, the Radio, the Cat) through the same door.
+
 ## Seams: the triggers this needs from core/71 and core/72
 
 Named, not designed; each is a read of their Part or an answer of their Command.

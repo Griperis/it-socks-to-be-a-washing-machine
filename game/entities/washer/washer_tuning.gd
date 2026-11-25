@@ -70,6 +70,41 @@ extends Resource
 ## How the machine looks in each cutscene (core/88 and core/87 read them).
 @export var cutscene_looks: Array[WasherCutsceneLook] = []
 
+@export_group("Knockdown wash")
+## A body let go this near the door's front (on the floor, within a metre up or down) goes in.
+@export_range(0.1, 5.0, 0.05, "suffix:m") var wash_reach := 1.5 # placeholder: the old wash.json door_reach
+## How long they spin in the drum, the slide in included.
+@export_range(0.5, 20.0, 0.1, "suffix:s") var wash_seconds := 3.0 # placeholder: the old wash.json seconds
+## The washed player's view and the blob turn this many times a second.
+@export_range(0.0, 5.0, 0.05, "suffix:1/s") var wash_turns := 1.2 # placeholder: the old wash.json spin
+## The body slides in over this long before the door shuts.
+@export_range(0.05, 2.0, 0.05, "suffix:s") var wash_slide := 0.35 # placeholder: the old wash.json slide
+## How long they lie knocked down after tumbling out (never under the rise plus 0.05 s).
+@export_range(0.5, 20.0, 0.1, "suffix:s") var wash_out_seconds := 2.0 # placeholder: the old wash.json out_seconds
+## The body comes out head first, tipped forward this far from upright; every bone is flung out of the door
+## and up at these speeds; it twists by `out_side` (-1..1) times the knockdown's spin.
+@export_range(0.0, 90.0, 1.0, "suffix:deg") var out_tilt := 70.0 # placeholder: the old wash.json out_tilt
+@export_range(0.0, 10.0, 0.1, "suffix:m/s") var out_speed := 2.5 # placeholder: the old wash.json out_speed
+@export_range(0.0, 10.0, 0.1, "suffix:m/s") var out_lift := 1.5 # placeholder: the old wash.json out_lift
+@export_range(-1.0, 1.0, 0.05) var out_side := 0.4 # placeholder: the old wash.json out_side
+## Where the feet start: out of the door's front and up from the floor (the old OUT_GAP and OUT_UP).
+@export_range(0.0, 1.0, 0.05, "suffix:m") var out_gap := 0.2 # placeholder: the old washes.gd OUT_GAP
+@export_range(0.0, 1.5, 0.05, "suffix:m") var out_up := 0.3 # placeholder: the old washes.gd OUT_UP
+## The burst-open door stands open this long, then swings shut over `close_time`; it shuts on a slam in
+## `shut_time` and bursts open in `burst_time`.
+@export_range(0.0, 5.0, 0.1, "suffix:s") var door_open := 1.0 # placeholder: the old wash.json door_open
+@export_range(0.01, 2.0, 0.01, "suffix:s") var close_time := 0.5 # placeholder: the old wash_view.gd CLOSE_TIME
+@export_range(0.01, 1.0, 0.01, "suffix:s") var shut_time := 0.08 # placeholder: the old wash_view.gd SHUT_TIME
+@export_range(0.01, 1.0, 0.01, "suffix:s") var burst_time := 0.05 # placeholder: the old wash_view.gd BURST_TIME
+## The washed player's screen fades to black over the last `wash_fade_out` of the wash and back in over
+## `wash_fade_in` as they tumble out.
+@export_range(0.05, 3.0, 0.05, "suffix:s") var wash_fade_out := 0.4 # placeholder: the old wash.json fade_out
+@export_range(0.05, 3.0, 0.05, "suffix:s") var wash_fade_in := 0.6 # placeholder: the old wash.json fade_in
+## The washed player's eyes in the drum, in the machine's frame, and how far the view lolls (radians times
+## the sine of half the spin).
+@export var drum_eye := Vector3(0.0, 0.42, 0.12) # placeholder: the old rig_wash.gd DRUM_EYE
+@export_range(0.0, 0.5, 0.01) var drum_loll := 0.12 # placeholder: the old rig_wash.gd
+
 
 ## The look of cutscene `trigger`, or null.
 func cutscene_look(trigger: StringName) -> WasherCutsceneLook:

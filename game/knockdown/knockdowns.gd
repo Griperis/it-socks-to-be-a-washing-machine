@@ -25,6 +25,10 @@
 ## them and cut their `down` to the rise. On the Host the feet are pulled to the dragger's hold point each
 ## tick; further than `break_distance` from it, once within it, the Host ends the drag ("apart"); as the
 ## body rises it ends ("up"), and a knock of the dragger ends it ("knocked"), a leave too ("leave").
+##
+## The wash (core/98, docs/architecture/washer.md): a body let go within reach of a free washing machine's
+## door ends its knockdown and starts the machine's `WasherWash` in the same answer ("wash"); the wash's end
+## lays the player down again by `tumble()`. A washed player is out of play: no hit, grab or hand-off finds them.
 class_name Knockdowns
 extends Part
 
@@ -42,6 +46,8 @@ const UP := "up"
 const APART := "apart"
 const KNOCKED := "knocked"
 const LEAVE := "leave"
+## A let go by the washing machine's door that sends the body in (core/98).
+const WASH := "wash"
 ## Why a Command is refused.
 const GONE := "gone"
 const SELF := "self"
@@ -116,6 +122,14 @@ func is_down(peer: int) -> bool:
 func is_rising(peer: int) -> bool:
 	var l := left_of(peer)
 	return l > 0.0 and l <= rise_time()
+
+
+## Whether player `peer` spins in a washing machine's drum of this level now (core/98): out of play.
+func is_washed(peer: int) -> bool:
+	for wash in WasherWash.in_level(self):
+		if wash.peer == peer:
+			return true
+	return false
 
 
 ## The rise's length, never over the knockdown's.
@@ -242,7 +256,7 @@ func decide(cmd: Command) -> Dictionary:
 			var target := dragging_of(cmd.by)
 			if target < 0:
 				return refuse(NOTHING)
-			return _released(target, DROP)
+			return _let_go_at(target, cmd.by)
 		RELEASE:
 			if cmd.by != Parts.HOST or not (cmd.args.get("target") is int):
 				return refuse("wrong")
@@ -271,7 +285,7 @@ func _decide_knock(cmd: Command) -> Dictionary:
 		return refuse(GONE)
 	if target == thrower:
 		return refuse(SELF)
-	if is_down(target):
+	if is_down(target) or is_washed(target):
 		return refuse(ALREADY)
 	# B25: the numbers are made sound here, whoever worked them out.
 	var flat := Vector3((push as Vector3).x, 0.0, (push as Vector3).z)
@@ -359,6 +373,30 @@ func _decide_struggle(cmd: Command) -> Dictionary:
 	return ev
 
 
+## The answer to a let go of `target`: a drop, or, with its feet by a free washing machine's door, the body
+## going in (its knockdown ends, the machine's wash starts: "wash"). A busy machine's door is no door (it
+## just lies there, Q758).
+func _let_go_at(target: int, cmd_by: int) -> Dictionary:
+	var ev := _released(target, DROP)
+	var rag := ragdoll_of(target)
+	if rag == null:
+		return ev
+	var feet := rag.feet()
+	for wash in WasherWash.in_level(self):
+		if not wash.by_door(feet):
+			continue
+		var patch := wash.take_in(target, feet, cmd_by)
+		if patch.is_empty():
+			break
+		var now_down := _live_down()
+		now_down.erase(target)
+		(ev["changes"][id] as Dictionary)["down"] = now_down
+		ev["changes"][wash.id] = patch
+		ev["why"] = WASH
+		break
+	return ev
+
+
 ## The answer that ends the drag of `target` (`why`).
 func _released(target: int, why: String) -> Dictionary:
 	var now_drags := drags.duplicate()
@@ -394,6 +432,19 @@ func left(by: int) -> Dictionary:
 	var ev := grant({"down": now_down, "drags": now_drags, "struggles": now_struggles})
 	ev["why"] = LEAVE
 	return ev
+
+
+## The Host, in a wash's end: the patch that lays player `target` down again as they tumble out (core/98):
+## their knockdown, `by` the one who let go of them (an entry like a hit's, with `tilt` forward from upright, a `launch` velocity for every
+## bone and `speed` of the push) for `seconds`, never under the rise plus 0.05 s. Reads only.
+func tumble(target: int, by: int, at: Vector3, yaw: float, push: Vector3, side: float, tilt: float,
+		launch: Vector3, seconds: float) -> Dictionary:
+	var entry := {"left": maxf(seconds, rise_time() + 0.05), "at": at, "yaw": yaw, "push": push, "high": 0.5,
+			"side": clampf(side, -1.0, 1.0), "by": by, "n": serial + 1, "cut": 0, "tilt": tilt, "launch": launch,
+			"speed": 0.0}
+	var now_down := _live_down()
+	now_down[target] = entry
+	return {"down": now_down, "serial": serial + 1}
 
 
 # --- State shown, and the clocks -----------------------------------------------------------------
@@ -510,14 +561,14 @@ func _bodies() -> Array[Array]:
 	var seen: Dictionary[int, bool] = {}
 	for node in get_tree().get_nodes_in_group(Hands.PLAYERS):
 		var player := node as Player
-		if player == null or player.multiplayer != multiplayer or not _in_level(player):
+		if player == null or player.multiplayer != multiplayer or not _in_level(player) or is_washed(player.player_id()):
 			continue
 		var t := player.tuning
 		out.append([player.player_id(), player.global_position, t.crouch_height if player.crouching else t.stand_height])
 		seen[player.player_id()] = true
 	for node in get_tree().get_nodes_in_group(Avatar.GROUP):
 		var a := node as Avatar
-		if a == null or a.is_queued_for_deletion() or not _in_level(a) or seen.has(a.peer()):
+		if a == null or a.is_queued_for_deletion() or not _in_level(a) or seen.has(a.peer()) or is_washed(a.peer()):
 			continue
 		var at := (place_of(a.peer()) as Transform3D).origin
 		var t := a.tuning if a.tuning != null else AvatarTuning.new()

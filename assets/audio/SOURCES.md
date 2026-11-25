@@ -41,3 +41,5 @@ The old game's picks for the core events (ported, Q2319). CC0 or public domain, 
 assets/07 brought the furniture devices' clips: the old picks, or for an event with no pick the pool's first candidate (the litter flap and the piano lid play the cupboard pool's first, Kenney's door open1 and close4). The piano is the old first instrument, its notes' measured roots in the catalogue's `piano` instrument.
 
 core/87 brought the broken washer's sounds, synthesised in the old game (`tools/gen_sounds.py`): washer_buzz__synth_a.ogg and washer_buzz__synth_c.ogg (the old `washer_buzz` picks) and washer_rumble__synth_a.ogg (the old `rogue_rumble`, no pick, its first candidate).
+
+core/98 brought the knockdown wash's two sounds, synthesised in the old game (`tools/gen_sounds.py`, no pick, the first candidate of each): wash_slosh__synth_a.ogg (the old `wash_slosh`, loops at the machine while someone spins) and wash_slam__synth_a.ogg (the old `wash_slam`, the door's slam as the body goes in and as it bursts out).

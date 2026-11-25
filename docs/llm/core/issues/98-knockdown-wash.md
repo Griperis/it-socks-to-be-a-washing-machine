@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: knockdown
@@ -42,3 +42,15 @@ The numbers in `washer_tuning.tres` (Knockdown wash group), placeholders; the dr
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-25
+Changed: the knockdown wash. `WasherWash` Part and `WashView` (looks) inside `washer.tscn` (so the house has them, no
+`house.tscn` edit); `Knockdowns` starts it in the let-go answer (`why: "wash"`) and lays the tumble down (`tumble()`),
+`is_washed()` keeps the washed player out of play (hits, grabs, hand-offs); `Ragdoll.knock` takes tilt, launch, speed;
+`Avatar.set_washed`, `Player.set_washed`; the cutscene's end clears a wash; numbers in `WasherTuning` "Knockdown wash";
+sounds `wash_slosh`, `wash_slam`; the knockdown station got a washing machine (moved off the coop test's spots). Settled
+by the old game: rows in `docs/migration/batch-a-review.md`.
+Files: game/entities/washer/{washer_wash,wash_view,washer_tuning}.gd, washer.tscn; game/knockdown/knockdowns.gd; game/hands/hands.gd;
+game/parts/avatar/{avatar,ragdoll}.gd; game/player/player.gd; game/cutscene/cutscenes.gd; game/audio/sound_catalogue.tres;
+game/ui/licence/credits.tres; game/zoo/stations/knockdown.tscn; assets/audio/wash_*; tests/wash_test.gd; docs.
+Verified: wash suite PASS 56 checks; knockdown and coop_knockdown PASS; `--touched` PASS (see commit line).
