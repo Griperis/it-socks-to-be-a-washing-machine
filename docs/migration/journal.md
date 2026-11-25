@@ -1365,3 +1365,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/93, the Laundry day: the seven bin spots, the tip, the pile behind the porthole, the refusals, the Stage bar's "Wash clothes n/m"; merged (main abf5cfe) |
 | Cost | about 264k subagent tokens |
 | Surprises | it added socks_pour too (one copy kept at merge); no Guest case; the Stage bar can drop a number change mid pop-in ([later]) |
+
+---
+
+| Ticket | core/94, the First wash: a New Game holds Stage 1's Socks, "Wash the laundry", the calm wash, the break, cutscene_1, the spray, the bin still full, "Fix the washing machine first"; the room-lamp flicker follows the drum light; merged (main 2caa3d4) |
+| Cost | about 311k subagent tokens |
+| Surprises | the old lamps never dimmed at the break; Worlds saved before this skip the First wash; another missing blob at commit |
