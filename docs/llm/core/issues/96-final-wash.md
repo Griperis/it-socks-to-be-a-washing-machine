@@ -29,6 +29,7 @@ Batch A is built unattended (Q2603): an open choice this ticket does not settle 
 The sequence is `final_wash.tres`; the happy wash's numbers in `washer_tuning.tres` (placeholders).
 
 ## Acceptance
+- During the happy wash the room's lamps within 4 m flicker, cleared when it ends (old `rogue_machine.gd:186-188`, `:318-323`, `:468-474`; found by core/87).
 - Real path: in the house with one bin left (the Laundry station's knob or a short plan), the player clicks it into the washing machine; after the cutscene the Final screen is open on both machines and play time has stopped.
 - A load or a join after the Final wash began goes straight to the Final screen.
 - Reachable in the main scene.

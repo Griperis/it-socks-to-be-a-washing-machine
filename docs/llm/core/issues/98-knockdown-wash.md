@@ -30,6 +30,7 @@ Batch A is built unattended (Q2603): an open choice this ticket does not settle 
 The numbers in `washer_tuning.tres` (Knockdown wash group), placeholders; the drum slosh in the sound catalogue.
 
 ## Acceptance
+- Every knockdown wash ends at core/88's respawn (left to this ticket by core/88).
 - Real path: in the knockdown station with the washer, the player drags the knocked Teammate to the door and lets go; the Teammate's body is hidden, their view spins, and after 3 s they lie knocked down in front of the door.
 - A second body let go meanwhile just lies there; a cutscene's end ends the wash.
 - Placeholders: the knockdown wash numbers.

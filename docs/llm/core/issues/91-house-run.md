@@ -31,6 +31,7 @@ Batch A is built unattended (Q2603): an open choice this ticket does not settle 
 All placed things are edited on their instances in `house.tscn`; the plan is `house_stage_plan.tres`.
 
 ## Acceptance
+- The floor locks are placed in the house, each with its `floor` set (core/80).
 - The house's Cabinets get their `unlock_stage` values (until then core/77's Stage 1 lays about 400 Pairs there).
 - A house case: a New Game lays Stage 1 behind the loading screen (core/77's `Mess.layer`, `lay_progress()`).
 - A house case with two players: core/77's high-spot pass puts a few Socks on a top over 1.7 m (no station has one; never seen placing).

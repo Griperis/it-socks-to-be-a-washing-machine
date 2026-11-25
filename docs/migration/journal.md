@@ -1287,3 +1287,15 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/86, the washing machine entity and its comments: it replaces the house marker, stare comments silent before the First wash (Q2636), comment sets by Stage; the Washer station at x 98; merged (main f528b6b) |
 | Cost | about 319k subagent tokens |
 | Surprises | its looks contract broke the asset lint's shape and its station lay outside the zoo's Mess bounds (both fixed at merge); the disk filled with test mirrors mid-merge |
+
+---
+
+| Ticket | core/83, run tallies, record, Whiteboard and Tab: Pairs shelved, Socks picked, Coins earned per player; a Tab overlay key; merged (main 3d99183) |
+| Cost | about 190k subagent tokens |
+| Surprises | the disk filled mid-finish (test mirrors in /tmp); a Guest's counting tested by snapshot, not two machines |
+
+---
+
+| Ticket | core/101, coop_knockdown:real_path flaky: the click came before the Host heard the Guest's new place; the test now waits for it; no game change; merged (main 3d99183) |
+| Cost | about 154k subagent tokens |
+| Surprises | coop_hands, coop_carry, coop_pings may share the race (core/103); a run.py hung 25 min holding perf.lock |
