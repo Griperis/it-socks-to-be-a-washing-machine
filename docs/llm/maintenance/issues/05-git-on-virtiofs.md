@@ -82,3 +82,4 @@ What is known:
 - Files: docs/research/git-on-virtiofs.md
 - Verified: lab runs of 5 worktrees x 200-400 commits, and 1 x 500, plus raw link/rename tests (counts in the note);
   `git fsck --full` clean on every lab repo; lab repos deleted (12 raw-test files on the mount left, see Open follow-ups).
+- Merged: b36c00d1 (2026-11-25, branch maintenance/05-git-on-virtiofs)
