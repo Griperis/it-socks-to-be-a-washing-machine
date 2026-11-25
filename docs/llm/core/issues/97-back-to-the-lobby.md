@@ -6,7 +6,7 @@ area: core
 feature: frame
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/96]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [World, Host, Guest]
@@ -45,3 +45,4 @@ The words are placeholders in the Lobby's own scenes; nothing new to author.
 - 2026-11-25 Changed: Continue on the Final screen. Any player's press asks the Host (`LaundryDay.continue`); the Host saves and reopens the Lobby (`LobbyState.reopen`), waits for its Guests to leave the house, and every machine loads `lobby.tscn` through `LobbyReturn` (seam `LevelRuntime.go_into_lobby`) with the link kept. The finished World stays chosen: row and card say "Finished · played ...", no Continue, never loads into the house; Start (Host) and New Game (Solo) ask "Start a new game? The finished World is replaced." and make a New Game in its slot. Five rows under "Settled by the old game".
   Files: game/level/lobby_return.gd(+uid), game/level/level_runtime.gd, game/laundry/laundry_day.gd, game/lobby/{lobby.gd,lobby_state.gd,lobby_words.gd}, game/save/worlds.gd, tests/back_to_lobby_test.gd(+uid), docs/architecture/run-ends.md, docs/migration/batch-a-review.md.
   Verified: see the commit's suite line.
+- Merged: 59db02a2 (2026-11-25, branch core/97-back-to-the-lobby)
