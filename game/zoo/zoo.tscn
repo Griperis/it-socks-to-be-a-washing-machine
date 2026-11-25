@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://bx2esfl7c8ibt" path="res://game/zoo/stations/hand_off.tscn" id="53_hand_off"]
 [ext_resource type="PackedScene" uid="uid://b3p4lgjwxx4ru" path="res://game/zoo/stations/stacking.tscn" id="54_stacking"]
 [ext_resource type="PackedScene" uid="uid://bg8lkqbbiv0lh" path="res://game/zoo/stations/pings.tscn" id="55_pings"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/laundry.tscn" id="89_laundry"]
 [ext_resource type="PackedScene" uid="uid://q0tm1ywugfrf" path="res://game/level/level_runtime.tscn" id="43_runtime"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/stages.tscn" id="56_stages"]
 
@@ -141,6 +142,9 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -16.5, 0, -2.5)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -2)
 
 [node name="Stages" parent="Stations" instance=ExtResource("56_stages")]
+
+[node name="Laundry" parent="Stations" instance=ExtResource("89_laundry")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0, 7)
 
 [node name="ReturnSpot" type="Marker3D" parent="." unique_id=1397039282]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.5)

@@ -1,0 +1,93 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://game/laundry/sock_spray.tscn" id="1_spray"]
+[ext_resource type="Script" path="res://game/zoo/laundry/spray_pillar.gd" id="2_pillar"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.62, 0.7, 0.78, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_pad")
+size = Vector2(10, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(10, 0.2, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_washer"]
+albedo_color = Color(0.9, 0.9, 0.92, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_washer"]
+material = SubResource("StandardMaterial3D_washer")
+size = Vector3(1, 1.1, 0.9)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_porthole"]
+albedo_color = Color(0.2, 0.3, 0.5, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_porthole"]
+material = SubResource("StandardMaterial3D_porthole")
+radius = 0.06
+height = 0.12
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_button"]
+albedo_color = Color(0.3, 0.5, 0.75, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_button"]
+material = SubResource("StandardMaterial3D_button")
+size = Vector3(0.5, 1, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_button"]
+size = Vector3(0.5, 1, 0.3)
+
+[node name="Laundry" type="Node3D"]
+
+[node name="Pad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+metadata/surface = "wood"
+
+[node name="Shape" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_ground")
+
+[node name="Name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 3.5)
+pixel_size = 0.004
+billboard = 2
+text = "Laundry: the spray of Socks out of the washing machine's door (press E on the pillar)"
+vertical_alignment = 2
+autowrap_mode = 3
+width = 700.0
+
+[node name="Washer" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -3)
+mesh = SubResource("BoxMesh_washer")
+
+[node name="Porthole" type="Marker3D" parent="Washer"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.05, 0.47)
+
+[node name="Mark" type="MeshInstance3D" parent="Washer/Porthole"]
+mesh = SubResource("SphereMesh_porthole")
+
+[node name="Spray" parent="." instance=ExtResource("1_spray")]
+
+[node name="SprayPillar" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 3)
+
+[node name="SprayPillar" type="Node" parent="SprayPillar" node_paths=PackedStringArray("spray", "porthole")]
+script = ExtResource("2_pillar")
+spray = NodePath("../../Spray")
+porthole = NodePath("../../Washer/Porthole")
+
+[node name="Mesh" type="MeshInstance3D" parent="SprayPillar"]
+mesh = SubResource("BoxMesh_button")
+
+[node name="Shape" type="CollisionShape3D" parent="SprayPillar"]
+shape = SubResource("BoxShape3D_button")
+
+[node name="Label" type="Label3D" parent="SprayPillar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+pixel_size = 0.004
+billboard = 2
+text = "Spray"
