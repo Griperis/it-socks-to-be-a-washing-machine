@@ -19,6 +19,7 @@ static func scrub(tree: SceneTree) -> void:
 	Settings.autosave = false
 	Settings.reset_to_defaults()
 	Sounds.reset()
+	Voices.reset()
 	PadRumble.reset()
 	# coop/12: every Host in a test listens on a free port, so parallel runs never clash.
 	Session.free_port = true
