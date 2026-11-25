@@ -1,18 +1,6 @@
 [gd_scene format=3]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hamper"]
-albedo_color = Color(0.93, 0.93, 0.95, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_hamper"]
-material = SubResource("StandardMaterial3D_hamper")
-size = Vector3(0.44, 0.52, 0.34)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_heap"]
-albedo_color = Color(0.55, 0.42, 0.5, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_heap"]
-material = SubResource("StandardMaterial3D_heap")
-size = Vector3(0.38, 0.16, 0.28)
+[ext_resource type="PackedScene" path="res://assets/laundry_bin/laundry_bin.glb" id="1_model"]
 
 [sub_resource type="Animation" id="Animation_tip"]
 resource_name = "tip"
@@ -39,15 +27,7 @@ _data = {
 
 [node name="Aim" type="Node3D" parent="."]
 
-[node name="Tip" type="Node3D" parent="Aim"]
-
-[node name="Hamper" type="MeshInstance3D" parent="Aim/Tip"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26, 0)
-mesh = SubResource("BoxMesh_hamper")
-
-[node name="Contents" type="MeshInstance3D" parent="Aim/Tip"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-mesh = SubResource("BoxMesh_heap")
+[node name="Tip" parent="Aim" instance=ExtResource("1_model")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

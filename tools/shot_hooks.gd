@@ -190,6 +190,23 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# pulled off (shoot a few frames later for the slide, 30 frames later for the bare Cabinet).
 			_devices_shot(world, arg)
 			return true
+		"laundry_bin":
+			# assets/13: the Laundry station's two bins close up (the model in the game), the other
+			# stations hidden. arg "full": the full bin from front-right; "empty": the empty one;
+			# "above_full", "above_empty": the same from above, into the tub.
+			var station := world.get_node("Stations/Laundry") as Node3D
+			for s in world.get_node("Stations").get_children():
+				(s as Node3D).visible = s == station
+			var bin := station.get_node("BinEmpty" if arg.ends_with("empty") else "BinFull") as Node3D
+			var cam := Camera3D.new()
+			world.add_child(cam)
+			cam.fov = 40.0
+			var eye := Vector3(0.45, 1.05, 0.9) if arg.begins_with("above") else Vector3(0.75, 0.7, 1.15)
+			cam.global_position = bin.to_global(eye)
+			cam.look_at(bin.to_global(Vector3(0.0, 0.25, 0.0)))
+			cam.reset_physics_interpolation()
+			cam.make_current()
+			return true
 		"fixes09":
 			# assets/09: the car and the whiteboard at the Furniture station, the other stations hidden.
 			# arg "windows": the car's greenhouse close up from front-left, above the belt; "door_l" and

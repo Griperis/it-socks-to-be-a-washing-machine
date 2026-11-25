@@ -642,6 +642,12 @@
       "colliders": 0,
       "source": "furniture/workbench",
       "glb": "assets/furniture/workbench.glb"
+    },
+    "laundry_bin": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "laundry/laundry_bin",
+      "glb": "assets/laundry_bin/laundry_bin.glb"
     }
   }
 }
