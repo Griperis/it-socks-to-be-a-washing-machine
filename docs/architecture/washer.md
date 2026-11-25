@@ -49,7 +49,7 @@ the cutscene frame (`run-ends.md` "The Cutscene frame", core/88) or the lines th
   dim and flicker, the spins, the no-voice cutscene lengths, `cutscene_looks: Array[WasherCutsceneLook]` (per cutscene
   trigger: its repair 0-1 and its damage share 1, 0.8, 0.6, 0.4, 0.2, 0, Q1427). All `# placeholder:` as in the old
   tuning ("Numbers" below).
-- **`looks_contract.json`**: what every washer Looks has (the graybox and the real one), checked by the Looks test:
+- **`looks_contract.json`**: what every washer Looks has (the graybox and the real one), checked by the Looks test and the kit's asset lint (`nodes` and `animations` are plain name lists for the lint; `paths` holds nested nodes, `players` which player has which animation):
   - a `Skeleton3D` named `face_rig` with the bones `lean`, `bob` (under lean), `door_hinge`, `brow_left_pivot`,
     `brow_right_pivot`, `drum_spin`, `laundry_tumble` (under bob), rests the neutral face;
   - an `AnimationPlayer` with `angry`, `calming`, `entitled`, `surprised` (held poses), `talk`, `rumble`, `spin` (loops)

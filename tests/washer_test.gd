@@ -207,7 +207,7 @@ func case_contract() -> void:
 			continue
 		add_child(looks)
 		var name := path.get_file()
-		for n: String in contract.get("nodes", []):
+		for n: String in contract.get("nodes", []) + contract.get("paths", []):
 			_check(looks.get_node_or_null(n) != null, "%s has %s" % [name, n])
 		for n: String in contract.get("named", []):
 			_check(looks.find_child(n, true, false) != null, "%s has a %s somewhere" % [name, n])
@@ -220,7 +220,7 @@ func case_contract() -> void:
 			for b: String in parents:
 				var i := rig.find_bone(b)
 				_check(i >= 0 and rig.get_bone_parent(i) == rig.find_bone(String(parents[b])), "%s: %s is under %s" % [name, b, parents[b]])
-		var players: Dictionary = contract.get("animations", {})
+		var players: Dictionary = contract.get("players", {})
 		for p: String in players:
 			var player := looks.get_node_or_null(p) as AnimationPlayer
 			_check(player != null and player.callback_mode_process == AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS,
