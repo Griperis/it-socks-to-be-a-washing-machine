@@ -93,7 +93,7 @@ func _ready() -> void:
 	_start.pressed.connect(start)
 	_continue.pressed.connect(continue_world)
 	_new_game.pressed.connect(new_game)
-	_ask_yes.pressed.connect(_new_game_over_save)
+	_ask_yes.pressed.connect(_ask_confirmed)
 	_ask_close.pressed.connect(func() -> void: _show_ask(false))
 	_who_key.pressed.connect(open_who)
 	_who.closed.connect(_sync_focus)
@@ -173,6 +173,8 @@ func _begin() -> void:
 					return
 			_choose_world()
 			_publish_worlds()
+		Mode.JOIN when s.is_online():
+			pass  # back from the house after the run ended (core/97): already joined to this Host
 		Mode.JOIN:
 			_joining_card = JOINING_CARD.instantiate() as LoadingScreen
 			_joining_card.free_when_faded = true
@@ -274,16 +276,20 @@ func toggle_ready() -> void:
 	_ask_lobby(link.lobby.ready_command(_me(), not link.lobby.is_ready(_me())))
 
 
-## Start (the Host's): every machine loads the house once the Host's answer says started.
+## Start (the Host's): every machine loads the house once the Host's answer says started. With a finished World
+## chosen it asks first (core/97, Q2631): yes replaces that World with a New Game in its slot.
 func start() -> void:
 	if _going or mode != Mode.HOST:
+		return
+	if _finished():
+		_ask_replace()
 		return
 	_ask_lobby(link.lobby.start_command(_me()))
 
 
 ## Solo's Continue: the saved Solo World.
 func continue_world() -> void:
-	if _going or mode != Mode.SOLO or world == null or world.is_new:
+	if _going or mode != Mode.SOLO or world == null or world.is_new or world.record.finished:
 		return
 	_into_house()
 
@@ -296,6 +302,7 @@ func new_game() -> void:
 	var saved := world != null and not world.is_new
 	if saved or PairsSlider.in_build():
 		($Ask/Center/Panel/Box/Question as Label).visible = saved
+		($Ask/Center/Panel/Box/Question as Label).text = LobbyWords.FINISHED_ASK if _finished() else LobbyWords.NEW_GAME_ASK
 		_ask_yes.text = LobbyWords.NEW_GAME if saved else LobbyWords.NEW_GAME_GO
 		_pairs.visible = PairsSlider.in_build()
 		_show_ask(true)
@@ -366,6 +373,33 @@ func is_going() -> bool:
 	return _going
 
 
+## Whether the chosen World's run has ended: a record, never loaded into the house.
+func _finished() -> bool:
+	return world != null and not world.is_new and world.record.finished
+
+
+## The Host's Start over a finished World asks before it replaces it.
+func _ask_replace() -> void:
+	($Ask/Center/Panel/Box/Question as Label).visible = true
+	($Ask/Center/Panel/Box/Question as Label).text = LobbyWords.FINISHED_ASK
+	_ask_yes.text = LobbyWords.NEW_GAME
+	_pairs.visible = false
+	_show_ask(true)
+
+
+## The question's yes: the Host's replaces the finished World and starts; Solo's makes the New Game.
+func _ask_confirmed() -> void:
+	if mode != Mode.HOST:
+		_new_game_over_save()
+		return
+	_show_ask(false)
+	var fresh := Worlds.pick_slot(world.slot, true, true) if _finished() else null
+	if fresh == null:
+		return
+	world = fresh
+	_ask_lobby(link.lobby.start_command(_me()))
+
+
 func _new_game_over_save() -> void:
 	_show_ask(false)
 	var fresh := Worlds.pick_slot(Worlds.SOLO, false, true)
@@ -394,8 +428,8 @@ func _me() -> int:
 
 ## Into the house: the Host and Solo with their World, a Guest as a Guest of the Host's address.
 func _into_house() -> void:
-	if _going:
-		return
+	if _going or (world != null and mode != Mode.JOIN and not world.is_new and world.record.finished):
+		return  # a finished World never loads into the house (Q2631)
 	_going = true
 	_refresh()
 	var path := world.record.level if world != null and mode != Mode.JOIN else link.lobby.level
@@ -487,7 +521,7 @@ func _refresh() -> void:
 	_drawer.set_can_invite(mode == Mode.HOST and link.session.transport.can_invite())
 	_status.text = status_text()
 	_status.visible = _status.text != ""
-	_continue.visible = solo and world != null and not world.is_new
+	_continue.visible = solo and world != null and not world.is_new and not world.record.finished
 	_new_game.visible = solo
 	for key: Button in [_back, _ready_key, _start, _continue, _new_game]:
 		if _going:

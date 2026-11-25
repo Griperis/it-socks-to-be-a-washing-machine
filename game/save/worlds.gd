@@ -25,6 +25,8 @@ enum NameForm {MEMBERS, NUMBERED}
 ## The form in use; placeholder until the designer judges the still.
 static var name_form := NameForm.MEMBERS
 const DAMAGED_WORLD := "Damaged World"
+## A finished World's row begins its details with this (core/97). placeholder: the old wording.
+const FINISHED := "Finished"
 
 var tuning: SaveTuning = preload("res://game/save/save_tuning.tres")
 ## What the title shows once when it comes back ("" for nothing): why a session ended, a save that
@@ -143,7 +145,8 @@ func rows() -> Array[Dictionary]:
 			continue
 		var rec := WorldRecord.from_dict(_world_of(got))
 		var row := {"slot": slot, "name": display_name(slot, rec), "details": row_details(rec), "damaged": false,
-				"last_played": rec.last_played, "colours": member_colours(rec), "members": Array(member_names(rec))}
+				"last_played": rec.last_played, "colours": member_colours(rec), "members": Array(member_names(rec)),
+				"finished": rec.finished}
 		(solo if slot == SOLO else coop).append(row)
 	coop.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a["last_played"]) > int(b["last_played"]))
 	return solo + coop
@@ -177,10 +180,13 @@ static func member_colours(rec: WorldRecord) -> Array:
 	return out
 
 
-## A row's details: "<floor> · played <h>h <mm>m · last <date time>".
+## A row's details: "<floor> · played <h>h <mm>m · last <date time>"; a World whose run ended (Q2631) says
+## "Finished" in the floor's place.
 static func row_details(rec: WorldRecord) -> String:
 	var mins := int(rec.play_time / 60.0)
 	var when := Time.get_datetime_string_from_unix_time(rec.last_played, true) if rec.last_played > 0 else "-"
+	if rec.finished:
+		return "%s · played %dh %02dm · last %s" % [FINISHED, mins / 60, mins % 60, when]
 	return "%s · played %dh %02dm · last %s" % [rec.floor_name if rec.floor_name != "" else "-", mins / 60, mins % 60, when]
 
 

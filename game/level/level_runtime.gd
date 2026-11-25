@@ -51,6 +51,9 @@ const HOUSE_GATE := &"house_gate"
 
 ## The game link this level plays through (set as it enters the tree).
 var link: GameLink = null
+## How the house goes back to the Lobby after the run ended (core/97): func(setup: Callable), `setup` gets the
+## Lobby's root before it enters the tree. A test swaps it.
+var go_into_lobby := func(setup: Callable) -> void: SceneChanger.change_to(LobbyScreen.SCENE, "", setup)
 
 
 ## The runtime of the level `node` is in (`node` is the level, the runtime or anything under the
