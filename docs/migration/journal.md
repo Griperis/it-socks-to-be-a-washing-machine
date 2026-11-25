@@ -1335,3 +1335,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/98, the knockdown wash: drag a knocked Teammate to the door, the spin, the burst out, ending at the respawn; the dragger let through the tumbling body; merged (main 2d30223) |
 | Cost | about 283k subagent tokens |
 | Surprises | without letting the dragger through, the ragdoll flew off at ~20 m/s |
+
+---
+
+| Ticket | core/91, the house's run: Stage by Stage in the house, the Cabinets' unlock Stages, the floor locks placed, the Stage 1 laying and high-spot cases, the New Game page with the debug Pairs per Drawer slider; merged (main beee71a) |
+| Cost | about 313k subagent tokens |
+| Surprises | the lock door swings the other way and the gate's hinge moved, to keep the old swing with the chain on the players' side |
