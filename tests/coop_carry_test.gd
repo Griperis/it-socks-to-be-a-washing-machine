@@ -123,6 +123,18 @@ func _aim(zoo: Node3D, feet: Vector3, target: Vector3) -> void:
 	await _paced_ticks(int(LAG_MS * 3 * FPS / 1000.0) + 4)
 	_place(zoo, Vector3(feet.x, player.global_position.y, feet.z), target)
 	await _paced_ticks(2)
+	await _host_has(player)
+
+
+## The Host judges reach by where it last heard this player stands (LevelNet.where()): a click sent before the pose
+## got there is refused as too far (core/101, core/103). Waits until the Host has the player at `player`'s feet (all three axes: reach is 3D).
+func _host_has(player: Player) -> void:
+	var host_net := _in_branch(_branches[0]).net
+	var me := player.player_id()
+	await _wait(func() -> bool:
+		var at: Variant = host_net.where(me)
+		return at is Vector3 and (at as Vector3).distance_to(player.global_position) < 0.1,
+			"the Host to have the player where it stands", FPS * 2)
 
 
 func _place(zoo: Node3D, feet: Vector3, target: Vector3) -> void:
