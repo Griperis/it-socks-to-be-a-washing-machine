@@ -38,3 +38,4 @@ the pick as too far. `coop_hands`, `coop_carry` and `coop_pings` move the Guest 
   at the late avatar, drag cases), which this ticket does not touch: see follow-up.
   Files: tests/coop_carry_test.gd, tests/coop_hands_test.gd, tests/coop_pings_test.gd.
   Verified: `--touched` PASS 689 checks, 35 cases; `grep_rules.py` PASS.
+- Merged: 16181be7 (2026-11-25, branch core/103-coop-guest-move-race)
