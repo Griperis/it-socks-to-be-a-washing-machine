@@ -31,6 +31,8 @@ const CHOSEN_TICK := "✓"
 # Solo's question.
 const NEW_GAME_HEADING := "New game"
 const NEW_GAME_ASK := "Start a new game? The saved game is lost."
+## The same question over a World whose run ended (core/97, Q2631): Start (Host) and New Game (Solo) ask it.
+const FINISHED_ASK := "Start a new game? The finished World is replaced."
 ## Solo's New Game page with the debug slider and no save to lose: its key.
 const NEW_GAME_GO := "Start"
 

@@ -210,6 +210,19 @@ screen, the Session and Roster kept). The finished World is then kept as a recor
 "Finished" with its play time; it cannot be continued; Start with it chosen (Solo: New Game) asks "Start a new game?
 The finished World is replaced." (placeholder wording) and makes a New Game in its slot.
 
+As built (core/97, `game/level/lobby_return.gd`):
+- **Verbs:** `LaundryDay.continue` (any player; granted once `ended`, not in the zoo; `FinalScreen.continue_pressed` asks it once
+  per machine) and `LobbyState.reopen` (Host only; refused unless `started`; sets `started = false`, clears Ready).
+- **`LobbyReturn.go(runtime)`** on every machine from the `continue` answer: the Host (or Solo) `save_now()`s and asks `reopen`;
+  everyone waits until `lobby.started` is false; the Host also waits (8 s at most) until no Guest is in its house; then
+  `LevelRuntime.go_into_lobby` (a seam, default `SceneChanger.change_to(lobby.tscn)`) loads the Lobby with the mode from the
+  Session (Host, Guest, Solo), the finished World read back from its file (`Worlds.pick_slot`) and the profile launch args.
+- **The Lobby:** a Guest that is already online does not join again; a finished World (`WorldRecord.finished`) is a record:
+  its row (`Worlds.rows()` has `finished`) and card say "Finished · played ...", Solo has no Continue key, `_into_house` never
+  loads it, Start (Host) and New Game (Solo) ask `LobbyWords.FINISHED_ASK` and a yes makes a New Game in the same slot.
+- **Known noise:** a Guest's house goes while the Host's is up, so the Host's despawns of the Guest's avatars reach a peer that
+  already forgot them: Godot logs `on_despawn_receive ... recv_nodes` twice (the co-op case declares them).
+
 ## The Cutscene frame (shared; core/88)
 
 The First wash, the Final wash and core/71's Fix scenes are one frame, built once as core/88 (core/72's draft 4 and

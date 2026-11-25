@@ -43,6 +43,8 @@ const DRAW := &"draw"
 const FINAL_WASH := &"final_wash"
 ## The Host's end of the run (the Final wash's cutscene over, or none).
 const FINAL_WASH_END := &"final_wash_end"
+## Any player's Continue on the Final screen (core/97): everyone goes back to the Lobby.
+const CONTINUE := &"continue"
 const ZOO_LAST_FIX := &"zoo_last_fix"
 const ZOO_FINAL := &"zoo_final"
 ## The Host's end of the First wash (its cutscene over, or none).
@@ -122,6 +124,8 @@ var _end_asked := false
 var _shown_final := false
 var _final_end_asked := false
 var _screen_opened := false
+## Whether this machine asked Continue (once).
+var _continue_asked := false
 
 
 func _enter_tree() -> void:
@@ -247,7 +251,7 @@ func bar_numbers() -> Vector2i:
 # --- Verbs ---------------------------------------------------------------------------------------
 
 func accepts() -> Dictionary[StringName, Dictionary]:
-	var out: Dictionary[StringName, Dictionary] = {LOAD: {"args": {}, "rate": 4}}
+	var out: Dictionary[StringName, Dictionary] = {LOAD: {"args": {}, "rate": 4}, CONTINUE: {"args": {}, "rate": 2}}
 	if zoo:
 		out[ZOO_FIRST_WASH] = {"args": {}, "rate": 5}
 		out[ZOO_LAST_FIX] = {"args": {"on": TYPE_BOOL}, "rate": 5}
@@ -269,6 +273,8 @@ func decide(cmd: Command) -> Dictionary:
 			if cmd.by != Parts.HOST or not final_started or ended:
 				return refuse("already")
 			return grant({"ended": true, "play_seconds": _play_seconds()})
+		CONTINUE:
+			return grant({}) if ended and not zoo else refuse("wrong")
 		ZOO_LAST_FIX:
 			var on: Variant = cmd.args.get("on")
 			if not zoo or not (on is bool) or on == zoo_fixed:
@@ -551,12 +557,24 @@ func _open_final_screen() -> void:
 	if runtime == null:
 		return
 	_screen_opened = true
+	if not runtime.final_screen.continue_pressed.is_connected(_on_continue):
+		runtime.final_screen.continue_pressed.connect(_on_continue)
 	runtime.cutscene_player.release()
 	runtime.autosave.mark_finished()
 	var summary := FinalSummary.of(runtime)
 	if play_seconds > 0:
 		summary.values[&"play_time"] = play_seconds
 	runtime.final_screen.open(summary)
+
+
+## Continue was pressed on this machine's Final screen: it asks the Host, once.
+func _on_continue() -> void:
+	if parts == null or _continue_asked:
+		return
+	_continue_asked = true
+	var runtime := LevelRuntime.of(self)
+	var me := runtime.session.me() if runtime != null and runtime.session != null else Parts.HOST
+	parts.ask(Command.new(CONTINUE, me, id))
 
 
 func _on_bound() -> void:
@@ -570,7 +588,14 @@ func _draw_if_new() -> void:
 
 ## Looks only: a bin tips into the machine and the Socks pour, on every machine.
 func _on_applied(ev: Dictionary) -> void:
-	if not ev.get("ok", false) or ev.get("to") != id or StringName(ev.get("kind", &"")) != LOAD or ev.get("first_wash", false):
+	if not ev.get("ok", false) or ev.get("to") != id:
+		return
+	if StringName(ev.get("kind", &"")) == CONTINUE:
+		var runtime := LevelRuntime.of(self)
+		if runtime != null:
+			LobbyReturn.go(runtime)
+		return
+	if StringName(ev.get("kind", &"")) != LOAD or ev.get("first_wash", false):
 		return
 	var bin := parts.of(StringName(ev.get("bin", &""))) as LaundryBin
 	if bin != null:

@@ -11,6 +11,8 @@
 ##   (`world`), as it says them.
 ## - Pairs per Drawer: a New Game's Drawer size (the debug slider, Q668, core/91): the Host's only (`pairs`),
 ##   1 to 25; each change clears Ready, as the old; it rides the launch into the run's `start`.
+## - Reopen: the Host's only, after a run ended (Continue on the Final screen, core/97): `started` is false and
+##   nobody is Ready, so the Lobby is as it was before Start.
 class_name LobbyState
 extends Part
 
@@ -20,6 +22,8 @@ const START := &"start"
 const WORLD := &"world"
 const WORLDS := &"worlds"
 const PAIRS := &"pairs"
+## The Host opens the Lobby again after a run ended (core/97): nobody is started or Ready.
+const REOPEN := &"reopen"
 ## The most `ready` one Guest may ask in a second (a flood is dropped by the Session).
 const READY_RATE := 5
 
@@ -81,6 +85,10 @@ func decide(cmd: Command) -> Dictionary:
 			if int(n) == pairs_per_drawer:
 				return refuse("already")
 			return grant({"pairs_per_drawer": int(n), "readied": PackedStringArray()})
+		REOPEN:
+			if cmd.by != Parts.HOST or not started:
+				return refuse("already")
+			return grant({"started": false, "readied": PackedStringArray()})
 		WORLDS:
 			var rows: Variant = cmd.args.get("rows")
 			if not (rows is Array) or not (rows as Array).all(func(r: Variant) -> bool: return r is Dictionary):
@@ -171,6 +179,11 @@ func world_command(by: int, p_level: String, p_title: String, p_line: String, sl
 ## The Host's Command to set a New Game's Pairs per Drawer.
 func pairs_command(by: int, pairs: int) -> Command:
 	return Command.new(PAIRS, by, id, {"pairs": pairs})
+
+
+## The Host's Command to open the Lobby again once the run is over (Continue on the Final screen, core/97).
+func reopen_command(by: int) -> Command:
+	return Command.new(REOPEN, by, id)
 
 
 ## The Host's Command to say its Worlds (the rows the drawers list).

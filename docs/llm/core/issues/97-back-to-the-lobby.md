@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: frame
@@ -38,5 +38,10 @@ The words are placeholders in the Lobby's own scenes; nothing new to author.
 - A finished World stays in the Lobby as a record; Start or New Game asks and replaces it (Q2631, 2026-11-24).
 
 ## Open follow-ups
+- [later] A Guest's house going while the Host's still stands logs two engine errors (`on_despawn_receive`, `recv_nodes`): the Host's despawn of the Guest's avatars reaches a peer that already forgot them. Harmless, declared in tests/back_to_lobby_test.gd; a quieter leave would be a netcode ticket.
+- [later] The zoo's Final wash pillar still opens no Final screen (the station has no Lobby to go back to).
 
 ## Built log
+- 2026-11-25 Changed: Continue on the Final screen. Any player's press asks the Host (`LaundryDay.continue`); the Host saves and reopens the Lobby (`LobbyState.reopen`), waits for its Guests to leave the house, and every machine loads `lobby.tscn` through `LobbyReturn` (seam `LevelRuntime.go_into_lobby`) with the link kept. The finished World stays chosen: row and card say "Finished · played ...", no Continue, never loads into the house; Start (Host) and New Game (Solo) ask "Start a new game? The finished World is replaced." and make a New Game in its slot. Five rows under "Settled by the old game".
+  Files: game/level/lobby_return.gd(+uid), game/level/level_runtime.gd, game/laundry/laundry_day.gd, game/lobby/{lobby.gd,lobby_state.gd,lobby_words.gd}, game/save/worlds.gd, tests/back_to_lobby_test.gd(+uid), docs/architecture/run-ends.md, docs/migration/batch-a-review.md.
+  Verified: see the commit's suite line.
