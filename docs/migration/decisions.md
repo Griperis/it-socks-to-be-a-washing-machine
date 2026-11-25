@@ -1,4 +1,4 @@
-Next free Q number: Q2671 (update this line whenever a round of questions is asked)
+Next free Q number: Q2679 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -605,3 +605,18 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2669 (E3): the 16 Upgrades whose features come in batch C show greyed "Coming soon" in the grid until then, the
   old rule Q1272 (designer, 2026-11-25).
 - Q2670 (E4): the Old Tree's voice comes in batch B; its motion waits for its rework (Q2506) (designer, 2026-11-25).
+- Q2671 (E5): Sole Mates, Sole Hands and Mate Radar (the co-op mate cues) are built in batch B with the Upgrade grid
+  (designer, 2026-11-25; core/120).
+- Q2672 (E6): Coins still flying to the counter are spendable only once landed, as the old (designer, 2026-11-25).
+- Q2673 (G1): a present whose Collection the player already owns whole gives a piece of another unlocked Collection
+  they lack; Coins (75, the old number) only once they own every piece (designer, 2026-11-25; core/121; replaces Q1609).
+- Q2674 (G2): each player picks up and opens their own present whenever they like, as the old (Q1592, Q715): that
+  is what "opened together" (Q2612) means (designer, 2026-11-25).
+- Q2675 (G3): the Lost Socks belong in the Drum (the Drum finale, batch D), not the Grotto: until the Drum is built
+  they are left out of the encyclopedia, the start set and presents (designer, 2026-11-25; replaces their Grotto home).
+- Q2676 (G4): the encyclopedia book stands in the house in batch B, as the old (workbench, one Hands slot, E reads);
+  batch C's guide card reuses its one-slot Hands item (designer, 2026-11-25).
+- Q2677 (G5): hints for presents: "[LMB] Pick up" aimed at your own present and "[LMB] Open" while carrying it
+  (designer, 2026-11-25).
+- Q2678 (G6): the first presents come after Stage 2, as the rules fall out (Stage 1 cannot complete a Collection)
+  (designer, 2026-11-25).
