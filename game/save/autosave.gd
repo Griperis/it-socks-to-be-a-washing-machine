@@ -70,6 +70,17 @@ func collect() -> Dictionary:
 	return {"world": rec.to_dict(), "parts": parts.save_snapshot(), "versions": parts.save_versions()}
 
 
+## The run ended (core/96): the World's record is finished, its play time stops, and it is saved so. Every machine
+## calls it; only the Host's World is kept.
+func mark_finished() -> void:
+	if world == null or world.record.finished:
+		return
+	world.record.finished = true
+	dirty = true
+	if saves():
+		save_later()
+
+
 ## Saves at once and waits for the file (every way out). Its answer; ok when nothing is to be saved.
 func save_now() -> Dictionary:
 	if not saves():
@@ -93,7 +104,8 @@ func save_later() -> void:
 func _process(delta: float) -> void:
 	if not saves():
 		return
-	world.record.play_time += delta
+	if not world.record.finished:
+		world.record.play_time += delta
 	if dirty:
 		_since += delta
 		if _since >= tuning.autosave_seconds:

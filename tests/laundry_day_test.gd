@@ -251,9 +251,9 @@ func case_station() -> void:
 	_check(day.ending_left < 0.0, "no wait yet")
 	await _press(&"interact")
 	await _until(func() -> bool: return day.loaded_bins == 3 and day.wait_left() >= 0.0, "the next press to load the last and start the wait", 60)
-	await _until(func() -> bool: return day.final_started, "the wait to end in the stub", 200)
+	await _until(func() -> bool: return day.final_started, "the wait to end in the Final wash", 200)
 	await _physics_ticks(2)
-	_check(label.text.contains("Final wash asked"), "the label shows the stub (%s)" % label.text)
+	_check(label.text.contains("run ended"), "the label shows the zoo's end at once (%s)" % label.text)
 
 
 # --- Helpers -------------------------------------------------------------------------------------

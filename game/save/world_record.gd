@@ -21,12 +21,14 @@ var level := ""
 var floor_name := ""
 ## The seed its Socks were laid with (Q2524).
 var seed := 0
+## The run ended with the Final wash (core/96, Q2631): the World is kept as a record, its play time stopped.
+var finished := false
 
 
 ## As plain data, for the file.
 func to_dict() -> Dictionary:
 	return {"kind": kind, "members": members.duplicate(true), "play_time": play_time, "last_played": last_played,
-			"level": level, "floor": floor_name, "seed": seed}
+			"level": level, "floor": floor_name, "seed": seed, "finished": finished}
 
 
 ## Read back from the file (unknown or missing fields take their defaults).
@@ -40,4 +42,5 @@ static func from_dict(d: Dictionary) -> WorldRecord:
 	r.level = String(d.get("level", ""))
 	r.floor_name = String(d.get("floor", ""))
 	r.seed = int(d.get("seed", 0))
+	r.finished = bool(d.get("finished", false))
 	return r

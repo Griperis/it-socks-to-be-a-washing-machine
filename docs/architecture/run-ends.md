@@ -164,6 +164,23 @@ cuts; fade out and hold black.
 Final screen over the frozen game; play time stops (`Autosave`'s clock reads `ended`). A load or join with the Final
 wash begun but not ended ends it at once.
 
+As built (core/96):
+- **`LaundryDay`:** `final_wash` (the wait's end, Host) is one answer: `final_started`, `ending_left = -1` and the
+  cutscene `final_wash.tres` on the frame (with `cutscene` off, the zoo or a test, `ended` in the same answer). The door
+  shuts (`door_close`) on every machine that sees it begin. The Host asks `final_wash_end` once the frame plays nothing
+  (its timeline, its skip, a load or a join after it began): `ended = true`, `play_seconds`. Every machine that sees
+  `ended` (arrive or bind) calls `CutscenePlayer.release()`, `Autosave.mark_finished()` and opens
+  `LevelRuntime.final_screen` with `FinalSummary.of()` (play time from `play_seconds`); the zoo's Laundry day opens none.
+- **`WorldRecord.finished`** (saved): `Autosave` counts no play time once it is set. Core/97 reads it for the Lobby.
+- **`final_wash.tres`:** `happy_wash("$happy_bubbles")` at 0, `happy_done` at "$happy_lead", `respawn` off,
+  `hold_black` on, `no_voice_seconds` 7; `numbers` is `washer_tuning.tres` (the `happy_*` placeholders).
+- **`WasherLooks`:** `happy_wash` (drum to `wash_spin`, bubbles, the wide shot's bob, `shot_push()`, the room's lamps
+  within 4 m under `room_flickering()` until the cutscene ends), `happy_done` (drum to `after_spin`, bubbles off a
+  second later), `set_voiced(false)` for the old unvoiced look (hop, sway, warm glow, rumble). `CutscenePlayer` lerps
+  the wide shot to `Shots/Push` by `shot_push()` and tells the Looks whether a line plays.
+- **`Washer.ending()`:** the Final wash has begun: `senses_on()` is false and `could_speak()` refuses.
+- **Tests:** `tests/final_wash_test.gd`, `tests/coop_final_wash_test.gd`.
+
 ## The Final screen
 
 **`RunRecord`** (a Part, on every machine through the answers): a Cabinet's shelve answer appends `[player id, design,

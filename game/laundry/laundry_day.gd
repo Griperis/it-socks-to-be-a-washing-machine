@@ -17,7 +17,14 @@
 ## ending's wait (`ending_left`, the tip's length). Every machine's answer: the bin tips, the pile behind the
 ## porthole grows, `socks_pour` plays at the porthole; no Socks are seen going in (Q2627).
 ## **The wait**: the Host counts `ending_left` down (the live value is what a save and a snapshot carry) and at 0
-## asks `final_wash` (Host only). The Final wash itself is core/96: here it is the stub `final_started`.
+## asks `final_wash` (Host only).
+## **The Final wash** (core/96, run-ends.md "The Final wash and the end of the run"): that answer begins it
+## (`final_started`; `ending_left` back to -1), shuts the door on every machine and starts `final_wash.tres` on the
+## Cutscene frame (the happy wash, the push-in, cutscene_6 whole, hold black, no respawn). The Host ends the run
+## (`ended`, `play_seconds`: the clock stops, the World's record is `finished`) once the frame plays nothing: its
+## timeline, its skip, or a load or join after it began. Every machine then lets the cutscene's black go and opens the
+## Final screen over the frozen game (`FinalSummary.of`). With the cutscene off (the zoo, a test) it ends at once and
+## the zoo opens no screen.
 ##
 ## It is the Stage bar's `laundry_bins` provider (`bar_numbers`, `bar_changed`; core/82) and its goal
 ## (`stage_bar_goal`). Looks only (the tip, the pile, the sound) never writes state.
@@ -34,6 +41,8 @@ const BAR_SOURCE := &"laundry_bins"
 const LOAD := &"load"
 const DRAW := &"draw"
 const FINAL_WASH := &"final_wash"
+## The Host's end of the run (the Final wash's cutscene over, or none).
+const FINAL_WASH_END := &"final_wash_end"
 const ZOO_LAST_FIX := &"zoo_last_fix"
 const ZOO_FINAL := &"zoo_final"
 ## The Host's end of the First wash (its cutscene over, or none).
@@ -57,6 +66,8 @@ const POUR_SOUND := &"socks_pour"
 const PORTHOLE := ^"Porthole"
 ## The First wash's cutscene (beats as data; its numbers are FirstWashTuning's).
 const FIRST_WASH_SCRIPT := "res://game/laundry/first_wash.tres"
+## The Final wash's cutscene (the washer's numbers are WasherTuning's `happy_*`).
+const FINAL_WASH_SCRIPT := "res://game/laundry/final_wash.tres"
 ## Links the wiring check lets stay empty: the zoo's station has no run, a level may have no spots node.
 const WIRING_OPTIONAL := ["stages"]
 
@@ -81,8 +92,12 @@ const WIRING_OPTIONAL := ["stages"]
 @export var loaded_bins := 0
 ## Seconds of the ending's wait left when written, -1 for none; the Host's live value is what is saved.
 @export var ending_left := -1.0
-## The wait ran out and the Final wash was asked (the stub core/96 replaces with its cutscene and `ended`).
+## The wait ran out and the Final wash began (core/96): its cutscene plays, then the run ends.
 @export var final_started := false
+## The run is over (the Final wash's cutscene ended): the Final screen is up on every machine, the play time stopped.
+@export var ended := false
+## The play time the run ended on, in seconds (the Final screen's total on a Guest too).
+@export var play_seconds := 0
 ## The zoo's stand-in for the last Fix (only read when there is no `stages`).
 @export var zoo_fixed := false
 ## The zoo's held Socks (no run there): their Designs and Mess.POSE floats each, let in by the First wash.
@@ -102,6 +117,11 @@ var _asked := false
 ## The First wash as this machine last showed it, and whether the Host asked its end.
 var _shown_wash := -1
 var _end_asked := false
+## The Final wash as this machine last showed it (the door shuts once), whether the Host asked the run's end, and
+## whether this machine opened the Final screen.
+var _shown_final := false
+var _final_end_asked := false
+var _screen_opened := false
 
 
 func _enter_tree() -> void:
@@ -122,9 +142,10 @@ func goal_pending() -> bool:
 
 
 ## Version 2 (core/94) adds the zoo's held Socks; a version 1 save (core/93) lacks them and keeps the scene's
-## empty lists, so nothing needs upgrading.
+## empty lists, so nothing needs upgrading. Version 3 (core/96) adds `ended` and `play_seconds`: an older save
+## has the run still going, which is what their defaults say.
 func save_version() -> int:
-	return 2
+	return 3
 
 
 ## The Laundry day of the level `node` is in, or null.
@@ -243,7 +264,11 @@ func decide(cmd: Command) -> Dictionary:
 		FINAL_WASH:
 			if cmd.by != Parts.HOST or ending_left < 0.0 or final_started:
 				return refuse("wrong")
-			return grant({"ending_left": -1.0, "final_started": true})
+			return _final_wash_answer()
+		FINAL_WASH_END:
+			if cmd.by != Parts.HOST or not final_started or ended:
+				return refuse("already")
+			return grant({"ended": true, "play_seconds": _play_seconds()})
 		ZOO_LAST_FIX:
 			var on: Variant = cmd.args.get("on")
 			if not zoo or not (on is bool) or on == zoo_fixed:
@@ -258,6 +283,31 @@ func decide(cmd: Command) -> Dictionary:
 		ZOO_FIRST_WASH:
 			return _zoo_first_wash_answer() if zoo else refuse("wrong")
 	return refuse("wrong")
+
+
+## The Final wash begins: the wait is over, the cutscene starts on the frame; with the cutscene off the run ends in
+## the same answer.
+func _final_wash_answer() -> Dictionary:
+	var patch := {"ending_left": -1.0, "final_started": true}
+	var changes := {id: patch}
+	var wash := washer()
+	var frame := Cutscenes.of(self)
+	if cutscene and frame != null and wash != null:
+		var started := frame.start(FINAL_WASH_SCRIPT)
+		if not started.get("ok", false):
+			return refuse(BUSY)
+		changes.merge(started["changes"], true)
+	else:
+		patch["ended"] = true
+		patch["play_seconds"] = _play_seconds()
+	return {"ok": true, "changes": changes}
+
+
+## The World's play time so far, in whole seconds (the Host's clock; 0 with no World).
+func _play_seconds() -> int:
+	var runtime := LevelRuntime.of(self) if is_inside_tree() else null
+	var autosave := runtime.autosave if runtime != null else null
+	return int(autosave.world.record.play_time) if autosave != null and autosave.world != null else 0
 
 
 ## The `load` answer; see the top for the order of the refusals.
@@ -419,6 +469,7 @@ func _physics_process(delta: float) -> void:
 	if parts == null or not parts.is_host():
 		return
 	_end_first_wash()
+	_end_final_wash()
 	if _wait_left < 0.0:
 		return
 	_wait_left -= delta
@@ -441,6 +492,18 @@ func _end_first_wash() -> void:
 	parts.ask(Command.new(FIRST_WASH_END, Parts.HOST, id))
 
 
+## The Host ends the run once the Final wash's cutscene plays no more (its timeline, its skip, or a load or join after
+## it began: the frame is not saved), once.
+func _end_final_wash() -> void:
+	if not final_started or ended or _final_end_asked:
+		return
+	var frame := Cutscenes.of(self)
+	if frame != null and frame.is_playing():
+		return
+	_final_end_asked = true
+	parts.ask(Command.new(FINAL_WASH_END, Parts.HOST, id))
+
+
 ## A save and a late Guest get the wait as it stands on the Host's clock.
 func whole_state() -> Dictionary:
 	var out := state()
@@ -461,14 +524,39 @@ func _show(now: bool) -> void:
 	if first_wash == FirstWash.DONE and _shown_wash >= 0 and _shown_wash != FirstWash.DONE and not now:
 		first_wash_done.emit()
 	_shown_wash = first_wash
+	if not final_started:
+		_final_end_asked = false
 	var wash := washer() if is_inside_tree() else null
+	if final_started and not _shown_final and not now and wash != null and wash.looks != null:
+		wash.looks.door_close(0.3)  # the door shuts on the Final wash (W2)
+	_shown_final = final_started
 	if wash != null and wash.looks != null:
 		wash.looks.pile = pile_of(loaded_bins, total())
 	bar_changed.emit()
+	if ended and not _screen_opened and not zoo:
+		_open_final_screen.call_deferred()
 	if parts != null and not parts.applied.is_connected(_on_applied):
 		parts.applied.connect(_on_applied)
 		if not zoo:
 			parts.bound.connect(_on_bound, CONNECT_ONE_SHOT)
+
+
+## Every machine, once the run has ended: the cutscene's black lets go (the view and the HUD come back), the World's
+## record is finished (play time stops, saved) and the Final screen opens over the frozen game. A load or a join after
+## the end goes straight to it. The zoo's Laundry day opens none.
+func _open_final_screen() -> void:
+	if _screen_opened or zoo or not ended or not is_inside_tree():
+		return
+	var runtime := LevelRuntime.of(self)
+	if runtime == null:
+		return
+	_screen_opened = true
+	runtime.cutscene_player.release()
+	runtime.autosave.mark_finished()
+	var summary := FinalSummary.of(runtime)
+	if play_seconds > 0:
+		summary.values[&"play_time"] = play_seconds
+	runtime.final_screen.open(summary)
 
 
 func _on_bound() -> void:
