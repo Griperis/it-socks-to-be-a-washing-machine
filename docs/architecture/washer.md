@@ -68,7 +68,16 @@ the cutscene frame (`run-ends.md` "The Cutscene frame", core/88) or the lines th
     the drum and laundry meshes are on), the `drum_glow` material on the lining and power light;
   - `Damage`: `SparksBack`, `SparksCable` (GPUParticles3D, blue-white), `Smoke`, `Flash` (OmniLight3D), `Buzz` (a
     looping world sound of the catalogue's `washer_buzz`), `Rumble` (the voice rumble loop, `washer_rumble`); `Bubbles`;
-  - a `RidingBody` (AnimatableBody3D on `bob`) so a Sock lying on the top rides the talking bob and lean (rogue/03, Q867).
+  - a `RidingBody` (AnimatableBody3D on `bob`) so a Sock lying on the top rides the talking bob and lean (rogue/03, Q867);
+  - the wash beats as clips of the Looks scene itself, not of the model (core/108; the contract's `clips`, so the glb's
+    import script never looks for them): `Beats` (AnimationPlayer) with `calm_wash`, `wash_break`, `happy_wash`,
+    `happy_wash_unvoiced`, `happy_done`, `happy_done_unvoiced`, keying the root's `spin`, `shot_height` (the wide shot's
+    bob, read by `shot_bob()`), `push_share` (read by `shot_push()`), `position:y` and `rotation:z` (the unvoiced hop and
+    sway), `lit`, `glow_colour`, `glow_energy`, `Bubbles:emitting` and `WashCalm:playing`; `Door` (AnimationPlayer) with
+    `door` (the root's `door` 0 to 1 over a second, played at 1/seconds by `door_open`/`door_close`); `WashCalm` (the
+    `wash_calm` loop, 0.4 m over the foot, where the break's clanks play too). The beat methods set flags and play a
+    clip; what follows a live number stays code: the glow's ease toward the mood, the repair's dim and flicker, the
+    broken look's strength (sparks, smoke, buzz, rumble by `damage` and the acting), the door's seek of `mouth`.
 - **`looks_graybox.tscn`**: the old stand-in's colour (0.6, 0.85, 0.75) box, a door disc and two brow bars on BoneAttachments
   of a hand-made `face_rig` with the contract's bones, a drum disc, the contract's nodes; its AnimationPlayer's eight
   animations are simple hand keys. The acting Animations drive it as they will the real one (the same bone tracks).

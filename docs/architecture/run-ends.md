@@ -138,7 +138,7 @@ As built (core/94):
 - **`first_wash.tres`** (`game/laundry/`): `calm_wash("$bubbles")` at 0, `wash_break` at "$wash_seconds", `spray` after the
   line; `numbers` is `first_wash_tuning.tres` (`FirstWashTuning`), `lead_from` its `wash_seconds` (`CutsceneScript.value()`
   and `lead_seconds()` read them).
-- **`WasherLooks`:** `calm_wash(count)` (the drum to `wash_spin` over `wash_ramp`, the bubbles, the `wash_calm` loop at the
+- **`WasherLooks`:** `calm_wash(count)` (its `Beats` clip `calm_wash`, core/108: the drum to 0.8 turns a second over 1 s, the bubbles, the `wash_calm` loop at the
   machine, the damage held calm, `shot_bob()` for the frame's wide shot), `wash_break()` (`machine_break`, all of it stops,
   the damage released, `room_flickering()`), `door_open(s)`, `door_close(s)`; `set_cutscene(null)` ends them. The graybox's
   `Bubbles` has the old bubble look.
@@ -177,9 +177,10 @@ As built (core/96):
   `LevelRuntime.final_screen` with `FinalSummary.of()` (play time from `play_seconds`); the zoo's Laundry day opens none.
 - **`WorldRecord.finished`** (saved): `Autosave` counts no play time once it is set. Core/97 reads it for the Lobby.
 - **`final_wash.tres`:** `happy_wash("$happy_bubbles")` at 0, `happy_done` at "$happy_lead", `respawn` off,
-  `hold_black` on, `no_voice_seconds` 7; `numbers` is `washer_tuning.tres` (the `happy_*` placeholders).
-- **`WasherLooks`:** `happy_wash` (drum to `wash_spin`, bubbles, the wide shot's bob, `shot_push()`, the room's lamps
-  within 4 m under `room_flickering()` until the cutscene ends), `happy_done` (drum to `after_spin`, bubbles off a
+  `hold_black` on, `no_voice_seconds` 7; `numbers` is `washer_tuning.tres` (`happy_bubbles`, `happy_lead`).
+- **`WasherLooks`:** the Looks' `Beats` clips since core/108 (`happy_wash`, `happy_wash_unvoiced`, `happy_done`,
+  `happy_done_unvoiced`; washer.md "looks_contract.json"): `happy_wash` (drum to 0.8, bubbles, the wide shot's bob, `shot_push()`, the room's lamps
+  within 4 m under `room_flickering()` until the cutscene ends), `happy_done` (drum to 0.12, bubbles off a
   second later), `set_voiced(false)` for the old unvoiced look (hop, sway, warm glow, rumble). `CutscenePlayer` lerps
   the wide shot to `Shots/Push` by `shot_push()` and tells the Looks whether a line plays.
 - **`Washer.ending()`:** the Final wash has begun: `senses_on()` is false and `could_speak()` refuses.

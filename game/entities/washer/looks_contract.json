@@ -1,11 +1,12 @@
 {
-	"nodes": ["face_rig", "AnimationPlayer", "Loops", "Spin", "Outline", "Bubbles", "Damage"],
+	"nodes": ["face_rig", "AnimationPlayer", "Loops", "Spin", "Outline", "Bubbles", "Damage", "Beats", "Door", "WashCalm"],
 	"paths": ["Damage/SparksBack", "Damage/SparksCable", "Damage/Smoke", "Damage/Flash", "Damage/Buzz", "Damage/Rumble"],
 	"named": ["DrumLight", "RidingBody", "Lining", "Pile"],
 	"bones": ["lean", "bob", "door_hinge", "brow_left_pivot", "brow_right_pivot", "drum_spin", "laundry_tumble"],
 	"parents": {"bob": "lean", "door_hinge": "bob", "brow_left_pivot": "bob", "brow_right_pivot": "bob", "drum_spin": "bob", "laundry_tumble": "bob"},
-	"animations": ["angry", "calming", "entitled", "surprised", "mouth", "talk", "rumble", "spin"],
+	"animations": ["angry", "calming", "entitled", "surprised", "mouth", "talk", "rumble", "spin", "calm_wash", "wash_break", "happy_wash", "happy_wash_unvoiced", "happy_done", "happy_done_unvoiced", "door"],
 	"players": {"AnimationPlayer": ["angry", "calming", "entitled", "surprised", "mouth"], "Loops": ["talk", "rumble"], "Spin": ["spin"]},
-	"properties": ["wiggle", "angry", "glow_colour", "glow_energy", "door", "spin", "pile", "repair", "damage", "lit"],
-	"methods": ["act", "rest", "bubbles", "calm_wash", "wash_break", "door_open", "door_close", "shot_bob", "room_flickering"]
+	"clips": {"Beats": ["calm_wash", "wash_break", "happy_wash", "happy_wash_unvoiced", "happy_done", "happy_done_unvoiced"], "Door": ["door"]},
+	"properties": ["wiggle", "angry", "glow_colour", "glow_energy", "door", "spin", "pile", "repair", "damage", "lit", "shot_height", "push_share"],
+	"methods": ["act", "rest", "bubbles", "calm_wash", "wash_break", "door_open", "door_close", "shot_bob", "shot_push", "happy_wash", "happy_done", "set_voiced", "room_flickering"]
 }
