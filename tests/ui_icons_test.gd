@@ -35,7 +35,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "u01_old_icons", "method": "case_u01", "world": false,
 				"title": "U01: every one of the old game's 111 icons is imported under its old name, a 64 by 64 picture (the cursor 36), and the aliases give their target's"},
 		{"name": "u02_keycaps", "method": "case_u02", "world": false,
-				"title": "U02: the lookup names the keycap of each prompt action (LMB, RMB, wheel, E, R, G, Space, Ctrl) and its pad glyph, and none for an unknown action"},
+				"title": "U02: the lookup names the keycap of each prompt action (LMB, RMB, wheel, E, R, Q, Space, Ctrl) and its pad glyph, and none for an unknown action"},
 		{"name": "u03_station", "method": "case_u03", "world": false,
 				"title": "U03 (Q2337): the Icons station makes one cell per icon of the folder with its name under it, in the families' order"},
 		{"name": "u02_real_path", "method": "case_real_path", "world": false,
@@ -69,7 +69,7 @@ func case_u01() -> void:
 func case_u02() -> void:
 	var keys: Dictionary[StringName, String] = {
 		&"pick": "key_lmb", &"drop_throw": "key_rmb", &"hands_next": "key_wheel", &"interact": "key_e",
-		&"turn": "key_r", &"zoom": "key_g", &"jump": "key_space", &"crouch": "key_ctrl",
+		&"turn": "key_r", &"zoom": "key_q", &"jump": "key_space", &"crouch": "key_ctrl",
 	}
 	for a in keys:
 		var got := UiIcons.keys_for_action(a)

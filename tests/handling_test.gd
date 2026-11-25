@@ -52,7 +52,9 @@ func cases() -> Array[Dictionary]:
 		{"name": "h06_several", "method": "case_h06", "world": false,
 				"title": "H06: the newest is active, big right of centre, the others small to the left; the wheel steps and wraps; one item stays"},
 		{"name": "h21_zoom", "method": "case_h21", "world": false,
-				"title": "H21: G eases the view to 50 degrees in 0.15 s, the look slows, the active item comes close and large, tucked ones keep their screen size"},
+				"title": "H21: Q eases the view to 50 degrees in 0.15 s, the look slows, the active item comes close and large, tucked ones keep their screen size"},
+		{"name": "h21_keys", "method": "case_h21_keys", "world": false,
+				"title": "H21: holding a Sock, the Q key zooms the view and the G key does nothing (Q2663)"},
 		{"name": "h22_turn", "method": "case_h22", "world": false,
 				"title": "H22: R turns the active Sock about its long axis, one turn in 2 s, and it keeps the angle; walking and the wheel still work"},
 		{"name": "h23_size", "method": "case_h23", "world": false,
@@ -320,6 +322,30 @@ func case_h21() -> void:
 			"so it keeps its place and size on screen")
 	Input.action_release(&"zoom")
 	await _until(func() -> bool: return is_equal_approx(camera.fov, 75.0), "letting go to put the view back")
+
+
+func case_h21_keys() -> void:
+	await _build()
+	await _pick(ON_FLOOR)
+	var camera := _player.camera()
+	_key(KEY_G, true)
+	await _frames(int(0.15 * 60.0) + 4)
+	_near(camera.fov, 75.0, 0.01, "G held: the view stays at 75 degrees")
+	_key(KEY_G, false)
+	_key(KEY_Q, true)
+	await _frames(int(0.15 * 60.0) + 4)
+	_near(camera.fov, 50.0, 0.01, "Q held: the view eases to 50 degrees")
+	_key(KEY_Q, false)
+	await _until(func() -> bool: return is_equal_approx(camera.fov, 75.0), "letting go to put the view back")
+
+
+## A physical key event through the viewport, as a keyboard sends it.
+func _key(code: Key, pressed: bool) -> void:
+	var key := InputEventKey.new()
+	key.keycode = code
+	key.physical_keycode = code
+	key.pressed = pressed
+	Input.parse_input_event(key)
 
 
 func case_h22() -> void:

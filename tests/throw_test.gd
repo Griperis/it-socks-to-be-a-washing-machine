@@ -39,7 +39,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "t03_speed", "method": "case_t03", "world": false,
 				"title": "T03: more charge flies faster, 3 m/s at the tap to 5 m/s at full, and farther"},
 		{"name": "t04_q", "method": "case_t04", "world": false,
-				"title": "T04: pressing Q does nothing"},
+				"title": "T04: pressing Y (bound to nothing) does nothing"},
 		{"name": "t07_cabinet", "method": "case_t07", "world": false,
 				"title": "T07: a loose Sock thrown at a Cabinet bounces off and lies loose again, never shelved"},
 		{"name": "t08_wall", "method": "case_t08", "world": false,
@@ -200,12 +200,12 @@ func case_t04() -> void:
 	var before := [_mess.state(), _hands.state()]
 	for pressed: bool in [true, false]:
 		var key := InputEventKey.new()
-		key.keycode = KEY_Q
-		key.physical_keycode = KEY_Q
+		key.keycode = KEY_Y
+		key.physical_keycode = KEY_Y
 		key.pressed = pressed
 		Input.parse_input_event(key)
 		await _physics_ticks(10)
-	_same([_mess.state(), _hands.state()], before, "Q changes no Sock and no Hands")
+	_same([_mess.state(), _hands.state()], before, "Y changes no Sock and no Hands")
 	_check(not _player.charging and _player.message() == "", "and starts nothing, says nothing")
 
 

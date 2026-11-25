@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: change
 area: core
 feature: controls
@@ -28,3 +28,5 @@ The designer (Q2663): Zoom moves from G to Q. R stays Turn, and G is left unboun
 ## Open follow-ups
 
 ## Built log
+
+- 2026-11-25. Changed: `zoom` in project.godot is Q (physical 81, was G 71); it had no pad binding, so none added. Hints, controls page and Options read the InputMap, so no code changed; hand-written G text fixed in the handling zoo station, aim_screen_test and ui_icons_test. Checked: Q (81) was on no other action in project.godot and in no key code in game/ or tools/ (profily F3 only). throw_test T04 used Q as an unbound key; now Y. New real-path case h21_keys in handling_test: a Q key event zooms a held Sock, a G event does not. Files: project.godot, tests/handling_test.gd, tests/throw_test.gd, tests/aim_screen_test.gd, tests/ui_icons_test.gd, game/zoo/stations/handling.tscn. Verified: see the commit suite line.
