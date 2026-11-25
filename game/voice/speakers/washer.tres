@@ -1,9 +1,11 @@
 [gd_resource type="Resource" script_class="VoiceSpeaker" format=3 uid="uid://v7tirw0tssx0"]
 
 [ext_resource type="Resource" uid="uid://7vt30kd1ok8f" path="res://game/voice/speakers/washer_acting.tres" id="1_l5brt"]
+[ext_resource type="Texture2D" uid="uid://bhcdywjxveqjd" path="res://assets/ui/washer.svg" id="3_icon"]
 [ext_resource type="Script" uid="uid://8es185yuoi1s" path="res://game/voice/voice_speaker.gd" id="2_0dr47"]
 
 [resource]
 script = ExtResource("2_0dr47")
 id = &"washer"
+icon = ExtResource("3_icon")
 acting = ExtResource("1_l5brt")

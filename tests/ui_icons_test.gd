@@ -55,7 +55,11 @@ func case_u01() -> void:
 			wrong.append(n)
 	_check(missing.is_empty(), "every old icon loads (missing: %s)" % [missing])
 	_check(wrong.is_empty(), "every icon is 64 by 64 (the cursor 36) as the old import made it (wrong: %s)" % [wrong])
-	_check(UiIcons.all_keys() == OLD_NAMES, "the folder holds exactly the old names, sorted")
+	# The folder holds the old names and the game's own additions (the washer's subtitle icon, assets/15).
+	var expected: Array[String] = OLD_NAMES.duplicate()
+	expected.append("washer")
+	expected.sort()
+	_check(UiIcons.all_keys() == expected, "the folder holds exactly the old names and the washer's, sorted")
 	_check(UiIcons.texture("upgrade_carry") == UiIcons.texture("carry"), "an alias gives its target's picture")
 	_check(UiIcons.texture("key_skip") == UiIcons.texture("key_space"), "key_skip shares the Space keycap")
 	_check(UiIcons.texture("no_such_icon") == null, "an unknown key has no picture")

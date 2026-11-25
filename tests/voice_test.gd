@@ -151,7 +151,7 @@ func case_real_path() -> void:
 	var first := tr(line.takes[0].segments[0].key)
 	await _until(func() -> bool: return Voices.subtitle_text(&"washer") == first, "the Subtitles row to show the first segment (%s)" % first)
 	var row := Voices.subtitles().row_of(&"washer")
-	_check(row != null and not row.has_icon(), "with the washer's plain disc until its icon lands")
+	_check(row != null and row.has_icon(), "with the washer's drawn icon (assets/15)")
 	_check(first == "I don't wanna talk to you!", "the text is the line's, through tr (%s)" % first)
 	await _until(func() -> bool: return looks.player.is_playing() and looks.player.current_animation == "voice/acting", "the stand-in's AnimationPlayer to play the acting")
 	_check(looks.player.get_animation("voice/acting") == line.takes[Voices.channel(&"washer").take].acting, "it is the take's own acting")
