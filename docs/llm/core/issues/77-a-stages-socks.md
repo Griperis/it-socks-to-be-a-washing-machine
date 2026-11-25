@@ -6,7 +6,7 @@ area: core
 feature: frame
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/76]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [Stage, Sock, Mess, Design]
@@ -60,3 +60,4 @@ are code (the old rule); `high_share` and `high_spot` stay on `StagePlan`.
   sock_laying_job.gd, mess.gd), game/level/loading_screen.gd, game/house/house.tscn, tests/stage_socks_test.gd,
   tests/stages_test.gd, docs/architecture/stages.md, docs/migration/batch-a-review.md
 - Verified: `--only=stages,stage_socks` PASS 105 checks, 14 cases; `--touched` verdict below
+- Merged: 3b935422 (2026-11-25, branch core/77-a-stages-socks)
