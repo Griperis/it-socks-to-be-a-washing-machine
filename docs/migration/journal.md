@@ -1371,3 +1371,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/94, the First wash: a New Game holds Stage 1's Socks, "Wash the laundry", the calm wash, the break, cutscene_1, the spray, the bin still full, "Fix the washing machine first"; the room-lamp flicker follows the drum light; merged (main 2caa3d4) |
 | Cost | about 311k subagent tokens |
 | Surprises | the old lamps never dimmed at the break; Worlds saved before this skip the First wash; another missing blob at commit |
+
+---
+
+| Ticket | core/96, the Final wash: the happy wash, the push-in, cutscene_6 whole, the Final screen on every machine (FinalSummary), the World recorded as finished; a co-op case; merged (main dd925bb) |
+| Cost | about 215k subagent tokens |
+| Surprises | the old happy wash's lamps sat under the flicker at level 1.0, so nothing visible (a question for the designer) |
