@@ -1,0 +1,224 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://game/entities/door/materials/door.tres" id="1_wood"]
+[ext_resource type="Material" path="res://game/entities/door/materials/brass.tres" id="2_brass"]
+
+[sub_resource type="BoxMesh" id="Mesh_post"]
+material = ExtResource("1_wood")
+size = Vector3(0.135, 2.1, 0.1)
+
+[sub_resource type="BoxShape3D" id="Shape_post"]
+size = Vector3(0.135, 2.1, 0.1)
+
+[sub_resource type="BoxMesh" id="Mesh_leaf"]
+material = ExtResource("1_wood")
+size = Vector3(0.826, 2.083, 0.045)
+
+[sub_resource type="BoxShape3D" id="Shape_leaf"]
+size = Vector3(0.826, 2.083, 0.045)
+
+[sub_resource type="BoxMesh" id="Mesh_chain"]
+material = ExtResource("2_brass")
+size = Vector3(0.9, 0.02, 0.02)
+
+[sub_resource type="BoxMesh" id="Mesh_padlock"]
+material = ExtResource("2_brass")
+size = Vector3(0.1, 0.12, 0.04)
+
+[sub_resource type="BoxMesh" id="Mesh_panel"]
+material = ExtResource("1_wood")
+size = Vector3(1.13, 0.6, 0.1)
+
+[sub_resource type="BoxShape3D" id="Shape_panel"]
+size = Vector3(1.13, 0.6, 0.1)
+
+[sub_resource type="Animation" id="Animation_open"]
+resource_name = "open"
+length = 2.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("leaf:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8, 2.2),
+"transitions": PackedFloat32Array(1, -2, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_unlock"]
+resource_name = "unlock"
+length = 1.14
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("padlock:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.18, 0.54),
+"transitions": PackedFloat32Array(0.5, 2, 1),
+"update": 0,
+"values": [Vector3(0, 0.9, 0.08), Vector3(0, 1.02, 0.3), Vector3(0, 0.04, 0.45)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("padlock:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.54),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(3.76991, 1.88496, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("chain:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.09, 0.45),
+"transitions": PackedFloat32Array(1, 2, 1),
+"update": 0,
+"values": [Vector3(0, 0.95, 0.07), Vector3(0, 0.95, 0.07), Vector3(0, 0.03, 0.12)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("chain:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.09, 0.45),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0.4)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("padlock:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.84, 1.14),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1, 1, 1), Vector3(0.01, 0.01, 0.01)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("chain:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.84, 1.14),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1, 1, 1), Vector3(0.01, 0.01, 0.01)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("padlock:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1.14),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("chain:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 1.14),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="Library_open"]
+_data = {
+&"open": SubResource("Animation_open")
+}
+
+[sub_resource type="AnimationLibrary" id="Library_unlock"]
+_data = {
+&"unlock": SubResource("Animation_unlock")
+}
+
+[node name="LooksLockDoor" type="Node3D"]
+
+[node name="frame" type="Node3D" parent="."]
+
+[node name="PostLeft" type="MeshInstance3D" parent="frame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4975, 1.05, 0)
+mesh = SubResource("Mesh_post")
+
+[node name="PostRight" type="MeshInstance3D" parent="frame"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4975, 1.05, 0)
+mesh = SubResource("Mesh_post")
+
+[node name="Posts" type="StaticBody3D" parent="frame"]
+collision_mask = 0
+
+[node name="ShapeLeft" type="CollisionShape3D" parent="frame/Posts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4975, 1.05, 0)
+shape = SubResource("Shape_post")
+
+[node name="ShapeRight" type="CollisionShape3D" parent="frame/Posts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4975, 1.05, 0)
+shape = SubResource("Shape_post")
+
+[node name="panel" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("Mesh_panel")
+
+[node name="PanelBody" type="StaticBody3D" parent="panel"]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="panel/PanelBody"]
+shape = SubResource("Shape_panel")
+
+[node name="leaf" type="AnimatableBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.413, 0, 0)
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="leaf"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.413, 1.0495, 0)
+mesh = SubResource("Mesh_leaf")
+
+[node name="Shape" type="CollisionShape3D" parent="leaf"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.413, 1.0495, 0)
+shape = SubResource("Shape_leaf")
+
+[node name="chain" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0.07)
+
+[node name="Mesh" type="MeshInstance3D" parent="chain"]
+mesh = SubResource("Mesh_chain")
+
+[node name="padlock" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0.08)
+
+[node name="Mesh" type="MeshInstance3D" parent="padlock"]
+mesh = SubResource("Mesh_padlock")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+callback_mode_process = 0
+libraries/ = SubResource("Library_open")
+
+[node name="UnlockPlayer" type="AnimationPlayer" parent="."]
+callback_mode_process = 0
+libraries/ = SubResource("Library_unlock")

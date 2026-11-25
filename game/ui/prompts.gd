@@ -42,7 +42,10 @@ static func target(part: Part, pad := false) -> Array[Prompt]:
 	if part is Openable:
 		out.append(openable_prompt(part as Openable, pad))
 	elif part != null and part.prompt_title() != "":
-		out.append(Prompt.of(part.prompt_title(), keys(Player.PICK if part.click_only() else Player.INTERACT, pad)))
+		var use: Array[String] = []
+		if part.prompt_has_key():
+			use = keys(Player.PICK if part.click_only() else Player.INTERACT, pad)
+		out.append(Prompt.of(part.prompt_title(), use))
 	return out
 
 

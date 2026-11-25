@@ -1,0 +1,41 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/parts/openable.gd" id="1_openable"]
+[ext_resource type="PackedScene" path="res://game/run/looks_lock_door.tscn" id="2_looks"]
+[ext_resource type="Script" path="res://game/run/floor_lock.gd" id="3_lock"]
+[ext_resource type="Resource" path="res://game/run/floor_lock_tuning.tres" id="4_tuning"]
+[ext_resource type="Script" path="res://game/outline/outline.gd" id="5_outline"]
+
+[sub_resource type="BoxShape3D" id="Shape_aim"]
+size = Vector3(0.2, 0.24, 0.14)
+
+[node name="FloorLock" type="Node3D"]
+
+[node name="Openable" type="Node" parent="."]
+script = ExtResource("1_openable")
+noun = "Door"
+sound_height = 1.0
+quiet_when_locked = true
+keeps_open_on_load = true
+one_way = true
+locked = true
+
+[node name="Looks" parent="." instance=ExtResource("2_looks")]
+
+[node name="Padlock" type="Node3D" parent="."]
+
+[node name="FloorLock" type="Node" parent="Padlock" node_paths=PackedStringArray("aim", "outline")]
+script = ExtResource("3_lock")
+tuning = ExtResource("4_tuning")
+aim = NodePath("../Aim")
+outline = NodePath("../Outline")
+
+[node name="Aim" type="StaticBody3D" parent="Padlock"]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Padlock/Aim"]
+shape = SubResource("Shape_aim")
+
+[node name="Outline" type="Node3D" parent="Padlock"]
+visible = false
+script = ExtResource("5_outline")

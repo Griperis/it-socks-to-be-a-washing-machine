@@ -109,6 +109,18 @@ func cabinets() -> Array[Cabinet]:
 	return _cabinets
 
 
+## The floor locks of its level (FloorLock, core/80), in tree order.
+func floor_locks() -> Array[FloorLock]:
+	var out: Array[FloorLock] = []
+	if not is_inside_tree():
+		return out
+	var root := level()
+	for node in get_tree().get_nodes_in_group(FloorLock.GROUP):
+		if root != null and root.is_ancestor_of(node):
+			out.append(node as FloorLock)
+	return out
+
+
 ## The current Stage's data, or null.
 func current() -> Stage:
 	return plan.stage(stage) if plan != null else null
@@ -530,6 +542,11 @@ func _open_answer(events: Array, base_due := due) -> Dictionary:
 			var rows := mini(plan.start_rows, height)
 			changes.merge(cab.lock_patch(false, rows), true)
 			rows_by[cab] = rows
+	# The floor's locks open: the leaf is unlocked and open, shown by every machine (core/80).
+	var opened := plan.stage(next).floor
+	for lock in floor_locks():
+		if lock.floor == opened and lock.is_locked():
+			changes[lock.leaf().id] = {"open": true, "locked": false}
 	var designs := stage_designs(next, rows_by, per, spawned)
 	var now_due := base_due.duplicate()
 	now_due.append_array(designs)

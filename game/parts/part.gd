@@ -40,6 +40,12 @@ func prompt_title() -> String:
 	return ""
 
 
+## Whether the crosshair's prompt of this thing shows the use key (false: it only names it, as "Please
+## the washing machine" on a floor lock's padlock).
+func prompt_has_key() -> bool:
+	return true
+
+
 ## Whether the crosshair may rest on this thing now: false hides it from the aim (no outline, no
 ## prompt, no use), as a Cabinet under its dust sheet (Q2513).
 func aimable() -> bool:

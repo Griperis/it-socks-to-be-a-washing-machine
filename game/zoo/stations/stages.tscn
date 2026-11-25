@@ -23,6 +23,10 @@
 [ext_resource type="Resource" path="res://game/entities/machine_part/part_detergent.tres" id="21_detergent"]
 [ext_resource type="Script" path="res://game/entities/machine_part/machine_part_slot.gd" id="22_slot"]
 
+[ext_resource type="PackedScene" path="res://game/run/floor_lock.tscn" id="23_door"]
+[ext_resource type="PackedScene" path="res://game/run/floor_lock_gate.tscn" id="24_gate"]
+[ext_resource type="PackedScene" path="res://game/zoo/stages/lock_switch.tscn" id="25_lockswitch"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.42, 0.36, 0.5, 1)
 
@@ -60,6 +64,13 @@ size = Vector3(0.9, 0.9, 0.7)
 [sub_resource type="BoxShape3D" id="BoxShape3D_slot"]
 size = Vector3(0.9, 0.9, 0.7)
 
+[sub_resource type="BoxMesh" id="BoxMesh_wall"]
+material = SubResource("StandardMaterial3D_platform")
+size = Vector3(1.935, 2.7, 0.1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall"]
+size = Vector3(1.935, 2.7, 0.1)
+
 [node name="Stages" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 0, -6)
 
@@ -78,7 +89,7 @@ shape = SubResource("BoxShape3D_ground")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 5)
 pixel_size = 0.004
 billboard = 2
-text = "Stages: a mini run of two Stages, 2 Pairs a Drawer. Shelve the Simple Pairs into Cabinet A to complete Stage 1: its Part pops out of the Cabinet's top. Click it to carry it, then click the washing machine box: Cabinet B on the platform unlocks and Cabinet A grows a Row. \"Complete the Stage\" completes a Stage outright, \"Fit now\" fits its Part at once. On the left, the house's Stages from its plan, each Part lying beside it"
+text = "Stages: a mini run of two Stages, 2 Pairs a Drawer. Shelve the Simple Pairs into Cabinet A to complete Stage 1: its Part pops out of the Cabinet's top. Click it to carry it, then click the washing machine box: Cabinet B on the platform unlocks and Cabinet A grows a Row. \"Complete the Stage\" completes a Stage outright, \"Fit now\" fits its Part at once. On the left, the house's Stages from its plan, each Part lying beside it. The floor's locks: the door in the back wall and the gate on the platform stay shut until the floor opens (the padlock reads what opens them); the pillar opens and locks them again"
 vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
@@ -184,6 +195,62 @@ collection = &"sport"
 locked = true
 
 [node name="DustSheet" parent="CabinetB" instance=ExtResource("8_sheet")]
+
+[node name="Door" parent="." instance=ExtResource("23_door")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4.2)
+
+[node name="FloorLock" parent="Door/Padlock" index="0"]
+floor = 1
+
+[node name="Gate" parent="." instance=ExtResource("24_gate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.6, -1.5)
+
+[node name="FloorLock" parent="Gate/Padlock" index="0"]
+floor = 1
+
+[node name="Walls" type="Node3D" parent="."]
+
+[node name="DoorLeft" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5325, 1.35, -4.2)
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/DoorLeft"]
+mesh = SubResource("BoxMesh_wall")
+
+[node name="Shape" type="CollisionShape3D" parent="Walls/DoorLeft"]
+shape = SubResource("BoxShape3D_wall")
+
+[node name="DoorRight" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4675, 1.35, -4.2)
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/DoorRight"]
+mesh = SubResource("BoxMesh_wall")
+
+[node name="Shape" type="CollisionShape3D" parent="Walls/DoorRight"]
+shape = SubResource("BoxShape3D_wall")
+
+[node name="GateLeft" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4675, 1.95, -1.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/GateLeft"]
+mesh = SubResource("BoxMesh_wall")
+
+[node name="Shape" type="CollisionShape3D" parent="Walls/GateLeft"]
+shape = SubResource("BoxShape3D_wall")
+
+[node name="GateRight" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5325, 1.95, -1.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/GateRight"]
+mesh = SubResource("BoxMesh_wall")
+
+[node name="Shape" type="CollisionShape3D" parent="Walls/GateRight"]
+shape = SubResource("BoxShape3D_wall")
+
+[node name="Locks" parent="." instance=ExtResource("25_lockswitch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 1.5)
+
+[node name="LockSwitch" parent="Locks" index="0" node_paths=PackedStringArray("stages")]
+stages = NodePath("../../Run/Stages")
 
 [node name="Complete" parent="." instance=ExtResource("13_switch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 1.5)

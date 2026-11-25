@@ -369,7 +369,28 @@ clips = Array[AudioStream]([ExtResource("202_partfit")])
 spatial = true
 note = "A Machine Part goes into the washing machine (core/79). Old pick cc0/rubberduck_v2_lock_open_fit."
 
+[sub_resource type="Resource" id="Resource_padlock_pop"]
+script = ExtResource("1_76itk")
+event = &"padlock_pop"
+clips = Array[AudioStream]([ExtResource("200_ui")])
+spatial = true
+note = "A floor lock's padlock pops off (core/80). The old game shared device_click; the port's click is cc0/qubodup_click1 (the nearest, Q2604)."
+
+[sub_resource type="Resource" id="Resource_chain_drop"]
+script = ExtResource("1_76itk")
+event = &"chain_drop"
+clips = Array[AudioStream]([ExtResource("104_dev")])
+spatial = true
+note = "A floor lock's chain drops (core/80). The old game shared oven_close: cc0/rubberduck_metal_close."
+
+[sub_resource type="Resource" id="Resource_lock_door_open"]
+script = ExtResource("1_76itk")
+event = &"lock_door_open"
+clips = Array[AudioStream]([ExtResource("14_hlpqd")])
+spatial = true
+note = "A floor lock's leaf swings open (core/80), 1 m up. The old game shared wardrobe_open: cc0/oiboo_door_open."
+
 [resource]
 script = ExtResource("23_7apgx")
-events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_jump"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape"), SubResource("Resource_fridge_open"), SubResource("Resource_fridge_close"), SubResource("Resource_oven_open"), SubResource("Resource_oven_close"), SubResource("Resource_drawer_thunk"), SubResource("Resource_basket_open"), SubResource("Resource_basket_close"), SubResource("Resource_litter_flap_open"), SubResource("Resource_litter_flap_close"), SubResource("Resource_piano_lid_open"), SubResource("Resource_piano_lid_close"), SubResource("Resource_cabinet_reveal"), SubResource("Resource_piano"), SubResource("Resource_ui_click"), SubResource("Resource_ui_hover"), SubResource("Resource_ping"), SubResource("Resource_part_pop"), SubResource("Resource_part_fit")])
+events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_jump"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape"), SubResource("Resource_fridge_open"), SubResource("Resource_fridge_close"), SubResource("Resource_oven_open"), SubResource("Resource_oven_close"), SubResource("Resource_drawer_thunk"), SubResource("Resource_basket_open"), SubResource("Resource_basket_close"), SubResource("Resource_litter_flap_open"), SubResource("Resource_litter_flap_close"), SubResource("Resource_piano_lid_open"), SubResource("Resource_piano_lid_close"), SubResource("Resource_cabinet_reveal"), SubResource("Resource_piano"), SubResource("Resource_ui_click"), SubResource("Resource_ui_hover"), SubResource("Resource_ping"), SubResource("Resource_part_pop"), SubResource("Resource_part_fit"), SubResource("Resource_padlock_pop"), SubResource("Resource_chain_drop"), SubResource("Resource_lock_door_open")])
 muffling_scenes = Array[String](["res://game/entities/door/door.tscn", "res://game/entities/door/room_door.tscn", "res://game/entities/door/room_door_flipped.tscn"])
