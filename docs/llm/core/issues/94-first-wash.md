@@ -32,6 +32,7 @@ Batch A is built unattended (Q2603): an open choice this ticket does not settle 
 data). The Laundry station's "First wash" pillar resets it and holds a few Socks.
 
 ## Acceptance
+- The First wash joins group `stage_bar_goal` and answers `goal_pending()` (core/82): until a member exists, the Stage bar shows no goal phase.
 - Real path: a New Game in the house: no Socks lie and the bar reads "Wash the laundry"; the player clicks the bin into the washing machine; the cutscene plays; after it the Mess count is the first Stage's, the bin is still full in the Hands, the bar shows Stage 1, and a second bin is refused "Fix the washing machine first".
 - Before it the washer shows no damage and makes no comment; after it, the angriest.
 - It never plays again in that World (saved); a Guest joining mid-cutscene sees the end state.

@@ -33,6 +33,7 @@ placeholders. The Laundry station gets "Last Fix done" and "Final wash" (all but
 `loaded/total` label.
 
 ## Acceptance
+- `LaundryDay` provides `laundry_bins` and the `bar_changed` signal for the Stage bar's fold into "Wash clothes n/m" (core/82).
 - The bins are placed, their `used` and `full` written and `tip()` called through core/90's `LaundryBin` API.
 - Real path: in the house with the last Fix set by the zoo knob, the player carries a bin to the washing machine and clicks: the bar reads "Wash clothes 1/3", the bin is empty in the Hands, a second click is refused "That bin is empty".
 - Before the last Fix a bin is refused "Fix the washing machine first"; during the wait "The washing machine is busy".
