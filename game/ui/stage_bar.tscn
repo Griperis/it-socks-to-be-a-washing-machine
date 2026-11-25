@@ -24,6 +24,7 @@ corner_radius_bottom_left = 5
 
 [node name="StageBar" type="PanelContainer"]
 visible = false
+layout_mode = 3
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5

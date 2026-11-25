@@ -1,4 +1,4 @@
-## What this game adds to shots (kit/docs/TESTING.md "The shot harness").
+## What this game adds to shots (kit/docs/TESTING-more.md "The shot harness").
 extends RefCounted
 
 ## The scene a shot loads unless its line gives --scene=: the zoo, where every shot set before
@@ -107,6 +107,12 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			else:
 				station.screen.skip()
 				station.screen.advance(0.05)
+			if q.size() > 2:
+				# core/112: "<pillar>,<seconds>,burst" also throws a finale burst and a rare-Pair sparkle in every column.
+				for c: FinalColumn in station.screen.columns:
+					var metres := c.stage_metres()
+					c.burst(Vector3(0.0, 0.0, 0.0), 40, c.colour.lerp(Color(1.0, 0.8, 0.4), 0.5), metres.x * 0.35)
+					c._sparkle(Vector3(0.0, 0.0, -metres.y * 0.3), c.colour, 0.9)
 			return true
 		"cabinet_rows":
 			# assets/11: arg "<collection>,<rows>,<old|port>": one Cabinet alone on a plain floor far from
@@ -216,7 +222,7 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# core/108: the washer's wash beats on a plain floor (before/after of the beats as clips). arg
 			# "stage,<graybox|port>,<cutscene trigger>": the Looks alone, under that cutscene's look, and a camera
 			# from its front three-quarter that rides `shot_bob()` and pushes in by `shot_push()` as the
-			# cutscene's wide shot does; "call,<method>[,<arg>]" calls a beat on it (an int, true/false or a float).
+			# cutscene's wide shot does; "call,<method>[,<arg>]" calls a beat on it (an int, true/false or a float); "set,<property>,<float>" sets one.
 			_washer_beat(world, arg)
 			return true
 		"materials":
@@ -1364,6 +1370,14 @@ static func _washer_beat(world: Node, arg: String) -> void:
 		if q.size() > 2:
 			args.append(true if q[2] == "true" else (false if q[2] == "false" else (int(q[2]) if q[2].is_valid_int() else float(q[2]))))
 		looks.callv(StringName(q[1]), args)
+		return
+	if q[0] == "set":
+		# "set,<property>,<float>": a Looks property (damage, repair) set on the stage's Looks (core/117).
+		var held := world.get_node_or_null("WasherBeatStage/Looks")
+		if held == null or q.size() < 3:
+			push_warning("washer_beat: no stage")
+			return
+		held.set(StringName(q[1]), float(q[2]))
 		return
 	var stage := Node3D.new()
 	stage.name = "WasherBeatStage"

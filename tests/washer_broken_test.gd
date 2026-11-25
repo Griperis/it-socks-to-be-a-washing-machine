@@ -29,6 +29,8 @@ func cases() -> Array[Dictionary]:
 				"title": "a cutscene's look sets the repair and damage share; an angry loud stretch bursts, any other mood only smokes a little; its end gives the run's mood back"},
 		{"name": "riding", "method": "case_riding", "world": false,
 				"title": "a body lying on top rides the talking bob and lean: the riding body moves when the talk loop plays at full wiggle"},
+		{"name": "damage_nodes", "method": "case_damage_nodes", "world": false,
+				"title": "both Looks (graybox and real) carry every Damage node of the contract, and each emitter can show (a process material, a draw pass, a lifetime)"},
 	]
 
 
@@ -245,6 +247,23 @@ func case_riding() -> void:
 	await _physics_ticks(60)
 	_check(riding.global_position.distance_to(rest) < 0.0005, "it settles when the machine is silent (%.4f)" % riding.global_position.distance_to(rest))
 	looks.free()
+
+
+func case_damage_nodes() -> void:
+	var contract := JSON.parse_string(FileAccess.get_file_as_string("res://game/entities/washer/looks_contract.json")) as Dictionary
+	for file: String in ["looks_graybox", "looks_washer"]:
+		var looks := (load("res://game/entities/washer/%s.tscn" % file) as PackedScene).instantiate() as WasherLooks
+		add_child(looks)
+		for path: String in contract["paths"]:
+			if not path.begins_with("Damage/"):
+				continue
+			var node := looks.get_node_or_null(path)
+			_check(node != null, "%s has %s" % [file, path])
+			var particles := node as GPUParticles3D
+			if particles != null:
+				_check(particles.process_material != null and particles.draw_pass_1 != null and particles.lifetime > 0.0,
+						"%s: %s can show (a process material and a draw pass)" % [file, path])
+		looks.free()
 
 
 # --- Helpers -------------------------------------------------------------------------------------

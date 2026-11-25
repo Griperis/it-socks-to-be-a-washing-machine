@@ -15,8 +15,8 @@ you), **In progress**, **Done** (newest first) and **By area**.
 - A new ticket starts from `_templates/ticket.md` (Templates plugin: "Insert template").
 - A ticket's **frontmatter** carries its status. Agents set it to `in-progress` when they start
   and `done` when they finish.
-- Each ticket's **Built log** is the agent's record: what changed, which files, how it was
-  verified, and (added at merge) the merge hash.
+- **CHANGELOG.md** has one line per merged ticket, written at merge; what was built and how it
+  was verified is in the branch's commit messages.
 - **Open follow-ups** are questions an agent ran into and left for you to answer.
 - `kind: decision` tickets are questions for you. They're answered in a grilling session, and the
   answers spawn `build` tickets.

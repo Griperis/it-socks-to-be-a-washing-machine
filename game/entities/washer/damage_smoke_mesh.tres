@@ -1,0 +1,13 @@
+[gd_resource type="SphereMesh" format=3]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_smoke"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[resource]
+material = SubResource("StandardMaterial3D_smoke")
+radius = 0.09
+height = 0.18
+radial_segments = 8
+rings = 4

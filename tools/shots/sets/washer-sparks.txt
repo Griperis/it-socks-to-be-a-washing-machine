@@ -1,0 +1,9 @@
+# core/117: the broken washer's sparks and smoke on the real Looks (port) and the graybox, alone on a plain floor (shot hook
+# washer_beat, "set" damage and repair at frame 31). angriest = damage 1, mild = damage 0.3 (the lowest mood the floor gives).
+# The bursts run on a fixed clock with fixed seeds: frames 50 and 70 are inside a burst, 150 is later in the smoke.
+port-angry-50  --size=640x480 --do='30:washer_beat:stage,port;31:washer_beat:set,damage,1;32:washer_beat:set,repair,0' --shots=50
+port-angry-70  --size=640x480 --do='30:washer_beat:stage,port;31:washer_beat:set,damage,1;32:washer_beat:set,repair,0' --shots=70
+port-angry-150  --size=640x480 --do='30:washer_beat:stage,port;31:washer_beat:set,damage,1;32:washer_beat:set,repair,0' --shots=150
+port-mild-70  --size=640x480 --do='30:washer_beat:stage,port;31:washer_beat:set,damage,0.3;32:washer_beat:set,repair,0.7' --shots=70
+graybox-angry-50  --size=640x480 --do='30:washer_beat:stage,graybox;31:washer_beat:set,damage,1;32:washer_beat:set,repair,0' --shots=50
+graybox-angry-150  --size=640x480 --do='30:washer_beat:stage,graybox;31:washer_beat:set,damage,1;32:washer_beat:set,repair,0' --shots=150

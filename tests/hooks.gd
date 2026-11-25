@@ -1,4 +1,4 @@
-## What this game adds to the test runner (kit/docs/TESTING.md "The game's hooks").
+## What this game adds to the test runner (kit/docs/TESTING-more.md "The game's hooks").
 extends RefCounted
 
 ## The scene a "world": true case gets. The project's main scene is the zoo now, so the kit's

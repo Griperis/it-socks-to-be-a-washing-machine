@@ -2,7 +2,7 @@
 ## `Profily`) shown and hidden with F3 (the `toggle_profiler` action), in debug builds only. It
 ## starts hidden and its own Ctrl+G / Ctrl+H keys are off, so F3 is its one key and no game key
 ## clashes. A release build switches every module off and frees the node, so the add-on ships
-## unseen (kit/docs/TESTING.md 5). Optional: kit/tools/setup.py --profily=no removes all of it.
+## unseen (kit/docs/TESTING-more.md "Exporting"). Optional: kit/tools/setup.py --profily=no removes all of it.
 class_name Profiler
 
 const TEST_KNOBS := ["allowed"]
