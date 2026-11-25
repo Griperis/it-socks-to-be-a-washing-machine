@@ -64,4 +64,4 @@ edited in the inspector.
   project.godot change); a credits entry for the recordings. Settled by the old game (batch-a-review.md): the untagged
   comments get all four comment triggers; the optional per-recording `timing`; the credits entry.
   Files: see the commit. Verified: `kit/tools/run.sh --touched` (the commit's verdict lines); `tests/voice_bake_test.gd`.
-
+- Merged: ff8944fc (2026-11-25, branch core/84-voice-data-and-bake)

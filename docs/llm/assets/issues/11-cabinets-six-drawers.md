@@ -51,3 +51,4 @@ The Cabinet Looks scenes and their contract test; no new numbers.
 - Review: `builds/review-assets-11/strip-2-rows.png`, `strip-6-rows.png` (before = old, after = port),
   `old-game-baseline-cab-simple.png` (the old game's own Simple Cabinet at 6).
 - Verified: PASS 20103 checks, 578 cases (--touched); PASS rules; PASS asset_lint.
+- Merged: 5f3667ea (2026-11-25, branch assets/11-cabinets-six-drawers)

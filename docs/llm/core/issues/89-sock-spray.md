@@ -6,7 +6,7 @@ area: core
 feature: laundry
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: []
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [Sock, Design, First wash]
@@ -45,3 +45,4 @@ Batch A is built unattended (Q2603): an open choice this ticket does not settle 
 Changed: `SockSpray` (`sock_spray.tscn`, MultiMesh per Collection from the catalogue's Designs, seeded, the old FS step without physics, gone when it ends) and `SockSprayTuning` (every old spit number, plus `floor_grip` and `rest_speed`, the two the old code hard-coded); the Laundry station (`laundry.tscn`, placed at 60, 0, 0 in the zoo) with a stand-in washer box, a Porthole marker and the Spray pillar (`SprayPillar`, a Part, E plays the spray on the pressing machine only). The door's swing stays the washer's.
 Files: game/laundry/sock_spray.gd, sock_spray.tscn, sock_spray_tuning.gd, sock_spray_tuning.tres; game/zoo/laundry/spray_pillar.gd; game/zoo/stations/laundry.tscn; game/zoo/zoo.tscn; tests/sock_spray_test.gd; docs/migration/batch-a-review.md (two rows).
 Verified: see the commit's suite line.
+- Merged: 407e7409 (2026-11-25, branch core/89-sock-spray)
