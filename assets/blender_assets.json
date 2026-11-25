@@ -457,6 +457,20 @@
       "source": "furniture/living_rug",
       "glb": "assets/furniture/living_rug.glb"
     },
+    "lock_door": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "lock/lock_door",
+      "glb": "assets/lock/lock_door.glb",
+      "origin_xy": false
+    },
+    "lock_gate": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "lock/lock_gate",
+      "glb": "assets/lock/lock_gate.glb",
+      "origin_xy": false
+    },
     "mine_barrel": {
       "class": "furniture",
       "colliders": 0,

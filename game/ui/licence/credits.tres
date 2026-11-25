@@ -825,11 +825,11 @@ covers = PackedStringArray()
 [sub_resource type="Resource" id="Entry_91"]
 script = ExtResource("2_entry")
 section = "Made for It Socks"
-what = "3D models: the house (and the flat it grew from), the outside, the Cabinets, the washer, the pairing machine, the Sock vacuum, the Wardrobe Station, the clock, the Socks and sock balls, the sock creature and its Wardrobe, the TV and the radio, the black cat, the house furniture, the assets modelled through MCP"
+what = "3D models: the house (and the flat it grew from) and its floor locks, the outside, the Cabinets, the washer, the pairing machine, the Sock vacuum, the Wardrobe Station, the clock, the Socks and sock balls, the sock creature and its Wardrobe, the TV and the radio, the black cat, the house furniture, the assets modelled through MCP"
 author = "It Socks (tools/blender)"
 source = ""
 licence = "Part of the game"
-covers = PackedStringArray("assets/flat/*", "assets/house/*", "assets/blender_assets/*", "assets/exterior/*", "assets/cabinet/*", "assets/washing_machine/*", "assets/pairing_machine/*", "assets/sock_vacuum/*", "assets/wardrobe_station/*", "assets/clock/*", "assets/sock/*.glb", "assets/avatar/*", "assets/tv/*", "assets/radio/*.glb", "assets/parts/*", "assets/laundry_bin/*", "assets/cat/*", "assets/grotto_lantern/*", "assets/encyclopedia_book/*", "assets/hamper/*", "assets/sock_detector/*", "assets/vacuum_devices/*", "assets/furniture/*", "assets/blender_assets.json", "assets/sock/knit.png")
+covers = PackedStringArray("assets/flat/*", "assets/house/*", "assets/lock/*", "assets/blender_assets/*", "assets/exterior/*", "assets/cabinet/*", "assets/washing_machine/*", "assets/pairing_machine/*", "assets/sock_vacuum/*", "assets/wardrobe_station/*", "assets/clock/*", "assets/sock/*.glb", "assets/avatar/*", "assets/tv/*", "assets/radio/*.glb", "assets/parts/*", "assets/laundry_bin/*", "assets/cat/*", "assets/grotto_lantern/*", "assets/encyclopedia_book/*", "assets/hamper/*", "assets/sock_detector/*", "assets/vacuum_devices/*", "assets/furniture/*", "assets/blender_assets.json", "assets/sock/knit.png")
 
 [sub_resource type="Resource" id="Entry_92"]
 script = ExtResource("2_entry")

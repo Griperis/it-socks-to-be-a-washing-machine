@@ -216,6 +216,12 @@ the washing machine" with no key. A moving leaf sweeps Socks as the room Doors d
 lamps: `HouseLights` gains `reveal(floor)` (fade in 0.6 s, lit 6 s, fade 1.2 s back to the day rule) and keeps a
 locked floor's lamps off.
 
+The models (assets/10): `assets/lock/lock_door.glb` and `lock_gate.glb`, built by `assets_src/generate/lock/make_locks.py`.
+Under the root, each a pivot: `frame` (posts, the door's head, the chain's eyes; the gate's caps), `panel` (the door's
+wall panel up to the ceiling), `leaf` (origin on its pin, the s = 0 end, players' side), `chain` (origin at its
+lowest middle point) and `padlock` (origin at its body's middle). The root sits on the opening's middle line at the
+floor, the players' side towards +z; the leaf opens about +y. The Looks scenes instance these and key the nodes.
+
 ### The Stage bar
 `game/ui/stage_bar.tscn`, a child of the HUD, hidden in a level with no run: the old panel and layout (behaviour list
 "The Stage bar"), on the Theme's `StagePanel` variation. It reads `Stages` (by group) and the bar's Cabinets; it
