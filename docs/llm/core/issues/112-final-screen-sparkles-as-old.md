@@ -1,0 +1,50 @@
+---
+type: ticket
+status: ready-for-agent
+kind: bug
+area: core
+feature: final-screen
+priority: now
+created: 2026-11-25
+done:
+blocked_by: []
+notes: ["suggested model: sonnet", "designer 2026-11-25: the patches covering the Socks on the Final screen look weird"]
+terms: [Final screen]
+---
+
+# The Final screen's sparkles are the old soft specks, not square patches
+
+The designer, looking at `builds/review-final-screen/`: "What's the patches in the final screen that cover the socks,
+that looks weird." The patches are the sparkle and finale bursts (`game/ui/final_screen/final_spark.tscn`,
+`final_column.gd` `_spark`/`burst`). core/95 ported the old `PairedMoment.burst`
+(`reference/it-socks/game/.../paired_moment.gd:163-203`, `_speck()` :265-287) without most of it:
+
+| Old burst | Port today |
+|---|---|
+| a soft round speck: radial `GradientTexture2D` (32 px), **additive** blend, unshaded, cull off, vertex colour as sRGB | a plain square quad, alpha blend: the squares |
+| each speck **shrinks to nothing** over its life (`scale_amount_curve` 1 → 0), scale 0.6-1.2 | no shrink, one size |
+| `damping` speed × 1.2-2.0, `gravity` down speed × 0.6: they stop and settle near the spot | no damping, no gravity: they drift far over the Socks |
+| emitted from a sphere of radius `size`; the quad is `size` across | from a point; the quad is `size × 2` |
+| colour mixed per speck from the tint toward white by `white` (0.5 here) | one colour |
+
+The port already has this speck done right in `game/hands/mate_sparkle.tscn` (the material and the process numbers),
+`pair_moment.tscn` and `machine_part.tscn`: reuse that look (share the material, or one speck-burst scene the three
+use) rather than a fourth copy.
+
+Also check every other place the old game called `PairedMoment.burst` and whether the port has it, and as the old:
+`ending_screen.gd:556,611`, `part_view.gd:76,129,170`, `gift_view.gd` (batch B), `held_view.gd:507,653`,
+`laundry_view.gd:69` (a Dirty Sock binned puffs in the bin's mouth), `splitter_view.gd:174`, `hamper_view.gd:217`.
+List each as ported / ported differently / missing. Fix only the Final screen's here; anything missing or different
+goes to the designer as a follow-up (small details are never dropped without them).
+
+## Acceptance
+- The Final screen's sparkle (a Pair popping, a rare Pair) and the finale's three bursts look like the old ones: soft
+  round specks that shrink, slow and settle, at the old sizes and counts, in the player's colour mixed toward gold and white.
+- Visuals authored in nodes (Q2658): the look is in a scene and its material; code only places, tints and emits.
+- Look work stops at its first still: old beside port of the 2-player and 4-player popping screens and a strip of one
+  burst, in `builds/review-core-112/`; `ready-for-human`.
+- The final screen suite passes.
+
+## Open follow-ups
+
+## Built log
