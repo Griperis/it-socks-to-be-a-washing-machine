@@ -254,6 +254,19 @@ corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 anti_aliasing = true
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_subtitle_disc"]
+bg_color = Color(1, 0.956863, 0.878431, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.231373, 0.164706, 0.133333, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+anti_aliasing = true
+
 [resource]
 Heading1/base_type = &"OutlinedLabel"
 Heading1/font_sizes/font_size = 44
@@ -278,6 +291,13 @@ SizeBox/base_type = &"PanelContainer"
 SizeBox/styles/panel = SubResource("StyleBoxFlat_size_box")
 SizeLetter/base_type = &"PlainLabel"
 SizeLetter/font_sizes/font_size = 23
+SubtitleIcon/base_type = &"Panel"
+SubtitleIcon/styles/panel = SubResource("StyleBoxFlat_subtitle_disc")
+SubtitleLabel/base_type = &"OutlinedLabel"
+SubtitleLabel/colors/font_color = Color(1, 0.956863, 0.878431, 1)
+SubtitleLabel/colors/font_outline_color = Color(0, 0, 0, 0.85)
+SubtitleLabel/constants/outline_size = 10
+SubtitleLabel/font_sizes/font_size = 30
 ThinLabel/base_type = &"OutlinedLabel"
 ThinLabel/constants/outline_size = 6
 StagePanel/base_type = &"PanelContainer"

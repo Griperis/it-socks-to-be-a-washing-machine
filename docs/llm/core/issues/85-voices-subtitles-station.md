@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: voice
@@ -45,3 +45,8 @@ with no other change. `VoiceTuning` (the duck's 0.25 and 0.5 s), placeholders.
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-25
+- Changed: `Voices` autoload (channels, priority and `waits`, earshot and level band, `display/subtitles`, the cutscene duck, signals, `play_cutscene`), `VoicePicker`, `VoiceSource`, `VoiceChannel`, `VoiceTuning` (placeholders), `Subtitles` and `SubtitleRow` on the Theme (`SubtitleLabel`, `SubtitleIcon` disc), the MuffledVoice bus, the Voice station (pillars built from the VoiceBook, a stand-in speaker Part with `talk`, `say_line`, `cutscene`, a second speaker behind a shut Door, a radio) placed at (78, 0, 2). Five rows under "Settled by the old game".
+- Files: `game/voice/{voices,voice_channel,voice_picker,voice_source,voice_tuning,subtitles,subtitle_row}.*`, `game/zoo/voice/*`, `game/zoo/stations/voice.tscn`, `tests/voice_test.gd`, `default_bus_layout.tres`, `game/look/theme.tres`, `project.godot` (autoload), `tests/hooks.gd`.
+- Verified: `--touched` ran every suite (an autoload changed); only 3 failures, in the new suite, fixed after (picker fallback no longer takes cutscene lines; a wrong earshot edge in the test).

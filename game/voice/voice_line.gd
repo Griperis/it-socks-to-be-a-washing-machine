@@ -26,3 +26,11 @@ func has_trigger(trigger_id: StringName) -> bool:
 		if t != null and t.id == trigger_id:
 			return true
 	return false
+
+
+## Whether some game moment gives this line as a comment (a trigger of kind COMMENT).
+func has_comment_trigger() -> bool:
+	for t: VoiceTrigger in triggers:
+		if t != null and t.kind == VoiceTrigger.Kind.COMMENT:
+			return true
+	return false

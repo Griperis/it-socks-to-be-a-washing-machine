@@ -72,6 +72,14 @@ func find_line(speaker: StringName, id: StringName) -> VoiceLine:
 	return null
 
 
+## Whose line it is, or null for a line of no bank here.
+func speaker_of(line: VoiceLine) -> VoiceSpeaker:
+	for id: StringName in banks:
+		if banks[id].lines.has(line):
+			return banks[id].speaker
+	return null
+
+
 func _load(baked: String, lines: String, csv: String) -> void:
 	var texts := VoiceBook.read_csv_english(csv) if FileAccess.file_exists(csv) else {}
 	var check_keys := FileAccess.file_exists(csv)

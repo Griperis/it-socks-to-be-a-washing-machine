@@ -33,6 +33,7 @@ Save="*res://game/save/save.gd"
 Worlds="*res://game/save/worlds.gd"
 SceneChanger="*res://game/scenes/scene_changer.gd"
 UiSounds="*res://game/audio/ui_sounds.gd"
+Voices="*res://game/voice/voices.gd"
 
 [debug]
 
