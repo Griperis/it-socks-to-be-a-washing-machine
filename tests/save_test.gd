@@ -90,11 +90,15 @@ func case_s01() -> void:
 	_check(not (_lobby.get_node("%Continue") as Control).visible and (_lobby.get_node("%NewGame") as Control).visible,
 			"no save: Continue hidden, New Game there")
 	await _click(_lobby.get_node("%NewGame") as Control)
+	await _click(_lobby.get_node("%AskYes") as Control)  # core/91: the New Game page's Start (a debug build)
 	await _until(func() -> bool: return _level != null, "New Game to load the house")
 	var runtime := LevelRuntime.of(_level)
 	await _until(func() -> bool: return runtime.loading.is_lifted(), "the house's Socks to be laid behind the loading screen", 3000)
 	await _until(func() -> bool: return runtime.autosave.saves() and runtime.player.is_on_floor(), "the Solo World to be loaded and the player to stand")
 	_check(runtime.autosave.world.slot == Worlds.SOLO and runtime.autosave.world.is_new, "a New Game in the Solo slot")
+	# The kitchen's Cabinet unlocks with Stage 2 (core/91): the ground floor opened as its Fix would.
+	var stages := _level.get_node("Run/Stages") as Stages
+	runtime.parts.apply(stages.zoo_fit_now_answer())
 	var mess := runtime.mess
 	var hands := runtime.hands
 	var player := runtime.player
@@ -467,7 +471,10 @@ func case_s14() -> void:
 	var saved := Mess.unpacked(mess.save_state())
 	_check(int((saved["states"] as PackedByteArray)[sock]) == Mess.State.LYING and not (saved["throws"] as Dictionary).has(sock), "it is saved lying, with no launch")
 	var at := Mess.unpack(saved["poses"] as PackedFloat32Array, sock).origin
-	_check(absf(at.y) < 0.15 and at.distance_to(from.origin) < 2.0, "where it would land on the floor (%s)" % at)
+	# On the floor or on a Sock lying there (the Mess's layout moves with what the house holds: core/91's locks).
+	var under := PhysicsQueries.ray(house, at + Vector3.UP * 0.05, at + Vector3.DOWN * 0.1, Mess.LAYER_HOUSE | Mess.LAYER_LYING)
+	_check(at.y > -0.02 and at.y < 0.35 and not under.is_empty() and at.distance_to(from.origin) < 2.0,
+			"where it would land, on the floor or what lies on it (%s, on %s)" % [at, ("nothing" if under.is_empty() else (str((under["collider"] as Node).name) if under.get("collider") is Node else "a lying Sock"))])
 	_check(mess.state_of(sock) == Mess.State.FLYING, "the live game is untouched")
 
 

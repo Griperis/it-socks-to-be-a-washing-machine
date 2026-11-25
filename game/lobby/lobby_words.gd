@@ -31,6 +31,11 @@ const CHOSEN_TICK := "✓"
 # Solo's question.
 const NEW_GAME_HEADING := "New game"
 const NEW_GAME_ASK := "Start a new game? The saved game is lost."
+## Solo's New Game page with the debug slider and no save to lose: its key.
+const NEW_GAME_GO := "Start"
+
+# The debug "Pairs per Drawer" slider (Q668, core/91).
+const PAIRS := "Pairs per Drawer: %d"
 
 # The drawer and its rows.
 const DRAWER_HEADING := "World settings"

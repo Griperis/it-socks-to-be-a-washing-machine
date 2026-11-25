@@ -9,6 +9,8 @@
 ##   refused) and a house is named; once started it stays started.
 ## - The World: the house scene to load, the card's title and line, the chosen slot: the Host's only
 ##   (`world`), as it says them.
+## - Pairs per Drawer: a New Game's Drawer size (the debug slider, Q668, core/91): the Host's only (`pairs`),
+##   1 to 25; each change clears Ready, as the old; it rides the launch into the run's `start`.
 class_name LobbyState
 extends Part
 
@@ -17,6 +19,7 @@ const READY := &"ready"
 const START := &"start"
 const WORLD := &"world"
 const WORLDS := &"worlds"
+const PAIRS := &"pairs"
 ## The most `ready` one Guest may ask in a second (a flood is dropped by the Session).
 const READY_RATE := 5
 
@@ -41,6 +44,8 @@ signal changed
 ## The Host's Worlds as the drawer lists them: Worlds.rows() (slot, name, details, damaged, colours);
 ## the Host's only (`worlds`), so a Guest's drawer shows every World read-only (core/65, Q2587).
 @export var worlds: Array = []
+## A New Game's Pairs per Drawer (the debug slider; 25 otherwise).
+@export_range(1, 25, 1) var pairs_per_drawer := StagePlan.PAIRS_AT
 @export_group("")
 
 
@@ -67,6 +72,15 @@ func decide(cmd: Command) -> Dictionary:
 					return refuse("wrong")
 			return grant({"level": a["level"], "title": a["title"], "line": a["line"], "world": a["world"],
 					"readied": PackedStringArray()})
+		PAIRS:
+			if started:
+				return refuse("already")
+			var n: Variant = cmd.args.get("pairs")
+			if not (n is int) or int(n) < 1 or int(n) > StagePlan.PAIRS_AT:
+				return refuse("wrong")
+			if int(n) == pairs_per_drawer:
+				return refuse("already")
+			return grant({"pairs_per_drawer": int(n), "readied": PackedStringArray()})
 		WORLDS:
 			var rows: Variant = cmd.args.get("rows")
 			if not (rows is Array) or not (rows as Array).all(func(r: Variant) -> bool: return r is Dictionary):
@@ -152,6 +166,11 @@ func start_command(by: int) -> Command:
 ## The Host's Command to choose a World: the house scene, the card's title and line, the slot.
 func world_command(by: int, p_level: String, p_title: String, p_line: String, slot: String) -> Command:
 	return Command.new(WORLD, by, id, {"level": p_level, "title": p_title, "line": p_line, "world": slot})
+
+
+## The Host's Command to set a New Game's Pairs per Drawer.
+func pairs_command(by: int, pairs: int) -> Command:
+	return Command.new(PAIRS, by, id, {"pairs": pairs})
 
 
 ## The Host's Command to say its Worlds (the rows the drawers list).

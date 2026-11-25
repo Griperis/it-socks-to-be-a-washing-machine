@@ -48,6 +48,8 @@ func cases() -> Array[Dictionary]:
 				"title": "ENet cannot invite: the Host's \"Invite friends\" key is hidden; a test transport that can shows it, in the Host's drawer only, and the key asks that transport"},
 		{"name": "k14_words_one_place_narrow_camera", "method": "case_k14", "world": false,
 				"title": "the Lobby's scenes carry no text of their own (LobbyWords is the one place); the status line is empty and hidden; a narrower-than-16:9 stage keeps the width a 16:9 one sees"},
+		{"name": "k15_pairs_slider", "method": "case_k15", "world": false,
+				"title": "core/91 (Q668, Q2586): a debug build's Host drawer shows the Pairs per Drawer slider while New game is chosen (a Guest's read-only); moving it sets the New Game's Pairs on every machine and clears everyone's Ready; it hides for a saved World"},
 	]
 
 
@@ -260,7 +262,15 @@ func case_k06() -> void:
 	_check(not (lobby.get_node("%Continue") as Control).visible and (lobby.get_node("%NewGame") as Control).visible, "no save: Continue hidden")
 	_check((lobby.get_node("%CardTitle") as Label).text == LobbyWords.SOLO_TITLE, "the card says Solo")
 	await _click(lobby.get_node("%NewGame") as Control)
-	_check(not lobby.asking() and _into.size() == 3, "New Game with no save goes in at once")
+	# core/91: a debug build (the tests') shows the New Game page with the Pairs per Drawer slider, no question.
+	_check(lobby.asking() and _into.is_empty() and lobby.pairs_slider().is_visible_in_tree()
+			and not (lobby.get_node("Ask/Center/Panel/Box/Question") as Control).visible
+			and (lobby.get_node("%AskYes") as Button).text == LobbyWords.NEW_GAME_GO,
+			"New Game with no save opens the New Game page: the slider and Start, no question (a debug build)")
+	await _click(lobby.get_node("%AskYes") as Control)
+	_check(not lobby.asking() and _into.size() == 3, "its Start goes in")
+	_check(_launch_of(_into).has(Stages.PAIRS_ARG + "25"),
+			"with the slider's Pairs per Drawer (25) in the launch (%s)" % [_launch_of(_into)])
 	_check(_world_of(_into).is_new and _world_of(_into).slot == Worlds.SOLO, "with a New Game in the Solo slot")
 	_drop_branches()
 	_into.clear()
@@ -278,7 +288,9 @@ func case_k06() -> void:
 			"a save: Continue shows, the card's line the Solo World (%s)" % (lobby.get_node("%CardLine") as Label).text)
 	await _click(lobby.get_node("%NewGame") as Control)
 	_check(lobby.asking() and _into.is_empty(), "New Game over a save asks first")
-	_check((lobby.get_node("Ask/Center/Panel/Box/Question") as Label).text == "Start a new game? The saved game is lost.", "with the old words")
+	_check((lobby.get_node("Ask/Center/Panel/Box/Question") as Label).text == "Start a new game? The saved game is lost."
+			and (lobby.get_node("Ask/Center/Panel/Box/Question") as Control).visible, "with the old words")
+	_check(lobby.pairs_slider().is_visible_in_tree(), "and the Pairs per Drawer slider on that page (a debug build)")
 	var close := lobby.get_node("%AskClose") as CloseButton
 	var area := close.get_global_rect()  # it fills the panel's inside, as every dialogue's (menus x01)
 	_check(close.key().is_visible_in_tree() and absf(close.key().get_global_rect().end.x - area.end.x) < 1.0
@@ -460,6 +472,15 @@ func _world_of(into: Array) -> WorldSlot:
 	var w := LevelRuntime.of(root).world
 	root.free()
 	return w
+
+
+## The launch the Lobby handed the level it went into (`into`: go_into's path, heading and setup).
+func _launch_of(into: Array) -> PackedStringArray:
+	var root := (load(ONE_BOX) as PackedScene).instantiate()
+	(into[2] as Callable).call(root)
+	var launch := LevelRuntime.of(root).launch
+	root.free()
+	return launch
 
 
 # --- K11 to K14: core/67, the Lobby's details ---------------------------------------------------------
@@ -762,3 +783,42 @@ func _key(action: StringName) -> void:
 		get_tree().root.window_input.emit(ev)
 		Input.parse_input_event(ev)
 		await _frames(2)
+
+
+# --- K15: core/91, the Pairs per Drawer slider ----------------------------------------------------
+
+func case_k15() -> void:
+	_write_world("coop1", {"a": {"name": "Ann", "colour": 0}}, 100)
+	var host := _machine("Host")
+	var guest := _machine("Guest")
+	var hlobby := await _lobby(host, LobbyScreen.Mode.HOST, _host_world())
+	await _until(func() -> bool: return hlobby.link.session.is_online(), "the Host's Lobby to listen", 900, 20.0)
+	var globby := await _lobby(guest, LobbyScreen.Mode.JOIN, null, "127.0.0.1:%d" % hlobby.link.session.port)
+	var hd := hlobby.drawer()
+	var gd := globby.drawer()
+	await _until(func() -> bool: return gd.row_nodes().size() == 1 and globby.link.lobby.world == "coop1", "the Guest to see Ann's World chosen", 900, 20.0)
+	_check(not hd.pairs().visible and not gd.pairs().visible, "a saved World chosen: no slider")
+	globby.visible = false
+	await _click(hd.get_node("%NewGame") as Control)
+	await _until(func() -> bool: return hlobby.world.is_new and gd.pairs().visible, "New game to be chosen on both", 900, 20.0)
+	_check(hd.pairs().visible and hd.pairs().slider().editable and not gd.pairs().slider().editable
+			and gd.pairs().value() == StagePlan.PAIRS_AT, "the Host's slider moves, the Guest's only reads (%d)" % gd.pairs().value())
+	globby.link.parts.ask(globby.link.lobby.ready_command(globby.link.session.me(), true))
+	await _click(hlobby.get_node("%Ready") as Control)
+	await _until(func() -> bool: return hlobby.link.lobby.readied.size() == 2, "both Ready", 900, 20.0)
+	var track := hd.pairs().slider().get_global_rect()
+	await _frames(2)
+	for pressed: bool in [true, false]:
+		var ev := InputEventMouseButton.new()
+		ev.button_index = MOUSE_BUTTON_LEFT
+		ev.position = Vector2(track.position.x + 2.0, track.get_center().y)
+		ev.global_position = ev.position
+		ev.pressed = pressed
+		hd.get_viewport().push_input(ev, true)
+	await _until(func() -> bool: return globby.link.lobby.pairs_per_drawer < StagePlan.PAIRS_AT, "the Guest to see the Pairs moved", 900, 20.0)
+	var per := hlobby.link.lobby.pairs_per_drawer
+	_check(per < 5 and hd.pairs().value() == per and gd.pairs().value() == per, "the slider's left end sets %d Pairs per Drawer on both (Host shows %d, Guest %d)" % [per, hd.pairs().value(), gd.pairs().value()])
+	_check(hlobby.link.lobby.readied.is_empty() and globby.link.lobby.readied.is_empty(), "the step clears everyone's Ready")
+	await _click(_choose_key(hd, "coop1"))
+	await _until(func() -> bool: return not gd.pairs().visible, "the Guest's slider to hide with Ann's World chosen", 900, 20.0)
+	_check(not hd.pairs().visible, "and the Host's")
