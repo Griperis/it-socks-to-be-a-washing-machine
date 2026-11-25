@@ -112,9 +112,9 @@ func case_real_path() -> void:
 			seen["spin"] = maxf(seen["spin"], looks.spin)
 			seen["calm_damage"] = maxf(seen["calm_damage"], looks.broken_strength())
 		return looks.room_flickering(), "the calm wash to break", 100000, 10.0)
-	_near(seen["bob"], washer.tuning.shot_bob, 0.003, "the wide shot bobs 1 cm")
+	_near(seen["bob"], 0.01, 0.003, "the wide shot bobs 1 cm (the calm_wash clip)")
 	_check(seen["bubbles"] and seen["loop"], "bubbles rise and the calm wash loops (%s)" % [seen])
-	_near(seen["spin"], washer.tuning.wash_spin, 0.05, "the drum turns at wash_spin")
+	_near(seen["spin"], 0.8, 0.05, "the drum turns at 0.8 turns a second (the old wash_spin)")
 	_check(seen["calm_damage"] < 0.02, "no damage shows in the calm wash (%s)" % seen["calm_damage"])
 	# The break.
 	await _frames(2)

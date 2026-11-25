@@ -34,7 +34,9 @@ func cases() -> Array[Dictionary]:
 		{"name": "house", "method": "case_house", "world": false,
 				"title": "in the house the machine stands at the old place, in group washer, the generators' NodePath still reaches it; the crosshair names it Washing machine with no key and E does nothing; it stays silent"},
 		{"name": "contract", "method": "case_contract", "world": false,
-				"title": "every washer Looks loads and has what looks_contract.json names: the bones and their parents, the three players' animations, the properties, the lit drum on its own layer"},
+				"title": "every washer Looks loads and has what looks_contract.json names: the bones and their parents, the three players' animations and the wash beats' clips, the properties, the lit drum on its own layer"},
+		{"name": "beats", "method": "case_beats", "world": false,
+				"title": "the wash beats are the Looks' clips, the same keys in every Looks: the calm wash ramps the drum to 0.8 and bobs the wide shot 1 cm, the break stops it all, the unvoiced happy wash hops at most 6 cm and sways, happy_done slows the drum to 0.12, door_open(0.4) opens the door in 0.4 s"},
 		{"name": "rests", "method": "case_rests", "world": false,
 				"title": "the bone rests of washer_acting.tres (lean, door_hinge, the brows) are the rests of every Looks' skeleton"},
 		{"name": "face", "method": "case_face", "world": false,
@@ -221,7 +223,7 @@ func case_contract() -> void:
 			for b: String in parents:
 				var i := rig.find_bone(b)
 				_check(i >= 0 and rig.get_bone_parent(i) == rig.find_bone(String(parents[b])), "%s: %s is under %s" % [name, b, parents[b]])
-		var players: Dictionary = contract.get("players", {})
+		var players: Dictionary = contract.get("players", {}).merged(contract.get("clips", {}))
 		for p: String in players:
 			var player := looks.get_node_or_null(p) as AnimationPlayer
 			_check(player != null and player.callback_mode_process == AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_PHYSICS,
@@ -243,6 +245,73 @@ func case_contract() -> void:
 		var riding := looks.find_child("RidingBody", true, false) as AnimatableBody3D
 		_check(riding != null and riding.get_parent() is BoneAttachment3D and (riding.get_parent() as BoneAttachment3D).bone_name == "bob",
 				"%s: a body rides the bob" % name)
+		looks.free()
+
+
+func case_beats() -> void:
+	var paths := looks_paths()
+	var first: Array = []
+	for path in paths:
+		var looks := (load(path) as PackedScene).instantiate() as WasherLooks
+		add_child(looks)
+		await _physics_ticks(2)
+		var name := path.get_file()
+		# The same clips, key for key, in every Looks.
+		var keys: Array = []
+		for player: AnimationPlayer in [looks.beats, looks.door_player]:
+			for clip: StringName in player.get_animation_list():
+				var anim := player.get_animation(clip)
+				for t in anim.get_track_count():
+					var row: Array = [clip, anim.track_get_path(t), anim.length]
+					for k in anim.track_get_key_count(t):
+						row.append([anim.track_get_key_time(t, k), anim.track_get_key_value(t, k)])
+					keys.append(row)
+		if first.is_empty():
+			first = keys
+		else:
+			_check(keys == first, "%s has the same beat clips as %s" % [name, paths[0].get_file()])
+		# The calm wash, then the break.
+		var peak := {"bob": 0.0, "spin": 0.0}
+		looks.calm_wash(40)
+		for i in 120:
+			await _physics_ticks(1)
+			peak["bob"] = maxf(peak["bob"], absf(looks.shot_bob()))
+			peak["spin"] = maxf(peak["spin"], looks.spin)
+		_near(peak["spin"], 0.8, 0.001, "%s: the calm wash's drum reaches 0.8 turns a second" % name)
+		_near(peak["bob"], 0.01, 0.0005, "%s: the wide shot bobs 1 cm" % name)
+		_check(looks.bubbling() and looks.wash_looping(), "%s: bubbles and the wash loop" % name)
+		looks.wash_break()
+		await _physics_ticks(1)
+		_check(looks.spin == 0.0 and looks.shot_bob() == 0.0 and not looks.bubbling() and not looks.wash_looping(), "%s: the break stops it all" % name)
+		# The happy wash without a line, then the line.
+		looks.set_voiced(false)
+		looks.happy_wash(40)
+		var moved := {"hop": 0.0, "sway": 0.0}
+		for i in 300:
+			await _physics_ticks(1)
+			moved["hop"] = maxf(moved["hop"], looks.position.y)
+			moved["sway"] = maxf(moved["sway"], absf(looks.rotation.z))
+		_near(moved["hop"], 0.06, 0.002, "%s: it hops 6 cm" % name)
+		_near(moved["sway"], deg_to_rad(3.0), 0.002, "%s: it sways 3 degrees" % name)
+		_near(looks.spin, 1.2, 0.001, "%s: the unvoiced drum turns 1.2 a second" % name)
+		_near(looks.shot_push(), 1.0, 0.001, "%s: the push has run its way" % name)
+		looks.happy_done()
+		await _physics_ticks(150)
+		_near(looks.spin, 0.12, 0.001, "%s: the drum slows to 0.12" % name)
+		_check(not looks.bubbling() and looks.position.y == 0.0 and looks.shot_push() == 0.0, "%s: the bubbles stopped, the body at rest" % name)
+		looks.set_cutscene(null)
+		# The door.
+		looks.door_open(0.4)
+		await _physics_ticks(12)
+		_near(looks.door, 0.5, 0.05, "%s: halfway open at 0.2 s" % name)
+		await _physics_ticks(14)
+		_near(looks.door, 1.0, 0.001, "%s: open at 0.4 s" % name)
+		looks.door_close(0.6)
+		await _physics_ticks(38)
+		_near(looks.door, 0.0, 0.001, "%s: shut at 0.6 s" % name)
+		looks.door_close(0.3)
+		await _physics_ticks(10)
+		_check(looks.door == 0.0, "%s: a shut door told to shut stays shut (the Final wash's start)" % name)
 		looks.free()
 
 

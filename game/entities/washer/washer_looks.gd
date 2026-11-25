@@ -12,14 +12,16 @@
 ## The broken look (core/87): the sparks, smoke, flash and buzz under `Damage` as strong as `damage`, bursts on a fixed
 ## clock with fixed seeds; the drum's light dimmed and flickering by `repair`; the rumble under an angry voice. A
 ## cutscene's `WasherCutsceneLook` (`set_cutscene`) takes both over from the run's mood.
+## Each wash beat sets its flags and plays its clip on `Beats` or `Door` (core/108; the contract's `clips`).
 ## The First wash's beats (core/94; the cutscene frame calls them by name from `first_wash.tres`): `calm_wash`
 ## (the drum ramps up, bubbles, the `wash_calm` loop, the wide shot's 1 cm bob: `shot_bob()`, the damage held
 ## calm), `wash_break` (the loop stops, `machine_break`, the bubbles and the drum stop, the damage released,
 ## the room's lamps flicker: `room_flickering()`), and the door's `door_open` and `door_close`.
-## The Final wash's beats (core/96): `happy_wash` (the drum to `wash_spin`, the bubbles, the wide shot's bob and
-## the camera's push toward `Shots/Push`: `shot_push()`, the room's lamps flicker with the drum light) and
-## `happy_done` (the drum eases to `after_spin`, the bubbles stop a second later); without a line (`set_voiced(false)`)
+## The Final wash's beats (core/96): `happy_wash` (the drum to 0.8 turns a second, the bubbles, the wide shot's bob
+## and the camera's push toward `Shots/Push`: `shot_push()`, the room's lamps flicker with the drum light) and
+## `happy_done` (the drum eases to 0.12, the bubbles stop a second later); without a line (`set_voiced(false)`)
 ## the old happy look carries it: the body hops and sways, a warm glow pulses, the rumble plays.
+## What follows a live number stays code: the glow's ease, the repair's dim and flicker, the broken look's strength.
 ## Looks only: it never writes state.
 class_name WasherLooks
 extends VoiceSource
@@ -32,6 +34,14 @@ const MOUTH := &"mouth"
 const TALK := &"talk"
 const RUMBLE := &"rumble"
 const SPIN := &"spin"
+## The wash beats' clips (on `Beats`) and the door's (on `Door`).
+const CALM_WASH := &"calm_wash"
+const WASH_BREAK := &"wash_break"
+const HAPPY_WASH := &"happy_wash"
+const HAPPY_WASH_UNVOICED := &"happy_wash_unvoiced"
+const HAPPY_DONE := &"happy_done"
+const HAPPY_DONE_UNVOICED := &"happy_done_unvoiced"
+const DOOR := &"door"
 
 @export var tuning: WasherTuning
 ## The skeleton (`face_rig`), the loops' and the spin's players.
@@ -56,6 +66,14 @@ var repair := 1.0
 var damage := 0.0
 ## The light inside the drum is on (a line plays).
 var lit := false
+## What the wash clips key: the wide shot's height offset in metres, and the camera's push 0-1.
+var shot_height := 0.0
+var push_share := 0.0
+
+## The wash beats' players and the calm wash's loop (contract `clips`, `paths`).
+@onready var beats := get_node_or_null(^"Beats") as AnimationPlayer
+@onready var door_player := get_node_or_null(^"Door") as AnimationPlayer
+@onready var wash_calm := get_node_or_null(^"WashCalm") as AudioStreamPlayer3D
 
 ## The cutscene's look while one plays (null: the run's mood shows).
 var _cut: WasherCutsceneLook = null
@@ -83,19 +101,13 @@ var _glow_energy_now := 0.0
 var _material: StandardMaterial3D = null
 var _bob_rest := Transform3D.IDENTITY
 
-## The First wash's calm wash: seconds since it began (-1: none), its loop, whether the damage is held calm
-## and whether the room's lamps flicker (from the break to the cutscene's end).
-var _wash_clock := -1.0
-var _wash_loop: AudioStreamPlayer3D = null
+## The washes: a wash runs (the drum, the bob), the damage is held calm, the room's lamps flicker (from the break
+## to the cutscene's end), the happy wash runs, its drum slows, the cutscene plays a line, and the body's rest pose.
+var _washing := false
 var _calm := false
 var _room_flicker := false
-var _door_tween: Tween = null
-
-## The Final wash's happy wash (core/96): seconds since it began (-1: none), since its slow-down began (-1: none),
-## the bubbles' countdown to off (-1: none), whether the cutscene plays a line, and the body's rest pose.
-var _happy_clock := -1.0
-var _slow_clock := -1.0
-var _bubbles_left := -1.0
+var _happy := false
+var _slowing := false
 var _voiced := true
 var _rest_xform := Transform3D.IDENTITY
 var _rest_set := false
@@ -152,8 +164,6 @@ func bubbling() -> bool:
 
 func _process(delta: float) -> void:
 	_clock += delta
-	_washing(delta)
-	_happy(delta)
 	_loop()
 	_spin()
 	_door()
@@ -258,50 +268,31 @@ func set_cutscene(look: WasherCutsceneLook) -> void:
 	_cut = look
 	_intensity = 0.0
 	if look == null:
-		_end_wash()
-		_end_happy()
+		_end_washes()
 		_calm = false
 		_room_flicker = false
 
 
-# --- The First wash's beats (core/94) --------------------------------------------------------------
+# --- The First wash's beats (core/94; clips since core/108) ----------------------------------------
 
-## The calm wash: the drum ramps up to `wash_spin` over `wash_ramp`, `count` bubbles rise out of the porthole,
-## the `wash_calm` loop plays at the machine, the wide shot bobs, and the damage is held calm until the break.
+## The calm wash (clip `calm_wash`, `count` bubbles); the damage is held calm until the break.
 func calm_wash(count: Variant = null) -> void:
-	_wash_clock = 0.0
+	_washing = true
 	_calm = true
-	if bubbles_node != null and count != null and int(count) > 0:
-		bubbles_node.amount = int(count)
-	bubbles(true)
-	if _wash_loop == null:
-		_wash_loop = AudioStreamPlayer3D.new()
-		_wash_loop.name = "WashCalm"
-		add_child(_wash_loop)
-	var e := Sounds.catalogue.find(&"wash_calm")
-	if e != null and not e.clips.is_empty():
-		var stream := e.clips[0].duplicate() as AudioStream
-		if "loop" in stream:
-			stream.set("loop", true)
-		_wash_loop.stream = stream
-		_wash_loop.bus = e.bus
-		_wash_loop.volume_db = e.volume_db
-		_wash_loop.unit_size = Sounds.catalogue.unit_size
-		_wash_loop.max_distance = Sounds.catalogue.max_distance
-		_wash_loop.position = Vector3.UP * (tuning.break_height if tuning != null else 0.4)
-		_wash_loop.play()
+	_amount(count)
+	_beat(CALM_WASH)
 
 
-## The break: the wash loop stops, the clanks play at the machine, the bubbles and the drum stop, the damage
-## shows (the cutscene's look, the angriest) and the room's lamps start to flicker.
+## The break (clip `wash_break`): the clanks play where `WashCalm` stands, the damage shows, the room's lamps flicker.
 func wash_break() -> void:
-	_end_wash()
+	_washing = false
 	_calm = false
 	_room_flicker = true
-	Sounds.play_at(&"machine_break", global_position + Vector3.UP * (tuning.break_height if tuning != null else 0.4))
+	_beat(WASH_BREAK)
+	Sounds.play_at(&"machine_break", wash_calm.global_position if wash_calm != null else global_position)
 
 
-## The door swings open over `seconds`.
+## The door swings open over `seconds` (`Door` plays `door` from where the door stands).
 func door_open(seconds: Variant = 0.4) -> void:
 	_swing_door(1.0, float(seconds) if seconds != null else 0.4)
 
@@ -311,16 +302,14 @@ func door_close(seconds: Variant = 0.6) -> void:
 	_swing_door(0.0, float(seconds) if seconds != null else 0.6)
 
 
-## The wide shot's height offset now, in metres: the calm wash's bob, 0 otherwise.
+## The wide shot's height offset now, in metres: the washes' bob (the clips' `shot_height`), 0 otherwise.
 func shot_bob() -> float:
-	if _wash_clock < 0.0 or tuning == null:
-		return 0.0
-	return sin(_wash_clock * tuning.shot_bob_rate) * tuning.shot_bob
+	return shot_height if _washing else 0.0
 
 
-## Whether the calm wash runs (the drum turning, the loop).
+## Whether the calm wash (or the happy wash) runs: the drum turning, the bob.
 func calm_washing() -> bool:
-	return _wash_clock >= 0.0
+	return _washing
 
 
 ## Whether the damage is held calm (the calm wash, before its break).
@@ -334,98 +323,104 @@ func room_flickering() -> bool:
 	return _room_flicker
 
 
-# --- The Final wash's beats (core/96) --------------------------------------------------------------
+func wash_looping() -> bool:
+	return wash_calm != null and wash_calm.playing
 
-## Whether the cutscene plays a line (the frame tells it at its start): without one the old happy look carries the wash.
+
+# --- The Final wash's beats (core/96; clips since core/108) ----------------------------------------
+
+## Whether the cutscene plays a line (the frame tells it at its start): without one the old happy look carries the
+## wash. Told during the happy wash, the other clip takes over at the same time.
 func set_voiced(on: bool) -> void:
+	if on == _voiced:
+		return
 	_voiced = on
+	if _happy and beats != null and beats.is_playing():
+		var at := beats.current_animation_position
+		_beat(_happy_clip())
+		beats.seek(at, true)
 
 
-## The happy wash: the drum ramps up (`wash_spin`; `happy_spin` without a line), `count` bubbles rise, the wide shot
-## bobs and the camera pushes in (`shot_push()`), the room's lamps within `room_flicker_range` follow the drum light.
-## No wash sound of its own; unvoiced the body hops and sways, a warm glow pulses and the rumble plays.
+## The happy wash (clip `happy_wash`, or `happy_wash_unvoiced` without a line; `count` bubbles); the room's lamps
+## within `room_flicker_range` follow the drum light; unvoiced the rumble plays too.
 func happy_wash(count: Variant = null) -> void:
-	_happy_clock = 0.0
-	_slow_clock = -1.0
-	_bubbles_left = -1.0
-	_wash_clock = 0.0
+	_happy = true
+	_slowing = false
+	_washing = true
 	_calm = true
 	_room_flicker = true
 	if not _rest_set:
 		_rest_xform = transform
 		_rest_set = true
-	if bubbles_node != null and count != null and int(count) > 0:
-		bubbles_node.amount = int(count)
-	bubbles(true)
+	_amount(count)
+	_beat(_happy_clip())
 
 
-## The wash is over and the machine talks: the drum eases to `after_spin`, the push is over (the wide shot again),
-## the bubbles stop `happy_bubbles_off` seconds on.
+## The wash is over and the machine talks (clip `happy_done`, or `happy_done_unvoiced`).
 func happy_done() -> void:
-	_slow_clock = 0.0
-	_bubbles_left = tuning.happy_bubbles_off if tuning != null else 1.0
-	_wash_clock = -1.0
-	_happy_clock = -1.0
+	_slowing = true
+	_washing = false
+	_happy = false
 	_rest_body()
+	_beat(HAPPY_DONE if _voiced else HAPPY_DONE_UNVOICED)
 
 
-## The camera's push toward the face, 0 (the wide shot) to 1: over the first `happy_push` of the wash, 0 outside it.
+## The camera's push toward the face, 0 (the wide shot) to 1 (the clips' `push_share`), 0 outside the happy wash.
 func shot_push() -> float:
-	if _happy_clock < 0.0 or tuning == null:
-		return 0.0
-	return smoothstep(0.0, maxf(tuning.happy_lead * tuning.happy_push, 0.001), _happy_clock)
+	return push_share if _happy else 0.0
 
 
 ## Whether the happy wash runs (before `happy_done`).
 func happy_washing() -> bool:
-	return _happy_clock >= 0.0
+	return _happy
 
 
 ## Whether the drum eases to its slow turn now (after `happy_done`).
 func slowing() -> bool:
-	return _slow_clock >= 0.0
+	return _slowing
 
 
 ## Whether the old unvoiced happy look shows (the body hops, the glow pulses): the wash runs without a line.
 func happy_look() -> bool:
-	return _happy_clock >= 0.0 and not _voiced
+	return _happy and not _voiced
 
 
-func _happy(delta: float) -> void:
-	if tuning == null:
-		return
-	if _happy_clock >= 0.0:
-		_happy_clock += delta
-		if not _voiced:
-			var ramp := smoothstep(0.0, maxf(tuning.happy_lead * 0.2, 0.001), _happy_clock)
-			spin = tuning.happy_spin * (0.3 + 0.7 * ramp)
-			var hop := tuning.happy_hop * ramp * absf(sin(_happy_clock * TAU * tuning.happy_hop_rate))
-			var sway := deg_to_rad(tuning.happy_sway) * ramp * sin(_happy_clock * TAU * tuning.happy_sway_rate)
-			transform = Transform3D(_rest_xform.basis * Basis(Vector3.BACK, sway), _rest_xform.origin + Vector3(0.0, hop, 0.0))
-			lit = true
-			glow_colour = tuning.happy_glow_colour
-			glow_energy = tuning.happy_glow_energy + tuning.happy_glow_pulse * sin(_happy_clock * 3.0)
-	if _slow_clock >= 0.0:
-		_slow_clock += delta
-		spin = move_toward(spin, tuning.after_spin, delta * tuning.happy_after_rate)
-	if _bubbles_left >= 0.0:
-		_bubbles_left -= delta
-		if _bubbles_left < 0.0:
-			bubbles(false)
+func _happy_clip() -> StringName:
+	return HAPPY_WASH if _voiced else HAPPY_WASH_UNVOICED
 
 
-## Everything the happy wash left running stops (the cutscene ended or the washer is reset).
-func _end_happy() -> void:
-	var was := _happy_clock >= 0.0 or _slow_clock >= 0.0 or _bubbles_left >= 0.0
-	_happy_clock = -1.0
-	_slow_clock = -1.0
-	_bubbles_left = -1.0
+## The bubbles' count for a wash (the beat's argument; none keeps the scene's).
+func _amount(count: Variant) -> void:
+	if bubbles_node != null and count != null and int(count) > 0:
+		bubbles_node.amount = int(count)
+
+
+func _beat(clip: StringName) -> void:
+	if beats != null and beats.has_animation(clip):
+		beats.play(clip)
+		beats.advance(0.0)
+
+
+## Everything the washes left running stops (the cutscene ended or the washer is reset): the clip, the drum,
+## the bubbles, the loop, the bob and the push, the body at its rest.
+func _end_washes() -> void:
+	var was := _washing or _happy or _slowing or (beats != null and beats.is_playing())
+	var was_happy := _happy or _slowing
+	if beats != null:
+		beats.stop()
+	_washing = false
+	_happy = false
+	_slowing = false
 	_voiced = true
+	shot_height = 0.0
+	push_share = 0.0
+	if wash_calm != null:
+		wash_calm.stop()
 	if was:
 		spin = 0.0
 		bubbles(false)
 		_rest_body()
-		if not is_acting():
+		if was_happy and not is_acting():
 			lit = false
 			glow_energy = 0.0
 
@@ -436,32 +431,16 @@ func _rest_body() -> void:
 		_rest_set = false
 
 
-func wash_looping() -> bool:
-	return _wash_loop != null and _wash_loop.playing
-
-
-func _washing(delta: float) -> void:
-	if _wash_clock < 0.0:
-		return
-	_wash_clock += delta
-	var ramp := tuning.wash_ramp if tuning != null else 1.0
-	spin = (tuning.wash_spin if tuning != null else 0.8) * smoothstep(0.0, maxf(ramp, 0.001), _wash_clock)
-
-
-func _end_wash() -> void:
-	if _wash_clock >= 0.0:
-		spin = 0.0
-		bubbles(false)
-	_wash_clock = -1.0
-	if _wash_loop != null:
-		_wash_loop.stop()
-
-
 func _swing_door(to: float, seconds: float) -> void:
-	if _door_tween != null:
-		_door_tween.kill()
-	_door_tween = create_tween()
-	_door_tween.tween_property(self, "door", to, maxf(seconds, 0.001))
+	var from := clampf(door, 0.0, 1.0)
+	if door_player == null or not door_player.has_animation(DOOR) or is_equal_approx(from, to):
+		if door_player != null:
+			door_player.stop()
+		door = to
+		return
+	var speed := 1.0 / maxf(seconds, 0.001)
+	door_player.play(DOOR, -1.0, speed if to > from else -speed, to < from)
+	door_player.seek(from, true)
 
 
 func cutscene_playing() -> bool:
@@ -521,6 +500,9 @@ func _find_damage() -> void:
 	_flash = get_node_or_null("Damage/Flash") as OmniLight3D
 	_buzz = _loop_player("Damage/Buzz", &"washer_buzz")
 	_rumble = _loop_player("Damage/Rumble", &"washer_rumble")
+	var calm := _loop_player("WashCalm", &"wash_calm")
+	if calm != null:
+		calm.volume_db = Sounds.catalogue.find(&"wash_calm").volume_db
 
 
 ## A looping world sound at `path` with the catalogue event's first clip, bus and level.

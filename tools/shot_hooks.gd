@@ -212,6 +212,13 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# actions and lit with its MOOD_GLOW and a light as its washer_face.gd made. Shoot after 1.5 s.
 			_washer_lineup(world, arg)
 			return true
+		"washer_beat":
+			# core/108: the washer's wash beats on a plain floor (before/after of the beats as clips). arg
+			# "stage,<graybox|port>,<cutscene trigger>": the Looks alone, under that cutscene's look, and a camera
+			# from its front three-quarter that rides `shot_bob()` and pushes in by `shot_push()` as the
+			# cutscene's wide shot does; "call,<method>[,<arg>]" calls a beat on it (an int, true/false or a float).
+			_washer_beat(world, arg)
+			return true
 		"materials":
 			# assets/04 F01: a camera on the Materials station's board. arg "overview" looks at the
 			# whole board; arg <row> ("oak", "singles_1") hides every other row and stands before that
@@ -1343,3 +1350,53 @@ static func _old_washer(stage: Node3D, pose: String, mood: String) -> void:
 		light.light_color = glow[0]
 		light.light_energy = float(OLD_WASHER_LIGHT[0]) * float(glow[1])
 		at.add_child(light)
+
+
+## The washer beats' stage (see "washer_beat" in act()).
+static func _washer_beat(world: Node, arg: String) -> void:
+	var q := arg.split(",")
+	if q[0] == "call":
+		var looks := world.get_node_or_null("WasherBeatStage/Looks") as WasherLooks
+		if looks == null:
+			push_warning("washer_beat: no stage")
+			return
+		var args: Array = []
+		if q.size() > 2:
+			args.append(true if q[2] == "true" else (false if q[2] == "false" else (int(q[2]) if q[2].is_valid_int() else float(q[2]))))
+		looks.callv(StringName(q[1]), args)
+		return
+	var stage := Node3D.new()
+	stage.name = "WasherBeatStage"
+	world.add_child(stage)
+	stage.global_position = Vector3(0.0, 0.0, 400.0)
+	var floor := MeshInstance3D.new()
+	var plane := PlaneMesh.new()
+	plane.size = Vector2(12.0, 12.0)
+	var grey := StandardMaterial3D.new()
+	grey.albedo_color = Color(0.55, 0.55, 0.53)
+	plane.material = grey
+	floor.mesh = plane
+	stage.add_child(floor)
+	var file := "looks_graybox" if q[1] == "graybox" else "looks_washer"
+	var looks := (load("res://game/entities/washer/%s.tscn" % file) as PackedScene).instantiate() as WasherLooks
+	looks.name = "Looks"
+	stage.add_child(looks)
+	looks.pile = 1.0
+	if q.size() > 2:
+		looks.set_cutscene(looks.tuning.cutscene_look(StringName(q[2])))
+	var cam := Camera3D.new()
+	world.add_child(cam)
+	cam.fov = 35.0
+	var wide := Transform3D(Basis(), stage.to_global(Vector3(0.75, 1.15, 2.0))).looking_at(stage.to_global(Vector3(0.0, 0.5, 0.0)))
+	var near := Transform3D(Basis(), stage.to_global(Vector3(0.3, 0.8, 1.0))).looking_at(stage.to_global(Vector3(0.0, 0.5, 0.0)))
+	var ride := func() -> void:
+		if not is_instance_valid(looks):
+			return
+		var at := wide.translated(Vector3.UP * looks.shot_bob())
+		var push := looks.shot_push()
+		var to := near.translated(Vector3.UP * looks.shot_bob() * 0.5)
+		cam.global_transform = Transform3D(at.basis.slerp(to.basis, push), at.origin.lerp(to.origin, push))
+	ride.call()
+	world.get_tree().process_frame.connect(ride)
+	cam.reset_physics_interpolation()
+	cam.make_current()

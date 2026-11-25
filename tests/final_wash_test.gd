@@ -10,6 +10,11 @@ const HOUSE := "res://game/house/house.tscn"
 const ACTIONS: Array[StringName] = [&"pick", &"drop_throw", &"interact", CutscenePlayer.SKIP]
 ## The wall time the whole Final wash may take (the wash, cutscene_6, the fades).
 const SCENE_S := 120.0
+## What the washer's clips draw (core/108; the old wash_spin, after_spin and happy.hop): the voiced drum's turns a
+## second, its slow turn after the wash, and the unvoiced hop's height in metres.
+const WASH_SPIN := 0.8
+const AFTER_SPIN := 0.12
+const HAPPY_HOP := 0.06
 
 var _holder: Node = null
 var _house: Node3D = null
@@ -97,14 +102,14 @@ func case_real_path() -> void:
 		return looks.slowing(), "the happy wash to end", 100000, 20.0)
 	_check(_door_shut(looks), "the washer's door is shut")
 	_check(seen["flicker"], "the room's lamps within 4 m flicker in the happy wash")
-	_check(seen["bubbles"] and absf(seen["spin"] - washer.tuning.wash_spin) < 0.05, "bubbles rise and the drum turns at wash_spin (%s)" % [seen])
+	_check(seen["bubbles"] and absf(seen["spin"] - WASH_SPIN) < 0.05, "bubbles rise and the drum turns at 0.8 (%s)" % [seen])
 	_check(seen["push"] > 0.99, "the camera's push ran its whole way (%s)" % seen["push"])
 	_check(not looks.bubbling() or looks.slowing(), "the wash is over")
 	_check(rt.cutscenes.is_playing(), "cutscene_6 follows the wash")
 	# The line: the drum eases to after_spin, the bubbles stop a second later.
 	await _until(func() -> bool: return not looks.bubbling(), "the bubbles to stop", 600, 10.0)
-	_check(looks.spin <= washer.tuning.wash_spin and looks.spin >= washer.tuning.after_spin - 0.001, "the drum slows (%s)" % looks.spin)
-	await _until(func() -> bool: return absf(looks.spin - washer.tuning.after_spin) < 0.001, "the drum to reach after_spin", 3000, 20.0)
+	_check(looks.spin <= WASH_SPIN and looks.spin >= AFTER_SPIN - 0.001, "the drum slows (%s)" % looks.spin)
+	await _until(func() -> bool: return absf(looks.spin - AFTER_SPIN) < 0.001, "the drum to reach 0.12", 3000, 20.0)
 	_check(not looks.drum_light.visible or looks.lit, "the drum light follows the line")
 	# To the end: black, no respawn, then the screen.
 	await _until(func() -> bool: return cp.phase == CutscenePlayer.Phase.BLACK or day.ended, "the cutscene to end on black", 100000, SCENE_S)
@@ -189,7 +194,7 @@ func case_unvoiced() -> void:
 		moved["sway"] = maxf(moved["sway"], absf(looks.rotation.z - rest.basis.get_euler().z))
 		moved["rumble"] = moved["rumble"] or looks.rumbling()
 		return looks.happy_look() and moved["hop"] > 0.01 and moved["rumble"], "the unvoiced look to move", 600, 10.0)
-	_check(moved["hop"] <= washer.tuning.happy_hop + 0.001, "it hops no more than happy_hop (%s)" % moved["hop"])
+	_check(moved["hop"] <= HAPPY_HOP + 0.001, "it hops no more than 6 cm (%s)" % moved["hop"])
 	_check(moved["sway"] > 0.0, "it sways")
 	_check(looks.lit and looks.spin > 0.0, "the glow is lit and the drum turns")
 	looks.set_cutscene(null)

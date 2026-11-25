@@ -63,36 +63,15 @@ extends Resource
 @export_range(1, 12, 1) var zoo_levels := 5 # placeholder: the old five Parts
 
 @export_group("Washes")
-@export var wash_spin := 0.8 # placeholder: the old TW wash_spin (turns a second)
-@export var after_spin := 0.12 # placeholder: the old TW after_spin
-## The First wash's calm wash (core/94): the drum ramps up to `wash_spin` over `wash_ramp`; the wide shot bobs
-## `shot_bob` metres up and down at `shot_bob_rate` radians a second (the old rogue_machine.gd:340).
-@export_range(0.0, 5.0, 0.1, "suffix:s") var wash_ramp := 1.0 # placeholder: the old rogue_machine.gd:337 ramp
-@export_range(0.0, 0.1, 0.001, "suffix:m") var shot_bob := 0.01 # placeholder: the old rogue_machine.gd:340 bob
-@export_range(0.0, 10.0, 0.1) var shot_bob_rate := 2.2 # placeholder: the old rogue_machine.gd:340 bob
-## The break (core/94): the clanks play this high over the machine, and the room's lamps within
-## `room_flicker_range` flicker with its drum light until the cutscene ends (the old rogue_machine.gd:281-289).
-@export_range(0.0, 2.0, 0.05, "suffix:m") var break_height := 0.4 # placeholder: the old rogue_machine.gd:281
+## The wash beats' motion is keyed in the Looks' clips (core/108: `Beats`, washer.md "looks_contract.json"); what stays
+## here times the cutscenes and sizes their effects.
+## The room's lamps within `room_flicker_range` flicker with the drum light from the First wash's break until the
+## cutscene ends (the old rogue_machine.gd:281-289).
 @export_range(0.0, 20.0, 0.5, "suffix:m") var room_flicker_range := 4.0 # placeholder: the old rogue_machine.gd:289
-## The Final wash's happy wash (core/96; the old laundry.json `happy`, voice.json `wash_spin`, `after_spin`): the drum turns
-## `wash_spin` while the camera pushes in over the first `happy_push` of the wash (to the `Shots/Push` marker, 1 m before the face);
-## then the drum eases to `after_spin` at `happy_after_rate` turns a second each second and the bubbles stop
-## `happy_bubbles_off` later. `happy_lead` is the wash (the old 7 s less the 0.5 s fade).
+## The Final wash's happy wash (core/96; the old laundry.json `happy`): `happy_wash` runs `happy_lead` (the old 7 s less
+## the 0.5 s fade) before `happy_done`, with `happy_bubbles` bubbles.
 @export_range(0.5, 30.0, 0.1, "suffix:s") var happy_lead := 6.5 # placeholder: the old laundry.json happy.seconds 7 less the fade
-@export_range(0.0, 5.0, 0.05) var happy_spin := 1.2 # placeholder: the old laundry.json happy.spin (the unvoiced wash's turns a second)
 @export_range(1, 200, 1) var happy_bubbles := 40 # placeholder: the old laundry.json happy.bubbles
-@export_range(0.0, 1.0, 0.05) var happy_push := 0.4 # placeholder: the old laundry.json happy.push
-@export_range(0.0, 1.0, 0.01) var happy_after_rate := 0.5 # placeholder: the old rogue_machine.gd:353 delta * 0.5
-@export_range(0.0, 5.0, 0.1, "suffix:s") var happy_bubbles_off := 1.0 # placeholder: the old rogue_machine.gd:356
-## Without a line the old happy look carries the wash: it hops `happy_hop` m (`happy_hop_rate` a second), sways
-## `happy_sway` degrees (`happy_sway_rate` a second), a warm glow pulses and the rumble plays (rogue_machine.gd:311-328).
-@export_range(0.0, 0.2, 0.005, "suffix:m") var happy_hop := 0.06 # placeholder: the old laundry.json happy.hop
-@export_range(0.0, 5.0, 0.05) var happy_hop_rate := 1.1 # placeholder: the old rogue_machine.gd:315
-@export_range(0.0, 20.0, 0.5, "suffix:deg") var happy_sway := 3.0 # placeholder: the old rogue_machine.gd:316
-@export_range(0.0, 5.0, 0.05) var happy_sway_rate := 0.55 # placeholder: the old rogue_machine.gd:316
-@export var happy_glow_colour := Color(1.0, 0.9, 0.6) # placeholder: the old rogue_machine.gd:322
-@export_range(0.0, 8.0, 0.05) var happy_glow_energy := 0.5 # placeholder: the old rogue_machine.gd:323 (0.5 + 0.2 sin)
-@export_range(0.0, 8.0, 0.05) var happy_glow_pulse := 0.2 # placeholder: the old rogue_machine.gd:323
 ## The cutscene's length when it has no voice, by level (cutscene_1 to _6).
 @export var no_voice_seconds: PackedFloat32Array = PackedFloat32Array([5.0, 5.5, 6.5, 7.5, 8.5, 10.0]) # placeholder: the old TR seconds
 ## How the machine looks in each cutscene (core/88 and core/87 read them).
