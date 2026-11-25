@@ -211,3 +211,4 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 | core/97 | Continue and Start over a finished World | Solo has no Continue key for it and Continue does nothing; Solo's New Game and the Host's Start ask "Start a new game? The finished World is replaced."; yes makes a New Game in the same slot (a Host's yes starts at once, so Ready stays) | R8, Q2631 |
 | core/97 | The Lobby's Guests after the end | a Guest stays joined and in the Roster; its Lobby does not join again, and Ready starts clear | the nearest |
 | core/97 | The zoo's Final wash pillar | still opens no Final screen (the station has no Lobby to go back to) | |
+| core/109 | Spark quad size per burst (a shared scene mesh cannot hold it) | the scene's quad is 1 m; code sets `scale_amount` to the old quad width, so the drawn size is the same | technical, no old-game answer needed |

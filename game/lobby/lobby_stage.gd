@@ -32,17 +32,7 @@ func _ready() -> void:
 	_silhouette_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	_silhouette_material.albedo_color = tuning.backdrop.lerp(Color(0.5, 0.5, 0.5), tuning.silhouette_show)
 	for i in PLACES:
-		var pedestal := MeshInstance3D.new()
-		pedestal.name = "Pedestal%d" % i
-		var cylinder := CylinderMesh.new()
-		cylinder.top_radius = tuning.pedestal_radius
-		cylinder.bottom_radius = tuning.pedestal_radius
-		cylinder.height = tuning.pedestal_height
-		pedestal.mesh = cylinder
-		pedestal.material_override = StandardMaterial3D.new()
-		pedestal.position.y = -tuning.pedestal_height * 0.5
-		_row.add_child(pedestal)
-		_pedestals.append(pedestal)
+		_pedestals.append(_row.get_node("Pedestal%d" % i) as MeshInstance3D)
 		var figure := LOOKS.instantiate() as AvatarLooks
 		figure.name = "Figure%d" % i
 		figure.seed_idle("lobby%d" % i)
