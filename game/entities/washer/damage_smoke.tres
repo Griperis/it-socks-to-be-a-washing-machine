@@ -1,0 +1,27 @@
+[gd_resource type="ParticleProcessMaterial" format=3]
+
+[sub_resource type="Gradient" id="Gradient_fade"]
+colors = PackedColorArray(0.3, 0.3, 0.32, 0.8, 0.3, 0.3, 0.32, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fade"]
+gradient = SubResource("Gradient_fade")
+
+[sub_resource type="Curve" id="Curve_grow"]
+_data = [Vector2(0, 0.4), 0.0, 0.0, 0, 0, Vector2(1, 1.6), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_grow"]
+curve = SubResource("Curve_grow")
+
+[resource]
+emission_shape = 1
+emission_sphere_radius = 0.08
+direction = Vector3(0, 1, 0)
+spread = 15.0
+initial_velocity_min = 0.12
+initial_velocity_max = 0.25
+gravity = Vector3(0, 0.05, 0)
+damping_min = 0.05
+damping_max = 0.1
+scale_curve = SubResource("CurveTexture_grow")
+color_ramp = SubResource("GradientTexture1D_fade")
