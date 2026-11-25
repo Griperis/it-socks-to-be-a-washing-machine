@@ -1341,3 +1341,15 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/91, the house's run: Stage by Stage in the house, the Cabinets' unlock Stages, the floor locks placed, the Stage 1 laying and high-spot cases, the New Game page with the debug Pairs per Drawer slider; merged (main beee71a) |
 | Cost | about 313k subagent tokens |
 | Surprises | the lock door swings the other way and the gate's hinge moved, to keep the old swing with the chain on the players' side |
+
+---
+
+| Ticket | core/103, co-op tests that clicked a fixed time after moving the Guest: coop_carry, coop_hands, coop_pings wait for the Host's copy of the Guest's place; no game change; merged (main 0185d21) |
+| Cost | about 93k subagent tokens |
+| Surprises | only coop_carry failed under a forced lag; coop_knockdown still did (core/104) |
+
+---
+
+| Ticket | core/104, coop_knockdown with a late pose: real_path threw where the Host still had the Guest, drag_ends grabbed after the rise; both wait on the Host's view now; no game change; merged (main a3d74e1) |
+| Cost | about 121k subagent tokens |
+| Surprises | its commit came out damaged (repaired) |
