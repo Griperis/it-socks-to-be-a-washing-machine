@@ -54,7 +54,7 @@ their Looks swap in when the designer says yes.
 | 9 | core/97 Back to the Lobby | |
 | later | core/99 The visible pour (`needs-info`, after the review, Q2627) | |
 
-The designer plays batch A after wave 9 (the asset tickets' line-ups may be judged at the same sitting).
+The designer plays batch A after wave 9 (the asset tickets' line-ups may be judged at the same sitting). **Built and merged 2026-11-25 (main a541cde); waiting for the designer's play session and the questions in the review sheet.**
 
 ## M0.5 batches (Q2296)
 Each batch is one theme, tested in one sitting at one or two stations, ending with a short play session and the
