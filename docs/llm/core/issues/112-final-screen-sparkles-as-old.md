@@ -70,3 +70,4 @@ tint-to-white mix (0.5). Shot hook `final` takes `,burst`; shot set `final-spark
 Files: game/ui/final_screen/final_spark.tscn, final_column.gd, final_screen_tuning.gd, game/hands/speck_material.tres,
 tools/shot_hooks.gd, tools/shots/sets/final-sparkles.txt.
 Verified: PASS 22906 checks, 719 cases (--touched). Stills in `builds/review-core-112/`; waits for the designer's go.
+- Merged: f6b85dfe (2026-11-25, branch core/112-final-screen-sparkles)

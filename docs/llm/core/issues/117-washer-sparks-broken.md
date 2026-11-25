@@ -57,3 +57,4 @@ streaks, not specks. New case `damage_nodes` (both Looks have every contract Dam
 Files: game/entities/washer/looks_washer.tscn, looks_graybox.tscn, damage_*.tres, tests/washer_broken_test.gd,
 tools/shot_hooks.gd, tools/shots/sets/washer-sparks.txt.
 Look work: strip in builds/review-core-117/washer-sparks-strip.png (real and graybox, angriest and mild).
+- Merged: 7f4c7ce8 (2026-11-25, branch core/117-washer-sparks)
