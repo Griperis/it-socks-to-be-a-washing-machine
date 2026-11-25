@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://bgma7k1j0iwkv" path="res://game/ping/ping_wheel.tscn" id="21_wheel"]
 [ext_resource type="Script" uid="uid://tiy0agr0vohh" path="res://game/player/pinger.gd" id="22_pinger"]
 [ext_resource type="Resource" uid="uid://e3fid8403c2f" path="res://game/ping/ping_tuning.tres" id="23_ping_tuning"]
+[ext_resource type="PackedScene" path="res://game/ui/stage_bar.tscn" id="24_stage_bar"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -73,6 +74,9 @@ script = ExtResource("8_hud")
 tuning = ExtResource("9_hud_tuning")
 
 [node name="Vignette" parent="Hud" unique_id=1460311761 instance=ExtResource("13_vignette")]
+unique_name_in_owner = true
+
+[node name="StageBar" parent="Hud" instance=ExtResource("24_stage_bar")]
 unique_name_in_owner = true
 
 [node name="Crosshair" parent="Hud" unique_id=1667869579 instance=ExtResource("6_cross")]

@@ -29,6 +29,16 @@ border = 4
 margin = 30
 pressed = false
 
+[sub_resource type="StyleBox" id="Keycap_stage_panel"]
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 10
+pressed = false
+
 [sub_resource type="StyleBox" id="Keycap_KeycapButton_normal"]
 script = ExtResource("1_keycap")
 face_colour = Color(0.94902, 0.607843, 0.294118, 1)
@@ -270,6 +280,8 @@ SizeLetter/base_type = &"PlainLabel"
 SizeLetter/font_sizes/font_size = 23
 ThinLabel/base_type = &"OutlinedLabel"
 ThinLabel/constants/outline_size = 6
+StagePanel/base_type = &"PanelContainer"
+StagePanel/styles/panel = SubResource("Keycap_stage_panel")
 TitlePanel/base_type = &"PanelContainer"
 TitlePanel/styles/panel = SubResource("Keycap_panel")
 KeycapButton/base_type = &"Button"

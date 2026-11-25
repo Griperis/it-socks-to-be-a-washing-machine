@@ -168,6 +168,34 @@ func bar_numbers() -> Vector2i:
 	return Vector2i(got, takes)
 
 
+## The words ahead of the two numbers in the `stage_phase` text: the Stage's number and title.
+func bar_words() -> Array:
+	var s := current()
+	return [stage + 1, s.title if s != null else ""]
+
+
+## The Collections of the bar's Cabinets, in catalogue order (the Stage bar's icons).
+func bar_collections() -> Array[StringName]:
+	var have: Dictionary[StringName, bool] = {}
+	var catalogue: DesignCatalogue = null
+	for row: Variant in bar:
+		var cab := cabinet_of(StringName(str((row as Array)[0])))
+		if cab == null:
+			continue
+		have[cab.collection] = true
+		if catalogue == null and cab.mess_of() != null:
+			catalogue = cab.mess_of().catalogue
+	var out: Array[StringName] = []
+	if catalogue != null:
+		for c in catalogue.collections():
+			if have.has(c):
+				out.append(c)
+	for c in have:
+		if not out.has(c):
+			out.append(c)
+	return out
+
+
 ## The Rows a Cabinet of `cab` may have at `per` Pairs per Drawer: its full height, never more than its
 ## Drawers.
 static func height_of(cab: Cabinet, per: int) -> int:
