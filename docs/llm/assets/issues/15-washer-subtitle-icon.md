@@ -45,3 +45,4 @@ An SVG in the UI icons' folder, imported as the others; nothing else.
 - 2026-11-25 (send-back, Q2655): Changed: the two brow paths removed from `assets/ui/washer.svg` (nothing else; the import
   re-exports it). Files: assets/ui/washer.svg. Still: `builds/review-assets-15/washer-icon-nobrows-lineup.png`,
   `washer-icon-nobrows-zoom.png` (old files kept). Stopped at ready-for-human again. Verified: see the commit's suite line.
+- Merged: 97199ee8 (2026-11-25, branch assets/15-washer-subtitle-icon)

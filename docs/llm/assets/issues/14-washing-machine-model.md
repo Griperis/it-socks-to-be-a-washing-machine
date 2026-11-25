@@ -80,3 +80,4 @@ The model by its script; the game's AnimationTree and properties stay in the Loo
 - Files: assets_src/generate/appliance/make_washing_machine_face.py, assets_src/blender/appliance/washing_machine.blend,
   assets/appliance/washing_machine.glb, game/entities/washer/washer_model_import.gd
 - Verified: see the commit's verdict lines; before/after builds/review-assets-14/*-shadowfix*
+- Merged: df333848 (2026-11-25, branch assets/14-washing-machine-model)
