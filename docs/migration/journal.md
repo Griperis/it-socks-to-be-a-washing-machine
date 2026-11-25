@@ -1202,3 +1202,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/70, a Sock pushed under the floor drawn for a frame: not seen (0 of 306 drawn frames with 4 pushes; the push lands at the next tick's start and the Mess puts it back in that tick); a drawn-frame floor watch added to mess_settle; no game change |
 | Cost | about 125k subagent tokens |
 | Surprises | t01_heap no longer gets a push on main; reproduced on the thin-floor pour |
+
+---
+
+| Ticket | core/75, pad focus: the old lit look ported (the selected control lifts 5 px, grows to 1.08 over 0.1 s, a gold glow fades in; only pad or keyboard selection lights it); UiSounds drives it for every control, opt-out by the meta `own_lit`; numbers in pad_focus_tuning.tres (Q2647-Q2650); merged (main 2ec8f85) |
+| Cost | not recorded |
+| Surprises | the first build invented a ring instead of the old look; an editor re-save dropped credits.tres's covers lists on main (restored, 1877358) |
