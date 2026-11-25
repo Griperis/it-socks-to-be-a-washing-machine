@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: voice
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: []
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: opus"]
 terms: [Voice line]
@@ -50,3 +50,18 @@ edited in the inspector.
 ## Open follow-ups
 
 ## Built log
+- 2026-11-25. Changed: the voice data and its bake. The Resources `VoiceSpeaker`, `VoiceActing`, `VoiceMood` (one mood's
+  pose, brow acting and glow), `VoiceTrigger`, `VoiceBank` (with `lines_md5`), `VoiceLine` (with `marks`), `VoiceTake`
+  (no gain), `VoiceSegment`, and `VoiceBook` with its load checks (bank older than its JSON, missing trigger file, key
+  without CSV text). The bake: `tools/voice_bake.sh` (import, bake, import; project.godot put back) and
+  `tools/voice_bake.gd` (headless script entry), `VoiceBaker` (JSON check and completion, timing, banks, CSV; stops on
+  an error before writing, naming the line), `VoiceLipsync` (the old voiceover.py door curve and brows.py acting,
+  wiggle, angry share and mood glow ported), `VoiceFiles` (the JSON in the designer's order, CSV rows, the editor's uid
+  format a headless save lacks); `tools/voice_transcribe.py` (faster-whisper small.en; without it new lines get TODO).
+  The 21 washer recordings in `assets/voice/washer/`, `game/voice/lines/washer.json` (the old corrected texts, triggers,
+  sets 1-5, moods, and the old segment times as `timing`), `washer.tres`, `washer_acting.tres` (old numbers), the ten
+  batch A trigger files, baked to `game/voice/baked/`; `voice_lines.csv` registered under Localization (the one
+  project.godot change); a credits entry for the recordings. Settled by the old game (batch-a-review.md): the untagged
+  comments get all four comment triggers; the optional per-recording `timing`; the credits entry.
+  Files: see the commit. Verified: `kit/tools/run.sh --touched` (the commit's verdict lines); `tests/voice_bake_test.gd`.
+

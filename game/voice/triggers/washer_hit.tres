@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="VoiceTrigger" format=3 uid="uid://cluv0ordnmta8"]
+
+[ext_resource type="Script" uid="uid://k1g7mn7jdf7a" path="res://game/voice/voice_trigger.gd" id="1_qfd11"]
+[ext_resource type="Resource" uid="uid://v7tirw0tssx0" path="res://game/voice/speakers/washer.tres" id="2_26nqi"]
+
+[resource]
+script = ExtResource("1_qfd11")
+id = &"washer_hit"
+speaker = ExtResource("2_26nqi")
+note = "The Host on a thrown thing's landing within 1.4 m of the machine: core/86."

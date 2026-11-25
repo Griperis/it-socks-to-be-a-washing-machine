@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="VoiceTrigger" format=3 uid="uid://bhjfu8vgom0ue"]
+
+[ext_resource type="Script" uid="uid://k1g7mn7jdf7a" path="res://game/voice/voice_trigger.gd" id="1_oy4pv"]
+[ext_resource type="Resource" uid="uid://v7tirw0tssx0" path="res://game/voice/speakers/washer.tres" id="2_vfu78"]
+
+[resource]
+script = ExtResource("1_oy4pv")
+id = &"washer_stare"
+speaker = ExtResource("2_vfu78")
+chance = 0.5
+note = "The washer's stare sensing, on each machine for its own player (4 s, 8 m, 12 degrees): core/86."

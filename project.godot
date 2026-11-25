@@ -165,6 +165,10 @@ click_middle={
 ]
 }
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://game/voice/voice_lines.en.translation")
+
 [it_socks]
 
 graphics/preset="high"

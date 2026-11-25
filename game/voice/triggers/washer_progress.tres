@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="VoiceTrigger" format=3 uid="uid://dhxqal2xducss"]
+
+[ext_resource type="Script" uid="uid://k1g7mn7jdf7a" path="res://game/voice/voice_trigger.gd" id="1_blkbi"]
+[ext_resource type="Resource" uid="uid://v7tirw0tssx0" path="res://game/voice/speakers/washer.tres" id="2_kkcym"]
+
+[resource]
+script = ExtResource("1_blkbi")
+id = &"washer_progress"
+speaker = ExtResource("2_kkcym")
+note = "The Host on a Pair shelved or a Cabinet filled: core/86 (core/76's Cabinet filled)."

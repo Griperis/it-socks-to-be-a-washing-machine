@@ -1,0 +1,59 @@
+[gd_resource type="Resource" script_class="VoiceActing" format=3 uid="uid://7vt30kd1ok8f"]
+
+[ext_resource type="Script" uid="uid://bvk0ablhfr3g7" path="res://game/voice/voice_mood.gd" id="1_1phpx"]
+[ext_resource type="Script" uid="uid://743gc8q6q486" path="res://game/voice/voice_acting.gd" id="2_yfqw7"]
+
+[sub_resource type="Resource" id="mood_angry"]
+script = ExtResource("1_1phpx")
+id = &"angry"
+lean = 5.0
+brow_left = Vector2(24, -0.004)
+brow_right = Vector2(24, -0.004)
+brow_left_tilt = Vector3(14, 0, 10)
+brow_left_raise = Vector3(-0.008, -0.006, 0)
+brow_right_tilt = Vector3(14, 0, 10)
+brow_right_raise = Vector3(-0.008, -0.006, 0)
+beat_tilt = Vector3(0, 0, 8)
+glow_colour = Color(1, 0.02, 0.005, 1)
+glow_energy = 3.0
+
+[sub_resource type="Resource" id="mood_calming"]
+script = ExtResource("1_1phpx")
+id = &"calming"
+brow_left = Vector2(0, 0.012)
+brow_right = Vector2(0, 0.012)
+brow_left_raise = Vector3(0.016, 0, 0.012)
+brow_right_raise = Vector3(0.016, 0, 0.012)
+beat_tilt = Vector3(0, -10, 0)
+beat_raise = Vector3(0, 0.01, 0)
+glow_colour = Color(1, 0.45, 0.12, 1)
+glow_energy = 2.0
+
+[sub_resource type="Resource" id="mood_entitled"]
+script = ExtResource("1_1phpx")
+id = &"entitled"
+lean = -5.0
+brow_left = Vector2(12, -0.01)
+brow_right = Vector2(-6, 0.052)
+brow_left_tilt = Vector3(6, 6, 0)
+brow_right_tilt = Vector3(0, -6, 0)
+brow_right_raise = Vector3(0.022, 0, 0.02)
+glow_colour = Color(0.5, 0.06, 1, 1)
+glow_energy = 2.4
+
+[sub_resource type="Resource" id="mood_surprised"]
+script = ExtResource("1_1phpx")
+id = &"surprised"
+lean = -2.0
+brow_left = Vector2(-10, 0.035)
+brow_right = Vector2(-10, 0.035)
+brow_left_tilt = Vector3(0, -6, 0)
+brow_left_raise = Vector3(0.012, 0, 0.018)
+brow_right_tilt = Vector3(0, -6, 0)
+brow_right_raise = Vector3(0.012, 0, 0.018)
+glow_colour = Color(0.95, 0.8, 0.55, 1)
+glow_energy = 1.2
+
+[resource]
+script = ExtResource("2_yfqw7")
+moods = Array[ExtResource("1_1phpx")]([SubResource("mood_angry"), SubResource("mood_calming"), SubResource("mood_entitled"), SubResource("mood_surprised")])

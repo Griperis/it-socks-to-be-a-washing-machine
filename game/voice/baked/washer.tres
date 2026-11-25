@@ -1,0 +1,690 @@
+[gd_resource type="Resource" script_class="VoiceBank" format=3 uid="uid://dppy408eygxhm"]
+
+[ext_resource type="Script" uid="uid://djcn1eowhugtd" path="res://game/voice/voice_line.gd" id="1_7844s"]
+[ext_resource type="Script" uid="uid://3w8vgd6jplm5" path="res://game/voice/voice_take.gd" id="2_q7aco"]
+[ext_resource type="Animation" uid="uid://l58d2w3qptc1" path="res://game/voice/baked/washer/stage_1_voice_A.anim.tres" id="3_y0xjp"]
+[ext_resource type="Script" uid="uid://by18xp3147q3t" path="res://game/voice/voice_segment.gd" id="4_y6681"]
+[ext_resource type="AudioStream" uid="uid://ctm8vxjt43np4" path="res://assets/voice/washer/stage_1_voice_A.wav" id="5_3uhdl"]
+[ext_resource type="Script" uid="uid://k1g7mn7jdf7a" path="res://game/voice/voice_trigger.gd" id="6_fe5l8"]
+[ext_resource type="Resource" uid="uid://bhjfu8vgom0ue" path="res://game/voice/triggers/washer_stare.tres" id="7_2x3ga"]
+[ext_resource type="Animation" uid="uid://ck4mxhs0lni7" path="res://game/voice/baked/washer/stage_1_voice_B.anim.tres" id="8_wrk36"]
+[ext_resource type="AudioStream" uid="uid://5mhahgi14ypv" path="res://assets/voice/washer/stage_1_voice_B.wav" id="9_6fsxm"]
+[ext_resource type="Resource" uid="uid://dh4xnw0fqmqkw" path="res://game/voice/triggers/washer_idle.tres" id="10_nkbj4"]
+[ext_resource type="Animation" uid="uid://8mnexvnd13fi" path="res://game/voice/baked/washer/stage_1_voice_C.anim.tres" id="11_51snm"]
+[ext_resource type="AudioStream" uid="uid://ufcwsu8bqdqp" path="res://assets/voice/washer/stage_1_voice_C.wav" id="12_uptyl"]
+[ext_resource type="Animation" uid="uid://ife4huf08dn6" path="res://game/voice/baked/washer/stage_2_voice_A.anim.tres" id="13_07qg7"]
+[ext_resource type="AudioStream" uid="uid://crtrncnf1h7fo" path="res://assets/voice/washer/stage_2_voice_A.wav" id="14_e6cp0"]
+[ext_resource type="Animation" uid="uid://drbmi6rxxsa5g" path="res://game/voice/baked/washer/stage_2_voice_B.anim.tres" id="15_8g0al"]
+[ext_resource type="AudioStream" uid="uid://cqi0a0ioycrrw" path="res://assets/voice/washer/stage_2_voice_B.wav" id="16_ffp43"]
+[ext_resource type="Animation" uid="uid://c84djcy3kic81" path="res://game/voice/baked/washer/stage_2_voice_C.anim.tres" id="17_751c2"]
+[ext_resource type="AudioStream" uid="uid://crrrcrm8fq8bm" path="res://assets/voice/washer/stage_2_voice_C.wav" id="18_v33xo"]
+[ext_resource type="Animation" uid="uid://cqw8pwnkvlp5o" path="res://game/voice/baked/washer/stage_3_voice_A.anim.tres" id="19_ymxei"]
+[ext_resource type="AudioStream" uid="uid://dc10sw3vxgbln" path="res://assets/voice/washer/stage_3_voice_A.wav" id="20_ye3yr"]
+[ext_resource type="Resource" uid="uid://dhxqal2xducss" path="res://game/voice/triggers/washer_progress.tres" id="21_0jt0r"]
+[ext_resource type="Animation" uid="uid://cx7iqv648is1u" path="res://game/voice/baked/washer/stage_3_voice_B.anim.tres" id="22_44k0l"]
+[ext_resource type="AudioStream" uid="uid://cbadi6crvpb8d" path="res://assets/voice/washer/stage_3_voice_B.wav" id="23_b3w5a"]
+[ext_resource type="Animation" uid="uid://dsnfqlpgmp0fk" path="res://game/voice/baked/washer/stage_3_voice_C.anim.tres" id="24_ir1op"]
+[ext_resource type="AudioStream" uid="uid://cl3pbmnxynv8r" path="res://assets/voice/washer/stage_3_voice_C.wav" id="25_x7jhf"]
+[ext_resource type="Animation" uid="uid://cyrgdndlaqu5a" path="res://game/voice/baked/washer/stage_4_voice_A.anim.tres" id="26_hglp5"]
+[ext_resource type="AudioStream" uid="uid://h22emxsoc3kv" path="res://assets/voice/washer/stage_4_voice_A.wav" id="27_kohkt"]
+[ext_resource type="Animation" uid="uid://bbyvs7u6pr1ec" path="res://game/voice/baked/washer/stage_4_voice_B.anim.tres" id="28_dmdaj"]
+[ext_resource type="AudioStream" uid="uid://m6k0xb1p4svd" path="res://assets/voice/washer/stage_4_voice_B.wav" id="29_myfgc"]
+[ext_resource type="Resource" uid="uid://cluv0ordnmta8" path="res://game/voice/triggers/washer_hit.tres" id="30_f516y"]
+[ext_resource type="Animation" uid="uid://duvsj1fxsu6k6" path="res://game/voice/baked/washer/stage_4_voice_C.anim.tres" id="31_24f2t"]
+[ext_resource type="AudioStream" uid="uid://bty1gku3rfwq" path="res://assets/voice/washer/stage_4_voice_C.wav" id="32_lcj0w"]
+[ext_resource type="Animation" uid="uid://ciq3qsflvcxci" path="res://game/voice/baked/washer/stage_5_voice_A.anim.tres" id="33_pv1ff"]
+[ext_resource type="AudioStream" uid="uid://djh2ov02hxpgu" path="res://assets/voice/washer/stage_5_voice_A.wav" id="34_k1spf"]
+[ext_resource type="Animation" uid="uid://kkjujj1vlif2" path="res://game/voice/baked/washer/stage_5_voice_B.anim.tres" id="35_cel4x"]
+[ext_resource type="AudioStream" uid="uid://cty5p10dvfsrh" path="res://assets/voice/washer/stage_5_voice_B.wav" id="36_maeu7"]
+[ext_resource type="Animation" uid="uid://ci3yxbwx0pmvb" path="res://game/voice/baked/washer/stage_5_voice_C.anim.tres" id="37_jqedv"]
+[ext_resource type="AudioStream" uid="uid://cxgsc05kg0ugr" path="res://assets/voice/washer/stage_5_voice_C.wav" id="38_xpfhm"]
+[ext_resource type="Animation" uid="uid://bav700btjl3rk" path="res://game/voice/baked/washer/cutscene_1.anim.tres" id="39_xxsgp"]
+[ext_resource type="AudioStream" uid="uid://l3bb50rkuhga" path="res://assets/voice/washer/cutscene_1.wav" id="40_mmp0r"]
+[ext_resource type="Resource" uid="uid://dspm447roaxf7" path="res://game/voice/triggers/cutscene_first_wash.tres" id="41_0uvda"]
+[ext_resource type="Animation" uid="uid://8ji4nli16wii" path="res://game/voice/baked/washer/cutscene_2.anim.tres" id="42_pkxn4"]
+[ext_resource type="AudioStream" uid="uid://emd0n842hsns" path="res://assets/voice/washer/cutscene_2.wav" id="43_ushca"]
+[ext_resource type="Resource" uid="uid://065dcqng2efe" path="res://game/voice/triggers/cutscene_fix_1.tres" id="44_aer1f"]
+[ext_resource type="Animation" uid="uid://cptxlmhm43j4e" path="res://game/voice/baked/washer/cutscene_3.anim.tres" id="45_osfye"]
+[ext_resource type="AudioStream" uid="uid://t245pwud4gwi" path="res://assets/voice/washer/cutscene_3.wav" id="46_tkbrl"]
+[ext_resource type="Resource" uid="uid://cw4x5o0ldw64f" path="res://game/voice/triggers/cutscene_fix_2.tres" id="47_bn8rx"]
+[ext_resource type="Animation" uid="uid://c4i76u2q6kt1t" path="res://game/voice/baked/washer/cutscene_4.anim.tres" id="48_cqbqx"]
+[ext_resource type="AudioStream" uid="uid://bh5e075f71sa6" path="res://assets/voice/washer/cutscene_4.wav" id="49_m837s"]
+[ext_resource type="Resource" uid="uid://d3cl0oi0aok6d" path="res://game/voice/triggers/cutscene_fix_3.tres" id="50_ehubp"]
+[ext_resource type="Animation" uid="uid://b2yymrulhv77h" path="res://game/voice/baked/washer/cutscene_5.anim.tres" id="51_wtgce"]
+[ext_resource type="AudioStream" uid="uid://1utrjjc2hn1q" path="res://assets/voice/washer/cutscene_5.wav" id="52_euw3t"]
+[ext_resource type="Resource" uid="uid://cq4r6eyho4be1" path="res://game/voice/triggers/cutscene_fix_4.tres" id="53_tbpra"]
+[ext_resource type="Animation" uid="uid://cga0v76fkwyu3" path="res://game/voice/baked/washer/cutscene_6.anim.tres" id="54_k6cti"]
+[ext_resource type="AudioStream" uid="uid://cmoi6duhgvcro" path="res://assets/voice/washer/cutscene_6.wav" id="55_hce2m"]
+[ext_resource type="Resource" uid="uid://ctbypx2rcmrs2" path="res://game/voice/triggers/cutscene_final_wash.tres" id="56_hja17"]
+[ext_resource type="Script" uid="uid://0spuefso45pc" path="res://game/voice/voice_bank.gd" id="57_233gd"]
+[ext_resource type="Resource" uid="uid://v7tirw0tssx0" path="res://game/voice/speakers/washer.tres" id="58_s1r26"]
+
+[sub_resource type="Resource" id="seg_stage_1_voice_A_0_0"]
+script = ExtResource("4_y6681")
+end = 1.44
+key = &"VO_STAGE_1_VOICE_A_1"
+
+[sub_resource type="Resource" id="take_stage_1_voice_A_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("5_3uhdl")
+source_md5 = "28019c3f41525ac94780df7734d3e549"
+duration = 1.5
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_1_voice_A_0_0")])
+acting = ExtResource("3_y0xjp")
+
+[sub_resource type="Resource" id="line_stage_1_voice_A"]
+script = ExtResource("1_7844s")
+id = &"stage_1_voice_A"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("7_2x3ga")])
+sets = PackedInt32Array(1)
+keys = PackedStringArray("VO_STAGE_1_VOICE_A_1")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_1_voice_A_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_1_voice_B_0_0"]
+script = ExtResource("4_y6681")
+end = 1.6
+key = &"VO_STAGE_1_VOICE_B_1"
+
+[sub_resource type="Resource" id="take_stage_1_voice_B_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("9_6fsxm")
+source_md5 = "ba07105976c975119ee804db12315c9f"
+duration = 1.75
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_1_voice_B_0_0")])
+acting = ExtResource("8_wrk36")
+
+[sub_resource type="Resource" id="line_stage_1_voice_B"]
+script = ExtResource("1_7844s")
+id = &"stage_1_voice_B"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("10_nkbj4")])
+sets = PackedInt32Array(1)
+keys = PackedStringArray("VO_STAGE_1_VOICE_B_1")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_1_voice_B_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_1_voice_C_0_0"]
+script = ExtResource("4_y6681")
+end = 1.7
+key = &"VO_STAGE_1_VOICE_C_1"
+
+[sub_resource type="Resource" id="take_stage_1_voice_C_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("12_uptyl")
+source_md5 = "ebc2a4ed10a936abd9a45468d55d1c19"
+duration = 1.75
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_1_voice_C_0_0")])
+acting = ExtResource("11_51snm")
+
+[sub_resource type="Resource" id="line_stage_1_voice_C"]
+script = ExtResource("1_7844s")
+id = &"stage_1_voice_C"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("7_2x3ga")])
+sets = PackedInt32Array(1)
+keys = PackedStringArray("VO_STAGE_1_VOICE_C_1")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_1_voice_C_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_2_voice_A_0_0"]
+script = ExtResource("4_y6681")
+end = 1.68
+key = &"VO_STAGE_2_VOICE_A_1"
+
+[sub_resource type="Resource" id="take_stage_2_voice_A_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("14_e6cp0")
+source_md5 = "6fc5a15fc7a233a0bb5aa868bd2f0b6e"
+duration = 1.75
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_2_voice_A_0_0")])
+acting = ExtResource("13_07qg7")
+
+[sub_resource type="Resource" id="line_stage_2_voice_A"]
+script = ExtResource("1_7844s")
+id = &"stage_2_voice_A"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("10_nkbj4")])
+sets = PackedInt32Array(2)
+keys = PackedStringArray("VO_STAGE_2_VOICE_A_1")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_2_voice_A_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_2_voice_B_0_0"]
+script = ExtResource("4_y6681")
+end = 2.64
+key = &"VO_STAGE_2_VOICE_B_1"
+
+[sub_resource type="Resource" id="take_stage_2_voice_B_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("16_ffp43")
+source_md5 = "a1305e9a0df302d5dabeb670bbeed5f4"
+duration = 2.75
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_2_voice_B_0_0")])
+acting = ExtResource("15_8g0al")
+
+[sub_resource type="Resource" id="line_stage_2_voice_B"]
+script = ExtResource("1_7844s")
+id = &"stage_2_voice_B"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("10_nkbj4")])
+sets = PackedInt32Array(2)
+keys = PackedStringArray("VO_STAGE_2_VOICE_B_1")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_2_voice_B_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_2_voice_C_0_0"]
+script = ExtResource("4_y6681")
+end = 2.0
+key = &"VO_STAGE_2_VOICE_C_1"
+
+[sub_resource type="Resource" id="take_stage_2_voice_C_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("18_v33xo")
+source_md5 = "73c635c29aa24af7708d2b85a96ab627"
+duration = 1.75
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_2_voice_C_0_0")])
+acting = ExtResource("17_751c2")
+
+[sub_resource type="Resource" id="line_stage_2_voice_C"]
+script = ExtResource("1_7844s")
+id = &"stage_2_voice_C"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("7_2x3ga")])
+sets = PackedInt32Array(2)
+keys = PackedStringArray("VO_STAGE_2_VOICE_C_1")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_2_voice_C_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_3_voice_A_0_0"]
+script = ExtResource("4_y6681")
+end = 3.44
+key = &"VO_STAGE_3_VOICE_A_1"
+
+[sub_resource type="Resource" id="take_stage_3_voice_A_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("20_ye3yr")
+source_md5 = "2700ae333c5c372b0ca4c90117799596"
+duration = 3.5
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_3_voice_A_0_0")])
+acting = ExtResource("19_ymxei")
+
+[sub_resource type="Resource" id="line_stage_3_voice_A"]
+script = ExtResource("1_7844s")
+id = &"stage_3_voice_A"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("21_0jt0r")])
+sets = PackedInt32Array(3)
+keys = PackedStringArray("VO_STAGE_3_VOICE_A_1")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_3_voice_A_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_3_voice_B_0_0"]
+script = ExtResource("4_y6681")
+end = 3.0
+key = &"VO_STAGE_3_VOICE_B_1"
+
+[sub_resource type="Resource" id="take_stage_3_voice_B_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("23_b3w5a")
+source_md5 = "f68380b5ff20f973a2b5338da65789e3"
+duration = 3.0
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_3_voice_B_0_0")])
+acting = ExtResource("22_44k0l")
+
+[sub_resource type="Resource" id="line_stage_3_voice_B"]
+script = ExtResource("1_7844s")
+id = &"stage_3_voice_B"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("7_2x3ga")])
+sets = PackedInt32Array(3)
+keys = PackedStringArray("VO_STAGE_3_VOICE_B_1")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_3_voice_B_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_3_voice_C_0_0"]
+script = ExtResource("4_y6681")
+end = 2.0
+key = &"VO_STAGE_3_VOICE_C_1"
+
+[sub_resource type="Resource" id="take_stage_3_voice_C_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("25_x7jhf")
+source_md5 = "02d418ea8377304edcd6e2b99814bb5b"
+duration = 1.75
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_3_voice_C_0_0")])
+acting = ExtResource("24_ir1op")
+
+[sub_resource type="Resource" id="line_stage_3_voice_C"]
+script = ExtResource("1_7844s")
+id = &"stage_3_voice_C"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("21_0jt0r")])
+sets = PackedInt32Array(3)
+keys = PackedStringArray("VO_STAGE_3_VOICE_C_1")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_3_voice_C_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_4_voice_A_0_0"]
+script = ExtResource("4_y6681")
+end = 2.72
+key = &"VO_STAGE_4_VOICE_A_1"
+
+[sub_resource type="Resource" id="take_stage_4_voice_A_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("27_kohkt")
+source_md5 = "a8870ec0c0900ed0561ecac445dff1e8"
+duration = 2.75
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_4_voice_A_0_0")])
+acting = ExtResource("26_hglp5")
+
+[sub_resource type="Resource" id="line_stage_4_voice_A"]
+script = ExtResource("1_7844s")
+id = &"stage_4_voice_A"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("10_nkbj4")])
+sets = PackedInt32Array(4)
+keys = PackedStringArray("VO_STAGE_4_VOICE_A_1")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_4_voice_A_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_4_voice_B_0_0"]
+script = ExtResource("4_y6681")
+end = 4.4
+key = &"VO_STAGE_4_VOICE_B_1"
+
+[sub_resource type="Resource" id="seg_stage_4_voice_B_0_1"]
+script = ExtResource("4_y6681")
+start = 4.4
+end = 6.96
+key = &"VO_STAGE_4_VOICE_B_2"
+
+[sub_resource type="Resource" id="take_stage_4_voice_B_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("29_myfgc")
+source_md5 = "fec678d84f1b3369b9458c3c8b55b13d"
+duration = 7.0
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_4_voice_B_0_0"), SubResource("seg_stage_4_voice_B_0_1")])
+acting = ExtResource("28_dmdaj")
+
+[sub_resource type="Resource" id="line_stage_4_voice_B"]
+script = ExtResource("1_7844s")
+id = &"stage_4_voice_B"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("7_2x3ga"), ExtResource("21_0jt0r"), ExtResource("30_f516y"), ExtResource("10_nkbj4")])
+sets = PackedInt32Array(4)
+keys = PackedStringArray("VO_STAGE_4_VOICE_B_1", "VO_STAGE_4_VOICE_B_2")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_4_voice_B_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_4_voice_C_0_0"]
+script = ExtResource("4_y6681")
+end = 2.72
+key = &"VO_STAGE_4_VOICE_C_1"
+
+[sub_resource type="Resource" id="seg_stage_4_voice_C_0_1"]
+script = ExtResource("4_y6681")
+start = 2.72
+end = 4.32
+key = &"VO_STAGE_4_VOICE_C_2"
+
+[sub_resource type="Resource" id="seg_stage_4_voice_C_0_2"]
+script = ExtResource("4_y6681")
+start = 4.32
+end = 6.18
+key = &"VO_STAGE_4_VOICE_C_3"
+
+[sub_resource type="Resource" id="seg_stage_4_voice_C_0_3"]
+script = ExtResource("4_y6681")
+start = 6.18
+end = 7.48
+key = &"VO_STAGE_4_VOICE_C_4"
+
+[sub_resource type="Resource" id="take_stage_4_voice_C_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("32_lcj0w")
+source_md5 = "b794fa7eb244681e3af9969cedd57515"
+duration = 7.5
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_4_voice_C_0_0"), SubResource("seg_stage_4_voice_C_0_1"), SubResource("seg_stage_4_voice_C_0_2"), SubResource("seg_stage_4_voice_C_0_3")])
+acting = ExtResource("31_24f2t")
+
+[sub_resource type="Resource" id="line_stage_4_voice_C"]
+script = ExtResource("1_7844s")
+id = &"stage_4_voice_C"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("7_2x3ga"), ExtResource("21_0jt0r"), ExtResource("30_f516y"), ExtResource("10_nkbj4")])
+sets = PackedInt32Array(4)
+keys = PackedStringArray("VO_STAGE_4_VOICE_C_1", "VO_STAGE_4_VOICE_C_2", "VO_STAGE_4_VOICE_C_3", "VO_STAGE_4_VOICE_C_4")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_4_voice_C_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_5_voice_A_0_0"]
+script = ExtResource("4_y6681")
+end = 5.84
+key = &"VO_STAGE_5_VOICE_A_1"
+
+[sub_resource type="Resource" id="take_stage_5_voice_A_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("34_k1spf")
+source_md5 = "33fc7016cda6a8759b4e1cb2cfc82a5f"
+duration = 6.0
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_5_voice_A_0_0")])
+acting = ExtResource("33_pv1ff")
+
+[sub_resource type="Resource" id="line_stage_5_voice_A"]
+script = ExtResource("1_7844s")
+id = &"stage_5_voice_A"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("10_nkbj4")])
+sets = PackedInt32Array(5)
+keys = PackedStringArray("VO_STAGE_5_VOICE_A_1")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_5_voice_A_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_5_voice_B_0_0"]
+script = ExtResource("4_y6681")
+end = 5.0
+key = &"VO_STAGE_5_VOICE_B_1"
+
+[sub_resource type="Resource" id="take_stage_5_voice_B_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("36_maeu7")
+source_md5 = "9dab1301cb48113c1150fd16dfac490a"
+duration = 5.0
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_5_voice_B_0_0")])
+acting = ExtResource("35_cel4x")
+
+[sub_resource type="Resource" id="line_stage_5_voice_B"]
+script = ExtResource("1_7844s")
+id = &"stage_5_voice_B"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("7_2x3ga"), ExtResource("21_0jt0r"), ExtResource("30_f516y"), ExtResource("10_nkbj4")])
+sets = PackedInt32Array(5)
+keys = PackedStringArray("VO_STAGE_5_VOICE_B_1")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_5_voice_B_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_stage_5_voice_C_0_0"]
+script = ExtResource("4_y6681")
+end = 1.44
+key = &"VO_STAGE_5_VOICE_C_1"
+
+[sub_resource type="Resource" id="take_stage_5_voice_C_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("38_xpfhm")
+source_md5 = "486f32d4134821a0c0eb9ee3c5b9b384"
+duration = 1.5
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_stage_5_voice_C_0_0")])
+acting = ExtResource("37_jqedv")
+
+[sub_resource type="Resource" id="line_stage_5_voice_C"]
+script = ExtResource("1_7844s")
+id = &"stage_5_voice_C"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("7_2x3ga"), ExtResource("21_0jt0r"), ExtResource("30_f516y"), ExtResource("10_nkbj4")])
+sets = PackedInt32Array(5)
+keys = PackedStringArray("VO_STAGE_5_VOICE_C_1")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_stage_5_voice_C_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_cutscene_1_0_0"]
+script = ExtResource("4_y6681")
+end = 4.72
+key = &"VO_CUTSCENE_1_1"
+
+[sub_resource type="Resource" id="seg_cutscene_1_0_1"]
+script = ExtResource("4_y6681")
+start = 4.72
+end = 7.44
+key = &"VO_CUTSCENE_1_2"
+
+[sub_resource type="Resource" id="seg_cutscene_1_0_2"]
+script = ExtResource("4_y6681")
+start = 7.44
+end = 11.92
+key = &"VO_CUTSCENE_1_3"
+
+[sub_resource type="Resource" id="take_cutscene_1_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("40_mmp0r")
+source_md5 = "ea68fd92622c3acd108d85ab30465cff"
+duration = 12.0
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_cutscene_1_0_0"), SubResource("seg_cutscene_1_0_1"), SubResource("seg_cutscene_1_0_2")])
+acting = ExtResource("39_xxsgp")
+
+[sub_resource type="Resource" id="line_cutscene_1"]
+script = ExtResource("1_7844s")
+id = &"cutscene_1"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("41_0uvda")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_CUTSCENE_1_1", "VO_CUTSCENE_1_2", "VO_CUTSCENE_1_3")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_cutscene_1_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_cutscene_2_0_0"]
+script = ExtResource("4_y6681")
+end = 2.88
+key = &"VO_CUTSCENE_2_1"
+
+[sub_resource type="Resource" id="seg_cutscene_2_0_1"]
+script = ExtResource("4_y6681")
+start = 2.88
+end = 6.72
+key = &"VO_CUTSCENE_2_2"
+
+[sub_resource type="Resource" id="seg_cutscene_2_0_2"]
+script = ExtResource("4_y6681")
+start = 6.72
+end = 9.12
+key = &"VO_CUTSCENE_2_3"
+
+[sub_resource type="Resource" id="take_cutscene_2_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("43_ushca")
+source_md5 = "c2a803bb4b1c5db8eecf8bb92f7cbc48"
+duration = 9.25
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_cutscene_2_0_0"), SubResource("seg_cutscene_2_0_1"), SubResource("seg_cutscene_2_0_2")])
+acting = ExtResource("42_pkxn4")
+
+[sub_resource type="Resource" id="line_cutscene_2"]
+script = ExtResource("1_7844s")
+id = &"cutscene_2"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("44_aer1f")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_CUTSCENE_2_1", "VO_CUTSCENE_2_2", "VO_CUTSCENE_2_3")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_cutscene_2_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_cutscene_3_0_0"]
+script = ExtResource("4_y6681")
+end = 3.02
+key = &"VO_CUTSCENE_3_1"
+
+[sub_resource type="Resource" id="seg_cutscene_3_0_1"]
+script = ExtResource("4_y6681")
+start = 3.76
+end = 8.16
+key = &"VO_CUTSCENE_3_2"
+
+[sub_resource type="Resource" id="seg_cutscene_3_0_2"]
+script = ExtResource("4_y6681")
+start = 9.32
+end = 12.32
+key = &"VO_CUTSCENE_3_3"
+
+[sub_resource type="Resource" id="seg_cutscene_3_0_3"]
+script = ExtResource("4_y6681")
+start = 12.84
+end = 16.96
+key = &"VO_CUTSCENE_3_4"
+
+[sub_resource type="Resource" id="seg_cutscene_3_0_4"]
+script = ExtResource("4_y6681")
+start = 17.32
+end = 20.1
+key = &"VO_CUTSCENE_3_5"
+
+[sub_resource type="Resource" id="take_cutscene_3_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("46_tkbrl")
+source_md5 = "48997b38b27a2829ae4d88b271001202"
+duration = 22.0
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_cutscene_3_0_0"), SubResource("seg_cutscene_3_0_1"), SubResource("seg_cutscene_3_0_2"), SubResource("seg_cutscene_3_0_3"), SubResource("seg_cutscene_3_0_4")])
+acting = ExtResource("45_osfye")
+
+[sub_resource type="Resource" id="line_cutscene_3"]
+script = ExtResource("1_7844s")
+id = &"cutscene_3"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("47_bn8rx")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_CUTSCENE_3_1", "VO_CUTSCENE_3_2", "VO_CUTSCENE_3_3", "VO_CUTSCENE_3_4", "VO_CUTSCENE_3_5")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_cutscene_3_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_cutscene_4_0_0"]
+script = ExtResource("4_y6681")
+end = 4.0
+key = &"VO_CUTSCENE_4_1"
+
+[sub_resource type="Resource" id="seg_cutscene_4_0_1"]
+script = ExtResource("4_y6681")
+start = 4.0
+end = 11.0
+key = &"VO_CUTSCENE_4_2"
+
+[sub_resource type="Resource" id="seg_cutscene_4_0_2"]
+script = ExtResource("4_y6681")
+start = 11.0
+end = 15.0
+key = &"VO_CUTSCENE_4_3"
+
+[sub_resource type="Resource" id="take_cutscene_4_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("49_m837s")
+source_md5 = "4b54d6e9a676c757286fdcf04162e2cc"
+duration = 15.0
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_cutscene_4_0_0"), SubResource("seg_cutscene_4_0_1"), SubResource("seg_cutscene_4_0_2")])
+acting = ExtResource("48_cqbqx")
+
+[sub_resource type="Resource" id="line_cutscene_4"]
+script = ExtResource("1_7844s")
+id = &"cutscene_4"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("50_ehubp")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_CUTSCENE_4_1", "VO_CUTSCENE_4_2", "VO_CUTSCENE_4_3")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_cutscene_4_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_cutscene_5_0_0"]
+script = ExtResource("4_y6681")
+end = 3.72
+key = &"VO_CUTSCENE_5_1"
+
+[sub_resource type="Resource" id="seg_cutscene_5_0_1"]
+script = ExtResource("4_y6681")
+start = 3.72
+end = 6.88
+key = &"VO_CUTSCENE_5_2"
+
+[sub_resource type="Resource" id="seg_cutscene_5_0_2"]
+script = ExtResource("4_y6681")
+start = 6.88
+end = 9.48
+key = &"VO_CUTSCENE_5_3"
+
+[sub_resource type="Resource" id="seg_cutscene_5_0_3"]
+script = ExtResource("4_y6681")
+start = 9.48
+end = 13.28
+key = &"VO_CUTSCENE_5_4"
+
+[sub_resource type="Resource" id="seg_cutscene_5_0_4"]
+script = ExtResource("4_y6681")
+start = 13.28
+end = 18.12
+key = &"VO_CUTSCENE_5_5"
+
+[sub_resource type="Resource" id="seg_cutscene_5_0_5"]
+script = ExtResource("4_y6681")
+start = 18.12
+end = 22.12
+key = &"VO_CUTSCENE_5_6"
+
+[sub_resource type="Resource" id="seg_cutscene_5_0_6"]
+script = ExtResource("4_y6681")
+start = 22.12
+end = 25.68
+key = &"VO_CUTSCENE_5_7"
+
+[sub_resource type="Resource" id="seg_cutscene_5_0_7"]
+script = ExtResource("4_y6681")
+start = 25.68
+end = 28.88
+key = &"VO_CUTSCENE_5_8"
+
+[sub_resource type="Resource" id="take_cutscene_5_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("52_euw3t")
+source_md5 = "673dfa88297a4f01639077bf4e341177"
+duration = 29.0
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_cutscene_5_0_0"), SubResource("seg_cutscene_5_0_1"), SubResource("seg_cutscene_5_0_2"), SubResource("seg_cutscene_5_0_3"), SubResource("seg_cutscene_5_0_4"), SubResource("seg_cutscene_5_0_5"), SubResource("seg_cutscene_5_0_6"), SubResource("seg_cutscene_5_0_7")])
+acting = ExtResource("51_wtgce")
+
+[sub_resource type="Resource" id="line_cutscene_5"]
+script = ExtResource("1_7844s")
+id = &"cutscene_5"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("53_tbpra")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_CUTSCENE_5_1", "VO_CUTSCENE_5_2", "VO_CUTSCENE_5_3", "VO_CUTSCENE_5_4", "VO_CUTSCENE_5_5", "VO_CUTSCENE_5_6", "VO_CUTSCENE_5_7", "VO_CUTSCENE_5_8")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_cutscene_5_0")])
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_cutscene_6_0_0"]
+script = ExtResource("4_y6681")
+end = 4.0
+key = &"VO_CUTSCENE_6_1"
+
+[sub_resource type="Resource" id="seg_cutscene_6_0_1"]
+script = ExtResource("4_y6681")
+start = 4.0
+end = 9.0
+key = &"VO_CUTSCENE_6_2"
+
+[sub_resource type="Resource" id="seg_cutscene_6_0_2"]
+script = ExtResource("4_y6681")
+start = 9.0
+end = 18.0
+key = &"VO_CUTSCENE_6_3"
+
+[sub_resource type="Resource" id="seg_cutscene_6_0_3"]
+script = ExtResource("4_y6681")
+start = 18.0
+end = 23.0
+key = &"VO_CUTSCENE_6_4"
+
+[sub_resource type="Resource" id="seg_cutscene_6_0_4"]
+script = ExtResource("4_y6681")
+start = 23.0
+end = 26.0
+key = &"VO_CUTSCENE_6_5"
+
+[sub_resource type="Resource" id="seg_cutscene_6_0_5"]
+script = ExtResource("4_y6681")
+start = 26.0
+end = 31.0
+key = &"VO_CUTSCENE_6_6"
+
+[sub_resource type="Resource" id="seg_cutscene_6_0_6"]
+script = ExtResource("4_y6681")
+start = 31.0
+end = 38.0
+key = &"VO_CUTSCENE_6_7"
+
+[sub_resource type="Resource" id="take_cutscene_6_0"]
+script = ExtResource("2_q7aco")
+stream = ExtResource("55_hce2m")
+source_md5 = "51d400aa74c834a17714fd4247dbdcfd"
+duration = 38.0
+segments = Array[ExtResource("4_y6681")]([SubResource("seg_cutscene_6_0_0"), SubResource("seg_cutscene_6_0_1"), SubResource("seg_cutscene_6_0_2"), SubResource("seg_cutscene_6_0_3"), SubResource("seg_cutscene_6_0_4"), SubResource("seg_cutscene_6_0_5"), SubResource("seg_cutscene_6_0_6")])
+acting = ExtResource("54_k6cti")
+
+[sub_resource type="Resource" id="line_cutscene_6"]
+script = ExtResource("1_7844s")
+id = &"cutscene_6"
+triggers = Array[ExtResource("6_fe5l8")]([ExtResource("56_hja17")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_CUTSCENE_6_1", "VO_CUTSCENE_6_2", "VO_CUTSCENE_6_3", "VO_CUTSCENE_6_4", "VO_CUTSCENE_6_5", "VO_CUTSCENE_6_6", "VO_CUTSCENE_6_7")
+takes = Array[ExtResource("2_q7aco")]([SubResource("take_cutscene_6_0")])
+marks = PackedStringArray()
+
+[resource]
+script = ExtResource("57_233gd")
+speaker = ExtResource("58_s1r26")
+lines = Array[ExtResource("1_7844s")]([SubResource("line_stage_1_voice_A"), SubResource("line_stage_1_voice_B"), SubResource("line_stage_1_voice_C"), SubResource("line_stage_2_voice_A"), SubResource("line_stage_2_voice_B"), SubResource("line_stage_2_voice_C"), SubResource("line_stage_3_voice_A"), SubResource("line_stage_3_voice_B"), SubResource("line_stage_3_voice_C"), SubResource("line_stage_4_voice_A"), SubResource("line_stage_4_voice_B"), SubResource("line_stage_4_voice_C"), SubResource("line_stage_5_voice_A"), SubResource("line_stage_5_voice_B"), SubResource("line_stage_5_voice_C"), SubResource("line_cutscene_1"), SubResource("line_cutscene_2"), SubResource("line_cutscene_3"), SubResource("line_cutscene_4"), SubResource("line_cutscene_5"), SubResource("line_cutscene_6")])
+lines_md5 = "2f14f8ca86ab06ca6c2b9aa22c143340"
