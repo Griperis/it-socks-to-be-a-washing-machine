@@ -1323,3 +1323,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/102, house:h09 flaky: the laying behind the loading screen outlasted a fixed frame wait on a busy machine; the test waits for the screen to lift (20 s floor); no game change; merged (main 3c1fc28) |
 | Cost | about 126k subagent tokens |
 | Surprises | the same race in case_real_path_loading_screen, fixed too |
+
+---
+
+| Ticket | core/95, the Final screen: a column per player, the Pairs popping in, the totals, the skip; FinalSummary for core/96; stills in builds/review-final-screen/; merged (main 917166b) |
+| Cost | about 261k subagent tokens |
+| Surprises | its station at x 116 took the zoo's Mess bounds to x 160 at merge; SOURCES rows moved back into the table |
