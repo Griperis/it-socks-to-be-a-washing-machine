@@ -16,6 +16,7 @@ static func scrub(tree: SceneTree) -> void:
 		if link != null and not link.is_private() and link.get_parent() != null:
 			link.get_parent().remove_child(link)
 			link.free()
+	SockGenerator.start_all = false
 	Settings.autosave = false
 	Settings.reset_to_defaults()
 	Sounds.reset()

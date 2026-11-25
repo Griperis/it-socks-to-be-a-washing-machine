@@ -626,6 +626,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.46, -3, 5.21)
 
 [node name="Basement" type="Node3D" parent="SockGenerators" node_paths=PackedStringArray("washer", "scan") unique_id=1769423610]
 script = ExtResource("82_generator")
+floor = 0
+lays_at_start = false
 collections = Array[StringName]([&"simple", &"sport"])
 washer = NodePath("../../Washer")
 scan = NodePath("../..")
@@ -656,6 +658,8 @@ generator = NodePath("..")
 
 [node name="Ground" type="Node3D" parent="SockGenerators" node_paths=PackedStringArray("washer", "scan") unique_id=827901271]
 script = ExtResource("82_generator")
+floor = 1
+lays_at_start = false
 collections = Array[StringName]([&"food", &"patterns"])
 washer = NodePath("../../Washer")
 scan = NodePath("../..")
@@ -686,6 +690,8 @@ generator = NodePath("..")
 
 [node name="First" type="Node3D" parent="SockGenerators" node_paths=PackedStringArray("washer", "scan") unique_id=1297027466]
 script = ExtResource("82_generator")
+floor = 2
+lays_at_start = false
 collections = Array[StringName]([&"animals", &"superhero"])
 washer = NodePath("../../Washer")
 scan = NodePath("../..")
@@ -716,6 +722,8 @@ generator = NodePath("..")
 
 [node name="Attic" type="Node3D" parent="SockGenerators" node_paths=PackedStringArray("washer", "scan") unique_id=2043012127]
 script = ExtResource("82_generator")
+floor = 3
+lays_at_start = false
 collections = Array[StringName]([&"winter", &"space"])
 washer = NodePath("../../Washer")
 scan = NodePath("../..")

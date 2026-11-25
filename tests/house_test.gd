@@ -123,6 +123,7 @@ func cases() -> Array[Dictionary]:
 
 
 func _before_case() -> void:
+	SockGenerator.start_all = true  # the house lays its starting Mess here, as before the run (core/77)
 	for a: StringName in [&"move_forward", &"move_back", &"move_left", &"move_right"]:
 		Input.action_release(a)
 	if _level != null:

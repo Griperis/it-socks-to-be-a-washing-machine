@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: frame
@@ -42,5 +42,21 @@ are code (the old rule); `high_share` and `high_spot` stay on `StagePlan`.
 - The First wash's spray is decoration; the first Stage's Socks lie in their usual places (Q2626, 2026-11-24).
 
 ## Open follow-ups
+- [later] The high-spot pass (`high_over`) is built but only checked for "the count never changes": no station has a
+  furniture top over 1.7 m; a look in the house with two players would show it.
+- [later] The Stages station sets no `floor` on its generators (the scene was not to be edited this wave); it reads
+  Ground, Platform as floors 0, 1 by tree order. Setting `floor = 1` on `Generators/Platform` makes it explicit.
 
 ## Built log
+
+### 2026-11-25
+- Changed: `SockGenerator.floor`, `lays_at_start`, `records_for` (one Pair per Design given, areas weighted by `pairs`,
+  high-spot pass); `Stages.stage_designs` (the old Designs rule, lesson first) written into `spawned`/`due` by `start`
+  and `open_floor`; `StageSpawner` (Host, slices, even shares over open floors, `land`); `land`, `lay_first` and the held
+  records (`holding`, `held_designs`, `held_poses`; group `first_wash_wanters` for core/94); a load lays what is still
+  due; Stage 1 behind the loading screen through `Mess.layer`; the house's four generators set `floor`, `lays_at_start`
+  off. Old choices are rows in `batch-a-review.md`.
+- Files: game/run/ (stage_spawner.gd, stages.gd, run.tscn), game/mess/ (sock_generator.gd, sock_laying.gd,
+  sock_laying_job.gd, mess.gd), game/level/loading_screen.gd, game/house/house.tscn, tests/stage_socks_test.gd,
+  tests/stages_test.gd, docs/architecture/stages.md, docs/migration/batch-a-review.md
+- Verified: `--only=stages,stage_socks` PASS 105 checks, 14 cases; `--touched` verdict below

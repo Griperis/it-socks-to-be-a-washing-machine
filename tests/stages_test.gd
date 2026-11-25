@@ -291,6 +291,7 @@ func _build(plan: StagePlan = null) -> void:
 	_b = _station.get_node("CabinetB/Cabinet") as Cabinet
 	await _until(func() -> bool: return _player.is_on_floor() and _mess.looks_of(0) != null and _stages.stage == 0,
 			"the player to stand, the Socks to lie and the run to start")
+	await _until(func() -> bool: return _stages.due.is_empty(), "Stage 1's Socks to be laid")
 
 
 ## Pairs Sock `sock` with its mate (the next id) by the Hands' Command and shelves the Pair into

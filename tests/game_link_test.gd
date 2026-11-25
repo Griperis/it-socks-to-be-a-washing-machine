@@ -55,6 +55,7 @@ func cases() -> Array[Dictionary]:
 
 
 func _before_case() -> void:
+	SockGenerator.start_all = true  # the house lays its starting Mess here, as before the run (core/77)
 	_drop_branches()
 	_went_titles.clear()
 
