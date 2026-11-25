@@ -1,0 +1,42 @@
+---
+type: ticket
+status: ready-for-agent
+kind: bug
+area: coop
+feature: net
+priority: now
+created: 2026-11-25
+done:
+blocked_by: []
+notes: ["suggested model: sonnet", "designer 2026-11-25: hosting in one window of the build, the second window cannot join: 'You are already in this game'"]
+terms: [Host, Guest]
+---
+
+# A second copy of the game on one PC can join without a launch argument
+
+The designer runs the Windows debug build twice to test co-op on one PC. One copy hosts. The other is refused with
+"You are already in this game" (`game/parts/session.gd` `ALREADY`). Both copies read the same `user://profile.json`,
+so they have the same player id (Q2458). The way round it today is `"It Socks.exe" -- --profile=2`. That isn't
+visible in the build and is easy to miss: the hint is only on the zoo's title line.
+
+## What it does
+- In a debug build (`OS.is_debug_build()`), a second copy started while another copy holds the profile picks a
+  profile of its own (`profile_2`, then `profile_3`, ...). It holds a lock file for as long as it runs (an exclusive
+  `FileAccess` lock, or a lock file with the process id that a dead process doesn't keep). Its window title or
+  title screen shows which profile it is ("Player 2").
+- `--profile=<tag>` still wins when given.
+- A release build never does this: one player is one profile, and a duplicate id is refused as today.
+- Check what the old game did (`reference/it-socks`, read from the main checkout: grep `profile` and `instance`)
+  and follow it if it had an answer. Record the answer in "Settled by the old game".
+
+## Acceptance
+- Two copies of the debug build on one PC, no arguments: the second joins the first's game as a Guest with its own
+  name and id.
+- Real-path case: two machines in one test run with the same user folder; the second gets `profile_2` and joins.
+- A copy that crashed doesn't hold its profile forever: the next start takes it back.
+- `--profile=` and the release build behave as before.
+- The full suite passes, nothing flaky.
+
+## Open follow-ups
+
+## Built log
