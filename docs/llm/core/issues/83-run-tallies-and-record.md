@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: frame
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/76]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [Pair, Coins, Whiteboard, World]
@@ -43,3 +43,8 @@ where the zoo already shows it.
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-25
+Changed: `RunTallies` and `RunRecord` (Parts on `run.tscn`, found by group within their Parts); the Hands' `pick` answer and the Cabinet's `_shelve` answer carry their patches; `Whiteboard` (`whiteboard.gd` on `collection_board.tscn`: sheet in a SubViewport on the face, drawn again only on a change); `WhiteboardSheet`, `TabOverlay` on the player's HUD; `whiteboard_overlay` action (Tab, pad Back/Select); `WhiteboardTuning` (placeholders); `Player.input_blocked()`; `shape.json` and `house_ids.txt`; four rows under "Settled by the old game".
+Files: game/run/run_tallies.gd, run_record.gd, run.tscn; game/ui/whiteboard/*; game/furniture/whiteboard.gd, collection_board.tscn; game/hands/hands.gd; game/entities/cabinet/cabinet.gd; game/player/player.gd, player.tscn; project.godot; tests/run_tallies_test.gd, tests/saves/*; docs/migration/batch-a-review.md.
+Verified: `--touched` ran every suite (project.godot changed): only save s11/s12 failed, fixed by committing the two lists; run_tallies PASS; grep_rules PASS. A Guest's counts and the leaver's row rest on the Part answer path (tested as a snapshot and a Roster listing, not on a second machine).

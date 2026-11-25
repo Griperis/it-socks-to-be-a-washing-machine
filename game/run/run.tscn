@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://game/run/stages.gd" id="1_stages"]
 [ext_resource type="Script" path="res://game/run/stage_spawner.gd" id="2_spawner"]
+[ext_resource type="Script" path="res://game/run/run_tallies.gd" id="3_tallies"]
+[ext_resource type="Script" path="res://game/run/run_record.gd" id="4_record"]
 
 [node name="Run" type="Node3D"]
 
@@ -11,3 +13,9 @@ script = ExtResource("1_stages")
 [node name="StageSpawner" type="Node" parent="." node_paths=PackedStringArray("stages")]
 script = ExtResource("2_spawner")
 stages = NodePath("../Stages")
+
+[node name="RunTallies" type="Node" parent="."]
+script = ExtResource("3_tallies")
+
+[node name="RunRecord" type="Node" parent="."]
+script = ExtResource("4_record")

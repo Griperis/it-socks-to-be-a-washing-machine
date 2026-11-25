@@ -22,6 +22,7 @@
 [ext_resource type="Script" uid="uid://tiy0agr0vohh" path="res://game/player/pinger.gd" id="22_pinger"]
 [ext_resource type="Resource" uid="uid://e3fid8403c2f" path="res://game/ping/ping_tuning.tres" id="23_ping_tuning"]
 [ext_resource type="PackedScene" path="res://game/ui/stage_bar.tscn" id="24_stage_bar"]
+[ext_resource type="PackedScene" path="res://game/ui/whiteboard/tab_overlay.tscn" id="25_tab"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -185,6 +186,9 @@ script = ExtResource("19_arrows")
 tuning = ExtResource("20_arrow_tuning")
 
 [node name="PingWheel" parent="Hud" unique_id=1460313012 instance=ExtResource("21_wheel")]
+
+[node name="TabOverlay" parent="Hud" instance=ExtResource("25_tab")]
+unique_name_in_owner = true
 
 [node name="Footsteps" type="Node" parent="." unique_id=1954666980]
 script = ExtResource("6_steps")
