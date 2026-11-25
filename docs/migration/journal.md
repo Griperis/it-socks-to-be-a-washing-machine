@@ -1208,3 +1208,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/75, pad focus: the old lit look ported (the selected control lifts 5 px, grows to 1.08 over 0.1 s, a gold glow fades in; only pad or keyboard selection lights it); UiSounds drives it for every control, opt-out by the meta `own_lit`; numbers in pad_focus_tuning.tres (Q2647-Q2650); merged (main 2ec8f85) |
 | Cost | not recorded |
 | Surprises | the first build invented a ring instead of the old look; an editor re-save dropped credits.tres's covers lists on main (restored, 1877358) |
+
+---
+
+| Ticket | core/100, a Sock drawn under the floor: bound to suite order, not load; a Sock pressed 13-18 mm into the floor under one Jolt pushed through is now put back; the drawn-frame watch counts only a push (Jolt's 0.02 m slop kept, the old game's, Q2604; 0.005 m a [later] question); merged (main bb48b63) |
+| Cost | about 336k subagent tokens |
+| Surprises | the ticket's guess (several steps a frame) was wrong; 10 full runs in a row passed |
