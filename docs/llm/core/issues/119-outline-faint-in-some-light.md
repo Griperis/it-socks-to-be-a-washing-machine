@@ -8,7 +8,7 @@ priority: now
 created: 2026-11-25
 done:
 blocked_by: []
-notes: ["suggested model: sonnet", "designer 2026-11-25, Windows build: 'outline is barely visible in some lighting conditions - why?'"]
+notes: ["suggested model: sonnet", "designer 2026-11-25, Windows build: 'outline is barely visible in some lighting conditions - why?'", "parked by the designer 2026-11-25: the branch waits, not merged"]
 terms: []
 ---
 

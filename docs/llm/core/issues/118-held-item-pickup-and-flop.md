@@ -8,7 +8,7 @@ priority: now
 created: 2026-11-25
 done:
 blocked_by: []
-notes: ["suggested model: opus", "designer 2026-11-25, Windows build"]
+notes: ["suggested model: opus", "designer 2026-11-25, Windows build", "parked by the designer 2026-11-25: the branch waits, not merged"]
 terms: [Hands]
 ---
 
