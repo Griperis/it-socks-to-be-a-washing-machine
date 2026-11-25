@@ -57,3 +57,4 @@ Files: game/ui/*, game/lobby/*, game/look/theme.tres, game/player/player.tscn, t
 Verified: stills in builds/review-core-111/ui-nodes-before-after.png: HUD, Stage bar, lit key, Lobby (four, drawer, Who,
 focus) 0 differing pixels; the Final screen differs only in its 3D stages, which differ between two runs of the same code
 too (random, not the UI); `PASS 22784 checks, 714 cases`.
+- Merged: 9c31e00b (2026-11-25, branch core/111-ui-authored-in-nodes)
