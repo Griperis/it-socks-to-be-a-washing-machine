@@ -2,6 +2,8 @@
 
 [ext_resource type="PackedScene" path="res://game/laundry/sock_spray.tscn" id="1_spray"]
 [ext_resource type="Script" path="res://game/zoo/laundry/spray_pillar.gd" id="2_pillar"]
+[ext_resource type="PackedScene" path="res://game/entities/laundry_bin/laundry_bin.tscn" id="3_bin"]
+[ext_resource type="Script" path="res://game/zoo/laundry/bin_pillar.gd" id="4_bin_pillar"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.62, 0.7, 0.78, 1)
@@ -55,12 +57,12 @@ shape = SubResource("BoxShape3D_ground")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 3.5)
 pixel_size = 0.004
 billboard = 2
-text = "Laundry: the spray of Socks out of the washing machine's door (press E on the pillar)"
+text = "Laundry: the spray of Socks out of the washing machine's door (press E on the pillar); the Laundry bins: carry one, press E on the Bin pillar to empty it"
 vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="Washer" type="MeshInstance3D" parent="."]
+[node name="Washer" type="MeshInstance3D" parent="." groups=["washer"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -3)
 mesh = SubResource("BoxMesh_washer")
 
@@ -91,3 +93,31 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 pixel_size = 0.004
 billboard = 2
 text = "Spray"
+
+[node name="BinFull" parent="." instance=ExtResource("3_bin")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 0.5)
+
+[node name="BinEmpty" parent="." instance=ExtResource("3_bin")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0.5)
+
+[node name="LaundryBin" parent="BinEmpty" index="3"]
+full = false
+
+[node name="BinPillar" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.5, 3)
+
+[node name="BinPillar" type="Node" parent="BinPillar" node_paths=PackedStringArray("bin")]
+script = ExtResource("4_bin_pillar")
+bin = NodePath("../../BinFull/LaundryBin")
+
+[node name="Mesh" type="MeshInstance3D" parent="BinPillar"]
+mesh = SubResource("BoxMesh_button")
+
+[node name="Shape" type="CollisionShape3D" parent="BinPillar"]
+shape = SubResource("BoxShape3D_button")
+
+[node name="Label" type="Label3D" parent="BinPillar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+pixel_size = 0.004
+billboard = 2
+text = "Bin"
