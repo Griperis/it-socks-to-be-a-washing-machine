@@ -29,16 +29,25 @@ Batch A is built unattended (Q2603): an open choice this ticket does not settle 
 The model by its script; the game's AnimationTree and properties stay in the Looks scene, not in the glb.
 
 ## Acceptance
-- (lead, at the designer's yes) The real Looks takes core/87's Damage nodes (sparks, smoke, flash, buzz, rumble) from the graybox; the branch has placeholders. The rig parent fix is already on main (bob carries the door, brows and drum).
 - Look work: stops at its first line-up (old and port side by side, each mood pose, the mouth open) in `builds/review-assets-14/`, `ready-for-human`; assets per family batch.
 - No real-path case (Q2421); the Looks contract test passes on `looks_washer.tscn`.
 
 ## Answers
 - None beyond the design's (see the files named above).
+- Q2655 (2026-11-25, on the line-up): "OK except there are some weird shadow artifacts, most likely." Sent back:
+  find and fix them in the asset (not the game's lights or shadow settings), a before/after line-up of the
+  fixed spots (`*-shadowfix*`), stop at ready-for-human again.
 
 ## Open follow-ups
 - [later] The designer's go on the line-up (old beside port, each mood pose, the mouth open):
-  `builds/review-assets-14/` (Look work stops here; assets per family batch).
+  `builds/review-assets-14/` (Look work stops here; assets per family batch). After Q2655: the shadow fix,
+  before beside after, `washer-lineup-<pose>-shadowfix.png` and the spots `washer-lineup-shadowfix-spots.png`.
+- [blocking] What is left is the sun's shadow itself, not the model: with the door open, the edge of the
+  shadow inside the drum is stepped in squares, and the door ring's face shows a few small steps where its
+  lip shadows it (spots 4 and 1 of `washer-lineup-shadowfix-spots.png`). The steps are the size of the
+  shadow map's texels at this distance (the zoo's Sun, normal bias 2, blur 0 from the Picture). Only a light
+  or shadow setting makes them finer, which this ticket may not change: does the designer want that looked
+  at (a ticket of its own, it touches every model in the sun), or is it fine as it is?
 - [later] The kit's asset contract wants snake_case node names; the Looks contract's `Lining` and `Pile` are glb
   mesh names (advice only, asset_checks; the export does not stop on it).
 - [later] The script lives with the other generators in `assets_src/generate/appliance/` (the ticket said
@@ -56,3 +65,18 @@ The model by its script; the game's AnimationTree and properties stay in the Loo
 - Files: assets_src/generate/appliance/make_washing_machine_face.py, assets/appliance/washing_machine.glb(.import),
   game/entities/washer/looks_washer.tscn, washer_model_import.gd, looks_contract.json, tools/shots/sets/washer-lineup.txt
 - Verified: see the commit's verdict lines; line-up builds/review-assets-14/
+
+### 2026-11-25 (shadow fix, Q2655)
+- Changed: the stripes of false shadow on the washer in the sun are gone. (1) The body's big flat faces (the
+  front round the door hole, the panel) are long thin triangles whose corners shared smooth normals with the
+  bevels and the gasket, up to 46 degrees off the face; the shadow's normal bias followed them, so the body
+  shadowed itself in stripes fanning out round the door, the brows and the panel. Each flat face now has its
+  own normal at its corners (a weighted-normal modifier on the body, the door, the dial and the drawer, at
+  export). (2) The raised trims (worktop, panel, ring round the door, gasket, feet, steel and brass bits) stand
+  1-2 cm proud of the shell and drew false stripes beside them in the sun's coarse shadow: they are their own
+  mesh `body_trim` now and, with the dial and the drawer, cast no shadow (the import script); they still take
+  shadow, and the shell, the door and the brows still cast. A rebuild from the saved .blend joins the trim
+  back first (and `_join` takes an emptied material slot).
+- Files: assets_src/generate/appliance/make_washing_machine_face.py, assets_src/blender/appliance/washing_machine.blend,
+  assets/appliance/washing_machine.glb, game/entities/washer/washer_model_import.gd
+- Verified: see the commit's verdict lines; before/after builds/review-assets-14/*-shadowfix*
