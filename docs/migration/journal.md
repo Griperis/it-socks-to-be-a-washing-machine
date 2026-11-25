@@ -1299,3 +1299,27 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/101, coop_knockdown:real_path flaky: the click came before the Host heard the Guest's new place; the test now waits for it; no game change; merged (main 3d99183) |
 | Cost | about 154k subagent tokens |
 | Surprises | coop_hands, coop_carry, coop_pings may share the race (core/103); a run.py hung 25 min holding perf.lock |
+
+---
+
+| Ticket | core/80, floor locks: the door and the gate, the padlock hint, the pop, the chain, the one-way swing, the lamps; graybox Looks keyed as assets/10's models; merged (main 3c1fc28) |
+| Cost | about 257k subagent tokens |
+| Surprises | assets/10's Looks need `leaf` as an AnimatableBody3D |
+
+---
+
+| Ticket | core/87, the broken washer's looks: sparks, smoke, buzz, rumble, flash and the drum light's flicker by mood, calmer each Fix; `set_cutscene` for core/88; merged (main 3c1fc28) |
+| Cost | about 160k subagent tokens |
+| Surprises | the old room-lamp flicker belongs to the washes (carried into core/94, core/96) |
+
+---
+
+| Ticket | core/88, the cutscene frame: shots, cuts, fades, only the washer drawn, the Host's skip (Space, pad Start), the respawn; the washer station's Play pillars; merged (main 3c1fc28) |
+| Cost | about 263k subagent tokens |
+| Surprises | the knockdown wash's respawn and the First wash's bob carried into core/98, core/94 |
+
+---
+
+| Ticket | core/102, house:h09 flaky: the laying behind the loading screen outlasted a fixed frame wait on a busy machine; the test waits for the screen to lift (20 s floor); no game change; merged (main 3c1fc28) |
+| Cost | about 126k subagent tokens |
+| Surprises | the same race in case_real_path_loading_screen, fixed too |
