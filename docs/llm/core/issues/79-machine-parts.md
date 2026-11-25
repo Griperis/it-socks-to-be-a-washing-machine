@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: frame
@@ -48,3 +48,19 @@ picks. The Stages station's mini run gets the slot box and the Parts lie beside 
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-25
+- Changed: `machine_part.tscn` (Carriable, `MachinePart`, Looks, glow disc, sparkle, 18-spark burst), `MachinePart`
+  (stateless: drawn from the run's phase; pop from the Cabinet's top, `lying`/`RESET`), `MachinePartSlot` with `fit`
+  (`busy` seam via the group `washer`; "The washing machine is busy"; opens the floor at once while no
+  `fix_cutscene`), `Stages.fit_answer()` and the pop in `_complete_answer`, `MachinePartTuning`, graybox Looks per
+  kind (assets/12's contract), `part_pop` and `part_fit` sounds, the "Fit the ..." prompt, the Stages station's slot
+  box and Parts (the plan board's Parts now lie turning).
+- Files: `game/entities/machine_part/`, `game/hands/hold_slot_part.tres`, `game/run/stages.gd`, `game/player/player.gd`,
+  `game/ui/prompts.gd`, `game/zoo/`, `game/audio/sound_catalogue.tres`, `assets/audio/`, `tests/machine_part_test.gd`,
+  `tests/support/busy_washer.gd`, docs.
+- Verified: PASS touched run (see report); sounds station per_row 9 to 10 and credits for the two clips
+
+## Follow-ups handed on
+- Old detail left out: the pop spot is not pushed clear of gift boxes (no gifts until batch B's presents); listed in batch-a-review.
+- At the assets/12 merge the four `part_*.tres` conflict on the `looks` line: take assets/12's.

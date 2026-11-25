@@ -808,6 +808,8 @@ func _update_screen(h: Hands) -> void:
 	if part is Carriable or carried != null:
 		# core/78: a carried thing is named with no key; a lying one shows the click only to empty Hands.
 		target = Prompts.carry_target(part as Carriable, carried, items.is_empty() and carried == null, _hud.pad)
+		if carried != null and part is MachinePartSlot:
+			target.append(Prompts.fit_prompt(carried, _hud.pad))  # core/79: the click that fits the Part
 	if aimed_body >= 0:
 		target.clear()
 		target.append(Prompts.drag_prompt(_hud.pad))
@@ -917,6 +919,11 @@ func _on_applied(ev: Dictionary) -> void:
 		var text := String(Cabinet.SAYS.get(String(ev.get("reason", "")), ""))
 		if text != "":
 			say(text)
+		return
+	if to is MachinePartSlot:
+		var words := String(MachinePartSlot.SAYS.get(String(ev.get("reason", "")), ""))
+		if words != "":
+			say(words)
 		return
 	if StringName(ev.get("to", &"")) != _hands.id:
 		return

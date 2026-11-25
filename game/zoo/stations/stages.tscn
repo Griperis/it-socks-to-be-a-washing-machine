@@ -16,6 +16,12 @@
 [ext_resource type="Script" uid="uid://cyhr6nx34vjq0" path="res://game/mess/sock_generator.gd" id="14_gen"]
 [ext_resource type="Script" uid="uid://co2u54sk1yir8" path="res://game/mess/generated_socks.gd" id="15_generated"]
 [ext_resource type="Script" uid="uid://cub70qrwflqk1" path="res://game/mess/sock_area.gd" id="16_area"]
+[ext_resource type="PackedScene" path="res://game/entities/machine_part/machine_part.tscn" id="17_part"]
+[ext_resource type="Resource" path="res://game/entities/machine_part/part_filter.tres" id="18_filter"]
+[ext_resource type="Resource" path="res://game/entities/machine_part/part_motor.tres" id="19_motor"]
+[ext_resource type="Resource" path="res://game/entities/machine_part/part_drum_belt.tres" id="20_belt"]
+[ext_resource type="Resource" path="res://game/entities/machine_part/part_detergent.tres" id="21_detergent"]
+[ext_resource type="Script" path="res://game/entities/machine_part/machine_part_slot.gd" id="22_slot"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.42, 0.36, 0.5, 1)
@@ -44,6 +50,16 @@ size = Vector3(1.6, 0.2, 2.6)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ramp"]
 size = Vector3(1.6, 0.2, 2.6)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_slot"]
+albedo_color = Color(0.85, 0.87, 0.9, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_slot"]
+material = SubResource("StandardMaterial3D_slot")
+size = Vector3(0.9, 0.9, 0.7)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_slot"]
+size = Vector3(0.9, 0.9, 0.7)
+
 [node name="Stages" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 0, -6)
 
@@ -62,7 +78,7 @@ shape = SubResource("BoxShape3D_ground")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 5)
 pixel_size = 0.004
 billboard = 2
-text = "Stages: a mini run of two Stages, 2 Pairs a Drawer. Shelve the Simple Pairs into Cabinet A to complete Stage 1, then press E on \"Fit now\": Cabinet B on the platform unlocks and Cabinet A grows a Row. \"Complete the Stage\" completes it outright. On the left, the house's Stages from its plan"
+text = "Stages: a mini run of two Stages, 2 Pairs a Drawer. Shelve the Simple Pairs into Cabinet A to complete Stage 1: its Part pops out of the Cabinet's top. Click it to carry it, then click the washing machine box: Cabinet B on the platform unlocks and Cabinet A grows a Row. \"Complete the Stage\" completes a Stage outright, \"Fit now\" fits its Part at once. On the left, the house's Stages from its plan, each Part lying beside it"
 vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
@@ -76,6 +92,32 @@ plan = ExtResource("11_house")
 
 [node name="Stages" parent="Run" index="0"]
 plan = ExtResource("10_mini")
+
+[node name="MachineParts" type="Node3D" parent="Run"]
+
+[node name="Filter" parent="Run/MachineParts" instance=ExtResource("17_part")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.2)
+
+[node name="MachinePart" parent="Run/MachineParts/Filter" index="6"]
+kind = ExtResource("18_filter")
+
+[node name="Motor" parent="Run/MachineParts" instance=ExtResource("17_part")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 2.2)
+
+[node name="MachinePart" parent="Run/MachineParts/Motor" index="6"]
+kind = ExtResource("19_motor")
+
+[node name="DrumBelt" parent="Run/MachineParts" instance=ExtResource("17_part")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 0, 2.2)
+
+[node name="MachinePart" parent="Run/MachineParts/DrumBelt" index="6"]
+kind = ExtResource("20_belt")
+
+[node name="Detergent" parent="Run/MachineParts" instance=ExtResource("17_part")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.2)
+
+[node name="MachinePart" parent="Run/MachineParts/Detergent" index="6"]
+kind = ExtResource("21_detergent")
 
 [node name="CabinetA" parent="." instance=ExtResource("1_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
@@ -107,6 +149,29 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.6, -1.5)
 
 [node name="SlotBoxSpot" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -4)
+
+[node name="SlotBox" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -4)
+
+[node name="Shape" type="CollisionShape3D" parent="SlotBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+shape = SubResource("BoxShape3D_slot")
+
+[node name="Looks" type="Node3D" parent="SlotBox"]
+
+[node name="Mesh" type="MeshInstance3D" parent="SlotBox/Looks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+mesh = SubResource("BoxMesh_slot")
+
+[node name="Label" type="Label3D" parent="SlotBox/Looks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+pixel_size = 0.004
+billboard = 2
+text = "Washing machine (stand-in): click it with a Part in your Hands"
+
+[node name="MachinePartSlot" type="Node" parent="SlotBox" node_paths=PackedStringArray("stages")]
+script = ExtResource("22_slot")
+stages = NodePath("../../Run/Stages")
 
 [node name="CabinetB" parent="." instance=ExtResource("1_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.6, -5.2)

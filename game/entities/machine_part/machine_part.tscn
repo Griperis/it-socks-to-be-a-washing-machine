@@ -1,0 +1,139 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://game/entities/machine_part/looks_filter_graybox.tscn" id="1_looks"]
+[ext_resource type="Script" path="res://game/parts/carriable.gd" id="2_carriable"]
+[ext_resource type="Script" path="res://game/entities/machine_part/machine_part.gd" id="3_part"]
+[ext_resource type="Resource" path="res://game/hands/hold_slot_part.tres" id="4_slot"]
+[ext_resource type="Resource" path="res://game/entities/machine_part/machine_part_tuning.tres" id="5_tuning"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_part"]
+size = Vector3(0.26, 0.26, 0.26)
+
+[sub_resource type="Gradient" id="Gradient_glow"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_glow"]
+gradient = SubResource("Gradient_glow")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glow"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.55, 0.85, 1, 0.8)
+albedo_texture = SubResource("GradientTexture2D_glow")
+
+[sub_resource type="QuadMesh" id="QuadMesh_glow"]
+size = Vector2(0.616, 0.616)
+orientation = 1
+
+[sub_resource type="Gradient" id="Gradient_fade"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fade"]
+gradient = SubResource("Gradient_fade")
+
+[sub_resource type="Gradient" id="Gradient_speck"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_speck"]
+gradient = SubResource("Gradient_speck")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_speck"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.55, 0.85, 1, 1)
+albedo_texture = SubResource("GradientTexture2D_speck")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_speck"]
+material = SubResource("StandardMaterial3D_speck")
+size = Vector2(0.05, 0.05)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sparkle"]
+emission_shape = 1
+emission_sphere_radius = 0.176
+direction = Vector3(0, 1, 0)
+spread = 20.0
+initial_velocity_min = 0.0
+initial_velocity_max = 0.1
+gravity = Vector3(0, 0.25, 0)
+scale_min = 0.5
+scale_max = 1.0
+color_ramp = SubResource("GradientTexture1D_fade")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_burst"]
+emission_shape = 1
+emission_sphere_radius = 0.05
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 0.7
+initial_velocity_max = 1.4
+gravity = Vector3(0, -0.6, 0)
+damping_min = 1.2
+damping_max = 2.0
+scale_min = 0.6
+scale_max = 1.2
+color_ramp = SubResource("GradientTexture1D_fade")
+
+[node name="MachinePart" type="StaticBody3D"]
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.13, 0)
+shape = SubResource("BoxShape3D_part")
+
+[node name="Looks" parent="." instance=ExtResource("1_looks")]
+
+[node name="Glow" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+visible = false
+material_override = SubResource("StandardMaterial3D_glow")
+cast_shadow = 0
+mesh = SubResource("QuadMesh_glow")
+
+[node name="Sparkle" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.132, 0)
+emitting = false
+amount = 10
+lifetime = 1.2
+visibility_aabb = AABB(-1, -1, -1, 2, 2, 2)
+process_material = SubResource("ParticleProcessMaterial_sparkle")
+draw_pass_1 = SubResource("QuadMesh_speck")
+
+[node name="Burst" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+emitting = false
+amount = 18
+lifetime = 0.6
+one_shot = true
+explosiveness = 1.0
+visibility_aabb = AABB(-1, -1, -1, 2, 2, 2)
+process_material = SubResource("ParticleProcessMaterial_burst")
+draw_pass_1 = SubResource("QuadMesh_speck")
+
+[node name="Carriable" type="Node" parent="."]
+script = ExtResource("2_carriable")
+slot = ExtResource("4_slot")
+handable = true
+
+[node name="MachinePart" type="Node" parent="." node_paths=PackedStringArray("carriable")]
+script = ExtResource("3_part")
+carriable = NodePath("../Carriable")
+tuning = ExtResource("5_tuning")

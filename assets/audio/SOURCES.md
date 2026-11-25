@@ -32,6 +32,8 @@ The old game's picks for the core events (ported, Q2319). CC0 or public domain, 
 | oven_close__rubberduck_metal_close.ogg | cc0/rubberduck_metal_close | rubberduck | CC0 | https://opengameart.org/content/100-cc0-metal-and-wood-sfx |
 | basket_open__kenney_creak3.ogg | cc0/kenney_creak3 | Kenney | CC0 | https://opengameart.org/content/50-rpg-sound-effects |
 | basket_close__rubberduck_wood_misc2.ogg | cc0/rubberduck_wood_misc2 | rubberduck | CC0 | https://opengameart.org/content/100-cc0-metal-and-wood-sfx |
+| part_pop__rubberduck_plop1_pop.ogg | cc0/rubberduck_plop1_pop | rubberduck | CC0 | https://opengameart.org/content/100-cc0-sfx (core/79: the old `part_pop` pick) |
+| part_fit__rubberduck_v2_lock_open_fit.ogg | cc0/rubberduck_v2_lock_open_fit | rubberduck | CC0 | https://opengameart.org/content/100-cc0-sfx-2 (core/79: the old `part_fit` pick) |
 | cupboard_open__kenney_door_open1.ogg | cc0/kenney_door_open1 | Kenney | CC0 | https://opengameart.org/content/50-rpg-sound-effects |
 | cupboard_close__kenney_door_close4.ogg | cc0/kenney_door_close4 | Kenney | CC0 | https://opengameart.org/content/50-rpg-sound-effects |
 | piano/piano_remeau_<n>.ogg (23 notes) | cc0/piano_remeau | Sadiquecat | CC0 | https://freesound.org/people/Sadiquecat/sounds/794367/ and the pack's 22 other notes (the old candidates.json lists each page) |
