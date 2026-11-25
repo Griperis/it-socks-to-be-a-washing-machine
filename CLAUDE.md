@@ -18,7 +18,7 @@ the pin): `kit/docs/agents/terms.md`.
 |---|---|
 | asking the designer, Q numbers | the `designer-grilling` skill |
 | a question of fact (engine, tool, platform) | the `research` skill |
-| writing a ticket; its fields, statuses, Built log | the `ticket-writing` skill; `kit/docs/agents/issue-tracker.md` |
+| writing a ticket; its fields, statuses, the changelog | the `ticket-writing` skill; `kit/docs/agents/issue-tracker.md` |
 | handing tickets to agents | the `ticket-agents` skill |
 | a small fix without a ticket | the `fast-lane` skill |
 | merging, a play session, ending a session | the `lead-integrator` skill |
@@ -125,7 +125,8 @@ through that feature's own rules object. Otherwise they go through the co-op sha
   code fills them and instances a row scene per item, and never builds a Control or StyleBox itself.
 - **A zoo station that shows game data is built from that data at load** (designer, Q2337): a new Design, sound
   or other entry appears in its station with no other change.
-- **A journal line per merged ticket** in `docs/migration/journal.md`.
+- **One changelog:** `docs/llm/CHANGELOG.md`, one line per merged ticket, written by `kit/tools/integrate.sh`
+  (designer, Q2684). `docs/migration/journal.md` is the history up to 2026-11-25 and gets no new lines.
 - **Nobody but the designer pushes** (designer, 2026-11-24): the lead and agents never run `git push`, for the game or the
   kit; the lead says what is ready to push and in what order (the kit before the game).
 - **No commit message carries a Claude (or any AI assistant) `Co-Authored-By` line** (designer, 2026-11-20);

@@ -10,6 +10,7 @@ done:
 blocked_by: []
 notes: []
 terms: []
+suites: []              # suites besides its own that the agent runs (kit/docs/TESTING.md "--touched")
 ---
 
 # {{title}}
@@ -26,5 +27,3 @@ terms: []
 ## Answers
 
 ## Open follow-ups
-
-## Built log

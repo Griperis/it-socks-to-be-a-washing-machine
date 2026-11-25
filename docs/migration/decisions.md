@@ -1,4 +1,4 @@
-Next free Q number: Q2684 (update this line whenever a round of questions is asked)
+Next free Q number: Q2685 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -627,3 +627,9 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2682 (W4): no Secrets in batch B; the eight and their pieces come together later (designer, 2026-11-25; Q2600).
 - Q2683 (W5): the Lost Socks' six pieces are hidden from the Wardrobe and its "N/M" until the Lost Socks come with the
   Drum (follows Q2675; lead, from the designer's G3 answer, 2026-11-25).
+- Q2684: the kit simplification (designer, 2026-11-25, on the toolbox audit): the kit is a generic Godot game kit
+  (its two co-op shapes and self-test games stay); it stays a submodule; the Built logs give way to one changelog
+  (`docs/llm/CHANGELOG.md`, written at merge). Do: one test gate (agents run their own and the ticket's `suites:`,
+  a commit runs no tests, the batch's whole run is the gate), one record per ticket, the contradicting rules
+  fixed, unused tools removed, what every agent reads shrunk, the damaged-commit machinery retired after a clean
+  week. Not now: splitting shared append files, grouping small suites into shared processes.
