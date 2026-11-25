@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: frame
 priority: now
 created: 2026-11-24
-done:
+done: 2026-11-25
 blocked_by: [core/76]
 notes: ["batch A (Q2606, Q2614); order: docs/migration/milestones.md Batch A", "suggested model: sonnet"]
 terms: [Stage, Collection, Laundry day]
@@ -46,3 +46,8 @@ station by a case that sets the run's state with a test-side stand-in provider.
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-25
+- Changed: the HUD has the Stage bar (a child of the player's `Hud`, hidden in a level with no run): the old panel on the Theme's new `StagePanel`, the Collection icons stacked on its left, "Stage 1: Basement  1/4" over a track, the fill moving in 0.35 s, the drain and refill with the new icons popping at a new Stage, full between completion and Fix. It shows the plan's `goal_phase` while a `stage_bar_goal` node says the First wash is pending (no track; pops into the Stage), the `stage_phase`, and folds (fill, glow, back-ease shrink, `pop` sound, pop in) into `after_phase` "Wash clothes n/m" once the machine is fixed. Redraws only on a change. `Stages` answers `bar_words` and `bar_collections` beside `bar_numbers`.
+- Files: `game/ui/stage_bar.gd`, `stage_bar.tscn`, `stage_bar_tuning.gd/.tres`, `game/player/player.tscn`, `game/look/theme.tres`, `game/run/stages.gd`, `tests/stage_bar_test.gd`, `tests/fixtures/stage_bar_stand_in.gd`, `docs/architecture/stages.md`.
+- Verified: `run.sh --touched`: PASS 20703 checks, 605 cases (stage_bar suite: 4 cases); grep_rules PASS.

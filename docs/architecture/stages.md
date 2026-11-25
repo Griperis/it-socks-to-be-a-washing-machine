@@ -226,6 +226,13 @@ from the phase's provider. Between a Stage's completion and its Fix it stays ful
 `RIG:636-647`, `HUD:325-360`); from `goal_phase` to the first Stage the bar pops in. A level with a run but no First
 wash (the zoo's mini run) starts at `stage_phase`.
 
+Built by core/82 (`game/ui/stage_bar.gd`, `stage_bar_tuning.tres`; the bar is a child of the player's `Hud`). Its seams:
+core/72's First wash joins the group `stage_bar_goal` (`StageBar.GOAL_GROUP`) with `goal_pending() -> bool` (true until the
+First wash is over; no node in it means no goal phase). A provider (group `stage_bar_source`) may also give
+`bar_words() -> Array` (the arguments before the two numbers in the text; `Stages` gives the Stage's number and title),
+`bar_collections()` (a `CABINETS` phase's icons; `Stages`) and the signal `bar_changed` (core/93's `LaundryDay` emits it
+when a bin is loaded). The fold plays `pop` (placeholder, Q1620) as it begins and emits `StageBar.folded`.
+
 ### The tallies, the Whiteboard and Tab
 `RunTallies`' State: player id -> `{pairs, made, socks, coins}`, written in the same answers that cause them (the
 Cabinet's shelve adds `pairs` and `coins` beside its Coins patch; the Hands' pick adds `socks` for a Mess Sock and
