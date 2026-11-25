@@ -75,6 +75,8 @@ How this game is built, unless a decision record says otherwise. They are the ga
 | The washing machine (build plan, batch A) | `docs/architecture/washer.md` | you change the washer entity, its Looks contract, how broken it looks, its comments, its shots, or the knockdown wash |
 | Voice (build plan, batch A) | `docs/architecture/voice.md` | you add or change a voice line, a speaker, a trigger, the bake, subtitles, or how lines are played and heard |
 | Co-op | `docs/architecture/coop.md` | you touch the Session, the transport, the Roster, avatars, a Guest's guesses, a Throw's stream, knockdown, or anything a Guest sees or sends |
+| Coins, Drawers and Upgrades (proposal, batch B) | `docs/architecture/economy.md` | you change Coins or the team's Drawers, a payout, the HUD counters, an Upgrade, the Upgrade menu, or the Old Tree as station or speaker |
+| Gifts, Collections and the encyclopedia (proposal, batch B) | `docs/architecture/gifts.md` | you change the Collections' data, their unlocking or the New Game's pools, a Collection completing, Stage presents and their reveal, Parts spawned during play, or the encyclopedia and its book |
 
 A ticket that adds a subsystem adds its row here and its file.
 

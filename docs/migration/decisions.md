@@ -1,4 +1,4 @@
-Next free Q number: Q2667 (update this line whenever a round of questions is asked)
+Next free Q number: Q2671 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -599,3 +599,9 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   checkout's copy of an empty submodule (the old game). The shared append-only lists stay as they are for now; no
   old-beside-port tool for now.
 - Q2666: an agent does the suite speed pass (maintenance/06), under 120 s without weakening a test.
+- Q2667 (E1): Stage Coins bonuses as the old game: +100 to every player when a floor opens and +50 to whoever fills
+  a Cabinet's current Rows (designer, 2026-11-25; core/120, closes Q2619).
+- Q2668 (E2): a bonus payout shows as the old: the Coins counter counts up, no "+N" (designer, 2026-11-25).
+- Q2669 (E3): the 16 Upgrades whose features come in batch C show greyed "Coming soon" in the grid until then, the
+  old rule Q1272 (designer, 2026-11-25).
+- Q2670 (E4): the Old Tree's voice comes in batch B; its motion waits for its rework (Q2506) (designer, 2026-11-25).
