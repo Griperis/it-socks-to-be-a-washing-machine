@@ -30,6 +30,7 @@ An SVG in the UI icons' folder, imported as the others; nothing else.
 
 ## Answers
 - The washer's subtitle icon is a flat drawn icon in the UI icons' style, its own look ticket (Q2641, 2026-11-24).
+- Remove the eyebrows from the washer's subtitle icon; change nothing else (designer, after the first line-up, Q2655, 2026-11-25).
 
 ## Open follow-ups
 
@@ -41,3 +42,6 @@ An SVG in the UI icons' folder, imported as the others; nothing else.
   1080p, the washer's beside a no-icon row, and the icon among coins/dirty/drawers/carry/animals/check/key at 128 and 44 px),
   `washer-icon-zoom.png` (8x). Stopped at the first still. The zoo Icons station lists it by itself (group "other").
   Verified: suite PASS (ui_icons and voice cases updated: the folder lists "washer", the row has an icon); rules, asset_lint PASS.
+- 2026-11-25 (send-back, Q2655): Changed: the two brow paths removed from `assets/ui/washer.svg` (nothing else; the import
+  re-exports it). Files: assets/ui/washer.svg. Still: `builds/review-assets-15/washer-icon-nobrows-lineup.png`,
+  `washer-icon-nobrows-zoom.png` (old files kept). Stopped at ready-for-human again. Verified: see the commit's suite line.
