@@ -16,6 +16,9 @@ const SHELL := "res://game/house/shell.tscn"
 const HOUSE := "res://game/house/house.tscn"
 const RUNTIME := "res://game/level/level_runtime.tscn"
 const FURNITURE := "res://game/furniture"
+## The least wall time a wait on the house's laying gives it: on a busy machine the loading screen's
+## slices shrink (SliceClock lets fewer units fit), so the laying takes more frames, not a set number.
+const LAYING_S := 20.0
 ## The old spawn moved to the plan (room.gd spawn_pos 1.58, -2.9, 5.59 in the laundry, spawn_yaw).
 const SPAWN := Vector3(1.68, -3.0, 5.87)
 const SPAWN_YAW := 0.922
@@ -160,11 +163,15 @@ func _house() -> Node3D:
 	return _level.get_child(0) as Node3D
 
 
-## The house level, in the tree; physics ready and the player standing.
+## The house level, in the tree; its Socks laid, physics ready and the player standing. The loading
+## screen holds the player while it lays a slice per frame, and a busy machine makes those slices
+## short (a unit's time grows, so fewer fit), so the laying is waited for in wall time, not frames.
 func _level_up() -> Node3D:
 	_level = (load(HOUSE) as PackedScene).instantiate() as Node3D
 	add_child(_level)
-	var player := LevelRuntime.of(_level).player
+	var rt := LevelRuntime.of(_level)
+	var player := rt.player
+	await _until(rt.loading.is_lifted, "the house's Socks to be laid", 900, LAYING_S)
 	await _until(func() -> bool: return player.is_on_floor(), "the player to stand in the house")
 	return _level
 
@@ -1255,7 +1262,8 @@ func case_real_path_loading_screen() -> void:
 	var last := 0.0
 	var moved_while := 0.0
 	var frames := 0
-	while screen.is_showing() and frames < 3000:
+	var give_up := Time.get_ticks_msec() + int(LAYING_S * 1000.0)
+	while screen.is_showing() and (frames < 3000 or Time.get_ticks_msec() < give_up):
 		await get_tree().process_frame
 		frames += 1
 		counts[mess.count()] = true

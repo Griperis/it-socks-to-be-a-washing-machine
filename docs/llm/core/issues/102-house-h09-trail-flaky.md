@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: bug
 area: core
 feature: house
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-25
 blocked_by: []
 notes: ["suggested model: opus (flaky test debugging)", "ledger: tests/flaky/ledger.md, house:h09_trail_stays_on_treads (2026-11-25)", "batch A side ticket"]
 terms: []
@@ -26,3 +26,18 @@ terms: []
 ## Open follow-ups
 
 ## Built log
+
+### 2026-11-25
+- Cause: `_level_up()` waited 900 frames for the player to stand, and the loading screen holds the player
+  until the house's Socks are laid. On a busy machine `SliceClock` times units long, so fewer fit a 14 ms
+  slice (down to one a frame) and the laying takes more frames than 900, each frame short (the ledger: 900
+  frames in 2.4 s). Not core/77: the house suite sets `start_all`, so it lays what it laid before (990 Socks,
+  90 frames quiet). Reproduced by a forced short slice (3 ms: one unit a frame): the same failure line.
+- Changed: `_level_up()` first waits for the loading screen to lift with a 20 s wall-time floor
+  (`LAYING_S`), then for the player to stand; `real_path_loading_screen`'s laying loop has the same floor.
+  No game code or number changed.
+- Files: tests/house_test.gd
+- Verified: forced 3.6 ms slice: laid in 1627 frames, the case passes; house suite 10 runs in a row under
+  load (loadavg 4.5-11.6, reruns off; runs 3-10 without the unchanged timing case): every one
+  `PASS`, no FLAKY line; `run.sh --touched`: see the commit
+
