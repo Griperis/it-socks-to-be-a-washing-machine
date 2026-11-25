@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CutsceneScript" format=3]
+
+[ext_resource type="Script" path="res://game/cutscene/cutscene_script.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+beats = Array[Array]([[0.5, "bubbles", [true]], ["after_voice", "bubbles", [false]]])
+no_voice_seconds = 2.0

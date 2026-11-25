@@ -26,6 +26,8 @@ const SAY_LINE := &"say_line"
 const ZOO_MOOD := &"zoo_mood"
 const ZOO_STAGE := &"zoo_stage"
 const ZOO_BROKEN := &"zoo_broken"
+## The washer station's cutscene pillars (core/88): a CUTSCENE trigger played plainly on the Cutscene frame.
+const ZOO_CUTSCENE := &"zoo_cutscene"
 
 ## Whose lines these are, its numbers, and its face.
 @export var speaker: VoiceSpeaker
@@ -87,6 +89,18 @@ static func of(tree: SceneTree) -> Washer:
 	return null
 
 
+## The washing machine of the level `node` is in (two levels share the tree in a co-op test), or null.
+static func of_level(node: Node) -> Washer:
+	if not node.is_inside_tree():
+		return null
+	var runtime := LevelRuntime.of(node)
+	for thing in node.get_tree().get_nodes_in_group(GROUP):
+		for child in thing.get_children():
+			if child is Washer and LevelRuntime.of(child) == runtime:
+				return child as Washer
+	return null
+
+
 ## Nothing is kept in a save (the old saved none): a load starts the machine quiet and, until core/94, fine.
 func save_state() -> Dictionary:
 	return {}
@@ -109,6 +123,7 @@ func accepts() -> Dictionary[StringName, Dictionary]:
 		out[ZOO_MOOD] = {"args": {"level": {"type": TYPE_INT, "min": -1, "max": 64}}, "rate": 5}
 		out[ZOO_STAGE] = {"args": {"stage": {"type": TYPE_INT, "min": -1, "max": 64}}, "rate": 5}
 		out[ZOO_BROKEN] = {"args": {"on": TYPE_BOOL}, "rate": 5}
+		out[ZOO_CUTSCENE] = {"args": {"trigger": trigger}, "rate": 5}
 	return out
 
 
@@ -138,6 +153,12 @@ func decide(cmd: Command) -> Dictionary:
 			if not zoo or not (on is bool) or on == broken:
 				return refuse("wrong")
 			return grant({"broken": on})
+		ZOO_CUTSCENE:
+			var cutscene := trigger_of(StringName(str(cmd.args.get("trigger", ""))))
+			var frame := Cutscenes.of(self)
+			if not zoo or cutscene == null or cutscene.kind != VoiceTrigger.Kind.CUTSCENE or frame == null:
+				return refuse("wrong")
+			return frame.start(cutscene.resource_path)
 	return refuse("wrong")
 
 
@@ -226,6 +247,11 @@ func _process(_delta: float) -> void:
 
 ## Looks only: the mood into the Looks' damage and repair (core/87 shows them).
 func _apply_mood() -> void:
+	# A cutscene's look (the CutscenePlayer's `looks.set_cutscene`) holds damage and repair until it ends; the
+	# key is left behind, so the run's mood is applied the frame after.
+	var frame := Cutscenes.of(self) if is_inside_tree() else null
+	if frame != null and frame.is_playing():
+		return
 	_look_key = "%d/%d/%s" % [mood_level(), mood_total(), broken]
 	if looks == null:
 		return
