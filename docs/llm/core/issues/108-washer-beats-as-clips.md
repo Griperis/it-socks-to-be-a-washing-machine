@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: in-progress
 kind: refactor
 area: core
 feature: washer

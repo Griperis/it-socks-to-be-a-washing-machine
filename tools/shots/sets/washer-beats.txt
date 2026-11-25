@@ -1,0 +1,40 @@
+# core/108: the washer's wash beats, the real Looks alone on a plain floor (the shot hook washer_beat), the camera riding
+# shot_bob() and shot_push() as the cutscene's wide shot does; 60 frames a second. calm: the First wash's calm wash from 31
+# (the drum ramps up, bubbles, the 1 cm bob), the break at 211 (all stops, the damage shows). voiced: the Final wash with a
+# line from 32 (drum, bubbles, bob, the push in over 2.6 s), happy_done at 422 (the drum slows, the bubbles stop 1 s on).
+# unvoiced: the same without a line (the hop, sway and warm pulsing glow). door: door_open(0.4) at 32, door_close(0.6) at 92.
+# Before/after: --before <commit> --strip; the pixel diff: png_strip.py --diff.
+calm-45  --size=640x480 --do='30:washer_beat:stage,port,cutscene_first_wash;31:washer_beat:call,calm_wash,40;211:washer_beat:call,wash_break' --shots=45
+calm-60  --size=640x480 --do='30:washer_beat:stage,port,cutscene_first_wash;31:washer_beat:call,calm_wash,40;211:washer_beat:call,wash_break' --shots=60
+calm-90  --size=640x480 --do='30:washer_beat:stage,port,cutscene_first_wash;31:washer_beat:call,calm_wash,40;211:washer_beat:call,wash_break' --shots=90
+calm-120  --size=640x480 --do='30:washer_beat:stage,port,cutscene_first_wash;31:washer_beat:call,calm_wash,40;211:washer_beat:call,wash_break' --shots=120
+calm-150  --size=640x480 --do='30:washer_beat:stage,port,cutscene_first_wash;31:washer_beat:call,calm_wash,40;211:washer_beat:call,wash_break' --shots=150
+calm-200  --size=640x480 --do='30:washer_beat:stage,port,cutscene_first_wash;31:washer_beat:call,calm_wash,40;211:washer_beat:call,wash_break' --shots=200
+calm-213  --size=640x480 --do='30:washer_beat:stage,port,cutscene_first_wash;31:washer_beat:call,calm_wash,40;211:washer_beat:call,wash_break' --shots=213
+calm-240  --size=640x480 --do='30:washer_beat:stage,port,cutscene_first_wash;31:washer_beat:call,calm_wash,40;211:washer_beat:call,wash_break' --shots=240
+calm-270  --size=640x480 --do='30:washer_beat:stage,port,cutscene_first_wash;31:washer_beat:call,calm_wash,40;211:washer_beat:call,wash_break' --shots=270
+voiced-60  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,true;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=60
+voiced-120  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,true;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=120
+voiced-190  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,true;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=190
+voiced-300  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,true;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=300
+voiced-440  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,true;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=440
+voiced-500  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,true;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=500
+voiced-560  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,true;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=560
+unvoiced-50  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,false;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=50
+unvoiced-60  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,false;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=60
+unvoiced-70  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,false;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=70
+unvoiced-80  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,false;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=80
+unvoiced-90  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,false;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=90
+unvoiced-100  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,false;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=100
+unvoiced-110  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,false;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=110
+unvoiced-120  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,false;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=120
+unvoiced-130  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,false;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=130
+unvoiced-430  --size=640x480 --do='30:washer_beat:stage,port,cutscene_final_wash;31:washer_beat:call,set_voiced,false;32:washer_beat:call,happy_wash,40;422:washer_beat:call,happy_done' --shots=430
+door-38  --size=640x480 --do='30:washer_beat:stage,port;32:washer_beat:call,door_open,0.4;92:washer_beat:call,door_close,0.6' --shots=38
+door-44  --size=640x480 --do='30:washer_beat:stage,port;32:washer_beat:call,door_open,0.4;92:washer_beat:call,door_close,0.6' --shots=44
+door-50  --size=640x480 --do='30:washer_beat:stage,port;32:washer_beat:call,door_open,0.4;92:washer_beat:call,door_close,0.6' --shots=50
+door-56  --size=640x480 --do='30:washer_beat:stage,port;32:washer_beat:call,door_open,0.4;92:washer_beat:call,door_close,0.6' --shots=56
+door-101  --size=640x480 --do='30:washer_beat:stage,port;32:washer_beat:call,door_open,0.4;92:washer_beat:call,door_close,0.6' --shots=101
+door-110  --size=640x480 --do='30:washer_beat:stage,port;32:washer_beat:call,door_open,0.4;92:washer_beat:call,door_close,0.6' --shots=110
+door-119  --size=640x480 --do='30:washer_beat:stage,port;32:washer_beat:call,door_open,0.4;92:washer_beat:call,door_close,0.6' --shots=119
+door-128  --size=640x480 --do='30:washer_beat:stage,port;32:washer_beat:call,door_open,0.4;92:washer_beat:call,door_close,0.6' --shots=128
