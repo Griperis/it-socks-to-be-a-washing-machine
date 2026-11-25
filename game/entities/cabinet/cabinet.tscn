@@ -31,3 +31,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.71, 0)
 
 [node name="Openable" parent="Drawer3" parent_id_path=PackedInt32Array(1947667389) index="0" unique_id=779168564]
 locked = true
+
+[node name="Drawer4" parent="." instance=ExtResource("4_drawer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01, 0)
+visible = false
+
+[node name="Openable" parent="Drawer4" index="0"]
+locked = true
+
+[node name="Drawer5" parent="." instance=ExtResource("4_drawer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31, 0)
+visible = false
+
+[node name="Openable" parent="Drawer5" index="0"]
+locked = true
+
+[node name="Drawer6" parent="." instance=ExtResource("4_drawer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61, 0)
+visible = false
+
+[node name="Openable" parent="Drawer6" index="0"]
+locked = true

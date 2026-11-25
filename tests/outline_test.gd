@@ -155,6 +155,11 @@ func case_o04() -> void:
 	styles.append(door.current_style())
 	_check(styles[0] == styles[1] and styles[0] == Outline.AIM, "the drawer and the Door have the same outline")
 	# Empty Hands at the top drawer (above the Rows: no room): no tint.
+	var cab := _station.get_node("Cabinet/Cabinet") as Cabinet
+	# core/81: a drawer above the Rows is not there, so the third Row is shown, one Pair a Row and full.
+	cab.tuning = cab.tuning.duplicate()
+	cab.tuning.drawer_capacity = 1
+	_parts.load_snapshot({cab.id: {"rows": 3, "shelf": [PackedInt32Array(), PackedInt32Array(), PackedInt32Array([0])]}})
 	var top := _outline_of("Cabinet/Drawer3/Looks/Outline")
 	_stand(BY_CABINET)
 	await _aim(_drawer_front(2))

@@ -62,7 +62,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "c11_no_icon", "method": "case_c11", "world": false,
 				"title": "C11: the Cabinet shows no icon or text of its Collection"},
 		{"name": "c14_built", "method": "case_c14", "world": false,
-				"title": "C14: the Cabinet is built from the model's parts (base, 3 segments, top, a drawer each with 25 slots, a handle within 4 cm) and stands against the wall facing out"},
+				"title": "C14: the Cabinet is built from the model's parts (base, 6 segments, top, a drawer each with 25 slots, a handle within 4 cm) and stands against the wall facing out"},
 		{"name": "t05_thrown_shelves", "method": "case_t05", "world": false,
 				"title": "T05: a thrown Pair touching its own Cabinet shelves itself into the lowest drawer with room, which pops open, pays the thrower, and nothing lies on the floor"},
 		{"name": "r06_top_no_shelve", "method": "case_r06", "world": false,
@@ -311,8 +311,8 @@ func case_c14() -> void:
 	var looks := cabinet.get_node("Looks")
 	for n: String in ["Base", "Segment1", "Segment2", "Segment3", "Segment4", "Segment5", "Segment6", "Top"]:
 		_check(looks.get_node_or_null(NodePath(n)) is MeshInstance3D, "the Looks has its %s" % n)
-	_check(_cabinet.drawer_count() == 3, "one drawer per segment (%d)" % _cabinet.drawer_count())
-	for i in 3:
+	_check(_cabinet.drawer_count() == 6, "one drawer per segment (%d)" % _cabinet.drawer_count())
+	for i in 6:
 		var dlooks := cabinet.get_node("Drawer%d/Looks" % (i + 1))
 		var slots := 0
 		while dlooks.find_child(Cabinet.SLOT % (slots + 1), true, false) != null:
