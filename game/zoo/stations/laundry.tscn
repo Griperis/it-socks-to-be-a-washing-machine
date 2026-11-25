@@ -4,6 +4,9 @@
 [ext_resource type="Script" path="res://game/zoo/laundry/spray_pillar.gd" id="2_pillar"]
 [ext_resource type="PackedScene" path="res://game/entities/laundry_bin/laundry_bin.tscn" id="3_bin"]
 [ext_resource type="Script" path="res://game/zoo/laundry/bin_pillar.gd" id="4_bin_pillar"]
+[ext_resource type="PackedScene" path="res://game/laundry/laundry_day.tscn" id="5_day"]
+[ext_resource type="Script" path="res://game/zoo/laundry/laundry_pillar.gd" id="6_pillar"]
+[ext_resource type="Script" path="res://game/zoo/laundry/laundry_label.gd" id="7_label"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.62, 0.7, 0.78, 1)
@@ -121,3 +124,58 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 pixel_size = 0.004
 billboard = 2
 text = "Bin"
+
+[node name="BinThird" parent="." instance=ExtResource("3_bin")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
+
+[node name="LaundryDay" parent="." instance=ExtResource("5_day")]
+
+[node name="Day" parent="LaundryDay" index="0" node_paths=PackedStringArray("spots")]
+spots = NodePath("../..")
+zoo = true
+
+[node name="LastFixPillar" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.5, 3)
+
+[node name="LaundryPillar" type="Node" parent="LastFixPillar" node_paths=PackedStringArray("day")]
+script = ExtResource("6_pillar")
+day = NodePath("../../LaundryDay/Day")
+
+[node name="Mesh" type="MeshInstance3D" parent="LastFixPillar"]
+mesh = SubResource("BoxMesh_button")
+
+[node name="Shape" type="CollisionShape3D" parent="LastFixPillar"]
+shape = SubResource("BoxShape3D_button")
+
+[node name="Label" type="Label3D" parent="LastFixPillar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+pixel_size = 0.004
+billboard = 2
+text = "Last Fix done"
+
+[node name="FinalPillar" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.5, 3)
+
+[node name="LaundryPillar" type="Node" parent="FinalPillar" node_paths=PackedStringArray("day")]
+script = ExtResource("6_pillar")
+day = NodePath("../../LaundryDay/Day")
+kind = 1
+
+[node name="Mesh" type="MeshInstance3D" parent="FinalPillar"]
+mesh = SubResource("BoxMesh_button")
+
+[node name="Shape" type="CollisionShape3D" parent="FinalPillar"]
+shape = SubResource("BoxShape3D_button")
+
+[node name="Label" type="Label3D" parent="FinalPillar"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+pixel_size = 0.004
+billboard = 2
+text = "Final wash"
+
+[node name="Tally" type="Label3D" parent="." node_paths=PackedStringArray("day")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -3)
+pixel_size = 0.004
+billboard = 2
+script = ExtResource("7_label")
+day = NodePath("../LaundryDay/Day")

@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/laundry/laundry_day.gd" id="1_day"]
+[ext_resource type="Resource" path="res://game/laundry/laundry_tuning.tres" id="2_tuning"]
+
+[node name="LaundryDay" type="Node"]
+
+[node name="Day" type="Node" parent="."]
+script = ExtResource("1_day")
+tuning = ExtResource("2_tuning")

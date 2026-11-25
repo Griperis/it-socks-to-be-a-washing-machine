@@ -21,11 +21,29 @@
 		},
 		"version": 1
 	},
+	"res://game/entities/laundry_bin/laundry_bin.gd": {
+		"fields": {
+			"full": "bool",
+			"used": "bool"
+		},
+		"version": 1
+	},
 	"res://game/hands/hands.gd": {
 		"fields": {
 			"active": "Dictionary",
 			"grabbed_at": "Dictionary",
 			"held": "Dictionary"
+		},
+		"version": 1
+	},
+	"res://game/laundry/laundry_day.gd": {
+		"fields": {
+			"drawn": "bool",
+			"ending_left": "float",
+			"final_started": "bool",
+			"first_wash": "int",
+			"loaded_bins": "int",
+			"zoo_fixed": "bool"
 		},
 		"version": 1
 	},

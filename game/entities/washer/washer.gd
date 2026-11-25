@@ -120,6 +120,19 @@ func hint_only() -> bool:
 	return true
 
 
+## A click with a carried Laundry bin loads the machine (core/93, "[LMB] Load the washing machine"): the Laundry
+## day decides; with no bin carried it does nothing, as the old `hint_only`.
+func use(by: int) -> void:
+	var day := LaundryDay.of(self)
+	if parts != null and day != null:
+		parts.ask(Command.new(LaundryDay.LOAD, by, day.id))
+
+
+## Only the left click uses it (the load); the use key does nothing.
+func click_only() -> bool:
+	return true
+
+
 func accepts() -> Dictionary[StringName, Dictionary]:
 	var trigger := {"type": TYPE_STRING, "max": 64}
 	var out: Dictionary[StringName, Dictionary] = {TALK: {"args": {"trigger": trigger}, "rate": 5}}

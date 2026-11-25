@@ -378,6 +378,13 @@ clips = Array[AudioStream]([ExtResource("202_partfit")])
 spatial = true
 note = "A Machine Part goes into the washing machine (core/79). Old pick cc0/rubberduck_v2_lock_open_fit."
 
+[sub_resource type="Resource" id="Resource_socks_pour"]
+script = ExtResource("1_76itk")
+event = &"socks_pour"
+clips = Array[AudioStream]([ExtResource("206_pour")])
+spatial = true
+note = "PLACEHOLDER (core/93): the Socks pouring out of the washing machine's porthole, a whoosh, and each Laundry bin's pour into it. The old first pick cc0/pyrano_whoosh_pour (none chosen). Pick and level on the Sounds bench."
+
 [sub_resource type="Resource" id="Resource_padlock_pop"]
 script = ExtResource("1_76itk")
 event = &"padlock_pop"
@@ -457,13 +464,6 @@ event = &"wash_slam"
 clips = Array[AudioStream]([ExtResource("305_slam")])
 spatial = true
 note = "PLACEHOLDER (core/98): the old wash_slam, no pick, its first synthesised candidate; the washer's door slams as the body goes in and bursts as it comes out, heard at the porthole."
-
-[sub_resource type="Resource" id="Resource_socks_pour"]
-script = ExtResource("1_76itk")
-event = &"socks_pour"
-clips = Array[AudioStream]([ExtResource("206_pour")])
-spatial = true
-note = "The Socks pour out of the washing machine's door at the spit (core/92). Old pick cc0/pyrano_whoosh_pour."
 
 [resource]
 script = ExtResource("23_7apgx")
