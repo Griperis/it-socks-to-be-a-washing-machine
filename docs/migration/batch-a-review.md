@@ -49,3 +49,5 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 | Ticket | The choice | What was done (the old answer) | Designer |
 |---|---|---|---|
 | core/100 | Jolt penetration slop (Socks under a heap sink up to about 1 cm) | kept Jolt's default 0.02 m, the watch counts only pushes | reference/it-socks/project.godot:257-260 (no slop set) |
+| core/89 | The old step's two hard-coded numbers (0.7 sideways grip at a bounce, 0.3 m/s last bounce) | made `floor_grip` and `rest_speed` in `SockSprayTuning`, with the old values, so every spray number is in the Resource | reference/it-socks/game/devices/first_wash_spit.gd `_process` (vel.x *= 0.7; vel.y < 0.3) |
+| core/89 | The zoo's Spray pillar: shown to every machine or only the presser | plays on the pressing machine only (looks only, nothing asked of the Host); the real First wash plays it on every machine from the Host's answer (core/94) | the old spit was a local effect started by the cutscene timeline (first_wash_spit.gd `play`) |
