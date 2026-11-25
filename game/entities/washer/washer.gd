@@ -203,6 +203,7 @@ func spray() -> void:
 	var thing := get_parent() as Node3D
 	var t := sock_spray.tuning
 	sock_spray.play(porthole.global_position, porthole.global_basis.z, thing.global_position.y if thing != null else 0.0)
+	Sounds.play_at(&"socks_pour", porthole.global_position)  # the old rogue_machine.gd:300
 	if looks == null:
 		return
 	if _spit != null:

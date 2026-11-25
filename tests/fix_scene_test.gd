@@ -63,6 +63,11 @@ func case_real_path_fix() -> void:
 	_check(stages.phase == Stages.Phase.FIXING and stages.stage == 0, "the Stage is FIXING while the scene plays")
 	_check(cs.playing.ends_with("fix_scene_1.tres") and cs.trigger().id == &"cutscene_fix_1", "cutscene_2 plays (%s)" % cs.playing)
 	_check(washer.busy(), "the washing machine is busy while it plays")
+	var poured: Array = []
+	var heard := func(e: StringName, _s: bool, at: Vector3, _b: StringName) -> void:
+		if e == &"socks_pour":
+			poured.append(at)
+	Sounds.played.connect(heard)
 	var seen := {"spray": false, "stage_at_spray": -1, "open_before_end": false}
 	var door := _level.get_node("FloorLocks/Ground/Padlock/FloorLock") as FloorLock
 	_check(door.is_locked(), "the ground floor's door is shut before the scene's fade")
@@ -71,6 +76,9 @@ func case_real_path_fix() -> void:
 			seen["spray"] = true
 			seen["stage_at_spray"] = stages.stage
 		return not cs.is_playing(), "the Fix scene to end", 100000, SCENE_S)
+	Sounds.played.disconnect(heard)
+	var door_at := washer.porthole.global_position
+	_check(poured.size() == 1 and (poured[0] as Vector3).distance_to(door_at) < 0.01, "socks_pour plays once at the porthole (%s)" % [poured])
 	_check(seen["spray"] and seen["stage_at_spray"] == 0, "the spray played before the floor opened (%s)" % [seen])
 	_check(stages.stage == 1 and stages.phase == Stages.Phase.PLAYING, "Stage 2 is current (%d, phase %d)" % [stages.stage, stages.phase])
 	_check(not door.is_locked() and door.leaf().open, "the ground floor's door is open")
