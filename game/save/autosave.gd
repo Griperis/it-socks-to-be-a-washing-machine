@@ -58,6 +58,10 @@ func saves() -> bool:
 func collect() -> Dictionary:
 	var rec := world.record
 	rec.last_played = int(Time.get_unix_time_from_system())
+	# The World's row names its floor: the run's current Stage's title (a level with no run keeps "").
+	var stages := get_tree().get_first_node_in_group(Stages.GROUP) as Stages if is_inside_tree() else null
+	if stages != null:
+		rec.floor_name = stages.floor_title()
 	var roster := session.roster if session != null else null
 	if roster != null:
 		for pid: Variant in roster.players:

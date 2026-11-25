@@ -75,6 +75,8 @@
 [ext_resource type="PackedScene" uid="uid://1jfxjkr05r4r" path="res://game/entities/door/room_door_flipped.tscn" id="87_door_flipped"]
 [ext_resource type="Script" uid="uid://u22gclb5j8x6" path="res://game/house/door_shuts.gd" id="88_door_shuts"]
 [ext_resource type="Resource" uid="uid://u22gclb5im37" path="res://game/house/door_shut_rules.tres" id="89_door_rules"]
+[ext_resource type="PackedScene" path="res://game/run/run.tscn" id="90_run"]
+[ext_resource type="Resource" path="res://game/run/house_stage_plan.tres" id="91_stage_plan"]
 
 [node name="House" type="Node3D" unique_id=1892225822]
 
@@ -545,6 +547,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.68, -3, 5.87)
 [node name="Runtime" parent="." unique_id=715124708 instance=ExtResource("80_runtime")]
 mess_bounds = AABB(-2, -5, -2, 14.5, 17, 12.5)
 load_screen = true
+
+[node name="Run" parent="." instance=ExtResource("90_run")]
+
+[node name="Stages" parent="Run" index="0"]
+plan = ExtResource("91_stage_plan")
 
 [node name="Cabinets" type="Node3D" parent="." unique_id=1977464650]
 

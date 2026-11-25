@@ -53,11 +53,16 @@ const BALL_LANDING := preload("res://game/sock/ball_landing_tuning.tres")
 const DUST_SHEET := ^"../DustSheet"
 ## Links the wiring check lets stay empty: a Cabinet finds the level's Hands and Coins by group.
 const WIRING_OPTIONAL := ["hands", "coins"]
+## Every Cabinet is in this group (the run's Stages finds the ones of its level by it).
+const GROUP := &"cabinets"
 
 @export var tuning: CabinetTuning
 ## The level's Hands (their Mess is the Mess) and Coins; empty, the first of each group.
 @export var hands: Hands
 @export var coins: Coins
+## The Stage that unlocks it (1 is the basement's; the garage's 2, Q1463). Read only in a level with a
+## run (docs/architecture/stages.md).
+@export_range(1, 16, 1) var unlock_stage := 1
 
 @export_group("State")
 ## The Collection whose Pairs this Cabinet takes (a SockDesign.collection).
@@ -65,7 +70,7 @@ const WIRING_OPTIONAL := ["hands", "coins"]
 ## A locked Cabinet takes nothing and its drawers stay shut (C08).
 @export var locked := false
 ## How many drawers, from the bottom, are in use (Stage growth is M4).
-@export_range(0, 64, 1) var rows := 2 # placeholder: the designer's number (today's start, Stage growth in M4)
+@export_range(0, 64, 1) var rows := 2 # placeholder: a level with no run keeps it; a run sets it (StagePlan.start_rows)
 ## Each drawer's shelved Pairs (their lead Sock ids), bottom drawer first, in the order they went
 ## in: an Array of PackedInt32Array.
 @export var shelf := []
@@ -81,6 +86,13 @@ var _waiting: Dictionary[int, Array] = {}
 var _drawers: Array[Openable] = []
 var _slots: Array[Array] = []
 var _found := false
+## The run's Stages of its level (they set it as they enter), or null in a level with no run: the Row's
+## capacity is then the tuning's `drawer_capacity`.
+var stages: Stages = null
+
+
+func _enter_tree() -> void:
+	add_to_group(GROUP)
 
 
 func _ready() -> void:
@@ -260,6 +272,50 @@ func shelved() -> PackedInt32Array:
 	return out
 
 
+## The Pairs a Drawer holds: the run's (its World's Pairs per Drawer) in a level with one, else the
+## tuning's.
+func per_drawer() -> int:
+	return stages.pairs_per_drawer if stages != null and stages.pairs_per_drawer > 0 else tuning_of().drawer_capacity
+
+
+## How many Designs its Collection has; 0 when unknown (no Mess yet).
+func designs_count() -> int:
+	var mess := mess_of()
+	return mess.catalogue.count_of(collection) if mess != null and mess.catalogue != null else 0
+
+
+## The Pairs Row `index` takes (0 is the bottom): a Drawer's worth, the Collection's last Row only the
+## Designs left (Simple's sixth at 25: 5; CB:203-216), none past it.
+func row_capacity(index: int) -> int:
+	return row_capacity_at(index, per_drawer())
+
+
+## Row `index`'s capacity at `per` Pairs per Drawer (a run deciding a new Drawer size).
+func row_capacity_at(index: int, per: int) -> int:
+	var count := designs_count()
+	if count <= 0:
+		return per
+	return clampi(count - index * per, 0, per)
+
+
+## Its full height: its Collection's Designs over the Pairs per Drawer, rounded up (Q641).
+func full_height() -> int:
+	return full_height_at(per_drawer())
+
+
+## Its full height at `per` Pairs per Drawer.
+func full_height_at(per: int) -> int:
+	var count := designs_count()
+	if count <= 0 or per <= 0:
+		return drawer_count()
+	return ceili(float(count) / per)
+
+
+## Whether Row `index` holds all it takes.
+func row_full(index: int) -> bool:
+	return contents(index).size() >= row_capacity(index)
+
+
 ## How many drawers take Pairs now: the Rows, never more than the drawers there are.
 func rows_in_use() -> int:
 	return clampi(rows, 0, drawer_count())
@@ -270,27 +326,25 @@ func rows_in_use() -> int:
 ## above the Rows, the search starts at the top Row. -1 when every Row is full.
 func next_drawer(aimed: int, counts: Array[int]) -> int:
 	var n := rows_in_use()
-	var cap := tuning_of().drawer_capacity
 	aimed = clampi(aimed, 0, maxi(n - 1, 0))
 	for step in n:
 		for index: int in [aimed - step, aimed + step]:
-			if index >= 0 and index < n and counts[index] < cap:
+			if index >= 0 and index < n and counts[index] < row_capacity(index):
 				return index
 	return -1
 
 
 ## Room left in all its Rows.
 func room() -> int:
-	var cap := tuning_of().drawer_capacity
 	var left := 0
 	for i in rows_in_use():
-		left += maxi(cap - contents(i).size(), 0)
+		left += maxi(row_capacity(i) - contents(i).size(), 0)
 	return left
 
 
 ## Whether drawer `index` takes another Pair: a Row in use, not full (the old game's has_room).
 func has_room(index: int) -> bool:
-	return index >= 0 and index < rows_in_use() and contents(index).size() < tuning_of().drawer_capacity
+	return index >= 0 and index < rows_in_use() and contents(index).size() < row_capacity(index)
 
 
 ## Whether the Pair led by `sock` is of this Cabinet's Collection.

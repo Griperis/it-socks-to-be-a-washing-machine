@@ -116,12 +116,17 @@ func pull_off() -> float:
 	_tween = create_tween()
 	_tween.tween_method(_set_pull, 0.0, 1.0, t.pull_time).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	_tween.tween_callback(func() -> void: show_on(false))
-	var cabinet := get_parent() as Node3D
 	var wait := maxf(t.reveal_delay, t.pull_time)
-	get_tree().create_timer(wait, false).timeout.connect(func() -> void:
-		if is_instance_valid(cabinet) and cabinet.is_inside_tree():
-			Sounds.play_at(REVEAL, cabinet.global_position + Vector3.UP * REVEAL_UP))
+	# A method of the sheet's, so a sheet freed before the timer (its level left) is never called.
+	get_tree().create_timer(wait, false).timeout.connect(_reveal_sound)
 	return t.pull_time
+
+
+## The reveal sounds over the Cabinet, after the pull.
+func _reveal_sound() -> void:
+	var cabinet := get_parent() as Node3D
+	if cabinet != null and cabinet.is_inside_tree():
+		Sounds.play_at(REVEAL, cabinet.global_position + Vector3.UP * REVEAL_UP)
 
 
 ## Whether the pull is still playing.

@@ -1,0 +1,281 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://h3610c6dred6" path="res://game/entities/cabinet/cabinet.tscn" id="1_cabinet"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="2_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="3_hands"]
+[ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="4_spot"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="5_designs"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
+[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="7_coins"]
+[ext_resource type="PackedScene" uid="uid://dqcr0t6aah51x" path="res://game/devices/dust_sheet.tscn" id="8_sheet"]
+[ext_resource type="PackedScene" path="res://game/run/run.tscn" id="9_run"]
+[ext_resource type="Resource" path="res://game/zoo/stages/mini_plan.tres" id="10_mini"]
+[ext_resource type="Resource" path="res://game/run/house_stage_plan.tres" id="11_house"]
+[ext_resource type="Script" path="res://game/zoo/stages/stage_plan_board.gd" id="12_board"]
+[ext_resource type="PackedScene" path="res://game/zoo/stages/stages_switch.tscn" id="13_switch"]
+[ext_resource type="Script" uid="uid://cyhr6nx34vjq0" path="res://game/mess/sock_generator.gd" id="14_gen"]
+[ext_resource type="Script" uid="uid://co2u54sk1yir8" path="res://game/mess/generated_socks.gd" id="15_generated"]
+[ext_resource type="Script" uid="uid://cub70qrwflqk1" path="res://game/mess/sock_area.gd" id="16_area"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.42, 0.36, 0.5, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_pad")
+size = Vector2(16, 11)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(16, 0.2, 11)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_platform"]
+albedo_color = Color(0.7, 0.66, 0.6, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_platform"]
+material = SubResource("StandardMaterial3D_platform")
+size = Vector3(5, 0.6, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_platform"]
+size = Vector3(5, 0.6, 4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ramp"]
+material = SubResource("StandardMaterial3D_platform")
+size = Vector3(1.6, 0.2, 2.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ramp"]
+size = Vector3(1.6, 0.2, 2.6)
+
+[node name="Stages" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 0, -6)
+
+[node name="Pad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, -1)
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, -1)
+metadata/surface = "wood"
+
+[node name="Shape" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_ground")
+
+[node name="Name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 5)
+pixel_size = 0.004
+billboard = 2
+text = "Stages: a mini run of two Stages, 2 Pairs a Drawer. Shelve the Simple Pairs into Cabinet A to complete Stage 1, then press E on \"Fit now\": Cabinet B on the platform unlocks and Cabinet A grows a Row. \"Complete the Stage\" completes it outright. On the left, the house's Stages from its plan"
+vertical_alignment = 2
+autowrap_mode = 3
+width = 700.0
+
+[node name="PlanBoard" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -5)
+script = ExtResource("12_board")
+plan = ExtResource("11_house")
+
+[node name="Run" parent="." instance=ExtResource("9_run")]
+
+[node name="Stages" parent="Run" index="0"]
+plan = ExtResource("10_mini")
+
+[node name="CabinetA" parent="." instance=ExtResource("1_cabinet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
+
+[node name="Cabinet" parent="CabinetA" index="0" node_paths=PackedStringArray("hands", "coins")]
+hands = NodePath("../../Socks/Hands")
+coins = NodePath("../../Socks/Coins")
+
+[node name="Platform" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.3, -3.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Platform"]
+mesh = SubResource("BoxMesh_platform")
+
+[node name="Shape" type="CollisionShape3D" parent="Platform"]
+shape = SubResource("BoxShape3D_platform")
+
+[node name="Ramp" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.970296, -0.241922, 0, 0.241922, 0.970296, 4, 0.22, -0.26)
+
+[node name="Mesh" type="MeshInstance3D" parent="Ramp"]
+mesh = SubResource("BoxMesh_ramp")
+
+[node name="Shape" type="CollisionShape3D" parent="Ramp"]
+shape = SubResource("BoxShape3D_ramp")
+
+[node name="GateSpot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.6, -1.5)
+
+[node name="SlotBoxSpot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -4)
+
+[node name="CabinetB" parent="." instance=ExtResource("1_cabinet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.6, -5.2)
+
+[node name="Cabinet" parent="CabinetB" index="0" node_paths=PackedStringArray("hands", "coins")]
+hands = NodePath("../../Socks/Hands")
+coins = NodePath("../../Socks/Coins")
+unlock_stage = 2
+collection = &"sport"
+locked = true
+
+[node name="DustSheet" parent="CabinetB" instance=ExtResource("8_sheet")]
+
+[node name="Complete" parent="." instance=ExtResource("13_switch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 1.5)
+
+[node name="StagesSwitch" parent="Complete" index="0" node_paths=PackedStringArray("stages")]
+stages = NodePath("../../Run/Stages")
+does = 0
+
+[node name="FitNow" parent="." instance=ExtResource("13_switch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1.5)
+
+[node name="StagesSwitch" parent="FitNow" index="0" node_paths=PackedStringArray("stages")]
+stages = NodePath("../../Run/Stages")
+
+[node name="Generators" type="Node3D" parent="."]
+
+[node name="Ground" type="Node3D" parent="Generators" node_paths=PackedStringArray("washer", "scan")]
+script = ExtResource("14_gen")
+washer = NodePath("../../SlotBoxSpot")
+collections = Array[StringName]([&"simple"])
+scan = NodePath("../..")
+
+[node name="Floor" type="Node3D" parent="Generators/Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0.5)
+script = ExtResource("16_area")
+size = Vector3(6, 2.4, 4)
+pairs = 0
+
+[node name="Generated" type="Node" parent="Generators/Ground" node_paths=PackedStringArray("mess", "generator")]
+script = ExtResource("15_generated")
+mess = NodePath("../../../Socks/Mess")
+generator = NodePath("..")
+
+[node name="Platform" type="Node3D" parent="Generators" node_paths=PackedStringArray("washer", "scan")]
+script = ExtResource("14_gen")
+washer = NodePath("../../SlotBoxSpot")
+collections = Array[StringName]([&"sport"])
+scan = NodePath("../..")
+
+[node name="Floor" type="Node3D" parent="Generators/Platform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.6, -3.2)
+script = ExtResource("16_area")
+size = Vector3(4.6, 2.4, 2.8)
+pairs = 0
+
+[node name="Generated" type="Node" parent="Generators/Platform" node_paths=PackedStringArray("mess", "generator")]
+script = ExtResource("15_generated")
+mess = NodePath("../../../Socks/Mess")
+generator = NodePath("..")
+
+[node name="Spots" type="Node3D" parent="."]
+
+[node name="Simple0" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 0.2)
+script = ExtResource("4_spot")
+
+[node name="Simple0Mate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.05, 0, 0.2)
+script = ExtResource("4_spot")
+
+[node name="Simple1" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0, 0.2)
+script = ExtResource("4_spot")
+design = 1
+
+[node name="Simple1Mate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.15, 0, 0.2)
+script = ExtResource("4_spot")
+design = 1
+
+[node name="Simple2" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7, 0, 0.2)
+script = ExtResource("4_spot")
+design = 2
+
+[node name="Simple2Mate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.25, 0, 0.2)
+script = ExtResource("4_spot")
+design = 2
+
+[node name="Simple3" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0, 0.2)
+script = ExtResource("4_spot")
+design = 3
+
+[node name="Simple3Mate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.35, 0, 0.2)
+script = ExtResource("4_spot")
+design = 3
+
+[node name="Simple4" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 0.75)
+script = ExtResource("4_spot")
+design = 4
+
+[node name="Simple4Mate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.05, 0, 0.75)
+script = ExtResource("4_spot")
+design = 4
+
+[node name="Simple5" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0, 0.75)
+script = ExtResource("4_spot")
+design = 5
+
+[node name="Simple5Mate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.15, 0, 0.75)
+script = ExtResource("4_spot")
+design = 5
+
+[node name="Sport0" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.6, -3)
+script = ExtResource("4_spot")
+design = 230
+
+[node name="Sport0Mate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.95, 0.6, -3)
+script = ExtResource("4_spot")
+design = 230
+
+[node name="Sport1" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4, 0.6, -3)
+script = ExtResource("4_spot")
+design = 231
+
+[node name="Sport1Mate" type="Marker3D" parent="Spots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.85, 0.6, -3)
+script = ExtResource("4_spot")
+design = 231
+
+[node name="ReturnSpot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 2.5)
+
+[node name="Lying" type="Node3D" parent="."]
+
+[node name="Flights" type="Node3D" parent="."]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="."]
+
+[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+script = ExtResource("2_mess")
+catalogue = ExtResource("5_designs")
+tuning = ExtResource("6_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+bounds = AABB(-9, -2, -8, 18, 8, 14)
+return_spot = NodePath("../../ReturnSpot")
+
+[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess")]
+script = ExtResource("3_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("6_tuning")
+
+[node name="Coins" type="Node" parent="Socks"]
+script = ExtResource("7_coins")

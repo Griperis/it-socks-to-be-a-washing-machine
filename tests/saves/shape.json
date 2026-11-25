@@ -59,5 +59,17 @@
 			"open": "bool"
 		},
 		"version": 1
+	},
+	"res://game/run/stages.gd": {
+		"fields": {
+			"bar": "Array",
+			"due": "PackedInt32Array",
+			"first_laid": "bool",
+			"pairs_per_drawer": "int",
+			"phase": "int",
+			"spawned": "PackedInt32Array",
+			"stage": "int"
+		},
+		"version": 1
 	}
 }

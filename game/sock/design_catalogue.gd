@@ -11,6 +11,18 @@ extends Resource
 ## drawer's prompt reads "<name> drawer" (core/15, Q2388).
 @export var cabinet_names: Dictionary[StringName, String] = {}
 
+## How many Designs each Collection has, counted once (count_of()).
+var _counts: Dictionary[StringName, int] = {}
+
+
+## How many Designs Collection `collection` has (Simple 130, Sport 70: a Cabinet's full height).
+func count_of(collection: StringName) -> int:
+	if _counts.is_empty():
+		for d in designs:
+			if d != null:
+				_counts[d.collection] = _counts.get(d.collection, 0) + 1
+	return _counts.get(collection, 0)
+
 
 ## The Design with this id, or null.
 func design(id: int) -> SockDesign:

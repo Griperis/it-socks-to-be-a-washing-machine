@@ -27,6 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://b3p4lgjwxx4ru" path="res://game/zoo/stations/stacking.tscn" id="54_stacking"]
 [ext_resource type="PackedScene" uid="uid://bg8lkqbbiv0lh" path="res://game/zoo/stations/pings.tscn" id="55_pings"]
 [ext_resource type="PackedScene" uid="uid://q0tm1ywugfrf" path="res://game/level/level_runtime.tscn" id="43_runtime"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/stages.tscn" id="56_stages"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.42, 0.44, 0.46, 1)
@@ -138,6 +139,8 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -16.5, 0, -2.5)
 
 [node name="Pings" parent="Stations" unique_id=1700166444 instance=ExtResource("55_pings")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -2)
+
+[node name="Stages" parent="Stations" instance=ExtResource("56_stages")]
 
 [node name="ReturnSpot" type="Marker3D" parent="." unique_id=1397039282]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.5)
