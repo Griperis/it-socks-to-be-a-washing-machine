@@ -26,7 +26,7 @@ theme_type_variation = &"SubtitleIcon"
 
 [node name="Words" type="Label" parent="."]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 mouse_filter = 2
 theme_type_variation = &"SubtitleLabel"
 horizontal_alignment = 1

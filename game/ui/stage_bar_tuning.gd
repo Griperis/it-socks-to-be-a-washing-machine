@@ -12,8 +12,6 @@ extends Resource
 @export var track_size := Vector2(300.0, 16.0) # placeholder: the old hud.gd STAGE_BAR_SIZE
 ## The gap between the fill and the track's edge.
 @export_range(0, 8, 1, "suffix:px") var fill_inset := 3 # placeholder: the old hud.gd _build_stage_bar
-## The fill's colour.
-@export var fill_colour := Color("#f29b4b") # placeholder: the old UiBits.ACCENT
 ## The bar's top gap.
 @export_range(0, 64, 1, "suffix:px") var top_gap := 12 # placeholder: the old hud.gd _build_stage_bar
 
