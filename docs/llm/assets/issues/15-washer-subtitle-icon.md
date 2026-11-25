@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: assets
 feature: assets
@@ -34,3 +34,10 @@ An SVG in the UI icons' folder, imported as the others; nothing else.
 ## Open follow-ups
 
 ## Built log
+
+- 2026-11-25: Changed: `assets/ui/washer.svg` (64x64, the UI icons' outline and palette: cream body, red knob, blue porthole,
+  two thick angry brows), set as `washer.tres`'s `icon`. Files: assets/ui/washer.svg(.import), game/voice/speakers/washer.tres,
+  tools/washer_icon_still.gd/.tscn (the still scene). Still: `builds/review-assets-15/washer-icon-lineup.png` (subtitle rows at
+  1080p, the washer's beside a no-icon row, and the icon among coins/dirty/drawers/carry/animals/check/key at 128 and 44 px),
+  `washer-icon-zoom.png` (8x). Stopped at the first still. The zoo Icons station lists it by itself (group "other").
+  Verified: suite PASS (ui_icons and voice cases updated: the folder lists "washer", the row has an icon); rules, asset_lint PASS.
