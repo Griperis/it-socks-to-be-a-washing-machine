@@ -43,3 +43,4 @@ Not yet seen flaky in a normal run, but the race is real.
   Files: tests/coop_knockdown_test.gd.
   Verified: forced-lag repro PASS 182 checks, 8 cases; `--only=coop_knockdown` 12 runs, 3 at once, reruns off: PASS 182
   checks, 8 cases each, no FLAKY; `grep_rules.py`: PASS.
+- Merged: 863d6bcc (2026-11-25, branch core/104-coop-knockdown-pose-lag)
