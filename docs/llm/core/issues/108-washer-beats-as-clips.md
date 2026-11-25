@@ -84,3 +84,4 @@ What follows a live number: the glow easing toward the mood, `repair` dim and fl
   final_wash_test.gd}; tools/shot_hooks.gd (`washer_beat`), tools/shots/sets/washer-beats.txt;
   docs/architecture/{washer.md, run-ends.md}; docs/migration/batch-a-review.md.
 - Verified: `PASS 22971 checks, 720 cases` (--touched, 90 suites); `PASS rules`; `PASS asset_lint: 2 look scenes, no problem`; `PASS uids`.
+- Merged: fb60d92b (2026-11-25, branch core/108-washer-beats-as-clips)
