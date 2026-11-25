@@ -53,3 +53,4 @@ Four things the designer saw in the Windows debug build:
 - **Files:** game/voice/subtitle_row.gd/.tscn, game/ui/esc_menu/esc_menu.tscn, game/look/theme.tres, game/ui/stage_bar.gd/.tscn, game/ui/stage_bar_tuning.gd, tests/menus_test.gd (E04), tools/shot_ui_nodes.gd, tools/shots/sets/ui-polish.txt.
 - **Stills:** builds/review-core-115/ (before/, after/, pairs-bar.png, pairs-sub.png, pairs-esc.png).
 - **Verified:** see the commit.
+- Merged: ad2b4bc5 (2026-11-25, branch core/115-ui-polish)
