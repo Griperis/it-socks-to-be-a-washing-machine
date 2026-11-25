@@ -1269,3 +1269,9 @@ a rule that turned out wrong is marked `rule change`; the drift list (changes to
 | Ticket | core/77, a Stage's Socks: only open floors hold Socks, even shares after each Fix, a high-spot pass with two players; Stage 1 laid behind the loading screen; held records until the First wash; merged (main 8f19925) |
 | Cost | about 279k subagent tokens |
 | Surprises | the high-spot pass never placed a Sock in a station (no top over 1.7 m), left to core/91's house case |
+
+---
+
+| Ticket | core/81, the Cabinets grow: the new Drawers drop in at once with a thunk and dust (Q2620); only the current Rows' Drawers shown; CabinetGrowth split out of cabinet.gd; merged (main 74260a4) |
+| Cost | about 161k subagent tokens |
+| Surprises | coop_knockdown:real_path went FLAKY in a run (core/101) |
