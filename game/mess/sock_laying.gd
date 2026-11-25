@@ -56,6 +56,8 @@ var _rng := RandomNumberGenerator.new()
 var _area: SockArea
 var _places: SockPlaces
 var _socks := 0
+## A high pass (a Stage's high spots, core/77): only the tops at least this far over the area's floor.
+var _high := false
 var _next := 0
 var _missed := 0
 var _hidden := 0
@@ -94,12 +96,16 @@ func lay_area(area: SockArea, places: SockPlaces, seed: int) -> void:
 		pass
 
 
-## Gets ready to lay `area`'s Socks one at a time (lay_next(), house/09): its dice, its Heaps.
-func begin_area(area: SockArea, places: SockPlaces, seed: int) -> void:
-	_rng.seed = hash([seed, String(area.name)])
+## Gets ready to lay `area`'s Socks one at a time (lay_next(), house/09): its dice, its Heaps. A Stage's
+## laying (core/77) asks `pairs` Pairs (the area's own when below 0) and, for its high spots, `high_over`
+## (at least that far over the area's floor: only its tops, no hiding, no Heaps; no such top: the usual
+## places), its dice salted by `salt`.
+func begin_area(area: SockArea, places: SockPlaces, seed: int, pairs := -1, high_over := -1.0, salt := "") -> void:
+	_rng.seed = hash([seed, String(area.name)]) if salt == "" else hash([seed, String(area.name), salt])
 	_area = area
 	_places = places
-	_socks = area.pairs * 2
+	_socks = (area.pairs if pairs < 0 else pairs) * 2
+	_high = false
 	_next = 0
 	_missed = 0
 	_phase = PICK
@@ -111,12 +117,23 @@ func begin_area(area: SockArea, places: SockPlaces, seed: int) -> void:
 	asked += _socks
 	_hidden = roundi(_socks * area.hidden_share) if not places.hidden_places.is_empty() else 0
 	_open_places = places.top_places.duplicate()
-	_open_places.append_array(places.floor_places)
+	if high_over >= 0.0:
+		var tops: Array[Dictionary] = []
+		var least := area.global_position.y + high_over
+		for place in places.top_places:
+			if (place["space"] as Transform3D).origin.y >= least:
+				tops.append(place)
+		if not tops.is_empty():
+			_high = true
+			_hidden = 0
+			_open_places = tops
+	if not _high:
+		_open_places.append_array(places.floor_places)
 	_open_sums = _sums(_open_places)
 	_hidden_sums = _sums(places.hidden_places)
 	var floor_sums := _sums(places.floor_places)
 	_heaps.clear()
-	if area.heap and not places.floor_places.is_empty():
+	if area.heap and not _high and not places.floor_places.is_empty():
 		var n := maxi(1, roundi(tuning.heaps_per_100 * (_socks - _hidden) / 100.0))
 		for i in n:
 			var cell: Dictionary = places.floor_places[_weighted(floor_sums)]

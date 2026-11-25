@@ -201,6 +201,10 @@ var skip_generated := false
 ## The generators' starting Socks while they are being laid, else null. Not state: work in hand, given
 ## up when a whole state is written (a Guest's snapshot).
 var starting: StartingSocks
+## A New Game's Stage 1 laying behind the loading screen (core/77, the run's StageSpawner): an object with
+## `is_busy() -> bool`, `step(until: int) -> bool` and `progress() -> float`, or null. Not state: given
+## up when a whole state is written, as `starting`.
+var layer: Object
 
 
 ## Before the level binds: the SockSpots (of `spots`, then of `more_spots`) become the starting
@@ -223,7 +227,7 @@ func _ready() -> void:
 	var gens: Array[GeneratedSocks] = []
 	for node in get_tree().get_nodes_in_group(GeneratedSocks.GROUP):
 		var gen := node as GeneratedSocks
-		if gen != null and gen.mess == self:
+		if gen != null and gen.mess == self and (gen.generator == null or gen.generator.lays_at_start or SockGenerator.start_all):
 			gens.append(gen)
 	if not gens.is_empty() and not skip_generated:
 		MessBodies.fit(MessDrawing.sock_points(), bodies_tuning().min_thick)
@@ -234,22 +238,32 @@ func _ready() -> void:
 
 ## Whether the generated starting Socks are still being laid (lay_in_slices).
 func is_laying() -> bool:
-	return starting != null
+	return starting != null or (layer != null and layer.call(&"is_busy"))
+
+
+## How far the laying is, 0 to 1 (the loading bar): the starting Socks', then the layer's.
+func lay_progress() -> float:
+	if starting != null:
+		return starting.progress()
+	return float(layer.call(&"progress")) if layer != null else 1.0
 
 
 ## Lays the starting Socks until done or the clock (Time.get_ticks_usec()) passes `until` (below 0:
 ## no limit); once done they join the Mess and are shown, all at once (a slice: in the next call, a
 ## frame of its own). Returns whether nothing is left to lay.
 func lay_step(until: int) -> bool:
-	if starting == null:
-		return true
-	var was_done := starting.is_done()
-	if not starting.step(until) or (not was_done and until >= 0):
-		return false
-	starting.reveal()
-	starting = null
-	if parts != null:
-		_show(false)
+	if starting != null:
+		var was_done := starting.is_done()
+		if not starting.step(until) or (not was_done and until >= 0):
+			return false
+		starting.reveal()
+		starting = null
+		if parts != null:
+			_show(false)
+	if layer != null:
+		if not layer.call(&"step", until):
+			return false
+		layer = null
 	return true
 
 
@@ -678,6 +692,7 @@ func write(patch: Dictionary, now: bool) -> void:
 	if not patch.has(ROWS):
 		stream_offset = INF
 		starting = null
+		layer = null
 		super.write(patch, now)
 		_motion.clear()
 		return

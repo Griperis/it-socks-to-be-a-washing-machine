@@ -25,6 +25,12 @@ extends Node3D
 @export var new_seed_each_start := false
 ## The Collections its Designs come from (each its share, spread evenly); empty: every Collection.
 @export var collections: Array[StringName] = []
+## The floor it lays a Stage's Socks on (an index into HouseLights.floors, as a Stage's `floor`); below 0:
+## its place among its level's generators in tree order (core/77).
+@export var floor := -1
+## Lays its own Pairs when the level starts (the zoo's stations). Off where a run's Stages lay instead:
+## the generator is then only the places a Stage's Socks may land (core/77).
+@export var lays_at_start := true
 ## The washer marker the open floor and tops thin out from (Q2528); none: no thinning.
 @export var washer: Node3D:
 	set(value):
@@ -35,11 +41,22 @@ extends Node3D
 ## Draws the preview again (after furniture moved: its places are not watched).
 @export_tool_button("Refresh preview") var refresh := preview_now
 
+## The tests' knob (reset between cases): every generator lays at the start and no Stage lays, as the house
+## did before the run's Stages (the house's starting Mess suites).
+static var start_all := false
+
+## Every SockGenerator is in this group (a run's Stages find the level's by it).
+const GROUP := &"sock_generators"
+
 ## The editor's dots (an internal child, never saved), and whether a redraw waits.
 var _dots: MultiMeshInstance3D
 var _pending := false
 ## The last laying's report, for the log and the tests: asked, laid and left out by area.
 var last_report: Dictionary = {}
+
+
+func _enter_tree() -> void:
+	add_to_group(GROUP)
 
 
 func _ready() -> void:
@@ -71,6 +88,45 @@ func lay(with_seed: int, before: Array[Array] = []) -> SockLaying:
 ## repeating when the Pairs outnumber the Designs).
 func records(with_seed: int, catalogue: DesignCatalogue, before: Array[Array] = []) -> Dictionary:
 	return records_of(lay(with_seed, before), with_seed, catalogue)
+
+
+## The Mess records of a Stage's Socks (core/77): one Pair for each of `designs` (a SockDesign id each,
+## in that order), laid over the generator's areas by their `pairs` (no trails), `high` of the Pairs on
+## tops at least `high_over` over the floor, both Socks of a Pair about a Mate distance apart. A Pair no
+## place was found for is left out (the records hold fewer Designs than asked).
+func records_for(designs: PackedInt32Array, with_seed: int, catalogue: DesignCatalogue, before: Array[Array] = [],
+		high := 0, high_over := 0.0) -> Dictionary:
+	var job := SockLayingJob.new(self, with_seed, designs, high, high_over)
+	job.plan(null)
+	job.lay(before, null)
+	return records_of_given(job.laying, with_seed, designs, catalogue)
+
+
+## records_for()'s records of a finished laying (a SockLayingJob's).
+func records_of_given(laying: SockLaying, with_seed: int, designs: PackedInt32Array, catalogue: DesignCatalogue) -> Dictionary:
+	var dealt := deal_given(laying, with_seed, designs, catalogue)
+	laying.restack(dealt[2])
+	return records_dealt(laying, dealt)
+
+
+## deal() for a Stage's Designs: Pair `k` is Design `designs[k]` (the Pairs are as many as the rows give).
+func deal_given(laying: SockLaying, with_seed: int, designs: PackedInt32Array, catalogue: DesignCatalogue) -> Array:
+	var pairs := laying.pair_up(with_seed)
+	var dealt: Array[SockDesign] = []
+	var parts: Array[Array] = []
+	for r in laying.rows.size():
+		parts.append([])
+	var n := mini(pairs.size(), designs.size())
+	for k in n:
+		var design := catalogue.design(designs[k]) if catalogue != null else null
+		if design == null:
+			continue
+		dealt.append(design)
+		var shape := MessBodies.parts_at(SockDress.scale_of(design))
+		parts[pairs[k].x] = shape
+		parts[pairs[k].y] = shape
+	pairs.resize(dealt.size())
+	return [pairs, dealt, parts]
 
 
 ## The Mess records (records()) of a finished laying from `with_seed` (a SockLayingJob's, house/09).

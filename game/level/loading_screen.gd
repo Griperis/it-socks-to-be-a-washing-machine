@@ -174,8 +174,8 @@ func _process(delta: float) -> void:
 	longest_slice = maxi(longest_slice, took)
 	slices.append(took)
 	frames += 1
-	if mess.starting != null:
-		set_progress(mess.starting.progress())
+	if mess.starting != null or mess.layer != null:
+		set_progress(mess.lay_progress())
 	if done:
 		set_progress(1.0)
 		_end_wait()

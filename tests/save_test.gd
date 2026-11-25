@@ -68,6 +68,7 @@ func cases() -> Array[Dictionary]:
 
 ## What a case before left behind goes first (a level still saving would write into this case's store).
 func _before_case() -> void:
+	SockGenerator.start_all = true  # the house lays its starting Mess here, as before the run (core/77)
 	_free_all()
 	for child in get_children():
 		child.queue_free()

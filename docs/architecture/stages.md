@@ -61,8 +61,8 @@ Elevator's stops (batch C) read `floor_open(floor)`.
 | `complete` | Host, after any applied answer that shelved (it listens to `Parts.applied`) | when `phase == PLAYING` and every bar Row is full: `phase = PART_OUT`, the Stage's Machine Part `{holder 0, at: the pop spot}` (in front of the Cabinet that took the last Pair, `ahead` m out, on the floor: one ray) |
 | `fit` | the player carrying the Part, through the `MachinePartSlot` on the washer | the asker holds this Stage's Part and the washer is not busy (the slot's `busy` seam, core/73; refused "The washing machine is busy"): the Part is put away (`holder 0`, hidden), `phase = FIXING` |
 | `open_floor` | Host: the washer at its Fix scene's fade (core/73), or the slot at once when the Stage names no `fix_cutscene` (the zoo's mini plan, tests; core/92) | the next Stage: `stage + 1`, `phase = PLAYING`, every unlocked Cabinet `+rows_per_stage` Rows to its full height, the new Stage's Cabinets unlocked at `start_rows`, the new bar, the floor's lock Openables `{open true, locked false}`, the new Stage's Designs into `due` and `spawned`. On the last Stage instead `phase = FIXED` |
-| `lay_first` | Host: the First wash at its spit (core/72), or the run at a New Game's start when the level wants no First wash (no `LaundryDay`, or its `wants_first_wash()` false; core/94) | Stage 1's Designs into `due` |
-| `land` | Host: the StageSpawner | the laid records join the Mess (`added_lying_patch`), their Designs leave `due`, `first_laid` |
+| `lay_first` | Host: the First wash at its spit (core/72) | releases the hold of a New Game that wanted a First wash: the held records join the Mess lying (`added_lying_patch`), `first_laid`; not yet laid, they land in the Mess when they are (core/77) |
+| `land` | Host: the StageSpawner | the laid records of the asked Designs join the Mess (`added_lying_patch`), or are held (`held_designs`, `held_poses`) while a New Game holds Stage 1's; the asked Designs leave `due`; `first_laid` for Stage 1's |
 | `zoo_complete`, `zoo_fit_now` | Host, the zoo station's switches only | complete the Stage outright; fit and open at once |
 
 **Built (core/76).** `game/run/run.tscn` (`Run`, a Node3D, its child `Stages` naming the plan) is in the house and
@@ -72,8 +72,7 @@ a Cabinet's Rows never pass its Drawers (`Stages.height_of`) until core/81 gives
 the run carries `stage_events` (`[[name, args...]]`), which each machine emits as the signals below as it applies the
 answer (never on a load or a join). The Host asks `complete` after any applied answer that leaves the bar full. The
 zoo's switches (`game/zoo/stages/stages_switch.gd`) ask their own `switch` verb and answer with
-`zoo_complete_answer()` / `zoo_fit_now_answer()`. `lay_first`, `land` and `stage_designs()` are stubs core/77 fills;
-a debug build's launch option `--pairs-per-drawer=N` sets a New Game's Drawer size (the slider, core/91, rides it).
+`zoo_complete_answer()` / `zoo_fit_now_answer()`. a debug build's launch option `--pairs-per-drawer=N` sets a New Game's Drawer size (the slider, core/91, rides it).
 
 A load between `FIXING` and `open_floor` (the Fix scene cut short) opens the floor in the run's `loaded()`, as the old
 `step()` did. A load with `due` not empty lays those Designs again (old `redo_due`: the ones now held, lying or shelved
@@ -173,6 +172,21 @@ the old code (`mess.spill.level_shares`, Q2617): with n floors open each floor's
 remainder to the newest floor), dealt in the Designs' order so every machine splits them alike; Stage 1's all go to the
 basement's. At a New Game Stage 1 lays behind the loading screen as house/09 does when no First wash waits; with the
 First wash they are laid and held until its grant (core/72; the spray is decoration, Q2626).
+
+**Built (core/77).** `SockGenerator` has `floor` (below 0: its place among its level's generators in tree order, so the
+Stages station, which sets none, reads Ground, Platform as floors 0, 1) and `lays_at_start` (off on the house's four);
+`records_for(designs, seed, catalogue, before, high, high_over)` lays one Pair for each Design given, over the
+generator's areas by their `pairs` (equal when all are 0; the house's `Floor` pairs are only weights now), no trails;
+the high ones in a separate pass of the area on tops at least `high_over` over its floor (no such top: the usual
+places). `Stages.stage_designs(index, rows_by, per, taken)` is the old rule (lesson first, `Stages.lesson_designs`: the
+first two common Simple Designs), and `start` and `open_floor` write its Designs into `spawned` and `due` in their own
+answers. `StageSpawner` (`game/run/stage_spawner.gd`, in `run.tscn` beside `Stages`) lays `due` when it is not empty,
+Host only. A New Game of a level with a loading screen registers it as the Mess's `layer`, so Stage 1's laying runs
+behind the screen with the starting Socks (`Mess.layer`, `lay_progress()`); every other laying runs in `_process`.
+Held Socks (seam S1): `Stages.holding` is set at `start` when a node in the group `first_wash_wanters` under the level
+says `wants_first_wash()` (core/94's `LaundryDay` joins it; no node: laid at once); the laid records wait in
+`held_designs` and `held_poses` (saved state) and `lay_first` releases them. A load keeps only the `due` Designs the
+Mess has no Sock of (`_still_due`) and the spawner lays those.
 
 ### Machine Parts
 `game/entities/machine_part/machine_part.tscn`: a root Node3D, a `Carriable` (exists), the kind's Looks (`looks_filter`,
