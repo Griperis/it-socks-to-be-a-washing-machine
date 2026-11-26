@@ -1,0 +1,72 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://game/parts/spawned_parts.tscn" id="1_spawned"]
+[ext_resource type="PackedScene" path="res://game/zoo/gifts/crate_switch.tscn" id="2_switch"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
+albedo_color = Color(0.55, 0.42, 0.5, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
+material = SubResource("StandardMaterial3D_pad")
+size = Vector2(10, 8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(12, 0.2, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tree"]
+albedo_color = Color(0.36, 0.5, 0.32, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tree"]
+material = SubResource("StandardMaterial3D_tree")
+top_radius = 0.2
+bottom_radius = 0.6
+height = 2.4
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_tree"]
+height = 2.4
+radius = 0.6
+
+[node name="Gifts" type="Node3D"]
+
+[node name="Pad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("PlaneMesh_pad")
+
+[node name="Ground" type="StaticBody3D" parent="."]
+metadata/surface = "wood"
+
+[node name="Shape" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_ground")
+
+[node name="Name" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -3.5)
+pixel_size = 0.004
+billboard = 2
+text = "Gifts: things made during play come through the spawner (SpawnedParts). \"Spawn a crate\" makes a crate at the PresentSpot beside the Old Tree stand-in; carry it with a left click, lay it with a right click. Presents land here with core/137"
+vertical_alignment = 2
+autowrap_mode = 3
+width = 700.0
+
+[node name="OldTree" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
+
+[node name="Mesh" type="MeshInstance3D" parent="OldTree"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+mesh = SubResource("CylinderMesh_tree")
+
+[node name="Shape" type="CollisionShape3D" parent="OldTree"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("CylinderShape3D_tree")
+
+[node name="PresentSpot" type="Marker3D" parent="." groups=["present_spots"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -1)
+
+[node name="Spawned" parent="." instance=ExtResource("1_spawned")]
+
+[node name="CrateSwitch" parent="." instance=ExtResource("2_switch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -1)
+
+[node name="CrateSwitch" parent="CrateSwitch" index="0" node_paths=PackedStringArray("spawned", "spot")]
+spawned = NodePath("../../Spawned")
+spot = NodePath("../../PresentSpot")

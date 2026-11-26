@@ -87,6 +87,13 @@
 		},
 		"version": 1
 	},
+	"res://game/parts/spawned_parts.gd": {
+		"fields": {
+			"next_id": "int",
+			"rows": "Array"
+		},
+		"version": 1
+	},
 	"res://game/run/run_record.gd": {
 		"fields": {
 			"shelved": "Array"

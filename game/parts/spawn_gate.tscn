@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_gate"]
+
+[node name="SpawnGate" type="MultiplayerSynchronizer"]
+replication_config = SubResource("SceneReplicationConfig_gate")

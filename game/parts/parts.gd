@@ -48,6 +48,15 @@ var is_bound := false
 var _seq := 0
 ## Who still makes the level's starting state (unsettle()), by node.
 var _unsettled: Dictionary[Object, bool] = {}
+## The root bind() named every part from (adopt() names a spawned node's parts from it too).
+var _root: Node = null
+## What every spawned part's id starts with: each SpawnedParts' id and a slash (core/126).
+var _spawn_roots: PackedStringArray = []
+## The ids adopt() bound (a spawned node's parts), which the layout hash leaves out.
+var _adopted: Dictionary[StringName, bool] = {}
+## A spawned part's state that came before its node (a snapshot or an answer ahead of the spawn,
+## gifts.md "Gotchas"), by id: written when adopt() binds the node.
+var _waiting: Dictionary[StringName, Dictionary] = {}
 
 
 ## The level is still making its starting state (house/09: its Socks laid behind the loading screen)
@@ -82,16 +91,85 @@ func bind(root: Node) -> void:
 		if is_instance_valid(old) and old.get_parent() != null:
 			old.get_parent().remove_meta(ENTITY_META)
 	_by_id.clear()
-	for part in _walk(root, root, []):
-		part.id = StringName(id_prefix + String(root.get_path_to(part)))
-		part.parts = self
-		_by_id[part.id] = part
-		var thing := part.get_parent()
-		if thing != null and not thing.has_meta(ENTITY_META):
-			thing.set_meta(ENTITY_META, part)
+	_adopted.clear()
+	_spawn_roots.clear()
+	_root = root
+	var found := _walk(root, root, [])
+	for part in found:
+		_name(part, root)
+		if part is SpawnedParts:
+			_spawn_roots.append(String(part.id) + "/")
+	for part in found:
 		part._show(true)
 	is_bound = true
 	bound.emit()
+
+
+## A node a SpawnedParts made during play (core/126): its parts are bound by path as bind() binds
+## placed ones (Run/Spawned/Crate3/Carriable), each written first with `states` (by the part's path
+## from `node`: what the spawn carried), then with what came for it before the node (a late Guest's
+## snapshot, an answer ahead of the spawn), else shown as they are.
+func adopt(node: Node, states: Dictionary = {}) -> void:
+	if _root == null or not node.is_inside_tree():
+		return
+	for part in _walk(node, node, []):
+		_name(part, _root)
+		_adopted[part.id] = true
+		var key := String(node.get_path_to(part))
+		var state: Variant = states.get(key)
+		var waited: Dictionary = _waiting.get(part.id, {})
+		_waiting.erase(part.id)
+		if state is Dictionary and not (state as Dictionary).is_empty():
+			part.write(state, true)
+		if not waited.is_empty():
+			part.write(waited, true)
+		elif not (state is Dictionary and not (state as Dictionary).is_empty()):
+			part._show(true)
+
+
+## A spawned node goes (its row was removed): its parts are no longer this level's, and nothing waits
+## for them.
+func release(node: Node) -> void:
+	if _root == null:
+		return
+	for part in _walk(node, node, []):
+		if _by_id.get(part.id) == part:
+			_by_id.erase(part.id)
+		_adopted.erase(part.id)
+	if node.is_inside_tree():
+		var prefix := id_prefix + String(_root.get_path_to(node)) + "/"
+		for id: StringName in _waiting.keys():
+			if String(id).begins_with(prefix):
+				_waiting.erase(id)
+	node.remove_meta(ENTITY_META)
+
+
+## Whether `id` is (or would be) a spawned node's part: adopted, or under a SpawnedParts.
+func is_spawned(id: StringName) -> bool:
+	if _adopted.has(id):
+		return true
+	var text := String(id)
+	for prefix in _spawn_roots:
+		if text.begins_with(prefix):
+			return true
+	return false
+
+
+## Names `part` by its path from `root` and binds it here.
+func _name(part: Part, root: Node) -> void:
+	part.id = StringName(id_prefix + String(root.get_path_to(part)))
+	part.parts = self
+	_by_id[part.id] = part
+	var thing := part.get_parent()
+	if thing != null and not thing.has_meta(ENTITY_META):
+		thing.set_meta(ENTITY_META, part)
+
+
+## A state for spawned part `id` whose node is not here yet: kept (merged) until adopt().
+func _wait_for(id: StringName, patch: Dictionary) -> void:
+	var held: Dictionary = _waiting.get(id, {})
+	held.merge(patch, true)
+	_waiting[id] = held
 
 
 ## The part of the thing `node` belongs to (what the player's use button on `node` means): the first
@@ -185,6 +263,9 @@ func apply(ev: Dictionary) -> void:
 		var changes: Dictionary = ev["changes"]
 		for id: Variant in changes:
 			var part := of(StringName(id))
+			if part == null and is_spawned(StringName(id)):
+				_wait_for(StringName(id), changes[id])
+				continue
 			if part == null:
 				Log.error("parts", "no part %s in this level" % id)
 				continue
@@ -240,20 +321,31 @@ func save_versions() -> Dictionary:
 ## an id this level no longer has is skipped (logged). A part merges what was saved into what it
 ## holds now (Part.restored(): the Roster keeps who is here). Then every part's loaded() reset is
 ## applied, `host` being the Host's player id.
+##
+## A SpawnedParts' rows go first: its nodes are spawned (and adopted) before their parts' states
+## are written (core/126).
 func load_save(saved: Dictionary, versions: Dictionary, host: String) -> void:
-	var snap := {}
+	var first := {}
+	var rest := {}
 	for id: Variant in saved:
-		var part := of(StringName(id))
-		if part == null or not (saved[id] is Dictionary):
-			Log.warn("save", "the save has a part %s this level does not" % id)
-			continue
-		var state: Dictionary = saved[id]
-		var v := int(versions.get(id, 1))
-		while v < part.save_version():
-			state = part.upgrade_save(state, v)
-			v += 1
-		snap[id] = part.restored(state)
-	load_snapshot(snap)
+		if of(StringName(id)) is SpawnedParts:
+			first[id] = saved[id]
+		else:
+			rest[id] = saved[id]
+	for group: Dictionary in [first, rest]:
+		var snap := {}
+		for id: Variant in group:
+			var part := of(StringName(id))
+			if part == null or not (saved[id] is Dictionary):
+				Log.warn("save", "the save has a part %s this level does not" % id)
+				continue
+			var state: Dictionary = saved[id]
+			var v := int(versions.get(id, 1))
+			while v < part.save_version():
+				state = part.upgrade_save(state, v)
+				v += 1
+			snap[id] = part.restored(state)
+		load_snapshot(snap)
 	for part: Part in _all():
 		var ev := part.loaded(host)
 		if not ev.is_empty():
@@ -269,20 +361,36 @@ func ids() -> Array[StringName]:
 	return out
 
 
-## A late Guest, or a save loaded: every part takes its state whole, shown at once.
+## A late Guest, or a save loaded: every part takes its state whole, shown at once. A SpawnedParts
+## goes first (the Host spawns its rows' nodes); a spawned part whose node is not here yet (a Guest's
+## spawner brings it later) waits for it by id.
 func load_snapshot(snap: Dictionary) -> void:
+	var later: Array = []
 	for id: Variant in snap:
+		if of(StringName(id)) is SpawnedParts:
+			if snap[id] is Dictionary:
+				of(StringName(id)).write(snap[id], true)
+		else:
+			later.append(id)
+	for id: Variant in later:
+		if not (snap[id] is Dictionary):
+			continue
 		var part := of(StringName(id))
-		if part != null and snap[id] is Dictionary:
+		if part != null:
 			part.write(snap[id], true)
+		elif is_spawned(StringName(id)):
+			_wait_for(StringName(id), snap[id])
 
 
-## Every part under `node`; a game link under the level (a level's private one) binds its own.
+## Every part under `node`; a game link under the level (a level's private one) binds its own; what a
+## SpawnedParts made is adopted, not walked (its spawner's helpers included).
 func _walk(node: Node, root: Node, into: Array[Part]) -> Array[Part]:
 	if node is GameLink and node != root:
 		return into
 	if node is Part:
 		into.append(node)
+	if node is SpawnedParts and node != root:
+		return into
 	for child in node.get_children():
 		_walk(child, root, into)
 	return into
