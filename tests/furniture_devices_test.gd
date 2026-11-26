@@ -513,6 +513,7 @@ func case_v05_old_tree() -> void:
 		var piece := (load(FOLDER.path_join(stem + ".tscn")) as PackedScene).instantiate()
 		# core/129: the Old Tree is the Upgrade station, its one Part (OldTree) and the Upgrade menu it opens;
 		# the tree itself still has no code and no motion of its own (its motion waits for the rework, Q2670).
+		# core/132: its two voices (Voice, CallVoice) are VoiceSource nodes, the speaker's, not the tree's code.
 		var menu := piece.get_node_or_null(^"UpgradeMenu")
 		var scripted := 0
 		var moving := 0
@@ -521,12 +522,13 @@ func case_v05_old_tree() -> void:
 				continue
 			if n is AnimationPlayer:
 				moving += 1
-			if n.get_script() != null and not (n.get_script() as Script).resource_path.ends_with("outline.gd") and not n is OldTree:
+			if n.get_script() != null and not (n.get_script() as Script).resource_path.ends_with("outline.gd") and not n is OldTree and not n is VoiceSource:
 				scripted += 1
 		_check(piece.get_script() == null and scripted == 0, "%s has no code of its own" % stem)
 		_check(moving == 0, "%s has no motion of its own" % stem)
 		if stem == "old_tree":
 			_check(piece.find_children("*", "OldTree", true, false).size() == 1 and menu is UpgradeMenu, "the Old Tree is the Upgrade station: its OldTree Part and its Upgrade menu")
+			_check(piece.find_children("*", "VoiceSource", true, false).size() == 2, "the Old Tree speaks through its two VoiceSources (core/132)")
 			_check(not piece.find_children("*", "OmniLight3D", true, false).is_empty(), "the Old Tree keeps its glowing bulbs' light")
 		piece.free()
 
