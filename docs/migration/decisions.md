@@ -1,4 +1,4 @@
-Next free Q number: Q2712 (update this line whenever a round of questions is asked)
+Next free Q number: Q2715 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -702,3 +702,9 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   core/150; narrows Q2699).
 - Q2711: a player holding the nozzle may climb into the car with the container outside; nothing stops it and the
   hose stretches between floors, as the old (designer, 2026-11-26; core/150).
+- Q2712: the Cat's litterbox scratch sound: its build ticket brings three licence-checked recordings of a cat
+  scratching litter to the Sounds station for the designer to pick (designer, 2026-11-26; core/151; follows Q2703).
+- Q2713: the Cabinet X-ray's words: title "Cabinet X-ray: Show Cabinet", tooltip "Show Cabinet (key 2): the right
+  Cabinet glows through walls." (designer, 2026-11-26; core/152; follows Q2701).
+- Q2714: the Sock X-ray's glow follows the mate as it moves (thrown, carried, fetched), not where it lay when the
+  X-ray began (designer, 2026-11-26; core/152; a change from the old).

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="VoiceTrigger" format=3]
+
+[ext_resource type="Script" uid="uid://k1g7mn7jdf7a" path="res://game/voice/voice_trigger.gd" id="1_trigger"]
+[ext_resource type="Resource" path="res://game/voice/speakers/old_tree.tres" id="2_speaker"]
+
+[resource]
+script = ExtResource("1_trigger")
+id = &"tree_greet"
+speaker = ExtResource("2_speaker")
+note = "The near player's machine: arriving near the tree again after OldTreeTuning.away_seconds away (OldTree)."

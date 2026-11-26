@@ -184,7 +184,11 @@ func case_built_from_book() -> void:
 	var book := Voices.book()
 	_check(book.errors.is_empty(), "the book loads clean (%s)" % [book.errors])
 	var lines := book.lines_of(&"washer")
-	_check(lines.size() == 21 and station.line_pillars.size() == 21, "21 washer lines have 21 pillars (%d)" % station.line_pillars.size())
+	var every := 0
+	for id in book.speakers():
+		every += book.lines_of(id).size()
+	_check(lines.size() == 21 and station.line_pillars.size() == every, "21 washer lines, and every speaker's line has a pillar (%d of %d)" % [station.line_pillars.size(), every])
+	_check(book.lines_of(&"old_tree").size() == 145, "the Old Tree's 145 lines are in the book (%d)" % book.lines_of(&"old_tree").size())
 	for l in lines:
 		var p: VoicePillar = station.line_pillars.get("washer/%s" % l.id)
 		_check(p != null and p.target == l.id, "line %s has its pillar" % l.id)
@@ -200,7 +204,7 @@ func case_built_from_book() -> void:
 		else:
 			cutscenes += 1
 			_check(station.cutscene_pillars.has(t.id), "cutscene trigger %s has a pillar" % t.id)
-	_check(comments == 4 and cutscenes == 6, "4 comment and 6 cutscene triggers (%d, %d)" % [comments, cutscenes])
+	_check(comments == 10 and cutscenes == 6, "10 comment (the washer's 4, the Old Tree's 6) and 6 cutscene triggers (%d, %d)" % [comments, cutscenes])
 	_check(station.radio != null and station.radio.hum != null, "the radio has its hum")
 	var ground := station.get_node("Pad") as MeshInstance3D
 	var box := ground.global_transform * ground.get_aabb()

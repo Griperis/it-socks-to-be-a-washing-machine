@@ -86,6 +86,7 @@ Furniture/KitchenSink/Doors/Openable
 Furniture/LaundryBasket/Lid/Openable
 Furniture/Litterbox/Flap/Openable
 Furniture/Nightstand/Drawer_1/Openable
+Furniture/OldTree/OldTree
 Furniture/Oven/Door/Openable
 Furniture/Piano/Keys/Key_100/Key
 Furniture/Piano/Keys/Key_101/Key

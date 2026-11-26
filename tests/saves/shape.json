@@ -39,6 +39,19 @@
 		},
 		"version": 1
 	},
+	"res://game/furniture/old_tree.gd": {
+		"fields": {
+			"beat": "Dictionary",
+			"calling": "bool",
+			"line": "StringName",
+			"met": "PackedStringArray",
+			"said": "Dictionary",
+			"serial": "int",
+			"take": "int",
+			"tips": "Dictionary"
+		},
+		"version": 1
+	},
 	"res://game/hands/hands.gd": {
 		"fields": {
 			"active": "Dictionary",

@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: design
 area: core
 feature: frame
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["suggested model: opus", "batch C design (Q2614, Q2707): one of four, written on the designer's answers Q2698-Q2706"]
 terms: [X-ray, Upgrade]
@@ -55,3 +55,9 @@ the way core/120-122 did for batch B. A design ticket: no game code.
   (Q2707).
 
 ## Open follow-ups
+- [blocking] The Cabinet X-ray's new words (Q2701 renames the ability "Show Cabinet" and has the tooltip say the whole
+  Cabinet glows; the exact sentence is not given). (a) The old sentences with "drawer" taken out: title "Cabinet
+  X-ray: Show Cabinet", tooltip "Show Cabinet (key 2): the right Cabinet glows through walls."; (b) other words
+  (which?). Blocks the words part of 152-A only.
+- [later] For the lead, not the designer: GLOSSARY "Cabinet X-ray" still says "Show drawer" and "the front of the
+  Cabinet drawer ... glow"; since Q1964 and Q2701 it is "Show Cabinet" and the whole Cabinet outlined in amber.

@@ -10,7 +10,7 @@ done:
 blocked_by: ["[[132-old-tree-voice]]", "[[137-presents-under-the-old-tree]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 5", "suggested model: sonnet"]
 terms: [Old Tree, Gift]
-suites: [voice]
+suites: [furniture_devices, voice]
 ---
 
 # The Old Tree's present lines
