@@ -1,12 +1,12 @@
 ## The gate of one Session and who is in the game: a Guest's word read and admitted or refused, an admitted
-## Guest taken into the Roster with the link's snapshot, a leaver forgotten, the Hands numbers a player brings.
+## Guest taken into the Roster with the link's snapshot, a leaver forgotten.
 ##
 ## Godot starts replicating (spawns, synchronizers) and accepting RPCs the moment a peer is admitted, so
 ## nobody is admitted before the gate's checks. SceneMultiplayer's auth_callback (answer()) holds each new
 ## connection: the Guest sends its word (say_word()): its PROTOCOL as 4 bytes, then its player id (the
-## profile's, never the peer id), its name, its Hands' numbers an Upgrade changes (HandsTuning.to_sent(),
-## D13: the Host clamps them to what Upgrades can make them and writes them into the Roster) and, when it
-## already has a level, that level's layout hash. The Host answers ACCEPTED and admits it (complete_auth),
+## profile's, never the peer id), its name and, when it already has a level, that level's layout hash. A
+## Guest's Hands numbers are never said: the Host derives every player's from the Upgrade levels it keeps
+## (core/130, Hands.tuning_of()), so a Guest cannot claim a capacity its levels do not give. The Host answers ACCEPTED and admits it (complete_auth),
 ## or REFUSED and a reason byte and never admits it, so a refused Guest receives no spawn, no synchronized
 ## value and no RPC. A Guest is refused when its PROTOCOL differs, or its layout differs from the Host's
 ## level ("Another version of the game"), when the game is full, or when its player id already plays ("You
@@ -107,11 +107,7 @@ func _refusal(peer: int, data: PackedByteArray) -> int:
 	if 1 + _players.size() + _waiting.size() >= _s.tuning.max_players:
 		guard.drop(peer, "full", "%d players" % _s.tuning.max_players)
 		return Session.WHY_FULL
-	var hands: Variant = word.get("hands", {})
-	if not (hands is Dictionary) or (hands as Dictionary).size() > Command.ARGS_MAX:
-		guard.drop(peer, "gate", "unreadable Hands numbers")
-		return Session.WHY_VERSION
-	_waiting[peer] = {"id": pid, "name": PlayerProfile.clean_name(word["name"]), "hands": clamped_hands(hands),
+	_waiting[peer] = {"id": pid, "name": PlayerProfile.clean_name(word["name"]),
 			"said": clamped_said(word), "in_level": word.has("layout") and mine != ""}
 	return 0
 
@@ -143,7 +139,7 @@ func say_word(peer: int) -> void:
 	var word := PackedByteArray()
 	word.resize(4)
 	word.encode_u32(0, _s.protocol)
-	var said := {"id": _s.profile.id, "name": _s.profile.name, "hands": own_hands()}
+	var said := {"id": _s.profile.id, "name": _s.profile.name}
 	said.merge(own_word())
 	var layout := _s._level_layout()
 	if layout != "":
@@ -152,14 +148,10 @@ func say_word(peer: int) -> void:
 	_s._scene_multiplayer().send_auth(peer, word)
 
 
-## A player's Hands numbers as the Host keeps them: clamped to what the Upgrades can make them by this
-## level's Hands (HandsTuning.clamped()), only the known names; {} with no Hands here.
-func clamped_hands(sent: Dictionary) -> Dictionary:
-	var parts := _s.parts
-	var hands := parts.find(func(part: Part) -> bool: return part is Hands) as Hands if parts != null else null
-	if hands == null:
-		return {}
-	return hands.own_tuning().clamped(sent).to_sent()
+## A player's Hands numbers as the Host keeps them in the Roster: none any more (core/130: the Host
+## derives them from the Upgrade levels, Hands.tuning_of()). Kept, always {}, for the Session's callers.
+func clamped_hands(_sent: Dictionary) -> Dictionary:
+	return {}
 
 
 ## What this machine's profile says it wears, owns and has tallied, and the colour it wishes.
@@ -206,12 +198,9 @@ func clamped_said(word: Dictionary) -> Dictionary:
 	return {"look": worn, "owned": owned, "tallies": tallies, "colour": wish}
 
 
-## This machine's own player's Hands numbers (HandsTuning.to_sent()), or {} with no player here.
+## This machine's own player's Hands numbers as it would say them: none any more (core/130). Kept,
+## always {}, for the Session's callers.
 func own_hands() -> Dictionary:
-	for node in _s.get_tree().get_nodes_in_group(Hands.PLAYERS):
-		var player := node as Player
-		if player != null and player.multiplayer == _s.multiplayer and player.hands_tuning != null:
-			return player.hands_tuning.to_sent()
 	return {}
 
 
@@ -235,7 +224,7 @@ func joined(peer: int) -> void:
 	_waiting.erase(peer)
 	_players[peer] = String(who["id"])
 	if s.roster != null:
-		s.parts.apply(s.roster.joined(String(who["id"]), peer, String(who["name"]), who.get("hands", {}), who.get("said", {})))
+		s.parts.apply(s.roster.joined(String(who["id"]), peer, String(who["name"]), {}, who.get("said", {})))
 	s._guests[peer] = true
 	var snap := s.link_parts.snapshot() if s.link_parts != null else {}
 	s._linked.rpc_id(peer, snap)

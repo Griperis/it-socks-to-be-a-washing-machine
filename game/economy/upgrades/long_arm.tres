@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" path="res://assets/ui/upgrade_throw.svg" id="1_oqoew"]
 [ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_s5mng"]
+[ext_resource type="Resource" path="res://game/economy/stats/throw_speed.tres" id="3_stat"]
 
 [resource]
 script = ExtResource("2_s5mng")
@@ -10,3 +11,4 @@ tooltip = "Throws fly faster and farther. Throwing itself is free but weak."
 icon = ExtResource("1_oqoew")
 cell = Vector2i(1, 0)
 prices = PackedInt32Array(240, 380, 600)
+stat = ExtResource("3_stat")

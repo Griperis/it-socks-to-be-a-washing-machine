@@ -43,6 +43,8 @@ const MOVE_FORWARD := &"move_forward"
 const MOVE_BACK := &"move_back"
 const JUMP := &"jump"
 const CROUCH := &"crouch"
+## Held, the walk runs (core/130): only once Sprint is bought.
+const SPRINT := &"sprint"
 const LOOK_LEFT := &"look_left"
 const LOOK_RIGHT := &"look_right"
 const LOOK_UP := &"look_up"
@@ -72,11 +74,16 @@ static var CROSSHAIR_NO := Hud.CROSSHAIR_NO
 const FULL_OUTLINE := preload("res://game/outline/full.tres")
 
 @export var tuning: MoveTuning
-## How its Hands pick, hold and drop; its capacity is here (the zoo's player holds 3, Q2244).
+## How its Hands pick, hold and drop; its capacity is here (the zoo's player holds 3, Q2244). Where the
+## level has its own Upgrades Part, the levels grow it and three more from here (Hands.tuning_of()).
 @export var hands_tuning: HandsTuning
 ## The Upgrades that change what its screen shows (Sock Smarts, Sock Sense; core/15). Each player
 ## keeps its own copy.
 @export var upgrades: PlayerUpgrades
+## The stats of Footwork (the walk's factor) and Sprint (held Shift runs), read from the level's
+## Upgrades when they are used (core/130); a level without an Upgrades Part walks at its own pace.
+@export var walk_stat: UpgradeStat = preload("res://game/economy/stats/walk_speed.tres")
+@export var sprint_stat: UpgradeStat = preload("res://game/economy/stats/sprint.tres")
 
 @onready var _head: Node3D = %Head
 @onready var _camera: Camera3D = %Camera
@@ -248,6 +255,27 @@ func player_id() -> int:
 	return multiplayer.get_unique_id()
 
 
+## Footwork's factor on the walk for this player now: 1 with no Upgrades Part in the level.
+func walk_factor() -> float:
+	var levels := _levels()
+	return levels.value(walk_stat, player_id()) if levels != null else 1.0
+
+
+## Whether this player has bought Sprint (nobody sprints without it, Q1343).
+func can_sprint() -> bool:
+	var levels := _levels()
+	return levels != null and levels.value(sprint_stat, player_id()) >= 1.0
+
+
+## The level's Upgrades this player's levels are read from (bound as the Hands are found), or null.
+func _levels() -> Upgrades:
+	var h := hands()
+	var levels := upgrades.levels if upgrades != null else null
+	if levels == null or not is_instance_valid(levels) or h == null or levels.parts != h.parts:
+		return null  # a level without its own Upgrades Part walks at its own pace
+	return levels
+
+
 ## The level's one Hands (the zoo's for every station, Q2284), or null where there are none (the
 ## movement station alone). Where several levels share the tree (two zoos in a co-op test), the
 ## Hands of this player's own scene.
@@ -354,7 +382,11 @@ func _physics_process(delta: float) -> void:
 		velocity.y -= tuning.gravity * delta
 	elif not _input_blocked and not crouching and Input.is_action_just_pressed(JUMP):
 		_jump()
-	var pace := tuning.walk_speed * (tuning.crouch_speed_factor if crouching else 1.0) * _stack.carry
+	var pace := tuning.walk_speed * walk_factor() * _stack.carry
+	if crouching:
+		pace *= tuning.crouch_speed_factor  # crouching cancels a sprint (the old player.gd)
+	elif not _input_blocked and Input.is_action_pressed(SPRINT) and can_sprint():
+		pace *= tuning.sprint_multiplier
 	if kd != null and kd.dragging_of(player_id()) >= 0:
 		pace *= kd.tuning.drag_speed  # H95
 	var direction := global_basis * Vector3(walk.x, 0.0, walk.y)
@@ -683,7 +715,7 @@ func _update_hands(delta: float) -> void:
 	if _drop_down_at >= 0.0 and not charging and socks and _time - _drop_down_at >= hands_tuning.tap:
 		_set_charge(true)
 	if charging:
-		charge = minf(1.0, charge + delta / maxf(hands_tuning.charge_time, 0.01))
+		charge = minf(1.0, charge + delta / maxf(h.tuning_of(player_id()).charge_time, 0.01))  # Quick Charge
 		_ring.value = charge
 	if Input.is_action_just_released(DROP_THROW) and _drop_down_at >= 0.0:
 		var tapped := _time - _drop_down_at < hands_tuning.tap
@@ -928,7 +960,7 @@ func _update_screen(h: Hands) -> void:
 		target.append(Prompts.drag_prompt(_hud.pad))
 	_hud.show_target(target)
 	var capacity := h.tuning_of(me).capacity if h != null else 0
-	var hints := Prompts.hints(items.size(), _hud.pad, _pinger.can_ping(), carried != null)
+	var hints := Prompts.hints(items.size(), _hud.pad, _pinger.can_ping(), carried != null, can_sprint())
 	var kd := knockdowns()
 	if kd != null and kd.dragger_of(me) >= 0:
 		hints.clear()

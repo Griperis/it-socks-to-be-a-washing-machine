@@ -66,8 +66,20 @@ var _probe := _make_probe()
 @export var mess: Mess
 ## The numbers of a player the Hands cannot find a tuning for (a Guest's, until M0.6).
 @export var tuning: HandsTuning
+## Where a Teammate the Roster names starts on a machine that does not have their player: the level's
+## player's own numbers (LevelRuntime sets it: the zoo's 3, Q2244). Empty: `tuning`. A stand-in the
+## Roster does not name keeps `tuning`.
+@export var teammate_tuning: HandsTuning
 ## The Hand-off's numbers (hand_off_tuning.tres when empty).
 @export var hand_off_tuning: HandOffTuning
+
+@export_group("Upgrades")
+## The stats the Personal Upgrades change, read through the level's Upgrades (core/130): Big Hands'
+## capacity, Quick Grab's pick gap, Long Arm's full Throw speed and Quick Charge's charge time.
+@export var carry_stat: UpgradeStat = preload("res://game/economy/stats/carry.tres")
+@export var grab_stat: UpgradeStat = preload("res://game/economy/stats/grab_interval.tres")
+@export var throw_stat: UpgradeStat = preload("res://game/economy/stats/throw_speed.tres")
+@export var charge_stat: UpgradeStat = preload("res://game/economy/stats/charge_time.tres")
 
 @export_group("State")
 ## Each player's held Sock ids, newest last: {key: PackedInt32Array}. The key is the player id from the
@@ -85,10 +97,9 @@ var _roster: Roster
 var _roster_looked := false
 ## The last player id seen on each peer: the key still holds once the Roster is cleared.
 var _ids: Dictionary[int, String] = {}
-## A Teammate's numbers built from the Roster (D13), by player id, and what they were built from.
-var _teammate_tuning: Dictionary[String, HandsTuning] = {}
-var _teammate_sent: Dictionary[String, Dictionary] = {}
-var _teammate_base: HandsTuning
+## Each player's numbers with their Upgrades in (tuning_of()), by peer: [what they were made from, the
+## HandsTuning]; remade when a level, or the base, changes.
+var _upgraded: Dictionary[int, Array] = {}
 ## The level's Knockdowns (who is down), found once among the Parts.
 var _knockdowns: Knockdowns
 
@@ -140,23 +151,35 @@ func active_index(by: int) -> int:
 	return i if i >= 0 and i < items.size() else -1
 
 
-## The numbers that hold for player `by`: their player's HandsTuning when it is on this machine
-## (alone, always); a Teammate's own, as they sent it at their join and the Host wrote it into the
-## Roster (D13), clamped to what Upgrades can make them (HandsTuning.clamped()); else these Hands' own.
+## The numbers that hold for player `by`: their player's HandsTuning when it is on this machine,
+## else these Hands' own. In a level with its own Upgrades Part the four an Upgrade changes grow from
+## those by the levels it keeps for `by` (core/130: Big Hands' capacity, Quick Grab's pick gap, Long
+## Arm's full Throw speed, Quick Charge's charge; UpgradeStat.value_from()), read at each call and the
+## same on every machine (the levels are synced). The house's HandsTuning holds the stats' bases; the
+## zoo's player starts from its own 3 (Q2244). Nothing a Teammate's machine sends counts: the Host
+## derives every player's numbers from the levels it keeps.
 func tuning_of(by: int) -> HandsTuning:
 	var player := _player_of(by)
-	if player != null and player.hands_tuning != null:
-		return player.hands_tuning
-	var r := _roster_of()
-	var pid := r.id_of(by) if r != null else ""
-	var sent: Variant = r.entry_of(by).get("hands") if pid != "" else null
-	if sent is Dictionary:
-		if not _teammate_tuning.has(pid) or _teammate_sent.get(pid) != sent or _teammate_base != _own_tuning():
-			_teammate_base = _own_tuning()
-			_teammate_tuning[pid] = _teammate_base.clamped(sent)
-			_teammate_sent[pid] = (sent as Dictionary).duplicate()
-		return _teammate_tuning[pid]
-	return _own_tuning()
+	var base := player.hands_tuning if player != null and player.hands_tuning != null else _own_tuning()
+	if player == null and teammate_tuning != null:
+		var r := _roster_of()
+		if r != null and r.id_of(by) != "":
+			base = teammate_tuning  # a Teammate the Roster names starts where this level's player does
+	var ups := Upgrades.of(self)
+	if ups == null or ups.parts != parts:
+		return base  # a level without its own Upgrades Part keeps its own numbers
+	var now := [base, ups.stat_level(carry_stat, by), ups.stat_level(grab_stat, by), ups.stat_level(throw_stat, by),
+			ups.stat_level(charge_stat, by)]
+	var made: Array = _upgraded.get(by, [])
+	if made.size() == 2 and made[0] == now:
+		return made[1] as HandsTuning
+	var t := base.duplicate() as HandsTuning
+	t.capacity = maxi(1, roundi(carry_stat.value_from(base.capacity, int(now[1]))))
+	t.grab_interval = maxf(0.0, grab_stat.value_from(base.grab_interval, int(now[2])))
+	t.max_speed = maxf(t.min_speed, throw_stat.value_from(base.max_speed, int(now[3])))
+	t.charge_time = maxf(0.01, charge_stat.value_from(base.charge_time, int(now[4])))
+	_upgraded[by] = [now, t]
+	return t
 
 
 ## The level's Roster (found once among the Parts), or null.
@@ -171,7 +194,7 @@ func _roster_of() -> Roster:
 	return _roster
 
 
-## These Hands' own numbers: the floor and ceiling of a Teammate's (HandsTuning.clamped()).
+## These Hands' own numbers: a Teammate's where the level has no Upgrades Part.
 func own_tuning() -> HandsTuning:
 	return _own_tuning()
 

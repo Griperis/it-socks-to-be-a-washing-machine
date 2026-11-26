@@ -11,10 +11,10 @@ in `docs/architecture.md` say what happens in order; this file says who owns wha
 | Piece | Files | Owns |
 |---|---|---|
 | The game link | `game/net/game_link.gd/.tscn` | Lives for the whole game beside the current scene (core/62, Q2582): holds the `Session`, its `Roster` and the link's `Parts` (ids prefixed `Runtime/`, so the Roster stays `Runtime/Session/Roster`). The title makes it beside itself (under the root in the game; SceneChanger leaves it alone) and frees it when the game is back at the title; a level with none (F5, the zoo, `--scene=`, tests) makes a private one, beside itself when it is the scene the machine runs (F5: the title's path, core/68), else under its runtime. Found with `GameLink.of(node)`; `LevelRuntime` hands its Session and Roster to the Net, Avatars, Autosave and ESC menu |
-| The session | `game/parts/session.gd` and its helpers `session_peer.gd`, `session_gate.gd`, `session_house.gd`, `session_guard.gd`, `session_relay.gd` (maintenance/04) | The only node with RPCs: the gate (PROTOCOL, player id, name, Hands numbers, and the layout hash when the Guest already has a level), the guards, Commands up, answers down, the link snapshot at connect (`linked`), the house handshake (`house_ready` with PROTOCOL, layout and Hands numbers; the level snapshot once the Host's level is settled: `welcomed`), a leaver, the Host quitting. Works with the link's Parts and the attached level's (`attach_level`/`detach_level`; the level's read through to the link's). `session.gd` keeps the public calls, `PROTOCOL`, every `@rpc` (one line each) and the session's life; the work is in the helpers (see "The session's files") |
+| The session | `game/parts/session.gd` and its helpers `session_peer.gd`, `session_gate.gd`, `session_house.gd`, `session_guard.gd`, `session_relay.gd` (maintenance/04) | The only node with RPCs: the gate (PROTOCOL, player id, name, and the layout hash when the Guest already has a level), the guards, Commands up, answers down, the link snapshot at connect (`linked`), the house handshake (`house_ready` with PROTOCOL and layout; the level snapshot once the Host's level is settled: `welcomed`), a leaver, the Host quitting. Works with the link's Parts and the attached level's (`attach_level`/`detach_level`; the level's read through to the link's). `session.gd` keeps the public calls, `PROTOCOL`, every `@rpc` (one line each) and the session's life; the work is in the helpers (see "The session's files") |
 | The transport | `game/net/net_transport.gd`, `enet_transport.gd` | How a machine reaches the others; the only file that names ENet or reads an address (Steam comes as another transport at M4) |
 | Start and words | `game/net/level_net.gd` | `--host`, `--join=`, `--profile=`; the HUD's toasts and mode line |
-| Who plays | `game/net/roster.gd`, `player_profile.gd`, `coop_tuning.gd/.tres` | The Roster Part (by player id: peer, name, colour, place, Hands numbers; alone too, the player in its own Roster through `Session.enter_alone()`, core/58, so Hands and Coins are keyed by player id); the long random id in `user://profile[_<tag>].json`; max players, colours, timeouts |
+| Who plays | `game/net/roster.gd`, `player_profile.gd`, `coop_tuning.gd/.tres` | The Roster Part (by player id: peer, name, colour, place; alone too, the player in its own Roster through `Session.enter_alone()`, core/58, so Hands and Coins are keyed by player id); the long random id in `user://profile[_<tag>].json`; max players, colours, timeouts |
 | The rules | `game/parts/part.gd`, `parts.gd`, `command.gd` | Every shared thing is a Part; `decide()` on the Host only; `Parts.apply` the one writer; the Command's wire shape and arg checks |
 | Bodies seen | `game/parts/avatar/` | `Avatars` spawns one `Avatar` per Roster entry; the pose goes from its owner on a MultiplayerSynchronizer, checked in its setters; `AvatarLooks` derives every motion; `Ragdoll` the knockdown body |
 | A Guest's guesses | `game/hands/guest_ghosts.gd`, `throw_ghost.gd`, `ghost_tuning.tres` | Looks only: a pick, drop, Throw or wheel shown at once and matched to the Host's answer by `seq`; a Throw or drop flies its own body from the hand the Host lets it go from, corrected once it parts (Q2573) |
@@ -35,7 +35,7 @@ and write the Session's own fields and call its RPCs, and nothing else holds the
 |---|---|
 | `session.gd` | Public calls (`host`, `join`, `close`, `enter_alone`, `attach_level`, `sees_house`, ...), signals, `PROTOCOL` and the gate's constants, every `@rpc` as one line into a helper, `_guests`, `_end`, `_note` |
 | `session_peer.gd` (`SessionPeer`) | Opening (`host`, `join`) and closing the peer: the SceneMultiplayer signals, the auth callback, every helper's `clear()` on close |
-| `session_gate.gd` (`SessionGate`) | The gate word both ways, the refusals, a Guest taken into the Roster with the link snapshot (`joined`), a leaver (`left`), the Hands numbers a player brings (`clamped_hands`, `own_hands`) |
+| `session_gate.gd` (`SessionGate`) | The gate word both ways, the refusals, a Guest taken into the Roster with the link snapshot (`joined`), a leaver (`left`); `clamped_hands` and `own_hands` stay as calls that return nothing (core/130) until the session's callers drop them |
 | `session_house.gd` (`SessionHouse`) | The house handshake both ways: `house_ready`, the level snapshot, who is in (`_houses`), a level attached or detached |
 | `session_guard.gd` (`SessionGuard`) | A Guest's Command checked in the guards' order, then answered; `drop`/`count` (`Session.dropped`, `stats`), the rate |
 | `session_relay.gd` (`SessionRelay`) | Which Parts the Session listens to, which Guests hear each answer (`on_applied`), a Guest's way up (`send_up`), `is_link_part` |
@@ -79,7 +79,14 @@ and write the Session's own fields and call its RPCs, and nothing else holds the
   `house_ready`, so it gets the link and level snapshots together once the Host's level is settled.
   Every avatar carries a Host-owned `Gate` synchronizer under the same filter (core/68): Godot decides whom a spawn
   goes to only by the Host's own synchronizers on it, so without it a Guest still loading would get another Guest's
-  avatar. `house_ready` also carries the Guest's Hands numbers (a Lobby joiner said none at the gate).
+  avatar.
+- **A player's Hands numbers are derived, never said (core/130).** Nobody sends capacity, reach, charge or
+  Throw speed any more (D13's sent numbers and `HandsTuning.*_most` went): `Hands.tuning_of(by)` grows the four an
+  Upgrade changes from the levels the level's `Upgrades` Part keeps for that player (synced, so every machine's
+  guesses agree with the Host), starting from the player's own HandsTuning on its machine, from
+  `Hands.teammate_tuning` for a Teammate the Roster names (the level's player numbers: the zoo's 3), from
+  `Hands.tuning` for a stand-in. A Guest's own forged copy changes only its own guesses; the Host refuses.
+  `house_ready` still carries an empty Hands slot until `session_house.gd` drops it.
 - **The wire's version.** `Session.PROTOCOL` goes up with any change to an RPC, a synchronized property, a
   spawnable scene, or the shape of a Command, event, snapshot or gate word.
 

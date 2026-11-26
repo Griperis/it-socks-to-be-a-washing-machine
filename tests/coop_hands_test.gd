@@ -42,6 +42,8 @@ func cases() -> Array[Dictionary]:
 				"title": "coop/09 E01-E03: a Guest's drop falls at once as a ghost and ends where the Host's did"},
 		{"name": "refusals", "method": "case_refusals", "world": false,
 				"title": "coop/09 F01, F08, F09: a refused pick flies back with Hands full; a refused Throw is back in the Hands at once; an answer withheld 2 s goes back with refuse"},
+		{"name": "guest_big_hands", "method": "case_guest_big_hands", "world": false,
+				"title": "core/130, 50 ms one way: a Guest buys Big Hands I (the Host decides) and then picks two loose Socks by its own clicks: the Host holds both in its Hands"},
 		{"name": "race_one_sock", "method": "case_race_one_sock", "world": false,
 				"title": "coop/09 L01, L02, F03, F04: the Host and the Guest click one Sock: the Host gets it; the Guest's grab fizzles silently and flies to the Host's Hands"},
 		{"name": "guest_pairs_and_shelves", "method": "case_guest_pairs_and_shelves", "world": false,
@@ -240,14 +242,17 @@ func case_refusals() -> void:
 	var hh := _hands(host)
 	var me := gp.player_id()
 	var view := gp.held_view()
-	# The Guest's own copy lets it hold 3; the Host clamps the Guest's numbers to its Upgrades: 1 here.
-	var mine := gp.hands_tuning.duplicate() as HandsTuning
-	mine.capacity = 3
-	gp.hands_tuning = mine
+	# core/130: the Guest's own copy of the levels claims Big Hands II (written on its machine alone,
+	# never answered), so it guesses more; the Host derives its numbers from the levels it keeps, from a
+	# Teammate's start (one here).
 	var held := await _guest_holds(host, guest, _handling_sock(guest, "Floor"))
 	var host_t := hh.own_tuning().duplicate() as HandsTuning
-	host_t.capacity_most = 1
-	hh.tuning = host_t
+	host_t.capacity = 1
+	hh.teammate_tuning = host_t
+	var gu := Upgrades.of(gh)
+	gu.personal = {gu.bank.key_of(me): {"big_hands": 2}}
+	_check(gh.tuning_of(me).capacity > 1 and hh.tuning_of(me).capacity == 1,
+			"the Guest's forged level gives it more on its own machine, the Host's levels one (%d, %d)" % [gh.tuning_of(me).capacity, hh.tuning_of(me).capacity])
 	var other := _handling_sock(guest, "OnTable")
 	await _aim_at(guest, gm.box_of(other).get_center())
 	await _wait(func() -> bool: return gp.aimed_sock == other, "the crosshair on a second Sock", FPS * 2)
@@ -288,6 +293,38 @@ func case_refusals() -> void:
 	_check(gp.ghosts().ghost_of(held) == null and not view.is_hidden(held), "F09: the item is back in the Hands")
 	_check(_count(&"refuse") == 1, "F09: refuse plays once (%s)" % [_flat])
 	_withhold = false
+	_drop_branches()
+
+
+func case_guest_big_hands() -> void:
+	var zoos := await _pair(LAG_MS)
+	var host: Node3D = zoos[0]
+	var guest: Node3D = zoos[1]
+	var gp := _player(guest)
+	var gh := _hands(guest)
+	var hh := _hands(host)
+	var me := gp.player_id()
+	var hu := Upgrades.of(hh)
+	var gu := Upgrades.of(gh)
+	var big := Upgrades.find_upgrade(&"big_hands")
+	# The house's start, one, on both machines (the zoo's player holds 3, Q2244).
+	var one := hh.own_tuning().duplicate() as HandsTuning
+	one.capacity = 1
+	hh.teammate_tuning = one
+	gp.hands_tuning = one.duplicate() as HandsTuning
+	_check(hh.tuning_of(me).capacity == 1 and gh.tuning_of(me).capacity == 1, "with no level the Guest holds one on both machines")
+	var hr := LevelRuntime.of(host)
+	await _wait(func() -> bool: return hr.bank.coins.has(hr.bank.key_of(me)), "the Host to welcome the Guest into its Bank")
+	hr.parts.apply(hr.bank.grant({"coins": {hr.bank.key_of(me): big.prices[0]}, "recent": {}}))
+	await _wait(func() -> bool: return LevelRuntime.of(guest).bank.of_player(me) == big.prices[0], "the Guest's Bank to read the price")
+	gu.ask_buy(big, me)
+	await _wait(func() -> bool: return hu.level(big, me) == 1 and gu.level(big, me) == 1, "the Host to decide the purchase and the Guest to read it")
+	_check(hh.tuning_of(me).capacity == 2 and gh.tuning_of(me).capacity == 2, "Big Hands I: two on both machines")
+	var first := await _guest_holds(host, guest, _handling_sock(guest, "Floor"))
+	await _paced_ticks(int(gh.tuning_of(me).grab_interval * FPS) + 2)
+	var second := await _guest_holds(host, guest, _handling_sock(guest, "OnTable"))
+	await _wait(func() -> bool: return hh.items_of(me).has(first) and hh.items_of(me).has(second), "the Host to hold both Socks in the Guest's Hands")
+	_check(hh.items_of(me).size() == 2 and gh.items_of(me).size() == 2, "two items in the Guest's Hands on both machines")
 	_drop_branches()
 
 

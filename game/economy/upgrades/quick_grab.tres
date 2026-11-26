@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" path="res://assets/ui/upgrade_quick_grab.svg" id="1_7dj7h"]
 [ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_ru2y0"]
+[ext_resource type="Resource" path="res://game/economy/stats/grab_interval.tres" id="3_stat"]
 
 [resource]
 script = ExtResource("2_ru2y0")
@@ -10,3 +11,4 @@ tooltip = "Pick up and swap items quicker."
 icon = ExtResource("1_7dj7h")
 cell = Vector2i(0, 2)
 prices = PackedInt32Array(40, 70, 120, 200)
+stat = ExtResource("3_stat")

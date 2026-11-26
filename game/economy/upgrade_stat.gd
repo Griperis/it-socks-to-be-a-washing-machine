@@ -31,16 +31,22 @@ enum Kind {
 
 ## The value at `level` (the summed levels of the Upgrades naming this stat).
 func value_at(level: int) -> float:
+	return value_from(base, level)
+
+
+## The value at `level` grown from `start` instead of `base`: a feature whose level sets its own start
+## (the zoo's player holds 3, Q2244) keeps it, and the levels change it by `kind` and `step` (core/130).
+func value_from(start: float, level: int) -> float:
 	match kind:
 		Kind.ADD:
-			return base + level * step
+			return start + level * step
 		Kind.SCALE_UP:
-			return base * (1.0 + level * step)
+			return start * (1.0 + level * step)
 		Kind.SCALE_DOWN:
-			return base * maxf(least, 1.0 - level * step)
+			return start * maxf(least, 1.0 - level * step)
 		Kind.FLAG:
 			return 1.0 if level > 0 else 0.0
-	return base
+	return start
 
 
 ## The value at `level` in the tip card's words ("" with no format).

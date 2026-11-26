@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" path="res://assets/ui/upgrade_quick_charge.svg" id="1_ryyqq"]
 [ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_7bb0b"]
+[ext_resource type="Resource" path="res://game/economy/stats/charge_time.tres" id="3_stat"]
 
 [resource]
 script = ExtResource("2_7bb0b")
@@ -10,3 +11,4 @@ tooltip = "A Throw charges quicker."
 icon = ExtResource("1_ryyqq")
 cell = Vector2i(1, 1)
 prices = PackedInt32Array(120, 190)
+stat = ExtResource("3_stat")
