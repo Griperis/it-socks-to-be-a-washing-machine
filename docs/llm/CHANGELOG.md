@@ -31,3 +31,4 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-26 [[153-batch-c-file-build-tickets]] Batch C: the answers folded in, the build tickets filed: 6eac5026 (core/153-batch-c-file-build-tickets)
 - 2026-11-26 [[144-trails-as-particles]] The Trails as particle scenes: 38b1e9c9 (core/144-trails-as-particles)
 - 2026-11-26 [[09-one-profile-object]] One profile object per machine: 447fba55 (maintenance/09-one-profile-object)
+- 2026-11-26 [[142-wardrobe-page-and-station]] The Wardrobe page and the station in the house: 34dcd74b (core/142-wardrobe-page-and-station)
