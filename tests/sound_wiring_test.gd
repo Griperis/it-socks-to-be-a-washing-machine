@@ -143,7 +143,9 @@ func case_real_path() -> void:
 	await _physics_ticks(5)
 	Input.action_release(&"drop_throw")
 	await _until(func() -> bool: return _hands.items_of(1).is_empty(), "the throw")
-	var seq := _seq().filter(func(n: StringName) -> bool: return n != &"bounce")
+	# The Coins' landings in the HUD counter (core/124) come on the flight's own clock: checked apart.
+	_check(_seq().has(&"coins"), "the shelved Pair's Coins land in the counter with \"coins\"")
+	var seq := _seq().filter(func(n: StringName) -> bool: return n != &"bounce" and n != &"coins")
 	var want: Array[StringName] = [&"pick", &"pair", &"pop", &"drawer_open", &"shelve", &"pick", &"pick", &"cycle", &"refuse",
 			&"drop", &"throw_charge", &"throw"]
 	_check(seq == want, "the events in order: %s" % [seq])

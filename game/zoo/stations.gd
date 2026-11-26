@@ -6,18 +6,18 @@
 ## A station's node is named after its scene's root, and that name is part of the id of every Part
 ## on it (`Stations/<Root>/...`).
 ##
-## One Mess, one Hands and one Coins for the whole zoo (Q2284): a station's own `Socks` gives way to
+## One Mess, one Hands and one Bank for the whole zoo (Q2284): a station's own `Socks` gives way to
 ## the zoo's `socks` before the station is added (_join_socks()), so what is held at one station is
 ## still held at the next. A station played alone keeps its own.
 class_name ZooStations
 extends Node3D
 
-## The node a station keeps its own Mess, Hands and Coins under (and the zoo its own).
+## The node a station keeps its own Mess, Hands and Bank under (and the zoo its own).
 const SOCKS := ^"Socks"
 ## Its Mess, under it.
 const MESS := ^"Mess"
 
-## The zoo's Socks: the level's one Mess, Hands and Coins (its LevelRuntime's). Empty, every station
+## The zoo's Socks: the level's one Mess, Hands and Bank (its LevelRuntime's). Empty, every station
 ## keeps its own.
 var socks: Node
 
@@ -35,7 +35,7 @@ func _enter_tree() -> void:
 
 ## A station's own Socks give way to the zoo's, before the station enters the tree (so before its
 ## parts are ready or bound): its SockSpots become records of the zoo's Mess, after those of the
-## stations before it; every link of a station node to its own Mess, Hands or Coins (a Cabinet's)
+## stations before it; every link of a station node to its own Mess, Hands or Bank (a Cabinet's)
 ## points at the zoo's node of the same path, and its Socks go. Its empty Lying, Flights and
 ## spawner stay.
 func _join_socks(station: Node3D) -> void:

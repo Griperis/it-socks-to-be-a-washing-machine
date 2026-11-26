@@ -350,14 +350,14 @@ func case_guest_pairs_and_shelves() -> void:
 	_check(gm.is_pair(mates[0]) and gh.items_of(me).has(mates[0]), "J01: the Pair is held, as on the Host")
 	_check(hm.is_pair(mates[0]), "the Host's Mess has the Pair")
 	await _stand_by(guest, (cabinet.drawer(0).get_parent() as Node3D).global_position)
-	var coins := host_cab.coins_of()
+	var coins := host_cab.bank_of()
 	var before := coins.of_player(me) if coins != null else 0
 	cabinet.click(me, 0)
 	await _wait(func() -> bool: return host_cab.shelved().has(mates[0]), "K01: the Host shelves the Guest's Pair")
 	await _wait(func() -> bool: return cabinet.shelved().has(mates[0]), "the Guest sees it shelved")
 	if coins != null:
 		await _wait(func() -> bool: return coins.of_player(me) > before, "K04: the Guest is paid")
-		var gcoins := cabinet.coins_of()
+		var gcoins := cabinet.bank_of()
 		await _wait(func() -> bool: return gcoins.of_player(me) == coins.of_player(me), "the Guest's bank shows it")
 	_drop_branches()
 

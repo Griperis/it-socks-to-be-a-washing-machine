@@ -124,7 +124,7 @@ func case_s01() -> void:
 	await _aim(player, (root.get_node("Drawer1/Looks/Slide/Front") as Node3D).global_position + root.global_basis.z * 0.02)
 	await _press(&"pick")
 	await _until(func() -> bool: return cab.contents(0).has(pair), "the Pair to be shelved")
-	var coins := runtime.coins.of_player(me)
+	var coins := runtime.bank.of_player(me)
 	_check(coins > 0, "Coins earned (%d)" % coins)
 	# One more Sock held, and the fridge open.
 	var held := -1
@@ -171,7 +171,7 @@ func case_s01() -> void:
 	_same(mess.states, states, "every Sock's state is as left")
 	_check(runtime.hands.items_of(me) == PackedInt32Array([held]), "the Hands hold the held Sock (%s)" % runtime.hands.items_of(me))
 	_check((_level.get_node("Cabinets/Kitchen/Cabinet") as Cabinet).contents(0) == shelved, "the Cabinet holds the shelved Pair")
-	_check(runtime.coins.of_player(me) == coins, "the Coins are as left (%d)" % runtime.coins.of_player(me))
+	_check(runtime.bank.of_player(me) == coins, "the Coins are as left (%d)" % runtime.bank.of_player(me))
 	_check(not (_level.get_node(FRIDGE) as Openable).open, "the fridge starts shut (Q2559)")
 	_near(runtime.player.global_position.distance_to(stood), 0.0, 0.3, "the player stands where they quit")
 
@@ -184,8 +184,8 @@ func case_s02() -> void:
 	var pid := runtime.session.profile.id if runtime.session.profile != null else ""
 	_check(PlayerProfile.is_id(pid), "alone the Session has a player id")
 	_check(runtime.roster.id_of(1) == pid, "alone the player is in its own Roster by that id")
-	runtime.parts.apply(runtime.coins.grant(runtime.coins.paid_patch(1, 5)))
-	_check(runtime.coins.coins.keys() == [pid], "the Coins are kept under the player id (%s)" % runtime.coins.coins.keys())
+	runtime.parts.apply(runtime.bank.grant(runtime.bank.paid_patch(1, 5)))
+	_check(runtime.bank.coins.keys() == [pid], "the Coins are kept under the player id (%s)" % runtime.bank.coins.keys())
 	_check(runtime.hands.key_of(1) == pid, "the Hands key the player by its player id")
 
 
@@ -202,8 +202,8 @@ func case_s03() -> void:
 	await _until(func() -> bool: return gr.roster.peers().size() == 2, "the Guest to be welcomed", 900, 0.1)
 	var gpeer := gr.session.me()
 	var gpid := gr.session.profile.id
-	hr.parts.apply(hr.coins.grant(hr.coins.paid_patch(1, 7)))
-	hr.parts.apply(hr.coins.grant(hr.coins.paid_patch(gpeer, 3)))
+	hr.parts.apply(hr.bank.grant(hr.bank.paid_patch(1, 7)))
+	hr.parts.apply(hr.bank.grant(hr.bank.paid_patch(gpeer, 3)))
 	_check(not gr.autosave.saves(), "a Guest's runtime never saves")
 	_check(hr.autosave.save_now()["ok"], "the Host saves")
 	var gprofile := gr.session.profile
@@ -219,8 +219,8 @@ func case_s03() -> void:
 	g2.session.profile = gprofile
 	g2.net.start(["--join=127.0.0.1:%d" % h2.session.port])
 	await _until(func() -> bool: return g2.roster.peers().size() == 2, "the Guest to join the reloaded World", 900, 0.1)
-	_check(g2.coins.of_player(1) == 7, "the Guest sees the Host's saved Coins (%d)" % g2.coins.of_player(1))
-	_check(g2.coins.of_player(g2.session.me()) == 3, "the Guest's own Coins waited for them under %s" % gpid.left(8))
+	_check(g2.bank.of_player(1) == 7, "the Guest sees the Host's saved Coins (%d)" % g2.bank.of_player(1))
+	_check(g2.bank.of_player(g2.session.me()) == 3, "the Guest's own Coins waited for them under %s" % gpid.left(8))
 	_free_all()
 
 
@@ -256,7 +256,7 @@ func case_s05() -> void:
 	var before := store.writes
 	await _until(func() -> bool: return store.writes > before, "the New Game's first save", 300)
 	before = store.writes
-	runtime.parts.apply(runtime.coins.grant(runtime.coins.paid_patch(1, 1)))
+	runtime.parts.apply(runtime.bank.grant(runtime.bank.paid_patch(1, 1)))
 	await _physics_ticks(roundi(runtime.autosave.tuning.autosave_seconds * 60.0 * 0.5))
 	_check(store.writes == before, "not saved before autosave_seconds")
 	await _until(func() -> bool: return store.writes > before, "saved within autosave_seconds", roundi(runtime.autosave.tuning.autosave_seconds * 60.0) + 30)
@@ -279,7 +279,7 @@ func case_s06() -> void:
 	_check(runtime.autosave.save_now()["ok"], "a first save")
 	var good: String = store.files[runtime.autosave.world.file]
 	store.fail_writes = true
-	runtime.parts.apply(runtime.coins.grant(runtime.coins.paid_patch(1, 4)))
+	runtime.parts.apply(runtime.bank.grant(runtime.bank.paid_patch(1, 4)))
 	_check(not runtime.autosave.save_now()["ok"], "the write fails")
 	_check(store.files[runtime.autosave.world.file] == good, "the old file stays")
 	_check(_hud_line(runtime) == Autosave.FAILED, "the HUD says \"%s\"" % Autosave.FAILED)
@@ -334,6 +334,12 @@ func case_s09() -> void:
 	Save.register_migration(1, func(data: Dictionary) -> Dictionary:
 		var world: Dictionary = data["world"]
 		world["floor"] = "Basement"
+		# core/124 renamed the Coins Part to the Bank: the step moves its state to the new id.
+		for key: String in ["parts", "versions"]:
+			var d: Dictionary = data.get(key, {})
+			if d.has("Runtime/Socks/Coins"):
+				d["Runtime/Socks/Bank"] = d["Runtime/Socks/Coins"]
+				d.erase("Runtime/Socks/Coins")
 		return data)
 	# The World belongs to the player who saved it: load it as them.
 	var owner := PlayerProfile.fresh()
@@ -347,7 +353,7 @@ func case_s09() -> void:
 		return
 	var level := await _one_box(w, [])
 	var runtime := LevelRuntime.of(level)
-	_check(runtime.coins.of_player(1) == 12, "its Coins load (%d)" % runtime.coins.of_player(1))
+	_check(runtime.bank.of_player(1) == 12, "its Coins load (%d)" % runtime.bank.of_player(1))
 	# A Part's own version: a saved state of version 1 is stepped to the Part's.
 	var stepped := SaveStepPart.new()
 	stepped.name = "StepPart"
@@ -576,7 +582,7 @@ func case_s17() -> void:
 func case_s99() -> void:
 	var level := await _one_box(Worlds.pick_solo(), [])
 	var runtime := LevelRuntime.of(level)
-	runtime.parts.apply(runtime.coins.grant(runtime.coins.paid_patch(1, 12)))
+	runtime.parts.apply(runtime.bank.grant(runtime.bank.paid_patch(1, 12)))
 	DirAccess.make_dir_recursive_absolute(_out_folder())
 	var path := _out_folder().path_join("sample_v%d.json" % Save.version)
 	var f := FileAccess.open(path, FileAccess.WRITE)

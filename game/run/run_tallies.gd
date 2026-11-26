@@ -81,6 +81,20 @@ func shelved_patch(by: int, pairs: int, coins: int) -> Dictionary:
 	return _added(by, {PAIRS: pairs, COINS: coins})
 
 
+## The change that adds a bonus of `coins` earned to the row of each player of `players` (peer numbers:
+## a floor's or a Cabinet's Stage bonus, Q2667), on top of `into` (a patch of the tallies already in
+## the answer).
+func bonus_patch(players: PackedInt32Array, coins: int, into := {}) -> Dictionary:
+	var all: Dictionary = (into.get("rows", rows) as Dictionary).duplicate(true)
+	for by in players:
+		var key: Variant = key_of(by)
+		var row: Dictionary = all.get(key, all.get(by, {}))
+		all.erase(by)
+		row[COINS] = int(row.get(COINS, 0)) + coins
+		all[key] = row
+	return {"rows": all}
+
+
 ## The change for a pick by player `by`: a Sock out of the Mess is `socks`, and `made` when it fused a Pair.
 func picked_patch(by: int, socks: int, made: int) -> Dictionary:
 	return _added(by, {SOCKS: socks, MADE: made})

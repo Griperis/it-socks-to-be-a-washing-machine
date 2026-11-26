@@ -10,6 +10,8 @@ const THROW := preload("res://game/audio/rumble_throw.tres")
 const PAIR := preload("res://game/audio/rumble_pair.tres")
 ## A knockdown, and being grabbed to be dragged (coop/10): the knocked or dragged player's pad only.
 const KNOCK := preload("res://game/audio/rumble_knock.tres")
+## A Cabinet drawer this player filled (the old "done" cue, Q1556; core/124).
+const DONE := preload("res://game/audio/rumble_done.tres")
 
 ## The cue last asked for, for a test (a headless run has no pad to shake).
 static var last: RumbleCue = null

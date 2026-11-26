@@ -600,17 +600,17 @@ kind = ExtResource("99_detergent")
 [node name="Laundry" parent="Cabinets" unique_id=1126269557 instance=ExtResource("81_cabinet")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.42, -3, 8.15)
 
-[node name="Cabinet" parent="Cabinets/Laundry" index="0" node_paths=PackedStringArray("hands", "coins")]
+[node name="Cabinet" parent="Cabinets/Laundry" index="0" node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
-coins = NodePath("../../../Runtime/Socks/Coins")
+bank = NodePath("../../../Runtime/Socks/Bank")
 collection = &"simple"
 
 [node name="Garage" parent="Cabinets" unique_id=15423979 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, -3, 7.3)
 
-[node name="Cabinet" parent="Cabinets/Garage" index="0" node_paths=PackedStringArray("hands", "coins")]
+[node name="Cabinet" parent="Cabinets/Garage" index="0" node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
-coins = NodePath("../../../Runtime/Socks/Coins")
+bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 2
 collection = &"sport"
 locked = true
@@ -620,9 +620,9 @@ locked = true
 [node name="Kitchen" parent="Cabinets" unique_id=759235581 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.35, 0, 4.99)
 
-[node name="Cabinet" parent="Cabinets/Kitchen" index="0" node_paths=PackedStringArray("hands", "coins")]
+[node name="Cabinet" parent="Cabinets/Kitchen" index="0" node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
-coins = NodePath("../../../Runtime/Socks/Coins")
+bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 2
 collection = &"food"
 locked = true
@@ -630,9 +630,9 @@ locked = true
 [node name="Living" parent="Cabinets" unique_id=946583941 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 0, 2.08)
 
-[node name="Cabinet" parent="Cabinets/Living" index="0" node_paths=PackedStringArray("hands", "coins")]
+[node name="Cabinet" parent="Cabinets/Living" index="0" node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
-coins = NodePath("../../../Runtime/Socks/Coins")
+bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 2
 collection = &"patterns"
 locked = true
@@ -640,9 +640,9 @@ locked = true
 [node name="KidsNorth" parent="Cabinets" unique_id=32228217 instance=ExtResource("81_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.84, 3, 3.81)
 
-[node name="Cabinet" parent="Cabinets/KidsNorth" index="0" node_paths=PackedStringArray("hands", "coins")]
+[node name="Cabinet" parent="Cabinets/KidsNorth" index="0" node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
-coins = NodePath("../../../Runtime/Socks/Coins")
+bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 3
 collection = &"animals"
 locked = true
@@ -650,9 +650,9 @@ locked = true
 [node name="KidsEast" parent="Cabinets" unique_id=2075620364 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 3, 5.38)
 
-[node name="Cabinet" parent="Cabinets/KidsEast" index="0" node_paths=PackedStringArray("hands", "coins")]
+[node name="Cabinet" parent="Cabinets/KidsEast" index="0" node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
-coins = NodePath("../../../Runtime/Socks/Coins")
+bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 3
 collection = &"superhero"
 locked = true
@@ -660,9 +660,9 @@ locked = true
 [node name="LoftWest" parent="Cabinets" unique_id=1701359047 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.35, 6, 4.26)
 
-[node name="Cabinet" parent="Cabinets/LoftWest" index="0" node_paths=PackedStringArray("hands", "coins")]
+[node name="Cabinet" parent="Cabinets/LoftWest" index="0" node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
-coins = NodePath("../../../Runtime/Socks/Coins")
+bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 4
 collection = &"winter"
 locked = true
@@ -670,9 +670,9 @@ locked = true
 [node name="LoftEast" parent="Cabinets" unique_id=1484615176 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 6, 4.26)
 
-[node name="Cabinet" parent="Cabinets/LoftEast" index="0" node_paths=PackedStringArray("hands", "coins")]
+[node name="Cabinet" parent="Cabinets/LoftEast" index="0" node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
-coins = NodePath("../../../Runtime/Socks/Coins")
+bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 4
 collection = &"space"
 locked = true

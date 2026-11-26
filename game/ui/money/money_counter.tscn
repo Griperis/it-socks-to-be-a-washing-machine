@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/money/money_counter.gd" id="1_counter"]
+
+[node name="MoneyCounter" type="HBoxContainer"]
+mouse_filter = 2
+theme_override_constants/separation = 6
+script = ExtResource("1_counter")
+
+[node name="Icon" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Number" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"MoneyLabel"
+text = "0"

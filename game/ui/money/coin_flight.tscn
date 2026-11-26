@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/ui/money/coin_flight.gd" id="1_flight"]
+[ext_resource type="Resource" path="res://game/ui/money/coin_flight_tuning.tres" id="2_tuning"]
+[ext_resource type="PackedScene" path="res://game/ui/money/money_pop.tscn" id="3_pop"]
+[ext_resource type="PackedScene" path="res://game/ui/money/flying_icon.tscn" id="4_icon"]
+
+[node name="CoinFlight" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_flight")
+tuning = ExtResource("2_tuning")
+pop_scene = ExtResource("3_pop")
+icon_scene = ExtResource("4_icon")

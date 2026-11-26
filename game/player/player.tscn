@@ -23,6 +23,8 @@
 [ext_resource type="Resource" uid="uid://e3fid8403c2f" path="res://game/ping/ping_tuning.tres" id="23_ping_tuning"]
 [ext_resource type="PackedScene" path="res://game/ui/stage_bar.tscn" id="24_stage_bar"]
 [ext_resource type="PackedScene" path="res://game/ui/whiteboard/tab_overlay.tscn" id="25_tab"]
+[ext_resource type="PackedScene" path="res://game/ui/money/money_counters.tscn" id="26_money"]
+[ext_resource type="PackedScene" path="res://game/ui/money/coin_flight.tscn" id="27_flight"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -79,6 +81,11 @@ unique_name_in_owner = true
 
 [node name="StageBar" parent="Hud" instance=ExtResource("24_stage_bar")]
 unique_name_in_owner = true
+
+[node name="MoneyCounters" parent="Hud" node_paths=PackedStringArray("flight") instance=ExtResource("26_money")]
+unique_name_in_owner = true
+flight = NodePath("../CoinFlight")
+says_cheat = true
 
 [node name="Crosshair" parent="Hud" unique_id=1667869579 instance=ExtResource("6_cross")]
 unique_name_in_owner = true
@@ -203,6 +210,9 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("19_arrows")
 tuning = ExtResource("20_arrow_tuning")
+
+[node name="CoinFlight" parent="Hud" instance=ExtResource("27_flight")]
+unique_name_in_owner = true
 
 [node name="PingWheel" parent="Hud" unique_id=1460313012 instance=ExtResource("21_wheel")]
 

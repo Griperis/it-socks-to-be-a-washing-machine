@@ -8,8 +8,10 @@
 ## empty Hands (or only loose Socks) it is the drawer's own Openable.use (C04). A granted `shelve`
 ## changes five Parts in one answer: the Hands (the Pairs leave, the rest kept: C02), the Mess (the
 ## leads go SHELVED), this shelf (the aimed drawer, then the nearest with room, the lower of two as
-## near: C03), each drawer used (opens) and the Coins (10 x rarity a Pair, paid once per drawer used:
-## C05, I.12). A thrown Pair that touches one of its own Cabinet's drawer fronts is shelved by the Host's `thrown_shelve`
+## near: C03), each drawer used (opens) and the Bank (10 x rarity a Pair, paid once per drawer used:
+## C05, I.12; a drawer filled to the Pairs per Drawer pays the team its Stage's `drawer_payout` Drawers;
+## in a run, the shelve that fills the Cabinet's current Rows pays its shelver the Cabinet bonus once per
+## Rows count, Q2667: core/124). A thrown Pair that touches one of its own Cabinet's drawer fronts is shelved by the Host's `thrown_shelve`
 ## (T05); any other touch asks nothing and the body bounces (T06, T07). No icon shows the
 ## Collection: the refusal tells it (C11).
 ##
@@ -51,15 +53,15 @@ const BALL_LANDING := preload("res://game/sock/ball_landing_tuning.tres")
 ## A sheeted Cabinet's dust sheet (assets/07, Q2507): a DustSheet child of its root by this name,
 ## draped while it is locked and pulled off on the unlock.
 const DUST_SHEET := ^"../DustSheet"
-## Links the wiring check lets stay empty: a Cabinet finds the level's Hands and Coins by group.
-const WIRING_OPTIONAL := ["hands", "coins"]
+## Links the wiring check lets stay empty: a Cabinet finds the level's Hands and Bank by group.
+const WIRING_OPTIONAL := ["hands", "bank"]
 ## Every Cabinet is in this group (the run's Stages finds the ones of its level by it).
 const GROUP := &"cabinets"
 
 @export var tuning: CabinetTuning
-## The level's Hands (their Mess is the Mess) and Coins; empty, the first of each group.
+## The level's Hands (their Mess is the Mess) and Bank; empty, the first of each group.
 @export var hands: Hands
-@export var coins: Coins
+@export var bank: Bank
 ## The Stage that unlocks it (1 is the basement's; the garage's 2, Q1463). Read only in a level with a
 ## run (docs/architecture/stages.md).
 @export_range(1, 16, 1) var unlock_stage := 1
@@ -74,6 +76,8 @@ const GROUP := &"cabinets"
 ## Each drawer's shelved Pairs (their lead Sock ids), bottom drawer first, in the order they went
 ## in: an Array of PackedInt32Array.
 @export var shelf := []
+## The Rows count whose filling last paid the Cabinet bonus (0: none yet): a grown Cabinet pays again.
+@export_range(0, 64, 1) var bonus_rows := 0
 @export_group("")
 
 var _mess: Mess
@@ -196,11 +200,24 @@ func hands_of() -> Hands:
 	return hands
 
 
-## The Coins it pays into.
-func coins_of() -> Coins:
-	if coins == null and is_inside_tree():
-		coins = get_tree().get_first_node_in_group(Coins.GROUP) as Coins
-	return coins
+## The Bank it pays into.
+func bank_of() -> Bank:
+	if bank == null and is_inside_tree():
+		bank = get_tree().get_first_node_in_group(Bank.GROUP) as Bank
+	return bank
+
+
+## Version 2 (core/124) adds `bonus_rows`: an older save has paid no Cabinet bonus, its default.
+func save_version() -> int:
+	return 2
+
+
+## The Drawers one of its drawers pays when it fills: its unlock Stage's `drawer_payout` in a level
+## with a run, else 1.
+func drawer_payout() -> int:
+	if stages == null or stages.plan == null or stages.plan.stages.is_empty():
+		return 1
+	return stages.plan.stages[clampi(unlock_stage - 1, 0, stages.plan.stages.size() - 1)].drawer_payout
 
 
 ## The Mess whose Pairs it takes.
@@ -478,16 +495,49 @@ func _shelve(leads: PackedInt32Array, aimed: int, by: int, from_hands: bool) -> 
 			paid.append({"drawer": index, "coins": 0})
 		paid.back()["coins"] = int(paid.back()["coins"]) + coins_for
 	# A drawer is left only once it is full, so each drawer used is one payment (I.12).
-	var changes := {id: {"shelf": new_shelf}, mess.id: mess.shelved_patch(taken)}
+	var patch := {"shelf": new_shelf}
+	var changes := {id: patch, mess.id: mess.shelved_patch(taken)}
 	if from_hands:
 		changes[hands_of().id] = hands_of().taken_patch(by, taken)
-	var bank := coins_of()
-	if bank != null and total > 0:
-		changes[bank.id] = bank.paid_patch(by, total)
-	# The run's tallies and record (core/83): the same answer counts them.
+	# A drawer filled to the Pairs per Drawer pays the team (a short last Row never does); in a run, the
+	# Cabinet's current Rows all full pay the shelver the Cabinet bonus once per Rows count (core/124).
+	var per := per_drawer()
+	var filled := {}
+	for p in paid:
+		var index := int(p["drawer"])
+		if contents(index).size() < per and counts[index] >= per:
+			filled[index] = drawer_payout()
+	var bonus := 0
+	var b := bank_of()
+	if stages != null and b != null and not taken.is_empty() and rows_in_use() > 0 and bonus_rows < rows:
+		var all_full := true
+		for i in rows_in_use():
+			all_full = all_full and counts[i] >= row_capacity(i)
+		if all_full:
+			bonus = b.tuning.cabinet_bonus
+			patch["bonus_rows"] = rows
+	var notes := {}
+	if b != null:
+		var into := {}
+		if total > 0:
+			into = b.paid_patch(by, total)
+		if bonus > 0:
+			into = b.paid_patch(by, bonus, true, into)
+		var drawers_paid := 0
+		for index: int in filled:
+			drawers_paid += int(filled[index])
+		if drawers_paid > 0:
+			into = b.drawers_patch(drawers_paid, into)
+		if not into.is_empty():
+			changes[b.id] = into
+		for p in paid:
+			Bank.note(notes, by, int(p["coins"]), int(filled.get(int(p["drawer"]), 0)), drawer(int(p["drawer"])), false)
+		if bonus > 0:
+			Bank.note(notes, by, bonus, 0, null, true)
+	# The run's tallies and record (core/83): the same answer counts them, the bonus too (Q2667).
 	var tallies := RunTallies.of(self)
 	if tallies != null and not taken.is_empty():
-		changes[tallies.id] = tallies.shelved_patch(by, taken.size(), total if bank != null else 0)
+		changes[tallies.id] = tallies.shelved_patch(by, taken.size(), total + bonus if b != null else 0)
 	var record := RunRecord.of(self)
 	if record != null and not taken.is_empty():
 		changes[record.id] = record.shelved_patch(tallies.key_of(by) if tallies != null else by, entries)
@@ -495,7 +545,9 @@ func _shelve(leads: PackedInt32Array, aimed: int, by: int, from_hands: bool) -> 
 		var openable := drawer(int(p["drawer"]))
 		if openable != null and not openable.open:
 			changes[openable.id] = {"open": true}
-	return {"ok": true, "shelved": taken, "paid": paid, "payee": by, "changes": changes}
+	var ev := {"ok": true, "shelved": taken, "paid": paid, "payee": by, "changes": changes}
+	ev.merge(notes)
+	return ev
 
 
 ## The Host: a falling body touched something. A thrown Pair of this Collection touching this

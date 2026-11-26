@@ -34,6 +34,7 @@
 [ext_resource type="PackedScene" path="res://game/zoo/stations/stages.tscn" id="56_stages"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/voice.tscn" id="91_voice"]
 [ext_resource type="PackedScene" path="res://game/zoo/stations/gifts.tscn" id="96_gifts"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/economy.tscn" id="124_economy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.42, 0.44, 0.46, 1)
@@ -166,11 +167,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 138, 0, 2)
 [node name="Gifts" parent="Stations" instance=ExtResource("96_gifts")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 152, 0, 2)
 
+[node name="Economy" parent="Stations" instance=ExtResource("124_economy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 166, 0, 2)
+
 [node name="ReturnSpot" type="Marker3D" parent="." unique_id=1397039282]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.5)
 
 [node name="Runtime" parent="." unique_id=1728372765 instance=ExtResource("43_runtime")]
-mess_bounds = AABB(-20, -6, -60, 180, 20, 80)
+mess_bounds = AABB(-20, -6, -60, 200, 20, 80)
 hands_tuning = SubResource("Resource_zoo_hands")
 upgrades = ExtResource("32_upgrades")
 place_name = "zoo"

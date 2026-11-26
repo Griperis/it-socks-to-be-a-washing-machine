@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="4_spot"]
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="5_designs"]
 [ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
-[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="7_coins"]
+[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/economy/bank.gd" id="7_bank"]
 [ext_resource type="PackedScene" uid="uid://dqcr0t6aah51x" path="res://game/devices/dust_sheet.tscn" id="8_sheet"]
 [ext_resource type="PackedScene" path="res://game/run/run.tscn" id="9_run"]
 [ext_resource type="Resource" path="res://game/zoo/stages/mini_plan.tres" id="10_mini"]
@@ -133,9 +133,9 @@ kind = ExtResource("21_detergent")
 [node name="CabinetA" parent="." instance=ExtResource("1_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
 
-[node name="Cabinet" parent="CabinetA" index="0" node_paths=PackedStringArray("hands", "coins")]
+[node name="Cabinet" parent="CabinetA" index="0" node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../Socks/Hands")
-coins = NodePath("../../Socks/Coins")
+bank = NodePath("../../Socks/Bank")
 
 [node name="Platform" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.3, -3.5)
@@ -187,9 +187,9 @@ stages = NodePath("../../Run/Stages")
 [node name="CabinetB" parent="." instance=ExtResource("1_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.6, -5.2)
 
-[node name="Cabinet" parent="CabinetB" index="0" node_paths=PackedStringArray("hands", "coins")]
+[node name="Cabinet" parent="CabinetB" index="0" node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../Socks/Hands")
-coins = NodePath("../../Socks/Coins")
+bank = NodePath("../../Socks/Bank")
 unlock_stage = 2
 collection = &"sport"
 locked = true
@@ -409,5 +409,5 @@ script = ExtResource("3_hands")
 mess = NodePath("../Mess")
 tuning = ExtResource("6_tuning")
 
-[node name="Coins" type="Node" parent="Socks"]
-script = ExtResource("7_coins")
+[node name="Bank" type="Node" parent="Socks"]
+script = ExtResource("7_bank")
