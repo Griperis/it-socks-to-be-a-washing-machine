@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bco54pfhfmvfr"]
+
+[ext_resource type="PackedScene" uid="uid://cgbnt2q52bplc" path="res://assets/wardrobe/frog_hood.glb" id="1_glb"]
+
+[node name="frog_hood" unique_id=1419228505 instance=ExtResource("1_glb")]

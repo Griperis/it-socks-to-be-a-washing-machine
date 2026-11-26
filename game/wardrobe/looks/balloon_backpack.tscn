@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://c26n18gdve601"]
+
+[ext_resource type="PackedScene" uid="uid://dahcg3l5jtu2h" path="res://assets/wardrobe/balloon_backpack.glb" id="1_glb"]
+
+[sub_resource type="Animation" id="Animation_wjaer"]
+length = 2.0
+loop_mode = 1
+tracks/0/type = "blend_shape"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("balloon_backpack/balloon_backpack_rig/Skeleton3D/balloon_backpack_mesh:Touch")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 1, 1, 1, 2, 1, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xxxo7"]
+_data = {
+&"touch": SubResource("Animation_wjaer")
+}
+
+[node name="balloon_backpack" unique_id=1016915263 instance=ExtResource("1_glb")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=1845438050]
+libraries/ = SubResource("AnimationLibrary_xxxo7")
+autoplay = &"touch"

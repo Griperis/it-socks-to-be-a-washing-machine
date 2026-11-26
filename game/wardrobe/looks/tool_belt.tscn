@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://gwl32fjkq33u"]
+
+[ext_resource type="PackedScene" uid="uid://boukc405fcskw" path="res://assets/wardrobe/tool_belt.glb" id="1_glb"]
+
+[sub_resource type="Animation" id="Animation_yb2f1"]
+length = 1.8
+loop_mode = 1
+tracks/0/type = "blend_shape"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("tool_belt/tool_belt_rig/Skeleton3D/tool_belt_mesh:Touch")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.9, 1, 1, 1.8, 1, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bvt3o"]
+_data = {
+&"touch": SubResource("Animation_yb2f1")
+}
+
+[node name="tool_belt" unique_id=169410228 instance=ExtResource("1_glb")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=183568477]
+libraries/ = SubResource("AnimationLibrary_bvt3o")
+autoplay = &"touch"

@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://du2xttv701wh4"]
+
+[ext_resource type="PackedScene" uid="uid://dpkkqx4xkuptb" path="res://assets/wardrobe/pilots_goggles.glb" id="1_glb"]
+
+[node name="pilots_goggles" unique_id=1739711732 instance=ExtResource("1_glb")]

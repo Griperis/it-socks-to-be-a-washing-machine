@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dtxx7gacrlhg1"]
+
+[ext_resource type="PackedScene" uid="uid://c37bi0lxuxv04" path="res://assets/wardrobe/puffy_coat.glb" id="1_glb"]
+
+[node name="puffy_coat" unique_id=60402466 instance=ExtResource("1_glb")]

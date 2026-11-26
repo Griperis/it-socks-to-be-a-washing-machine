@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dq4up2f705o15"]
+
+[ext_resource type="PackedScene" uid="uid://bu66w3vyyyjqn" path="res://assets/wardrobe/fruit_basket_backpack.glb" id="1_glb"]
+
+[sub_resource type="Animation" id="Animation_1h4te"]
+length = 1.6
+loop_mode = 1
+tracks/0/type = "blend_shape"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("fruit_basket_backpack/fruit_basket_backpack_rig/Skeleton3D/fruit_basket_backpack_mesh:Touch")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.8, 1, 1, 1.6, 1, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dii4w"]
+_data = {
+&"touch": SubResource("Animation_1h4te")
+}
+
+[node name="fruit_basket_backpack" unique_id=748870728 instance=ExtResource("1_glb")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=1687197901]
+libraries/ = SubResource("AnimationLibrary_dii4w")
+autoplay = &"touch"

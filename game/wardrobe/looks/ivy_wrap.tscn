@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://b3v28dftgyyt6"]
+
+[ext_resource type="PackedScene" uid="uid://bukkcfwthf6dx" path="res://assets/wardrobe/ivy_wrap.glb" id="1_glb"]
+
+[sub_resource type="Animation" id="Animation_ihexi"]
+length = 1.2
+loop_mode = 1
+tracks/0/type = "blend_shape"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ivy_wrap/ivy_wrap_rig/Skeleton3D/ivy_wrap_mesh:Touch")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.6, 1, 1, 1.2, 1, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cx3d1"]
+_data = {
+&"touch": SubResource("Animation_ihexi")
+}
+
+[node name="ivy_wrap" unique_id=1181597090 instance=ExtResource("1_glb")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=1875968835]
+libraries/ = SubResource("AnimationLibrary_cx3d1")
+autoplay = &"touch"

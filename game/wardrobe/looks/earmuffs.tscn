@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://2saxmbxtssg5"]
+
+[ext_resource type="PackedScene" uid="uid://5yitag2e5tnx" path="res://assets/wardrobe/earmuffs.glb" id="1_glb"]
+
+[node name="earmuffs" unique_id=894241803 instance=ExtResource("1_glb")]

@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bhc8tf2y8uf7g"]
+
+[ext_resource type="PackedScene" uid="uid://cyfqea4bosc5e" path="res://assets/wardrobe/backpack.glb" id="1_glb"]
+
+[node name="backpack" unique_id=766176224 instance=ExtResource("1_glb")]

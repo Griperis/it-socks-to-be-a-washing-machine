@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://c6ca760mbiovd"]
+
+[ext_resource type="PackedScene" uid="uid://btitk8k75roul" path="res://assets/wardrobe/bee_wings.glb" id="1_glb"]
+
+[node name="bee_wings" unique_id=1920812961 instance=ExtResource("1_glb")]

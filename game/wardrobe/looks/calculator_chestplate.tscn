@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://c8m3j7xrqqqbo"]
+
+[ext_resource type="PackedScene" uid="uid://crboie4vkyhul" path="res://assets/wardrobe/calculator_chestplate.glb" id="1_glb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t6edl"]
+resource_name = "calculator_chestplate_digits_glow"
+cull_mode = 2
+albedo_color = Color(0.45000002, 1, 0.59999996, 1)
+roughness = 0.4
+emission_enabled = true
+emission = Color(0.45000002, 1, 0.59999996, 1)
+emission_energy_multiplier = 0.3
+
+[sub_resource type="Animation" id="Animation_m8bkt"]
+length = 1.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("calculator_chestplate/calculator_chestplate_rig/Skeleton3D/calculator_chestplate_mesh:surface_material_override/2:emission_energy_multiplier")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.3, 1.8, 0.3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2o660"]
+_data = {
+&"touch": SubResource("Animation_m8bkt")
+}
+
+[node name="calculator_chestplate" unique_id=303733325 instance=ExtResource("1_glb")]
+
+[node name="calculator_chestplate_mesh" parent="calculator_chestplate/calculator_chestplate_rig/Skeleton3D" parent_id_path=PackedInt32Array(1779916338) index="0" unique_id=1682056524]
+surface_material_override/2 = SubResource("StandardMaterial3D_t6edl")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=894740503]
+libraries/ = SubResource("AnimationLibrary_2o660")
+autoplay = &"touch"

@@ -1,0 +1,41 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://tools/wardrobe_lineup.gd" id="1_lineup"]
+
+[sub_resource type="Environment" id="Environment_bg"]
+background_mode = 1
+background_color = Color(0.96, 0.96, 0.96, 1)
+ambient_light_source = 2
+ambient_light_color = Color(1, 0.98, 0.95, 1)
+ambient_light_energy = 0.6
+tonemap_mode = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.86, 0.74, 0.6, 1)
+roughness = 0.9
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_floor"]
+material = SubResource("StandardMaterial3D_floor")
+size = Vector2(24, 24)
+
+[node name="WardrobeLineup" type="Node3D"]
+script = ExtResource("1_lineup")
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_bg")
+
+[node name="Key" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866, -0.25, 0.433, 0, 0.866, 0.5, -0.5, 0.433, -0.75, 0, 4, 0)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_floor")
+
+[node name="Row" type="Node3D" parent="."]
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 2.6, -10.8)
+keep_aspect = 0
+fov = 39.6
+current = true

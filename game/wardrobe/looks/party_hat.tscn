@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cxxswlxssjdtu"]
+
+[ext_resource type="PackedScene" uid="uid://cvrj6cesij4ot" path="res://assets/wardrobe/party_hat.glb" id="1_glb"]
+
+[node name="party_hat" unique_id=1224283508 instance=ExtResource("1_glb")]

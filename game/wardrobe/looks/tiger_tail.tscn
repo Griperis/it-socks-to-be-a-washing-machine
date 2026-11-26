@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://qok5g3q8k6ib"]
+
+[ext_resource type="PackedScene" uid="uid://4dmgugv3dgaq" path="res://assets/wardrobe/tiger_tail.glb" id="1_glb"]
+
+[node name="tiger_tail" unique_id=1869481432 instance=ExtResource("1_glb")]

@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cxn67j0pv4qq1"]
+
+[ext_resource type="PackedScene" uid="uid://bly86w5148eqk" path="res://assets/wardrobe/welding_mask.glb" id="1_glb"]
+
+[node name="welding_mask" unique_id=1691136958 instance=ExtResource("1_glb")]

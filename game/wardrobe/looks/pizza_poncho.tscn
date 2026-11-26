@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bs8jmtbbnkgu2"]
+
+[ext_resource type="PackedScene" uid="uid://bfcp1mdyyqfjd" path="res://assets/wardrobe/pizza_poncho.glb" id="1_glb"]
+
+[node name="pizza_poncho" unique_id=1870648497 instance=ExtResource("1_glb")]

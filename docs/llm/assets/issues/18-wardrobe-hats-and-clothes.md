@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: assets
 feature: assets
@@ -45,3 +45,12 @@ them (Q2177).
 - No Secrets in batch B (Q2682, 2026-11-25).
 
 ## Open follow-ups
+- [later] The line-up is waiting for the designer's look (`builds/review-assets-18/`: one strip per Collection and
+  one of the basic pieces, old game's shot above, port below; `touch-robot-chest-panel.png` the glow in turn). On a
+  yes: core/128's piece files point at `game/wardrobe/looks/<id>.tscn` and the graybox hat and clothes go.
+- [later] The glbs came over byte for byte (no node, material or size change needed: no material name is one of the
+  shared library's, no import-hint names, no transforms on the meshes). The ten basic pieces keep their old CamelCase
+  node names (`TopHat`, `Armature`); nothing finds them by name.
+- [later] The glows are faint on the line-up's stage (no glow/bloom in its Environment); judge them in the house's own
+  light. The two drops-only pieces (Detergent cap crown, Hose scarf) have their Drops and no `touch` clip, as the old
+  had nothing to animate on them.

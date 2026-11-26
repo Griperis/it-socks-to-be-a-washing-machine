@@ -1,0 +1,22 @@
+# assets/18: the hats and clothes on the Avatar, one row per Collection and one of the ten basic pieces, placed
+# and framed as the old game's line-ups (docs/art/avatar/wardrobe/<theme>_lineup.png in reference/it-socks;
+# simple was the old theme basic, patterns the old casual). tools/wardrobe_lineup.tscn, the shot hook wardrobe_lineup.
+# The Socks and Trail places stand bare until assets/19; the last creature wears a hat and clothes together.
+basic  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:basic' --shots=60
+simple  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:simple' --shots=60
+sport  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:sport' --shots=60
+food  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:food' --shots=60
+patterns  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:patterns' --shots=60
+animals  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:animals' --shots=60
+superhero  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:superhero' --shots=60
+winter  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:winter' --shots=60
+space  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:space' --shots=60
+fruit  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:fruit' --shots=60
+nature  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:nature' --shots=60
+vegetables  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:vegetables' --shots=60
+drinks  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:drinks' --shots=60
+math  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:math' --shots=60
+tech  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:tech' --shots=60
+transport  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:transport' --shots=60
+machinery  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:machinery' --shots=60
+lost  --scene=res://tools/wardrobe_lineup.tscn --size=1100x380 --do='5:wardrobe_lineup:lost' --shots=60

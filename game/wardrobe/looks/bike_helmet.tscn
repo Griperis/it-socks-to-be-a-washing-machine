@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://d1hjl8mr86ikq"]
+
+[ext_resource type="PackedScene" uid="uid://bm2g3gv2qfjom" path="res://assets/wardrobe/bike_helmet.glb" id="1_glb"]
+
+[node name="bike_helmet" unique_id=1489352089 instance=ExtResource("1_glb")]

@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cfyw2elkm718l"]
+
+[ext_resource type="PackedScene" uid="uid://cbhr1d55pdou5" path="res://assets/wardrobe/mobius_halo.glb" id="1_glb"]
+
+[node name="mobius_halo" unique_id=935980545 instance=ExtResource("1_glb")]

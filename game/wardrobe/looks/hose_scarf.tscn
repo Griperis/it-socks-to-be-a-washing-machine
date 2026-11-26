@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://carg2ar3qg6hu"]
+
+[ext_resource type="PackedScene" uid="uid://bba7cs4urg35e" path="res://assets/wardrobe/hose_scarf.glb" id="1_glb"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_txdaf"]
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_max = 0.02
+gravity = Vector3(0, -6, 0)
+scale_min = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kof1j"]
+transparency = 1
+albedo_color = Color(0.62352943, 0.83137256, 1, 0.8666667)
+
+[sub_resource type="SphereMesh" id="SphereMesh_5qtxa"]
+material = SubResource("StandardMaterial3D_kof1j")
+radius = 0.014
+height = 0.028
+radial_segments = 6
+rings = 3
+
+[node name="hose_scarf" unique_id=455452506 instance=ExtResource("1_glb")]
+
+[node name="Drops" type="GPUParticles3D" parent="hose_scarf/hose_scarf_rig/Skeleton3D/hose_scarf_mesh" parent_id_path=PackedInt32Array(244264327) index="0" unique_id=384704314]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.3)
+cast_shadow = 0
+amount = 1
+lifetime = 0.6
+process_material = SubResource("ParticleProcessMaterial_txdaf")
+draw_pass_1 = SubResource("SphereMesh_5qtxa")
