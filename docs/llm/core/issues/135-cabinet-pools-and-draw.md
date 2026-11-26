@@ -6,7 +6,7 @@ area: core
 feature: gifts
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: ["[[125-collections-as-data]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 2", "suggested model: sonnet"]
 terms: [Cabinet, Cabinet pool, Unlocked Collection, New Game, Stage]
