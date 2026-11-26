@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: assets
 feature: assets
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 1", "suggested model: opus (Blender)"]
 terms: [Gift]
@@ -43,6 +43,8 @@ present's `SockCollection` at run time, not the model.
 - Keep the rounded edges and the curved ribbon loops; replace the round knot (it reads like a blob or an apple)
   with a flatter wrapped knot; the box and the lid hollow inside, so an opened box shows inner walls and a floor
   (thin walls, the inside lit as the paper's inside, no pattern); keep the triangle budget (Q2690, 2026-11-26).
+- Round 2 (flat wrapped knot, hollow box and lid with a plain matte inside, the ribbon not across the openings) is
+  yes; core/137 swaps it into the box's Looks, since it is not on main yet (Q2692, 2026-11-26).
 
 ## Open follow-ups
 - [later] The line-up's paper is a Blender stand-in for `gift_paper.gdshader` (core/137 has not ported it): the
