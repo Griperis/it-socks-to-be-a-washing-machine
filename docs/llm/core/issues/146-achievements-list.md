@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: needs-info
+status: wontfix
 kind: content
 area: content
 feature: player
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: ["[[145-achievements-system]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, later row (after the answer)", "suggested model: sonnet"]
 terms: [Achievement, Lifetime tallies]
@@ -43,9 +43,11 @@ The proposal's ten, as plain badges (team credit, none hidden, numbers the draft
 - `kit/tools/run.sh --touched` ends PASS.
 
 ## Answers
+- Batch B ships no Achievements list; the system and the Profile page come with none, and the list waits for a
+  later content round (Q2687, 2026-11-26).
 - The ten basic Wardrobe pieces are owned from the start (Q2679, 2026-11-25).
 
 ## Open follow-ups
-- [blocking] Which Achievements does batch B ship? (a) the ten above as plain badges, no piece (recommended: the
+- (answered Q2687) Which Achievements does batch B ship? (a) the ten above as plain badges, no piece (recommended: the
   Profile page has something to show and every tally has a first goal); (b) a cut of the old draft of 46 that the
   designer picks (only tally conditions work in batch B); (c) none in batch B: the system waits for a content round.

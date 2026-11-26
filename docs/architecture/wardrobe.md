@@ -47,7 +47,7 @@ game/entities/wardrobe_station/   the oak wardrobe: its scene, WardrobeStation (
 game/profile/                     the Profile's game side
   tally_recorder.gd                 TallyRecorder (Node, every machine, in run.tscn): the five Lifetime tallies
   achievement.gd                    Achievement (Resource): one Achievement
-  achievements/<id>.tres            the list (core/146: which ones ship waits on the designer)
+  achievements/<id>.tres            the list: none in batch B (Q2687)
   achievements.gd                   Achievements (Node, every machine, in the game link): decides for its player
   achievement_backend.gd            AchievementBackend (RefCounted, abstract): the seam
   local_achievement_backend.gd      over the Profile; always on
@@ -241,10 +241,9 @@ API name: lowercase a-z, 0-9 and `_`, at most 40, never renamed once live: a tes
 TEAM, OWN: Q1691; with every batch B condition a tally, TEAM), `tally: StringName` and `at: int` (the batch B
 condition kind: a Lifetime tally reaching `at`), `reward: WardrobePiece` (optional, Q1690). Later kinds (an event in a
 Stage, a skill) add fields and a branch in `check()`; none is in batch B. **A designer adds an Achievement** by
-dropping a `.tres`: it shows on the page and in the zoo station. **Which Achievements batch B ships is open:** the ten
+dropping a `.tres`: it shows on the page and in the zoo station. **Batch B ships no Achievements list (Q2687):** the ten
 basic pieces no longer need Achievements to be had (Q2679), so the draft ten (each giving a basic piece) were not
-taken; core/146 asks the designer for the list (`needs-info`), and the system (core/145) is built and tested with test
-fixtures meanwhile.
+taken; the system (core/145) is built and tested with test fixtures, and the list waits for a later content round.
 
 **`Achievements`** (Node in the game link, every machine): `check()` earns, for the local player only, every
 Achievement whose tally the profile has reached and that it has not (`profile.earn`); for each: its `reward` goes
@@ -314,8 +313,8 @@ corner key on the title (beside core/121's encyclopedia key, tooltip "Profile") 
 - "Who is in the Wardrobe" is the station's own state, not string toggles in a shared Game.
 
 ## The designer's answers (Q2679-Q2683, 2026-11-25)
-- W1: the ten basic pieces are owned from the start (Q2679, reversing Q696). Which Achievements ship is asked in
-  core/146.
+- W1: the ten basic pieces are owned from the start (Q2679, reversing Q696). Batch B ships no Achievements
+  list (Q2687).
 - W2: the 17 Trails are remade as particle scenes authored in the editor, not ported scripts; the look is judged on
   stills (Q2680).
 - W3: one Profile page: the five Lifetime tallies on top, the Achievements under them (Q2681).
@@ -336,7 +335,7 @@ on the designer's yes.
 | 122-D | core/142 The Wardrobe page and the station in the house | |
 | 122-E | core/143 The Lobby's Wardrobe key and stats card | |
 | 122-F | core/144 The Trails as particle scenes | remade, not ported (Q2680); look work, stops at its first stills |
-| 122-G | core/145 Achievements: the system, the toast and the station; core/146 Batch B's Achievements list | the draft ten dropped by Q2679; the list `needs-info` |
+| 122-G | core/145 Achievements: the system, the toast and the station; core/146 Batch B's Achievements list | the draft ten dropped by Q2679; no list in batch B (Q2687) |
 | 122-H | core/147 The Profile page | Q2681 |
 | AS-W1 | assets/18 The hats and clothes; assets/19 The Socks pieces and the Trails' meshes | split in two |
 | AS-W2 | assets/20 The Wardrobe station's model | |

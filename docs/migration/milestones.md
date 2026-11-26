@@ -75,7 +75,6 @@ their Looks swap in when the designer says yes; core/144 (the Trails' looks) sto
 | 5 | core/130 The Personal Upgrades (opus); core/138 Opening a present (opus); core/140 The Old Tree's present lines; core/142 The Wardrobe page and station (opus); core/147 The Profile page | core/130 alone on `player.gd`, `hands.gd`, `session_gate.gd`, `project.godot`, `prompts.gd`; core/138 alone on `final_screen`, the Gifts station; core/140 alone on the tree's Part; core/142 alone on `house.tscn`, `sock_places.gd`, the Wardrobe station; core/147 alone on `title.tscn`, `esc_menu.tscn` |
 | 6 | core/131 The Sole cues (opus); core/133 The Old Tree's help; core/143 The Lobby's Wardrobe key | core/131 alone on the HUD (`player.tscn`); core/133 alone on `house.tscn`, `cabinet.gd`, the tree's Part |
 | 7 | core/139 The encyclopedia book (opus) | alone on `house.tscn`, `carriable.gd`, `hands.gd`, `prompts.gd` |
-| later | core/146 Batch B's Achievements list (`needs-info`: which ones ship); data files only, any wave after core/145 once answered | |
 
 How the cross-piece clashes the designs named are ordered: `player_profile.gd` only core/127 (both profile drafts
 merged); `run.tscn` core/126, 127, 134, 137 in waves 1-4; `house.tscn` core/135, 132, 137, 142, 133, 139 in waves 2-7;

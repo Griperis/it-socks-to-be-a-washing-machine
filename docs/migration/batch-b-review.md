@@ -37,8 +37,7 @@ Lobby. For each line say yes, or what to change; a change becomes a ticket. The 
 | core/142 Wardrobe page and station | the wardrobe in the parents' bedroom: the doors, the page, the colour row, "N/M unlocked" without the Lost Socks' six (Q2683) |
 | core/143 Lobby key and card | the Wardrobe key by your figure clears Ready; a Teammate's stats card |
 | core/144 Trails | the strip: all 17 Trails remade as particles, judged on stills (Q2680) |
-| core/145 Achievements | the toast at the top right (needs a list: core/146) |
-| core/146 Achievements list | waits on your answer: which Achievements ship in batch B |
+| core/145 Achievements | the system only: no list ships in batch B (Q2687); its station shows the toast with test entries |
 | core/147 Profile page | the title's Profile key and the ESC menu's entry; the tallies on top, the Achievements under them (Q2681) |
 | assets/16-20 | the line-ups: the present box, the book, the hats and clothes, the Socks pieces and Trail meshes, the Wardrobe station |
 
@@ -47,7 +46,7 @@ Lobby. For each line say yes, or what to change; a change becomes a ticket. The 
   knows no other; a Guest with a different unlocked set gets pieces from the Host's.
 - A present holding a piece of another Collection keeps the wrapping of the Collection the Stage completed.
 - The Old Tree's lines are copied with the old +12.5 dB baked into the recordings once (the game adds no gain, Q2638).
-- Batch B ships no Achievement until core/146 is answered; the Profile page then shows the tallies and "0 / 0 earned".
+- Batch B ships no Achievement (Q2687): the Profile page shows the tallies and "0 / 0 earned".
 
 ## Questions for the designer (end of batch B)
 Collected while the batch builds unattended. Each is answered in play or here; a change becomes a ticket.
