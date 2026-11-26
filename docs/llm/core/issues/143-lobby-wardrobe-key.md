@@ -6,7 +6,7 @@ area: ui
 feature: player
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: ["[[142-wardrobe-page-and-station]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 6", "suggested model: sonnet"]
 terms: [Lobby, Wardrobe, Colour & Wardrobe, Lifetime tallies]

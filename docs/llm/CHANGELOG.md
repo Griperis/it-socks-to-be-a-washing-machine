@@ -34,3 +34,4 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-26 [[142-wardrobe-page-and-station]] The Wardrobe page and the station in the house: 34dcd74b (core/142-wardrobe-page-and-station)
 - 2026-11-26 [[138-opening-a-present]] Opening a present and the reveal: b94f021f (core/138-opening-a-present)
 - 2026-11-26 [[130-personal-upgrades]] The Personal Upgrades take effect: f4ce85d8 (core/130-personal-upgrades)
+- 2026-11-26 [[143-lobby-wardrobe-key]] The Lobby's Wardrobe key and stats card: 0186656e (core/143-lobby-wardrobe-key)
