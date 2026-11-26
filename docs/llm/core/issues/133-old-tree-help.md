@@ -10,7 +10,7 @@ done:
 blocked_by: ["[[132-old-tree-voice]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 6", "suggested model: sonnet"]
 terms: [Old Tree, Stage, Cabinet, Part, Fix, Final wash]
-suites: [house, stages, voice, cabinet, final_wash, fix_scene]
+suites: [furniture_devices, house, stages, voice, cabinet, final_wash, fix_scene]
 ---
 
 # The Old Tree's help
