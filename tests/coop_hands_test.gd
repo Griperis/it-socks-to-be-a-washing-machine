@@ -805,7 +805,7 @@ func _aim_at(zoo: Node3D, target: Vector3, aside := Vector3.ZERO) -> void:
 	player.reset_physics_interpolation()
 	# Twice: a body pushed out of something as it lands looks again from where it stands.
 	for _i in 2:
-		await _paced_ticks(int(LAG_MS * 3 * FPS / 1000.0) + 4)
+		await _stands_still(player)
 		var head := player.get_node("Head") as Node3D
 		var to := target - player.global_position
 		player.rotation.y = atan2(-to.x, -to.z)
@@ -813,6 +813,19 @@ func _aim_at(zoo: Node3D, target: Vector3, aside := Vector3.ZERO) -> void:
 		head.rotation.x = clampf(atan2(up.y, Vector2(up.x, up.z).length()), -1.5, 1.5)
 	await _paced_ticks(2)
 	await _host_has(player)
+
+
+## Waits until `player` stands on the floor and did not move over the last paced tick (a body put down
+## in something is pushed out of it first).
+func _stands_still(player: Player) -> void:
+	var last := player.global_position
+	for _i in FPS * 2:
+		await _paced()
+		var now := player.global_position
+		if player.is_on_floor() and now.distance_to(last) < 0.0005:
+			return
+		last = now
+	_check(false, "the player to stand still where it was put (within %d frames)" % (FPS * 2))
 
 
 ## The Host judges reach by where it last heard this player stands (LevelNet.where()): a click sent before the pose

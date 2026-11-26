@@ -35,6 +35,73 @@ func _game(engine: PackedStringArray, args: PackedStringArray) -> Dictionary:
 	return {"code": code, "text": "\n".join(PackedStringArray(out))}
 
 
+## Several games as child processes at once, each `[engine, args]` as _game() takes them, each with a
+## user data folder of its own (two games starting in one folder would move each other's logs); returns
+## {code, text} for each, in order.
+func _games(runs: Array) -> Array[Dictionary]:
+	var keys := ["XDG_DATA_HOME", "APPDATA"]
+	var kept := {}
+	for k: String in keys:
+		kept[k] = OS.get_environment(k)
+	var started: Array[Dictionary] = []
+	for i in runs.size():
+		var run: Array = runs[i]
+		var all := PackedStringArray(["--path", ProjectSettings.globalize_path("res://")])
+		all.append_array(run[0] as PackedStringArray)
+		all.append("--")
+		all.append_array(run[1] as PackedStringArray)
+		var own := ProjectSettings.globalize_path("user://game_cli_%d" % i)
+		DirAccess.make_dir_recursive_absolute(own)
+		for k: String in keys:
+			OS.set_environment(k, own)
+		started.append(OS.execute_with_pipe(OS.get_executable_path(), all, false))
+	for k: String in keys:
+		if String(kept[k]).is_empty():
+			OS.unset_environment(k)
+		else:
+			OS.set_environment(k, kept[k])
+	var texts: Array[PackedByteArray] = []
+	for _i in started.size():
+		texts.append(PackedByteArray())
+	var running := true
+	while running:
+		running = false
+		for i in started.size():
+			var pid := int(started[i].get("pid", -1))
+			if pid > 0 and OS.is_process_running(pid):
+				running = true
+		for i in started.size():
+			texts[i] = texts[i] + _drain(started[i])
+		if running:
+			await get_tree().process_frame
+			OS.delay_msec(10)
+	var out: Array[Dictionary] = []
+	for i in started.size():
+		texts[i] = texts[i] + _drain(started[i])
+		var pid := int(started[i].get("pid", -1))
+		out.append({"code": OS.get_process_exit_code(pid) if pid > 0 else -1, "text": texts[i].get_string_from_utf8()})
+		for k: String in ["stdio", "stderr"]:
+			var pipe := started[i].get(k) as FileAccess
+			if pipe != null:
+				pipe.close()
+	return out
+
+
+## What a child's pipes hold now (its output and errors).
+func _drain(child: Dictionary) -> PackedByteArray:
+	var got := PackedByteArray()
+	for k: String in ["stdio", "stderr"]:
+		var pipe := child.get(k) as FileAccess
+		if pipe == null or not pipe.is_open():
+			continue
+		while true:
+			var chunk := pipe.get_buffer(65536)
+			if chunk.is_empty():
+				break
+			got.append_array(chunk)
+	return got
+
+
 func case_real_path() -> void:
 	var r := _game(PackedStringArray(["--headless", "--audio-driver", "Dummy", "--fixed-fps", "10"]),
 			PackedStringArray(["--bench=mess", "--only=idle_500", "--headless", "--label=cli_test"]))
@@ -63,14 +130,17 @@ func case_scene() -> void:
 
 func case_zoo_and_house() -> void:
 	_same(String(ProjectSettings.get_setting("application/run/main_scene")), "res://game/ui/title/title.tscn", "the title is the main scene (core/58)")
-	var plain := _game(PackedStringArray(["--headless", "--audio-driver", "Dummy", "--quit-after", "40"]), PackedStringArray())
+	var engine := PackedStringArray(["--headless", "--audio-driver", "Dummy", "--quit-after", "40"])
+	var three := await _games([[engine, PackedStringArray()], [engine, PackedStringArray(["--scene=res://game/house/house.tscn"])],
+			[engine, PackedStringArray(["--zoo"])]])
+	var plain := three[0]
 	var text: String = plain["text"]
 	_check(not text.contains("GameCli: scene"), "a plain start swaps no scene")
 	_check(not text.contains("SCRIPT ERROR"), "the title starts without an error")
-	var house := _game(PackedStringArray(["--headless", "--audio-driver", "Dummy", "--quit-after", "40"]), PackedStringArray(["--scene=res://game/house/house.tscn"]))
+	var house := three[1]
 	text = house["text"]
 	_check(text.contains("GameCli: scene res://game/house/house.tscn") and not text.contains("SCRIPT ERROR"), "-- --scene= starts the house alone, without an error")
-	var zoo := _game(PackedStringArray(["--headless", "--audio-driver", "Dummy", "--quit-after", "40"]), PackedStringArray(["--zoo"]))
+	var zoo := three[2]
 	text = zoo["text"]
 	_check(text.contains("GameCli: scene res://game/zoo/zoo.tscn"), "-- --zoo starts the zoo")
 	_check(not text.contains("SCRIPT ERROR") and not text.contains("cannot start"), "the zoo started without an error")

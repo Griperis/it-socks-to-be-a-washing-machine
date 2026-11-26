@@ -33,6 +33,8 @@ const SETTLE_FRAMES := 30
 
 var _branches: Array[Node] = []
 var _pace_next := 0
+## The carried loop's numbers by one-way delay, walked once a process (_carried_loop).
+var _loops: Dictionary[int, Dictionary] = {}
 
 
 func cases() -> Array[Dictionary]:
@@ -41,10 +43,10 @@ func cases() -> Array[Dictionary]:
 				"title": "real path, two players in the zoo station: B's pressed jump near A's back climbs: B ends on A's disc (feet at A's back height) on B's machine; A's pace is halved (2 m/s); A walks by its input and B moves with A on both machines"},
 		{"name": "carried_loop", "method": "case_carried_loop", "world": false,
 				"title": "0 and 50 ms one way: B rides A while A walks a loop: on each machine B's drawn place stays within a typed bound of A's on-screen back (on A's machine it trails by the lag, Q2591), and on B's machine no jitter (the frame's move against the frame before's) over 0.01 m once under way; A stays at the carry pace throughout and counts B on its back (the numbers on A's machine are printed: carried_loop_seen holds the open rule)"},
-		{"name": "carried_loop_seen", "method": "case_carried_loop_seen", "world": false,
-				"title": "0 and 50 ms one way: on A's machine B is drawn on A's disc (within its radius and the body's round bottom) and riding adds no jitter over 0.01 m"},
 		{"name": "jump_heard", "method": "case_jump_heard", "world": false,
 				"title": "Q2593: B's climb is a jump: jump plays on B's machine and at B's body on A's; A's jump with B on its back plays at A's body on B's machine, and none at B's (the rider rides, it does not jump); B still rides after A lands"},
+		{"name": "carried_loop_seen", "method": "case_carried_loop_seen", "world": false,
+				"title": "0 and 50 ms one way: on A's machine B is drawn on A's disc (within its radius and the body's round bottom) and riding adds no jitter over 0.01 m"},
 		{"name": "carrier_stands", "method": "case_carrier_stands", "world": false,
 				"title": "lines 29, 30: crouched A with B on its back stands up with room for the stack (B rides up), and stays crouched under a board that leaves room for A alone"},
 	]
@@ -102,8 +104,30 @@ func case_carried_loop_seen() -> void:
 
 
 ## B rides A round a loop at `lag_ms`; `on_disc` asks the stricter rule of the open question (B drawn on
-## A's disc on A's machine, no added jitter) instead of the counting reach the stack keeps today.
+## A's disc on A's machine, no added jitter) instead of the counting reach the stack keeps today. The loop
+## is walked once per lag in a process: carried_loop and carried_loop_seen judge the same numbers.
 func _carried_loop(lag_ms: int, on_disc: bool) -> void:
+	if not _loops.has(lag_ms):
+		_loops[lag_ms] = await _walk_loop(lag_ms)
+	var r: Dictionary = _loops[lag_ms]
+	var most: Dictionary = r["most"]
+	var off_back: int = r["off_back"]
+	var full_pace: int = r["full_pace"]
+	var alone: float = r["alone"]
+	_check(off_back == 0, "%d ms: B rode A the whole loop on B's machine (off %d frames)" % [lag_ms, off_back])
+	_check(most["rider"] <= RIDER_OFF_MOST and most["rider_y"] <= AT, "%d ms: on B's machine B stays on A's drawn disc (%.3f m off, %.3f high)" % [lag_ms, most["rider"], most["rider_y"]])
+	_check(most["seen"] <= SEEN_OFF_MOST and most["seen_y"] <= 0.15, "%d ms: on A's machine B's drawn body stays counted on A's back (within %.2f m) (%.3f m off, %.3f high)" % [lag_ms, SEEN_OFF_MOST, most["seen"], most["seen_y"]])
+	_check(most["step_guest"] <= STEP_MOST, "%d ms: on B's machine no jitter over %.2f m against A's drawn back (%.4f)" % [lag_ms, STEP_MOST, most["step_guest"]])
+	if on_disc:
+		_check(most["seen"] <= RIDER_OFF_MOST, "%d ms: on A's machine B is drawn on A's disc (%.3f m off)" % [lag_ms, most["seen"]])
+		_check(most["step_host"] <= STEP_MOST, "%d ms: on A's machine riding adds no jitter over %.2f m (%.4f; B walking alone there: %.4f)" % [
+				lag_ms, STEP_MOST, most["step_host"], alone])
+	_check(full_pace == 0, "%d ms: A kept the carry pace the whole loop (full pace %d frames)" % [lag_ms, full_pace])
+
+
+## Walks the loop at `lag_ms` (B alone first for the baseline, then B on A's back) and returns what it
+## measured: {most, off_back, full_pace, alone}.
+func _walk_loop(lag_ms: int) -> Dictionary:
 	var pair := await _joined(lag_ms)
 	var host: Node3D = pair[0]
 	var guest: Node3D = pair[1]
@@ -154,16 +178,8 @@ func _carried_loop(lag_ms: int, on_disc: bool) -> void:
 	Input.action_release(Player.MOVE_FORWARD)
 	print("STACK carried %d ms over %d frames: rider %.3f m off A's drawn disc (y %.3f), drawn on A's machine %.3f m off A's back (y %.3f); jitter %.4f (B's machine) %.4f (A's; B walking alone %.4f); full pace %d frames, off the back %d" % [
 			lag_ms, frames[0], most["rider"], most["rider_y"], most["seen"], most["seen_y"], most["step_guest"], most["step_host"], alone, full_pace[0], off_back[0]])
-	_check(off_back[0] == 0, "%d ms: B rode A the whole loop on B's machine (off %d frames)" % [lag_ms, off_back[0]])
-	_check(most["rider"] <= RIDER_OFF_MOST and most["rider_y"] <= AT, "%d ms: on B's machine B stays on A's drawn disc (%.3f m off, %.3f high)" % [lag_ms, most["rider"], most["rider_y"]])
-	_check(most["seen"] <= SEEN_OFF_MOST and most["seen_y"] <= 0.15, "%d ms: on A's machine B's drawn body stays counted on A's back (within %.2f m) (%.3f m off, %.3f high)" % [lag_ms, SEEN_OFF_MOST, most["seen"], most["seen_y"]])
-	_check(most["step_guest"] <= STEP_MOST, "%d ms: on B's machine no jitter over %.2f m against A's drawn back (%.4f)" % [lag_ms, STEP_MOST, most["step_guest"]])
-	if on_disc:
-		_check(most["seen"] <= RIDER_OFF_MOST, "%d ms: on A's machine B is drawn on A's disc (%.3f m off)" % [lag_ms, most["seen"]])
-		_check(most["step_host"] <= STEP_MOST, "%d ms: on A's machine riding adds no jitter over %.2f m (%.4f; B walking alone there: %.4f)" % [
-				lag_ms, STEP_MOST, most["step_host"], alone])
-	_check(full_pace[0] == 0, "%d ms: A kept the carry pace the whole loop (full pace %d frames)" % [lag_ms, full_pace[0]])
 	_drop_branches()
+	return {"most": most, "off_back": off_back[0], "full_pace": full_pace[0], "alone": alone}
 
 
 func case_jump_heard() -> void:

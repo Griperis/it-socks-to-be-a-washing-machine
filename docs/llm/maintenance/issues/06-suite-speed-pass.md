@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: maintenance
 area: maintenance
 feature: tests
@@ -38,6 +38,22 @@ The full run grew from about 129 s to 200-290 s during batch A (`SLOW the whole 
 - Nothing flaky: the suites that changed pass `--reverse` and `--seed=7` too.
 - Game behaviour unchanged; only tests and test support change (a tuning hook for tests is fine).
 
+## Answers
+- Q2688 (designer, 2026-11-26): yes; kit 12dacfa holds the gate 0.2 s while a run is alone, 1 s while another
+  is live. The question was: (kit, the lead's) The full run is start-limited, not test-limited: `kit/tools/run.py` holds the
+  machine-wide start gate `START_GAP = 1.0` s per process, so 101 processes take at least ~116 s to start
+  (suites phase 140 s at 719 s of process time, where 8 slots need ~90 s). Measured on this tree, idle,
+  with START_GAP patched to 0.2 in the Python process (kit not edited): 120 s whole run (suites 98 s,
+  check 8 s, timing lane 14 s) against 169 s unpatched. Under 120 s needs a shorter gap (or none
+  within one run, whose own processes headroom_kb() already counts).
+
 ## Open follow-ups
+- [later] (the lead) Each process costs ~1.4 s before its first case (engine boot ~1 s, then the
+  runner's knob discovery loading every class); 96 suites are 96+ processes. Merging small suites would
+  cut starts and boots, but renames case ids that tickets' `suites:` name: not done.
+- Check count 23152 -> 23146: coop_stacking walks its carried loop once a process for carried_loop and
+  carried_loop_seen (same numbers, each case still makes all its rule checks); the 6 set-up checks of
+  the second walk ("the Host hosts", "B's jump is a climb onto A's back", "B rides A's back", at 0 and
+  50 ms) are no longer repeated. Cases 767, unchanged; none moved to stress.
 
 ## Built log
