@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" path="res://assets/ui/upgrade_mate_radar.svg" id="1_22u7h"]
 [ext_resource type="Resource" path="res://game/economy/upgrades/sole_mates.tres" id="2_f5lj5"]
 [ext_resource type="Script" path="res://game/economy/upgrade.gd" id="3_43r2g"]
+[ext_resource type="Resource" path="res://game/economy/stats/mate_radar.tres" id="9_stat"]
 
 [resource]
 script = ExtResource("3_43r2g")
@@ -16,3 +17,4 @@ needs = Dictionary[Resource, int]({
 ExtResource("2_f5lj5"): 1
 })
 coop_only = true
+stat = ExtResource("9_stat")

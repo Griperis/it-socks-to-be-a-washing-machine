@@ -26,6 +26,8 @@
 [ext_resource type="PackedScene" path="res://game/ui/money/money_counters.tscn" id="26_money"]
 [ext_resource type="PackedScene" path="res://game/ui/money/coin_flight.tscn" id="27_flight"]
 [ext_resource type="PackedScene" path="res://game/profile/achievement_toast.tscn" id="28_toast"]
+[ext_resource type="Script" path="res://game/ui/sole_cues.gd" id="29_sole"]
+[ext_resource type="Resource" path="res://game/ui/sole_cues_tuning.tres" id="30_sole_tuning"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -223,6 +225,10 @@ unique_name_in_owner = true
 
 [node name="AchievementToast" parent="Hud" instance=ExtResource("28_toast")]
 unique_name_in_owner = true
+
+[node name="SoleCues" type="Node" parent="Hud"]
+script = ExtResource("29_sole")
+tuning = ExtResource("30_sole_tuning")
 
 [node name="Footsteps" type="Node" parent="." unique_id=1954666980]
 script = ExtResource("6_steps")

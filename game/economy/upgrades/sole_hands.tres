@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" path="res://assets/ui/upgrade_sole_hands.svg" id="1_ptbic"]
 [ext_resource type="Resource" path="res://game/economy/upgrades/sole_mates.tres" id="2_wl1tk"]
 [ext_resource type="Script" path="res://game/economy/upgrade.gd" id="3_gw4im"]
+[ext_resource type="Resource" path="res://game/economy/stats/sole_hands.tres" id="9_stat"]
 
 [resource]
 script = ExtResource("3_gw4im")
@@ -16,3 +17,4 @@ needs = Dictionary[Resource, int]({
 ExtResource("2_wl1tk"): 1
 })
 coop_only = true
+stat = ExtResource("9_stat")
