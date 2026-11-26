@@ -1,6 +1,6 @@
 ## The Final screen (run-ends.md "The Final screen"; the old ending_screen.gd): over the frozen game, on the one
 ## Theme, the title, a FinalColumn per player in the game at the end side by side, the World totals from
-## final_totals.tres, the unlock strip (empty, hidden: batch B fills it) and Continue. `open(summary)` starts it:
+## final_totals.tres, the unlock strip (core/134) and Continue. `open(summary)` starts it:
 ## every column pops its Pairs on its schedule, the scores count up, then the totals show and count up, the finale
 ## bursts over every column with its sting, and Continue waits. Any key, mouse button or pad button before the
 ## totals show skips this machine's screen to them. The player is held, the mouse free, and Esc does not open the
@@ -26,6 +26,9 @@ const MIN_STAGE_H := 160.0
 const MAX_STAGE_H := 760.0
 const TOTAL_CELL := preload("res://game/ui/final_screen/final_total_cell.tscn")
 const GOLD := Color(1.0, 0.8, 0.4)
+const UNLOCK_CELL := preload("res://game/ui/final_screen/unlock_cell.tscn")
+## What the unlock strip (its heading, a cell and the gap) takes of the window's height.
+const STRIP_H := 230.0
 
 @export var tuning: FinalScreenTuning
 @export var totals: FinalTotalList
@@ -48,6 +51,10 @@ var _silent := false
 var _mouse_before := Input.MOUSE_MODE_VISIBLE
 var _total_labels: Array[Label] = []
 var _rng := RandomNumberGenerator.new()
+## The unlock strip's cells, how many have popped, and when the next pops (seconds on `clock`).
+var _cells: Array[Control] = []
+var _popped := 0
+var _next_pop := 0.0
 
 @onready var _panel: Control = %Panel
 @onready var _title: Label = %Title
@@ -55,6 +62,8 @@ var _rng := RandomNumberGenerator.new()
 @onready var _totals_row: HBoxContainer = %Totals
 @onready var _unlocked: Control = %Unlocked
 @onready var _continue: Button = %Continue
+@onready var _heading: Label = %Heading
+@onready var _cells_row: HBoxContainer = %Cells
 
 
 func _ready() -> void:
@@ -75,7 +84,8 @@ func open(summary: FinalSummary) -> void:
 	var view := get_viewport().get_visible_rect().size
 	var count := maxi(summary.columns.size(), 1)
 	var col_w := floorf((view.x - 2.0 * MARGIN - 80.0 - COLUMN_GAP * (count - 1)) / count)
-	var stage := Vector2(col_w - 2.0 * FinalColumn.PAD, clampf(view.y - CHROME, MIN_STAGE_H, MAX_STAGE_H))
+	var chrome := CHROME + (STRIP_H if not summary.unlocked.is_empty() else 0.0)
+	var stage := Vector2(col_w - 2.0 * FinalColumn.PAD, clampf(view.y - chrome, MIN_STAGE_H, MAX_STAGE_H))
 	var end := 0.0
 	for entry: Dictionary in summary.columns:
 		var c := COLUMN.instantiate() as FinalColumn
@@ -93,6 +103,7 @@ func open(summary: FinalSummary) -> void:
 		_total_labels.append(value)
 		_totals_row.add_child(cell)
 	_totals_row.modulate.a = 0.0
+	_build_strip(summary.unlocked)
 	_continue.visible = false
 	_panel.visible = true
 	_open = true
@@ -134,6 +145,8 @@ func advance(delta: float) -> void:
 			_continue.visible = true
 			_totals_row.modulate.a = 1.0
 			_focus_continue()
+			_next_pop = clock + tuning.unlock_delay
+		_pop_cells()
 		_count_t += delta
 		_show_totals(_count_t / maxf(tuning.count_time, 0.01))
 		if not _finale and _count_t >= tuning.count_time:
@@ -154,6 +167,7 @@ func skip() -> void:
 	_silent = false
 	_count_t = tuning.count_time
 	advance(0.002)
+	_pop_cells(true)
 
 
 func totals_shown() -> bool:
@@ -177,9 +191,47 @@ func continue_button() -> Button:
 	return _continue
 
 
-## The strip of unlocked Collections: empty and hidden until batch B fills it.
+## The strip of unlocked Collections: hidden when the game unlocked none.
 func unlocked_strip() -> Control:
 	return _unlocked
+
+
+## The strip's cells, one per Collection unlocked, in order (each Body at scale 0 until it pops).
+func unlock_cells() -> Array[Control]:
+	return _cells
+
+
+## How many of the strip's cells have popped.
+func unlocks_shown() -> int:
+	return _popped
+
+
+## One cell per Collection of `ids` under a heading in the plural when there are several; hidden when none.
+func _build_strip(ids: Array[StringName]) -> void:
+	_unlocked.visible = not ids.is_empty()
+	_heading.modulate.a = 0.0
+	_heading.text = "New Collections unlocked" if ids.size() > 1 else "New Collection unlocked"
+	for id in ids:
+		var c := Collections.of(id)
+		var cell := UNLOCK_CELL.instantiate() as Control
+		(cell.get_node(^"Body/Name") as Label).text = c.name if c != null else String(id)
+		(cell.get_node(^"Body/Icon") as TextureRect).texture = c.icon if c != null else null
+		_cells_row.add_child(cell)
+		_cells.append(cell)
+
+
+## Pops the strip's cells that are due (each with a "pop" cue, the first with the heading), or all at once.
+func _pop_cells(all := false) -> void:
+	while _popped < _cells.size() and (all or clock >= _next_pop):
+		var pop := _cells[_popped].get_node(^"Pop") as AnimationPlayer
+		pop.play(&"pop")
+		if all:
+			pop.advance(pop.current_animation_length)
+		elif not _silent:
+			Sounds.play(&"pop")
+		_heading.modulate.a = 1.0
+		_popped += 1
+		_next_pop += tuning.unlock_gap
 
 
 func _input(event: InputEvent) -> void:
@@ -253,6 +305,13 @@ func _clear() -> void:
 	for child in _totals_row.get_children():
 		_totals_row.remove_child(child)
 		child.queue_free()
+	for child in _cells_row.get_children():
+		_cells_row.remove_child(child)
+		child.queue_free()
+	_cells.clear()
+	_popped = 0
+	_next_pop = 0.0
+	_unlocked.visible = false
 	columns.clear()
 	_total_labels.clear()
 	clock = 0.0
