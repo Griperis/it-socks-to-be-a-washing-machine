@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://djguks3s328wm"]
+
+[ext_resource type="PackedScene" uid="uid://ckfu377e3gpfw" path="res://assets/wardrobe/mushroom_cap.glb" id="1_glb"]
+
+[node name="mushroom_cap" unique_id=692031779 instance=ExtResource("1_glb")]

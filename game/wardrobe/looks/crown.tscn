@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dbuyl4tvblpns"]
+
+[ext_resource type="PackedScene" uid="uid://bam3fmqok1pqv" path="res://assets/wardrobe/crown.glb" id="1_glb"]
+
+[node name="crown" unique_id=864708917 instance=ExtResource("1_glb")]

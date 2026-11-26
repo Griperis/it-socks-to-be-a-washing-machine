@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dvf8q25u6qjg5"]
+
+[ext_resource type="PackedScene" uid="uid://b3kb8tpbyrumh" path="res://assets/wardrobe/milk_carton_costume.glb" id="1_glb"]
+
+[node name="milk_carton_costume" unique_id=2064941876 instance=ExtResource("1_glb")]

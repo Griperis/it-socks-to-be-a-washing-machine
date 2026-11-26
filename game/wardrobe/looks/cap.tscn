@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://85xirwnkuhuv"]
+
+[ext_resource type="PackedScene" uid="uid://dq2knwin544w3" path="res://assets/wardrobe/cap.glb" id="1_glb"]
+
+[node name="cap" unique_id=139025231 instance=ExtResource("1_glb")]

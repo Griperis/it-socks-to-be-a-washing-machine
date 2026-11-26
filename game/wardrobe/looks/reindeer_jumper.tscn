@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://c3quobcpjlvq0"]
+
+[ext_resource type="PackedScene" uid="uid://be56mbdxpsoem" path="res://assets/wardrobe/reindeer_jumper.glb" id="1_glb"]
+
+[node name="reindeer_jumper" unique_id=767479362 instance=ExtResource("1_glb")]

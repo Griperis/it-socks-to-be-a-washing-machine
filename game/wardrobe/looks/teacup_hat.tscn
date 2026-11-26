@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://da8h7rc80830q"]
+
+[ext_resource type="PackedScene" uid="uid://df3nn64xky6eb" path="res://assets/wardrobe/teacup_hat.glb" id="1_glb"]
+
+[node name="teacup_hat" unique_id=531030382 instance=ExtResource("1_glb")]

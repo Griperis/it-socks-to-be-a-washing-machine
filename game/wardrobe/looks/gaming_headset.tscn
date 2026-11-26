@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bj3heh6wqchpm"]
+
+[ext_resource type="PackedScene" uid="uid://cfwel4q262osd" path="res://assets/wardrobe/gaming_headset.glb" id="1_glb"]
+
+[node name="gaming_headset" unique_id=1384788714 instance=ExtResource("1_glb")]

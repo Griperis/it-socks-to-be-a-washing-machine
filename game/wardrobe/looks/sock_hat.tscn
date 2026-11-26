@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://h0axjwuia8m1"]
+
+[ext_resource type="PackedScene" uid="uid://d0c7whgjwrrjp" path="res://assets/wardrobe/sock_hat.glb" id="1_glb"]
+
+[node name="sock_hat" unique_id=351672329 instance=ExtResource("1_glb")]

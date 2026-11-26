@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bm521xh0v14t6"]
+
+[ext_resource type="PackedScene" uid="uid://bge2y2qmtmvg1" path="res://assets/wardrobe/space_helmet.glb" id="1_glb"]
+
+[node name="space_helmet" unique_id=991556253 instance=ExtResource("1_glb")]

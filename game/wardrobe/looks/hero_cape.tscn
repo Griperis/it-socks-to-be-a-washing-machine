@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://d350nkeboy67f"]
+
+[ext_resource type="PackedScene" uid="uid://krdahtgoiyjg" path="res://assets/wardrobe/hero_cape.glb" id="1_glb"]
+
+[node name="hero_cape" unique_id=1262070614 instance=ExtResource("1_glb")]

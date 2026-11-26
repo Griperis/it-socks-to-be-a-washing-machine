@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cdymtfn8mkvng"]
+
+[ext_resource type="PackedScene" uid="uid://68571eq6uk5t" path="res://assets/wardrobe/moss_shawl.glb" id="1_glb"]
+
+[node name="moss_shawl" unique_id=745166995 instance=ExtResource("1_glb")]

@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://tengwwlal07c"]
+
+[ext_resource type="PackedScene" uid="uid://dead03v7dd5a5" path="res://assets/wardrobe/odd_sock_scarf.glb" id="1_glb"]
+
+[node name="odd_sock_scarf" unique_id=585593494 instance=ExtResource("1_glb")]

@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: assets
 feature: assets
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 1", "suggested model: opus"]
 terms: [Hat, Clothes, Wardrobe, Rarity]
@@ -43,5 +43,12 @@ them (Q2177).
 ## Answers
 - The ten basic pieces are owned from the start (Q2679, 2026-11-25).
 - No Secrets in batch B (Q2682, 2026-11-25).
+- The line-up is yes; core/128 points the piece files at the Looks and deletes the graybox pieces (Q2691, 2026-11-26).
 
 ## Open follow-ups
+- [later] The glbs came over byte for byte (no node, material or size change needed: no material name is one of the
+  shared library's, no import-hint names, no transforms on the meshes). The ten basic pieces keep their old CamelCase
+  node names (`TopHat`, `Armature`); nothing finds them by name.
+- [later] The glows are faint on the line-up's stage (no glow/bloom in its Environment); judge them in the house's own
+  light. The two drops-only pieces (Detergent cap crown, Hose scarf) have their Drops and no `touch` clip, as the old
+  had nothing to animate on them.

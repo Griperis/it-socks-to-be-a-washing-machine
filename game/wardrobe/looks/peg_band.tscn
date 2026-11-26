@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://fkymgax0ffwg"]
+
+[ext_resource type="PackedScene" uid="uid://dg534baf4d4tc" path="res://assets/wardrobe/peg_band.glb" id="1_glb"]
+
+[node name="peg_band" unique_id=99965930 instance=ExtResource("1_glb")]

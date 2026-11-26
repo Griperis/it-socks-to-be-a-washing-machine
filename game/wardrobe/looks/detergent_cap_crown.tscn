@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://cqsc7n6gwapp8"]
+
+[ext_resource type="PackedScene" uid="uid://cfbhsd434m2wc" path="res://assets/wardrobe/detergent_cap_crown.glb" id="1_glb"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5yut0"]
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_max = 0.05
+gravity = Vector3(0, 0.3, 0)
+scale_min = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fsatx"]
+transparency = 1
+albedo_color = Color(0.95686275, 0.972549, 1, 0.8)
+
+[sub_resource type="SphereMesh" id="SphereMesh_gxus7"]
+material = SubResource("StandardMaterial3D_fsatx")
+radius = 0.018
+height = 0.036
+radial_segments = 6
+rings = 3
+
+[node name="detergent_cap_crown" unique_id=1008086101 instance=ExtResource("1_glb")]
+
+[node name="Drops" type="GPUParticles3D" parent="detergent_cap_crown/detergent_cap_crown_mesh" parent_id_path=PackedInt32Array(770625321) index="0" unique_id=1963939288]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+cast_shadow = 0
+amount = 3
+lifetime = 1.2
+process_material = SubResource("ParticleProcessMaterial_5yut0")
+draw_pass_1 = SubResource("SphereMesh_gxus7")

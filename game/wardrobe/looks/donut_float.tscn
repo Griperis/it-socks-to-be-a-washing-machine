@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bvdcqcrla7upx"]
+
+[ext_resource type="PackedScene" uid="uid://ch2lfviq3escr" path="res://assets/wardrobe/donut_float.glb" id="1_glb"]
+
+[node name="donut_float" unique_id=249299835 instance=ExtResource("1_glb")]

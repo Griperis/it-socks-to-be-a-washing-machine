@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cgcf5odu7s7kk"]
+
+[ext_resource type="PackedScene" uid="uid://da4mrnw0cwiv" path="res://assets/wardrobe/gold_medal.glb" id="1_glb"]
+
+[node name="gold_medal" unique_id=1470111564 instance=ExtResource("1_glb")]

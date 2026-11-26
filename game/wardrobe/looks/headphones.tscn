@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dyahmgytihhgt"]
+
+[ext_resource type="PackedScene" uid="uid://ym6nk0j6u6gr" path="res://assets/wardrobe/headphones.glb" id="1_glb"]
+
+[node name="headphones" unique_id=779408316 instance=ExtResource("1_glb")]

@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dfrksi7djjkd4"]
+
+[ext_resource type="PackedScene" uid="uid://c1oslxfolrby3" path="res://assets/wardrobe/onion_layers.glb" id="1_glb"]
+
+[sub_resource type="Animation" id="Animation_jv2n3"]
+length = 2.4
+loop_mode = 1
+tracks/0/type = "blend_shape"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("onion_layers/onion_layers_rig/Skeleton3D/onion_layers_mesh:Touch")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 1.2, 1, 1, 2.4, 1, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6v4tj"]
+_data = {
+&"touch": SubResource("Animation_jv2n3")
+}
+
+[node name="onion_layers" unique_id=1127407490 instance=ExtResource("1_glb")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=2084732075]
+libraries/ = SubResource("AnimationLibrary_6v4tj")
+autoplay = &"touch"

@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bd4ilb8oukvyg"]
+
+[ext_resource type="PackedScene" uid="uid://ctg0g5jf6yrgv" path="res://assets/wardrobe/bubble_tea_backpack.glb" id="1_glb"]
+
+[sub_resource type="Animation" id="Animation_0o0q0"]
+length = 1.4
+loop_mode = 1
+tracks/0/type = "blend_shape"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("bubble_tea_backpack/bubble_tea_backpack_rig/Skeleton3D/bubble_tea_backpack_mesh:Touch")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.7, 1, 1, 1.4, 1, 0)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0kvb0"]
+_data = {
+&"touch": SubResource("Animation_0o0q0")
+}
+
+[node name="bubble_tea_backpack" unique_id=872474557 instance=ExtResource("1_glb")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=937886817]
+libraries/ = SubResource("AnimationLibrary_0kvb0")
+autoplay = &"touch"

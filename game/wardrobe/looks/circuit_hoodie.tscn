@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cy18m23n7lfuw"]
+
+[ext_resource type="PackedScene" uid="uid://deyq06chhof7s" path="res://assets/wardrobe/circuit_hoodie.glb" id="1_glb"]
+
+[node name="circuit_hoodie" unique_id=601019102 instance=ExtResource("1_glb")]

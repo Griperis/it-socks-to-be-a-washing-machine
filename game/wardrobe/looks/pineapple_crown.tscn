@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://h617u6ygri7w"]
+
+[ext_resource type="PackedScene" uid="uid://bw2o6ojsuyr88" path="res://assets/wardrobe/pineapple_crown.glb" id="1_glb"]
+
+[node name="pineapple_crown" unique_id=1104008061 instance=ExtResource("1_glb")]

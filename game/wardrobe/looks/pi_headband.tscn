@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bry6fda6dwdb1"]
+
+[ext_resource type="PackedScene" uid="uid://b167d1oif1705" path="res://assets/wardrobe/pi_headband.glb" id="1_glb"]
+
+[node name="pi_headband" unique_id=1357869956 instance=ExtResource("1_glb")]

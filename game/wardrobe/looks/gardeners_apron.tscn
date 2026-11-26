@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cififqmtygem6"]
+
+[ext_resource type="PackedScene" uid="uid://cxwdhmfegen3k" path="res://assets/wardrobe/gardeners_apron.glb" id="1_glb"]
+
+[node name="gardeners_apron" unique_id=2015465882 instance=ExtResource("1_glb")]

@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cmbekwak1yo5d"]
+
+[ext_resource type="PackedScene" uid="uid://bsqm8knlww4mh" path="res://assets/wardrobe/watermelon_vest.glb" id="1_glb"]
+
+[node name="watermelon_vest" unique_id=30349504 instance=ExtResource("1_glb")]

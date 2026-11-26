@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://hc0jh7b63uin"]
+
+[ext_resource type="PackedScene" uid="uid://cmxkakwsso02e" path="res://assets/wardrobe/bow_tie.glb" id="1_glb"]
+
+[node name="bow_tie" unique_id=1273154982 instance=ExtResource("1_glb")]

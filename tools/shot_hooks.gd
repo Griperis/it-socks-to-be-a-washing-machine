@@ -209,6 +209,11 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.look_at(stage.to_global(Vector3(0.0, 0.09, 0.0)))
 			cam.reset_physics_interpolation()
 			cam.make_current()
+		"wardrobe_lineup":
+			# assets/18: arg a Collection id ("sport") or "basic": tools/wardrobe_lineup.tscn stands that row of
+			# Avatars wearing its hats and clothes, framed as the old game's line-up.
+			world.call(&"show_row", arg)
+			return true
 		"washer_lineup":
 			# assets/14: arg "<pose>,<old|port>": the washing machine alone on a plain floor far from the
 			# stations, from its front three-quarter, its laundry shown. <pose> is neutral, angry, calming,

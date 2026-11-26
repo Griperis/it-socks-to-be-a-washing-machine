@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cxhcfjnr3havm"]
+
+[ext_resource type="PackedScene" uid="uid://bivvxkhghnntk" path="res://assets/wardrobe/times_table_cardigan.glb" id="1_glb"]
+
+[node name="times_table_cardigan" unique_id=897715097 instance=ExtResource("1_glb")]
