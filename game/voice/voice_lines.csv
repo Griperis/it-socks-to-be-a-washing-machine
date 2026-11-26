@@ -1,4 +1,288 @@
 keys,en
+VO_TREE_CALL_1_1,Psst... over here. In the garage.
+VO_TREE_CALL_2_1,Hello? Is somebody there? Come to the garage.
+VO_TREE_CALL_2_2,I don't bite. I'm a tree.
+VO_TREE_CALL_3_1,I can hear you rattling about in there.
+VO_TREE_CALL_3_2,The door is open. Come and say hello.
+VO_TREE_CALL_4_1,Don't mind me.
+VO_TREE_CALL_4_2,"Just an old tree, calling into the dark."
+VO_TREE_CALL_4_3,It has been a while.
+VO_TREE_CALL_5_1,"Over here, in the garage."
+VO_TREE_CALL_5_2,"I'd come to you, but, well. Roots."
+VO_TREE_FIRST_1_1,Ah. There you are.
+VO_TREE_FIRST_1_2,I wondered which Christmas you'd come back.
+VO_TREE_FIRST_2_1,Don't mind the box. I've been in worse.
+VO_TREE_FIRST_2_2,"Come closer, I remember you."
+VO_TREE_FIRST_3_1,"Another winter, another visit. You've grown."
+VO_TREE_FIRST_3_2,I haven't. Plastic doesn't.
+VO_TREE_GREET_1_1,Back again. Good.
+VO_TREE_GREET_1_2,The garage is too quiet without you.
+VO_TREE_GREET_2_1,Mind the wires. They're older than both of us.
+VO_TREE_GREET_3_1,"Hello, hello. Still chasing socks?"
+VO_TREE_GREET_3_2,Of course you are.
+VO_TREE_GREET_4_1,"Ah, footsteps. I know those footsteps."
+VO_TREE_GREET_5_1,You look tired. I know the feeling.
+VO_TREE_GREET_5_2,Forty Christmases will do that.
+VO_TREE_IDLE_1_1,I was tall once. Well. Taller.
+VO_TREE_IDLE_2_1,"Seven bulbs left. I count them, some nights."
+VO_TREE_IDLE_3_1,The socks always come back. Eventually.
+VO_TREE_IDLE_3_2,Everything does.
+VO_TREE_IDLE_4_1,That washing machine. Loud thing. It will learn.
+VO_TREE_IDLE_5_1,I remember the year the cat climbed me.
+VO_TREE_IDLE_5_2,We don't talk about that year.
+VO_TREE_IDLE_6_1,"Somewhere, a box of ornaments is still waiting for December."
+VO_TREE_IDLE_7_1,Hmm. Just resting my branches.
+VO_TREE_IDLE_7_2,"Go on, I'm listening."
+VO_TREE_AFFORDABLE_1_1,You've coins enough now. I can hear them jingle.
+VO_TREE_AFFORDABLE_2_1,Something new is within your reach.
+VO_TREE_AFFORDABLE_2_2,Come and see.
+VO_TREE_AFFORDABLE_3_1,Your pockets are heavy.
+VO_TREE_AFFORDABLE_3_2,Let an old tree lighten them.
+VO_TREE_AFFORDABLE_4_1,I have a little something for you.
+VO_TREE_AFFORDABLE_4_2,If you can spare the coins. And you can.
+VO_TREE_AFFORDABLE_5_1,Ahh. You've saved up. Just like last year.
+VO_TREE_AFFORDABLE_5_2,And the year before.
+VO_TREE_BOUGHT_1_1,A fine choice. I'd have picked the same.
+VO_TREE_BOUGHT_2_1,There. Wear it well.
+VO_TREE_BOUGHT_3_1,Spend it while you're young. I didn't.
+VO_TREE_BOUGHT_4_1,Hmm. That one always suited you.
+VO_TREE_BOUGHT_5_1,"Off you go, then. Don't lose it like the socks."
+VO_TREE_BOUGHT_6_1,Thank you.
+VO_TREE_BOUGHT_6_2,It's been years since anyone took a present from under me.
+VO_TREE_GRUMBLE_1_1,That washing machine rumbles about everything.
+VO_TREE_GRUMBLE_1_2,Everything! I've never heard such a complaint.
+VO_TREE_GRUMBLE_2_1,"Listen to it. Rattle, rattle, rattle."
+VO_TREE_GRUMBLE_2_2,Some of us bear our age quietly.
+VO_TREE_GRUMBLE_3_1,Don't mind the washer.
+VO_TREE_GRUMBLE_3_2,It makes a fuss about every sock.
+VO_TREE_GRUMBLE_3_3,I've had forty winters of it.
+VO_TREE_GRUMBLE_4_1,"It's always the machine, isn't it?"
+VO_TREE_GRUMBLE_4_2,"Too much noise, too little washing."
+VO_TREE_GRUMBLE_5_1,That machine blames everybody. Never itself.
+VO_TREE_GRUMBLE_5_2,Typical.
+VO_TREE_STAGE_HALF_1_1,"Halfway there, if my needles count right."
+VO_TREE_STAGE_HALF_1_2,"You are quicker than last Christmas, I remember."
+VO_TREE_STAGE_HALF_2_1,Half the work is done.
+VO_TREE_STAGE_HALF_2_2,"The other half is the same, only longer."
+VO_TREE_STAGE_HALF_3_1,Half of it already. My branches can tell.
+VO_TREE_STAGE_MOST_1_1,Most of it is done now.
+VO_TREE_STAGE_MOST_1_2,I can feel it in my branches.
+VO_TREE_STAGE_MOST_2_1,Nearly there. Just a few more pairs. Don't rush.
+VO_TREE_STAGE_MOST_2_2,"Well, rush a little."
+VO_TREE_STAGE_MOST_3_1,The end of this floor is in sight.
+VO_TREE_STAGE_MOST_3_2,"Even I can see it, and I'm facing the wall."
+VO_TREE_STAGE_LAST_1_1,"Almost. Almost. One or two pairs, I'd say."
+VO_TREE_STAGE_LAST_2_1,"Just a few left. Oh, my lights are trembling."
+VO_TREE_STAGE_LAST_2_2,Do forgive an old tree.
+VO_TREE_STAGE_LAST_3_1,So close. I'll hold my breath.
+VO_TREE_STAGE_LAST_3_2,"I don't breathe, but I'll hold it."
+VO_TREE_CABINET_LAUNDRY_1_1,The cabinet in the laundry room still has gaps.
+VO_TREE_CABINET_LAUNDRY_1_2,I can feel the draught from here.
+VO_TREE_CABINET_LAUNDRY_2_1,The laundry room's cabinet is still missing a few pairs.
+VO_TREE_CABINET_LAUNDRY_2_2,"It is patient, as cabinets go."
+VO_TREE_CABINET_LAUNDRY_3_1,Funny thing about the laundry room.
+VO_TREE_CABINET_LAUNDRY_3_2,Its cabinet is the one with room left.
+VO_TREE_CABINET_LAUNDRY_4_1,I do wonder how full the cabinet in the laundry room is.
+VO_TREE_CABINET_LAUNDRY_4_2,"Not full, I'd guess."
+VO_TREE_CABINET_GARAGE_1_1,The garage cabinet isn't full yet.
+VO_TREE_CABINET_GARAGE_1_2,It's a draughty place to wait.
+VO_TREE_CABINET_GARAGE_2_1,The cabinet in the garage is still missing a few pairs.
+VO_TREE_CABINET_GARAGE_2_2,"I'd know, I'm next door."
+VO_TREE_CABINET_GARAGE_3_1,Something in the garage is still hungry.
+VO_TREE_CABINET_GARAGE_3_2,"A cabinet, I mean. Mostly."
+VO_TREE_CABINET_GARAGE_4_1,A few pairs still belong in the garage cabinet.
+VO_TREE_CABINET_GARAGE_4_2,"It smells of oil down there, I'm told."
+VO_TREE_CABINET_KITCHEN_1_1,The kitchen cabinet is not full yet.
+VO_TREE_CABINET_KITCHEN_1_2,"Smells nice in there, I've heard."
+VO_TREE_CABINET_KITCHEN_2_1,A few pairs still belong in the kitchen.
+VO_TREE_CABINET_KITCHEN_2_2,"Its cabinet hasn't said so, but it hasn't had to."
+VO_TREE_CABINET_KITCHEN_3_1,The kitchen cabinet has gaps.
+VO_TREE_CABINET_KITCHEN_3_2,"Crumbs and gaps, I imagine."
+VO_TREE_CABINET_KITCHEN_4_1,I was thinking about the kitchen.
+VO_TREE_CABINET_KITCHEN_4_2,Its cabinet is not as full as it could be.
+VO_TREE_CABINET_LIVING_1_1,The cabinet in the living room is still waiting for pairs.
+VO_TREE_CABINET_LIVING_1_2,It's the comfortable one.
+VO_TREE_CABINET_LIVING_2_1,The living room cabinet has room left.
+VO_TREE_CABINET_LIVING_2_2,"Plenty of cushions near it, so no hurry."
+VO_TREE_CABINET_LIVING_3_1,A few pairs are still missing from the living room's cabinet.
+VO_TREE_CABINET_LIVING_3_2,The sofa knows.
+VO_TREE_CABINET_LIVING_4_1,The living room's cabinet is not full.
+VO_TREE_CABINET_LIVING_4_2,It will wait. It has a nice view.
+VO_TREE_CABINET_KIDS_NORTH_1_1,The cabinet in the north kids' room still has gaps.
+VO_TREE_CABINET_KIDS_NORTH_1_2,"Mind the toys, if you ever go."
+VO_TREE_CABINET_KIDS_NORTH_2_1,The north kids' room cabinet is missing pairs.
+VO_TREE_CABINET_KIDS_NORTH_2_2,"Small feet, small socks, small gaps."
+VO_TREE_CABINET_KIDS_NORTH_3_1,"Somewhere in the north kids' room, a cabinet is waiting."
+VO_TREE_CABINET_KIDS_NORTH_3_2,"Under the toys, probably."
+VO_TREE_CABINET_KIDS_NORTH_4_1,I hear the north kids' room cabinet isn't full.
+VO_TREE_CABINET_KIDS_NORTH_4_2,It's a messy room. Hard to tell.
+VO_TREE_CABINET_KIDS_EAST_1_1,The cabinet in the east kids' room still has gaps.
+VO_TREE_CABINET_KIDS_EAST_1_2,"Mind the toys there, too."
+VO_TREE_CABINET_KIDS_EAST_2_1,The east kids' room cabinet is missing pairs.
+VO_TREE_CABINET_KIDS_EAST_2_2,The toys are guarding it.
+VO_TREE_CABINET_KIDS_EAST_3_1,"Somewhere in the east kids' room, a cabinet is waiting."
+VO_TREE_CABINET_KIDS_EAST_3_2,"Under a pile, I expect."
+VO_TREE_CABINET_KIDS_EAST_4_1,I hear the east kids' room cabinet isn't full.
+VO_TREE_CABINET_KIDS_EAST_4_2,"Hard to say, with all those toys."
+VO_TREE_CABINET_LOFT_WEST_1_1,The cabinet at the west end of the loft wants pairs.
+VO_TREE_CABINET_LOFT_WEST_1_2,"Dusty up there, but it's patient."
+VO_TREE_CABINET_LOFT_WEST_2_1,"Up in the loft, the west end."
+VO_TREE_CABINET_LOFT_WEST_2_2,Its cabinet is still hungry.
+VO_TREE_CABINET_LOFT_WEST_3_1,The loft's west cabinet has room left.
+VO_TREE_CABINET_LOFT_WEST_3_2,The dust won't mind waiting.
+VO_TREE_CABINET_LOFT_WEST_4_1,The far west of the loft has a cabinet that isn't full.
+VO_TREE_CABINET_LOFT_WEST_4_2,I hear it sigh sometimes.
+VO_TREE_CABINET_LOFT_EAST_1_1,The cabinet at the east end of the loft wants pairs.
+VO_TREE_CABINET_LOFT_EAST_1_2,"Dusty up there, but it's patient."
+VO_TREE_CABINET_LOFT_EAST_2_1,"Up in the loft, the east end."
+VO_TREE_CABINET_LOFT_EAST_2_2,Its cabinet is still hungry.
+VO_TREE_CABINET_LOFT_EAST_3_1,The loft's east cabinet has room left.
+VO_TREE_CABINET_LOFT_EAST_3_2,The cobwebs keep it company.
+VO_TREE_CABINET_LOFT_EAST_4_1,The far east of the loft has a cabinet that isn't full.
+VO_TREE_CABINET_LOFT_EAST_4_2,"A quiet corner, that."
+VO_TREE_HINT_BASEMENT_1_1,I have a feeling about the basement.
+VO_TREE_HINT_BASEMENT_1_2,"A lonely sock, perhaps. Mates are like that."
+VO_TREE_HINT_BASEMENT_2_1,Have you looked down in the basement lately?
+VO_TREE_HINT_BASEMENT_2_2,Something odd is lying about down there.
+VO_TREE_HINT_BASEMENT_3_1,The basement is full of corners.
+VO_TREE_HINT_BASEMENT_3_2,Socks like corners.
+VO_TREE_HINT_BASEMENT_4_1,"Somewhere below, a sock sits alone."
+VO_TREE_HINT_BASEMENT_4_2,"The basement, I think. Don't tell it I said."
+VO_TREE_HINT_GROUND_1_1,I have a feeling about the ground floor.
+VO_TREE_HINT_GROUND_1_2,"A mate is lying about, waiting to be found."
+VO_TREE_HINT_GROUND_2_1,"Somewhere on the ground floor, a lonely sock is wishing for company."
+VO_TREE_HINT_GROUND_3_1,"The ground floor has a sock too many lying about, if you ask me."
+VO_TREE_HINT_GROUND_3_2,Or one too few.
+VO_TREE_HINT_GROUND_4_1,"A mate is on the ground floor, I'd bet a bulb on it."
+VO_TREE_HINT_FIRST_1_1,I have a feeling about upstairs.
+VO_TREE_HINT_FIRST_1_2,"The first floor, I think."
+VO_TREE_HINT_FIRST_1_3,A mate is hiding there.
+VO_TREE_HINT_FIRST_2_1,"Somewhere on the first floor, a sock is missing its other half."
+VO_TREE_HINT_FIRST_3_1,"The first floor has beds, and beds have socks under them."
+VO_TREE_HINT_FIRST_3_2,Usually.
+VO_TREE_HINT_FIRST_4_1,"Up on the first floor, something small and woolly is lying about."
+VO_TREE_HINT_FIRST_4_2,I can feel it in my roots.
+VO_TREE_HINT_ATTIC_1_1,I have a feeling about the attic.
+VO_TREE_HINT_ATTIC_1_2,"Up high, under the roof. A mate is hiding there."
+VO_TREE_HINT_ATTIC_2_1,"Somewhere up in the attic, a sock is lonely."
+VO_TREE_HINT_ATTIC_2_2,Dust has a way of hiding things.
+VO_TREE_HINT_ATTIC_3_1,"The attic keeps everything, eventually."
+VO_TREE_HINT_ATTIC_3_2,Even socks.
+VO_TREE_HINT_ATTIC_4_1,"A mate is up under the roof, I think."
+VO_TREE_HINT_ATTIC_4_2,The attic is a good place to be forgotten.
+VO_TREE_TIP_THROW_1_1,A word of advice.
+VO_TREE_TIP_THROW_1_2,"A thrown pair lands in its cabinet, if you aim well."
+VO_TREE_TIP_THROW_1_3,Don't aim at your friends.
+VO_TREE_TIP_PART_1_1,A part!
+VO_TREE_TIP_PART_1_2,The old machine could do with one of those.
+VO_TREE_TIP_PART_1_3,"It would calm down, a little, once it's fitted."
+VO_TREE_TIP_PART_2_1,That shiny thing lying about is a part of the washing machine.
+VO_TREE_TIP_PART_2_2,It does so love to be fixed.
+VO_TREE_TIP_VACUUM_1_1,There's a vacuum in the kitchen now.
+VO_TREE_TIP_VACUUM_1_2,It gobbles up loose socks in a flash.
+VO_TREE_TIP_VACUUM_1_3,Don't be too proud to use it.
+VO_TREE_TIP_VACUUM_2_1,The kitchen's vacuum is free to use.
+VO_TREE_TIP_VACUUM_2_2,"Loose socks go in, a lot of them at once."
+VO_TREE_TIP_VACUUM_2_3,I'd use it.
+VO_TREE_TIP_VACUUM_3_1,Have you met the vacuum in the kitchen?
+VO_TREE_TIP_VACUUM_3_2,It will take socks off your hands.
+VO_TREE_TIP_VACUUM_3_3,Quite literally.
+VO_TREE_TIP_ELEVATOR_1_1,The elevator.
+VO_TREE_TIP_ELEVATOR_1_2,"Slow, a bit shaky, but it still beats the stairs."
+VO_TREE_TIP_ELEVATOR_1_3,Mind the doors.
+VO_TREE_PART_BASEMENT_1_1,That new filter did the machine some good.
+VO_TREE_PART_BASEMENT_1_2,It grumbles more quietly now.
+VO_TREE_PART_BASEMENT_2_1,"Ever since that part went in, the machine has been a little less sour."
+VO_TREE_PART_BASEMENT_2_2,Progress.
+VO_TREE_PART_BASEMENT_3_1,"Well fitted, that first part."
+VO_TREE_PART_BASEMENT_3_2,It will make a difference. Eventually.
+VO_TREE_PART_BASEMENT_4_1,The machine is quieter since the filter.
+VO_TREE_PART_BASEMENT_4_2,I won't say it's happier. It's a machine.
+VO_TREE_PART_GROUND_1_1,"The machine only coughs now, since the second part."
+VO_TREE_PART_GROUND_1_2,It used to roar.
+VO_TREE_PART_GROUND_2_1,That second part went in nicely.
+VO_TREE_PART_GROUND_2_2,"The machine has been listening to you, I think."
+VO_TREE_PART_GROUND_3_1,"Another part in, and the old machine only mutters."
+VO_TREE_PART_GROUND_3_2,I hardly hear it from here.
+VO_TREE_PART_GROUND_4_1,The machine is quieter since the motor.
+VO_TREE_PART_GROUND_4_2,Not quiet. Quieter.
+VO_TREE_PART_FIRST_1_1,"The machine is almost behaving, since that third part."
+VO_TREE_PART_FIRST_1_2,I could get used to it.
+VO_TREE_PART_FIRST_2_1,That drum belt went in nicely.
+VO_TREE_PART_FIRST_2_2,The machine's mood is lifting.
+VO_TREE_PART_FIRST_2_3,"Or I'm imagining it. I do, sometimes."
+VO_TREE_PART_FIRST_3_1,"The machine hums now, rather than rattles. Hmm."
+VO_TREE_PART_FIRST_3_2,Strange to hear.
+VO_TREE_PART_FIRST_4_1,"Three parts in, and the machine has nearly stopped complaining."
+VO_TREE_PART_FIRST_4_2,Nearly.
+VO_TREE_PART_ATTIC_1_1,"Barely a rattle left in it, since the fourth part."
+VO_TREE_PART_ATTIC_1_2,Imagine that.
+VO_TREE_PART_ATTIC_2_1,"That fourth part, all the way up and back again."
+VO_TREE_PART_ATTIC_2_2,You earned that one.
+VO_TREE_PART_ATTIC_3_1,"The machine sounds like a machine, not a thunderstorm."
+VO_TREE_PART_ATTIC_3_2,"I miss the thunder, a little."
+VO_TREE_PART_ATTIC_4_1,Four parts in.
+VO_TREE_PART_ATTIC_4_2,"It only wants one more thing, I think. Kindness."
+VO_TREE_PART_ATTIC_4_3,And a part.
+VO_TREE_FLOOR_GROUND_1_1,"Fresh floors, fresh socks."
+VO_TREE_FLOOR_GROUND_1_2,The ground floor has more house in it than I remembered.
+VO_TREE_FLOOR_GROUND_2_1,The door downstairs stands open now.
+VO_TREE_FLOOR_GROUND_2_2,There is more house than there was a while ago.
+VO_TREE_FLOOR_GROUND_3_1,"It's odd, having the ground floor to wander."
+VO_TREE_FLOOR_GROUND_3_2,It smells of old wood and kitchens.
+VO_TREE_FLOOR_GROUND_4_1,The ground floor is open to you now.
+VO_TREE_FLOOR_GROUND_4_2,I've watched it from here for years.
+VO_TREE_FLOOR_FIRST_1_1,Upstairs is open now.
+VO_TREE_FLOOR_FIRST_1_2,"The stairs are steep, but you are not old yet."
+VO_TREE_FLOOR_FIRST_2_1,The first floor is open at last.
+VO_TREE_FLOOR_FIRST_2_2,"Mind the little ones' toys, if you visit."
+VO_TREE_FLOOR_FIRST_3_1,There are beds and wardrobes up on the first floor.
+VO_TREE_FLOOR_FIRST_3_2,Quite the adventure for a sock.
+VO_TREE_FLOOR_FIRST_4_1,"The first floor, at last."
+VO_TREE_FLOOR_FIRST_4_2,I remember when the landing creaked in a friendly way.
+VO_TREE_FLOOR_ATTIC_1_1,The attic is open.
+VO_TREE_FLOOR_ATTIC_1_2,"Dusty, and full of old things. I fit right in."
+VO_TREE_FLOOR_ATTIC_2_1,Up in the attic now.
+VO_TREE_FLOOR_ATTIC_2_2,"The cobwebs have been there longer than me, mind."
+VO_TREE_FLOOR_ATTIC_3_1,The attic is open.
+VO_TREE_FLOOR_ATTIC_3_2,It smells of summers I almost remember.
+VO_TREE_FLOOR_ATTIC_4_1,Something about the attic always made me feel young.
+VO_TREE_FLOOR_ATTIC_4_2,"Tall, anyway."
+VO_TREE_FINAL_WASH_1_1,"That's it, then. One last wash."
+VO_TREE_FINAL_WASH_1_2,"After this, the house is quiet."
+VO_TREE_FINAL_WASH_2_1,The final wash.
+VO_TREE_FINAL_WASH_2_2,I've waited a long time to see this.
+VO_TREE_FINAL_WASH_3_1,Wash well. And well done. All of it.
+VO_TREE_PEACE_1_1,The machine is mended.
+VO_TREE_PEACE_1_2,I suppose I owe it an apology. A short one.
+VO_TREE_PEACE_2_1,There. It's quiet.
+VO_TREE_PEACE_2_2,"I think I miss the rumbling, a little."
+VO_TREE_PEACE_2_3,Don't tell it.
+VO_TREE_PEACE_3_1,"Mended, at last."
+VO_TREE_PEACE_3_2,"We'll be friends, the washer and I."
+VO_TREE_PEACE_3_3,"After all these winters, it's about time."
+VO_TREE_PRESENTS_READY_1_1,I got some presents for you.
+VO_TREE_PRESENTS_READY_2_1,Some presents have turned up under my branches.
+VO_TREE_PRESENTS_READY_2_2,"Go on, they're for you."
+VO_TREE_PRESENTS_READY_3_1,Look what the Stage left me. Presents.
+VO_TREE_PRESENTS_READY_3_2,I kept them safe for you.
+VO_TREE_PRESENTS_1_1,There are presents under me.
+VO_TREE_PRESENTS_1_2,One has your name on it. Don't be shy.
+VO_TREE_PRESENTS_2_1,"Look down, by my roots."
+VO_TREE_PRESENTS_2_2,Something is waiting for you.
+VO_TREE_PRESENTS_2_3,"I wrapped it myself. Well, nearly."
+VO_TREE_PRESENTS_3_1,A little box is waiting at my feet. Take it.
+VO_TREE_PRESENTS_3_2,It's what an old tree is for.
+VO_TREE_PRESENTS_4_1,Your present is still lying there.
+VO_TREE_PRESENTS_4_2,It doesn't mind the waiting.
+VO_TREE_PRESENTS_4_3,But I'd love to see you open it.
+VO_TREE_PRESENT_TAKEN_1_1,There. Now it's yours. I do hope it fits.
+VO_TREE_PRESENT_TAKEN_2_1,"Ah, good."
+VO_TREE_PRESENT_TAKEN_2_2,A present is only a present once somebody takes it.
+VO_TREE_PRESENT_TAKEN_3_1,"Open it, open it."
+VO_TREE_PRESENT_TAKEN_3_2,I've waited all year for this part.
+VO_TREE_PRESENT_TAKEN_4_1,Careful with the paper. I'll want to keep it.
+VO_TREE_PRESENT_TAKEN_4_2,Old habit.
 VO_STAGE_1_VOICE_A_1,I don't wanna talk to you!
 VO_STAGE_1_VOICE_B_1,You feel like you don't have enough to do?
 VO_STAGE_1_VOICE_C_1,Don't you dare to look at me like that!

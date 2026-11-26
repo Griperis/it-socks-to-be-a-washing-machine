@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: economy
@@ -65,3 +65,10 @@ picked in the inspector. `looks_old_tree.tscn` is not changed. `OldTreeTuning` (
 - The Host decides every speaker's line (Q2545).
 
 ## Open follow-ups
+- [later] The old voice "norman" (Piper, LibriVox): its licence check before a shipping build (Q1575, old ticket 95);
+  the credits entry now covers `assets/voice/old_tree/*`.
+- [later] The +12.5 dB baked into the 145 copies (Q2638) clips 2.3 % of their samples (every old recording peaks
+  near 0 dBFS); a fix at the source (a limiter, or less gain) is the designer's (batch-b-review.md, core/132).
+- [later] The Old Tree's subtitle icon: none yet (the Theme's plain disc); a drawn icon is a look ticket.
+- [later] `game/house/door_shut_rules.gd`'s `keep_open` still reads `# placeholder: waits for the Old Tree (M4)`;
+  it is Q1864's answer now (not this ticket's file).

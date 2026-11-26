@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="VoiceSpeaker" format=3]
+
+[ext_resource type="Script" uid="uid://8es185yuoi1s" path="res://game/voice/voice_speaker.gd" id="1_speaker"]
+
+[resource]
+script = ExtResource("1_speaker")
+id = &"old_tree"
+priority = 10
+unit_size = 2.5
+max_distance = 9.0
+earshot = 4.5
+level_band = 1.8
+default_mood = &""
