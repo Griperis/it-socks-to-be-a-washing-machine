@@ -20,3 +20,6 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-26 [[149-batch-c-elevator-day-exterior-design]] Batch C: The Elevator, the day cycle and the exterior view (design): 49043322 (core/149-batch-c-elevator-day-exterior-design)
 - 2026-11-26 [[19-wardrobe-socks-and-trail-meshes]] The Wardrobe's Socks pieces and the Trails' meshes: 4ed83f26 (assets/19-wardrobe-socks-and-trail-meshes)
 - 2026-11-26 [[150-batch-c-devices-tv-radio-design]] Batch C: The vacuums, the detector, the TV and the Radio (design): ac9d3a50 (core/150-batch-c-devices-tv-radio-design)
+- 2026-11-26 [[132-old-tree-voice]] The Old Tree's voice: d36f7f0b (core/132-old-tree-voice)
+- 2026-11-26 [[151-batch-c-cat-design]] Batch C: The Cat and the litterbox (design): 88ad83be (core/151-batch-c-cat-design)
+- 2026-11-26 [[152-batch-c-x-rays-design]] Batch C: The X-rays (design): 2da2a530 (core/152-batch-c-x-rays-design)

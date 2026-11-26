@@ -6,7 +6,7 @@ area: core
 feature: economy
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: ["[[129-upgrades-and-menu]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 3", "suggested model: opus"]
 terms: [Old Tree, Upgrade, First wash, Door, Voice line]
