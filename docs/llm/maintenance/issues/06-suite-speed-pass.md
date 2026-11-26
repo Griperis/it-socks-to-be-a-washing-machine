@@ -6,7 +6,7 @@ area: maintenance
 feature: tests
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["suggested model: opus", "designer 2026-11-25 (Q2666): an agent does a speed pass", "runs when no other ticket edits tests/ in the same suites"]
 terms: []
