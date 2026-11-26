@@ -44,7 +44,8 @@ func _exit_tree() -> void:
 		roster.changed.disconnect(_tint_own_body)
 
 
-## The own body takes this machine's Player colour.
+## The own body takes this machine's Player colour; it and the mirror body wear this machine's own
+## Roster entry's look (core/141; the own body shows only its Socks and Trail, Q888).
 func _tint_own_body() -> void:
 	var player := local_body as Player
 	if player == null or roster == null or player.own_body() == null:
@@ -52,6 +53,9 @@ func _tint_own_body() -> void:
 	var me := multiplayer.get_unique_id()
 	var known := not roster.entry_of(me).is_empty()
 	player.own_body().colour = roster.colour_of(me) if known else roster.tuning.colour(0)
+	player.own_body().look = roster.look_of(me)
+	if player.mirror_body() != null:
+		player.mirror_body().look = roster.look_of(me)
 
 
 ## The Host: an avatar for itself now and for every player who comes in; a leaver's goes.
