@@ -10,7 +10,7 @@ done:
 blocked_by: ["[[127-profile-file-and-tallies]]", "[[125-collections-as-data]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 3", "suggested model: sonnet"]
 terms: [Sock encyclopedia, Unlocked Collection, Profile, Design, Final wash]
-suites: [final_screen, final_wash, laundry_day, save, stages, coop_join]
+suites: [cabinet_draw, final_screen, final_wash, laundry_day, save, stages, coop_join]
 ---
 
 # The encyclopedia record and Collections unlocking
@@ -45,6 +45,8 @@ order and count are `collection_unlocks.tres` (core/125). A held-back Collection
 - The Final screen station's pillar "with an unlock" shows the strip; a finished mini run (the Laundry station's Final
   wash pillar, the last bin loaded by a click) unlocks Space in the profile.
 - A Guest's profile records only what was shelved after it joined; a loaded World adds its shelved Designs once.
+- The New Game's draw reads the profile's unlocked Collections: `Stages.unlocked_collections()` (core/135) switches from
+  `CollectionUnlocks.start` to the local profile's `collections`, the one place core/135 left for it.
 - Placeholders: none new (the reveal timings are `FinalScreenTuning`'s).
 - `kit/tools/run.sh --touched` ends PASS; the real-path case drives player input through the scene's own wiring.
 
