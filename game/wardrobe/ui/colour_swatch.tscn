@@ -1,0 +1,24 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/wardrobe/ui/colour_swatch.gd" id="1_swatch"]
+
+[node name="ColourSwatch" type="VBoxContainer"]
+custom_minimum_size = Vector2(64, 0)
+theme_override_constants/separation = 2
+script = ExtResource("1_swatch")
+
+[node name="Key" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"ColourSwatch"
+
+[node name="Who" type="Label" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme_type_variation = &"WardrobeCount"
+horizontal_alignment = 1
+clip_text = true
+text_overrun_behavior = 3

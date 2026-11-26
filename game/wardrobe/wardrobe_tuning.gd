@@ -37,3 +37,13 @@ extends Resource
 @export_group("Preview")
 ## A piece's preview is this large at its largest side (the gift reveal's FIT).
 @export_range(0.1, 3.0, 0.01, "suffix:m") var preview_fit := 0.62
+
+@export_group("Page")
+## The Wardrobe page's preview turns all the way round once in this long (the old SPIN_TIME).
+@export_range(1.0, 30.0, 0.5, "suffix:s") var spin_time := 8.0 # placeholder: the old 8 s, until the designer sets it in a review build
+## Its pupils glance at the viewer while it faces the camera within this (the old FACING, Q1141).
+@export_range(0.0, 3.2, 0.05, "suffix:rad") var facing := 1.05
+## A taken colour's swatch: its colour this far toward `taken_grey`, faded to `taken_alpha` (the old WardrobeView).
+@export var taken_grey := Color(0.6, 0.6, 0.6)
+@export_range(0.0, 1.0, 0.05) var taken_mix := 0.75
+@export_range(0.0, 1.0, 0.05) var taken_alpha := 0.45

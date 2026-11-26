@@ -315,6 +315,54 @@ corner_radius_bottom_right = 17
 corner_radius_bottom_left = 17
 anti_aliasing = true
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wardrobe_well"]
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.231373, 0.164706, 0.133333, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBox" id="Keycap_swatch"]
+script = ExtResource("1_keycap")
+face_colour = Color(1, 1, 1, 1)
+shade_colour = Color(0.7, 0.7, 0.7, 1)
+lip = 3
+radius = 26
+border = 5
+margin = 0
+pressed = false
+frame_colour = Color(0.7, 0.7, 0.7, 1)
+
+[sub_resource type="StyleBox" id="Keycap_swatch_pressed"]
+script = ExtResource("1_keycap")
+face_colour = Color(1, 1, 1, 1)
+shade_colour = Color(0.7, 0.7, 0.7, 1)
+lip = 3
+radius = 26
+border = 5
+margin = 0
+pressed = true
+frame_colour = Color(0.7, 0.7, 0.7, 1)
+
+[sub_resource type="StyleBox" id="Keycap_swatch_picked"]
+script = ExtResource("1_keycap")
+face_colour = Color(1, 1, 1, 1)
+shade_colour = Color(0.7, 0.7, 0.7, 1)
+lip = 6
+radius = 26
+border = 5
+margin = 0
+pressed = false
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_final_column"]
 content_margin_left = 8.0
 content_margin_top = 8.0
@@ -685,6 +733,23 @@ InkLabel/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
 InkLabel/font_sizes/font_size = 24
 RowName/base_type = &"InkLabel"
 RowName/font_sizes/font_size = 26
+WardrobeNameBox/base_type = &"PanelContainer"
+WardrobeNameBox/styles/panel = SubResource("StyleBoxFlat_wardrobe_well")
+WardrobeCount/base_type = &"InkLabel"
+WardrobeCount/font_sizes/font_size = 16
+ColourSwatch/base_type = &"Button"
+ColourSwatch/styles/normal = SubResource("Keycap_swatch")
+ColourSwatch/styles/hover = SubResource("Keycap_swatch")
+ColourSwatch/styles/pressed = SubResource("Keycap_swatch_pressed")
+ColourSwatch/styles/hover_pressed = SubResource("Keycap_swatch_pressed")
+ColourSwatch/styles/disabled = SubResource("Keycap_swatch")
+ColourSwatch/styles/focus = SubResource("StyleBoxEmpty_esc")
+ColourSwatchPicked/base_type = &"ColourSwatch"
+ColourSwatchPicked/styles/normal = SubResource("Keycap_swatch_picked")
+ColourSwatchPicked/styles/hover = SubResource("Keycap_swatch_picked")
+ColourSwatchPicked/styles/pressed = SubResource("Keycap_swatch_picked")
+ColourSwatchPicked/styles/hover_pressed = SubResource("Keycap_swatch_picked")
+ColourSwatchPicked/styles/disabled = SubResource("Keycap_swatch_picked")
 StatusLabel/base_type = &"Label"
 StatusLabel/colors/font_color = Color(0.788235, 0.466667, 0.184314, 1)
 StatusLabel/font_sizes/font_size = 24

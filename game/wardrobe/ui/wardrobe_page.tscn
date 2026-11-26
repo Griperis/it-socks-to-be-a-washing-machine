@@ -1,0 +1,76 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/wardrobe/ui/wardrobe_page.gd" id="1_page"]
+[ext_resource type="PackedScene" path="res://game/wardrobe/ui/preview_stage.tscn" id="2_stage"]
+[ext_resource type="PackedScene" path="res://game/parts/avatar/looks_avatar.tscn" id="3_avatar"]
+[ext_resource type="PackedScene" path="res://game/wardrobe/ui/wardrobe_row.tscn" id="4_row"]
+[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="5_close"]
+
+[node name="WardrobePage" type="PanelContainer"]
+custom_minimum_size = Vector2(900, 0)
+theme_type_variation = &"TitlePanel"
+script = ExtResource("1_page")
+
+[node name="Box" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Heading" type="Label" parent="Box"]
+layout_mode = 2
+theme_type_variation = &"Heading1"
+text = "Colour & Wardrobe"
+
+[node name="Body" type="HBoxContainer" parent="Box"]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="Preview" parent="Box/Body" instance=ExtResource("2_stage")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Creature" parent="Box/Body/Preview/Stage/Shown" instance=ExtResource("3_avatar")]
+unique_name_in_owner = true
+leaves_trail = false
+
+[node name="TrailSample" parent="Box/Body/Preview/Stage/Shown" instance=ExtResource("3_avatar")]
+unique_name_in_owner = true
+leaves_trail = false
+
+[node name="Rows" type="VBoxContainer" parent="Box/Body"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 26
+alignment = 1
+
+[node name="Colours" type="HFlowContainer" parent="Box/Body/Rows"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 4
+
+[node name="Hats" parent="Box/Body/Rows" instance=ExtResource("4_row")]
+unique_name_in_owner = true
+layout_mode = 2
+title = "Hats"
+
+[node name="Clothes" parent="Box/Body/Rows" instance=ExtResource("4_row")]
+unique_name_in_owner = true
+layout_mode = 2
+slot = 1
+title = "Clothes"
+
+[node name="Socks" parent="Box/Body/Rows" instance=ExtResource("4_row")]
+unique_name_in_owner = true
+layout_mode = 2
+slot = 2
+title = "Socks"
+
+[node name="Trail" parent="Box/Body/Rows" instance=ExtResource("4_row")]
+unique_name_in_owner = true
+layout_mode = 2
+slot = 3
+title = "Trail"
+
+[node name="Close" parent="." instance=ExtResource("5_close")]
+unique_name_in_owner = true
+layout_mode = 2

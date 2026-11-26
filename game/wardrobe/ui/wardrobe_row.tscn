@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/wardrobe/ui/wardrobe_row.gd" id="1_row"]
+
+[node name="WardrobeRow" type="HBoxContainer"]
+theme_override_constants/separation = 10
+script = ExtResource("1_row")
+
+[node name="Head" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+
+[node name="Heading" type="Label" parent="Head"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"InkLabel"
+
+[node name="Count" type="Label" parent="Head"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"WardrobeCount"
+
+[node name="Prev" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "<"
+
+[node name="NameBox" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(230, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_type_variation = &"WardrobeNameBox"
+
+[node name="Name" type="Label" parent="NameBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"InkLabel"
+text = "None"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Next" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = ">"

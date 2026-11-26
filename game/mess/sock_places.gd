@@ -1,7 +1,7 @@
 ## The landing places a SockArea finds under it (core/52, Q2518, Q2519, Q2527, Q2528): open floor cells,
 ## furniture tops (a piece's `Spots/Top<n>`), insides (an opening's `Inside` and its shelves), the gap
 ## under a piece (its `crawl_gap`, in strips along the edges that face open floor), and the boxes no
-## Sock may touch (SockExclusions, the clear box in front of every Cabinet). Read from the level's nodes
+## Sock may touch (SockExclusions, the clear box in front of every Cabinet and of every `sock_clear` node). Read from the level's nodes
 ## and the physics space, the same in the editor and in the game.
 ##
 ## A place is {"kind": SockArea.Kind, "space": Transform3D (its surface at y = 0), "rect": Rect2 (in
@@ -19,6 +19,9 @@ const RAY_DOWN := 0.5
 const FLAT := 0.95
 ## A Sock under furniture keeps this far in from the gap's edges (old SockLayout: 0.06).
 const UNDER_INSET := 0.06
+## A node in this group keeps a floor box clear of Socks (core/142: the Wardrobe Station): its `clear_box`
+## (width, depth in metres) centred at its `clear_centre`, in its own space (or its parent's, for a plain Node).
+const CLEAR_GROUP := &"sock_clear"
 ## An inside's places keep this far in from its walls (old SockLayout: 0.01).
 const INSIDE_INSET := 0.01
 
@@ -59,6 +62,8 @@ func _init(of_area: SockArea, with: SockGeneratorTuning, in_level: Node, from_wa
 	for node in _nodes:
 		if node is Cabinet:
 			_cabinet_zone(node as Cabinet)
+		elif node.is_in_group(CLEAR_GROUP):
+			_clear_zone(node)
 	_nx = maxi(1, floori(area.size.x / tuning.floor_grid))
 	_nz = maxi(1, floori(area.size.z / tuning.floor_grid))
 	if at_once:
@@ -276,3 +281,16 @@ func _cabinet_zone(cabinet: Cabinet) -> void:
 	var c := area.rules.cabinet_clear
 	var head := area.rules.headroom
 	keep_out.append([Vector3(c.x, head, c.y), root.global_transform * Transform3D(Basis.IDENTITY, Vector3(0.0, head * 0.5, 0.25 + c.y * 0.5))])
+
+
+## The box a `sock_clear` node keeps clear (its `clear_box` at its `clear_centre`), if it stands in the area.
+func _clear_zone(node: Node) -> void:
+	var root := node as Node3D if node is Node3D else node.get_parent() as Node3D
+	var box: Variant = node.get(&"clear_box")
+	if root == null or not (box is Vector2) or not area.has_point(root.global_position):
+		return
+	var centre: Variant = node.get(&"clear_centre")
+	var at: Vector3 = centre if centre is Vector3 else Vector3.ZERO
+	var head := area.rules.headroom
+	keep_out.append([Vector3((box as Vector2).x, head, (box as Vector2).y),
+			root.global_transform * Transform3D(Basis.IDENTITY, at + Vector3(0.0, head * 0.5, 0.0))])

@@ -219,6 +219,20 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# as the old line-up's view of that number, the doors posed by its own clips.
 			world.call(&"show_view", int(arg))
 			return true
+		"wardrobe_page":
+			# core/142: the zoo's player before the Wardrobe Station's wardrobe uses it: the doors open and the
+			# Wardrobe page shows. arg "hat": its Hats row stepped once (the first basic hat on the preview).
+			var station := world.get_node_or_null(^"Stations/Wardrobe") as Node3D
+			var player := LevelRuntime.of(world).player if station != null else null
+			if player == null:
+				return false
+			player.global_position = station.to_global(Vector3(4.1, 0.0, 1.3))
+			player.reset_physics_interpolation()
+			var part := station.get_node(^"WardrobeStation/WardrobeStation") as WardrobeStation
+			part.use(player.player_id())
+			if arg == "hat" and part.menu.is_open():
+				part.menu.page().row(WardrobePiece.Slot.HAT).step(1)
+			return true
 		"wardrobe_one":
 			# assets/19: arg a Socks or Trail piece id: tools/wardrobe_lineup.tscn shows one Avatar wearing it,
 			# from the old line-up's close-up camera for that slot.
