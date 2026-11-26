@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[node name="UpgradeSpacer" type="Control"]
+custom_minimum_size = Vector2(92, 92)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 92.0
+offset_bottom = 92.0
+mouse_filter = 2

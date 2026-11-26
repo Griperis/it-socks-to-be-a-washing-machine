@@ -267,6 +267,11 @@ func hands() -> Hands:
 			_listening.applied.disconnect(_on_applied)
 		_listening = _hands.parts
 		_listening.applied.connect(_on_applied)
+	if _hands != null and upgrades != null:
+		# core/129: Sock Smarts and Sense bought at the Old Tree, read from this level's Upgrades.
+		if upgrades.levels == null or not is_instance_valid(upgrades.levels) or upgrades.levels.parts != _hands.parts:
+			upgrades.levels = Upgrades.of(_hands)
+		upgrades.player = player_id()
 	return _hands
 
 

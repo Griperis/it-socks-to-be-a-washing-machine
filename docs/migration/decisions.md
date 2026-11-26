@@ -1,4 +1,4 @@
-Next free Q number: Q2697 (update this line whenever a round of questions is asked)
+Next free Q number: Q2708 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -659,3 +659,37 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   dropped).
 - Q2696: the encyclopedia book (assets/17, the old meshes with the shared library's brass and ribbon) is yes; core/139
   swaps its Looks in (designer, 2026-11-26).
+- Q2697: the Upgrade menu's button motion (lift, press, the refusal shake) is AnimationPlayer clips on the button
+  scene, not code tweens: motion is clips (designer, 2026-11-26; core/129, done in its branch).
+- Q2698 (C 09): the vacuums and the detector as the old: all in the house from a New Game (the vacuums behind the
+  ground floor's lock); the Spit 0.1 s a Sock (placeholder); a full vacuum just stops; the nozzle take plays the pick
+  rustle; the motor's one pitch with its 0.12 s fade; no pour sound; both orders of shared carrying; a dropped nozzle
+  lies where dropped; only the hose shakes at its length; the detector on the workbench beside the book; its beep the
+  ping's pool; the old pad placeholders until batch D (designer, 2026-11-26; m4-lists/09 questions 1-11, 15).
+- Q2699 (C 09-12): every carried thing rides the Elevator by one item rule (the detector too, like the Radio);
+  putting things into the washer's drum is a Secret and waits with them (designer, 2026-11-26; Q2682).
+- Q2700 (C 09-13, 12-7, 13-7): a thrown detector, Radio or Cat that hits a Teammate: a full-charge Throw knocks down,
+  a weaker one bounces off to their feet, never caught; an Elevator rider is never hit, as the old (designer,
+  2026-11-26; Q1935, Q1936, Q2483, Q2484).
+- Q2701 (C 10): the X-rays as the old, with one wording fix: the Cabinet X-ray's ability is "Show Cabinet" and its
+  tooltip says the whole Cabinet glows; the ready sound borrows the Sole Mates cue; no cue until it is usable; only
+  its user sees it; the old timings and prices as placeholders; the outline judged at its first still, a Teammate's
+  held Sock included (designer, 2026-11-26; m4-lists/10).
+- Q2702 (C 11): the Elevator as the old: players ride (shrink, hop in, curl, the low dim view); no car seen moving;
+  out of order until Elevator Repair and locked until the ground floor opens, then open floors only; the car empty at
+  a New Game; riders climb out on arrival; the call button only opens a shut hatch; the letters on the car's side
+  wall; the old placeholder sounds, no climb sound (designer, 2026-11-26; m4-lists/11).
+- Q2703 (C 12): the Cat as the old (the couch until the ground floor opens; the fetch of the nearest Pair at 0.6 and
+  45 s; the litterbox every 240 +- 45 s, 6 s, 1 in 3; held in the world at the hands), except: its drum cycle and coat
+  change are ported now, without the other Secrets (an exception to Q2699); the litterbox scratch gets its own clip
+  and sound (designer, 2026-11-26; m4-lists/12).
+- Q2704 (C 13): the TV and the Radio as the old: the four shows with their texts and timings; the old tracks; the
+  hint names the current channel; a load turns the TV off; the Radio's near reaches open rooms; Socks on a picked-up
+  Radio fall; the TV's spot (designer, 2026-11-26; m4-lists/13).
+- Q2705: batch C's models are ported from the old game by the port rules, each family with its strip and the old
+  colours (the Sock vacuum, the Backpack vacuum's tank, the nozzle's pod, the detector, the Elevator with its letters
+  and plaque as modelled parts, the Cat and its clips, the TV, the Radio) (designer, 2026-11-26).
+- Q2706: the day's lamps follow the clock on every floor, locked or not: at night every lamp is on (designer,
+  2026-11-26; the clock wins over core/80's locked-floor rule at night).
+- Q2707: batch C is designed as four tickets: core/149 the Elevator, day and exterior; core/150 the devices, TV and
+  Radio; core/151 the Cat; core/152 the X-rays (designer, 2026-11-26).

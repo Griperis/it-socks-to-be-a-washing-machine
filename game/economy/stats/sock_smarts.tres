@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="UpgradeStat" format=3]
+
+[ext_resource type="Script" path="res://game/economy/upgrade_stat.gd" id="1_l28oe"]
+
+[resource]
+script = ExtResource("1_l28oe")
+kind = 3

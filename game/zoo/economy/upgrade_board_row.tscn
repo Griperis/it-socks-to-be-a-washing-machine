@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/zoo/economy/upgrade_board_row.gd" id="1_row"]
+
+[node name="UpgradeBoardRow" type="Node3D"]
+script = ExtResource("1_row")
+
+[node name="Icon" type="Sprite3D" parent="."]
+pixel_size = 0.0012
+
+[node name="Text" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08, 0, 0)
+pixel_size = 0.0018
+text = "Upgrade"
+horizontal_alignment = 0

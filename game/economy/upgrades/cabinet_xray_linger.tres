@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Upgrade" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/upgrade_cabinet_xray_linger.svg" id="1_4f2a5"]
+[ext_resource type="Resource" path="res://game/economy/upgrades/cabinet_xray.tres" id="2_0byqs"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="3_43fsx"]
+
+[resource]
+script = ExtResource("3_43fsx")
+title = "Lingering Cabinet X-ray"
+tooltip = "The Cabinet X-ray glows longer."
+icon = ExtResource("1_4f2a5")
+cell = Vector2i(3, 3)
+prices = PackedInt32Array(100, 160)
+needs = Dictionary[Resource, int]({
+ExtResource("2_0byqs"): 1
+})
