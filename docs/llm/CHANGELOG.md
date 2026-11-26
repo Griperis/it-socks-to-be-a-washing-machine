@@ -12,3 +12,5 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-26 [[127-profile-file-and-tallies]] The Profile file and the Lifetime tallies: 33107d59 (core/127-profile-file-and-tallies)
 - 2026-11-26 [[135-cabinet-pools-and-draw]] Cabinet pools and the New Game's draw: 560a3973 (core/135-cabinet-pools-and-draw)
 - 2026-11-26 [[17-encyclopedia-book]] The encyclopedia book model: dab084ea (assets/17-encyclopedia-book)
+- 2026-11-26 [[128-wardrobe-pieces-and-dressed-avatar]] Wardrobe pieces as data and the dressed Avatar: 7fb20957 (core/128-wardrobe-pieces-and-dressed-avatar)
+- 2026-11-26 [[148-batch-c-behaviour-lists]] Batch C: the behaviour lists: ab3de382 (core/148-batch-c-behaviour-lists)

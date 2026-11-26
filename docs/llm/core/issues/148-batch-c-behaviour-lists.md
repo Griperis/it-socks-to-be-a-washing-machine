@@ -6,7 +6,7 @@ area: core
 feature: frame
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["suggested model: opus", "batch C (Q2614): behaviour lists first, for the designer to approve; the proposals follow as their own tickets"]
 terms: [Elevator, Cat, X-ray, Upgrade, Old Tree]
