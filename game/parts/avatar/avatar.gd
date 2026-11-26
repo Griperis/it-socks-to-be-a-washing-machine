@@ -423,13 +423,14 @@ func _tuning() -> AvatarTuning:
 	return tuning
 
 
-## Its colour and name from the Roster, once its player has an entry there.
+## Its colour, name and look (core/141) from the Roster, once its player has an entry there.
 func _dress() -> void:
 	if looks == null or roster == null:
 		return
 	var known := not roster.entry_of(peer()).is_empty()
 	looks.colour = roster.colour_of(peer()) if known else Color.WHITE
 	looks.player_name = roster.name_of(peer()) if known else ""
+	looks.look = roster.look_of(peer())
 
 
 ## Whether the level of `node` (a Knockdowns, a Hands) holds this avatar.

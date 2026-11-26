@@ -23,6 +23,7 @@
 [ext_resource type="Script" path="res://game/cutscene/cutscenes.gd" id="25_cutscenes"]
 [ext_resource type="PackedScene" path="res://game/cutscene/cutscene_player.tscn" id="26_cutscene_player"]
 [ext_resource type="PackedScene" path="res://game/ui/final_screen/final_screen.tscn" id="27_final_screen"]
+[ext_resource type="Script" path="res://game/economy/upgrades.gd" id="28_upgrades"]
 
 [node name="LevelRuntime" type="Node3D" unique_id=573781402]
 script = ExtResource("0_runtime")
@@ -61,6 +62,10 @@ hands = NodePath("../Hands")
 
 [node name="Bank" type="Node" parent="Socks" unique_id=916480979]
 script = ExtResource("9_bank")
+
+[node name="Upgrades" type="Node" parent="Socks" node_paths=PackedStringArray("bank")]
+script = ExtResource("28_upgrades")
+bank = NodePath("../Bank")
 
 [node name="Pings" type="Node" parent="." node_paths=PackedStringArray("mess") unique_id=1460313001]
 script = ExtResource("22_pings")

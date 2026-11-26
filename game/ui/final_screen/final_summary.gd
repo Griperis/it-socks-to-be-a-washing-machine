@@ -10,6 +10,8 @@ extends RefCounted
 var columns: Array[Dictionary] = []
 ## What FinalTotal.source names, each a whole number: "play_time" (seconds), "coins_earned", "stages".
 var values: Dictionary[StringName, int] = {}
+## The Collections this machine's player unlocked by finishing the game (core/134), shown in the screen's strip.
+var unlocked: Array[StringName] = []
 
 
 ## The summary of `shelved` (RunRecord.shelved: [player id, Design id, Coins paid] rows) for the players of `listing` who are still in the game. `earned` is the Coins the
@@ -45,7 +47,11 @@ static func of(level: Node) -> FinalSummary:
 	var listing: Array[Dictionary] = []
 	if tallies != null:
 		listing = tallies.listing()
-	return make(record.shelved if record != null else [], listing, seconds, completed(stages))
+	var s := make(record.shelved if record != null else [], listing, seconds, completed(stages))
+	var recorder := tree.get_first_node_in_group(ProfileRecorder.GROUP) as ProfileRecorder
+	if recorder != null:
+		s.unlocked = recorder.unlocked.duplicate()
+	return s
 
 
 ## How many Stages are done: the current one counts once its bar is full.

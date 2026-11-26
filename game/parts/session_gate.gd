@@ -13,8 +13,22 @@
 ## are already in this game"). Once both sides complete, peer_connected fires: the Host writes the player
 ## into the Roster (one answer) and sends the link's snapshot (`linked`). From M4 the word carries Steam's
 ## auth ticket too (Q2458); no token before (Q2449).
+##
+## The word also carries what the profile wears, owns and has tallied (core/141, docs/architecture/
+## wardrobe.md "What a player owns and wears, in co-op"): `look`, `owned`, `tallies` and the `colour`
+## wish. The Host never refuses for them; it clamps them (clamped_said()) and the Roster's joined() writes
+## them. Off Steam a Guest's `owned` cannot be proved: the Host keeps it for the Session.
 class_name SessionGate
 extends RefCounted
+
+## The most piece ids a word's `owned` keeps (every piece of the game); more are dropped.
+const OWNED_MAX := 112
+## The most entries of a word's `owned` read at all (unknown ids included).
+const OWNED_READ_MAX := 256
+## The longest piece id read.
+const PIECE_ID_MAX := Roster.PIECE_ID_MAX
+## No Lifetime tally said goes past this.
+const TALLY_MAX := PlayerProfile.TALLY_MAX
 
 var _s: Session
 ## The Host: who passed the gate and is not in yet: {peer: {"id": player id, "name": String}}.
@@ -98,7 +112,7 @@ func _refusal(peer: int, data: PackedByteArray) -> int:
 		guard.drop(peer, "gate", "unreadable Hands numbers")
 		return Session.WHY_VERSION
 	_waiting[peer] = {"id": pid, "name": PlayerProfile.clean_name(word["name"]), "hands": clamped_hands(hands),
-			"in_level": word.has("layout") and mine != ""}
+			"said": clamped_said(word), "in_level": word.has("layout") and mine != ""}
 	return 0
 
 
@@ -130,6 +144,7 @@ func say_word(peer: int) -> void:
 	word.resize(4)
 	word.encode_u32(0, _s.protocol)
 	var said := {"id": _s.profile.id, "name": _s.profile.name, "hands": own_hands()}
+	said.merge(own_word())
 	var layout := _s._level_layout()
 	if layout != "":
 		said["layout"] = layout
@@ -145,6 +160,50 @@ func clamped_hands(sent: Dictionary) -> Dictionary:
 	if hands == null:
 		return {}
 	return hands.own_tuning().clamped(sent).to_sent()
+
+
+## What this machine's profile says it wears, owns and has tallied, and the colour it wishes.
+func own_word() -> Dictionary:
+	var p := _s.profile
+	if p == null:
+		return {}
+	return {"look": p.look, "owned": p.pieces, "tallies": p.tallies, "colour": p.colour}
+
+
+## The Host's own word as it clamps a Guest's: for its own joined() (hosting, alone).
+func own_said() -> Dictionary:
+	return clamped_said(own_word())
+
+
+## A word's `look`, `owned`, `tallies` and `colour` as the Host keeps them: known piece ids only, at most
+## OWNED_MAX; the look only of known pieces of their slots that are owned (WardrobeLook.allowed(), the
+## basic pieces counting); the five tallies, finite, 0 to TALLY_MAX; the colour an index in range. What
+## is missing or unreadable is empty (0 for the colour).
+func clamped_said(word: Dictionary) -> Dictionary:
+	var owned := PackedStringArray()
+	var said_owned: Variant = word.get("owned")
+	if said_owned is Array or said_owned is PackedStringArray:
+		var read := 0
+		for v: Variant in said_owned:
+			read += 1
+			if read > OWNED_READ_MAX or owned.size() >= OWNED_MAX:
+				break
+			if (v is String or v is StringName) and String(v).length() <= PIECE_ID_MAX \
+					and Wardrobe.of(StringName(v)) != null and not owned.has(String(v)):
+				owned.append(String(v))
+	var look: Variant = word.get("look")
+	var worn := Roster.plain_look(WardrobeLook.allowed(look if look is Dictionary else {}, Wardrobe.owned(owned)))
+	var tallies := {}
+	var said_tallies: Variant = word.get("tallies")
+	if said_tallies is Dictionary:
+		for t in PlayerProfile.TALLIES:
+			var n: Variant = (said_tallies as Dictionary).get(t)
+			if (n is int or n is float) and is_finite(float(n)):
+				tallies[t] = int(clampf(float(n), 0.0, float(TALLY_MAX)))
+	var colours := maxi(_s.tuning.colours.size(), 1) if _s.tuning != null else 1
+	var colour: Variant = word.get("colour")
+	var wish := clampi(int(colour), 0, colours - 1) if colour is int else 0
+	return {"look": worn, "owned": owned, "tallies": tallies, "colour": wish}
 
 
 ## This machine's own player's Hands numbers (HandsTuning.to_sent()), or {} with no player here.
@@ -176,7 +235,7 @@ func joined(peer: int) -> void:
 	_waiting.erase(peer)
 	_players[peer] = String(who["id"])
 	if s.roster != null:
-		s.parts.apply(s.roster.joined(String(who["id"]), peer, String(who["name"]), who.get("hands", {})))
+		s.parts.apply(s.roster.joined(String(who["id"]), peer, String(who["name"]), who.get("hands", {}), who.get("said", {})))
 	s._guests[peer] = true
 	var snap := s.link_parts.snapshot() if s.link_parts != null else {}
 	s._linked.rpc_id(peer, snap)

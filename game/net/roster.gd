@@ -6,8 +6,14 @@
 ## colour while that is free (Q2448). It is in the join snapshot; the Avatars spawner spawns by it.
 ##
 ## Only the Host's answers write it: joined() when the gate admitted a player, left() when one went,
-## hands_said() when a Lobby joiner's house was ready.
-## No Guest may ask anything of it (accepts() is empty).
+## hands_said() when a Lobby joiner's house was ready, and its three verbs (core/141,
+## docs/architecture/wardrobe.md "What a player owns and wears, in co-op"), each asked by a player for
+## itself (the entry is the sender's, never named in the args): `wear` a look (refused unless every piece
+## is owned), `colour` a Player colour (refused "taken" while another present player has it), `own` a
+## piece (an Achievement's reward). Each entry also keeps the player's `look`, `owned` pieces and
+## Lifetime `tallies` as the gate's word brought them (SessionGate.clamped_said()). This machine's
+## profile (its Session's) follows its own entry's applied `look` and `colour`, so the next game starts
+## in them.
 class_name Roster
 extends Part
 
@@ -18,6 +24,14 @@ const LEFT := &"left"
 const HANDS := &"hands"
 ## The Host's peer id.
 const HOST := 1
+## The verbs a player asks for itself (core/141).
+const WEAR := &"wear"
+const COLOUR := &"colour"
+const OWN := &"own"
+## The longest piece id a verb carries.
+const PIECE_ID_MAX := 64
+## How many `own` a Guest may send in a second: an Achievements' batch gives several at once.
+const OWN_RATE := 120
 
 ## Shown on every machine whenever the roster changed (an answer or a snapshot).
 signal changed
@@ -26,7 +40,9 @@ signal changed
 
 @export_group("State")
 ## {player id: {"peer": int, "name": String, "colour": int, "at": Vector3, "yaw": float, "hands": the
-## numbers of their Hands an Upgrade changes, clamped by the Host (D13)}}.
+## numbers of their Hands an Upgrade changes, clamped by the Host (D13), "look": {"hat", "clothes",
+## "socks", "trail": piece id or ""}, "owned": PackedStringArray of piece ids (the basic ones not
+## stored: owned_of() adds them), "tallies": {tally name: int}}}.
 @export var players := {}
 @export_group("")
 
@@ -40,11 +56,34 @@ func _ready() -> void:
 		tuning = CoopTuning.new()
 
 
-func decide(_cmd: Command) -> Dictionary:
+func accepts() -> Dictionary[StringName, Dictionary]:
+	var piece := {"type": TYPE_STRING_NAME, "max": PIECE_ID_MAX}
+	var colours := maxi(tuning.colours.size(), 1)
+	return {
+		WEAR: {"args": {"hat": piece, "clothes": piece, "socks": piece, "trail": piece}},
+		COLOUR: {"args": {"index": {"type": TYPE_INT, "min": 0, "max": colours - 1}}},
+		OWN: {"args": {"piece": piece}, "rate": OWN_RATE},
+	}
+
+
+## The Host: a player's `wear`, `colour` or `own`, for its own entry (the sender's).
+func decide(cmd: Command) -> Dictionary:
+	var pid := id_of(cmd.by)
+	if pid == "":
+		return refuse("wrong")
+	match cmd.kind:
+		WEAR:
+			return _wear(pid, cmd.args)
+		COLOUR:
+			return _colour(pid, cmd.args.get("index"))
+		OWN:
+			return _own(pid, cmd.args.get("piece"))
 	return refuse("wrong")
 
 
-func _show(_now: bool) -> void:
+func _show(now: bool) -> void:
+	if not now:
+		_follow_profile()
 	changed.emit()
 
 
@@ -95,6 +134,18 @@ func colour_of(peer: int) -> Color:
 	return tuning.colour(int(e["colour"])) if not e.is_empty() else Color.WHITE
 
 
+## What the player on `peer` wears ({"hat", "clothes", "socks", "trail"}), or {} for nobody.
+func look_of(peer: int) -> Dictionary:
+	var look: Variant = entry_of(peer).get("look", {})
+	return look if look is Dictionary else {}
+
+
+## The pieces player id `pid` owns: their entry's, plus every basic piece (Wardrobe.owned(), Q2679).
+## The Host's check of a `wear`, and the seam for a present's draw (S-122b).
+func owned_of(pid: String) -> PackedStringArray:
+	return Wardrobe.owned(_owned_in(players.get(pid, {})))
+
+
 ## The colour index of the player on `peer`, or -1.
 func colour_index_of(peer: int) -> int:
 	return int(entry_of(peer).get("colour", -1))
@@ -120,8 +171,10 @@ func free_colour(wanted: int, among: Dictionary = players) -> int:
 ## The Host: player id `pid` on `peer`, named `who`, joins. A new id takes the next free colour and
 ## stands beside the Host (the Host itself where it stands); an id that played before stands where it
 ## left and keeps its colour while free. `hands`: their Hands' numbers as the Host clamped them.
-## Returns the answer, for Parts.apply().
-func joined(pid: String, peer: int, who: String, hands := {}) -> Dictionary:
+## `said`: their profile's `look`, `owned`, `tallies` and `colour` wish as the gate clamped them
+## (SessionGate.clamped_said()): the word wins over what the entry had; a new id takes its wished colour
+## when free, else the next free. Returns the answer, for Parts.apply().
+func joined(pid: String, peer: int, who: String, hands := {}, said := {}) -> Dictionary:
 	var all := players.duplicate(true)
 	if peer == HOST:
 		# This machine's own entry made alone under another profile (a test's) gives way: a peer is one player.
@@ -134,8 +187,12 @@ func joined(pid: String, peer: int, who: String, hands := {}) -> Dictionary:
 	var entry := {"peer": peer, "name": PlayerProfile.clean_name(who)}
 	if not hands.is_empty():
 		entry["hands"] = hands
+	entry["look"] = plain_look(said.get("look", before.get("look", {})))
+	entry["owned"] = _owned_in(said if said.has("owned") else before)
+	var tallies: Variant = said.get("tallies", before.get("tallies", {}))
+	entry["tallies"] = (tallies as Dictionary).duplicate() if tallies is Dictionary else {}
 	if before.is_empty():
-		entry["colour"] = free_colour(0, others)
+		entry["colour"] = free_colour(int(said.get("colour", 0)), others)
 		# With no level (the Lobby) nobody stands anywhere yet: placed() gives the spot in the house.
 		if _pose(HOST) != null:
 			var spot := _spot_for(peer)
@@ -188,8 +245,9 @@ func save_state() -> Dictionary:
 
 
 ## A save loads into the live Roster (core/62: the Roster lives for the whole game, so players may be
-## in it before the house loads): the present players stay as they are, each standing where the save
-## kept them (Q296); every saved player not here comes back with their spot, colour and Hands; an
+## in it before the house loads): the present players stay as they are (their live look, owned pieces
+## and tallies are their profiles', the word at the gate wins over the save's), each standing where the
+## save kept them (Q296); every saved player not here comes back with their spot, colour and Hands; an
 ## entry the save does not name stays.
 func restored(saved: Dictionary) -> Dictionary:
 	var kept: Dictionary = saved.get("players", {}) if saved.get("players") is Dictionary else {}
@@ -256,11 +314,116 @@ func hands_said(peer: int, hands: Dictionary) -> Dictionary:
 	return ev
 
 
+## The changes that make `piece` owned by the player on `peer`, for another part's answer to carry
+## (S-122c: a present opened puts them in its own answer, beside its own patch, so the piece won reaches
+## `owned` with no extra ask): {this part's id: patch}, or {} when the piece is unknown, already owned or
+## nobody plays on `peer`. Merge it into the answer's "changes".
+func owned_patch(by: int, piece: StringName) -> Dictionary:
+	var pid := id_of(by)
+	if pid == "" or Wardrobe.of(piece) == null or owned_of(pid).has(String(piece)):
+		return {}
+	var owned := _owned_in(players[pid])
+	owned.append(String(piece))
+	return _patched(pid, "owned", owned)["changes"]
+
+
+## A look as an entry keeps it: every slot, a known piece of that slot or "", as plain Strings.
+static func plain_look(look: Variant) -> Dictionary:
+	var clean := WardrobeLook.clean(look if look is Dictionary else {})
+	var out := {}
+	for k in WardrobeLook.SLOTS:
+		out[String(k)] = String(clean[k])
+	return out
+
+
+## `look` as WEAR's args (four Strings, every slot).
+static func wear_args(look: Dictionary) -> Dictionary:
+	return plain_look(look)
+
+
 ## The Session is over on this machine (alone again): nobody is in it. Returns the answer.
 func cleared() -> Dictionary:
 	var ev := grant({"players": {}})
 	ev.merge({"kind": &"cleared", "by": HOST, "to": id})
 	return ev
+
+
+## `wear`: `asked` as the new look of `pid`, refused unless every slot names "" or a known piece of that
+## slot the player owns (silent: the Wardrobe only offers owned pieces).
+func _wear(pid: String, asked: Dictionary) -> Dictionary:
+	var want := {}
+	for k in WardrobeLook.SLOTS:
+		var v: Variant = asked.get(String(k), "")
+		if not (v is String or v is StringName):
+			return refuse("wrong")
+		want[String(k)] = String(v)
+	var allowed := WardrobeLook.allowed(want, owned_of(pid))
+	for k in WardrobeLook.SLOTS:
+		if String(allowed[k]) != want[String(k)]:
+			return refuse("not_owned")
+	if plain_look((players[pid] as Dictionary).get("look", {})) == want:
+		return refuse("already")
+	return _patched(pid, "look", want)
+
+
+## `colour`: Player colour `index` for `pid`, refused "taken" while another present player has it.
+func _colour(pid: String, index: Variant) -> Dictionary:
+	if not (index is int) or int(index) < 0 or int(index) >= tuning.colours.size():
+		return refuse("wrong")
+	for other: Variant in players:
+		var e: Dictionary = players[other]
+		if String(other) != pid and int(e.get("peer", 0)) != 0 and int(e.get("colour", -1)) == int(index):
+			return refuse("taken")
+	if int((players[pid] as Dictionary).get("colour", -1)) == int(index):
+		return refuse("already")
+	return _patched(pid, "colour", int(index))
+
+
+## `own`: piece `piece` appended to what `pid` owns (an Achievement's reward, asked by its machine).
+func _own(pid: String, piece: Variant) -> Dictionary:
+	if not (piece is String or piece is StringName) or Wardrobe.of(StringName(piece)) == null:
+		return refuse("wrong")
+	if owned_of(pid).has(String(piece)):
+		return refuse("already")
+	var owned := _owned_in(players[pid])
+	owned.append(String(piece))
+	return _patched(pid, "owned", owned)
+
+
+## A yes: field `field` of `pid`'s entry becomes `value`; the answer names the player.
+func _patched(pid: String, field: String, value: Variant) -> Dictionary:
+	var all := players.duplicate(true)
+	(all[pid] as Dictionary)[field] = value
+	var ev := grant({"players": all})
+	ev["player"] = pid
+	return ev
+
+
+## The "owned" of entry `e` (a copy), as stored: no basic pieces added.
+static func _owned_in(e: Variant) -> PackedStringArray:
+	var owned: Variant = (e as Dictionary).get("owned") if e is Dictionary else null
+	if owned is PackedStringArray or owned is Array:
+		return PackedStringArray(owned)
+	return PackedStringArray()
+
+
+## After an answer, this machine's profile (its Session's) takes its own entry's look and colour, written
+## soon. A snapshot is not an answer: a Guest's colour moved off its wish at its join stays its wish.
+func _follow_profile() -> void:
+	var session := get_parent() as Session
+	var profile := session.profile if session != null else null
+	if profile == null or not (players.get(profile.id) is Dictionary):
+		return
+	var e: Dictionary = players[profile.id]
+	var moved := false
+	if e.get("look") is Dictionary and e["look"] != profile.look:
+		profile.look = (e["look"] as Dictionary).duplicate()
+		moved = true
+	if e.has("colour") and int(e["colour"]) != profile.colour:
+		profile.colour = int(e["colour"])
+		moved = true
+	if moved:
+		profile.save_soon()
 
 
 ## Where a new player on `peer` stands: the Host where it stands; the k-th other live player beside

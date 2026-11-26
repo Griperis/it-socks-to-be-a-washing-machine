@@ -1,0 +1,5 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://c47s4ol1w03ls" path="res://assets/wardrobe/broccoli_fluff_socks.glb" id="1_glb"]
+
+[node name="broccoli_fluff_socks" unique_id=2044830362 instance=ExtResource("1_glb")]

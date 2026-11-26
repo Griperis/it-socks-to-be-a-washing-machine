@@ -20,6 +20,8 @@ func cases() -> Array[Dictionary]:
 				"title": "a player who left has no column, their Pairs count in the totals; the totals read Play time h:mm:ss, Coins earned and Stages from final_totals.tres; no titles of who did what"},
 		{"name": "schedule", "method": "case_schedule", "world": false,
 				"title": "the pop schedule is slow then a fast stream with a longer hold after a rare Pair; Pairs pop in order on the clock, the count and the bonus follow; the totals wait for the last column"},
+		{"name": "unlock_strip", "method": "case_unlock_strip", "world": false,
+				"title": "the pillar with an unlock shows the strip: a plural heading and a cell per Collection that pop one after another once the totals show, in the Collection's name; a skip shows them at once; a screen with none hides the strip"},
 		{"name": "long_name_and_esc", "method": "case_long_name_and_esc", "world": false,
 				"title": "a long name is clipped inside its column; Esc does not open the Esc menu over the screen; Continue is only a signal here and the station closes the screen, giving the player back"},
 	]
@@ -66,6 +68,38 @@ func case_real_path() -> void:
 	_check(screen.columns[1].bonus_text() == "", "the other has none")
 	await _until(func() -> bool: return screen.finale_started() and screen.continue_button().visible, "the totals count up, the finale starts and Continue shows")
 	_check(not screen.unlocked_strip().visible, "the unlock strip stays hidden while empty")
+
+
+func case_unlock_strip() -> void:
+	await _build()
+	var screen := _screen()
+	screen.open(_summary("1 player"))
+	await _frames(2)
+	_check(not screen.unlocked_strip().visible and screen.unlock_cells().is_empty(), "a game that unlocked nothing has no strip")
+	screen.close()
+	var summary := _summary("with an unlock")
+	_check(summary.unlocked == [&"space", &"fruit"], "the pillar carries two unlocked Collections")
+	screen.open(summary)
+	await _frames(2)
+	var cells := screen.unlock_cells()
+	_check(screen.unlocked_strip().visible and cells.size() == 2, "the strip has a cell each")
+	_check((cells[0].get_node("Body/Name") as Label).text == Collections.of(&"space").name, "the first cell names Space")
+	_check((screen.get_node("%Heading") as Label).text == "New Collections unlocked", "the heading is plural")
+	_check(screen.unlocks_shown() == 0, "nothing pops before the totals")
+	var tuning := screen.tuning
+	screen.advance(100.0)
+	_check(screen.totals_shown() and screen.unlocks_shown() == 0, "the totals show and the strip waits its delay")
+	screen.advance(tuning.unlock_delay + 0.01)
+	_check(screen.unlocks_shown() == 1, "the first cell pops after the delay (%d)" % screen.unlocks_shown())
+	screen.advance(tuning.unlock_gap + 0.01)
+	_check(screen.unlocks_shown() == 2, "the second pops a gap later (%d)" % screen.unlocks_shown())
+	screen.close()
+	screen.open(summary)
+	await _frames(2)
+	screen.skip()
+	_check(screen.unlocks_shown() == 2, "a skip shows both at once")
+	_check((screen.unlock_cells()[1].get_node("Body") as Control).scale == Vector2.ONE, "the cell is whole")
+	screen.close()
 
 
 func case_leaver_and_totals() -> void:

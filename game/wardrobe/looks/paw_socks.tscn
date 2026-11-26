@@ -1,0 +1,5 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://c06tp2w82oqlu" path="res://assets/wardrobe/paw_socks.glb" id="1_glb"]
+
+[node name="paw_socks" unique_id=27471034 instance=ExtResource("1_glb")]

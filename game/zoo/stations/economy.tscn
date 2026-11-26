@@ -11,6 +11,10 @@
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="9_designs"]
 [ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="10_hands_tuning"]
 [ext_resource type="PackedScene" path="res://game/zoo/economy/money_switch.tscn" id="11_switch"]
+[ext_resource type="Script" path="res://game/economy/upgrades.gd" id="12_upgrades"]
+[ext_resource type="PackedScene" uid="uid://b0dgpaqabl8x4" path="res://game/furniture/old_tree.tscn" id="13_tree"]
+[ext_resource type="PackedScene" path="res://game/zoo/economy/upgrades_switch.tscn" id="14_upswitch"]
+[ext_resource type="Script" path="res://game/zoo/economy/upgrade_board.gd" id="15_board"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.62, 0.55, 0.3, 1)
@@ -39,7 +43,7 @@ shape = SubResource("BoxShape3D_ground")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 2, -3)
 pixel_size = 0.004
 billboard = 2
-text = "Economy: Coins and Drawers. Pair two Simple Socks and click a drawer of the small Cabinet (2 Pairs a drawer): the Coins fly to the counter top left, and a filled drawer pays the team a Drawer. The switches pay 100 Coins or 5 Drawers"
+text = "Economy: Coins and Drawers, the Upgrades. Pair two Simple Socks and click a drawer of the small Cabinet (2 Pairs a drawer): the Coins fly to the counter top left, and a filled drawer pays the team a Drawer. The switches pay 100 Coins or 5 Drawers, reset every Upgrade level or count the zoo as co-op (the co-op-only Upgrades show). Press E on the Old Tree for the Upgrade menu; the board at the left lists every Upgrade file"
 vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
@@ -88,6 +92,27 @@ bank = NodePath("../../Socks/Bank")
 pays = 1
 amount = 5
 
+[node name="OldTree" parent="." instance=ExtResource("13_tree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -2.5)
+
+[node name="ResetLevels" parent="." instance=ExtResource("14_upswitch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -1)
+
+[node name="UpgradesSwitch" parent="ResetLevels" index="0" node_paths=PackedStringArray("upgrades")]
+upgrades = NodePath("../../Socks/Upgrades")
+
+[node name="Coop" parent="." instance=ExtResource("14_upswitch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1)
+
+[node name="UpgradesSwitch" parent="Coop" index="0" node_paths=PackedStringArray("upgrades")]
+upgrades = NodePath("../../Socks/Upgrades")
+does = 1
+
+[node name="Board" type="Node3D" parent="." node_paths=PackedStringArray("upgrades")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.8, 3.4, 4)
+script = ExtResource("15_board")
+upgrades = NodePath("../Socks/Upgrades")
+
 [node name="Spots" type="Node3D" parent="."]
 
 [node name="ReturnSpot" type="Marker3D" parent="."]
@@ -120,3 +145,7 @@ tuning = ExtResource("10_hands_tuning")
 
 [node name="Bank" type="Node" parent="Socks"]
 script = ExtResource("8_bank")
+
+[node name="Upgrades" type="Node" parent="Socks" node_paths=PackedStringArray("bank")]
+script = ExtResource("12_upgrades")
+bank = NodePath("../Bank")

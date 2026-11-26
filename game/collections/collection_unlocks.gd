@@ -13,12 +13,15 @@ extends Resource
 
 
 ## The Collections a finished game unlocks for a player who has `unlocked`: the next `per_finished_game` of
-## `order` not yet in it (none once all are).
+## `order` not yet in it, held-back ones skipped (none once all are).
 func next_after(unlocked: Array[StringName]) -> Array[StringName]:
 	var out: Array[StringName] = []
 	for id in order:
 		if out.size() >= per_finished_game:
 			break
+		var held := Collections.of(id)
+		if held != null and held.held_back:
+			continue  # a held-back Collection is never unlocked by the order
 		if not unlocked.has(id) and not start.has(id):
 			out.append(id)
 	return out

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Upgrade" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/upgrade_mate_radar.svg" id="1_22u7h"]
+[ext_resource type="Resource" path="res://game/economy/upgrades/sole_mates.tres" id="2_f5lj5"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="3_43r2g"]
+
+[resource]
+script = ExtResource("3_43r2g")
+title = "Mate Radar"
+tooltip = "The Sole cues show through walls."
+icon = ExtResource("1_22u7h")
+section = 1
+cell = Vector2i(4, 2)
+prices = PackedInt32Array(1)
+needs = Dictionary[Resource, int]({
+ExtResource("2_f5lj5"): 1
+})
+coop_only = true

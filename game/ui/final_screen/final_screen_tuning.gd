@@ -28,3 +28,8 @@ extends Resource
 @export_range(0.1, 10.0, 0.1, "suffix:s") var finale_time := 2.5 # placeholder: the old finale_time
 ## How many bits one burst of the finale throws.
 @export_range(1, 300, 1) var confetti := 40 # placeholder: the old confetti
+@export_group("The unlocked Collections")
+## Seconds after the totals show before the first unlocked Collection pops (the strip's pop clip itself is 0.5 s).
+@export_range(0.0, 5.0, 0.05, "suffix:s") var unlock_delay := 0.6 # placeholder: the old unlock reveal delay
+## The gap between one unlocked Collection popping and the next.
+@export_range(0.0, 3.0, 0.05, "suffix:s") var unlock_gap := 0.25 # placeholder: the old unlock reveal gap

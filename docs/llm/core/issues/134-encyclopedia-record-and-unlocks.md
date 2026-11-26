@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: gifts
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: ["[[127-profile-file-and-tallies]]", "[[125-collections-as-data]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 3", "suggested model: sonnet"]
 terms: [Sock encyclopedia, Unlocked Collection, Profile, Design, Final wash]
