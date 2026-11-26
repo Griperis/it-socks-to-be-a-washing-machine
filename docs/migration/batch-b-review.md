@@ -57,6 +57,7 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 
 | Ticket | The choice | What was done (the old answer) | Designer |
 |---|---|---|---|
+| assets/17 | Which materials does the book share with the library? | `brass` (the old's brass, same colour) and `pink` (the ribbon, same colour) are the library's; the cloth, leather and cream paper stay the book's own (the library's `paper` is near-white, the old's cream); no collider (the entity's box) (old `make_encyclopedia_book.py`) | |
 | core/124 | Does the Cabinet bonus pay in a level with no run (a zoo station's Cabinet)? | Only in a level with a run: the bonus is the campaign's (the old `cabinet_batch` paid from the campaign's Rows only) | |
 | core/124 | Does a zoo or test fill pay Drawers? | Yes, every drawer filled to the Pairs per Drawer pays (the old CBS:290 paid for the zoo's and tests' fills too); 1 Drawer with no run | |
 | core/124 | A floor opened by a load cut short during its Fix (the floor opens after the load) | Pays the floor bonus then, as any opening (the old step() opened it the same way, CA:348-353) | |

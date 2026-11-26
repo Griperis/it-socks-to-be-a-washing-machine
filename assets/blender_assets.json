@@ -687,6 +687,12 @@
       "source": "laundry/laundry_bin",
       "glb": "assets/laundry_bin/laundry_bin.glb"
     },
+    "encyclopedia_book": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "encyclopedia_book/encyclopedia_book",
+      "glb": "assets/encyclopedia_book/encyclopedia_book.glb"
+    },
     "washing_machine": {
       "class": "appliance",
       "colliders": 1,
