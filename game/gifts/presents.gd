@@ -9,6 +9,11 @@
 ## hex grid `apart` across, turned at random, nearest first, at least 0.9 x `apart` from a box already lying,
 ## nudged 5 % at random (the old GI:202-226). The answer carries `presents_dropped` so every machine plays the
 ## boxes' drop; a box that came by a snapshot or a load just lies.
+##
+## An opened present's answer (Present.OPENED, core/138) is shown here on every machine, the box's node being
+## gone: a Teammate's machine plays a PresentOpening at the carrier's hold point (the shake and the pop); the
+## opener's own machine plays only the rattle there and the pick cue, writes a new piece into its profile
+## (`unlock_piece`) and opens the GiftReveal (one per level, made at the first opening).
 class_name Presents
 extends Part
 
@@ -24,6 +29,12 @@ const NUDGE := 0.05
 ## How long a drop counts as fresh for a box whose node comes after the answer (a Guest's spawn).
 const FRESH_MS := 2000
 const UNLOCKS := preload("res://game/collections/collection_unlocks.tres")
+const OPENING := preload("res://game/gifts/present_opening.tscn")
+const REVEAL := preload("res://game/gifts/gift_reveal.tscn")
+## Where the opener's rattle sounds from, over the hold point.
+const RATTLE_UP := 0.15
+## The players' colours (the Roster's own tuning).
+const TINTS := preload("res://game/net/coop_tuning.tres")
 
 ## The rows its presents are.
 @export var spawned: SpawnedParts
@@ -37,6 +48,8 @@ const UNLOCKS := preload("res://game/collections/collection_unlocks.tres")
 var _rng := RandomNumberGenerator.new()
 ## Rows dropped lately, by id: the tick they were dropped (a node coming after the answer still drops).
 var _fresh: Dictionary[int, int] = {}
+## The opener's reveal on this machine (made at the first opening).
+var _reveal: GiftReveal
 
 
 func _enter_tree() -> void:
@@ -211,7 +224,12 @@ func _show(_now: bool) -> void:
 
 ## A drop reached this machine: its boxes already here drop now, the rest as their nodes come.
 func _on_applied(ev: Dictionary) -> void:
-	if not ev.get("ok", false) or not (ev.get(DROPPED) is Dictionary):
+	if not ev.get("ok", false):
+		return
+	var opened: Variant = ev.get(Present.OPENED)
+	if opened is Dictionary and String((opened as Dictionary).get("presents", "")) == String(id):
+		_show_opened(opened as Dictionary)
+	if not (ev.get(DROPPED) is Dictionary):
 		return
 	var ids: Variant = (ev[DROPPED] as Dictionary).get(String(id))
 	if not (ids is PackedInt32Array) or spawned == null:
@@ -223,6 +241,65 @@ func _on_applied(ev: Dictionary) -> void:
 		var present := node.get_node_or_null(^"Present") as Present if node != null else null
 		if present != null:
 			present.dropped()
+
+
+## A present was opened (every machine): its shake and pop where it is carried, or the opener's reveal.
+func _show_opened(o: Dictionary) -> void:
+	var by := int(o.get("by", 0))
+	var piece := StringName(String(o.get("piece", "")))
+	var refund := int(o.get("refund", 0))
+	var collection := StringName(String(o.get("collection", "")))
+	var hands := level_hands()
+	var at := _hold_of(hands, by)
+	if by != multiplayer.get_unique_id():
+		var fx := OPENING.instantiate() as PresentOpening
+		var holder := spawned.get_parent() if spawned != null else get_parent()
+		holder.add_child(fx)
+		fx.start(hands, by, collection, at, tuning)
+		return
+	Sounds.play_at(&"gift_rattle", at.origin + Vector3.UP * RATTLE_UP)
+	Sounds.play(&"pick")  # placeholder: the old game's generic cue (CA:656)
+	if refund <= 0:
+		Worlds.profile().unlock_piece(piece)
+	reveal().player = GiftClicks.player_of(hands, by)
+	reveal().open(piece, refund, collection, _tint_of(by))
+
+
+## This machine's reveal (made once, a child of this node).
+func reveal() -> GiftReveal:
+	if _reveal == null or not is_instance_valid(_reveal):
+		_reveal = REVEAL.instantiate() as GiftReveal
+		_reveal.tuning = tuning
+		add_child(_reveal)
+	return _reveal
+
+
+## The Hands of this level (the ones sharing its Parts), or null.
+func level_hands() -> Hands:
+	if not is_inside_tree():
+		return null
+	for node in get_tree().get_nodes_in_group(Hands.GROUP):
+		var h := node as Hands
+		if h != null and h.parts == parts:
+			return h
+	return null
+
+
+## Where player `by` holds a carried present as this machine draws them, else the heap's spot.
+func _hold_of(hands: Hands, by: int) -> Transform3D:
+	var body := hands.body_frame(by) if hands != null else {}
+	if not body.is_empty():
+		return PresentOpening.SLOT.pose(body["feet"], float(body["yaw"]), float(body["drop"]))
+	return spot.global_transform if spot != null and spot.is_inside_tree() else Transform3D.IDENTITY
+
+
+## Player `by`'s colour (a Socks piece stands on feet in it): the Roster's, else this machine's profile's.
+func _tint_of(by: int) -> Color:
+	var roster := _roster()
+	var index := roster.colour_index_of(by) if roster != null else -1
+	if index < 0:
+		index = Worlds.profile().colour
+	return TINTS.colour(index)
 
 
 func _roster() -> Roster:

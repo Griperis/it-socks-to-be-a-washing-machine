@@ -120,9 +120,11 @@
 	},
 	"res://game/run/run_record.gd": {
 		"fields": {
+			"gifts_opened": "int",
+			"pieces": "Array",
 			"shelved": "Array"
 		},
-		"version": 1
+		"version": 2
 	},
 	"res://game/run/run_tallies.gd": {
 		"fields": {

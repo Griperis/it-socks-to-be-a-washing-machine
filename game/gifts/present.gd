@@ -4,7 +4,12 @@
 ## (where it lies and who holds it are its Carriable's).
 ##
 ## It is its Carriable's pick guard (the `carry_guards` seam): only the player it is for may aim at it and pick
-## it up; a Teammate's is refused silently ("not_yours") and never aimed or outlined. Opening is core/138's.
+## it up; a Teammate's is refused silently ("not_yours") and never aimed or outlined.
+##
+## Opening (core/138, "Opening"): the carrier's next left click asks `open`; the Host checks the asker is the
+## player it is for and holds it, and the answer removes its row, gives the piece (the Roster's owned list) or
+## pays the refund into the Bank as a bonus when they owned every piece (Q2673), and counts it in the run's
+## record. Presents shows the answer on every machine (the shake and pop, the opener's reveal).
 ##
 ## Looks only: the box is wrapped from its Collection's file (paper, ink, icon, bow); the Looks' `drop` clip
 ## plays once on every machine that saw the drop (Presents.fresh()), then `lying` loops while it lies at its
@@ -15,6 +20,11 @@ extends Part
 
 ## A present's Carriable asks the parts in this group whether a pick may go ahead (Carriable.GUARDS).
 const NOT_YOURS := &"not_yours"
+## The verb a carried present's left click asks, and the answer's key Presents shows.
+const OPEN := &"open"
+const OPENED := "present_opened"
+## The left click (the Hands' pick action).
+const PICK := &"pick"
 const LOOKS := ^"../Looks"
 const PLAYER := ^"AnimationPlayer"
 const DROP := &"drop"
@@ -53,6 +63,9 @@ var _wrapped: StringName = &""
 ## Whether it was drawn lying the last frame (the glow, the sparkle and the clips follow a change).
 var _was_lying := false
 var _started := false
+## The physics frame this machine's player was first seen carrying it (-1: not carrying); a click opens it only
+## on a later frame, so the click that picked it up never opens it.
+var _carried_from := -1
 
 
 func _enter_tree() -> void:
@@ -62,10 +75,89 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	if tuning == null:
 		tuning = PresentTuning.new()
+	# Before the player's own tick (priority 0), so the click that opens it is swallowed before the player
+	# reads it (GiftClicks).
+	process_physics_priority = GiftClicks.BEFORE_PLAYER
 
 
-func decide(_cmd: Command) -> Dictionary:
-	return refuse("wrong")
+func accepts() -> Dictionary[StringName, Dictionary]:
+	return {OPEN: {"args": {}, "rate": 4}}
+
+
+## Player `by` asks to open it (their left click while carrying it).
+func open(by: int) -> void:
+	if parts != null:
+		parts.ask(Command.new(OPEN, by, id, {}))
+
+
+## The Host: only the player it is for, carrying it, opens it. The answer removes its row, gives the piece or
+## pays the refund (Q2673), counts it in the run's record, and carries OPENED for every machine's show.
+func decide(cmd: Command) -> Dictionary:
+	if cmd.kind != OPEN:
+		return refuse("wrong")
+	var c := carriable()
+	if c == null or c.holder != cmd.by:
+		return refuse("not_carried")
+	if not is_for(cmd.by):
+		return refuse(NOT_YOURS)
+	var spawned := get_parent().get_parent() as SpawnedParts if get_parent() != null else null
+	var row := row_id()
+	if spawned == null or row == 0:
+		return refuse("wrong")
+	var changes := {spawned.id: spawned.remove_patch(PackedInt32Array([row]))}
+	var ev := {"ok": true, "changes": changes}
+	var fresh := not owned_by(cmd.by).has(String(piece))
+	var refund := 0
+	if fresh:
+		var r := roster()
+		if r != null:
+			changes.merge(r.owned_patch(cmd.by, piece))
+	else:
+		refund = tuning.refund
+		var bank := Bank.of(self)
+		if bank != null and refund > 0:
+			changes[bank.id] = bank.paid_patch(cmd.by, refund, true)
+			Bank.note(ev, cmd.by, refund, 0, null, true)
+	var record := RunRecord.of(self)
+	if record != null:
+		var tallies := RunTallies.of(self)
+		changes[record.id] = record.opened_patch(tallies.key_of(cmd.by) if tallies != null else cmd.by, piece, fresh)
+	var presents := Presents.of(self)
+	ev[OPENED] = {"by": cmd.by, "piece": String(piece), "refund": refund, "collection": String(collection),
+			"row": row, "presents": String(presents.id) if presents != null else ""}
+	return ev
+
+
+## The pieces player `by` owns, as the Host knows them: the Roster's, or this machine's profile with no Roster
+## naming them (a station's Host of one).
+func owned_by(by: int) -> PackedStringArray:
+	var r := roster()
+	var pid := r.id_of(by) if r != null else ""
+	if pid != "":
+		return r.owned_of(pid)
+	return Wardrobe.owned(Worlds.profile().pieces)
+
+
+## This machine's player's left click while carrying it opens it (the click goes no further).
+func _physics_process(_delta: float) -> void:
+	var c := carriable()
+	if c == null or parts == null or not is_inside_tree():
+		return
+	var me := multiplayer.get_unique_id()
+	if c.holder != me:
+		_carried_from = -1
+		return
+	var frame := Engine.get_physics_frames()
+	if _carried_from < 0:
+		_carried_from = frame
+		return
+	if frame <= _carried_from or not Input.is_action_just_pressed(PICK):
+		return
+	var player := GiftClicks.player_of(c.hands(), me)
+	if player == null or not GiftClicks.acting(player):
+		return
+	GiftClicks.swallow(player)
+	open(me)
 
 
 ## Its Carriable's guard: player `by` (a peer) may pick it up only when it is theirs.
@@ -185,7 +277,7 @@ static func wrap_looks(looks: Node3D, col: SockCollection, tuning: PresentTuning
 	var glow_material := glow.material_override as StandardMaterial3D if glow != null else null
 	if glow_material != null:
 		glow_material.albedo_color = Color(bow.lightened(GLOW_LIGHTEN), GLOW_ALPHA)
-	for name: StringName in [&"Sparkle", &"Burst"]:
+	for name: StringName in [&"Sparkle", &"Burst", &"Pop"]:
 		var specks := looks.get_node_or_null(NodePath(name)) as GPUParticles3D
 		var material := specks.process_material as ParticleProcessMaterial if specks != null else null
 		if material != null:

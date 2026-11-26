@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: gifts
@@ -65,3 +65,6 @@ it; `shake` and `preview` in `PresentTuning` (`# placeholder:`).
 - Each player opens their own present whenever they like (Q2674, 2026-11-25).
 
 ## Open follow-ups
+- [later] Technical, for the lead: `player.gd` was out of bounds (core/130), so the carried present's left click and the
+  reveal's click-taking poll the pick action before the player's tick and hold its input for that one tick
+  (`game/gifts/gift_clicks.gd`). Once core/130 is in, a carried-thing click route in `player.gd` could replace it.

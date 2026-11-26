@@ -1,0 +1,187 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/gifts/gift_reveal.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://game/wardrobe/ui/preview_stage.tscn" id="2_stage"]
+[ext_resource type="PackedScene" path="res://game/gifts/looks_present.tscn" id="3_looks"]
+
+[sub_resource type="Animation" id="Animation_pop_reset"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/Stage/Stage/Turntable:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.01, 0.01, 0.01)]
+}
+
+[sub_resource type="Animation" id="Animation_pop"]
+resource_name = "pop"
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/Stage/Stage/Turntable:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25, 0.275, 0.3, 0.325, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.01, 0.01, 0.01), Vector3(0.3041, 0.3041, 0.3041), Vector3(0.5489, 0.5489, 0.5489), Vector3(0.74, 0.74, 0.74), Vector3(0.8836, 0.8836, 0.8836), Vector3(0.9855, 0.9855, 0.9855), Vector3(1.0515, 1.0515, 1.0515), Vector3(1.0877, 1.0877, 1.0877), Vector3(1.0999, 1.0999, 1.0999), Vector3(1.094, 1.094, 1.094), Vector3(1.0759, 1.0759, 1.0759), Vector3(1.0516, 1.0516, 1.0516), Vector3(1.0268, 1.0268, 1.0268), Vector3(1.0077, 1.0077, 1.0077), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pop"]
+_data = {
+&"RESET": SubResource("Animation_pop_reset"),
+&"pop": SubResource("Animation_pop")
+}
+
+[sub_resource type="Animation" id="Animation_spin_reset"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/Stage/Stage/Turntable/Spin:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_spin"]
+resource_name = "spin"
+length = 3.926991
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/Stage/Stage/Turntable/Spin:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3.926991),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 6.283185, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_spin_trail"]
+resource_name = "spin_trail"
+length = 12.566371
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/Stage/Stage/Turntable/Spin:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 12.566371),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.6, 0, 0), Vector3(-0.6, 6.283185, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_spin"]
+_data = {
+&"RESET": SubResource("Animation_spin_reset"),
+&"spin": SubResource("Animation_spin"),
+&"spin_trail": SubResource("Animation_spin_trail")
+}
+
+[node name="GiftReveal" type="CanvasLayer"]
+layer = 8
+script = ExtResource("1_script")
+
+[node name="Root" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Stage" parent="Root" instance=ExtResource("2_stage")]
+custom_minimum_size = Vector2(520, 520)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -300.0
+offset_right = 260.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Stage" parent="Root/Stage" index="0"]
+size = Vector2i(520, 520)
+
+[node name="Camera" parent="Root/Stage/Stage" index="2"]
+transform = Transform3D(-1, 0, 0, 0, 0.9856, 0.169, 0, 0.169, -0.9856, 0, 1.32, -1.75)
+
+[node name="Turntable" type="Node3D" parent="Root/Stage/Stage"]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 1.02, 0)
+
+[node name="Spin" type="Node3D" parent="Root/Stage/Stage/Turntable"]
+rotation_order = 4
+
+[node name="Box" parent="Root/Stage/Stage" instance=ExtResource("3_looks")]
+transform = Transform3D(1.40413, 0, -0.76709, 0, 1.6, 0, 0.76709, 0, 1.40413, 0, 0.74, 0)
+visible = false
+
+[node name="Caption" type="VBoxContainer" parent="Root"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = -170.0
+offset_bottom = -170.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="Name" type="Label" parent="Root/Caption"]
+layout_mode = 2
+theme_type_variation = &"RevealName"
+text = "Piece"
+horizontal_alignment = 1
+
+[node name="Rarity" type="Label" parent="Root/Caption"]
+layout_mode = 2
+theme_type_variation = &"RevealRarity"
+text = "Rare"
+horizontal_alignment = 1
+
+[node name="Line" type="Label" parent="Root/Caption"]
+layout_mode = 2
+theme_type_variation = &"RevealLine"
+text = "New in your Wardrobe"
+horizontal_alignment = 1
+
+[node name="PopPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_pop")
+}
+
+[node name="SpinPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_spin")
+}
+
+[editable path="Root/Stage"]
