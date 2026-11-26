@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: design
 area: core
 feature: frame
@@ -55,3 +55,8 @@ the way core/120-122 did for batch B. A design ticket: no game code.
   (Q2707).
 
 ## Open follow-ups
+- [blocking] (before 151-D is built) The litterbox scratch's own sound (Q2703 asks for one; neither the answer nor
+  the old game names it). (a) The old: the swat's sound ("cat_swat", Q2008), kept under its own event
+  `litter_scratch` until the designer swaps it on the Sounds bench; (b) 151-D brings three candidate recordings
+  (licence-checked) of a cat scratching litter to the Sounds bench for the designer to pick; (c) another sound
+  (which?).
