@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://c5i2jlrgmcseh" path="res://game/parts/avatar/avatar_looks.gd" id="1_looks"]
 [ext_resource type="PackedScene" uid="uid://ociuf17dwty7" path="res://assets/avatar/avatar.glb" id="2_model"]
 [ext_resource type="Resource" uid="uid://bep60a25bpkxr" path="res://game/parts/avatar/avatar_tuning.tres" id="3_tuning"]
+[ext_resource type="Script" path="res://game/wardrobe/dresser.gd" id="4_dresser"]
+[ext_resource type="Resource" path="res://game/wardrobe/wardrobe_tuning.tres" id="5_wardrobe"]
 
 [node name="AvatarLooks" type="Node3D" unique_id=7225576]
 script = ExtResource("1_looks")
@@ -19,3 +21,7 @@ modulate = Color(1, 1, 1, 1)
 outline_modulate = Color(0.1, 0.07, 0.05, 1)
 font_size = 40
 outline_size = 10
+
+[node name="Dresser" type="Node" parent="."]
+script = ExtResource("4_dresser")
+tuning = ExtResource("5_wardrobe")

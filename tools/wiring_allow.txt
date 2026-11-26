@@ -1,0 +1,7 @@
+# Links empty on purpose (kit/docs/TESTING-more.md "The wiring check"): <scene> <node path> <property>.
+
+# core/128: the Wardrobe station's stand-in Teammate walks alone (no still one) and takes no Sock.
+game/zoo/stations/wardrobe.tscn Teammates still
+game/zoo/stations/wardrobe.tscn Teammates sock_spot
+game/zoo/zoo.tscn Stations/Wardrobe/Teammates still
+game/zoo/zoo.tscn Stations/Wardrobe/Teammates sock_spot

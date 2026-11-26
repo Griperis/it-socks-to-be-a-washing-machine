@@ -21,9 +21,14 @@
 ## - Knocked down (coop/10): copy_ragdoll() places the whole creature by the ragdoll's Root and bends
 ##   it by the other three bones, so the pupils, HoldPoint, Head (the name tag) and HatPoint ride along;
 ##   the walk, bend, crouch and squash stop and are reset while it lies, and come back at end_ragdoll().
+## - Dressed (core/128): `look` ({hat, clothes, socks, trail}) is put on by the `Dresser` child; each
+##   time the rocking turns over, `stepped` names the foot coming down (where a Trail lays its mark).
 ## The nodes the avatar's behaviour may lean on are named in looks_contract.json beside it.
 class_name AvatarLooks
 extends Node3D
+
+## The rocking turned over: `foot` is coming down (every machine, every creature: it is derived from the waddle).
+signal stepped(foot: Node3D)
 
 ## The body's surfaces that take the player's colour, and a darker shade of it.
 const TINTED := &"player"
@@ -47,6 +52,14 @@ const BODY := ^"Body/Armature/Skeleton3D/Avatar"
 		player_name = value
 		if is_node_ready():
 			_tint()
+## What it wears: {hat, clothes, socks, trail}, a piece id or &"" each (the Dresser puts it on).
+@export var look: Dictionary = {}:
+	set(value):
+		look = value
+		if is_node_ready() and dresser() != null:
+			dresser().wear(look)
+## Off for the mirror body: its steps leave no Trail.
+@export var leaves_trail := true
 
 ## The look pitch (radians, + up): the bend eases toward it.
 var look_pitch := 0.0
@@ -91,6 +104,9 @@ var _fall := 0.0
 var _squash := 0.0
 var _squash_speed := 0.0
 var _airborne := false
+## Which way the feet rock now (1, -1; 0 before the first frame): a turn over is a step.
+var _step_side := 0
+var _dresser: Dresser
 
 
 func _ready() -> void:
@@ -124,6 +140,10 @@ func _ready() -> void:
 	_blend = _mesh.find_blend_shape_by_name(&"Crouch")
 	_body_rest = _body.position
 	_tint()
+	_dresser = dresser()
+	if _dresser != null:
+		_dresser.attach(self)
+		_dresser.wear(look)
 
 
 ## The own body: the belly alone (keeping the Crouch shape key), set back behind the eyes; the feet
@@ -139,6 +159,16 @@ func _make_first_person() -> void:
 		_tag.visible = false
 	for m: GeometryInstance3D in [_mesh] + _feet:
 		m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+
+
+## The Dresser that puts the look on (null in a Looks without one).
+func dresser() -> Dresser:
+	return get_node_or_null(^"Dresser") as Dresser
+
+
+## Where the waddle is in its rocking (radians, 0 to TAU): a swishing piece swings by it.
+func walk_phase() -> float:
+	return _phase
 
 
 ## The body mesh, skinned to the four-bone spine.
@@ -192,6 +222,8 @@ func set_crouch(weight: float) -> void:
 		return  # a lying body copies its ragdoll (copy_ragdoll())
 	if _blend >= 0:
 		_mesh.set_blend_shape_value(_blend, crouch)
+	if _dresser != null:
+		_dresser.crouch(crouch)
 	_pose()
 
 
@@ -252,6 +284,11 @@ func _waddle(delta: float) -> void:
 	walk = move_toward(walk, clampf(_speed / tuning.walk_speed, 0.0, 1.0), delta * tuning.walk_rate)
 	_phase = fmod(_phase + _speed * delta / tuning.stride * TAU, TAU)
 	var s := sin(_phase)
+	var side := 1 if s >= 0.0 else -1
+	if side != _step_side:
+		if _step_side != 0:
+			stepped.emit(_feet[0] if side > 0 else _feet[1])
+		_step_side = side
 	var swing := deg_to_rad(tuning.foot_swing) * walk
 	var roll := deg_to_rad(tuning.foot_roll) * walk
 	_body.position = _body_rest + Vector3.UP * tuning.bob * absf(s) * walk
@@ -347,6 +384,8 @@ func copy_ragdoll(moves: Array[Transform3D]) -> void:
 		crouch = 0.0
 		if _blend >= 0:
 			_mesh.set_blend_shape_value(_blend, 0.0)
+		if _dresser != null:
+			_dresser.crouch(0.0)
 	global_transform = moves[0]
 	var back := moves[0].affine_inverse()
 	for b: int in _bone_rest.size():

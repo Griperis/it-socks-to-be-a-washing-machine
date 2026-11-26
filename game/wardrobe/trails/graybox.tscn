@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/wardrobe/trail_mark.gd" id="1_mark"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mark"]
+albedo_color = Color(0.55, 0.5, 0.62, 1)
+roughness = 1.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mark"]
+material = SubResource("StandardMaterial3D_mark")
+top_radius = 0.05
+bottom_radius = 0.05
+height = 0.004
+radial_segments = 12
+rings = 1
+
+[node name="GrayboxTrail" type="Node3D"]
+editor_description = "The stand-in mark of every Trail not yet remade (core/144 makes each its particle scene). placeholder: life and max_marks are the old wardrobe.json shared trail numbers (life 3.0, max 30)"
+script = ExtResource("1_mark")
+
+[node name="Mark" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_mark")
