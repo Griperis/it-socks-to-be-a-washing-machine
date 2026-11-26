@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/entities/wardrobe_station/wardrobe_station.gd" id="1_station"]
+[ext_resource type="PackedScene" path="res://game/entities/wardrobe_station/looks_wardrobe_station.tscn" id="2_looks"]
+[ext_resource type="PackedScene" path="res://game/wardrobe/ui/wardrobe_menu.tscn" id="3_menu"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_carcass"]
+size = Vector3(1, 1.92, 0.56)
+
+[node name="WardrobeStation" type="StaticBody3D"]
+collision_mask = 0
+
+[node name="WardrobeStation" type="Node" parent="." node_paths=PackedStringArray("menu") groups=["sock_clear"]]
+script = ExtResource("1_station")
+menu = NodePath("../WardrobeMenu")
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.96, 0)
+shape = SubResource("BoxShape3D_carcass")
+
+[node name="Looks" parent="." instance=ExtResource("2_looks")]
+
+[node name="WardrobeMenu" parent="." instance=ExtResource("3_menu")]

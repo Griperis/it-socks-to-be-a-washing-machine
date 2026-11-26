@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: player
@@ -10,7 +10,7 @@ done:
 blocked_by: ["[[141-looks-in-coop]]", "[[125-collections-as-data]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 5", "suggested model: opus"]
 terms: [Wardrobe, Wardrobe Station, Colour & Wardrobe, Player colour, Hat, Clothes, Socks piece, Trail]
-suites: [house, mess, sock_generator, menus, ui_nodes, save, coop_join, openables]
+suites: [house, mess, sock_generator, menus, ui_nodes, save, coop_join]
 ---
 
 # The Wardrobe page and the station in the house

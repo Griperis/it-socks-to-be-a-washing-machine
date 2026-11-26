@@ -89,6 +89,7 @@
 [ext_resource type="Script" path="res://game/entities/machine_part/machine_part_slot.gd" id="101_slot"]
 [ext_resource type="PackedScene" path="res://game/entities/laundry_bin/laundry_bin.tscn" id="102_bin"]
 [ext_resource type="PackedScene" path="res://game/laundry/laundry_day.tscn" id="103_day"]
+[ext_resource type="PackedScene" path="res://game/entities/wardrobe_station/wardrobe_station.tscn" id="104_wardrobe"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_part_slot"]
 size = Vector3(0.72, 0.97, 0.72)
@@ -691,6 +692,9 @@ unlock_stage = 4
 collection = &"space"
 pool = Array[StringName]([&"winter", &"space", &"nature", &"tech"])
 locked = true
+
+[node name="WardrobeStation" parent="." instance=ExtResource("104_wardrobe")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.38, 3, 3.94)
 
 [node name="FloorLocks" type="Node3D" parent="."]
 

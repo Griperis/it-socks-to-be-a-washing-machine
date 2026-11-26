@@ -13,6 +13,9 @@ const NET_WAIT_S := 20.0
 const FPS := 60
 ## Where a player stands before the switches, in station space (tests/wardrobe_test.gd).
 const BY_SWITCHES := Vector3(-0.8, 0.0, 4.1)
+## Before the station's wardrobe (core/142), and one of its doors, in station space.
+const BY_WARDROBE := Vector3(4.1, 0.0, 1.3)
+const WARDROBE_DOOR := Vector3(5.2, 1.1, 1.3)
 ## Where the Host waits, out of the way.
 const HOST_ASIDE := Vector3(4.0, 0.0, -4.0)
 
@@ -28,6 +31,8 @@ func cases() -> Array[Dictionary]:
 				"title": "two players wishing the same colour: the Guest gets the next free one, its profile keeping the wish; colour of the Host's is refused taken; a free one is granted on both machines and the profile follows; own adds a known piece, refuses an unknown one"},
 		{"name": "alone", "method": "case_alone", "world": false,
 				"title": "alone (a Host of one) the lone player has its Roster entry with the profile's look: a fresh profile wears a basic hat by the Hat switch, its own body and mirror body dressed from its entry"},
+		{"name": "station", "method": "case_station", "world": false,
+				"title": "real path (co-op, core/142): the Guest presses E at the zoo's wardrobe: the doors swing open on both machines and the Guest's Wardrobe page opens (the Host's stays shut); a click on its Hats \">\" puts a basic hat on the Guest's preview and on the Host's Avatar of the Guest; its close key shuts the page and the doors close on both"},
 		{"name": "save_merge", "method": "case_save_merge", "world": false,
 				"title": "the Roster's save merge keeps a present player's live look, owned pieces and tallies over the save's, and brings an absent player's back from the save; owned_patch adds a won piece once"},
 	]
@@ -161,6 +166,51 @@ func case_alone() -> void:
 	_check(player.mirror_body().dresser().hat != null, "the mirror body wears it")
 	_check(String(profile.look.get("hat", "")) == String(hat), "the profile follows")
 	_drop_branches()
+
+
+func case_station() -> void:
+	var zoos := await _pair(PlayerProfile.fresh(), PlayerProfile.fresh())
+	var host: Node3D = zoos[0]
+	var guest: Node3D = zoos[1]
+	var g := LevelRuntime.of(guest).session.me()
+	var gid := LevelRuntime.of(guest).roster.id_of(g)
+	var host_station := host.get_node("%s/WardrobeStation/WardrobeStation" % STATION) as WardrobeStation
+	var guest_station := guest.get_node("%s/WardrobeStation/WardrobeStation" % STATION) as WardrobeStation
+	await _aim(guest, _station_point(guest, BY_WARDROBE), _station_point(guest, WARDROBE_DOOR))
+	_check(LevelRuntime.of(guest).player.aimed_part() == guest_station, "the Guest aims at the wardrobe")
+	Input.action_press(&"interact")
+	await _paced_ticks(2)
+	Input.action_release(&"interact")
+	await _wait(guest_station.menu.is_open, "the Guest's Wardrobe page to open", FPS * 3)
+	await _wait(func() -> bool: return host_station.inside.has(gid), "the Host's station to have the Guest inside", FPS * 3)
+	_check(not host_station.menu.is_open(), "the Host's own page stays shut")
+	var host_door := host.get_node("%s/WardrobeStation/Looks/door_left" % STATION) as Node3D
+	await _wait(func() -> bool: return absf(rad_to_deg(host_door.rotation.y)) > 79.0, "the doors to swing open on the Host", FPS * 2)
+	var page := guest_station.menu.page()
+	await _click(page.row(WardrobePiece.Slot.HAT).next_key())
+	var hat := _first_owned_hat()
+	_check(page.creature().dresser().worn[&"hat"] == hat, "the Guest's preview wears %s at once" % hat)
+	var seen := _avatar(host, g)
+	await _wait(func() -> bool: return seen.looks.dresser().worn[&"hat"] == hat, "the Host's Avatar of the Guest to wear %s" % hat, FPS * 3)
+	await _click(page.close_key())
+	_check(not guest_station.menu.is_open(), "the close key shuts the Guest's page")
+	await _wait(func() -> bool: return host_station.inside.is_empty() and guest_station.inside.is_empty(), "the Guest to leave the station on both", FPS * 3)
+	await _wait(func() -> bool: return absf(host_door.rotation.y) < 0.02, "the doors to swing shut on the Host", FPS * 2)
+	_drop_branches()
+
+
+## Clicks `control` in its own viewport (a branch's).
+func _click(control: Control) -> void:
+	await _paced_ticks(2)
+	var at := control.get_global_rect().get_center()
+	for pressed: bool in [true, false]:
+		var ev := InputEventMouseButton.new()
+		ev.button_index = MOUSE_BUTTON_LEFT
+		ev.position = at
+		ev.global_position = at
+		ev.pressed = pressed
+		control.get_viewport().push_input(ev, true)
+	await _paced_ticks(2)
 
 
 func case_save_merge() -> void:
