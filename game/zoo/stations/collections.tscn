@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://game/zoo/collections/collections_station.gd" id="1_station"]
 
+[ext_resource type="PackedScene" path="res://game/zoo/collections/encyclopedia_pillar.tscn" id="2_pillar"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.5, 0.42, 0.55, 1)
 
@@ -28,3 +30,6 @@ width = 700.0
 
 [node name="Wall" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.7, 0)
+
+[node name="Pillar" parent="." instance=ExtResource("2_pillar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.5, 0, 1)

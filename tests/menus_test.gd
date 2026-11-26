@@ -68,6 +68,8 @@ func cases() -> Array[Dictionary]:
 				"title": "X01 real path: on the title, Multiplayer, Join, Options and Licence each show the ESC close key at the same top-right corner of their panel; a click closes the page (one page up), Esc does the same"},
 		{"name": "x02_close_key_esc_menu", "method": "case_x02", "world": false,
 				"title": "X02 real path: the ESC menu and the Options over it show the close key; a click closes each, Esc too; over End session's question the key cancels the question first"},
+		{"name": "k01_encyclopedia_key", "method": "case_k01", "world": false,
+				"title": "K01 real path (core/136): on the title a click on the encyclopedia key opens the pages on the profile; a held Design shows its name, the others \"???\"; > turns to the next page and wraps; a locked Collection and the Lost Socks have no page; Esc and the close key shut it; the arrows take focus"},
 		{"name": "x03_every_dialogue_has_it", "method": "case_x03", "world": false,
 				"title": "X03: every dialogue scene under game/ui (a root with a `closed` signal, the title's Multiplayer and Join pages) holds the shared close_button scene, at the top right"},
 	]
@@ -474,6 +476,54 @@ func _check_corner(close: CloseButton, what: String) -> void:
 	_check(key.is_visible_in_tree() and absf(key.get_global_rect().end.x - area.end.x) < 1.0
 			and key.get_global_rect().position.y - area.position.y < 24.0, "%s: the close key is at the top right" % what)
 	_check(key.icon == UiIcons.texture("key_esc") and key.text == "", "%s: it is the ESC keycap, icon only" % what)
+
+
+func case_k01() -> void:
+	var p := Worlds.profile()
+	var had_designs := p.designs
+	var had_collections := p.collections
+	var mine := EncyclopediaPage.sorted_designs(&"simple")
+	p.designs = PackedInt32Array([mine[0].id])
+	p.collections = [&"simple", &"patterns", &"lost"]
+	var t := await _title()
+	var key := t.get_node("%EncyclopediaKey") as Button
+	_check(key.tooltip_text == "Sock encyclopedia" and key.size.is_equal_approx(Vector2(72, 72)), "a 72 x 72 key with the tooltip")
+	_check(key.get_global_rect().end.x < (t.get_node("%LicenceKey") as Control).get_global_rect().position.x, "left of the Licence key")
+	await _click(key)
+	_check(t.page == TitleScreen.ENCYCLOPEDIA_PAGE, "a click opens the pages")
+	var book := t.get_node("Pages").get_child(t.get_node("Pages").get_child_count() - 1) as EncyclopediaPage
+	_check(book != null and book.title_text() == "Simple (1/3)" and book.count_text() == "1 / 130", "page one of Simple: 1 / 130")
+	var cells := book.cells()
+	_check(cells.size() == 50 and cells[0].shown_name() == mine[0].name, "the held Design shows its name first (small first)")
+	var unknown := 0
+	for c in cells:
+		if c.shown_name() == EncyclopediaCell.UNKNOWN:
+			unknown += 1
+	_check(unknown == 49, "the other 49 read ???")
+	var sock_count := (book.get_node("%Socks") as Node3D).get_child_count()
+	_check(sock_count == 50, "a Sock stands behind each cell (%d)" % sock_count)
+	_check((book.get_node("%Next") as Button).has_focus() and (book.get_node("%Prev") as Button).focus_mode == Control.FOCUS_ALL, "the arrows take focus (Tab, the pad)")
+	await _click(book.get_node("%Next"))
+	_check(book.title_text() == "Simple (2/3)" and book.cells().size() == 50, "> turns to the next page")
+	await _click(book.get_node("%Next"))
+	await _click(book.get_node("%Next"))
+	var titles: Array[String] = []
+	for pg in book.pages():
+		titles.append((pg["collection"] as SockCollection).id)
+	_check(not titles.has("lost") and not titles.has("space") and book.title_text().begins_with("Patterns") or book.page == 3, "the Lost Socks and a locked Collection have no page: %s" % ",".join(titles))
+	_check(not titles.has("lost") and not titles.has("space"), "no page of lost or space")
+	await _click(book.get_node("%Prev"))
+	await _click(book.get_node("%Prev"))
+	await _click(book.get_node("%Prev"))
+	_check(book.title_text() == "Simple (1/3)", "< wraps round to the end and back")
+	await _click(book.get_node("%Close").key())
+	_check(t.page == TitleScreen.HOME, "the close key shuts it")
+	await _click(key)
+	await _key(&"ui_cancel")
+	await _frames(2)
+	_check(t.page == TitleScreen.HOME, "Esc shuts it")
+	p.designs = had_designs
+	p.collections = had_collections
 
 
 func case_x01() -> void:

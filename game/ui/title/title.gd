@@ -1,13 +1,13 @@
 ## The game's first screen (the old TitleScreen, B60; core/58): the dark backdrop, one cream keycap
-## panel with its pages shown one at a time (home, Multiplayer, Join, Options, Licence), the status
-## line under them and the Licence key in the corner (the Zoo key too in a debug build). The pages swap
+## panel with its pages shown one at a time (home, Multiplayer, Join, Options, Licence, Sock encyclopedia), the status
+## line under them and the Licence and Sock encyclopedia keys in the corner (the Zoo key too in a debug build). The pages swap
 ## at once; the Zoo key in the corner is a debug build's only (Q2580). The look is the scene's, on the Theme; code fills data and reacts to presses.
 ##
 ## - Solo: the Lobby (core/63, Q2583) with the Solo World (Worlds.pick_solo()), alone, nothing listening.
 ## - Multiplayer: one "Your name" field above Host and Join (kept in the profile; Q2585), Host (the Lobby on
 ##   the last-played co-op World, or a New Game in a free slot; listening) and Join (address, kept in the
 ##   profile; the Host's Lobby or house).
-## - Options, Licence: their pages. Quit closes the game.
+## - Options, Licence, Sock encyclopedia (core/136, the profile's pages): their pages. Quit closes the game.
 ## - Each way into the game (Solo, Host, Join) makes the game link (GameLink, core/62) beside the title,
 ##   which the level then plays through and a scene change keeps; back at the title the game is over
 ##   and the title frees the link it finds.
@@ -19,11 +19,13 @@ extends Control
 const ZOO := "res://game/zoo/zoo.tscn"
 const OPTIONS := preload("res://game/ui/options/options.tscn")
 const LICENCE := preload("res://game/ui/licence/licence.tscn")
+const ENCYCLOPEDIA := preload("res://game/ui/encyclopedia/encyclopedia.tscn")
 const HOME := "home"
 const MULTIPLAYER := "multiplayer"
 const JOIN := "join"
 const OPTIONS_PAGE := "options"
 const LICENCE_PAGE := "licence"
+const ENCYCLOPEDIA_PAGE := "encyclopedia"
 
 ## How a choice goes into the game: func(path, heading, setup: Callable). A test swaps it to stay put.
 var go_into := func(path: String, heading: String, setup: Callable) -> void: SceneChanger.change_to(path, heading, setup)
@@ -47,6 +49,7 @@ var _page_node: Control = null
 @onready var _name: LineEdit = %NameField
 @onready var _address: LineEdit = %AddressField
 @onready var _licence_key: Button = %LicenceKey
+@onready var _encyclopedia_key: Button = %EncyclopediaKey
 @onready var _zoo_key: Button = %ZooKey
 @onready var _close: CloseButton = %Close
 
@@ -63,6 +66,7 @@ func _ready() -> void:
 	_join.pressed.connect(join)
 	_address.text_submitted.connect(func(_t: String) -> void: join())
 	_licence_key.pressed.connect(show_page.bind(LICENCE_PAGE))
+	_encyclopedia_key.pressed.connect(show_page.bind(ENCYCLOPEDIA_PAGE))
 	# The Zoo key is a debug build's only (Q2580): a release build has none.
 	if OS.is_debug_build():
 		_zoo_key.pressed.connect(func() -> void: go_into.call(ZOO, "", Callable()))
@@ -95,10 +99,15 @@ func show_page(which: String) -> void:
 		_page_node = OPTIONS.instantiate() as Control
 	elif which == LICENCE_PAGE:
 		_page_node = LICENCE.instantiate() as Control
+	elif which == ENCYCLOPEDIA_PAGE:
+		var book := ENCYCLOPEDIA.instantiate() as EncyclopediaPage
+		book.profile = Worlds.profile()
+		_page_node = book
 	if _page_node != null:
 		_page_node.connect(&"closed", _on_page_closed)
 		_holder.add_child(_page_node)
 	_licence_key.visible = which == HOME
+	_encyclopedia_key.visible = which == HOME
 	_close.visible = which == MULTIPLAYER or which == JOIN
 	if _zoo_key != null:
 		_zoo_key.visible = which == HOME
