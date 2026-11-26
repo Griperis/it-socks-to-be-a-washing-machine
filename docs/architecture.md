@@ -78,6 +78,12 @@ How this game is built, unless a decision record says otherwise. They are the ga
 | Coins, Drawers and Upgrades (build plan, batch B) | `docs/architecture/economy.md` | you change Coins or the team's Drawers, a payout, the HUD counters, an Upgrade, the Upgrade menu, or the Old Tree as station or speaker |
 | Gifts, Collections and the encyclopedia (build plan, batch B) | `docs/architecture/gifts.md` | you change the Collections' data, their unlocking or the New Game's pools, a Collection completing, Stage presents and their reveal, Parts spawned during play, or the encyclopedia and its book |
 | The Wardrobe, the Profile and Achievements (build plan, batch B) | `docs/architecture/wardrobe.md` | you change a Wardrobe piece, what an Avatar wears, a Trail, the Wardrobe page or station, the profile file, the Lifetime tallies, an Achievement or the Profile page |
+| The Elevator (build plan, batch C) | `docs/architecture/elevator.md` | you change the Elevator, its stops, calls, hatches, out of order or locked, its riders, what rides in the car (the one carry rule, the group `elevator_cargo`), or the three Elevator Upgrades |
+| The day and the exterior (build plan, batch C) | `docs/architecture/day-and-exterior.md` | you change the in-game hour, the sun, moon and skies, the lamps by the clock, the wall clock, or the outside seen through the windows |
+| The vacuums and the detector (build plan, batch C) | `docs/architecture/devices.md` | you change the Sock vacuum, its nozzle, hose, Tank, Spit, Pour or Filter, the Backpack vacuum, the Sock detector, the five vacuum Upgrades, or the whole-Hands and thrown-knock rules every carried device follows |
+| The TV and the Radio (build plan, batch C) | `docs/architecture/tv-and-radio.md` | you change the TV, its shows, the Radio, its channels and tracks (the game's music), the knob and broadcast clock, or carrying and throwing the Radio |
+| The Cat (build plan, batch C) | `docs/architecture/cat.md` | you change the Cat, its map and walk, petting, holding or throwing it, the swat, the fetch, the litterbox visit, its naps in the car, the drum cycle and its coats, or a place the Cat uses (`cat_places`) |
+| The X-rays (build plan, batch C) | `docs/architecture/x-rays.md` | you change Show pair or Show Cabinet, their clocks, glows, outlines, arrows, the screen tint, the ability icons, or the eight X-ray Upgrades |
 
 A ticket that adds a subsystem adds its row here and its file.
 

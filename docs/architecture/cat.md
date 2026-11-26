@@ -1,7 +1,9 @@
 # The Cat and the litterbox
 
-**Status: build plan for batch C (designed in core/151 on the designer's answers Q2699, Q2700, Q2703, Q2705;
-2026-11-26). Not filed yet: the drafts below are for the lead to file.** Behaviour list:
+**Status: build plan for batch C (designed in core/151 on the designer's answers Q2699, Q2700, Q2703, Q2705, with
+Q2712 for the scratch's sound; 2026-11-26). Filed by core/153: 151-A core/176, 151-B core/177, 151-C core/178, 151-D
+core/179, 151-E core/180, 151-F core/181, AS-C assets/29, AS-K assets/30; the Cat's sounds and the station's shell come
+with the batch's groundwork, core/154. The build order is `docs/migration/milestones.md` "Batch C".** Behaviour list:
 `docs/migration/m4-lists/12-cat-and-litterbox.md` (40 lines). Batch C is built unattended and reviewed in play as a
 whole, as batches A and B were (Q2603-Q2605). An open choice an agent meets in the build takes the old game's answer
 and goes on the batch's review sheet.
@@ -194,7 +196,9 @@ Every node in the group `cat_places` may have these methods (read with `has_meth
 - **Authored in nodes (Q2658):** the Cat, its `Aim`, the hearts (a `GPUParticles3D` `Hearts` in the Looks: little pink
   hearts, (1, 0.42, 0.62), floating up and fading, emitting for `purr_seconds`), the mouth (`Mouth`, a
   `BoneAttachment3D` on the head bone: the Sock across its jaws; `Carry`, a `Marker3D` 0.2 m up and 0.2 m ahead: the
-  sock ball), the prompts through the existing crosshair rows. No Control, mesh, material or particle built in code;
+  sock ball), the prompts through the existing crosshair rows. `CatLooks` joins the group `sock_carriers`
+  (`drawn_sock(id) -> Node3D`: the node drawing that Mess id in its mouth, or null), which a Sock X-ray asks for a mate
+  no Hands hold (Q2714, `x-rays.md`; 151-C). No Control, mesh, material or particle built in code;
   the Sock and the sock ball it carries are the Mess's own Looks scenes for that Design (`looks_of`, as the Hands
   show them).
 - **Motion is clips in Looks (Q2697):** the contract (`game/entities/cat/looks_contract.json`) names a `Skeleton3D`
@@ -328,7 +332,7 @@ Nothing writes save code: `Cat` and `WasherWash` are saved and joined by their S
 `place` that is not in the loaded level is cleared. `tests/saves/shape.json` changes in 151-A only (the Cat) and 151-F
 (the wash's two load fields).
 
-## Sounds (SoundEvents in `sound_catalogue.tres`, the old picks; all added by 151-A so the later drafts do not touch the catalogue)
+## Sounds (SoundEvents in `sound_catalogue.tres`, the old picks; all added by core/154, the batch's groundwork, so no Cat draft touches the catalogue but 151-D's candidates)
 
 | Event | When | Space | Old pick |
 |---|---|---|---|
@@ -337,7 +341,7 @@ Nothing writes save code: `Cat` and `WasherWash` are saved and joined by their S
 | `cat_hiss` | a throw | world | SB:59 (Dan Knoflicek, Cat 8, CC-BY: in `credits.tres`) |
 | `cat_land` | a landing, the hop into or out of the car | world | SB:60 |
 | `cat_swat` | the swat's contact | world | SB:61 |
-| `litter_scratch` | the litterbox scratch, while BOXED | world, at the litterbox | **open (Q2703 asks its own sound): `[blocking]` below**; until answered, the swat's clips as a placeholder |
+| `litter_scratch` | the litterbox scratch, while BOXED | world, at the litterbox | its own sound (Q2703): 151-D brings three licence-checked recordings of a cat scratching litter to the Sounds station for the designer to pick (Q2712); until the pick, the swat's clips as a placeholder (core/154) |
 | `pop` (exists) | the Cat takes Socks | world | shared |
 | `pick` (exists) | the pick | the picker's | shared |
 
@@ -386,17 +390,20 @@ The Cat has no rumble of its own: a Throw of it buzzes "throw", a knock "knock" 
 - Q2699: every carried thing rides the Elevator by one rule (the Cat is cargo); putting other things into the drum waits
   with the Secrets.
 - Q2705: the Cat and its clips are ported from the old game by the port rules, with the old colours.
+- Q2712: the scratch's sound: three licence-checked recordings to the Sounds station for the designer to pick.
+- Q2714: a Sock X-ray's glow follows its mate as it moves, the fetched one in the Cat's mouth too (`x-rays.md`; the
+  Cat's side is 151-C's: `CatLooks` offers the Sock it draws).
 - Q2682: the Cat's five Secrets wait with the Secrets subsystem. Q2599: no Grotto. Q2600: the litterbox's Socks are the
   generator's.
 
-## Draft tickets (ready-for-agent; the lead files them)
+## Draft tickets (filed by core/153; each heading names its ticket)
 
 Each builds on graybox Looks and waits for no asset (Q2705); every number `# placeholder:` the old unless a Q set it.
 "Lines" are list 12's by heading and order (W What it is, R Roaming and resting, P Petting, H Picking up, holding,
 throwing, S Swatting, F Fetching, L The litterbox, C Naps in the car, WD The watchdog, D The drum and the coats, Wo
 Words). Every list line is in one draft below or named after them.
 
-### 151-A The Cat walks the house: the entity, its map, roaming, resting and the watchdog
+### 151-A The Cat walks the house: the entity, its map, roaming, resting and the watchdog (filed: core/176)
 - **Lines:** W1 (graybox look; the model is AS-C), W2, W3; R1, R2 (the sofa, beds and window spots; the car spot is
   151-E's), R3, R4, R5, R6, R7 (every clip in the graybox Looks, `scratch` a placeholder copy of `swat`); WD1.
 - **Build:** `cat.tscn` (root, `Cat` Part with every State field of this doc, `Aim`, `Gait`, `Nav`, graybox Looks
@@ -404,9 +411,9 @@ Words). Every list line is in one draft below or named after them.
   (every field above), `CatCoat` and the five coats, the verbs `rest_over`, `walk`, `meow`, `put` and the Host's timers,
   the group contracts `cat_nap` and `cat_places` (the calls, no member yet), the per-floor regions and the async bake,
   the Door scene's `NavigationLink3D` and doorway obstacle, `CatStart` and the window nap markers in `house.tscn`, the
-  nap markers in `sofa.tscn`, `double_bed.tscn`, `bunk_bed.tscn`, `old_cot.tscn`, the Cat placed in `house.tscn`, every
-  Cat SoundEvent of the table (and the hiss's credit), the station `cat.tscn` with its board and zoo tuning, the station
-  under `Stations` in `zoo.tscn`, `tests/saves/shape.json`.
+  nap markers in `sofa.tscn`, `double_bed.tscn`, `bunk_bed.tscn`, `old_cot.tscn`, the Cat placed in `house.tscn`, the
+  station `cat.tscn` filled with its board and zoo tuning (its shell under `Stations` in `zoo.tscn`, the Cat's
+  SoundEvents and the hiss's credit are core/154's), `tests/saves/shape.json`.
 - **Acceptance:** in the house from a New Game (stages on) the Cat sits on the living room's couch and stays there while
   the ground floor is locked; when the ground floor opens (the real `open_floor`) it walks off within a rest's length;
   it is never seen on a locked floor, through a shut Door or in the shaft (a 10-minute seeded soak of the house at
@@ -423,7 +430,7 @@ Words). Every list line is in one draft below or named after them.
 - **Authored:** `CatTuning` and the coats in the inspector; nap spots as markers in the group; clips in the graybox
   Looks; the station built from the coats folder, the markers and the catalogue.
 
-### 151-B Petting, holding and throwing the Cat
+### 151-B Petting, holding and throwing the Cat (filed: core/177)
 - **Lines:** P1, P3; H1, H2, H3 (with the run-off, the stairs step and the places' `takes_cat` first: details from the
   reference, CAT:358-364, CAT:831-845), H4, H5 (the Cat's side of Q2700); Wo1.
 - **Build:** the verb `pet` and its refusals; `free` and `landed`; the `Hold` whole-Hands member on `cat.tscn` by
@@ -444,11 +451,12 @@ Words). Every list line is in one draft below or named after them.
 - **Model:** opus. **After:** 151-A and core/150's whole-Hands and thrown-knock drafts.
 - **Authored:** no new numbers (CatTuning's); the hold slot a `.tres`; the words in the crosshair rows.
 
-### 151-C Swatting and fetching
+### 151-C Swatting and fetching (filed: core/178)
 - **Lines:** P2; S1; F1, F2.
 - **Build:** the verbs `swat`, `knock`, `fetch_step` and the fetch roll in `pet`; `Mess.carried_patch`,
   `Mess.fetched_pair_patch`, the swat's drop by nobody; the mouth's drawing (`CatLooks.carry`: one Sock across `Mouth`,
-  a Pair's sock ball at `Carry`, the Mess's own Looks for the Design); the errand's ends (a pick, a leaver, a load).
+  a Pair's sock ball at `Carry`, the Mess's own Looks for the Design) and `CatLooks.drawn_sock` in `sock_carriers`
+  (Q2714); the errand's ends (a pick, a leaver, a load).
 - **Acceptance:** in the Cat station a loose Sock within reach is batted 0.5 to 1 m at the swat's contact with
   "cat_swat", never one in the Hands, inside furniture or above 0.45 m; with `fetch_chance` 1 a pet sends the Cat to the
   nearest two Socks of one Design, they leave the floor with "pop", it carries a sock ball and a Pair lies within 1.2 m
@@ -461,12 +469,14 @@ Words). Every list line is in one draft below or named after them.
 - **Model:** opus. **After:** 151-B.
 - **Authored:** CatTuning's swat and fetch numbers; no new data.
 
-### 151-D The litterbox visit
+### 151-D The litterbox visit (filed: core/179)
 - **Lines:** L4, L5, L6, L7. L1, L2, L3 are built (assets/07; the generator's `Inside` spots, Q2600; the flap's
   sounds) and are checked again by this draft's case.
 - **Build:** `LitterVisit` on `litterbox.tscn` with its markers (`CatFront`, `CatSill`, `CatInside`, `CatDrop`), the
   visit's steps as the errand `litter` (the flap's Openable patched in the answers), the hiding visit, the scratch with
-  `scratch` and `litter_scratch`, `holds_cat` while BOXED.
+  `scratch` and `litter_scratch`, `holds_cat` while BOXED; three licence-checked recordings of a cat scratching litter
+  added to `litter_scratch` as candidates on the Sounds station, each with its `SOURCES.md` row and credit, for the
+  designer to pick (Q2712).
 - **Acceptance:** with the zoo tuning's `litter_every` the Cat walks to the flap, a shut flap opens ("litter_flap_open"
   plays), it steps in, scratches 6 s with `scratch` and "litter_scratch", walks out and the flap shuts behind it even
   if a player opened it; a flap a player shuts on it is pushed open again; with `litter_hide_chance` 1 it first carries
@@ -479,7 +489,7 @@ Words). Every list line is in one draft below or named after them.
 - **Authored:** the spots are markers in the litterbox scene (moving the litterbox moves the visit); the numbers are
   CatTuning's.
 
-### 151-E The Cat's naps in the Elevator's car
+### 151-E The Cat's naps in the Elevator's car (filed: core/180)
 - **Lines:** C1, C2, C3, C4 (the Cat's side; the carry rule and the refusal words are core/149's).
 - **Build:** `CarNap` on `cat.tscn` (`nap_spot`, `rides_patch`, `fills_car`, `called_patch`, `takes_cat`,
   `holds_cat`), the `wake` verb from `arrived` and a call, the shut nap and `open_hatch`; the real Elevator (two stops)
@@ -495,7 +505,7 @@ Words). Every list line is in one draft below or named after them.
 - **Model:** opus. **After:** 151-B, core/149-A and core/149-C.
 - **Authored:** no data of its own (CatTuning's `car_shut_seconds`); the car is a place by the group contract.
 
-### 151-F The drum cycle and the coats
+### 151-F The drum cycle and the coats (filed: core/181)
 - **Lines:** D1 (Q2703: now, for the Cat only).
 - **Build:** `WasherWash`'s `load` and `load_left` (State, one at a time with a washed player), its `takes_cat` and
   `holds_cat`, the end answer (the next coat, DIZZY, the meow, the run-off), `WashView`'s blob in the coat's colour at
@@ -512,7 +522,7 @@ Words). Every list line is in one draft below or named after them.
 - **Model:** opus. **After:** 151-B.
 - **Authored:** coats are files in the folder; the cycle's numbers are `WasherTuning`'s; the blob's colour is the coat's.
 
-### AS-C The Cat's model and clips (asset ticket, `assets/<NN>`; Q2705)
+### AS-C The Cat's model and clips (filed: assets/29; Q2705)
 - **Lines:** W1's look (the model), R7's real clips.
 - **Build:** by the port rules (technical only): the old `assets/cat/cat.glb` from `tools/blender/make_cat.py` and its
   clips from `tools/blender/cat_anims.py`, ported into `assets_src/generate/cat/` and built by `build.py -- cat` to
@@ -528,7 +538,7 @@ Words). Every list line is in one draft below or named after them.
 - **Model:** opus. **After:** 151-A (the contract).
 - **Authored:** the generator script; the clips' keys are the motion's numbers.
 
-### AS-K The litterbox scratch clip (asset ticket; Q2703)
+### AS-K The litterbox scratch clip (filed: assets/30; Q2703)
 - **Lines:** L4's own clip.
 - **Build:** a new `scratch` clip on the ported rig (front paws digging, the old swat's timing only as a starting
   point), added to the generator, exported with the others; `looks_cat.tscn`'s `scratch` points at it.
@@ -543,27 +553,12 @@ Words). Every list line is in one draft below or named after them.
   subsystem (Q2682). The drum line is not among them: Q2703 brings it now (151-F).
 - Not ported: the Cat in the Lost Sock Grotto (Q2599); the litterbox's fixed three starting Socks (Q2600: the generator's).
 
-## The waves (this doc; for the lead to merge with the other batch C designs)
+## The waves
 
-Waves run side by side, at most 5 agents; a wave starts when the waves before it are merged.
-
-| Wave | Drafts (suggested model) | Files each is alone on in its wave |
-|---|---|---|
-| 1 | 151-A The Cat walks the house (opus) | `game/entities/cat/*`, `house.tscn`, `zoo.tscn`, `game/zoo/stations/cat.tscn`, `game/zoo/cat/*`, `sofa.tscn`, `double_bed.tscn`, `bunk_bed.tscn`, `old_cot.tscn`, the Door scenes (`door.tscn`, `room_door*.tscn`), `sound_catalogue.tres`, `credits.tres`, `tests/saves/shape.json` |
-| 2 | 151-B Petting, holding and throwing (opus; after core/150's rules); AS-C The Cat's model (opus) | 151-B: `cat.gd`, `cat.tscn`, `cat_looks.gd`, `hold_slot_cat.tres`, (core/150's rule file only if needed); AS-C: `assets/cat/`, `assets_src/generate/cat/`, `assets/blender_assets.json`, `game/entities/cat/looks_cat.tscn` |
-| 3 | 151-C Swatting and fetching (opus); 151-F The drum cycle (opus) | 151-C: `cat.gd`, `cat_looks.gd`, `mess.gd`, `hands.gd` (only if the HELD check needs it); 151-F: `washer_wash.gd`, `wash_view.gd`, `washer.gd`, `washer_tuning.gd`, `washer_tuning.tres`, `tests/saves/shape.json` |
-| 4 | 151-D The litterbox visit (sonnet); 151-E The car naps (opus; after core/149-A, -C); AS-K The scratch clip (opus; after AS-C's go) | 151-D: `litterbox.tscn`, `game/furniture/litter_visit.gd`; 151-E: `cat.tscn`, `cat_car_nap.gd`, `game/zoo/stations/cat.tscn`; AS-K: `assets/cat/`, `assets_src/generate/cat/`, `looks_cat.tscn` |
-
-Where the chains run: `cat.gd` 151-A, B, C in waves 1-3 (151-D, E, F add their own Parts and call the Cat's patch
-functions; they do not edit `cat.gd`); `cat.tscn` 151-A, B, E in waves 1, 2, 4; `cat_looks.gd` 151-B then C;
-`tests/saves/shape.json` 151-A then F; the Cat station 151-A then E; `assets/cat/` AS-C then AS-K. AS-C's swap line in
+Superseded by the batch's one build order, `docs/migration/milestones.md` "Batch C" (core/153), which merges the four
+designs' waves and keeps this doc's chains apart (`cat.gd` 151-A, B, C; `cat.tscn` 151-A, B, E; `cat_looks.gd` 151-B
+then C; the Cat station 151-A then E; `mess.gd` with 149-C; `house.tscn` with the other designs). AS-C's swap line in
 `cat.tscn` is done after the designer's go and outside a wave where 151-B or 151-E edits `cat.tscn`.
-
-Across the batch C designs (not this doc's to order; for the lead when the four are filed): 151-A edits `house.tscn`,
-`zoo.tscn`, `sound_catalogue.tres`, `credits.tres` and `tests/saves/shape.json`, which core/149's 149-A, 149-G, 149-H
-and core/150's drafts also edit: keep them out of 151-A's wave. 151-B needs core/150's whole-Hands and thrown-knock
-drafts merged (and may touch their file). 151-C edits `mess.gd`, which 149-C also edits: not in one wave. 151-E needs 149-A and 149-C merged. 151-F edits the washer's files, which no
-other batch C draft names. The Door scenes (151-A's `NavigationLink3D`) are named by no other batch C draft.
 
 ## Gotchas for the build
 

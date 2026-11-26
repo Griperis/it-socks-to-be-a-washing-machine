@@ -1,10 +1,13 @@
 # The Sock vacuum, the Backpack vacuum and the Sock detector
 
-**Status: proposal for batch C (designed in core/150 on the designer's answers Q2697-Q2706, 2026-11-26; the lead files
-the drafts below).** Behaviour list: `docs/migration/m4-lists/09-vacuums-and-detector.md` (53 lines, here V1-V53 in
+**Status: build plan for batch C (designed in core/150 on the designer's answers Q2697-Q2706, with Q2710 and Q2711
+for the Sock vacuum in the Elevator; 2026-11-26). Filed by core/153: 150-S became the whole batch's groundwork core/154;
+150-A core/163, 150-B core/164, 150-C core/165, 150-D core/166, 150-E core/167, 150-F core/168, 150-G core/169, 150-H
+core/170, 150-I core/171, 150-J core/172, 150-K core/173, 150-L core/174, 150-M and 150-N together core/175; AS-C2-1
+assets/24, AS-C2-2 assets/25, AS-C2-3 assets/26, AS-C2-4 assets/27, AS-C2-5 assets/28. The build order is
+`docs/migration/milestones.md` "Batch C".** Behaviour list: `docs/migration/m4-lists/09-vacuums-and-detector.md` (53 lines, here V1-V53 in
 its order). The TV and the Radio are the other half of this design: `docs/architecture/tv-and-radio.md` (its lines
-R1-R33). Both docs share the two rules every carried device follows (below) and one table of waves (at the end of
-this doc).
+R1-R33). Both docs share the two rules every carried device follows (below).
 
 ## What it owns
 
@@ -35,6 +38,9 @@ placeholders until then, Q2698).
 - **Q2705** (list 09 question 14): the models are ported from the old game by the port rules, each family with its
   strip and the old colours.
 - **Q2697**: motion is AnimationPlayer clips in a Looks scene, never code tweens.
+- **Q2710**: the Sock vacuum's container rides the Elevator only with its nozzle on its hook (narrows Q2699).
+- **Q2711**: a player holding the nozzle may climb into the car with the container outside; nothing stops it and the
+  hose stretches between floors, as the old.
 
 ## The two shared rules
 
@@ -234,7 +240,7 @@ collision with falling Socks (its body's layer is not in a Sock flight's mask, V
   `NozzleMouth`, `HoseTop`, `Window` heap markers, `Gauge`, `Pod` with its SubViewport, `Streaks`, `Motes`, `Motor`,
   clips `pour`, `settle`, `fill`, `motor_on`, `motor_off`; the hose: `tug`; the Backpack: `Tank` heap markers, `Port`,
   `Dial`, `Straps`, clips `worn`, `lying`, `fill`; the detector: `Screen`, `Speaker`).
-- **Sounds** (`sound_catalogue.tres`, the old picks or shares, all added at once by 150-S): `vacuum_motor` (3D loop at
+- **Sounds** (`sound_catalogue.tres`, the old picks or shares, all added at once by core/154, the batch's groundwork): `vacuum_motor` (3D loop at
   the container), `vacuum_thwip`, `vacuum_spit_tick` (at the nozzle's mouth; the per-Sock sounds 0.09 s apart per
   vacuum: the SoundEvent's own gap), `vacuum_nozzle_hang`, `vacuum_nozzle_drop`, `vacuum_lift`, `vacuum_set_down`,
   `beeper_beep` (shares the ping's pool, Q2698). Taking the nozzle plays the Hands' pick rustle (Q2698). Not carried
@@ -252,7 +258,8 @@ collision with falling Socks (its body's layer is not in a Sock flight's mask, V
 | V32-V39 (the Backpack vacuum) | 150-J |
 | V48-V52 (the five Upgrades) | 150-K |
 | V40 (carry, drop, Hand-off, leaver), V41 (the thrown knock, Q2700), V42 (the bars), V43 (the beep), V44 (the held look), V45 (no Mess collider, not into the drum: Q2699), V47 (saved and joined) | 150-E |
-| V45's ride (Q2699 changed it: it rides like the Radio) | 150-M |
+| V45's ride (Q2699 changed it: it rides like the Radio) | 150-M (core/175) |
+| the Sock vacuum and the car (Q2710, Q2711) | 150-N (core/175) |
 | V46 (moved into the Drum at the pull) | not drafted: batch D's (Q1891) |
 | V53 (the words) | each draft its own words: "Hold: Vacuum", "Vacuum: full", "Drop the nozzle", "Hang the nozzle", "Take the nozzle   %s", "Pick up   %s", "Sock vacuum   %s", "Hands full", "The hose won't reach" (150-F, 150-G); "Hold: Spit out", "Hold: Pour out", "Put down" (150-H); "Up: Size  Down: Collection" (150-I); "Backpack: full", "Put it on", "Take it off" (150-J); "Sock detector" (150-E); the Upgrades' names and tooltips (exist) |
 
@@ -298,8 +305,13 @@ is saved hung, their worn or carried Backpack lying where they stood with its lo
 - **core/149 (the Elevator's carry rule), this side only:** the container, a lying Backpack, the detector (Q2699) and
   the Radio are `Carriable`s lying in the car, carried by core/149's one item rule (they need nothing more than a
   writable `at`, which they have); a lying detector or Radio keeps working on the ride. The hose's mask leaves out the
-  car's layer, so the car never pushes it (V13). A rider keeps what they hold (list 11). What happens to the Sock
-  vacuum's hose across floors is not answered: the two `[blocking]` questions of core/150 (150-N waits on them).
+  car's layer, so the car never pushes it (V13). A rider keeps what they hold (list 11). The container rides only
+  with its nozzle on its hook (Q2710): `Vacuum` answers the carry rule's `may_ride()` (core/149's `Carriable`) with
+  `nozzle_at == INF`, so with the nozzle out the container stays at its stop. The nozzle's holder may climb into the
+  car with the container outside (Q2711): nothing stops it; while the holder rides and after, the hose is drawn
+  stretched from the container's cuff to the nozzle's, through the shaft, its bones laid along the line with their
+  collision off until the nozzle is back within the hose's length of the container, as the old drew a straight tube
+  (VV); the length rule and the Host's checks stay as they are (VA:383-450 measures only sucks and drops). core/175.
 - **core/151 (the Cat):** the whole-Hands rule and the thrown-knock rule are the Cat's too; the Cat sets `throwable`
   on its Carriable and needs no other code from this doc. Its own side (held in the world at the hands, Q2703) is
   core/151's.
@@ -344,13 +356,13 @@ the same ticket after the go. Suggested model: opus (Blender).
 
 (AS-C2-4 the TV and AS-C2-5 the Radio are in `tv-and-radio.md`.)
 
-## Build drafts (`ready-for-agent`; the lead files them)
+## Build drafts (filed by core/153; each heading names its ticket)
 
 Every core draft builds on graybox Looks and waits for no asset; every number `# placeholder:` the old unless a Q
 set it. Every old detail of its lines is built (Q2277); one left out goes to the lead before the merge. Real paths
 drive player input through the scene's own wiring (`kit/docs/TESTING.md` "The real path").
 
-**150-S The devices' groundwork: sounds and station shells** (sonnet)
+**150-S The devices' groundwork: sounds and station shells** (sonnet; filed as the whole batch's groundwork, core/154)
 - Lines: none of their own; it gives every later draft its sounds and stations so none of them edits
   `sound_catalogue.tres` or `zoo.tscn`.
 - Build: the SoundEvents of both docs in `game/audio/sound_catalogue.tres` with the old files copied into
@@ -366,7 +378,7 @@ drive player input through the scene's own wiring (`kit/docs/TESTING.md` "The re
 - `suites: [sounds, sound_wiring, zoo]`
 - Authored: SoundEvents in the catalogue (the Sounds bench swaps any); stations are scenes.
 
-**150-E The Sock detector** (opus; after 150-A)
+**150-E The Sock detector** (opus; after 150-A; filed: core/167)
 - Lines: V40, V41, V42, V43, V44, V45 (no Mess collider; not into the drum, Q2699), V47; its word "Sock detector".
 - Build: `sock_detector.tscn` (`Carriable` `throwable` and `handable`, `hold_slot_detector.tres`), `DetectorScreen`,
   `detector_screen.tscn` in a SubViewport, `DetectorTuning`, graybox Looks and contract; the detector station filled.
@@ -378,7 +390,7 @@ drive player input through the scene's own wiring (`kit/docs/TESTING.md` "The re
 - `suites: [carry, coop_carry, knockdown, coop_knockdown, save, zoo]` (a new `detector` suite for its reading)
 - Authored: `DetectorTuning` and the hold slot in the inspector; the screen in nodes; Looks graybox, then AS-C2-3.
 
-**150-F The Sock vacuum: the nozzle, the hose and the container** (opus; after 150-A)
+**150-F The Sock vacuum: the nozzle, the hose and the container** (opus; after 150-A; filed: core/168)
 - Lines: V4, V9, V12, V13 (the Doors), V14, V15, V16, V17, V20, V21, V22, V31; the words of these lines.
 - Build: `sock_vacuum.tscn` with the container's `Carriable`, `Vacuum` (take and put the nozzle, the Tank empty for
   now, `left`, `loaded`), `Hands.TAKERS` in `hands.gd`, the hose (`PhysicalBoneSimulator3D` rope, `HoseTuning`,
@@ -396,7 +408,7 @@ drive player input through the scene's own wiring (`kit/docs/TESTING.md` "The re
 - Authored: `VacuumTuning`, `HoseTuning`, the slots in the inspector; Looks graybox (a canister, a hook, a nozzle, a
   boned tube), then AS-C2-1.
 
-**150-G The suck** (opus; after 150-F)
+**150-G The suck** (opus; after 150-F; filed: core/169)
 - Lines: V5, V6, V7, V8, V19, V28, V29, V30 (the thwip).
 - Build: `suck` with its refusals and rate; the Tank's HELD records; the fly to the nozzle (looks, `fly_time`); the
   heap's places and `settle`, the gauge's `fill`; `pose_suction` on the avatar (`avatar.gd`, `avatar.tscn`); the
@@ -411,7 +423,7 @@ drive player input through the scene's own wiring (`kit/docs/TESTING.md` "The re
 - `suites: [coop_hands, coop_mess, mess, teammates, avatar, zoo]` (the `vacuum` suite)
 - Authored: the particles' fields and the clips in the Looks; the numbers in `VacuumTuning`.
 
-**150-H The Spit and the Pour** (opus; after 150-G)
+**150-H The Spit and the Pour** (opus; after 150-G; filed: core/170)
 - Lines: V10, V11, V18; V8's "tilted"; V30's spit tick; the words "Hold: Spit out", "Hold: Pour out", "Put down".
 - Build: `spit` (from the holder's right hold past `spit_tap`, oldest first, ignoring the Filter, a scatter, the
   room's side of the wall, the 24-body budget), `pour` with the Host's timer and the `pour` clip, the "tilted" pause
@@ -424,7 +436,7 @@ drive player input through the scene's own wiring (`kit/docs/TESTING.md` "The re
 - `suites: [coop_flight, mess, throw, zoo]` (the `vacuum` suite)
 - Authored: `VacuumTuning`'s spit and pour numbers; `pour` is a clip.
 
-**150-I The Filter nozzle and the Nozzle display** (opus; after 150-H)
+**150-I The Filter nozzle and the Nozzle display** (opus; after 150-H; filed: core/171)
 - Lines: V23, V24, V25, V26, V27; V8's "filtered"; the words "Up: Size  Down: Collection".
 - Build: `VacuumFilter` (state, `step`, `accepts`), the Collection list from the Mess's loose Socks and the data;
   `nozzle_display.tscn` in the pod's SubViewport (the fill from the start, Q2187; the Size and Collection once
@@ -437,7 +449,7 @@ drive player input through the scene's own wiring (`kit/docs/TESTING.md` "The re
 - Authored: the display in nodes on the Theme; the lists from the catalogue and the Collections (a new Collection
   shows with no change).
 
-**150-J The Backpack vacuum** (opus; after 150-H)
+**150-J The Backpack vacuum** (opus; after 150-H; filed: core/172)
 - Lines: V32-V39; the words "Backpack: full", "Put it on", "Take it off".
 - Build: `backpack_vacuum.tscn` (`Carriable`, `Vacuum` in `wearable` mode, `backpack_tuning.tres`), `wear` /
   `unwear`, the worn views (the wearer's nozzle with its dial, a Teammate's tank on the back with its hose to the
@@ -451,7 +463,7 @@ drive player input through the scene's own wiring (`kit/docs/TESTING.md` "The re
 - `suites: [carry, coop_carry, wardrobe, wardrobe_looks, knockdown, save, zoo]` (the `vacuum` suite)
 - Authored: `backpack_tuning.tres`; Looks graybox, then AS-C2-2; the piece flag in the inspector.
 
-**150-K The five vacuum Upgrades take effect** (sonnet; after 150-I and 150-J)
+**150-K The five vacuum Upgrades take effect** (sonnet; after 150-I and 150-J; filed: core/173)
 - Lines: V48-V52.
 - Build: the five `UpgradeStat`s in `game/economy/stats/`, set on the five Upgrade `.tres`; `UpgradeStat.per_second`;
   `Vacuum` reads capacity, interval, hose, reach and cone through `Upgrades.value` when it uses them; the real Old
@@ -464,7 +476,7 @@ drive player input through the scene's own wiring (`kit/docs/TESTING.md` "The re
 - `suites: [upgrades, economy, zoo]` (the `vacuum` suite)
 - Authored: the stats are `.tres` (a new effect is a file plus one line in `Vacuum`).
 
-**150-L The devices in the house** (sonnet; after 150-J, core/139, core/133)
+**150-L The devices in the house** (sonnet; after 150-J, core/139, core/133; filed: core/174)
 - Lines: V1, V2, V3; R1 and R15's New Game (with `tv-and-radio.md`).
 - Build: in `house.tscn` the Sock vacuum in the kitchen, two Backpacks beside it, the detector on the workshop's
   workbench 0.35 m beside the book turned 20 degrees, the TV in the living room in front of the north window, the
@@ -477,7 +489,7 @@ drive player input through the scene's own wiring (`kit/docs/TESTING.md` "The re
 - `suites: [house, floor_lock, voice, stages, save]`
 - Authored: placed by hand in the editor; the tip is data.
 
-**150-M The devices ride the Elevator** (sonnet; after 150-L and core/149's carry-rule draft)
+**150-M The devices ride the Elevator** (after 150-L and core/149's carry-rule draft; filed with 150-N as core/175)
 - Lines: V45's ride (Q2699), V13's car half, R30.
 - Build: nothing new if core/149's item rule moves every lying `Carriable` in the car: cases only, and the hose's mask
   leaving out the car's layer.
@@ -487,28 +499,21 @@ drive player input through the scene's own wiring (`kit/docs/TESTING.md` "The re
 - `suites: [house, carry]` (core/149's elevator suite)
 - Authored: nothing new.
 
-**150-N The Sock vacuum and the Elevator** (sonnet; `needs-info`: waits on core/150's two `[blocking]` questions;
-after 150-M)
-- Lines: none of list 09 (a gap the answers leave: Q2699 "every carried thing rides" meets the hose).
-- Build and acceptance: as the answers say.
+**150-N The Sock vacuum and the Elevator** (answered Q2710, Q2711; filed with 150-M as core/175, opus)
+- Lines: none of list 09 (the gap Q2699 left, answered).
+- Build: `Vacuum.may_ride()` (true only with the nozzle on its hook) read by the carry rule; the hose drawn stretched
+  across floors while its nozzle's holder rides or stands beyond the hose's reach on another floor (above).
+- Acceptance: real path: in the house with Elevator Repair bought, the container in the car with its nozzle hung rides
+  to the other floor on a call; with the nozzle out it stays at its stop. A player holding the nozzle presses Space at
+  the open car: they climb in, ride, and the hose is seen stretched through the shaft on both machines; nothing is
+  refused.
 
-## Waves (both docs' drafts; at most 5 agents with the other batch C designs)
+## Waves
 
-| Wave | Drafts | Kept apart |
-|---|---|---|
-| 1 | 150-S, AS-C2-1, AS-C2-4 | 150-S alone on `sound_catalogue.tres` and `zoo.tscn` |
-| 2 | 150-A, AS-C2-2, AS-C2-5 | 150-A alone on `carriable.gd`, `knockdowns.gd`, `player.gd` |
-| 3 | 150-B, 150-E, 150-F, AS-C2-3 | 150-B on `game/entities/radio/`, `game/devices/channels/`, `game/audio/sounds.gd`, `credits.tres`, `tv_radio.tscn`; 150-E on `game/entities/sock_detector/`, `detector.tscn`; 150-F on `hands.gd`, `game/devices/vacuum/`, `game/entities/sock_vacuum/`, `vacuums.tscn` |
-| 4 | 150-C, 150-G | 150-C on `game/entities/tv/`, `channel_knob.gd`, `tv_radio.tscn`; 150-G on `vacuum.gd`, the vacuum's Looks, `avatar.gd`, `avatar.tscn`, `guest_ghosts.gd` |
-| 5 | 150-D, 150-H | 150-D on `game/devices/tv/shows/`, the TV's channel `.tres`; 150-H on `vacuum.gd`, the vacuum's Looks |
-| 6 | 150-I, 150-J | 150-I on `vacuum_filter.gd`, `sock_vacuum.tscn`, the pod; 150-J on `game/entities/backpack_vacuum/`, `vacuum.gd`, `game/wardrobe/` (the four pieces, `dresser.gd`, `wardrobe_piece.gd`), `vacuums.tscn` |
-| 7 | 150-K, 150-L | 150-K on `game/economy/` (five upgrades, stats, `upgrade_stat.gd`), `vacuum.gd`, `vacuums.tscn`; 150-L on `house.tscn`, the ground Stage `.tres`, the trigger file |
-| 8 | 150-M | after core/149's carry rule |
-| 9 | 150-N | after the answers |
-
-Clashes with the other batch C designs to keep out of one wave: `house.tscn` (150-L; core/149's Elevator, day and
-exterior; core/151's Cat and litterbox), `zoo.tscn` (150-S; each other design's station), `sound_catalogue.tres`
-(150-S; core/149's Elevator sounds, core/151's, core/152's), `carriable.gd` and `knockdowns.gd` (150-A; core/149's
+Superseded by the batch's one build order, `docs/migration/milestones.md` "Batch C" (core/153), which merges the four
+designs' waves. The clashes it keeps apart: `house.tscn` (150-L; core/149's Elevator, day and
+exterior; core/151's Cat and litterbox), `zoo.tscn` and `sound_catalogue.tres` (only
+core/154, the groundwork, edits them), `carriable.gd` and `knockdowns.gd` (150-A; core/149's
 rider exemption, core/151's Cat), `hands.gd` (150-F; core/151 if the Cat touches it), `avatar.gd` / `avatar.tscn`
 (150-G; core/149's riders' curl), `player.gd` (150-A; core/149's ride input), the Upgrade `.tres` folder (150-K; core/149's
 three Elevator ones, core/152's eight X-ray ones: different files, but `upgrade_stat.gd` only once). Batch B's

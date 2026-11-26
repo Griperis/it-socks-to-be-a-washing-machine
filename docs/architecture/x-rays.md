@@ -1,7 +1,9 @@
 # The X-rays: Show pair and Show Cabinet
 
-**Status: build plan for batch C (designed in core/152 on the designer's answer Q2701, with Q2697 and Q2705;
-2026-11-26). Not filed yet: the drafts below are for the lead to file.** Behaviour list:
+**Status: build plan for batch C (designed in core/152 on the designer's answer Q2701, with Q2697 and Q2705; the words
+Q2713 and the moving glow Q2714; 2026-11-26). Filed by core/153: 152-A core/182, 152-B core/183, 152-C core/184, 152-D
+core/185; the sounds and the station's shell come with the batch's groundwork, core/154. The build order is
+`docs/migration/milestones.md` "Batch C".** Behaviour list:
 `docs/migration/m4-lists/10-x-rays.md` (31 lines). Batch C is built unattended and reviewed in play as a whole, as
 batches A and B were (Q2603-Q2605): an open choice an agent meets takes the old game's answer and goes on the batch's
 review sheet (Q2604).
@@ -67,8 +69,10 @@ the Sole cues, and the rules "decided state lives on Parts" are kept by having n
     token, `XR:128-131`; CABINET: a loose Sock or a Pair, not a token, `CX:39-41`); with the All-Hands stat at 1 every
     fitting item in the Hands (Q1345). `targets()` from them:
     - MATES: for each shown item's Design, the other Sock of that Design (two records per Design, `Mess.count_of`)
-      while it is LYING or FLYING in the Mess, each once; and every Teammate's held loose Sock of that Design, in any of
-      their slots (the old `_mates_held` took every slot, `RIG:516-525`; Q252).
+      wherever it moves (Q2714): LYING or FLYING in the Mess, in every Teammate's Hands as a loose Sock of that Design
+      in any of their slots (the old `_mates_held` took every slot, `RIG:516-525`; Q252), and in the Cat's mouth (a
+      HELD record no Hands hold, drawn by a member of the group `sock_carriers`, core/178), each once. A mate in a
+      vacuum's Tank or shelved shows nothing, as the old.
     - CABINET: for each shown item's Collection, the level's Cabinet (group `cabinets`) that `takes()` it, each once,
       whether locked, sheeted or full (the old showed the Collection's Cabinet whatever its state:
       `next_drawer` fell back to the aimed drawer, `CX:58-64`, `cabinets.gd:123-130`). The Dirty Socks' bin rule is
@@ -107,10 +111,13 @@ own looks, Q3 of the co-op structure), and never asks the Host anything (line 6)
 - **A Teammate's held mate** (on their avatar, in any slot): the glow material as an overlay on its meshes and an
   Outline of the X-ray style beside its own, so both follow the cloth (`XV:211-218`; the outline's copies keep the
   skin and blend shapes, core/11).
-- **The copy follows the Sock** each frame (the old rebuilt it only when the World changed, so a moving mate left its
-  glow behind: improved technically, no look change). The ping's copy-following code moves out of `ping_mark.gd` into
-  one shared node, `game/mess/sock_copy.gd` (a Mess Sock's live Looks copy at its drawn pose), used by both: one way
-  to draw a Mess Sock outside its batch.
+- **The glow follows the mate as it moves** (Q2714, the designer's change from the old, which rebuilt the glow only
+  when the World changed, so a thrown, carried or fetched mate left it behind where it lay when the X-ray began): the
+  copy follows the Sock's drawn pose each frame, a Teammate's held mate carries its overlay with their hand, and a mate
+  the Cat carries glows at its mouth (the `sock_carriers` member's `drawn_sock(id)`: the overlay and the second Outline
+  on that node, as on a Teammate's held Sock). The ping's copy-following code moves out of `ping_mark.gd` into one
+  shared node, `game/mess/sock_copy.gd` (a Mess Sock's live Looks copy at its drawn pose), used by both: one way to
+  draw a Mess Sock outside its batch.
 - Cycling the Hands moves the glow (the targets follow the active item).
 
 ### Show Cabinet: `CabinetGlow` (152-C)
@@ -213,14 +220,13 @@ The icons' rectangles join the HUD's `keep_clear()` so a hint arrow slides past 
   variations; code fills them and instances a row scene per item.
 - **Motion:** the icon's press, release, halo and ready pulse are AnimationPlayer clips in `ability_icon.tscn`
   (Q2697); the glows' and outlines' breathing is their shaders' pulse (core/11). There is no code tween.
-- **Sounds** (SoundEvents in `sound_catalogue.tres`, flat, SFX; the old picks or shares):
+- **Sounds** (SoundEvents in `sound_catalogue.tres`, flat, SFX; the old picks or shares; all added by core/154):
   - `xray_on`: the old `cc0/laleksic_switch_on`; `xray_off`: `cc0/laleksic_switch_off` (the clips copied to
     `assets/audio/` as `xray_on__laleksic_switch_on.ogg` and `xray_off__laleksic_switch_off.ogg` with their
     `SOURCES.md` rows and credits).
   - `xray_ready`: shares `match`'s clips (core/131: the first synth candidate at -8 dB, Q2701).
-  - `lamp_on` and `lamp_off` (149-H) share `xray_on`'s and `xray_off`'s clips. Whichever ticket lands first copies the
-    clip and adds its row; the other only adds its SoundEvent naming the same file. Each stays its own SoundEvent, so
-    the designer can part them on the Sounds bench.
+  - `lamp_on` and `lamp_off` (149-H) share `xray_on`'s and `xray_off`'s clips, copied once by core/154. Each stays its
+    own SoundEvent, so the designer can part them on the Sounds bench.
 - **Input:** `python3 kit/tools/input_actions.py add xray_show <key 1> <pad D-pad left>` and
   `cabinet_xray_show <key 2> <pad D-pad right>` (the old bindings, physical keys 1 and 2, joypad buttons 13 and 14;
   the pad ones are placeholders until batch D's controller work, as Q2698 did for the vacuums).
@@ -230,8 +236,8 @@ The icons' rectangles join the HUD's `keep_clear()` so a hint arrow slides past 
 ## Words (Q2701)
 "Show pair", "Show Cabinet", "Sock X-ray on", "Cabinet X-ray on", "X-ray not bought", "Cabinet X-ray not bought", the
 key caps "1" and "2", and the eight Upgrades' titles and tooltips as the old (`UJ:185-340`, already in the port's
-files), but for the Cabinet X-ray's: its title becomes "Cabinet X-ray: Show Cabinet" and its tooltip says the whole
-Cabinet glows (the exact sentence is the designer's: Open follow-ups).
+files), but for the Cabinet X-ray's (Q2713): its title is "Cabinet X-ray: Show Cabinet" and its tooltip "Show Cabinet
+(key 2): the right Cabinet glows through walls.".
 
 ## Saves, joins and the Lobby
 Nothing: an X-ray is not saved and not joined (line 5); its Upgrades' levels are the `Upgrades` Part's (core/129).
@@ -248,7 +254,7 @@ Nothing: an X-ray is not saved and not joined (line 5); its Upgrades' levels are
   Nothing in `outline.gd` changes, but the Cabinet's outline must be remade when its Rows grow (152-C).
 - **The Sole cues (core/131):** both outline a Teammate's held Sock on this machine and both read the avatar's held
   view to find it; the X-ray's style takes the higher `priority`. `xray_ready` shares `match`'s clips: if core/131 has
-  not landed when 152-D runs, 152-D copies the old synth candidate and core/131 points `match` at it.
+  is merged in batch B, before batch C: core/154 adds `xray_ready` naming `match`'s clip.
 - **The pings (core/43, built):** `PingMark`'s Mess copy moves to `game/mess/sock_copy.gd` (152-B), the pings' look
   unchanged (the `pings` suite proves it); the hint arrows take two more sources.
 - **The day (core/149, `day-and-exterior.md`):** `lamp_on`/`lamp_off` share `xray_on`/`xray_off` (above).
@@ -266,27 +272,30 @@ Nothing: an X-ray is not saved and not joined (line 5); its Upgrades' levels are
 - Q2701: the X-rays as the old, with one wording fix: "Show Cabinet", the tooltip saying the whole Cabinet glows; the
   ready sound borrows the Sole Mates cue; no cue until it is usable; only its user sees it; the old timings and prices
   as placeholders; the outline judged at its first still, a Teammate's held Sock included.
+- Q2713: the Cabinet X-ray's words: title "Cabinet X-ray: Show Cabinet", tooltip "Show Cabinet (key 2): the right
+  Cabinet glows through walls."
+- Q2714: the Sock X-ray's glow follows the mate as it moves (thrown, carried, fetched), a change from the old.
 - Q2697: motion is AnimationPlayer clips, not code tweens.
 - Q2705: batch C's models are ported by the port rules (the X-rays have none).
 - Q2669: the eight Upgrades are "Coming soon" until this piece.
 - Earlier, kept: Q536, Q539-Q543, Q601-Q604, Q1345, Q1346, Q1513-Q1519, Q1964-Q1971, Q1987-Q1989, Q2010-Q2016, Q2040,
   Q252.
 
-## Draft tickets (ready-for-agent; the lead files them)
+## Draft tickets (filed by core/153; each heading names its ticket)
 
 Each builds on graybox where a Looks is missing and waits for no asset; every number `# placeholder:` the old. "Lines"
 are the behaviour list's (`10-x-rays.md`) by heading. Every new script has its `.uid`; the real-path case drives player
 input through the scene's own wiring.
 
-### 152-A The X-rays: owning, the keys, the clock, the Upgrades
+### 152-A The X-rays: owning, the keys, the clock, the Upgrades (filed: core/182)
 - **Lines:** "Owning and using" (all 6); "Show pair" line 3 (a Pair or a token shows nothing) and the rule of line 4
   (All-Hands: which items count); "Show drawer" line 3 (nothing active, nothing shows) and the rule of line 4; "The
   Upgrades" (all 8: their stats, so they are bought and take effect); "Words" (all, with "Show Cabinet", Q2701).
 - **Build:** `XRayAbility`, `XRays`, `XRay` (the Timers, the key, `use()`, `shown_items()`, `targets()` for both
   kinds, `usable()`, `state()`, the signals), `XRayTuning`, the two ability files (no `view` yet), the eight stats set
-  on the eight Upgrades, the Cabinet X-ray's new title and tooltip (as the designer's answer gives it), the two input
-  actions, `xray_on` and `xray_off` with their clips, sources and credits (unless 149-H has added them), `XRays` in
-  `player.tscn`, the X-rays station, `tests/upgrades_test.gd`'s "Coming soon" case moved to a test-only Upgrade.
+  on the eight Upgrades, the Cabinet X-ray's new title and tooltip (Q2713), the two input actions, `XRays` in
+  `player.tscn`, the X-rays station filled (its shell and the sounds are core/154's), `tests/upgrades_test.gd`'s
+  "Coming soon" case moved to a test-only Upgrade.
 - **Acceptance:** in the station, with the X-ray owned, the player picks a loose Sock whose mate lies behind the wall
   (a left click on it) and presses key 1: the HUD reads "Sock X-ray on", `xray_on` plays, `usable()` is false while
   on; after the show (a test-only duration stat) `xray_off` plays and the cooldown runs for the stat's cooldown; a
@@ -302,12 +311,13 @@ input through the scene's own wiring.
 - **Model:** opus.
 - **Authored:** the abilities and stats in the inspector; a dropped ability file shows in the station's board.
 
-### 152-B Show pair: the mates glow
+### 152-B Show pair: the mates glow (filed: core/183)
 - **Lines:** "Show pair" lines 1, 2 and 4 (the glow of every target); "How they look" line 1 (the Sock X-ray's) and
   line 3 (its arrows); "Owning and using" line 6 for the glows (only its user sees them).
 - **Build:** `game/mess/sock_copy.gd` (moved out of `ping_mark.gd`, which uses it), `MateGlows` (`mate_glows.tscn`,
   `.gd`), `xray_glow.gdshader` and `sock_xray_glow.tres`, `sock_xray_outline.tres`, the overlay and second Outline on
-  a Teammate's held mate, the arrows' source; `sock.tres`'s `view`. Stills of a mate through the wall, under the Heap
+  a Teammate's held mate, the group `sock_carriers` asked for a mate no Hands hold (its member is the Cat's, core/178;
+  none needed for this ticket's cases), the arrows' source; `sock.tres`'s `view`. Stills of a mate through the wall, under the Heap
   and in the stand-in Teammate's Hands go to `<main checkout>/builds/review-xrays/` for the batch review sheet (Q2701:
   the outline is judged at its first still).
 - **Acceptance:** in the station, with Show pair on, the mate behind the wall has a copy at its drawn pose wearing
@@ -323,7 +333,7 @@ input through the scene's own wiring.
 - **Model:** opus.
 - **Authored:** the glow material and the outline style in the inspector; the glow's breathing is the shader's.
 
-### 152-C Show Cabinet: the Cabinet in amber
+### 152-C Show Cabinet: the Cabinet in amber (filed: core/184)
 - **Lines:** "Show drawer" lines 1, 2 and 4 (the outline of every target Cabinet); "How they look" line 1 (the
   Cabinet X-ray's) and line 3 (its arrows).
 - **Build:** `CabinetGlow` (`cabinet_glow.tscn`, `.gd`), `cabinet_xray_outline.tres`, the remade outline on a Rows
@@ -339,11 +349,11 @@ input through the scene's own wiring.
 - **Model:** sonnet.
 - **Authored:** the outline style in the inspector.
 
-### 152-D The X-rays on the HUD: the icons and the screen tint
+### 152-D The X-rays on the HUD: the icons and the screen tint (filed: core/185)
 - **Lines:** "The ability icons (HUD)" (all 5); "How they look" line 2 (the screen tint).
 - **Build:** `ability_icon.tscn` and `.gd` with its clips, the Theme variations on `game/look/theme.tres`,
   `AbilityIcons` and `XRayScreen` in `player.tscn`'s `Hud`, `xray_screen.tscn` and `.gdshader`, the icons in the
-  HUD's `keep_clear()`, `xray_ready` (sharing `match`'s clips). A still of both icons in each state and of the tint with
+  HUD's `keep_clear()`, `xray_ready` played (its SoundEvent is core/154's). A still of both icons in each state and of the tint with
   both X-rays on to `<main checkout>/builds/review-xrays/`.
 - **Acceptance:** in the house with neither Upgrade owned no icon shows; owning the X-ray shows its icon at the
   bottom left (24 px, 24 px) with "1" under it, the Cabinet X-ray's 28 px to its right; with empty Hands it is greyed
@@ -363,17 +373,8 @@ debug X-ray (Q2599), the Size and Collection X-rays (Q536).
 
 ## The waves
 
-At most 5 agents; a wave starts when the waves before it are merged.
-
-| Wave | Drafts (suggested model) | Files each is alone on in its wave |
-|---|---|---|
-| 1 | 152-A (opus) | `game/xray/xray*.gd`, `game/xray/abilities/`, `game/economy/stats/` (8 new), the 8 X-ray Upgrade files, `project.godot` (two actions), `sound_catalogue.tres`, `assets/audio/` (2 clips), `assets/audio/SOURCES.md`, `game/ui/licence/credits.tres`, `player.tscn`, `zoo.tscn`, `game/zoo/stations/xrays.tscn`, `game/zoo/xrays/`, `tests/upgrades_test.gd`, `tests/xrays_test.gd`, `tests/coop_xrays_test.gd` |
-| 2 | 152-B (opus); 152-C (sonnet); 152-D (sonnet) | 152-B: `game/mess/sock_copy.gd`, `ping_mark.gd`, `game/xray/mate_glows.*`, `xray_glow.gdshader`, `sock_xray_glow.tres`, `sock_xray_outline.tres`, `abilities/sock.tres`, `tests/xray_mates_test.gd`, `tests/coop_xrays_test.gd`; 152-C: `game/xray/cabinet_glow.*`, `cabinet_xray_outline.tres`, `abilities/cabinet.tres`, `tests/xray_cabinet_test.gd`; 152-D: `game/ui/ability_icon/`, `game/xray/xray_screen.*`, `player.tscn`, `hud.gd`, `game/look/theme.tres`, `sound_catalogue.tres`, `tests/xray_hud_test.gd` |
-
-The X-rays can run beside any wave of the other batch C docs except on the files they share: `sound_catalogue.tres`
-(149-A, 149-D, 149-H, and core/150's and core/151's sound tickets) and `tests/upgrades_test.gd` (any ticket that sets a
-"Coming soon" Upgrade's `stat`: 149-A, 149-E, core/150's vacuum Upgrades). `player.tscn` is also 149-D's (the riders).
-152-A should land before the other pieces' Upgrade tickets so the "Coming soon" case is moved once.
+Superseded by the batch's one build order, `docs/migration/milestones.md` "Batch C" (core/153). 152-A comes early, so
+the "Coming soon" case of `tests/upgrades_test.gd` moves once before any other batch C Upgrade ticket lands.
 
 ## Gotchas for the build
 - Read `Upgrades.value()` when a timer starts and when `use()` asks, never at ready: a level bought mid-game counts.
@@ -391,4 +392,4 @@ The X-rays can run beside any wave of the other batch C docs except on the files
 - `tests/upgrades_test.gd`'s "Coming soon" case must not name an Upgrade a later ticket gives a `stat`.
 
 ## Open follow-ups
-The choices below are in the ticket's `## Open follow-ups` (`docs/llm/core/issues/152-batch-c-x-rays-design.md`).
+None: the two of core/152 are answered (Q2713 the words; the GLOSSARY entry brought to "Show Cabinet" by core/153).
