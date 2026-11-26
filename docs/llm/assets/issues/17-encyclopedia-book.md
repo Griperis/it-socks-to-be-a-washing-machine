@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: assets
 feature: assets
@@ -34,6 +34,6 @@ An inherited scene of the imported glb; the shared materials where the port's ru
 
 ## Answers
 - The encyclopedia book stands in the house in batch B (Q2676, 2026-11-25).
+- The designer said yes to the line-up (Q2696); core/139 swaps the Looks in (its graybox root must match `EncyclopediaBookLooks`).
 
 ## Open follow-ups
-- [later] The designer's look at the line-up: `builds/review-assets-17/encyclopedia-book-old-vs-port.png` (Blender EEVEE; old left, port right; top and three-quarter, closed). Same meshes as the old (1928 tris); the port's brass and ribbon pink are the library's. It swaps in (`game/entities/encyclopedia_book/looks_encyclopedia_book.tscn`, root `EncyclopediaBookLooks`) on the yes; core/139's graybox root name was not visible to me, so check it matches.
