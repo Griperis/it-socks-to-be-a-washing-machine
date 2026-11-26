@@ -5,6 +5,7 @@
 [ext_resource type="Script" path="res://game/run/run_tallies.gd" id="3_tallies"]
 [ext_resource type="Script" path="res://game/run/run_record.gd" id="4_record"]
 [ext_resource type="PackedScene" path="res://game/parts/spawned_parts.tscn" id="5_spawned"]
+[ext_resource type="Script" path="res://game/profile/tally_recorder.gd" id="6_recorder"]
 
 [node name="Run" type="Node3D"]
 
@@ -20,5 +21,8 @@ script = ExtResource("3_tallies")
 
 [node name="RunRecord" type="Node" parent="."]
 script = ExtResource("4_record")
+
+[node name="TallyRecorder" type="Node" parent="."]
+script = ExtResource("6_recorder")
 
 [node name="Spawned" parent="." instance=ExtResource("5_spawned")]

@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/zoo/wardrobe/piece_stand.gd" id="1_stand"]
+[ext_resource type="PackedScene" path="res://game/parts/avatar/looks_avatar.tscn" id="2_looks"]
+
+[node name="PieceStand" type="Node3D"]
+script = ExtResource("1_stand")
+
+[node name="Looks" parent="." instance=ExtResource("2_looks")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
+
+[node name="Label" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+pixel_size = 0.0025
+billboard = 1
+modulate = Color(0.1, 0.1, 0.12, 1)
+outline_modulate = Color(1, 1, 1, 1)
+text = "piece"
+font_size = 28
+outline_size = 6
+autowrap_mode = 3
+width = 260.0

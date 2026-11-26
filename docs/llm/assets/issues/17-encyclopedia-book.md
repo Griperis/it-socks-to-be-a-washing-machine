@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: assets
 feature: assets
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 2", "suggested model: sonnet"]
 terms: [Sock encyclopedia]
@@ -34,5 +34,6 @@ An inherited scene of the imported glb; the shared materials where the port's ru
 
 ## Answers
 - The encyclopedia book stands in the house in batch B (Q2676, 2026-11-25).
+- The designer said yes to the line-up (Q2696); core/139 swaps the Looks in (its graybox root must match `EncyclopediaBookLooks`).
 
 ## Open follow-ups

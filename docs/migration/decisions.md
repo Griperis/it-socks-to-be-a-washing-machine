@@ -1,4 +1,4 @@
-Next free Q number: Q2693 (update this line whenever a round of questions is asked)
+Next free Q number: Q2697 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -650,3 +650,12 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   deletes the graybox pieces (designer, 2026-11-26).
 - Q2692: the present box, round 2 (flat wrapped knot, hollow box and lid with a plain matte inside, the ribbon not
   across the openings) is yes; core/137 swaps its Looks in (designer, 2026-11-26; assets/16).
+- Q2693: the house gets the old 20-minute day: the sun's path, the dusk and night skies, the moon, and the lamps on and
+  off by the clock (19:30 and 7:00), with the old `day.json` numbers as placeholders; nothing else of the old day is
+  needed (designer, 2026-11-26; batch C; follows Q2299).
+- Q2694: the exterior is a view only: the old outside (garden, fences, trees, street, light wells) seen through the
+  windows; the front and garage doors stay shut (designer, 2026-11-26; batch C; keeps Q2514).
+- Q2695: no guide card: the HUD goal line stays in its place (designer, 2026-11-26; batch C; Q2625's replacement
+  dropped).
+- Q2696: the encyclopedia book (assets/17, the old meshes with the shared library's brass and ribbon) is yes; core/139
+  swaps its Looks in (designer, 2026-11-26).

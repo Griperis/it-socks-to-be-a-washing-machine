@@ -51,6 +51,7 @@ first_person = true
 unique_name_in_owner = true
 visible = false
 physics_interpolation_mode = 2
+leaves_trail = false
 
 [node name="Head" type="Node3D" parent="." unique_id=888082870]
 unique_name_in_owner = true

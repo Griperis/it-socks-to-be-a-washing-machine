@@ -50,5 +50,6 @@ nodes on the Theme (Q2658).
 ## Answers
 - The encyclopedia book stands in the house in batch B, as the old; batch C's guide card reuses its one-slot Hands
   item (Q2676, 2026-11-25).
+- The designer said yes to assets/17's book model (Q2696): swapping `game/entities/encyclopedia_book/looks_encyclopedia_book.tscn` in for the graybox Looks is this ticket's job; its graybox Looks root must be named `EncyclopediaBookLooks` (or rename one of the two so they match).
 
 ## Open follow-ups

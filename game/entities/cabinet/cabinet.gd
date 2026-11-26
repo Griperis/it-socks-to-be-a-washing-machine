@@ -66,6 +66,10 @@ const GROUP := &"cabinets"
 ## run (docs/architecture/stages.md).
 @export_range(1, 16, 1) var unlock_stage := 1
 
+## The Collections this spot may draw at a New Game, set on the placed Cabinet (core/135: the spot is the
+## Cabinet). Empty: it keeps its placed `collection`.
+@export var pool: Array[StringName] = []
+
 @export_group("State")
 ## The Collection whose Pairs this Cabinet takes (a SockDesign.collection).
 @export var collection := &"simple"

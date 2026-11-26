@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: player
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: ["[[124-coins-and-drawers]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 2", "suggested model: sonnet"]
 terms: [Profile, Lifetime tallies, Coins]

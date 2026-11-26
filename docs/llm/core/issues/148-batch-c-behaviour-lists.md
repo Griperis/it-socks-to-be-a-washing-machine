@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: design
 area: core
 feature: frame
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["suggested model: opus", "batch C (Q2614): behaviour lists first, for the designer to approve; the proposals follow as their own tickets"]
 terms: [Elevator, Cat, X-ray, Upgrade, Old Tree]
@@ -73,5 +73,12 @@ tickets, the way core/120-122 did for batch B.
 - The 16 batch C Upgrades show greyed "Coming soon" until their features land (Q2669).
 - Not ported: the splitter, the Grotto, Hampers, the pairing machine, the F1 menu (Q2599); Secrets come later together
   (Q2600, Q2682); wash cycles and proximity chat (Q2602).
+- Scope change (designer, via the lead, 2026-11-26): no list 14; the exterior, the day and the guide card are settled by
+  the lead's grilling (Q2693 the old 20-minute day, Q2694 the exterior as a view through the windows, Q2695 no guide
+  card, the HUD goal line stays); `batch-c.md` names the day cycle and the exterior view as two settled pieces with
+  their seams, and the guide card is dropped everywhere.
 
 ## Open follow-ups
+- [later] The ticket's step 3 names `assets/cat/`, `assets/tv/`, `assets/radio/`, `assets/sock_vacuum/`,
+  `assets/vacuum_devices/`, `assets/sock_detector/`, `assets/exterior/` as ported in M1: they are the old game's paths;
+  none is in the port (only the litterbox is, assets/07). Each list asks whether the old model is ported.

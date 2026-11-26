@@ -57,6 +57,7 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 
 | Ticket | The choice | What was done (the old answer) | Designer |
 |---|---|---|---|
+| assets/17 | Which materials does the book share with the library? | `brass` (the old's brass, same colour) and `pink` (the ribbon, same colour) are the library's; the cloth, leather and cream paper stay the book's own (the library's `paper` is near-white, the old's cream); no collider (the entity's box) (old `make_encyclopedia_book.py`) | |
 | core/124 | Does the Cabinet bonus pay in a level with no run (a zoo station's Cabinet)? | Only in a level with a run: the bonus is the campaign's (the old `cabinet_batch` paid from the campaign's Rows only) | |
 | core/124 | Does a zoo or test fill pay Drawers? | Yes, every drawer filled to the Pairs per Drawer pays (the old CBS:290 paid for the zoo's and tests' fills too); 1 Drawer with no run | |
 | core/124 | A floor opened by a load cut short during its Fix (the floor opens after the load) | Pays the floor bonus then, as any opening (the old step() opened it the same way, CA:348-353) | |
@@ -68,3 +69,5 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 | core/129 | Big Hands' icon (the old `upgrade_carry`, no file) | The HUD's carry icon (`assets/ui/carry.svg`), the old Icons fallback for it | |
 | core/129 | Whether a menu click predicts the refusal | No: the click asks the Host and the answer shakes the button and says why (the old shook at once on its own check, UM:399-425); alone or on the Host the answer is the same frame | |
 | core/129 | The X-ray titles | "X-ray: Show pair (key 1)", "Cabinet X-ray: Show drawer (key 2)" as the old menu titles (UM:18-20), so "Needs:" and the teammate line read "X-ray: Show pair" | |
+| core/135 | A Cabinet with no pool in a level that draws (a spot kept as placed) | Keeps its placed Collection and no other spot draws it (the old pools listed every spot, CPO:193-262; the port empty pool is the zoo stations way) | |
+| core/135 | The order spots are solved in | Fewest choices first, then in tree order, a seeded shuffle of each pool first (the old _order and _solve, CPO:216-262) | |
