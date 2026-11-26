@@ -38,6 +38,7 @@ The old game's picks for the core events (ported, Q2319). CC0 or public domain, 
 | cupboard_close__kenney_door_close4.ogg | cc0/kenney_door_close4 | Kenney | CC0 | https://opengameart.org/content/50-rpg-sound-effects |
 | piano/piano_remeau_<n>.ogg (23 notes) | cc0/piano_remeau | Sadiquecat | CC0 | https://freesound.org/people/Sadiquecat/sounds/794367/ and the pack's 22 other notes (the old candidates.json lists each page) |
 | coins__starninjas_coin1.ogg | cc0/starninjas_coin1 | StarNinjas | CC0 | https://opengameart.org/content/12-coin-sound-effects |
+| buy__kenney_coins.ogg | cc0/kenney_coins | Kenney | CC0 | https://opengameart.org/content/50-rpg-sound-effects |
 | match__a.ogg | synth/match_a | tools/gen_sounds.py | synth | synthesised by the old tools/gen_sounds.py (no samples); the old "match" had no pick, the first candidate played (core/95: the Final screen's rare Pair) |
 | socks_pour__pyrano_whoosh_pour.ogg | cc0/pyrano_whoosh_pour | pyranostudios | CC0 | https://opengameart.org/content/air-whoosh (core/92: the old `socks_pour` pick, played at the porthole when the spit starts) |
 

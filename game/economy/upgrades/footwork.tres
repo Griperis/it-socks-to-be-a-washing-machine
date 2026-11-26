@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Upgrade" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/upgrade_speed.svg" id="1_wolwn"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_qn4k6"]
+
+[resource]
+script = ExtResource("2_qn4k6")
+title = "Footwork"
+tooltip = "Walk faster."
+icon = ExtResource("1_wolwn")
+prices = PackedInt32Array(40, 60, 90, 135)

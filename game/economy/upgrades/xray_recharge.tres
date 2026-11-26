@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Upgrade" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/upgrade_xray_recharge.svg" id="1_pydw8"]
+[ext_resource type="Resource" path="res://game/economy/upgrades/xray.tres" id="2_y2ygv"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="3_ah26u"]
+
+[resource]
+script = ExtResource("3_ah26u")
+title = "X-ray Recharge"
+tooltip = "A shorter X-ray cooldown."
+icon = ExtResource("1_pydw8")
+cell = Vector2i(2, 2)
+prices = PackedInt32Array(100, 160)
+needs = Dictionary[Resource, int]({
+ExtResource("2_y2ygv"): 1
+})

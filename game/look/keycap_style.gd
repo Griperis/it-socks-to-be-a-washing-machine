@@ -37,6 +37,16 @@ const INK := Color("#3b2a22")
 	set(v):
 		pressed = v
 		_rebuild()
+## The face's own frame: the ink by default; an Upgrade at its top has a gold one (the old UpgradeMenu).
+@export var frame_colour := INK:
+	set(v):
+		frame_colour = v
+		_rebuild()
+## The face's frame width; -1 uses `border`.
+@export_range(-1, 12, 1) var frame_width := -1:
+	set(v):
+		frame_width = v
+		_rebuild()
 
 var _face: StyleBoxFlat
 var _ink: StyleBoxFlat
@@ -53,7 +63,8 @@ func sink() -> float:
 
 
 func _rebuild() -> void:
-	_face = _flat(face_colour, radius, border)
+	_face = _flat(face_colour, radius, border if frame_width < 0 else frame_width)
+	_face.border_color = frame_colour
 	_ink = _flat(INK, radius, 0)
 	_side = _flat(shade_colour, maxi(radius - border, 0), 0)
 	var d := sink()

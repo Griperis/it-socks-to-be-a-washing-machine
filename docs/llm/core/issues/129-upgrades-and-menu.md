@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: economy
@@ -10,7 +10,7 @@ done:
 blocked_by: ["[[124-coins-and-drawers]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 2", "suggested model: opus"]
 terms: [Upgrade, Personal, House, Old Tree, Upgrade station, Coins, Drawers, Sock Smarts, Sock Sense]
-suites: [player, aim_screen, outline, save, coop_join, ui_nodes, menus, furniture, zoo]
+suites: [player, aim_screen, outline, save, coop_join, ui_nodes, menus, furniture, zoo, furniture_devices, game_cli]
 ---
 
 # The Upgrades and the menu at the Old Tree
@@ -69,3 +69,7 @@ prices `# placeholder:` the old.
 - Coins still flying are spendable only once landed (Q2672, 2026-11-25).
 
 ## Open follow-ups
+- [later] Seven open choices settled by the old game are on `docs/migration/batch-b-review.md` (core/129 rows): the
+  House prices' re-scaling, "Need Coins 120" as text, the close key's place, the silent menu_open/close, Big Hands'
+  icon, no predicted refusal, the X-ray titles.
+- [later] No stills were taken (no look work in this ticket): the menu's look is unjudged by the designer.

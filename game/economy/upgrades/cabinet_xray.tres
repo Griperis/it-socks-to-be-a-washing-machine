@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Upgrade" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/upgrade_cabinet_xray.svg" id="1_3grrw"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_ttmk4"]
+
+[resource]
+script = ExtResource("2_ttmk4")
+title = "Cabinet X-ray: Show drawer"
+tooltip = "Show drawer (key 2): the right Cabinet drawer glows through walls."
+icon = ExtResource("1_3grrw")
+cell = Vector2i(3, 0)
+prices = PackedInt32Array(200)
+key_hint = "key 2"

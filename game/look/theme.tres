@@ -331,6 +331,206 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
+[sub_resource type="StyleBox" id="Keycap_UpgradeOff_normal"]
+script = ExtResource("1_keycap")
+face_colour = Color(0.839216, 0.819608, 0.784314, 1)
+shade_colour = Color(0.666667, 0.635294, 0.580392, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = false
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeOff_hover"]
+script = ExtResource("1_keycap")
+face_colour = Color(0.858824, 0.839216, 0.807843, 1)
+shade_colour = Color(0.666667, 0.635294, 0.580392, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = false
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeOff_pressed"]
+script = ExtResource("1_keycap")
+face_colour = Color(0.839216, 0.819608, 0.784314, 1)
+shade_colour = Color(0.666667, 0.635294, 0.580392, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = true
+
+[sub_resource type="StyleBox" id="Keycap_UpgradePersonal_normal"]
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = false
+
+[sub_resource type="StyleBox" id="Keycap_UpgradePersonal_hover"]
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.85098, 0.682353, 1)
+shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = false
+
+[sub_resource type="StyleBox" id="Keycap_UpgradePersonal_pressed"]
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = true
+
+[sub_resource type="StyleBox" id="Keycap_UpgradePersonalMax_normal"]
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = false
+frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
+frame_width = 5
+
+[sub_resource type="StyleBox" id="Keycap_UpgradePersonalMax_hover"]
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.85098, 0.682353, 1)
+shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = false
+frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
+frame_width = 5
+
+[sub_resource type="StyleBox" id="Keycap_UpgradePersonalMax_pressed"]
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = true
+frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
+frame_width = 5
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeTipPersonal"]
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
+lip = 8
+radius = 16
+border = 3
+margin = 16
+pressed = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrade_glow_personal"]
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0.964706, 0.768627, 0.262745, 0.85)
+shadow_size = 16
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeHouse_normal"]
+script = ExtResource("1_keycap")
+face_colour = Color(0.788235, 0.827451, 0.941176, 1)
+shade_colour = Color(0.117647, 0.168627, 0.333333, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = false
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeHouse_hover"]
+script = ExtResource("1_keycap")
+face_colour = Color(0.890196, 0.913725, 0.984314, 1)
+shade_colour = Color(0.117647, 0.168627, 0.333333, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = false
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeHouse_pressed"]
+script = ExtResource("1_keycap")
+face_colour = Color(0.788235, 0.827451, 0.941176, 1)
+shade_colour = Color(0.117647, 0.168627, 0.333333, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = true
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeHouseMax_normal"]
+script = ExtResource("1_keycap")
+face_colour = Color(0.788235, 0.827451, 0.941176, 1)
+shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = false
+frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
+frame_width = 5
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeHouseMax_hover"]
+script = ExtResource("1_keycap")
+face_colour = Color(0.890196, 0.913725, 0.984314, 1)
+shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = false
+frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
+frame_width = 5
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeHouseMax_pressed"]
+script = ExtResource("1_keycap")
+face_colour = Color(0.788235, 0.827451, 0.941176, 1)
+shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
+lip = 6
+radius = 14
+border = 3
+margin = 6
+pressed = true
+frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
+frame_width = 5
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeTipHouse"]
+script = ExtResource("1_keycap")
+face_colour = Color(0.788235, 0.827451, 0.941176, 1)
+shade_colour = Color(0.117647, 0.168627, 0.333333, 1)
+lip = 8
+radius = 16
+border = 3
+margin = 16
+pressed = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrade_glow_house"]
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0.372549, 0.498039, 0.878431, 0.85)
+shadow_size = 16
+
 [resource]
 Heading1/base_type = &"OutlinedLabel"
 Heading1/font_sizes/font_size = 44
@@ -524,3 +724,73 @@ MoneyLabel/base_type = &"OutlinedLabel"
 MoneyLabel/font_sizes/font_size = 30
 MoneyPopLabel/base_type = &"OutlinedLabel"
 MoneyPopLabel/font_sizes/font_size = 56
+UpgradeButtonPersonal/base_type = &"Button"
+UpgradeButtonPersonal/styles/normal = SubResource("Keycap_UpgradePersonal_normal")
+UpgradeButtonPersonal/styles/hover = SubResource("Keycap_UpgradePersonal_hover")
+UpgradeButtonPersonal/styles/pressed = SubResource("Keycap_UpgradePersonal_pressed")
+UpgradeButtonPersonal/styles/hover_pressed = SubResource("Keycap_UpgradePersonal_pressed")
+UpgradeButtonPersonal/styles/disabled = SubResource("Keycap_UpgradePersonal_normal")
+UpgradeButtonPersonal/styles/focus = SubResource("StyleBoxEmpty_esc")
+UpgradeButtonPersonalOff/base_type = &"Button"
+UpgradeButtonPersonalOff/styles/normal = SubResource("Keycap_UpgradeOff_normal")
+UpgradeButtonPersonalOff/styles/hover = SubResource("Keycap_UpgradeOff_hover")
+UpgradeButtonPersonalOff/styles/pressed = SubResource("Keycap_UpgradeOff_pressed")
+UpgradeButtonPersonalOff/styles/hover_pressed = SubResource("Keycap_UpgradeOff_pressed")
+UpgradeButtonPersonalOff/styles/disabled = SubResource("Keycap_UpgradeOff_normal")
+UpgradeButtonPersonalOff/styles/focus = SubResource("StyleBoxEmpty_esc")
+UpgradeButtonPersonalMax/base_type = &"Button"
+UpgradeButtonPersonalMax/styles/normal = SubResource("Keycap_UpgradePersonalMax_normal")
+UpgradeButtonPersonalMax/styles/hover = SubResource("Keycap_UpgradePersonalMax_hover")
+UpgradeButtonPersonalMax/styles/pressed = SubResource("Keycap_UpgradePersonalMax_pressed")
+UpgradeButtonPersonalMax/styles/hover_pressed = SubResource("Keycap_UpgradePersonalMax_pressed")
+UpgradeButtonPersonalMax/styles/disabled = SubResource("Keycap_UpgradePersonalMax_normal")
+UpgradeButtonPersonalMax/styles/focus = SubResource("StyleBoxEmpty_esc")
+UpgradeTipPersonal/base_type = &"PanelContainer"
+UpgradeTipPersonal/styles/panel = SubResource("Keycap_UpgradeTipPersonal")
+UpgradeGlowPersonal/base_type = &"Panel"
+UpgradeGlowPersonal/styles/panel = SubResource("StyleBoxFlat_upgrade_glow_personal")
+UpgradeButtonHouse/base_type = &"Button"
+UpgradeButtonHouse/styles/normal = SubResource("Keycap_UpgradeHouse_normal")
+UpgradeButtonHouse/styles/hover = SubResource("Keycap_UpgradeHouse_hover")
+UpgradeButtonHouse/styles/pressed = SubResource("Keycap_UpgradeHouse_pressed")
+UpgradeButtonHouse/styles/hover_pressed = SubResource("Keycap_UpgradeHouse_pressed")
+UpgradeButtonHouse/styles/disabled = SubResource("Keycap_UpgradeHouse_normal")
+UpgradeButtonHouse/styles/focus = SubResource("StyleBoxEmpty_esc")
+UpgradeButtonHouseOff/base_type = &"Button"
+UpgradeButtonHouseOff/styles/normal = SubResource("Keycap_UpgradeOff_normal")
+UpgradeButtonHouseOff/styles/hover = SubResource("Keycap_UpgradeOff_hover")
+UpgradeButtonHouseOff/styles/pressed = SubResource("Keycap_UpgradeOff_pressed")
+UpgradeButtonHouseOff/styles/hover_pressed = SubResource("Keycap_UpgradeOff_pressed")
+UpgradeButtonHouseOff/styles/disabled = SubResource("Keycap_UpgradeOff_normal")
+UpgradeButtonHouseOff/styles/focus = SubResource("StyleBoxEmpty_esc")
+UpgradeButtonHouseMax/base_type = &"Button"
+UpgradeButtonHouseMax/styles/normal = SubResource("Keycap_UpgradeHouseMax_normal")
+UpgradeButtonHouseMax/styles/hover = SubResource("Keycap_UpgradeHouseMax_hover")
+UpgradeButtonHouseMax/styles/pressed = SubResource("Keycap_UpgradeHouseMax_pressed")
+UpgradeButtonHouseMax/styles/hover_pressed = SubResource("Keycap_UpgradeHouseMax_pressed")
+UpgradeButtonHouseMax/styles/disabled = SubResource("Keycap_UpgradeHouseMax_normal")
+UpgradeButtonHouseMax/styles/focus = SubResource("StyleBoxEmpty_esc")
+UpgradeTipHouse/base_type = &"PanelContainer"
+UpgradeTipHouse/styles/panel = SubResource("Keycap_UpgradeTipHouse")
+UpgradeGlowHouse/base_type = &"Panel"
+UpgradeGlowHouse/styles/panel = SubResource("StyleBoxFlat_upgrade_glow_house")
+UpgradeLevel/base_type = &"OutlinedLabel"
+UpgradeLevel/font_sizes/font_size = 18
+UpgradePrice/base_type = &"OutlinedLabel"
+UpgradePrice/font_sizes/font_size = 16
+PriceShort/base_type = &"UpgradePrice"
+PriceShort/colors/font_color = Color(1, 0.541176, 0.470588, 1)
+PriceMax/base_type = &"UpgradePrice"
+PriceMax/colors/font_color = Color(0.964706, 0.768627, 0.262745, 1)
+UpgradeTipTitle/base_type = &"PlainLabel"
+UpgradeTipTitle/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
+UpgradeTipTitle/font_sizes/font_size = 28
+UpgradeTipText/base_type = &"PlainLabel"
+UpgradeTipText/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
+UpgradeTipText/font_sizes/font_size = 22
+UpgradeTipNumbers/base_type = &"UpgradeTipText"
+UpgradeTipNumbers/colors/font_color = Color(0.788235, 0.466667, 0.184314, 1)
+UpgradeTipNeeds/base_type = &"UpgradeTipText"
+UpgradeTipNeeds/colors/font_color = Color(0.690196, 0.227451, 0.164706, 1)
+SectionHeadingHouse/base_type = &"Heading2"
+SectionHeadingHouse/colors/font_color = Color(0.890196, 0.913725, 0.984314, 1)

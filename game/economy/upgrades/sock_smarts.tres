@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="Upgrade" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/upgrade_sock_smarts.svg" id="1_owbut"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_43mkg"]
+[ext_resource type="Resource" path="res://game/economy/stats/sock_smarts.tres" id="3_0axxh"]
+
+[resource]
+script = ExtResource("2_43mkg")
+title = "Sock Smarts"
+tooltip = "A held Sock shows its readout. Without it you see only the model."
+icon = ExtResource("1_owbut")
+cell = Vector2i(1, 2)
+prices = PackedInt32Array(30)
+stat = ExtResource("3_0axxh")

@@ -8,10 +8,19 @@
 class_name MoneyCounters
 extends HBoxContainer
 
+## Links the wiring check lets stay empty: the Upgrade menu's header has no flight of its own.
+const WIRING_OPTIONAL := ["flight"]
+
 ## Where payouts fly (the HUD's); none: the counters show the Bank's numbers as they are.
 @export var flight: CoinFlight
 ## Says the debug cheat's message to this machine's player ("Debug: +1000 Coins": the HUD's does).
 @export var says_cheat := false
+
+## The Player whose numbers it shows when it is not on that Player's HUD (the Upgrade menu's header).
+var for_player: Player = null
+## A flight whose Coins still flying it holds back without paying into it (the Upgrade menu's header
+## shows what the HUD's counters show).
+var holds_back: CoinFlight = null
 
 @onready var coins: MoneyCounter = $Coins
 @onready var drawers: MoneyCounter = $Drawers
@@ -31,8 +40,9 @@ func _process(_delta: float) -> void:
 	visible = b != null
 	if b == null:
 		return
-	coins.show_amount(b.of_player(_me()) - (flight.pending(coins.currency) if flight != null else 0))
-	drawers.show_amount(b.drawers - (flight.pending(drawers.currency) if flight != null else 0))
+	var shown := flight if flight != null else holds_back
+	coins.show_amount(b.of_player(_me()) - (shown.pending(coins.currency) if shown != null else 0))
+	drawers.show_amount(b.drawers - (shown.pending(drawers.currency) if shown != null else 0))
 
 
 ## The Bank it shows: the level's of this machine's player (its Hands' Parts), else the first one.
@@ -66,11 +76,10 @@ func _on_paid(player: int, amount: int, at_drawer: Node3D, bonus: bool) -> void:
 
 
 func _on_drawers_paid(player: int, amount: int, at_drawer: Node3D) -> void:
-	if player != _me():
+	if player != _me() or flight == null:
 		return
 	PadRumble.play(PadRumble.DONE)
-	if flight != null:
-		flight.pay(_point_of(at_drawer, flight.tuning.drawer_rise), amount, drawers.currency)
+	flight.pay(_point_of(at_drawer, flight.tuning.drawer_rise), amount, drawers.currency)
 
 
 func _on_cheated(player: int, amount: int) -> void:
@@ -107,6 +116,8 @@ func _me() -> int:
 
 ## The Player whose HUD this is, or null.
 func _player() -> Player:
+	if for_player != null and is_instance_valid(for_player):
+		return for_player
 	var n := get_parent()
 	while n != null and not (n is Player):
 		n = n.get_parent()

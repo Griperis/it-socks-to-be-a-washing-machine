@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Upgrade" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/upgrade_big_bag.svg" id="1_jvnvw"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_1mjyf"]
+
+[resource]
+script = ExtResource("2_1mjyf")
+title = "Big Bag"
+tooltip = "The vacuum holds more Socks."
+icon = ExtResource("1_jvnvw")
+section = 1
+cell = Vector2i(2, 0)
+prices = PackedInt32Array(1, 2)

@@ -190,7 +190,7 @@ what = "50 RPG sound effects"
 author = "Kenney"
 source = "https://opengameart.org/content/50-rpg-sound-effects"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/basket_open__kenney_creak3.ogg", "assets/audio/cupboard_close__kenney_door_close4.ogg", "assets/audio/cupboard_open__kenney_door_open1.ogg", "assets/audio/drop__kenney_drop_leather.ogg", "assets/audio/shelve__kenney_book_place1.ogg", "assets/audio/step_wood__kenney_footstep00.ogg")
+covers = PackedStringArray("assets/audio/basket_open__kenney_creak3.ogg", "assets/audio/buy__kenney_coins.ogg", "assets/audio/cupboard_close__kenney_door_close4.ogg", "assets/audio/cupboard_open__kenney_door_open1.ogg", "assets/audio/drop__kenney_drop_leather.ogg", "assets/audio/shelve__kenney_book_place1.ogg", "assets/audio/step_wood__kenney_footstep00.ogg")
 
 [sub_resource type="Resource" id="Entry_21"]
 script = ExtResource("2_entry")
