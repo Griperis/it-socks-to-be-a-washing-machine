@@ -62,5 +62,6 @@ designer's yes); the doors are clips in its Looks. `spin_time` in `WardrobeTunin
 - The ten basic pieces are owned from the start (Q2679, 2026-11-25).
 - The Lost Socks' six pieces are hidden from the Wardrobe and its "N/M" until the Drum (Q2683, 2026-11-25).
 - UI is always authored in nodes (Q2658, 2026-11-25).
+- The station swaps in assets/20's Looks, `game/entities/wardrobe_station/looks_wardrobe_station.tscn`, for the graybox (Q2715, 2026-11-26).
 
 ## Open follow-ups
