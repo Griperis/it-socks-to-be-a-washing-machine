@@ -30,6 +30,8 @@ func cases() -> Array[Dictionary]:
 				"title": "WardrobeLook.clean drops unknown ids and wrong slots; allowed takes off what is not owned"},
 		{"name": "dressed", "method": "case_dressed", "world": false,
 				"title": "a skinned clothes piece is bound to the Avatar's skeleton and crouches with the body; Socks go under FootL and FootR; Bee wings swish 4 times a waddle; a changed Trail frees its marks"},
+		{"name": "trail_scenes", "method": "case_trail_scenes", "world": false,
+				"title": "every Trail piece's scene (core/144) instances with a TrailMark root, one-shot particles or a clip, and its mark is gone after its life"},
 		{"name": "own_and_mirror", "method": "case_own_and_mirror", "world": false,
 				"title": "the player's own body (first person) wears only Socks and Trail, never the hat or clothes, its Socks casting no shadow; the mirror body wears the whole look and leaves no Trail"},
 		{"name": "preview", "method": "case_preview", "world": false,
@@ -88,7 +90,7 @@ func case_real_path() -> void:
 	await _until(func() -> bool: return not looks.dresser().marks().is_empty(), "the walking stand-in to leave a puff", 1200, 10.0)
 	var mark: TrailMark = looks.dresser().marks()[0]
 	_check(mark.top_level and absf(mark.global_position.y - (walker.global_position.y + 0.006)) < 0.02, "the mark stays where it was laid, 0.006 m over the floor (%.3f)" % mark.global_position.y)
-	var puffs := mark.get_node("Puffs") as GPUParticles3D
+	var puffs := mark.find_children("*", "GPUParticles3D", true, false)[0] as GPUParticles3D
 	_check(puffs.emitting and puffs.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_OFF, "its puffs emit and cast no shadow")
 	var left: WeakRef = weakref(mark)
 	var at := mark.global_position
@@ -144,7 +146,7 @@ func case_dressed() -> void:
 	a.set_crouch(0.0)
 	_near(mesh.get_blend_shape_value(key), 0.0, 0.001, "and stand with it")
 	_check(d.socks.size() == 2 and d.socks[0].get_parent() == a.feet()[0] and d.socks[1].get_parent() == a.feet()[1], "the Socks go under FootL and FootR")
-	_check((d.socks[0].get_node("sock_l") as Node3D).visible and not (d.socks[0].get_node("sock_r") as Node3D).visible, "the left foot draws only sock_l")
+	_check((d.socks[0].find_child("sock_l", true, false) as Node3D).is_visible_in_tree() and not (d.socks[0].find_child("sock_r", true, false) as Node3D).is_visible_in_tree(), "the left foot draws only sock_l")
 	# Steps lay marks; a changed Trail frees them at once.
 	for i in 3:
 		a.walk = 1.0
@@ -177,6 +179,23 @@ func case_dressed() -> void:
 	_check(d.marks().size() == most, "at most max_marks (%d) marks kept (%d)" % [most, d.marks().size()])
 
 
+func case_trail_scenes() -> void:
+	var trails := Wardrobe.all().filter(func(p: WardrobePiece) -> bool: return p.slot == WardrobePiece.Slot.TRAIL)
+	_check(trails.size() == 17, "17 Trail pieces (%d)" % trails.size())
+	for piece: WardrobePiece in trails:
+		var mark := piece.looks.instantiate() as TrailMark
+		_check(mark != null, "%s's scene has a TrailMark root" % piece.id)
+		if mark == null:
+			continue
+		_check(mark.life > 0.0 and mark.max_marks > 0, "%s has its life (%.1f) and max (%d)" % [piece.id, mark.life, mark.max_marks])
+		_check(not mark.find_children("*", "GPUParticles3D", true, false).is_empty() or not mark.find_children("*", "AnimationPlayer", true, false).is_empty(), "%s is made of particles or a clip" % piece.id)
+		var gone := [false]
+		mark.tree_exited.connect(func() -> void: gone[0] = true)
+		mark.laid_ago(mark.life - 0.05)
+		add_child(mark)
+		await _until(func() -> bool: return gone[0], "%s's mark to be gone after its life" % piece.id)
+
+
 func case_own_and_mirror() -> void:
 	var player := (load(PLAYER) as PackedScene).instantiate() as Player
 	add_child(player)
@@ -190,7 +209,7 @@ func case_own_and_mirror() -> void:
 	_check(own.dresser().hat == null and own.dresser().clothes == null, "the own body wears no hat or clothes")
 	_check((own.swaying().get_node(^"HatPoint") as Node3D).get_child_count() == 0, "nothing is drawn at the own body's HatPoint")
 	_check(own.dresser().socks.size() == 2, "the own body wears its Socks")
-	var sock := own.dresser().socks[0].get_node("sock_l") as GeometryInstance3D
+	var sock := own.dresser().socks[0].find_child("sock_l", true, false) as GeometryInstance3D
 	_check(sock.cast_shadow == GeometryInstance3D.SHADOW_CASTING_SETTING_OFF, "its Socks cast no shadow in first person")
 	_check(own.dresser().worn[&"trail"] == &"lint_puffs" and own.leaves_trail, "the own body leaves its Trail")
 	_check(mirror.dresser().hat != null and mirror.dresser().clothes != null and mirror.dresser().socks.size() == 2, "the mirror body wears the whole look")

@@ -10,6 +10,10 @@ extends Node3D
 ## The most marks of this Trail one creature keeps.
 @export_range(1, 200, 1) var max_marks := 30
 
+## Which of its Layouts this mark keeps (a scene holds a few, in the group `variant`, each its own random
+## placing and timing as the old Trails drew one anew per step); -1 picks one at random.
+@export var layout := -1
+
 ## Seconds since it was laid.
 var age := 0.0
 
@@ -23,6 +27,13 @@ func laid_ago(seconds: float) -> void:
 
 
 func _ready() -> void:
+	var layouts := get_children().filter(func(n: Node) -> bool: return n.is_in_group(&"variant"))
+	if not layouts.is_empty():
+		var keep: Node = layouts[randi() % layouts.size() if layout < 0 else clampi(layout, 0, layouts.size() - 1)]
+		for n: Node in layouts:
+			if n != keep:
+				remove_child(n)
+				n.queue_free()
 	if age > 0.0:
 		for a: Node in find_children("*", "AnimationPlayer", true, false):
 			var player := a as AnimationPlayer

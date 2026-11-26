@@ -5,9 +5,8 @@ data/tuning/gifts.json "pieces" (six per Collection), with the old avatar.json s
 
     python3 tools/wardrobe_pieces_from_old.py [--reference <old game checkout>]
 
-A hat or clothes piece points at its Looks game/wardrobe/looks/<id>.tscn (assets/18); a Socks piece at the
-graybox pair and a Trail at its scene in game/wardrobe/trails/ (lint_puffs) or the graybox mark, until
-assets/19 and core/144. The ten basic pieces are owned from the start (Q2679). Values the editor would not
+A hat, clothes or Socks piece points at its Looks game/wardrobe/looks/<id>.tscn (assets/18, 19) and a Trail at
+its scene game/wardrobe/trails/<id>.tscn (core/144). The ten basic pieces are owned from the start (Q2679). Values the editor would not
 write (the defaults) are left out; uids are left to the editor (path-only references).
 Python 3 standard library only. Kept so the files can be written again; after that they are the designer's.
 """
@@ -22,20 +21,19 @@ RARITY = {"common": 0, "uncommon": 1, "rare": 2}
 NAMES = {"beanie": "Beanie", "cap": "Cap", "top_hat": "Top hat", "party_hat": "Party hat",
 		"bobble_hat": "Bobble hat", "crown": "Crown", "scarf": "Scarf", "apron": "Apron",
 		"bow_tie": "Bow tie", "jumper": "Jumper"}
-SOCKS = "res://game/wardrobe/graybox_socks.tscn"
 TRAILS = "res://game/wardrobe/trails/"
 
 
 def looks_of(pid: str, slot: str) -> str:
-	if slot in ("hat", "clothes"):
+	if slot in ("hat", "clothes", "socks"):
 		path = ROOT / "game" / "wardrobe" / "looks" / (pid + ".tscn")
 		if not path.exists():
 			raise SystemExit("no Looks for %s at %s" % (pid, path))
 		return "res://game/wardrobe/looks/%s.tscn" % pid
-	if slot == "socks":
-		return SOCKS
 	own = ROOT / "game" / "wardrobe" / "trails" / (pid + ".tscn")
-	return TRAILS + (pid if own.exists() else "graybox") + ".tscn"
+	if not own.exists():
+		raise SystemExit("no Trail scene for %s at %s" % (pid, own))
+	return TRAILS + pid + ".tscn"
 
 
 def write(pid: str, piece: dict) -> None:
