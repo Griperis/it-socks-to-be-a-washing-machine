@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dft3tg0kq0vvb" path="res://assets/ui/menu_options.svg" id="4_options"]
 [ext_resource type="Texture2D" uid="uid://cptq4se7vvdh5" path="res://assets/ui/menu_exit.svg" id="5_exit"]
 [ext_resource type="Texture2D" uid="uid://bsaunnyq7oikd" path="res://assets/ui/menu_licence.svg" id="6_licence"]
+[ext_resource type="Texture2D" path="res://assets/ui/menu_encyclopedia.svg" id="7_encyclopedia"]
 [ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
 
 [node name="Title" type="Control" unique_id=531573]
@@ -213,6 +214,26 @@ grow_vertical = 0
 tooltip_text = "Licence"
 theme_type_variation = &"CornerKey"
 icon = ExtResource("6_licence")
+icon_alignment = 1
+expand_icon = true
+
+[node name="EncyclopediaKey" type="Button" parent="." unique_id=772901]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -180.0
+offset_top = -96.0
+offset_right = -108.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+tooltip_text = "Sock encyclopedia"
+theme_type_variation = &"CornerKey"
+icon = ExtResource("7_encyclopedia")
 icon_alignment = 1
 expand_icon = true
 
