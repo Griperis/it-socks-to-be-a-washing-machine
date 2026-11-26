@@ -6,7 +6,7 @@ area: core
 feature: gifts
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: ["[[126-spawned-parts]]", "[[125-collections-as-data]]", "[[128-wardrobe-pieces-and-dressed-avatar]]", "[[141-looks-in-coop]]", "[[127-profile-file-and-tallies]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 4", "suggested model: opus"]
 terms: [Gift, Stage, Collection, Old Tree, Part, Hands, Teammate]

@@ -27,3 +27,5 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-26 [[145-achievements-system]] Achievements: the system, the toast and the station: 51ae7236 (core/145-achievements-system)
 - 2026-11-26 [[20-wardrobe-station-model]] The Wardrobe station's model: 21d12c3c (assets/20-wardrobe-station-model)
 - 2026-11-26 [[147-profile-page]] The Profile page: cfbe37ba (core/147-profile-page)
+- 2026-11-26 [[137-presents-under-the-old-tree]] Presents under the Old Tree: 8c775efe (core/137-presents-under-the-old-tree)
+- 2026-11-26 [[153-batch-c-file-build-tickets]] Batch C: the answers folded in, the build tickets filed: 6eac5026 (core/153-batch-c-file-build-tickets)
