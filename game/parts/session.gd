@@ -329,6 +329,8 @@ func _note(text: String, warning: bool) -> void:
 
 
 func _exit_tree() -> void:
+	if profile != null:
+		profile.flush()
 	leave()
 
 
