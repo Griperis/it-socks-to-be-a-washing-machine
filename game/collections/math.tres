@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://game/collections/sock_collection.gd" id="1_c"]
+[ext_resource type="Texture2D" path="res://assets/ui/math.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_c")
+id = &"math"
+name = "Math"
+colour = Color(0.1843, 0.3647, 0.3137, 1)
+cabinet_name = "Math cabinet"
+icon = ExtResource("2_icon")
+paper = Color(0.4706, 0.5882, 0.5529, 1)
+ink = Color(0.1373, 0.2745, 0.2353, 1)
+bow = Color(0.1608, 0.3216, 0.2745, 1)

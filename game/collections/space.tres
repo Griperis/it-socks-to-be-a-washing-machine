@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://game/collections/sock_collection.gd" id="1_c"]
+[ext_resource type="Texture2D" path="res://assets/ui/space.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_c")
+id = &"space"
+name = "Space"
+colour = Color(0.3529, 0.2471, 0.6902, 1)
+cabinet_name = "Space cabinet"
+icon = ExtResource("2_icon")
+paper = Color(0.5804, 0.5098, 0.8000, 1)
+ink = Color(0.2667, 0.1843, 0.5176, 1)
+bow = Color(0.3098, 0.2157, 0.6078, 1)

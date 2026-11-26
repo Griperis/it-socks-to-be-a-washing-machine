@@ -1,0 +1,15 @@
+[gd_resource type="Resource" format=3]
+
+[ext_resource type="Script" path="res://game/collections/sock_collection.gd" id="1_c"]
+[ext_resource type="Texture2D" path="res://assets/ui/machinery.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_c")
+id = &"machinery"
+name = "Machinery"
+colour = Color(0.5412, 0.5608, 0.5961, 1)
+cabinet_name = "Machinery cabinet"
+icon = ExtResource("2_icon")
+paper = Color(0.7020, 0.7137, 0.7373, 1)
+ink = Color(0.4078, 0.4196, 0.4471, 1)
+bow = Color(0.4745, 0.4941, 0.5255, 1)
