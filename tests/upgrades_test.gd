@@ -239,7 +239,7 @@ func case_data() -> void:
 	stat.least = 0.1
 	_check(is_equal_approx(stat.value_at(2), 0.6) and is_equal_approx(stat.value_at(8), 0.12), "SCALE_DOWN keeps its least share")
 	var t := load("res://game/ui/upgrade_menu/upgrade_menu_tuning.tres") as UpgradeMenuTuning
-	_check(t.cell == 92.0 and t.gap == 8 and t.lift == 5.0 and t.grow == 1.08 and t.tip_width == 360.0, "the menu's old sizes")
+	_check(t.cell == 92.0 and t.gap == 8 and t.tip_width == 360.0, "the menu's old sizes")
 
 
 func case_house_total() -> void:

@@ -1,16 +1,16 @@
 [gd_resource type="Resource" script_class="Upgrade" format=3]
 
 [ext_resource type="Texture2D" path="res://assets/ui/upgrade_xray_linger.svg" id="1_nxtgl"]
-[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_unt4k"]
-[ext_resource type="Resource" path="res://game/economy/upgrades/xray.tres" id="3_b15vd"]
+[ext_resource type="Resource" path="res://game/economy/upgrades/xray.tres" id="2_unt4k"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="3_b15vd"]
 
 [resource]
-script = ExtResource("2_unt4k")
+script = ExtResource("3_b15vd")
 title = "Lingering X-ray"
 tooltip = "The X-ray glows longer."
 icon = ExtResource("1_nxtgl")
 cell = Vector2i(2, 3)
 prices = PackedInt32Array(100, 160)
-needs = Dictionary[ExtResource("2_unt4k"), int]({
-ExtResource("3_b15vd"): 1
+needs = Dictionary[Resource, int]({
+ExtResource("2_unt4k"): 1
 })

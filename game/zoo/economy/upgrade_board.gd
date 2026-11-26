@@ -25,7 +25,7 @@ var _since := 0.0
 
 func _ready() -> void:
 	var i := 0
-	for u in Upgrades.listed():
+	for u in _upgrades():
 		var row := ROW.instantiate() as UpgradeBoardRow
 		add_child(row)
 		row.position = Vector3(0.0, -i * row_gap, 0.0)
@@ -42,10 +42,14 @@ func _process(delta: float) -> void:
 		_relabel()
 
 
+func _upgrades() -> Array[Upgrade]:
+	return upgrades.all() if upgrades != null else Upgrades.listed()
+
+
 ## Every row's line now.
 func _relabel() -> void:
 	var me := multiplayer.get_unique_id() if is_inside_tree() else Parts.HOST
-	for u in Upgrades.listed():
+	for u in _upgrades():
 		var row: UpgradeBoardRow = _rows.get(u.id())
 		if row != null:
 			var text := line_of(u, upgrades, me)

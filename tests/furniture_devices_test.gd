@@ -66,7 +66,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "d06_now", "method": "case_d06_now", "world": false,
 				"title": "D06: a state arriving whole shows the sheet as it stands with no pull or sound; locked again, it drapes at once"},
 		{"name": "v05_old_tree", "method": "case_v05_old_tree", "world": false,
-				"title": "V05, D08: the Old Tree and the sheeted sofa stay models: no script, no motion of their own"},
+				"title": "V05, D08: the Old Tree and the sheeted sofa have no motion of their own; the sofa no script, the tree only its Upgrade station Part and menu (core/129)"},
 	]
 
 
@@ -511,13 +511,22 @@ func case_d06_now() -> void:
 func case_v05_old_tree() -> void:
 	for stem: String in ["old_tree", "sheeted_sofa"]:
 		var piece := (load(FOLDER.path_join(stem + ".tscn")) as PackedScene).instantiate()
+		# core/129: the Old Tree is the Upgrade station, its one Part (OldTree) and the Upgrade menu it opens;
+		# the tree itself still has no code and no motion of its own (its motion waits for the rework, Q2670).
+		var menu := piece.get_node_or_null(^"UpgradeMenu")
 		var scripted := 0
+		var moving := 0
 		for n: Node in piece.find_children("*", "Node", true, false):
-			if n.get_script() != null and not (n.get_script() as Script).resource_path.ends_with("outline.gd"):
+			if menu != null and (n == menu or menu.is_ancestor_of(n)):
+				continue
+			if n is AnimationPlayer:
+				moving += 1
+			if n.get_script() != null and not (n.get_script() as Script).resource_path.ends_with("outline.gd") and not n is OldTree:
 				scripted += 1
 		_check(piece.get_script() == null and scripted == 0, "%s has no code of its own" % stem)
-		_check(piece.find_children("*", "AnimationPlayer", true, false).is_empty(), "%s has no motion of its own" % stem)
+		_check(moving == 0, "%s has no motion of its own" % stem)
 		if stem == "old_tree":
+			_check(piece.find_children("*", "OldTree", true, false).size() == 1 and menu is UpgradeMenu, "the Old Tree is the Upgrade station: its OldTree Part and its Upgrade menu")
 			_check(not piece.find_children("*", "OmniLight3D", true, false).is_empty(), "the Old Tree keeps its glowing bulbs' light")
 		piece.free()
 

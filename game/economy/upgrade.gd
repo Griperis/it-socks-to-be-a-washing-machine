@@ -25,8 +25,9 @@ enum Section {
 @export var cell := Vector2i.ZERO
 ## One price per level (so the level count). Coins for a Personal one, Drawers for a House one.
 @export var prices := PackedInt32Array() # placeholder: the old data/upgrades.json prices (House ones re-scaled, Q1405)
-## What must be bought first: {Upgrade: the level it must have}.
-@export var needs: Dictionary[Upgrade, int] = {}
+## What must be bought first: {Upgrade: the level it must have}. Keyed by Resource, not Upgrade: a
+## collection typed with its own class holds this script and it is never freed (reported at quit).
+@export var needs: Dictionary[Resource, int] = {}
 ## The stat its levels add to; empty: its feature is not built and it says "Coming soon".
 @export var stat: UpgradeStat
 ## Hidden and not for sale in single player (Q1357; hosting counts as co-op, Q1399).

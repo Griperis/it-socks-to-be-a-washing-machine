@@ -10,7 +10,7 @@ done:
 blocked_by: ["[[124-coins-and-drawers]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 2", "suggested model: opus"]
 terms: [Upgrade, Personal, House, Old Tree, Upgrade station, Coins, Drawers, Sock Smarts, Sock Sense]
-suites: [player, aim_screen, outline, save, coop_join, ui_nodes, menus, furniture, zoo]
+suites: [player, aim_screen, outline, save, coop_join, ui_nodes, menus, furniture, zoo, furniture_devices, game_cli]
 ---
 
 # The Upgrades and the menu at the Old Tree
@@ -69,9 +69,6 @@ prices `# placeholder:` the old.
 - Coins still flying are spendable only once landed (Q2672, 2026-11-25).
 
 ## Open follow-ups
-- [later] The lift, growth, glow and shake of a button and the tip card's place are tweens driven by `UpgradeMenuTuning`
-  (as the architecture asks, and as core/124's flight); the "motion is clips" rule (core/108) would make them
-  AnimationPlayer clips in `upgrade_button.tscn`: the lead's call.
 - [later] Seven open choices settled by the old game are on `docs/migration/batch-b-review.md` (core/129 rows): the
   House prices' re-scaling, "Need Coins 120" as text, the close key's place, the silent menu_open/close, Big Hands'
   icon, no predicted refusal, the X-ray titles.

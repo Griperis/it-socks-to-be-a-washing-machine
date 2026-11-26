@@ -141,7 +141,7 @@ func _input(event: InputEvent) -> void:
 ## The Upgrades shown here now, by id.
 func _shown_ids() -> Array[StringName]:
 	var out: Array[StringName] = []
-	for u in Upgrades.listed():
+	for u in upgrades.all():
 		if upgrades.shown(u):
 			out.append(u.id())
 	return out
@@ -159,7 +159,7 @@ func _rebuild_if_changed() -> void:
 	_buttons.clear()
 	for of: Upgrade.Section in [Upgrade.Section.PERSONAL, Upgrade.Section.HOUSE]:
 		var ups: Array[Upgrade] = []
-		for u in Upgrades.listed():
+		for u in upgrades.all():
 			if u.section == of and ids.has(u.id()):
 				ups.append(u)
 		if ups.is_empty():

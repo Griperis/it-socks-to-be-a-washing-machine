@@ -1,17 +1,17 @@
 [gd_resource type="Resource" script_class="Upgrade" format=3]
 
 [ext_resource type="Texture2D" path="res://assets/ui/upgrade_fast_elevator.svg" id="1_euhff"]
-[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_yp0rh"]
-[ext_resource type="Resource" path="res://game/economy/upgrades/elevator_repair.tres" id="3_uff3c"]
+[ext_resource type="Resource" path="res://game/economy/upgrades/elevator_repair.tres" id="2_yp0rh"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="3_uff3c"]
 
 [resource]
-script = ExtResource("2_yp0rh")
+script = ExtResource("3_uff3c")
 title = "Fast Elevator"
 tooltip = "The Elevator moves faster."
 icon = ExtResource("1_euhff")
 section = 1
 cell = Vector2i(0, 1)
 prices = PackedInt32Array(3, 3)
-needs = Dictionary[ExtResource("2_yp0rh"), int]({
-ExtResource("3_uff3c"): 1
+needs = Dictionary[Resource, int]({
+ExtResource("2_yp0rh"): 1
 })

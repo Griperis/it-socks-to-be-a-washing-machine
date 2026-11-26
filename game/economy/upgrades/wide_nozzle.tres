@@ -1,17 +1,17 @@
 [gd_resource type="Resource" script_class="Upgrade" format=3]
 
 [ext_resource type="Texture2D" path="res://assets/ui/upgrade_wide_nozzle.svg" id="1_eqro5"]
-[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_5xx4d"]
-[ext_resource type="Resource" path="res://game/economy/upgrades/long_hose.tres" id="3_begmx"]
+[ext_resource type="Resource" path="res://game/economy/upgrades/long_hose.tres" id="2_5xx4d"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="3_begmx"]
 
 [resource]
-script = ExtResource("2_5xx4d")
+script = ExtResource("3_begmx")
 title = "Wide Nozzle"
 tooltip = "The vacuum's nozzle takes a wider swath."
 icon = ExtResource("1_eqro5")
 section = 1
 cell = Vector2i(2, 3)
 prices = PackedInt32Array(1)
-needs = Dictionary[ExtResource("2_5xx4d"), int]({
-ExtResource("3_begmx"): 1
+needs = Dictionary[Resource, int]({
+ExtResource("2_5xx4d"): 1
 })

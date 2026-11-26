@@ -58,8 +58,9 @@ const CHECK_EVERY := 0.25
 @export var coop := false
 @export_group("")
 
-## The Upgrades in FOLDER, read once per run (sorted by file name).
-static var _listed: Array[Upgrade] = []
+## The Upgrades in FOLDER as this Part first read them (all()). Never a static: a resource a static holds
+## outlives the scene and the engine reports it still in use at quit.
+var _all: Array[Upgrade] = []
 
 ## The ids this machine's player could buy at the last look (null before the first).
 var _buyable: Variant = null
@@ -86,21 +87,37 @@ static func of(node: Node) -> Upgrades:
 
 ## Every Upgrade in the folder, sorted by file name: a new `.tres` dropped there is listed with no
 ## other change (ResourceLoader.list_directory() lists an exported build's remapped files too).
+## Read from the folder at each call: what runs often asks all() of the level's Upgrades instead.
 static func listed() -> Array[Upgrade]:
-	if _listed.is_empty():
-		var files := Array(ResourceLoader.list_directory(FOLDER))
-		files.sort()
-		for f: String in files:
-			if f.ends_with(".tres") or f.ends_with(".res"):
-				var u := load(FOLDER + f) as Upgrade
-				if u != null:
-					_listed.append(u)
-	return _listed
+	var out: Array[Upgrade] = []
+	var files := Array(ResourceLoader.list_directory(FOLDER))
+	files.sort()
+	for f: String in files:
+		if f.ends_with(".tres") or f.ends_with(".res"):
+			var u := load(FOLDER + f) as Upgrade
+			if u != null:
+				out.append(u)
+	return out
 
 
-## The Upgrade whose id is `id`, or null.
+## The Upgrade whose id is `id` in the folder, or null.
 static func find_upgrade(id: StringName) -> Upgrade:
 	for u in listed():
+		if u.id() == id:
+			return u
+	return null
+
+
+## listed(), read once by this Part.
+func all() -> Array[Upgrade]:
+	if _all.is_empty():
+		_all = listed()
+	return _all
+
+
+## The Upgrade whose id is `id` among all(), or null.
+func upgrade_of(id: StringName) -> Upgrade:
+	for u in all():
 		if u.id() == id:
 			return u
 	return null
@@ -126,7 +143,7 @@ func value(stat: UpgradeStat, by: int) -> float:
 ## The summed levels for player `by` of every Upgrade naming `stat`.
 func stat_level(stat: UpgradeStat, by: int) -> int:
 	var n := 0
-	for u in listed():
+	for u in all():
 		if u.stat == stat:
 			n += level(u, by)
 	return n
@@ -217,7 +234,7 @@ func decide(cmd: Command) -> Dictionary:
 		SET_LEVEL:
 			if cmd.by != Parts.HOST:
 				return refuse("wrong")
-			var u := find_upgrade(StringName(String(cmd.args.get("upgrade", ""))))
+			var u := upgrade_of(StringName(String(cmd.args.get("upgrade", ""))))
 			if u == null:
 				return refuse(UNKNOWN)
 			var to := clampi(int(cmd.args.get("level", 0)), 0, u.top())
@@ -226,7 +243,7 @@ func decide(cmd: Command) -> Dictionary:
 
 
 func _decide_buy(cmd: Command) -> Dictionary:
-	var u := find_upgrade(StringName(String(cmd.args.get("upgrade", ""))))
+	var u := upgrade_of(StringName(String(cmd.args.get("upgrade", ""))))
 	var price := u.price_after(level(u, cmd.by)) if u != null else -1
 	var why := refusal(u, cmd.by, funds(u, cmd.by) if u != null else 0) if bank != null else UNKNOWN
 	var ev: Dictionary
@@ -274,7 +291,7 @@ func _on_applied(ev: Dictionary) -> void:
 	if StringName(ev.get("to", &"")) != id or StringName(ev.get("kind", &"")) != BUY:
 		return
 	var by := int(ev.get("by", Parts.HOST))
-	var u := find_upgrade(StringName(String(ev.get("upgrade", ""))))
+	var u := upgrade_of(StringName(String(ev.get("upgrade", ""))))
 	if not ev.get("ok", false):
 		refused.emit(by, u, says(String(ev.get("reason", "")), u, int(ev.get("price", 0))))
 		return
@@ -305,11 +322,11 @@ func _process(delta: float) -> void:
 	_since_check = 0.0
 	var me := _me()
 	var now := {}
-	for u in listed():
+	for u in all():
 		if refusal(u, me, shown_funds(u, me)) == "":
 			now[u.id()] = true
 	if _buyable is Dictionary:
-		for u in listed():
+		for u in all():
 			if now.has(u.id()) and not (_buyable as Dictionary).has(u.id()):
 				affordable.emit(me, u)
 	_buyable = now

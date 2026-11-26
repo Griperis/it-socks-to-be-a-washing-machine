@@ -2,9 +2,9 @@
 ## the grid lays out, and the button free inside it so it can lift. The button shows the icon, "level/top"
 ## and the next price with its currency's icon; locked: greyed, the lock over a dimmed icon; no stat: greyed,
 ## "Coming soon"; at its top: the gold frame and "MAX"; dearer than the funds: `PriceShort`. Hovered or
-## focused it lifts, grows and glows in its section's colour; a refusal shakes it. The looks are the
-## Theme's variations (`UpgradeButtonPersonal` / `UpgradeButtonHouse`, with `Off` and `Max`); code only
-## fills it.
+## focused it lifts, grows and glows in its section's colour (the `Lit` player's `lit` clip, played back
+## to go out); a refusal shakes it (the `Shake` player's `shake` clip, Q2697). The looks are the Theme's
+## variations (`UpgradeButtonPersonal` / `UpgradeButtonHouse`, with `Off` and `Max`); code only fills it.
 class_name UpgradeButton
 extends Control
 
@@ -36,8 +36,6 @@ var lit := false
 
 var _hovered := false
 var _focused := false
-var _lit_tween: Tween = null
-var _shake_tween: Tween = null
 
 @onready var key: Button = %Key
 @onready var _glow: Control = %Glow
@@ -46,6 +44,8 @@ var _shake_tween: Tween = null
 @onready var _level: Label = %Level
 @onready var _currency: TextureRect = %Currency
 @onready var _price: Label = %Price
+@onready var _lit: AnimationPlayer = %Lit
+@onready var _shake: AnimationPlayer = %Shake
 
 
 func _ready() -> void:
@@ -111,12 +111,9 @@ func lock_shown() -> bool:
 ## A quick wobble about its middle: a refusal.
 func shake() -> void:
 	shakes += 1
-	if _shake_tween != null:
-		_shake_tween.kill()
 	key.pivot_offset = key.size * 0.5
-	_shake_tween = create_tween()
-	for a in tuning.shake_angles:
-		_shake_tween.tween_property(key, "rotation", a, tuning.shake_step)
+	_shake.stop()
+	_shake.play(&"shake")
 
 
 ## Puts its light out at once (the menu closing).
@@ -136,7 +133,7 @@ func _set_focus(on: bool) -> void:
 	_update_lit()
 
 
-## Lit: it lifts, grows about its middle and its glow fades in, over the tuning's time.
+## Lit: the `lit` clip lifts it, grows it about its middle and fades its glow in; out, it plays back.
 func _update_lit() -> void:
 	var on := _hovered or _focused
 	if on == lit:
@@ -144,19 +141,10 @@ func _update_lit() -> void:
 	lit = on
 	z_index = 1 if on else 0
 	key.pivot_offset = key.size * 0.5
-	if _lit_tween != null:
-		_lit_tween.kill()
-	var scale_to := Vector2.ONE * (tuning.grow if on else 1.0)
-	var y_to := -tuning.lift if on else 0.0
-	if not is_inside_tree():
-		key.scale = scale_to
-		key.position.y = y_to
-		_glow.modulate.a = 1.0 if on else 0.0
+	if on:
+		_lit.play(&"lit")
 	else:
-		_lit_tween = create_tween().set_parallel(true)
-		_lit_tween.tween_property(key, "scale", scale_to, tuning.glow_time)
-		_lit_tween.tween_property(key, "position:y", y_to, tuning.glow_time)
-		_lit_tween.tween_property(_glow, "modulate:a", 1.0 if on else 0.0, tuning.glow_time)
+		_lit.play_backwards(&"lit")
 	lit_changed.emit(self, on)
 
 
