@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" path="res://assets/ui/upgrade_sole_mates.svg" id="1_vt28i"]
 [ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_g8snp"]
+[ext_resource type="Resource" path="res://game/economy/stats/sole_mates.tres" id="9_stat"]
 
 [resource]
 script = ExtResource("2_g8snp")
@@ -12,3 +13,4 @@ section = 1
 cell = Vector2i(4, 0)
 prices = PackedInt32Array(3)
 coop_only = true
+stat = ExtResource("9_stat")

@@ -56,6 +56,8 @@ const FLY_IN := ^"Mate/FlyIn"
 
 ## The sparkle at a Teammate's hand when their pick makes a Pair.
 const MATE_SPARKLE := preload("res://game/hands/mate_sparkle.tscn")
+## The match cue's glow on a held Sock (core/131).
+const SOCK_GLOW := preload("res://game/hands/sock_glow.tscn")
 ## A Teammate's worn Hands (old held.json "worn_step", HV:338-344): a hung item hangs from the anchor.
 const WORN_HANG := Basis(Vector3.UP, PI / 2.0) * Basis(Vector3.BACK, -PI / 2.0)
 
@@ -117,6 +119,8 @@ var _ghosts: Dictionary[int, Node3D] = {}
 var _backs: Dictionary[int, Dictionary] = {}
 ## Where a picked mate's ghost was when its Pair's moment started: its fly-in starts there (D08).
 var _fly_in_from: Dictionary[int, Transform3D] = {}
+## The match glows playing, by Sock (core/131).
+var _glows: Dictionary[int, SockGlow] = {}
 ## Held items let go by a Guest's Throw or drop not answered yet: not drawn (G01, E01).
 var _hidden: Dictionary[int, bool] = {}
 ## A Guest's turn of the wheel not answered yet: the active index shown, or -1 (E06).
@@ -416,6 +420,28 @@ func _sparkle(sock: int) -> void:
 	add_child(fx)
 	fx.play(colour)
 	sparkles += 1
+
+
+## The match cue (core/131; the old Q666): held loose Sock `sock` glows a warm white, `strength` (0..1)
+## bright, fading out over `seconds`. Whether one was there to glow.
+func glow(sock: int, seconds: float, strength: float) -> bool:
+	var looks: Node3D = _looks.get(sock)
+	if looks == null or _balls.has(sock):
+		return false
+	var old: Variant = _glows.get(sock)
+	if old != null and is_instance_valid(old):
+		(old as SockGlow).queue_free()
+	var fx := SOCK_GLOW.instantiate() as SockGlow
+	add_child(fx)
+	fx.play(looks, seconds, strength)
+	_glows[sock] = fx
+	return true
+
+
+## Whether held Sock `sock` glows with the match cue now.
+func glowing(sock: int) -> bool:
+	var fx: Variant = _glows.get(sock)
+	return fx != null and is_instance_valid(fx) and (fx as SockGlow).glowing()
 
 
 ## Places the pairing moment's second Sock while it flies in: its FlyIn starts where the Sock lay

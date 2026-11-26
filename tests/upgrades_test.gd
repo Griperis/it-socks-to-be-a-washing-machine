@@ -43,7 +43,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "coop_guest", "method": "case_coop_guest", "world": false,
 				"title": "Q1399, Q243: a Host shows the co-op-only Upgrades before anyone joins; a joining Guest gets the House levels; the Guest's purchase is decided by the Host from its Coins, the Host reads \"<name> bought Sock Smarts\", and a save and a load keep the Guest's levels"},
 		{"name": "data", "method": "case_data", "world": false,
-				"title": "the 27 Upgrades (16 Personal, 11 House) with the old cells, prices and needs; Sock Smarts, Sense and the six of core/130 have their stats, the rest \"Coming soon\"; Personal levels sum per stat and Sock Smarts turns the player's readout on"},
+				"title": "the 27 Upgrades (16 Personal, 11 House) with the old cells, prices and needs; Sock Smarts, Sense, the six of core/130 and the three Sole cues (core/131) have their stats, the rest \"Coming soon\"; Personal levels sum per stat and Sock Smarts turns the player's readout on"},
 		{"name": "house_total", "method": "case_house_total", "world": false,
 				"title": "Q1405: the House prices total within 2 of 0.9 x the Drawers the house pays, each at least 1"},
 		{"name": "house_menu", "method": "case_house_menu", "world": false,
@@ -228,7 +228,8 @@ func case_data() -> void:
 	var sense := Upgrades.find_upgrade(&"sock_sense")
 	_check(sense.needs.size() == 1 and sense.needs.keys()[0] == Upgrades.find_upgrade(&"sock_smarts"), "Sock Sense needs Sock Smarts")
 	for u in all:
-		var built := u.id() in [&"sock_smarts", &"sock_sense", &"footwork", &"sprint", &"quick_grab", &"big_hands", &"long_arm", &"quick_charge"]
+		var built := u.id() in [&"sock_smarts", &"sock_sense", &"footwork", &"sprint", &"quick_grab", &"big_hands", &"long_arm", &"quick_charge",
+				&"sole_mates", &"sole_hands", &"mate_radar"]
 		_check((u.stat != null) == built, "%s %s" % [u.id(), "has its stat" if built else "is Coming soon"])
 		_check(u.icon != null and u.title != "" and u.top() > 0, "%s has its icon, title and prices" % u.id())
 		_check(u.coop_only == CO_OP_ONLY.has(u.id()), "%s co-op only as the old" % u.id())
