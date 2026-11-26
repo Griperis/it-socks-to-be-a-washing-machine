@@ -1,8 +1,8 @@
 # Gifts, Collections and the encyclopedia
 
-**Status: proposal for batch B (core/121), waiting for the designer's choices G1-G6 (core/121's Open follow-ups).**
-Behaviour list: `docs/migration/m4-lists/07-gifts-and-collections.md`. Batch B is built unattended once the designer
-approves its three proposals in one sitting (Q2603-Q2605); its neighbours are core/120 (Coins and Drawers, the Old
+**Status: build plan for batch B (designed in core/121; answered Q2673-Q2678, 2026-11-25; filed by core/123 as
+core/125, 126, 134-140 and assets/16-17).** Behaviour list: `docs/migration/m4-lists/07-gifts-and-collections.md`.
+Batch B is built unattended in the order of `docs/migration/milestones.md` "Batch B" (Q2603-Q2605); its neighbours are core/120 (Coins and Drawers, the Old
 Tree, the Upgrade grid: `docs/architecture/economy.md`) and core/122 (the Wardrobe, its pieces, the Profile and
 Achievements: `docs/architecture/wardrobe.md`). The seams to both are named at the end; neither piece is designed here.
 
@@ -36,13 +36,13 @@ game/gifts/                  Stage presents
   presents.gd                  Presents (Part, in run.tscn): the drop verb and the heap
   present_draw.gd              PresentDraw (RefCounted rules): which piece each player gets
   present_tuning.gd/.tres      PresentTuning (Resource)
-  looks_present_graybox.tscn   the box until the model (assets, AS-B1): Box, Box/Lid, Glow, Sparkle, Tag, AnimationPlayer
+  looks_present_graybox.tscn   the box until the model (assets, assets/16): Box, Box/Lid, Glow, Sparkle, Tag, AnimationPlayer
   present_opening.tscn         the opened box's last second on every machine (shake, pop, burst), then gone
   gift_paper.gdshader          the old wrapping shader, ported
   gift_reveal.tscn/.gd         the opener's reveal (a CanvasLayer authored in nodes)
 game/parts/spawned_parts.gd  SpawnedParts (Part): Parts made during play (a present), through a MultiplayerSpawner
 game/ui/encyclopedia/        encyclopedia.tscn (the pages), encyclopedia_cell.tscn, encyclopedia_menu.tscn (the book's)
-game/entities/encyclopedia_book/  the book: its scene, Looks (the old glb, AS-B2)
+game/entities/encyclopedia_book/  the book: its scene, Looks (the old glb, assets/17)
 ```
 
 Inheritance stays one step (Q2251): `Present`, `Presents` and `SpawnedParts` extend `Part`; nothing extends
@@ -55,14 +55,16 @@ Inheritance stays one step (Q2251): `Present`, `Presents` and `SpawnedParts` ext
 `id: StringName`, `name` ("Simple"; the 2026-11-19 names, Q1954), `colour` (the pairing moment's sparkles, the old
 designs.json colour), `cabinet_name` ("Simple cabinet"), `icon: Texture2D` (`assets/ui/<id>.svg`), the wrapping
 `paper`, `ink`, `bow` (the old `wrapping.json` values; a transparent colour falls back to the old rule: paper = colour
-lightened 35%, ink darkened 25%, bow = colour), `in_encyclopedia: bool` (on for all but per G3). `Collections.all()`
+lightened 35%, ink darkened 25%, bow = colour), `held_back: bool` (on only for the Lost Socks, whose home is the Drum
+of batch D, Q2675: a held-back Collection is in no encyclopedia page, start set, pool or present, and its pieces are
+not in the Wardrobe's rows or its "N/M", Q2683; the Drum's ticket switches it off). `Collections.all()`
 lists the folder with `ResourceLoader.list_directory` (export-safe) and orders it as `DesignCatalogue.collections()`;
 `Collections.of(id)`. **A designer adds a Collection** by its Designs in `designs.tres` and one `.tres` here: no code.
 `DesignCatalogue.collection_colours` and `cabinet_names` go; `collection_colour()` and `cabinet_name()` keep their
 signatures and read the Collection files, so no caller changes. Dirty has no file (not ported).
 
-**`CollectionUnlocks`** (Resource, `collection_unlocks.tres`): `start: Array[StringName]` (Simple, Sport, Lost Socks
-per G3, Patterns, Animals, Superhero, Winter, Nature, Food: Q1439), `order: Array[StringName]` (Space, Fruit, Machinery,
+**`CollectionUnlocks`** (Resource, `collection_unlocks.tres`): `start: Array[StringName]` (Simple, Sport, Patterns,
+Animals, Superhero, Winter, Nature, Food: Q1439 without the Lost Socks, Q2675), `order: Array[StringName]` (Space, Fruit, Machinery,
 Drinks, Tech, Vegetables, Transport, Math: Q1465), `per_finished_game := 1` (Q1440). `next_after(unlocked) ->
 Array[StringName]`. **A designer changes the start set, the order or the count** in the inspector; a new Collection
 unlocks by adding its id to `order`. The old "modes" layer is dropped with wash cycles (Q1464, Q2602).
@@ -119,10 +121,16 @@ small seam on `Carriable`, which Present fills. "Hands full" is the Carriable's 
 **`Presents`** (Part in `run.tscn`, `presents.gd`; State `next_id`): on the Host, at `stage_completed` (Stages'
 signal), it asks its Host-only `drop` verb. `drop` reads `Stages.completed`, the Session's present players (the
 Roster), each one's owned pieces (core/122) and the pieces already waiting in lying presents, and asks **`PresentDraw`**
-(rules only, the old `GI:79-140`): for each player, for each completed Collection with pieces, one piece they lack and
-do not have waiting, a piece of rarity RARE weighing `rare_weight` (0.25) against 1; none lacked: any piece of it (its
-opening pays per G1). The answer is `SpawnedParts` rows, one per present, each at a spot of the heap (the run's record counts
-a present only when it is opened). No Collection completed, no present (G6).
+(rules only, the old `GI:79-140`): for each player, for each completed Collection with pieces, one piece of it they
+lack and do not have waiting, a piece of rarity RARE weighing `rare_weight` (0.25) against 1. **When they own (or have
+waiting) every piece of it** (Q2673, replacing Q1609): one piece they lack of another unlocked Collection, by the same
+weights over all the lacked pieces of every unlocked Collection that is not held back; only when they lack no piece of
+any of them: any piece of the completed one, whose opening pays the refund (75 Coins). "Unlocked" here is the Host's
+unlocked set, the one the New Game's draw used (the only set the Host knows; the lead's reading, on the review
+sheet). The box is wrapped in the completed Collection's paper whatever piece it holds (the Stage earned it; the lead's
+reading, on the review sheet). The answer is `SpawnedParts` rows, one per present, each at a spot of the heap (the run's
+record counts a present only when it is opened). No Collection completed, no present, so the first presents come after
+Stage 2 (Q2678; Stage 1 cannot complete Simple).
 
 **The heap** (`Presents.heap_spots(n, lying)`): round a **`PresentSpot`** Marker3D placed by hand at the Old Tree's south
 foot (the old first clear `tree_spots` entry, Q1605) under `Run` in the house and in each station that drops presents:
@@ -136,7 +144,7 @@ present, the same `heap_spots` with the lying presents (the old `CA:439-479`; ba
 
 ### The box's Looks (an AnimationPlayer, as every entity)
 
-`looks_present_graybox.tscn` (contract for AS-B1's model): `Box` (body, ribbon cross; the paper's surfaces use
+`looks_present_graybox.tscn` (contract for assets/16's model): `Box` (body, ribbon cross; the paper's surfaces use
 `gift_paper.gdshader`), `Box/Lid` (lid, ribbon, bow), `Glow` (a quad with a radial `GradientTexture2D`, 2.6 box sizes),
 `Sparkle` (a particles node: 10 specks, 1.2 s, rising), `Tag` (Label3D, the old style, hidden solo and while carried),
 `Burst` (a one-shot particles node, 18 specks, at the landing), and an AnimationPlayer:
@@ -153,27 +161,28 @@ The wrapping (paper, ink, icon, bow) is set from the present's `SockCollection` 
 
 `Present.open` (verb, asked by the carrier's second left click, the Hands' click routing for a carried thing that
 `Carriable` already has, core/78): the Host decides that the asker is `for_player` and holds it. The answer removes the
-present's `SpawnedParts` row, writes the opener's refund into `Coins` (core/120's seam, a bonus) when they own the
-piece, appends `[player id, piece]` to `RunRecord.pieces` (a new piece only) and counts `RunRecord.gifts_opened`, and
+present's `SpawnedParts` row, writes the opener's refund into the `Bank` (core/120's seam, a bonus) when they own the
+piece (they owned every piece, Q2673), puts `Roster.owned_patch(by, piece)` in for a new piece (core/122's seam, so
+the Host's owned list grows with no extra ask), appends `[player id, piece]` to `RunRecord.pieces` (a new piece only) and counts `RunRecord.gifts_opened`, and
 carries `present_opened(by, piece, refund, collection, at)`. On every machine, before the node goes, its `Looks` is
 handed to a **`present_opening.tscn`** effect that follows the carrier's hold point and plays the `open` clip: the old
 wobble (5 Hz quickening by 3 Hz, 0.04 to 0.3 rad by 70%), the crouch, the 0.45 box hop, the lid's flight and the
 shrink, the 28-speck burst, the `gift_rattle` at the box; scaled to `shake` (1.0 s) by its speed, then freed. On the
 opener's machine the world box only rattles and vanishes (as the old) and **`GiftReveal`** opens: a CanvasLayer scene
-(`gift_reveal.tscn`, on the Theme) with a 520 x 520 `SubViewportContainer` stage (its camera, a turntable node, a box
-Looks instance playing `open` at 1.6 x), and a `Caption` VBox of three Labels (name, Rarity, "New in your Wardrobe" or
+(`gift_reveal.tscn`, on the Theme) with a 520 x 520 `SubViewportContainer` holding core/122's `preview_stage.tscn`
+(its light and camera; a turntable node, a box Looks instance playing `open` at 1.6 x), and a `Caption` VBox of three Labels (name, Rarity, "New in your Wardrobe" or
 "Already yours: +%d Coins") with Theme variations; code only fills them and puts the piece's preview (core/122) on the
 turntable after the pop (0.35 s back-out pop-in, 1.6 rad/s, a Trail 0.5 rad/s tipped -0.6). It stays `preview` (3.0 s);
 any click or pad face button then closes it and is consumed; during the shake a click is consumed and does nothing; the
-player may walk. The opener's own machine then writes a new piece into its profile (core/122's `unlock_piece`), which
-core/122's sync makes the Host's owned list.
+player may walk. The opener's own machine then writes a new piece into its profile (core/122's `unlock_piece`).
 
 **The Final screen** (run-ends' seams): `RunRecord` gains `pieces` and `gifts_opened` (its batch B rows); each
 `FinalColumn`'s pieces strip shows its player's pieces (core/122's preview, fitted); two `FinalTotal` Resources,
 `gifts_opened` ("Gifts opened") and `pieces_won` ("Wardrobe pieces won"), join `final_totals.tres`: no screen change.
 
 ### Prompts and sounds
-Aimed own present: the outline only (as the old) or the row of G5; carried: "Drop [RMB]" (and "Open [LMB]" per G5).
+Aimed own present: the outline and "[LMB] Pick up"; carried: "[LMB] Open" and "Drop [RMB]" (Q2677: the old showed only
+the outline and "Drop [RMB]"). A Teammate's present is not aimed (no outline, no row).
 Sounds as SoundEvents in the catalogue with the old picks: `pick` on the pick-up and the open (placeholder), `drop` on
 the put down, `gift_rattle` (the first synthesised candidate; the designer picks on the bench). The landing is silent.
 
@@ -182,8 +191,8 @@ The presents fire three VoiceTriggers this piece adds (`game/voice/triggers/pres
 `present_taken.tres`, COMMENT kind, the Old Tree's speaker); `Presents.waiting_for(player_id) -> int` and the signals
 `presents_dropped(players)` and `present_taken(by)` (a Carriable pick of a present) are what the tree's director reads
 for "near". The eleven old lines (`VO tree_presents*`, `tree_present_taken*`) go into the Old Tree's line file
-(Q2640) by the ticket that brings the tree's voice (core/120's, after Q2506's rework); until then the triggers exist and
-nothing speaks.
+(Q2640) with the rest of its lines (core/132: the tree's voice is batch B, Q2670); core/140 adds the three triggers, the
+two signals and their moments in the tree's director.
 
 ## The encyclopedia
 
@@ -204,19 +213,19 @@ buttons, 80 px, wrapping round; the Collection's `Icon` 48 px; `Title` "Simple (
 10 columns; code instances one `encyclopedia_cell.tscn` (150 x 124: the name Label, 14 px, and the existing
 `size_box.tscn` badge) per Design and puts each Design's Sock (its Looks, fitted to 0.34 m) behind its cell in the
 stage, a collected one in its own look, an uncollected one with `silhouette.tres` (unshaded, the UI ink colour) and
-"???". Pages: one per unlocked Collection with `in_encyclopedia` on, in catalogue order, 50 a page, sorted small, medium,
+"???". Pages: one per unlocked Collection that is not held back, in catalogue order, 50 a page, sorted small, medium,
 large then catalogue order; names are the catalogue's (they already carry their colour where shared, Q1198).
 - **On the title:** a 72 x 72 corner key (`menu_encyclopedia`, tooltip "Sock encyclopedia") left of the Licence key
   opens an Encyclopedia page of the title (`title.tscn` gets the key and the page; the key is the old Q1195, the "later"
   of Q2562).
-- **In the house** (G4): `encyclopedia_menu.tscn` (a CanvasLayer, the cream panel style, the same pages) opened by E
+- **In the house** (Q2676): `encyclopedia_menu.tscn` (a CanvasLayer, the cream panel style, the same pages) opened by E
   while the book is the active Hands item; the player frozen and the mouse free, the world running; arrows, A / D,
   Left / Right turn; E or Esc closes; it closes when the book leaves the Hands.
 
-**The book** (G4 (a)): `game/entities/encyclopedia_book/encyclopedia_book.tscn`, placed by hand on the workshop's
+**The book** (batch B, as the old, Q2676): `game/entities/encyclopedia_book/encyclopedia_book.tscn`, placed by hand on the workshop's
 workbench in the house: a `Carriable` (title "Sock Encyclopedia", `handable` on, never thrown) whose new export
 `one_slot` makes it a Hands item in one slot instead of the whole Hands, listed and cycled with the Socks and Pairs (the
-seam batch C's guide card reuses); E reads it ("Read" in the hints). Its Looks is the old glb (AS-B2). Saved and in the
+seam batch C's guide card reuses); E reads it ("Read" in the hints). Its Looks is the old glb (assets/17). Saved and in the
 snapshot as every Carriable; a New Game puts it back on the bench.
 
 ## The save
@@ -226,9 +235,9 @@ snapshot as every Carriable; a New Game puts it back on the bench.
   Carriable on a load, Q2559-Q2560), `Presents.next_id`, `Stages.completed`, each `Cabinet.collection` (the draw), the
   book's Carriable, `RunRecord.pieces` and `gifts_opened`. A New Game starts with none of them (unopened presents lost,
   Q1601). Each Part's version steps as Q2557 says.
-- **The profile** (core/122 owns the file, its version and its cloud sync, Q2565): this piece's fields are `designs:
-  PackedInt32Array` (the encyclopedia, sorted ids) and `collections: Array[StringName]` (unlocked; a new profile starts
-  with `CollectionUnlocks.start`).
+- **The profile** (core/122 owns the file, its version and its cloud sync, Q2565; one ticket, core/127, writes every
+  batch B field of it): this piece's fields are `designs: PackedInt32Array` (the encyclopedia, sorted ids) and
+  `collections: Array[StringName]` (unlocked; a new profile starts with `CollectionUnlocks.start`).
 
 ## Co-op
 
@@ -240,119 +249,65 @@ core/122's sync of the profile's pieces (the old sent them in the join, unchecke
 
 ## Zoo stations (built from the data at load, Q2337)
 
-- **`game/zoo/stations/collections.tscn`** (new, 121-A): one row per `SockCollection` from `Collections.all()`: icon,
-  name, colour swatch, Cabinet name, wrapping swatches (paper, ink, bow) and a wrapped graybox present once 121-C lands,
+- **`game/zoo/stations/collections.tscn`** (new, core/125): one row per `SockCollection` from `Collections.all()`: icon,
+  name, colour swatch, Cabinet name, wrapping swatches (paper, ink, bow) and a wrapped graybox present once core/137 lands,
   whether it is in the start set or its place in the unlock order; a switch per Collection toggles its unlock in the
   zoo's profile (Q1441). A new Collection file shows with no other change.
-- **`game/zoo/stations/gifts.tscn`** (new, 121-B makes it, 121-C fills it): an Old Tree stand-in with a `PresentSpot`;
+- **`game/zoo/stations/gifts.tscn`** (new, core/126 makes it, core/137 fills it): an Old Tree stand-in with a `PresentSpot`;
   switches (zoo-only Commands under `game/zoo/gifts/`): "Drop presents" (one per player for a Collection picked on a
   dial), "Complete a Collection"; each Collection's pieces (core/122's) laid out beside its wrapped box. The real-path
-  cases of 121-C and 121-D run here and on the Stages station's mini run.
-- **The Stages station's mini run** gets a `PresentSpot` and pools on its Cabinets (121-E, 121-C), so a whole Stage ends
+  cases of core/137 and core/138 run here and on the Stages station's mini run.
+- **The Stages station's mini run** gets a `PresentSpot` and pools on its Cabinets (core/135, core/137), so a whole Stage ends
   in presents.
-- **The Final screen station's** pillars get pieces and an unlock in their made-up records (121-D, 121-F).
-- **An Encyclopedia pillar** on the Collections station opens the pages on the zoo's profile (121-G).
+- **The Final screen station's** pillars get pieces and an unlock in their made-up records (core/138, core/134).
+- **An Encyclopedia pillar** on the Collections station opens the pages on the zoo's profile (core/136).
 
 ## Seams
 
 | Seam | Other side | What crosses |
 |---|---|---|
-| S-122a pieces by Collection | core/122's piece catalogue | `pieces_of(collection) -> Array[piece]`, each with `id`, `name`, `slot`, `rarity` (RARE weighs `rare_weight`); `piece_name(id)` |
-| S-122b owned pieces on the Host | core/122's profile sync | `owned_pieces(player_id) -> PackedStringArray` for every present player |
-| S-122c a piece won | core/122's profile | the opener's machine calls `unlock_piece(id)`; the Wardrobe offers it |
-| S-122d a piece's preview | core/122's Looks | `preview(id, tint) -> Node3D` for the reveal's turntable and the Final screen's strip (a hat or clothes model, Socks on feet in the tint, a Trail's live sample) |
-| S-122e the profile file | core/122's `player_profile.gd` | two fields, `designs` and `collections`, in its versioned shape; its coalesced save |
-| S-122f Lifetime tallies | core/122's tallies | the `collection_completed` Stage event (and batch A's `stage_completed`) |
-| S-120a the refund | core/120's Coins | the open answer writes `Coins.paid_patch(by, refund)` marked a bonus (the Final screen's "+N bonus") |
-| S-120b the Old Tree's lines | core/120's tree voice | three VoiceTriggers, `Presents.waiting_for()`, `presents_dropped`, `present_taken` |
+| S-122a pieces by Collection | core/128's `Wardrobe` | `Wardrobe.pieces_of(collection) -> Array[WardrobePiece]` (`id`, `name`, `slot`, `rarity`; RARE weighs `rare_weight`); `piece_name(id)` |
+| S-122b owned pieces on the Host | core/141's Roster | `Roster.owned_of(player_id) -> PackedStringArray` for every present player (the ten basic pieces count as owned, Q2679) |
+| S-122c a piece won | core/141's Roster, core/127's profile | the open answer carries `Roster.owned_patch(by, piece)`; the opener's machine calls `unlock_piece(id)`; the Wardrobe offers it |
+| S-122d a piece's preview | core/128's `Wardrobe.preview` and `preview_stage.tscn` | `preview(id, tint) -> Node3D` for the reveal's turntable and the Final screen's strip (a hat or clothes model, Socks on feet in the tint, a Trail's live sample) |
+| S-122e the profile file | core/127's `player_profile.gd` | two fields, `designs` and `collections`, in its versioned shape; its coalesced save |
+| S-122f Lifetime tallies | core/127's `TallyRecorder` | the `collection_completed` Stage event (counted by core/137, which makes it) and batch A's `stage_completed` |
+| S-120a the refund | core/124's `Bank` | the open answer writes `Bank.paid_patch(by, refund)` marked a bonus (the counter counts up, Q2668; the Final screen's "+N bonus") |
+| S-120b the Old Tree's lines | core/132's tree voice | three VoiceTriggers, `Presents.waiting_for()`, `presents_dropped`, `present_taken` (core/140) |
 | S-120c the tree's place | core/120's Old Tree | none: the `PresentSpot` marker is the level's, beside the tree |
 | run-ends | core/95's Final screen, RunRecord | `pieces`, `gifts_opened`, two `FinalTotal`s, the unlock strip |
 | stages | core/76's `start`, core/79's pop spot | the draw's Cabinet patches before the Stage's Designs; `completed`; the pop spot clear of presents |
-| hands | core/78's `Carriable` | the `carry_guards` seam (pick refusal, aimable); `one_slot` for the book (G4) |
+| hands | core/78's `Carriable` | the `carry_guards` seam (pick refusal, aimable); `one_slot` for the book (Q2676) |
 
-## Tickets (drafts for the lead to file, `ready-for-agent`)
+## The designer's answers (Q2673-Q2678, 2026-11-25)
+- G1: a present whose Collection the player already owns whole gives a piece of another unlocked Collection they lack;
+  Coins (75) only once they own every piece (Q2673, replacing Q1609).
+- G2: each player picks up and opens their own present whenever they like, as the old: that is what "opened together"
+  (Q2612) means (Q2674).
+- G3: the Lost Socks belong in the Drum (batch D); until then they are left out of the encyclopedia, the start set and
+  presents (Q2675); their six pieces are hidden from the Wardrobe and its "N/M" (Q2683).
+- G4: the encyclopedia book stands in the house in batch B, as the old; batch C's guide card reuses its one-slot Hands
+  item (Q2676).
+- G5: "[LMB] Pick up" aimed at your own present, "[LMB] Open" while carrying it (Q2677).
+- G6: the first presents come after Stage 2, as the rules fall out (Q2678).
 
-Every core ticket builds on graybox Looks; AS-B1 and AS-B2 stop at their first line-up and swap in on the designer's yes.
+## Tickets (filed by core/123)
+Build order and waves: `docs/migration/milestones.md` "Batch B". Every core ticket builds on graybox Looks; the asset
+tickets stop at their first line-up and swap in on the designer's yes.
 
-**121-A Collections as data** (sonnet). `SockCollection` x 17 (from the old designs.json and wrapping.json, the
-renamed Simple and Patterns), `Collections`, `CollectionUnlocks` (`.tres` with Q1439 and Q1465), `DesignCatalogue`
-reading colour and Cabinet name from them (its dictionaries removed), the Collections station. Real path: in the
-Cabinet station, aiming at a drawer shows "[E] <cabinet_name> Drawer" from the Collection's file, and a Pair shelved by
-a left click bursts in the file's colour.
-
-**121-B Spawned Parts** (opus). `SpawnedParts` with its `MultiplayerSpawner`, `Parts.adopt` and `release`, rows in the
-save and the join snapshot (spawn before states; a state arriving before its node waits for it), the Gifts station
-with its `PresentSpot` and a zoo-only "Spawn a crate" switch (a plain Carriable crate under `game/zoo/gifts/`). Real
-path: a click on the switch puts a crate at the spot on the Host and a Guest; the player picks it up and puts it down;
-a late joiner sees it where it lies; a save and load keeps it.
-
-**121-C Presents under the Old Tree** (opus; blocked by S-122a, S-122b). `Stages.completed` and `note_complete` with the
-`collection_completed` event and the "done" rumble; `Presents`, `PresentDraw`, `present.tscn` with its graybox Looks,
-clips `drop`, `lying`, `RESET`, the wrapping shader, the Tag, Glow, Sparkle and Burst; the `carry_guards` seam on
-`Carriable`; `PresentSpot` in the house and on the Stages station's mini run; the Machine Part's pop spot clear of
-presents; G5's prompts. Real path: on the Stages station's mini run the player shelves Cabinet A's last Pairs by
-clicks, the Stage completes, a present wrapped in A's Collection drops at the spot labelled for the player (co-op: one
-each, a Teammate's not aimable); a left click carries it; a right click puts it down.
-
-**121-D Opening and the reveal** (sonnet; blocked by 121-C, S-122c, S-122d). `Present.open`, `present_opening.tscn` and
-the `open` clip, `GiftReveal`, the refund (S-120a), `RunRecord.pieces` and `gifts_opened`, the Final screen's pieces
-strip and two totals. Real path: carrying their present the player left-clicks: the box shakes and pops, the reveal
-shows the piece's name and "New in your Wardrobe", a click closes it, the profile lists the piece; the Teammate's
-machine sees the box shake and pop where it is carried; opening a piece already owned shows "Already yours: +75 Coins"
-and the Coins rise by 75.
-
-**121-E Cabinet pools and the New Game's draw** (sonnet; after 121-F). `Cabinet.pool`, `CabinetDraw` with its shared-pool
-solving and `problems()`, the draw in `Stages.start` from the Host's unlocked set, the Cabinet's Looks swap on a changed
-`collection`, the house's eight pools, pools on the mini run's two Cabinets. Real path: in the Stages station a click on
-the mini run's New run switch gives Cabinet B one of its pool's unlocked Collections, its Looks and drawer prompt follow,
-and Stage 1's Socks are of the drawn Collections only.
-
-**121-F The profile's Collections and encyclopedia record** (sonnet; coordinated with core/122's profile ticket on
-`player_profile.gd`). The two profile fields, `ProfileRecorder` (shelve answers, a loaded World's shelves, a Guest from
-its join on), the unlock at the finished run and the Final screen's unlock strip. Real path: on the Stages station's
-mini run a Pair shelved by a click puts its Design in the profile file; the Final screen station's pillar "with an
-unlock" shows the strip, and a finished mini run (the Laundry station's Final wash pillar, the last bin loaded by a
-click) unlocks Space in the profile.
-
-**121-G The encyclopedia pages and the title's key** (sonnet; after 121-F). `encyclopedia.tscn`, its cell, the silhouette,
-the title's key and page, the Collections station's Encyclopedia pillar. Real path: on the title a click on the
-encyclopedia key opens the pages: a Design in the profile shows its Sock and name, the others "???"; a click on ">"
-turns to the next Collection; a locked Collection has no page.
-
-**121-H The book in the house** (opus; G4 (a); after 121-G and AS-B2). `Carriable.one_slot` with the Hands listing and
-cycling it, `encyclopedia_book.tscn` on the workbench, `encyclopedia_menu.tscn`, its prompts ("Sock Encyclopedia
-[LMB]", "Read [E]", "Drop [RMB]"), never thrown. Real path: in the house the player left-clicks the book on the workbench
-into a free Hands slot, presses E, the pages show their own profile; A turns back, Esc closes; a right click puts it
-down.
-
-**121-I The Old Tree's present lines** (sonnet; blocked by core/120's tree voice). The three triggers, the lines added
-to the tree's file, `waiting_for` and the two signals read by the tree's director. Real path: after a present drops the
-player walks up to the tree and its subtitle shows a "presents_ready" line; taking the present near it gives a
-"present_taken" line.
-
-**AS-B1 The present box** (opus, Blender; stops at its line-up). The old box (Q1591, `presents_tree.png` approved,
-Q1611) as a model: body, separate lid, ribbon cross, bow; paper surfaces taking `gift_paper.gdshader`; the Looks
-contract above. **AS-B2 The encyclopedia book** (sonnet; stops at its line-up). The old `encyclopedia_book.glb` (Q1267)
-imported as a Looks scene by the asset port rules.
-
-### Waves (at most 5 agents; a wave starts when the ones before are merged)
-
-| Wave | Tickets | Clash kept apart |
+| Draft | Filed as | Note |
 |---|---|---|
-| 1 | 121-A, 121-B, 121-F, AS-B1, AS-B2 | 121-F alone on `run.tscn` and `final_screen`; 121-B alone on `parts.gd`; 121-F and core/122's profile ticket both edit `player_profile.gd`: the lead orders them |
-| 2 | 121-E, 121-G | 121-E alone on `stages.gd`, `cabinet.gd`, `house.tscn`; 121-G alone on `title.tscn` |
-| 3 | 121-C | alone on `stages.gd`, `house.tscn`, `carriable.gd`, the Gifts station, the Stages station |
-| 4 | 121-D, 121-H | 121-D on the Gifts station and `final_screen`; 121-H on `house.tscn`, the Hands, `carriable.gd`, the prompts |
-| later | 121-I | after core/120's tree voice |
-
-Cross-piece clashes the lead must order with core/120 and core/122: `stages.gd` (121-E, 121-C and any Coins bonus at a
-Stage, Q2619), `house.tscn` (121-E, 121-C, 121-H and the Old Tree's or the Wardrobe's placement), `final_screen`
-(121-F, 121-D and core/120's Drawers total), `run.tscn` (121-F, 121-C and core/120's parts), `player_profile.gd`.
-
-## Choices (core/121's Open follow-ups)
-
-G1 a duplicate piece; G2 "opened together"; G3 the Lost Socks; G4 the book; G5 the present's hints; G6 Stage 1's
-presents. Each has a recommendation; the proposal above is written with the recommended answers.
+| 121-A | core/125 Collections as data | `held_back` (Q2675) instead of `in_encyclopedia` |
+| 121-B | core/126 Spawned Parts | |
+| 121-C | core/137 Presents under the Old Tree | the G1 draw (Q2673), G5's hints (Q2677), the Machine Part's pop spot (batch-a-review question 4) |
+| 121-D | core/138 Opening a present and the reveal | the reveal's stage is core/128's `preview_stage.tscn` |
+| 121-E | core/135 Cabinet pools and the New Game's draw | |
+| 121-F | core/134 The encyclopedia record and Collections unlocking | its two profile fields move into the one profile ticket, core/127 |
+| 121-G | core/136 The encyclopedia pages and the title's key | |
+| 121-H | core/139 The encyclopedia book in the house | Q2676 |
+| 121-I | core/140 The Old Tree's present lines | the lines themselves come with core/132 |
+| AS-B1 | assets/16 The present box | |
+| AS-B2 | assets/17 The encyclopedia book | |
 
 ## Gotchas for the build
 
@@ -363,4 +318,6 @@ presents. Each has a recommendation; the proposal above is written with the reco
 - The reveal consumes the clicks that close or skip it; nothing behind it picks up.
 - A spawned Part's state may reach a Guest before its node (snapshot vs spawner order, coop-structure line 205): wait
   by id.
-- Lost Socks (G3 (a)): `in_encyclopedia` off, not in `start`, no pool names it; nothing else special-cases it.
+- Lost Socks (Q2675, Q2683): `held_back` on, not in `start`, no pool names it; everything that lists Collections or
+  pieces asks `held_back` and nothing else special-cases it. The Drum's ticket (batch D) switches it off and adds the
+  Lost Socks to every profile's `collections`.

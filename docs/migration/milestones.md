@@ -8,7 +8,7 @@ M1 and M2 run beside M0.5 and M0.6, not after them.
 |---|---|---|---|
 | M0 | Setup | The repository is set up from starter kit 8.0 (was 7.1) with the port pack on top; the checks pass; the reference clone at `v0.1.1` is in place; the first commit is pushed | done 2026-11-20 (pushed to origin by the designer) |
 | M0.5 | The core in a single-player zoo | In a flat graybox zoo scene (edited in the editor, one station per feature, the game's real entities): movement, handling Socks, pairing, one Cabinet. A true vertical slice of the core (Q2296): the core's sounds and rumble and its polish details are in it, as the old game has them. One player, but every change already goes through the shared-state path: the player is a Host of one (Q2207, Q2208, Q2211, Q2212) | built 2026-11-22; closing (Q2425): the designer's zoo run and code review are left |
-| M0.6 | The co-op zoo base | The same zoo with a Host, a Guest and a late joiner: avatars seen by the others every frame (Q2223), a Guest's pick and Throw as decided (Q2220-Q2222, Q2226), a long random player id in the profile (Q2224), and the full knockdown with Godot's own physical-bone ragdoll (Q2225) | started 2026-11-22: behaviour lists being drafted; batches below, proposed |
+| M0.6 | The co-op zoo base | The same zoo with a Host, a Guest and a late joiner: avatars seen by the others every frame (Q2223), a Guest's pick and Throw as decided (Q2220-Q2222, Q2226), a long random player id in the profile (Q2224), and the full knockdown with Godot's own physical-bone ragdoll (Q2225) | done: all 14 coop tickets merged (coop/14, the Guest's flight, on 2026-11-25) |
 | M1 | Assets | Models and UI art ported by the port rules; the core's models and the avatar rig first; a shared material library; things built by code become models or scenes. Approved in family batches, each with a before and after strip (Q2151-Q2153, Q2177, Q2178, Q2216) | mostly done: the families are built (assets/01-09); left: the exterior and the dusk and night skies; batch A adds its own models (assets/10-15) |
 | M1.1 | Sound | The sound system is built in M0.5 for the core (Q2296); M1.1 ports every other old sound and pad rumble, ported with the old clips and numbers, made plug-and-play: a sound is added or swapped by dropping in a file and naming it, with no code change. The list from the four merged pieces is in `old-details-backlog.md` (Q2278) | planned |
 | Polish | The polish pass | The core's polish details are done in M0.5 (Q2296); this pass holds those of later pieces | planned |
@@ -28,7 +28,7 @@ goes on the review sheet (Q2604).
 | Batch | What | State |
 |---|---|---|
 | A | The run and the washer: Stages and floors, the First wash, the Laundry day (bins, Final wash), the Final screen, the voice system and the talking washing machine (Q2606); the run ends after the fourth Stage (Q2615) | designed (core/71-73), answered (Q2617-Q2643), filed (core/74): building |
-| B | Progression: Coins and Drawers, the Old Tree and the Upgrade grid, Stage presents and Gifts, the Wardrobe, Collections unlocking, Profile and encyclopedia, Achievements | planned |
+| B | Progression: Coins and Drawers, the Old Tree and the Upgrade grid, Stage presents and Gifts, the Wardrobe, Collections unlocking, Profile and encyclopedia, Achievements | designed (core/120-122), answered (Q2667-Q2683), filed (core/123): building |
 | C | The lived-in house: exterior, Elevator, Cat and litterbox, X-rays, the vacuums, the detector, TV and Radio, the guide card | planned |
 | D | Finale and finish: the Drum finale, the other cutscenes, studio intro, M1.1's other sounds, controller, graphics presets, Steam | planned |
 
@@ -55,6 +55,41 @@ their Looks swap in when the designer says yes.
 | later | core/99 The visible pour (`needs-info`, after the review, Q2627) | |
 
 The designer plays batch A after wave 9 (the asset tickets' line-ups may be judged at the same sitting). **Built and merged 2026-11-25 (main a541cde); waiting for the designer's play session and the questions in the review sheet.**
+
+## Batch B
+Filed by core/123 from the three designs (core/120 Coins, Drawers, the Old Tree and the Upgrade grid
+`docs/architecture/economy.md`; core/121 presents, Gifts, Collections and the encyclopedia `gifts.md`; core/122 the
+Wardrobe, the Profile and Achievements `wardrobe.md`), answered Q2667-Q2683. Review sheet:
+`docs/migration/batch-b-review.md`.
+
+Waves run side by side, at most 5 agents; a wave starts when the waves before it are merged. Core tickets build on
+graybox Looks, so none waits for an asset's go; the asset tickets stop at their first line-up, `ready-for-human`, and
+their Looks swap in when the designer says yes; core/144 (the Trails' looks) stops at its first strip.
+
+| Wave | Tickets (suggested model) | Clash kept apart |
+|---|---|---|
+| 1 | core/124 Coins and Drawers (opus); core/125 Collections as data; core/126 Spawned Parts (opus); assets/16 The present box (opus); assets/18 The hats and clothes (opus) | core/124 alone on `cabinet.gd`, `stages.gd`, the HUD (`player.tscn`), `level_runtime.tscn`, `project.godot`, the Final screen station; core/126 alone on `run.tscn`, `parts.gd` |
+| 2 | core/127 The Profile file and the Lifetime tallies; core/128 Wardrobe pieces and the dressed Avatar (opus); core/129 The Upgrades and the menu (opus); core/135 Cabinet pools and the draw; assets/17 The encyclopedia book | core/127 alone on `player_profile.gd` (the only ticket on it) and `run.tscn`; core/129 alone on `old_tree.tscn`, `level_runtime.tscn`, the Economy station; core/135 alone on `cabinet.gd`, `stages.gd`, `house.tscn`, the Stages station; core/128 alone on `avatar_looks.gd`, `player.tscn` |
+| 3 | core/132 The Old Tree's voice (opus); core/134 The encyclopedia record and unlocks; core/141 Looks in co-op (opus); core/144 The Trails as particles (look work); assets/19 The Socks pieces and Trail meshes (opus) | core/132 alone on `old_tree.tscn`, the tree's Part and `house.tscn` (the Doors' start); core/134 alone on `run.tscn` and `final_screen`; core/141 alone on `roster.gd`, `session_gate.gd`, `avatar.gd`, `player.gd`, the Wardrobe station; core/144 only `game/wardrobe/trails/` |
+| 4 | core/136 The encyclopedia pages; core/137 Presents under the Old Tree (opus); core/145 Achievements: the system (opus); assets/20 The Wardrobe station's model | core/137 alone on `stages.gd`, `run.tscn`, `house.tscn`, `carriable.gd`, `prompts.gd`, `tally_recorder.gd`, the Gifts and Stages stations; core/136 alone on `title.tscn`, the Collections station; core/145 alone on the HUD (`player.tscn`), `game_link.tscn`, `project.godot` |
+| 5 | core/130 The Personal Upgrades (opus); core/138 Opening a present (opus); core/140 The Old Tree's present lines; core/142 The Wardrobe page and station (opus); core/147 The Profile page | core/130 alone on `player.gd`, `hands.gd`, `session_gate.gd`, `project.godot`, `prompts.gd`; core/138 alone on `final_screen`, the Gifts station; core/140 alone on the tree's Part; core/142 alone on `house.tscn`, `sock_places.gd`, the Wardrobe station; core/147 alone on `title.tscn`, `esc_menu.tscn` |
+| 6 | core/131 The Sole cues (opus); core/133 The Old Tree's help; core/143 The Lobby's Wardrobe key | core/131 alone on the HUD (`player.tscn`); core/133 alone on `house.tscn`, `cabinet.gd`, the tree's Part |
+| 7 | core/139 The encyclopedia book (opus) | alone on `house.tscn`, `carriable.gd`, `hands.gd`, `prompts.gd` |
+| later | core/146 Batch B's Achievements list (`needs-info`: which ones ship); data files only, any wave after core/145 once answered | |
+
+How the cross-piece clashes the designs named are ordered: `player_profile.gd` only core/127 (both profile drafts
+merged); `run.tscn` core/126, 127, 134, 137 in waves 1-4; `house.tscn` core/135, 132, 137, 142, 133, 139 in waves 2-7;
+the HUD scene (`player.tscn`) core/124, 128, 141, 145, 131 in waves 1, 2, 3, 4, 6; `title.tscn` core/136 then core/147;
+`stages.gd` core/124, 135, 137; `cabinet.gd` core/124, 135, 133; `final_screen` core/124 (the station's rename), 134,
+138; `old_tree.tscn` core/129 then 132, and the tree's Part `old_tree.gd` core/129, 132, 140, 133; the seams S-122a..d
+come before the tickets that need them (core/128 and core/141 before core/137; core/127, 128 and 141 before core/138).
+
+At the merge (not wave clashes; each change is a separate line the lead keeps from both sides): `zoo.tscn` (wave 1:
+core/124, 125, 126 each add one station instance; later core/128, 145), `tests/saves/shape.json` (each ticket adding
+saved State regenerates it: take both entries, or rerun `save` case s11's kept copy), the one Theme's variations and
+`sound_catalogue.tres` (appended by several tickets per wave), `credits` entries.
+
+The designer plays batch B after wave 7 (the line-ups and core/144's strip may be judged at the same sitting).
 
 ## M0.5 batches (Q2296)
 Each batch is one theme, tested in one sitting at one or two stations, ending with a short play session and the
