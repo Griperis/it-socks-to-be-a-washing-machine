@@ -15,6 +15,7 @@ func _ready() -> void:
 	var piece := load("res://game/wardrobe/pieces/%s.tres" % (id if id != "" else "lint_puffs")) as WardrobePiece
 	_mark = piece.looks.instantiate() as TrailMark
 	_mark.position = Vector3(0.0, 0.006, 0.0)
+	_mark.layout = int(OS.get_environment("GAME_LAYOUT")) if OS.get_environment("GAME_LAYOUT") != "" else 0
 	var age := OS.get_environment("GAME_AGE")
 	if age != "":
 		_mark.laid_ago(maxf(float(age) - float(HOLD) / 60.0, 0.0))

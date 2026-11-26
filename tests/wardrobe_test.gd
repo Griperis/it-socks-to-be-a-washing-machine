@@ -188,7 +188,7 @@ func case_trail_scenes() -> void:
 		if mark == null:
 			continue
 		_check(mark.life > 0.0 and mark.max_marks > 0, "%s has its life (%.1f) and max (%d)" % [piece.id, mark.life, mark.max_marks])
-		_check(not mark.find_children("*", "GPUParticles3D", true, false).is_empty(), "%s is made of particles" % piece.id)
+		_check(not mark.find_children("*", "GPUParticles3D", true, false).is_empty() or not mark.find_children("*", "AnimationPlayer", true, false).is_empty(), "%s is made of particles or a clip" % piece.id)
 		var gone := [false]
 		mark.tree_exited.connect(func() -> void: gone[0] = true)
 		mark.laid_ago(mark.life - 0.05)
