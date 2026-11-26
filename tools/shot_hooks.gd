@@ -211,8 +211,13 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			cam.make_current()
 		"wardrobe_lineup":
 			# assets/18: arg a Collection id ("sport") or "basic": tools/wardrobe_lineup.tscn stands that row of
-			# Avatars wearing its hats and clothes, framed as the old game's line-up.
+			# Avatars wearing its hats, clothes, Socks and Trail (assets/19), framed as the old game's line-up.
 			world.call(&"show_row", arg)
+			return true
+		"wardrobe_one":
+			# assets/19: arg a Socks or Trail piece id: tools/wardrobe_lineup.tscn shows one Avatar wearing it,
+			# from the old line-up's close-up camera for that slot.
+			world.call(&"show_one", arg)
 			return true
 		"washer_lineup":
 			# assets/14: arg "<pose>,<old|port>": the washing machine alone on a plain floor far from the

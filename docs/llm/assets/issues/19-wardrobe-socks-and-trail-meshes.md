@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: assets
 feature: assets
@@ -41,5 +41,11 @@ Inherited scenes and mesh resources of the imported glbs; the shared materials w
 
 ## Answers
 - The Trails are remade as particle scenes authored in the editor (Q2680, 2026-11-25).
+- Yes to the line-up: the Socks pieces and the Trails' meshes as built (Q2708, 2026-11-26).
 
 ## Open follow-ups
+- [later] On the designer's yes: point the 17 Socks piece files at `game/wardrobe/looks/<id>.tscn`, and the
+  Trail scenes' draw passes at `assets/wardrobe/meshes/<id>_a.res`, `_b` ... (core/144 names its stand-ins
+  alike), then delete the graybox socks.
+- [later] The old game has no shot of a Trail on its own (its line-up hides the Trail behind the creature):
+  the Trail close-ups are compared with the old line-up only; the meshes are the old glbs' unchanged.
