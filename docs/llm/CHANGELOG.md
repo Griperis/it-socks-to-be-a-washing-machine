@@ -15,3 +15,6 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-26 [[128-wardrobe-pieces-and-dressed-avatar]] Wardrobe pieces as data and the dressed Avatar: 7fb20957 (core/128-wardrobe-pieces-and-dressed-avatar)
 - 2026-11-26 [[148-batch-c-behaviour-lists]] Batch C: the behaviour lists: ab3de382 (core/148-batch-c-behaviour-lists)
 - 2026-11-26 [[129-upgrades-and-menu]] The Upgrades and the menu at the Old Tree: 7f0c568a (core/129-upgrades-and-menu)
+- 2026-11-26 [[134-encyclopedia-record-and-unlocks]] The encyclopedia record and Collections unlocking: eec473c6 (core/134-encyclopedia-record-and-unlocks)
+- 2026-11-26 [[141-looks-in-coop]] Looks, colours and owned pieces in co-op: 0a0faef8 (core/141-looks-in-coop)
+- 2026-11-26 [[149-batch-c-elevator-day-exterior-design]] Batch C: The Elevator, the day cycle and the exterior view (design): 49043322 (core/149-batch-c-elevator-day-exterior-design)
