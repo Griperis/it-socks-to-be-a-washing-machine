@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: assets
 feature: assets
@@ -42,3 +42,14 @@ present's `SockCollection` at run time, not the model.
 - Gifts come as Stage presents under the Old Tree (Q2612, 2026-11-24).
 
 ## Open follow-ups
+- [blocking] For the designer, at the line-up (`builds/review-assets-16/present-box-lineup.png`, bow close-up
+  `present-box-bow-closeup.png`): the model keeps the old sizes and places, with two changes a model invites: the
+  edges are rounded a little, and the bow's two loops are ribbon loops (a flat band round an oval, at the old
+  loops' place, size and lean) instead of the old tilted cubes. Keep them, or go back to the old's blocky bow?
+- [later] The line-up's paper is a Blender stand-in for `gift_paper.gdshader` (core/137 has not ported it): the
+  same mapping (object space, 2 tiles a face, half-drop, ink 0.85), but Blender's box projection may run the
+  top's rows another way. The Looks scene (the glb under `Box`/`Box/Lid`, the shader and the bow colour) is built
+  on the designer's yes, against core/137's graybox.
+- [later] Kit: `kit/tools/blender/export.sh <asset> --check` refuses the Looks contract's node names (`Box`,
+  `Lid`: "name must be snake_case"), as it already does for `laundry_bin`'s `Body`/`Shell`/`Contents`; the
+  asset's own script exports it. The kit's rule and the Looks contracts' PascalCase names disagree.

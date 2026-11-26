@@ -692,6 +692,12 @@
       "colliders": 1,
       "source": "appliance/washing_machine",
       "glb": "assets/appliance/washing_machine.glb"
+    },
+    "present_box": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "present/present_box",
+      "glb": "assets/present/present_box.glb"
     }
   }
 }
