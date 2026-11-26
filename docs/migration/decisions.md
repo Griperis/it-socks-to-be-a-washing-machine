@@ -1,4 +1,4 @@
-Next free Q number: Q2716 (update this line whenever a round of questions is asked)
+Next free Q number: Q2717 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -710,3 +710,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   X-ray began (designer, 2026-11-26; core/152; a change from the old).
 - Q2715: the Wardrobe station (assets/20, the old meshes, its open and shut clips) is yes; core/142 places it in the
   house (designer, 2026-11-26).
+- Q2716: the Trails (core/144) are close; their gaps are fixed before the merge: every colour of a two-colour mesh,
+  the tumble, lean, rocking and sway, varied mark layouts, the old's timing (designer, 2026-11-26).
