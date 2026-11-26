@@ -6,7 +6,7 @@ area: core
 feature: economy
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 1", "suggested model: opus"]
 terms: [Coins, Drawers, Drawer, Cabinet, Stage]

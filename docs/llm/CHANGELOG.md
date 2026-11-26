@@ -8,3 +8,4 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-26 [[126-spawned-parts]] Spawned Parts: things made during play: ba8cee2c (core/126-spawned-parts)
 - 2026-11-26 [[16-present-box]] The present box model: 6c4f026c (assets/16-present-box)
 - 2026-11-26 [[18-wardrobe-hats-and-clothes]] The Wardrobe's hats and clothes: 771f85fe (assets/18-wardrobe-hats-and-clothes)
+- 2026-11-26 [[124-coins-and-drawers]] Coins and Drawers: the Bank, the payouts and the HUD counters: 9c3ad924 (core/124-coins-and-drawers)
