@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: player
@@ -57,3 +57,8 @@ the gate's other limits.
 - The ten basic Wardrobe pieces are owned from the start (Q2679, 2026-11-25).
 
 ## Open follow-ups
+- [later] The Wardrobe zoo station's switches step only through pieces the player owns (as the page will), so
+  for a fresh profile the Socks and Trail switches offer only None (no basic Socks or Trail exist). The old zoo
+  showed every piece unlocked (M/M, behaviour list "Where a piece comes from"); granting all in the zoo would
+  leave the acceptance's "wear of an unowned piece is refused" untestable there. Lead: keep, or add a zoo-only
+  "own every piece" switch (as core/145's "Grant all")?

@@ -28,7 +28,7 @@ func host() -> Error:
 	s.multiplayer.peer_disconnected.connect(s._on_peer_left)
 	s._relay.listen(s.parts)
 	if s.roster != null:
-		s.parts.apply(s.roster.joined(s.profile.id, Roster.HOST, s.profile.name, s._gate.clamped_hands(s._gate.own_hands())))
+		s.parts.apply(s.roster.joined(s.profile.id, Roster.HOST, s.profile.name, s._gate.clamped_hands(s._gate.own_hands()), s._gate.own_said()))
 	s._note("hosting on %s" % s.transport.describe(), false)
 	return OK
 
