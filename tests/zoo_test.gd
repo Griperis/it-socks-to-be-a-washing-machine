@@ -2,7 +2,7 @@
 ## rules; alone it opens no network, and two zoos in co-op see each other's players and what one's
 ## player uses the other sees. Nothing here tests a feature's rules through the zoo: features have their own
 ## suites, and the zoo is for a person to play in. The one exception is the zoo's one Mess, Hands and
-## Coins (core/10, Z01-Z04), which only the zoo has.
+## Bank (core/10, Z01-Z04), which only the zoo has.
 extends TestSuite
 
 const ZOO := "res://game/zoo/zoo.tscn"
@@ -45,9 +45,9 @@ func cases() -> Array[Dictionary]:
 		{"name": "z01_throw", "method": "case_z01_throw", "world": false,
 				"title": "Z01: a Pair made at the handling station is still in the Hands at the Cabinet station and shelves itself when thrown at the Cabinet"},
 		{"name": "z02", "method": "case_z02", "world": false,
-				"title": "Z02: the zoo has one Mess, one Hands and one Coins; every station's Socks are records of that Mess, lying where the station places them"},
+				"title": "Z02: the zoo has one Mess, one Hands and one Bank; every station's Socks are records of that Mess, lying where the station places them"},
 		{"name": "z03", "method": "case_z03", "world": false,
-				"title": "Z03: a station instanced without the zoo keeps its own Mess, Hands and Coins, and its links point at them"},
+				"title": "Z03: a station instanced without the zoo keeps its own Mess, Hands and Bank, and its links point at them"},
 		{"name": "z04", "method": "case_z04", "world": false,
 				"title": "Z04: a Sock thrown off the zoo's floor comes back to the zoo's return spot, in the zoo's Mess"},
 	]
@@ -296,7 +296,7 @@ func case_z01_click() -> void:
 	var station := _zoo.get_node("Stations/Cabinet") as Node3D
 	var mess := LevelRuntime.of(_zoo).mess
 	var hands := LevelRuntime.of(_zoo).hands
-	var coins := LevelRuntime.of(_zoo).coins
+	var coins := LevelRuntime.of(_zoo).bank
 	var cabinet := station.get_node("Cabinet/Cabinet") as Cabinet
 	var player := LevelRuntime.of(_zoo).player
 	var sock := _sock_of(handling, "Floor")
@@ -357,17 +357,17 @@ func case_z02() -> void:
 	await _zoo_up()
 	var mess := LevelRuntime.of(_zoo).mess
 	var hands := LevelRuntime.of(_zoo).hands
-	var coins := LevelRuntime.of(_zoo).coins
-	var found := {"Mess": 0, "Hands": 0, "Coins": 0}
+	var coins := LevelRuntime.of(_zoo).bank
+	var found := {"Mess": 0, "Hands": 0, "Bank": 0}
 	for node in _zoo.find_children("*", "Node", true, false):
 		if node is Mess:
 			found["Mess"] += 1
 		elif node is Hands:
 			found["Hands"] += 1
-		elif node is Coins:
-			found["Coins"] += 1
-	_check(found == {"Mess": 1, "Hands": 1, "Coins": 1}, "one Mess, one Hands, one Coins in the zoo (%s)" % [found])
-	_check(hands.mess == mess and hands.id == &"Runtime/Socks/Hands" and mess.id == &"Runtime/Socks/Mess" and coins.id == &"Runtime/Socks/Coins",
+		elif node is Bank:
+			found["Bank"] += 1
+	_check(found == {"Mess": 1, "Hands": 1, "Bank": 1}, "one Mess, one Hands, one Bank in the zoo (%s)" % [found])
+	_check(hands.mess == mess and hands.id == &"Runtime/Socks/Hands" and mess.id == &"Runtime/Socks/Mess" and coins.id == &"Runtime/Socks/Bank",
 			"the Hands' Mess is the Mess; their ids are the zoo's (%s, %s, %s)" % [hands.id, mess.id, coins.id])
 	var seen := {}
 	var spots := 0
@@ -391,8 +391,8 @@ func case_z02() -> void:
 			generated += (node as GeneratedSocks).socks
 	_check(mess.count() == spots + generated and spots > 0, "every SockSpot of every station is one record, and every generated Sock one more (%d records, %d spots, %d generated)" % [mess.count(), spots, generated])
 	var cabinet := _zoo.get_node("Stations/Cabinet/Cabinet/Cabinet") as Cabinet
-	_check(cabinet.hands_of() == hands and cabinet.coins_of() == coins and cabinet.mess_of() == mess,
-			"the Cabinet takes from the zoo's Hands and Mess and pays into the zoo's Coins")
+	_check(cabinet.hands_of() == hands and cabinet.bank_of() == coins and cabinet.mess_of() == mess,
+			"the Cabinet takes from the zoo's Hands and Mess and pays into the zoo's Bank")
 
 
 func case_z03() -> void:

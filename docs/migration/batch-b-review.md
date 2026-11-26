@@ -57,3 +57,7 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 
 | Ticket | The choice | What was done (the old answer) | Designer |
 |---|---|---|---|
+| core/124 | Does the Cabinet bonus pay in a level with no run (a zoo station's Cabinet)? | Only in a level with a run: the bonus is the campaign's (the old `cabinet_batch` paid from the campaign's Rows only) | |
+| core/124 | Does a zoo or test fill pay Drawers? | Yes, every drawer filled to the Pairs per Drawer pays (the old CBS:290 paid for the zoo's and tests' fills too); 1 Drawer with no run | |
+| core/124 | A floor opened by a load cut short during its Fix (the floor opens after the load) | Pays the floor bonus then, as any opening (the old step() opened it the same way, CA:348-353) | |
+| core/124 | The corner's network line ("Playing alone", "Hosting on port ...") sat where the counters go | Moved below the counters (the old HUD had the counters top left, HUD:132-138) | |

@@ -1,10 +1,4 @@
 {
-	"res://game/coins/coins.gd": {
-		"fields": {
-			"coins": "Dictionary"
-		},
-		"version": 1
-	},
 	"res://game/devices/piano_key.gd": {
 		"fields": {
 			"by": "int",
@@ -12,14 +6,23 @@
 		},
 		"version": 1
 	},
+	"res://game/economy/bank.gd": {
+		"fields": {
+			"coins": "Dictionary",
+			"drawers": "int",
+			"recent": "Dictionary"
+		},
+		"version": 1
+	},
 	"res://game/entities/cabinet/cabinet.gd": {
 		"fields": {
+			"bonus_rows": "int",
 			"collection": "StringName",
 			"locked": "bool",
 			"rows": "int",
 			"shelf": "Array"
 		},
-		"version": 1
+		"version": 2
 	},
 	"res://game/entities/laundry_bin/laundry_bin.gd": {
 		"fields": {

@@ -77,7 +77,7 @@ func case_real_path() -> void:
 	await _press(&"pick")
 	await _until(func() -> bool: return _a.shelved().size() == 1, "the Pair to be shelved")
 	await _until(func() -> bool: return _record.shelved.size() == 1, "the record to hold the Pair")
-	var coins := (_station.get_node("Socks/Coins") as Coins).of_player(1)
+	var coins := (_station.get_node("Socks/Bank") as Bank).of_player(1)
 	_check(coins > 0, "shelving paid Coins (%d)" % coins)
 	_check(_tallies.tally(1, RunTallies.PAIRS) == 1 and _tallies.tally(1, RunTallies.MADE) == 1 and _tallies.tally(1, RunTallies.SOCKS) == 2
 			and _tallies.tally(1, RunTallies.COINS) == coins, "pairs 1, made 1, socks 2, coins %d (%s)" % [coins, _tallies.rows])

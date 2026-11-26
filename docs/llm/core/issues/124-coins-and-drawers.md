@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: economy
@@ -10,7 +10,7 @@ done:
 blocked_by: []
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 1", "suggested model: opus"]
 terms: [Coins, Drawers, Drawer, Cabinet, Stage]
-suites: [cabinet, cabinet_growth, drawer_details, pairing, stages, run_tallies, final_screen, save, coop_join, coop_hands, zoo]
+suites: [economy, sounds, sound_wiring, cabinet, cabinet_growth, drawer_details, pairing, stages, run_tallies, final_screen, save, coop_join, coop_hands, zoo]
 ---
 
 # Coins and Drawers: the Bank, the payouts and the HUD counters

@@ -204,7 +204,7 @@ Run/RunRecord
 Run/RunTallies
 Run/Stages
 Runtime/Session/Roster
-Runtime/Socks/Coins
+Runtime/Socks/Bank
 Runtime/Socks/Hands
 Runtime/Socks/Mess
 SockGenerators/Attic/Generated

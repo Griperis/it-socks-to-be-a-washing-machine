@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Currency" format=3]
+
+[ext_resource type="Script" path="res://game/economy/currency.gd" id="1_currency"]
+[ext_resource type="Texture2D" path="res://assets/ui/drawers.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_currency")
+name = "Drawers"
+icon = ExtResource("2_icon")
+tint = Color(0.117647, 0.168627, 0.333333, 1)

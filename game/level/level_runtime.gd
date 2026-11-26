@@ -1,5 +1,5 @@
 ## The full game setup every level shares (Q2517): the player, the Mess with its Hands, Knockdowns and
-## Coins, the Parts, the Avatars and the Net, in one sealed scene (`level_runtime.tscn`). A level is
+## Bank, the Parts, the Avatars and the Net, in one sealed scene (`level_runtime.tscn`). A level is
 ## its own geometry and look, a `Spawn` marker and one instance of it; no level overrides a node inside
 ## it. What differs per level is set on the instance (below).
 ##
@@ -207,7 +207,7 @@ var autosave: Autosave:
 	get: return get_node(^"Autosave") as Autosave
 var esc_menu: EscMenu:
 	get: return get_node(^"EscMenu") as EscMenu
-## The node the Mess, Hands, Knockdowns and Coins are under (ZooStations joins stations' to it).
+## The node the Mess, Hands, Knockdowns and Bank are under (ZooStations joins stations' to it).
 var socks: Node:
 	get: return get_node(^"Socks")
 var mess: Mess:
@@ -216,8 +216,9 @@ var hands: Hands:
 	get: return get_node(^"Socks/Hands") as Hands
 var knockdowns: Knockdowns:
 	get: return get_node(^"Socks/Knockdowns") as Knockdowns
-var coins: Coins:
-	get: return get_node(^"Socks/Coins") as Coins
+## Both currencies (core/124).
+var bank: Bank:
+	get: return get_node(^"Socks/Bank") as Bank
 ## The co-op pings (core/43) and how this machine draws them.
 var pings: Pings:
 	get: return get_node(^"Pings") as Pings

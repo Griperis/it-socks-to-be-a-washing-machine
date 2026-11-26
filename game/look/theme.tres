@@ -520,3 +520,7 @@ ReadyCircle/base_type = &"PanelContainer"
 ReadyCircle/styles/panel = SubResource("StyleBoxFlat_ready_on")
 ReadyCircleOff/base_type = &"PanelContainer"
 ReadyCircleOff/styles/panel = SubResource("StyleBoxFlat_ready_off")
+MoneyLabel/base_type = &"OutlinedLabel"
+MoneyLabel/font_sizes/font_size = 30
+MoneyPopLabel/base_type = &"OutlinedLabel"
+MoneyPopLabel/font_sizes/font_size = 56

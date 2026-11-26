@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://dlacqnrt2ohho" path="res://game/zoo/sock_generator/seed_sign.gd" id="7_sign"]
 [ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="8_mess"]
 [ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="9_hands"]
-[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="10_coins"]
+[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/economy/bank.gd" id="10_bank"]
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="11_designs"]
 [ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="12_hands_tuning"]
 [ext_resource type="PackedScene" uid="uid://cf20nsmnjwiwq" path="res://game/furniture/double_bed.tscn" id="13_bed"]
@@ -127,9 +127,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 0, 2.6)
 [node name="Cabinet" parent="." instance=ExtResource("18_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, -4.7)
 
-[node name="Cabinet" parent="Cabinet" index="0" node_paths=PackedStringArray("hands", "coins")]
+[node name="Cabinet" parent="Cabinet" index="0" node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../Socks/Hands")
-coins = NodePath("../../Socks/Coins")
+bank = NodePath("../../Socks/Bank")
 
 [node name="Stair" parent="." instance=ExtResource("19_stair")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.6, 0, -2.5)
@@ -224,5 +224,5 @@ script = ExtResource("9_hands")
 mess = NodePath("../Mess")
 tuning = ExtResource("12_hands_tuning")
 
-[node name="Coins" type="Node" parent="Socks"]
-script = ExtResource("10_coins")
+[node name="Bank" type="Node" parent="Socks"]
+script = ExtResource("10_bank")

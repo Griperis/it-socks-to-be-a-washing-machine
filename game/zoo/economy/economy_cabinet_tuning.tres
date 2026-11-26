@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CabinetTuning" format=3]
+
+[ext_resource type="Script" uid="uid://car7kbiufbmg7" path="res://game/entities/cabinet/cabinet_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")
+drawer_capacity = 2

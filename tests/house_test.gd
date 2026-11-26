@@ -836,7 +836,7 @@ func case_h01_main_scene() -> void:
 	_check(shell != null and shell.scene_file_path == SHELL and shell.transform == Transform3D.IDENTITY, "the shell stands at the origin, the house's frame")
 	var runtime := LevelRuntime.of(house)
 	_check(runtime != null and runtime.scene_file_path == RUNTIME and runtime.get_parent() == house, "the house has one instance of the level runtime")
-	for n: String in ["Player", "Parts", "Socks/Mess", "Socks/Hands", "Socks/Knockdowns", "Socks/Coins",
+	for n: String in ["Player", "Parts", "Socks/Mess", "Socks/Hands", "Socks/Knockdowns", "Socks/Bank",
 			"Avatars", "FlightSpawner", "Net", "Net/Hud/Mode"]:
 		_check(runtime.get_node_or_null(n) != null, "the house has its %s, as the zoo" % n)
 	# core/62: the Session and its Roster are the game link's (a private one when nothing started a game).
@@ -1123,7 +1123,7 @@ func case_h05_mess() -> void:
 			_check(root.global_position.distance_to(Vector3(c[2], c[3], c[4])) < 0.01 and absf(angle_difference(root.rotation.y, c[5])) < 0.01,
 					"the %s Cabinet stands at the old spot, its back to the wall (%s)" % [c[0], root.global_position])
 		if cab != null:
-			_check(cab.hands == LevelRuntime.of(house).hands and cab.coins != null, "the %s Cabinet shelves through the house's Hands and pays its Coins" % c[0])
+			_check(cab.hands == LevelRuntime.of(house).hands and cab.bank != null, "the %s Cabinet shelves through the house's Hands and pays its Coins" % c[0])
 
 
 func case_h05_stair_treads() -> void:
@@ -1237,7 +1237,7 @@ func case_real_path_kitchen_loop() -> void:
 	await _press_action(&"pick")
 	await _until(func() -> bool: return cab.contents(0).has(pair), "the Pair to be shelved in the kitchen's Cabinet")
 	_check(mess.state_of(pair) == Mess.State.SHELVED and hands.items_of(1).is_empty(), "the Pair is shelved and the Hands are empty")
-	_check(runtime.coins.of_player(1) > 0, "the player earned Coins (%d)" % runtime.coins.of_player(1))
+	_check(runtime.bank.of_player(1) > 0, "the player earned Coins (%d)" % runtime.bank.of_player(1))
 
 
 func _sock_centre(mess: Mess, sock: int) -> Vector3:

@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://2hleeyffro51" path="res://game/net/level_net.gd" id="6_net"]
 [ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="7_mess"]
 [ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="8_hands"]
-[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/coins/coins.gd" id="9_coins"]
+[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/economy/bank.gd" id="9_bank"]
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="10_designs"]
 [ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="11_tuning"]
 [ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="16_knockdowns"]
@@ -59,8 +59,8 @@ script = ExtResource("16_knockdowns")
 tuning = ExtResource("17_knock_tuning")
 hands = NodePath("../Hands")
 
-[node name="Coins" type="Node" parent="Socks" unique_id=916480979]
-script = ExtResource("9_coins")
+[node name="Bank" type="Node" parent="Socks" unique_id=916480979]
+script = ExtResource("9_bank")
 
 [node name="Pings" type="Node" parent="." node_paths=PackedStringArray("mess") unique_id=1460313001]
 script = ExtResource("22_pings")
@@ -101,9 +101,9 @@ autosave = NodePath("../Autosave")
 [node name="Mode" type="Label" parent="Net/Hud" unique_id=1250551748]
 unique_name_in_owner = true
 offset_left = 12.0
-offset_top = 8.0
+offset_top = 68.0
 offset_right = 600.0
-offset_bottom = 34.0
+offset_bottom = 94.0
 
 [node name="Autosave" type="Node" parent="." node_paths=PackedStringArray("parts") unique_id=1731902455]
 script = ExtResource("18_autosave")

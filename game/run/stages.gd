@@ -573,7 +573,7 @@ func _open_answer(events: Array, base_due := due) -> Dictionary:
 	var next := stage + 1
 	if next >= plan.size():
 		events.append([&"machine_fixed"])
-		return {"ok": true, "changes": {id: {"phase": Phase.FIXED}}, EVENTS: events}
+		return _floor_bonus({"ok": true, "changes": {id: {"phase": Phase.FIXED}}, EVENTS: events})
 	var per := pairs_per_drawer
 	var changes := {}
 	var rows_by := {}
@@ -603,7 +603,28 @@ func _open_answer(events: Array, base_due := due) -> Dictionary:
 	changes[id] = {"stage": next, "phase": Phase.PLAYING, "bar": _bar_of(next, rows_by, per),
 			"due": now_due, "spawned": now_spawned}
 	events.append([&"floor_opened", next, grown])
-	return {"ok": true, "changes": changes, EVENTS: events}
+	return _floor_bonus({"ok": true, "changes": changes, EVENTS: events})
+
+
+## `ev` (a floor's opening, or the last Fix) with the floor bonus (Q2667): every player in the game is
+## paid `EconomyTuning.floor_bonus` Coins with no "+N" (Q2668), counted in their tallies. A level with
+## no Bank pays nothing.
+func _floor_bonus(ev: Dictionary) -> Dictionary:
+	var bank := Bank.of(self) if is_inside_tree() else null
+	if bank == null or bank.tuning == null or bank.tuning.floor_bonus <= 0:
+		return ev
+	var amount := bank.tuning.floor_bonus
+	var changes: Dictionary = ev["changes"]
+	var into: Dictionary = changes.get(bank.id, {})
+	var everyone := bank.present()
+	for by in everyone:
+		into = bank.paid_patch(by, amount, true, into)
+		Bank.note(ev, by, amount, 0, null, true)
+	changes[bank.id] = into
+	var tallies := RunTallies.of(self)
+	if tallies != null:
+		changes[tallies.id] = tallies.bonus_patch(everyone, amount, changes.get(tallies.id, {}))
+	return ev
 
 
 ## A load between the Fix and its floor's opening (the Fix scene cut short) opens the floor now, as

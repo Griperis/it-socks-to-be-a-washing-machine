@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[node name="FlyingIcon" type="TextureRect"]
+visible = false
+custom_minimum_size = Vector2(34, 34)
+offset_right = 34.0
+offset_bottom = 34.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5

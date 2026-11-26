@@ -38,7 +38,7 @@ var _station: Node3D = null
 var _player: Player = null
 var _mess: Mess = null
 var _hands: Hands = null
-var _coins: Coins = null
+var _coins: Bank = null
 
 
 func cases() -> Array[Dictionary]:
@@ -328,7 +328,7 @@ func _build() -> void:
 	add_child(_level)
 	_mess = _station.get_node("Socks/Mess") as Mess
 	_hands = _station.get_node("Socks/Hands") as Hands
-	_coins = _station.get_node("Socks/Coins") as Coins
+	_coins = _station.get_node("Socks/Bank") as Bank
 	await _until(func() -> bool: return _player.is_on_floor() and _mess.looks_of(0) != null, "the player to stand and the Socks to lie")
 
 
