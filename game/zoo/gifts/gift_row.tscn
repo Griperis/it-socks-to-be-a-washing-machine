@@ -1,0 +1,27 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/zoo/gifts/gift_row.gd" id="1_row"]
+[ext_resource type="PackedScene" path="res://game/gifts/looks_present.tscn" id="2_box"]
+[ext_resource type="PackedScene" path="res://game/zoo/zoo_label.tscn" id="3_label"]
+[ext_resource type="Resource" path="res://game/gifts/present_tuning.tres" id="4_tuning"]
+
+[node name="GiftRow" type="Node3D" node_paths=PackedStringArray("box", "name_label", "pieces")]
+script = ExtResource("1_row")
+box = NodePath("Box")
+name_label = NodePath("Name")
+pieces = NodePath("Pieces")
+tuning = ExtResource("4_tuning")
+
+[node name="Box" parent="." instance=ExtResource("2_box")]
+
+[node name="Name" parent="." instance=ExtResource("3_label")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+pixel_size = 0.004
+double_sided = true
+modulate = Color(1, 1, 1, 1)
+text = "name"
+font_size = 40
+outline_size = 8
+
+[node name="Pieces" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0, 0)

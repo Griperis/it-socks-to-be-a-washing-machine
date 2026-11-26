@@ -10,6 +10,14 @@
 ## fit_now_answer() are the same answers for a Part that asks its own verb). Every
 ## answer that moves the run carries `stage_events` and every machine emits them as the signals below
 ## when it applies the answer (never on a load or a join: a snapshot shows the state at once).
+##
+## A Collection completes (core/137, docs/architecture/gifts.md "A Collection completes"): after every applied
+## shelve the Host asks its own `note_complete` for a Cabinet of the bar that is complete (every Drawer
+## unlocked and full, or every Design of its Collection shelved: the old CB:61-69) and not yet noted this
+## Stage; the answer appends it to `completed` and carries `collection_completed(collection, by)`: the
+## completer's pad buzzes ("done") and their Lifetime tally counts it; no banner, no Coins (Q1602). The
+## `complete` answer drops the Stage's presents for `completed` (Presents, beside it in the Run) and lays
+## the Machine Part clear of them; `completed` empties when the next Stage begins.
 class_name Stages
 extends Part
 
@@ -43,6 +51,8 @@ const PAIRS_ARG := "--pairs-per-drawer="
 signal run_started
 ## Stage `stage` completed; its last Pair went into `cabinet` (a Cabinet's Part id).
 signal stage_completed(stage: int, cabinet: StringName)
+## Collection `collection` completed this Stage, by player `by`'s shelve (core/137).
+signal collection_completed(collection: StringName, by: int)
 ## Stage `stage`'s Part went into the machine (core/73: the Fix scene).
 signal part_fitted(stage: int)
 ## Stage `stage`'s floor opened; `grown` are the Cabinets whose Rows grew (their Part ids).
@@ -79,12 +89,16 @@ signal machine_fixed
 @export var held_poses := PackedFloat32Array()
 ## This World's Pairs per Drawer (25; the debug slider, Q668).
 @export_range(1, 25, 1) var pairs_per_drawer := 25
+## The Collections completed in the current Stage, in the order completed (core/137; its presents).
+@export var completed: Array[StringName] = []
 @export_group("")
 
 ## The Cabinets of its level, in tree order (found once).
 var _cabinets: Array[Cabinet] = []
 ## A `complete` is on its way to the Host's Parts (asked once).
 var _completing := false
+## A `note_complete` is on its way (asked once per shelve).
+var _noting := false
 ## The level's Mess (found once).
 var _mess: Mess
 
@@ -425,6 +439,8 @@ func decide(cmd: Command) -> Dictionary:
 			return _land_answer(cmd.args)
 		&"complete_now":
 			return complete_now_answer()
+		&"note_complete":
+			return note_complete_answer(int(cmd.args.get("by", Parts.HOST)))
 		&"fit_now":
 			return fit_now_answer()
 	return refuse("wrong")
@@ -466,7 +482,8 @@ func start_answer(per: int, draw := false, again := false, salt := 0) -> Diction
 		cab.collection = placed[cab]
 	changes[id] = {"stage": 0, "phase": Phase.PLAYING, "bar": _bar_of(0, rows_by, per),
 			"spawned": designs, "due": designs, "first_laid": false, "pairs_per_drawer": per,
-			"holding": wants_first_wash(), "held_designs": PackedInt32Array(), "held_poses": PackedFloat32Array()}
+			"holding": wants_first_wash(), "held_designs": PackedInt32Array(), "held_poses": PackedFloat32Array(),
+			"completed": _no_collections()}
 	return {"ok": true, "changes": changes, EVENTS: [[&"run_started"]]}
 
 
@@ -581,23 +598,129 @@ func fit_now_answer() -> Dictionary:
 	if stage < 0 or phase == Phase.FIXED:
 		return refuse("already")
 	var events := []
+	var drop := {"changes": {}}
 	if phase == Phase.PLAYING:
+		_drop_presents(_noted_with(events, Parts.HOST), drop)
 		events.append([&"stage_completed", stage, _last_cabinet(&"")])
 	if phase != Phase.FIXING:
 		events.append([&"part_fitted", stage])
-	return _open_answer(events)
+	var ev := _open_answer(events)
+	(ev["changes"] as Dictionary).merge(drop["changes"] as Dictionary)
+	if drop.has(Presents.DROPPED):
+		ev[Presents.DROPPED] = drop[Presents.DROPPED]
+	return ev
 
 
 ## Complete: `phase = PART_OUT`, and the Stage's Machine Part laid at its pop spot in front of the Cabinet
 ## that took the last Pair (core/79: `MachinePart.pop_changes()`; a level with no such Part adds nothing).
 func _complete_answer(cabinet: StringName, changes: Dictionary) -> Dictionary:
 	var last := _last_cabinet(cabinet)
+	var events := []
+	var now_completed := _noted_with(events, Parts.HOST)
+	var ev := {"ok": true, "changes": changes, "cabinet": last}
+	var dropped := _drop_presents(now_completed, ev)
 	var part := machine_part()
 	if part != null:
-		changes.merge(part.pop_changes(cabinet_of(last)), true)
-	changes[id] = {"phase": Phase.PART_OUT}
-	return {"ok": true, "changes": changes, "cabinet": last,
-			EVENTS: [[&"stage_completed", stage, last]]}
+		changes.merge(_clear_of_presents(part.pop_changes(cabinet_of(last)), dropped), true)
+	changes[id] = {"phase": Phase.PART_OUT, "completed": now_completed}
+	events.append([&"stage_completed", stage, last])
+	ev[EVENTS] = events
+	return ev
+
+
+## `note_complete` (the Host's, after a shelve by player `by`): every Cabinet of the bar that is complete and
+## not yet noted is appended to `completed`, each with its `collection_completed` event. Refused when none is.
+func note_complete_answer(by: int) -> Dictionary:
+	if stage < 0 or phase != Phase.PLAYING:
+		return refuse("already")
+	var events := []
+	var now_completed := _noted_with(events, by)
+	if events.is_empty():
+		return refuse("already")
+	return {"ok": true, "changes": {id: {"completed": now_completed}}, EVENTS: events}
+
+
+## Whether Cabinet `cab`'s Collection is complete (the old CB:61-69): unlocked with every Drawer in use
+## and full, or every Design of its Collection shelved in it.
+func cabinet_complete(cab: Cabinet) -> bool:
+	if cab == null or cab.locked:
+		return false
+	var count := cab.designs_count()
+	if count > 0 and cab.shelved().size() >= count:
+		return true
+	var drawers := cab.drawer_count()
+	if drawers <= 0 or cab.rows_in_use() < drawers:
+		return false
+	for i in drawers:
+		if not cab.row_full(i):
+			return false
+	return true
+
+
+## The Cabinets of the bar, once each, in its order.
+func bar_cabinets() -> Array[Cabinet]:
+	var out: Array[Cabinet] = []
+	for row: Variant in bar:
+		var cab := cabinet_of(StringName(str((row as Array)[0])))
+		if cab != null and not out.has(cab):
+			out.append(cab)
+	return out
+
+
+## `completed` with every complete Cabinet of the bar not yet noted, each adding its event to `events`.
+func _noted_with(events: Array, by: int) -> Array[StringName]:
+	var out: Array[StringName] = completed.duplicate()
+	for cab in bar_cabinets():
+		if not out.has(cab.collection) and cabinet_complete(cab):
+			out.append(cab.collection)
+			events.append([&"collection_completed", cab.collection, by])
+	return out
+
+
+## The Stage's presents for `now_completed` into answer `ev` (its changes and its `presents_dropped`); the
+## spots they will lie at (the level's), empty when none drop.
+func _drop_presents(now_completed: Array[StringName], ev: Dictionary) -> Array[Vector3]:
+	var spots: Array[Vector3] = []
+	var presents := run_presents()
+	if presents == null or now_completed.is_empty():
+		return spots
+	var drop := presents.drop(now_completed)
+	if drop.is_empty():
+		return spots
+	(ev["changes"] as Dictionary).merge(drop["changes"] as Dictionary, true)
+	ev[Presents.DROPPED] = drop[Presents.DROPPED]
+	spots.assign(drop["spots"])
+	return spots
+
+
+## The Machine Part's pop changes moved to the nearest spot clear of the presents lying and dropping (the old
+## CA:439-479; batch A's carried item, core/79).
+func _clear_of_presents(pop: Dictionary, dropping: Array[Vector3]) -> Dictionary:
+	var presents := run_presents()
+	if presents == null or pop.is_empty():
+		return pop
+	for part_id: Variant in pop:
+		var patch: Dictionary = (pop[part_id] as Dictionary).duplicate()
+		var carriable := parts.of(StringName(str(part_id))) as Carriable if parts != null else null
+		var thing := carriable.get_parent() as Node3D if carriable != null else null
+		var base := thing.get_parent() as Node3D if thing != null else null
+		if not (patch.get("at") is Vector3) or base == null or not base.is_inside_tree():
+			continue
+		var level_at := base.global_transform * (patch["at"] as Vector3)
+		var clear := presents.clear_spot(level_at, dropping)
+		patch["at"] = base.global_transform.affine_inverse() * clear
+		pop[part_id] = patch
+	return pop
+
+
+## The Presents beside it in the Run, or null.
+func run_presents() -> Presents:
+	return get_node_or_null(^"../Presents") as Presents
+
+
+func _no_collections() -> Array[StringName]:
+	var out: Array[StringName] = []
+	return out
 
 
 ## The current Stage's Machine Part among the level's (by its kind), or null.
@@ -674,7 +797,7 @@ func _open_answer(events: Array, base_due := due) -> Dictionary:
 	var now_spawned := spawned.duplicate()
 	now_spawned.append_array(designs)
 	changes[id] = {"stage": next, "phase": Phase.PLAYING, "bar": _bar_of(next, rows_by, per),
-			"due": now_due, "spawned": now_spawned}
+			"due": now_due, "spawned": now_spawned, "completed": _no_collections()}
 	events.append([&"floor_opened", next, grown])
 	return _floor_bonus({"ok": true, "changes": changes, EVENTS: events})
 
@@ -698,6 +821,18 @@ func _floor_bonus(ev: Dictionary) -> Dictionary:
 	if tallies != null:
 		changes[tallies.id] = tallies.bonus_patch(everyone, amount, changes.get(tallies.id, {}))
 	return ev
+
+
+## Version 2 (core/137): `completed`, the Collections completed in the current Stage.
+func save_version() -> int:
+	return 2
+
+
+## A version 1 save completed nothing yet this Stage.
+func upgrade_save(state: Dictionary, from: int) -> Dictionary:
+	if from == 1:
+		state["completed"] = _no_collections()
+	return state
 
 
 ## A load between the Fix and its floor's opening (the Fix scene cut short) opens the floor now, as
@@ -786,12 +921,22 @@ func launch_pairs_per_drawer() -> int:
 func _on_applied(ev: Dictionary) -> void:
 	if ev.get("kind") == &"complete" and ev.get("to") == id:
 		_completing = false
+	if ev.get("kind") == &"note_complete" and ev.get("to") == id:
+		_noting = false
 	if not ev.get("ok", false):
 		return
 	var events: Variant = ev.get(EVENTS)
 	if events is Array:
 		for e: Variant in (events as Array):
 			_emit(e as Array)
+	# core/137: a shelve may complete a Collection of the bar (noted before the Stage's `complete`, asked after).
+	if parts.is_host() and not _noting and ev.has("shelved") and stage >= 0 and phase == Phase.PLAYING:
+		for cab in bar_cabinets():
+			if not completed.has(cab.collection) and cabinet_complete(cab):
+				_noting = true
+				var by := int(ev.get("payee", ev.get("by", Parts.HOST)))
+				parts.ask.call_deferred(Command.new(&"note_complete", Parts.HOST, id, {"by": by}))
+				break
 	if parts.is_host() and not _completing and stage >= 0 and phase == Phase.PLAYING and bar_full():
 		_completing = true
 		var cabinet := StringName(str(ev.get("to", ""))) if ev.has("shelved") else &""
@@ -804,6 +949,11 @@ func _emit(e: Array) -> void:
 			run_started.emit()
 		&"stage_completed":
 			stage_completed.emit(int(e[1]), StringName(str(e[2])))
+		&"collection_completed":
+			# The completer's pad buzzes, as a Drawer they filled (the old "done" cue).
+			if int(e[2]) == multiplayer.get_unique_id():
+				PadRumble.play(PadRumble.DONE)
+			collection_completed.emit(StringName(str(e[1])), int(e[2]))
 		&"part_fitted":
 			part_fitted.emit(int(e[1]))
 		&"floor_opened":

@@ -2,7 +2,7 @@
 ## Lifetime tallies"). A Node of `run.tscn` on every machine: it hears applied answers only (a Parts'
 ## `applied`, the Bank's `paid`, the Stages' `stage_completed`), so a World that loads, a join snapshot and the
 ## level's starting state (a Parts not settled) count nothing, and a Guest counts from its join on.
-## `collections_completed` is counted by core/137, which makes its event.
+## `collections_completed` counts the Stages' `collection_completed` (core/137).
 class_name TallyRecorder
 extends Node
 
@@ -16,6 +16,7 @@ func _ready() -> void:
 	var stages := get_node_or_null("../Stages") as Stages
 	if stages != null:
 		stages.stage_completed.connect(_on_stage_completed)
+		stages.collection_completed.connect(_on_collection_completed)
 	var tree := get_tree()
 	tree.node_added.connect(_on_node_added)
 	for node in tree.root.find_children("*", "Parts", true, false):
@@ -88,3 +89,10 @@ func _on_stage_completed(_stage: int, _cabinet: StringName) -> void:
 	var stages := get_node_or_null("../Stages") as Stages
 	if stages == null or _counting(stages.parts):
 		_count(PlayerProfile.FLOORS_COMPLETED, 1)
+
+
+## core/137: a Collection the team completed counts for every player (the old PI:20, as a Stage completed).
+func _on_collection_completed(_collection: StringName, _by: int) -> void:
+	var stages := get_node_or_null("../Stages") as Stages
+	if stages == null or _counting(stages.parts):
+		_count(PlayerProfile.COLLECTIONS_COMPLETED, 1)

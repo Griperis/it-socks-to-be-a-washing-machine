@@ -89,7 +89,7 @@ shape = SubResource("BoxShape3D_ground")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 5)
 pixel_size = 0.004
 billboard = 2
-text = "Stages: a mini run of two Stages, 2 Pairs a Drawer. Shelve the Simple Pairs into Cabinet A to complete Stage 1: its Part pops out of the Cabinet's top. Click it to carry it, then click the washing machine box: Cabinet B on the platform unlocks and Cabinet A grows a Row. \"Complete the Stage\" completes a Stage outright, \"Fit now\" fits its Part at once. On the left, the house's Stages from its plan, each Part lying beside it. The floor's locks: the door in the back wall and the gate on the platform stay shut until the floor opens (the padlock reads what opens them); the pillar opens and locks them again"
+text = "Stages: a mini run of two Stages, 2 Pairs a Drawer. Shelve the Simple Pairs into Cabinet A to complete Stage 1: its Part pops out of the Cabinet's top. Click it to carry it, then click the washing machine box: Cabinet B on the platform unlocks and Cabinet A grows a Row. \"Complete the Stage\" completes a Stage outright, \"Fit now\" fits its Part at once. On the left, the house's Stages from its plan, each Part lying beside it. The floor's locks: the door in the back wall and the gate on the platform stay shut until the floor opens (the padlock reads what opens them); the pillar opens and locks them again. A Stage that completes a Collection (every Drawer of its Cabinet full) drops each player a present wrapped in it at the far left"
 vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
@@ -104,6 +104,13 @@ plan = ExtResource("11_house")
 [node name="Stages" parent="Run" index="0"]
 plan = ExtResource("10_mini")
 draw_first_start = false
+
+[node name="Presents" parent="Run" index="7" node_paths=PackedStringArray("spot")]
+spot = NodePath("../PresentSpot")
+
+[node name="PresentSpot" type="Marker3D" parent="Run"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 0, -1.8)
+metadata/note = "Where a Stage's presents lie (core/137): one per player for each Collection completed in the Stage."
 
 [node name="MachineParts" type="Node3D" parent="Run"]
 

@@ -1,0 +1,15 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/zoo/gifts/gift_switch.gd" id="1_switch"]
+[ext_resource type="PackedScene" uid="uid://b4mtn5fi0wiu1" path="res://game/zoo/screen/upgrade_switch/looks_graybox.tscn" id="2_looks"]
+
+[node name="GiftSwitch" type="Node3D"]
+
+[node name="GiftSwitch" type="Node" parent="." node_paths=PackedStringArray("label")]
+script = ExtResource("1_switch")
+label = NodePath("../Looks/Label")
+
+[node name="Looks" parent="." instance=ExtResource("2_looks")]
+
+[node name="Label" parent="Looks" index="2"]
+text = "Drop presents"
