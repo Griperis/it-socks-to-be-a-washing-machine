@@ -207,6 +207,37 @@ func unlock_piece(id: StringName) -> bool:
 	return true
 
 
+## Adds Designs `ids` to the encyclopedia (sorted, each once); true when any was new. Marks the file to be written.
+func see_designs(ids: PackedInt32Array) -> bool:
+	var seen := {}
+	for d in designs:
+		seen[d] = true
+	var fresh := false
+	for d in ids:
+		if d >= 0 and not seen.has(d):
+			seen[d] = true
+			fresh = true
+	if not fresh:
+		return false
+	var all := seen.keys()
+	all.sort()
+	designs = PackedInt32Array(all)
+	save_soon()
+	return true
+
+
+## Unlocks Collections `ids` (each once); true when any was new. Marks the file to be written.
+func unlock_collections(ids: Array[StringName]) -> bool:
+	var fresh := false
+	for id in ids:
+		if not collections.has(id):
+			collections.append(id)
+			fresh = true
+	if fresh:
+		save_soon()
+	return fresh
+
+
 ## Marks the file to be written: one write at most every ProfileTuning.save_every seconds however many
 ## changes came (a Pair shelved never writes a file by itself), and flush() at quit.
 func save_soon() -> void:
