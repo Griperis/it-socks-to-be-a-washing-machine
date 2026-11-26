@@ -112,7 +112,7 @@ func case_bought_and_earshot() -> void:
 	_check(tree.is_near(at + Vector3(4.4, 0.0, 0.0)) and not tree.is_near(at + Vector3(4.6, 0.0, 0.0)), "the earshot is 4.5 m")
 	_check(tree.is_near(at + Vector3(0.0, 1.7, 0.0)) and not tree.is_near(at + Vector3(0.0, 1.9, 0.0)), "the level band is 1.8 m")
 	var channel := Voices.channel(&"old_tree")
-	_check(channel != null and is_equal_approx(channel.volume_db(), 0.0), "the line plays at 0 dB: no level adjustment by the game (Q2638)")
+	_check(channel != null and is_equal_approx(channel.volume_db(), 12.5), "the line plays at the old +12.5 dB, applied at playback (%s)" % (channel.volume_db() if channel != null else 0.0))
 
 
 func case_quiet() -> void:
@@ -178,8 +178,8 @@ func case_calls() -> void:
 	await _until(func() -> bool: return Voices.talking(&"old_tree"), "a call", 900)
 	var call := Voices.line_of(&"old_tree")
 	_check(call.has_trigger(OldTree.CALL), "it is a call (%s)" % call.id)
-	_check(Voices.channel(&"old_tree").source == tree.call_voice and tree.call_voice.speaker.max_distance == 16.0,
-			"a call sounds from the tree and carries 16 m")
+	_check(Voices.channel(&"old_tree").source == tree.call_voice and tree.call_voice.speaker.max_distance == 16.0
+			and is_equal_approx(Voices.channel(&"old_tree").volume_db(), 12.5), "a call sounds from the tree at +12.5 dB and carries 16 m")
 	var cam := rt.player.get_viewport().get_camera_3d().global_position
 	if Voices.within_earshot(cam, tree.voice.global_position, 16.0, 16.0):
 		await _until(func() -> bool: return Voices.subtitle_text(&"old_tree") != "", "the call's subtitle within 16 m")
@@ -222,7 +222,8 @@ func case_saved() -> void:
 				"%s is of a ported feature" % l.id)
 	var t := load("res://game/furniture/old_tree_tuning.tres") as OldTreeTuning
 	_check(t.away_seconds == 45.0 and t.idle_seconds == 40.0 and t.check_seconds == 0.25 and t.call_first_delay == 20.0
-			and t.call_gap == Vector2(25.0, 55.0) and t.call_reach == 16.0 and t.beat_gap == 20.0, "OldTreeTuning carries the old numbers")
+			and t.call_gap == Vector2(25.0, 55.0) and t.call_reach == 16.0 and t.beat_gap == 20.0 and t.voice_db == 12.5
+			and t.call_db == 12.5, "OldTreeTuning carries the old numbers, the +12.5 dB playback level among them")
 
 
 # --- Co-op ---------------------------------------------------------------------------------------

@@ -43,8 +43,8 @@ const ASK_GAP := 1.0
 ## Whose lines these are and the voice numbers.
 @export var speaker: VoiceSpeaker
 @export var tuning: OldTreeTuning
-## Where its lines sound from (and the point "near" is measured from); the calls sound from `call_voice`, given
-## a copy of `speaker` that carries `call_reach`.
+## Where its lines sound from (and the point "near" is measured from); the calls sound from `call_voice`. Each is
+## given a copy of `speaker` at the tree's playback level (the calls' with `call_reach`).
 @export var voice: VoiceSource
 @export var call_voice: VoiceSource
 
@@ -84,9 +84,18 @@ var _upgrades: Upgrades = null
 var _day: LaundryDay = null
 
 
+## The sources get copies of `speaker` carrying the tree's playback level (`voice_db`, `call_db`: the old
+## +12.5 dB, Q2638) and, for the calls, `call_reach`.
 func _ready() -> void:
-	if call_voice != null and speaker != null and tuning != null:
+	if speaker == null or tuning == null:
+		return
+	if voice != null:
+		var level := speaker.duplicate() as VoiceSpeaker
+		level.voice_db = tuning.voice_db
+		voice.speaker = level
+	if call_voice != null:
 		var reach := speaker.duplicate() as VoiceSpeaker
+		reach.voice_db = tuning.call_db
 		reach.max_distance = tuning.call_reach
 		reach.earshot = tuning.call_reach
 		reach.level_band = tuning.call_reach  # no level band: a call is heard from the laundry

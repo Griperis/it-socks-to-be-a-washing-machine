@@ -21,7 +21,8 @@ The Old Tree speaks in batch B; nothing on it moves until its rework (Q2670, Q25
 - The speaker `game/voice/speakers/old_tree.tres` (no acting), the lines `game/voice/lines/old_tree.json` with the old
   recordings copied into `assets/voice/old_tree/` (162 lines of the old `data/voiceover/old_tree/`, less `tip_dirty`,
   `tip_pairing` and the three Grotto ones; the presents' eleven included, their triggers are core/140's; the old
-  +12.5 dB baked into the copies once, Q2638); the bake run; credits for the recordings (the old "norman" voice:
+  +12.5 dB applied at playback, as the old player's volume, the recordings copied unchanged: the lead's reading of
+  Q2638, 2026-11-26); the bake run; credits for the recordings (the old "norman" voice:
   its licence check before a shipping build stays a `[later]`, Q1575).
 - `OldTree.talk {trigger}` (the Host runs the cooldown, `busy` with a cutscene or the washer, the chance and the
   picker; every machine plays the answered line from the tree, heard and subtitled only near it), its saved state
@@ -67,8 +68,6 @@ picked in the inspector. `looks_old_tree.tscn` is not changed. `OldTreeTuning` (
 ## Open follow-ups
 - [later] The old voice "norman" (Piper, LibriVox): its licence check before a shipping build (Q1575, old ticket 95);
   the credits entry now covers `assets/voice/old_tree/*`.
-- [later] The +12.5 dB baked into the 145 copies (Q2638) clips 2.3 % of their samples (every old recording peaks
-  near 0 dBFS); a fix at the source (a limiter, or less gain) is the designer's (batch-b-review.md, core/132).
 - [later] The Old Tree's subtitle icon: none yet (the Theme's plain disc); a drawn icon is a look ticket.
 - [later] `game/house/door_shut_rules.gd`'s `keep_open` still reads `# placeholder: waits for the Old Tree (M4)`;
   it is Q1864's answer now (not this ticket's file).

@@ -1,7 +1,7 @@
 ## The Old Tree's voice numbers (core/132, docs/architecture/economy.md "The Old Tree talks"): when it senses a
 ## player near, greets them again, muses, calls into the house, and core/133's help (beats, the Stage's share,
 ## the idle spell's chances). The speaker's own numbers (earshot, level band, cooldown, unit size, reach) are on
-## `game/voice/speakers/old_tree.tres`. Every number is the old `data/tuning/old_tree.json`'s, a placeholder.
+## `game/voice/speakers/old_tree.tres`; the level its lines play at is here (`voice_db`, `call_db`). Every number is the old `data/tuning/old_tree.json`'s, a placeholder.
 ## The motion's numbers come with the tree's rework (Q2670).
 class_name OldTreeTuning
 extends Resource
@@ -17,11 +17,18 @@ extends Resource
 ## A purchase near the tree is said within this long of it, or not at all (the old 5 s).
 @export_range(0.0, 30.0, 0.5, "suffix:s") var bought_window := 5.0 # placeholder: the old OldTreeVoice's 5 s
 
+## The level every line of the tree plays at: the old +12.5 dB, applied at playback as the old player's volume,
+## so it clips only where the old clipped, up close (the lead's reading of Q2638 for a faithful port; the
+## recordings are the old ones, unchanged).
+@export_range(-40.0, 24.0, 0.5, "suffix:dB") var voice_db := 12.5 # placeholder: the old old_tree.voice_db
+
 @export_group("Calls")
 ## After the First wash's end, the wait before the first call into the house (Q1864, Q1865).
 @export_range(0.0, 300.0, 1.0, "suffix:s") var call_first_delay := 20.0 # placeholder: the old old_tree.call_first_delay
 ## The random gap between two calls (the Host's clock).
 @export var call_gap := Vector2(25.0, 55.0) # placeholder: the old old_tree.call_min, call_max
+## A call's level (the old's own number, the same as `voice_db`).
+@export_range(-40.0, 24.0, 0.5, "suffix:dB") var call_db := 12.5 # placeholder: the old old_tree.call_db
 ## How far a call carries and is subtitled (no level band: it is heard from the laundry).
 @export_range(1.0, 100.0, 0.5, "suffix:m") var call_reach := 16.0 # placeholder: the old old_tree.call_max_distance
 

@@ -45,7 +45,7 @@ Lobby. For each line say yes, or what to change; a change becomes a ticket. The 
 - Q2673's "another unlocked Collection": the Host's unlocked set (the one the New Game's draw used), since the Host
   knows no other; a Guest with a different unlocked set gets pieces from the Host's.
 - A present holding a piece of another Collection keeps the wrapping of the Collection the Stage completed.
-- The Old Tree's lines are copied with the old +12.5 dB baked into the recordings once (the game adds no gain, Q2638).
+- The Old Tree's lines are copied unchanged and play at the old +12.5 dB, applied at playback as the old player's volume (`OldTreeTuning.voice_db`), so they clip only where the old clipped, up close: baked into 16-bit copies it clipped 2.3 % of every recording (core/132; the lead's reading of Q2638 for a faithful port).
 - Batch B ships no Achievement (Q2687): the Profile page shows the tallies and "0 / 0 earned".
 
 ## Questions for the designer (end of batch B)
@@ -65,7 +65,6 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 | core/129 | How the House prices are re-scaled to 0.9 x the 33 Drawers the house pays (Q1405) | 30 in all, the old proportions: each old price x 30/21 by largest remainder (every 2 becomes 3); of the eleven 1s the four ties that go up to 2 are the second levels of Big Bag, Long Hose and Strong Suction and its third (Elevator Repair, the gate, stays 1). Elevator Repair 1, Fast Elevator 3/3, Roomy Car 3, Big Bag 1/2, Strong Suction 1/2/2, Long Hose 1/2, Wide Nozzle 1, Filter nozzle 3, Sole Mates 3, Sole Hands 1, Mate Radar 1 (the old D Numbers rule; UJ:365-812) | |
 | core/129 | "Need {coins} 120": the old HUD drew the currency's icon inline | The port's message row is text: "Need Coins 120" / "Need Drawers 2", as the cheat's "Debug: +1000 Coins" (core/124) (the old UP:409-424, HUD:615) | |
 | core/132 | How many Old Tree recordings to copy ("162 less" the unported ones) | The old folder holds 161; less `tip_dirty` (1), `tip_pairing` (3) and the three Grotto groups (12): 145 copied, every one with its old text and segment times (the old `data/voiceover/old_tree/`) | |
-| core/132 | The +12.5 dB baked into the copies (Q2638): every old recording peaks near 0 dBFS, so 16-bit copies clip | Hard-clipped at full scale: 2.3 % of the samples (the old played +12.5 dB through the 3D player, so it clipped only up close, OTV:426). A source fix (a limiter or less gain) is the designer's call | |
 | core/132 | A call's level and reach | The same level as every line (the old `call_db` 12.5 = `voice_db` 12.5), carrying 16 m and subtitled within 16 m with no level band (OTV:427, OTV:465) | |
 | core/132 | An Upgrade newly affordable on a first visit | Said in place of the greeting, so the player is not met yet and the next greeting is the "first" line (the old order, OTV:274) | |
 | core/132 | The lines of core/133's, core/140's and batch C's moments | Copied with no trigger (the JSON's note names the owner and the trigger id); `final_wash` and `peace` marked `waits` (story beats) | |
