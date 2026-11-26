@@ -1,4 +1,4 @@
-Next free Q number: Q2717 (update this line whenever a round of questions is asked)
+Next free Q number: Q2718 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -712,3 +712,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   house (designer, 2026-11-26).
 - Q2716: the Trails (core/144) are close; their gaps are fixed before the merge: every colour of a two-colour mesh,
   the tumble, lean, rocking and sway, varied mark layouts, the old's timing (designer, 2026-11-26).
+- Q2717: the Trails (core/144, the final strips: every colour, tumble and sway as clips, three layouts, the old
+  palette and fades) are yes and merge (designer, 2026-11-26).
