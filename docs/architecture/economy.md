@@ -1,23 +1,24 @@
 # Coins and Drawers, the Old Tree and the Upgrade grid
 
-**Status: proposal for batch B (designed in core/120; choices E1-E6 wait for the designer's sitting).** Behaviour
-list: `docs/migration/m4-lists/06-coins-drawers-upgrades.md`. Batch B (Q2614) is built unattended after the designer
-approves the three proposals (this, core/121 `gifts.md`, core/122 `wardrobe.md`) in one sitting, then reviewed in play
-as a whole (Q2603-Q2605). An open choice an agent meets in the build takes the old game's answer and goes on the
-batch's review sheet (Q2604).
+**Status: build plan for batch B (designed in core/120; answered Q2667-Q2672, 2026-11-25; filed by core/123 as
+core/124, 129-133).** Behaviour list: `docs/migration/m4-lists/06-coins-drawers-upgrades.md`. Batch B (Q2614) is built
+unattended in the order of `docs/migration/milestones.md` "Batch B", then reviewed in play as a whole (Q2603-Q2605). An
+open choice an agent meets in the build takes the old game's answer and goes on the batch's review sheet,
+`docs/migration/batch-b-review.md` (Q2604).
 
 ## What it owns
 
 Both currencies (each player's Coins and the team's Drawers) as decided state, every payout of them (a shelved Pair, a
-filled drawer, the Stage bonuses of Q2619, a late joiner's start, the debug cheat) and every spending of them (an
-Upgrade); the Coins and Drawers counters on the HUD with their flying "+N"; the Upgrades as data, the `buy` verb and
-how a feature reads an Upgrade's effect; the Upgrade menu; the Old Tree as the Upgrade station and as a speaker (its
-motion and its lines, E4); the Personal effects that exist in the port's features (walk, Sprint, grab, carry, Throw,
-Sock Smarts and Sense) and the Sole cues (E5); what a World keeps of all of it.
+filled drawer, the two Stage bonuses, Q2667, a late joiner's start, the debug cheat) and every spending of them (an
+Upgrade); the Coins and Drawers counters on the HUD with their flying "+N" (a bonus has none: the counter counts up,
+Q2668); the Upgrades as data, the `buy` verb and how a feature reads an Upgrade's effect; the Upgrade menu; the Old Tree
+as the Upgrade station and as a speaker (its lines, Q2670; its motion waits for its rework, Q2506); the Personal
+effects that exist in the port's features (walk, Sprint, grab, carry, Throw, Sock Smarts and Sense) and the Sole cues
+(Q2671); what a World keeps of all of it.
 
 It does not own Stage presents, Gifts, their refund's reason or Collections unlocking (core/121), the Wardrobe, the
 Profile's Lifetime tallies or Achievements (core/122), the X-rays, the Elevator or the vacuums whose Upgrades wait as
-"Coming soon" (batch C, E3), the Final screen (core/95, built: it reads what this piece pays). Where they meet it, it
+"Coming soon" (batch C, Q2669), the Final screen (core/95, built: it reads what this piece pays). Where they meet it, it
 names the seam.
 
 ## The shape
@@ -41,7 +42,7 @@ Everything on screen is a view: the HUD counters and flights, the Upgrade menu, 
 |---|---|
 | `coins: Dictionary` | player id -> their Coins (the peer number only while no Roster names them, as `Coins` today) |
 | `drawers: int` | the team's Drawers |
-| `recent: Dictionary` | E6 (a) only, not saved: player id -> `[[host clock, amount], ...]` of payouts still flying, so the Host can tell the spendable Coins |
+| `recent: Dictionary` | not saved (Q2672): player id -> `[[host clock, amount], ...]` of payouts still flying, so the Host can tell the spendable Coins |
 
 No verb pays by itself: every payout is a patch inside another Part's answer, as today (`paid_patch(by, amount)`,
 `drawers_patch(amount)`, `spent_patch(by, coins, drawers)`), so a shelve, its Coins, its Drawers and its tallies are
@@ -59,13 +60,14 @@ Who pays what:
   the Stage the Cabinet unlocks with (`Cabinet.unlock_stage`): basement 1, ground 1, first 2, attic 3 (`# placeholder:`
   the old by-floor table; the garage's Cabinet unlocks with Stage 2 and stands in the basement, both pay 1). The answer
   carries `drawers_paid: [[drawer, amount]]` for the flight.
-- **The Stage bonuses** (Q2619, choice E1): in the `open_floor` answer (and the last Fix's, `phase = FIXED`), every
+- **The Stage bonuses** (both, as the old: Q2667, closing Q2619): in the `open_floor` answer (and the last Fix's, `phase = FIXED`), every
   player in the game `EconomyTuning.floor_bonus` (100); in a shelve answer that leaves a Cabinet's current Rows all
   full, its shelver `EconomyTuning.cabinet_bonus` (50), once per Rows count (`Cabinet.bonus_rows`, a new State field).
   Each bonus is also added to `RunTallies` coins, so the Final screen's "+N bonus" step counts it (core/95 reads
   tallies minus the record's Pair Coins).
-- **A Gift refund** (core/121): its open answer patches `paid_patch(opener, GiftTuning.refund)` and tallies, and
-  carries `bonus: true` so the HUD shows it as a bonus (E2).
+- **A Gift refund** (core/121): only when the opener owns every piece a present could hold (Q2673); its open answer
+  patches `paid_patch(opener, PresentTuning.refund)` (75) and tallies, and carries `bonus: true` so the HUD shows it
+  as a bonus (Q2668).
 
 ### `Upgrades`' state and verbs
 
@@ -76,7 +78,7 @@ Who pays what:
 
 | Verb | Who | What it decides |
 |---|---|---|
-| `buy {upgrade}` | any player, from the menu | refused (`SAYS`) when the id is unknown, `hidden` (co-op only and the game is single player: `Session` alone and not hosting, Q1357, Q1399), `maxed`, `soon` (no `stat`: Coming soon, Q1272), `locked` (a `needs` entry below its level) or `poor` (E6: the buyer's spendable Coins, or the team's Drawers, below the price); else one answer: the Bank's `spent_patch` and the level +1 (Personal: the buyer's; House: the team's) |
+| `buy {upgrade}` | any player, from the menu | refused (`SAYS`) when the id is unknown, `hidden` (co-op only and the game is single player: `Session` alone and not hosting, Q1357, Q1399), `maxed`, `soon` (no `stat`: Coming soon, seen and not buyable, Q1272, Q2669), `locked` (a `needs` entry below its level) or `poor` (the buyer's spendable Coins, the landed ones, Q2672, or the team's Drawers, below the price); else one answer: the Bank's `spent_patch` and the level +1 (Personal: the buyer's; House: the team's) |
 | `set_level {upgrade, level, player}` | Host only: the zoo's switches and tests (the old `set_level`) | the level outright, nothing paid |
 
 Refusals read the old words: "Co-op only", "Maxed out", "Coming soon", "Locked", "Need {coins} %d" / "Need {drawers} %d".
@@ -89,14 +91,14 @@ export (a missing file is a load error, not a silent 0), as the voice triggers d
 
 **The Hands numbers in co-op.** Today a Guest's machine sends its capacity, reach, charge time and Throw speed and the
 Host clamps them (D13, `SessionGate.clamped_hands`). With the Upgrades Part the Host computes them from the levels it
-keeps; the sent numbers and `HandsTuning.*_most` go (120-C). Every machine reads the same synced levels for its
+keeps; the sent numbers and `HandsTuning.*_most` go (core/130). Every machine reads the same synced levels for its
 guesses.
 
 ### Signals (every machine, from applied answers): the seams
 
 | Signal | Who plugs in |
 |---|---|
-| `Bank.paid(player, amount, at_drawer: Node3D or null, bonus: bool)` | the HUD's Coin flight (this machine's player only); core/122's Lifetime "coins_earned" (counted when the Coins land, as the old) |
+| `Bank.paid(player, amount, at_drawer: Node3D or null, bonus: bool)` | the HUD's Coin flight (this machine's player only); core/122's Lifetime "coins_earned" (counted at the decided payout) |
 | `Bank.drawers_paid(player, amount, at_drawer)` | the HUD's Drawer flight (the shelver only), the pad's "done" buzz |
 | `Upgrades.bought(player, upgrade)` | the menu's refresh, the teammate line "<name> bought <Upgrade>" (Q243), the Old Tree's "bought" moment, any feature whose House level changed (batch C's Elevator, vacuums) |
 | `Upgrades.affordable(player, upgrade)` (each machine, for its own player, when an Upgrade becomes buyable) | the Old Tree's "affordable" moment |
@@ -149,7 +151,7 @@ guesses.
   -> top; a new `.tres` shows with no other change), an Old Tree that opens the real menu, a small Cabinet (drawer
   capacity 2, its own `CabinetTuning`) with a `SockGenerator` of its Pairs, the station's own Bank and Upgrades, and
   switches: "+100 Coins", "+5 Drawers", "Reset levels", "Co-op" (shows the co-op-only Upgrades). The Stages station's
-  mini run already shows the floor bonus. Only 120-A and 120-B edit the station's scene.
+  mini run already shows the floor bonus. Only core/124 and core/129 edit the station's scene.
 
 ## The pieces
 
@@ -159,8 +161,11 @@ flying on this machine (looks only: the Bank holds the decided numbers). `Bank.p
 drawer: the "+N" pops over that drawer's front (0.2 m up; the screen's centre when behind the camera), grows in,
 holds, bursts into N icons that fly to the counter in the old timing; each landing pulses the counter's icon and plays
 `coins`. `Bank.drawers_paid`: the same with the Drawer icon, 80 px higher, in the House blue, `drawer_clack` on
-landing. A teammate's payout moves only the Drawers counter. A bonus (`bonus: true`) is choice E2. A load or a join
-shows the totals at once, nothing flying.
+landing. A teammate's payout moves only the Drawers counter. **A bonus** (`bonus: true`: the floor's 100, the
+Cabinet's 50, a Gift refund) shows as the old (Q2668): no "+N" and no flying icons; its Coins land in the counter one by
+one, spread over the payout's time as the Coins of a "+N" would, starting `bonus_delay` (0.35 s) later than a "+N"'s
+first landing, so the counter counts up, its icon pulsing and `coins` playing per landing (the old `CB:19-27`,
+`CB:50-93`). A load or a join shows the totals at once, nothing flying.
 
 ### The Old Tree, the station
 `OldTree`'s `prompt()` is "The Old Tree" with the E key; the outline goes round the Looks' tree mesh (the kit's outline,
@@ -177,7 +182,7 @@ lifts, grows and glows in its section's colour, and the tip card shows beside it
 the button and plays `refuse` (the Host's refusal text shows as any refusal). The pad's route is the old true grid.
 `Upgrades.bought` and the Bank's changes refresh it while open. The counters in its header are the HUD's scene.
 
-### The Personal effects (120-C) and the Sole cues (120-D)
+### The Personal effects (core/130) and the Sole cues (core/131)
 | Upgrade | Stat (kind, base, step) | Read by |
 |---|---|---|
 | Footwork | `walk_speed` (SCALE_UP, 1.0, 0.05) | the player's walk (`MoveTuning.walk_speed` x it) |
@@ -186,19 +191,17 @@ the button and plays `refuse` (the Host's refusal text shows as any refusal). Th
 | Big Hands | `carry` (ADD, 1, 1) | the Hands' capacity (1 to 5, Q1397) |
 | Long Arm | `throw_speed` (ADD, 5 m/s, 4) | a full Throw's speed (the Throw stays free and weak, Q1344) |
 | Quick Charge | `charge_time` (SCALE_DOWN, 1.2 s, 0.25, least 0.1) | a Throw's charge |
-| Sock Smarts, Sock Sense | `sock_smarts`, `sock_sense` (FLAG; Sense needs Smarts) | the HUD's readouts (`PlayerUpgrades` reads them; its zoo toggles stay); wired by 120-B |
-| Sole Mates, Sole Hands, Mate Radar | `sole_mates`, `sole_hands`, `mate_radar` (FLAG, House) | a `SoleCues` view on each machine (E5): the Teammate's mate Sock outlined in their colour in sight (0.15 s linger), the whole Teammate with Sole Hands, through walls and with edge arrows (the existing `HintArrows`) with Mate Radar; `match` once at their Hands and a brief glow on your own Sock |
+| Sock Smarts, Sock Sense | `sock_smarts`, `sock_sense` (FLAG; Sense needs Smarts) | the HUD's readouts (`PlayerUpgrades` reads them; its zoo toggles stay); wired by core/129 |
+| Sole Mates, Sole Hands, Mate Radar | `sole_mates`, `sole_hands`, `mate_radar` (FLAG, House) | a `SoleCues` view on each machine (built in batch B, Q2671): the Teammate's mate Sock outlined in their colour in sight (0.15 s linger), the whole Teammate with Sole Hands, through walls and with edge arrows (the existing `HintArrows`) with Mate Radar; `match` once at their Hands and a brief glow on your own Sock |
 
-### The Old Tree talks and breathes (E4)
-- **Looks:** `looks_old_tree.tscn` gets the old tree's motion as Looks: a material on the moving parts (the old
-  `old_tree.gdshader` ported: the vertices above the box's rim breathe and rustle; the lit bulbs' emission flickers and
-  pulses) with `breath`, `talk` and `flicker` parameters; an `AnimationPlayer` plays a looping `idle` clip (the breath
-  and the flicker as keyed curves, not code); the voice's acting Animation keys `.:talk` (the rustle and the pulse) as
-  the washer's acting keys its door. Every machine draws it alone; nothing synced.
+### The Old Tree talks (Q2670)
+- **No motion in batch B:** the tree's breathing, rustle and bulb flicker and pulse wait for its rework (Q2506, Q2670);
+  `looks_old_tree.tscn` is not changed and nothing on the tree moves while it talks. The rework brings the motion as
+  Looks (the old `old_tree.gdshader` and an `idle` clip) and an acting resource that keys it; the behaviour list's
+  motion lines ("The Old Tree moves and talks") are carried to that rework, not dropped.
 - **The speaker:** `game/voice/speakers/old_tree.tres` (priority 10, positional, unit size 2.5 m, max 9 m, earshot
-  4.5 m, level band 1.8 m, cooldown 120 s, `voice_db` 0) and `old_tree_acting.tres` (the rustle instead of brows, the
-  bulbs' glow per mood); the lines `game/voice/lines/old_tree.json` with the old recordings in `assets/voice/old_tree/`
-  (162 lines of the old `data/voiceover/old_tree/`, less those of features not ported: `tip_dirty`, `tip_pairing`,
+  4.5 m, level band 1.8 m, cooldown 120 s, `voice_db` 0), with no acting; the lines `game/voice/lines/old_tree.json`
+  with the old recordings in `assets/voice/old_tree/` (162 lines of the old `data/voiceover/old_tree/`, less those of features not ported: `tip_dirty`, `tip_pairing`,
   `cabinet_grotto`, `hint_grotto`, `floor_grotto`); the old +12.5 dB is baked into the copied recordings once, since
   the game does not adjust voice levels (Q2638).
 - **Who decides:** the Host (Q2545). Each machine senses for its own player (near: the camera within earshot and
@@ -212,8 +215,8 @@ the button and plays `refuse` (the Host's refusal text shows as any refusal). Th
 - **`OldTreeTuning`** (`game/furniture/old_tree_tuning.tres`, the old `old_tree.json`, placeholders): away 45 s, idle
   40 s, check 0.25 s, beat gap 20 s, beat hold 120 s, beat delay 120-420 s, beat chance 0.75, presents nag 240 s
   (core/121's moment), stage thresholds 0.5/0.8/0.95, grumble and hint chances 0.35, call first delay 20 s, call gap
-  25-55 s, call reach 16 m; the motion's breath 6.5 s / 4.5 % / 1.2 cm, rustle 1.2 cm at 21, flicker 0.35 at 1.0,
-  glow 4, pulse 2.2.
+  25-55 s, call reach 16 m. (The motion's numbers, breath 6.5 s / 4.5 % / 1.2 cm, rustle 1.2 cm at 21, flicker 0.35
+  at 1.0, glow 4, pulse 2.2, come with the rework.)
 - **Triggers** (`game/voice/triggers/`, kind COMMENT unless said; the data that names them):
 
 | Trigger | Fired by | Named on |
@@ -227,7 +230,7 @@ the button and plays `refuse` (the Host's refusal text shows as any refusal). Th
 | `tree_part_<floor>` (4), `tree_floor_<floor>` (3) | a Fix's comment, some time into the next Stage | `Stage.tree_part_comment`, `Stage.tree_floor_comment` |
 | `tree_tip_throw`, `tree_tip_part` | once per player per run (the Throw from the start; a Part once Stage 1 completes) | `OldTree` |
 | `tree_final_wash`, `tree_peace` | story beats (`waits`, skip the cooldown after the beat gap) | `OldTree` (core/96's Final wash, `Stages.machine_fixed`) |
-| `tree_presents_ready`, `tree_presents`, `tree_present_taken` | core/121's present Part (made by core/121) | core/121 |
+| `tree_presents_ready`, `tree_presents`, `tree_present_taken` | core/121's `Presents` Part (core/137) | core/140 |
 | `cutscene_fix_2` | core/92's Fix 2: the tree's line joins the washer's when its recording is dropped (Q2633) | the line's JSON |
 
 A new room, floor or tip is a trigger file, a recording, its JSON entry and the field on the Cabinet or Stage: no code.
@@ -240,16 +243,17 @@ play-test). The Coins in flight are looks, never saved. A Guest's Coins and Pers
 their player id for their next join (as `Coins` today); a new id is `welcome`d.
 
 ## Seams to the other pieces
-- **core/121 (Gifts, presents):** a refund is `Bank.paid_patch` with `bonus: true` and a tallies patch in the Gift's
-  open answer (refund 75 is `GiftTuning`'s); the presents pile under the Old Tree is placed from Marker3D spots that
-  core/121 adds to `old_tree.tscn` (not in a wave with 120-B or 120-E, below); the tree's three present moments are
-  core/121's trigger files and fire calls, on this speaker. If a Gift ever costs Coins, it is a Command whose answer
+- **core/121 (Gifts, presents):** a refund (only once the opener owns every piece, Q2673) is `Bank.paid_patch` with
+  `bonus: true` and a tallies patch in the present's open answer (refund 75 is `PresentTuning`'s); the presents' heap
+  is placed round a `PresentSpot` marker the level places beside the tree (`gifts.md`), so `old_tree.tscn` is not
+  touched for it; the tree's three present moments are core/121's trigger files and fire calls, on this speaker
+  (core/140). If a Gift ever costs Coins, it is a Command whose answer
   carries `spent_patch`.
-- **core/122 (Wardrobe, Profile, Achievements):** the old Wardrobe cost nothing (pieces come as Gifts and milestones);
-  if core/122 makes something cost, it is the same `spent_patch` in its own Part's answer and its refusal "Need {coins}
-  %d". The Lifetime "coins_earned" tally counts `Bank.paid` for the profile's player as the Coins land (bonuses and
-  refunds included, the old). A debug cheat's Coins (`cheat`) carry `cheat: true` for the Achievements' "not in a run
-  with cheats" rule if core/122 keeps it.
+- **core/122 (Wardrobe, Profile, Achievements):** nothing in the Wardrobe costs (the old: the ten basic pieces are
+  owned from the start, Q2679, the others come in presents). The Lifetime "coins_earned" tally counts `Bank.paid` for
+  the profile's player at the decided payout (bonuses and refunds included; `wardrobe.md` "Changed technically"). A
+  debug cheat's Coins (`cheat`) are not paid through `paid`, so they count in no tally; Achievements count in every
+  build (Q1696).
 - **Batch A (built):** `Cabinet._shelve` grows the drawer payout and the Cabinet bonus; `Stages.open_floor` and the last
   Fix carry the floor bonus; `RunTallies` takes the bonuses; `RunRecord` stays Pair Coins only; the Final screen's
   totals need no change and get no Drawers total (the old had none; `run-ends.md`'s "batch B adds drawers" was a
@@ -261,90 +265,37 @@ their player id for their next join (as `Coins` today); a new id is `welcome`d.
   pays nothing (the old).
 
 ## Changed technically from the old (no choice: tell the designer at the sitting)
-- The flight is looks only; the Host decides the Coins at once. Whether they can be spent before they land is E6.
+- The flight is looks only; the Host decides the Coins at once. They are spendable only once landed, as the old
+  (Q2672): the Host keeps the payouts still flying in `recent`.
 - The tree's line is the Host's pick, the same for everyone near (Q2545), not one per machine.
 - An Upgrade's effect is data (`UpgradeStat`), not a match in code; the old effect names map one to one.
 - The Host derives a Guest's Hands numbers from the levels (no more sent and clamped numbers).
 
-## Choices for the designer (core/120's Open follow-ups)
-E1 Stage Coins bonuses, E2 how a bonus shows, E3 the batch C Upgrades in batch B, E4 the Old Tree's voice and motion,
-E5 the Sole cues, E6 spending Coins still flying. Each with its options and a recommendation in the ticket.
+## The designer's answers (Q2667-Q2672, 2026-11-25)
+- E1: both Stage Coins bonuses, as the old: +100 to every player when a floor opens, +50 to whoever fills a Cabinet's
+  current Rows (Q2667).
+- E2: a bonus shows as the old: the Coins counter counts up, no "+N" (Q2668).
+- E3: the 16 Upgrades whose features come in batch C show greyed "Coming soon" until then, not buyable (Q2669).
+- E4: the Old Tree's voice comes in batch B; its motion waits for its rework (Q2670).
+- E5: Sole Mates, Sole Hands and Mate Radar are built in batch B (Q2671).
+- E6: Coins still flying are spendable only once landed (Q2672).
 
-## Tickets (drafts, `ready-for-agent`; the lead files them)
+## Tickets (filed by core/123)
+Build order and waves: `docs/migration/milestones.md` "Batch B". Each builds on graybox where an asset is missing; every
+number `# placeholder:` the old.
 
-Each builds on graybox where an asset is missing; all numbers `# placeholder:` the old.
-
-**120-A Coins and Drawers: the Bank, the payouts and the HUD counters** (opus)
-- `Coins` becomes `Bank` with `drawers`, `welcome`, `cheat` (F9 action `debug_cheat_coins`, debug builds only);
-  `Currency` ×2; `EconomyTuning`; `Stage.drawer_payout` on the four Stages; the drawer payout and the Cabinet bonus in
-  `Cabinet._shelve` (`bonus_rows`); the floor bonus in `open_floor` and the last Fix (per E1); bonuses into
-  `RunTallies`; E6.
-- The HUD: `money_counters.tscn`, `coin_flight.tscn` with its pool, `CoinFlightTuning`; `coins` and `drawer_clack`;
-  the pad's "done" buzz on a filled drawer; the bonus look per E2.
-- The Economy station (`economy.tscn`): the small Cabinet and its generator, the counters, "+100 Coins" and "+5
-  Drawers".
-- Real path: in the Economy station the player, holding the Pairs that fill a drawer, presses the pick key on that
-  drawer; the Coins "+N" and the Drawers "+1" pop and, after the flight, the HUD counters read the new totals.
-- Also: a Guest joining a saved World keeps its Coins; a new id gets the average (co-op case); the save shape.
-
-**120-B The Upgrades and the menu at the Old Tree** (opus; after 120-A)
-- `Upgrade`, `UpgradeStat`; the 27 `.tres`: Sock Smarts and Sock Sense with their stats set (`PlayerUpgrades` reads
-  the flags: the port's readouts exist, core/15), the other six Personal and the three Sole ones with their stat empty
-  until 120-C and 120-D set it, the 16 batch C ones empty; House prices re-scaled (Q1405) with the
-  total test; the `Upgrades` Part (`buy`, `set_level`, `value`, `affordable` and `bought`); the teammate line.
-- `OldTree` Part on `old_tree.tscn` (prompt, outline, `use`); the menu scenes, Theme variations, `UpgradeMenuTuning`,
-  pad route, tip card, shake, sounds.
-- The Economy station: the Old Tree, the Upgrades board from the folder, "Reset levels", "Co-op".
-- Real path: in the Economy station with 30 Coins the player presses E on the Old Tree and clicks Sock Smarts' button;
-  it reads "1/1" and MAX and the Coins counter reads 0; a second click shakes it and reads "Maxed out".
-
-**120-C The Personal Upgrades take effect** (opus; after 120-B)
-- The six other Personal stats of the table above set on their Upgrades and read by the player, the Hands and the
-  Throw; the `sprint` action and its corner hint; the Host derives each player's Hands numbers
-  from the levels (D13's sent numbers and `HandsTuning.*_most` go; `coop.md` updated).
-- Real path: in the Economy station the player buys Big Hands I in the menu by a click, closes it, presses pick on two
-  loose Socks and both are in the Hands ("2/2" with Sock Smarts); a co-op case: a Guest with Big Hands I picks two on
-  the Host.
-
-**120-D The Sole cues** (opus; after 120-C)
-- Sole Mates, Sole Hands, Mate Radar: their stats, the `SoleCues` view (outline, line of sight with linger, `match`
-  once, the own Sock's glow, edge arrows through `HintArrows`), hidden in single player.
-- Real path (co-op): the team owns Sole Mates; player A holds a loose Sock; player B presses pick on its mate; on A's
-  screen B's Sock is outlined in B's colour and `match` plays once.
-
-**120-E The Old Tree talks and breathes** (opus; after 120-B; per E4)
-- The tree's Looks (shader, `idle` clip, `talk`), the speaker and acting `.tres`, the lines JSON and recordings (+12.5
-  dB baked once), the bake run; `OldTree.talk`, its state and `OldTreeTuning`; the moments `tree_call` (with the Doors
-  on the way to the garage open at a New Game, Q1864), `tree_first`, `tree_greet`, `tree_idle`, `tree_affordable`,
-  `tree_bought`.
-- Real path: in the Economy station the player walks up to the Old Tree; its "first" subtitle shows and the tree's
-  `talk` key moves; walking away and back after the away time gives a "greet".
-
-**120-F The Old Tree's help** (sonnet; after 120-E)
-- `tree_grumble`, the Stage thresholds, the Cabinet and floor hints (`Cabinet.tree_hint` on the house's eight Cabinets,
-  `Stage.tree_hint`), the two tips, the Fix comments (`Stage.tree_part_comment`, `tree_floor_comment`), the final wash
-  and peace beats.
-- Real path: in the house, with Stage 1's bar filled past half (a test's `fill`), the player walks to the Old Tree
-  and its "stage_half" subtitle shows; a second case in the house: idle near the tree with a Cabinet's Row unfilled and
-  `hint_chance` 1 gives that Cabinet's room line.
-
-**Waves (with core/121 and core/122 beside them, at most 5 agents):**
-
-| Wave | core/120's | Kept apart |
+| Draft | Filed as | Note |
 |---|---|---|
-| 1 | 120-A | 120-A alone on `cabinet.gd` and the HUD scene |
-| 2 | 120-B | 120-B alone on `old_tree.tscn` and the Economy station |
-| 3 | 120-C, 120-E | 120-C alone on the player and the Hands; 120-E alone on `old_tree.tscn` and the voice files |
-| 4 | 120-D, 120-F | 120-D alone on the HUD scene (edge arrows); 120-F alone on `house.tscn` |
-
-Clashes to keep out of the same wave: `cabinet.gd` (120-A; core/121's Collection-complete moment if it touches it);
-the HUD scene (120-A, 120-D, core/121's Gift preview, core/122's Achievement toast); `old_tree.tscn` (120-B, 120-E,
-core/121's present spots); `house.tscn` (120-F, core/121's present pile, core/122's Wardrobe); `Bank` must exist
-before core/121's refund and core/122's Lifetime Coins tally (both after wave 1).
+| 120-A | core/124 Coins and Drawers: the Bank, the payouts and the HUD counters | both bonuses (Q2667), the counting-up bonus (Q2668), landed-only spending (Q2672) |
+| 120-B | core/129 The Upgrades and the menu at the Old Tree | "Coming soon" (Q2669) |
+| 120-C | core/130 The Personal Upgrades take effect | |
+| 120-D | core/131 The Sole cues | Q2671 |
+| 120-E | core/132 The Old Tree's voice | the Looks part dropped: no motion until the rework (Q2670) |
+| 120-F | core/133 The Old Tree's help | |
 
 ## Gotchas for the build
 - `Coins` is referenced by the Cabinet's `coins` export, `LevelRuntime.coins`, `RunTallies`, the Final screen's station
-  and tests: rename in one ticket (120-A), keep the group's name `coins` -> `bank` consistent.
+  and tests: rename in one ticket (core/124), keep the group's name `coins` -> `bank` consistent.
 - A Row pays Drawers when it reaches the World's `pairs_per_drawer` (the debug slider makes drawers of 2): the last
   Row's short capacity never pays.
 - The Cabinet bonus pays again when a Cabinet grows and its new Rows all fill (the old `batch_done` held the Rows count).
