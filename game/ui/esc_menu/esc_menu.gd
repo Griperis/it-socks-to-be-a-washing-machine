@@ -16,6 +16,7 @@ const TOGGLE := &"ui_cancel"
 const NO_NOTICE := ""
 const TITLE := "res://game/ui/title/title.tscn"
 const OPTIONS := preload("res://game/ui/options/options.tscn")
+const PROFILE := preload("res://game/profile/profile_page.tscn")
 
 @export var autosave: Autosave
 ## The game link's Session (LevelRuntime sets it as it enters the tree: it lives outside the level).
@@ -29,13 +30,16 @@ var quit_game := func() -> void: get_tree().quit()
 
 var _mouse_before := Input.MOUSE_MODE_VISIBLE
 var _options: Control = null
+var _profile: Control = null
 
 @onready var _menu: Control = %Menu
+@onready var _panel: Control = $Dim/Center
 @onready var _back_to_title: Button = %BackToTitle
 @onready var _quit: Button = %QuitGame
 @onready var _end_session: Button = %EndSession
 @onready var _leave: Button = %Leave
 @onready var _options_button: Button = %Options
+@onready var _profile_button: Button = %Profile
 @onready var _back: CloseButton = %Back
 @onready var _ask: Control = %Ask
 @onready var _end: Button = %End
@@ -50,6 +54,7 @@ func _ready() -> void:
 	_end.pressed.connect(end_session)
 	_leave.pressed.connect(leave)
 	_options_button.pressed.connect(_open_options)
+	_profile_button.pressed.connect(_open_profile)
 	_back.pressed.connect(_escape)
 	if net != null:
 		net.ended_to_title.connect(func(text: String) -> void: go_to_title.call(text))
@@ -84,6 +89,9 @@ func close() -> void:
 		return
 	if is_instance_valid(_options):
 		_options.queue_free()
+	if is_instance_valid(_profile):
+		_profile.queue_free()
+	_panel.visible = true
 	visible = false
 	Input.mouse_mode = _mouse_before
 	get_tree().call_group(INPUT_GROUP, &"set_input_blocked", false)
@@ -182,3 +190,19 @@ func _open_options() -> void:
 		return
 	_options = OPTIONS.instantiate() as Control
 	add_child(_options)
+
+
+## The Profile page over the menu (the menu's panel steps aside while it shows); Esc or its close key shuts it.
+func _open_profile() -> void:
+	if is_instance_valid(_profile):
+		return
+	var page := PROFILE.instantiate() as ProfilePage
+	_profile = page
+	page.closed.connect(_on_profile_closed)
+	_panel.visible = false
+	add_child(page)
+
+
+func _on_profile_closed() -> void:
+	_panel.visible = true
+	_profile_button.grab_focus()

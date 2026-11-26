@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://q170uo2ru4ie" path="res://game/ui/esc_menu/esc_menu.gd" id="1_menu"]
 [ext_resource type="Texture2D" uid="uid://cptq4se7vvdh5" path="res://assets/ui/menu_exit.svg" id="2_exit"]
 [ext_resource type="Texture2D" uid="uid://dft3tg0kq0vvb" path="res://assets/ui/menu_options.svg" id="3_options"]
+[ext_resource type="Texture2D" path="res://game/profile/profile_key.svg" id="4_profile"]
 [ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
 
 [node name="EscMenu" type="CanvasLayer" unique_id=396950]
@@ -53,6 +54,14 @@ layout_mode = 2
 theme_type_variation = &"KeycapButton"
 text = "Options"
 icon = ExtResource("3_options")
+
+[node name="Profile" type="Button" parent="Dim/Center/Panel/Pages/Menu" unique_id=492103]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+theme_type_variation = &"KeycapButton"
+text = "Profile"
+icon = ExtResource("4_profile")
 
 [node name="BackToTitle" type="Button" parent="Dim/Center/Panel/Pages/Menu" unique_id=452383]
 unique_name_in_owner = true

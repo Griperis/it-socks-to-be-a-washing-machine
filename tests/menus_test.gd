@@ -70,6 +70,12 @@ func cases() -> Array[Dictionary]:
 				"title": "X02 real path: the ESC menu and the Options over it show the close key; a click closes each, Esc too; over End session's question the key cancels the question first"},
 		{"name": "k01_encyclopedia_key", "method": "case_k01", "world": false,
 				"title": "K01 real path (core/136): on the title a click on the encyclopedia key opens the pages on the profile; a held Design shows its name, the others \"???\"; > turns to the next page and wraps; a locked Collection and the Lost Socks have no page; Esc and the close key shut it; the arrows take focus"},
+		{"name": "k02_profile_title", "method": "case_k02", "world": false,
+				"title": "K02 real path (core/147): on the title a click on the 72 x 72 Profile key (left of the encyclopedia key, tooltip Profile) opens the page with the five tallies; an earned fixture Achievement shows its title and date, an unearned one greyed, a hidden unearned one ???; Esc and the close key shut it"},
+		{"name": "k03_profile_empty", "method": "case_k03", "world": false,
+				"title": "K03: with no Achievement files the Profile page shows the five tallies and 0 / 0 earned"},
+		{"name": "k04_profile_esc_menu", "method": "case_k04", "world": false,
+				"title": "K04 real path (core/147): in the house Esc then a click on Profile opens the same page; Esc shuts the page first, the menu stays; the close key does the same"},
 		{"name": "x03_every_dialogue_has_it", "method": "case_x03", "world": false,
 				"title": "X03: every dialogue scene under game/ui (a root with a `closed` signal, the title's Multiplayer and Join pages) holds the shared close_button scene, at the top right"},
 	]
@@ -423,7 +429,7 @@ func case_e04() -> void:
 	for c in menu.get_node("%Menu").get_children():
 		if c is Button and (c as Button).visible:
 			keys.append(c)
-	_check(keys.size() == 3 and keys[0].name == &"Options" and keys[-1].name == &"QuitGame", "Options first, Quit game last (%s)" % [keys.map(func(b: Button) -> String: return b.name)])
+	_check(keys.size() == 4 and keys[0].name == &"Options" and keys[1].name == &"Profile" and keys[-1].name == &"QuitGame", "Options first, Quit game last (%s)" % [keys.map(func(b: Button) -> String: return b.name)])
 	var close := (menu.get_node("%Back") as CloseButton).key()
 	PadFocus.pad_used = false  # the test's action event stands for the Esc key, which a real keyboard does not count as a pad press
 	close.grab_focus()
@@ -524,6 +530,88 @@ func case_k01() -> void:
 	_check(t.page == TitleScreen.HOME, "Esc shuts it")
 	p.designs = had_designs
 	p.collections = had_collections
+
+
+func case_k02() -> void:
+	Achievements.folder = "res://tests/fixtures/achievements/"
+	var had := Worlds.profile()
+	var p := PlayerProfile.fresh()
+	Worlds.use_profile(p)
+	p.name = "Sockrates"
+	p.tallies = {"pairs_shelved": 12, "coins_earned": 3400, "games_finished": 2}
+	p.achievements = {"one_pair_shelved": 1796000000}
+	var t := await _title()
+	var key := t.get_node("%ProfileKey") as Button
+	_check(key.tooltip_text == "Profile" and key.size.is_equal_approx(Vector2(72, 72)), "a 72 x 72 key with the tooltip")
+	_check(key.get_global_rect().end.x < (t.get_node("%EncyclopediaKey") as Control).get_global_rect().position.x, "left of the encyclopedia key")
+	await _click(key)
+	_check(t.page == TitleScreen.PROFILE_PAGE, "a click opens the page")
+	var page := t.get_node("Pages").get_child(t.get_node("Pages").get_child_count() - 1) as ProfilePage
+	_check(page != null and (page.get_node("%PlayerName") as Label).text == "Sockrates", "it shows the player's name")
+	var tallies := page.tally_cells()
+	var got: Array[String] = []
+	for c in tallies:
+		got.append("%s %s" % [c.caption(), c.number()])
+	_check(got == ["Pairs 12", "Coins 3400", "Collections 0", "Floors 0", "Games 2"], "the five tallies: %s" % [got])
+	var cells := page.cells()
+	_check(cells.size() == 2 and page.count_text() == "1 / 2 earned", "two Achievements, 1 / 2 earned (%s)" % page.count_text())
+	var earned: AchievementCell = null
+	var secret: AchievementCell = null
+	for c in cells:
+		if c.shown_title() == "1 Pair shelved":
+			earned = c
+		elif c.shown_title() == AchievementCell.UNKNOWN:
+			secret = c
+	_check(earned != null and not earned.is_greyed() and earned.shown_date() == Time.get_date_string_from_unix_time(1796000000), "the earned one shows its title and date in full colour")
+	_check(secret != null and secret.is_greyed() and secret.shown_date() == "", "the hidden unearned one is ??? and greyed")
+	_check((page.get_node("%Close") as CloseButton).key().has_focus(), "the close key takes the focus")
+	await _click(page.get_node("%Close").key())
+	_check(t.page == TitleScreen.HOME, "the close key shuts it")
+	await _click(key)
+	await _key(&"ui_cancel")
+	await _frames(2)
+	_check(t.page == TitleScreen.HOME, "Esc shuts it")
+	Achievements.folder = Achievements.FOLDER
+	Worlds.use_profile(had)
+
+
+func case_k03() -> void:
+	Achievements.folder = Achievements.FOLDER
+	var had := Worlds.profile()
+	Worlds.use_profile(PlayerProfile.fresh())
+	var t := await _title()
+	await _click(t.get_node("%ProfileKey"))
+	var page := t.get_node("Pages").get_child(t.get_node("Pages").get_child_count() - 1) as ProfilePage
+	_check(page != null and page.tally_cells().size() == 5 and page.cells().is_empty(), "five tallies, no Achievement cells")
+	_check(page.count_text() == "0 / 0 earned", "0 / 0 earned (%s)" % page.count_text())
+	Worlds.use_profile(had)
+
+
+func case_k04() -> void:
+	Achievements.folder = Achievements.FOLDER
+	var level := await _level(Worlds.pick_solo(), [])
+	var menu := LevelRuntime.of(level).esc_menu
+	await _key(&"ui_cancel")
+	_check(menu.is_open(), "Esc opens the ESC menu")
+	await _click(menu.get_node("%Profile"))
+	var page: ProfilePage = null
+	for c in menu.get_children():
+		if c is ProfilePage:
+			page = c
+	_check(page != null and page.tally_cells().size() == 5 and page.count_text() == "0 / 0 earned", "Profile opens the same page")
+	_check(not (menu.get_node("Dim/Center") as Control).visible, "the menu's panel steps aside")
+	await _key(&"ui_cancel")
+	await _frames(2)
+	_check(not is_instance_valid(page) or page.is_queued_for_deletion(), "Esc shuts the page")
+	_check(menu.is_open() and (menu.get_node("Dim/Center") as Control).visible, "the menu stays and shows again")
+	await _click(menu.get_node("%Profile"))
+	for c in menu.get_children():
+		if c is ProfilePage:
+			page = c
+	await _click(page.get_node("%Close").key())
+	await _frames(2)
+	_check(menu.is_open() and (menu.get_node("Dim/Center") as Control).visible, "the close key shuts the page, the menu stays")
+	await _key(&"ui_cancel")
 
 
 func case_x01() -> void:
