@@ -148,12 +148,6 @@ func say_word(peer: int) -> void:
 	_s._scene_multiplayer().send_auth(peer, word)
 
 
-## A player's Hands numbers as the Host keeps them in the Roster: none any more (core/130: the Host
-## derives them from the Upgrade levels, Hands.tuning_of()). Kept, always {}, for the Session's callers.
-func clamped_hands(_sent: Dictionary) -> Dictionary:
-	return {}
-
-
 ## What this machine's profile says it wears, owns and has tallied, and the colour it wishes.
 func own_word() -> Dictionary:
 	var p := _s.profile
@@ -198,12 +192,6 @@ func clamped_said(word: Dictionary) -> Dictionary:
 	return {"look": worn, "owned": owned, "tallies": tallies, "colour": wish}
 
 
-## This machine's own player's Hands numbers as it would say them: none any more (core/130). Kept,
-## always {}, for the Session's callers.
-func own_hands() -> Dictionary:
-	return {}
-
-
 ## The Host: a Guest passed the gate: the Roster takes it in (every Guest already in hears that), then it
 ## gets the link's state, its own entry in it, then every event about the link. The level's state waits
 ## for its house_ready (SessionHouse). A Guest whose word already named this machine's level layout (it
@@ -224,7 +212,7 @@ func joined(peer: int) -> void:
 	_waiting.erase(peer)
 	_players[peer] = String(who["id"])
 	if s.roster != null:
-		s.parts.apply(s.roster.joined(String(who["id"]), peer, String(who["name"]), {}, who.get("said", {})))
+		s.parts.apply(s.roster.joined(String(who["id"]), peer, String(who["name"]), who.get("said", {})))
 	s._guests[peer] = true
 	var snap := s.link_parts.snapshot() if s.link_parts != null else {}
 	s._linked.rpc_id(peer, snap)

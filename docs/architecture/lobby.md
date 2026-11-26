@@ -79,9 +79,7 @@ and owned by whoever starts a game and found with `GameLink.of(node)` (as `Level
    scene the Host named (`LobbyState.level`) with `SceneChanger` behind the loading screen; the machine's `Session` keeps
    its peer.
 2. When a machine's house is bound (Parts bound, Socks laid on the Host: `parts.is_settled()`), a Guest sends `house_ready`
-   (reliable RPC on `Session`) with the hash of its level's Part ids, `PROTOCOL` and its Hands numbers (a Guest that
-   joined in the Lobby had no Player to say them at the gate: the Host clamps them into the Roster, `Roster.hands_said()`,
-   core/68).
+   (reliable RPC on `Session`) with the hash of its level's Part ids, `PROTOCOL` (no Hands numbers: the Host derives them from the Upgrade levels, maintenance/10).
 3. The Host answers a mismatch with the existing `WRONG_BUILD` refusal and the Guest goes to its title; otherwise it waits
    for its own house to be settled, then sends `parts.snapshot()` of the level (what `_on_peer_joined` sends today) and the
    Guest shows the house at once (`load_snapshot`, `_show(now = true)`).

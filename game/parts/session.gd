@@ -32,7 +32,7 @@ signal ended(text: String)
 ## synchronized property, a spawnable scene or the shape of a Command, an event, a snapshot or the
 ## gate's word changes. The word's first 4 bytes (the PROTOCOL) never move, so any two builds can
 ## tell they differ.
-const PROTOCOL := 23  # 23: core/141, the gate word's look, owned, tallies and colour wish, the Roster's wear, colour and own verbs; 22: core/126, SpawnedParts (Run/Spawned) and its spawner's {scene, id, states}; 21: core/76, the run's Stages and the zoo's StagesSwitch verb; 20: core/43, the Pings part and its ping verb; 19: core/65, LobbyState.worlds and its worlds verb (the Host's World list); 17: core/41, an avatar's Back and riding pose (pose_riding, pose_ride_offset), its jump count (pose_jumps), a child Back in the avatar scene; 14: core/62, the game link: the layout leaves the gate's word for house_ready, the link's snapshot; 15: core/63, LobbyState in the link; 16: core/42, the Hands' hand_off verb and its answer; 18: core/68, house_ready carries the Hands numbers, the Guests in the house (_houses), the avatar's Gate
+const PROTOCOL := 24  # 24: maintenance/10, house_ready no longer carries Hands numbers; 23: core/141, the gate word's look, owned, tallies and colour wish, the Roster's wear, colour and own verbs; 22: core/126, SpawnedParts (Run/Spawned) and its spawner's {scene, id, states}; 21: core/76, the run's Stages and the zoo's StagesSwitch verb; 20: core/43, the Pings part and its ping verb; 19: core/65, LobbyState.worlds and its worlds verb (the Host's World list); 17: core/41, an avatar's Back and riding pose (pose_riding, pose_ride_offset), its jump count (pose_jumps), a child Back in the avatar scene; 14: core/62, the game link: the layout leaves the gate's word for house_ready, the link's snapshot; 15: core/63, LobbyState in the link; 16: core/42, the Hands' hand_off verb and its answer; 18: core/68, house_ready carries the Hands numbers, the Guests in the house (_houses), the avatar's Gate
 ## The gate's answers: one byte, and after REFUSED one byte saying why.
 const ACCEPTED := 1
 const REFUSED := 0
@@ -131,7 +131,7 @@ func enter_alone() -> void:
 	if profile == null:
 		profile = PlayerProfile.fresh()
 		profile_made = true
-	parts.apply(roster.joined(profile.id, Roster.HOST, profile.name, _gate.clamped_hands(_gate.own_hands()), _gate.own_said()))
+	parts.apply(roster.joined(profile.id, Roster.HOST, profile.name, _gate.own_said()))
 
 
 ## Joins the Host at `where` (opaque to this file: "ip" or "ip:port" for ENet). From now on this
@@ -233,8 +233,8 @@ func _scene_multiplayer() -> SceneMultiplayer:
 
 ## A Guest's level is bound and settled (SessionHouse.ready_said).
 @rpc("any_peer", "call_remote", "reliable")
-func _house_ready(protocol_said: Variant, layout: Variant, hands: Variant) -> void:
-	_house.ready_said(multiplayer.get_remote_sender_id(), protocol_said, layout, hands)
+func _house_ready(protocol_said: Variant, layout: Variant) -> void:
+	_house.ready_said(multiplayer.get_remote_sender_id(), protocol_said, layout)
 
 
 ## A Guest's level went (a scene change): it is sent nothing of this machine's level until its next
