@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Upgrade" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/upgrade_sock_sense.svg" id="1_hnqrj"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_d86si"]
+[ext_resource type="Resource" path="res://game/economy/upgrades/sock_smarts.tres" id="3_5jor3"]
+[ext_resource type="Resource" path="res://game/economy/stats/sock_sense.tres" id="4_qdo35"]
+
+[resource]
+script = ExtResource("2_d86si")
+title = "Sock Sense"
+tooltip = "The Sock under your crosshair shows its readout."
+icon = ExtResource("1_hnqrj")
+cell = Vector2i(1, 3)
+prices = PackedInt32Array(120)
+needs = Dictionary[ExtResource("2_d86si"), int]({
+ExtResource("3_5jor3"): 1
+})
+stat = ExtResource("4_qdo35")

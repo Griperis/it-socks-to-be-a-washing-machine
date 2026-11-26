@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Upgrade" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/upgrade_roomy_car.svg" id="1_xc5i4"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_naf3t"]
+[ext_resource type="Resource" path="res://game/economy/upgrades/elevator_repair.tres" id="3_w04lq"]
+
+[resource]
+script = ExtResource("2_naf3t")
+title = "Roomy Car"
+tooltip = "Three can ride together."
+icon = ExtResource("1_xc5i4")
+section = 1
+cell = Vector2i(0, 2)
+prices = PackedInt32Array(3)
+needs = Dictionary[ExtResource("2_naf3t"), int]({
+ExtResource("3_w04lq"): 1
+})
+coop_only = true

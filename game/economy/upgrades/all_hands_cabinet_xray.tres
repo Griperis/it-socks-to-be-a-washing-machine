@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Upgrade" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/upgrade_all_hands_cabinet_xray.svg" id="1_57agv"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_smgbq"]
+[ext_resource type="Resource" path="res://game/economy/upgrades/cabinet_xray.tres" id="3_s2mjx"]
+
+[resource]
+script = ExtResource("2_smgbq")
+title = "All-Hands Cabinet X-ray"
+tooltip = "Cabinet X-ray shows the Cabinet of every Sock you hold."
+icon = ExtResource("1_57agv")
+cell = Vector2i(3, 1)
+prices = PackedInt32Array(300)
+needs = Dictionary[ExtResource("2_smgbq"), int]({
+ExtResource("3_s2mjx"): 1
+})

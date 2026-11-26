@@ -208,6 +208,7 @@ Runtime/Session/Roster
 Runtime/Socks/Bank
 Runtime/Socks/Hands
 Runtime/Socks/Mess
+Runtime/Socks/Upgrades
 SockGenerators/Attic/Generated
 SockGenerators/Basement/Generated
 SockGenerators/First/Generated

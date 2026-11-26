@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Upgrade" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/ui/upgrade_filter_nozzle.svg" id="1_lfofe"]
+[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_i5t4u"]
+
+[resource]
+script = ExtResource("2_i5t4u")
+title = "Filter nozzle"
+tooltip = "The nozzle gets a display and a Size and Collection filter."
+icon = ExtResource("1_lfofe")
+section = 1
+cell = Vector2i(2, 4)
+prices = PackedInt32Array(3)

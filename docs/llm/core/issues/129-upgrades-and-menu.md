@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: economy
@@ -69,3 +69,10 @@ prices `# placeholder:` the old.
 - Coins still flying are spendable only once landed (Q2672, 2026-11-25).
 
 ## Open follow-ups
+- [later] The lift, growth, glow and shake of a button and the tip card's place are tweens driven by `UpgradeMenuTuning`
+  (as the architecture asks, and as core/124's flight); the "motion is clips" rule (core/108) would make them
+  AnimationPlayer clips in `upgrade_button.tscn`: the lead's call.
+- [later] Seven open choices settled by the old game are on `docs/migration/batch-b-review.md` (core/129 rows): the
+  House prices' re-scaling, "Need Coins 120" as text, the close key's place, the silent menu_open/close, Big Hands'
+  icon, no predicted refusal, the X-ray titles.
+- [later] No stills were taken (no look work in this ticket): the menu's look is unjudged by the designer.

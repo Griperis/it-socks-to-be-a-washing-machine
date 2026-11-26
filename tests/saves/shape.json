@@ -14,6 +14,14 @@
 		},
 		"version": 1
 	},
+	"res://game/economy/upgrades.gd": {
+		"fields": {
+			"coop": "bool",
+			"house": "Dictionary",
+			"personal": "Dictionary"
+		},
+		"version": 1
+	},
 	"res://game/entities/cabinet/cabinet.gd": {
 		"fields": {
 			"bonus_rows": "int",
