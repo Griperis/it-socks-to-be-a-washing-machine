@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cptq4se7vvdh5" path="res://assets/ui/menu_exit.svg" id="5_exit"]
 [ext_resource type="Texture2D" uid="uid://bsaunnyq7oikd" path="res://assets/ui/menu_licence.svg" id="6_licence"]
 [ext_resource type="Texture2D" path="res://assets/ui/menu_encyclopedia.svg" id="7_encyclopedia"]
-[ext_resource type="Texture2D" path="res://game/profile/profile_key.svg" id="8_profile"]
+[ext_resource type="Texture2D" path="res://assets/ui/menu_profile.svg" id="8_profile"]
 [ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
 
 [node name="Title" type="Control" unique_id=531573]
