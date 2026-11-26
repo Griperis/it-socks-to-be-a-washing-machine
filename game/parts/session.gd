@@ -76,7 +76,12 @@ var parts: Parts:
 ## How this machine reaches the others.
 var transport: NetTransport = EnetTransport.new()
 ## Who this machine's player is; host() or join() makes one in memory when none was given.
-var profile: PlayerProfile = null
+var profile: PlayerProfile = null:
+	set(value):
+		profile = value
+		profile_made = false
+## The profile above was made here in memory because none was given: not a machine's own (Worlds.profile_of).
+var profile_made := false
 ## What this machine says at the gate as its PROTOCOL (a test stands in for another build with it).
 var protocol := PROTOCOL
 var stats := {"bad_packets": 0}
@@ -125,6 +130,7 @@ func enter_alone() -> void:
 		return
 	if profile == null:
 		profile = PlayerProfile.fresh()
+		profile_made = true
 	parts.apply(roster.joined(profile.id, Roster.HOST, profile.name, _gate.clamped_hands(_gate.own_hands()), _gate.own_said()))
 
 

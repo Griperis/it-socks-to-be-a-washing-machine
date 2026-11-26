@@ -68,6 +68,7 @@ func start(args: PackedStringArray) -> Error:
 	if not joining and autosave != null and world != null:
 		if session.profile == null:
 			session.profile = PlayerProfile.fresh()
+			session.profile_made = true
 		autosave.restore(session.profile.id)
 	for arg in args:
 		if arg == "--host":

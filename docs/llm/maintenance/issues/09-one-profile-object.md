@@ -10,7 +10,7 @@ done:
 blocked_by: []
 notes: ["suggested model: sonnet", "found by core/145's agent, 2026-11-26"]
 terms: [Profile]
-suites: [profile_tallies, coop_join, coop_wardrobe]
+suites: [profile_tallies, coop_join, coop_wardrobe, coop_profile, encyclopedia_record, stages]
 ---
 
 # One profile object per machine

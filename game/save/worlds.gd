@@ -67,7 +67,8 @@ func profile() -> PlayerProfile:
 ## one process each keep their own), else the single-machine default `profile()`.
 func profile_of(node: Node) -> PlayerProfile:
 	var runtime := LevelRuntime.of(node) if node != null else null
-	if runtime != null and runtime.session != null and runtime.session.profile != null:
+	if runtime != null and runtime.session != null and runtime.session.profile != null \
+			and not runtime.session.profile_made:
 		return runtime.session.profile
 	return profile()
 
