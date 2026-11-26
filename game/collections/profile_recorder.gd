@@ -38,7 +38,7 @@ func _watch(node: Node) -> void:
 
 
 func _profile() -> PlayerProfile:
-	return profile if profile != null else Worlds.profile()
+	return profile if profile != null else Worlds.profile_of(self)
 
 
 ## The World the Host (or Solo) loaded: every Design on a Cabinet's shelves was in that World.

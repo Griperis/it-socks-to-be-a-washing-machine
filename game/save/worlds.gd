@@ -63,6 +63,16 @@ func profile() -> PlayerProfile:
 	return _profile
 
 
+## The profile of the machine `node` plays on: its level's Session's (the `--profile=` one, so two machines in
+## one process each keep their own), else the single-machine default `profile()`.
+func profile_of(node: Node) -> PlayerProfile:
+	var runtime := LevelRuntime.of(node) if node != null else null
+	if runtime != null and runtime.session != null and runtime.session.profile != null \
+			and not runtime.session.profile_made:
+		return runtime.session.profile
+	return profile()
+
+
 ## Another player's Worlds from now on (a test's in-memory profile).
 func use_profile(p: PlayerProfile) -> void:
 	_profile = p

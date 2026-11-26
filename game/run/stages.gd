@@ -493,7 +493,7 @@ func unlocked_collections() -> Array[StringName]:
 	var out: Array[StringName] = []
 	if unlocks != null:
 		out.append_array(unlocks.start)
-	for id in Worlds.profile().collections:
+	for id in Worlds.profile_of(self).collections:
 		if not out.has(id):
 			out.append(id)
 	return out

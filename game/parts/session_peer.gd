@@ -90,6 +90,7 @@ func close() -> void:
 func _prepare() -> void:
 	if _s.profile == null:
 		_s.profile = PlayerProfile.fresh()
+		_s.profile_made = true
 
 
 ## Nobody is admitted before the gate's checks (SessionGate), then the peer goes live.

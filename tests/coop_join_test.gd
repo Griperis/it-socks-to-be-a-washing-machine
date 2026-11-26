@@ -114,6 +114,7 @@ func _join_round(lag_ms: int) -> void:
 	_check(_net(guest).start(["--join=127.0.0.1:%d" % _session(host).port, "--profile=%s" % TAGS[1]]) == OK,
 			"the other zoo started with --join= and its own --profile= starts joining")
 	_lag(guest, lag_ms)
+	_check(Worlds.profile_of(guest) == _session(guest).profile and Worlds.profile_of(host) != Worlds.profile_of(guest), "each machine reaches its own profile")
 	var g_hud := _player(guest).hud()
 	await _until(func() -> bool: return g_hud.message_text() == "Joined Player's zoo", "the Guest to read \"Joined Player's zoo\"")
 	var h_hud := _player(host).hud()

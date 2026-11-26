@@ -68,11 +68,12 @@ func start(args: PackedStringArray) -> Error:
 	if not joining and autosave != null and world != null:
 		if session.profile == null:
 			session.profile = PlayerProfile.fresh()
+			session.profile_made = true
 		autosave.restore(session.profile.id)
 	for arg in args:
 		if arg == "--host":
 			if session.profile == null:
-				session.profile = PlayerProfile.load_or_make("")
+				session.profile = Worlds.profile()
 			var err := session.host()
 			if err != OK:
 				_say("Could not host on port %d (%s): playing alone" % [session.port, error_string(err)])
@@ -82,7 +83,7 @@ func start(args: PackedStringArray) -> Error:
 			return OK
 		if arg.begins_with("--join="):
 			if session.profile == null:
-				session.profile = PlayerProfile.load_or_make("")
+				session.profile = Worlds.profile()
 			var where_to := arg.trim_prefix("--join=")
 			var err := session.join(where_to)
 			_say("Joining %s ..." % where_to if err == OK else "Could not join %s (%s)" % [where_to, error_string(err)])
