@@ -17,6 +17,9 @@ const LAG_MS := 50
 const MIDDLE := &"click_middle"
 ## Where the Host waits, out of the Guest's way.
 const HOST_ASIDE := Vector3(6.0, 0.0, -18.0)
+## How long a ping stands in a joined pair (the Host's tuning, carried in the ping): shorter than the
+## shipped seconds, so the waits for a ping's end are short; every check is made well before it ends.
+const PING_S := 2.0
 
 var _branches: Array[Node] = []
 var _pace_next := 0
@@ -249,6 +252,11 @@ func _pair(lag_ms: int) -> Array[Node3D]:
 			_held_back.append(cmd)
 		else:
 			_up.call(cmd)
+	for zoo: Node3D in [host, guest]:
+		var pings := _pings(zoo)
+		var t := pings.tuning.duplicate() as PingTuning
+		t.seconds = PING_S
+		pings.tuning = t
 	await _wait(func() -> bool: return _avatar(host, gs.me()) != null and _avatar(guest, Parts.HOST) != null, "each machine's avatar of the other", FPS * 5)
 	return [host, guest]
 
@@ -275,6 +283,19 @@ func _move_mouse(zoo: Node3D, relative: Vector2) -> void:
 	await _paced_ticks(1)
 
 
+## Waits until `player` stands on the floor and did not move over the last paced tick (a body put down
+## in something is pushed out of it first).
+func _stands_still(player: Player) -> void:
+	var last := player.global_position
+	for _i in FPS * 2:
+		await _paced()
+		var now := player.global_position
+		if player.is_on_floor() and now.distance_to(last) < 0.0005:
+			return
+		last = now
+	_check(false, "the player to stand still where it was put (within %d frames)" % (FPS * 2))
+
+
 ## Stands `zoo`'s player at `feet` looking at `target`; only it has the mouse.
 func _aim(zoo: Node3D, feet: Vector3, target: Vector3) -> void:
 	var player := _player(zoo)
@@ -284,7 +305,7 @@ func _aim(zoo: Node3D, feet: Vector3, target: Vector3) -> void:
 			p.set("_captured", false)
 	player.capture_mouse()
 	_place(zoo, feet, target)
-	await _paced_ticks(int(LAG_MS * 3 * FPS / 1000.0) + 4)
+	await _stands_still(player)
 	_place(zoo, Vector3(feet.x, player.global_position.y, feet.z), target)
 	await _paced_ticks(2)
 	await _host_has(player)

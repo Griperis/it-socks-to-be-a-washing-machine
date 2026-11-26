@@ -111,6 +111,19 @@ func _click(action: StringName) -> void:
 	await _paced_ticks(1)
 
 
+## Waits until `player` stands on the floor and did not move over the last paced tick (a body put down
+## in something is pushed out of it first).
+func _stands_still(player: Player) -> void:
+	var last := player.global_position
+	for _i in FPS * 2:
+		await _paced()
+		var now := player.global_position
+		if player.is_on_floor() and now.distance_to(last) < 0.0005:
+			return
+		last = now
+	_check(false, "the player to stand still where it was put (within %d frames)" % (FPS * 2))
+
+
 ## Stands `zoo`'s player at `feet` looking at `target`; only it has the mouse.
 func _aim(zoo: Node3D, feet: Vector3, target: Vector3) -> void:
 	var player := _player(zoo)
@@ -120,7 +133,7 @@ func _aim(zoo: Node3D, feet: Vector3, target: Vector3) -> void:
 			p.set("_captured", false)
 	player.capture_mouse()
 	_place(zoo, feet, target)
-	await _paced_ticks(int(LAG_MS * 3 * FPS / 1000.0) + 4)
+	await _stands_still(player)
 	_place(zoo, Vector3(feet.x, player.global_position.y, feet.z), target)
 	await _paced_ticks(2)
 	await _host_has(player)
