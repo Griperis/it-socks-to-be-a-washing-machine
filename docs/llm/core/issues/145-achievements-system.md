@@ -6,7 +6,7 @@ area: core
 feature: player
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: ["[[127-profile-file-and-tallies]]", "[[141-looks-in-coop]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 4", "suggested model: opus"]
 terms: [Achievement, Profile, Lifetime tallies, Wardrobe]

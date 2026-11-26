@@ -6,7 +6,7 @@ area: ui
 feature: gifts
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: ["[[134-encyclopedia-record-and-unlocks]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 4", "suggested model: sonnet"]
 terms: [Sock encyclopedia, Design, Collection, Size]

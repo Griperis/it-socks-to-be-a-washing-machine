@@ -23,3 +23,6 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-26 [[132-old-tree-voice]] The Old Tree's voice: d36f7f0b (core/132-old-tree-voice)
 - 2026-11-26 [[151-batch-c-cat-design]] Batch C: The Cat and the litterbox (design): 88ad83be (core/151-batch-c-cat-design)
 - 2026-11-26 [[152-batch-c-x-rays-design]] Batch C: The X-rays (design): 2da2a530 (core/152-batch-c-x-rays-design)
+- 2026-11-26 [[136-encyclopedia-pages]] The encyclopedia pages and the title's key: f315f081 (core/136-encyclopedia-pages)
+- 2026-11-26 [[145-achievements-system]] Achievements: the system, the toast and the station: 51ae7236 (core/145-achievements-system)
+- 2026-11-26 [[20-wardrobe-station-model]] The Wardrobe station's model: 21d12c3c (assets/20-wardrobe-station-model)
