@@ -131,8 +131,8 @@ guesses.
   (`game/economy/economy_tuning.tres`: `floor_bonus` 100, `cabinet_bonus` 50, `cheat_coins` 1000), `Stage.drawer_payout`
   (a new field on the four Stage `.tres`), `CoinFlightTuning` (`game/ui/money/coin_flight_tuning.tres`: hold 0.5,
   pop_in 0.12, burst 0.2, flight 0.45, total 1.5, radius 70 px, icon 34 px, text 56 px, bonus delay 0.35, Drawer rise
-  80 px, counter pulse 1.35), `UpgradeMenuTuning` (cell 92 px, gap 8, lift 5 px, grow 1.08, glow 0.1 s, shake angles and
-  step, tip width 360), `OldTreeTuning` (below).
+  80 px, counter pulse 1.35), `UpgradeMenuTuning` (cell 92 px, gap 8, tip width 360; the button's lift 5 px, grow 1.08,
+  glow 0.1 s and refusal shake are AnimationPlayer clips on the button scene, Q2697), `OldTreeTuning` (below).
 - **Sounds** (SoundEvents in `sound_catalogue.tres`, the old picks or shares): `coins` (the old cc0 coin, already in
   the catalogue for `final_tick`), `drawer_clack` (shares `drawer_close`), `menu_open`, `menu_close`, `buy`, `refuse`
   (the UI's), `match` (Sole Mates, the first synth candidate at -8 dB as the old). The designer swaps any on the Sounds
