@@ -12,6 +12,9 @@
 class_name Autosave
 extends Node
 
+## The Host or a player alone loaded a saved World's Parts (restore(); core/134's ProfileRecorder listens).
+signal restored
+
 ## The HUD's line when a save could not be written (Q2556). placeholder: the designer's wording.
 const FAILED := "Could not save the game"
 
@@ -45,6 +48,7 @@ func restore(host: String) -> void:
 		return
 	if not world.is_new:
 		parts.load_save(world.parts, world.versions, host)
+		restored.emit()
 	_loaded = true
 	dirty = true
 

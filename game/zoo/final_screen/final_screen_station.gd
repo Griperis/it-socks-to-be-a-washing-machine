@@ -18,7 +18,7 @@ const LONG_NAME := "Bartholomew Fluffington the Third of Sockshire"
 @export var pitch := 1.6
 
 var _built := false
-## By what each shows: "1 player", "2 players", "4 players", "left", "long name".
+## By what each shows: "1 player", "2 players", "4 players", "left", "long name", "with an unlock".
 var pillars: Dictionary[String, FinalPillar] = {}
 
 
@@ -39,6 +39,7 @@ func build() -> void:
 		["4 players", "Four players", [["Ana", 30], ["Ben", 22], ["Cleo", 40], ["Dev", 5]]],
 		["left", "A player left", [["Ana", 18], ["Ben", 26], ["Gone", 14, true]]],
 		["long name", "A long name", [["Ana", 20], [LONG_NAME, 20]]],
+		["with an unlock", "With an unlock", [["Ana", 18], ["Ben", 12]], [&"space", &"fruit"]],
 	]
 	for n in shows.size():
 		var show: Array = shows[n]
@@ -50,6 +51,8 @@ func build() -> void:
 		part.screen = screen
 		part.title = show[1]
 		part.summary = made_up(show[2])
+		if show.size() > 3:
+			part.summary.unlocked.assign(show[3])
 		holder.add_child(root)
 		pillars[show[0]] = part
 	screen.continue_pressed.connect(screen.close)

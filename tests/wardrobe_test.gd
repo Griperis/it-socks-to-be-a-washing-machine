@@ -1,7 +1,7 @@
 ## Wardrobe pieces as data and the dressed Avatar (core/128, docs/architecture/wardrobe.md "The pieces as
 ## data", "The dressed Avatar"): the 112 piece files and Wardrobe's lists, the Dresser on an AvatarLooks
 ## (hat, clothes, Socks, Trail, swish, first person, the mirror body), the preview and the Wardrobe zoo
-## station. The station case plays it on a floor with the game's player and a Parts (a Host of one), as
+## station. The station case plays it on a floor with the game's player, a Roster and a Parts (a Host of one), as
 ## economy_test does.
 extends TestSuite
 
@@ -23,7 +23,7 @@ var _nodes: Array[Node] = []
 func cases() -> Array[Dictionary]:
 	return [
 		{"name": "real_path", "method": "case_real_path", "world": false,
-				"title": "real path: in the Wardrobe station the player presses E on the Hat switch: the walking stand-in Teammate wears the next hat and its name tag rises over it; with the Trail switch on Lint puffs it leaves puffs as it walks, gone after their life"},
+				"title": "real path: in the Wardrobe station the player presses E on the Hat switch: the real wear puts the first basic hat on the player's Roster entry and the walking stand-in Teammate (showing the player's look) wears it, its name tag rising over it; the Trail switch puts on no Trail unowned; once Lint puffs is owned (own) it puts it on and the stand-in leaves puffs as it walks, gone after their life"},
 		{"name": "pieces", "method": "case_pieces", "world": false,
 				"title": "112 piece files with their Looks; owned([]) is the ten basic pieces; counted leaves out the Lost Socks' six (held back); rows go basic first, then by Collection; pieces_of and piece_name"},
 		{"name": "looks", "method": "case_looks", "world": false,
@@ -50,26 +50,39 @@ func _before_case() -> void:
 
 func case_real_path() -> void:
 	await _build()
+	var parts := _level.get_node("Parts") as Parts
+	var roster := _level.get_node("Roster") as Roster
+	var me := PlayerProfile.new_id()
+	parts.apply(roster.joined(me, Parts.HOST, "Player"))
 	var walker := _station.get_node("Teammates/4") as Avatar
 	var looks := walker.looks
 	var tag_before := looks.tag().position.y
 	_check(looks.dresser().hat == null, "the stand-in starts bare-headed")
-	# The player presses E on the Hat switch.
+	# The player presses E on the Hat switch: the real wear, for the player.
 	await _aim(_button("HatSwitch"))
 	await _press(&"interact")
 	var first_hat := _first_shown(WardrobePiece.Slot.HAT)
+	_check(Wardrobe.of(first_hat).owned_from_start, "the hat row's first is a basic hat (%s)" % first_hat)
 	await _until(func() -> bool: return looks.dresser().worn[&"hat"] == first_hat, "the stand-in to wear %s" % first_hat)
+	_check(String(roster.look_of(Parts.HOST)["hat"]) == String(first_hat), "the player's Roster entry wears it")
 	var hat := looks.dresser().hat
 	_check(hat != null and hat.get_parent() == looks.swaying().get_node(^"HatPoint"), "the hat's Looks sits under the HatPoint")
 	_check(looks.tag().position.y > tag_before + 0.05, "the name tag rose over the hat (%.3f, was %.3f)" % [looks.tag().position.y, tag_before])
 	_check((_station.get_node("HatSwitch/Looks/Label") as Label3D).text == "Hat: %s" % Wardrobe.piece_name(first_hat), "the switch names the hat")
-	# Again: the next hat.
+	# Again: the next hat the player owns.
 	await _press(&"interact")
-	var second := (_station.get_node("HatSwitch/WardrobeSwitch") as WardrobeSwitch).next_after(first_hat)
+	var second := (_station.get_node("HatSwitch/WardrobeSwitch") as WardrobeSwitch).next_after(first_hat, roster.owned_of(me))
+	_check(second != &"" and Wardrobe.of(second).owned_from_start, "the next owned hat is a basic one (%s)" % second)
 	await _until(func() -> bool: return looks.dresser().worn[&"hat"] == second, "the stand-in to wear the next hat %s" % second)
-	# The Trail switch, on Lint puffs (the first Trail of the row).
+	# The Trail switch: no Trail is owned yet, so it stays on None; owned (as an Achievement's reward
+	# asks `own`), Lint puffs (the first Trail of the row) is the next.
 	_check(_first_shown(WardrobePiece.Slot.TRAIL) == &"lint_puffs", "Lint puffs is the Trail row's first")
 	await _aim(_button("TrailSwitch"))
+	await _press(&"interact")
+	await _physics_ticks(2)
+	_check(looks.dresser().worn[&"trail"] == &"", "a Trail nobody owns is never put on")
+	parts.ask(Command.new(Roster.OWN, Parts.HOST, roster.id, {"piece": "lint_puffs"}))
+	_check(roster.owned_of(me).has("lint_puffs"), "own: Lint puffs is the player's")
 	await _press(&"interact")
 	await _until(func() -> bool: return looks.dresser().worn[&"trail"] == &"lint_puffs", "the stand-in to wear Lint puffs")
 	await _until(func() -> bool: return not looks.dresser().marks().is_empty(), "the walking stand-in to leave a puff", 1200, 10.0)
@@ -259,6 +272,9 @@ func _build() -> void:
 	_player.position = BY_SWITCHES
 	_level.add_child(_player)
 	_player.capture_mouse()
+	var roster := Roster.new()
+	roster.name = "Roster"
+	_level.add_child(roster)
 	var parts := Parts.new()
 	parts.name = "Parts"
 	_level.add_child(parts)

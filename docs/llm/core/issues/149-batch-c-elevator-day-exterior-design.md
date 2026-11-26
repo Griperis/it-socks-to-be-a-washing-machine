@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: design
 area: core
 feature: frame
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["suggested model: opus", "batch C design (Q2614, Q2707): one of four, written on the designer's answers Q2698-Q2706"]
 terms: [Elevator, Upgrade]
@@ -51,7 +51,22 @@ the way core/120-122 did for batch B. A design ticket: no game code.
 - No two drafts in one wave edit the same file.
 
 ## Answers
+- The day keeps the lamps' click and the wall clock's hands; the shades' glow, the night panes, the grade by the hour and
+  the outside's night glow are dropped (Q2709, 2026-11-26).
 - Batch C is designed as four tickets: the Elevator, day and exterior; the devices, TV and Radio; the Cat; the X-rays
   (Q2707).
 
 ## Open follow-ups
+- (answered Q2709: keep the lamps' click and the clock's hands, drop the other four) Q2693 says "nothing else of the old day is needed", but the old day had six small details beside the
+  sun, skies, moon and lamps (`docs/architecture/day-and-exterior.md`, the lines marked "(ask)"). Only the designer
+  drops a detail (Q2277). For each: (a) keep it as the old; (b) drop it.
+  1. The lamps' click when they switch, flat: `lamp_on` at 19:30, `lamp_off` at 7:00 (sharing the X-ray's on and off
+     sounds).
+  2. The globe shades' paper glowing while the lamps are on.
+  3. The window panes darkening to night blue at night.
+  4. The colour grade following the hour (warmer at dusk, bluer at night) and the vignette closing in at night.
+  5. The wall clock whose hands show the hour (its model is not ported yet: one more asset ticket).
+  6. The outside's night glow: the neighbours' windows, the street lamps and their pools of light switching on with
+     the house's lamps.
+  Blocks only draft 149-H (and the glow's line of 149-I); 149-G, 149-I and every Elevator draft can be filed without
+  it.

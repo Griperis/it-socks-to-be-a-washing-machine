@@ -77,3 +77,6 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 | core/129 | The X-ray titles | "X-ray: Show pair (key 1)", "Cabinet X-ray: Show drawer (key 2)" as the old menu titles (UM:18-20), so "Needs:" and the teammate line read "X-ray: Show pair" | |
 | core/135 | A Cabinet with no pool in a level that draws (a spot kept as placed) | Keeps its placed Collection and no other spot draws it (the old pools listed every spot, CPO:193-262; the port empty pool is the zoo stations way) | |
 | core/135 | The order spots are solved in | Fewest choices first, then in tree order, a seeded shuffle of each pool first (the old _order and _solve, CPO:216-262) | |
+| core/134 | Is the start set always unlocked beside the profile's own list? | Yes: the draw uses the start set plus the profile's `collections` (a version 1 profile stores none; the old read its start set into every profile, CP start) | |
+| core/134 | What counts for the encyclopedia when a Guest's snapshot arrives or the level is not settled? | Nothing: only applied answers record (the old recorded on its own shelve events, PR:111-121) | |
+| core/134 | The unlock reveal's timings | The old's 0.6 s delay, 0.25 s gap and 0.5 s pop with overshoot (the clip in `unlock_cell.tscn`); delay and gap are `FinalScreenTuning`'s, placeholders (ES:655-731) | |

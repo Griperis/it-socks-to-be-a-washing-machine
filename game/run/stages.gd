@@ -470,12 +470,15 @@ func start_answer(per: int, draw := false, again := false, salt := 0) -> Diction
 	return {"ok": true, "changes": changes, EVENTS: [[&"run_started"]]}
 
 
-## The Collections the New Game's draw may use: the Host's unlocked ones (its start set until the profile's
-## own answers, core/127).
+## The Collections the New Game's draw may use: the start set and the Host's own profile's unlocked ones
+## (core/134; the start set is always unlocked, a version 1 profile having none stored).
 func unlocked_collections() -> Array[StringName]:
 	var out: Array[StringName] = []
 	if unlocks != null:
 		out.append_array(unlocks.start)
+	for id in Worlds.profile().collections:
+		if not out.has(id):
+			out.append(id)
 	return out
 
 

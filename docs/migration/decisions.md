@@ -1,4 +1,4 @@
-Next free Q number: Q2708 (update this line whenever a round of questions is asked)
+Next free Q number: Q2710 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -693,3 +693,8 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   2026-11-26; the clock wins over core/80's locked-floor rule at night).
 - Q2707: batch C is designed as four tickets: core/149 the Elevator, day and exterior; core/150 the devices, TV and
   Radio; core/151 the Cat; core/152 the X-rays (designer, 2026-11-26).
+- Q2708: the Wardrobe's Socks pieces and Trail meshes (assets/19, the 34 old glbs) are yes; core/144 points the Trails
+  at the meshes (designer, 2026-11-26).
+- Q2709: of the old day's six small details the port keeps the lamps' click and the wall clock's hands; the lamp
+  shades' glow, the night-blue window panes, the grade and vignette following the hour and the outside's night glow
+  are dropped (designer, 2026-11-26; core/149's [blocking]; narrows Q2693).
