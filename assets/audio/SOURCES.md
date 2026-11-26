@@ -47,3 +47,5 @@ assets/07 brought the furniture devices' clips: the old picks, or for an event w
 core/87 brought the broken washer's sounds, synthesised in the old game (`tools/gen_sounds.py`): washer_buzz__synth_a.ogg and washer_buzz__synth_c.ogg (the old `washer_buzz` picks) and washer_rumble__synth_a.ogg (the old `rogue_rumble`, no pick, its first candidate).
 
 core/98 brought the knockdown wash's two sounds, synthesised in the old game (`tools/gen_sounds.py`, no pick, the first candidate of each): wash_slosh__synth_a.ogg (the old `wash_slosh`, loops at the machine while someone spins) and wash_slam__synth_a.ogg (the old `wash_slam`, the door's slam as the body goes in and as it bursts out).
+
+core/145 brought the Achievement chime: the old game designed the toast's soft chime (Q1695) but never made one, so achievement__synth_a.ogg is the nearest synthesised clip of the old bench, `part_pop__c` ("two rising chimes, something new found", old `tools/gen_sounds.py` `_part_pop_c`), as the first candidate; the designer picks on the bench.

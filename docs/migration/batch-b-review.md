@@ -74,3 +74,8 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 | core/134 | Is the start set always unlocked beside the profile's own list? | Yes: the draw uses the start set plus the profile's `collections` (a version 1 profile stores none; the old read its start set into every profile, CP start) | |
 | core/134 | What counts for the encyclopedia when a Guest's snapshot arrives or the level is not settled? | Nothing: only applied answers record (the old recorded on its own shelve events, PR:111-121) | |
 | core/134 | The unlock reveal's timings | The old's 0.6 s delay, 0.25 s gap and 0.5 s pop with overshoot (the clip in `unlock_cell.tscn`); delay and gap are `FinalScreenTuning`'s, placeholders (ES:655-731) | |
+| core/145 | The Achievement chime | The old never made one (designed, Q1695); the nearest synthesised clip of the old bench, `part_pop__c` ("two rising chimes, something new found"), is the first candidate, at -6 dB on the UI bus (old `tools/gen_sounds.py` `_part_pop_c`) | |
+| core/145 | How long the HUD says "Wardrobe: <name> unlocked", and several at once | 2 s, every piece of one check named in one line, ", " between (old `hud.gd:676`, `profile_installer.gd:104-105`) | |
+| core/145 | The debug keys for grant all and reset (Q1696 names none) | F7 grants all, F8 resets (beside F3 stats and F9 Coins; the old had none) | |
+| core/145 | The toast's slide | 0.35 s in from the right edge, eased, and out the same way (the old never built one; `AchievementTuning`) | |
+| core/145 | The toast's card look | The Theme's existing cream keycap card `UpgradeTipPersonal`, caption `InkLabel`, title `UpgradeTipTitle` (no new Theme entry) | |

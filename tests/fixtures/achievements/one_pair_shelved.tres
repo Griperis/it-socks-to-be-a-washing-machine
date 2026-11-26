@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Achievement" format=3]
+
+[ext_resource type="Script" path="res://game/profile/achievement.gd" id="1_a"]
+
+[resource]
+script = ExtResource("1_a")
+title = "1 Pair shelved"
+description = "A test fixture (core/145): shelve one Pair."
+tally = &"pairs_shelved"

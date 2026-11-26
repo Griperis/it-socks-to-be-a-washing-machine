@@ -27,3 +27,5 @@ static func scrub(tree: SceneTree) -> void:
 	# core/58: saves go to a fresh in-memory store, the Worlds under a fresh profile, no title line.
 	Save.reset()
 	Worlds.reset()
+	# core/145: the Achievements list read from the game's folder again (a case points it at its fixtures).
+	Achievements.folder = Achievements.FOLDER
