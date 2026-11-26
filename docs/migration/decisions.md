@@ -1,4 +1,4 @@
-Next free Q number: Q2715 (update this line whenever a round of questions is asked)
+Next free Q number: Q2716 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -708,3 +708,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   Cabinet glows through walls." (designer, 2026-11-26; core/152; follows Q2701).
 - Q2714: the Sock X-ray's glow follows the mate as it moves (thrown, carried, fetched), not where it lay when the
   X-ray began (designer, 2026-11-26; core/152; a change from the old).
+- Q2715: the Wardrobe station (assets/20, the old meshes, its open and shut clips) is yes; core/142 places it in the
+  house (designer, 2026-11-26).
