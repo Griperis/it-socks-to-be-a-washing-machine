@@ -70,5 +70,6 @@ code. A Trail is a scene of particle nodes authored in the editor (Q2680), its n
 - The ten basic pieces are owned from the start (Q2679, 2026-11-25).
 - The Trails are remade as particle scenes authored in the editor; the look is judged on stills (Q2680, 2026-11-25).
 - The Lost Socks' six pieces are hidden from the Wardrobe and its "N/M" until the Drum (Q2683, 2026-11-25).
+- The 78 hats and clothes Looks (assets/18, `game/wardrobe/looks/<id>.tscn`) are yes: this ticket points the piece files at them and deletes the graybox pieces (Q2691, 2026-11-26).
 
 ## Open follow-ups

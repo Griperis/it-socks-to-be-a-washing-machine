@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://wsxmguy0wsla"]
 
-[ext_resource type="Script" path="res://tools/wardrobe_lineup.gd" id="1_lineup"]
+[ext_resource type="Script" uid="uid://cjmmh4p4ijkoo" path="res://tools/wardrobe_lineup.gd" id="1_lineup"]
 
 [sub_resource type="Environment" id="Environment_bg"]
 background_mode = 1
