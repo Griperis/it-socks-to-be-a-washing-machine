@@ -38,6 +38,7 @@ func _ready() -> void:
 		figure.seed_idle("lobby%d" % i)
 		figure.rotation.y = PI  # the creature faces -z; the camera is in front of the row, on +z
 		_row.add_child(figure)
+		figure.dresser().demo = true  # the worn Trail's sample steps under the feet
 		_figures.append(figure)
 		_free.append(true)
 	resized.connect(_frame)
@@ -57,18 +58,21 @@ func set_places(count: int) -> void:
 	_paint()
 
 
-## Place `i` stands a player: their Avatar in `colour`, no name tag (the name is under the pedestal).
-func show_player(i: int, colour: Color) -> void:
+## Place `i` stands a player: their Avatar in `colour` wearing `look` (the Dresser redoes only what changed), no
+## name tag (the name is under the pedestal).
+func show_player(i: int, colour: Color, look := {}) -> void:
 	_free[i] = false
 	var figure := _figures[i]
 	_dress(figure, false)
 	figure.colour = colour
+	figure.look = WardrobeLook.clean(look)
 	_paint()
 
 
 ## Place `i` is free: a flat grey silhouette of the bare creature on a dimmed pedestal.
 func show_free(i: int) -> void:
 	_free[i] = true
+	_figures[i].look = {}
 	_dress(_figures[i], true)
 	_paint()
 

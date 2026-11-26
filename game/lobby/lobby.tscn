@@ -8,6 +8,9 @@
 [ext_resource type="PackedScene" path="res://game/lobby/lobby_place.tscn" id="place"]
 [ext_resource type="PackedScene" path="res://game/lobby/who_page.tscn" id="who"]
 [ext_resource type="PackedScene" path="res://game/lobby/pairs_slider.tscn" id="pairs"]
+[ext_resource type="PackedScene" path="res://game/lobby/lobby_stats_card.tscn" id="stats"]
+[ext_resource type="PackedScene" path="res://game/wardrobe/ui/wardrobe_page.tscn" id="wardrobe_page"]
+[ext_resource type="Texture2D" path="res://assets/ui/menu_wardrobe.svg" id="wardrobe_icon"]
 
 [node name="Lobby" type="Control" unique_id=965929202]
 layout_mode = 3
@@ -188,6 +191,21 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[node name="WardrobeKey" type="Button" parent="."]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(84, 84)
+layout_mode = 0
+offset_right = 84.0
+offset_bottom = 84.0
+theme_type_variation = &"KeycapButton"
+icon = ExtResource("wardrobe_icon")
+icon_alignment = 1
+
+[node name="Stats" parent="." instance=ExtResource("stats")]
+unique_name_in_owner = true
+layout_mode = 0
+
 [node name="Drawer" parent="." instance=ExtResource("drawer")]
 unique_name_in_owner = true
 
@@ -258,3 +276,35 @@ unique_name_in_owner = true
 
 [node name="Who" parent="." instance=ExtResource("who")]
 unique_name_in_owner = true
+
+[node name="WardrobeLayer" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="WardrobeLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.168627, 0.129412, 0.109804, 0.8)
+
+[node name="Center" type="CenterContainer" parent="WardrobeLayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Page" parent="WardrobeLayer/Center" instance=ExtResource("wardrobe_page")]
+unique_name_in_owner = true
+layout_mode = 2
