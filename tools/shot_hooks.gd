@@ -214,6 +214,11 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# Avatars wearing its hats, clothes, Socks and Trail (assets/19), framed as the old game's line-up.
 			world.call(&"show_row", arg)
 			return true
+		"wardrobe_station":
+			# assets/20: arg a view 0-4: tools/wardrobe_station_still.tscn frames the Wardrobe Station's Looks
+			# as the old line-up's view of that number, the doors posed by its own clips.
+			world.call(&"show_view", int(arg))
+			return true
 		"wardrobe_one":
 			# assets/19: arg a Socks or Trail piece id: tools/wardrobe_lineup.tscn shows one Avatar wearing it,
 			# from the old line-up's close-up camera for that slot.

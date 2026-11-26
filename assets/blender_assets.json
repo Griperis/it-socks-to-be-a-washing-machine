@@ -704,6 +704,13 @@
       "colliders": 0,
       "source": "present/present_box",
       "glb": "assets/present/present_box.glb"
+    },
+    "wardrobe_station": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "wardrobe_station/wardrobe_station",
+      "glb": "assets/wardrobe_station/wardrobe_station.glb",
+      "origin_xy": false
     }
   }
 }

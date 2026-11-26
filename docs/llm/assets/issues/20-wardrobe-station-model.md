@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: assets
 feature: assets
@@ -39,3 +39,6 @@ swap them (Q2177).
 - None beyond the design's.
 
 ## Open follow-ups
+- [later] The brass (rail, hangers' hooks, handles, hinges) reads darker in the Godot line-up than in the old Blender one: the library's `brass` is metallic 0.8 and the still has no sky to reflect. In the house it looks as every other brass piece; the designer judges whether it needs its own look ticket.
+- [later] Swapping the Looks in for core/142's graybox (`game/entities/wardrobe_station/looks_wardrobe_station.tscn`, nodes `door_left`, `door_right`, `Outline`, `AnimationPlayer` with `open`/`shut`) waits for the designer's yes and for core/142; the station's `looks_contract.json` is core/142's.
+- [later] The old loose `wardrobe_station_fabric_palette.png` is not ported (nothing read it; the palette is embedded in the glb).
