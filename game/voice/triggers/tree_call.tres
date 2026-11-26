@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="VoiceTrigger" format=3]
+
+[ext_resource type="Script" uid="uid://k1g7mn7jdf7a" path="res://game/voice/voice_trigger.gd" id="1_trigger"]
+[ext_resource type="Resource" path="res://game/voice/speakers/old_tree.tres" id="2_speaker"]
+
+[resource]
+script = ExtResource("1_trigger")
+id = &"tree_call"
+speaker = ExtResource("2_speaker")
+ignores_cooldown = true
+note = "The Host's call timer, from the First wash's end until a player comes near the tree (OldTree, Q1864, Q1865): heard and subtitled within OldTreeTuning.call_reach; it skips the cooldown."

@@ -1,0 +1,4226 @@
+[gd_resource type="Resource" script_class="VoiceBank" format=3 uid="uid://d2af87fi1joqq"]
+
+[ext_resource type="Script" uid="uid://djcn1eowhugtd" path="res://game/voice/voice_line.gd" id="1_tmhjc"]
+[ext_resource type="Script" uid="uid://3w8vgd6jplm5" path="res://game/voice/voice_take.gd" id="2_vwrhp"]
+[ext_resource type="Script" uid="uid://by18xp3147q3t" path="res://game/voice/voice_segment.gd" id="3_q8epu"]
+[ext_resource type="AudioStream" uid="uid://cvgbpfglgyir3" path="res://assets/voice/old_tree/tree_call_1.wav" id="4_lbwg4"]
+[ext_resource type="Script" uid="uid://k1g7mn7jdf7a" path="res://game/voice/voice_trigger.gd" id="5_8o56u"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_call.tres" id="6_aclld"]
+[ext_resource type="AudioStream" uid="uid://dd4clsov12xm6" path="res://assets/voice/old_tree/tree_call_2.wav" id="7_0bicw"]
+[ext_resource type="AudioStream" uid="uid://cetynhjnda88p" path="res://assets/voice/old_tree/tree_call_3.wav" id="8_qxt7a"]
+[ext_resource type="AudioStream" uid="uid://fh6y0206uoyt" path="res://assets/voice/old_tree/tree_call_4.wav" id="9_bmuy0"]
+[ext_resource type="AudioStream" uid="uid://bcm5g0oyn5jnp" path="res://assets/voice/old_tree/tree_call_5.wav" id="10_egqt8"]
+[ext_resource type="AudioStream" uid="uid://b46bfn4l42pgt" path="res://assets/voice/old_tree/tree_first_1.wav" id="11_5q3b1"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_first.tres" id="12_5t8ol"]
+[ext_resource type="AudioStream" uid="uid://c48myjmnven32" path="res://assets/voice/old_tree/tree_first_2.wav" id="13_y5gop"]
+[ext_resource type="AudioStream" uid="uid://dy6ejf7t68x57" path="res://assets/voice/old_tree/tree_first_3.wav" id="14_oc458"]
+[ext_resource type="AudioStream" uid="uid://dnmggecftchxp" path="res://assets/voice/old_tree/tree_greet_1.wav" id="15_i0hw3"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_greet.tres" id="16_n6uf0"]
+[ext_resource type="AudioStream" uid="uid://c3wd7q1b3y6ow" path="res://assets/voice/old_tree/tree_greet_2.wav" id="17_pjmrj"]
+[ext_resource type="AudioStream" uid="uid://dhfj0dxnsvx8i" path="res://assets/voice/old_tree/tree_greet_3.wav" id="18_utygb"]
+[ext_resource type="AudioStream" uid="uid://bd4xlvs5vf4gf" path="res://assets/voice/old_tree/tree_greet_4.wav" id="19_gjvn0"]
+[ext_resource type="AudioStream" uid="uid://cx2excrrsdiph" path="res://assets/voice/old_tree/tree_greet_5.wav" id="20_tiwfi"]
+[ext_resource type="AudioStream" uid="uid://bep0q0u5hxkup" path="res://assets/voice/old_tree/tree_idle_1.wav" id="21_ggwx2"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_idle.tres" id="22_rmryn"]
+[ext_resource type="AudioStream" uid="uid://cc3g001tl0hau" path="res://assets/voice/old_tree/tree_idle_2.wav" id="23_273q8"]
+[ext_resource type="AudioStream" uid="uid://cpjykoejh8m6a" path="res://assets/voice/old_tree/tree_idle_3.wav" id="24_nxoux"]
+[ext_resource type="AudioStream" uid="uid://ckqetal83ead0" path="res://assets/voice/old_tree/tree_idle_4.wav" id="25_ocu3p"]
+[ext_resource type="AudioStream" uid="uid://bax5redxg87qw" path="res://assets/voice/old_tree/tree_idle_5.wav" id="26_j3fwv"]
+[ext_resource type="AudioStream" uid="uid://cmfgb1d7x7uij" path="res://assets/voice/old_tree/tree_idle_6.wav" id="27_e8mvs"]
+[ext_resource type="AudioStream" uid="uid://qataef275vjl" path="res://assets/voice/old_tree/tree_idle_7.wav" id="28_baylg"]
+[ext_resource type="AudioStream" uid="uid://cuxbbap6bpsft" path="res://assets/voice/old_tree/tree_affordable_1.wav" id="29_qqnh8"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_affordable.tres" id="30_imadg"]
+[ext_resource type="AudioStream" uid="uid://b0tpjce7ibefj" path="res://assets/voice/old_tree/tree_affordable_2.wav" id="31_tvhhs"]
+[ext_resource type="AudioStream" uid="uid://1ls0jnshobvx" path="res://assets/voice/old_tree/tree_affordable_3.wav" id="32_a5fs5"]
+[ext_resource type="AudioStream" uid="uid://4q2xo7mv6b88" path="res://assets/voice/old_tree/tree_affordable_4.wav" id="33_6wnad"]
+[ext_resource type="AudioStream" uid="uid://dtvepw7v3fa7q" path="res://assets/voice/old_tree/tree_affordable_5.wav" id="34_wsxac"]
+[ext_resource type="AudioStream" uid="uid://diuqjqq5a5fp0" path="res://assets/voice/old_tree/tree_bought_1.wav" id="35_w2qn0"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_bought.tres" id="36_k0rvm"]
+[ext_resource type="AudioStream" uid="uid://bhg5trwxtmm70" path="res://assets/voice/old_tree/tree_bought_2.wav" id="37_lkm7y"]
+[ext_resource type="AudioStream" uid="uid://bkjrpvwm52kwe" path="res://assets/voice/old_tree/tree_bought_3.wav" id="38_bipwe"]
+[ext_resource type="AudioStream" uid="uid://dwvr7m7jouu5u" path="res://assets/voice/old_tree/tree_bought_4.wav" id="39_wm6gn"]
+[ext_resource type="AudioStream" uid="uid://3xiwo13nqegy" path="res://assets/voice/old_tree/tree_bought_5.wav" id="40_1jeda"]
+[ext_resource type="AudioStream" uid="uid://hsyumt167uoe" path="res://assets/voice/old_tree/tree_bought_6.wav" id="41_1xxoi"]
+[ext_resource type="AudioStream" uid="uid://xpagmiexj85g" path="res://assets/voice/old_tree/tree_grumble_1.wav" id="42_cshol"]
+[ext_resource type="AudioStream" uid="uid://cu5psgspm1kbs" path="res://assets/voice/old_tree/tree_grumble_2.wav" id="43_i0ciu"]
+[ext_resource type="AudioStream" uid="uid://djr3x1d0qvun5" path="res://assets/voice/old_tree/tree_grumble_3.wav" id="44_wnxwh"]
+[ext_resource type="AudioStream" uid="uid://bnakssklp7xu2" path="res://assets/voice/old_tree/tree_grumble_4.wav" id="45_qxd0j"]
+[ext_resource type="AudioStream" uid="uid://cw438hev8amwc" path="res://assets/voice/old_tree/tree_grumble_5.wav" id="46_ksoog"]
+[ext_resource type="AudioStream" uid="uid://j3r8wuc5an6q" path="res://assets/voice/old_tree/tree_stage_half_1.wav" id="47_f2im7"]
+[ext_resource type="AudioStream" uid="uid://ctjiollxj5tfl" path="res://assets/voice/old_tree/tree_stage_half_2.wav" id="48_hgi7v"]
+[ext_resource type="AudioStream" uid="uid://bprh0opg5rptu" path="res://assets/voice/old_tree/tree_stage_half_3.wav" id="49_qlqbp"]
+[ext_resource type="AudioStream" uid="uid://02qb4spgxbkg" path="res://assets/voice/old_tree/tree_stage_most_1.wav" id="50_4g6jg"]
+[ext_resource type="AudioStream" uid="uid://c5hjsrror46sl" path="res://assets/voice/old_tree/tree_stage_most_2.wav" id="51_l4aea"]
+[ext_resource type="AudioStream" uid="uid://fy3ndbjsy31j" path="res://assets/voice/old_tree/tree_stage_most_3.wav" id="52_ikdy7"]
+[ext_resource type="AudioStream" uid="uid://tx3xwk3bwxgy" path="res://assets/voice/old_tree/tree_stage_last_1.wav" id="53_o6r3k"]
+[ext_resource type="AudioStream" uid="uid://dvvu1qis02ohv" path="res://assets/voice/old_tree/tree_stage_last_2.wav" id="54_koric"]
+[ext_resource type="AudioStream" uid="uid://cvctmbtldcsay" path="res://assets/voice/old_tree/tree_stage_last_3.wav" id="55_xpmbf"]
+[ext_resource type="AudioStream" uid="uid://csvsmdccpb7m3" path="res://assets/voice/old_tree/tree_cabinet_laundry_1.wav" id="56_6xrs5"]
+[ext_resource type="AudioStream" uid="uid://63ymmbchpfuy" path="res://assets/voice/old_tree/tree_cabinet_laundry_2.wav" id="57_exkd3"]
+[ext_resource type="AudioStream" uid="uid://cidpn8xr27f7v" path="res://assets/voice/old_tree/tree_cabinet_laundry_3.wav" id="58_e1rvo"]
+[ext_resource type="AudioStream" uid="uid://du0ny64msdtr3" path="res://assets/voice/old_tree/tree_cabinet_laundry_4.wav" id="59_844ss"]
+[ext_resource type="AudioStream" uid="uid://c20r1sfefxboh" path="res://assets/voice/old_tree/tree_cabinet_garage_1.wav" id="60_gstf6"]
+[ext_resource type="AudioStream" uid="uid://cxos1tbbsd6xk" path="res://assets/voice/old_tree/tree_cabinet_garage_2.wav" id="61_sl3r5"]
+[ext_resource type="AudioStream" uid="uid://m8jc276vxt4g" path="res://assets/voice/old_tree/tree_cabinet_garage_3.wav" id="62_3jj5j"]
+[ext_resource type="AudioStream" uid="uid://rcjo2gxoagcm" path="res://assets/voice/old_tree/tree_cabinet_garage_4.wav" id="63_c06w5"]
+[ext_resource type="AudioStream" uid="uid://bauj4ix5q5pvd" path="res://assets/voice/old_tree/tree_cabinet_kitchen_1.wav" id="64_ggasp"]
+[ext_resource type="AudioStream" uid="uid://cvla8a8jj60jr" path="res://assets/voice/old_tree/tree_cabinet_kitchen_2.wav" id="65_toy6q"]
+[ext_resource type="AudioStream" uid="uid://dwo33bel42613" path="res://assets/voice/old_tree/tree_cabinet_kitchen_3.wav" id="66_8djmv"]
+[ext_resource type="AudioStream" uid="uid://ybwiu8ctvpxq" path="res://assets/voice/old_tree/tree_cabinet_kitchen_4.wav" id="67_fdrwb"]
+[ext_resource type="AudioStream" uid="uid://bp7er71djf4xp" path="res://assets/voice/old_tree/tree_cabinet_living_1.wav" id="68_ow8ry"]
+[ext_resource type="AudioStream" uid="uid://t2aiebwgajnx" path="res://assets/voice/old_tree/tree_cabinet_living_2.wav" id="69_gt8nq"]
+[ext_resource type="AudioStream" uid="uid://by13ehrfvyffc" path="res://assets/voice/old_tree/tree_cabinet_living_3.wav" id="70_g8yv1"]
+[ext_resource type="AudioStream" uid="uid://b7f6nh0j0rhbn" path="res://assets/voice/old_tree/tree_cabinet_living_4.wav" id="71_bv3lv"]
+[ext_resource type="AudioStream" uid="uid://dtfk4psqdisqx" path="res://assets/voice/old_tree/tree_cabinet_kids_north_1.wav" id="72_7slqc"]
+[ext_resource type="AudioStream" uid="uid://dtigabtrysexx" path="res://assets/voice/old_tree/tree_cabinet_kids_north_2.wav" id="73_w60h5"]
+[ext_resource type="AudioStream" uid="uid://i46x2o1yqenm" path="res://assets/voice/old_tree/tree_cabinet_kids_north_3.wav" id="74_ebtp2"]
+[ext_resource type="AudioStream" uid="uid://khtxwbecird2" path="res://assets/voice/old_tree/tree_cabinet_kids_north_4.wav" id="75_waojd"]
+[ext_resource type="AudioStream" uid="uid://tcwlgemtcpi0" path="res://assets/voice/old_tree/tree_cabinet_kids_east_1.wav" id="76_x5gip"]
+[ext_resource type="AudioStream" uid="uid://c14u34xxcxbn7" path="res://assets/voice/old_tree/tree_cabinet_kids_east_2.wav" id="77_73x1p"]
+[ext_resource type="AudioStream" uid="uid://bpatcmh5ysym2" path="res://assets/voice/old_tree/tree_cabinet_kids_east_3.wav" id="78_1tucu"]
+[ext_resource type="AudioStream" uid="uid://v28na25r8ma6" path="res://assets/voice/old_tree/tree_cabinet_kids_east_4.wav" id="79_1m2hu"]
+[ext_resource type="AudioStream" uid="uid://bnhrr4rrlsyth" path="res://assets/voice/old_tree/tree_cabinet_loft_west_1.wav" id="80_33aeu"]
+[ext_resource type="AudioStream" uid="uid://bc5t0brg1opp8" path="res://assets/voice/old_tree/tree_cabinet_loft_west_2.wav" id="81_uywod"]
+[ext_resource type="AudioStream" uid="uid://bnhprhmiy4hjf" path="res://assets/voice/old_tree/tree_cabinet_loft_west_3.wav" id="82_tmlu8"]
+[ext_resource type="AudioStream" uid="uid://cu87w72k186vc" path="res://assets/voice/old_tree/tree_cabinet_loft_west_4.wav" id="83_1sp50"]
+[ext_resource type="AudioStream" uid="uid://cfrcfsff81s7k" path="res://assets/voice/old_tree/tree_cabinet_loft_east_1.wav" id="84_ju2kb"]
+[ext_resource type="AudioStream" uid="uid://dlr81met3ktt3" path="res://assets/voice/old_tree/tree_cabinet_loft_east_2.wav" id="85_jd6ja"]
+[ext_resource type="AudioStream" uid="uid://js81byok5a0y" path="res://assets/voice/old_tree/tree_cabinet_loft_east_3.wav" id="86_qsgvx"]
+[ext_resource type="AudioStream" uid="uid://taff4h4c50vi" path="res://assets/voice/old_tree/tree_cabinet_loft_east_4.wav" id="87_vonbh"]
+[ext_resource type="AudioStream" uid="uid://dyxwfc0djj1py" path="res://assets/voice/old_tree/tree_hint_basement_1.wav" id="88_7n5x3"]
+[ext_resource type="AudioStream" uid="uid://c74vf4ir2mpmj" path="res://assets/voice/old_tree/tree_hint_basement_2.wav" id="89_orvcy"]
+[ext_resource type="AudioStream" uid="uid://d15btm3uvbl7" path="res://assets/voice/old_tree/tree_hint_basement_3.wav" id="90_yh0gs"]
+[ext_resource type="AudioStream" uid="uid://cxchhjopv7qwq" path="res://assets/voice/old_tree/tree_hint_basement_4.wav" id="91_nbfl6"]
+[ext_resource type="AudioStream" uid="uid://beunw2y0ihdjn" path="res://assets/voice/old_tree/tree_hint_ground_1.wav" id="92_cuht3"]
+[ext_resource type="AudioStream" uid="uid://c7ojjrkq3yako" path="res://assets/voice/old_tree/tree_hint_ground_2.wav" id="93_pqhgp"]
+[ext_resource type="AudioStream" uid="uid://bkw6yankgpl4w" path="res://assets/voice/old_tree/tree_hint_ground_3.wav" id="94_2acap"]
+[ext_resource type="AudioStream" uid="uid://pibv5v0vnwgf" path="res://assets/voice/old_tree/tree_hint_ground_4.wav" id="95_fqeq6"]
+[ext_resource type="AudioStream" uid="uid://c02oythqtjpwc" path="res://assets/voice/old_tree/tree_hint_first_1.wav" id="96_uvs0g"]
+[ext_resource type="AudioStream" uid="uid://dx0pcyddbyjom" path="res://assets/voice/old_tree/tree_hint_first_2.wav" id="97_l1si1"]
+[ext_resource type="AudioStream" uid="uid://dfe0fjdhwoog8" path="res://assets/voice/old_tree/tree_hint_first_3.wav" id="98_fx20a"]
+[ext_resource type="AudioStream" uid="uid://c3dyr6scuqysf" path="res://assets/voice/old_tree/tree_hint_first_4.wav" id="99_opun7"]
+[ext_resource type="AudioStream" uid="uid://p8p8i8igcwio" path="res://assets/voice/old_tree/tree_hint_attic_1.wav" id="100_yblbx"]
+[ext_resource type="AudioStream" uid="uid://c820jp5sh5v8e" path="res://assets/voice/old_tree/tree_hint_attic_2.wav" id="101_w0ptl"]
+[ext_resource type="AudioStream" uid="uid://sp2d0px2ek2f" path="res://assets/voice/old_tree/tree_hint_attic_3.wav" id="102_fki6a"]
+[ext_resource type="AudioStream" uid="uid://bru68a7ih0j1g" path="res://assets/voice/old_tree/tree_hint_attic_4.wav" id="103_ivwxs"]
+[ext_resource type="AudioStream" uid="uid://dguaebncwvy7y" path="res://assets/voice/old_tree/tree_tip_throw_1.wav" id="104_sbucs"]
+[ext_resource type="AudioStream" uid="uid://bkjvq4ysilhyv" path="res://assets/voice/old_tree/tree_tip_part_1.wav" id="105_7crhp"]
+[ext_resource type="AudioStream" uid="uid://bi5ts4mpip4pn" path="res://assets/voice/old_tree/tree_tip_part_2.wav" id="106_ebx7b"]
+[ext_resource type="AudioStream" uid="uid://bhom8ans2r7pb" path="res://assets/voice/old_tree/tree_tip_vacuum_1.wav" id="107_tfvuo"]
+[ext_resource type="AudioStream" uid="uid://cief07jj7858f" path="res://assets/voice/old_tree/tree_tip_vacuum_2.wav" id="108_k5d54"]
+[ext_resource type="AudioStream" uid="uid://x5vcsw00k0ve" path="res://assets/voice/old_tree/tree_tip_vacuum_3.wav" id="109_knfkk"]
+[ext_resource type="AudioStream" uid="uid://f5wv5qx10p23" path="res://assets/voice/old_tree/tree_tip_elevator_1.wav" id="110_wbatc"]
+[ext_resource type="AudioStream" uid="uid://curdyf0ponhlv" path="res://assets/voice/old_tree/tree_part_basement_1.wav" id="111_o4y20"]
+[ext_resource type="AudioStream" uid="uid://b2hegirofnp81" path="res://assets/voice/old_tree/tree_part_basement_2.wav" id="112_8p60b"]
+[ext_resource type="AudioStream" uid="uid://cq5afrfihi576" path="res://assets/voice/old_tree/tree_part_basement_3.wav" id="113_sfwfs"]
+[ext_resource type="AudioStream" uid="uid://oreila8ccuuj" path="res://assets/voice/old_tree/tree_part_basement_4.wav" id="114_ohl3w"]
+[ext_resource type="AudioStream" uid="uid://c6yn0w4gqy7lf" path="res://assets/voice/old_tree/tree_part_ground_1.wav" id="115_co0rj"]
+[ext_resource type="AudioStream" uid="uid://b8o4o4201kpsk" path="res://assets/voice/old_tree/tree_part_ground_2.wav" id="116_oidjh"]
+[ext_resource type="AudioStream" uid="uid://cjvr6ublyea8q" path="res://assets/voice/old_tree/tree_part_ground_3.wav" id="117_ylo37"]
+[ext_resource type="AudioStream" uid="uid://dbiq5dhjg533t" path="res://assets/voice/old_tree/tree_part_ground_4.wav" id="118_a2cx4"]
+[ext_resource type="AudioStream" uid="uid://bxbk4ndpuj22b" path="res://assets/voice/old_tree/tree_part_first_1.wav" id="119_uck7b"]
+[ext_resource type="AudioStream" uid="uid://d3pky0tsebb0s" path="res://assets/voice/old_tree/tree_part_first_2.wav" id="120_mjxj7"]
+[ext_resource type="AudioStream" uid="uid://jsgb40x6ggdl" path="res://assets/voice/old_tree/tree_part_first_3.wav" id="121_81tw3"]
+[ext_resource type="AudioStream" uid="uid://d2ca2mlqr0706" path="res://assets/voice/old_tree/tree_part_first_4.wav" id="122_pxs1h"]
+[ext_resource type="AudioStream" uid="uid://cfev1nnoc4myt" path="res://assets/voice/old_tree/tree_part_attic_1.wav" id="123_sje67"]
+[ext_resource type="AudioStream" uid="uid://dco64nvlmbj2" path="res://assets/voice/old_tree/tree_part_attic_2.wav" id="124_iifct"]
+[ext_resource type="AudioStream" uid="uid://dt81eakdqux28" path="res://assets/voice/old_tree/tree_part_attic_3.wav" id="125_tsvsv"]
+[ext_resource type="AudioStream" uid="uid://5uw5gl4o0xoo" path="res://assets/voice/old_tree/tree_part_attic_4.wav" id="126_d7co0"]
+[ext_resource type="AudioStream" uid="uid://js258grlkysq" path="res://assets/voice/old_tree/tree_floor_ground_1.wav" id="127_5b1cx"]
+[ext_resource type="AudioStream" uid="uid://i5b5yk4osp74" path="res://assets/voice/old_tree/tree_floor_ground_2.wav" id="128_7hq5n"]
+[ext_resource type="AudioStream" uid="uid://bh1f7kjqdgosf" path="res://assets/voice/old_tree/tree_floor_ground_3.wav" id="129_t85re"]
+[ext_resource type="AudioStream" uid="uid://cxhv6tsslboxy" path="res://assets/voice/old_tree/tree_floor_ground_4.wav" id="130_33jwt"]
+[ext_resource type="AudioStream" uid="uid://bqku2kyysiu3s" path="res://assets/voice/old_tree/tree_floor_first_1.wav" id="131_x00l1"]
+[ext_resource type="AudioStream" uid="uid://bpdrmyimawgh" path="res://assets/voice/old_tree/tree_floor_first_2.wav" id="132_digtr"]
+[ext_resource type="AudioStream" uid="uid://bm5ch7mq8fybm" path="res://assets/voice/old_tree/tree_floor_first_3.wav" id="133_hgra8"]
+[ext_resource type="AudioStream" uid="uid://bj7e412giuqtt" path="res://assets/voice/old_tree/tree_floor_first_4.wav" id="134_yrex8"]
+[ext_resource type="AudioStream" uid="uid://4kpmh57jgq4t" path="res://assets/voice/old_tree/tree_floor_attic_1.wav" id="135_0vrbi"]
+[ext_resource type="AudioStream" uid="uid://4nxwb57icedg" path="res://assets/voice/old_tree/tree_floor_attic_2.wav" id="136_qoe40"]
+[ext_resource type="AudioStream" uid="uid://c46ka8rum2l0c" path="res://assets/voice/old_tree/tree_floor_attic_3.wav" id="137_18g45"]
+[ext_resource type="AudioStream" uid="uid://dq6yfocpiu41g" path="res://assets/voice/old_tree/tree_floor_attic_4.wav" id="138_xpstj"]
+[ext_resource type="AudioStream" uid="uid://gcm3p0petdbi" path="res://assets/voice/old_tree/tree_final_wash_1.wav" id="139_e2485"]
+[ext_resource type="AudioStream" uid="uid://bvvn82fhyue3j" path="res://assets/voice/old_tree/tree_final_wash_2.wav" id="140_5wg3w"]
+[ext_resource type="AudioStream" uid="uid://cqsl7kbnvxnc1" path="res://assets/voice/old_tree/tree_final_wash_3.wav" id="141_8uk51"]
+[ext_resource type="AudioStream" uid="uid://ntvvpch3dryi" path="res://assets/voice/old_tree/tree_peace_1.wav" id="142_0w5u0"]
+[ext_resource type="AudioStream" uid="uid://1f1wv6we43aa" path="res://assets/voice/old_tree/tree_peace_2.wav" id="143_g0ahr"]
+[ext_resource type="AudioStream" uid="uid://ct0plv5s666ks" path="res://assets/voice/old_tree/tree_peace_3.wav" id="144_6xm3c"]
+[ext_resource type="AudioStream" uid="uid://damnai02viu0l" path="res://assets/voice/old_tree/tree_presents_ready_1.wav" id="145_37g6c"]
+[ext_resource type="AudioStream" uid="uid://bjsn8scd3xov3" path="res://assets/voice/old_tree/tree_presents_ready_2.wav" id="146_weun0"]
+[ext_resource type="AudioStream" uid="uid://cdxqmx3ymqwsw" path="res://assets/voice/old_tree/tree_presents_ready_3.wav" id="147_3gnij"]
+[ext_resource type="AudioStream" uid="uid://dyqdstdh462hi" path="res://assets/voice/old_tree/tree_presents_1.wav" id="148_ipycp"]
+[ext_resource type="AudioStream" uid="uid://g17j78vy36sh" path="res://assets/voice/old_tree/tree_presents_2.wav" id="149_g44cv"]
+[ext_resource type="AudioStream" uid="uid://dofp8wkwse87s" path="res://assets/voice/old_tree/tree_presents_3.wav" id="150_gwkca"]
+[ext_resource type="AudioStream" uid="uid://bohuasook6hvq" path="res://assets/voice/old_tree/tree_presents_4.wav" id="151_csmxm"]
+[ext_resource type="AudioStream" uid="uid://hf2nt5n7aa45" path="res://assets/voice/old_tree/tree_present_taken_1.wav" id="152_g6ix0"]
+[ext_resource type="AudioStream" uid="uid://drcv2kuwg40k0" path="res://assets/voice/old_tree/tree_present_taken_2.wav" id="153_umvn0"]
+[ext_resource type="AudioStream" uid="uid://cjgegckbqh3br" path="res://assets/voice/old_tree/tree_present_taken_3.wav" id="154_nskm4"]
+[ext_resource type="AudioStream" uid="uid://dcc0djc8gnja" path="res://assets/voice/old_tree/tree_present_taken_4.wav" id="155_t2vxr"]
+[ext_resource type="Script" uid="uid://0spuefso45pc" path="res://game/voice/voice_bank.gd" id="156_r1q4c"]
+[ext_resource type="Resource" path="res://game/voice/speakers/old_tree.tres" id="157_skfrl"]
+
+[sub_resource type="Resource" id="seg_tree_call_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.15
+key = &"VO_TREE_CALL_1_1"
+
+[sub_resource type="Resource" id="take_tree_call_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("4_lbwg4")
+source_md5 = "39ac5c3c45fb87457b9a4605f965e71d"
+duration = 4.497
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_call_1_0_0")])
+
+[sub_resource type="Resource" id="line_tree_call_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_call_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("6_aclld")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CALL_1_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_call_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_call_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.61
+key = &"VO_TREE_CALL_2_1"
+
+[sub_resource type="Resource" id="seg_tree_call_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 5.03
+end = 7.83
+key = &"VO_TREE_CALL_2_2"
+
+[sub_resource type="Resource" id="take_tree_call_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("7_0bicw")
+source_md5 = "2bf81c85065892eb09627b18dd0186dd"
+duration = 8.184000000000001
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_call_2_0_0"), SubResource("seg_tree_call_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_call_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_call_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("6_aclld")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CALL_2_1", "VO_TREE_CALL_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_call_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_call_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.6
+key = &"VO_TREE_CALL_3_1"
+
+[sub_resource type="Resource" id="seg_tree_call_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.02
+end = 6.98
+key = &"VO_TREE_CALL_3_2"
+
+[sub_resource type="Resource" id="take_tree_call_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("8_qxt7a")
+source_md5 = "aea341e89bf89b5ffa4cc3ae3de90770"
+duration = 7.33
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_call_3_0_0"), SubResource("seg_tree_call_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_call_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_call_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("6_aclld")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CALL_3_1", "VO_TREE_CALL_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_call_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_call_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.86
+key = &"VO_TREE_CALL_4_1"
+
+[sub_resource type="Resource" id="seg_tree_call_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.28
+end = 5.82
+key = &"VO_TREE_CALL_4_2"
+
+[sub_resource type="Resource" id="seg_tree_call_4_0_2"]
+script = ExtResource("3_q8epu")
+start = 6.24
+end = 7.5
+key = &"VO_TREE_CALL_4_3"
+
+[sub_resource type="Resource" id="take_tree_call_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("9_bmuy0")
+source_md5 = "f935a9dae7584e2e60b8d296f418d183"
+duration = 7.854
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_call_4_0_0"), SubResource("seg_tree_call_4_0_1"), SubResource("seg_tree_call_4_0_2")])
+
+[sub_resource type="Resource" id="line_tree_call_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_call_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("6_aclld")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CALL_4_1", "VO_TREE_CALL_4_2", "VO_TREE_CALL_4_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_call_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_call_5_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.34
+key = &"VO_TREE_CALL_5_1"
+
+[sub_resource type="Resource" id="seg_tree_call_5_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.76
+end = 6.87
+key = &"VO_TREE_CALL_5_2"
+
+[sub_resource type="Resource" id="take_tree_call_5_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("10_egqt8")
+source_md5 = "ff42202b598bc0058506f0309f84d60c"
+duration = 7.2170000000000005
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_call_5_0_0"), SubResource("seg_tree_call_5_0_1")])
+
+[sub_resource type="Resource" id="line_tree_call_5"]
+script = ExtResource("1_tmhjc")
+id = &"tree_call_5"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("6_aclld")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CALL_5_1", "VO_TREE_CALL_5_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_call_5_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_first_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 7.79
+key = &"VO_TREE_FIRST_1_1"
+
+[sub_resource type="Resource" id="seg_tree_first_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 8.21
+end = 11.36
+key = &"VO_TREE_FIRST_1_2"
+
+[sub_resource type="Resource" id="take_tree_first_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("11_5q3b1")
+source_md5 = "b913dc6bda089527e787875a6b92940a"
+duration = 11.707
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_first_1_0_0"), SubResource("seg_tree_first_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_first_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_first_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("12_5t8ol")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FIRST_1_1", "VO_TREE_FIRST_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_first_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_first_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.97
+key = &"VO_TREE_FIRST_2_1"
+
+[sub_resource type="Resource" id="seg_tree_first_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.39
+end = 7.76
+key = &"VO_TREE_FIRST_2_2"
+
+[sub_resource type="Resource" id="take_tree_first_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("13_y5gop")
+source_md5 = "8fc8827984c5c4d7cb3e4bfa8e71d20d"
+duration = 8.109
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_first_2_0_0"), SubResource("seg_tree_first_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_first_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_first_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("12_5t8ol")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FIRST_2_1", "VO_TREE_FIRST_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_first_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_first_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.14
+key = &"VO_TREE_FIRST_3_1"
+
+[sub_resource type="Resource" id="seg_tree_first_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.56
+end = 8.87
+key = &"VO_TREE_FIRST_3_2"
+
+[sub_resource type="Resource" id="take_tree_first_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("14_oc458")
+source_md5 = "566ef9c863994aa15057d25b04cb035f"
+duration = 9.223
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_first_3_0_0"), SubResource("seg_tree_first_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_first_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_first_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("12_5t8ol")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FIRST_3_1", "VO_TREE_FIRST_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_first_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_greet_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.76
+key = &"VO_TREE_GREET_1_1"
+
+[sub_resource type="Resource" id="seg_tree_greet_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.18
+end = 6.53
+key = &"VO_TREE_GREET_1_2"
+
+[sub_resource type="Resource" id="take_tree_greet_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("15_i0hw3")
+source_md5 = "61d1cc0533255cfe3e528ea244760a18"
+duration = 6.877
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_greet_1_0_0"), SubResource("seg_tree_greet_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_greet_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_greet_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("16_n6uf0")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_GREET_1_1", "VO_TREE_GREET_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_greet_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_greet_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.74
+key = &"VO_TREE_GREET_2_1"
+
+[sub_resource type="Resource" id="take_tree_greet_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("17_pjmrj")
+source_md5 = "1dcf8cef57bdbde1f4c2d34fee3dd754"
+duration = 4.091
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_greet_2_0_0")])
+
+[sub_resource type="Resource" id="line_tree_greet_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_greet_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("16_n6uf0")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_GREET_2_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_greet_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_greet_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.17
+key = &"VO_TREE_GREET_3_1"
+
+[sub_resource type="Resource" id="seg_tree_greet_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.59
+end = 5.25
+key = &"VO_TREE_GREET_3_2"
+
+[sub_resource type="Resource" id="take_tree_greet_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("18_utygb")
+source_md5 = "421ec2364e725057bf3a3fe2190e3886"
+duration = 5.602
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_greet_3_0_0"), SubResource("seg_tree_greet_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_greet_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_greet_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("16_n6uf0")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_GREET_3_1", "VO_TREE_GREET_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_greet_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_greet_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.95
+key = &"VO_TREE_GREET_4_1"
+
+[sub_resource type="Resource" id="take_tree_greet_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("19_gjvn0")
+source_md5 = "7b5c05be322964843de0fb7ae689eb58"
+duration = 5.295
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_greet_4_0_0")])
+
+[sub_resource type="Resource" id="line_tree_greet_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_greet_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("16_n6uf0")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_GREET_4_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_greet_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_greet_5_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.23
+key = &"VO_TREE_GREET_5_1"
+
+[sub_resource type="Resource" id="seg_tree_greet_5_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.65
+end = 5.8
+key = &"VO_TREE_GREET_5_2"
+
+[sub_resource type="Resource" id="take_tree_greet_5_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("20_tiwfi")
+source_md5 = "b089a54c21e701854b03b385594d4c8e"
+duration = 6.154
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_greet_5_0_0"), SubResource("seg_tree_greet_5_0_1")])
+
+[sub_resource type="Resource" id="line_tree_greet_5"]
+script = ExtResource("1_tmhjc")
+id = &"tree_greet_5"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("16_n6uf0")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_GREET_5_1", "VO_TREE_GREET_5_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_greet_5_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_idle_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.5
+key = &"VO_TREE_IDLE_1_1"
+
+[sub_resource type="Resource" id="take_tree_idle_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("21_ggwx2")
+source_md5 = "e5eda605c30c498662fb4a8e1e0f15a4"
+duration = 4.851
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_idle_1_0_0")])
+
+[sub_resource type="Resource" id="line_tree_idle_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_idle_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("22_rmryn")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_IDLE_1_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_idle_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_idle_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.69
+key = &"VO_TREE_IDLE_2_1"
+
+[sub_resource type="Resource" id="take_tree_idle_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("23_273q8")
+source_md5 = "fa8ce57e72b1379eacbc70ae5f2bf9d0"
+duration = 5.04
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_idle_2_0_0")])
+
+[sub_resource type="Resource" id="line_tree_idle_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_idle_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("22_rmryn")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_IDLE_2_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_idle_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_idle_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.76
+key = &"VO_TREE_IDLE_3_1"
+
+[sub_resource type="Resource" id="seg_tree_idle_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.18
+end = 5.59
+key = &"VO_TREE_IDLE_3_2"
+
+[sub_resource type="Resource" id="take_tree_idle_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("24_nxoux")
+source_md5 = "0d983e11659dd93b61c3537b00c285dc"
+duration = 5.942
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_idle_3_0_0"), SubResource("seg_tree_idle_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_idle_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_idle_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("22_rmryn")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_IDLE_3_1", "VO_TREE_IDLE_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_idle_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_idle_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.81
+key = &"VO_TREE_IDLE_4_1"
+
+[sub_resource type="Resource" id="take_tree_idle_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("25_ocu3p")
+source_md5 = "2c1dd99901dd842425a9573bdecf82f9"
+duration = 5.163
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_idle_4_0_0")])
+
+[sub_resource type="Resource" id="line_tree_idle_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_idle_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("22_rmryn")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_IDLE_4_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_idle_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_idle_5_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.58
+key = &"VO_TREE_IDLE_5_1"
+
+[sub_resource type="Resource" id="seg_tree_idle_5_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.0
+end = 4.95
+key = &"VO_TREE_IDLE_5_2"
+
+[sub_resource type="Resource" id="take_tree_idle_5_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("26_j3fwv")
+source_md5 = "260df486d105ff112c76945a8ad0f373"
+duration = 5.295
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_idle_5_0_0"), SubResource("seg_tree_idle_5_0_1")])
+
+[sub_resource type="Resource" id="line_tree_idle_5"]
+script = ExtResource("1_tmhjc")
+id = &"tree_idle_5"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("22_rmryn")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_IDLE_5_1", "VO_TREE_IDLE_5_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_idle_5_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_idle_6_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.31
+key = &"VO_TREE_IDLE_6_1"
+
+[sub_resource type="Resource" id="take_tree_idle_6_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("27_e8mvs")
+source_md5 = "d50d3c361b5c36e122b58e7735463697"
+duration = 4.663
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_idle_6_0_0")])
+
+[sub_resource type="Resource" id="line_tree_idle_6"]
+script = ExtResource("1_tmhjc")
+id = &"tree_idle_6"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("22_rmryn")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_IDLE_6_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_idle_6_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_idle_7_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.58
+key = &"VO_TREE_IDLE_7_1"
+
+[sub_resource type="Resource" id="seg_tree_idle_7_0_1"]
+script = ExtResource("3_q8epu")
+start = 5.0
+end = 6.99
+key = &"VO_TREE_IDLE_7_2"
+
+[sub_resource type="Resource" id="take_tree_idle_7_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("28_baylg")
+source_md5 = "f7a4e6b8f90ede452ff2ea9d217764fc"
+duration = 7.344
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_idle_7_0_0"), SubResource("seg_tree_idle_7_0_1")])
+
+[sub_resource type="Resource" id="line_tree_idle_7"]
+script = ExtResource("1_tmhjc")
+id = &"tree_idle_7"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("22_rmryn")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_IDLE_7_1", "VO_TREE_IDLE_7_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_idle_7_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_affordable_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.39
+key = &"VO_TREE_AFFORDABLE_1_1"
+
+[sub_resource type="Resource" id="take_tree_affordable_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("29_qqnh8")
+source_md5 = "ab3417d67294336533c96d5124bc343f"
+duration = 4.743
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_affordable_1_0_0")])
+
+[sub_resource type="Resource" id="line_tree_affordable_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_affordable_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("30_imadg")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_AFFORDABLE_1_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_affordable_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_affordable_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.17
+key = &"VO_TREE_AFFORDABLE_2_1"
+
+[sub_resource type="Resource" id="seg_tree_affordable_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.59
+end = 4.12
+key = &"VO_TREE_AFFORDABLE_2_2"
+
+[sub_resource type="Resource" id="take_tree_affordable_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("31_tvhhs")
+source_md5 = "36ae9290102ffa661bef62f43a5b8da4"
+duration = 4.474
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_affordable_2_0_0"), SubResource("seg_tree_affordable_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_affordable_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_affordable_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("30_imadg")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_AFFORDABLE_2_1", "VO_TREE_AFFORDABLE_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_affordable_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_affordable_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.78
+key = &"VO_TREE_AFFORDABLE_3_1"
+
+[sub_resource type="Resource" id="seg_tree_affordable_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.2
+end = 4.12
+key = &"VO_TREE_AFFORDABLE_3_2"
+
+[sub_resource type="Resource" id="take_tree_affordable_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("32_a5fs5")
+source_md5 = "d088f4d1b9c2947900cff0a4fda8f449"
+duration = 4.474
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_affordable_3_0_0"), SubResource("seg_tree_affordable_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_affordable_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_affordable_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("30_imadg")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_AFFORDABLE_3_1", "VO_TREE_AFFORDABLE_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_affordable_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_affordable_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.27
+key = &"VO_TREE_AFFORDABLE_4_1"
+
+[sub_resource type="Resource" id="seg_tree_affordable_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.69
+end = 6.48
+key = &"VO_TREE_AFFORDABLE_4_2"
+
+[sub_resource type="Resource" id="take_tree_affordable_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("33_6wnad")
+source_md5 = "637b470e21cc5ff9ddab33e3994ff38a"
+duration = 6.8340000000000005
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_affordable_4_0_0"), SubResource("seg_tree_affordable_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_affordable_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_affordable_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("30_imadg")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_AFFORDABLE_4_1", "VO_TREE_AFFORDABLE_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_affordable_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_affordable_5_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 10.96
+key = &"VO_TREE_AFFORDABLE_5_1"
+
+[sub_resource type="Resource" id="seg_tree_affordable_5_0_1"]
+script = ExtResource("3_q8epu")
+start = 11.38
+end = 12.82
+key = &"VO_TREE_AFFORDABLE_5_2"
+
+[sub_resource type="Resource" id="take_tree_affordable_5_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("34_wsxac")
+source_md5 = "fa8b9fa51662e28d407b3dae0984228b"
+duration = 13.175
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_affordable_5_0_0"), SubResource("seg_tree_affordable_5_0_1")])
+
+[sub_resource type="Resource" id="line_tree_affordable_5"]
+script = ExtResource("1_tmhjc")
+id = &"tree_affordable_5"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("30_imadg")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_AFFORDABLE_5_1", "VO_TREE_AFFORDABLE_5_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_affordable_5_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_bought_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.46
+key = &"VO_TREE_BOUGHT_1_1"
+
+[sub_resource type="Resource" id="take_tree_bought_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("35_w2qn0")
+source_md5 = "f51485f214562d65abf2b655dff082a9"
+duration = 3.8080000000000003
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_bought_1_0_0")])
+
+[sub_resource type="Resource" id="line_tree_bought_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_bought_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("36_k0rvm")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_BOUGHT_1_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_bought_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_bought_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.11
+key = &"VO_TREE_BOUGHT_2_1"
+
+[sub_resource type="Resource" id="take_tree_bought_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("37_lkm7y")
+source_md5 = "717d9e0479f28d91ee11bfe7a45a37e1"
+duration = 2.462
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_bought_2_0_0")])
+
+[sub_resource type="Resource" id="line_tree_bought_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_bought_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("36_k0rvm")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_BOUGHT_2_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_bought_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_bought_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.36
+key = &"VO_TREE_BOUGHT_3_1"
+
+[sub_resource type="Resource" id="take_tree_bought_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("38_bipwe")
+source_md5 = "f96d4ee9f583b448ba0453e1d0381941"
+duration = 3.709
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_bought_3_0_0")])
+
+[sub_resource type="Resource" id="line_tree_bought_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_bought_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("36_k0rvm")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_BOUGHT_3_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_bought_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_bought_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.49
+key = &"VO_TREE_BOUGHT_4_1"
+
+[sub_resource type="Resource" id="take_tree_bought_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("39_wm6gn")
+source_md5 = "1f6e5475bcbe11b99583c6a1c0f388e1"
+duration = 3.8360000000000003
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_bought_4_0_0")])
+
+[sub_resource type="Resource" id="line_tree_bought_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_bought_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("36_k0rvm")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_BOUGHT_4_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_bought_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_bought_5_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.44
+key = &"VO_TREE_BOUGHT_5_1"
+
+[sub_resource type="Resource" id="take_tree_bought_5_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("40_1jeda")
+source_md5 = "811e795d9d777922843e2cc5f389685d"
+duration = 4.785
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_bought_5_0_0")])
+
+[sub_resource type="Resource" id="line_tree_bought_5"]
+script = ExtResource("1_tmhjc")
+id = &"tree_bought_5"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("36_k0rvm")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_BOUGHT_5_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_bought_5_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_bought_6_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.22
+key = &"VO_TREE_BOUGHT_6_1"
+
+[sub_resource type="Resource" id="seg_tree_bought_6_0_1"]
+script = ExtResource("3_q8epu")
+start = 1.64
+end = 5.12
+key = &"VO_TREE_BOUGHT_6_2"
+
+[sub_resource type="Resource" id="take_tree_bought_6_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("41_1xxoi")
+source_md5 = "ed3014064f602617378acf6a267be068"
+duration = 5.465
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_bought_6_0_0"), SubResource("seg_tree_bought_6_0_1")])
+
+[sub_resource type="Resource" id="line_tree_bought_6"]
+script = ExtResource("1_tmhjc")
+id = &"tree_bought_6"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("36_k0rvm")])
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_BOUGHT_6_1", "VO_TREE_BOUGHT_6_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_bought_6_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_grumble_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.15
+key = &"VO_TREE_GRUMBLE_1_1"
+
+[sub_resource type="Resource" id="seg_tree_grumble_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.57
+end = 7.59
+key = &"VO_TREE_GRUMBLE_1_2"
+
+[sub_resource type="Resource" id="take_tree_grumble_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("42_cshol")
+source_md5 = "ad1751a020f92a6cb0cc68241d641280"
+duration = 7.939
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_grumble_1_0_0"), SubResource("seg_tree_grumble_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_grumble_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_grumble_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_GRUMBLE_1_1", "VO_TREE_GRUMBLE_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_grumble_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_grumble_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.98
+key = &"VO_TREE_GRUMBLE_2_1"
+
+[sub_resource type="Resource" id="seg_tree_grumble_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.4
+end = 6.77
+key = &"VO_TREE_GRUMBLE_2_2"
+
+[sub_resource type="Resource" id="take_tree_grumble_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("43_i0ciu")
+source_md5 = "8ab18eba7eab1b216ad34dc037ab5b7f"
+duration = 7.117
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_grumble_2_0_0"), SubResource("seg_tree_grumble_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_grumble_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_grumble_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_GRUMBLE_2_1", "VO_TREE_GRUMBLE_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_grumble_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_grumble_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.85
+key = &"VO_TREE_GRUMBLE_3_1"
+
+[sub_resource type="Resource" id="seg_tree_grumble_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.27
+end = 4.45
+key = &"VO_TREE_GRUMBLE_3_2"
+
+[sub_resource type="Resource" id="seg_tree_grumble_3_0_2"]
+script = ExtResource("3_q8epu")
+start = 4.87
+end = 7.11
+key = &"VO_TREE_GRUMBLE_3_3"
+
+[sub_resource type="Resource" id="take_tree_grumble_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("44_wnxwh")
+source_md5 = "322383e20a1e82862924ee05aa9ea0a3"
+duration = 7.457
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_grumble_3_0_0"), SubResource("seg_tree_grumble_3_0_1"), SubResource("seg_tree_grumble_3_0_2")])
+
+[sub_resource type="Resource" id="line_tree_grumble_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_grumble_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_GRUMBLE_3_1", "VO_TREE_GRUMBLE_3_2", "VO_TREE_GRUMBLE_3_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_grumble_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_grumble_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.78
+key = &"VO_TREE_GRUMBLE_4_1"
+
+[sub_resource type="Resource" id="seg_tree_grumble_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.2
+end = 5.96
+key = &"VO_TREE_GRUMBLE_4_2"
+
+[sub_resource type="Resource" id="take_tree_grumble_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("45_qxd0j")
+source_md5 = "32cf30a49ee2f0fb77b3032aea50e52e"
+duration = 6.315
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_grumble_4_0_0"), SubResource("seg_tree_grumble_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_grumble_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_grumble_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_GRUMBLE_4_1", "VO_TREE_GRUMBLE_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_grumble_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_grumble_5_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.94
+key = &"VO_TREE_GRUMBLE_5_1"
+
+[sub_resource type="Resource" id="seg_tree_grumble_5_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.36
+end = 5.32
+key = &"VO_TREE_GRUMBLE_5_2"
+
+[sub_resource type="Resource" id="take_tree_grumble_5_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("46_ksoog")
+source_md5 = "b6b6e764833c46ff3b7ea3ecffd64498"
+duration = 5.673
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_grumble_5_0_0"), SubResource("seg_tree_grumble_5_0_1")])
+
+[sub_resource type="Resource" id="line_tree_grumble_5"]
+script = ExtResource("1_tmhjc")
+id = &"tree_grumble_5"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_GRUMBLE_5_1", "VO_TREE_GRUMBLE_5_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_grumble_5_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_stage_half_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.31
+key = &"VO_TREE_STAGE_HALF_1_1"
+
+[sub_resource type="Resource" id="seg_tree_stage_half_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.73
+end = 6.94
+key = &"VO_TREE_STAGE_HALF_1_2"
+
+[sub_resource type="Resource" id="take_tree_stage_half_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("47_f2im7")
+source_md5 = "58734fddc71563596edad60599c5a5f0"
+duration = 7.292
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_half_1_0_0"), SubResource("seg_tree_stage_half_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_stage_half_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_stage_half_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_STAGE_HALF_1_1", "VO_TREE_STAGE_HALF_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_half_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_stage_half_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.62
+key = &"VO_TREE_STAGE_HALF_2_1"
+
+[sub_resource type="Resource" id="seg_tree_stage_half_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.04
+end = 4.96
+key = &"VO_TREE_STAGE_HALF_2_2"
+
+[sub_resource type="Resource" id="take_tree_stage_half_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("48_hgi7v")
+source_md5 = "449f3df57b53630c1b3a9311af670f8d"
+duration = 5.309
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_half_2_0_0"), SubResource("seg_tree_stage_half_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_stage_half_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_stage_half_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_STAGE_HALF_2_1", "VO_TREE_STAGE_HALF_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_half_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_stage_half_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.25
+key = &"VO_TREE_STAGE_HALF_3_1"
+
+[sub_resource type="Resource" id="take_tree_stage_half_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("49_qlqbp")
+source_md5 = "5a37876b596008c5afb6fae0beb3a255"
+duration = 4.601
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_half_3_0_0")])
+
+[sub_resource type="Resource" id="line_tree_stage_half_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_stage_half_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_STAGE_HALF_3_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_half_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_stage_most_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.06
+key = &"VO_TREE_STAGE_MOST_1_1"
+
+[sub_resource type="Resource" id="seg_tree_stage_most_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.48
+end = 4.82
+key = &"VO_TREE_STAGE_MOST_1_2"
+
+[sub_resource type="Resource" id="take_tree_stage_most_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("50_4g6jg")
+source_md5 = "ddbcb6a58e58bdb7cff1202e2a20768f"
+duration = 5.168
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_most_1_0_0"), SubResource("seg_tree_stage_most_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_stage_most_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_stage_most_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_STAGE_MOST_1_1", "VO_TREE_STAGE_MOST_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_most_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_stage_most_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 5.49
+key = &"VO_TREE_STAGE_MOST_2_1"
+
+[sub_resource type="Resource" id="seg_tree_stage_most_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 5.91
+end = 7.7
+key = &"VO_TREE_STAGE_MOST_2_2"
+
+[sub_resource type="Resource" id="take_tree_stage_most_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("51_l4aea")
+source_md5 = "2899d3ef81024ff85ac9008cd16a7c8a"
+duration = 8.047
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_most_2_0_0"), SubResource("seg_tree_stage_most_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_stage_most_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_stage_most_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_STAGE_MOST_2_1", "VO_TREE_STAGE_MOST_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_most_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_stage_most_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.5
+key = &"VO_TREE_STAGE_MOST_3_1"
+
+[sub_resource type="Resource" id="seg_tree_stage_most_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.92
+end = 6.01
+key = &"VO_TREE_STAGE_MOST_3_2"
+
+[sub_resource type="Resource" id="take_tree_stage_most_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("52_ikdy7")
+source_md5 = "0c9257c2b3e73afe1b6bb536732ddf28"
+duration = 6.357
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_most_3_0_0"), SubResource("seg_tree_stage_most_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_stage_most_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_stage_most_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_STAGE_MOST_3_1", "VO_TREE_STAGE_MOST_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_most_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_stage_last_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 5.95
+key = &"VO_TREE_STAGE_LAST_1_1"
+
+[sub_resource type="Resource" id="take_tree_stage_last_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("53_o6r3k")
+source_md5 = "df973b6777d9cfc234be83df8c945466"
+duration = 6.296
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_last_1_0_0")])
+
+[sub_resource type="Resource" id="line_tree_stage_last_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_stage_last_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_STAGE_LAST_1_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_last_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_stage_last_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.78
+key = &"VO_TREE_STAGE_LAST_2_1"
+
+[sub_resource type="Resource" id="seg_tree_stage_last_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 5.2
+end = 7.18
+key = &"VO_TREE_STAGE_LAST_2_2"
+
+[sub_resource type="Resource" id="take_tree_stage_last_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("54_koric")
+source_md5 = "fdb8c874af5277d371865c5e534c5da5"
+duration = 7.5280000000000005
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_last_2_0_0"), SubResource("seg_tree_stage_last_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_stage_last_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_stage_last_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_STAGE_LAST_2_1", "VO_TREE_STAGE_LAST_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_last_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_stage_last_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.0
+key = &"VO_TREE_STAGE_LAST_3_1"
+
+[sub_resource type="Resource" id="seg_tree_stage_last_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.42
+end = 5.58
+key = &"VO_TREE_STAGE_LAST_3_2"
+
+[sub_resource type="Resource" id="take_tree_stage_last_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("55_xpmbf")
+source_md5 = "05e05b1a7b1fee10e13b7c0b1551270b"
+duration = 5.928
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_last_3_0_0"), SubResource("seg_tree_stage_last_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_stage_last_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_stage_last_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_STAGE_LAST_3_1", "VO_TREE_STAGE_LAST_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_last_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_laundry_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.43
+key = &"VO_TREE_CABINET_LAUNDRY_1_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_laundry_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.85
+end = 5.96
+key = &"VO_TREE_CABINET_LAUNDRY_1_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_laundry_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("56_6xrs5")
+source_md5 = "12d00dd28f71ca1f0d73fe30f2c32699"
+duration = 6.315
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_laundry_1_0_0"), SubResource("seg_tree_cabinet_laundry_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_laundry_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_laundry_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LAUNDRY_1_1", "VO_TREE_CABINET_LAUNDRY_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_laundry_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_laundry_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.19
+key = &"VO_TREE_CABINET_LAUNDRY_2_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_laundry_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.61
+end = 6.97
+key = &"VO_TREE_CABINET_LAUNDRY_2_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_laundry_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("57_exkd3")
+source_md5 = "a48d201229030ece76999b6f4433e10e"
+duration = 7.321
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_laundry_2_0_0"), SubResource("seg_tree_cabinet_laundry_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_laundry_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_laundry_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LAUNDRY_2_1", "VO_TREE_CABINET_LAUNDRY_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_laundry_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_laundry_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.51
+key = &"VO_TREE_CABINET_LAUNDRY_3_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_laundry_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.93
+end = 5.68
+key = &"VO_TREE_CABINET_LAUNDRY_3_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_laundry_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("58_e1rvo")
+source_md5 = "c4309952a6f989df08eeae5c8160bc5b"
+duration = 6.032
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_laundry_3_0_0"), SubResource("seg_tree_cabinet_laundry_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_laundry_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_laundry_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LAUNDRY_3_1", "VO_TREE_CABINET_LAUNDRY_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_laundry_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_laundry_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.21
+key = &"VO_TREE_CABINET_LAUNDRY_4_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_laundry_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.63
+end = 6.96
+key = &"VO_TREE_CABINET_LAUNDRY_4_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_laundry_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("59_844ss")
+source_md5 = "2fd493cfa1f3985597a52f1261c9336b"
+duration = 7.306
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_laundry_4_0_0"), SubResource("seg_tree_cabinet_laundry_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_laundry_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_laundry_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LAUNDRY_4_1", "VO_TREE_CABINET_LAUNDRY_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_laundry_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_garage_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.64
+key = &"VO_TREE_CABINET_GARAGE_1_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_garage_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.06
+end = 5.47
+key = &"VO_TREE_CABINET_GARAGE_1_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_garage_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("60_gstf6")
+source_md5 = "878632358beb5fe757ad16d748505952"
+duration = 5.819
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_garage_1_0_0"), SubResource("seg_tree_cabinet_garage_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_garage_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_garage_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_GARAGE_1_1", "VO_TREE_CABINET_GARAGE_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_garage_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_garage_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.96
+key = &"VO_TREE_CABINET_GARAGE_2_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_garage_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.38
+end = 6.7
+key = &"VO_TREE_CABINET_GARAGE_2_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_garage_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("61_sl3r5")
+source_md5 = "d20c38fe71cdb1d7919f839a292b43ef"
+duration = 7.051
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_garage_2_0_0"), SubResource("seg_tree_cabinet_garage_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_garage_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_garage_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_GARAGE_2_1", "VO_TREE_CABINET_GARAGE_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_garage_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_garage_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.56
+key = &"VO_TREE_CABINET_GARAGE_3_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_garage_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.98
+end = 6.75
+key = &"VO_TREE_CABINET_GARAGE_3_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_garage_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("62_3jj5j")
+source_md5 = "b8a89b6cff09ae1c103fba0f1f6ce3e6"
+duration = 7.103
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_garage_3_0_0"), SubResource("seg_tree_cabinet_garage_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_garage_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_garage_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_GARAGE_3_1", "VO_TREE_CABINET_GARAGE_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_garage_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_garage_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.7
+key = &"VO_TREE_CABINET_GARAGE_4_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_garage_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.12
+end = 7.44
+key = &"VO_TREE_CABINET_GARAGE_4_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_garage_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("63_c06w5")
+source_md5 = "c1e004b8eb845a98cc12febcadf7ea06"
+duration = 7.788
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_garage_4_0_0"), SubResource("seg_tree_cabinet_garage_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_garage_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_garage_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_GARAGE_4_1", "VO_TREE_CABINET_GARAGE_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_garage_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kitchen_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.95
+key = &"VO_TREE_CABINET_KITCHEN_1_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kitchen_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.37
+end = 5.77
+key = &"VO_TREE_CABINET_KITCHEN_1_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_kitchen_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("64_ggasp")
+source_md5 = "21b58fb6777243eb4f1d4024b2a53dff"
+duration = 6.117
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kitchen_1_0_0"), SubResource("seg_tree_cabinet_kitchen_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_kitchen_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_kitchen_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_KITCHEN_1_1", "VO_TREE_CABINET_KITCHEN_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kitchen_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kitchen_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.08
+key = &"VO_TREE_CABINET_KITCHEN_2_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kitchen_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.5
+end = 7.51
+key = &"VO_TREE_CABINET_KITCHEN_2_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_kitchen_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("65_toy6q")
+source_md5 = "6dc72a74ed643c7fcf01ee87f59716e4"
+duration = 7.859
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kitchen_2_0_0"), SubResource("seg_tree_cabinet_kitchen_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_kitchen_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_kitchen_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_KITCHEN_2_1", "VO_TREE_CABINET_KITCHEN_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kitchen_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kitchen_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.3
+key = &"VO_TREE_CABINET_KITCHEN_3_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kitchen_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.72
+end = 5.82
+key = &"VO_TREE_CABINET_KITCHEN_3_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_kitchen_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("66_8djmv")
+source_md5 = "22267d1235eab426efed3c38a6c67fa4"
+duration = 6.173
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kitchen_3_0_0"), SubResource("seg_tree_cabinet_kitchen_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_kitchen_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_kitchen_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_KITCHEN_3_1", "VO_TREE_CABINET_KITCHEN_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kitchen_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kitchen_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.12
+key = &"VO_TREE_CABINET_KITCHEN_4_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kitchen_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.54
+end = 5.47
+key = &"VO_TREE_CABINET_KITCHEN_4_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_kitchen_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("67_fdrwb")
+source_md5 = "0bc4a8fbc048da0d2acf193ae05a9367"
+duration = 5.819
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kitchen_4_0_0"), SubResource("seg_tree_cabinet_kitchen_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_kitchen_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_kitchen_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_KITCHEN_4_1", "VO_TREE_CABINET_KITCHEN_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kitchen_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_living_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.82
+key = &"VO_TREE_CABINET_LIVING_1_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_living_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.24
+end = 5.77
+key = &"VO_TREE_CABINET_LIVING_1_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_living_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("68_ow8ry")
+source_md5 = "48bd66e47713a2624d5119aad2c0a623"
+duration = 6.117
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_living_1_0_0"), SubResource("seg_tree_cabinet_living_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_living_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_living_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LIVING_1_1", "VO_TREE_CABINET_LIVING_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_living_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_living_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.63
+key = &"VO_TREE_CABINET_LIVING_2_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_living_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.05
+end = 6.39
+key = &"VO_TREE_CABINET_LIVING_2_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_living_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("69_gt8nq")
+source_md5 = "d0e544f2a1af5fa4d6682421462a46f1"
+duration = 6.74
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_living_2_0_0"), SubResource("seg_tree_cabinet_living_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_living_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_living_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LIVING_2_1", "VO_TREE_CABINET_LIVING_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_living_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_living_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.1
+key = &"VO_TREE_CABINET_LIVING_3_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_living_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.52
+end = 5.89
+key = &"VO_TREE_CABINET_LIVING_3_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_living_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("70_g8yv1")
+source_md5 = "eb1b830300affb0e2314baec05bb3353"
+duration = 6.244
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_living_3_0_0"), SubResource("seg_tree_cabinet_living_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_living_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_living_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LIVING_3_1", "VO_TREE_CABINET_LIVING_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_living_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_living_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.74
+key = &"VO_TREE_CABINET_LIVING_4_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_living_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.16
+end = 6.23
+key = &"VO_TREE_CABINET_LIVING_4_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_living_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("71_bv3lv")
+source_md5 = "f5cefb45dfb9cee7047af90e425dc403"
+duration = 6.579
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_living_4_0_0"), SubResource("seg_tree_cabinet_living_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_living_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_living_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LIVING_4_1", "VO_TREE_CABINET_LIVING_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_living_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_north_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.68
+key = &"VO_TREE_CABINET_KIDS_NORTH_1_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_north_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.1
+end = 6.53
+key = &"VO_TREE_CABINET_KIDS_NORTH_1_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_kids_north_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("72_7slqc")
+source_md5 = "ecc0510aa2ab1c6334ceff85660e75d6"
+duration = 6.881
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_north_1_0_0"), SubResource("seg_tree_cabinet_kids_north_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_kids_north_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_kids_north_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_KIDS_NORTH_1_1", "VO_TREE_CABINET_KIDS_NORTH_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_north_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_north_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.41
+key = &"VO_TREE_CABINET_KIDS_NORTH_2_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_north_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.83
+end = 8.23
+key = &"VO_TREE_CABINET_KIDS_NORTH_2_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_kids_north_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("73_w60h5")
+source_md5 = "7b039e2e05597739283fcf84ed56fa08"
+duration = 8.581
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_north_2_0_0"), SubResource("seg_tree_cabinet_kids_north_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_kids_north_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_kids_north_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_KIDS_NORTH_2_1", "VO_TREE_CABINET_KIDS_NORTH_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_north_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_north_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.14
+key = &"VO_TREE_CABINET_KIDS_NORTH_3_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_north_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.56
+end = 6.96
+key = &"VO_TREE_CABINET_KIDS_NORTH_3_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_kids_north_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("74_ebtp2")
+source_md5 = "81b0215b26c3c6dfb7db14c91ce1b29a"
+duration = 7.306
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_north_3_0_0"), SubResource("seg_tree_cabinet_kids_north_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_kids_north_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_kids_north_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_KIDS_NORTH_3_1", "VO_TREE_CABINET_KIDS_NORTH_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_north_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_north_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.51
+key = &"VO_TREE_CABINET_KIDS_NORTH_4_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_north_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.93
+end = 6.95
+key = &"VO_TREE_CABINET_KIDS_NORTH_4_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_kids_north_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("75_waojd")
+source_md5 = "d1607a5a95d70135401634ab5cad57a5"
+duration = 7.301
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_north_4_0_0"), SubResource("seg_tree_cabinet_kids_north_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_kids_north_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_kids_north_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_KIDS_NORTH_4_1", "VO_TREE_CABINET_KIDS_NORTH_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_north_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_east_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.46
+key = &"VO_TREE_CABINET_KIDS_EAST_1_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_east_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.88
+end = 5.95
+key = &"VO_TREE_CABINET_KIDS_EAST_1_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_kids_east_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("76_x5gip")
+source_md5 = "f1b08a6d3fee068e8a42db5e83f9cc94"
+duration = 6.301
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_east_1_0_0"), SubResource("seg_tree_cabinet_kids_east_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_kids_east_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_kids_east_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_KIDS_EAST_1_1", "VO_TREE_CABINET_KIDS_EAST_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_east_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_east_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.85
+key = &"VO_TREE_CABINET_KIDS_EAST_2_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_east_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.27
+end = 5.96
+key = &"VO_TREE_CABINET_KIDS_EAST_2_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_kids_east_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("77_73x1p")
+source_md5 = "9f8271f8f7394209e804a3b0903db3d8"
+duration = 6.315
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_east_2_0_0"), SubResource("seg_tree_cabinet_kids_east_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_kids_east_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_kids_east_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_KIDS_EAST_2_1", "VO_TREE_CABINET_KIDS_EAST_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_east_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_east_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.57
+key = &"VO_TREE_CABINET_KIDS_EAST_3_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_east_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.99
+end = 7.11
+key = &"VO_TREE_CABINET_KIDS_EAST_3_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_kids_east_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("78_1tucu")
+source_md5 = "26753360338c9a8e68503ef64e800f91"
+duration = 7.462
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_east_3_0_0"), SubResource("seg_tree_cabinet_kids_east_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_kids_east_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_kids_east_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_KIDS_EAST_3_1", "VO_TREE_CABINET_KIDS_EAST_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_east_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_east_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.7
+key = &"VO_TREE_CABINET_KIDS_EAST_4_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_kids_east_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.12
+end = 6.93
+key = &"VO_TREE_CABINET_KIDS_EAST_4_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_kids_east_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("79_1m2hu")
+source_md5 = "5f9bc5ff0e392c2005f56ef3c7113f03"
+duration = 7.2780000000000005
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_east_4_0_0"), SubResource("seg_tree_cabinet_kids_east_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_kids_east_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_kids_east_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_KIDS_EAST_4_1", "VO_TREE_CABINET_KIDS_EAST_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_east_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_west_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.55
+key = &"VO_TREE_CABINET_LOFT_WEST_1_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_west_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.97
+end = 6.46
+key = &"VO_TREE_CABINET_LOFT_WEST_1_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_loft_west_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("80_33aeu")
+source_md5 = "eb0291b821eb53d4a61f8efdfb3d4916"
+duration = 6.811
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_west_1_0_0"), SubResource("seg_tree_cabinet_loft_west_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_loft_west_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_loft_west_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LOFT_WEST_1_1", "VO_TREE_CABINET_LOFT_WEST_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_west_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_west_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.95
+key = &"VO_TREE_CABINET_LOFT_WEST_2_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_west_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.37
+end = 5.53
+key = &"VO_TREE_CABINET_LOFT_WEST_2_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_loft_west_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("81_uywod")
+source_md5 = "8d6bd6e0c469a1820481aed92874280a"
+duration = 5.876
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_west_2_0_0"), SubResource("seg_tree_cabinet_loft_west_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_loft_west_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_loft_west_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LOFT_WEST_2_1", "VO_TREE_CABINET_LOFT_WEST_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_west_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_west_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.74
+key = &"VO_TREE_CABINET_LOFT_WEST_3_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_west_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.16
+end = 5.23
+key = &"VO_TREE_CABINET_LOFT_WEST_3_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_loft_west_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("82_tmlu8")
+source_md5 = "76ff11107fe72e9666ec345d2965f5c4"
+duration = 5.578
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_west_3_0_0"), SubResource("seg_tree_cabinet_loft_west_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_loft_west_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_loft_west_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LOFT_WEST_3_1", "VO_TREE_CABINET_LOFT_WEST_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_west_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_west_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.97
+key = &"VO_TREE_CABINET_LOFT_WEST_4_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_west_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.39
+end = 6.79
+key = &"VO_TREE_CABINET_LOFT_WEST_4_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_loft_west_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("83_1sp50")
+source_md5 = "58fab6a537520816da738070c8cddc0c"
+duration = 7.136
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_west_4_0_0"), SubResource("seg_tree_cabinet_loft_west_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_loft_west_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_loft_west_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LOFT_WEST_4_1", "VO_TREE_CABINET_LOFT_WEST_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_west_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_east_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.38
+key = &"VO_TREE_CABINET_LOFT_EAST_1_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_east_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.8
+end = 6.32
+key = &"VO_TREE_CABINET_LOFT_EAST_1_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_loft_east_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("84_ju2kb")
+source_md5 = "243e16fb1be1e947aeacae7d4c209c5c"
+duration = 6.6690000000000005
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_east_1_0_0"), SubResource("seg_tree_cabinet_loft_east_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_loft_east_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_loft_east_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LOFT_EAST_1_1", "VO_TREE_CABINET_LOFT_EAST_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_east_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_east_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.19
+key = &"VO_TREE_CABINET_LOFT_EAST_2_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_east_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.61
+end = 5.84
+key = &"VO_TREE_CABINET_LOFT_EAST_2_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_loft_east_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("85_jd6ja")
+source_md5 = "59484b4fe57b6fe10c90dcc4874c4fef"
+duration = 6.187
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_east_2_0_0"), SubResource("seg_tree_cabinet_loft_east_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_loft_east_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_loft_east_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LOFT_EAST_2_1", "VO_TREE_CABINET_LOFT_EAST_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_east_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_east_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.71
+key = &"VO_TREE_CABINET_LOFT_EAST_3_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_east_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.13
+end = 5.23
+key = &"VO_TREE_CABINET_LOFT_EAST_3_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_loft_east_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("86_qsgvx")
+source_md5 = "d507ee44eb251f5cd5085fe6e516fdc0"
+duration = 5.578
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_east_3_0_0"), SubResource("seg_tree_cabinet_loft_east_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_loft_east_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_loft_east_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LOFT_EAST_3_1", "VO_TREE_CABINET_LOFT_EAST_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_east_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_east_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.45
+key = &"VO_TREE_CABINET_LOFT_EAST_4_1"
+
+[sub_resource type="Resource" id="seg_tree_cabinet_loft_east_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.87
+end = 5.75
+key = &"VO_TREE_CABINET_LOFT_EAST_4_2"
+
+[sub_resource type="Resource" id="take_tree_cabinet_loft_east_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("87_vonbh")
+source_md5 = "8c23d4b74c3d2d826c4bdf5cf2a06bde"
+duration = 6.102
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_east_4_0_0"), SubResource("seg_tree_cabinet_loft_east_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_cabinet_loft_east_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_cabinet_loft_east_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_CABINET_LOFT_EAST_4_1", "VO_TREE_CABINET_LOFT_EAST_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_east_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_basement_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.24
+key = &"VO_TREE_HINT_BASEMENT_1_1"
+
+[sub_resource type="Resource" id="seg_tree_hint_basement_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.66
+end = 6.92
+key = &"VO_TREE_HINT_BASEMENT_1_2"
+
+[sub_resource type="Resource" id="take_tree_hint_basement_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("88_7n5x3")
+source_md5 = "77b877b498ed164277ec736d249b97da"
+duration = 7.273000000000001
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_basement_1_0_0"), SubResource("seg_tree_hint_basement_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_hint_basement_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_basement_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_BASEMENT_1_1", "VO_TREE_HINT_BASEMENT_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_basement_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_basement_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.5
+key = &"VO_TREE_HINT_BASEMENT_2_1"
+
+[sub_resource type="Resource" id="seg_tree_hint_basement_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.92
+end = 5.31
+key = &"VO_TREE_HINT_BASEMENT_2_2"
+
+[sub_resource type="Resource" id="take_tree_hint_basement_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("89_orvcy")
+source_md5 = "9da3bd1832dc3afc7515058ea00d6d7d"
+duration = 5.663
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_basement_2_0_0"), SubResource("seg_tree_hint_basement_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_hint_basement_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_basement_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_BASEMENT_2_1", "VO_TREE_HINT_BASEMENT_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_basement_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_basement_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.29
+key = &"VO_TREE_HINT_BASEMENT_3_1"
+
+[sub_resource type="Resource" id="seg_tree_hint_basement_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.71
+end = 4.52
+key = &"VO_TREE_HINT_BASEMENT_3_2"
+
+[sub_resource type="Resource" id="take_tree_hint_basement_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("90_yh0gs")
+source_md5 = "e7e91af7c0d2960cadc0f02627d47e92"
+duration = 4.87
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_basement_3_0_0"), SubResource("seg_tree_hint_basement_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_hint_basement_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_basement_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_BASEMENT_3_1", "VO_TREE_HINT_BASEMENT_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_basement_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_basement_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.22
+key = &"VO_TREE_HINT_BASEMENT_4_1"
+
+[sub_resource type="Resource" id="seg_tree_hint_basement_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.64
+end = 8.03
+key = &"VO_TREE_HINT_BASEMENT_4_2"
+
+[sub_resource type="Resource" id="take_tree_hint_basement_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("91_nbfl6")
+source_md5 = "290d8b8ba54ded9122532d5267292bf1"
+duration = 8.378
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_basement_4_0_0"), SubResource("seg_tree_hint_basement_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_hint_basement_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_basement_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_BASEMENT_4_1", "VO_TREE_HINT_BASEMENT_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_basement_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_ground_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.66
+key = &"VO_TREE_HINT_GROUND_1_1"
+
+[sub_resource type="Resource" id="seg_tree_hint_ground_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.08
+end = 6.62
+key = &"VO_TREE_HINT_GROUND_1_2"
+
+[sub_resource type="Resource" id="take_tree_hint_ground_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("92_cuht3")
+source_md5 = "d07a8e4645f228691a536a95384dde51"
+duration = 6.966
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_ground_1_0_0"), SubResource("seg_tree_hint_ground_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_hint_ground_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_ground_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_GROUND_1_1", "VO_TREE_HINT_GROUND_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_ground_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_ground_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.7
+key = &"VO_TREE_HINT_GROUND_2_1"
+
+[sub_resource type="Resource" id="take_tree_hint_ground_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("93_pqhgp")
+source_md5 = "c02b313acd7c79240204ca60830baefa"
+duration = 5.045
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_ground_2_0_0")])
+
+[sub_resource type="Resource" id="line_tree_hint_ground_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_ground_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_GROUND_2_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_ground_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_ground_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.95
+key = &"VO_TREE_HINT_GROUND_3_1"
+
+[sub_resource type="Resource" id="seg_tree_hint_ground_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 5.37
+end = 7.06
+key = &"VO_TREE_HINT_GROUND_3_2"
+
+[sub_resource type="Resource" id="take_tree_hint_ground_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("94_2acap")
+source_md5 = "929880ccd527988c9d1ab8e3d3bd1257"
+duration = 7.406000000000001
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_ground_3_0_0"), SubResource("seg_tree_hint_ground_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_hint_ground_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_ground_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_GROUND_3_1", "VO_TREE_HINT_GROUND_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_ground_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_ground_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.94
+key = &"VO_TREE_HINT_GROUND_4_1"
+
+[sub_resource type="Resource" id="take_tree_hint_ground_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("95_fqeq6")
+source_md5 = "edd7b7b51c5468ad3292887adb45b05e"
+duration = 4.2940000000000005
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_ground_4_0_0")])
+
+[sub_resource type="Resource" id="line_tree_hint_ground_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_ground_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_GROUND_4_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_ground_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_first_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.49
+key = &"VO_TREE_HINT_FIRST_1_1"
+
+[sub_resource type="Resource" id="seg_tree_hint_first_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.91
+end = 5.29
+key = &"VO_TREE_HINT_FIRST_1_2"
+
+[sub_resource type="Resource" id="seg_tree_hint_first_1_0_2"]
+script = ExtResource("3_q8epu")
+start = 5.71
+end = 7.38
+key = &"VO_TREE_HINT_FIRST_1_3"
+
+[sub_resource type="Resource" id="take_tree_hint_first_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("96_uvs0g")
+source_md5 = "bc68492c9a33c4410526c0fb3f4715a1"
+duration = 7.726
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_first_1_0_0"), SubResource("seg_tree_hint_first_1_0_1"), SubResource("seg_tree_hint_first_1_0_2")])
+
+[sub_resource type="Resource" id="line_tree_hint_first_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_first_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_FIRST_1_1", "VO_TREE_HINT_FIRST_1_2", "VO_TREE_HINT_FIRST_1_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_first_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_first_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.5
+key = &"VO_TREE_HINT_FIRST_2_1"
+
+[sub_resource type="Resource" id="take_tree_hint_first_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("97_l1si1")
+source_md5 = "62d57823bd86157de6ed72b2cb95f60c"
+duration = 4.847
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_first_2_0_0")])
+
+[sub_resource type="Resource" id="line_tree_hint_first_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_first_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_FIRST_2_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_first_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_first_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.55
+key = &"VO_TREE_HINT_FIRST_3_1"
+
+[sub_resource type="Resource" id="seg_tree_hint_first_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.97
+end = 5.03
+key = &"VO_TREE_HINT_FIRST_3_2"
+
+[sub_resource type="Resource" id="take_tree_hint_first_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("98_fx20a")
+source_md5 = "d9bd19fb76e4d26dda867275dd598fb2"
+duration = 5.38
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_first_3_0_0"), SubResource("seg_tree_hint_first_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_hint_first_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_first_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_FIRST_3_1", "VO_TREE_HINT_FIRST_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_first_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_first_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.71
+key = &"VO_TREE_HINT_FIRST_4_1"
+
+[sub_resource type="Resource" id="seg_tree_hint_first_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 5.13
+end = 7.23
+key = &"VO_TREE_HINT_FIRST_4_2"
+
+[sub_resource type="Resource" id="take_tree_hint_first_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("99_opun7")
+source_md5 = "f624d4f64d4614f013bc4ff6c28b9fd7"
+duration = 7.5760000000000005
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_first_4_0_0"), SubResource("seg_tree_hint_first_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_hint_first_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_first_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_FIRST_4_1", "VO_TREE_HINT_FIRST_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_first_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_attic_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.27
+key = &"VO_TREE_HINT_ATTIC_1_1"
+
+[sub_resource type="Resource" id="seg_tree_hint_attic_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.69
+end = 8.17
+key = &"VO_TREE_HINT_ATTIC_1_2"
+
+[sub_resource type="Resource" id="take_tree_hint_attic_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("100_yblbx")
+source_md5 = "665eeb1a93fe3f0ce7d4614bd4984992"
+duration = 8.52
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_attic_1_0_0"), SubResource("seg_tree_hint_attic_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_hint_attic_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_attic_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_ATTIC_1_1", "VO_TREE_HINT_ATTIC_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_attic_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_attic_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.36
+key = &"VO_TREE_HINT_ATTIC_2_1"
+
+[sub_resource type="Resource" id="seg_tree_hint_attic_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.78
+end = 6.06
+key = &"VO_TREE_HINT_ATTIC_2_2"
+
+[sub_resource type="Resource" id="take_tree_hint_attic_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("101_w0ptl")
+source_md5 = "05c5e46e36d3ee351e319a178d9d60c9"
+duration = 6.414
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_attic_2_0_0"), SubResource("seg_tree_hint_attic_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_hint_attic_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_attic_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_ATTIC_2_1", "VO_TREE_HINT_ATTIC_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_attic_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_attic_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.14
+key = &"VO_TREE_HINT_ATTIC_3_1"
+
+[sub_resource type="Resource" id="seg_tree_hint_attic_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.56
+end = 4.83
+key = &"VO_TREE_HINT_ATTIC_3_2"
+
+[sub_resource type="Resource" id="take_tree_hint_attic_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("102_fki6a")
+source_md5 = "204c38577c3b41781d23ef1e7e6c35f9"
+duration = 5.182
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_attic_3_0_0"), SubResource("seg_tree_hint_attic_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_hint_attic_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_attic_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_ATTIC_3_1", "VO_TREE_HINT_ATTIC_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_attic_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_hint_attic_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.9
+key = &"VO_TREE_HINT_ATTIC_4_1"
+
+[sub_resource type="Resource" id="seg_tree_hint_attic_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.32
+end = 6.42
+key = &"VO_TREE_HINT_ATTIC_4_2"
+
+[sub_resource type="Resource" id="take_tree_hint_attic_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("103_ivwxs")
+source_md5 = "500fb6a61c3113b68d7577e4f86d40fa"
+duration = 6.768
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_attic_4_0_0"), SubResource("seg_tree_hint_attic_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_hint_attic_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_hint_attic_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_HINT_ATTIC_4_1", "VO_TREE_HINT_ATTIC_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_attic_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_tip_throw_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.71
+key = &"VO_TREE_TIP_THROW_1_1"
+
+[sub_resource type="Resource" id="seg_tree_tip_throw_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.13
+end = 5.98
+key = &"VO_TREE_TIP_THROW_1_2"
+
+[sub_resource type="Resource" id="seg_tree_tip_throw_1_0_2"]
+script = ExtResource("3_q8epu")
+start = 6.4
+end = 8.44
+key = &"VO_TREE_TIP_THROW_1_3"
+
+[sub_resource type="Resource" id="take_tree_tip_throw_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("104_sbucs")
+source_md5 = "9d884c2b3bb3bcc3d4a1d224ab81dfc1"
+duration = 8.789
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_tip_throw_1_0_0"), SubResource("seg_tree_tip_throw_1_0_1"), SubResource("seg_tree_tip_throw_1_0_2")])
+
+[sub_resource type="Resource" id="line_tree_tip_throw_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_tip_throw_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_TIP_THROW_1_1", "VO_TREE_TIP_THROW_1_2", "VO_TREE_TIP_THROW_1_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_tip_throw_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_tip_part_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.92
+key = &"VO_TREE_TIP_PART_1_1"
+
+[sub_resource type="Resource" id="seg_tree_tip_part_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.34
+end = 4.75
+key = &"VO_TREE_TIP_PART_1_2"
+
+[sub_resource type="Resource" id="seg_tree_tip_part_1_0_2"]
+script = ExtResource("3_q8epu")
+start = 5.17
+end = 8.4
+key = &"VO_TREE_TIP_PART_1_3"
+
+[sub_resource type="Resource" id="take_tree_tip_part_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("105_7crhp")
+source_md5 = "fbd6733c2bd9999cd0d5023ca24dfad5"
+duration = 8.746
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_tip_part_1_0_0"), SubResource("seg_tree_tip_part_1_0_1"), SubResource("seg_tree_tip_part_1_0_2")])
+
+[sub_resource type="Resource" id="line_tree_tip_part_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_tip_part_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_TIP_PART_1_1", "VO_TREE_TIP_PART_1_2", "VO_TREE_TIP_PART_1_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_tip_part_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_tip_part_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.83
+key = &"VO_TREE_TIP_PART_2_1"
+
+[sub_resource type="Resource" id="seg_tree_tip_part_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.25
+end = 6.35
+key = &"VO_TREE_TIP_PART_2_2"
+
+[sub_resource type="Resource" id="take_tree_tip_part_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("106_ebx7b")
+source_md5 = "6281318e28ff2dfdd891a08800d50da6"
+duration = 6.697
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_tip_part_2_0_0"), SubResource("seg_tree_tip_part_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_tip_part_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_tip_part_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_TIP_PART_2_1", "VO_TREE_TIP_PART_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_tip_part_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_tip_vacuum_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.44
+key = &"VO_TREE_TIP_VACUUM_1_1"
+
+[sub_resource type="Resource" id="seg_tree_tip_vacuum_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.86
+end = 5.98
+key = &"VO_TREE_TIP_VACUUM_1_2"
+
+[sub_resource type="Resource" id="seg_tree_tip_vacuum_1_0_2"]
+script = ExtResource("3_q8epu")
+start = 6.4
+end = 8.41
+key = &"VO_TREE_TIP_VACUUM_1_3"
+
+[sub_resource type="Resource" id="take_tree_tip_vacuum_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("107_tfvuo")
+source_md5 = "bfbfbe69677a19b3415012de999f2e37"
+duration = 8.76
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_tip_vacuum_1_0_0"), SubResource("seg_tree_tip_vacuum_1_0_1"), SubResource("seg_tree_tip_vacuum_1_0_2")])
+
+[sub_resource type="Resource" id="line_tree_tip_vacuum_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_tip_vacuum_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_TIP_VACUUM_1_1", "VO_TREE_TIP_VACUUM_1_2", "VO_TREE_TIP_VACUUM_1_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_tip_vacuum_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_tip_vacuum_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.04
+key = &"VO_TREE_TIP_VACUUM_2_1"
+
+[sub_resource type="Resource" id="seg_tree_tip_vacuum_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.46
+end = 6.77
+key = &"VO_TREE_TIP_VACUUM_2_2"
+
+[sub_resource type="Resource" id="seg_tree_tip_vacuum_2_0_2"]
+script = ExtResource("3_q8epu")
+start = 7.19
+end = 8.3
+key = &"VO_TREE_TIP_VACUUM_2_3"
+
+[sub_resource type="Resource" id="take_tree_tip_vacuum_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("108_k5d54")
+source_md5 = "7fe02bbd657404a8cb3b9e5797107ef9"
+duration = 8.647
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_tip_vacuum_2_0_0"), SubResource("seg_tree_tip_vacuum_2_0_1"), SubResource("seg_tree_tip_vacuum_2_0_2")])
+
+[sub_resource type="Resource" id="line_tree_tip_vacuum_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_tip_vacuum_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_TIP_VACUUM_2_1", "VO_TREE_TIP_VACUUM_2_2", "VO_TREE_TIP_VACUUM_2_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_tip_vacuum_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_tip_vacuum_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.33
+key = &"VO_TREE_TIP_VACUUM_3_1"
+
+[sub_resource type="Resource" id="seg_tree_tip_vacuum_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.75
+end = 5.34
+key = &"VO_TREE_TIP_VACUUM_3_2"
+
+[sub_resource type="Resource" id="seg_tree_tip_vacuum_3_0_2"]
+script = ExtResource("3_q8epu")
+start = 5.76
+end = 7.21
+key = &"VO_TREE_TIP_VACUUM_3_3"
+
+[sub_resource type="Resource" id="take_tree_tip_vacuum_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("109_knfkk")
+source_md5 = "b65d50ac8897ec58bb3d887de569f13e"
+duration = 7.556
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_tip_vacuum_3_0_0"), SubResource("seg_tree_tip_vacuum_3_0_1"), SubResource("seg_tree_tip_vacuum_3_0_2")])
+
+[sub_resource type="Resource" id="line_tree_tip_vacuum_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_tip_vacuum_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_TIP_VACUUM_3_1", "VO_TREE_TIP_VACUUM_3_2", "VO_TREE_TIP_VACUUM_3_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_tip_vacuum_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_tip_elevator_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.24
+key = &"VO_TREE_TIP_ELEVATOR_1_1"
+
+[sub_resource type="Resource" id="seg_tree_tip_elevator_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 1.66
+end = 6.18
+key = &"VO_TREE_TIP_ELEVATOR_1_2"
+
+[sub_resource type="Resource" id="seg_tree_tip_elevator_1_0_2"]
+script = ExtResource("3_q8epu")
+start = 6.6
+end = 7.94
+key = &"VO_TREE_TIP_ELEVATOR_1_3"
+
+[sub_resource type="Resource" id="take_tree_tip_elevator_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("110_wbatc")
+source_md5 = "b136e975c771898b9e92bd5e538c344b"
+duration = 8.293000000000001
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_tip_elevator_1_0_0"), SubResource("seg_tree_tip_elevator_1_0_1"), SubResource("seg_tree_tip_elevator_1_0_2")])
+
+[sub_resource type="Resource" id="line_tree_tip_elevator_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_tip_elevator_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_TIP_ELEVATOR_1_1", "VO_TREE_TIP_ELEVATOR_1_2", "VO_TREE_TIP_ELEVATOR_1_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_tip_elevator_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_basement_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.77
+key = &"VO_TREE_PART_BASEMENT_1_1"
+
+[sub_resource type="Resource" id="seg_tree_part_basement_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.19
+end = 5.23
+key = &"VO_TREE_PART_BASEMENT_1_2"
+
+[sub_resource type="Resource" id="take_tree_part_basement_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("111_o4y20")
+source_md5 = "316c8a83eee8b10fc85288bcca729fff"
+duration = 5.578
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_basement_1_0_0"), SubResource("seg_tree_part_basement_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_basement_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_basement_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_BASEMENT_1_1", "VO_TREE_PART_BASEMENT_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_basement_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_basement_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.75
+key = &"VO_TREE_PART_BASEMENT_2_1"
+
+[sub_resource type="Resource" id="seg_tree_part_basement_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 5.17
+end = 6.19
+key = &"VO_TREE_PART_BASEMENT_2_2"
+
+[sub_resource type="Resource" id="take_tree_part_basement_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("112_8p60b")
+source_md5 = "04113cbbba6842f0d30fa0ec3b157e90"
+duration = 6.542
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_basement_2_0_0"), SubResource("seg_tree_part_basement_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_basement_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_basement_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_BASEMENT_2_1", "VO_TREE_PART_BASEMENT_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_basement_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_basement_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.91
+key = &"VO_TREE_PART_BASEMENT_3_1"
+
+[sub_resource type="Resource" id="seg_tree_part_basement_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.33
+end = 6.37
+key = &"VO_TREE_PART_BASEMENT_3_2"
+
+[sub_resource type="Resource" id="take_tree_part_basement_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("113_sfwfs")
+source_md5 = "34f03fdcd1e2282eceb0885dd53b3017"
+duration = 6.721
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_basement_3_0_0"), SubResource("seg_tree_part_basement_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_basement_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_basement_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_BASEMENT_3_1", "VO_TREE_PART_BASEMENT_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_basement_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_basement_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.61
+key = &"VO_TREE_PART_BASEMENT_4_1"
+
+[sub_resource type="Resource" id="seg_tree_part_basement_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.03
+end = 6.92
+key = &"VO_TREE_PART_BASEMENT_4_2"
+
+[sub_resource type="Resource" id="take_tree_part_basement_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("114_ohl3w")
+source_md5 = "dc55be816930dbf02f5cd6331e000aff"
+duration = 7.273000000000001
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_basement_4_0_0"), SubResource("seg_tree_part_basement_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_basement_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_basement_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_BASEMENT_4_1", "VO_TREE_PART_BASEMENT_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_basement_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_ground_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.06
+key = &"VO_TREE_PART_GROUND_1_1"
+
+[sub_resource type="Resource" id="seg_tree_part_ground_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.48
+end = 6.08
+key = &"VO_TREE_PART_GROUND_1_2"
+
+[sub_resource type="Resource" id="take_tree_part_ground_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("115_co0rj")
+source_md5 = "a80dd2b382a40c1b4368b8cdd6e45d27"
+duration = 6.428
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_ground_1_0_0"), SubResource("seg_tree_part_ground_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_ground_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_ground_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_GROUND_1_1", "VO_TREE_PART_GROUND_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_ground_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_ground_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.53
+key = &"VO_TREE_PART_GROUND_2_1"
+
+[sub_resource type="Resource" id="seg_tree_part_ground_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.95
+end = 6.23
+key = &"VO_TREE_PART_GROUND_2_2"
+
+[sub_resource type="Resource" id="take_tree_part_ground_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("116_oidjh")
+source_md5 = "6ae205d05b978d0d3becc50f76c3f4e7"
+duration = 6.5840000000000005
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_ground_2_0_0"), SubResource("seg_tree_part_ground_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_ground_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_ground_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_GROUND_2_1", "VO_TREE_PART_GROUND_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_ground_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_ground_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.06
+key = &"VO_TREE_PART_GROUND_3_1"
+
+[sub_resource type="Resource" id="seg_tree_part_ground_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.48
+end = 6.91
+key = &"VO_TREE_PART_GROUND_3_2"
+
+[sub_resource type="Resource" id="take_tree_part_ground_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("117_ylo37")
+source_md5 = "a7cccbc02ac73653990f78dd143267d4"
+duration = 7.264
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_ground_3_0_0"), SubResource("seg_tree_part_ground_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_ground_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_ground_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_GROUND_3_1", "VO_TREE_PART_GROUND_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_ground_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_ground_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.43
+key = &"VO_TREE_PART_GROUND_4_1"
+
+[sub_resource type="Resource" id="seg_tree_part_ground_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.85
+end = 7.5
+key = &"VO_TREE_PART_GROUND_4_2"
+
+[sub_resource type="Resource" id="take_tree_part_ground_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("118_a2cx4")
+source_md5 = "d842d88227818e48f73558fbf147359d"
+duration = 7.854
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_ground_4_0_0"), SubResource("seg_tree_part_ground_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_ground_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_ground_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_GROUND_4_1", "VO_TREE_PART_GROUND_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_ground_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_first_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.03
+key = &"VO_TREE_PART_FIRST_1_1"
+
+[sub_resource type="Resource" id="seg_tree_part_first_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.45
+end = 6.06
+key = &"VO_TREE_PART_FIRST_1_2"
+
+[sub_resource type="Resource" id="take_tree_part_first_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("119_uck7b")
+source_md5 = "87c879abe06129d5702892f2e99a0ce6"
+duration = 6.414
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_first_1_0_0"), SubResource("seg_tree_part_first_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_first_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_first_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_FIRST_1_1", "VO_TREE_PART_FIRST_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_first_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_first_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.7
+key = &"VO_TREE_PART_FIRST_2_1"
+
+[sub_resource type="Resource" id="seg_tree_part_first_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.12
+end = 5.17
+key = &"VO_TREE_PART_FIRST_2_2"
+
+[sub_resource type="Resource" id="seg_tree_part_first_2_0_2"]
+script = ExtResource("3_q8epu")
+start = 5.59
+end = 10.37
+key = &"VO_TREE_PART_FIRST_2_3"
+
+[sub_resource type="Resource" id="take_tree_part_first_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("120_mjxj7")
+source_md5 = "346cb8afc467fef137ea53b957ddb160"
+duration = 10.724
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_first_2_0_0"), SubResource("seg_tree_part_first_2_0_1"), SubResource("seg_tree_part_first_2_0_2")])
+
+[sub_resource type="Resource" id="line_tree_part_first_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_first_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_FIRST_2_1", "VO_TREE_PART_FIRST_2_2", "VO_TREE_PART_FIRST_2_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_first_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_first_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.28
+key = &"VO_TREE_PART_FIRST_3_1"
+
+[sub_resource type="Resource" id="seg_tree_part_first_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.7
+end = 6.27
+key = &"VO_TREE_PART_FIRST_3_2"
+
+[sub_resource type="Resource" id="take_tree_part_first_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("121_81tw3")
+source_md5 = "6c1120daa832f4295c23684e77295018"
+duration = 6.622
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_first_3_0_0"), SubResource("seg_tree_part_first_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_first_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_first_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_FIRST_3_1", "VO_TREE_PART_FIRST_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_first_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_first_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.57
+key = &"VO_TREE_PART_FIRST_4_1"
+
+[sub_resource type="Resource" id="seg_tree_part_first_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.99
+end = 6.83
+key = &"VO_TREE_PART_FIRST_4_2"
+
+[sub_resource type="Resource" id="take_tree_part_first_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("122_pxs1h")
+source_md5 = "195aa5bf121895802ce66b93266cab80"
+duration = 7.179
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_first_4_0_0"), SubResource("seg_tree_part_first_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_first_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_first_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_FIRST_4_1", "VO_TREE_PART_FIRST_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_first_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_attic_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.66
+key = &"VO_TREE_PART_ATTIC_1_1"
+
+[sub_resource type="Resource" id="seg_tree_part_attic_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.08
+end = 5.4
+key = &"VO_TREE_PART_ATTIC_1_2"
+
+[sub_resource type="Resource" id="take_tree_part_attic_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("123_sje67")
+source_md5 = "7a2d49bf2352f9231f946af137f0bbc7"
+duration = 5.748
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_attic_1_0_0"), SubResource("seg_tree_part_attic_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_attic_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_attic_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_ATTIC_1_1", "VO_TREE_PART_ATTIC_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_attic_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_attic_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.52
+key = &"VO_TREE_PART_ATTIC_2_1"
+
+[sub_resource type="Resource" id="seg_tree_part_attic_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.94
+end = 5.23
+key = &"VO_TREE_PART_ATTIC_2_2"
+
+[sub_resource type="Resource" id="take_tree_part_attic_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("124_iifct")
+source_md5 = "91963badf6d663f440a37656f02ff996"
+duration = 5.578
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_attic_2_0_0"), SubResource("seg_tree_part_attic_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_attic_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_attic_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_ATTIC_2_1", "VO_TREE_PART_ATTIC_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_attic_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_attic_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.57
+key = &"VO_TREE_PART_ATTIC_3_1"
+
+[sub_resource type="Resource" id="seg_tree_part_attic_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.99
+end = 6.96
+key = &"VO_TREE_PART_ATTIC_3_2"
+
+[sub_resource type="Resource" id="take_tree_part_attic_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("125_tsvsv")
+source_md5 = "337351ce8a42c85ceb4a28a2d0b2b252"
+duration = 7.306
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_attic_3_0_0"), SubResource("seg_tree_part_attic_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_part_attic_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_attic_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_ATTIC_3_1", "VO_TREE_PART_ATTIC_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_attic_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_part_attic_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.61
+key = &"VO_TREE_PART_ATTIC_4_1"
+
+[sub_resource type="Resource" id="seg_tree_part_attic_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.03
+end = 6.53
+key = &"VO_TREE_PART_ATTIC_4_2"
+
+[sub_resource type="Resource" id="seg_tree_part_attic_4_0_2"]
+script = ExtResource("3_q8epu")
+start = 6.95
+end = 7.97
+key = &"VO_TREE_PART_ATTIC_4_3"
+
+[sub_resource type="Resource" id="take_tree_part_attic_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("126_d7co0")
+source_md5 = "7647b30ebbbe8c06adbf5e1ce70e6599"
+duration = 8.316
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_attic_4_0_0"), SubResource("seg_tree_part_attic_4_0_1"), SubResource("seg_tree_part_attic_4_0_2")])
+
+[sub_resource type="Resource" id="line_tree_part_attic_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_part_attic_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PART_ATTIC_4_1", "VO_TREE_PART_ATTIC_4_2", "VO_TREE_PART_ATTIC_4_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_attic_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_floor_ground_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.23
+key = &"VO_TREE_FLOOR_GROUND_1_1"
+
+[sub_resource type="Resource" id="seg_tree_floor_ground_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.65
+end = 7.54
+key = &"VO_TREE_FLOOR_GROUND_1_2"
+
+[sub_resource type="Resource" id="take_tree_floor_ground_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("127_5b1cx")
+source_md5 = "99cce649717e7c057fc40a0857efe8c6"
+duration = 7.8870000000000005
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_ground_1_0_0"), SubResource("seg_tree_floor_ground_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_floor_ground_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_floor_ground_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FLOOR_GROUND_1_1", "VO_TREE_FLOOR_GROUND_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_ground_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_floor_ground_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.95
+key = &"VO_TREE_FLOOR_GROUND_2_1"
+
+[sub_resource type="Resource" id="seg_tree_floor_ground_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.37
+end = 5.94
+key = &"VO_TREE_FLOOR_GROUND_2_2"
+
+[sub_resource type="Resource" id="take_tree_floor_ground_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("128_7hq5n")
+source_md5 = "930f1da7624694a368c74ce62063170d"
+duration = 6.287
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_ground_2_0_0"), SubResource("seg_tree_floor_ground_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_floor_ground_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_floor_ground_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FLOOR_GROUND_2_1", "VO_TREE_FLOOR_GROUND_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_ground_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_floor_ground_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.55
+key = &"VO_TREE_FLOOR_GROUND_3_1"
+
+[sub_resource type="Resource" id="seg_tree_floor_ground_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.97
+end = 6.42
+key = &"VO_TREE_FLOOR_GROUND_3_2"
+
+[sub_resource type="Resource" id="take_tree_floor_ground_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("129_t85re")
+source_md5 = "0538d2236a74028c7481d47230fa6ad0"
+duration = 6.768
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_ground_3_0_0"), SubResource("seg_tree_floor_ground_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_floor_ground_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_floor_ground_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FLOOR_GROUND_3_1", "VO_TREE_FLOOR_GROUND_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_ground_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_floor_ground_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.53
+key = &"VO_TREE_FLOOR_GROUND_4_1"
+
+[sub_resource type="Resource" id="seg_tree_floor_ground_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.95
+end = 5.55
+key = &"VO_TREE_FLOOR_GROUND_4_2"
+
+[sub_resource type="Resource" id="take_tree_floor_ground_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("130_33jwt")
+source_md5 = "d8d4382057485be3793e84d0d6e2e83d"
+duration = 5.904
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_ground_4_0_0"), SubResource("seg_tree_floor_ground_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_floor_ground_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_floor_ground_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FLOOR_GROUND_4_1", "VO_TREE_FLOOR_GROUND_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_ground_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_floor_first_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.24
+key = &"VO_TREE_FLOOR_FIRST_1_1"
+
+[sub_resource type="Resource" id="seg_tree_floor_first_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.66
+end = 6.08
+key = &"VO_TREE_FLOOR_FIRST_1_2"
+
+[sub_resource type="Resource" id="take_tree_floor_first_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("131_x00l1")
+source_md5 = "5c0f659ea3d313fc7d0fd1cfe8e0a0d1"
+duration = 6.428
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_first_1_0_0"), SubResource("seg_tree_floor_first_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_floor_first_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_floor_first_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FLOOR_FIRST_1_1", "VO_TREE_FLOOR_FIRST_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_first_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_floor_first_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.8
+key = &"VO_TREE_FLOOR_FIRST_2_1"
+
+[sub_resource type="Resource" id="seg_tree_floor_first_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.22
+end = 6.33
+key = &"VO_TREE_FLOOR_FIRST_2_2"
+
+[sub_resource type="Resource" id="take_tree_floor_first_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("132_digtr")
+source_md5 = "66b5b108e5f65c4d11dde0554ba527ee"
+duration = 6.683
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_first_2_0_0"), SubResource("seg_tree_floor_first_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_floor_first_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_floor_first_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FLOOR_FIRST_2_1", "VO_TREE_FLOOR_FIRST_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_first_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_floor_first_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.02
+key = &"VO_TREE_FLOOR_FIRST_3_1"
+
+[sub_resource type="Resource" id="seg_tree_floor_first_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.44
+end = 5.51
+key = &"VO_TREE_FLOOR_FIRST_3_2"
+
+[sub_resource type="Resource" id="take_tree_floor_first_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("133_hgra8")
+source_md5 = "225040a6b3597f86012ddf9e15022af6"
+duration = 5.862
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_first_3_0_0"), SubResource("seg_tree_floor_first_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_floor_first_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_floor_first_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FLOOR_FIRST_3_1", "VO_TREE_FLOOR_FIRST_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_first_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_floor_first_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.24
+key = &"VO_TREE_FLOOR_FIRST_4_1"
+
+[sub_resource type="Resource" id="seg_tree_floor_first_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.66
+end = 6.13
+key = &"VO_TREE_FLOOR_FIRST_4_2"
+
+[sub_resource type="Resource" id="take_tree_floor_first_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("134_yrex8")
+source_md5 = "293072d6419ecb8e453dcdd5cf32c958"
+duration = 6.485
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_first_4_0_0"), SubResource("seg_tree_floor_first_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_floor_first_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_floor_first_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FLOOR_FIRST_4_1", "VO_TREE_FLOOR_FIRST_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_first_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_floor_attic_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.82
+key = &"VO_TREE_FLOOR_ATTIC_1_1"
+
+[sub_resource type="Resource" id="seg_tree_floor_attic_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.24
+end = 6.85
+key = &"VO_TREE_FLOOR_ATTIC_1_2"
+
+[sub_resource type="Resource" id="take_tree_floor_attic_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("135_0vrbi")
+source_md5 = "4c73bb1ab174439f6785a25618e262d3"
+duration = 7.202
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_attic_1_0_0"), SubResource("seg_tree_floor_attic_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_floor_attic_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_floor_attic_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FLOOR_ATTIC_1_1", "VO_TREE_FLOOR_ATTIC_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_attic_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_floor_attic_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.24
+key = &"VO_TREE_FLOOR_ATTIC_2_1"
+
+[sub_resource type="Resource" id="seg_tree_floor_attic_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.66
+end = 6.6
+key = &"VO_TREE_FLOOR_ATTIC_2_2"
+
+[sub_resource type="Resource" id="take_tree_floor_attic_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("136_qoe40")
+source_md5 = "1c806623ba1b50ce8aeb3632992062cf"
+duration = 6.952
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_attic_2_0_0"), SubResource("seg_tree_floor_attic_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_floor_attic_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_floor_attic_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FLOOR_ATTIC_2_1", "VO_TREE_FLOOR_ATTIC_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_attic_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_floor_attic_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.56
+key = &"VO_TREE_FLOOR_ATTIC_3_1"
+
+[sub_resource type="Resource" id="seg_tree_floor_attic_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 1.98
+end = 4.86
+key = &"VO_TREE_FLOOR_ATTIC_3_2"
+
+[sub_resource type="Resource" id="take_tree_floor_attic_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("137_18g45")
+source_md5 = "480d795aec191039b77c803bf64ed8df"
+duration = 5.21
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_attic_3_0_0"), SubResource("seg_tree_floor_attic_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_floor_attic_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_floor_attic_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FLOOR_ATTIC_3_1", "VO_TREE_FLOOR_ATTIC_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_attic_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_floor_attic_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.18
+key = &"VO_TREE_FLOOR_ATTIC_4_1"
+
+[sub_resource type="Resource" id="seg_tree_floor_attic_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.6
+end = 5.48
+key = &"VO_TREE_FLOOR_ATTIC_4_2"
+
+[sub_resource type="Resource" id="take_tree_floor_attic_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("138_xpstj")
+source_md5 = "df9ce5b7ab78fbc74bd3043db906bf40"
+duration = 5.833
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_attic_4_0_0"), SubResource("seg_tree_floor_attic_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_floor_attic_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_floor_attic_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FLOOR_ATTIC_4_1", "VO_TREE_FLOOR_ATTIC_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_attic_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_final_wash_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.97
+key = &"VO_TREE_FINAL_WASH_1_1"
+
+[sub_resource type="Resource" id="seg_tree_final_wash_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.39
+end = 6.98
+key = &"VO_TREE_FINAL_WASH_1_2"
+
+[sub_resource type="Resource" id="take_tree_final_wash_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("139_e2485")
+source_md5 = "4d13ce47fd4aa886f1021d3f1bace12c"
+duration = 7.33
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_final_wash_1_0_0"), SubResource("seg_tree_final_wash_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_final_wash_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_final_wash_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FINAL_WASH_1_1", "VO_TREE_FINAL_WASH_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_final_wash_1_0")])
+waits = true
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_final_wash_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.34
+key = &"VO_TREE_FINAL_WASH_2_1"
+
+[sub_resource type="Resource" id="seg_tree_final_wash_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 1.76
+end = 4.42
+key = &"VO_TREE_FINAL_WASH_2_2"
+
+[sub_resource type="Resource" id="take_tree_final_wash_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("140_5wg3w")
+source_md5 = "ac4880213a06fe1c152efa848a79bc7f"
+duration = 4.771
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_final_wash_2_0_0"), SubResource("seg_tree_final_wash_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_final_wash_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_final_wash_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FINAL_WASH_2_1", "VO_TREE_FINAL_WASH_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_final_wash_2_0")])
+waits = true
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_final_wash_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 5.58
+key = &"VO_TREE_FINAL_WASH_3_1"
+
+[sub_resource type="Resource" id="take_tree_final_wash_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("141_8uk51")
+source_md5 = "c0ba58390fd684ab8c501a4ec2875a81"
+duration = 5.928
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_final_wash_3_0_0")])
+
+[sub_resource type="Resource" id="line_tree_final_wash_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_final_wash_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_FINAL_WASH_3_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_final_wash_3_0")])
+waits = true
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_peace_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.76
+key = &"VO_TREE_PEACE_1_1"
+
+[sub_resource type="Resource" id="seg_tree_peace_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.18
+end = 6.44
+key = &"VO_TREE_PEACE_1_2"
+
+[sub_resource type="Resource" id="take_tree_peace_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("142_0w5u0")
+source_md5 = "3de7299ebc5eb2854d56db4bf23eba11"
+duration = 6.792
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_peace_1_0_0"), SubResource("seg_tree_peace_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_peace_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_peace_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PEACE_1_1", "VO_TREE_PEACE_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_peace_1_0")])
+waits = true
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_peace_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.18
+key = &"VO_TREE_PEACE_2_1"
+
+[sub_resource type="Resource" id="seg_tree_peace_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.6
+end = 5.38
+key = &"VO_TREE_PEACE_2_2"
+
+[sub_resource type="Resource" id="seg_tree_peace_2_0_2"]
+script = ExtResource("3_q8epu")
+start = 5.8
+end = 6.97
+key = &"VO_TREE_PEACE_2_3"
+
+[sub_resource type="Resource" id="take_tree_peace_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("143_g0ahr")
+source_md5 = "f2524825d5343c0d19b0edfcef6d1b1c"
+duration = 7.325
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_peace_2_0_0"), SubResource("seg_tree_peace_2_0_1"), SubResource("seg_tree_peace_2_0_2")])
+
+[sub_resource type="Resource" id="line_tree_peace_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_peace_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PEACE_2_1", "VO_TREE_PEACE_2_2", "VO_TREE_PEACE_2_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_peace_2_0")])
+waits = true
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_peace_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.44
+key = &"VO_TREE_PEACE_3_1"
+
+[sub_resource type="Resource" id="seg_tree_peace_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.86
+end = 5.46
+key = &"VO_TREE_PEACE_3_2"
+
+[sub_resource type="Resource" id="seg_tree_peace_3_0_2"]
+script = ExtResource("3_q8epu")
+start = 5.88
+end = 8.79
+key = &"VO_TREE_PEACE_3_3"
+
+[sub_resource type="Resource" id="take_tree_peace_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("144_6xm3c")
+source_md5 = "83ea68823fd97607ef69e6cd4664c7fe"
+duration = 9.143
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_peace_3_0_0"), SubResource("seg_tree_peace_3_0_1"), SubResource("seg_tree_peace_3_0_2")])
+
+[sub_resource type="Resource" id="line_tree_peace_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_peace_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PEACE_3_1", "VO_TREE_PEACE_3_2", "VO_TREE_PEACE_3_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_peace_3_0")])
+waits = true
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_presents_ready_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.29
+key = &"VO_TREE_PRESENTS_READY_1_1"
+
+[sub_resource type="Resource" id="take_tree_presents_ready_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("145_37g6c")
+source_md5 = "d2a3a60948524eda8ee8d24d5566a1ed"
+duration = 2.637
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_presents_ready_1_0_0")])
+
+[sub_resource type="Resource" id="line_tree_presents_ready_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_presents_ready_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PRESENTS_READY_1_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_presents_ready_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_presents_ready_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.26
+key = &"VO_TREE_PRESENTS_READY_2_1"
+
+[sub_resource type="Resource" id="seg_tree_presents_ready_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.68
+end = 6.32
+key = &"VO_TREE_PRESENTS_READY_2_2"
+
+[sub_resource type="Resource" id="take_tree_presents_ready_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("146_weun0")
+source_md5 = "99ce8808d52884cb7596dbf83cdac76c"
+duration = 6.6690000000000005
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_presents_ready_2_0_0"), SubResource("seg_tree_presents_ready_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_presents_ready_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_presents_ready_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PRESENTS_READY_2_1", "VO_TREE_PRESENTS_READY_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_presents_ready_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_presents_ready_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.11
+key = &"VO_TREE_PRESENTS_READY_3_1"
+
+[sub_resource type="Resource" id="seg_tree_presents_ready_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.53
+end = 6.31
+key = &"VO_TREE_PRESENTS_READY_3_2"
+
+[sub_resource type="Resource" id="take_tree_presents_ready_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("147_3gnij")
+source_md5 = "3abbda49cd404670682d9e50ee4812c5"
+duration = 6.664
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_presents_ready_3_0_0"), SubResource("seg_tree_presents_ready_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_presents_ready_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_presents_ready_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PRESENTS_READY_3_1", "VO_TREE_PRESENTS_READY_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_presents_ready_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_presents_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 1.71
+key = &"VO_TREE_PRESENTS_1_1"
+
+[sub_resource type="Resource" id="seg_tree_presents_1_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.13
+end = 5.39
+key = &"VO_TREE_PRESENTS_1_2"
+
+[sub_resource type="Resource" id="take_tree_presents_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("148_ipycp")
+source_md5 = "24f571bfda15f85a9f64efa2b2415f6f"
+duration = 5.743
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_presents_1_0_0"), SubResource("seg_tree_presents_1_0_1")])
+
+[sub_resource type="Resource" id="line_tree_presents_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_presents_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PRESENTS_1_1", "VO_TREE_PRESENTS_1_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_presents_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_presents_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.95
+key = &"VO_TREE_PRESENTS_2_1"
+
+[sub_resource type="Resource" id="seg_tree_presents_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 3.37
+end = 5.23
+key = &"VO_TREE_PRESENTS_2_2"
+
+[sub_resource type="Resource" id="seg_tree_presents_2_0_2"]
+script = ExtResource("3_q8epu")
+start = 5.65
+end = 10.25
+key = &"VO_TREE_PRESENTS_2_3"
+
+[sub_resource type="Resource" id="take_tree_presents_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("149_g44cv")
+source_md5 = "aa7ec948f8d265550ba0bb07d26a4f56"
+duration = 10.597
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_presents_2_0_0"), SubResource("seg_tree_presents_2_0_1"), SubResource("seg_tree_presents_2_0_2")])
+
+[sub_resource type="Resource" id="line_tree_presents_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_presents_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PRESENTS_2_1", "VO_TREE_PRESENTS_2_2", "VO_TREE_PRESENTS_2_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_presents_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_presents_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.79
+key = &"VO_TREE_PRESENTS_3_1"
+
+[sub_resource type="Resource" id="seg_tree_presents_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 5.21
+end = 7.18
+key = &"VO_TREE_PRESENTS_3_2"
+
+[sub_resource type="Resource" id="take_tree_presents_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("150_gwkca")
+source_md5 = "0134a834246bfb6b18c151423d5503c7"
+duration = 7.5280000000000005
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_presents_3_0_0"), SubResource("seg_tree_presents_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_presents_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_presents_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PRESENTS_3_1", "VO_TREE_PRESENTS_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_presents_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_presents_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.16
+key = &"VO_TREE_PRESENTS_4_1"
+
+[sub_resource type="Resource" id="seg_tree_presents_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.58
+end = 4.27
+key = &"VO_TREE_PRESENTS_4_2"
+
+[sub_resource type="Resource" id="seg_tree_presents_4_0_2"]
+script = ExtResource("3_q8epu")
+start = 4.69
+end = 6.75
+key = &"VO_TREE_PRESENTS_4_3"
+
+[sub_resource type="Resource" id="take_tree_presents_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("151_csmxm")
+source_md5 = "84f6cbd754efc8ae72776e3ed3cc1b59"
+duration = 7.103
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_presents_4_0_0"), SubResource("seg_tree_presents_4_0_1"), SubResource("seg_tree_presents_4_0_2")])
+
+[sub_resource type="Resource" id="line_tree_presents_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_presents_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PRESENTS_4_1", "VO_TREE_PRESENTS_4_2", "VO_TREE_PRESENTS_4_3")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_presents_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_present_taken_1_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 4.76
+key = &"VO_TREE_PRESENT_TAKEN_1_1"
+
+[sub_resource type="Resource" id="take_tree_present_taken_1_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("152_g6ix0")
+source_md5 = "21569af8297f6740091969954aed1c22"
+duration = 5.106
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_present_taken_1_0_0")])
+
+[sub_resource type="Resource" id="line_tree_present_taken_1"]
+script = ExtResource("1_tmhjc")
+id = &"tree_present_taken_1"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PRESENT_TAKEN_1_1")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_present_taken_1_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_present_taken_2_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.03
+key = &"VO_TREE_PRESENT_TAKEN_2_1"
+
+[sub_resource type="Resource" id="seg_tree_present_taken_2_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.45
+end = 5.64
+key = &"VO_TREE_PRESENT_TAKEN_2_2"
+
+[sub_resource type="Resource" id="take_tree_present_taken_2_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("153_umvn0")
+source_md5 = "079fca9e850b1dbb6e667589b0e63e04"
+duration = 5.989
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_present_taken_2_0_0"), SubResource("seg_tree_present_taken_2_0_1")])
+
+[sub_resource type="Resource" id="line_tree_present_taken_2"]
+script = ExtResource("1_tmhjc")
+id = &"tree_present_taken_2"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PRESENT_TAKEN_2_1", "VO_TREE_PRESENT_TAKEN_2_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_present_taken_2_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_present_taken_3_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 2.1
+key = &"VO_TREE_PRESENT_TAKEN_3_1"
+
+[sub_resource type="Resource" id="seg_tree_present_taken_3_0_1"]
+script = ExtResource("3_q8epu")
+start = 2.52
+end = 4.95
+key = &"VO_TREE_PRESENT_TAKEN_3_2"
+
+[sub_resource type="Resource" id="take_tree_present_taken_3_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("154_nskm4")
+source_md5 = "6cbdcd0f56959e5c1778073072a22e12"
+duration = 5.295
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_present_taken_3_0_0"), SubResource("seg_tree_present_taken_3_0_1")])
+
+[sub_resource type="Resource" id="line_tree_present_taken_3"]
+script = ExtResource("1_tmhjc")
+id = &"tree_present_taken_3"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PRESENT_TAKEN_3_1", "VO_TREE_PRESENT_TAKEN_3_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_present_taken_3_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[sub_resource type="Resource" id="seg_tree_present_taken_4_0_0"]
+script = ExtResource("3_q8epu")
+start = 0.12
+end = 3.63
+key = &"VO_TREE_PRESENT_TAKEN_4_1"
+
+[sub_resource type="Resource" id="seg_tree_present_taken_4_0_1"]
+script = ExtResource("3_q8epu")
+start = 4.05
+end = 5.1
+key = &"VO_TREE_PRESENT_TAKEN_4_2"
+
+[sub_resource type="Resource" id="take_tree_present_taken_4_0"]
+script = ExtResource("2_vwrhp")
+stream = ExtResource("155_t2vxr")
+source_md5 = "25137729fbb158dc78f27d883615abf0"
+duration = 5.446
+segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_present_taken_4_0_0"), SubResource("seg_tree_present_taken_4_0_1")])
+
+[sub_resource type="Resource" id="line_tree_present_taken_4"]
+script = ExtResource("1_tmhjc")
+id = &"tree_present_taken_4"
+sets = PackedInt32Array()
+keys = PackedStringArray("VO_TREE_PRESENT_TAKEN_4_1", "VO_TREE_PRESENT_TAKEN_4_2")
+takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_present_taken_4_0")])
+placeholder = true
+marks = PackedStringArray()
+
+[resource]
+script = ExtResource("156_r1q4c")
+speaker = ExtResource("157_skfrl")
+lines = Array[ExtResource("1_tmhjc")]([SubResource("line_tree_call_1"), SubResource("line_tree_call_2"), SubResource("line_tree_call_3"), SubResource("line_tree_call_4"), SubResource("line_tree_call_5"), SubResource("line_tree_first_1"), SubResource("line_tree_first_2"), SubResource("line_tree_first_3"), SubResource("line_tree_greet_1"), SubResource("line_tree_greet_2"), SubResource("line_tree_greet_3"), SubResource("line_tree_greet_4"), SubResource("line_tree_greet_5"), SubResource("line_tree_idle_1"), SubResource("line_tree_idle_2"), SubResource("line_tree_idle_3"), SubResource("line_tree_idle_4"), SubResource("line_tree_idle_5"), SubResource("line_tree_idle_6"), SubResource("line_tree_idle_7"), SubResource("line_tree_affordable_1"), SubResource("line_tree_affordable_2"), SubResource("line_tree_affordable_3"), SubResource("line_tree_affordable_4"), SubResource("line_tree_affordable_5"), SubResource("line_tree_bought_1"), SubResource("line_tree_bought_2"), SubResource("line_tree_bought_3"), SubResource("line_tree_bought_4"), SubResource("line_tree_bought_5"), SubResource("line_tree_bought_6"), SubResource("line_tree_grumble_1"), SubResource("line_tree_grumble_2"), SubResource("line_tree_grumble_3"), SubResource("line_tree_grumble_4"), SubResource("line_tree_grumble_5"), SubResource("line_tree_stage_half_1"), SubResource("line_tree_stage_half_2"), SubResource("line_tree_stage_half_3"), SubResource("line_tree_stage_most_1"), SubResource("line_tree_stage_most_2"), SubResource("line_tree_stage_most_3"), SubResource("line_tree_stage_last_1"), SubResource("line_tree_stage_last_2"), SubResource("line_tree_stage_last_3"), SubResource("line_tree_cabinet_laundry_1"), SubResource("line_tree_cabinet_laundry_2"), SubResource("line_tree_cabinet_laundry_3"), SubResource("line_tree_cabinet_laundry_4"), SubResource("line_tree_cabinet_garage_1"), SubResource("line_tree_cabinet_garage_2"), SubResource("line_tree_cabinet_garage_3"), SubResource("line_tree_cabinet_garage_4"), SubResource("line_tree_cabinet_kitchen_1"), SubResource("line_tree_cabinet_kitchen_2"), SubResource("line_tree_cabinet_kitchen_3"), SubResource("line_tree_cabinet_kitchen_4"), SubResource("line_tree_cabinet_living_1"), SubResource("line_tree_cabinet_living_2"), SubResource("line_tree_cabinet_living_3"), SubResource("line_tree_cabinet_living_4"), SubResource("line_tree_cabinet_kids_north_1"), SubResource("line_tree_cabinet_kids_north_2"), SubResource("line_tree_cabinet_kids_north_3"), SubResource("line_tree_cabinet_kids_north_4"), SubResource("line_tree_cabinet_kids_east_1"), SubResource("line_tree_cabinet_kids_east_2"), SubResource("line_tree_cabinet_kids_east_3"), SubResource("line_tree_cabinet_kids_east_4"), SubResource("line_tree_cabinet_loft_west_1"), SubResource("line_tree_cabinet_loft_west_2"), SubResource("line_tree_cabinet_loft_west_3"), SubResource("line_tree_cabinet_loft_west_4"), SubResource("line_tree_cabinet_loft_east_1"), SubResource("line_tree_cabinet_loft_east_2"), SubResource("line_tree_cabinet_loft_east_3"), SubResource("line_tree_cabinet_loft_east_4"), SubResource("line_tree_hint_basement_1"), SubResource("line_tree_hint_basement_2"), SubResource("line_tree_hint_basement_3"), SubResource("line_tree_hint_basement_4"), SubResource("line_tree_hint_ground_1"), SubResource("line_tree_hint_ground_2"), SubResource("line_tree_hint_ground_3"), SubResource("line_tree_hint_ground_4"), SubResource("line_tree_hint_first_1"), SubResource("line_tree_hint_first_2"), SubResource("line_tree_hint_first_3"), SubResource("line_tree_hint_first_4"), SubResource("line_tree_hint_attic_1"), SubResource("line_tree_hint_attic_2"), SubResource("line_tree_hint_attic_3"), SubResource("line_tree_hint_attic_4"), SubResource("line_tree_tip_throw_1"), SubResource("line_tree_tip_part_1"), SubResource("line_tree_tip_part_2"), SubResource("line_tree_tip_vacuum_1"), SubResource("line_tree_tip_vacuum_2"), SubResource("line_tree_tip_vacuum_3"), SubResource("line_tree_tip_elevator_1"), SubResource("line_tree_part_basement_1"), SubResource("line_tree_part_basement_2"), SubResource("line_tree_part_basement_3"), SubResource("line_tree_part_basement_4"), SubResource("line_tree_part_ground_1"), SubResource("line_tree_part_ground_2"), SubResource("line_tree_part_ground_3"), SubResource("line_tree_part_ground_4"), SubResource("line_tree_part_first_1"), SubResource("line_tree_part_first_2"), SubResource("line_tree_part_first_3"), SubResource("line_tree_part_first_4"), SubResource("line_tree_part_attic_1"), SubResource("line_tree_part_attic_2"), SubResource("line_tree_part_attic_3"), SubResource("line_tree_part_attic_4"), SubResource("line_tree_floor_ground_1"), SubResource("line_tree_floor_ground_2"), SubResource("line_tree_floor_ground_3"), SubResource("line_tree_floor_ground_4"), SubResource("line_tree_floor_first_1"), SubResource("line_tree_floor_first_2"), SubResource("line_tree_floor_first_3"), SubResource("line_tree_floor_first_4"), SubResource("line_tree_floor_attic_1"), SubResource("line_tree_floor_attic_2"), SubResource("line_tree_floor_attic_3"), SubResource("line_tree_floor_attic_4"), SubResource("line_tree_final_wash_1"), SubResource("line_tree_final_wash_2"), SubResource("line_tree_final_wash_3"), SubResource("line_tree_peace_1"), SubResource("line_tree_peace_2"), SubResource("line_tree_peace_3"), SubResource("line_tree_presents_ready_1"), SubResource("line_tree_presents_ready_2"), SubResource("line_tree_presents_ready_3"), SubResource("line_tree_presents_1"), SubResource("line_tree_presents_2"), SubResource("line_tree_presents_3"), SubResource("line_tree_presents_4"), SubResource("line_tree_present_taken_1"), SubResource("line_tree_present_taken_2"), SubResource("line_tree_present_taken_3"), SubResource("line_tree_present_taken_4")])
+lines_md5 = "cc05d2ebbae4af3a280a496c3a789709"

@@ -37,7 +37,7 @@ what = "The Old Tree's voice (Piper en_US \"norman\" medium, aged by tools/voice
 author = "Voice data: LibriVox volunteer readers (librivox.org); model trained by Bryce Beattie (brycebeattie.com/files/tts/); Piper (Rhasspy / Open Home Foundation)"
 source = "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/norman/medium/MODEL_CARD"
 licence = "Public domain (dataset: LibriVox recordings, https://librivox.org; per the model card)"
-covers = PackedStringArray()
+covers = PackedStringArray("assets/voice/old_tree/*")
 
 [sub_resource type="Resource" id="Entry_4"]
 script = ExtResource("2_entry")

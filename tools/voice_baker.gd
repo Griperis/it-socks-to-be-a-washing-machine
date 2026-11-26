@@ -139,8 +139,8 @@ func _speaker(id: String) -> VoiceSpeaker:
 	var path := speakers_dir.path_join(id + ".tres")
 	if ResourceLoader.exists(path) or FileAccess.file_exists(path):
 		var s := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_REPLACE) as VoiceSpeaker
-		if s == null or s.acting == null:
-			errors.append("%s is not a VoiceSpeaker with its acting" % path)
+		if s == null:
+			errors.append("%s is not a VoiceSpeaker" % path)
 		return s
 	var from := load(template_speaker) as VoiceSpeaker
 	if from == null:
@@ -194,7 +194,7 @@ func _new_line(wav: String, speaker: VoiceSpeaker) -> Dictionary:
 		"sets": [],
 		"text": text,
 		"recordings": [wav.get_file()],
-		"moods": [[0.0, String(speaker.default_mood)]],
+		"moods": [[0.0, String(speaker.default_mood)]] if speaker.acting != null else [],
 		"order": 0,
 		"waits": false,
 		"placeholder": false,
@@ -252,6 +252,8 @@ func _check(speaker: String, line: Variant, known: PackedStringArray, ids: Dicti
 	for m: Variant in moods:
 		if not m is Array or (m as Array).size() != 2:
 			errors.append("%s: a mood key must be [seconds, mood]" % name)
+		elif s.acting == null:
+			errors.append("%s: a mood key, but %s has no acting (no moods)" % [name, speaker])
 		elif s.acting.mood(StringName(str(m[1]))) == null:
 			errors.append("%s: unknown mood \"%s\"; %s's moods: %s" % [name, m[1], speaker, ", ".join(s.acting.mood_ids())])
 	for t: Variant in d.get("sets", []):
@@ -273,7 +275,8 @@ func _bake(plan: Dictionary) -> void:
 	var bank_path := baked_dir.path_join(id + ".tres")
 	var old := _old_takes(bank_path)
 	var acting_dir := baked_dir.path_join(id)
-	DirAccess.make_dir_recursive_absolute(acting_dir)
+	if speaker.acting != null:
+		DirAccess.make_dir_recursive_absolute(acting_dir)
 	var bank := VoiceBank.new()
 	bank.speaker = speaker
 	var written := {}
@@ -285,7 +288,7 @@ func _bake(plan: Dictionary) -> void:
 	bank.lines_md5 = FileAccess.get_md5(plan["json"])
 	_save(bank, bank_path)
 	var dir := DirAccess.open(acting_dir)
-	for f in dir.get_files():
+	for f in dir.get_files() if dir != null else PackedStringArray():
 		if f.ends_with(".anim.tres") and not written.has(f):
 			DirAccess.remove_absolute(acting_dir.path_join(f))
 			report.append("%s: removed %s (its recording is gone)" % [id, f])
@@ -294,7 +297,10 @@ func _bake(plan: Dictionary) -> void:
 
 func _bake_line(d: Dictionary, speaker: VoiceSpeaker, folder: String, acting_dir: String, old: Dictionary,
 		written: Dictionary) -> VoiceLine:
-	_kps = speaker.acting.keys_per_second
+	# A speaker with no acting (the Old Tree's, until its rework, Q2670) gets no acting files: the default
+	# profile's loudness window still finds the voiced span a guessed timing needs.
+	var acting: VoiceActing = speaker.acting if speaker.acting != null else VoiceActing.new()
+	_kps = acting.keys_per_second
 	var line := VoiceLine.new()
 	line.id = StringName(str(d["id"]))
 	line.resource_scene_unique_id = "line_%s" % line.id
@@ -313,7 +319,7 @@ func _bake_line(d: Dictionary, speaker: VoiceSpeaker, folder: String, acting_dir
 	if TODO in text:
 		line.marks.append("text TODO")
 	var moods: Array = d.get("moods", [])
-	if moods.is_empty():
+	if moods.is_empty() and speaker.acting != null:
 		moods = [[0.0, String(speaker.default_mood)]]
 	moods = moods.duplicate()
 	moods.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) < float(b[0]))
@@ -334,7 +340,7 @@ func _bake_line(d: Dictionary, speaker: VoiceSpeaker, folder: String, acting_dir
 			return null
 		take.source_md5 = FileAccess.get_md5(path)
 		take.duration = snappedf(float(wav["duration"]), 0.001)
-		var door := VoiceLipsync.door_keys(VoiceLipsync.envelope(wav, speaker.acting.window), take.duration, speaker.acting)
+		var door := VoiceLipsync.door_keys(VoiceLipsync.envelope(wav, acting.window), take.duration, acting)
 		var times := _times(line, file, path, text, take, door, timing.get(file), old.get(file))
 		var segs: Array = []
 		for n in text.size():
@@ -345,11 +351,12 @@ func _bake_line(d: Dictionary, speaker: VoiceSpeaker, folder: String, acting_dir
 			seg.key = StringName(line.keys[n])
 			take.segments.append(seg)
 			segs.append({"start": seg.start, "end": seg.end, "text": str(text[n])})
-		var anim := VoiceLipsync.animation(door, take.duration, segs, moods, speaker.acting)
-		var anim_file := file.get_basename() + ".anim.tres"
-		_save(anim, acting_dir.path_join(anim_file))
-		written[anim_file] = true
-		take.acting = anim
+		if speaker.acting != null:
+			var anim := VoiceLipsync.animation(door, take.duration, segs, moods, speaker.acting)
+			var anim_file := file.get_basename() + ".anim.tres"
+			_save(anim, acting_dir.path_join(anim_file))
+			written[anim_file] = true
+			take.acting = anim
 		line.takes.append(take)
 	return line
 

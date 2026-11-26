@@ -200,10 +200,12 @@ the button and plays `refuse` (the Host's refusal text shows as any refusal). Th
   Looks (the old `old_tree.gdshader` and an `idle` clip) and an acting resource that keys it; the behaviour list's
   motion lines ("The Old Tree moves and talks") are carried to that rework, not dropped.
 - **The speaker:** `game/voice/speakers/old_tree.tres` (priority 10, positional, unit size 2.5 m, max 9 m, earshot
-  4.5 m, level band 1.8 m, cooldown 120 s, `voice_db` 0), with no acting; the lines `game/voice/lines/old_tree.json`
+  4.5 m, level band 1.8 m, cooldown 120 s), with no acting; the lines `game/voice/lines/old_tree.json`
   with the old recordings in `assets/voice/old_tree/` (162 lines of the old `data/voiceover/old_tree/`, less those of features not ported: `tip_dirty`, `tip_pairing`,
-  `cabinet_grotto`, `hint_grotto`, `floor_grotto`); the old +12.5 dB is baked into the copied recordings once, since
-  the game does not adjust voice levels (Q2638).
+  `cabinet_grotto`, `hint_grotto`, `floor_grotto`; the old folder holds 161, so 145 are copied, unchanged); the old
+  +12.5 dB is applied at playback, as the old player's volume (`OldTreeTuning.voice_db` and `call_db`, the old
+  values), so the lines clip only where the old clipped, up close (the lead's reading of Q2638 for a faithful port,
+  core/132).
 - **Who decides:** the Host (Q2545). Each machine senses for its own player (near: the camera within earshot and
   level band; away 45 s; idle 40 s; an Upgrade newly affordable; the Stage bar's share; a waiting story beat) and asks
   `OldTree.talk {trigger}`; the Host runs the cooldown, `busy` (a cutscene or the washer talking), the chance and the

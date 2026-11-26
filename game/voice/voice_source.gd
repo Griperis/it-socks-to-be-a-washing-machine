@@ -12,6 +12,8 @@ const GROUP := &"voice_source"
 ## The library the takes' acting is played from.
 const LIBRARY := &"voice"
 const ACTING := &"acting"
+## `player` is found under this node when left empty (a speaker with no acting has none).
+const WIRING_OPTIONAL := ["player"]
 
 ## Whose face this is.
 @export var speaker: VoiceSpeaker
