@@ -75,6 +75,7 @@ level's author. The Looks follows the contract assets/16's model will keep.
 - "[LMB] Pick up" aimed at your own present, "[LMB] Open" while carrying it (Q2677, 2026-11-25).
 - The first presents come after Stage 2, as the rules fall out (Q2678, 2026-11-25).
 - Gifts come as Stage presents under the Old Tree when a Stage ends (Q2612, 2026-11-24).
+- The present box model (assets/16, `assets/present/present_box.glb`: `Box`, `Box/Lid`) is approved; this ticket swaps it into the box's Looks in place of the graybox (Q2692, 2026-11-26).
 
 ## Open follow-ups
 - [later] Two readings of Q2673 the lead made, built so and listed on the review sheet for the designer: "unlocked" is
