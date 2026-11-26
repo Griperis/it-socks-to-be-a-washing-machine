@@ -19,3 +19,4 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-26 [[141-looks-in-coop]] Looks, colours and owned pieces in co-op: 0a0faef8 (core/141-looks-in-coop)
 - 2026-11-26 [[149-batch-c-elevator-day-exterior-design]] Batch C: The Elevator, the day cycle and the exterior view (design): 49043322 (core/149-batch-c-elevator-day-exterior-design)
 - 2026-11-26 [[19-wardrobe-socks-and-trail-meshes]] The Wardrobe's Socks pieces and the Trails' meshes: 4ed83f26 (assets/19-wardrobe-socks-and-trail-meshes)
+- 2026-11-26 [[150-batch-c-devices-tv-radio-design]] Batch C: The vacuums, the detector, the TV and the Radio (design): ac9d3a50 (core/150-batch-c-devices-tv-radio-design)

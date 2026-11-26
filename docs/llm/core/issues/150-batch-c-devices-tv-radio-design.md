@@ -6,7 +6,7 @@ area: core
 feature: frame
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["suggested model: opus", "batch C design (Q2614, Q2707): one of four, written on the designer's answers Q2698-Q2706"]
 terms: [Sock vacuum, Backpack vacuum, detector, Radio, TV]
