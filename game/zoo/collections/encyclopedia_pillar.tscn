@@ -24,7 +24,7 @@ mesh = SubResource("BoxMesh_pillar")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_pillar")
 
-[node name="Press" type="Node" parent="Body"]
+[node name="Press" type="Node" parent="Body" node_paths=PackedStringArray("host")]
 script = ExtResource("1_pillar")
 host = NodePath("../../Pages")
 
