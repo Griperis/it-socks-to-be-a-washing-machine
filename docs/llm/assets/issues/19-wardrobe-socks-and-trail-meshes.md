@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: assets
 feature: assets
@@ -41,6 +41,7 @@ Inherited scenes and mesh resources of the imported glbs; the shared materials w
 
 ## Answers
 - The Trails are remade as particle scenes authored in the editor (Q2680, 2026-11-25).
+- Yes to the line-up: the Socks pieces and the Trails' meshes as built (Q2708, 2026-11-26).
 
 ## Open follow-ups
 - [later] On the designer's yes: point the 17 Socks piece files at `game/wardrobe/looks/<id>.tscn`, and the
