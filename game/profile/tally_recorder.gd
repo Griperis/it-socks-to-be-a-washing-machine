@@ -28,7 +28,15 @@ func _on_node_added(node: Node) -> void:
 	_watch(node)
 
 
+## Whether `node` is on this machine (its level's runtime is this recorder's): two machines in one process
+## each count only their own answers.
+func _mine(node: Node) -> bool:
+	return LevelRuntime.of(node) == LevelRuntime.of(self)
+
+
 func _watch(node: Node) -> void:
+	if (node is Parts or node is Bank) and not _mine(node):
+		return
 	if node is Parts:
 		var p := node as Parts
 		if not _watched.has(p):
@@ -41,7 +49,7 @@ func _watch(node: Node) -> void:
 
 
 func _profile() -> PlayerProfile:
-	return profile if profile != null else Worlds.profile()
+	return profile if profile != null else Worlds.profile_of(self)
 
 
 ## This machine's own peer number (1 offline: a Host of one).

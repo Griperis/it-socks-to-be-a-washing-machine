@@ -172,7 +172,7 @@ func current_profile() -> PlayerProfile:
 func _profile(for_profile: PlayerProfile) -> PlayerProfile:
 	if for_profile != null:
 		return for_profile
-	return profile if profile != null else Worlds.profile()
+	return profile if profile != null else Worlds.profile_of(self)
 
 
 ## What follows each Achievement earned now: its reward, the stores, the toast; one HUD line for the pieces.

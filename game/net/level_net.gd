@@ -58,8 +58,7 @@ func start(args: PackedStringArray) -> Error:
 		return OK
 	for arg in args:
 		if arg.begins_with("--profile="):
-			Worlds.use_profile(PlayerProfile.load_or_make(arg.trim_prefix("--profile=")))
-			session.profile = Worlds.profile()
+			session.profile = PlayerProfile.load_or_make(arg.trim_prefix("--profile="))
 	var joining := false
 	for arg in args:
 		joining = joining or arg.begins_with("--join=")
