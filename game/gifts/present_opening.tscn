@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/gifts/present_opening.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://game/gifts/looks_present.tscn" id="2_looks"]
+
+[node name="PresentOpening" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Looks" parent="." instance=ExtResource("2_looks")]

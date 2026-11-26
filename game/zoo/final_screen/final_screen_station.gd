@@ -1,6 +1,8 @@
 ## The Final screen station (core/95, Q2337): the real Final screen and pillars that open it on a made-up record
 ## drawn from the catalogue at load (every Collection's Designs, rare ones included): 1, 2 and 4 players, a
-## record where a player left (no column, their Pairs in the totals) and a long name. A new Design or Collection
+## record where a player left (no column, their Pairs in the totals) and a long name. Each record also has
+## Wardrobe pieces won (core/138), drawn from the Wardrobe's pieces at load (every slot, rare ones included), and
+## its Gifts opened. A new Design or Collection
 ## shows in the Pairs with no other change. Continue closes the screen here (core/97 makes it go to the Lobby).
 class_name FinalScreenStation
 extends Node3D
@@ -9,6 +11,8 @@ const PILLAR := preload("res://game/zoo/final_screen/final_pillar.tscn")
 const TUNING := preload("res://game/net/coop_tuning.tres")
 const DESIGNS := preload("res://game/sock/designs.tres")
 const LONG_NAME := "Bartholomew Fluffington the Third of Sockshire"
+## How many Wardrobe pieces each player of a made-up record won, by their place (one opened present was a refund).
+const PIECES_EACH: Array[int] = [2, 1, 3, 0]
 
 @export var screen: FinalScreen
 ## The ground and the name; the pad is sized to what is built.
@@ -74,7 +78,12 @@ static func made_up(players: Array) -> FinalSummary:
 		var d := DESIGNS.design(id)
 		if d != null:
 			(rare if d.rarity >= SockDesign.Rarity.RARE else common).append(id)
+	var won_from: Array[StringName] = []
+	for p in Wardrobe.all():
+		if p.collection != &"" and p.listed and not p.owned_from_start:
+			won_from.append(p.id)
 	var shelved := []
+	var won := []
 	var listing: Array[Dictionary] = []
 	for i in players.size():
 		var spec: Array = players[i]
@@ -86,7 +95,10 @@ static func made_up(players: Array) -> FinalSummary:
 			var coins := 1 + DESIGNS.design(design).rarity * 2
 			shelved.append([id, design, coins])
 			paid += coins
+		if not won_from.is_empty():
+			for k in PIECES_EACH[i % PIECES_EACH.size()]:
+				won.append([id, String(won_from[rng.randi() % won_from.size()])])
 		var bonus := 40 if i == 0 and players.size() > 1 else 0
 		listing.append({"id": id, "name": spec[0], "colour": TUNING.colour(i), "left": spec.size() > 2 and bool(spec[2]),
 				"coins": paid + bonus})
-	return FinalSummary.make(shelved, listing, 5025, 4)
+	return FinalSummary.make(shelved, listing, 5025, 4, won, won.size() + 1)

@@ -19,6 +19,16 @@ script = ExtResource("2_total")
 caption = "Stages"
 source = &"stages"
 
+[sub_resource type="Resource" id="Resource_gifts"]
+script = ExtResource("2_total")
+caption = "Gifts opened"
+source = &"gifts_opened"
+
+[sub_resource type="Resource" id="Resource_pieces"]
+script = ExtResource("2_total")
+caption = "Wardrobe pieces won"
+source = &"pieces_won"
+
 [resource]
 script = ExtResource("1_list")
-totals = Array[ExtResource("2_total")]([SubResource("Resource_time"), SubResource("Resource_coins"), SubResource("Resource_stages")])
+totals = Array[ExtResource("2_total")]([SubResource("Resource_time"), SubResource("Resource_coins"), SubResource("Resource_stages"), SubResource("Resource_gifts"), SubResource("Resource_pieces")])

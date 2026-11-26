@@ -85,6 +85,8 @@ func open(summary: FinalSummary) -> void:
 	var count := maxi(summary.columns.size(), 1)
 	var col_w := floorf((view.x - 2.0 * MARGIN - 80.0 - COLUMN_GAP * (count - 1)) / count)
 	var chrome := CHROME + (STRIP_H if not summary.unlocked.is_empty() else 0.0)
+	if summary.columns.any(func(e: Dictionary) -> bool: return not (e.get("pieces", PackedStringArray()) as PackedStringArray).is_empty()):
+		chrome += FinalColumn.PIECES_H  # core/138: the pieces' strip under the Pairs
 	var stage := Vector2(col_w - 2.0 * FinalColumn.PAD, clampf(view.y - chrome, MIN_STAGE_H, MAX_STAGE_H))
 	var end := 0.0
 	for entry: Dictionary in summary.columns:

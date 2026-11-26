@@ -17,9 +17,9 @@ func cases() -> Array[Dictionary]:
 		{"name": "real_path", "method": "case_real_path", "world": false,
 				"title": "real path: E on the 2-player pillar opens the screen with two columns and the player held; a key skips to the totals: both scores read their final Coins, the totals show, Continue waits"},
 		{"name": "leaver_and_totals", "method": "case_leaver_and_totals", "world": false,
-				"title": "a player who left has no column, their Pairs count in the totals; the totals read Play time h:mm:ss, Coins earned and Stages from final_totals.tres; no titles of who did what"},
+				"title": "a player who left has no column, their Pairs count in the totals; the totals read Play time h:mm:ss, Coins earned, Stages, Gifts opened and Wardrobe pieces won from final_totals.tres; no titles of who did what"},
 		{"name": "schedule", "method": "case_schedule", "world": false,
-				"title": "the pop schedule is slow then a fast stream with a longer hold after a rare Pair; Pairs pop in order on the clock, the count and the bonus follow; the totals wait for the last column"},
+				"title": "the pop schedule is slow then a fast stream with a longer hold after a rare Pair; Pairs pop in order on the clock, the count and the bonus follow; the totals wait for the last column; the Wardrobe pieces a player won pop after their Pairs (core/138)"},
 		{"name": "unlock_strip", "method": "case_unlock_strip", "world": false,
 				"title": "the pillar with an unlock shows the strip: a plural heading and a cell per Collection that pop one after another once the totals show, in the Collection's name; a skip shows them at once; a screen with none hides the strip"},
 		{"name": "long_name_and_esc", "method": "case_long_name_and_esc", "world": false,
@@ -121,7 +121,13 @@ func case_leaver_and_totals() -> void:
 	screen.skip()
 	await _frames(2)
 	await _until(func() -> bool: return screen.total_texts()[0] == "Play time 1:23:45", "the totals count up to the play time")
-	_check(screen.total_texts() == ["Play time 1:23:45", "Coins earned %d" % all, "Stages 4"], "the three totals (%s)" % [screen.total_texts()])
+	var won := 0
+	for c: Dictionary in summary.columns:
+		won += (c["pieces"] as PackedStringArray).size()
+	_check(won < int(summary.values[&"pieces_won"]), "the leaver's pieces count in the totals but are in no column")
+	_check(screen.total_texts() == ["Play time 1:23:45", "Coins earned %d" % all, "Stages 4",
+			"Gifts opened %d" % int(summary.values[&"gifts_opened"]), "Wardrobe pieces won %d" % int(summary.values[&"pieces_won"])],
+			"the five totals, core/138's Gifts opened and Wardrobe pieces won last (%s)" % [screen.total_texts()])
 	_check(screen.find_children("*", "Label", true, false).filter(func(n: Node) -> bool: return String((n as Label).text).contains("most")).is_empty(),
 			"no who-did-what titles")
 	screen.close()
@@ -161,6 +167,14 @@ func case_schedule() -> void:
 		if c.shown == c.pairs.size() and c.settled == c.pairs.size():
 			break
 	_check(c.shown == c.pairs.size(), "every Pair pops in the end (%d)" % c.shown)
+	# core/138: the player's Wardrobe pieces pop after the Pairs, piece_start_gap after the last, piece_gap apart.
+	_check(c.pieces.size() == 2 and c.piece_nodes().size() == 2, "the column has its two won pieces on its strip (%s)" % [c.pieces])
+	_check(c.pieces_shown == 0 and not c.piece_nodes()[0].visible, "no piece shows while the Pairs pop")
+	_near(c.piece_times[0], c.times[c.times.size() - 1] + t.pop_time + t.piece_start_gap, 0.0001, "the first piece pops piece_start_gap after the last Pair")
+	_near(c.piece_times[1] - c.piece_times[0], t.piece_gap, 0.0001, "the next piece_gap later")
+	_check(not screen.totals_shown(), "the totals wait for the pieces")
+	screen.advance(c.end - screen.clock + 0.01)
+	_check(c.pieces_shown == 2 and c.piece_nodes()[1].visible, "both pieces show by the column's end")
 	_check(not screen.totals_shown() or screen.clock >= c.end, "the totals wait for the column to end")
 	screen.advance(t.totals_delay + 0.1)
 	_check(screen.totals_shown(), "then they show")

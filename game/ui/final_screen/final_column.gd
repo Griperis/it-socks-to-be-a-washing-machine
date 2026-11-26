@@ -1,8 +1,9 @@
 ## One player's column on the Final screen (run-ends.md "The Final screen"; the old ending_screen.gd's column): the
 ## name in the player's colour, the Coins icon and score, "n / total Pairs", "+N bonus", and a Sock stage where the
 ## Pairs that player shelved pop in one by one as Sock previews (a Sock of the Pair's Design seen from above, fitted
-## to its grid cell, in shelving order). The screen steps it on a clock; it plays nothing itself but says which
-## sound it wants (`cue`). One MultiMesh per Collection draws the previews, as the Sock spray does.
+## to its grid cell, in shelving order), then, under them, the Wardrobe pieces that player won (core/138: each
+## Wardrobe.preview fitted to its place on the pieces' strip, popping in after the Pairs and turning; a rare one
+## sparkles). The screen steps it on a clock; it plays nothing itself but says which sound it wants (`cue`). One MultiMesh per Collection draws the previews, as the Sock spray does.
 class_name FinalColumn
 extends PanelContainer
 
@@ -15,6 +16,14 @@ const CAMERA_HEIGHT := 3.0
 const PAD := 12.0
 
 const SPARK := preload("res://game/ui/final_screen/final_spark.tscn")
+## The pieces' strip: its height in pixels, its camera's distance and field of view (the scene's), the most
+## metres a piece takes along it, where the pieces stand, and how fast a shown piece turns.
+const PIECES_H := 120.0
+const PIECE_EYE := 1.2
+const PIECE_FOV := 36.0
+const PIECE_SPACING := 0.5
+const PIECE_Y := 0.3
+const PIECE_SPIN := 1.6
 
 var tuning: FinalScreenTuning = null
 ## The player's colour, name and Pairs ([[Design id, Coins paid], ...]) and the Coins they earned.
@@ -22,11 +31,17 @@ var colour := Color.WHITE
 var player_name := ""
 var pairs: Array = []
 var earned := 0
+## The Wardrobe pieces the player won, in the order opened.
+var pieces := PackedStringArray()
 var catalogue: DesignCatalogue = null
 var stage_size := Vector2(300, 400)
 ## When each Pair pops, and when the column is done (seconds on the screen's clock).
 var times := PackedFloat32Array()
+var piece_times := PackedFloat32Array()
 var end := 0.0
+## How many pieces have popped, and how many have finished popping.
+var pieces_shown := 0
+var pieces_settled := 0
 ## How many Pairs have popped, how many have landed, the score on show and the one it counts toward.
 var shown := 0
 var settled := 0
@@ -41,6 +56,8 @@ var _fit: Array[float] = []
 var _mesh_at: Dictionary[MultiMesh, Transform3D] = {}
 var _centre: Dictionary[MultiMesh, Vector3] = {}
 var _bonus := 0
+var _piece_nodes: Array[Node3D] = []
+var _piece_k := 1.0
 
 @onready var _name: Label = %Name
 @onready var _score: Label = %Score
@@ -50,6 +67,9 @@ var _bonus := 0
 @onready var _viewport: SubViewport = %Stage
 @onready var _camera: Camera3D = %Camera
 @onready var _root: Node3D = %SockRoot
+@onready var _pieces_box: SubViewportContainer = %Pieces
+@onready var _piece_stage: SubViewport = %PieceStage
+@onready var _piece_root: Node3D = %PieceRoot
 
 
 ## Fills the column from `entry` (a FinalSummary column) and lays the Pairs out; call it before it enters the tree.
@@ -61,6 +81,7 @@ func setup(entry: Dictionary, size_of_stage: Vector2, tune: FinalScreenTuning, d
 	player_name = String(entry["name"])
 	pairs = entry["pairs"]
 	earned = int(entry["earned"])
+	pieces = entry.get("pieces", PackedStringArray())
 	var paid := 0
 	for p: Array in pairs:
 		paid += int(p[1])
@@ -78,6 +99,7 @@ func _ready() -> void:
 	_viewport.size = Vector2i(stage_size)
 	_camera.size = stage_size.y / PPM
 	_place_socks()
+	_place_pieces()
 	_schedule()
 	_refresh_labels()
 
@@ -188,13 +210,73 @@ func _place_socks() -> void:
 		m.set_instance_transform(row, Transform3D(Basis.from_scale(Vector3.ZERO), _rest[k]))
 
 
-## The pop times and when this column is done.
+## Each won piece's preview on the strip, hidden until it pops: side by side, centred, `PIECE_SPACING` apart at most.
+func _place_pieces() -> void:
+	_pieces_box.visible = not pieces.is_empty()
+	if pieces.is_empty():
+		return
+	_pieces_box.custom_minimum_size = Vector2(stage_size.x, PIECES_H)
+	_piece_stage.size = Vector2i(int(stage_size.x), int(PIECES_H))
+	var half_h := tan(deg_to_rad(PIECE_FOV) * 0.5) * PIECE_EYE
+	var visible_w := 2.0 * half_h * stage_size.x / PIECES_H
+	var n := pieces.size()
+	var spacing := minf(PIECE_SPACING, visible_w / float(n))
+	_piece_k = minf(1.0, spacing * 0.9 / Wardrobe.tuning().preview_fit)
+	for i in n:
+		var node := Wardrobe.preview(StringName(pieces[i]), colour)
+		node.position = Vector3((float(i) - float(n - 1) * 0.5) * spacing, PIECE_Y, 0.0)
+		node.scale = Vector3.ONE * 0.01
+		node.visible = false
+		_piece_root.add_child(node)
+		_piece_nodes.append(node)
+
+
+## Whether won piece `i` is a rare one.
+func is_rare_piece(i: int) -> bool:
+	var p := Wardrobe.of(StringName(pieces[i]))
+	return p != null and p.rarity == WardrobePiece.Rarity.RARE
+
+
+## The pop times and when this column is done: the Pairs, then the pieces `piece_start_gap` after the last Pair,
+## `piece_gap` apart (the old ending screen's).
 func _schedule() -> void:
 	var rare: Array = []
 	for k in pairs.size():
 		rare.append(is_rare(k))
 	times = schedule(rare, tuning)
 	end = tuning.start_delay if times.is_empty() else times[times.size() - 1] + tuning.pop_time
+	piece_times = PackedFloat32Array()
+	var at := end + tuning.piece_start_gap
+	for i in pieces.size():
+		piece_times.append(at)
+		at += tuning.piece_gap
+	if not pieces.is_empty():
+		end = piece_times[piece_times.size() - 1] + tuning.pop_time
+
+
+## The pieces at second `clock`: each pops (a "pop" cue, a sparkle for a rare one), grows with an overshoot and turns.
+func _advance_pieces(clock: float, delta: float, silent: bool) -> void:
+	var pop := maxf(tuning.pop_time, 0.01)
+	while pieces_shown < pieces.size() and piece_times[pieces_shown] <= clock:
+		var i := pieces_shown
+		_piece_nodes[i].visible = true
+		if not silent:
+			if is_rare_piece(i):
+				_spark_in(_piece_root, _piece_nodes[i].position, 18, 0.015, 0.25, 0.7, colour.lerp(Color(1.0, 0.8, 0.4), 0.6))
+			cue.emit(&"pop")
+		pieces_shown += 1
+	for i in pieces_shown:
+		var node := _piece_nodes[i]
+		var age := clampf((clock - piece_times[i]) / pop, 0.0, 1.0)
+		node.scale = Vector3.ONE * _piece_k * maxf(_back_out(age), 0.01)
+		node.rotation.y += PIECE_SPIN * delta
+		if age >= 1.0 and i == pieces_settled:
+			pieces_settled += 1
+
+
+## The piece previews on the strip (tests).
+func piece_nodes() -> Array[Node3D]:
+	return _piece_nodes
 
 
 ## Moves the column to second `clock` of the screen's clock, `delta` after the last step. `silent`: nothing is
@@ -224,6 +306,7 @@ func advance(clock: float, delta: float, silent := false) -> void:
 		settled += 1
 	if shown >= pairs.size():
 		target = earned  # the bonuses (floors, batches, refunds) land after the last Pair
+	_advance_pieces(clock, delta, silent)
 	_count_score(delta, silent)
 
 
@@ -233,6 +316,9 @@ func finish() -> void:
 	for k in range(0, pairs.size()):
 		_place(k, _rest[k], 1.0, 0.0)
 	settled = pairs.size()
+	for node in _piece_nodes:
+		node.scale = Vector3.ONE * _piece_k
+	pieces_settled = pieces.size()
 	score = float(target)
 	_refresh_labels()
 
@@ -290,6 +376,11 @@ func _sparkle(at: Vector3, tint: Color, scale: float) -> void:
 ## (0.6-1.2 times), slowed by damping, drawn down a little, shrinking to nothing, its colour mixed from `tint` up to
 ## half toward white; they free themselves. The look (soft round speck, shrink, fade) is the scene's.
 func _spark(at: Vector3, count: int, size: float, spread: float, life: float, tint: Color) -> void:
+	_spark_in(_root, at, count, size, spread, life, tint)
+
+
+## The same specks under `parent` (the Sock stage's root or the pieces' strip's).
+func _spark_in(parent: Node3D, at: Vector3, count: int, size: float, spread: float, life: float, tint: Color) -> void:
 	var bits := SPARK.instantiate() as CPUParticles3D
 	bits.amount = count
 	bits.lifetime = life
@@ -306,6 +397,6 @@ func _spark(at: Vector3, count: int, size: float, spread: float, life: float, ti
 	mix.set_color(1, tint.lerp(Color.WHITE, 0.5))
 	bits.color_initial_ramp = mix
 	bits.position = at + Vector3(0, 0.2, 0)
-	_root.add_child(bits)
+	parent.add_child(bits)
 	bits.emitting = true
 	bits.finished.connect(bits.queue_free)

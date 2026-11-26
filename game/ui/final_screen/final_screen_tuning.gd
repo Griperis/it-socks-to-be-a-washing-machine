@@ -19,6 +19,10 @@ extends Resource
 @export_range(0.0, 1.0, 0.01) var fly_from := 0.25 # placeholder: the old fly_from
 ## How fast a score catches up with the Coins just added, as a share of the gap per second.
 @export_range(0.5, 60.0, 0.5) var count_speed := 9.0 # placeholder: the old count_speed
+@export_group("The pieces")
+## The pause after a column's last Pair before its first Wardrobe piece pops (core/138), and the gap between pieces.
+@export_range(0.0, 5.0, 0.05, "suffix:s") var piece_start_gap := 0.8 # placeholder: the old piece_start_gap
+@export_range(0.0, 3.0, 0.05, "suffix:s") var piece_gap := 0.7 # placeholder: the old piece_gap
 @export_group("The totals")
 ## Seconds after the last column finishes before the totals show.
 @export_range(0.0, 5.0, 0.05, "suffix:s") var totals_delay := 1.0 # placeholder: the old totals_delay
