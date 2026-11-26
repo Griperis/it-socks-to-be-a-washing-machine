@@ -28,6 +28,13 @@ const NOT_READY_DASH := "–"
 const READY_TICK := "✓"
 const CHOSEN_TICK := "✓"
 
+# The Wardrobe key and the stats card (core/143).
+const WARDROBE_TIP := "Wardrobe"
+const TALLY_NAMES := {
+	"pairs_shelved": "Pairs", "coins_earned": "Coins", "collections_completed": "Collections",
+	"floors_completed": "Floors", "games_finished": "Games",
+}
+
 # Solo's question.
 const NEW_GAME_HEADING := "New game"
 const NEW_GAME_ASK := "Start a new game? The saved game is lost."

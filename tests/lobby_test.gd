@@ -59,6 +59,10 @@ func cases() -> Array[Dictionary]:
 				"title": "core/113, real path: on the Lobby the title's Host key opened, a Guest that joins stands on the second pedestal in its colour, the Host's figure stays on the first"},
 		{"name": "k18_control_scenes_keep_layout_mode", "method": "case_k18", "world": false,
 				"title": "core/113: every game scene whose root is an anchored Control stores the root's layout_mode (the editor writes 3): an exported 4.7 build gives an instance of such a root, with no layout_mode on it either, size 0 (the Lobby's stage drew nothing in the build)"},
+		{"name": "k19_wardrobe_key_real_path", "method": "case_k19", "world": false,
+				"title": "core/143, real path: the Wardrobe key (84 px, tooltip \"Wardrobe\") floats at 82% of this machine's own figure's width and no other figure has one; clicking it opens the Wardrobe page over the Lobby and clears this player's Ready; a click on the Socks row's arrow puts the Socks on the figure, Esc or the close key shuts the page; the figure wears them and the Ready stays cleared"},
+		{"name": "k20_stats_card", "method": "case_k20", "world": false,
+				"title": "core/143: hovering a Guest's figure shows the stats card with the Guest's name and its tallies as it told the Host, thousands apart; it takes no mouse and flips left near the screen's edge; leaving hides it"},
 	]
 
 
@@ -527,11 +531,15 @@ func case_k11() -> void:
 	await _key(&"ui_down")
 	_check(hlobby.selected() == hlobby.places()[0] and hlobby.places()[0].focused(), "Down from the top row goes to the first figure, and its place is focused")
 	await _key(&"ui_right")
+	_check(hlobby.selected() == hlobby.wardrobe_key(), "Right of the own figure goes to its Wardrobe key (core/143)")
+	await _key(&"ui_right")
 	_check(hlobby.selected() == hlobby.places()[1], "Right walks to the second figure")
+	await _key(&"ui_left")
 	await _key(&"ui_left")
 	_check(hlobby.selected() == hlobby.places()[0], "Left walks back")
 	await _key(&"ui_left")
 	_check(hlobby.selected() == hlobby.places()[0], "and stops at the first (no wrap)")
+	await _key(&"ui_right")
 	await _key(&"ui_right")
 	await _key(&"ui_right")
 	_check(drawer.is_open() and drawer.is_ancestor_of(hlobby.selected()), "Right of the last figure goes into the open drawer (%s)" % [hlobby.selected()])
@@ -953,3 +961,76 @@ func _scenes_under(dir_path: String) -> Array[String]:
 	for d in dir.get_directories():
 		found.append_array(_scenes_under(dir_path.path_join(d)))
 	return found
+
+
+# --- K19, K20: core/143, the Wardrobe key and the stats card ------------------------------------
+
+func case_k19() -> void:
+	var host := _machine("Host")
+	var lobby := await _title_host(host)
+	var link := lobby.link
+	var me := link.session.me()
+	var key := lobby.wardrobe_key()
+	var tuning := lobby.stage().tuning
+	_check(key.is_visible_in_tree() and key.size.is_equal_approx(Vector2.ONE * tuning.key_size) and key.tooltip_text == "Wardrobe",
+			"the Wardrobe key shows, 84 px, tooltip Wardrobe (%s, %s)" % [key.size, key.tooltip_text])
+	var mine := lobby.places()[0]
+	_check(key.position.is_equal_approx(mine.position + Vector2(mine.size.x * 0.82, 0.0)), "the key floats at 82%% of the own figure's width (%s)" % key.position)
+	lobby.toggle_ready()
+	await _until(func() -> bool: return link.lobby.is_ready(me), "the Host to be Ready")
+	await _click(key)
+	_check(lobby.wardrobe_open() and lobby.wardrobe_page().is_visible_in_tree(), "the key opens the Wardrobe page over the Lobby")
+	await _until(func() -> bool: return not link.lobby.is_ready(me), "the key to clear this player's Ready")
+	var row := lobby.wardrobe_page().row(WardrobePiece.Slot.SOCKS)
+	_check(link.roster.look_of(me).get("socks", &"") in [&"", ""], "no Socks yet")
+	link.parts.ask(Command.new(Roster.OWN, me, link.roster.id, {"piece": "odd_pair"}))  # no basic Socks piece is real yet
+	await _until(func() -> bool: return row.entries.has(&"odd_pair"), "the owned Socks to be offered on the row")
+	await _click(row.next_key())
+	await _until(func() -> bool: return String(link.roster.look_of(me).get("socks", "")) != "", "the Socks step to be worn on the Roster")
+	var worn := StringName(link.roster.look_of(me)["socks"])
+	await _key(&"ui_cancel")
+	_check(not lobby.wardrobe_open(), "Esc shuts the page")
+	await _until(func() -> bool: return lobby.stage().figure(0).dresser().worn[&"socks"] == worn, "the figure to wear the Socks")
+	_check(not link.lobby.is_ready(me), "Ready stays cleared")
+	await _click(key)
+	_check(lobby.wardrobe_open(), "the key opens it again")
+	await _click(lobby.wardrobe_page().close_key())
+	_check(not lobby.wardrobe_open(), "the close key shuts it")
+
+
+func case_k20() -> void:
+	var host := _machine("Host")
+	var guest := _machine("Guest")
+	var hlobby := await _title_host(host)
+	await _until(func() -> bool: return hlobby.link.session.is_online(), "the Host's Lobby to listen", 900, 20.0)
+	var globby := await _lobby(guest, LobbyScreen.Mode.JOIN, null, "127.0.0.1:%d" % hlobby.link.session.port)
+	await _until(func() -> bool: return hlobby.link.roster.peers().size() == 2 and not hlobby.stage().is_free(1), "the Guest to stand", 900, 20.0)
+	var roster := hlobby.link.roster
+	var gpid := roster.id_of(roster.peers()[1])
+	roster.players[gpid]["tallies"] = {"pairs_shelved": 1234567, "coins_earned": 12, "collections_completed": 0,
+			"floors_completed": 999, "games_finished": 1000}
+	roster.changed.emit()
+	var card := hlobby.stats_card()
+	_check(not card.visible, "no card with nothing focused")
+	var place := hlobby.places()[1]
+	place.mouse_entered.emit()  # a headless run draws no view: the hover is the box's own signal
+	await _frames(2)
+	_check(card.visible and card.mouse_filter == Control.MOUSE_FILTER_IGNORE, "hovering the Guest's figure shows a card that takes no mouse")
+	_check(card.name_text() == roster.name_of(roster.peers()[1]), "the card names the Guest (%s)" % card.name_text())
+	_check([card.tally_text("pairs_shelved"), card.tally_text("coins_earned"), card.tally_text("collections_completed"),
+			card.tally_text("floors_completed"), card.tally_text("games_finished")] == ["1,234,567", "12", "0", "999", "1,000"],
+			"the five tallies, thousands apart")
+	_check(card.get_node("Box/pairs_shelved/Caption").text == "Pairs" and card.get_node("Box/games_finished/Caption").text == "Games", "the captions")
+	# Near the screen's edge the card flips to the figure's left.
+	place.position = Vector2(1500.0, 200.0)
+	place.size = Vector2(250.0, 400.0)
+	hlobby.size = Vector2(1920.0, 1080.0)
+	hlobby._lay_card()
+	_check(card.position.x + card.size.x <= place.position.x, "near the edge the card sits left of the figure (%s)" % card.position)
+	place.position = Vector2(100.0, 200.0)
+	hlobby._lay_card()
+	_check(card.position.x >= place.position.x + place.size.x, "far from the edge it sits right of it (%s)" % card.position)
+	place.mouse_exited.emit()
+	await _frames(2)
+	_check(not card.visible, "leaving hides the card")
+	_check(globby != null, "the Guest's Lobby stands")

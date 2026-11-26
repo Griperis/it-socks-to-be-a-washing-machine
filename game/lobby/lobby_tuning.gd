@@ -23,3 +23,15 @@ extends Resource
 @export var focus_colour := Color(0.96, 0.76, 0.18) # placeholder: the gold of the marks, until the designer picks
 ## The backdrop the 3D view stands on (the title's dark brown), for dimming.
 @export var backdrop := Color(0.168627, 0.129412, 0.109804) # placeholder: the title's backdrop
+
+## The Wardrobe key beside this machine's own figure (core/143): its side, its icon, and how far across the figure's
+## box it floats (the fraction of the width).
+@export_range(32.0, 160.0, 1.0, "suffix:px") var key_size := 84.0 # placeholder: the old number (LB WARDROBE_KEY), until the designer tunes it
+@export_range(16.0, 96.0, 1.0, "suffix:px") var key_icon := 48.0 # placeholder: the old number, until the designer tunes it
+@export_range(0.0, 1.5, 0.01) var key_across := 0.82 # placeholder: the old number (82% of the figure's width), until the designer tunes it
+## The stats card (core/143): its width, the gap beside the figure, how far from the screen's edge it flips left, and
+## how far down the figure's box it starts (the fraction of the height).
+@export_range(120.0, 600.0, 1.0, "suffix:px") var card_width := 280.0 # placeholder: the old number, until the designer tunes it
+@export_range(0.0, 64.0, 1.0, "suffix:px") var card_gap := 16.0 # placeholder: the old number (LB CARD_GAP), until the designer tunes it
+@export_range(0.0, 128.0, 1.0, "suffix:px") var card_edge := 48.0 # placeholder: the old number (LB MARGIN), until the designer tunes it
+@export_range(0.0, 1.0, 0.01) var card_drop := 0.2 # placeholder: the old number, until the designer tunes it

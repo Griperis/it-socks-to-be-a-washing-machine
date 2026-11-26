@@ -55,6 +55,8 @@ var _going := false
 var _pending := ""
 var _joining_card: LoadingScreen = null
 var _place_nodes: Array[LobbyPlace] = []
+## The peer standing at each place now (0: nobody), for the Wardrobe key and the stats card.
+var _place_peers: Array[int] = [0, 0, 0, 0]
 
 @onready var _card_title: Label = %CardTitle
 @onready var _card_line: Label = %CardLine
@@ -76,6 +78,10 @@ var _place_nodes: Array[LobbyPlace] = []
 @onready var _ask_yes: Button = %AskYes
 @onready var _ask_close: CloseButton = %AskClose
 @onready var _pairs: PairsSlider = %AskPairs
+@onready var _wardrobe_key: Button = %WardrobeKey
+@onready var _stats: LobbyStatsCard = %Stats
+@onready var _wardrobe_layer: Control = %WardrobeLayer
+@onready var _wardrobe_page: WardrobePage = %Page
 
 
 func _enter_tree() -> void:
@@ -96,6 +102,13 @@ func _ready() -> void:
 	_ask_yes.pressed.connect(_ask_confirmed)
 	_ask_close.pressed.connect(func() -> void: _show_ask(false))
 	_who_key.pressed.connect(open_who)
+	_wardrobe_key.pressed.connect(open_wardrobe)
+	_wardrobe_page.closed.connect(close_wardrobe)
+	var tuning := _stage.tuning
+	_wardrobe_key.custom_minimum_size = Vector2.ONE * tuning.key_size
+	_wardrobe_key.size = Vector2.ONE * tuning.key_size
+	_wardrobe_key.add_theme_constant_override(&"icon_max_width", int(tuning.key_icon))
+	_stats.custom_minimum_size.x = tuning.card_width
 	_who.closed.connect(_sync_focus)
 	for i in LobbyStage.PLACES:
 		var place := PLACE.instantiate() as LobbyPlace
@@ -126,6 +139,7 @@ func _ready() -> void:
 ## Every static word of the screen, from LobbyWords (the scene carries none).
 func _words() -> void:
 	_who_key.text = LobbyWords.WHO_KEY
+	_wardrobe_key.tooltip_text = LobbyWords.WARDROBE_TIP
 	_back.text = LobbyWords.BACK
 	_ready_key.text = LobbyWords.READY
 	_ready_caption.text = LobbyWords.READY_CAPTION
@@ -144,6 +158,8 @@ func _process(_delta: float) -> void:
 	for place in _place_nodes:
 		if place.visible:
 			place.lay_out(_stage.box_of(place.index), _stage.tuning.label_gap)
+	_lay_wardrobe_key()
+	_lay_card()
 
 
 func _exit_tree() -> void:
@@ -354,6 +370,93 @@ func stage() -> LobbyStage:
 	return _stage
 
 
+## The Wardrobe key beside this machine's own figure's head (Q1773): on it, its page over the Lobby; this
+## player's Ready is cleared (Q1764), so the others see the new look before anyone starts.
+func open_wardrobe() -> void:
+	if _going or _wardrobe_layer.visible or asking() or _who.visible or _own_place() == null:
+		return
+	_wardrobe_layer.visible = true
+	_wardrobe_page.bind(link.roster, link.parts, _me())
+	Sounds.play(&"menu_open")
+	if mode != Mode.SOLO and link.lobby.is_ready(_me()):
+		_ask_lobby(link.lobby.ready_command(_me(), false))
+	_sync_focus()
+	if PadFocus.pad_used:
+		_wardrobe_page.focus_first()
+
+
+## Shuts the Wardrobe page: the Lobby shows the new look.
+func close_wardrobe() -> void:
+	if not _wardrobe_layer.visible:
+		return
+	_wardrobe_layer.visible = false
+	_wardrobe_page.unbind()
+	Sounds.play(&"menu_close")
+	_sync_focus()
+	if PadFocus.pad_used and LobbyPad.on_route(_wardrobe_key):
+		_wardrobe_key.grab_focus()
+
+
+## Whether the Wardrobe page lies over the Lobby.
+func wardrobe_open() -> bool:
+	return _wardrobe_layer.visible
+
+
+## The Wardrobe key.
+func wardrobe_key() -> Button:
+	return _wardrobe_key
+
+
+## The Wardrobe page.
+func wardrobe_page() -> WardrobePage:
+	return _wardrobe_page
+
+
+## The stats card.
+func stats_card() -> LobbyStatsCard:
+	return _stats
+
+
+## The place of this machine's own player, null when none stands (a Guest before its snapshot).
+func _own_place() -> LobbyPlace:
+	if link == null or not is_instance_valid(link):
+		return null
+	var at := _place_peers.find(_me())
+	return _place_nodes[at] if at >= 0 and _place_nodes[at].visible else null
+
+
+## The key floats at `key_across` of the figure's width, at its head.
+func _lay_wardrobe_key() -> void:
+	var mine := _own_place()
+	_wardrobe_key.visible = mine != null and not _going
+	if mine != null:
+		_wardrobe_key.position = mine.position + Vector2(mine.size.x * _stage.tuning.key_across, 0.0)
+
+
+## The card sits on the right of the focused figure, on its left where the right would leave `card_edge` of the
+## screen; beside this machine's own figure it clears the Wardrobe key too.
+func _lay_card() -> void:
+	if not _stats.visible:
+		return
+	var tuning := _stage.tuning
+	var focus := _focused_place()
+	if focus == null:
+		return
+	var left := focus.position.x + focus.size.x + tuning.card_gap
+	if focus == _own_place() and _wardrobe_key.visible:
+		left = maxf(left, _wardrobe_key.position.x + _wardrobe_key.size.x + tuning.card_gap)
+	if left + _stats.size.x > size.x - tuning.card_edge:
+		left = focus.position.x - tuning.card_gap - _stats.size.x
+	_stats.position = Vector2(left, focus.position.y + focus.size.y * tuning.card_drop)
+
+
+func _focused_place() -> LobbyPlace:
+	for place in _place_nodes:
+		if place.visible and place.focused():
+			return place
+	return null
+
+
 ## The "i" page of the chosen World: who was in it.
 func open_who() -> void:
 	var names := _members_of(link.lobby.world)
@@ -481,6 +584,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 	if asking():
 		_show_ask(false)
+	elif _wardrobe_layer.visible:
+		close_wardrobe()
 	elif _who.visible:
 		_who.close()
 	elif _drawer.close_dialog():
@@ -541,6 +646,7 @@ func _fill_places() -> void:
 	count = mini(count, LobbyStage.PLACES)
 	_stage.set_places(count)
 	var peers := roster.peers()
+	_place_peers.assign([0, 0, 0, 0])
 	for i in LobbyStage.PLACES:
 		var place := _place_nodes[i]
 		place.visible = i < count
@@ -554,7 +660,8 @@ func _fill_places() -> void:
 		var colour := roster.colour_of(peer)
 		place.show_player(roster.name_of(peer), colour, peer == Roster.HOST and mode != Mode.SOLO,
 				mode != Mode.SOLO, link.lobby.is_ready(peer))
-		_stage.show_player(i, colour)
+		_place_peers[i] = peer
+		_stage.show_player(i, colour, roster.look_of(peer))
 	_sync_focus()
 
 
@@ -563,13 +670,20 @@ func _fill_places() -> void:
 func _sync_focus() -> void:
 	if not is_node_ready():
 		return
-	var blocked := asking() or _who.visible
+	var blocked := asking() or _who.visible or _wardrobe_layer.visible
 	var at := -1
 	for place in _place_nodes:
 		place.set_blocked(blocked)
 		if place.visible and place.focused():
 			at = place.index
 	_stage.set_focus(at)
+	if at < 0 or _place_peers[at] == 0:
+		_stats.hide_card()
+	else:
+		var peer := _place_peers[at]
+		_stats.show_player(link.roster.id_of(peer), link.roster.name_of(peer),
+				link.roster.entry_of(peer).get("tallies", {}))
+		_lay_card()
 
 
 ## The status line's words: why the game cannot go on, "" when nothing holds it. The Group lock that held Start
@@ -585,14 +699,27 @@ func link_pad() -> void:
 		return
 	var top := LobbyPad.live([_who_key, _drawer.key()])
 	var figures := LobbyPad.live(_place_nodes)
+	var mine := figures.find(_own_place())
+	if mine >= 0 and LobbyPad.on_route(_wardrobe_key):
+		figures.insert(mine + 1, _wardrobe_key)  # the key beside the own figure is the next stop
 	var bottom := LobbyPad.live([_back, _ready_key, _start, _continue, _new_game])
 	LobbyPad.clear([_who_key, _drawer.key(), _back, _ready_key, _start, _continue, _new_game])
 	LobbyPad.clear(_place_nodes)
+	LobbyPad.clear([_wardrobe_key])
 	var side: Array = _drawer.pad_rows() if _drawer.is_open() and _drawer.is_visible_in_tree() else []
 	for row: Variant in side:
 		LobbyPad.clear(row as Array)
 	var rows: Array = [top, figures, bottom]
 	LobbyPad.link_rows(rows)
+	if mine >= 0 and figures.has(_wardrobe_key):
+		# Up and Down land on the figures, never on the key beside the own one (Right of the figure reaches it).
+		var own: Control = figures[mine]
+		for c: Control in top:
+			if c.get_node_or_null(c.focus_neighbor_bottom) == _wardrobe_key:
+				c.focus_neighbor_bottom = c.get_path_to(own)
+		for c: Control in bottom:
+			if c.get_node_or_null(c.focus_neighbor_top) == _wardrobe_key:
+				c.focus_neighbor_top = c.get_path_to(own)
 	if side.is_empty():
 		return
 	LobbyPad.link_rows(side)
