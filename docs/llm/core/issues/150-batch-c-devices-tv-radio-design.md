@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: design
 area: core
 feature: frame
@@ -55,3 +55,14 @@ the way core/120-122 did for batch B. A design ticket: no game code.
   (Q2707).
 
 ## Open follow-ups
+
+- [blocking] (for 150-N only) Q2699 says every carried thing rides the Elevator by one item rule; the Sock vacuum's
+  container is carried, but its hose ties it to its nozzle. Does the container ride when it lies in the car?
+  (a) As the old: it never rides (the old car carried Socks, Pairs, the Radio, the Guide card, the Cat and the book,
+  not the vacuums: `elevator_rules.gd`:120-175); (b) it rides only with its nozzle on its hook, and stays put with the
+  nozzle out; (c) it rides, and its nozzle goes back on its hook. Recommended: (b).
+- [blocking] (for 150-N only) A rider keeps what is in their Hands (list 11). What happens when the player holding the
+  nozzle climbs into the car? (a) As the old: no rule stops it; the nozzle rides with its holder and the hose stretches
+  between floors (the old had no check, VA:383-450 measures only sucks and drops); (b) the nozzle goes back on its hook
+  as they climb in; (c) the car refuses them with "The hose won't reach". Recommended: (c).
+
