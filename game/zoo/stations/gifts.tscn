@@ -50,7 +50,7 @@ billboard = 2
 text = "Gifts: Stage presents under the Old Tree stand-in. Click the dial to pick a Collection; \"Drop presents\" drops each player a present wrapped in it at the PresentSpot (a Stage that completes the Collection does the same). Your own present: a left click picks it up, a right click puts it down; a Teammate's cannot be aimed. \"Complete a Collection\" gives you every piece of the dial's Collection for this session, so the next present holds a piece of another unlocked Collection. Behind: every Collection's wrapped box and its pieces. Things made during play come through the spawner (SpawnedParts): \"Spawn a crate\" makes a plain crate at the spot"
 vertical_alignment = 2
 autowrap_mode = 3
-width = 900.0
+width = 700.0
 
 [node name="OldTree" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
