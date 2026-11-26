@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: player
@@ -73,3 +73,6 @@ code. A Trail is a scene of particle nodes authored in the editor (Q2680), its n
 - The 78 hats and clothes Looks (assets/18, `game/wardrobe/looks/<id>.tscn`) are yes: this ticket points the piece files at them and deletes the graybox pieces (Q2691, 2026-11-26).
 
 ## Open follow-ups
+- [later] (lead) Names that differ from wardrobe.md "The shape": `WardrobeLook` is in `wardrobe_look.gd` (one class per file, named alike), and `TrailMark`'s cap is `max_marks` (`max` shadows the global function). The doc can follow.
+- [later] (lead) No `graybox_*` piece files: the hats and clothes point at assets/18's Looks (Q2691); the 17 Socks pieces point at `game/wardrobe/graybox_socks.tscn` and the 16 Trails other than Lint puffs at `game/wardrobe/trails/graybox.tscn` until assets/19 and core/144 (rerun `tools/wardrobe_pieces_from_old.py` or repoint each `.tres`).
+- [later] (lead) `docs/llm/PLACEHOLDERS.md` is stale (`placeholders.py --check`); left for the lead's refresh to avoid a merge conflict.
