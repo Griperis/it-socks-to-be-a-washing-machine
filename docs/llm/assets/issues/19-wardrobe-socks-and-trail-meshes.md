@@ -10,7 +10,7 @@ done:
 blocked_by: []
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 3", "suggested model: opus"]
 terms: [Socks piece, Trail, Wardrobe]
-suites: []
+suites: [menus]        # menus l02: every new file under assets/ needs a credits entry
 ---
 
 # The Wardrobe's Socks pieces and the Trails' meshes

@@ -10,7 +10,7 @@ done:
 blocked_by: []
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 2", "suggested model: sonnet"]
 terms: [Sock encyclopedia]
-suites: []
+suites: [menus]        # menus l02: every new file under assets/ needs a credits entry
 ---
 
 # The encyclopedia book model
