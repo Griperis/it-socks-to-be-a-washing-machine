@@ -1,4 +1,4 @@
-Next free Q number: Q2691 (update this line whenever a round of questions is asked)
+Next free Q number: Q2692 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -646,3 +646,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2690: the present box keeps the port's rounded edges and curved ribbon loops (a look change the designer approved),
   with a flatter wrapped knot instead of the round one; the box and lid are hollow inside, seen when it is opened
   (designer, 2026-11-26; assets/16).
+- Q2691: the 78 Wardrobe pieces' Looks (assets/18, the old glbs) are yes; core/128 points the piece files at them and
+  deletes the graybox pieces (designer, 2026-11-26).
