@@ -18,3 +18,4 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-26 [[134-encyclopedia-record-and-unlocks]] The encyclopedia record and Collections unlocking: eec473c6 (core/134-encyclopedia-record-and-unlocks)
 - 2026-11-26 [[141-looks-in-coop]] Looks, colours and owned pieces in co-op: 0a0faef8 (core/141-looks-in-coop)
 - 2026-11-26 [[149-batch-c-elevator-day-exterior-design]] Batch C: The Elevator, the day cycle and the exterior view (design): 49043322 (core/149-batch-c-elevator-day-exterior-design)
+- 2026-11-26 [[19-wardrobe-socks-and-trail-meshes]] The Wardrobe's Socks pieces and the Trails' meshes: 4ed83f26 (assets/19-wardrobe-socks-and-trail-meshes)
