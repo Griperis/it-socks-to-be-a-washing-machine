@@ -11,28 +11,32 @@ Run from the repository root (Blender is the kit's pinned one, kit/tools/blender
 It builds the box from scratch (build() is safe to re-run in an open file), writes
 `assets/present/present_box.glb` (under `--out` when given) and with `--save` the source
 `assets_src/blender/present/present_box.blend`. `--lineup <dir>` renders the review line-up's tiles
-there instead (the old box beside this one, closed and lid off, in two Collections' wrapping; the
-Collections' icons as PNGs `<collection>.png` in `--icons`). Last line: `PASS present_box ...` or
-`FAIL ...`.
+there instead (the old box beside this one, closed, lid off seen from above into the box, and the
+bow close up, in two Collections' wrapping; the Collections' icons as PNGs `<collection>.png` in
+`--icons`). Last line: `PASS present_box ...` or `FAIL ...`.
 
 Blender metres, the bottom's middle on the origin. Under the root `present_box` (only its children
 are exported, so in Godot they sit straight under the glb's root; core/137's Looks contract,
 gifts.md "The box's Looks"):
-  Box       the body and its ribbon cross; origin on the floor at the middle (the turn and bob pivot)
-  Box/Lid   the lid, its ribbon cross and the bow; origin at the lid's underside, on the body's top
-            (0.246 m), so the `open` clip's lid flight and tumble turn about its own middle bottom
+  Box       the body (hollow, open at the top) and its ribbon cross; origin on the floor at the
+            middle (the turn and bob pivot)
+  Box/Lid   the lid (hollow, open underneath), its ribbon cross and the bow; origin at the lid's
+            underside, on the body's top (0.246 m), so the `open` clip's lid flight and tumble turn
+            about its own middle bottom
 
-Materials: `gift_paper` on the paper surfaces (the body and the lid), `gift_ribbon` on the ribbon and
-the bow. Both are placeholders the Looks overrides: the paper with `gift_paper.gdshader` (core/137,
-which maps its pattern from the object-space position, so the model needs no pattern UVs) and the
-ribbon with the Collection's bow colour (the present's `SockCollection`, at run time). The glb's own
-colours are the old plain ones (paper 0.98, 0.96, 0.9; the old fallback ribbon 0.8, 0.3, 0.3;
-roughness 0.45).
+Materials: `gift_paper` on the outside paper (the body and the lid), `gift_ribbon` on the ribbon and
+the bow, `gift_inside` (the paper's plain back, matte) on the rims and the inside walls, floor and
+ceiling. `gift_paper` and `gift_ribbon` are placeholders the Looks overrides: the paper with
+`gift_paper.gdshader` (core/137, which maps its pattern from the object-space position, so the model
+needs no pattern UVs) and the ribbon with the Collection's bow colour (the present's
+`SockCollection`, at run time). Their glb colours are the old plain ones (paper 0.98, 0.96, 0.9; the
+old fallback ribbon 0.8, 0.3, 0.3; roughness 0.45).
 
-What differs from the old (technical only, Q2153): one model instead of eleven BoxMesh cubes; the
-edges are rounded a little (BEVEL) so they catch the light; the bow's two loops are ribbon loops (a
-flat band round an oval, at the old loops' place, size and lean) instead of tilted cubes; the ribbon
-crosses no longer poke 5 mm below the floor (the origin is the lowest point).
+What differs from the old: one model instead of eleven BoxMesh cubes; the ribbon crosses no longer
+poke 5 mm below the floor (the origin is the lowest point). The designer's look changes (Q2690): the
+edges rounded a little (BEVEL); the bow's two loops are ribbon loops (a flat band round an oval, at
+the old loops' size and lean) instead of tilted cubes; the knot a flat wrapped band instead of a
+cube; the body and the lid hollow (WALL thick), so an opened box shows its inside.
 """
 
 import math
@@ -57,17 +61,24 @@ LID_W = S * 1.06     # the lid, a little wider
 LID_H = S * 0.2
 R = S * 0.18         # the ribbon's width
 RIB = 0.003          # how far the ribbon stands proud of the paper
-BEVEL = 0.006        # the rounded edges
+BEVEL = 0.006        # the rounded outside edges
 SEG = 2              # rounding segments
+WALL = 0.006         # the body's and the lid's walls (both hollow, Q2690)
 # The bow, as the old (in the lid's space): two loops 2R across and 1.4R high, 0.7R deep, their
-# middles 0.9R either side and 0.6R over the lid, leaning 0.5 rad; a knot 0.9R cubed.
+# middles 0.9R either side and 0.6R over the lid (here 0.66R, so the lowest band stays out of the
+# hollow lid), leaning 0.5 rad (their inner ends up).
 LOOP_W, LOOP_H, LOOP_D = R * 2.0, R * 1.4, R * 0.7
-LOOP_X, LOOP_Z, LOOP_LEAN = R * 0.9, LID_H + R * 0.6, 0.5
+LOOP_X, LOOP_Z, LOOP_LEAN = R * 0.9, LID_H + R * 0.66, 0.5
 LOOP_T = 0.009       # the loop band's thickness
-KNOT = R * 0.9
+# The knot (Q2690: flat and wrapped, not a ball): a short band wrapped round the loops' roots, wider
+# than it is high, a little deeper than the loops.
+KNOT_W, KNOT_H, KNOT_D = R * 0.7, R * 0.5, LOOP_D * 1.15
+KNOT_Z = LID_H + R * 0.68   # its underside
 
-COLOURS = {"gift_paper": "#FAF5E6", "gift_ribbon": "#CC4D4D"}
-ROUGHNESS = 0.45
+# `gift_inside` is the paper's plain back, on the rims and the inside walls and floors (the old box
+# was solid, so it had no inside to copy; Q2690: lit as the paper's inside, no pattern).
+COLOURS = {"gift_paper": "#FAF5E6", "gift_ribbon": "#CC4D4D", "gift_inside": "#F1ECE2"}
+ROUGHNESS = {"gift_paper": 0.45, "gift_ribbon": 0.45, "gift_inside": 0.8}
 ORDER = list(COLOURS)
 
 
@@ -76,9 +87,9 @@ def material(name):
     col = fam.srgb(COLOURS[name])
     b = next(n for n in m.node_tree.nodes if n.type == "BSDF_PRINCIPLED")
     b.inputs["Base Color"].default_value = col
-    b.inputs["Metallic"].default_value, b.inputs["Roughness"].default_value = 0.0, ROUGHNESS
+    b.inputs["Metallic"].default_value, b.inputs["Roughness"].default_value = 0.0, ROUGHNESS[name]
     m.diffuse_color = col  # Workbench previews
-    m.metallic, m.roughness = 0.0, ROUGHNESS
+    m.metallic, m.roughness = 0.0, ROUGHNESS[name]
     return m
 
 
@@ -86,16 +97,60 @@ def part():
     return fam.Part(ORDER, material)
 
 
-def _block(p, w, d, z0, z1, mat, r=BEVEL):
-    """A box w x d (plan, centred), z0..z1, its edges rounded by r."""
-    p.rounded_box(w, d, z0, z1, r, r, r, mat, seg=SEG, seg_round=SEG)
+def _arc(i0, z0, up):
+    """The outside rounding as (inset, z) points: from the bottom round onto the wall's foot (up
+    False) or from the wall's top round onto the top (up True)."""
+    pts = []
+    for k in range(SEG + 1):
+        a = math.pi / 2 * k / SEG
+        if up:
+            pts.append((i0 + BEVEL * (1 - math.cos(a)), z0 - BEVEL * (1 - math.sin(a))))
+        else:
+            pts.append((i0 + BEVEL * (1 - math.sin(a)), z0 + BEVEL * (1 - math.cos(a))))
+    return pts
 
 
-def _cross(p, w, z0, z1, step=0.0005):
-    """The ribbon cross over a block w across: two bands R wide, proud by RIB; the second band a
-    hair bigger so the crossing does not flicker."""
-    _block(p, w + 2 * RIB, R, z0, z1 + RIB, "gift_ribbon", r=BEVEL * 0.5)
-    _block(p, R + step, w + 2 * RIB + step, z0, z1 + RIB + step, "gift_ribbon", r=BEVEL * 0.5)
+def _shell(p, w, profile, cap_start, cap_end):
+    """A hollow square shell w across, rounded in plan: `profile` is [(inset, z, material of the
+    band to the next point)], each point a rounded-square ring inset from the outside."""
+    rings = [[Vector((q.x, q.y, z)) for q in fam.rounded_rect(w - 2 * i, w - 2 * i, BEVEL - i, SEG)]
+             for i, z, _m in profile]
+    last = len(rings) - 2
+    for k in range(len(rings) - 1):
+        p._strip([rings[k], rings[k + 1]], profile[k][2],
+                 cap_start=cap_start if k == 0 else None, cap_end=cap_end if k == last else None)
+
+
+def _body(p):
+    """The body, open at the top: the outside up from the rounded foot, over the rim and down the
+    inside walls to the inside floor."""
+    prof = [(i, z, "gift_paper") for i, z in _arc(0.0, 0.0, False)]
+    prof.append((0.0, BODY_H, "gift_inside"))
+    prof.append((WALL, BODY_H, "gift_inside"))
+    prof.append((WALL, WALL, None))
+    _shell(p, S, prof, cap_start="gift_paper", cap_end="gift_inside")
+    # The ribbon cross: a strip down the middle of each side, proud by RIB (none over the opening).
+    for turn in range(4):
+        m = Matrix.Rotation(turn * math.pi / 2, 4, "Z") @ Matrix.Translation((S / 2 + (RIB - 0.001) / 2, 0, 0))
+        p.rounded_box(RIB + 0.001, R, 0.0, BODY_H, 0.0012, 0.0, 0.0, "gift_ribbon", matrix=m, seg=1, seg_round=1)
+
+
+def _lid(p):
+    """The lid, open underneath: the inside ceiling and walls, the bottom rim, the outside up and
+    round onto the top."""
+    prof = [(WALL, LID_H - WALL, "gift_inside"), (WALL, 0.0, "gift_inside"), (0.0, 0.0, "gift_paper")]
+    prof += [(i, z, "gift_paper") for i, z in _arc(0.0, LID_H, True)]
+    prof[-1] = (prof[-1][0], prof[-1][1], None)
+    _shell(p, LID_W, prof, cap_start="gift_inside", cap_end="gift_paper")
+    # The ribbon cross: two bands over the top and down the sides, each an upside-down U (none
+    # under the opening); the second a hair proud of the first where they cross on the top.
+    for turn, step in ((0, 0.0), (1, 0.0005)):
+        o, i = LID_W / 2 + RIB, LID_W / 2 - 0.001
+        top, under = LID_H + RIB + step, LID_H - 0.001
+        outline = [Vector(v + (0.0,)) for v in ((-o, 0), (-i, 0), (-i, under), (i, under), (i, 0), (o, 0),
+                                               (o, top), (-o, top))]
+        m = Matrix.Rotation(turn * math.pi / 2, 4, "Z") @ Matrix.Rotation(math.pi / 2, 4, "X")
+        p.slab(outline, -R / 2 - step, R / 2 + step, "gift_ribbon", matrix=m)
 
 
 def _loop(p, side):
@@ -128,15 +183,14 @@ def build(clean=True):
     root = fam.root(ASSET)
     root.empty_display_size = 0.1
     p = part()
-    _block(p, S, S, 0.0, BODY_H, "gift_paper")
-    _cross(p, S, 0.0, BODY_H)
+    _body(p)
     box = p.finish("Box", parent=root, sharp_deg=50.0)
     p = part()
-    _block(p, LID_W, LID_W, 0.0, LID_H, "gift_paper")
-    _cross(p, LID_W, 0.0005, LID_H)
+    _lid(p)
     for side in (-1, 1):
         _loop(p, side)
-    _block(p, KNOT, KNOT, LID_H + RIB - 0.002, LID_H + RIB + KNOT - 0.002, "gift_ribbon", r=KNOT * 0.3)
+    p.rounded_box(KNOT_W, KNOT_D, KNOT_Z, KNOT_Z + KNOT_H, 0.008, 0.006, 0.008, "gift_ribbon",
+                  seg=SEG, seg_round=SEG)
     # The lid's vertices are made in the lid's own space; it sits on the body.
     lid = p.finish("Lid", parent=box, sharp_deg=50.0)
     lid.location = (0.0, 0.0, BODY_H)
@@ -217,7 +271,7 @@ def _paper_preview(col, icons):
     m = bpy.data.materials.new("_paper_" + col)
     nt = m.node_tree
     b = next(n for n in nt.nodes if n.type == "BSDF_PRINCIPLED")
-    b.inputs["Roughness"].default_value = ROUGHNESS
+    b.inputs["Roughness"].default_value = ROUGHNESS["gift_paper"]
     tc = nt.nodes.new("ShaderNodeTexCoord")
     mp = nt.nodes.new("ShaderNodeMapping")
     k = TILES / S
@@ -236,7 +290,7 @@ def _plain(name, hexcol):
     m = bpy.data.materials.new(name)
     b = next(n for n in m.node_tree.nodes if n.type == "BSDF_PRINCIPLED")
     b.inputs["Base Color"].default_value = fam.srgb(hexcol)
-    b.inputs["Roughness"].default_value = ROUGHNESS
+    b.inputs["Roughness"].default_value = ROUGHNESS["gift_paper"]
     return m
 
 
@@ -316,20 +370,33 @@ def _stage():
     cam.data.lens = 60
     scene.collection.objects.link(cam)
     scene.camera = cam
-    target = Vector((-0.08, 0.06, 0.15))
-    cam.location = target + Vector((0.55, -0.95, 0.62)).normalized() * 1.45
-    cam.rotation_euler = (target - cam.location).to_track_quat("-Z", "Y").to_euler()
     return cam
 
 
+# The line-up's views: (target, direction, distance). `lid_off` looks down into the open box.
+VIEWS = {
+    "closed": ((0.0, 0.0, 0.17), (0.55, -0.95, 0.62), 1.2),
+    "lid_off": ((-0.1, 0.06, 0.12), (0.45, -0.8, 1.1), 1.55),
+    "knot": ((0.0, 0.0, BODY_H + LID_H + 0.03), (0.3, -1.0, 0.55), 0.42),
+}
+
+
+def _aim(cam, view):
+    target, d, dist = VIEWS[view]
+    target = Vector(target)
+    cam.location = target + Vector(d).normalized() * dist
+    cam.rotation_euler = (target - cam.location).to_track_quat("-Z", "Y").to_euler()
+
+
 def lineup(out_dir, icons):
-    """Renders the tiles: for each Collection, the old box and this one, closed and lid off (the lid
-    set down beside), each turned as a lying box starts (id 1: 0.4 rad). Returns the tile paths."""
+    """Renders the tiles: for each Collection, the old box and this one closed, lid off (the lid
+    propped beside, its inside to the camera; the view looks into the box) and the bow close up,
+    each turned as a lying box starts (id 1: 0.4 rad). Returns the tile paths."""
     scene = bpy.context.scene
-    _stage()
+    cam = _stage()
     new_root = bpy.data.objects[ASSET]
     box, lid = bpy.data.objects["Box"], bpy.data.objects["Lid"]
-    lid_home = lid.matrix_parent_inverse.copy(), lid.location.copy()
+    home = lid.location.copy()
     os.makedirs(out_dir, exist_ok=True)
     paths = []
     for col in WRAPS:
@@ -338,9 +405,13 @@ def lineup(out_dir, icons):
         old, old_lid = _old_box(paper, ribbon)
         for o in (box, lid):
             for i, m in enumerate(o.data.materials):
-                o.data.materials[i] = paper if m.name.startswith(("gift_paper", "_paper")) else ribbon
-        for which in ("old", "port"):
-            for state in ("closed", "lid_off"):
+                if m.name.startswith(("gift_paper", "_paper")):
+                    o.data.materials[i] = paper
+                elif m.name.startswith(("gift_ribbon", "_ribbon")):
+                    o.data.materials[i] = ribbon
+        for view in ("closed", "lid_off", "knot"):
+            _aim(cam, view)
+            for which in ("old", "port"):
                 show_old = which == "old"
                 for o in [old] + list(old.children_recursive):
                     o.hide_render = not show_old
@@ -348,20 +419,21 @@ def lineup(out_dir, icons):
                     o.hide_render = show_old
                 b, l_ = (old, old_lid) if show_old else (box, lid)
                 b.rotation_euler = (0.0, 0.0, 0.4)
-                if state == "closed":
+                if view == "lid_off":
+                    # Propped on its back edge behind the box's left, its inside to the camera.
+                    l_.location = (-0.36, 0.25, 0.158)
+                    l_.rotation_euler = (-1.3, 0.0, -0.3)
+                else:
                     l_.location = (0.0, 0.0, BODY_H)
                     l_.rotation_euler = (0.0, 0.0, 0.0)
-                else:
-                    # Set down on the floor in front-left, tipped open: in the box's frame.
-                    l_.location = (-0.36, 0.2, 0.0)
-                    l_.rotation_euler = (0.0, 0.0, -0.3)
-                path = os.path.join(out_dir, "%s_%s_%s.png" % (col, which, state))
+                path = os.path.join(out_dir, "%s_%s_%s.png" % (col, which, view))
                 scene.render.filepath = path
                 bpy.ops.render.render(write_still=True)
                 paths.append(path)
         for o in [old] + list(old.children_recursive):
             bpy.data.objects.remove(o, do_unlink=True)
-    lid.location = lid_home[1]
+    lid.location = home
+    lid.rotation_euler = (0.0, 0.0, 0.0)
     return paths
 
 
