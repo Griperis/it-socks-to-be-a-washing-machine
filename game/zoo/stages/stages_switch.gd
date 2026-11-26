@@ -8,13 +8,13 @@ class_name StagesSwitch
 extends Part
 
 ## What a switch does.
-enum Does { COMPLETE, FIT_NOW }
+enum Does { COMPLETE, FIT_NOW, NEW_RUN }
 
 ## Where the Looks' label is, from this part.
 const LABEL := ^"../Looks/Label"
 const SWITCH := &"switch"
 ## Its prompt per Does. placeholder: zoo wording
-const TITLES := {Does.COMPLETE: "Complete the Stage", Does.FIT_NOW: "Fit now"}
+const TITLES := {Does.COMPLETE: "Complete the Stage", Does.FIT_NOW: "Fit now", Does.NEW_RUN: "New run"}
 ## The run's phases as the label says them.
 const PHASES := {Stages.Phase.PLAYING: "playing", Stages.Phase.PART_OUT: "Part out",
 		Stages.Phase.FIXING: "fixing", Stages.Phase.FIXED: "fixed"}
@@ -43,6 +43,9 @@ func decide(cmd: Command) -> Dictionary:
 		return refuse("wrong")
 	if not parts.near(cmd.by, get_parent(), reach):
 		return refuse("far")
+	if does == Does.NEW_RUN:
+		# The Host's own answer: a New Game's draw again, with a seed of its own (core/135).
+		return stages.start_answer(stages.pairs_per_drawer, true, true, randi())
 	return stages.complete_now_answer() if does == Does.COMPLETE else stages.fit_now_answer()
 
 

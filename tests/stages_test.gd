@@ -37,6 +37,8 @@ func cases() -> Array[Dictionary]:
 	return [
 		{"name": "real_path", "method": "case_real_path", "world": false,
 				"title": "real path: the player clicks the last Pair into Cabinet A, the Stage completes (Part out); E on \"Fit now\" unlocks Cabinet B at its starting Rows, its sheet comes off, and Cabinet A is one Row taller"},
+		{"name": "new_run_draw", "method": "case_new_run_draw", "world": false,
+				"title": "real path (core/135): E on the \"New run\" pillar draws Cabinet B's Collection from its pool among the unlocked ones, its Looks and drawer prompt follow, Stage 1's Socks are of the drawn Collections only, and a save keeps the draw"},
 		{"name": "start", "method": "case_start", "world": false,
 				"title": "a New Game starts at Stage 1: only Stage 1's Cabinets unlocked at 2 Rows, the rest locked showing 2 under the sheet; the bar counts their Rows at the World's Pairs per Drawer"},
 		{"name": "row_capacity", "method": "case_row_capacity", "world": false,
@@ -105,6 +107,39 @@ func case_real_path() -> void:
 	_check(_stages.floor_title() == "Ground", "the run is on the Ground floor")
 	_check(_stages.bar_numbers() == Vector2i(0, 6), "the new bar: A's third Row and B's two (%s)" % _stages.bar_numbers())
 	_check((_station.get_node("FitNow/Looks/Label") as Label3D).text.contains("Stage 2: Ground"), "the pillar's label says Stage 2")
+
+
+func case_new_run_draw() -> void:
+	await _build()
+	var started: Array = []
+	_stages.run_started.connect(func() -> void: started.append(true))
+	seed(11)
+	_stand(Vector3(-2.0, 0.0, 2.8))
+	await _aim(_player, _button("NewRun"))
+	await _press(&"interact")
+	await _until(func() -> bool: return started.size() >= 1, "the New run to start")
+	var unlocked := _stages.unlocked_collections()
+	_check(_a.collection in [&"simple", &"patterns"] and unlocked.has(_a.collection), "Cabinet A drew its pool's unlocked Collection (%s)" % _a.collection)
+	_check(_b.collection in [&"sport", &"animals", &"nature"] and unlocked.has(_b.collection), "Cabinet B drew its pool's unlocked Collection (%s)" % _b.collection)
+	_check(_b.collection != &"sport", "this seed moves Cabinet B off its placed Collection (%s)" % _b.collection)
+	var root := _b.get_parent()
+	var want := Cabinet.looks_path(_b.collection, false)
+	_check(want == "" or (root.get_node("Looks") as Node).scene_file_path == want, "Cabinet B wears %s's Looks" % _b.collection)
+	var drawer_want := Cabinet.looks_path(_b.collection, true)
+	_check(drawer_want == "" or (root.get_node("Drawer1/Looks") as Node).scene_file_path == drawer_want, "its drawers wear them too")
+	var prompt := _mess.catalogue.cabinet_name(_b.collection)
+	_check(prompt != "", "the drawer prompt reads the drawn Collection's name (%s)" % prompt)
+	_check(_stages.stage == 0 and _a.shelf.is_empty() or _a.shelved().is_empty(), "the Cabinets start empty")
+	_check(not _stages.spawned.is_empty(), "Stage 1's Designs were chosen")
+	for d in _stages.spawned:
+		var col := _mess.catalogue.design(d).collection
+		_check(col == _a.collection, "Stage 1 Design %d is of the drawn Collection of the unlocked Cabinet A (%s)" % [d, col])
+	var saved := _roundtrip(_parts.save_snapshot())
+	var versions := _parts.save_versions()
+	var drawn := [_a.collection, _b.collection]
+	await _build()
+	_parts.load_save(saved, versions, "host")
+	_check([_a.collection, _b.collection] == drawn, "a save keeps the draw (%s)" % [[_a.collection, _b.collection]])
 
 
 # --- Rules ---------------------------------------------------------------------------------------

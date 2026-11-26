@@ -103,6 +103,7 @@ plan = ExtResource("11_house")
 
 [node name="Stages" parent="Run" index="0"]
 plan = ExtResource("10_mini")
+draw_first_start = false
 
 [node name="MachineParts" type="Node3D" parent="Run"]
 
@@ -136,6 +137,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
 [node name="Cabinet" parent="CabinetA" index="0" node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../Socks/Hands")
 bank = NodePath("../../Socks/Bank")
+pool = Array[StringName]([&"simple", &"patterns"])
 
 [node name="Platform" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.3, -3.5)
@@ -192,6 +194,7 @@ hands = NodePath("../../Socks/Hands")
 bank = NodePath("../../Socks/Bank")
 unlock_stage = 2
 collection = &"sport"
+pool = Array[StringName]([&"sport", &"animals", &"nature"])
 locked = true
 
 [node name="DustSheet" parent="CabinetB" instance=ExtResource("8_sheet")]
@@ -264,6 +267,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1.5)
 
 [node name="StagesSwitch" parent="FitNow" index="0" node_paths=PackedStringArray("stages")]
 stages = NodePath("../../Run/Stages")
+
+[node name="NewRun" parent="." instance=ExtResource("13_switch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 1.5)
+
+[node name="StagesSwitch" parent="NewRun" index="0" node_paths=PackedStringArray("stages")]
+stages = NodePath("../../Run/Stages")
+does = 2
 
 [node name="Generators" type="Node3D" parent="."]
 

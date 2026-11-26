@@ -61,3 +61,5 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 | core/124 | Does a zoo or test fill pay Drawers? | Yes, every drawer filled to the Pairs per Drawer pays (the old CBS:290 paid for the zoo's and tests' fills too); 1 Drawer with no run | |
 | core/124 | A floor opened by a load cut short during its Fix (the floor opens after the load) | Pays the floor bonus then, as any opening (the old step() opened it the same way, CA:348-353) | |
 | core/124 | The corner's network line ("Playing alone", "Hosting on port ...") sat where the counters go | Moved below the counters (the old HUD had the counters top left, HUD:132-138) | |
+| core/135 | A Cabinet with no pool in a level that draws (a spot kept as placed) | Keeps its placed Collection and no other spot draws it (the old pools listed every spot, CPO:193-262; the port empty pool is the zoo stations way) | |
+| core/135 | The order spots are solved in | Fewest choices first, then in tree order, a seeded shuffle of each pool first (the old _order and _solve, CPO:216-262) | |

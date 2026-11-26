@@ -1118,7 +1118,7 @@ func case_h05_mess() -> void:
 	for c: Array in CABINETS:
 		var root := house.get_node_or_null("Cabinets/" + String(c[0])) as Node3D
 		var cab := root.get_node_or_null("Cabinet") as Cabinet if root != null else null
-		_check(cab != null and cab.collection == c[1], "the %s Cabinet holds %s" % [c[0], c[1]])
+		_check(cab != null and (cab.pool.has(cab.collection) or cab.pool.is_empty() and cab.collection == c[1]), "the %s Cabinet holds %s of its pool %s (core/135 draws it)" % [c[0], cab.collection, cab.pool])
 		if root != null:
 			_check(root.global_position.distance_to(Vector3(c[2], c[3], c[4])) < 0.01 and absf(angle_difference(root.rotation.y, c[5])) < 0.01,
 					"the %s Cabinet stands at the old spot, its back to the wall (%s)" % [c[0], root.global_position])
