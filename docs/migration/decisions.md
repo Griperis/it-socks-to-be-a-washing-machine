@@ -1,4 +1,4 @@
-Next free Q number: Q2696 (update this line whenever a round of questions is asked)
+Next free Q number: Q2697 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -657,3 +657,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   windows; the front and garage doors stay shut (designer, 2026-11-26; batch C; keeps Q2514).
 - Q2695: no guide card: the HUD goal line stays in its place (designer, 2026-11-26; batch C; Q2625's replacement
   dropped).
+- Q2696: the encyclopedia book (assets/17, the old meshes with the shared library's brass and ribbon) is yes; core/139
+  swaps its Looks in (designer, 2026-11-26).
