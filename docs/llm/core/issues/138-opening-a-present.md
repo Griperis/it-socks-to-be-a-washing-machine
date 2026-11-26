@@ -6,7 +6,7 @@ area: core
 feature: gifts
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: ["[[137-presents-under-the-old-tree]]", "[[141-looks-in-coop]]", "[[128-wardrobe-pieces-and-dressed-avatar]]", "[[124-coins-and-drawers]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 5", "suggested model: opus"]
 terms: [Gift, Wardrobe, Coins, Rarity, Teammate]
