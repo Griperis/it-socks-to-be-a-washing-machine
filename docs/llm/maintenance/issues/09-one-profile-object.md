@@ -6,7 +6,7 @@ area: maintenance
 feature: profile
 priority: next
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["suggested model: sonnet", "found by core/145's agent, 2026-11-26"]
 terms: [Profile]

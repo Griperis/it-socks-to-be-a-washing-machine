@@ -6,7 +6,7 @@ area: content
 feature: player
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: ["[[128-wardrobe-pieces-and-dressed-avatar]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 3", "suggested model: sonnet", "look work: stops at its first strip"]
 terms: [Trail, Wardrobe]
