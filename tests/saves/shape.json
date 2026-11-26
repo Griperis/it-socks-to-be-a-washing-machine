@@ -133,6 +133,7 @@
 	"res://game/run/stages.gd": {
 		"fields": {
 			"bar": "Array",
+			"completed": "Array",
 			"due": "PackedInt32Array",
 			"first_laid": "bool",
 			"held_designs": "PackedInt32Array",
@@ -143,6 +144,6 @@
 			"spawned": "PackedInt32Array",
 			"stage": "int"
 		},
-		"version": 1
+		"version": 2
 	}
 }

@@ -53,13 +53,18 @@ static func target(part: Part, pad := false) -> Array[Prompt]:
 
 ## The crosshair's row for a carried thing (core/78, the old prompts.gd's bin): `carried`'s name with
 ## no key while it is carried; else the aimed lying `aimed`'s name with the click key when `empty`
-## Hands may pick it up, without it otherwise.
+## Hands may pick it up, without it otherwise. A thing with its own click words (a present, Q2677) reads
+## them with the click key: "[LMB] Pick up" aimed with empty Hands, "[LMB] Open" while carried.
 static func carry_target(aimed: Carriable, carried: Carriable, empty: bool, pad := false) -> Array[Prompt]:
 	var out: Array[Prompt] = []
 	var no_key: Array[String] = []
 	if carried != null:
-		if carried.prompt_title() != "":
+		if carried.carry_title != "":
+			out.append(Prompt.of(carried.carry_title, keys(Player.PICK, pad)))
+		elif carried.prompt_title() != "":
 			out.append(Prompt.of(carried.prompt_title(), no_key))
+	elif aimed != null and empty and aimed.pick_title != "":
+		out.append(Prompt.of(aimed.pick_title, keys(Player.PICK, pad)))
 	elif aimed != null and aimed.prompt_title() != "":
 		out.append(Prompt.of(aimed.prompt_title(), keys(Player.PICK, pad) if empty else no_key))
 	return out

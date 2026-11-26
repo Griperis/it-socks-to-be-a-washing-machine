@@ -2,16 +2,20 @@
 
 [ext_resource type="PackedScene" path="res://game/parts/spawned_parts.tscn" id="1_spawned"]
 [ext_resource type="PackedScene" path="res://game/zoo/gifts/crate_switch.tscn" id="2_switch"]
+[ext_resource type="Script" path="res://game/gifts/presents.gd" id="3_presents"]
+[ext_resource type="Resource" path="res://game/gifts/present_tuning.tres" id="4_tuning"]
+[ext_resource type="PackedScene" path="res://game/zoo/gifts/gift_switch.tscn" id="5_gift_switch"]
+[ext_resource type="Script" path="res://game/zoo/gifts/gift_shelf.gd" id="6_shelf"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.55, 0.42, 0.5, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_pad"]
 material = SubResource("StandardMaterial3D_pad")
-size = Vector2(10, 8)
+size = Vector2(12, 18)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
-size = Vector3(12, 0.2, 10)
+size = Vector3(12, 0.2, 18)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tree"]
 albedo_color = Color(0.36, 0.5, 0.32, 1)
@@ -29,24 +33,24 @@ radius = 0.6
 [node name="Gifts" type="Node3D"]
 
 [node name="Pad" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 4)
 mesh = SubResource("PlaneMesh_pad")
 
 [node name="Ground" type="StaticBody3D" parent="."]
 metadata/surface = "wood"
 
 [node name="Shape" type="CollisionShape3D" parent="Ground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 4)
 shape = SubResource("BoxShape3D_ground")
 
 [node name="Name" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -3.5)
 pixel_size = 0.004
 billboard = 2
-text = "Gifts: things made during play come through the spawner (SpawnedParts). \"Spawn a crate\" makes a crate at the PresentSpot beside the Old Tree stand-in; carry it with a left click, lay it with a right click. Presents land here with core/137"
+text = "Gifts: Stage presents under the Old Tree stand-in. Click the dial to pick a Collection; \"Drop presents\" drops each player a present wrapped in it at the PresentSpot (a Stage that completes the Collection does the same). Your own present: a left click picks it up, a right click puts it down; a Teammate's cannot be aimed. \"Complete a Collection\" gives you every piece of the dial's Collection for this session, so the next present holds a piece of another unlocked Collection. Behind: every Collection's wrapped box and its pieces. Things made during play come through the spawner (SpawnedParts): \"Spawn a crate\" makes a plain crate at the spot"
 vertical_alignment = 2
 autowrap_mode = 3
-width = 700.0
+width = 900.0
 
 [node name="OldTree" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
@@ -64,9 +68,41 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -1)
 
 [node name="Spawned" parent="." instance=ExtResource("1_spawned")]
 
+[node name="Presents" type="Node" parent="." node_paths=PackedStringArray("spawned", "spot")]
+script = ExtResource("3_presents")
+spawned = NodePath("../Spawned")
+spot = NodePath("../PresentSpot")
+tuning = ExtResource("4_tuning")
+
 [node name="CrateSwitch" parent="." instance=ExtResource("2_switch")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -1)
 
 [node name="CrateSwitch" parent="CrateSwitch" index="0" node_paths=PackedStringArray("spawned", "spot")]
 spawned = NodePath("../../Spawned")
 spot = NodePath("../../PresentSpot")
+
+[node name="Dial" parent="." instance=ExtResource("5_gift_switch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1.5)
+
+[node name="GiftSwitch" parent="Dial" index="0"]
+mode = 0
+
+[node name="Drop" parent="." instance=ExtResource("5_gift_switch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 1.5)
+
+[node name="GiftSwitch" parent="Drop" index="0" node_paths=PackedStringArray("presents", "dial")]
+presents = NodePath("../../Presents")
+dial = NodePath("../../Dial/GiftSwitch")
+
+[node name="Complete" parent="." instance=ExtResource("5_gift_switch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 1.5)
+
+[node name="GiftSwitch" parent="Complete" index="0" node_paths=PackedStringArray("dial")]
+mode = 2
+dial = NodePath("../../Dial/GiftSwitch")
+
+[node name="Shelf" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0, 5)
+script = ExtResource("6_shelf")
+row_pitch = 0.95
+column_pitch = 5.4

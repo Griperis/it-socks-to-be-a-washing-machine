@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: gifts
@@ -81,3 +81,12 @@ level's author. The Looks follows the contract assets/16's model will keep.
 - [later] Two readings of Q2673 the lead made, built so and listed on the review sheet for the designer: "unlocked" is
   the Host's unlocked set (the one the draw used), and the box keeps the completed Collection's wrapping whatever piece
   it holds.
+- [later] For core/138: the approved model comes as one glb instance, so the Looks' lid is `Looks/Box/Box/Lid` (the
+  turning `Box` is the glb's root, its `Box` mesh and `Lid` under it), not `Box/Lid`; `Present.MESHES` names both.
+- [later] The Stages station's own mini run (2 Pairs a Drawer, Cabinets of six Drawers) never completes a Collection,
+  so in the zoo presents come from the Gifts station's switches; the real-path case plays the station with a plan of
+  1 Pair a Drawer and six starting Rows. A zoo plan that ends in presents is the lead's call.
+- [later] The Gifts station's "Complete a Collection" is read as "own every piece of the dial's Collection for this
+  session" (so the next "Drop presents" shows G1); a lead's reading of the zoo switch, on the review sheet's list.
+- [later] The Collections station's wrapped box (gifts.md "Zoo stations") is core/136's file; `Present.wrap_looks()`
+  is the call it needs.

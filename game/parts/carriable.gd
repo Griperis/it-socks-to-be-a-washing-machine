@@ -22,11 +22,17 @@
 ## `handable`) puts it into their empty Hands, else down at their feet ("full": they read "Hands
 ## full"). A leaver lays it where they stood; a load where it last lay. While carried its shapes are
 ## off: it never blocks its carrier, the aim or a drop.
+##
+## The `carry_guards` seam (core/137): a sibling Part in the group GUARDS may refuse a pick
+## (`pick_refusal(by) -> StringName`, empty to allow: a Teammate's present, "not_yours", said by nobody) and
+## hide the thing from a player's crosshair (`aimable_by(by) -> bool`: no outline, no prompt, no click).
 class_name Carriable
 extends Part
 
 ## Every Carriable is in this group (Hands.carries() looks there).
 const GROUP := &"carriables"
+## A sibling Part in this group guards its picks and its aim (the carry_guards seam).
+const GUARDS := &"carry_guards"
 ## Why a pick or a hand-off is refused because of the Hands: they hold something.
 const FULL := "full"
 ## The right click aimed at a Teammate: the same verb as the Hand-off of a Sock (core/42), so it is
@@ -46,6 +52,10 @@ const FLOOR_PROBE := 0.5
 @export var handable := true
 ## Its name on the crosshair's row, aimed or carried ("" for none).
 @export var title := ""
+## The crosshair's words with the click key for empty Hands aimed at it ("Pick up"; "": its `title`).
+@export var pick_title := ""
+## The crosshair's words with the click key while it is carried ("Open"; "": its `title`, with no key).
+@export var carry_title := ""
 
 @export_group("State")
 ## Who holds it: a player's id, or 0 when it lies at `at`.
@@ -80,6 +90,31 @@ func _ready() -> void:
 
 func prompt_title() -> String:
 	return title
+
+
+## Whether this machine's player may aim at it: every guard beside it says so.
+func aimable() -> bool:
+	return aimable_by(multiplayer.get_unique_id() if is_inside_tree() else Parts.HOST)
+
+
+## Whether player `by`'s crosshair may rest on it (its guards', the carry_guards seam).
+func aimable_by(by: int) -> bool:
+	for guard in guards():
+		if guard.has_method(&"aimable_by") and not bool(guard.call(&"aimable_by", by)):
+			return false
+	return true
+
+
+## The Parts beside it that guard its picks and its aim (the group GUARDS).
+func guards() -> Array[Node]:
+	var out: Array[Node] = []
+	var thing := get_parent()
+	if thing == null:
+		return out
+	for node in thing.get_children():
+		if node != self and node.is_in_group(GUARDS):
+			out.append(node)
+	return out
 
 
 ## Picked up by the left click (with empty Hands); the use key does nothing on it.
@@ -122,9 +157,14 @@ func accepts() -> Dictionary[StringName, Dictionary]:
 	}
 
 
-## Why player `by` may not pick it up now, or "": someone holds it ("gone"), too far ("far"), or
-## their Hands hold something ("full").
+## Why player `by` may not pick it up now, or "": a guard refuses (its own word: a Teammate's present,
+## "not_yours"), someone holds it ("gone"), too far ("far"), or their Hands hold something ("full").
 func pick_refusal(by: int) -> String:
+	for guard in guards():
+		if guard.has_method(&"pick_refusal"):
+			var why := String(guard.call(&"pick_refusal", by))
+			if why != "":
+				return why
 	if holder != 0:
 		return "gone"
 	if parts != null and not parts.near(by, get_parent(), reach):
@@ -287,7 +327,7 @@ func _show(now: bool) -> void:
 		return
 	var mover := holder if holder != 0 else Parts.HOST
 	if thing.get_multiplayer_authority() != mover:
-		thing.set_multiplayer_authority(mover)
+		_set_mover(thing, mover)
 	_set_shapes(thing, holder == 0)
 	if holder != 0:
 		_put_left = 0.0
@@ -315,6 +355,16 @@ func _show(now: bool) -> void:
 	elif looks != null:
 		_put_left = 0.0
 		looks.transform = Transform3D.IDENTITY
+
+
+## `thing` and everything under it move by `mover`, but a spawned thing's SpawnGate, which stays the Host's
+## (SpawnedParts): changing the gate's authority while a late Guest's spawn of a carried thing is pending is an
+## engine error (core/137: a present carried as a Guest joins).
+func _set_mover(thing: Node3D, mover: int) -> void:
+	thing.set_multiplayer_authority(mover, false)
+	for child in thing.get_children():
+		if child.name != SpawnedParts.GATE:
+			child.set_multiplayer_authority(mover, true)
 
 
 ## Its shapes are on while it lies and off while carried (the ones it switched off come back).

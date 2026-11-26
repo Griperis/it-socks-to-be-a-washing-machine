@@ -568,6 +568,13 @@ load_screen = true
 [node name="Stages" parent="Run" index="0"]
 plan = ExtResource("91_stage_plan")
 
+[node name="Presents" parent="Run" index="7" node_paths=PackedStringArray("spot")]
+spot = NodePath("../PresentSpot")
+
+[node name="PresentSpot" type="Marker3D" parent="Run"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.185, -3, 6.475)
+metadata/note = "Where the Stage presents' heap lies: the Old Tree's south foot, the old first clear tree_spots entry ([1.2, 0.15] in the tree's frame: the four before it touch the port's tree; Q1605, core/137). Placed by hand."
+
 [node name="MachineParts" type="Node3D" parent="Run"]
 metadata/note = "The four Machine Parts, hidden under the house until their Stage completes (a Part's shapes are on until its first physics frame, so none stands where Socks are laid)."
 

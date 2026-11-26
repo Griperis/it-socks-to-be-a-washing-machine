@@ -5,3 +5,14 @@ game/zoo/stations/wardrobe.tscn Teammates still
 game/zoo/stations/wardrobe.tscn Teammates sock_spot
 game/zoo/zoo.tscn Stations/Wardrobe/Teammates still
 game/zoo/zoo.tscn Stations/Wardrobe/Teammates sock_spot
+
+# core/137: the Gifts station drops presents with no run (its draw uses the start set and the zoo's profile); its
+# dial needs neither the Presents nor a dial, the "Complete a Collection" switch no Presents.
+game/zoo/stations/gifts.tscn Presents stages
+game/zoo/stations/gifts.tscn Dial/GiftSwitch presents
+game/zoo/stations/gifts.tscn Dial/GiftSwitch dial
+game/zoo/stations/gifts.tscn Complete/GiftSwitch presents
+game/zoo/zoo.tscn Stations/Gifts/Presents stages
+game/zoo/zoo.tscn Stations/Gifts/Dial/GiftSwitch presents
+game/zoo/zoo.tscn Stations/Gifts/Dial/GiftSwitch dial
+game/zoo/zoo.tscn Stations/Gifts/Complete/GiftSwitch presents

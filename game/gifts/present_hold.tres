@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="HoldSlot" format=3]
+
+[ext_resource type="Script" path="res://game/hands/hold_slot.gd" id="1_slot"]
+
+[resource]
+script = ExtResource("1_slot")
+at = Vector3(0, 0.95, -0.5)
