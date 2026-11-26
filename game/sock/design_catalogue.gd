@@ -4,12 +4,6 @@ class_name DesignCatalogue
 extends Resource
 
 @export var designs: Array[SockDesign] = []
-## Each Collection's colour, by its id (the old game's data/designs.json): the pairing moment's
-## sparkles and ring (P05).
-@export var collection_colours: Dictionary[StringName, Color] = {}
-## Each Collection's Cabinet's name, by its id (the old game's data/designs.json "cabinet"): an aimed
-## drawer's prompt reads "<name> drawer" (core/15, Q2388).
-@export var cabinet_names: Dictionary[StringName, String] = {}
 
 ## How many Designs each Collection has, counted once (count_of()).
 var _counts: Dictionary[StringName, int] = {}
@@ -32,14 +26,16 @@ func design(id: int) -> SockDesign:
 	return d if d != null and d.id == id else _find(id)
 
 
-## The colour of Collection `collection`, or the old warm gold for one without.
+## The colour of Collection `collection` (its file in game/collections/), or the old warm gold for one without.
 func collection_colour(collection: StringName) -> Color:
-	return collection_colours.get(collection, Color(1.0, 0.8, 0.4))
+	var c := Collections.of(collection)
+	return c.colour if c != null else Color(1.0, 0.8, 0.4)
 
 
 ## The name of Collection `collection`'s Cabinet ("Simple cabinet"), or the Collection's id.
 func cabinet_name(collection: StringName) -> String:
-	return cabinet_names.get(collection, String(collection))
+	var c := Collections.of(collection)
+	return c.cabinet_name if c != null and c.cabinet_name != "" else String(collection)
 
 
 func size() -> int:

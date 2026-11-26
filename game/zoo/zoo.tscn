@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://dvh4amgapflsc" path="res://game/zoo/stations/outline.tscn" id="28_outline"]
 [ext_resource type="PackedScene" uid="uid://c3oefe5hwybf0" path="res://game/zoo/stations/sock_looks.tscn" id="29_sock_looks"]
 [ext_resource type="PackedScene" uid="uid://bia8qy2uew74e" path="res://game/zoo/stations/icons.tscn" id="30_icons"]
+[ext_resource type="PackedScene" path="res://game/zoo/stations/collections.tscn" id="96_collections"]
 [ext_resource type="PackedScene" uid="uid://q216ydccycux" path="res://game/zoo/stations/screen.tscn" id="31_screen"]
 [ext_resource type="Resource" uid="uid://do11bnjgc3rph" path="res://game/zoo/screen/zoo_upgrades.tres" id="32_upgrades"]
 [ext_resource type="PackedScene" uid="uid://c3p6luowfkhuw" path="res://game/zoo/stations/materials.tscn" id="35_materials"]
@@ -157,6 +158,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 98, 0, 2)
 
 [node name="FinalScreen" parent="Stations" instance=ExtResource("95_final_screen")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0, 2)
+
+[node name="Collections" parent="Stations" instance=ExtResource("96_collections")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 138, 0, 2)
 
 [node name="ReturnSpot" type="Marker3D" parent="." unique_id=1397039282]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.5)
