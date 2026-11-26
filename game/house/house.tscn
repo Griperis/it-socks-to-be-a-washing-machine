@@ -604,6 +604,7 @@ transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.42, -3, 8.15)
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 collection = &"simple"
+pool = Array[StringName]([&"simple"])
 
 [node name="Garage" parent="Cabinets" unique_id=15423979 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, -3, 7.3)
@@ -613,6 +614,7 @@ hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 2
 collection = &"sport"
+pool = Array[StringName]([&"machinery", &"transport", &"sport", &"tech"])
 locked = true
 
 [node name="DustSheet" parent="Cabinets/Garage" instance=ExtResource("100_sheet")]
@@ -625,6 +627,7 @@ hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 2
 collection = &"food"
+pool = Array[StringName]([&"fruit", &"vegetables", &"drinks", &"food"])
 locked = true
 
 [node name="Living" parent="Cabinets" unique_id=946583941 instance=ExtResource("81_cabinet")]
@@ -635,6 +638,7 @@ hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 2
 collection = &"patterns"
+pool = Array[StringName]([&"patterns"])
 locked = true
 
 [node name="KidsNorth" parent="Cabinets" unique_id=32228217 instance=ExtResource("81_cabinet")]
@@ -645,6 +649,7 @@ hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 3
 collection = &"animals"
+pool = Array[StringName]([&"animals", &"nature", &"superhero", &"space", &"math"])
 locked = true
 
 [node name="KidsEast" parent="Cabinets" unique_id=2075620364 instance=ExtResource("81_cabinet")]
@@ -655,6 +660,7 @@ hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 3
 collection = &"superhero"
+pool = Array[StringName]([&"animals", &"nature", &"superhero", &"space", &"math"])
 locked = true
 
 [node name="LoftWest" parent="Cabinets" unique_id=1701359047 instance=ExtResource("81_cabinet")]
@@ -665,6 +671,7 @@ hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 4
 collection = &"winter"
+pool = Array[StringName]([&"winter", &"space", &"nature", &"tech"])
 locked = true
 
 [node name="LoftEast" parent="Cabinets" unique_id=1484615176 instance=ExtResource("81_cabinet")]
@@ -675,6 +682,7 @@ hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 4
 collection = &"space"
+pool = Array[StringName]([&"winter", &"space", &"nature", &"tech"])
 locked = true
 
 [node name="FloorLocks" type="Node3D" parent="."]

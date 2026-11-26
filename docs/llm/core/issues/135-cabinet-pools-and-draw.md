@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: gifts
@@ -54,3 +54,6 @@ The pools are edited on the placed Cabinets in the editor (the spot is the Cabin
 - The Lost Socks are left out of the start set and presents until the Drum (Q2675, 2026-11-25).
 
 ## Open follow-ups
+- [later] The draw reads `CollectionUnlocks.start` (`Stages.unlocked_collections()`) until core/127 has its profile field: that function is the one place to switch to the Host profile set.
+- [later] The station New run empties the Cabinets but Socks already in the Mess stay (shelved ones are not removed): a zoo-only seam; a Mess verb to clear them would fix it.
+- Stages gets `draw_first_start` (the Stages station sets it off so its hand-laid Socks stay for the placed Collections; the house draws at its first start).

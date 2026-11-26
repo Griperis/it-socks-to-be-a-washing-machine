@@ -52,6 +52,12 @@ signal machine_fixed
 
 ## The level's run.
 @export var plan: StagePlan
+## Whether the first `start` draws the Cabinets' Collections from their pools (core/135). A station whose
+## Socks are laid by hand for its placed Collections turns it off; its `new_run` always draws.
+@export var draw_first_start := true
+## The rule of which Collections a first game has unlocked (core/125): the Host's start set until the
+## profile's own set (core/127) answers.
+@export var unlocks: CollectionUnlocks = preload("res://game/collections/collection_unlocks.tres")
 
 @export_group("State")
 ## The current Stage (0 is the basement's); -1 before a New Game's `start`.
@@ -400,7 +406,11 @@ func decide(cmd: Command) -> Dictionary:
 		return refuse("wrong")
 	match cmd.kind:
 		&"start":
-			return start_answer(int(cmd.args.get("pairs_per_drawer", plan.pairs_per_drawer)))
+			return start_answer(int(cmd.args.get("pairs_per_drawer", plan.pairs_per_drawer)), draw_first_start)
+		&"new_run":
+			# A zoo's New run: the run starts over, every Cabinet emptied, the draw made again.
+			return start_answer(int(cmd.args.get("pairs_per_drawer", plan.pairs_per_drawer)), true, true,
+					int(cmd.args.get("seed", 0)))
 		&"complete":
 			if stage < 0 or phase != Phase.PLAYING or not bar_full():
 				return refuse("already")
@@ -420,25 +430,85 @@ func decide(cmd: Command) -> Dictionary:
 	return refuse("wrong")
 
 
-## The `start` answer: Stage 1, every Cabinet's lock and Rows (Stage 1's unlocked at `start_rows`, the
-## rest locked showing them), the bar, the World's Pairs per Drawer. Refused once the run has begun.
-func start_answer(per: int) -> Dictionary:
-	if stage >= 0:
+## The `start` answer: first the draw of each Cabinet's Collection from its pool when `draw` (core/135), then
+## Stage 1, every Cabinet's lock and Rows (Stage 1's unlocked at `start_rows`, the rest locked showing
+## them), the bar, the World's Pairs per Drawer. Refused once the run has begun, unless `again` (a zoo's
+## New run, which also empties every Cabinet); `salt` is mixed into the World's seed for that draw.
+func start_answer(per: int, draw := false, again := false, salt := 0) -> Dictionary:
+	if stage >= 0 and not again:
 		return refuse("already")
 	per = clampi(per, 1, StagePlan.PAIRS_AT)
 	var changes := {}
 	var rows_by := {}
+	var drawn := {}
+	if draw:
+		drawn = draw_collections(salt)
+	var placed := {}
+	for cab: Cabinet in drawn:
+		placed[cab] = cab.collection
+		cab.collection = drawn[cab]  # only while this answer is worked out: the answer's patch sets it
 	for cab in cabinets():
 		var opens := cab.unlock_stage <= 1
 		var rows := mini(plan.start_rows, height_of(cab, per))
 		changes.merge(cab.lock_patch(not opens, rows), true)
+		if drawn.has(cab):
+			changes[cab.id]["collection"] = drawn[cab]
+		if again:
+			changes[cab.id]["shelf"] = []
+			changes[cab.id]["bonus_rows"] = 0
+			for i in cab.drawer_count():
+				if cab.drawer(i) != null:
+					changes[cab.drawer(i).id]["open"] = false
 		if opens:
 			rows_by[cab] = rows
 	var designs := stage_designs(0, rows_by, per, PackedInt32Array())
+	for cab: Cabinet in placed:
+		cab.collection = placed[cab]
 	changes[id] = {"stage": 0, "phase": Phase.PLAYING, "bar": _bar_of(0, rows_by, per),
 			"spawned": designs, "due": designs, "first_laid": false, "pairs_per_drawer": per,
 			"holding": wants_first_wash(), "held_designs": PackedInt32Array(), "held_poses": PackedFloat32Array()}
 	return {"ok": true, "changes": changes, EVENTS: [[&"run_started"]]}
+
+
+## The Collections the New Game's draw may use: the Host's unlocked ones (its start set until the profile's
+## own answers, core/127).
+func unlocked_collections() -> Array[StringName]:
+	var out: Array[StringName] = []
+	if unlocks != null:
+		out.append_array(unlocks.start)
+	return out
+
+
+## The New Game's draw (core/135): each Cabinet with a pool gets one unlocked Collection of it, never one
+## twice (a Cabinet with no pool keeps its placed Collection, which no other spot draws). {Cabinet: id};
+## empty when there is nothing to draw, or when the pools cannot be filled (the reason is logged and the
+## placed Collections stand).
+func draw_collections(salt := 0) -> Dictionary:
+	var spots: Array[Cabinet] = []
+	var pools := []
+	var taken: Array[StringName] = []
+	for cab in cabinets():
+		if cab.pool.is_empty():
+			taken.append(cab.collection)
+		else:
+			spots.append(cab)
+			pools.append(cab.pool)
+	var out := {}
+	if spots.is_empty():
+		return out
+	var unlocked := unlocked_collections()
+	var why := CabinetDraw.problems(pools, unlocked, taken)
+	if not why.is_empty():
+		push_error("Stages: the Cabinets' draw is kept to the placed Collections: " + "; ".join(why))
+		return out
+	var rng := RandomNumberGenerator.new()
+	var runtime := LevelRuntime.of(self)
+	var world_seed := runtime.world.record.seed if runtime != null and runtime.world != null else 0
+	rng.seed = hash([world_seed, salt, &"cabinet_draw"])
+	var got := CabinetDraw.draw(pools, unlocked, rng, taken)
+	for i in spots.size():
+		out[spots[i]] = got[i]
+	return out
 
 
 ## `lay_first` (the First wash at its spit, core/72): Stage 1's Socks held at the New Game lie in the Mess
