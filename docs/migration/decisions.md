@@ -1,4 +1,4 @@
-Next free Q number: Q2710 (update this line whenever a round of questions is asked)
+Next free Q number: Q2712 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -698,3 +698,7 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2709: of the old day's six small details the port keeps the lamps' click and the wall clock's hands; the lamp
   shades' glow, the night-blue window panes, the grade and vignette following the hour and the outside's night glow
   are dropped (designer, 2026-11-26; core/149's [blocking]; narrows Q2693).
+- Q2710: the Sock vacuum's container rides the Elevator only with its nozzle on its hook (designer, 2026-11-26;
+  core/150; narrows Q2699).
+- Q2711: a player holding the nozzle may climb into the car with the container outside; nothing stops it and the
+  hose stretches between floors, as the old (designer, 2026-11-26; core/150).
