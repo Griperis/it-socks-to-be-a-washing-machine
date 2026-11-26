@@ -57,10 +57,10 @@ func _count(tally: String, n: int) -> void:
 	if n <= 0:
 		return
 	_profile().count(tally, n)
-	# core/145's Achievements node, once it exists.
-	var achievements: Variant = get_node_or_null("/root/Achievements")
-	if achievements != null and achievements.has_method("check"):
-		achievements.check()
+	# Each count checks the Achievements (core/145) of the game link this level plays through.
+	var achievements := Achievements.of(self)
+	if achievements != null:
+		achievements.check(_profile())
 
 
 ## Every machine: a shelve answer (any shelver's, the whole team counts, Q896), or the Laundry day ending.

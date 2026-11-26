@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" path="res://game/ui/whiteboard/tab_overlay.tscn" id="25_tab"]
 [ext_resource type="PackedScene" path="res://game/ui/money/money_counters.tscn" id="26_money"]
 [ext_resource type="PackedScene" path="res://game/ui/money/coin_flight.tscn" id="27_flight"]
+[ext_resource type="PackedScene" path="res://game/profile/achievement_toast.tscn" id="28_toast"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -218,6 +219,9 @@ unique_name_in_owner = true
 [node name="PingWheel" parent="Hud" unique_id=1460313012 instance=ExtResource("21_wheel")]
 
 [node name="TabOverlay" parent="Hud" instance=ExtResource("25_tab")]
+unique_name_in_owner = true
+
+[node name="AchievementToast" parent="Hud" instance=ExtResource("28_toast")]
 unique_name_in_owner = true
 
 [node name="Footsteps" type="Node" parent="." unique_id=1954666980]

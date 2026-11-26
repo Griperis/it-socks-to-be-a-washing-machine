@@ -1,0 +1,165 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/profile/achievement_toast.gd" id="1_toast"]
+[ext_resource type="Resource" path="res://game/profile/achievement_tuning.tres" id="2_tuning"]
+
+[sub_resource type="Animation" id="Animation_reset"]
+resource_name = "RESET"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slot/Card:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(420, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Slot/Card:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_in"]
+resource_name = "slide_in"
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slot/Card:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector2(420, 0), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Slot/Card:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_out"]
+resource_name = "slide_out"
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slot/Card:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(420, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Slot/Card:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_toast"]
+_data = {
+&"RESET": SubResource("Animation_reset"),
+&"slide_in": SubResource("Animation_in"),
+&"slide_out": SubResource("Animation_out")
+}
+
+[node name="AchievementToast" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_toast")
+tuning = ExtResource("2_tuning")
+
+[node name="Slot" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -404.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 124.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="Card" type="PanelContainer" parent="Slot"]
+visible = false
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 0
+offset_left = 420.0
+offset_right = 800.0
+offset_bottom = 80.0
+mouse_filter = 2
+theme_type_variation = &"UpgradeTipPersonal"
+
+[node name="Row" type="HBoxContainer" parent="Slot/Card"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+
+[node name="Icon" type="TextureRect" parent="Slot/Card/Row"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Text" type="VBoxContainer" parent="Slot/Card/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Caption" type="Label" parent="Slot/Card/Row/Text"]
+layout_mode = 2
+theme_type_variation = &"InkLabel"
+text = "Achievement"
+
+[node name="Title" type="Label" parent="Slot/Card/Row/Text"]
+layout_mode = 2
+theme_type_variation = &"UpgradeTipTitle"
+text = "Title"
+autowrap_mode = 3
+
+[node name="Slide" type="AnimationPlayer" parent="."]
+callback_mode_process = 2
+libraries = {
+&"": SubResource("AnimationLibrary_toast")
+}

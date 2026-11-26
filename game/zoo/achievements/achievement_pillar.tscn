@@ -1,0 +1,57 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/zoo/achievements/achievement_pillar.gd" id="1_pillar"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_post"]
+albedo_color = Color(0.62, 0.58, 0.55, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_post"]
+material = SubResource("StandardMaterial3D_post")
+size = Vector3(0.5, 1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_top"]
+albedo_color = Color(0.45, 0.43, 0.42, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_top"]
+material = SubResource("StandardMaterial3D_top")
+size = Vector3(0.6, 0.08, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gold"]
+albedo_color = Color(0.95, 0.75, 0.3, 1)
+metallic = 0.6
+roughness = 0.35
+
+[sub_resource type="BoxMesh" id="BoxMesh_gold"]
+material = SubResource("StandardMaterial3D_gold")
+size = Vector3(0.6, 0.08, 0.6)
+
+[node name="AchievementPillar" type="Node3D"]
+script = ExtResource("1_pillar")
+
+[node name="Post" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_post")
+
+[node name="Top" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04, 0)
+mesh = SubResource("BoxMesh_top")
+
+[node name="EarnedTop" type="MeshInstance3D" parent="."]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04, 0)
+mesh = SubResource("BoxMesh_gold")
+
+[node name="RewardPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08, 0)
+
+[node name="Label" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9, 0)
+pixel_size = 0.0025
+billboard = 1
+modulate = Color(0.1, 0.1, 0.12, 1)
+outline_modulate = Color(1, 1, 1, 1)
+text = "Achievement"
+font_size = 28
+outline_size = 6
+autowrap_mode = 3
+width = 360.0

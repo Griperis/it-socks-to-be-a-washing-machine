@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AchievementTuning" format=3]
+
+[ext_resource type="Script" path="res://game/profile/achievement_tuning.gd" id="1_tuning"]
+[ext_resource type="Texture2D" path="res://assets/ui/simple.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_tuning")
+placeholder_icon = ExtResource("2_icon")
