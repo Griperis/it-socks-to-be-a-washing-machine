@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: polish
 area: content
 feature: player
@@ -51,9 +51,11 @@ and `TrailMark` (`# placeholder:` the old `wardrobe.json` trail numbers).
 ## Answers
 - The 17 Trails are remade as particle scenes authored in the editor, not ported scripts; the look is judged on stills
   (Q2680, 2026-11-25).
+- The strips were close; the gaps were closed: every colour of a two-colour mesh, tumble, lean, rocking and sway back,
+  each mark varied as the old did, Lightning's blink and Tumbling socks' timing varied like the old's (Q2716).
+- The final strips (`builds/review-trails/`, old above, port below) are approved (Q2717).
 
 ## Open follow-ups
 - [later] Motion that particles cannot give (tumble, lean, rocking, pendulum sway, a hinge, two-colour meshes) is a MeshInstance3D keyed by the Layout's `Clip` AnimationPlayer (keys sampled from the old formulas, no code); the rest is one-shot GPUParticles3D. Sprinkles, Falling leaves, Stardust, Sprouting footprints, Floating digits and Tumbling socks are clip-only (no particle node). Each Trail scene holds three Layouts (group `variant`, each its own random placing and timing, as the old drew a new one per step): `TrailMark` keeps one at random (its `layout` export, -1), the others are freed.
 - [later] Lightning's blink and Tumbling socks' phase: the old drew a new random one per mark (its rng is unseeded, seed 7 only in the demo), so there is no single pattern to match; the three Layouts vary them as the old did. Small old wobbles kept as approximations: Fizz bubbles' wobble.
-- [later] "Settled by the old game" lines for `docs/migration/batch-b-review.md` (this ticket) are not written (outside the owned files): every Trail's `life` and `max_marks` are wardrobe.json's; `trails/graybox.tscn` is removed, no piece uses it.
 - [later] Strips: `builds/review-trails/<id>.png` (old above, port below; the port shows the real assets/19 meshes, each moment held at the old shot's age). No collision is used: a landing is a second particle (a flight node, then a landed node at the landing point), so melt, fade and pop play after landing.
