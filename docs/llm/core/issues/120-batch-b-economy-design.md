@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: needs-info
+status: done
 kind: design
 area: core
 feature: economy
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["suggested model: opus", "batch B design (milestones.md), for the designer's one grilling sitting"]
 terms: [Coins, Drawer, Cabinet, Upgrade, Old Tree, Stage]
@@ -63,28 +63,21 @@ Co-op is the scene-parts shape: the Host decides, Parts sync and save
   answered.
 - No game code changed. The old game is at the main checkout's `reference/it-socks` (grep it, never commit there).
 
-## Open follow-ups
-Behaviour list `docs/migration/m4-lists/06-coins-drawers-upgrades.md`; proposal `docs/architecture/economy.md` (its
-drafts 120-A..120-F, waves and clashes). Recommendation first in each.
+## Answers
+Behaviour list `docs/migration/m4-lists/06-coins-drawers-upgrades.md`; proposal `docs/architecture/economy.md`, made a
+build plan to these answers by core/123, which filed its drafts as core/124 and core/129-133.
+- E1 Stage Coins bonuses: both, as the old: +100 to every player when a floor opens and +50 to whoever fills a
+  Cabinet's current Rows (option b; closes Q2619). (Q2667, 2026-11-25)
+- E2 How a bonus shows: as the old: the Coins counter counts up, no "+N" (option b). (Q2668, 2026-11-25)
+- E3 The 16 batch C Upgrades: greyed "Coming soon" in the grid until then, the old rule Q1272 (option a). (Q2669,
+  2026-11-25)
+- E4 The Old Tree: its voice in batch B, its motion waits for its rework, Q2506 (option b). (Q2670, 2026-11-25)
+- E5 Sole Mates, Sole Hands and Mate Radar: built in batch B with the Upgrade grid (option a). (Q2671, 2026-11-25)
+- E6 Coins still flying: spendable only once landed, as the old (option a). (Q2672, 2026-11-25)
 
-- [blocking] E1 Stage Coins bonuses (Q2619 left them here). The old paid +100 to every player when a floor opens and +50
-  to whoever fills a Cabinet's current Rows. (a) the +100 only: a filled Drawer pays its Coins and Drawers and nothing
-  else (Q2612) (recommended); (b) both, as the old; (c) none.
-- [blocking] E2 How a bonus (the floor's Coins, a Gift refund) shows. The old showed no "+N": the counter just counted
-  up. (a) a "+N" pops at the top centre and flies into the Coins counter like a payout (recommended); (b) as the old.
-- [blocking] E3 The 16 Upgrades whose features come in batch C (the eight X-rays, the Elevator's three, the vacuum's
-  five). (a) shown greyed "Coming soon" until then, the old rule Q1272 (recommended; the team's Drawers will pile up
-  with only the Sole cues to buy); (b) hidden until their feature lands.
-- [blocking] E4 The Old Tree's motion and voice, held back by Q2506 "it will be reworked". (a) both now, as the old:
-  breathing, flicker, rustle, and its lines (calls, greetings, upgrade lines, hints, tips, story beats) (recommended);
-  (b) the voice now, the motion with the rework; (c) neither: the tree only opens the menu until its rework.
-- [blocking] E5 Sole Mates, Sole Hands and Mate Radar (the co-op mate cues, not in the port yet). (a) built in batch B
-  with the grid (recommended); (b) "Coming soon" until later.
-- [blocking] E6 Coins still flying to the counter (about 1.5 s). (a) spendable only once landed, as the old
-  (recommended: what you see is what you can spend); (b) spendable the moment they are paid.
-- [later] For the lead: Q2632 said the Final screen's "who did what" titles are asked again with batch B; no piece of
-  core/120 owns them (they read the tallies), so the lead places the question (core/121 or core/122, or a line of its
-  own).
+## Open follow-ups
+- [later] For the lead: Q2632 said the Final screen's "who did what" titles are asked again with batch B; no piece
+  owns them and the batch B sitting did not ask them. Carried to core/123's Open follow-ups.
 
 ## Built log
 - 2026-11-25, core/120-batch-b-economy-design: Changed: the behaviour list of Coins and Drawers, the Old Tree and the

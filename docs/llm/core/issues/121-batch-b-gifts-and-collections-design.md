@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: needs-info
+status: done
 kind: design
 area: core
 feature: gifts
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["suggested model: opus", "batch B design (milestones.md), for the designer's one grilling sitting"]
 terms: [Gift, Stage, Collection, Design, Cabinet, Old Tree]
@@ -64,25 +64,23 @@ Co-op is the scene-parts shape: the Host decides, Parts sync and save
   answered.
 - No game code changed. The old game is at the main checkout's `reference/it-socks` (grep it, never commit there).
 
+## Answers
+Behaviour list `docs/migration/m4-lists/07-gifts-and-collections.md`; proposal `docs/architecture/gifts.md`, made a
+build plan to these answers by core/123, which filed its drafts as core/125, 126, 134-140 and assets/16-17.
+- G1 A present when the player already owns every piece of its Collection: a piece of another unlocked Collection
+  they lack; Coins (75) only once they own every piece (option b; replaces Q1609). (Q2673, 2026-11-25)
+- G2 "Opened together" (Q2612): each player picks up and opens their own present whenever they like, as the old
+  (option a). (Q2674, 2026-11-25)
+- G3 The Lost Socks: they belong in the Drum (batch D), not the Grotto; until the Drum is built they are left out of
+  the encyclopedia, the start set and presents (option a, with their home named). (Q2675, 2026-11-25)
+- G4 The encyclopedia book: in the house in batch B, as the old; batch C's guide card reuses its one-slot Hands item
+  (option a). (Q2676, 2026-11-25)
+- G5 The present's hints: "[LMB] Pick up" aimed at your own present, "[LMB] Open" while carrying it (option a).
+  (Q2677, 2026-11-25)
+- G6 Stage 1's presents: none; the first presents come after Stage 2, as the rules fall out (option a). (Q2678,
+  2026-11-25)
+
 ## Open follow-ups
-The proposal (`docs/architecture/gifts.md`) is written with each (a). Q numbers are the lead's to give.
-- [blocking] G1 A present when the player already owns every piece of its Collection (Q1609 "for now", Q1834 never
-  answered): (a) **rec.** Coins, 75, as the old; (b) a piece of another unlocked Collection they lack (Coins only once
-  they own every piece); (c) the piece goes to a Teammate who lacks it, else Coins.
-- [blocking] G2 Q2612 says presents are "opened together". Which? (a) **rec.** each player picks up and opens their
-  own whenever they like, as the old (Q1592, Q715); (b) a shared moment: once every player with a present has picked
-  theirs up, all shake and pop at once.
-- [blocking] G3 The Lost Socks lived only in the Grotto, which is not ported (Q2599), so it cannot be played or its
-  pieces won: (a) **rec.** leave it out of the encyclopedia, the start set and presents until it gets a home; (b) add it
-  to the attic's pool; (c) keep its page, always "???".
-- [blocking] G4 The encyclopedia book in the house (workbench, one Hands slot, E reads): (a) **rec.** in batch B, as the
-  old; its one-slot Hands item is reused by batch C's guide card; (b) batch B has only the title screen's
-  encyclopedia; the book comes with the guide card in batch C.
-- [blocking] G5 Nothing told the player a left click opens a carried present (only "Drop [RMB]"): (a) **rec.** add
-  "[LMB] Pick up" aimed at your own present and "[LMB] Open" while carrying it; (b) as the old.
-- [blocking] G6 Q1948 assumed every Stage completes a Collection, but Stage 1 cannot (Simple needs six Drawers), so
-  the first presents come after Stage 2: (a) **rec.** keep it so; (b) a Stage that completes no Collection gives each
-  player one present, themed by a Collection of its bar.
 
 ## Built log
 - 2026-11-25, core/121-batch-b-gifts-design: Changed: the behaviour list of Stage presents, Gifts, Collections

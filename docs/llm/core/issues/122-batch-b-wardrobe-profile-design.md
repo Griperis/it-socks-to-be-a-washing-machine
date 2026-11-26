@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: needs-info
+status: done
 kind: design
 area: core
 feature: player
 priority: now
 created: 2026-11-25
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["suggested model: opus", "batch B design (milestones.md), for the designer's one grilling sitting"]
 terms: [Wardrobe, piece, Profile, Achievement, Secret]
@@ -64,25 +64,20 @@ Co-op is the scene-parts shape: the Host decides, Parts sync and save
   answered.
 - No game code changed. The old game is at the main checkout's `reference/it-socks` (grep it, never commit there).
 
+## Answers
+Behaviour list `docs/migration/m4-lists/08-wardrobe-profile-achievements.md`; proposal `docs/architecture/wardrobe.md`,
+made a build plan to these answers by core/123, which filed its drafts as core/127, 128, 141-147 and assets/18-20.
+- W1 The ten basic pieces: owned from the start (option c; reverses Q696). Which Achievements batch B ships is not
+  settled by it: core/146 asks. (Q2679, 2026-11-25)
+- W2 The 17 Trails: remade as particle scenes authored in the editor, not ported scripts; the look is judged on stills
+  (option b; Q2658). (Q2680, 2026-11-25)
+- W3 The Achievements page: one Profile page, the five Lifetime tallies on top, the Achievements under them (option
+  a). (Q2681, 2026-11-25)
+- W4 Secrets: none in batch B; the eight and their pieces come together later (option a; Q2600). (Q2682, 2026-11-25)
+- W5 The Lost Socks' six pieces: hidden from the Wardrobe and its "N/M" until the Lost Socks come with the Drum
+  (option a; follows Q2675). (Q2683, 2026-11-25)
+
 ## Open follow-ups
-Behaviour list `docs/migration/m4-lists/08-wardrobe-profile-achievements.md`; proposal `docs/architecture/wardrobe.md`
-(drafts 122-A..122-H, AS-W1, AS-W2, four waves, clashes). Written with each (a). Q numbers are the lead's to give.
-- [blocking] W1 The ten basic pieces (Beanie, Cap, Top hat, Party hat, Bobble hat, Crown, Scarf, Apron, Bow tie,
-  Jumper) start locked (Q696) and the old game never gave them (the milestone table stayed empty). (a) **rec.** Batch B
-  ships ten Achievements from the old draft, each a Lifetime tally that gives one basic piece (the table in
-  wardrobe.md); (b) the Achievements system only, no list (Q1688): the basic pieces stay out of reach; (c) the basic
-  pieces are owned from the start (reverses Q696).
-- [blocking] W2 The 17 Trails were each a small script animating its marks. (a) **rec.** port each script as it is,
-  its numbers in its scene's inspector: the approved motion stays exact; (b) remake each as a particles scene authored
-  in the editor (looks may shift).
-- [blocking] W3 The Achievements page (Q1694: title key and ESC menu). (a) **rec.** one Profile page: the five Lifetime
-  tallies on top, the Achievements under them; (b) an Achievements page only; the tallies stay on the Lobby's stats card
-  alone, as the old.
-- [blocking] W4 Secrets wait (Q2600); of the old eight only Rubber Duck Load needs nothing of batch C. (a) **rec.** none
-  in batch B; their eight pieces come with them; (b) Rubber Duck Load in batch B (a present dropped in the fixed washer's
-  drum gives the Rubber duck hat).
-- [blocking] W5 The Lost Socks' six pieces cannot be had while the Lost Socks have no home (core/121's G3). (a) **rec.**
-  hide them from the Wardrobe and its "N/M" until they have a way in; (b) count them, as the old.
 
 ## Built log
 - 2026-11-25, core/122-batch-b-wardrobe-design: Changed: the behaviour list of the Wardrobe, its pieces, the Profile

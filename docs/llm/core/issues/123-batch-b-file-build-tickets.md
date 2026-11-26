@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: design
 area: core
 feature: frame
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["suggested model: opus", "batch B (Q2614); answers Q2667-Q2683; the same job core/74 did for batch A"]
 terms: [Coins, Drawer, Upgrade, Old Tree, Gift, Collection, Wardrobe, piece, Profile, Achievement]
@@ -73,3 +73,13 @@ built unattended (Q2603), the same way as batch A.
 - Batch B grilling: Q2667-Q2683 (designer, 2026-11-25).
 
 ## Open follow-ups
+- [later] For the lead, to ask the designer: core/146 (filed `needs-info`, its own `[blocking]`): which Achievements
+  batch B ships. W1's answer (Q2679) gave the basic pieces
+  from the start, so the proposal's ten (each giving a basic piece) no longer stand; the Achievements system (core/145)
+  and the Profile page (core/147) are built meanwhile with test fixtures. The question and its options are in core/146.
+- [later] For the lead: Q2632 said the Final screen's "who did what" titles are asked again with batch B; the batch B
+  sitting did not ask them and no ticket owns them (carried from core/120).
+- [later] For the lead: two readings of Q2673 are built and listed on the review sheet for the designer: "another
+  unlocked Collection" is the Host's unlocked set, and a present keeps the completed Collection's wrapping.
+- [later] For the lead: `docs/architecture.md`'s rows for economy, gifts and wardrobe still say "proposal" and
+  `docs/llm/PLACEHOLDERS.md` still lists W1 as blocking; neither file was this ticket's to edit.

@@ -1,10 +1,11 @@
 # The Wardrobe, its pieces, the Profile and Achievements
 
-**Status: proposal for batch B (core/122), waiting for the designer's choices W1-W5 (core/122's Open follow-ups).**
-Behaviour list: `docs/migration/m4-lists/08-wardrobe-profile-achievements.md`. Batch B is built unattended once the
-designer approves its three proposals in one sitting (Q2603-Q2605); its neighbours are core/120 (Coins, the Old Tree:
+**Status: build plan for batch B (designed in core/122; answered Q2679-Q2683, 2026-11-25; filed by core/123 as
+core/127, 128, 141-147 and assets/18-20).** Behaviour list: `docs/migration/m4-lists/08-wardrobe-profile-achievements.md`
+(where an answer below differs from a line there, the answer binds). Batch B is built unattended in the order of
+`docs/migration/milestones.md` "Batch B" (Q2603-Q2605); its neighbours are core/120 (Coins, the Old Tree:
 `docs/architecture/economy.md`) and core/121 (presents, Collections, the encyclopedia: `docs/architecture/gifts.md`).
-The seams to both are at the end. Written with each choice's recommended answer.
+The seams to both are at the end.
 
 ## What it owns
 
@@ -15,13 +16,13 @@ The seams to both are at the end. Written with each choice's recommended answer.
   Roster, asked for by Commands, decided by the Host.
 - **The Wardrobe:** its page (preview, colour row, four rows), the station in the house, the Lobby's Wardrobe key and
   stats card.
-- **The Profile file** (`game/net/player_profile.gd`): its version, its fields, a coalesced save; core/121 adds two
-  fields to it.
+- **The Profile file** (`game/net/player_profile.gd`): its version, its fields (core/121's two included: one ticket,
+  core/127, writes them all), a coalesced save.
 - **The Lifetime tallies** and **Achievements**: the data, the decision on each machine, the toast, the Profile page,
   the backend seam for Steam (batch D).
 
 It does not own: the presents, their draw and their reveal (core/121, through the seams); Coins (core/120); Secrets
-(not ported, Q2600; W4); Steam itself (batch D, Q2616).
+(none in batch B: the eight and their pieces come together later, Q2600, Q2682); Steam itself (batch D, Q2616).
 
 ## The shape
 
@@ -32,32 +33,32 @@ game/wardrobe/                    the pieces and what dresses an Avatar
   wardrobe.gd                       Wardrobe (static): every piece in the folder, rows, pieces_of(), preview()
   look.gd                           WardrobeLook (static): a look as {hat, clothes, socks, trail}: clean, allowed
   dresser.gd                        Dresser (Node, a child of AvatarLooks): puts a look on, swish, tag lift
-  trail_effect.gd                   TrailEffect (Node3D): the marks, their age and max, the demo
-  trails/<id>.tscn + <id>.gd        17 Trails: root TrailEffect subclass with its exports, Parts (the meshes)
-  looks/<id>.tscn                   a piece's Looks (AS-W1): the model, its AnimationPlayer "touch" clip when rare
+  trail_mark.gd                     TrailMark (Node3D): the one script of every Trail's mark: its life, then gone
+  trails/<id>.tscn                  17 Trails: one mark each, particle nodes authored in the editor (Q2680)
+  looks/<id>.tscn                   a piece's Looks (assets/18, 19): the model, its AnimationPlayer "touch" clip when rare
   wardrobe_tuning.gd/.tres          WardrobeTuning: swish, preview stage, demo steps, tag lift
 game/wardrobe/ui/                 the page, authored in nodes on the Theme (Q2658)
   wardrobe_page.tscn/.gd            the page: preview stage, colour row, four rows, Close
   wardrobe_row.tscn/.gd             one slot's row: heading, count, "<", name box, ">"
   colour_swatch.tscn                one swatch and its name
-  preview_stage.tscn                the SubViewport stage (light, camera); the gift reveal reuses it (core/121)
+  preview_stage.tscn                the SubViewport stage (light, camera); made with `preview()` (core/128), the gift reveal reuses it
   wardrobe_menu.tscn/.gd            the house's CanvasLayer holding the page
-game/entities/wardrobe_station/   the oak wardrobe: its scene, WardrobeStation (Part), graybox and real Looks (AS-W2)
+game/entities/wardrobe_station/   the oak wardrobe: its scene, WardrobeStation (Part), graybox and real Looks (assets/20)
 game/profile/                     the Profile's game side
   tally_recorder.gd                 TallyRecorder (Node, every machine, in run.tscn): the five Lifetime tallies
   achievement.gd                    Achievement (Resource): one Achievement
-  achievements/<id>.tres            the list (W1)
+  achievements/<id>.tres            the list: none in batch B (Q2687)
   achievements.gd                   Achievements (Node, every machine, in the game link): decides for its player
   achievement_backend.gd            AchievementBackend (RefCounted, abstract): the seam
   local_achievement_backend.gd      over the Profile; always on
   fake_achievement_backend.gd       tests (lives under tests/, not shipped)
   achievement_toast.tscn/.gd        the card at the top right
-  profile_page.tscn/.gd             the Profile page: tallies and Achievements (W3)
+  profile_page.tscn/.gd             the Profile page: tallies and Achievements (Q2681)
   achievement_cell.tscn             one Achievement on the page
 ```
 
-Inheritance stays one step (Q2251): `WardrobeStation` extends `Part`; each Trail extends `TrailEffect` (not a Part);
-`LocalAchievementBackend` and the fake extend `AchievementBackend`; nothing extends those.
+Inheritance stays one step (Q2251): `WardrobeStation` extends `Part`; a Trail has no script of its own (its root uses
+`TrailMark`); `LocalAchievementBackend` and the fake extend `AchievementBackend`; nothing extends those.
 
 ## The pieces as data
 
@@ -65,18 +66,23 @@ Inheritance stays one step (Q2251): `WardrobeStation` extends `Part`; each Trail
 name, read at load), `name` ("Top hat", "Lint puffs"), `slot` (enum HAT, CLOTHES, SOCKS, TRAIL), `collection:
 StringName` (empty for the ten basic pieces; else a `SockCollection` id, core/121), `rarity` (enum COMMON, UNCOMMON,
 RARE: the old names), `order: int` (its place among its Collection's, the old `gifts.json` order), `looks: PackedScene`
-(the hat or clothes model, the Socks pair, or the Trail scene), `swish_rate := 1` (Bee wings 4), `listed := true` (off:
-not in the Wardrobe's rows or counts unless owned; the Lost Socks' six per W5).
+(the hat or clothes model, the Socks pair, or the Trail scene), `swish_rate := 1` (Bee wings 4), `owned_from_start: bool`
+(on for the ten basic pieces: every player owns them from a new Profile on, Q2679, reversing Q696; a designer can tick
+it on any piece), `listed := true` (off: not in the Wardrobe's rows or counts unless owned; only the graybox stand-ins).
+A piece of a held-back Collection (`SockCollection.held_back`: the Lost Socks' six until the Drum, Q2683) is treated as
+not listed, and no present draws it.
 
 **`Wardrobe`** (static): `all()` lists the folder with `ResourceLoader.list_directory` (export-safe, as core/120's
 Upgrades), `of(id)`, `row(slot)` (basic pieces first by `order`, then by Collection in `Collections.all()` order, then
-`order`: the old rows), `pieces_of(collection)` (S-122a), `piece_name(id)`, `counted(slot)`, `preview(id, tint) ->
-Node3D` (S-122d: a hat or clothes Looks alone, a Socks pair on a bare-foot `AvatarLooks` in `tint` with its Body hidden,
-a Trail scene in demo mode; fitted by its largest side, the old `GP:171-207`). **A designer adds a piece** by dropping
+`order`: the old rows), `pieces_of(collection)` (S-122a), `piece_name(id)`, `counted(slot)` (listed pieces only),
+`owned(pieces: PackedStringArray) -> PackedStringArray` (the given ones plus every `owned_from_start` piece: the one
+place the ten basic pieces become owned, so no profile stores them), `preview(id, tint) -> Node3D` (S-122d: a hat or
+clothes Looks alone, a Socks pair on a bare-foot `AvatarLooks` in `tint` with its Body hidden, a Trail scene stepping
+its demo; fitted by its largest side, the old `GP:171-207`), shown in `preview_stage.tscn`. **A designer adds a piece** by dropping
 its model and making one `.tres` (or duplicating one) with its Looks: no code, and the Wardrobe zoo station, the rows,
 presents (through `pieces_of`) and the Final screen pick it up.
 
-**A piece's Looks** (`game/wardrobe/looks/<id>.tscn`, AS-W1): an inherited scene of the old glb. A hat's mesh is in the
+**A piece's Looks** (`game/wardrobe/looks/<id>.tscn`, assets/18-19): an inherited scene of the old glb. A hat's mesh is in the
 HatPoint's frame; clothes keep their skin (the Dresser binds them to the Avatar's Skeleton3D); a Socks piece has
 `sock_l` and `sock_r`. **The rare touches are authored in the Looks** (Q1618's "small animated touch"), not code: an
 AnimationPlayer with a looping `touch` clip (a wave keys the "Touch" blend shape 0, 1, 0 over the old period; a glow
@@ -96,8 +102,8 @@ keys each `_glow` surface's override material's emission energy, `cycle` as stag
   Body's "Crouch" blend shape with its own when it has one (`set_crouch` calls `Dresser.crouch()`).
 - **Socks:** the pair's two meshes under `FootL` and `FootR` at identity (so they waddle, stay planted and ride the
   ragdoll); no shadow in first person.
-- **Trail:** one instance of the Trail scene, `top_level` at the origin, given each step (below); a changed Trail
-  frees the old with its marks.
+- **Trail:** at each step (below) one new mark, an instance of the Trail scene, `top_level`, at the foot facing the
+  heading; at most the mark's `max` alive per creature (the oldest freed first); a changed Trail frees its marks.
 - **Swish:** each frame, a hat or clothes mesh with "SwishL" and "SwishR" keys gets the old value (`AV:790-822`): the
   walk phase times `swish_rate`, 0.9 rad behind, times `walk` and `swish`; plus the idle sway. It reads `walk` and the
   phase the AvatarLooks already keeps. Numbers in `WardrobeTuning` (`# placeholder:` the old avatar.json values).
@@ -105,15 +111,20 @@ keys each `_glow` surface's override material's emission energy, `cycle` as stag
 - **Mirror body** (the Player's `MirrorBody`): the whole look, `leaves_trail` off.
 
 **Steps.** `AvatarLooks` already rocks its feet from the walk phase; it emits a `stepped(foot: Node3D)` signal when the
-rocking turns over and `walk > 0.3` (the old `AV:775-780`), and the Dresser hands the Trail `step(at, yaw)` at that
-foot, 0.006 m up. A remote Teammate, the own body and the zoo's stand-in all step the same way, so every machine draws
+rocking turns over and `walk > 0.3` (the old `AV:775-780`), and the Dresser lays a mark at that foot, 0.006 m up. A remote Teammate, the own body and the zoo's stand-in all step the same way, so every machine draws
 every creature's Trail from its own waddle (nothing on the network).
 
-**Trails (W2 (a)).** `TrailEffect` is the old base (`TE`): `marks`, `step`, `advance`, `life`, `max`, `start_demo`
-(DEMO numbers in `WardrobeTuning`), `spring()`. Each of the 17 is a scene `trails/<id>.tscn`: its root carries its own
-script (the old `_spawn` / `_animate`, ported line by line) and its numbers as `@export` fields with the old values and
-`# placeholder:`; a `Parts` child holds the model's meshes (the old `parts()` read the glb at run time). The motion
-stays exactly the approved one (Q872, Q916, Q952). A designer tunes a Trail in its scene's inspector.
+**Trails: particle scenes authored in the editor (Q2680).** The 17 old Trail scripts are not ported. Each Trail is a
+scene `trails/<id>.tscn`, one mark: a root `Node3D` with `TrailMark` (exports `life` and `max`, the old numbers,
+`# placeholder:`), and under it the mark's look as editor nodes: `GPUParticles3D` nodes (one shot, emitting when the
+mark is made, local coordinates, no shadow; their `ParticleProcessMaterial` curves give the rise, sway, spin, swell,
+bounce and fade; their draw passes are the Trail's meshes from the old glb, assets/19, or a stand-in quad until then),
+sub-emitters where a mark bursts into more (Bubblegum pops' shreds), and, where a mark has staged motion that particles
+do not give (Tyre tracks' strip unrolling, the Turf tufts one after another), an `AnimationPlayer` with an autoplay
+`mark` clip keying the nodes. `TrailMark` only frees the mark after `life`; it moves nothing. The old motions in the
+behaviour list ("Trails") are the brief; the looks may shift and are judged on stills (Q2680). A designer tunes a
+Trail in its scene. **The demo** (the page's preview, the gift reveal, the zoo's stands): the Dresser lays a mark on a
+timer (`WardrobeTuning`'s demo steps) as if walking.
 
 ## What a player owns and wears, in co-op
 
@@ -123,7 +134,7 @@ is in the link's snapshot, so the Lobby and the run both have it. Its entry grow
 | Field | Meaning |
 |---|---|
 | `look` | `{hat, clothes, socks, trail}` the player wears |
-| `owned` | the piece ids they own (for the Host's checks and core/121's draw) |
+| `owned` | the piece ids they own (for the Host's checks and core/121's draw); `owned_of()` returns it through `Wardrobe.owned()`, so the ten basic pieces always count (Q2679) |
 | `tallies` | their five Lifetime tallies as they came in (the Lobby's stats card) |
 
 **The word at the gate** (`session_gate.gd`) carries, beside the id, name and Hands: the profile's `look`, `owned`,
@@ -137,7 +148,7 @@ it only through its own answers below.
 
 | Verb | Asks | The Host decides |
 |---|---|---|
-| `wear {look}` | the Wardrobe page, on each step | refused unless every piece is in the asker's `owned` (silent: the page only offers owned); else `look` patched |
+| `wear {look}` | the Wardrobe page, on each step | refused unless every piece is in `owned_of(asker)` (silent: the page only offers owned); else `look` patched |
 | `colour {index}` | the colour row | refused (`taken`) when another present player has it: the asker's swatch springs back; else patched |
 | `own {piece}` | the asker's machine after a local unlock (an Achievement's reward) | a known id appended to `owned` |
 
@@ -159,7 +170,9 @@ swatch): a `Heading` Label ("Colour & Wardrobe"), an HBox of the `PreviewStage` 
 HFlow and four `wardrobe_row.tscn` instances (`slot` export set per instance), and the `Close` button
 (`close_button.tscn`). Code only fills them: the preview is an `AvatarLooks` in the player's colour and look turning one
 turn per `spin_time` (8 s) with the pupils' watch set while it faces the camera (within 1.05 rad), and the worn
-Trail's demo beside it, counter-turned. A row lists "None" and the owned listed pieces of its slot, `"%d/%d unlocked"`,
+Trail's demo beside it, counter-turned. A row lists "None" and the owned listed pieces of its slot (the basic pieces
+from the first game on, Q2679), `"%d/%d unlocked"` (listed pieces only: the Lost Socks' six neither listed nor counted,
+Q2683),
 steps on "<" / ">" and A / D on a focused arrow, wrapping; each step asks `wear`. The colour row instances one
 `colour_swatch.tscn` per CoopTuning colour; taken ones greyed with their holder's name. The arrows and swatches are
 the pad's stops (PadFocus, Q2647, Q2654).
@@ -172,7 +185,7 @@ station; the player frozen, the mouse free, the world running; `menu_open` / `me
 
 `game/entities/wardrobe_station/wardrobe_station.tscn`: a `StaticBody3D` root (the old box, 1.0 x 1.92 x 0.56 m, on
 the station layer), `WardrobeStation` (Part), `Looks` (graybox: a box and two door leaves on hinge pivots, an
-AnimationPlayer with `open` (each leaf 80 degrees, 0.7 s, ease in-out) and `shut` (ease out); AS-W2 brings the old glb
+AnimationPlayer with `open` (each leaf 80 degrees, 0.7 s, ease in-out) and `shut` (ease out); assets/20 brings the old glb
 with the same names). **`WardrobeStation`** (State `inside: PackedStringArray`, player ids): verb `use` (E, for itself:
 the asker's machine opens its menu from the answer, `inside` gains the asker) and `leave` (on close; a leaver from the
 Roster is dropped too). The Looks plays `open` when `inside` turns non-empty and `shut` when it empties, with
@@ -214,7 +227,7 @@ edit one script): from applied answers only, into the local profile, never while
 |---|---|
 | `pairs_shelved` | each shelve answer (any shelver: the whole team counts, Q896) |
 | `coins_earned` | `Bank.paid(player, amount, ...)` for the local player id (bonuses and refunds included; at the decided payout, not when the flight lands: looks only) |
-| `collections_completed` | core/121's `collection_completed` Stage event |
+| `collections_completed` | core/121's `collection_completed` Stage event (the one line is added by core/137, which makes the event) |
 | `floors_completed` | `Stages.stage_completed` (the last floor's included) |
 | `games_finished` | the Laundry day's `ended` (run-ends) |
 
@@ -227,8 +240,10 @@ API name: lowercase a-z, 0-9 and `_`, at most 40, never renamed once live: a tes
 `icon: Texture2D` (empty: the shared placeholder, Q1698), `hidden: bool` ("???" until earned, Q1693), `credit` (enum
 TEAM, OWN: Q1691; with every batch B condition a tally, TEAM), `tally: StringName` and `at: int` (the batch B
 condition kind: a Lifetime tally reaching `at`), `reward: WardrobePiece` (optional, Q1690). Later kinds (an event in a
-Stage, a skill) add fields and a branch in `check()`; none is in batch B (W1). **A designer adds an Achievement** by
-dropping a `.tres`: it shows on the page and in the zoo station.
+Stage, a skill) add fields and a branch in `check()`; none is in batch B. **A designer adds an Achievement** by
+dropping a `.tres`: it shows on the page and in the zoo station. **Batch B ships no Achievements list (Q2687):** the ten
+basic pieces no longer need Achievements to be had (Q2679), so the draft ten (each giving a basic piece) were not
+taken; the system (core/145) is built and tested with test fixtures, and the list waits for a later content round.
 
 **`Achievements`** (Node in the game link, every machine): `check()` earns, for the local player only, every
 Achievement whose tally the profile has reached and that it has not (`profile.earn`); for each: its `reward` goes
@@ -246,7 +261,7 @@ px, "Achievement" caption, the title), slides in, stays `toast_seconds` (4 s), s
 SoundEvent, the first synthesised candidate, the designer picks on the bench); several queue; held while a cutscene or
 the Final screen shows (the HUD's own hide rule). Timings in `AchievementTuning` (placeholders).
 
-**The Profile page** (W3 (a); `profile_page.tscn`, a Control on the Theme): the player's name, the five Lifetime
+**The Profile page** (one page: the tallies on top, the Achievements under them, Q2681; `profile_page.tscn`, a Control on the Theme): the player's name, the five Lifetime
 tallies in a row of captions and numbers, then a `GridContainer` of `achievement_cell.tscn` (icon, title, description;
 earned in full colour with the date, unearned greyed, hidden unearned "???"), "%d / %d earned". Opened from a 72 x 72
 corner key on the title (beside core/121's encyclopedia key, tooltip "Profile") and from an entry in the ESC menu
@@ -262,12 +277,12 @@ corner key on the title (beside core/121's encyclopedia key, tooltip "Profile") 
 
 ## Zoo stations (built from the data at load, Q2337)
 
-- **`game/zoo/stations/wardrobe.tscn`** (122-B): one stand per slot, each piece from `Wardrobe.all()` worn by its own
+- **`game/zoo/stations/wardrobe.tscn`** (core/128): one stand per slot, each piece from `Wardrobe.all()` worn by its own
   `AvatarLooks` in a row (hats, clothes, socks, trails stepping their demo), labelled with name, Collection and Rarity;
   a stand-in Teammate walking a loop in a look picked by four zoo switches (one per slot, stepping through the pieces:
-  zoo-only Commands under `game/zoo/wardrobe/`, asking the real `wear`); the station's Wardrobe (122-D) beside a wall
+  zoo-only Commands under `game/zoo/wardrobe/`, asking the real `wear`); the station's Wardrobe (core/142) beside a wall
   mirror. A new piece file shows with no other change.
-- **`game/zoo/stations/achievements.tscn`** (122-G): one pillar per `Achievement` file (title, condition, reward's
+- **`game/zoo/stations/achievements.tscn`** (core/145): one pillar per `Achievement` file (title, condition, reward's
   preview, earned or not on the zoo's profile), switches "Grant all", "Reset" and "+100 Pairs" (adds to the zoo
   profile's tally, then `check()`).
 - The Gifts station (core/121) lays each Collection's pieces through `Wardrobe.preview`.
@@ -276,12 +291,12 @@ corner key on the title (beside core/121's encyclopedia key, tooltip "Profile") 
 
 | Seam | Other side | What crosses |
 |---|---|---|
-| S-122a pieces by Collection | core/121's `PresentDraw` | `Wardrobe.pieces_of(collection) -> Array[WardrobePiece]` (`id`, `name`, `slot`, `rarity`); `Wardrobe.piece_name(id)` |
-| S-122b owned pieces on the Host | core/121's drop | `Roster.owned_of(player_id) -> PackedStringArray` |
-| S-122c a piece won | core/121's `Present.open` | its answer carries `Roster.owned_patch(by, piece)`; the opener's machine calls `profile.unlock_piece(id)` |
-| S-122d a piece's preview | the gift reveal, the Final screen's strip | `Wardrobe.preview(id, tint) -> Node3D`; `preview_stage.tscn` reused by the reveal |
-| S-122e the profile file | core/121's `ProfileRecorder` | `designs`, `collections` fields and `save_soon()` |
-| S-122f Lifetime tallies | core/121, batch A | `collection_completed`, `stage_completed`, the Laundry day's `ended` |
+| S-122a pieces by Collection (core/128) | core/137's `PresentDraw` | `Wardrobe.pieces_of(collection) -> Array[WardrobePiece]` (`id`, `name`, `slot`, `rarity`); `Wardrobe.piece_name(id)` |
+| S-122b owned pieces on the Host (core/141) | core/137's drop | `Roster.owned_of(player_id) -> PackedStringArray` (basic pieces included) |
+| S-122c a piece won (core/141, core/127) | core/138's `Present.open` | its answer carries `Roster.owned_patch(by, piece)`; the opener's machine calls `profile.unlock_piece(id)` |
+| S-122d a piece's preview (core/128) | core/138's reveal, the Final screen's strip | `Wardrobe.preview(id, tint) -> Node3D`; `preview_stage.tscn` reused by the reveal |
+| S-122e the profile file (core/127) | core/134's `ProfileRecorder` | `designs`, `collections` fields and `save_soon()` |
+| S-122f Lifetime tallies (core/127) | core/137, batch A | `collection_completed`, `stage_completed`, the Laundry day's `ended` |
 | S-120 Coins | core/120's `Bank` | `Bank.paid` for the local player is `coins_earned`; nothing in the Wardrobe costs (the old) |
 | lobby | core/63 | the place's look, the Wardrobe key, the stats card, `ready(false)` on opening |
 | HUD | the HUD scene | the toast's layer, the HUD message line |
@@ -297,101 +312,33 @@ corner key on the title (beside core/121's encyclopedia key, tooltip "Profile") 
 - Coins earned count at the decided payout, not when the flight lands (a Coin in flight at quit now counts).
 - "Who is in the Wardrobe" is the station's own state, not string toggles in a shared Game.
 
-## Tickets (drafts for the lead to file, `ready-for-agent`)
+## The designer's answers (Q2679-Q2683, 2026-11-25)
+- W1: the ten basic pieces are owned from the start (Q2679, reversing Q696). Batch B ships no Achievements
+  list (Q2687).
+- W2: the 17 Trails are remade as particle scenes authored in the editor, not ported scripts; the look is judged on
+  stills (Q2680).
+- W3: one Profile page: the five Lifetime tallies on top, the Achievements under them (Q2681).
+- W4: no Secrets in batch B; the eight and their pieces come together later (Q2682).
+- W5: the Lost Socks' six pieces are hidden from the Wardrobe and its "N/M" until the Lost Socks come with the Drum
+  (Q2683).
 
-Every core ticket builds on graybox (four `graybox_*` pieces, one per slot, `listed` off, deleted by AS-W1); AS-W1 and
-AS-W2 stop at their first line-up and swap in on the designer's yes.
+## Tickets (filed by core/123)
+Build order and waves: `docs/migration/milestones.md` "Batch B". Every core ticket builds on graybox (four `graybox_*`
+pieces, one per slot, `listed` off, deleted by assets/18-19); the asset tickets stop at their first line-up and swap in
+on the designer's yes.
 
-**122-A The Profile file and the Lifetime tallies** (sonnet; coordinated with core/121's 121-F on
-`player_profile.gd`). `PlayerProfile` version 2 and its fields, `save_soon()`, `unlock_piece`, `count`, `earn`;
-`TallyRecorder` in `run.tscn` and its five tallies (`coins_earned` waits for core/120's `Bank`: until 120-A merges it
-reads today's `Coins`). Real path: on the Stages station's mini run the player shelves a Pair by a click; the profile's
-`pairs_shelved` reads 1 and its `coins_earned` the Pair's Coins; a loaded save counts nothing.
-
-**122-B Pieces as data and the dressed Avatar** (opus). `WardrobePiece`, `Wardrobe` (`all`, `row`, `pieces_of`,
-`preview`), `WardrobeLook`, `WardrobeTuning`, the 112 `.tres` (written once by a tool from the old `wardrobe.json` and
-`gifts.json`, Looks pointing at graybox until AS-W1), `Dresser` on `AvatarLooks` (hat, clothes skin and crouch, socks
-on feet, tag lift, swish, first person, mirror), the `stepped` signal, `TrailEffect` and Lint puffs as the first Trail;
-the Wardrobe zoo station. Real path: in the Wardrobe station the player presses E on the stand-in's Hat switch: the
-stand-in Teammate walking its loop wears the next hat and its name tag rises over it; with the Trail switch on Lint
-puffs it leaves puffs as it walks.
-
-**122-C Looks, colours and owned pieces in co-op** (opus; after 122-A, 122-B). The Roster's `look`, `owned`,
-`tallies`; the gate's word and the Host's clamps; `wear`, `colour`, `own`, `owned_patch`, `owned_of`; `Avatar._dress`
-and the own and mirror bodies from the Roster; the profile following its own entry; the save merge. Real path (co-op):
-a Guest presses E on the Wardrobe station's Hat switch (the zoo's, asking the real `wear`); on the Host the Guest's
-Avatar wears the hat; a `wear` of a piece the Guest does not own is refused and the Host still shows the old look.
-
-**122-D The Wardrobe page and the station in the house** (opus; after 122-C and core/121's 121-A (Collections order)).
-`preview_stage.tscn`, `wardrobe_page.tscn`, `wardrobe_row.tscn`, `colour_swatch.tscn`, `wardrobe_menu.tscn`; the
-`WardrobeStation` entity with graybox Looks, its `use` / `leave`, doors and sounds, placed in `house.tscn`; the
-`sock_clear` group in `SockPlaces`; the station in the Wardrobe zoo station. Real path: in the house the player walks to
-the wardrobe and presses E; the doors swing open and the page shows them in their colour; a click on the Hats ">" puts
-an owned hat on the preview and (co-op) on their Avatar for the Teammate; Esc shuts it and the doors close.
-
-**122-E The Lobby's Wardrobe key and stats card** (sonnet; after 122-D). The place's look and Trail demo, the key,
-`ready(false)` on opening, the stats card from the Roster's tallies. Real path: in the Lobby the player clicks the
-Wardrobe key beside their own figure, steps the Socks row with a click, closes; their figure wears the Socks and their
-Ready is cleared; hovering a Guest's figure shows the card with the Guest's tallies.
-
-**122-F The other sixteen Trails** (sonnet; W2 (a); after 122-B; Looks from AS-W1). Each old Trail ported to its
-scene line by line with its exports. Real path: in the Wardrobe station the stand-in walks with each Trail picked by
-the Trail switch and its marks appear and age; a case per Trail checks marks spawn, move and go by `life`.
-
-**122-G Achievements, the toast and the ten** (opus; W1 (a); after 122-A, 122-C). `Achievement`, `Achievements`,
-`AchievementBackend`, the local backend, the fake (tests), `AchievementTuning`, the toast, the debug actions, the ten
-`.tres` of W1, the Achievements zoo station. Real path: on the Stages station's mini run with a fresh zoo profile the
-player shelves a Pair by a click: the toast "Two of a Kind" slides in, the HUD says "Wardrobe: Beanie unlocked" and the
-Wardrobe's Hats row lists Beanie.
-
-**122-H The Profile page** (sonnet; W3 (a); after 122-G and core/121's 121-G (the title's corner keys)).
-`profile_page.tscn`, `achievement_cell.tscn`, the title's key, the ESC menu's entry. Real path: on the title a click on
-the Profile key opens the page with the five tallies; an earned Achievement shows its title and date, an unearned one
-greyed; Esc shuts it; in the house Esc then "Profile" opens the same page.
-
-**AS-W1 The 112 pieces** (opus; stops at its line-up). The old glbs (`assets/avatar/wardrobe/`, Q914, Q1629's line-ups
-approved in the old game) imported by the asset port rules into `assets/wardrobe/`, a Looks scene per piece, the
-thirteen rare touches as `touch` clips and drops particles, the sixteen Trails' `Parts` meshes; the graybox pieces
-deleted. Line-up: every piece on the Avatar in the old views beside the old game's shots, one strip per Collection.
-
-**AS-W2 The Wardrobe station's model** (sonnet; stops at its line-up). The old `wardrobe_station.glb` as a Looks scene
-with `door_left` / `door_right` pivots on their hinges and the `open` / `shut` clips; line-up shut and open beside the
-old.
-
-### Waves (at most 5 agents; a wave starts when the ones before are merged)
-
-| Wave | Tickets | Clash kept apart |
+| Draft | Filed as | Note |
 |---|---|---|
-| 1 | 122-A, 122-B, AS-W1, AS-W2 | 122-A alone on `player_profile.gd` and `run.tscn` in this piece (121-F also edits both: the lead orders 121-F and 122-A, either first); 122-B alone on `avatar_looks.gd` and the Wardrobe station |
-| 2 | 122-C, 122-F | 122-C alone on `roster.gd`, `session_gate.gd`, `avatar.gd`, `player.gd`; 122-F only `game/wardrobe/trails/` |
-| 3 | 122-D, 122-G | 122-D alone on `house.tscn` and `sock_places.gd`; 122-G on the HUD scene (not with 120-A or 120-D) and the game link scene |
-| 4 | 122-E, 122-H | 122-E alone on the Lobby scenes; 122-H alone on `title.tscn` (not with 121-G) and the ESC menu |
-
-Cross-piece clashes for the lead: `player_profile.gd` and `run.tscn` (121-F, 122-A, core/120's parts); `house.tscn`
-(122-D, 121-C, 121-E, 121-H, 120-F); the HUD scene (122-G, 120-A, 120-D); `title.tscn` (121-G, 122-H); core/121's
-121-C needs S-122a and S-122b (122-B, 122-C) and 121-D needs S-122c and S-122d (122-B, 122-C).
-
-## Choices (core/122's Open follow-ups)
-
-W1 the ten basic pieces and the Achievements of batch B; W2 how the Trails are ported; W3 the Profile page; W4
-Secrets; W5 the Lost Socks' pieces. Each has a recommendation; the proposal above is written with them.
-
-**W1 (a)'s ten** (team credit, none hidden; names from the old draft where it had one; each a Lifetime tally):
-
-| id | Title | Condition | Gives |
-|---|---|---|---|
-| `first_pair` | Two of a Kind | 1 Pair shelved | Beanie |
-| `pairs_100` | Sock Drawer Regular | 100 Pairs shelved | Cap |
-| `pairs_1000` | The Thousand Pair Club | 1,000 Pairs shelved | Top hat |
-| `coins_1000` | Pocket Lint Fortune | 1,000 Coins earned | Apron |
-| `coins_10000` | Sock Market Tycoon | 10,000 Coins earned | Crown |
-| `first_collection` | The Full Set | 1 Collection completed | Bow tie |
-| `basement_done` | Spin Cycle One | 1 floor completed | Scarf |
-| `floors_10` | Floor Show | 10 floors completed | Jumper |
-| `first_wash` | Fresh and Clean | 1 game finished | Party hat |
-| `games_5` | Repeat Cycle | 5 games finished | Bobble hat |
-
-The numbers are the draft's (placeholders, Q967's balance round).
+| 122-A | core/127 The Profile file and the Lifetime tallies | also core/121's two profile fields (one ticket on `player_profile.gd`) |
+| 122-B | core/128 Wardrobe pieces as data and the dressed Avatar | `owned_from_start` (Q2679); `preview_stage.tscn` moved here from 122-D; the Trail frame and Lint puffs as particles (Q2680) |
+| 122-C | core/141 Looks, colours and owned pieces in co-op | |
+| 122-D | core/142 The Wardrobe page and the station in the house | |
+| 122-E | core/143 The Lobby's Wardrobe key and stats card | |
+| 122-F | core/144 The Trails as particle scenes | remade, not ported (Q2680); look work, stops at its first stills |
+| 122-G | core/145 Achievements: the system, the toast and the station; core/146 Batch B's Achievements list | the draft ten dropped by Q2679; no list in batch B (Q2687) |
+| 122-H | core/147 The Profile page | Q2681 |
+| AS-W1 | assets/18 The hats and clothes; assets/19 The Socks pieces and the Trails' meshes | split in two |
+| AS-W2 | assets/20 The Wardrobe station's model | |
 
 ## Gotchas for the build
 
