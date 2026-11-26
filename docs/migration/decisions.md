@@ -1,4 +1,4 @@
-Next free Q number: Q2690 (update this line whenever a round of questions is asked)
+Next free Q number: Q2691 (update this line whenever a round of questions is asked)
 
 # Decisions for the move to a fresh project
 
@@ -643,3 +643,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2688: the kit's start gate is held 0.2 s per test process while a run is alone on the machine and 1 s while another
   run is live, so a full run is no longer start-limited (designer, 2026-11-26; maintenance/06; kit 12dacfa).
 - Q2689: no "who did what" titles on the Final screen, as the old game (designer, 2026-11-26; closes Q2632's ask).
+- Q2690: the present box keeps the port's rounded edges and curved ribbon loops (a look change the designer approved),
+  with a flatter wrapped knot instead of the round one; the box and lid are hollow inside, seen when it is opened
+  (designer, 2026-11-26; assets/16).
