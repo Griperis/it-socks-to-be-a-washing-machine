@@ -26,3 +26,4 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-26 [[136-encyclopedia-pages]] The encyclopedia pages and the title's key: f315f081 (core/136-encyclopedia-pages)
 - 2026-11-26 [[145-achievements-system]] Achievements: the system, the toast and the station: 51ae7236 (core/145-achievements-system)
 - 2026-11-26 [[20-wardrobe-station-model]] The Wardrobe station's model: 21d12c3c (assets/20-wardrobe-station-model)
+- 2026-11-26 [[147-profile-page]] The Profile page: cfbe37ba (core/147-profile-page)
