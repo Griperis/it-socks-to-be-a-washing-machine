@@ -1,10 +1,11 @@
 # The TV and the Radio
 
-**Status: proposal for batch C (designed in core/150 on the designer's answers Q2697-Q2706, 2026-11-26; the lead files
-the drafts below).** Behaviour list: `docs/migration/m4-lists/13-tv-and-radio.md` (33 lines, here R1-R33 in its
+**Status: build plan for batch C (designed in core/150 on the designer's answers Q2697-Q2706, 2026-11-26). Filed by
+core/153: 150-A core/163, 150-B core/164, 150-C core/165, 150-D core/166, AS-C2-4 assets/27, AS-C2-5 assets/28; the
+places in the house in core/174, the ride in core/175; the sounds and the station's shell in the groundwork core/154.
+The build order is `docs/migration/milestones.md` "Batch C".** Behaviour list: `docs/migration/m4-lists/13-tv-and-radio.md` (33 lines, here R1-R33 in its
 order). The other half of this design, the vacuums and the detector, and the two rules every carried device follows
-(**the whole-Hands rule**, **the thrown-knock rule**) are in `docs/architecture/devices.md`; so is the one table of
-waves for both docs.
+(**the whole-Hands rule**, **the thrown-knock rule**) are in `docs/architecture/devices.md`.
 
 ## What it owns
 
@@ -164,7 +165,7 @@ The whole-Hands rule and the thrown-knock rule of `devices.md`, with the Radio's
   mark to the new one's over the static's time, eased, with `AnimationPlayer.play_section`).
 - **Looks contracts:** the TV: `Glass` (the screen mesh, left out of the outline: R2 "never the TV's picture"),
   `PowerLight`, clips `static`, `off`, `on`; the Radio: `Dial`, `Needle`, `Speaker`, clips `on`, `off`, `dial`.
-- **Sounds** (`sound_catalogue.tres`, added by 150-S): `device_click` (shared with the Elevator's button), `tv_static`,
+- **Sounds** (`sound_catalogue.tres`, added by core/154): `device_click` (shared with the Elevator's button), `tv_static`,
   `radio_static`, `tv_puppets`, `tv_shop`, `tv_news`, `tv_testcard`, `radio_land`. The music tracks are plain
   `AudioStream` files, not SoundEvents.
 
@@ -232,9 +233,9 @@ colours, `asset_lint.py`, the contract above, a before-and-after strip in `<main
 - **AS-C2-5 The Radio** (`make_radio.py`): the radio with its dial, needle and speaker cloth (shown at 1.5 times by its
   Looks).
 
-## Build drafts (`ready-for-agent`; the lead files them; waves in `devices.md`)
+## Build drafts (filed by core/153; the order in `docs/migration/milestones.md` "Batch C")
 
-**150-A The Radio carried and thrown; the thrown-knock rule** (opus; after 150-S, core/130)
+**150-A The Radio carried and thrown; the thrown-knock rule** (opus; after the groundwork, core/130; filed: core/163)
 - Lines: R20, R23, R24, R25, R26, R27, R28, R29 (carrier, spot, turn, flight); R1's scale; R2's "Radio"; the words
   "Radio", "Hands full".
 - Build: `radio.tscn` (graybox Looks at 1.5, `Carriable` `throwable` `handable`, `hold_slot_radio.tres`, silent until
@@ -251,7 +252,7 @@ colours, `asset_lint.py`, the contract above, a before-and-after strip in `<main
 - `suites: [carry, coop_carry, throw, knockdown, coop_knockdown, hand_off, coop_hand_off, save, zoo]`
 - Authored: the Carriable's exports and the slot in the inspector; graybox Looks, then AS-C2-5.
 
-**150-B The Radio's channels: the game's music** (opus; after 150-A)
+**150-B The Radio's channels: the game's music** (opus; after 150-A; filed: core/164)
 - Lines: R3, R4 (the Radio's), R5, R6 (the dial), R14, R15, R16, R17, R18, R19 (the Radio's), R21, R22; R2's
   channel; the words "%s: %s", "Off", the Radio's channel names.
 - Build: `ChannelKnob`, `ChannelKnobTuning`, `Channel`; the six Radio channels in `game/devices/radio/channels/` and
@@ -268,7 +269,7 @@ colours, `asset_lint.py`, the contract above, a before-and-after strip in `<main
 - Authored: channels and tracks are files (a new one shows with no code); the credits a `.tres`; numbers in the
   inspector.
 
-**150-C The TV and its Test card** (opus; after 150-B)
+**150-C The TV and its Test card** (opus; after 150-B; filed: core/165)
 - Lines: R7, R8, R9, R13; R4's TV static, R6's power light, R19's TV off, R2's "TV"; the words "TV", "Test card".
 - Build: `tv.tscn` (static body of the old size, `ChannelKnob` with `keeps_on_load` off, `TvScreen` with the
   SubViewport and the CRT shader, the fps cap and on-screen check, `TvSound` with earshot and `reach_of`, `TvTuning`),
@@ -282,7 +283,7 @@ colours, `asset_lint.py`, the contract above, a before-and-after strip in `<main
 - `suites: [sounds, outline, save, profiler, zoo]` (the `devices` suite)
 - Authored: `TvTuning` in the inspector; the Test card a scene; clips in the Looks; then AS-C2-4.
 
-**150-D The TV's three shows** (sonnet; after 150-C)
+**150-D The TV's three shows** (sonnet; after 150-C; filed: core/166)
 - Lines: R10, R11, R12; the shows' names and texts (TVJ).
 - Build: `puppets.tscn`, `shop.tscn`, `news.tscn` with their `show` clips (the old texts and timings, Q2704), the
   copied voices, `ShopTuning`, the five `Forecast` files, `weather_room.tscn` and the map placed by hand, the

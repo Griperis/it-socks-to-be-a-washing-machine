@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: design
 area: core
 feature: frame
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["suggested model: opus", "batch C (Q2614); answers Q2693-Q2714; the same job core/123 did for batch B"]
 terms: [Elevator, Cat, X-ray, Sock vacuum, Backpack vacuum, detector, Radio, TV, Upgrade]
@@ -77,3 +77,10 @@ that range. Batch C is built unattended after batch B (Q2603), the same way.
 - Batch C answered: Q2693-Q2714 (designer, 2026-11-26).
 
 ## Open follow-ups
+- [later] For the lead: `docs/migration/m4-lists/batch-c.md` still says the Sock detector does not ride (list 09
+  question 12) and asks which lamp rule wins; Q2699 and Q2706 settled both. Not this ticket's file.
+- [later] For the lead: `docs/architecture/house.md`'s "until the exterior ticket brings the door entities" is closed
+  by Q2694 (the doors stay the shut bodies); `docs/llm/PLACEHOLDERS.md` gains batch C's placeholders as its tickets
+  land. Neither file was this ticket's to edit.
+- [later] For the lead: `assets/blender_assets.json` is treated as a merge-time file (each asset ticket adds its own
+  entry), as batch B did; waves 1 and 2 each carry two asset tickets.

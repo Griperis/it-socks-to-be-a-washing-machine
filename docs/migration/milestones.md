@@ -29,7 +29,7 @@ goes on the review sheet (Q2604).
 |---|---|---|
 | A | The run and the washer: Stages and floors, the First wash, the Laundry day (bins, Final wash), the Final screen, the voice system and the talking washing machine (Q2606); the run ends after the fourth Stage (Q2615) | designed (core/71-73), answered (Q2617-Q2643), filed (core/74): building |
 | B | Progression: Coins and Drawers, the Old Tree and the Upgrade grid, Stage presents and Gifts, the Wardrobe, Collections unlocking, Profile and encyclopedia, Achievements | designed (core/120-122), answered (Q2667-Q2683), filed (core/123): building |
-| C | The lived-in house: exterior, Elevator, Cat and litterbox, X-rays, the vacuums, the detector, TV and Radio, the guide card | planned |
+| C | The lived-in house: the day and the exterior, the Elevator, the Cat and litterbox, the X-rays, the vacuums, the detector, the TV and the Radio (no guide card, Q2695) | designed (core/149-152), answered (Q2693-Q2714), filed (core/153); built after batch B's last wave |
 | D | Finale and finish: the Drum finale, the other cutscenes, studio intro, M1.1's other sounds, controller, graphics presets, Steam | planned |
 
 ## Batch A
@@ -89,6 +89,56 @@ saved State regenerates it: take both entries, or rerun `save` case s11's kept c
 `sound_catalogue.tres` (appended by several tickets per wave), `credits` entries.
 
 The designer plays batch B after wave 7 (the line-ups and core/144's strip may be judged at the same sitting).
+
+## Batch C
+Filed by core/153 from the four designs (core/149 the Elevator `docs/architecture/elevator.md` and the day and exterior
+`day-and-exterior.md`; core/150 the vacuums and the detector `devices.md` and the TV and Radio `tv-and-radio.md`;
+core/151 the Cat `cat.md`; core/152 the X-rays `x-rays.md`), answered Q2693-Q2714. Review sheet:
+`docs/migration/batch-c-review.md`.
+
+Batch C's first wave starts after batch B's last wave (wave 7, core/139) is merged. Waves run side by side, at most 5
+agents; a wave starts when the waves before it are merged. Core tickets build on graybox Looks, so none waits for an
+asset's go; the asset tickets stop at their first line-up, `ready-for-human`, and their Looks swap in when the designer
+says yes. core/154 (the groundwork) adds every batch C SoundEvent and the seven station shells, so no other ticket edits
+`sound_catalogue.tres` (but core/179's scratch candidates, alone in its wave) or `zoo.tscn`. The stations, each with its
+own ground body (the zoo's floor ends before x = 160): Elevator x = 208, Day 222, Vacuums 236, Detector 250, TV and
+Radio 264, Cat 278, X-rays 292.
+
+| Wave | Tickets (suggested model) | Clash kept apart |
+|---|---|---|
+| 1 | core/154 The groundwork: sounds and station shells; assets/21 The Elevator's model (opus); assets/24 The Sock vacuum's model (opus) | core/154 alone on `sound_catalogue.tres`, `zoo.tscn`, the seven station scenes, `credits.tres`, `assets/audio/` |
+| 2 | core/155 The Elevator: car, calls, hatches, locks (opus); core/163 The Radio carried and thrown, the thrown-knock rule (opus); core/182 The X-rays: owning, keys, clock, Upgrades (opus); assets/23 The wall clock's model (opus); assets/28 The Radio's model (opus) | core/155 alone on `house.tscn`, `openable.gd`, the Elevator station; core/163 alone on `carriable.gd`, `knockdowns.gd`, `player.gd`, `mess.gd`, the TV and Radio station; core/182 alone on `player.tscn`, `project.godot`, `tests/upgrades_test.gd`, the X-rays station |
+| 3 | core/156 What rides: the one carry rule (opus); core/160 The day (opus); core/167 The Sock detector (opus); core/168 The Sock vacuum: nozzle, hose, container (opus); core/183 Show pair: the mates glow (opus) | core/156 alone on `mess.gd`, `carriable.gd`, the Elevator station; core/160 alone on `house.tscn`, `picture.gd`, `credits.tres`, the Day station; core/167 alone on the Detector station; core/168 alone on `hands.gd`, `player.gd`, `vacuum.gd`, the Vacuums station; core/183 alone on `ping_mark.gd`, `outline` styles |
+| 4 | core/157 The riders (opus); core/164 The Radio's channels (opus); core/176 The Cat walks the house (opus); core/184 Show Cabinet (sonnet); assets/25 The Backpack vacuum's model (opus) | core/157 alone on `elevator.gd`, `player.gd`, `player.tscn`, `avatar.gd` / `avatar.tscn`, `knockdowns.gd`, the Elevator station; core/164 alone on `sounds.gd`, `credits.tres`, the TV and Radio station; core/176 alone on `house.tscn`, the Door scenes, `sofa.tscn`, `double_bed.tscn`, `bunk_bed.tscn`, `old_cot.tscn`, the Cat station |
+| 5 | core/159 The Old Tree's Elevator tip; core/162 The exterior; core/165 The TV and its Test card (opus); core/169 The suck (opus); core/185 The X-rays on the HUD | core/159 alone on the Old Tree's tips; core/162 alone on `house.tscn`, the Day station; core/165 alone on the TV and Radio station; core/169 alone on `vacuum.gd`, `avatar.gd` / `avatar.tscn`, `guest_ghosts.gd`, `mess.gd`; core/185 alone on `player.tscn`, `hud.gd`, `theme.tres` |
+| 6 | core/158 Two in the car and the dragged body (opus); core/161 The lamps follow the clock, the wall clock; core/166 The TV's three shows; core/170 The Spit and the Pour (opus); assets/26 The Sock detector's model (opus) | core/158 alone on `elevator.gd`, `knockdowns.gd`, `avatar.gd`, `roomy_car.tres`; core/161 alone on `house.tscn`, `house_lights.gd`, `day_light.gd`, the Day station; core/166 alone on `theme.tres`, `credits.tres`, the TV and Radio station; core/170 alone on `vacuum.gd`, `mess.gd` |
+| 7 | core/171 The Filter nozzle and the Nozzle display (opus); core/172 The Backpack vacuum (opus); core/177 Petting, holding and throwing the Cat (opus); assets/29 The Cat's model and clips (opus) | core/171 alone on `sock_vacuum.tscn`, `vacuum_filter.gd`, `theme.tres`; core/172 alone on `vacuum.gd`, `avatar.gd`, `game/wardrobe/` (`dresser.gd`, `wardrobe_piece.gd`, the four backpack pieces), the Vacuums station; core/177 alone on `cat.gd`, `cat.tscn`, `cat_looks.gd`, `carriable.gd` and `knockdowns.gd` (only if a rule lacks one of its needs) |
+| 8 | core/173 The five vacuum Upgrades; core/174 The devices in the house; core/178 The Cat's swat and fetch (opus); core/181 The Cat's drum cycle and coats (opus); assets/22 The exterior's model (opus) | core/173 alone on `vacuum.gd`, `upgrade_stat.gd`, the Vacuums station; core/174 alone on `house.tscn`, the ground floor's Stage `.tres`, the Old Tree's tips; core/178 alone on `cat.gd`, `cat_looks.gd`, `mess.gd`, `hands.gd`; core/181 alone on the washer's files (`washer_wash.gd`, `wash_view.gd`, `washer.gd`, `washer_tuning*`) |
+| 9 | core/175 The devices and the Sock vacuum ride the Elevator (opus); core/179 The litterbox visit; core/180 The Cat's naps in the car (opus); assets/27 The TV's model (opus) | core/175 alone on `vacuum.gd`, the hose; core/179 alone on `litterbox.tscn`, `sound_catalogue.tres` (the scratch candidates), `credits.tres`; core/180 alone on `cat.tscn`, the Cat station (neither core/179 nor core/180 edits `cat.gd`: they call the Cat's patch functions) |
+| later | assets/30 The litterbox scratch clip (opus), after the designer's go on assets/29 | |
+
+How the clashes the designs named are ordered: `house.tscn` core/155, 160, 176, 162, 161, 174 in waves 2, 3, 4, 5, 6,
+8; `zoo.tscn` and `sound_catalogue.tres` only core/154 (and core/179's candidates in wave 9); `carriable.gd` core/163,
+156, 177, (175 reads it) in waves 2, 3, 7; `knockdowns.gd` core/163, 157, 158, 177 in waves 2, 4, 6, 7; `mess.gd`
+core/163, 156, 169, 170, 178 in waves 2, 3, 5, 6, 8; `player.gd` core/163, 168, 157 in waves 2, 3, 4; `player.tscn`
+core/182, 157, 185 in waves 2, 4, 5; `avatar.gd` / `avatar.tscn` core/157, 169, 158, 172 in waves 4, 5, 6, 7;
+`tests/upgrades_test.gd` only core/182 (wave 2, before every other batch C Upgrade ticket: core/155, 158, 173);
+`elevator.gd` core/155, 157, 158; `vacuum.gd` core/168, 169, 170, 172, 173, 175 one a wave; `cat.gd` core/176, 177, 178;
+`cat.tscn` core/176, 177, 180; `theme.tres` core/185, 166, 171; `credits.tres` core/154, 160, 164, 166, 179; the Day
+station core/160, 162, 161; the TV and Radio station core/163, 164, 165, 166; the Vacuums station core/168, 172, 173;
+the Elevator station core/155, 156, 157, 158; the Old Tree's tips core/159 then 174.
+
+The cross-design seams come before the tickets that need them: core/163's thrown-knock rule and held input before
+core/157 (the rider exemption for every thrown thing), core/167 and core/177; core/168's `Hands.TAKERS` before core/177;
+core/156's carry rule (and its `may_ride()` check) before core/175 and core/180; core/183's `sock_carriers` ask before
+core/178's member (Q2714). Batch B's core/129, 130, 131, 133 and 139 are merged before wave 1.
+
+At the merge (not wave clashes; each change is a separate line the lead keeps from both sides):
+`tests/saves/shape.json` (core/155, 160, 163, 164, 165, 167, 168, 171, 172, 176, 181 add saved State: take both
+entries, or rerun `save` case s11's kept copy), `assets/blender_assets.json` (each asset ticket adds its own entry; two
+in waves 1 and 2).
+
+The designer plays batch C after wave 9 (the line-ups and the X-ray stills may be judged at the same sitting).
 
 ## M0.5 batches (Q2296)
 Each batch is one theme, tested in one sitting at one or two stations, ending with a short play session and the

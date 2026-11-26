@@ -1,9 +1,11 @@
 # The Elevator and its riders
 
-**Status: build plan for batch C (designed in core/149 on the designer's answers Q2699, Q2700, Q2702, Q2705;
-2026-11-26). Not filed yet: the drafts below are for the lead to file.** Behaviour list:
+**Status: build plan for batch C (designed in core/149 on the designer's answers Q2699, Q2700, Q2702, Q2705, with
+Q2710 and Q2711 for the Sock vacuum in the car; 2026-11-26). Filed by core/153: 149-A core/155, 149-C core/156, 149-D
+core/157, 149-E core/158, 149-F core/159, AS-L assets/21; every sound and the station's shell come with the batch's
+groundwork, core/154. The build order is `docs/migration/milestones.md` "Batch C".** Behaviour list:
 `docs/migration/m4-lists/11-elevator.md` (46 lines). The day cycle and the exterior, designed in the same ticket:
-`docs/architecture/day-and-exterior.md`; the waves of both docs are at the end of this one. Batch C is built
+`docs/architecture/day-and-exterior.md`. Batch C is built
 unattended and reviewed in play as a whole, as batches A and B were (Q2603-Q2605).
 
 ## What it owns
@@ -118,7 +120,8 @@ Whatever lies in the car when it departs rides it; nothing else does. The rule n
 2. The members today: the **Mess** (its records lying in the box, Socks and floor Pairs, through a new
    `Mess.rides_patch`; a Moving Sock in the box is laid at its pose first; at `arrive` the Mess wakes those records
    so they settle as the hatch opens), and every **`Carriable`** (one implementation in `carriable.gd`: when nobody
-   holds it and `at` is in the box or on the sill, `at += delta`, clamped into the box). So the encyclopedia book,
+   holds it, `at` is in the box or on the sill and no sibling's `may_ride()` says no, `at += delta`, clamped into the
+   box; the Sock vacuum's container says no while its nozzle is out, Q2710). So the encyclopedia book,
    the Machine Parts, the Laundry bins, and core/150's Radio and detector (Carriables) ride with no line of theirs.
    The **Cat** (core/151) joins the group with its own `rides_patch`.
 3. Three optional methods of the same group, read with `has_method`: `fills_car(box) -> bool` (the Cat asleep in the
@@ -203,14 +206,14 @@ A new carried thing is a `Carriable` (rides at once) or a Part that joins the gr
   (`game/entities/elevator/looks_contract.json`) names these nodes and clips; the graybox Looks and the ported model
   (asset draft AS-L) both meet it.
 
-## Sounds (SoundEvents in `sound_catalogue.tres`; the old placeholders and shares, Q2702)
+## Sounds (SoundEvents in `sound_catalogue.tres`; the old placeholders and shares, Q2702; all added by core/154)
 
 | Event | When | Space | Old pool |
 |---|---|---|---|
 | `elevator_bell` | the arrival, at that stop | world | the ping's (`ping` clips) |
 | `elevator_creak` | every `creak_every` s while riding, at the shaft where the ride has got to | world | the basket's creaks (`basket_open` / `basket_close` clips) |
 | `hatch_open`, `hatch_close` | a hatch slides | world | the oven's (`oven_open`, `oven_close` clips) |
-| `elevator_button` | a call button's answer | world | `device_click`: the TV and Radio's knob click (core/150 adds it if it lands first; else this piece adds it and core/150 shares it) |
+| `elevator_button` | a call button's answer | world | `device_click`: the TV and Radio's knob click (added once, by core/154) |
 | `elevator_ride` | the rider alone, hatch shut to arrival | flat, loop | the old synth placeholder |
 | `elevator_squeeze` | a second rider squeezes in, at the car | world | the old synth placeholder |
 
@@ -237,7 +240,11 @@ is dropped from `riders` by the Elevator's `loaded()`.
   Slow, a bit shaky, but it still beats the stairs. Mind the doors." Draft 149-F, after core/133.
 - **core/150 (the devices, TV and Radio; designed beside this):** the Radio and the detector ride as Carriables
   (Q2699); a thrown one never knocks a rider (Q2700, `Knockdowns`'s rule here); `device_click` is shared with the
-  Elevator's button. core/150 writes its side.
+  Elevator's button. The Sock vacuum's container rides only with its nozzle on its hook (Q2710): it lies still at its
+  stop while its nozzle is out, so the carry rule asks a Carriable whether it may ride (a sibling's
+  `may_ride() -> bool`, read with `has_method`; the `Vacuum` answers `nozzle_at == INF`). A player holding the nozzle
+  may climb into the car with the container outside: nothing stops it and the hose stretches between floors, as the
+  old (Q2711). core/150 writes its side (core/175).
 - **core/151 (the Cat; designed beside this):** the Cat joins `elevator_cargo` (`rides_patch`, `fills_car`,
   `called_patch`), naps in the open car with nobody riding, asks `open_hatch` after `car_shut_seconds` 20 s, listens to
   `departed` / `arrived`, and lands inside when dropped or thrown into the open car (the car's StaticBody). core/151
@@ -267,12 +274,12 @@ is dropped from `riders` by the Elevator's `loaded()`.
 - Q2705: the model is ported by the port rules, with the letters and the plaque as modelled parts.
 - Q2706, Q2693, Q2694: in `day-and-exterior.md`.
 
-## Draft tickets (ready-for-agent; the lead files them)
+## Draft tickets (filed by core/153; each heading names its ticket)
 
 Each builds on graybox Looks and waits for no asset (Q2705); every number `# placeholder:` the old. "Lines" are the
 behaviour list's (`11-elevator.md`) by heading.
 
-### 149-A The Elevator: the car, calls, hatches, locks and out of order
+### 149-A The Elevator: the car, calls, hatches, locks and out of order (filed: core/155)
 - **Lines:** "Where it is and what it is" (all 3); "Calling and sending" lines 1-5 and 7-9 (the sill push of line 5 is
   149-C's, the send from the letters 149-D's); "Locked and out of order" (all 5); "Things in the car" line 1 (the hatch and the car's colliders); "Sounds"
   (bell, creak, hatch, button; no climb sound); "The Upgrades" `elevator_repair` and `fast_elevator`; "Words" (all but
@@ -282,7 +289,8 @@ behaviour list's (`11-elevator.md`) by heading.
   and the verbs `call`, `hatch`, `depart`, `arrive`, `open_hatch`; the cargo group's calls (`rides_patch` at `depart`, `fills_car` at `climb_in` once 149-D asks it, `called_patch` at
   `call`, `car_opened` after `arrive`) with no member yet;
   `ElevatorControl` (BUTTON, HATCH, LETTER); a small `Openable` export `driven` (use() asks nothing; aimed through the
-  stop's ElevatorControl); `ElevatorTuning`; the two stats; four SoundEvents; placed in `house.tscn`; the station.
+  stop's ElevatorControl); `ElevatorTuning`; the two stats; placed in `house.tscn`; the station filled (its shell and
+  the SoundEvents are core/154's).
 - **Acceptance:** in the house from a New Game (stages on), clicking the ground floor's call button with the mouse
   reads "Out of order (needs the Elevator Repair upgrade)" and the plaque shows; after Elevator Repair is bought
   (the real `buy`) and the ground floor is open, a click on the basement's button shuts the kitchen hatch (its clip
@@ -297,7 +305,7 @@ behaviour list's (`11-elevator.md`) by heading.
 - **Authored:** `ElevatorTuning` and the two stats in the inspector; stops dropped as scenes; clips in the stop's
   Looks; the station built from the stops and the Upgrades folder.
 
-### 149-C What rides: the one carry rule
+### 149-C What rides: the one carry rule (filed: core/156)
 - **Lines:** "Calling and sending" line 5's push (the hatch pushes every item on its sill in, never cutting or losing
   one) and line 6 (nothing drawn moving; what lies in it lies frozen at the bound floor, back to life when the hatch opens);
   "Things in the car" line 2 (everything lies where it lay; Socks and Pairs pushed in with the hatch).
@@ -314,15 +322,15 @@ behaviour list's (`11-elevator.md`) by heading.
 - **Model:** opus.
 - **Authored:** no data of its own; a new carried thing is a Carriable, or a Part in the group.
 
-### 149-D The riders
+### 149-D The riders (filed: core/157)
 - **Lines:** "Calling and sending" the send from the letters; "Riders" lines 1-6 and 10-15 (climb in, refused, the
   climb, the rider's view with its dim and shake, the rumble loop, looking round curled, keeping the Hands, the
   letters, climbing out on arrival and with Space, a Throw never knocks a rider, leaving and `everyone_out`, joins and
   loads curled); "Sounds" `elevator_ride`; "Words" (Climb in, Climb out, Elevator full, "Send the Elevator to %s").
 - **Build:** `climb_in`, `climb_out`, `send`, `everyone_out` and `left()`; the Player's jump asks the aimed Elevator
   first; the rider's camera at the seat's `Eyes`; `ride_view.tscn`; the seats' clips and the avatar's `curl`;
-  `ride_shake`; the letters aimed by riders only (the aim skips Teammates in the car); `Knockdowns` refuses a rider;
-  `elevator_ride` and `elevator_squeeze` SoundEvents (the squeeze plays in 149-E).
+  `ride_shake`; the letters aimed by riders only (the aim skips Teammates in the car); `Knockdowns` refuses a rider
+  (for every thrown thing: Socks and core/150's Carriables); `elevator_ride` played (its SoundEvent is core/154's).
 - **Acceptance:** in the house with Elevator Repair bought, the player presses Space aimed into the open car and is
   curled in it (the hint "Climb in [Space]"); a click on the "1" letter sends the car; the view dims and shakes while
   the hatch is shut and the rumble plays for the rider only; at the arrival the rider is out 0.8 m in front of the
@@ -335,7 +343,7 @@ behaviour list's (`11-elevator.md`) by heading.
 - **Model:** opus.
 - **Authored:** the motion is clips (seat, curl, ride view, shake); the reach and eye height in `ElevatorTuning`.
 
-### 149-E Two in the car and the dragged body
+### 149-E Two in the car and the dragged body (filed: core/158)
 - **Lines:** "Riders" lines 7 (two ride: squeeze, jostle, squeak), 8 (seats 2, 3 with Roomy Car; a dragger counts
   with the body) and 9 (the dragger: lift, climb, the drag holds, out half as far, falls); "The Upgrades" `roomy_car`.
 - **Build:** the second seat's `squeeze` clip and its sound; the `car_extra_seats` stat on `roomy_car.tres`; the
@@ -349,7 +357,7 @@ behaviour list's (`11-elevator.md`) by heading.
 - **Model:** opus.
 - **Authored:** `roomy_car`'s stat in the inspector; the squeeze and lift are clips.
 
-### 149-F The Old Tree's Elevator tip
+### 149-F The Old Tree's Elevator tip (filed: core/159)
 - **Lines:** "The Old Tree's tip" (1).
 - **Build:** `tree_tip_elevator.tres` named in the Old Tree's tips (core/133's mechanism), due once Elevator Repair is
   first bought in the Run. Waits for core/133 to be merged.
@@ -360,7 +368,7 @@ behaviour list's (`11-elevator.md`) by heading.
 - **Model:** sonnet.
 - **Authored:** a trigger file and its line's JSON entry: no code.
 
-### AS-L The Elevator's model (asset ticket, `assets/<NN>`)
+### AS-L The Elevator's model (filed: assets/21)
 Ported from the old `tools/blender/make_elevator.py` (`assets/house/elevator.glb`) by the port rules (Q2705, the old
 colours): the car (stainless, its caged brass lamp), the hatch and its frame, the brass call button, with the floor
 letters and their rings and the "OUT OF ORDER" plaque and the padlock sign now modelled parts (they were built in
@@ -373,25 +381,12 @@ first line-up (`ready-for-human`). Model: opus. No core ticket waits for it.
 - Elevator Duet: a Secret, later (Q2682).
 - Not ported: the Grotto's floor hatch (Q2599), the Guide card riding (Q2695).
 
-## The waves (both docs: the Elevator, the day and the exterior)
+## The waves
 
-Waves run side by side, at most 5 agents; a wave starts when the waves before it are merged. Day drafts 149-G, -H,
--I and asset AS-E are in `day-and-exterior.md`.
-
-| Wave | Drafts (suggested model) | Files each is alone on in its wave |
-|---|---|---|
-| 1 | 149-A The Elevator (opus); AS-L The Elevator's model (opus) | 149-A: `house.tscn`, `zoo.tscn`, `openable.gd`, `sound_catalogue.tres`, `tests/saves/shape.json`, `elevator_repair.tres`, `fast_elevator.tres`, `game/entities/elevator/*` but the model's Looks; AS-L: `assets/elevator/`, `assets_src/generate/elevator/`, `assets/blender_assets.json`, `game/entities/elevator/looks_elevator.tscn` |
-| 2 | 149-C What rides (opus); 149-D The riders (opus); 149-G The day (opus); AS-E The exterior's model (opus) | 149-C: `mess.gd`, `carriable.gd`; 149-D: `elevator.gd`, the car's graybox Looks, the avatar's Looks (`curl`), `player.gd`, `knockdowns.gd`, `sound_catalogue.tres`, the Elevator station; 149-G: `house.tscn`, `zoo.tscn`, `picture.gd`, `day_sky.gdshader`, `tests/saves/shape.json`, `assets/sky/`, `credits.tres`; AS-E: `assets/exterior/`, `assets_src/generate/exterior/`, `assets/blender_assets.json` |
-| 3 | 149-E Two in the car (opus); 149-I The exterior (sonnet) | 149-E: `elevator.gd`, `knockdowns.gd`, `roomy_car.tres`, the riders' view files; 149-I: `house.tscn`, `game/house/exterior/`, the Day station |
-| 4 | 149-H The lamps follow the clock (sonnet); 149-F The Old Tree's tip (sonnet, after core/133) | 149-H: `house_lights.gd`, `day_light.gd`, `picture.gd`, `house.tscn`, `sound_catalogue.tres`, the lamp furniture scenes, the Day station; 149-F: the Old Tree's scene and Part, `game/voice/triggers/` |
-
-Where the chains run: `elevator.gd` 149-A, D, E in waves 1-3 (149-C touches only its cargo group's members); `house.tscn`
-149-A, G, I, H in waves 1-4; `sound_catalogue.tres` 149-A, D, H in waves 1, 2, 4; `tests/saves/shape.json` 149-A then G;
-`assets/blender_assets.json` AS-L then AS-E; the Day station 149-G, I, H in waves 2-4; `knockdowns.gd` 149-D then E.
-
-Across the batch C designs (not this doc's to order; for the lead when the four are filed): core/150 and core/151
-will also edit `sound_catalogue.tres`, `house.tscn`, `carriable.gd` (the whole-Hands rule) and `knockdowns.gd` (the
-thrown knock, Q2700); core/151's Cat cargo needs 149-C merged; `device_click` is added by whichever lands first.
+Superseded by the batch's one build order, `docs/migration/milestones.md` "Batch C" (core/153), which merges the four
+designs' waves and keeps their clashes apart (`house.tscn`, `elevator.gd`, `knockdowns.gd`, `player.gd`,
+`player.tscn`, the Elevator station). Every SoundEvent and the stations' shells are core/154's, so no draft here edits
+`sound_catalogue.tres` or `zoo.tscn`.
 
 ## Gotchas for the build
 

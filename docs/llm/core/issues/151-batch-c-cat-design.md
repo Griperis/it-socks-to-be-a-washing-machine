@@ -53,10 +53,7 @@ the way core/120-122 did for batch B. A design ticket: no game code.
 ## Answers
 - Batch C is designed as four tickets: the Elevator, day and exterior; the devices, TV and Radio; the Cat; the X-rays
   (Q2707).
+- The litterbox scratch's sound: 151-D brings three licence-checked recordings of a cat scratching litter to the Sounds station for the designer to pick (Q2712, 2026-11-26).
+- Filed as core/176-181 and assets/29-30 by core/153.
 
 ## Open follow-ups
-- [blocking] (before 151-D is built) The litterbox scratch's own sound (Q2703 asks for one; neither the answer nor
-  the old game names it). (a) The old: the swat's sound ("cat_swat", Q2008), kept under its own event
-  `litter_scratch` until the designer swaps it on the Sounds bench; (b) 151-D brings three candidate recordings
-  (licence-checked) of a cat scratching litter to the Sounds bench for the designer to pick; (c) another sound
-  (which?).

@@ -53,11 +53,8 @@ the way core/120-122 did for batch B. A design ticket: no game code.
 ## Answers
 - Batch C is designed as four tickets: the Elevator, day and exterior; the devices, TV and Radio; the Cat; the X-rays
   (Q2707).
+- The Cabinet X-ray's words: title "Cabinet X-ray: Show Cabinet", tooltip "Show Cabinet (key 2): the right Cabinet glows through walls." (Q2713, 2026-11-26).
+- The Sock X-ray's glow follows the mate as it moves (thrown, carried, fetched), not where it lay when the X-ray began (Q2714, 2026-11-26).
+- Filed as core/182-185 by core/153; the GLOSSARY's "Cabinet X-ray" brought to "Show Cabinet" there too.
 
 ## Open follow-ups
-- [blocking] The Cabinet X-ray's new words (Q2701 renames the ability "Show Cabinet" and has the tooltip say the whole
-  Cabinet glows; the exact sentence is not given). (a) The old sentences with "drawer" taken out: title "Cabinet
-  X-ray: Show Cabinet", tooltip "Show Cabinet (key 2): the right Cabinet glows through walls."; (b) other words
-  (which?). Blocks the words part of 152-A only.
-- [later] For the lead, not the designer: GLOSSARY "Cabinet X-ray" still says "Show drawer" and "the front of the
-  Cabinet drawer ... glow"; since Q1964 and Q2701 it is "Show Cabinet" and the whole Cabinet outlined in amber.
