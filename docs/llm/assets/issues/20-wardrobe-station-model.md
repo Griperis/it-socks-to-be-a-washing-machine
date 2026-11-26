@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: assets
 feature: assets
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-26
 blocked_by: []
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 4", "suggested model: sonnet"]
 terms: [Wardrobe Station]
@@ -36,6 +36,8 @@ swap them (Q2177).
 - No real-path case (a look ticket, Q2421).
 
 ## Answers
-- None beyond the design's.
+- The Wardrobe station is yes; core/142 places it in the house (Q2715, 2026-11-26).
 
 ## Open follow-ups
+- [later] The brass (rail, hangers' hooks, handles, hinges) reads darker in the Godot line-up than in the old Blender one: the library's `brass` is metallic 0.8 and the still has no sky to reflect. In the house it looks as every other brass piece; the designer judges whether it needs its own look ticket.
+- [later] The old loose `wardrobe_station_fabric_palette.png` is not ported (nothing read it; the palette is embedded in the glb).

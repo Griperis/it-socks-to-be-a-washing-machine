@@ -1,0 +1,7 @@
+# assets/20: the Wardrobe Station's Looks framed as the old line-up (reference/it-socks docs/art/wardrobe_station/final_lineup.png):
+# shut from the front, open from three-quarter and from the front, shut from the side and from behind.
+front_shut  --scene=res://tools/wardrobe_station_still.tscn --size=300x400 --do='5:wardrobe_station:0' --shots=20
+quarter_open  --scene=res://tools/wardrobe_station_still.tscn --size=300x400 --do='5:wardrobe_station:1' --shots=20
+front_open  --scene=res://tools/wardrobe_station_still.tscn --size=300x400 --do='5:wardrobe_station:2' --shots=20
+side_shut  --scene=res://tools/wardrobe_station_still.tscn --size=300x400 --do='5:wardrobe_station:3' --shots=20
+back_shut  --scene=res://tools/wardrobe_station_still.tscn --size=300x400 --do='5:wardrobe_station:4' --shots=20
