@@ -5,6 +5,10 @@ Not filed yet: the drafts below are for the lead to file.** There is no behaviou
 lead's grilling settled them (Q2693, Q2694; `docs/migration/m4-lists/batch-c.md`), and the lines below are written
 from the old game here. The waves are with the Elevator's, at the end of `docs/architecture/elevator.md`.
 
+**The six "(ask)" lines are answered (Q2709):** keep the lamps' click and the wall clock's hands; drop the shades' glow,
+the night-blue panes, the grade and vignette by the hour, and the outside's night glow. Drafts 149-H and 149-I lose
+those parts when they are filed.
+
 ## What it owns
 
 The in-game hour and its 20-minute day (Q2693): the sun's path and the moon by night, the dusk and night skies, the

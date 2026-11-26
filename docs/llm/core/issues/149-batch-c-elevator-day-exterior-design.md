@@ -51,11 +51,13 @@ the way core/120-122 did for batch B. A design ticket: no game code.
 - No two drafts in one wave edit the same file.
 
 ## Answers
+- The day keeps the lamps' click and the wall clock's hands; the shades' glow, the night panes, the grade by the hour and
+  the outside's night glow are dropped (Q2709, 2026-11-26).
 - Batch C is designed as four tickets: the Elevator, day and exterior; the devices, TV and Radio; the Cat; the X-rays
   (Q2707).
 
 ## Open follow-ups
-- [blocking] Q2693 says "nothing else of the old day is needed", but the old day had six small details beside the
+- (answered Q2709: keep the lamps' click and the clock's hands, drop the other four) Q2693 says "nothing else of the old day is needed", but the old day had six small details beside the
   sun, skies, moon and lamps (`docs/architecture/day-and-exterior.md`, the lines marked "(ask)"). Only the designer
   drops a detail (Q2277). For each: (a) keep it as the old; (b) drop it.
   1. The lamps' click when they switch, flat: `lamp_on` at 19:30, `lamp_off` at 7:00 (sharing the X-ray's on and off
