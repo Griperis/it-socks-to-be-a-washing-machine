@@ -6,7 +6,7 @@
 ## colour while that is free (Q2448). It is in the join snapshot; the Avatars spawner spawns by it.
 ##
 ## Only the Host's answers write it: joined() when the gate admitted a player, left() when one went,
-## hands_said() when a Lobby joiner's house was ready, and its three verbs (core/141,
+## and its three verbs (core/141,
 ## docs/architecture/wardrobe.md "What a player owns and wears, in co-op"), each asked by a player for
 ## itself (the entry is the sender's, never named in the args): `wear` a look (refused unless every piece
 ## is owned), `colour` a Player colour (refused "taken" while another present player has it), `own` a
@@ -21,7 +21,6 @@ extends Part
 const JOINED := &"joined"
 const LEFT := &"left"
 ## A player's Hands numbers, said with their house_ready (core/68).
-const HANDS := &"hands"
 ## The Host's peer id.
 const HOST := 1
 ## The verbs a player asks for itself (core/141).
@@ -39,8 +38,7 @@ signal changed
 @export var tuning: CoopTuning
 
 @export_group("State")
-## {player id: {"peer": int, "name": String, "colour": int, "at": Vector3, "yaw": float, "hands": the
-## numbers of their Hands an Upgrade changes, clamped by the Host (D13), "look": {"hat", "clothes",
+## {player id: {"peer": int, "name": String, "colour": int, "at": Vector3, "yaw": float, "look": {"hat", "clothes",
 ## "socks", "trail": piece id or ""}, "owned": PackedStringArray of piece ids (the basic ones not
 ## stored: owned_of() adds them), "tallies": {tally name: int}}}.
 @export var players := {}
@@ -170,11 +168,11 @@ func free_colour(wanted: int, among: Dictionary = players) -> int:
 
 ## The Host: player id `pid` on `peer`, named `who`, joins. A new id takes the next free colour and
 ## stands beside the Host (the Host itself where it stands); an id that played before stands where it
-## left and keeps its colour while free. `hands`: their Hands' numbers as the Host clamped them.
+## left and keeps its colour while free.
 ## `said`: their profile's `look`, `owned`, `tallies` and `colour` wish as the gate clamped them
 ## (SessionGate.clamped_said()): the word wins over what the entry had; a new id takes its wished colour
 ## when free, else the next free. Returns the answer, for Parts.apply().
-func joined(pid: String, peer: int, who: String, hands := {}, said := {}) -> Dictionary:
+func joined(pid: String, peer: int, who: String, said := {}) -> Dictionary:
 	var all := players.duplicate(true)
 	if peer == HOST:
 		# This machine's own entry made alone under another profile (a test's) gives way: a peer is one player.
@@ -185,8 +183,6 @@ func joined(pid: String, peer: int, who: String, hands := {}, said := {}) -> Dic
 	others.erase(pid)
 	var before: Dictionary = all.get(pid, {})
 	var entry := {"peer": peer, "name": PlayerProfile.clean_name(who)}
-	if not hands.is_empty():
-		entry["hands"] = hands
 	entry["look"] = plain_look(said.get("look", before.get("look", {})))
 	entry["owned"] = _owned_in(said if said.has("owned") else before)
 	var tallies: Variant = said.get("tallies", before.get("tallies", {}))
@@ -297,20 +293,6 @@ func placed() -> Dictionary:
 		return {}
 	var ev := grant({"players": all})
 	ev.merge({"kind": &"placed", "by": HOST, "to": id})
-	return ev
-
-
-## The Host: the player on `peer` said their Hands' numbers (`hands`, as the Host clamped them) once
-## their house was ready, having said none at the gate (they joined in the Lobby, with no Player yet:
-## core/68). Returns the answer, or {} when that player is not here or the numbers are already these.
-func hands_said(peer: int, hands: Dictionary) -> Dictionary:
-	var pid := id_of(peer)
-	if pid == "" or hands.is_empty() or (players[pid] as Dictionary).get("hands") == hands:
-		return {}
-	var all := players.duplicate(true)
-	(all[pid] as Dictionary)["hands"] = hands.duplicate()
-	var ev := grant({"players": all})
-	ev.merge({"kind": HANDS, "by": HOST, "to": id, "player": pid})
 	return ev
 
 

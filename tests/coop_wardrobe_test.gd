@@ -219,7 +219,7 @@ func case_save_merge() -> void:
 	add_child(roster)
 	var here := PlayerProfile.new_id()
 	var away := PlayerProfile.new_id()
-	roster.write(roster.joined(here, Parts.HOST, "Here", {}, {"look": {"hat": "beanie"}, "owned": PackedStringArray(["sock_hat"]),
+	roster.write(roster.joined(here, Parts.HOST, "Here", {"look": {"hat": "beanie"}, "owned": PackedStringArray(["sock_hat"]),
 			"tallies": {PlayerProfile.PAIRS_SHELVED: 7}, "colour": 0})["changes"][roster.id], false)
 	var saved := {"players": {
 		here: {"peer": 0, "name": "Here", "colour": 0, "look": Roster.plain_look({"hat": "crown"}), "owned": PackedStringArray(), "tallies": {}},

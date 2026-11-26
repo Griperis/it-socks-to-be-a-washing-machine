@@ -89,9 +89,8 @@ of the levels of every Upgrade that names it (Personal ones the player's, House 
 stations) keeps its own tuning, so the zoo stays as it is. Each feature holds the `UpgradeStat` it reads as a typed
 export (a missing file is a load error, not a silent 0), as the voice triggers do.
 
-**The Hands numbers in co-op.** Today a Guest's machine sends its capacity, reach, charge time and Throw speed and the
-Host clamps them (D13, `SessionGate.clamped_hands`). With the Upgrades Part the Host computes them from the levels it
-keeps; the sent numbers and `HandsTuning.*_most` go (core/130). Every machine reads the same synced levels for its
+**The Hands numbers in co-op.** The Host computes them from the Upgrade levels it
+keeps (core/130, maintenance/10: no machine says its own). Every machine reads the same synced levels for its
 guesses.
 
 ### Signals (every machine, from applied answers): the seams

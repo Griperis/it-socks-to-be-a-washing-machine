@@ -151,9 +151,9 @@ func case_colour_taken() -> void:
 	add_child(_level)
 	player.capture_mouse()
 	await _until(func() -> bool: return player.is_on_floor(), "the player to stand")
-	parts.apply(roster.joined(PlayerProfile.new_id(), Parts.HOST, "Me", {}, {"colour": 0}))
+	parts.apply(roster.joined(PlayerProfile.new_id(), Parts.HOST, "Me", {"colour": 0}))
 	# Another player (present, on another peer) has colour 2.
-	parts.apply(roster.joined("bob", 7, "Bob", {}, {"colour": 2}))
+	parts.apply(roster.joined("bob", 7, "Bob", {"colour": 2}))
 	var mirror := station.get_node_or_null("WallMirror") as Node3D
 	var wardrobe := station.get_node("WardrobeStation") as Node3D
 	_check(mirror != null and mirror.global_position.distance_to(wardrobe.global_position) < 2.5, "the zoo's Wardrobe stands beside a wall mirror")

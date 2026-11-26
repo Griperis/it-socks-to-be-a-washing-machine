@@ -2,8 +2,7 @@
 ## taken into it with the level's snapshot.
 ##
 ## The handshake (core/62): when a Guest's level is bound and its starting state made, it sends `house_ready`
-## with its PROTOCOL, its level's layout hash and its Hands' numbers (core/68: a Guest that joined in the
-## Lobby had no Player to say them at the gate; the Host clamps them into the Roster). A Guest that joined
+## with its PROTOCOL, its level's layout hash. A Guest that joined
 ## from inside the Host's level, its layout in its gate word, has said it at the gate and is welcomed once
 ## the Host's level is settled. The Host refuses a mismatch ("Another version of the game", the Guest goes
 ## alone), else waits until its own level is settled and sends that level's snapshot (`welcomed`). Until
@@ -24,9 +23,6 @@ var _waiting: Dictionary[int, bool] = {}
 ## The Host: Guests whose house_ready came while this machine had no level (its house still loading
 ## after Start): {peer: layout}, answered when a level attaches.
 var _early: Dictionary[int, String] = {}
-## The Host: the Hands numbers each Guest said with its house_ready (as sent), written into the Roster
-## as it is taken in (core/68: a Guest that joined in the Lobby had no Player to say them at the gate).
-var _hands: Dictionary[int, Dictionary] = {}
 ## A Guest: the other Guests the Host says are in its house (`_houses`), the only ones this machine's
 ## own avatar is synchronized to (a Guest still loading has nowhere to put it: core/68).
 var _seen: Dictionary[int, bool] = {}
@@ -42,7 +38,6 @@ func clear() -> void:
 	_in_house.clear()
 	_waiting.clear()
 	_early.clear()
-	_hands.clear()
 	_seen.clear()
 	in_game = false
 	_asked = null
@@ -69,7 +64,6 @@ func inside() -> PackedInt32Array:
 func forget(peer: int) -> bool:
 	_waiting.erase(peer)
 	_early.erase(peer)
-	_hands.erase(peer)
 	return _in_house.erase(peer)
 
 
@@ -103,18 +97,15 @@ func level_detached() -> void:
 ## The Host: Guest `peer`'s level is bound and settled: its PROTOCOL and layout must be this machine's
 ## level's, else it is refused as another version. Then, once this machine's own level is settled (its
 ## Socks laid, house/09), it gets the level's whole state and from now on everything of it.
-func ready_said(peer: int, protocol_said: Variant, layout: Variant, hands: Variant) -> void:
+func ready_said(peer: int, protocol_said: Variant, layout: Variant) -> void:
 	if not _s.multiplayer.is_server() or not _s._guests.has(peer):
 		_s._guard.drop(peer, "not in the game", "")
 		return
-	if not (protocol_said is int) or not (layout is String) or String(layout).length() > 128 \
-			or not (hands is Dictionary) or (hands as Dictionary).size() > Command.ARGS_MAX:
+	if not (protocol_said is int) or not (layout is String) or String(layout).length() > 128:
 		_s._guard.drop(peer, "house", "an unreadable house_ready")
 		return
 	if _in_house.has(peer) or _waiting.has(peer):
 		return
-	if not (hands as Dictionary).is_empty():
-		_hands[peer] = hands
 	if int(protocol_said) != Session.PROTOCOL:
 		_s._guard.drop(peer, "protocol", "%d at house_ready, not %d" % [int(protocol_said), Session.PROTOCOL])
 		_s._house_refused.rpc_id(peer, Session.WHY_VERSION)
@@ -155,12 +146,6 @@ func take_into(peer: int, level: Parts) -> void:
 	if not _s._guests.has(peer) or _in_house.has(peer):
 		return
 	_in_house[peer] = true
-	var hands: Dictionary = _hands.get(peer, {})
-	_hands.erase(peer)
-	if _s.roster != null and not hands.is_empty():
-		var said := _s.roster.hands_said(peer, _s._gate.clamped_hands(hands))
-		if not said.is_empty():
-			_s.parts.apply(said)
 	var snap := level.snapshot()
 	_s._welcome.rpc_id(peer, snap)
 	_s.house_changed.emit(peer)
@@ -184,7 +169,6 @@ func left(peer: int) -> void:
 		return
 	_waiting.erase(peer)
 	_early.erase(peer)
-	_hands.erase(peer)
 	if _in_house.erase(peer):
 		_s.house_changed.emit(peer)
 		tell()
@@ -216,4 +200,4 @@ func step() -> void:
 			return
 	if s._peer == null or s.level_parts != level:
 		return
-	s._house_ready.rpc_id(1, s.protocol, Session.layout_of(level), s._gate.own_hands())
+	s._house_ready.rpc_id(1, s.protocol, Session.layout_of(level))

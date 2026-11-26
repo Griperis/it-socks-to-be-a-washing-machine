@@ -35,7 +35,7 @@ and write the Session's own fields and call its RPCs, and nothing else holds the
 |---|---|
 | `session.gd` | Public calls (`host`, `join`, `close`, `enter_alone`, `attach_level`, `sees_house`, ...), signals, `PROTOCOL` and the gate's constants, every `@rpc` as one line into a helper, `_guests`, `_end`, `_note` |
 | `session_peer.gd` (`SessionPeer`) | Opening (`host`, `join`) and closing the peer: the SceneMultiplayer signals, the auth callback, every helper's `clear()` on close |
-| `session_gate.gd` (`SessionGate`) | The gate word both ways, the refusals, a Guest taken into the Roster with the link snapshot (`joined`), a leaver (`left`); `clamped_hands` and `own_hands` stay as calls that return nothing (core/130) until the session's callers drop them |
+| `session_gate.gd` (`SessionGate`) | The gate word both ways, the refusals, a Guest taken into the Roster with the link snapshot (`joined`), a leaver (`left`) |
 | `session_house.gd` (`SessionHouse`) | The house handshake both ways: `house_ready`, the level snapshot, who is in (`_houses`), a level attached or detached |
 | `session_guard.gd` (`SessionGuard`) | A Guest's Command checked in the guards' order, then answered; `drop`/`count` (`Session.dropped`, `stats`), the rate |
 | `session_relay.gd` (`SessionRelay`) | Which Parts the Session listens to, which Guests hear each answer (`on_applied`), a Guest's way up (`send_up`), `is_link_part` |
