@@ -1,0 +1,162 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/wardrobe/trail_mark.gd" id="1_mark"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.95, 0.3, 1)
+roughness = 1
+emission_enabled = true
+emission = Color(1, 0.9, 0.2, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_2"]
+material = SubResource("StandardMaterial3D_1")
+size = Vector3(0.02, 0.12, 0.006)
+
+[sub_resource type="Gradient" id="Gradient_3"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.038462, 0.076923, 0.11538, 0.15385, 0.19231, 0.23077, 0.26923, 0.30769, 0.34615, 0.38462, 0.42308, 0.46154, 0.5, 0.53846, 0.57692, 0.61538, 0.65385, 0.69231, 0.73077, 0.76923, 0.80769, 0.84615, 0.88462, 0.92308, 0.96154, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4"]
+gradient = SubResource("Gradient_3")
+width = 512
+
+[sub_resource type="Curve" id="Curve_5"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.05, 1.3), 0.0, 0.0, 0, 0, Vector2(0.1, 1), 0.0, 0.0, 0, 0, Vector2(0.45, 0.9), 0.0, 0.0, 0, 0, Vector2(1, 0.4), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_6"]
+curve = SubResource("Curve_5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7"]
+emission_shape = 1
+emission_sphere_radius = 0.04
+particle_flag_rotate_y = true
+direction = Vector3(1, 0.3, 0)
+spread = 180
+flatness = 0.7
+initial_velocity_min = 0.6
+initial_velocity_max = 1
+damping_min = 7
+damping_max = 7
+scale_min = 1.28
+scale_max = 1.92
+angle_min = 0
+angle_max = 360
+color_ramp = SubResource("GradientTexture1D_4")
+scale_curve = SubResource("CurveTexture_6")
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_8"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.038462, 0.076923, 0.11538, 0.15385, 0.19231, 0.23077, 0.26923, 0.30769, 0.34615, 0.38462, 0.42308, 0.46154, 0.5, 0.53846, 0.57692, 0.61538, 0.65385, 0.69231, 0.73077, 0.76923, 0.80769, 0.84615, 0.88462, 0.92308, 0.96154, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_9"]
+gradient = SubResource("Gradient_8")
+width = 512
+
+[sub_resource type="Curve" id="Curve_10"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.05, 1.3), 0.0, 0.0, 0, 0, Vector2(0.1, 1), 0.0, 0.0, 0, 0, Vector2(0.45, 0.9), 0.0, 0.0, 0, 0, Vector2(1, 0.4), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="CurveTexture" id="CurveTexture_11"]
+curve = SubResource("Curve_10")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_12"]
+emission_shape = 1
+emission_sphere_radius = 0.04
+particle_flag_rotate_y = true
+direction = Vector3(1, 0.3, 0)
+spread = 180
+flatness = 0.7
+initial_velocity_min = 0.6
+initial_velocity_max = 1
+damping_min = 7
+damping_max = 7
+scale_min = 1.28
+scale_max = 1.92
+angle_min = 0
+angle_max = 360
+color_ramp = SubResource("GradientTexture1D_9")
+scale_curve = SubResource("CurveTexture_11")
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_13"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 1, 0.8, 1)
+shading_mode = 0
+billboard_mode = 3
+billboard_keep_scale = true
+emission_enabled = true
+emission = Color(1, 1, 0.6, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_14"]
+material = SubResource("StandardMaterial3D_13")
+size = Vector2(0.05, 0.05)
+
+[sub_resource type="Curve" id="Curve_15"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0.4), 0.0, 0.0, 0, 0, Vector2(0.45, 1.6), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_16"]
+curve = SubResource("Curve_15")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_17"]
+emission_shape_offset = Vector3(0, 0.03, 0)
+scale_curve = SubResource("CurveTexture_16")
+angular_velocity_min = -300
+angular_velocity_max = 300
+gravity = Vector3(0, 0, 0)
+
+[node name="LightningSparks" type="Node3D"]
+editor_description = "Lightning sparks (Superhero): 3 zigzag bolts crack out of the floor leaning outward with a glint at the foot, jumping out (0.6 m/s, slowing), blinking 24 times a second and flipping their zigzag; fade from 0.45 of 1.1 s; 30 kept; BoltA and BoltB are the zigzag and its mirror, lit in turn. placeholder: life, max_marks and every particle number are the old wardrobe.json / trail script numbers until the designer sets them; the meshes are stand-ins until assets/19's (core/144 judges the look on stills)"
+script = ExtResource("1_mark")
+life = 1.1
+max_marks = 30
+
+[node name="BoltA" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = true
+amount = 3
+lifetime = 1.1
+one_shot = true
+explosiveness = 1
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_7")
+draw_pass_1 = SubResource("BoxMesh_2")
+use_fixed_seed = true
+seed = 11
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+
+[node name="BoltB" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = true
+amount = 3
+lifetime = 1.1
+one_shot = true
+explosiveness = 1
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_12")
+draw_pass_1 = SubResource("BoxMesh_2")
+use_fixed_seed = true
+seed = 11
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+
+[node name="Glint" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = true
+amount = 1
+lifetime = 0.22
+one_shot = true
+explosiveness = 0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_17")
+draw_pass_1 = SubResource("QuadMesh_14")

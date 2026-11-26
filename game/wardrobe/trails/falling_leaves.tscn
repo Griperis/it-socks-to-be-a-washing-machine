@@ -1,0 +1,184 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/wardrobe/trail_mark.gd" id="1_mark"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.95, 0.5, 0.1, 1)
+roughness = 1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_2"]
+material = SubResource("StandardMaterial3D_1")
+size = Vector2(0.06, 0.085)
+
+[sub_resource type="Gradient" id="Gradient_3"]
+offsets = PackedFloat32Array(0, 0.65, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4"]
+gradient = SubResource("Gradient_3")
+width = 256
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5"]
+particle_flag_rotate_y = true
+emission_shape = 3
+emission_box_extents = Vector3(0.06, 0.03, 0.06)
+emission_shape_offset = Vector3(0, 0.2, 0)
+direction = Vector3(0, -1, 0)
+spread = 10
+initial_velocity_min = 0.05
+initial_velocity_max = 0.12
+gravity = Vector3(0, -0.5, 0)
+damping_min = 0.8
+damping_max = 1.2
+angle_min = 0
+angle_max = 360
+angular_velocity_min = -80
+angular_velocity_max = 80
+scale_min = 1.6
+scale_max = 1.6
+color_ramp = SubResource("GradientTexture1D_4")
+turbulence_enabled = true
+turbulence_noise_strength = 2
+turbulence_noise_scale = 2
+turbulence_influence_min = 0.1
+turbulence_influence_max = 0.25
+collision_mode = 1
+collision_friction = 1
+collision_bounce = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.95, 0.8, 0.15, 1)
+roughness = 1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_7"]
+material = SubResource("StandardMaterial3D_6")
+size = Vector2(0.06, 0.085)
+
+[sub_resource type="Gradient" id="Gradient_8"]
+offsets = PackedFloat32Array(0, 0.65, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_9"]
+gradient = SubResource("Gradient_8")
+width = 256
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_10"]
+particle_flag_rotate_y = true
+emission_shape = 3
+emission_box_extents = Vector3(0.06, 0.03, 0.06)
+emission_shape_offset = Vector3(0, 0.2, 0)
+direction = Vector3(0, -1, 0)
+spread = 10
+initial_velocity_min = 0.05
+initial_velocity_max = 0.12
+gravity = Vector3(0, -0.5, 0)
+damping_min = 0.8
+damping_max = 1.2
+angle_min = 0
+angle_max = 360
+angular_velocity_min = -80
+angular_velocity_max = 80
+scale_min = 1.6
+scale_max = 1.6
+color_ramp = SubResource("GradientTexture1D_9")
+turbulence_enabled = true
+turbulence_noise_strength = 2
+turbulence_noise_scale = 2
+turbulence_influence_min = 0.1
+turbulence_influence_max = 0.25
+collision_mode = 1
+collision_friction = 1
+collision_bounce = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_11"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.8, 0.2, 0.1, 1)
+roughness = 1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_12"]
+material = SubResource("StandardMaterial3D_11")
+size = Vector2(0.06, 0.085)
+
+[sub_resource type="Gradient" id="Gradient_13"]
+offsets = PackedFloat32Array(0, 0.65, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_14"]
+gradient = SubResource("Gradient_13")
+width = 256
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_15"]
+particle_flag_rotate_y = true
+emission_shape = 3
+emission_box_extents = Vector3(0.06, 0.03, 0.06)
+emission_shape_offset = Vector3(0, 0.2, 0)
+direction = Vector3(0, -1, 0)
+spread = 10
+initial_velocity_min = 0.05
+initial_velocity_max = 0.12
+gravity = Vector3(0, -0.5, 0)
+damping_min = 0.8
+damping_max = 1.2
+angle_min = 0
+angle_max = 360
+angular_velocity_min = -80
+angular_velocity_max = 80
+scale_min = 1.6
+scale_max = 1.6
+color_ramp = SubResource("GradientTexture1D_14")
+turbulence_enabled = true
+turbulence_noise_strength = 2
+turbulence_noise_scale = 2
+turbulence_influence_min = 0.1
+turbulence_influence_max = 0.25
+collision_mode = 1
+collision_friction = 1
+collision_bounce = 0
+
+[node name="FallingLeaves" type="Node3D"]
+editor_description = "Falling leaves (Nature): orange, yellow and red leaves let go from overhead sway down like pendulums, rocking, landing flat, fading; 30 kept. placeholder: life, max_marks and every particle number are the old wardrobe.json / trail script numbers until the designer sets them; the meshes are stand-ins until assets/19's (core/144 judges the look on stills)"
+script = ExtResource("1_mark")
+life = 3
+max_marks = 30
+
+[node name="Floor" type="GPUParticlesCollisionBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+size = Vector3(0.8, 0.2, 0.8)
+
+[node name="Orange" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = true
+amount = 1
+lifetime = 3
+one_shot = true
+explosiveness = 0.6
+local_coords = false
+process_material = SubResource("ParticleProcessMaterial_5")
+draw_pass_1 = SubResource("PlaneMesh_2")
+
+[node name="Yellow" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = true
+amount = 1
+lifetime = 3
+one_shot = true
+explosiveness = 0.6
+local_coords = false
+process_material = SubResource("ParticleProcessMaterial_10")
+draw_pass_1 = SubResource("PlaneMesh_7")
+
+[node name="Red" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = true
+amount = 1
+lifetime = 3
+one_shot = true
+explosiveness = 0.6
+local_coords = false
+process_material = SubResource("ParticleProcessMaterial_15")
+draw_pass_1 = SubResource("PlaneMesh_12")

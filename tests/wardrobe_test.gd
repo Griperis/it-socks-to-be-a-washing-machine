@@ -30,6 +30,8 @@ func cases() -> Array[Dictionary]:
 				"title": "WardrobeLook.clean drops unknown ids and wrong slots; allowed takes off what is not owned"},
 		{"name": "dressed", "method": "case_dressed", "world": false,
 				"title": "a skinned clothes piece is bound to the Avatar's skeleton and crouches with the body; Socks go under FootL and FootR; Bee wings swish 4 times a waddle; a changed Trail frees its marks"},
+		{"name": "trail_scenes", "method": "case_trail_scenes", "world": false,
+				"title": "every Trail piece's scene (core/144) instances with a TrailMark root, one-shot particles or a clip, and its mark is gone after its life"},
 		{"name": "own_and_mirror", "method": "case_own_and_mirror", "world": false,
 				"title": "the player's own body (first person) wears only Socks and Trail, never the hat or clothes, its Socks casting no shadow; the mirror body wears the whole look and leaves no Trail"},
 		{"name": "preview", "method": "case_preview", "world": false,
@@ -162,6 +164,23 @@ func case_dressed() -> void:
 	for i in most + 3:
 		a.stepped.emit(a.feet()[0])
 	_check(d.marks().size() == most, "at most max_marks (%d) marks kept (%d)" % [most, d.marks().size()])
+
+
+func case_trail_scenes() -> void:
+	var trails := Wardrobe.all().filter(func(p: WardrobePiece) -> bool: return p.slot == WardrobePiece.Slot.TRAIL)
+	_check(trails.size() == 17, "17 Trail pieces (%d)" % trails.size())
+	for piece: WardrobePiece in trails:
+		var mark := piece.looks.instantiate() as TrailMark
+		_check(mark != null, "%s's scene has a TrailMark root" % piece.id)
+		if mark == null:
+			continue
+		_check(mark.life > 0.0 and mark.max_marks > 0, "%s has its life (%.1f) and max (%d)" % [piece.id, mark.life, mark.max_marks])
+		_check(not mark.find_children("*", "GPUParticles3D", true, false).is_empty(), "%s is made of particles" % piece.id)
+		var gone := [false]
+		mark.tree_exited.connect(func() -> void: gone[0] = true)
+		mark.laid_ago(mark.life - 0.05)
+		add_child(mark)
+		await _until(func() -> bool: return gone[0], "%s's mark to be gone after its life" % piece.id)
 
 
 func case_own_and_mirror() -> void:

@@ -1,0 +1,347 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/wardrobe/trail_mark.gd" id="1_mark"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.45, 0.3, 0.25, 1)
+roughness = 1
+
+[sub_resource type="SphereMesh" id="SphereMesh_2"]
+material = SubResource("StandardMaterial3D_1")
+radius = 0.045
+height = 0.03
+radial_segments = 12
+rings = 5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.45, 0.3, 0.25, 1)
+roughness = 1
+
+[sub_resource type="SphereMesh" id="SphereMesh_4"]
+material = SubResource("StandardMaterial3D_3")
+radius = 0.02
+height = 0.024
+radial_segments = 10
+rings = 4
+
+[sub_resource type="Curve" id="Curve_5"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0.85), 0.0, 0.0, 0, 0, Vector2(0.028, 0.85), 0.0, 0.0, 0, 0, Vector2(0.03, 1.3), 0.0, 0.0, 0, 0, Vector2(0.04, 0.9), 0.0, 0.0, 0, 0, Vector2(0.05, 1.12), 0.0, 0.0, 0, 0, Vector2(0.06, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Curve" id="Curve_6"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 1.4), 0.0, 0.0, 0, 0, Vector2(0.028, 1.4), 0.0, 0.0, 0, 0, Vector2(0.03, 0.5), 0.0, 0.0, 0, 0, Vector2(0.04, 1.1), 0.0, 0.0, 0, 0, Vector2(0.05, 0.9), 0.0, 0.0, 0, 0, Vector2(0.06, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Curve" id="Curve_7"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0.85), 0.0, 0.0, 0, 0, Vector2(0.028, 0.85), 0.0, 0.0, 0, 0, Vector2(0.03, 1.3), 0.0, 0.0, 0, 0, Vector2(0.04, 0.9), 0.0, 0.0, 0, 0, Vector2(0.05, 1.12), 0.0, 0.0, 0, 0, Vector2(0.06, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_8"]
+curve_x = SubResource("Curve_5")
+curve_y = SubResource("Curve_6")
+curve_z = SubResource("Curve_7")
+
+[sub_resource type="Gradient" id="Gradient_9"]
+offsets = PackedFloat32Array(0, 0.65, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_10"]
+gradient = SubResource("Gradient_9")
+width = 256
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_11"]
+particle_flag_rotate_y = true
+emission_shape_offset = Vector3(0, 0.19, 0)
+angle_min = 0
+angle_max = 0
+gravity = Vector3(0, -47, 0)
+scale_min = 1.6
+scale_max = 1.6
+scale_curve = SubResource("CurveXYZTexture_8")
+color_ramp = SubResource("GradientTexture1D_10")
+collision_mode = 1
+collision_friction = 1
+collision_bounce = 0
+
+[sub_resource type="Curve" id="Curve_12"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0.85), 0.0, 0.0, 0, 0, Vector2(0.029281, 0.85), 0.0, 0.0, 0, 0, Vector2(0.031373, 1.3), 0.0, 0.0, 0, 0, Vector2(0.04183, 0.9), 0.0, 0.0, 0, 0, Vector2(0.052288, 1.12), 0.0, 0.0, 0, 0, Vector2(0.062745, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Curve" id="Curve_13"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 1.4), 0.0, 0.0, 0, 0, Vector2(0.029281, 1.4), 0.0, 0.0, 0, 0, Vector2(0.031373, 0.5), 0.0, 0.0, 0, 0, Vector2(0.04183, 1.1), 0.0, 0.0, 0, 0, Vector2(0.052288, 0.9), 0.0, 0.0, 0, 0, Vector2(0.062745, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Curve" id="Curve_14"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0.85), 0.0, 0.0, 0, 0, Vector2(0.029281, 0.85), 0.0, 0.0, 0, 0, Vector2(0.031373, 1.3), 0.0, 0.0, 0, 0, Vector2(0.04183, 0.9), 0.0, 0.0, 0, 0, Vector2(0.052288, 1.12), 0.0, 0.0, 0, 0, Vector2(0.062745, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_15"]
+curve_x = SubResource("Curve_12")
+curve_y = SubResource("Curve_13")
+curve_z = SubResource("Curve_14")
+
+[sub_resource type="Gradient" id="Gradient_16"]
+offsets = PackedFloat32Array(0, 0.63399, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_17"]
+gradient = SubResource("Gradient_16")
+width = 256
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_18"]
+particle_flag_rotate_y = true
+emission_shape_offset = Vector3(0, 0.19, 0)
+angle_min = 0.0975
+angle_max = 0.0975
+gravity = Vector3(0, -47, 0)
+scale_min = 1.6
+scale_max = 1.6
+scale_curve = SubResource("CurveXYZTexture_15")
+color_ramp = SubResource("GradientTexture1D_17")
+collision_mode = 1
+collision_friction = 1
+collision_bounce = 0
+
+[sub_resource type="Curve" id="Curve_19"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0.85), 0.0, 0.0, 0, 0, Vector2(0.029767, 0.85), 0.0, 0.0, 0, 0, Vector2(0.031894, 1.3), 0.0, 0.0, 0, 0, Vector2(0.042525, 0.9), 0.0, 0.0, 0, 0, Vector2(0.053156, 1.12), 0.0, 0.0, 0, 0, Vector2(0.063787, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Curve" id="Curve_20"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 1.4), 0.0, 0.0, 0, 0, Vector2(0.029767, 1.4), 0.0, 0.0, 0, 0, Vector2(0.031894, 0.5), 0.0, 0.0, 0, 0, Vector2(0.042525, 1.1), 0.0, 0.0, 0, 0, Vector2(0.053156, 0.9), 0.0, 0.0, 0, 0, Vector2(0.063787, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Curve" id="Curve_21"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0.85), 0.0, 0.0, 0, 0, Vector2(0.029767, 0.85), 0.0, 0.0, 0, 0, Vector2(0.031894, 1.3), 0.0, 0.0, 0, 0, Vector2(0.042525, 0.9), 0.0, 0.0, 0, 0, Vector2(0.053156, 1.12), 0.0, 0.0, 0, 0, Vector2(0.063787, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_22"]
+curve_x = SubResource("Curve_19")
+curve_y = SubResource("Curve_20")
+curve_z = SubResource("Curve_21")
+
+[sub_resource type="Gradient" id="Gradient_23"]
+offsets = PackedFloat32Array(0, 0.62791, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_24"]
+gradient = SubResource("Gradient_23")
+width = 256
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_25"]
+particle_flag_rotate_y = true
+emission_shape_offset = Vector3(0, 0.19, 0)
+angle_min = 0.036
+angle_max = 0.036
+gravity = Vector3(0, -47, 0)
+scale_min = 1.6
+scale_max = 1.6
+scale_curve = SubResource("CurveXYZTexture_22")
+color_ramp = SubResource("GradientTexture1D_24")
+collision_mode = 1
+collision_friction = 1
+collision_bounce = 0
+
+[sub_resource type="Curve" id="Curve_26"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0.85), 0.0, 0.0, 0, 0, Vector2(0.03027, 0.85), 0.0, 0.0, 0, 0, Vector2(0.032432, 1.3), 0.0, 0.0, 0, 0, Vector2(0.043243, 0.9), 0.0, 0.0, 0, 0, Vector2(0.054054, 1.12), 0.0, 0.0, 0, 0, Vector2(0.064865, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Curve" id="Curve_27"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 1.4), 0.0, 0.0, 0, 0, Vector2(0.03027, 1.4), 0.0, 0.0, 0, 0, Vector2(0.032432, 0.5), 0.0, 0.0, 0, 0, Vector2(0.043243, 1.1), 0.0, 0.0, 0, 0, Vector2(0.054054, 0.9), 0.0, 0.0, 0, 0, Vector2(0.064865, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Curve" id="Curve_28"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0.85), 0.0, 0.0, 0, 0, Vector2(0.03027, 0.85), 0.0, 0.0, 0, 0, Vector2(0.032432, 1.3), 0.0, 0.0, 0, 0, Vector2(0.043243, 0.9), 0.0, 0.0, 0, 0, Vector2(0.054054, 1.12), 0.0, 0.0, 0, 0, Vector2(0.064865, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_29"]
+curve_x = SubResource("Curve_26")
+curve_y = SubResource("Curve_27")
+curve_z = SubResource("Curve_28")
+
+[sub_resource type="Gradient" id="Gradient_30"]
+offsets = PackedFloat32Array(0, 0.62162, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_31"]
+gradient = SubResource("Gradient_30")
+width = 256
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_32"]
+particle_flag_rotate_y = true
+emission_shape_offset = Vector3(0, 0.19, 0)
+angle_min = -0.036
+angle_max = -0.036
+gravity = Vector3(0, -47, 0)
+scale_min = 1.6
+scale_max = 1.6
+scale_curve = SubResource("CurveXYZTexture_29")
+color_ramp = SubResource("GradientTexture1D_31")
+collision_mode = 1
+collision_friction = 1
+collision_bounce = 0
+
+[sub_resource type="Curve" id="Curve_33"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0.85), 0.0, 0.0, 0, 0, Vector2(0.03079, 0.85), 0.0, 0.0, 0, 0, Vector2(0.03299, 1.3), 0.0, 0.0, 0, 0, Vector2(0.043986, 0.9), 0.0, 0.0, 0, 0, Vector2(0.054983, 1.12), 0.0, 0.0, 0, 0, Vector2(0.065979, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Curve" id="Curve_34"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 1.4), 0.0, 0.0, 0, 0, Vector2(0.03079, 1.4), 0.0, 0.0, 0, 0, Vector2(0.03299, 0.5), 0.0, 0.0, 0, 0, Vector2(0.043986, 1.1), 0.0, 0.0, 0, 0, Vector2(0.054983, 0.9), 0.0, 0.0, 0, 0, Vector2(0.065979, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Curve" id="Curve_35"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0.85), 0.0, 0.0, 0, 0, Vector2(0.03079, 0.85), 0.0, 0.0, 0, 0, Vector2(0.03299, 1.3), 0.0, 0.0, 0, 0, Vector2(0.043986, 0.9), 0.0, 0.0, 0, 0, Vector2(0.054983, 1.12), 0.0, 0.0, 0, 0, Vector2(0.065979, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_36"]
+curve_x = SubResource("Curve_33")
+curve_y = SubResource("Curve_34")
+curve_z = SubResource("Curve_35")
+
+[sub_resource type="Gradient" id="Gradient_37"]
+offsets = PackedFloat32Array(0, 0.61512, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_38"]
+gradient = SubResource("Gradient_37")
+width = 256
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_39"]
+particle_flag_rotate_y = true
+emission_shape_offset = Vector3(0, 0.19, 0)
+angle_min = -0.0975
+angle_max = -0.0975
+gravity = Vector3(0, -47, 0)
+scale_min = 1.6
+scale_max = 1.6
+scale_curve = SubResource("CurveXYZTexture_36")
+color_ramp = SubResource("GradientTexture1D_38")
+collision_mode = 1
+collision_friction = 1
+collision_bounce = 0
+
+[sub_resource type="Animation" id="Animation_40"]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Toe0:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.14), "transitions": PackedFloat32Array(1, 1), "update": 1, "values": [false, true]}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Toe1:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {"times": PackedFloat32Array(0, 0.19), "transitions": PackedFloat32Array(1, 1), "update": 1, "values": [false, true]}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Toe2:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {"times": PackedFloat32Array(0, 0.24), "transitions": PackedFloat32Array(1, 1), "update": 1, "values": [false, true]}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Toe3:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {"times": PackedFloat32Array(0, 0.29), "transitions": PackedFloat32Array(1, 1), "update": 1, "values": [false, true]}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_41"]
+_data = {&"mark": SubResource("Animation_40")}
+
+[node name="PawPrints" type="Node3D"]
+editor_description = "Paw prints (Animals): a pad drops from 0.12 m with a squashy wobble, then four toe beans land 0.05 s apart, turned with the creature and a little askew; fades from 0.65 of 3.2 s; 30 kept; the Clip times the toes. placeholder: life, max_marks and every particle number are the old wardrobe.json / trail script numbers until the designer sets them; the meshes are stand-ins until assets/19's (core/144 judges the look on stills)"
+script = ExtResource("1_mark")
+life = 3.2
+max_marks = 30
+
+[node name="Floor" type="GPUParticlesCollisionBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+size = Vector3(0.8, 0.2, 0.8)
+
+[node name="Pad" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = true
+amount = 1
+lifetime = 3.2
+one_shot = true
+explosiveness = 0
+local_coords = false
+process_material = SubResource("ParticleProcessMaterial_11")
+draw_pass_1 = SubResource("SphereMesh_2")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Toe0" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = false
+amount = 1
+lifetime = 3.06
+one_shot = true
+explosiveness = 0
+local_coords = false
+process_material = SubResource("ParticleProcessMaterial_18")
+draw_pass_1 = SubResource("SphereMesh_4")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.072, 0, -0.08)
+
+[node name="Toe1" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = false
+amount = 1
+lifetime = 3.01
+one_shot = true
+explosiveness = 0
+local_coords = false
+process_material = SubResource("ParticleProcessMaterial_25")
+draw_pass_1 = SubResource("SphereMesh_4")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0256, 0, -0.1056)
+
+[node name="Toe2" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = false
+amount = 1
+lifetime = 2.96
+one_shot = true
+explosiveness = 0
+local_coords = false
+process_material = SubResource("ParticleProcessMaterial_32")
+draw_pass_1 = SubResource("SphereMesh_4")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0256, 0, -0.1056)
+
+[node name="Toe3" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = false
+amount = 1
+lifetime = 2.91
+one_shot = true
+explosiveness = 0
+local_coords = false
+process_material = SubResource("ParticleProcessMaterial_39")
+draw_pass_1 = SubResource("SphereMesh_4")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.072, 0, -0.08)
+
+[node name="Clip" type="AnimationPlayer" parent="."]
+libraries = {&"": SubResource("AnimationLibrary_41")}
+autoplay = "mark"

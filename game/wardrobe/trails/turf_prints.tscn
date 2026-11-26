@@ -1,0 +1,111 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/wardrobe/trail_mark.gd" id="1_mark"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.32, 0.22, 0.12, 1)
+roughness = 1
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_2"]
+material = SubResource("StandardMaterial3D_1")
+size = Vector2(0.09, 0.15)
+
+[sub_resource type="Gradient" id="Gradient_3"]
+offsets = PackedFloat32Array(0, 0.75, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4"]
+gradient = SubResource("Gradient_3")
+width = 256
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5"]
+scale_min = 1.4
+scale_max = 1.4
+color_ramp = SubResource("GradientTexture1D_4")
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.3, 0.7, 0.2, 1)
+roughness = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_7"]
+material = SubResource("StandardMaterial3D_6")
+top_radius = 0
+bottom_radius = 0.02
+height = 0.1
+radial_segments = 6
+rings = 1
+
+[sub_resource type="Curve" id="Curve_8"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.05, 1.1), 0.0, 0.0, 0, 0, Vector2(0.104, 1), 0.0, 0.0, 0, 0, Vector2(0.3, 1.1), 0.0, 0.0, 0, 0, Vector2(0.6, 0.9), 0.0, 0.0, 0, 0, Vector2(1, 0.3), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="Curve" id="Curve_9"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.05, 1.2), 0.0, 0.0, 0, 0, Vector2(0.104, 1), 0.0, 0.0, 0, 0, Vector2(0.6, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.15), 0.0, 0.0, 0, 0]
+point_count = 5
+
+[sub_resource type="Curve" id="Curve_10"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.05, 1.1), 0.0, 0.0, 0, 0, Vector2(0.104, 1), 0.0, 0.0, 0, 0, Vector2(0.3, 0.9), 0.0, 0.0, 0, 0, Vector2(0.6, 1.1), 0.0, 0.0, 0, 0, Vector2(1, 0.3), 0.0, 0.0, 0, 0]
+point_count = 6
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_11"]
+curve_x = SubResource("Curve_8")
+curve_y = SubResource("Curve_9")
+curve_z = SubResource("Curve_10")
+
+[sub_resource type="Gradient" id="Gradient_12"]
+offsets = PackedFloat32Array(0, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_13"]
+gradient = SubResource("Gradient_12")
+width = 256
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_14"]
+particle_flag_rotate_y = true
+emission_shape = 3
+emission_shape_offset = Vector3(0, 0.05, 0)
+emission_box_extents = Vector3(0.025, 0, 0.05)
+angle_min = 0
+angle_max = 360
+scale_min = 1.4
+scale_max = 1.6
+scale_curve = SubResource("CurveXYZTexture_11")
+color_ramp = SubResource("GradientTexture1D_13")
+gravity = Vector3(0, 0, 0)
+
+[node name="TurfPrints" type="Node3D"]
+editor_description = "Turf prints (Sport): a soil footprint with 4 grass tufts in the foot's shape; the tufts shoot up one after another with a springy overshoot over 0.25 s, sway, sink back from 0.6 of the 2.4 s life; the soil fades; 30 kept. placeholder: life, max_marks and every particle number are the old wardrobe.json / trail script numbers until the designer sets them; the meshes are stand-ins until assets/19's (core/144 judges the look on stills)"
+script = ExtResource("1_mark")
+life = 2.4
+max_marks = 30
+
+[node name="Soil" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = true
+amount = 1
+lifetime = 2.4
+one_shot = true
+explosiveness = 0
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_5")
+draw_pass_1 = SubResource("PlaneMesh_2")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.002, 0)
+
+[node name="Tufts" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = true
+amount = 4
+lifetime = 2.4
+one_shot = true
+explosiveness = 0.9
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_14")
+draw_pass_1 = SubResource("CylinderMesh_7")

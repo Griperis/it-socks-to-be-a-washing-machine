@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: polish
 area: content
 feature: player
@@ -53,3 +53,7 @@ and `TrailMark` (`# placeholder:` the old `wardrobe.json` trail numbers).
   (Q2680, 2026-11-25).
 
 ## Open follow-ups
+- [later] First strip: `builds/review-trails/<id>.png` (old above, port below, three moments each). Stand-in meshes (assets/19 not merged), sizes eyeballed against the old shots; they shift with the glb meshes.
+- [later] Particles that must land use `GPUParticlesCollisionBox3D` with world coordinates (`local_coords` off: Godot froze them with it on) and start off the floor; a collided particle stops its colour ramp and scale curve, so Snowflakes' melt does not play after landing. Needs the designer's eye, a sub-emitter, or a mesh swap.
+- [later] Old staged motions only roughly matched, listed for Q2277: Tyre tracks' strip and dust by clip, Turf prints' tufts rising together not one after another, Falling leaves' pendulum sway (turbulence stands in), Lightning sparks' zigzag flip (a baked blink ramp).
+- [later] "Settled by the old game" lines for `docs/migration/batch-b-review.md` (this ticket) are not written (outside the owned files): every Trail's `life` and `max_marks` are wardrobe.json's; `trails/graybox.tscn` is removed, no piece uses it.

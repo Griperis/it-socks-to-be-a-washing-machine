@@ -1,0 +1,64 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://game/wardrobe/trail_mark.gd" id="1_mark"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.45, 0.6, 1)
+roughness = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_2"]
+material = SubResource("StandardMaterial3D_1")
+size = Vector3(0.07, 0.016, 0.016)
+
+[sub_resource type="Curve" id="Curve_3"]
+_limits = [0, 3, 0.0, 1.0]
+_data = [Vector2(0, 1.6), 0.0, 0.0, 0, 0, Vector2(0.8, 1.6), 0.0, 0.0, 0, 0, Vector2(0.88, 2.4), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_4"]
+curve = SubResource("Curve_3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5"]
+particle_flag_rotate_y = true
+emission_shape = 1
+emission_sphere_radius = 0.01
+emission_shape_offset = Vector3(0, 0.03, 0)
+direction = Vector3(0, 1, 0.54)
+spread = 60
+initial_velocity_min = 0.7
+initial_velocity_max = 1.4
+angle_min = 0
+angle_max = 360
+angular_velocity_min = -300
+angular_velocity_max = 300
+gravity = Vector3(0, -9.8, 0)
+scale_curve = SubResource("CurveTexture_4")
+hue_variation_min = -0.8
+hue_variation_max = 0.8
+collision_mode = 1
+collision_friction = 0.8
+collision_bounce = 0.35
+collision_use_scale = true
+
+[node name="Sprinkles" type="Node3D"]
+editor_description = "Sprinkles (Food): 7 candy rods tossed up (1.3 m/s) and out (0.7 m/s), tumbling, one bounce (0.35), landing flat at random angles; from 0.8 of 3.0 s each swells and pops away, one after another; 30 kept. placeholder: life, max_marks and every particle number are the old wardrobe.json / trail script numbers until the designer sets them; the meshes are stand-ins until assets/19's (core/144 judges the look on stills)"
+script = ExtResource("1_mark")
+life = 3
+max_marks = 30
+
+[node name="Floor" type="GPUParticlesCollisionBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+size = Vector3(0.8, 0.2, 0.8)
+
+[node name="Rods" type="GPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = true
+amount = 7
+lifetime = 3
+one_shot = true
+explosiveness = 0.9166
+local_coords = false
+process_material = SubResource("ParticleProcessMaterial_5")
+draw_pass_1 = SubResource("BoxMesh_2")
