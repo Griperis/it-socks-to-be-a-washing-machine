@@ -1,0 +1,5 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://bmi5cr7nxbqx7" path="res://assets/wardrobe/fair_isle.glb" id="1_glb"]
+
+[node name="fair_isle" unique_id=817908637 instance=ExtResource("1_glb")]
