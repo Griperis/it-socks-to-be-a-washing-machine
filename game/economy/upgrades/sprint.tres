@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" path="res://assets/ui/upgrade_sprint.svg" id="1_65mni"]
 [ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_dgksv"]
+[ext_resource type="Resource" path="res://game/economy/stats/sprint.tres" id="3_stat"]
 
 [resource]
 script = ExtResource("2_dgksv")
@@ -10,4 +11,5 @@ tooltip = "Hold Shift to run. Nobody can sprint without it."
 icon = ExtResource("1_65mni")
 cell = Vector2i(0, 1)
 prices = PackedInt32Array(80)
+stat = ExtResource("3_stat")
 key_hint = "hold Shift"

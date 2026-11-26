@@ -12,7 +12,8 @@ extends Resource
 @export_range(0.0, 2.0, 0.1, "suffix:m") var reach_slack := 1.0 # placeholder: the Host's allowance, not felt in play
 ## The shortest time between two picks; a click sooner does nothing.
 @export_range(0.0, 2.0, 0.05, "suffix:s") var grab_interval := 0.35 # placeholder: the designer's number (today's value from the old game)
-## How many items the Hands hold (a Pair counts as one). The zoo's player holds 3 (Q2244).
+## How many items the Hands hold (a Pair counts as one). In a level with an Upgrades Part, Big Hands'
+## levels grow it from here, as their stats grow `grab_interval`, `charge_time` and `max_speed` (core/130).
 @export_range(1, 12, 1) var capacity := 1 # placeholder: the designer's number (today's value from the old game)
 
 @export_group("Drop")
@@ -48,13 +49,14 @@ extends Resource
 
 @export_group("Throw")
 ## How long a charge takes to fill the ring, from the hold to full (T01).
-@export_range(0.1, 5.0, 0.05, "suffix:s") var charge_time := 1.2 # placeholder: the designer's number (today's value from the old game; Quick Charge is M4)
+@export_range(0.1, 5.0, 0.05, "suffix:s") var charge_time := 1.2 # placeholder: the designer's number (today's value from the old game; Quick Charge's levels shorten it where Upgrades are)
 ## A charge released under this share is the lob (T02).
 @export_range(0.0, 1.0, 0.01) var tap_charge := 0.15 # placeholder: the designer's number (today's value from the old game)
 ## The lob: its speed along the aim, and the speed added straight up (T02).
 @export_range(0.0, 20.0, 0.1, "suffix:m/s") var lob_speed := 3.5 # placeholder: the designer's number (today's value from the old game)
 @export_range(0.0, 10.0, 0.1, "suffix:m/s") var lob_lift := 2.0 # placeholder: the designer's number (today's value from the old game)
-## The speed along the aim at the tap charge and at a full charge (T03; Long Arm is M4).
+## The speed along the aim at the tap charge and at a full charge (T03; Long Arm's levels raise the full one
+## where Upgrades are).
 @export_range(0.0, 30.0, 0.1, "suffix:m/s") var min_speed := 3.0 # placeholder: the designer's number (today's value from the old game)
 @export_range(0.0, 30.0, 0.1, "suffix:m/s") var max_speed := 5.0 # placeholder: the designer's number (today's value from the old game)
 ## The turn a thrown Sock leaves the Hands with.
@@ -123,37 +125,3 @@ extends Resource
 @export_range(0.0, 0.2, 0.005, "suffix:m") var wake_reach := 0.03 # placeholder: the old release.json
 ## How far under a lying Pair's ball something must lie to still hold it up, else it falls (P08).
 @export_range(0.0, 0.05, 0.001, "suffix:m") var wake_gap := 0.006 # placeholder: the old release.json
-
-@export_group("Upgrades (the Host's check)")
-## The numbers an Upgrade changes go from each player's machine to the Host at their join (D13); the
-## Host keeps each within what the Upgrades can make it: capacity from 1 to `capacity_most`, reach from
-## `reach` to `reach_most`, the charge from `charge_time_least` to `charge_time`, the full Throw's speed
-## from `max_speed` to `max_speed_most` (these Hands' own numbers are the floor or the ceiling).
-@export_range(1, 12, 1) var capacity_most := 3 # placeholder: the zoo player's 3 (Q2244) until Upgrades (M4)
-@export_range(0.5, 6.0, 0.1, "suffix:m") var reach_most := 2.5 # placeholder: until Upgrades (M4)
-@export_range(0.1, 5.0, 0.05, "suffix:s") var charge_time_least := 1.2 # placeholder: until Quick Charge (M4)
-@export_range(0.0, 30.0, 0.1, "suffix:m/s") var max_speed_most := 5.0 # placeholder: until Long Arm (M4)
-
-
-## The numbers an Upgrade changes, as a player's machine sends them to the Host (D13).
-func to_sent() -> Dictionary:
-	return {"capacity": capacity, "reach": reach, "charge_time": charge_time, "max_speed": max_speed}
-
-
-## These numbers with a Teammate's `sent` ones (to_sent()) put in, each clamped to what the Upgrades can
-## make it; anything missing, of the wrong type or not finite keeps this tuning's value.
-func clamped(sent: Dictionary) -> HandsTuning:
-	var out := duplicate() as HandsTuning
-	var c: Variant = sent.get("capacity")
-	if c is int:
-		out.capacity = clampi(c, 1, maxi(capacity_most, 1))
-	out.reach = _between(sent.get("reach"), reach, maxf(reach, reach_most), reach)
-	out.charge_time = _between(sent.get("charge_time"), minf(charge_time_least, charge_time), charge_time, charge_time)
-	out.max_speed = _between(sent.get("max_speed"), max_speed, maxf(max_speed, max_speed_most), max_speed)
-	return out
-
-
-static func _between(v: Variant, low: float, high: float, fallback: float) -> float:
-	if not (v is float or v is int) or not is_finite(float(v)):
-		return fallback
-	return clampf(float(v), low, high)

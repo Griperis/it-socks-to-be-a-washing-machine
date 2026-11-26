@@ -257,15 +257,14 @@ func case_leave_and_return() -> void:
 		a_hands.pick(a_peer, sock)
 		await _until(func() -> bool: return h_hands.items_of(a_peer).has(sock), "A to hold the %s Sock" % spot)
 		await _physics_ticks(25)  # the grab interval
-	# Z1: the Hands keep A's Socks under A's player id; D13: the Host holds A to A's own numbers (the
-	# zoo player's 3, sent at the join), clamped to what the Upgrades can make them.
+	# Z1: the Hands keep A's Socks under A's player id; core/130: the Host derives A's Hands numbers from
+	# the Upgrade levels it keeps for A (none: from the zoo player's 3, Q2244), whatever A's own copy says.
 	_check(h_hands.held.has(a_profile.id) and not h_hands.held.has(a_peer), "Z1: the Host's Hands key A by its player id")
-	_check(h_hands.tuning_of(a_peer).capacity == _player(a).hands_tuning.capacity, "D13: the Host reads A's own capacity (%d)" % h_hands.tuning_of(a_peer).capacity)
-	var forged := h_hands.own_tuning().clamped({"capacity": 99, "reach": 40.0, "charge_time": 0.0, "max_speed": INF})
-	var own := h_hands.own_tuning()
-	_check(forged.capacity == own.capacity_most and forged.reach == maxf(own.reach, own.reach_most) \
-			and forged.charge_time == minf(own.charge_time_least, own.charge_time) and forged.max_speed == own.max_speed,
-			"D13: a forged tuning is clamped to the Upgrades' values")
+	var forged := _player(a).hands_tuning.duplicate() as HandsTuning
+	forged.capacity = 5
+	_player(a).hands_tuning = forged
+	_check(h_hands.tuning_of(a_peer).capacity == 3, "core/130: the Host holds A to the zoo's 3 and its levels, not A's 5 (%d)" % h_hands.tuning_of(a_peer).capacity)
+	_check(not _roster(host).entry_of(a_peer).has("hands"), "no Hands numbers are said at the gate")
 	# B joins late: it sees the Host and A where they stand, in their colours.
 	_session(b).profile = PlayerProfile.fresh()
 	_net(b).start(["--join=127.0.0.1:%d" % hs.port])

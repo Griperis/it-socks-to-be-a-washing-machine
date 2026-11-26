@@ -107,3 +107,7 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 | core/142 | The picked swatch's ink ring | The Theme's swatch style tinted by the colour, so the ring reads as the colour's darkest shade rather than pure ink; raised by a deeper lip (WV:419-423) | |
 | core/142 | E shutting the page is the same press the wardrobe hears | The player gets its input back two physics frames after E shuts the page, so that press does not open it again (the old froze the player through the closing frame, WI:28-35) | |
 | core/142 | The graybox Looks | Not made: assets/20's Looks (Q2715) has the same door nodes and clips (`looks_contract.json`) | |
+| core/130 | Sprint while crouched, or carrying a machine Part | Crouching cancels it (the old `player.gd:405`); a carried Part only slows it by its own factor, as the walk (the old cancelled it only for a Hamper, `player.gd:396`, not ported) | |
+| core/130 | Where "Sprint" stands in the corner hints | After "Cycle", before "Ping", "Jump" and "Crouch" (the old `prompts.gd:104`); written "[SHIFT] Sprint" as every port hint | |
+| core/130 | The pad trigger's deadzone for Sprint | 0.2, as the port's Crouch on the other trigger (the old had 0.5 on both) | |
+| core/130 | Where a player's Hands numbers start in a level that sets its own (the zoo's 3, Q2244) | The level's player numbers, for its own player and a Teammate the Roster names; the Upgrade levels grow them from there (in the house the start is the stats' base: the same numbers); a zoo stand-in keeps the Hands' own one | |

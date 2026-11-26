@@ -86,6 +86,7 @@ func _enter_tree() -> void:
 		player.transform = _in_level(start)
 	if hands_tuning != null:
 		player.hands_tuning = hands_tuning
+		hands.teammate_tuning = hands_tuning  # a Teammate starts where this level's player does (core/130)
 	if upgrades != null:
 		player.upgrades = upgrades
 	var back := _marker(return_spot, RETURN_SPOT)

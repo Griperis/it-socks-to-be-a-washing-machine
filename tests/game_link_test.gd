@@ -48,9 +48,9 @@ func cases() -> Array[Dictionary]:
 		{"name": "l08_f5_join_50ms", "method": "case_l08_50ms", "world": false,
 				"title": "an F5 Guest joining a title Host with 50 ms each way"},
 		{"name": "l09_lobby_hands", "method": "case_l09", "world": false,
-				"title": "core/68: a Guest who joined with no level (the Lobby) sends its Hands numbers with house_ready; the Host clamps them into the Roster and holds that Guest by them, not by its own"},
+				"title": "core/68, core/130: a Guest who joined with no level (the Lobby) is held, once in the level, by the Hands numbers the Host derives from the Upgrade levels it keeps, never by what its own machine holds"},
 		{"name": "l09_lobby_hands_50ms", "method": "case_l09_50ms", "world": false,
-				"title": "a Lobby Guest's Hands numbers with 50 ms each way"},
+				"title": "a Lobby Guest's derived Hands numbers with 50 ms each way"},
 	]
 
 
@@ -489,22 +489,18 @@ func _lobby_hands(lag_ms: int) -> void:
 	var gr := LevelRuntime.of(glevel)
 	gr.parts.unsettle(self)
 	await _level_in(guest, glevel)
-	# The Guest's own Hands hold two (an Upgrade's) and reach further than the Host lets anyone's.
-	var own := hr.hands.own_tuning()
+	# The Guest's own Hands hold two: core/130, the Host derives its numbers from the Upgrade levels it
+	# keeps (none bought: one), never from what the Guest's machine holds.
 	var mine := gr.player.hands_tuning.duplicate() as HandsTuning
 	mine.capacity = 2
-	mine.reach = own.reach_most + 3.0
 	gr.player.hands_tuning = mine
-	_check(own.capacity != 2, "the Host's own Hands hold another number (%d)" % own.capacity)
 	gr.parts.settle(self)
 	await _until(func() -> bool: return not welcomed.is_empty(), "the Guest to be welcomed", 900, 20.0)
-	await _until(func() -> bool: return hl.roster.entry_of(g_peer).has("hands"), "the Host's Roster to have the Guest's Hands numbers", 900, 20.0)
-	var sent: Dictionary = hl.roster.entry_of(g_peer).get("hands", {})
-	_check(int(sent.get("capacity", 0)) == 2, "its capacity as it sent it (%s)" % sent)
-	_check(is_equal_approx(float(sent.get("reach", 0.0)), maxf(own.reach, own.reach_most)), "its reach clamped to what Upgrades can make it (%s)" % sent)
-	_check(hr.hands.tuning_of(g_peer).capacity == 2, "the Host holds that Guest by its own numbers")
-	var gl := GameLink.of(guest)
-	await _until(func() -> bool: return gl.roster.entry_of(g_peer).has("hands"), "the Guest's Roster to hear it", 900, 20.0)
+	_check(not hl.roster.entry_of(g_peer).has("hands"), "the Host's Roster keeps no Hands numbers of the Guest")
+	_check(hr.hands.tuning_of(g_peer).capacity == 1, "the Host holds that Guest by its levels (%d)" % hr.hands.tuning_of(g_peer).capacity)
+	var ups := Upgrades.of(hr.hands)
+	hr.parts.apply(hr.parts.answer(Command.new(Upgrades.SET_LEVEL, Parts.HOST, ups.id, {"upgrade": "big_hands", "level": 1, "player": g_peer})))
+	_check(hr.hands.tuning_of(g_peer).capacity == 2, "with Big Hands I the Host holds it to two (%d)" % hr.hands.tuning_of(g_peer).capacity)
 	_check(hl.session.dropped.is_empty(), "nothing dropped (%s)" % hl.session.dropped)
 
 

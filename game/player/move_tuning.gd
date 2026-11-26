@@ -6,6 +6,8 @@ extends Resource
 @export_range(0.5, 12.0, 0.1, "suffix:m/s") var walk_speed := 4.0 # placeholder: the designer's number (today's value from the old game)
 ## Share of the walking pace while crouched.
 @export_range(0.1, 1.0, 0.05) var crouch_speed_factor := 0.5 # placeholder: the designer's number (today's value from the old game)
+## How much faster the walk is while Sprint is held, once the Sprint Upgrade is bought (core/130).
+@export_range(1.0, 3.0, 0.05) var sprint_multiplier := 1.3 # placeholder: the old data/tuning/upgrades.json sprint.multiplier
 @export_range(0.0, 10.0, 0.1, "suffix:m/s") var jump_speed := 5.5 # placeholder: the designer's number (today's value from the old game)
 ## The player's own gravity (the world keeps Godot's 9.8, as in the old game).
 @export_range(1.0, 40.0, 0.5, "suffix:m/s²") var gravity := 20.0 # placeholder: the designer's number (today's value from the old game)
