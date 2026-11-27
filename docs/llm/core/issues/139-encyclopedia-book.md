@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: gifts
@@ -53,3 +53,10 @@ nodes on the Theme (Q2658).
 - The designer said yes to assets/17's book model (Q2696): swapping `game/entities/encyclopedia_book/looks_encyclopedia_book.tscn` in for the graybox Looks is this ticket's job; its graybox Looks root must be named `EncyclopediaBookLooks` (or rename one of the two so they match).
 
 ## Open follow-ups
+- [later] An old detail left out, reported to the lead (Q2277): while a Sock is active the old drew the book tucked small
+  (`tucked_scale` 0.35, `tucked_turn`) among the other tucked items in the camera's space; the port hides it (a Carriable
+  is drawn at a body-frame slot, core/78). Drawing it tucked needs the HeldView to draw the book, a design call.
+- [later] `hold_slot_book.tres` (0.1, 0.95, -0.5; stood up 1.35 rad) is a placeholder: the old drew the book in the hand
+  frame at (0.13, -0.13, -0.45); judge it by eye with the real glb.
+- [later] A knocked-down reader's spill is covered with a stand-in Teammate (`knockdown:book_spill`), not the local
+  player (a solo player has no ragdoll); whole-Hands carried things do not yet let go on a knock-down (core/150).

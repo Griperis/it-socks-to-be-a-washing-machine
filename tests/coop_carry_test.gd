@@ -10,6 +10,8 @@ const LagPeer := preload("res://tests/support/lag_peer.gd")
 const ZOO := "res://game/zoo/zoo.tscn"
 const KEEP := ["Handling"]
 const CRATE := "Stations/Handling/Crate"
+const BOOK := "Stations/Handling/Book"
+const BOOK_PLACE := Vector3(0.5, 0.0, 1.6)
 const NET_WAIT_S := 20.0
 const FPS := 60
 const LAG_MS := 50
@@ -22,6 +24,8 @@ func cases() -> Array[Dictionary]:
 	return [
 		{"name": "carry", "method": "case_carry", "world": false,
 				"title": "core/78, 50 ms one way: the Host's left click carries the crate and its right click lays it on the floor; the Guest sees it lying there, the same place and turn; the Guest carries it (the Host draws it at the Guest's slot) and lays it, the same on both"},
+		{"name": "book", "method": "case_book", "world": false,
+				"title": "core/139, 50 ms one way: the Host takes the book with its left click and reads it (E: its own pages, its own profile; the Guest's pages stay shut); the Guest sees it carried at the Host's avatar's slot and, put down, lying there; the Guest takes it and reads it: its own pages, not the Host's"},
 	]
 
 
@@ -82,11 +86,81 @@ func case_carry() -> void:
 	_drop_branches()
 
 
+## core/139: the book in two machines. Each reader's pages are their own profile's; the Teammate sees it carried.
+func case_book() -> void:
+	var zoos := await _pair(LAG_MS, true)
+	var host: Node3D = zoos[0]
+	var guest: Node3D = zoos[1]
+	var g := _player(guest).player_id()
+	var mine := EncyclopediaPage.sorted_designs(&"simple")
+	for z: Node3D in zoos:
+		LevelRuntime.of(z).session.profile.collections = [&"simple"]
+	LevelRuntime.of(host).session.profile.designs = PackedInt32Array([mine[0].id])
+	LevelRuntime.of(guest).session.profile.designs = PackedInt32Array([mine[1].id])
+	var lying := _book_thing(host).global_position
+	# The Host takes it by its own click, and the Guest sees it carried at the Host's avatar's slot.
+	await _aim(host, lying + Vector3(0.0, 0.0, 1.0), lying + Vector3.UP * 0.03)
+	await _wait(func() -> bool: return _player(host).aimed_part() == _book_part(host), "the Host's crosshair on the book", FPS)
+	await _click(&"pick")
+	await _wait(func() -> bool: return _book_part(host).holder == Parts.HOST and _book_part(guest).holder == Parts.HOST,
+			"the Host holds the book on both", FPS * 2)
+	await _paced_ticks(int(LAG_MS * 3 * FPS / 1000.0) + 10)
+	var drawn: Variant = _book_part(guest).carry_pose(Parts.HOST)
+	_check(drawn is Transform3D and _book_thing(guest).global_position.distance_to((drawn as Transform3D).origin) < 0.01
+			and _book_thing(guest).visible, "the Guest draws it at the Host's avatar's slot")
+	# E: the Host's own pages, on the Host's machine only.
+	Input.action_press(Player.INTERACT)
+	await _paced_ticks(2)
+	Input.action_release(Player.INTERACT)
+	await _wait(func() -> bool: return _book_menu(host).is_open(), "E opens the Host's pages", FPS)
+	_check(not _book_menu(guest).is_open(), "the Guest's pages stay shut")
+	var host_cells := _book_menu(host).page().cells()
+	_check(host_cells[0].shown_name() == mine[0].name and host_cells[1].shown_name() == EncyclopediaCell.UNKNOWN,
+			"the Host reads their own Design (%s)" % host_cells[0].shown_name())
+	_book_menu(host).close()
+	await _paced_ticks(FPS / 4)
+	# The Host puts it down; the Guest sees it lying and takes it.
+	var spot := lying + Vector3(-0.3, 0.0, 0.5)
+	await _aim(host, spot + Vector3(0.0, 0.0, 1.0), spot)
+	await _click(&"drop_throw")
+	await _wait(func() -> bool: return _book_part(host).holder == 0 and _book_part(guest).holder == 0, "it is put down on both", FPS * 2)
+	await _paced_ticks(2)
+	_check(_book_thing(host).global_position.distance_to(_book_thing(guest).global_position) < 0.001, "the Guest sees it lying there")
+	var down := _book_thing(guest).global_position
+	_place(host, Vector3(-8.0, 0.0, 6.0), Vector3(-8.0, 1.6, 3.0))
+	await _aim(guest, down + Vector3(0.0, 0.0, 1.0), down + Vector3.UP * 0.03)
+	await _wait(func() -> bool: return _player(guest).aimed_part() == _book_part(guest), "the Guest's crosshair on the book", FPS)
+	await _click(&"pick")
+	await _wait(func() -> bool: return _book_part(host).holder == g and _book_part(guest).holder == g, "the Guest holds the book on both", FPS * 3)
+	Input.action_press(Player.INTERACT)
+	await _paced_ticks(2)
+	Input.action_release(Player.INTERACT)
+	await _wait(func() -> bool: return _book_menu(guest).is_open(), "E opens the Guest's pages", FPS)
+	_check(not _book_menu(host).is_open(), "the Host's pages stay shut")
+	var guest_cells := _book_menu(guest).page().cells()
+	_check(guest_cells[0].shown_name() == EncyclopediaCell.UNKNOWN and guest_cells[1].shown_name() == mine[1].name,
+			"the Guest reads their own Design, not the Host's (%s, %s)" % [guest_cells[0].shown_name(), guest_cells[1].shown_name()])
+	_book_menu(guest).close()
+	_drop_branches()
+
+
 # --- Helpers -------------------------------------------------------------------------------------
 
-func _pair(lag_ms: int) -> Array[Node3D]:
-	var host := _branch("Host")
-	var guest := _branch("Guest")
+func _book_thing(zoo: Node3D) -> Node3D:
+	return zoo.get_node(BOOK) as Node3D
+
+
+func _book_part(zoo: Node3D) -> Carriable:
+	return zoo.get_node(BOOK + "/Carriable") as Carriable
+
+
+func _book_menu(zoo: Node3D) -> EncyclopediaMenu:
+	return zoo.get_node(BOOK + "/EncyclopediaMenu") as EncyclopediaMenu
+
+
+func _pair(lag_ms: int, with_book := false) -> Array[Node3D]:
+	var host := _branch("Host", with_book)
+	var guest := _branch("Guest", with_book)
 	await _frames(2)
 	var hs := LevelRuntime.of(host).session
 	var gs := LevelRuntime.of(guest).session
@@ -215,7 +289,7 @@ func _lag(zoo: Node3D, lag_ms: int) -> void:
 
 
 ## A zoo in a machine of its own (its own MultiplayerAPI and 3D world), with only the KEEP stations.
-func _branch(label: String) -> Node3D:
+func _branch(label: String, with_book := false) -> Node3D:
 	var node := Node.new()
 	node.name = label
 	add_child(node)
@@ -230,6 +304,11 @@ func _branch(label: String) -> Node3D:
 		if not KEEP.has(String(station.name)):
 			station.get_parent().remove_child(station)
 			station.free()
+	if with_book:
+		var book := (load("res://game/entities/encyclopedia_book/encyclopedia_book.tscn") as PackedScene).instantiate() as Node3D
+		book.name = "Book"
+		book.position = BOOK_PLACE
+		zoo.get_node("Stations/Handling").add_child(book)
 	view.add_child(zoo)
 	_branches.append(node)
 	return zoo

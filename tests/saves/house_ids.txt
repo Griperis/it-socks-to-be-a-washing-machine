@@ -62,6 +62,7 @@ Doors/LaundryLobby/Openable
 Doors/LobbyGarage/Openable
 Doors/OfficeLanding/Openable
 Doors/WorkshopLobby/Openable
+EncyclopediaBook/Carriable
 FloorLocks/Attic/Openable
 FloorLocks/First/Openable
 FloorLocks/Ground/Openable

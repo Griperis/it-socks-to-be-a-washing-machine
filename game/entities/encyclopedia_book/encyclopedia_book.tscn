@@ -1,0 +1,31 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://game/entities/encyclopedia_book/looks_encyclopedia_book.tscn" id="1_looks"]
+[ext_resource type="Script" path="res://game/parts/carriable.gd" id="2_carriable"]
+[ext_resource type="Resource" path="res://game/hands/hold_slot_book.tres" id="3_slot"]
+[ext_resource type="Script" path="res://game/outline/outline.gd" id="4_outline"]
+[ext_resource type="PackedScene" path="res://game/ui/encyclopedia/encyclopedia_menu.tscn" id="5_menu"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_book"]
+size = Vector3(0.19, 0.1, 0.25)
+
+[node name="EncyclopediaBook" type="StaticBody3D"]
+
+[node name="Shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+shape = SubResource("BoxShape3D_book")
+
+[node name="Looks" parent="." instance=ExtResource("1_looks")]
+
+[node name="Outline" type="Node3D" parent="Looks"]
+script = ExtResource("4_outline")
+
+[node name="Carriable" type="Node" parent="."]
+script = ExtResource("2_carriable")
+slot = ExtResource("3_slot")
+handable = true
+title = "Sock Encyclopedia"
+one_slot = true
+
+[node name="EncyclopediaMenu" parent="." node_paths=PackedStringArray("carriable") instance=ExtResource("5_menu")]
+carriable = NodePath("../Carriable")

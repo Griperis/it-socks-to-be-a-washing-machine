@@ -10,6 +10,8 @@ extends RefCounted
 const DROP_THROW := "Drop / hold: Throw"
 ## What the right click does to a carried thing (the old prompts.gd's "Drop" for what is not thrown).
 const DROP := "Drop"
+## What the use key does to the encyclopedia book held and active (core/139, the old prompts.gd's "Read").
+const READ := "Read"
 const ZOOM := "Zoom"
 const TURN := "Turn"
 const CYCLE := "Cycle"
@@ -61,6 +63,8 @@ static func carry_target(aimed: Carriable, carried: Carriable, empty: bool, pad 
 	var out: Array[Prompt] = []
 	var no_key: Array[String] = []
 	if carried != null:
+		if carried.one_slot:
+			return out  # core/139: the held book has no crosshair row (the old only named it lying)
 		if carried.carry_title != "":
 			out.append(Prompt.of(carried.carry_title, keys(Player.PICK, pad)))
 		elif carried.prompt_title() != "":
@@ -109,15 +113,20 @@ static func verb_title(open: bool, noun: String) -> String:
 ## the Hands hold; a held item is always a Sock or a Pair today, so it can zoom and turn. With `ping`
 ## (pinging works) "Ping" stands after "Cycle", before "Jump" (core/43 line 56). With `sprint` (the
 ## Sprint Upgrade bought) "Sprint" stands after "Cycle", before "Ping" (the old prompts.gd, core/130).
-static func hints(held: int, pad := false, ping := false, carrying := false, sprint := false) -> Array[Prompt]:
+static func hints(held: int, pad := false, ping := false, carrying := false, sprint := false, places := -1,
+		reading := false) -> Array[Prompt]:
 	var out: Array[Prompt] = []
+	if reading:
+		out.append(Prompt.of(READ, keys(Player.INTERACT, pad)))  # core/139: the book's own pages
 	if carrying:
 		out.append(Prompt.of(DROP, keys(Player.DROP_THROW, pad)))  # core/78: a carried thing only goes down
+	if reading:
+		out.append(Prompt.of(TURN, keys(Player.TURN, pad)))  # core/139: the book turns in the hand (the old can_turn)
 	if held > 0:
 		out.append(Prompt.of(DROP_THROW, keys(Player.DROP_THROW, pad)))
 		out.append(Prompt.of(ZOOM, keys(Player.ZOOM, pad)))
 		out.append(Prompt.of(TURN, keys(Player.TURN, pad)))
-	if held > 1:
+	if maxi(held, places) > 1:
 		out.append(Prompt.of(CYCLE, keys(Player.HANDS_NEXT, pad)))
 	if sprint:
 		out.append(Prompt.of(SPRINT, keys(Player.SPRINT, pad)))

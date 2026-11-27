@@ -324,9 +324,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_turn(-motion.relative.x * step, -motion.relative.y * step * _y_sign())
 	if _captured and (event.is_action_pressed(HANDS_NEXT) or event.is_action_pressed(HANDS_PREV)):
 		var h := hands()
-		if h != null and h.items_of(player_id()).size() > 1:
+		if h != null and h.list_size(player_id()) > 1:
 			var step := 1 if event.is_action_pressed(HANDS_NEXT) else -1
-			if _ghosts.active():
+			# A one-slot thing (core/139) is in the list: the Host's answer, never a wheel guess of the Socks alone.
+			if _ghosts.active() and h.one_slot_of(player_id()) == null:
 				_ghosts.cycle(step)
 			else:
 				h.cycle(player_id(), step)
@@ -610,6 +611,11 @@ func mirror_body() -> AvatarLooks:
 
 ## What interact does: uses the Part it aims at, unless the left click alone uses it (a piano key).
 func interact() -> Part:
+	# core/139: the use key reads the active one-slot item (the book), whatever is in reach.
+	var h := hands()
+	var held := h.one_slot_active(player_id()) if h != null else null
+	if held != null and held.use_held(player_id()):
+		return null
 	_aim.force_raycast_update()
 	var part := aimed_part()
 	if part != null and part.click_only():
@@ -657,9 +663,12 @@ func _update_hands(delta: float) -> void:
 	var me := player_id()
 	var found := aim_found(h)
 	# core/78: a carried thing takes the whole Hands; it is put down or handed over, never thrown.
-	var carried := h.carries(me)
+	var carried := h.in_hands(me)
 	var socks := h.active_of(me) >= 0
 	var holding := socks or carried != null
+	var one := h.one_slot_of(me)
+	if one != null:
+		one.turning = carried == one and _acting() and Input.is_action_pressed(TURN)  # core/139: the book turns in the hand
 	var kd := knockdowns()
 	aimed_body = kd.aimed_body(eyes(), aim_dir(), me) if kd != null and not holding and _acting() else -1
 	aimed_mate = _mate_aimed(h, found, kd) if holding and _acting() and (carried == null or carried.handable) else -1
@@ -836,7 +845,7 @@ func drop_refusal(h: Hands) -> String:
 func _refusal_of(h: Hands, spot: Dictionary) -> String:
 	if spot.is_empty():
 		return Hands.NO_SPOT
-	if h.carries(player_id()) != null:
+	if h.in_hands(player_id()) != null:
 		return h.spot_refusal(player_id(), spot["point"], spot["normal"])
 	return h.drop_refusal(player_id(), spot["point"], spot["normal"])
 
@@ -944,11 +953,12 @@ func _update_screen(h: Hands) -> void:
 		_aim.force_raycast_update()
 		part = aimed_part()
 	var items := h.items_of(me) if h != null else PackedInt32Array()
-	var carried := h.carries(me) if h != null else null
+	var carried := h.in_hands(me) if h != null else null
+	var places := h.list_size(me) if h != null else 0
 	var target := Prompts.target(part, _hud.pad)
 	if part is Carriable or carried != null:
 		# core/78: a carried thing is named with no key; a lying one shows the click only to empty Hands.
-		target = Prompts.carry_target(part as Carriable, carried, items.is_empty() and carried == null, _hud.pad)
+		target = Prompts.carry_target(part as Carriable, carried, places == 0, _hud.pad)
 		if carried != null and part is MachinePartSlot:
 			target.append(Prompts.fit_prompt(carried, _hud.pad))  # core/79: the click that fits the Part
 		elif carried != null and part is Washer:
@@ -960,7 +970,8 @@ func _update_screen(h: Hands) -> void:
 		target.append(Prompts.drag_prompt(_hud.pad))
 	_hud.show_target(target)
 	var capacity := h.tuning_of(me).capacity if h != null else 0
-	var hints := Prompts.hints(items.size(), _hud.pad, _pinger.can_ping(), carried != null, can_sprint())
+	var hints := Prompts.hints(0 if carried != null else items.size(), _hud.pad, _pinger.can_ping(), carried != null,
+			can_sprint(), places, carried != null and carried.one_slot)
 	var kd := knockdowns()
 	if kd != null and kd.dragger_of(me) >= 0:
 		hints.clear()
@@ -969,14 +980,14 @@ func _update_screen(h: Hands) -> void:
 	# A15: what picking the aimed loose Sock would make the Hands show.
 	if aimed != null and upgrades.sense() and not mess.is_pair(sock):
 		var pairs := h.mate_held(me, sock) >= 0
-		var n := items.size() + (0 if pairs or items.size() >= capacity else 1)
+		var n := places + (0 if pairs or places >= capacity else 1)
 		_hud.show_sense(aimed, pairs, "%d/%d" % [n, capacity], n > 1)
 	else:
 		_hud.show_sense(null)
 	var active := h.active_of(me) if h != null else -1
 	var held := mess.design_of(active) if active >= 0 and mess != null else null
-	_hud.show_held(held, held != null and mess.is_pair(active), "%d/%d" % [items.size(), capacity],
-			items.size() > 1, upgrades.smarts())
+	_hud.show_held(held, held != null and mess.is_pair(active), "%d/%d" % [places, capacity],
+			places > 1, upgrades.smarts())
 
 
 static func _first(list: Array[String]) -> String:
