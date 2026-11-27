@@ -15,8 +15,15 @@
 ## timer asks `tree_call` now and then, heard and subtitled within `call_reach` from `call_voice`, until a
 ## player comes near (`meet`). Nothing on the tree moves while it talks: its Looks are not touched.
 ##
-## State: `met` (player ids that heard their first line), `tips`, `beat`, `said` (core/133's: the tips said
-## this run, the Fix comment waiting, the Stage's thresholds said), `calling`, and the last line said (`line`,
+## core/133's help, from the same senses: the Stage bar's thresholds (`tree_stage_*`), the first-time tips, and an
+## idle spell that may be a grumble (only while the washer is broken) or a hint (a Cabinet with a Row to fill, or
+## the floor of a loose Mate: never a spot), chosen by the machine's own roll. The Fix comments and the story beats
+## (the Final wash, the peace) are the Host's: it arms them on the Stages' and the Laundry day's events, sets
+## `beat` when they are due, and every machine near asks them; the Host lapses an unheard one after `beat_hold`.
+##
+## State: `met` (player ids that heard their first line), `tips` (player id -> tips said this run), `beat` (the
+## Fix comment due, `comment`, and the story beats waiting, `story`), `said` (the Stage and the threshold already
+## said in it), `calling`, and the last line said (`line`,
 ## `take`, `serial`, which moves with every answer; not saved: a load starts quiet). A New Game is a new World,
 ## so it starts from the scene's empty state. The Host's memory (the picker, the clock of the last line, the next
 ## call) and each machine's senses are not state.
@@ -33,6 +40,10 @@ const GREET := &"tree_greet"
 const IDLE := &"tree_idle"
 const AFFORDABLE := &"tree_affordable"
 const BOUGHT := &"tree_bought"
+## The Host's own verbs (no player asks them): arm or lapse a beat, mark the Stage's bar as it stands, forget a run.
+const BEAT := &"beat"
+const MARK := &"mark"
+const FORGET := &"forget"
 ## The fields a save keeps (the last line said is not kept).
 const SAVED: Array[StringName] = [&"met", &"tips", &"calling", &"beat", &"said"]
 ## Seconds a machine waits on its own ask before it asks again.
@@ -82,6 +93,16 @@ var _bought_at := -INF
 var _meet_asked := false
 var _upgrades: Upgrades = null
 var _day: LaundryDay = null
+var _stages: Stages = null
+var _stages_heard := false
+## This machine's roll for an idle spell (a grumble, a hint or a musing).
+var roll := RandomNumberGenerator.new()
+## The Host's own memory (not state): the Fix comment armed and when it is due, when each beat was opened, the
+## last mark asked, and the Final wash seen.
+var _comment := {}
+var _opened: Dictionary[String, float] = {}
+var _marked_at := -INF
+var _final_seen := false
 
 
 ## The sources get copies of `speaker` carrying the tree's playback level (`voice_db`, `call_db`: the old
@@ -142,6 +163,8 @@ func decide(cmd: Command) -> Dictionary:
 			if cmd.by != Parts.HOST or calling:
 				return refuse("already")
 			return grant({"calling": true})
+		BEAT, MARK, FORGET:
+			return _host_verb(cmd) if cmd.by == Parts.HOST else refuse("wrong")
 	return refuse("wrong")
 
 
@@ -153,7 +176,11 @@ func _talk(trigger_id: StringName, by: int) -> Dictionary:
 		return refuse("wrong")
 	if trigger.id == CALL and not calling:
 		return refuse("quiet")
-	if busy() or not trigger.ignores_cooldown and clock - last_at < speaker.cooldown:
+	var story := OldTreeHelp.STORY.has(trigger.id)
+	if not _may_say(trigger, by):
+		return refuse("quiet")
+	if busy() or (story and clock - last_at < tuning.beat_gap) \
+			or (not story and not trigger.ignores_cooldown and clock - last_at < speaker.cooldown):
 		return refuse("quiet")
 	if picker.rng.randf() >= trigger.chance:
 		return refuse("quiet")
@@ -176,9 +203,84 @@ func _talk(trigger_id: StringName, by: int) -> Dictionary:
 		var now_met := met.duplicate()
 		now_met.append(who)
 		patch["met"] = now_met
+	patch.merge(_said_patch(trigger.id, who))
 	var answer := grant(patch)
 	answer["trigger"] = String(trigger.id)
 	return answer
+
+
+## Whether the Host lets `trigger` be asked for `by` now: a beat only while it waits, a tip once and when due, a
+## threshold once per Stage and once the bar is there, a grumble only while the washer is broken.
+func _may_say(trigger: VoiceTrigger, by: int) -> bool:
+	var asked := trigger.id
+	if OldTreeHelp.STORY.has(asked):
+		return (beat.get("story", []) as Array).has(String(asked))
+	if OldTreeHelp.is_comment(asked):
+		return str(beat.get("comment", "")) == String(asked)
+	if OldTreeHelp.TIPS.has(asked):
+		return OldTreeHelp.tip_due(asked, _stages_of()) and not (tips.get(str(_key_of(by)), []) as Array).has(String(asked))
+	var step := OldTreeHelp.STAGE.find(asked)
+	if step >= 0:
+		var stages := _stages_of()
+		return stages != null and int(said.get("stage", -1)) == stages.stage and step > int(said.get("step", -1)) \
+				and step <= OldTreeHelp.step_of(OldTreeHelp.share(stages), tuning.stage_thresholds)
+	if asked == OldTreeHelp.GRUMBLE:
+		var stages := _stages_of()
+		return stages == null or not stages.is_fixed()
+	return true
+
+
+## What a said line changes: a beat leaves its list, a tip is kept for the player, a threshold is kept for the Stage.
+func _said_patch(said_id: StringName, who: String) -> Dictionary:
+	var patch := {}
+	var waiting := beat.duplicate(true)
+	if OldTreeHelp.STORY.has(said_id):
+		(waiting["story"] as Array).erase(String(said_id))
+		patch["beat"] = waiting
+	elif OldTreeHelp.is_comment(said_id):
+		waiting["comment"] = ""
+		patch["beat"] = waiting
+	elif OldTreeHelp.TIPS.has(said_id):
+		var kept := tips.duplicate(true)
+		var mine: Array = kept.get(who, [])
+		mine.append(String(said_id))
+		kept[who] = mine
+		patch["tips"] = kept
+	elif OldTreeHelp.STAGE.has(said_id):
+		patch["said"] = {"stage": int(said.get("stage", -1)), "step": OldTreeHelp.STAGE.find(said_id)}
+	return patch
+
+
+## The Host's verbs: `beat` arms (`on`) or lapses a trigger (a story beat or the Fix comment), `mark` takes the
+## Stage's bar as it stands, `forget` starts a run's memory over.
+func _host_verb(cmd: Command) -> Dictionary:
+	match cmd.kind:
+		BEAT:
+			var asked := str(cmd.args.get("trigger", ""))
+			var story := OldTreeHelp.STORY.has(StringName(asked))
+			var waiting := beat.duplicate(true)
+			var list: Array = waiting.get("story", [])
+			if bool(cmd.args.get("on", true)):
+				if story:
+					if list.has(asked):
+						return refuse("already")
+					list.append(asked)
+					waiting["story"] = list
+				else:
+					waiting["comment"] = asked
+			elif story:
+				list.erase(asked)
+				waiting["story"] = list
+			elif str(waiting.get("comment", "")) == asked:
+				waiting["comment"] = ""
+			else:
+				return refuse("already")
+			return grant({"beat": waiting})
+		MARK:
+			return grant({"said": {"stage": int(cmd.args.get("stage", -1)), "step": int(cmd.args.get("step", -1))}})
+		FORGET:
+			return grant({"tips": {}, "said": {}, "beat": {}})
+	return refuse("wrong")
 
 
 ## Whether the tree keeps quiet now: a cutscene plays, or a speaker of higher priority (the washer) or the tree
@@ -210,6 +312,7 @@ func _process(delta: float) -> void:
 	_listen()
 	if parts.is_host():
 		_call_step()
+		_help_step()
 	_check += delta
 	if _check < tuning.check_seconds:
 		return
@@ -234,9 +337,13 @@ func sense() -> void:
 		parts.ask(Command.new(MEET, multiplayer.get_unique_id(), id))  # the calls end for everyone (Q1865)
 	var greet := arrived and (not _ever_near or clock - _left_at >= tuning.away_seconds)
 	_ever_near = true
+	if _may_ask_beat() and _ask_story():
+		return
 	if not _may_ask():
 		return
-	if clock - _bought_at <= tuning.bought_window:
+	if str(beat.get("comment", "")) != "":
+		_talk_ask(StringName(str(beat["comment"])))
+	elif clock - _bought_at <= tuning.bought_window:
 		_bought_at = -INF
 		_talk_ask(BOUGHT)
 	elif _pending_affordable:
@@ -244,9 +351,11 @@ func sense() -> void:
 		_talk_ask(AFFORDABLE)
 	elif greet:
 		_talk_ask(GREET)
+	elif _ask_tip() or _ask_stage():
+		pass
 	elif clock - _quiet_since >= tuning.idle_seconds:
 		_quiet_since = clock - tuning.idle_seconds + tuning.idle_retry  # look again a little later
-		_talk_ask(IDLE)
+		_talk_ask(spell())
 
 
 ## Whether a listener at `at` (null: none) is near the tree: within the speaker's earshot and level band.
@@ -258,6 +367,79 @@ func is_near(at: Variant) -> bool:
 ## has passed, and its last ask is not still on its way. (The Host decides; this only saves asking in vain.)
 func _may_ask() -> bool:
 	return not busy() and clock - heard_at >= speaker.cooldown and clock - _asked_at >= ASK_GAP
+
+
+## Whether this machine may ask a story beat now: it skips the cooldown but waits `beat_gap` since the last line
+## it heard.
+func _may_ask_beat() -> bool:
+	return not busy() and clock - heard_at >= tuning.beat_gap and clock - _asked_at >= ASK_GAP
+
+
+## Asks the first story beat waiting (the Final wash, the peace); whether it asked.
+func _ask_story() -> bool:
+	var waiting: Array = beat.get("story", [])
+	if waiting.is_empty():
+		return false
+	_talk_ask(StringName(str(waiting[0])))
+	return true
+
+
+## Asks the first tip that is due for this player and not said; whether it asked.
+func _ask_tip() -> bool:
+	var mine: Array = tips.get(str(_key_of(multiplayer.get_unique_id())), [])
+	for tip in OldTreeHelp.TIPS:
+		if OldTreeHelp.tip_due(tip, _stages_of()) and not mine.has(String(tip)):
+			_talk_ask(tip)
+			return true
+	return false
+
+
+## Asks the Stage bar's threshold it has reached and the tree has not said in this Stage; whether it asked.
+func _ask_stage() -> bool:
+	var stages := _stages_of()
+	if stages == null or int(said.get("stage", -1)) != stages.stage:
+		return false
+	var step := OldTreeHelp.step_of(OldTreeHelp.share(stages), tuning.stage_thresholds)
+	if step <= int(said.get("step", -1)):
+		return false
+	_talk_ask(OldTreeHelp.STAGE[step])
+	return true
+
+
+## What an idle spell says (this machine's roll): a grumble about the washer while it is broken
+## (`grumble_chance`), a hint (`hint_chance`) of a Cabinet with a Row to fill or the floor of a loose Mate, else a
+## musing. Never a spot.
+func spell() -> StringName:
+	var stages := _stages_of()
+	var at := roll.randf()
+	if (stages == null or not stages.is_fixed()) and at < tuning.grumble_chance:
+		return OldTreeHelp.GRUMBLE
+	if at < tuning.grumble_chance + tuning.hint_chance:
+		var rooms := OldTreeHelp.needy_cabinets(stages)
+		var floor_hint := OldTreeHelp.mate_hint(stages, _hands(), _lights(), multiplayer.get_unique_id(), roll)
+		if not rooms.is_empty() and (floor_hint == null or roll.randf() < 0.5):
+			return rooms[roll.randi() % rooms.size()].id
+		if floor_hint != null:
+			return floor_hint.id
+	return IDLE
+
+
+func _hands() -> Hands:
+	for node in get_tree().get_nodes_in_group(Hands.GROUP):
+		if (node as Hands).parts == parts:
+			return node as Hands
+	return null
+
+
+func _lights() -> HouseLights:
+	var found := get_tree().get_nodes_in_group(HouseLights.GROUP)
+	return found[0] as HouseLights if not found.is_empty() else null
+
+
+func _stages_of() -> Stages:
+	if _stages == null:
+		_stages = OldTreeHelp.stages_of(self)
+	return _stages
 
 
 ## The Host's calls into the house (Q1864, Q1865): `call_first_delay` after `calling` began, then every
@@ -285,6 +467,11 @@ func _listen() -> void:
 		_day = LaundryDay.of(self)
 		if _day != null:
 			_day.first_wash_done.connect(_on_first_wash_done)
+	if not _stages_heard and parts.is_host() and _stages_of() != null:
+		_stages_heard = true
+		_stages.floor_opened.connect(_on_floor_opened)
+		_stages.machine_fixed.connect(_on_machine_fixed)
+		_stages.run_started.connect(_on_run_started)
 
 
 func _on_bought(_player: int, _upgrade: Upgrade) -> void:
@@ -299,6 +486,61 @@ func _on_affordable(_player: int, _upgrade: Upgrade) -> void:
 func _on_first_wash_done() -> void:
 	if parts != null and parts.is_host():
 		parts.ask(Command.new(CALL_START, Parts.HOST, id))
+
+
+## The Host's beats: the Stage's bar taken as it stands when a new Stage begins (what it already has is not
+## news), the Fix comment armed when it is due, the Final wash, and any beat unheard for `beat_hold` lapsed.
+func _help_step() -> void:
+	var stages := _stages_of()
+	if stages != null and stages.stage >= 0 and int(said.get("stage", -1)) != stages.stage and clock - _marked_at >= ASK_GAP:
+		_marked_at = clock
+		var step := OldTreeHelp.step_of(OldTreeHelp.share(stages), tuning.stage_thresholds)
+		parts.ask(Command.new(MARK, Parts.HOST, id, {"stage": stages.stage, "step": step}))
+	if not _comment.is_empty() and clock >= float(_comment["due"]):
+		var due: String = _comment["trigger"]
+		_comment = {}
+		parts.ask(Command.new(BEAT, Parts.HOST, id, {"trigger": due}))
+	if _day != null and _day.final_started and not _final_seen:
+		_final_seen = true
+		_comment = {}  # the Final wash ends the Fix comments (the old); the tree says nothing over it (Q2718)
+	var waiting: Array[String] = []
+	if str(beat.get("comment", "")) != "":
+		waiting.append(str(beat["comment"]))
+	for story: Variant in beat.get("story", []) as Array:
+		waiting.append(str(story))
+	for key: String in _opened.keys():
+		if not waiting.has(key):
+			_opened.erase(key)
+	for key: String in waiting:
+		if not _opened.has(key):
+			_opened[key] = clock  # a beat found waiting (a load) starts its hold now
+		elif clock - _opened[key] > tuning.beat_hold:
+			_opened.erase(key)
+			parts.ask(Command.new(BEAT, Parts.HOST, id, {"trigger": key, "on": false}))
+
+
+## A floor opened: one Fix comment (the Part's or the floor's) comes `beat_delay` into the Stage, with `beat_chance`.
+func _on_floor_opened(stage: int, _grown: Array) -> void:
+	_comment = {}
+	var pool := OldTreeHelp.fix_pool(_stages.plan, stage)
+	if pool.is_empty() or picker.rng.randf() >= tuning.beat_chance:
+		return
+	var pick := pool[picker.rng.randi() % pool.size()]
+	_comment = {"trigger": String(pick.id), "due": clock + picker.rng.randf_range(tuning.beat_delay.x, tuning.beat_delay.y)}
+
+
+## The last Fix: no Fix comment now (the peace line is its own); the peace waits for a player near.
+func _on_machine_fixed() -> void:
+	_comment = {}
+	parts.ask(Command.new(BEAT, Parts.HOST, id, {"trigger": String(&"tree_peace")}))
+
+
+## A New Game's run starts: what is once per run starts again.
+func _on_run_started() -> void:
+	_comment = {}
+	_opened.clear()
+	_final_seen = false
+	parts.ask(Command.new(FORGET, Parts.HOST, id))
 
 
 func _talk_ask(trigger: StringName) -> void:

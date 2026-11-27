@@ -69,6 +69,9 @@ const GROUP := &"cabinets"
 ## The Collections this spot may draw at a New Game, set on the placed Cabinet (core/135: the spot is the
 ## Cabinet). Empty: it keeps its placed `collection`.
 @export var pool: Array[StringName] = []
+## The Old Tree's hint for this spot (`tree_cabinet_<room>`, core/133): said in an idle spell while a Row of the
+## Stage's bar here is unfilled. None: the tree never names it.
+@export var tree_hint: VoiceTrigger
 
 @export_group("State")
 ## The Collection whose Pairs this Cabinet takes (a SockDesign.collection).

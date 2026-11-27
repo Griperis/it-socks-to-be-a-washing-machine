@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: economy
@@ -53,5 +53,6 @@ The chances and times are `OldTreeTuning`'s (`# placeholder:` the old).
 
 ## Answers
 - The Old Tree's voice comes in batch B (Q2670, 2026-11-25).
+- tree_final_wash is dropped: the Final wash is a cutscene (Q2718, 2026-11-27).
 
 ## Open follow-ups

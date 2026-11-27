@@ -406,7 +406,7 @@
     },
     {
       "id": "tree_grumble_1",
-      "triggers": [],
+      "triggers": ["tree_grumble"],
       "sets": [],
       "text": ["That washing machine rumbles about everything.", "Everything! I've never heard such a complaint."],
       "recordings": ["tree_grumble_1.wav"],
@@ -414,12 +414,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_grumble is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_grumble_1.wav": [[0.12, 3.15], [3.57, 7.59]]}
     },
     {
       "id": "tree_grumble_2",
-      "triggers": [],
+      "triggers": ["tree_grumble"],
       "sets": [],
       "text": ["Listen to it. Rattle, rattle, rattle.", "Some of us bear our age quietly."],
       "recordings": ["tree_grumble_2.wav"],
@@ -427,12 +427,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_grumble is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_grumble_2.wav": [[0.12, 3.98], [4.4, 6.77]]}
     },
     {
       "id": "tree_grumble_3",
-      "triggers": [],
+      "triggers": ["tree_grumble"],
       "sets": [],
       "text": ["Don't mind the washer.", "It makes a fuss about every sock.", "I've had forty winters of it."],
       "recordings": ["tree_grumble_3.wav"],
@@ -440,12 +440,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_grumble is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_grumble_3.wav": [[0.12, 1.85], [2.27, 4.45], [4.87, 7.11]]}
     },
     {
       "id": "tree_grumble_4",
-      "triggers": [],
+      "triggers": ["tree_grumble"],
       "sets": [],
       "text": ["It's always the machine, isn't it?", "Too much noise, too little washing."],
       "recordings": ["tree_grumble_4.wav"],
@@ -453,12 +453,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_grumble is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_grumble_4.wav": [[0.12, 2.78], [3.2, 5.96]]}
     },
     {
       "id": "tree_grumble_5",
-      "triggers": [],
+      "triggers": ["tree_grumble"],
       "sets": [],
       "text": ["That machine blames everybody. Never itself.", "Typical."],
       "recordings": ["tree_grumble_5.wav"],
@@ -466,12 +466,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_grumble is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_grumble_5.wav": [[0.12, 3.94], [4.36, 5.32]]}
     },
     {
       "id": "tree_stage_half_1",
-      "triggers": [],
+      "triggers": ["tree_stage_half"],
       "sets": [],
       "text": ["Halfway there, if my needles count right.", "You are quicker than last Christmas, I remember."],
       "recordings": ["tree_stage_half_1.wav"],
@@ -479,12 +479,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_stage_half is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_stage_half_1.wav": [[0.12, 3.31], [3.73, 6.94]]}
     },
     {
       "id": "tree_stage_half_2",
-      "triggers": [],
+      "triggers": ["tree_stage_half"],
       "sets": [],
       "text": ["Half the work is done.", "The other half is the same, only longer."],
       "recordings": ["tree_stage_half_2.wav"],
@@ -492,12 +492,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_stage_half is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_stage_half_2.wav": [[0.12, 1.62], [2.04, 4.96]]}
     },
     {
       "id": "tree_stage_half_3",
-      "triggers": [],
+      "triggers": ["tree_stage_half"],
       "sets": [],
       "text": ["Half of it already. My branches can tell."],
       "recordings": ["tree_stage_half_3.wav"],
@@ -505,12 +505,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_stage_half is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_stage_half_3.wav": [[0.12, 4.25]]}
     },
     {
       "id": "tree_stage_most_1",
-      "triggers": [],
+      "triggers": ["tree_stage_most"],
       "sets": [],
       "text": ["Most of it is done now.", "I can feel it in my branches."],
       "recordings": ["tree_stage_most_1.wav"],
@@ -518,12 +518,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_stage_most is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_stage_most_1.wav": [[0.12, 2.06], [2.48, 4.82]]}
     },
     {
       "id": "tree_stage_most_2",
-      "triggers": [],
+      "triggers": ["tree_stage_most"],
       "sets": [],
       "text": ["Nearly there. Just a few more pairs. Don't rush.", "Well, rush a little."],
       "recordings": ["tree_stage_most_2.wav"],
@@ -531,12 +531,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_stage_most is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_stage_most_2.wav": [[0.12, 5.49], [5.91, 7.7]]}
     },
     {
       "id": "tree_stage_most_3",
-      "triggers": [],
+      "triggers": ["tree_stage_most"],
       "sets": [],
       "text": ["The end of this floor is in sight.", "Even I can see it, and I'm facing the wall."],
       "recordings": ["tree_stage_most_3.wav"],
@@ -544,12 +544,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_stage_most is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_stage_most_3.wav": [[0.12, 2.5], [2.92, 6.01]]}
     },
     {
       "id": "tree_stage_last_1",
-      "triggers": [],
+      "triggers": ["tree_stage_last"],
       "sets": [],
       "text": ["Almost. Almost. One or two pairs, I'd say."],
       "recordings": ["tree_stage_last_1.wav"],
@@ -557,12 +557,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_stage_last is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_stage_last_1.wav": [[0.12, 5.95]]}
     },
     {
       "id": "tree_stage_last_2",
-      "triggers": [],
+      "triggers": ["tree_stage_last"],
       "sets": [],
       "text": ["Just a few left. Oh, my lights are trembling.", "Do forgive an old tree."],
       "recordings": ["tree_stage_last_2.wav"],
@@ -570,12 +570,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_stage_last is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_stage_last_2.wav": [[0.12, 4.78], [5.2, 7.18]]}
     },
     {
       "id": "tree_stage_last_3",
-      "triggers": [],
+      "triggers": ["tree_stage_last"],
       "sets": [],
       "text": ["So close. I'll hold my breath.", "I don't breathe, but I'll hold it."],
       "recordings": ["tree_stage_last_3.wav"],
@@ -583,12 +583,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_stage_last is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_stage_last_3.wav": [[0.12, 3], [3.42, 5.58]]}
     },
     {
       "id": "tree_cabinet_laundry_1",
-      "triggers": [],
+      "triggers": ["tree_cabinet_laundry"],
       "sets": [],
       "text": ["The cabinet in the laundry room still has gaps.", "I can feel the draught from here."],
       "recordings": ["tree_cabinet_laundry_1.wav"],
@@ -596,12 +596,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_laundry is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_laundry_1.wav": [[0.12, 3.43], [3.85, 5.96]]}
     },
     {
       "id": "tree_cabinet_laundry_2",
-      "triggers": [],
+      "triggers": ["tree_cabinet_laundry"],
       "sets": [],
       "text": ["The laundry room's cabinet is still missing a few pairs.", "It is patient, as cabinets go."],
       "recordings": ["tree_cabinet_laundry_2.wav"],
@@ -609,12 +609,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_laundry is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_laundry_2.wav": [[0.12, 4.19], [4.61, 6.97]]}
     },
     {
       "id": "tree_cabinet_laundry_3",
-      "triggers": [],
+      "triggers": ["tree_cabinet_laundry"],
       "sets": [],
       "text": ["Funny thing about the laundry room.", "Its cabinet is the one with room left."],
       "recordings": ["tree_cabinet_laundry_3.wav"],
@@ -622,12 +622,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_laundry is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_laundry_3.wav": [[0.12, 2.51], [2.93, 5.68]]}
     },
     {
       "id": "tree_cabinet_laundry_4",
-      "triggers": [],
+      "triggers": ["tree_cabinet_laundry"],
       "sets": [],
       "text": ["I do wonder how full the cabinet in the laundry room is.", "Not full, I'd guess."],
       "recordings": ["tree_cabinet_laundry_4.wav"],
@@ -635,12 +635,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_laundry is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_laundry_4.wav": [[0.12, 4.21], [4.63, 6.96]]}
     },
     {
       "id": "tree_cabinet_garage_1",
-      "triggers": [],
+      "triggers": ["tree_cabinet_garage"],
       "sets": [],
       "text": ["The garage cabinet isn't full yet.", "It's a draughty place to wait."],
       "recordings": ["tree_cabinet_garage_1.wav"],
@@ -648,12 +648,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_garage is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_garage_1.wav": [[0.12, 2.64], [3.06, 5.47]]}
     },
     {
       "id": "tree_cabinet_garage_2",
-      "triggers": [],
+      "triggers": ["tree_cabinet_garage"],
       "sets": [],
       "text": ["The cabinet in the garage is still missing a few pairs.", "I'd know, I'm next door."],
       "recordings": ["tree_cabinet_garage_2.wav"],
@@ -661,12 +661,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_garage is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_garage_2.wav": [[0.12, 3.96], [4.38, 6.7]]}
     },
     {
       "id": "tree_cabinet_garage_3",
-      "triggers": [],
+      "triggers": ["tree_cabinet_garage"],
       "sets": [],
       "text": ["Something in the garage is still hungry.", "A cabinet, I mean. Mostly."],
       "recordings": ["tree_cabinet_garage_3.wav"],
@@ -674,12 +674,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_garage is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_garage_3.wav": [[0.12, 2.56], [2.98, 6.75]]}
     },
     {
       "id": "tree_cabinet_garage_4",
-      "triggers": [],
+      "triggers": ["tree_cabinet_garage"],
       "sets": [],
       "text": ["A few pairs still belong in the garage cabinet.", "It smells of oil down there, I'm told."],
       "recordings": ["tree_cabinet_garage_4.wav"],
@@ -687,12 +687,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_garage is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_garage_4.wav": [[0.12, 3.7], [4.12, 7.44]]}
     },
     {
       "id": "tree_cabinet_kitchen_1",
-      "triggers": [],
+      "triggers": ["tree_cabinet_kitchen"],
       "sets": [],
       "text": ["The kitchen cabinet is not full yet.", "Smells nice in there, I've heard."],
       "recordings": ["tree_cabinet_kitchen_1.wav"],
@@ -700,12 +700,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_kitchen is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_kitchen_1.wav": [[0.12, 2.95], [3.37, 5.77]]}
     },
     {
       "id": "tree_cabinet_kitchen_2",
-      "triggers": [],
+      "triggers": ["tree_cabinet_kitchen"],
       "sets": [],
       "text": ["A few pairs still belong in the kitchen.", "Its cabinet hasn't said so, but it hasn't had to."],
       "recordings": ["tree_cabinet_kitchen_2.wav"],
@@ -713,12 +713,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_kitchen is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_kitchen_2.wav": [[0.12, 3.08], [3.5, 7.51]]}
     },
     {
       "id": "tree_cabinet_kitchen_3",
-      "triggers": [],
+      "triggers": ["tree_cabinet_kitchen"],
       "sets": [],
       "text": ["The kitchen cabinet has gaps.", "Crumbs and gaps, I imagine."],
       "recordings": ["tree_cabinet_kitchen_3.wav"],
@@ -726,12 +726,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_kitchen is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_kitchen_3.wav": [[0.12, 2.3], [2.72, 5.82]]}
     },
     {
       "id": "tree_cabinet_kitchen_4",
-      "triggers": [],
+      "triggers": ["tree_cabinet_kitchen"],
       "sets": [],
       "text": ["I was thinking about the kitchen.", "Its cabinet is not as full as it could be."],
       "recordings": ["tree_cabinet_kitchen_4.wav"],
@@ -739,12 +739,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_kitchen is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_kitchen_4.wav": [[0.12, 2.12], [2.54, 5.47]]}
     },
     {
       "id": "tree_cabinet_living_1",
-      "triggers": [],
+      "triggers": ["tree_cabinet_living"],
       "sets": [],
       "text": ["The cabinet in the living room is still waiting for pairs.", "It's the comfortable one."],
       "recordings": ["tree_cabinet_living_1.wav"],
@@ -752,12 +752,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_living is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_living_1.wav": [[0.12, 3.82], [4.24, 5.77]]}
     },
     {
       "id": "tree_cabinet_living_2",
-      "triggers": [],
+      "triggers": ["tree_cabinet_living"],
       "sets": [],
       "text": ["The living room cabinet has room left.", "Plenty of cushions near it, so no hurry."],
       "recordings": ["tree_cabinet_living_2.wav"],
@@ -765,12 +765,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_living is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_living_2.wav": [[0.12, 2.63], [3.05, 6.39]]}
     },
     {
       "id": "tree_cabinet_living_3",
-      "triggers": [],
+      "triggers": ["tree_cabinet_living"],
       "sets": [],
       "text": ["A few pairs are still missing from the living room's cabinet.", "The sofa knows."],
       "recordings": ["tree_cabinet_living_3.wav"],
@@ -778,12 +778,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_living is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_living_3.wav": [[0.12, 4.1], [4.52, 5.89]]}
     },
     {
       "id": "tree_cabinet_living_4",
-      "triggers": [],
+      "triggers": ["tree_cabinet_living"],
       "sets": [],
       "text": ["The living room's cabinet is not full.", "It will wait. It has a nice view."],
       "recordings": ["tree_cabinet_living_4.wav"],
@@ -791,12 +791,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_living is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_living_4.wav": [[0.12, 2.74], [3.16, 6.23]]}
     },
     {
       "id": "tree_cabinet_kids_north_1",
-      "triggers": [],
+      "triggers": ["tree_cabinet_kids_north"],
       "sets": [],
       "text": ["The cabinet in the north kids' room still has gaps.", "Mind the toys, if you ever go."],
       "recordings": ["tree_cabinet_kids_north_1.wav"],
@@ -804,12 +804,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_kids_north is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_kids_north_1.wav": [[0.12, 3.68], [4.1, 6.53]]}
     },
     {
       "id": "tree_cabinet_kids_north_2",
-      "triggers": [],
+      "triggers": ["tree_cabinet_kids_north"],
       "sets": [],
       "text": ["The north kids' room cabinet is missing pairs.", "Small feet, small socks, small gaps."],
       "recordings": ["tree_cabinet_kids_north_2.wav"],
@@ -817,12 +817,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_kids_north is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_kids_north_2.wav": [[0.12, 3.41], [3.83, 8.23]]}
     },
     {
       "id": "tree_cabinet_kids_north_3",
-      "triggers": [],
+      "triggers": ["tree_cabinet_kids_north"],
       "sets": [],
       "text": ["Somewhere in the north kids' room, a cabinet is waiting.", "Under the toys, probably."],
       "recordings": ["tree_cabinet_kids_north_3.wav"],
@@ -830,12 +830,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_kids_north is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_kids_north_3.wav": [[0.12, 4.14], [4.56, 6.96]]}
     },
     {
       "id": "tree_cabinet_kids_north_4",
-      "triggers": [],
+      "triggers": ["tree_cabinet_kids_north"],
       "sets": [],
       "text": ["I hear the north kids' room cabinet isn't full.", "It's a messy room. Hard to tell."],
       "recordings": ["tree_cabinet_kids_north_4.wav"],
@@ -843,12 +843,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_kids_north is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_kids_north_4.wav": [[0.12, 3.51], [3.93, 6.95]]}
     },
     {
       "id": "tree_cabinet_kids_east_1",
-      "triggers": [],
+      "triggers": ["tree_cabinet_kids_east"],
       "sets": [],
       "text": ["The cabinet in the east kids' room still has gaps.", "Mind the toys there, too."],
       "recordings": ["tree_cabinet_kids_east_1.wav"],
@@ -856,12 +856,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_kids_east is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_kids_east_1.wav": [[0.12, 3.46], [3.88, 5.95]]}
     },
     {
       "id": "tree_cabinet_kids_east_2",
-      "triggers": [],
+      "triggers": ["tree_cabinet_kids_east"],
       "sets": [],
       "text": ["The east kids' room cabinet is missing pairs.", "The toys are guarding it."],
       "recordings": ["tree_cabinet_kids_east_2.wav"],
@@ -869,12 +869,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_kids_east is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_kids_east_2.wav": [[0.12, 3.85], [4.27, 5.96]]}
     },
     {
       "id": "tree_cabinet_kids_east_3",
-      "triggers": [],
+      "triggers": ["tree_cabinet_kids_east"],
       "sets": [],
       "text": ["Somewhere in the east kids' room, a cabinet is waiting.", "Under a pile, I expect."],
       "recordings": ["tree_cabinet_kids_east_3.wav"],
@@ -882,12 +882,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_kids_east is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_kids_east_3.wav": [[0.12, 4.57], [4.99, 7.11]]}
     },
     {
       "id": "tree_cabinet_kids_east_4",
-      "triggers": [],
+      "triggers": ["tree_cabinet_kids_east"],
       "sets": [],
       "text": ["I hear the east kids' room cabinet isn't full.", "Hard to say, with all those toys."],
       "recordings": ["tree_cabinet_kids_east_4.wav"],
@@ -895,12 +895,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_kids_east is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_kids_east_4.wav": [[0.12, 3.7], [4.12, 6.93]]}
     },
     {
       "id": "tree_cabinet_loft_west_1",
-      "triggers": [],
+      "triggers": ["tree_cabinet_loft_west"],
       "sets": [],
       "text": ["The cabinet at the west end of the loft wants pairs.", "Dusty up there, but it's patient."],
       "recordings": ["tree_cabinet_loft_west_1.wav"],
@@ -908,12 +908,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_loft_west is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_loft_west_1.wav": [[0.12, 3.55], [3.97, 6.46]]}
     },
     {
       "id": "tree_cabinet_loft_west_2",
-      "triggers": [],
+      "triggers": ["tree_cabinet_loft_west"],
       "sets": [],
       "text": ["Up in the loft, the west end.", "Its cabinet is still hungry."],
       "recordings": ["tree_cabinet_loft_west_2.wav"],
@@ -921,12 +921,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_loft_west is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_loft_west_2.wav": [[0.12, 2.95], [3.37, 5.53]]}
     },
     {
       "id": "tree_cabinet_loft_west_3",
-      "triggers": [],
+      "triggers": ["tree_cabinet_loft_west"],
       "sets": [],
       "text": ["The loft's west cabinet has room left.", "The dust won't mind waiting."],
       "recordings": ["tree_cabinet_loft_west_3.wav"],
@@ -934,12 +934,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_loft_west is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_loft_west_3.wav": [[0.12, 2.74], [3.16, 5.23]]}
     },
     {
       "id": "tree_cabinet_loft_west_4",
-      "triggers": [],
+      "triggers": ["tree_cabinet_loft_west"],
       "sets": [],
       "text": ["The far west of the loft has a cabinet that isn't full.", "I hear it sigh sometimes."],
       "recordings": ["tree_cabinet_loft_west_4.wav"],
@@ -947,12 +947,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_loft_west is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_loft_west_4.wav": [[0.12, 3.97], [4.39, 6.79]]}
     },
     {
       "id": "tree_cabinet_loft_east_1",
-      "triggers": [],
+      "triggers": ["tree_cabinet_loft_east"],
       "sets": [],
       "text": ["The cabinet at the east end of the loft wants pairs.", "Dusty up there, but it's patient."],
       "recordings": ["tree_cabinet_loft_east_1.wav"],
@@ -960,12 +960,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_loft_east is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_loft_east_1.wav": [[0.12, 3.38], [3.8, 6.32]]}
     },
     {
       "id": "tree_cabinet_loft_east_2",
-      "triggers": [],
+      "triggers": ["tree_cabinet_loft_east"],
       "sets": [],
       "text": ["Up in the loft, the east end.", "Its cabinet is still hungry."],
       "recordings": ["tree_cabinet_loft_east_2.wav"],
@@ -973,12 +973,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_loft_east is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_loft_east_2.wav": [[0.12, 3.19], [3.61, 5.84]]}
     },
     {
       "id": "tree_cabinet_loft_east_3",
-      "triggers": [],
+      "triggers": ["tree_cabinet_loft_east"],
       "sets": [],
       "text": ["The loft's east cabinet has room left.", "The cobwebs keep it company."],
       "recordings": ["tree_cabinet_loft_east_3.wav"],
@@ -986,12 +986,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_loft_east is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_loft_east_3.wav": [[0.12, 2.71], [3.13, 5.23]]}
     },
     {
       "id": "tree_cabinet_loft_east_4",
-      "triggers": [],
+      "triggers": ["tree_cabinet_loft_east"],
       "sets": [],
       "text": ["The far east of the loft has a cabinet that isn't full.", "A quiet corner, that."],
       "recordings": ["tree_cabinet_loft_east_4.wav"],
@@ -999,12 +999,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_cabinet_loft_east is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_cabinet_loft_east_4.wav": [[0.12, 3.45], [3.87, 5.75]]}
     },
     {
       "id": "tree_hint_basement_1",
-      "triggers": [],
+      "triggers": ["tree_hint_basement"],
       "sets": [],
       "text": ["I have a feeling about the basement.", "A lonely sock, perhaps. Mates are like that."],
       "recordings": ["tree_hint_basement_1.wav"],
@@ -1012,12 +1012,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_basement is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_basement_1.wav": [[0.12, 2.24], [2.66, 6.92]]}
     },
     {
       "id": "tree_hint_basement_2",
-      "triggers": [],
+      "triggers": ["tree_hint_basement"],
       "sets": [],
       "text": ["Have you looked down in the basement lately?", "Something odd is lying about down there."],
       "recordings": ["tree_hint_basement_2.wav"],
@@ -1025,12 +1025,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_basement is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_basement_2.wav": [[0.12, 2.5], [2.92, 5.31]]}
     },
     {
       "id": "tree_hint_basement_3",
-      "triggers": [],
+      "triggers": ["tree_hint_basement"],
       "sets": [],
       "text": ["The basement is full of corners.", "Socks like corners."],
       "recordings": ["tree_hint_basement_3.wav"],
@@ -1038,12 +1038,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_basement is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_basement_3.wav": [[0.12, 2.29], [2.71, 4.52]]}
     },
     {
       "id": "tree_hint_basement_4",
-      "triggers": [],
+      "triggers": ["tree_hint_basement"],
       "sets": [],
       "text": ["Somewhere below, a sock sits alone.", "The basement, I think. Don't tell it I said."],
       "recordings": ["tree_hint_basement_4.wav"],
@@ -1051,12 +1051,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_basement is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_basement_4.wav": [[0.12, 3.22], [3.64, 8.03]]}
     },
     {
       "id": "tree_hint_ground_1",
-      "triggers": [],
+      "triggers": ["tree_hint_ground"],
       "sets": [],
       "text": ["I have a feeling about the ground floor.", "A mate is lying about, waiting to be found."],
       "recordings": ["tree_hint_ground_1.wav"],
@@ -1064,12 +1064,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_ground is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_ground_1.wav": [[0.12, 2.66], [3.08, 6.62]]}
     },
     {
       "id": "tree_hint_ground_2",
-      "triggers": [],
+      "triggers": ["tree_hint_ground"],
       "sets": [],
       "text": ["Somewhere on the ground floor, a lonely sock is wishing for company."],
       "recordings": ["tree_hint_ground_2.wav"],
@@ -1077,12 +1077,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_ground is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_ground_2.wav": [[0.12, 4.7]]}
     },
     {
       "id": "tree_hint_ground_3",
-      "triggers": [],
+      "triggers": ["tree_hint_ground"],
       "sets": [],
       "text": ["The ground floor has a sock too many lying about, if you ask me.", "Or one too few."],
       "recordings": ["tree_hint_ground_3.wav"],
@@ -1090,12 +1090,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_ground is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_ground_3.wav": [[0.12, 4.95], [5.37, 7.06]]}
     },
     {
       "id": "tree_hint_ground_4",
-      "triggers": [],
+      "triggers": ["tree_hint_ground"],
       "sets": [],
       "text": ["A mate is on the ground floor, I'd bet a bulb on it."],
       "recordings": ["tree_hint_ground_4.wav"],
@@ -1103,12 +1103,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_ground is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_ground_4.wav": [[0.12, 3.94]]}
     },
     {
       "id": "tree_hint_first_1",
-      "triggers": [],
+      "triggers": ["tree_hint_first"],
       "sets": [],
       "text": ["I have a feeling about upstairs.", "The first floor, I think.", "A mate is hiding there."],
       "recordings": ["tree_hint_first_1.wav"],
@@ -1116,12 +1116,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_first is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_first_1.wav": [[0.12, 2.49], [2.91, 5.29], [5.71, 7.38]]}
     },
     {
       "id": "tree_hint_first_2",
-      "triggers": [],
+      "triggers": ["tree_hint_first"],
       "sets": [],
       "text": ["Somewhere on the first floor, a sock is missing its other half."],
       "recordings": ["tree_hint_first_2.wav"],
@@ -1129,12 +1129,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_first is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_first_2.wav": [[0.12, 4.5]]}
     },
     {
       "id": "tree_hint_first_3",
-      "triggers": [],
+      "triggers": ["tree_hint_first"],
       "sets": [],
       "text": ["The first floor has beds, and beds have socks under them.", "Usually."],
       "recordings": ["tree_hint_first_3.wav"],
@@ -1142,12 +1142,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_first is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_first_3.wav": [[0.12, 3.55], [3.97, 5.03]]}
     },
     {
       "id": "tree_hint_first_4",
-      "triggers": [],
+      "triggers": ["tree_hint_first"],
       "sets": [],
       "text": ["Up on the first floor, something small and woolly is lying about.", "I can feel it in my roots."],
       "recordings": ["tree_hint_first_4.wav"],
@@ -1155,12 +1155,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_first is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_first_4.wav": [[0.12, 4.71], [5.13, 7.23]]}
     },
     {
       "id": "tree_hint_attic_1",
-      "triggers": [],
+      "triggers": ["tree_hint_attic"],
       "sets": [],
       "text": ["I have a feeling about the attic.", "Up high, under the roof. A mate is hiding there."],
       "recordings": ["tree_hint_attic_1.wav"],
@@ -1168,12 +1168,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_attic is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_attic_1.wav": [[0.12, 2.27], [2.69, 8.17]]}
     },
     {
       "id": "tree_hint_attic_2",
-      "triggers": [],
+      "triggers": ["tree_hint_attic"],
       "sets": [],
       "text": ["Somewhere up in the attic, a sock is lonely.", "Dust has a way of hiding things."],
       "recordings": ["tree_hint_attic_2.wav"],
@@ -1181,12 +1181,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_attic is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_attic_2.wav": [[0.12, 3.36], [3.78, 6.06]]}
     },
     {
       "id": "tree_hint_attic_3",
-      "triggers": [],
+      "triggers": ["tree_hint_attic"],
       "sets": [],
       "text": ["The attic keeps everything, eventually.", "Even socks."],
       "recordings": ["tree_hint_attic_3.wav"],
@@ -1194,12 +1194,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_attic is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_attic_3.wav": [[0.12, 3.14], [3.56, 4.83]]}
     },
     {
       "id": "tree_hint_attic_4",
-      "triggers": [],
+      "triggers": ["tree_hint_attic"],
       "sets": [],
       "text": ["A mate is up under the roof, I think.", "The attic is a good place to be forgotten."],
       "recordings": ["tree_hint_attic_4.wav"],
@@ -1207,12 +1207,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_hint_attic is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_hint_attic_4.wav": [[0.12, 2.9], [3.32, 6.42]]}
     },
     {
       "id": "tree_tip_throw_1",
-      "triggers": [],
+      "triggers": ["tree_tip_throw"],
       "sets": [],
       "text": ["A word of advice.", "A thrown pair lands in its cabinet, if you aim well.", "Don't aim at your friends."],
       "recordings": ["tree_tip_throw_1.wav"],
@@ -1220,12 +1220,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_tip_throw is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_tip_throw_1.wav": [[0.12, 1.71], [2.13, 5.98], [6.4, 8.44]]}
     },
     {
       "id": "tree_tip_part_1",
-      "triggers": [],
+      "triggers": ["tree_tip_part"],
       "sets": [],
       "text": ["A part!", "The old machine could do with one of those.", "It would calm down, a little, once it's fitted."],
       "recordings": ["tree_tip_part_1.wav"],
@@ -1233,12 +1233,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_tip_part is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_tip_part_1.wav": [[0.12, 1.92], [2.34, 4.75], [5.17, 8.4]]}
     },
     {
       "id": "tree_tip_part_2",
-      "triggers": [],
+      "triggers": ["tree_tip_part"],
       "sets": [],
       "text": ["That shiny thing lying about is a part of the washing machine.", "It does so love to be fixed."],
       "recordings": ["tree_tip_part_2.wav"],
@@ -1246,7 +1246,7 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_tip_part is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_tip_part_2.wav": [[0.12, 3.83], [4.25, 6.35]]}
     },
     {
@@ -1303,7 +1303,7 @@
     },
     {
       "id": "tree_part_basement_1",
-      "triggers": [],
+      "triggers": ["tree_part_basement"],
       "sets": [],
       "text": ["That new filter did the machine some good.", "It grumbles more quietly now."],
       "recordings": ["tree_part_basement_1.wav"],
@@ -1311,12 +1311,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_basement is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_basement_1.wav": [[0.12, 2.77], [3.19, 5.23]]}
     },
     {
       "id": "tree_part_basement_2",
-      "triggers": [],
+      "triggers": ["tree_part_basement"],
       "sets": [],
       "text": ["Ever since that part went in, the machine has been a little less sour.", "Progress."],
       "recordings": ["tree_part_basement_2.wav"],
@@ -1324,12 +1324,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_basement is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_basement_2.wav": [[0.12, 4.75], [5.17, 6.19]]}
     },
     {
       "id": "tree_part_basement_3",
-      "triggers": [],
+      "triggers": ["tree_part_basement"],
       "sets": [],
       "text": ["Well fitted, that first part.", "It will make a difference. Eventually."],
       "recordings": ["tree_part_basement_3.wav"],
@@ -1337,12 +1337,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_basement is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_basement_3.wav": [[0.12, 2.91], [3.33, 6.37]]}
     },
     {
       "id": "tree_part_basement_4",
-      "triggers": [],
+      "triggers": ["tree_part_basement"],
       "sets": [],
       "text": ["The machine is quieter since the filter.", "I won't say it's happier. It's a machine."],
       "recordings": ["tree_part_basement_4.wav"],
@@ -1350,12 +1350,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_basement is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_basement_4.wav": [[0.12, 2.61], [3.03, 6.92]]}
     },
     {
       "id": "tree_part_ground_1",
-      "triggers": [],
+      "triggers": ["tree_part_ground"],
       "sets": [],
       "text": ["The machine only coughs now, since the second part.", "It used to roar."],
       "recordings": ["tree_part_ground_1.wav"],
@@ -1363,12 +1363,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_ground is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_ground_1.wav": [[0.12, 4.06], [4.48, 6.08]]}
     },
     {
       "id": "tree_part_ground_2",
-      "triggers": [],
+      "triggers": ["tree_part_ground"],
       "sets": [],
       "text": ["That second part went in nicely.", "The machine has been listening to you, I think."],
       "recordings": ["tree_part_ground_2.wav"],
@@ -1376,12 +1376,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_ground is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_ground_2.wav": [[0.12, 2.53], [2.95, 6.23]]}
     },
     {
       "id": "tree_part_ground_3",
-      "triggers": [],
+      "triggers": ["tree_part_ground"],
       "sets": [],
       "text": ["Another part in, and the old machine only mutters.", "I hardly hear it from here."],
       "recordings": ["tree_part_ground_3.wav"],
@@ -1389,12 +1389,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_ground is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_ground_3.wav": [[0.12, 4.06], [4.48, 6.91]]}
     },
     {
       "id": "tree_part_ground_4",
-      "triggers": [],
+      "triggers": ["tree_part_ground"],
       "sets": [],
       "text": ["The machine is quieter since the motor.", "Not quiet. Quieter."],
       "recordings": ["tree_part_ground_4.wav"],
@@ -1402,12 +1402,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_ground is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_ground_4.wav": [[0.12, 2.43], [2.85, 7.5]]}
     },
     {
       "id": "tree_part_first_1",
-      "triggers": [],
+      "triggers": ["tree_part_first"],
       "sets": [],
       "text": ["The machine is almost behaving, since that third part.", "I could get used to it."],
       "recordings": ["tree_part_first_1.wav"],
@@ -1415,12 +1415,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_first is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_first_1.wav": [[0.12, 4.03], [4.45, 6.06]]}
     },
     {
       "id": "tree_part_first_2",
-      "triggers": [],
+      "triggers": ["tree_part_first"],
       "sets": [],
       "text": ["That drum belt went in nicely.", "The machine's mood is lifting.", "Or I'm imagining it. I do, sometimes."],
       "recordings": ["tree_part_first_2.wav"],
@@ -1428,12 +1428,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_first is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_first_2.wav": [[0.12, 2.7], [3.12, 5.17], [5.59, 10.37]]}
     },
     {
       "id": "tree_part_first_3",
-      "triggers": [],
+      "triggers": ["tree_part_first"],
       "sets": [],
       "text": ["The machine hums now, rather than rattles. Hmm.", "Strange to hear."],
       "recordings": ["tree_part_first_3.wav"],
@@ -1441,12 +1441,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_first is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_first_3.wav": [[0.12, 4.28], [4.7, 6.27]]}
     },
     {
       "id": "tree_part_first_4",
-      "triggers": [],
+      "triggers": ["tree_part_first"],
       "sets": [],
       "text": ["Three parts in, and the machine has nearly stopped complaining.", "Nearly."],
       "recordings": ["tree_part_first_4.wav"],
@@ -1454,12 +1454,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_first is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_first_4.wav": [[0.12, 4.57], [4.99, 6.83]]}
     },
     {
       "id": "tree_part_attic_1",
-      "triggers": [],
+      "triggers": ["tree_part_attic"],
       "sets": [],
       "text": ["Barely a rattle left in it, since the fourth part.", "Imagine that."],
       "recordings": ["tree_part_attic_1.wav"],
@@ -1467,12 +1467,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_attic is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_attic_1.wav": [[0.12, 3.66], [4.08, 5.4]]}
     },
     {
       "id": "tree_part_attic_2",
-      "triggers": [],
+      "triggers": ["tree_part_attic"],
       "sets": [],
       "text": ["That fourth part, all the way up and back again.", "You earned that one."],
       "recordings": ["tree_part_attic_2.wav"],
@@ -1480,12 +1480,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_attic is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_attic_2.wav": [[0.12, 3.52], [3.94, 5.23]]}
     },
     {
       "id": "tree_part_attic_3",
-      "triggers": [],
+      "triggers": ["tree_part_attic"],
       "sets": [],
       "text": ["The machine sounds like a machine, not a thunderstorm.", "I miss the thunder, a little."],
       "recordings": ["tree_part_attic_3.wav"],
@@ -1493,12 +1493,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_attic is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_attic_3.wav": [[0.12, 4.57], [4.99, 6.96]]}
     },
     {
       "id": "tree_part_attic_4",
-      "triggers": [],
+      "triggers": ["tree_part_attic"],
       "sets": [],
       "text": ["Four parts in.", "It only wants one more thing, I think. Kindness.", "And a part."],
       "recordings": ["tree_part_attic_4.wav"],
@@ -1506,12 +1506,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_part_attic is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_part_attic_4.wav": [[0.12, 1.61], [2.03, 6.53], [6.95, 7.97]]}
     },
     {
       "id": "tree_floor_ground_1",
-      "triggers": [],
+      "triggers": ["tree_floor_ground"],
       "sets": [],
       "text": ["Fresh floors, fresh socks.", "The ground floor has more house in it than I remembered."],
       "recordings": ["tree_floor_ground_1.wav"],
@@ -1519,12 +1519,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_floor_ground is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_floor_ground_1.wav": [[0.12, 4.23], [4.65, 7.54]]}
     },
     {
       "id": "tree_floor_ground_2",
-      "triggers": [],
+      "triggers": ["tree_floor_ground"],
       "sets": [],
       "text": ["The door downstairs stands open now.", "There is more house than there was a while ago."],
       "recordings": ["tree_floor_ground_2.wav"],
@@ -1532,12 +1532,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_floor_ground is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_floor_ground_2.wav": [[0.12, 2.95], [3.37, 5.94]]}
     },
     {
       "id": "tree_floor_ground_3",
-      "triggers": [],
+      "triggers": ["tree_floor_ground"],
       "sets": [],
       "text": ["It's odd, having the ground floor to wander.", "It smells of old wood and kitchens."],
       "recordings": ["tree_floor_ground_3.wav"],
@@ -1545,12 +1545,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_floor_ground is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_floor_ground_3.wav": [[0.12, 3.55], [3.97, 6.42]]}
     },
     {
       "id": "tree_floor_ground_4",
-      "triggers": [],
+      "triggers": ["tree_floor_ground"],
       "sets": [],
       "text": ["The ground floor is open to you now.", "I've watched it from here for years."],
       "recordings": ["tree_floor_ground_4.wav"],
@@ -1558,12 +1558,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_floor_ground is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_floor_ground_4.wav": [[0.12, 2.53], [2.95, 5.55]]}
     },
     {
       "id": "tree_floor_first_1",
-      "triggers": [],
+      "triggers": ["tree_floor_first"],
       "sets": [],
       "text": ["Upstairs is open now.", "The stairs are steep, but you are not old yet."],
       "recordings": ["tree_floor_first_1.wav"],
@@ -1571,12 +1571,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_floor_first is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_floor_first_1.wav": [[0.12, 2.24], [2.66, 6.08]]}
     },
     {
       "id": "tree_floor_first_2",
-      "triggers": [],
+      "triggers": ["tree_floor_first"],
       "sets": [],
       "text": ["The first floor is open at last.", "Mind the little ones' toys, if you visit."],
       "recordings": ["tree_floor_first_2.wav"],
@@ -1584,12 +1584,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_floor_first is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_floor_first_2.wav": [[0.12, 2.8], [3.22, 6.33]]}
     },
     {
       "id": "tree_floor_first_3",
-      "triggers": [],
+      "triggers": ["tree_floor_first"],
       "sets": [],
       "text": ["There are beds and wardrobes up on the first floor.", "Quite the adventure for a sock."],
       "recordings": ["tree_floor_first_3.wav"],
@@ -1597,12 +1597,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_floor_first is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_floor_first_3.wav": [[0.12, 3.02], [3.44, 5.51]]}
     },
     {
       "id": "tree_floor_first_4",
-      "triggers": [],
+      "triggers": ["tree_floor_first"],
       "sets": [],
       "text": ["The first floor, at last.", "I remember when the landing creaked in a friendly way."],
       "recordings": ["tree_floor_first_4.wav"],
@@ -1610,12 +1610,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_floor_first is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_floor_first_4.wav": [[0.12, 2.24], [2.66, 6.13]]}
     },
     {
       "id": "tree_floor_attic_1",
-      "triggers": [],
+      "triggers": ["tree_floor_attic"],
       "sets": [],
       "text": ["The attic is open.", "Dusty, and full of old things. I fit right in."],
       "recordings": ["tree_floor_attic_1.wav"],
@@ -1623,12 +1623,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_floor_attic is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_floor_attic_1.wav": [[0.12, 1.82], [2.24, 6.85]]}
     },
     {
       "id": "tree_floor_attic_2",
-      "triggers": [],
+      "triggers": ["tree_floor_attic"],
       "sets": [],
       "text": ["Up in the attic now.", "The cobwebs have been there longer than me, mind."],
       "recordings": ["tree_floor_attic_2.wav"],
@@ -1636,12 +1636,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_floor_attic is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_floor_attic_2.wav": [[0.12, 2.24], [2.66, 6.6]]}
     },
     {
       "id": "tree_floor_attic_3",
-      "triggers": [],
+      "triggers": ["tree_floor_attic"],
       "sets": [],
       "text": ["The attic is open.", "It smells of summers I almost remember."],
       "recordings": ["tree_floor_attic_3.wav"],
@@ -1649,12 +1649,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_floor_attic is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_floor_attic_3.wav": [[0.12, 1.56], [1.98, 4.86]]}
     },
     {
       "id": "tree_floor_attic_4",
-      "triggers": [],
+      "triggers": ["tree_floor_attic"],
       "sets": [],
       "text": ["Something about the attic always made me feel young.", "Tall, anyway."],
       "recordings": ["tree_floor_attic_4.wav"],
@@ -1662,51 +1662,12 @@
       "order": 0,
       "waits": false,
       "placeholder": true,
-      "note": "its trigger tree_floor_attic is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_floor_attic_4.wav": [[0.12, 3.18], [3.6, 5.48]]}
     },
     {
-      "id": "tree_final_wash_1",
-      "triggers": [],
-      "sets": [],
-      "text": ["That's it, then. One last wash.", "After this, the house is quiet."],
-      "recordings": ["tree_final_wash_1.wav"],
-      "moods": [],
-      "order": 0,
-      "waits": true,
-      "placeholder": true,
-      "note": "its trigger tree_final_wash is core/133's (the Old Tree's help)",
-      "timing": {"tree_final_wash_1.wav": [[0.12, 3.97], [4.39, 6.98]]}
-    },
-    {
-      "id": "tree_final_wash_2",
-      "triggers": [],
-      "sets": [],
-      "text": ["The final wash.", "I've waited a long time to see this."],
-      "recordings": ["tree_final_wash_2.wav"],
-      "moods": [],
-      "order": 0,
-      "waits": true,
-      "placeholder": true,
-      "note": "its trigger tree_final_wash is core/133's (the Old Tree's help)",
-      "timing": {"tree_final_wash_2.wav": [[0.12, 1.34], [1.76, 4.42]]}
-    },
-    {
-      "id": "tree_final_wash_3",
-      "triggers": [],
-      "sets": [],
-      "text": ["Wash well. And well done. All of it."],
-      "recordings": ["tree_final_wash_3.wav"],
-      "moods": [],
-      "order": 0,
-      "waits": true,
-      "placeholder": true,
-      "note": "its trigger tree_final_wash is core/133's (the Old Tree's help)",
-      "timing": {"tree_final_wash_3.wav": [[0.12, 5.58]]}
-    },
-    {
       "id": "tree_peace_1",
-      "triggers": [],
+      "triggers": ["tree_peace"],
       "sets": [],
       "text": ["The machine is mended.", "I suppose I owe it an apology. A short one."],
       "recordings": ["tree_peace_1.wav"],
@@ -1714,12 +1675,12 @@
       "order": 0,
       "waits": true,
       "placeholder": true,
-      "note": "its trigger tree_peace is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_peace_1.wav": [[0.12, 1.76], [2.18, 6.44]]}
     },
     {
       "id": "tree_peace_2",
-      "triggers": [],
+      "triggers": ["tree_peace"],
       "sets": [],
       "text": ["There. It's quiet.", "I think I miss the rumbling, a little.", "Don't tell it."],
       "recordings": ["tree_peace_2.wav"],
@@ -1727,12 +1688,12 @@
       "order": 0,
       "waits": true,
       "placeholder": true,
-      "note": "its trigger tree_peace is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_peace_2.wav": [[0.12, 2.18], [2.6, 5.38], [5.8, 6.97]]}
     },
     {
       "id": "tree_peace_3",
-      "triggers": [],
+      "triggers": ["tree_peace"],
       "sets": [],
       "text": ["Mended, at last.", "We'll be friends, the washer and I.", "After all these winters, it's about time."],
       "recordings": ["tree_peace_3.wav"],
@@ -1740,7 +1701,7 @@
       "order": 0,
       "waits": true,
       "placeholder": true,
-      "note": "its trigger tree_peace is core/133's (the Old Tree's help)",
+      "note": "",
       "timing": {"tree_peace_3.wav": [[0.12, 2.44], [2.86, 5.46], [5.88, 8.79]]}
     },
     {

@@ -42,6 +42,7 @@
 [ext_resource type="AudioStream" uid="uid://3xiwo13nqegy" path="res://assets/voice/old_tree/tree_bought_5.wav" id="40_1jeda"]
 [ext_resource type="AudioStream" uid="uid://hsyumt167uoe" path="res://assets/voice/old_tree/tree_bought_6.wav" id="41_1xxoi"]
 [ext_resource type="AudioStream" uid="uid://xpagmiexj85g" path="res://assets/voice/old_tree/tree_grumble_1.wav" id="42_cshol"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_grumble.tres" id="43_baylg"]
 [ext_resource type="AudioStream" uid="uid://cu5psgspm1kbs" path="res://assets/voice/old_tree/tree_grumble_2.wav" id="43_i0ciu"]
 [ext_resource type="AudioStream" uid="uid://djr3x1d0qvun5" path="res://assets/voice/old_tree/tree_grumble_3.wav" id="44_wnxwh"]
 [ext_resource type="AudioStream" uid="uid://bnakssklp7xu2" path="res://assets/voice/old_tree/tree_grumble_4.wav" id="45_qxd0j"]
@@ -49,79 +50,96 @@
 [ext_resource type="AudioStream" uid="uid://j3r8wuc5an6q" path="res://assets/voice/old_tree/tree_stage_half_1.wav" id="47_f2im7"]
 [ext_resource type="AudioStream" uid="uid://ctjiollxj5tfl" path="res://assets/voice/old_tree/tree_stage_half_2.wav" id="48_hgi7v"]
 [ext_resource type="AudioStream" uid="uid://bprh0opg5rptu" path="res://assets/voice/old_tree/tree_stage_half_3.wav" id="49_qlqbp"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_stage_half.tres" id="49_qqnh8"]
 [ext_resource type="AudioStream" uid="uid://02qb4spgxbkg" path="res://assets/voice/old_tree/tree_stage_most_1.wav" id="50_4g6jg"]
 [ext_resource type="AudioStream" uid="uid://c5hjsrror46sl" path="res://assets/voice/old_tree/tree_stage_most_2.wav" id="51_l4aea"]
 [ext_resource type="AudioStream" uid="uid://fy3ndbjsy31j" path="res://assets/voice/old_tree/tree_stage_most_3.wav" id="52_ikdy7"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_stage_most.tres" id="53_imadg"]
 [ext_resource type="AudioStream" uid="uid://tx3xwk3bwxgy" path="res://assets/voice/old_tree/tree_stage_last_1.wav" id="53_o6r3k"]
 [ext_resource type="AudioStream" uid="uid://dvvu1qis02ohv" path="res://assets/voice/old_tree/tree_stage_last_2.wav" id="54_koric"]
 [ext_resource type="AudioStream" uid="uid://cvctmbtldcsay" path="res://assets/voice/old_tree/tree_stage_last_3.wav" id="55_xpmbf"]
 [ext_resource type="AudioStream" uid="uid://csvsmdccpb7m3" path="res://assets/voice/old_tree/tree_cabinet_laundry_1.wav" id="56_6xrs5"]
 [ext_resource type="AudioStream" uid="uid://63ymmbchpfuy" path="res://assets/voice/old_tree/tree_cabinet_laundry_2.wav" id="57_exkd3"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_stage_last.tres" id="57_tvhhs"]
 [ext_resource type="AudioStream" uid="uid://cidpn8xr27f7v" path="res://assets/voice/old_tree/tree_cabinet_laundry_3.wav" id="58_e1rvo"]
 [ext_resource type="AudioStream" uid="uid://du0ny64msdtr3" path="res://assets/voice/old_tree/tree_cabinet_laundry_4.wav" id="59_844ss"]
 [ext_resource type="AudioStream" uid="uid://c20r1sfefxboh" path="res://assets/voice/old_tree/tree_cabinet_garage_1.wav" id="60_gstf6"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_laundry.tres" id="61_a5fs5"]
 [ext_resource type="AudioStream" uid="uid://cxos1tbbsd6xk" path="res://assets/voice/old_tree/tree_cabinet_garage_2.wav" id="61_sl3r5"]
 [ext_resource type="AudioStream" uid="uid://m8jc276vxt4g" path="res://assets/voice/old_tree/tree_cabinet_garage_3.wav" id="62_3jj5j"]
 [ext_resource type="AudioStream" uid="uid://rcjo2gxoagcm" path="res://assets/voice/old_tree/tree_cabinet_garage_4.wav" id="63_c06w5"]
 [ext_resource type="AudioStream" uid="uid://bauj4ix5q5pvd" path="res://assets/voice/old_tree/tree_cabinet_kitchen_1.wav" id="64_ggasp"]
 [ext_resource type="AudioStream" uid="uid://cvla8a8jj60jr" path="res://assets/voice/old_tree/tree_cabinet_kitchen_2.wav" id="65_toy6q"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_garage.tres" id="66_6wnad"]
 [ext_resource type="AudioStream" uid="uid://dwo33bel42613" path="res://assets/voice/old_tree/tree_cabinet_kitchen_3.wav" id="66_8djmv"]
 [ext_resource type="AudioStream" uid="uid://ybwiu8ctvpxq" path="res://assets/voice/old_tree/tree_cabinet_kitchen_4.wav" id="67_fdrwb"]
 [ext_resource type="AudioStream" uid="uid://bp7er71djf4xp" path="res://assets/voice/old_tree/tree_cabinet_living_1.wav" id="68_ow8ry"]
 [ext_resource type="AudioStream" uid="uid://t2aiebwgajnx" path="res://assets/voice/old_tree/tree_cabinet_living_2.wav" id="69_gt8nq"]
 [ext_resource type="AudioStream" uid="uid://by13ehrfvyffc" path="res://assets/voice/old_tree/tree_cabinet_living_3.wav" id="70_g8yv1"]
 [ext_resource type="AudioStream" uid="uid://b7f6nh0j0rhbn" path="res://assets/voice/old_tree/tree_cabinet_living_4.wav" id="71_bv3lv"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_kitchen.tres" id="71_wsxac"]
 [ext_resource type="AudioStream" uid="uid://dtfk4psqdisqx" path="res://assets/voice/old_tree/tree_cabinet_kids_north_1.wav" id="72_7slqc"]
 [ext_resource type="AudioStream" uid="uid://dtigabtrysexx" path="res://assets/voice/old_tree/tree_cabinet_kids_north_2.wav" id="73_w60h5"]
 [ext_resource type="AudioStream" uid="uid://i46x2o1yqenm" path="res://assets/voice/old_tree/tree_cabinet_kids_north_3.wav" id="74_ebtp2"]
 [ext_resource type="AudioStream" uid="uid://khtxwbecird2" path="res://assets/voice/old_tree/tree_cabinet_kids_north_4.wav" id="75_waojd"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_living.tres" id="76_w2qn0"]
 [ext_resource type="AudioStream" uid="uid://tcwlgemtcpi0" path="res://assets/voice/old_tree/tree_cabinet_kids_east_1.wav" id="76_x5gip"]
 [ext_resource type="AudioStream" uid="uid://c14u34xxcxbn7" path="res://assets/voice/old_tree/tree_cabinet_kids_east_2.wav" id="77_73x1p"]
 [ext_resource type="AudioStream" uid="uid://bpatcmh5ysym2" path="res://assets/voice/old_tree/tree_cabinet_kids_east_3.wav" id="78_1tucu"]
 [ext_resource type="AudioStream" uid="uid://v28na25r8ma6" path="res://assets/voice/old_tree/tree_cabinet_kids_east_4.wav" id="79_1m2hu"]
 [ext_resource type="AudioStream" uid="uid://bnhrr4rrlsyth" path="res://assets/voice/old_tree/tree_cabinet_loft_west_1.wav" id="80_33aeu"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_kids_north.tres" id="81_k0rvm"]
 [ext_resource type="AudioStream" uid="uid://bc5t0brg1opp8" path="res://assets/voice/old_tree/tree_cabinet_loft_west_2.wav" id="81_uywod"]
 [ext_resource type="AudioStream" uid="uid://bnhprhmiy4hjf" path="res://assets/voice/old_tree/tree_cabinet_loft_west_3.wav" id="82_tmlu8"]
 [ext_resource type="AudioStream" uid="uid://cu87w72k186vc" path="res://assets/voice/old_tree/tree_cabinet_loft_west_4.wav" id="83_1sp50"]
 [ext_resource type="AudioStream" uid="uid://cfrcfsff81s7k" path="res://assets/voice/old_tree/tree_cabinet_loft_east_1.wav" id="84_ju2kb"]
 [ext_resource type="AudioStream" uid="uid://dlr81met3ktt3" path="res://assets/voice/old_tree/tree_cabinet_loft_east_2.wav" id="85_jd6ja"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_kids_east.tres" id="86_lkm7y"]
 [ext_resource type="AudioStream" uid="uid://js81byok5a0y" path="res://assets/voice/old_tree/tree_cabinet_loft_east_3.wav" id="86_qsgvx"]
 [ext_resource type="AudioStream" uid="uid://taff4h4c50vi" path="res://assets/voice/old_tree/tree_cabinet_loft_east_4.wav" id="87_vonbh"]
 [ext_resource type="AudioStream" uid="uid://dyxwfc0djj1py" path="res://assets/voice/old_tree/tree_hint_basement_1.wav" id="88_7n5x3"]
 [ext_resource type="AudioStream" uid="uid://c74vf4ir2mpmj" path="res://assets/voice/old_tree/tree_hint_basement_2.wav" id="89_orvcy"]
 [ext_resource type="AudioStream" uid="uid://d15btm3uvbl7" path="res://assets/voice/old_tree/tree_hint_basement_3.wav" id="90_yh0gs"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_loft_west.tres" id="91_bipwe"]
 [ext_resource type="AudioStream" uid="uid://cxchhjopv7qwq" path="res://assets/voice/old_tree/tree_hint_basement_4.wav" id="91_nbfl6"]
 [ext_resource type="AudioStream" uid="uid://beunw2y0ihdjn" path="res://assets/voice/old_tree/tree_hint_ground_1.wav" id="92_cuht3"]
 [ext_resource type="AudioStream" uid="uid://c7ojjrkq3yako" path="res://assets/voice/old_tree/tree_hint_ground_2.wav" id="93_pqhgp"]
 [ext_resource type="AudioStream" uid="uid://bkw6yankgpl4w" path="res://assets/voice/old_tree/tree_hint_ground_3.wav" id="94_2acap"]
 [ext_resource type="AudioStream" uid="uid://pibv5v0vnwgf" path="res://assets/voice/old_tree/tree_hint_ground_4.wav" id="95_fqeq6"]
 [ext_resource type="AudioStream" uid="uid://c02oythqtjpwc" path="res://assets/voice/old_tree/tree_hint_first_1.wav" id="96_uvs0g"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_loft_east.tres" id="96_wm6gn"]
 [ext_resource type="AudioStream" uid="uid://dx0pcyddbyjom" path="res://assets/voice/old_tree/tree_hint_first_2.wav" id="97_l1si1"]
 [ext_resource type="AudioStream" uid="uid://dfe0fjdhwoog8" path="res://assets/voice/old_tree/tree_hint_first_3.wav" id="98_fx20a"]
 [ext_resource type="AudioStream" uid="uid://c3dyr6scuqysf" path="res://assets/voice/old_tree/tree_hint_first_4.wav" id="99_opun7"]
 [ext_resource type="AudioStream" uid="uid://p8p8i8igcwio" path="res://assets/voice/old_tree/tree_hint_attic_1.wav" id="100_yblbx"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_hint_basement.tres" id="101_1jeda"]
 [ext_resource type="AudioStream" uid="uid://c820jp5sh5v8e" path="res://assets/voice/old_tree/tree_hint_attic_2.wav" id="101_w0ptl"]
 [ext_resource type="AudioStream" uid="uid://sp2d0px2ek2f" path="res://assets/voice/old_tree/tree_hint_attic_3.wav" id="102_fki6a"]
 [ext_resource type="AudioStream" uid="uid://bru68a7ih0j1g" path="res://assets/voice/old_tree/tree_hint_attic_4.wav" id="103_ivwxs"]
 [ext_resource type="AudioStream" uid="uid://dguaebncwvy7y" path="res://assets/voice/old_tree/tree_tip_throw_1.wav" id="104_sbucs"]
 [ext_resource type="AudioStream" uid="uid://bkjvq4ysilhyv" path="res://assets/voice/old_tree/tree_tip_part_1.wav" id="105_7crhp"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_hint_ground.tres" id="106_1xxoi"]
 [ext_resource type="AudioStream" uid="uid://bi5ts4mpip4pn" path="res://assets/voice/old_tree/tree_tip_part_2.wav" id="106_ebx7b"]
 [ext_resource type="AudioStream" uid="uid://bhom8ans2r7pb" path="res://assets/voice/old_tree/tree_tip_vacuum_1.wav" id="107_tfvuo"]
 [ext_resource type="AudioStream" uid="uid://cief07jj7858f" path="res://assets/voice/old_tree/tree_tip_vacuum_2.wav" id="108_k5d54"]
 [ext_resource type="AudioStream" uid="uid://x5vcsw00k0ve" path="res://assets/voice/old_tree/tree_tip_vacuum_3.wav" id="109_knfkk"]
 [ext_resource type="AudioStream" uid="uid://f5wv5qx10p23" path="res://assets/voice/old_tree/tree_tip_elevator_1.wav" id="110_wbatc"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_hint_first.tres" id="111_cshol"]
 [ext_resource type="AudioStream" uid="uid://curdyf0ponhlv" path="res://assets/voice/old_tree/tree_part_basement_1.wav" id="111_o4y20"]
 [ext_resource type="AudioStream" uid="uid://b2hegirofnp81" path="res://assets/voice/old_tree/tree_part_basement_2.wav" id="112_8p60b"]
 [ext_resource type="AudioStream" uid="uid://cq5afrfihi576" path="res://assets/voice/old_tree/tree_part_basement_3.wav" id="113_sfwfs"]
 [ext_resource type="AudioStream" uid="uid://oreila8ccuuj" path="res://assets/voice/old_tree/tree_part_basement_4.wav" id="114_ohl3w"]
 [ext_resource type="AudioStream" uid="uid://c6yn0w4gqy7lf" path="res://assets/voice/old_tree/tree_part_ground_1.wav" id="115_co0rj"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_hint_attic.tres" id="116_i0ciu"]
 [ext_resource type="AudioStream" uid="uid://b8o4o4201kpsk" path="res://assets/voice/old_tree/tree_part_ground_2.wav" id="116_oidjh"]
 [ext_resource type="AudioStream" uid="uid://cjvr6ublyea8q" path="res://assets/voice/old_tree/tree_part_ground_3.wav" id="117_ylo37"]
 [ext_resource type="AudioStream" uid="uid://dbiq5dhjg533t" path="res://assets/voice/old_tree/tree_part_ground_4.wav" id="118_a2cx4"]
 [ext_resource type="AudioStream" uid="uid://bxbk4ndpuj22b" path="res://assets/voice/old_tree/tree_part_first_1.wav" id="119_uck7b"]
 [ext_resource type="AudioStream" uid="uid://d3pky0tsebb0s" path="res://assets/voice/old_tree/tree_part_first_2.wav" id="120_mjxj7"]
 [ext_resource type="AudioStream" uid="uid://jsgb40x6ggdl" path="res://assets/voice/old_tree/tree_part_first_3.wav" id="121_81tw3"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_tip_throw.tres" id="121_wnxwh"]
 [ext_resource type="AudioStream" uid="uid://d2ca2mlqr0706" path="res://assets/voice/old_tree/tree_part_first_4.wav" id="122_pxs1h"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_tip_part.tres" id="123_qxd0j"]
 [ext_resource type="AudioStream" uid="uid://cfev1nnoc4myt" path="res://assets/voice/old_tree/tree_part_attic_1.wav" id="123_sje67"]
 [ext_resource type="AudioStream" uid="uid://dco64nvlmbj2" path="res://assets/voice/old_tree/tree_part_attic_2.wav" id="124_iifct"]
 [ext_resource type="AudioStream" uid="uid://dt81eakdqux28" path="res://assets/voice/old_tree/tree_part_attic_3.wav" id="125_tsvsv"]
@@ -130,33 +148,38 @@
 [ext_resource type="AudioStream" uid="uid://i5b5yk4osp74" path="res://assets/voice/old_tree/tree_floor_ground_2.wav" id="128_7hq5n"]
 [ext_resource type="AudioStream" uid="uid://bh1f7kjqdgosf" path="res://assets/voice/old_tree/tree_floor_ground_3.wav" id="129_t85re"]
 [ext_resource type="AudioStream" uid="uid://cxhv6tsslboxy" path="res://assets/voice/old_tree/tree_floor_ground_4.wav" id="130_33jwt"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_part_basement.tres" id="130_ksoog"]
 [ext_resource type="AudioStream" uid="uid://bqku2kyysiu3s" path="res://assets/voice/old_tree/tree_floor_first_1.wav" id="131_x00l1"]
 [ext_resource type="AudioStream" uid="uid://bpdrmyimawgh" path="res://assets/voice/old_tree/tree_floor_first_2.wav" id="132_digtr"]
 [ext_resource type="AudioStream" uid="uid://bm5ch7mq8fybm" path="res://assets/voice/old_tree/tree_floor_first_3.wav" id="133_hgra8"]
 [ext_resource type="AudioStream" uid="uid://bj7e412giuqtt" path="res://assets/voice/old_tree/tree_floor_first_4.wav" id="134_yrex8"]
 [ext_resource type="AudioStream" uid="uid://4kpmh57jgq4t" path="res://assets/voice/old_tree/tree_floor_attic_1.wav" id="135_0vrbi"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_part_ground.tres" id="135_f2im7"]
 [ext_resource type="AudioStream" uid="uid://4nxwb57icedg" path="res://assets/voice/old_tree/tree_floor_attic_2.wav" id="136_qoe40"]
 [ext_resource type="AudioStream" uid="uid://c46ka8rum2l0c" path="res://assets/voice/old_tree/tree_floor_attic_3.wav" id="137_18g45"]
 [ext_resource type="AudioStream" uid="uid://dq6yfocpiu41g" path="res://assets/voice/old_tree/tree_floor_attic_4.wav" id="138_xpstj"]
-[ext_resource type="AudioStream" uid="uid://gcm3p0petdbi" path="res://assets/voice/old_tree/tree_final_wash_1.wav" id="139_e2485"]
-[ext_resource type="AudioStream" uid="uid://bvvn82fhyue3j" path="res://assets/voice/old_tree/tree_final_wash_2.wav" id="140_5wg3w"]
-[ext_resource type="AudioStream" uid="uid://cqsl7kbnvxnc1" path="res://assets/voice/old_tree/tree_final_wash_3.wav" id="141_8uk51"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_part_first.tres" id="140_hgi7v"]
 [ext_resource type="AudioStream" uid="uid://ntvvpch3dryi" path="res://assets/voice/old_tree/tree_peace_1.wav" id="142_0w5u0"]
 [ext_resource type="AudioStream" uid="uid://1f1wv6we43aa" path="res://assets/voice/old_tree/tree_peace_2.wav" id="143_g0ahr"]
 [ext_resource type="AudioStream" uid="uid://ct0plv5s666ks" path="res://assets/voice/old_tree/tree_peace_3.wav" id="144_6xm3c"]
 [ext_resource type="AudioStream" uid="uid://damnai02viu0l" path="res://assets/voice/old_tree/tree_presents_ready_1.wav" id="145_37g6c"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_part_attic.tres" id="145_qlqbp"]
 [ext_resource type="AudioStream" uid="uid://bjsn8scd3xov3" path="res://assets/voice/old_tree/tree_presents_ready_2.wav" id="146_weun0"]
 [ext_resource type="AudioStream" uid="uid://cdxqmx3ymqwsw" path="res://assets/voice/old_tree/tree_presents_ready_3.wav" id="147_3gnij"]
 [ext_resource type="AudioStream" uid="uid://dyqdstdh462hi" path="res://assets/voice/old_tree/tree_presents_1.wav" id="148_ipycp"]
 [ext_resource type="AudioStream" uid="uid://g17j78vy36sh" path="res://assets/voice/old_tree/tree_presents_2.wav" id="149_g44cv"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_floor_ground.tres" id="150_4g6jg"]
 [ext_resource type="AudioStream" uid="uid://dofp8wkwse87s" path="res://assets/voice/old_tree/tree_presents_3.wav" id="150_gwkca"]
 [ext_resource type="AudioStream" uid="uid://bohuasook6hvq" path="res://assets/voice/old_tree/tree_presents_4.wav" id="151_csmxm"]
 [ext_resource type="AudioStream" uid="uid://hf2nt5n7aa45" path="res://assets/voice/old_tree/tree_present_taken_1.wav" id="152_g6ix0"]
 [ext_resource type="AudioStream" uid="uid://drcv2kuwg40k0" path="res://assets/voice/old_tree/tree_present_taken_2.wav" id="153_umvn0"]
 [ext_resource type="AudioStream" uid="uid://cjgegckbqh3br" path="res://assets/voice/old_tree/tree_present_taken_3.wav" id="154_nskm4"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_floor_first.tres" id="155_l4aea"]
 [ext_resource type="AudioStream" uid="uid://dcc0djc8gnja" path="res://assets/voice/old_tree/tree_present_taken_4.wav" id="155_t2vxr"]
 [ext_resource type="Script" uid="uid://0spuefso45pc" path="res://game/voice/voice_bank.gd" id="156_r1q4c"]
 [ext_resource type="Resource" path="res://game/voice/speakers/old_tree.tres" id="157_skfrl"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_floor_attic.tres" id="160_ikdy7"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_peace.tres" id="169_koric"]
 
 [sub_resource type="Resource" id="seg_tree_call_1_0_0"]
 script = ExtResource("3_q8epu")
@@ -1007,6 +1030,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_grumble_1_0_0"),
 [sub_resource type="Resource" id="line_tree_grumble_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_grumble_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("43_baylg")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_GRUMBLE_1_1", "VO_TREE_GRUMBLE_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_grumble_1_0")])
@@ -1035,6 +1059,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_grumble_2_0_0"),
 [sub_resource type="Resource" id="line_tree_grumble_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_grumble_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("43_baylg")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_GRUMBLE_2_1", "VO_TREE_GRUMBLE_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_grumble_2_0")])
@@ -1069,6 +1094,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_grumble_3_0_0"),
 [sub_resource type="Resource" id="line_tree_grumble_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_grumble_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("43_baylg")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_GRUMBLE_3_1", "VO_TREE_GRUMBLE_3_2", "VO_TREE_GRUMBLE_3_3")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_grumble_3_0")])
@@ -1097,6 +1123,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_grumble_4_0_0"),
 [sub_resource type="Resource" id="line_tree_grumble_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_grumble_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("43_baylg")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_GRUMBLE_4_1", "VO_TREE_GRUMBLE_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_grumble_4_0")])
@@ -1125,6 +1152,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_grumble_5_0_0"),
 [sub_resource type="Resource" id="line_tree_grumble_5"]
 script = ExtResource("1_tmhjc")
 id = &"tree_grumble_5"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("43_baylg")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_GRUMBLE_5_1", "VO_TREE_GRUMBLE_5_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_grumble_5_0")])
@@ -1153,6 +1181,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_half_1_0_0
 [sub_resource type="Resource" id="line_tree_stage_half_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_stage_half_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("49_qqnh8")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_STAGE_HALF_1_1", "VO_TREE_STAGE_HALF_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_half_1_0")])
@@ -1181,6 +1210,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_half_2_0_0
 [sub_resource type="Resource" id="line_tree_stage_half_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_stage_half_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("49_qqnh8")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_STAGE_HALF_2_1", "VO_TREE_STAGE_HALF_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_half_2_0")])
@@ -1203,6 +1233,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_half_3_0_0
 [sub_resource type="Resource" id="line_tree_stage_half_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_stage_half_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("49_qqnh8")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_STAGE_HALF_3_1")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_half_3_0")])
@@ -1231,6 +1262,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_most_1_0_0
 [sub_resource type="Resource" id="line_tree_stage_most_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_stage_most_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("53_imadg")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_STAGE_MOST_1_1", "VO_TREE_STAGE_MOST_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_most_1_0")])
@@ -1259,6 +1291,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_most_2_0_0
 [sub_resource type="Resource" id="line_tree_stage_most_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_stage_most_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("53_imadg")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_STAGE_MOST_2_1", "VO_TREE_STAGE_MOST_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_most_2_0")])
@@ -1287,6 +1320,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_most_3_0_0
 [sub_resource type="Resource" id="line_tree_stage_most_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_stage_most_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("53_imadg")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_STAGE_MOST_3_1", "VO_TREE_STAGE_MOST_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_most_3_0")])
@@ -1309,6 +1343,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_last_1_0_0
 [sub_resource type="Resource" id="line_tree_stage_last_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_stage_last_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("57_tvhhs")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_STAGE_LAST_1_1")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_last_1_0")])
@@ -1337,6 +1372,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_last_2_0_0
 [sub_resource type="Resource" id="line_tree_stage_last_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_stage_last_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("57_tvhhs")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_STAGE_LAST_2_1", "VO_TREE_STAGE_LAST_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_last_2_0")])
@@ -1365,6 +1401,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_last_3_0_0
 [sub_resource type="Resource" id="line_tree_stage_last_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_stage_last_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("57_tvhhs")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_STAGE_LAST_3_1", "VO_TREE_STAGE_LAST_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_stage_last_3_0")])
@@ -1393,6 +1430,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_laundry_
 [sub_resource type="Resource" id="line_tree_cabinet_laundry_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_laundry_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("61_a5fs5")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LAUNDRY_1_1", "VO_TREE_CABINET_LAUNDRY_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_laundry_1_0")])
@@ -1421,6 +1459,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_laundry_
 [sub_resource type="Resource" id="line_tree_cabinet_laundry_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_laundry_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("61_a5fs5")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LAUNDRY_2_1", "VO_TREE_CABINET_LAUNDRY_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_laundry_2_0")])
@@ -1449,6 +1488,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_laundry_
 [sub_resource type="Resource" id="line_tree_cabinet_laundry_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_laundry_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("61_a5fs5")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LAUNDRY_3_1", "VO_TREE_CABINET_LAUNDRY_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_laundry_3_0")])
@@ -1477,6 +1517,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_laundry_
 [sub_resource type="Resource" id="line_tree_cabinet_laundry_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_laundry_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("61_a5fs5")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LAUNDRY_4_1", "VO_TREE_CABINET_LAUNDRY_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_laundry_4_0")])
@@ -1505,6 +1546,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_garage_1
 [sub_resource type="Resource" id="line_tree_cabinet_garage_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_garage_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("66_6wnad")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_GARAGE_1_1", "VO_TREE_CABINET_GARAGE_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_garage_1_0")])
@@ -1533,6 +1575,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_garage_2
 [sub_resource type="Resource" id="line_tree_cabinet_garage_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_garage_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("66_6wnad")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_GARAGE_2_1", "VO_TREE_CABINET_GARAGE_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_garage_2_0")])
@@ -1561,6 +1604,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_garage_3
 [sub_resource type="Resource" id="line_tree_cabinet_garage_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_garage_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("66_6wnad")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_GARAGE_3_1", "VO_TREE_CABINET_GARAGE_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_garage_3_0")])
@@ -1589,6 +1633,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_garage_4
 [sub_resource type="Resource" id="line_tree_cabinet_garage_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_garage_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("66_6wnad")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_GARAGE_4_1", "VO_TREE_CABINET_GARAGE_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_garage_4_0")])
@@ -1617,6 +1662,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kitchen_
 [sub_resource type="Resource" id="line_tree_cabinet_kitchen_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_kitchen_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("71_wsxac")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_KITCHEN_1_1", "VO_TREE_CABINET_KITCHEN_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kitchen_1_0")])
@@ -1645,6 +1691,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kitchen_
 [sub_resource type="Resource" id="line_tree_cabinet_kitchen_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_kitchen_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("71_wsxac")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_KITCHEN_2_1", "VO_TREE_CABINET_KITCHEN_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kitchen_2_0")])
@@ -1673,6 +1720,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kitchen_
 [sub_resource type="Resource" id="line_tree_cabinet_kitchen_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_kitchen_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("71_wsxac")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_KITCHEN_3_1", "VO_TREE_CABINET_KITCHEN_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kitchen_3_0")])
@@ -1701,6 +1749,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kitchen_
 [sub_resource type="Resource" id="line_tree_cabinet_kitchen_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_kitchen_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("71_wsxac")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_KITCHEN_4_1", "VO_TREE_CABINET_KITCHEN_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kitchen_4_0")])
@@ -1729,6 +1778,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_living_1
 [sub_resource type="Resource" id="line_tree_cabinet_living_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_living_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("76_w2qn0")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LIVING_1_1", "VO_TREE_CABINET_LIVING_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_living_1_0")])
@@ -1757,6 +1807,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_living_2
 [sub_resource type="Resource" id="line_tree_cabinet_living_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_living_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("76_w2qn0")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LIVING_2_1", "VO_TREE_CABINET_LIVING_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_living_2_0")])
@@ -1785,6 +1836,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_living_3
 [sub_resource type="Resource" id="line_tree_cabinet_living_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_living_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("76_w2qn0")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LIVING_3_1", "VO_TREE_CABINET_LIVING_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_living_3_0")])
@@ -1813,6 +1865,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_living_4
 [sub_resource type="Resource" id="line_tree_cabinet_living_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_living_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("76_w2qn0")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LIVING_4_1", "VO_TREE_CABINET_LIVING_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_living_4_0")])
@@ -1841,6 +1894,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_nor
 [sub_resource type="Resource" id="line_tree_cabinet_kids_north_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_kids_north_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("81_k0rvm")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_KIDS_NORTH_1_1", "VO_TREE_CABINET_KIDS_NORTH_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_north_1_0")])
@@ -1869,6 +1923,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_nor
 [sub_resource type="Resource" id="line_tree_cabinet_kids_north_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_kids_north_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("81_k0rvm")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_KIDS_NORTH_2_1", "VO_TREE_CABINET_KIDS_NORTH_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_north_2_0")])
@@ -1897,6 +1952,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_nor
 [sub_resource type="Resource" id="line_tree_cabinet_kids_north_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_kids_north_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("81_k0rvm")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_KIDS_NORTH_3_1", "VO_TREE_CABINET_KIDS_NORTH_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_north_3_0")])
@@ -1925,6 +1981,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_nor
 [sub_resource type="Resource" id="line_tree_cabinet_kids_north_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_kids_north_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("81_k0rvm")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_KIDS_NORTH_4_1", "VO_TREE_CABINET_KIDS_NORTH_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_north_4_0")])
@@ -1953,6 +2010,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_eas
 [sub_resource type="Resource" id="line_tree_cabinet_kids_east_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_kids_east_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("86_lkm7y")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_KIDS_EAST_1_1", "VO_TREE_CABINET_KIDS_EAST_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_east_1_0")])
@@ -1981,6 +2039,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_eas
 [sub_resource type="Resource" id="line_tree_cabinet_kids_east_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_kids_east_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("86_lkm7y")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_KIDS_EAST_2_1", "VO_TREE_CABINET_KIDS_EAST_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_east_2_0")])
@@ -2009,6 +2068,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_eas
 [sub_resource type="Resource" id="line_tree_cabinet_kids_east_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_kids_east_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("86_lkm7y")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_KIDS_EAST_3_1", "VO_TREE_CABINET_KIDS_EAST_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_east_3_0")])
@@ -2037,6 +2097,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_eas
 [sub_resource type="Resource" id="line_tree_cabinet_kids_east_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_kids_east_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("86_lkm7y")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_KIDS_EAST_4_1", "VO_TREE_CABINET_KIDS_EAST_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_kids_east_4_0")])
@@ -2065,6 +2126,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_wes
 [sub_resource type="Resource" id="line_tree_cabinet_loft_west_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_loft_west_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("91_bipwe")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LOFT_WEST_1_1", "VO_TREE_CABINET_LOFT_WEST_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_west_1_0")])
@@ -2093,6 +2155,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_wes
 [sub_resource type="Resource" id="line_tree_cabinet_loft_west_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_loft_west_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("91_bipwe")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LOFT_WEST_2_1", "VO_TREE_CABINET_LOFT_WEST_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_west_2_0")])
@@ -2121,6 +2184,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_wes
 [sub_resource type="Resource" id="line_tree_cabinet_loft_west_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_loft_west_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("91_bipwe")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LOFT_WEST_3_1", "VO_TREE_CABINET_LOFT_WEST_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_west_3_0")])
@@ -2149,6 +2213,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_wes
 [sub_resource type="Resource" id="line_tree_cabinet_loft_west_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_loft_west_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("91_bipwe")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LOFT_WEST_4_1", "VO_TREE_CABINET_LOFT_WEST_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_west_4_0")])
@@ -2177,6 +2242,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_eas
 [sub_resource type="Resource" id="line_tree_cabinet_loft_east_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_loft_east_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("96_wm6gn")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LOFT_EAST_1_1", "VO_TREE_CABINET_LOFT_EAST_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_east_1_0")])
@@ -2205,6 +2271,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_eas
 [sub_resource type="Resource" id="line_tree_cabinet_loft_east_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_loft_east_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("96_wm6gn")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LOFT_EAST_2_1", "VO_TREE_CABINET_LOFT_EAST_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_east_2_0")])
@@ -2233,6 +2300,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_eas
 [sub_resource type="Resource" id="line_tree_cabinet_loft_east_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_loft_east_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("96_wm6gn")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LOFT_EAST_3_1", "VO_TREE_CABINET_LOFT_EAST_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_east_3_0")])
@@ -2261,6 +2329,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_loft_eas
 [sub_resource type="Resource" id="line_tree_cabinet_loft_east_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_cabinet_loft_east_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("96_wm6gn")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_CABINET_LOFT_EAST_4_1", "VO_TREE_CABINET_LOFT_EAST_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_cabinet_loft_east_4_0")])
@@ -2289,6 +2358,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_basement_1_
 [sub_resource type="Resource" id="line_tree_hint_basement_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_basement_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("101_1jeda")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_BASEMENT_1_1", "VO_TREE_HINT_BASEMENT_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_basement_1_0")])
@@ -2317,6 +2387,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_basement_2_
 [sub_resource type="Resource" id="line_tree_hint_basement_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_basement_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("101_1jeda")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_BASEMENT_2_1", "VO_TREE_HINT_BASEMENT_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_basement_2_0")])
@@ -2345,6 +2416,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_basement_3_
 [sub_resource type="Resource" id="line_tree_hint_basement_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_basement_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("101_1jeda")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_BASEMENT_3_1", "VO_TREE_HINT_BASEMENT_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_basement_3_0")])
@@ -2373,6 +2445,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_basement_4_
 [sub_resource type="Resource" id="line_tree_hint_basement_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_basement_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("101_1jeda")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_BASEMENT_4_1", "VO_TREE_HINT_BASEMENT_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_basement_4_0")])
@@ -2401,6 +2474,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_ground_1_0_
 [sub_resource type="Resource" id="line_tree_hint_ground_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_ground_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("106_1xxoi")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_GROUND_1_1", "VO_TREE_HINT_GROUND_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_ground_1_0")])
@@ -2423,6 +2497,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_ground_2_0_
 [sub_resource type="Resource" id="line_tree_hint_ground_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_ground_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("106_1xxoi")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_GROUND_2_1")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_ground_2_0")])
@@ -2451,6 +2526,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_ground_3_0_
 [sub_resource type="Resource" id="line_tree_hint_ground_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_ground_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("106_1xxoi")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_GROUND_3_1", "VO_TREE_HINT_GROUND_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_ground_3_0")])
@@ -2473,6 +2549,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_ground_4_0_
 [sub_resource type="Resource" id="line_tree_hint_ground_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_ground_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("106_1xxoi")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_GROUND_4_1")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_ground_4_0")])
@@ -2507,6 +2584,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_first_1_0_0
 [sub_resource type="Resource" id="line_tree_hint_first_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_first_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("111_cshol")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_FIRST_1_1", "VO_TREE_HINT_FIRST_1_2", "VO_TREE_HINT_FIRST_1_3")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_first_1_0")])
@@ -2529,6 +2607,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_first_2_0_0
 [sub_resource type="Resource" id="line_tree_hint_first_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_first_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("111_cshol")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_FIRST_2_1")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_first_2_0")])
@@ -2557,6 +2636,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_first_3_0_0
 [sub_resource type="Resource" id="line_tree_hint_first_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_first_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("111_cshol")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_FIRST_3_1", "VO_TREE_HINT_FIRST_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_first_3_0")])
@@ -2585,6 +2665,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_first_4_0_0
 [sub_resource type="Resource" id="line_tree_hint_first_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_first_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("111_cshol")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_FIRST_4_1", "VO_TREE_HINT_FIRST_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_first_4_0")])
@@ -2613,6 +2694,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_attic_1_0_0
 [sub_resource type="Resource" id="line_tree_hint_attic_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_attic_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("116_i0ciu")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_ATTIC_1_1", "VO_TREE_HINT_ATTIC_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_attic_1_0")])
@@ -2641,6 +2723,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_attic_2_0_0
 [sub_resource type="Resource" id="line_tree_hint_attic_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_attic_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("116_i0ciu")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_ATTIC_2_1", "VO_TREE_HINT_ATTIC_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_attic_2_0")])
@@ -2669,6 +2752,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_attic_3_0_0
 [sub_resource type="Resource" id="line_tree_hint_attic_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_attic_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("116_i0ciu")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_ATTIC_3_1", "VO_TREE_HINT_ATTIC_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_attic_3_0")])
@@ -2697,6 +2781,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_attic_4_0_0
 [sub_resource type="Resource" id="line_tree_hint_attic_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_hint_attic_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("116_i0ciu")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_HINT_ATTIC_4_1", "VO_TREE_HINT_ATTIC_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_hint_attic_4_0")])
@@ -2731,6 +2816,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_tip_throw_1_0_0"
 [sub_resource type="Resource" id="line_tree_tip_throw_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_tip_throw_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("121_wnxwh")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_TIP_THROW_1_1", "VO_TREE_TIP_THROW_1_2", "VO_TREE_TIP_THROW_1_3")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_tip_throw_1_0")])
@@ -2765,6 +2851,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_tip_part_1_0_0")
 [sub_resource type="Resource" id="line_tree_tip_part_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_tip_part_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("123_qxd0j")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_TIP_PART_1_1", "VO_TREE_TIP_PART_1_2", "VO_TREE_TIP_PART_1_3")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_tip_part_1_0")])
@@ -2793,6 +2880,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_tip_part_2_0_0")
 [sub_resource type="Resource" id="line_tree_tip_part_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_tip_part_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("123_qxd0j")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_TIP_PART_2_1", "VO_TREE_TIP_PART_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_tip_part_2_0")])
@@ -2957,6 +3045,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_basement_1_
 [sub_resource type="Resource" id="line_tree_part_basement_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_basement_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("130_ksoog")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_BASEMENT_1_1", "VO_TREE_PART_BASEMENT_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_basement_1_0")])
@@ -2985,6 +3074,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_basement_2_
 [sub_resource type="Resource" id="line_tree_part_basement_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_basement_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("130_ksoog")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_BASEMENT_2_1", "VO_TREE_PART_BASEMENT_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_basement_2_0")])
@@ -3013,6 +3103,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_basement_3_
 [sub_resource type="Resource" id="line_tree_part_basement_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_basement_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("130_ksoog")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_BASEMENT_3_1", "VO_TREE_PART_BASEMENT_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_basement_3_0")])
@@ -3041,6 +3132,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_basement_4_
 [sub_resource type="Resource" id="line_tree_part_basement_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_basement_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("130_ksoog")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_BASEMENT_4_1", "VO_TREE_PART_BASEMENT_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_basement_4_0")])
@@ -3069,6 +3161,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_ground_1_0_
 [sub_resource type="Resource" id="line_tree_part_ground_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_ground_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("135_f2im7")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_GROUND_1_1", "VO_TREE_PART_GROUND_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_ground_1_0")])
@@ -3097,6 +3190,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_ground_2_0_
 [sub_resource type="Resource" id="line_tree_part_ground_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_ground_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("135_f2im7")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_GROUND_2_1", "VO_TREE_PART_GROUND_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_ground_2_0")])
@@ -3125,6 +3219,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_ground_3_0_
 [sub_resource type="Resource" id="line_tree_part_ground_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_ground_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("135_f2im7")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_GROUND_3_1", "VO_TREE_PART_GROUND_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_ground_3_0")])
@@ -3153,6 +3248,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_ground_4_0_
 [sub_resource type="Resource" id="line_tree_part_ground_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_ground_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("135_f2im7")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_GROUND_4_1", "VO_TREE_PART_GROUND_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_ground_4_0")])
@@ -3181,6 +3277,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_first_1_0_0
 [sub_resource type="Resource" id="line_tree_part_first_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_first_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("140_hgi7v")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_FIRST_1_1", "VO_TREE_PART_FIRST_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_first_1_0")])
@@ -3215,6 +3312,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_first_2_0_0
 [sub_resource type="Resource" id="line_tree_part_first_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_first_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("140_hgi7v")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_FIRST_2_1", "VO_TREE_PART_FIRST_2_2", "VO_TREE_PART_FIRST_2_3")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_first_2_0")])
@@ -3243,6 +3341,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_first_3_0_0
 [sub_resource type="Resource" id="line_tree_part_first_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_first_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("140_hgi7v")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_FIRST_3_1", "VO_TREE_PART_FIRST_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_first_3_0")])
@@ -3271,6 +3370,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_first_4_0_0
 [sub_resource type="Resource" id="line_tree_part_first_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_first_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("140_hgi7v")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_FIRST_4_1", "VO_TREE_PART_FIRST_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_first_4_0")])
@@ -3299,6 +3399,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_attic_1_0_0
 [sub_resource type="Resource" id="line_tree_part_attic_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_attic_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("145_qlqbp")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_ATTIC_1_1", "VO_TREE_PART_ATTIC_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_attic_1_0")])
@@ -3327,6 +3428,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_attic_2_0_0
 [sub_resource type="Resource" id="line_tree_part_attic_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_attic_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("145_qlqbp")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_ATTIC_2_1", "VO_TREE_PART_ATTIC_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_attic_2_0")])
@@ -3355,6 +3457,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_attic_3_0_0
 [sub_resource type="Resource" id="line_tree_part_attic_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_attic_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("145_qlqbp")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_ATTIC_3_1", "VO_TREE_PART_ATTIC_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_attic_3_0")])
@@ -3389,6 +3492,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_part_attic_4_0_0
 [sub_resource type="Resource" id="line_tree_part_attic_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_part_attic_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("145_qlqbp")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PART_ATTIC_4_1", "VO_TREE_PART_ATTIC_4_2", "VO_TREE_PART_ATTIC_4_3")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_part_attic_4_0")])
@@ -3417,6 +3521,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_ground_1_0
 [sub_resource type="Resource" id="line_tree_floor_ground_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_floor_ground_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("150_4g6jg")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_FLOOR_GROUND_1_1", "VO_TREE_FLOOR_GROUND_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_ground_1_0")])
@@ -3445,6 +3550,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_ground_2_0
 [sub_resource type="Resource" id="line_tree_floor_ground_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_floor_ground_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("150_4g6jg")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_FLOOR_GROUND_2_1", "VO_TREE_FLOOR_GROUND_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_ground_2_0")])
@@ -3473,6 +3579,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_ground_3_0
 [sub_resource type="Resource" id="line_tree_floor_ground_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_floor_ground_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("150_4g6jg")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_FLOOR_GROUND_3_1", "VO_TREE_FLOOR_GROUND_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_ground_3_0")])
@@ -3501,6 +3608,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_ground_4_0
 [sub_resource type="Resource" id="line_tree_floor_ground_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_floor_ground_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("150_4g6jg")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_FLOOR_GROUND_4_1", "VO_TREE_FLOOR_GROUND_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_ground_4_0")])
@@ -3529,6 +3637,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_first_1_0_
 [sub_resource type="Resource" id="line_tree_floor_first_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_floor_first_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("155_l4aea")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_FLOOR_FIRST_1_1", "VO_TREE_FLOOR_FIRST_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_first_1_0")])
@@ -3557,6 +3666,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_first_2_0_
 [sub_resource type="Resource" id="line_tree_floor_first_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_floor_first_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("155_l4aea")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_FLOOR_FIRST_2_1", "VO_TREE_FLOOR_FIRST_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_first_2_0")])
@@ -3585,6 +3695,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_first_3_0_
 [sub_resource type="Resource" id="line_tree_floor_first_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_floor_first_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("155_l4aea")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_FLOOR_FIRST_3_1", "VO_TREE_FLOOR_FIRST_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_first_3_0")])
@@ -3613,6 +3724,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_first_4_0_
 [sub_resource type="Resource" id="line_tree_floor_first_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_floor_first_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("155_l4aea")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_FLOOR_FIRST_4_1", "VO_TREE_FLOOR_FIRST_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_first_4_0")])
@@ -3641,6 +3753,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_attic_1_0_
 [sub_resource type="Resource" id="line_tree_floor_attic_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_floor_attic_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("160_ikdy7")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_FLOOR_ATTIC_1_1", "VO_TREE_FLOOR_ATTIC_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_attic_1_0")])
@@ -3669,6 +3782,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_attic_2_0_
 [sub_resource type="Resource" id="line_tree_floor_attic_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_floor_attic_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("160_ikdy7")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_FLOOR_ATTIC_2_1", "VO_TREE_FLOOR_ATTIC_2_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_attic_2_0")])
@@ -3697,6 +3811,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_attic_3_0_
 [sub_resource type="Resource" id="line_tree_floor_attic_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_floor_attic_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("160_ikdy7")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_FLOOR_ATTIC_3_1", "VO_TREE_FLOOR_ATTIC_3_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_attic_3_0")])
@@ -3725,90 +3840,10 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_attic_4_0_
 [sub_resource type="Resource" id="line_tree_floor_attic_4"]
 script = ExtResource("1_tmhjc")
 id = &"tree_floor_attic_4"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("160_ikdy7")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_FLOOR_ATTIC_4_1", "VO_TREE_FLOOR_ATTIC_4_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_attic_4_0")])
-placeholder = true
-marks = PackedStringArray()
-
-[sub_resource type="Resource" id="seg_tree_final_wash_1_0_0"]
-script = ExtResource("3_q8epu")
-start = 0.12
-end = 3.97
-key = &"VO_TREE_FINAL_WASH_1_1"
-
-[sub_resource type="Resource" id="seg_tree_final_wash_1_0_1"]
-script = ExtResource("3_q8epu")
-start = 4.39
-end = 6.98
-key = &"VO_TREE_FINAL_WASH_1_2"
-
-[sub_resource type="Resource" id="take_tree_final_wash_1_0"]
-script = ExtResource("2_vwrhp")
-stream = ExtResource("139_e2485")
-source_md5 = "4d13ce47fd4aa886f1021d3f1bace12c"
-duration = 7.33
-segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_final_wash_1_0_0"), SubResource("seg_tree_final_wash_1_0_1")])
-
-[sub_resource type="Resource" id="line_tree_final_wash_1"]
-script = ExtResource("1_tmhjc")
-id = &"tree_final_wash_1"
-sets = PackedInt32Array()
-keys = PackedStringArray("VO_TREE_FINAL_WASH_1_1", "VO_TREE_FINAL_WASH_1_2")
-takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_final_wash_1_0")])
-waits = true
-placeholder = true
-marks = PackedStringArray()
-
-[sub_resource type="Resource" id="seg_tree_final_wash_2_0_0"]
-script = ExtResource("3_q8epu")
-start = 0.12
-end = 1.34
-key = &"VO_TREE_FINAL_WASH_2_1"
-
-[sub_resource type="Resource" id="seg_tree_final_wash_2_0_1"]
-script = ExtResource("3_q8epu")
-start = 1.76
-end = 4.42
-key = &"VO_TREE_FINAL_WASH_2_2"
-
-[sub_resource type="Resource" id="take_tree_final_wash_2_0"]
-script = ExtResource("2_vwrhp")
-stream = ExtResource("140_5wg3w")
-source_md5 = "ac4880213a06fe1c152efa848a79bc7f"
-duration = 4.771
-segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_final_wash_2_0_0"), SubResource("seg_tree_final_wash_2_0_1")])
-
-[sub_resource type="Resource" id="line_tree_final_wash_2"]
-script = ExtResource("1_tmhjc")
-id = &"tree_final_wash_2"
-sets = PackedInt32Array()
-keys = PackedStringArray("VO_TREE_FINAL_WASH_2_1", "VO_TREE_FINAL_WASH_2_2")
-takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_final_wash_2_0")])
-waits = true
-placeholder = true
-marks = PackedStringArray()
-
-[sub_resource type="Resource" id="seg_tree_final_wash_3_0_0"]
-script = ExtResource("3_q8epu")
-start = 0.12
-end = 5.58
-key = &"VO_TREE_FINAL_WASH_3_1"
-
-[sub_resource type="Resource" id="take_tree_final_wash_3_0"]
-script = ExtResource("2_vwrhp")
-stream = ExtResource("141_8uk51")
-source_md5 = "c0ba58390fd684ab8c501a4ec2875a81"
-duration = 5.928
-segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_final_wash_3_0_0")])
-
-[sub_resource type="Resource" id="line_tree_final_wash_3"]
-script = ExtResource("1_tmhjc")
-id = &"tree_final_wash_3"
-sets = PackedInt32Array()
-keys = PackedStringArray("VO_TREE_FINAL_WASH_3_1")
-takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_final_wash_3_0")])
-waits = true
 placeholder = true
 marks = PackedStringArray()
 
@@ -3834,6 +3869,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_peace_1_0_0"), S
 [sub_resource type="Resource" id="line_tree_peace_1"]
 script = ExtResource("1_tmhjc")
 id = &"tree_peace_1"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("169_koric")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PEACE_1_1", "VO_TREE_PEACE_1_2")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_peace_1_0")])
@@ -3869,6 +3905,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_peace_2_0_0"), S
 [sub_resource type="Resource" id="line_tree_peace_2"]
 script = ExtResource("1_tmhjc")
 id = &"tree_peace_2"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("169_koric")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PEACE_2_1", "VO_TREE_PEACE_2_2", "VO_TREE_PEACE_2_3")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_peace_2_0")])
@@ -3904,6 +3941,7 @@ segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_peace_3_0_0"), S
 [sub_resource type="Resource" id="line_tree_peace_3"]
 script = ExtResource("1_tmhjc")
 id = &"tree_peace_3"
+triggers = Array[ExtResource("5_8o56u")]([ExtResource("169_koric")])
 sets = PackedInt32Array()
 keys = PackedStringArray("VO_TREE_PEACE_3_1", "VO_TREE_PEACE_3_2", "VO_TREE_PEACE_3_3")
 takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_peace_3_0")])
@@ -4222,5 +4260,5 @@ marks = PackedStringArray()
 [resource]
 script = ExtResource("156_r1q4c")
 speaker = ExtResource("157_skfrl")
-lines = Array[ExtResource("1_tmhjc")]([SubResource("line_tree_call_1"), SubResource("line_tree_call_2"), SubResource("line_tree_call_3"), SubResource("line_tree_call_4"), SubResource("line_tree_call_5"), SubResource("line_tree_first_1"), SubResource("line_tree_first_2"), SubResource("line_tree_first_3"), SubResource("line_tree_greet_1"), SubResource("line_tree_greet_2"), SubResource("line_tree_greet_3"), SubResource("line_tree_greet_4"), SubResource("line_tree_greet_5"), SubResource("line_tree_idle_1"), SubResource("line_tree_idle_2"), SubResource("line_tree_idle_3"), SubResource("line_tree_idle_4"), SubResource("line_tree_idle_5"), SubResource("line_tree_idle_6"), SubResource("line_tree_idle_7"), SubResource("line_tree_affordable_1"), SubResource("line_tree_affordable_2"), SubResource("line_tree_affordable_3"), SubResource("line_tree_affordable_4"), SubResource("line_tree_affordable_5"), SubResource("line_tree_bought_1"), SubResource("line_tree_bought_2"), SubResource("line_tree_bought_3"), SubResource("line_tree_bought_4"), SubResource("line_tree_bought_5"), SubResource("line_tree_bought_6"), SubResource("line_tree_grumble_1"), SubResource("line_tree_grumble_2"), SubResource("line_tree_grumble_3"), SubResource("line_tree_grumble_4"), SubResource("line_tree_grumble_5"), SubResource("line_tree_stage_half_1"), SubResource("line_tree_stage_half_2"), SubResource("line_tree_stage_half_3"), SubResource("line_tree_stage_most_1"), SubResource("line_tree_stage_most_2"), SubResource("line_tree_stage_most_3"), SubResource("line_tree_stage_last_1"), SubResource("line_tree_stage_last_2"), SubResource("line_tree_stage_last_3"), SubResource("line_tree_cabinet_laundry_1"), SubResource("line_tree_cabinet_laundry_2"), SubResource("line_tree_cabinet_laundry_3"), SubResource("line_tree_cabinet_laundry_4"), SubResource("line_tree_cabinet_garage_1"), SubResource("line_tree_cabinet_garage_2"), SubResource("line_tree_cabinet_garage_3"), SubResource("line_tree_cabinet_garage_4"), SubResource("line_tree_cabinet_kitchen_1"), SubResource("line_tree_cabinet_kitchen_2"), SubResource("line_tree_cabinet_kitchen_3"), SubResource("line_tree_cabinet_kitchen_4"), SubResource("line_tree_cabinet_living_1"), SubResource("line_tree_cabinet_living_2"), SubResource("line_tree_cabinet_living_3"), SubResource("line_tree_cabinet_living_4"), SubResource("line_tree_cabinet_kids_north_1"), SubResource("line_tree_cabinet_kids_north_2"), SubResource("line_tree_cabinet_kids_north_3"), SubResource("line_tree_cabinet_kids_north_4"), SubResource("line_tree_cabinet_kids_east_1"), SubResource("line_tree_cabinet_kids_east_2"), SubResource("line_tree_cabinet_kids_east_3"), SubResource("line_tree_cabinet_kids_east_4"), SubResource("line_tree_cabinet_loft_west_1"), SubResource("line_tree_cabinet_loft_west_2"), SubResource("line_tree_cabinet_loft_west_3"), SubResource("line_tree_cabinet_loft_west_4"), SubResource("line_tree_cabinet_loft_east_1"), SubResource("line_tree_cabinet_loft_east_2"), SubResource("line_tree_cabinet_loft_east_3"), SubResource("line_tree_cabinet_loft_east_4"), SubResource("line_tree_hint_basement_1"), SubResource("line_tree_hint_basement_2"), SubResource("line_tree_hint_basement_3"), SubResource("line_tree_hint_basement_4"), SubResource("line_tree_hint_ground_1"), SubResource("line_tree_hint_ground_2"), SubResource("line_tree_hint_ground_3"), SubResource("line_tree_hint_ground_4"), SubResource("line_tree_hint_first_1"), SubResource("line_tree_hint_first_2"), SubResource("line_tree_hint_first_3"), SubResource("line_tree_hint_first_4"), SubResource("line_tree_hint_attic_1"), SubResource("line_tree_hint_attic_2"), SubResource("line_tree_hint_attic_3"), SubResource("line_tree_hint_attic_4"), SubResource("line_tree_tip_throw_1"), SubResource("line_tree_tip_part_1"), SubResource("line_tree_tip_part_2"), SubResource("line_tree_tip_vacuum_1"), SubResource("line_tree_tip_vacuum_2"), SubResource("line_tree_tip_vacuum_3"), SubResource("line_tree_tip_elevator_1"), SubResource("line_tree_part_basement_1"), SubResource("line_tree_part_basement_2"), SubResource("line_tree_part_basement_3"), SubResource("line_tree_part_basement_4"), SubResource("line_tree_part_ground_1"), SubResource("line_tree_part_ground_2"), SubResource("line_tree_part_ground_3"), SubResource("line_tree_part_ground_4"), SubResource("line_tree_part_first_1"), SubResource("line_tree_part_first_2"), SubResource("line_tree_part_first_3"), SubResource("line_tree_part_first_4"), SubResource("line_tree_part_attic_1"), SubResource("line_tree_part_attic_2"), SubResource("line_tree_part_attic_3"), SubResource("line_tree_part_attic_4"), SubResource("line_tree_floor_ground_1"), SubResource("line_tree_floor_ground_2"), SubResource("line_tree_floor_ground_3"), SubResource("line_tree_floor_ground_4"), SubResource("line_tree_floor_first_1"), SubResource("line_tree_floor_first_2"), SubResource("line_tree_floor_first_3"), SubResource("line_tree_floor_first_4"), SubResource("line_tree_floor_attic_1"), SubResource("line_tree_floor_attic_2"), SubResource("line_tree_floor_attic_3"), SubResource("line_tree_floor_attic_4"), SubResource("line_tree_final_wash_1"), SubResource("line_tree_final_wash_2"), SubResource("line_tree_final_wash_3"), SubResource("line_tree_peace_1"), SubResource("line_tree_peace_2"), SubResource("line_tree_peace_3"), SubResource("line_tree_presents_ready_1"), SubResource("line_tree_presents_ready_2"), SubResource("line_tree_presents_ready_3"), SubResource("line_tree_presents_1"), SubResource("line_tree_presents_2"), SubResource("line_tree_presents_3"), SubResource("line_tree_presents_4"), SubResource("line_tree_present_taken_1"), SubResource("line_tree_present_taken_2"), SubResource("line_tree_present_taken_3"), SubResource("line_tree_present_taken_4")])
-lines_md5 = "cc05d2ebbae4af3a280a496c3a789709"
+lines = Array[ExtResource("1_tmhjc")]([SubResource("line_tree_call_1"), SubResource("line_tree_call_2"), SubResource("line_tree_call_3"), SubResource("line_tree_call_4"), SubResource("line_tree_call_5"), SubResource("line_tree_first_1"), SubResource("line_tree_first_2"), SubResource("line_tree_first_3"), SubResource("line_tree_greet_1"), SubResource("line_tree_greet_2"), SubResource("line_tree_greet_3"), SubResource("line_tree_greet_4"), SubResource("line_tree_greet_5"), SubResource("line_tree_idle_1"), SubResource("line_tree_idle_2"), SubResource("line_tree_idle_3"), SubResource("line_tree_idle_4"), SubResource("line_tree_idle_5"), SubResource("line_tree_idle_6"), SubResource("line_tree_idle_7"), SubResource("line_tree_affordable_1"), SubResource("line_tree_affordable_2"), SubResource("line_tree_affordable_3"), SubResource("line_tree_affordable_4"), SubResource("line_tree_affordable_5"), SubResource("line_tree_bought_1"), SubResource("line_tree_bought_2"), SubResource("line_tree_bought_3"), SubResource("line_tree_bought_4"), SubResource("line_tree_bought_5"), SubResource("line_tree_bought_6"), SubResource("line_tree_grumble_1"), SubResource("line_tree_grumble_2"), SubResource("line_tree_grumble_3"), SubResource("line_tree_grumble_4"), SubResource("line_tree_grumble_5"), SubResource("line_tree_stage_half_1"), SubResource("line_tree_stage_half_2"), SubResource("line_tree_stage_half_3"), SubResource("line_tree_stage_most_1"), SubResource("line_tree_stage_most_2"), SubResource("line_tree_stage_most_3"), SubResource("line_tree_stage_last_1"), SubResource("line_tree_stage_last_2"), SubResource("line_tree_stage_last_3"), SubResource("line_tree_cabinet_laundry_1"), SubResource("line_tree_cabinet_laundry_2"), SubResource("line_tree_cabinet_laundry_3"), SubResource("line_tree_cabinet_laundry_4"), SubResource("line_tree_cabinet_garage_1"), SubResource("line_tree_cabinet_garage_2"), SubResource("line_tree_cabinet_garage_3"), SubResource("line_tree_cabinet_garage_4"), SubResource("line_tree_cabinet_kitchen_1"), SubResource("line_tree_cabinet_kitchen_2"), SubResource("line_tree_cabinet_kitchen_3"), SubResource("line_tree_cabinet_kitchen_4"), SubResource("line_tree_cabinet_living_1"), SubResource("line_tree_cabinet_living_2"), SubResource("line_tree_cabinet_living_3"), SubResource("line_tree_cabinet_living_4"), SubResource("line_tree_cabinet_kids_north_1"), SubResource("line_tree_cabinet_kids_north_2"), SubResource("line_tree_cabinet_kids_north_3"), SubResource("line_tree_cabinet_kids_north_4"), SubResource("line_tree_cabinet_kids_east_1"), SubResource("line_tree_cabinet_kids_east_2"), SubResource("line_tree_cabinet_kids_east_3"), SubResource("line_tree_cabinet_kids_east_4"), SubResource("line_tree_cabinet_loft_west_1"), SubResource("line_tree_cabinet_loft_west_2"), SubResource("line_tree_cabinet_loft_west_3"), SubResource("line_tree_cabinet_loft_west_4"), SubResource("line_tree_cabinet_loft_east_1"), SubResource("line_tree_cabinet_loft_east_2"), SubResource("line_tree_cabinet_loft_east_3"), SubResource("line_tree_cabinet_loft_east_4"), SubResource("line_tree_hint_basement_1"), SubResource("line_tree_hint_basement_2"), SubResource("line_tree_hint_basement_3"), SubResource("line_tree_hint_basement_4"), SubResource("line_tree_hint_ground_1"), SubResource("line_tree_hint_ground_2"), SubResource("line_tree_hint_ground_3"), SubResource("line_tree_hint_ground_4"), SubResource("line_tree_hint_first_1"), SubResource("line_tree_hint_first_2"), SubResource("line_tree_hint_first_3"), SubResource("line_tree_hint_first_4"), SubResource("line_tree_hint_attic_1"), SubResource("line_tree_hint_attic_2"), SubResource("line_tree_hint_attic_3"), SubResource("line_tree_hint_attic_4"), SubResource("line_tree_tip_throw_1"), SubResource("line_tree_tip_part_1"), SubResource("line_tree_tip_part_2"), SubResource("line_tree_tip_vacuum_1"), SubResource("line_tree_tip_vacuum_2"), SubResource("line_tree_tip_vacuum_3"), SubResource("line_tree_tip_elevator_1"), SubResource("line_tree_part_basement_1"), SubResource("line_tree_part_basement_2"), SubResource("line_tree_part_basement_3"), SubResource("line_tree_part_basement_4"), SubResource("line_tree_part_ground_1"), SubResource("line_tree_part_ground_2"), SubResource("line_tree_part_ground_3"), SubResource("line_tree_part_ground_4"), SubResource("line_tree_part_first_1"), SubResource("line_tree_part_first_2"), SubResource("line_tree_part_first_3"), SubResource("line_tree_part_first_4"), SubResource("line_tree_part_attic_1"), SubResource("line_tree_part_attic_2"), SubResource("line_tree_part_attic_3"), SubResource("line_tree_part_attic_4"), SubResource("line_tree_floor_ground_1"), SubResource("line_tree_floor_ground_2"), SubResource("line_tree_floor_ground_3"), SubResource("line_tree_floor_ground_4"), SubResource("line_tree_floor_first_1"), SubResource("line_tree_floor_first_2"), SubResource("line_tree_floor_first_3"), SubResource("line_tree_floor_first_4"), SubResource("line_tree_floor_attic_1"), SubResource("line_tree_floor_attic_2"), SubResource("line_tree_floor_attic_3"), SubResource("line_tree_floor_attic_4"), SubResource("line_tree_peace_1"), SubResource("line_tree_peace_2"), SubResource("line_tree_peace_3"), SubResource("line_tree_presents_ready_1"), SubResource("line_tree_presents_ready_2"), SubResource("line_tree_presents_ready_3"), SubResource("line_tree_presents_1"), SubResource("line_tree_presents_2"), SubResource("line_tree_presents_3"), SubResource("line_tree_presents_4"), SubResource("line_tree_present_taken_1"), SubResource("line_tree_present_taken_2"), SubResource("line_tree_present_taken_3"), SubResource("line_tree_present_taken_4")])
+lines_md5 = "2fc804efa289f15bde6fc795a293a040"
