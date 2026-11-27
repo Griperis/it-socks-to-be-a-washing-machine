@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: wontfix
 kind: maintenance
 area: maintenance
 feature: audio
@@ -43,5 +43,6 @@ its own file.
 - No sound changes how it sounds: no clip, volume or bus edited.
 
 ## Answers
+- Dropped: core/154 adds every batch C sound in one go, so the split barely helps (Q2721, designer, 2026-11-27).
 - The sound catalogue is split per feature, gathered at load (Q2721, 2026-11-27).
 - A zoo station that shows game data is built from it at load (Q2337).

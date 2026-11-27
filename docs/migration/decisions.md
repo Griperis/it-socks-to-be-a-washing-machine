@@ -722,6 +722,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2720: batch C's house systems each get their own sub-scene, instanced once in `house.tscn` by core/154
   (`game/house/systems/`: the Elevator, the day, the exterior, the Cat, the devices); later tickets edit only their
   own sub-scene, not `house.tscn` (designer, 2026-11-27).
-- Q2721: the sound catalogue is split into one catalogue file per feature in `game/audio/catalogue/`, gathered at
-  load, so a ticket adding sounds adds its own file and no longer clashes on `sound_catalogue.tres`
-  (designer, 2026-11-27; maintenance/11).
+- Q2721: the sound catalogue stays one file: a batch adds all its new sounds in one groundwork ticket (batch C's
+  core/154) instead of splitting the catalogue per feature; maintenance/11 is dropped (designer, 2026-11-27).

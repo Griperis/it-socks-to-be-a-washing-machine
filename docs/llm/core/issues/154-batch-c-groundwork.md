@@ -7,7 +7,7 @@ feature: zoo
 priority: now
 created: 2026-11-26
 done:
-blocked_by: ["[[11-sound-catalogue-per-feature]]"]
+blocked_by: []
 notes: ["batch C (Q2614); order: docs/migration/milestones.md Batch C, wave 1", "suggested model: sonnet"]
 terms: [Elevator, Cat, X-ray, Sock vacuum, Backpack vacuum, Sock detector, TV, Radio]
 suites: [sounds, sound_wiring, zoo, menus, house, save, coop_join]
@@ -16,7 +16,7 @@ suites: [sounds, sound_wiring, zoo, menus, house, save, coop_join]
 # Batch C's groundwork: every new sound, the seven station shells and the house's system slots
 
 Every SoundEvent the four batch C designs add, and every batch C zoo station's empty shell, and the house's five system slots, in one ticket, so no later
-batch C ticket edits the existing sound catalogue files, `game/zoo/zoo.tscn` or `game/house/house.tscn` (draft 150-S of `devices.md`, widened by
+batch C ticket edits `game/audio/sound_catalogue.tres`, `game/zoo/zoo.tscn` or `game/house/house.tscn` (draft 150-S of `devices.md`, widened by
 core/153 to the whole batch: the Elevator's, the day's, the devices', the TV and Radio's, the Cat's and the X-rays'
 sounds).
 
@@ -37,9 +37,6 @@ sounds).
 - the X-rays (`x-rays.md` "How it is authored"): `xray_on` (`cc0/laleksic_switch_on`), `xray_off`
   (`cc0/laleksic_switch_off`), copied once as `xray_on__laleksic_switch_on.ogg`, `xray_off__laleksic_switch_off.ogg`;
   `xray_ready` naming `match`'s clip (core/131).
-
-The new SoundEvents go into per-feature catalogue files in `game/audio/catalogue/` (maintenance/11, Q2721):
-`elevator.tres`, `day.tres`, `devices.tres`, `tv_radio.tres`, `cat.tres`, `xrays.tres`.
 
 Every copied clip goes into `assets/audio/` with its `SOURCES.md` row and its `game/ui/licence/credits.tres` entry.
 
