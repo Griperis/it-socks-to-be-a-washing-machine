@@ -257,6 +257,13 @@
       "origin_xy": false,
       "note": "assets/24: the Sock vacuum's hose, a skinned tube of 12 bones running 5 m from the origin along -Z (Godot); made by the same script"
     },
+    "sock_detector": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "sock_detector/sock_detector",
+      "glb": "assets/sock_detector/sock_detector.glb",
+      "note": "assets/26: the old Sock detector (tools/15, Q1857, Q1861), 1,492 triangles; assets_src/generate/sock_detector/make_sock_detector.py. Body and Screen (the flat screen face, UV 0..1, for core/167's SubViewport); no collider (the entity's box)"
+    },
     "armchair": {
       "class": "furniture",
       "colliders": 0,

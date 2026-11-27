@@ -234,6 +234,11 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# press, letters): the Elevator's stop, car and letters posed by their Looks' own clips.
 			world.call(&"show_view", arg)
 			return true
+		"sock_detector":
+			# assets/26: arg a view 0-2: tools/sock_detector_still.tscn frames the Sock detector's Looks as the old
+			# line-up's view of that number (its face from above the grip, its right side, three-quarter).
+			world.call(&"show_view", int(arg))
+			return true
 		"wardrobe_page":
 			# core/142: the zoo's player before the Wardrobe Station's wardrobe uses it: the doors open and the
 			# Wardrobe page shows. arg "hat": its Hats row stepped once (the first basic hat on the preview).

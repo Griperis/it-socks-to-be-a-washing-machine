@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: assets
 feature: assets
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-27
 blocked_by: []
 notes: ["batch C (Q2614); order: docs/migration/milestones.md Batch C, wave 6", "suggested model: opus"]
 terms: [Sock detector]
@@ -37,5 +37,6 @@ shared materials.
 
 ## Answers
 - Batch C's models are ported from the old game by the port rules, each family with its strip and the old colours (Q2705, 2026-11-26).
+- The Sock detector's line-up is yes, as built; the swap into `sock_detector.tscn` is core/167's, which uses this ticket's `game/entities/sock_detector/looks_contract.json` (Q2728, 2026-11-27).
 
 ## Open follow-ups
