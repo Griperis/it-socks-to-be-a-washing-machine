@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://b37yjw7y4yama"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iy0br"]
+albedo_color = Color(0.42, 0.44, 0.48, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_txpy0"]
+material = SubResource("StandardMaterial3D_iy0br")
+size = Vector2(12, 12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ls5h7"]
+size = Vector3(12, 0.2, 12)
+
+[node name="Day" type="Node3D" unique_id=1805381353]
+
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=1989241666]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("PlaneMesh_txpy0")
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1106328448]
+
+[node name="Shape" type="CollisionShape3D" parent="Ground" unique_id=2056170101]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_ls5h7")
+
+[node name="Name" type="Label3D" parent="." unique_id=1865898989]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2, 6.5)
+pixel_size = 0.004
+billboard = 2
+text = "Day: empty until core/160 builds it (batch C); the zoo's noon until then"
+vertical_alignment = 2
+autowrap_mode = 3
+width = 700.0
+
+[node name="Spawn" type="Marker3D" parent="." unique_id=2012431325]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)

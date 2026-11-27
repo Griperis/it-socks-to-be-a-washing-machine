@@ -86,9 +86,14 @@
 [ext_resource type="Resource" uid="uid://ba3jvy2k36fgk" path="res://game/entities/machine_part/part_drum_belt.tres" id="98_belt"]
 [ext_resource type="Resource" uid="uid://kjxfml1u8iqe" path="res://game/entities/machine_part/part_detergent.tres" id="99_detergent"]
 [ext_resource type="PackedScene" uid="uid://dqcr0t6aah51x" path="res://game/devices/dust_sheet.tscn" id="100_sheet"]
+[ext_resource type="PackedScene" uid="uid://cxmpnpaakn1xg" path="res://game/house/systems/elevator.tscn" id="100_sqowc"]
+[ext_resource type="PackedScene" uid="uid://b37yvsq2622e3" path="res://game/house/systems/day.tscn" id="101_3vlxv"]
 [ext_resource type="Script" uid="uid://ocy5msoga2i1" path="res://game/entities/machine_part/machine_part_slot.gd" id="101_slot"]
 [ext_resource type="PackedScene" uid="uid://y7nbf2ss5sg4" path="res://game/entities/laundry_bin/laundry_bin.tscn" id="102_bin"]
+[ext_resource type="PackedScene" uid="uid://dwa1386ouigyd" path="res://game/house/systems/exterior.tscn" id="102_j6n6t"]
 [ext_resource type="PackedScene" uid="uid://drplhdxvoydgt" path="res://game/laundry/laundry_day.tscn" id="103_day"]
+[ext_resource type="PackedScene" uid="uid://qlo43abkeujw" path="res://game/house/systems/cat.tscn" id="103_xloow"]
+[ext_resource type="PackedScene" uid="uid://6dlptsvqkr7j" path="res://game/house/systems/devices.tscn" id="104_hke1u"]
 [ext_resource type="PackedScene" uid="uid://dk3o4ktarrk4a" path="res://game/entities/wardrobe_station/wardrobe_station.tscn" id="104_wardrobe"]
 [ext_resource type="PackedScene" uid="uid://md0frx1hqksf" path="res://game/entities/encyclopedia_book/encyclopedia_book.tscn" id="105_book"]
 [ext_resource type="Resource" uid="uid://br75semxifsfu" path="res://game/voice/triggers/tree_cabinet_garage.tres" id="tcab_garage"]
@@ -111,7 +116,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yrken"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sqowc"]
 resource_local_to_scene = true
 transparency = 1
 cull_mode = 2
@@ -119,7 +124,7 @@ shading_mode = 0
 albedo_color = Color(0.55, 0.85, 1, 0.8)
 albedo_texture = SubResource("GradientTexture2D_glow")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_47p03"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3vlxv"]
 resource_local_to_scene = true
 transparency = 1
 cull_mode = 2
@@ -127,7 +132,7 @@ shading_mode = 0
 albedo_color = Color(0.55, 0.85, 1, 0.8)
 albedo_texture = SubResource("GradientTexture2D_glow")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivcfb"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j6n6t"]
 resource_local_to_scene = true
 transparency = 1
 cull_mode = 2
@@ -135,7 +140,7 @@ shading_mode = 0
 albedo_color = Color(0.55, 0.85, 1, 0.8)
 albedo_texture = SubResource("GradientTexture2D_glow")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y0tin"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xloow"]
 resource_local_to_scene = true
 transparency = 1
 cull_mode = 2
@@ -635,7 +640,7 @@ metadata/note = "The four Machine Parts, hidden under the house until their Stag
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, -8, 6.3)
 
 [node name="Glow" parent="Run/MachineParts/Filter" index="2" unique_id=1157612825]
-material_override = SubResource("StandardMaterial3D_yrken")
+material_override = SubResource("StandardMaterial3D_sqowc")
 
 [node name="MachinePart" parent="Run/MachineParts/Filter" index="6" unique_id=580453522]
 kind = ExtResource("96_filter")
@@ -644,7 +649,7 @@ kind = ExtResource("96_filter")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, -8, 6.3)
 
 [node name="Glow" parent="Run/MachineParts/Motor" index="2" unique_id=1157612825]
-material_override = SubResource("StandardMaterial3D_47p03")
+material_override = SubResource("StandardMaterial3D_3vlxv")
 
 [node name="MachinePart" parent="Run/MachineParts/Motor" index="6" unique_id=580453522]
 kind = ExtResource("97_motor")
@@ -653,7 +658,7 @@ kind = ExtResource("97_motor")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -8, 6.3)
 
 [node name="Glow" parent="Run/MachineParts/DrumBelt" index="2" unique_id=1157612825]
-material_override = SubResource("StandardMaterial3D_ivcfb")
+material_override = SubResource("StandardMaterial3D_j6n6t")
 
 [node name="MachinePart" parent="Run/MachineParts/DrumBelt" index="6" unique_id=580453522]
 kind = ExtResource("98_belt")
@@ -662,7 +667,7 @@ kind = ExtResource("98_belt")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, -8, 6.3)
 
 [node name="Glow" parent="Run/MachineParts/Detergent" index="2" unique_id=1157612825]
-material_override = SubResource("StandardMaterial3D_y0tin")
+material_override = SubResource("StandardMaterial3D_xloow")
 
 [node name="MachinePart" parent="Run/MachineParts/Detergent" index="6" unique_id=580453522]
 kind = ExtResource("99_detergent")
@@ -958,6 +963,18 @@ heap = true
 script = ExtResource("85_generated")
 mess = NodePath("../../../Runtime/Socks/Mess")
 generator = NodePath("..")
+
+[node name="Systems" type="Node3D" parent="." unique_id=1746041994]
+
+[node name="Elevator" parent="Systems" unique_id=639031169 instance=ExtResource("100_sqowc")]
+
+[node name="Day" parent="Systems" unique_id=1219047200 instance=ExtResource("101_3vlxv")]
+
+[node name="Exterior" parent="Systems" unique_id=2112975915 instance=ExtResource("102_j6n6t")]
+
+[node name="Cat" parent="Systems" unique_id=422090587 instance=ExtResource("103_xloow")]
+
+[node name="Devices" parent="Systems" unique_id=2053422012 instance=ExtResource("104_hke1u")]
 
 [editable path="Doors/WorkshopLobby"]
 [editable path="Doors/LaundryLobby"]

@@ -61,6 +61,8 @@ func cases() -> Array[Dictionary]:
 				"title": "S16 (Q2554, Q2561): one Solo World and five co-op slots; Solo continues the Solo World or starts one; Host the last-played co-op World or a New Game in a free slot; rows name and order them"},
 		{"name": "s17_timing", "method": "case_s17", "world": false, "perf": true,
 				"title": "S17: a save of 2,000 and of 10,000 Socks is measured (size, the main thread's snapshot, the worker's text) and stays within budget"},
+		{"name": "c154_system_slot_part", "method": "case_c154_slot", "world": false,
+				"title": "core/154 (Q2720): the house holds its five system slots under Systems; a Part placed in one is bound as Systems/<slot>/<name> and its state survives a save and a load into a new house"},
 		{"name": "s99_write_sample", "method": "case_s99", "world": false, "stress": true,
 				"title": "S99 (a tool): writes the one-box level's save of this version to sample_v<version>.json in GAME_SAVES_OUT (else user://saves_check), to commit under tests/saves/"},
 	]
@@ -416,6 +418,47 @@ func case_s12() -> void:
 	var gone := Array(committed).filter(func(i: String) -> bool: return not ids.has(i))
 	var new := Array(ids).filter(func(i: String) -> bool: return not committed.has(i))
 	_check(gone.is_empty() and new.is_empty(), "the house's saved ids are the committed list (gone, renamed or moved: %s; new: %s); commit the list when the change is meant:\n%s" % [gone, new, "\n".join(ids)])
+
+
+# --- core/154: the house's system slots -----------------------------------------------------------
+
+const SLOTS: Array[String] = ["Elevator", "Day", "Exterior", "Cat", "Devices"]
+const SLOT_PROBE := "Systems/Devices/Probe"
+
+
+func case_c154_slot() -> void:
+	var house := await _house_with_probe()
+	for slot in SLOTS:
+		var node := house.get_node_or_null("Systems/" + slot) as Node3D
+		_check(node != null and node.scene_file_path == "res://game/house/systems/%s.tscn" % slot.to_lower()
+				and node.transform == Transform3D.IDENTITY, "the %s slot is its own scene at the house's origin under Systems" % slot)
+	var parts := LevelRuntime.of(house).parts
+	var probe := house.get_node(SLOT_PROBE) as SaveStepPart
+	_check(parts.of(SLOT_PROBE) == probe and probe.id == StringName(SLOT_PROBE), "the Part in the Devices slot is bound as %s (%s)" % [SLOT_PROBE, probe.id])
+	parts.apply(probe.grant({"count": 7}))
+	_check(probe.count == 7, "its state is written by an answer")
+	var saved := parts.save_snapshot()
+	var versions := parts.save_versions()
+	_check((saved.get(SLOT_PROBE, {}) as Dictionary).get("count") == 7, "the save keeps it under its slot's id")
+	_free(house)
+	var again := await _house_with_probe()
+	var probe2 := again.get_node(SLOT_PROBE) as SaveStepPart
+	_check(probe2.count == 0, "a new house's Part starts afresh")
+	LevelRuntime.of(again).parts.load_save(saved, versions, LevelRuntime.of(again).roster.id_of(Parts.HOST))
+	_check(probe2.count == 7, "after the load the Part in the slot holds what was saved (count %d)" % probe2.count)
+
+
+## The house with a test Part (tests/saves/save_step_part.gd) placed in its Devices slot before it binds.
+func _house_with_probe() -> Node:
+	var house := (load(HOUSE) as PackedScene).instantiate()
+	var probe := SaveStepPart.new()
+	probe.name = "Probe"
+	house.get_node("Systems/Devices").add_child(probe)
+	var runtime := LevelRuntime.of(house)
+	_levels.append(house)
+	add_child(house)
+	await _until(func() -> bool: return runtime.loading.is_lifted() and runtime.parts.is_bound and runtime.player.is_on_floor(), "the house to start", 3000)
+	return house
 
 
 # --- S13 / S14 ------------------------------------------------------------------------------------

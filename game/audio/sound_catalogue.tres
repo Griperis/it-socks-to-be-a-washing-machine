@@ -73,6 +73,292 @@
 [ext_resource type="AudioStream" uid="uid://bc35adbphqdt8" path="res://assets/audio/washer_rumble__synth_a.ogg" id="303_rumble"]
 [ext_resource type="AudioStream" uid="uid://0vxeaxanvhs0" path="res://assets/audio/wash_slosh__synth_a.ogg" id="304_slosh"]
 [ext_resource type="AudioStream" uid="uid://bel3fubd0g064" path="res://assets/audio/wash_slam__synth_a.ogg" id="305_slam"]
+[ext_resource type="AudioStream" uid="uid://b1trvt7h3usog" path="res://assets/audio/elevator_creak__kenney_creak1.ogg" id="c154_1"]
+[ext_resource type="AudioStream" uid="uid://b5a4mcrwx03a6" path="res://assets/audio/device_click__kenney_switch11.ogg" id="c154_2"]
+[ext_resource type="AudioStream" uid="uid://dfydqwqeejrmv" path="res://assets/audio/elevator_ride__synth_a.ogg" id="c154_3"]
+[ext_resource type="AudioStream" uid="uid://b0hckyi3yxbv8" path="res://assets/audio/elevator_squeeze__synth_a.ogg" id="c154_4"]
+[ext_resource type="AudioStream" uid="uid://cj0pft40hglte" path="res://assets/audio/xray_on__laleksic_switch_on.ogg" id="c154_5"]
+[ext_resource type="AudioStream" uid="uid://njh7m24wo20c" path="res://assets/audio/xray_off__laleksic_switch_off.ogg" id="c154_6"]
+[ext_resource type="AudioStream" uid="uid://b08myl6hg270d" path="res://assets/audio/vacuum_motor__synth_a.ogg" id="c154_7"]
+[ext_resource type="AudioStream" uid="uid://ce2a7me4wacis" path="res://assets/audio/vacuum_thwip__synth_a.ogg" id="c154_8"]
+[ext_resource type="AudioStream" uid="uid://oyifvdaoaoew" path="res://assets/audio/vacuum_spit_tick__synth_a.ogg" id="c154_9"]
+[ext_resource type="AudioStream" uid="uid://sn6txrrrn0x" path="res://assets/audio/vacuum_nozzle_hang__synth_a.ogg" id="c154_10"]
+[ext_resource type="AudioStream" uid="uid://dw06iu85j3yqy" path="res://assets/audio/vacuum_nozzle_drop__synth_a.ogg" id="c154_11"]
+[ext_resource type="AudioStream" uid="uid://bqx8ys3favlsm" path="res://assets/audio/vacuum_lift__synth_a.ogg" id="c154_12"]
+[ext_resource type="AudioStream" uid="uid://bx4yaen6hey0g" path="res://assets/audio/vacuum_set_down__synth_a.ogg" id="c154_13"]
+[ext_resource type="AudioStream" uid="uid://dstjkyadr00oo" path="res://assets/audio/tv_static__synth_a.ogg" id="c154_14"]
+[ext_resource type="AudioStream" uid="uid://b1qu4f7frs8qr" path="res://assets/audio/radio_static__kresiek_radio_noise.ogg" id="c154_15"]
+[ext_resource type="AudioStream" uid="uid://cpaf8m335gcmp" path="res://assets/audio/tv_puppets__synth_a.ogg" id="c154_16"]
+[ext_resource type="AudioStream" uid="uid://bg5cr0e0glj33" path="res://assets/audio/tv_shop__synth_b.ogg" id="c154_17"]
+[ext_resource type="AudioStream" uid="uid://vd8vklccqbpj" path="res://assets/audio/tv_news__synth_a.ogg" id="c154_18"]
+[ext_resource type="AudioStream" uid="uid://t2pwfpyefqha" path="res://assets/audio/tv_testcard__wm_430hz.ogg" id="c154_19"]
+[ext_resource type="AudioStream" uid="uid://bj2ldeuxase4b" path="res://assets/audio/radio_land__rubberduck_wood_hit2.ogg" id="c154_20"]
+[ext_resource type="AudioStream" uid="uid://bht344tnf881j" path="res://assets/audio/cat_meow__kerzoven_softmew.ogg" id="c154_21"]
+[ext_resource type="AudioStream" uid="uid://q7js2ka5xcxj" path="res://assets/audio/cat_meow__antumdeluge_kitten_mew.ogg" id="c154_22"]
+[ext_resource type="AudioStream" uid="uid://1xspya7dxmft" path="res://assets/audio/cat_meow__ignasd_meow.ogg" id="c154_23"]
+[ext_resource type="AudioStream" uid="uid://c5ti5h7ej3rsb" path="res://assets/audio/cat_purr__kerzoven_purrsleepy.ogg" id="c154_24"]
+[ext_resource type="AudioStream" uid="uid://djk4eill5o3em" path="res://assets/audio/cat_hiss__knoflicek_cat8_hiss.ogg" id="c154_25"]
+[ext_resource type="AudioStream" uid="uid://ch8cdu76532au" path="res://assets/audio/cat_land__synth_a.ogg" id="c154_26"]
+[ext_resource type="AudioStream" uid="uid://cf18ousu58n1c" path="res://assets/audio/cat_swat__synth_a.ogg" id="c154_27"]
+
+[sub_resource type="Resource" id="Resource_xray_on"]
+script = ExtResource("1_76itk")
+event = &"xray_on"
+clips = Array[AudioStream]([ExtResource("c154_5")])
+note = "An X-ray shows, flat, for its player (core/154). The old pick cc0/laleksic_switch_on; the lamps' lamp_on names it too."
+
+[sub_resource type="Resource" id="Resource_xray_off"]
+script = ExtResource("1_76itk")
+event = &"xray_off"
+clips = Array[AudioStream]([ExtResource("c154_6")])
+note = "An X-ray's show ends, flat (core/154). The old pick cc0/laleksic_switch_off; the lamps' lamp_off names it too."
+
+[sub_resource type="Resource" id="Resource_xray_ready"]
+script = ExtResource("1_76itk")
+event = &"xray_ready"
+clips = Array[AudioStream]([ExtResource("204_match")])
+volume_db = -8.0
+note = "PLACEHOLDER (core/154, Q2701): an X-ray's icon becomes usable and pulses once, flat. Names match's clip (the Sole Mates cue's first synthesised candidate), -8 dB."
+
+[sub_resource type="Resource" id="Resource_cat_meow"]
+script = ExtResource("1_76itk")
+event = &"cat_meow"
+clips = Array[AudioStream]([ExtResource("c154_21"), ExtResource("c154_22"), ExtResource("c154_23")])
+volume_db = -2.0
+spatial = true
+note = "The Cat meows, at the Cat (core/154). The old picks cc0/kerzoven_softmew, cc0/antumdeluge_kitten_mew and cc0/ignasd_meow, -2 dB."
+
+[sub_resource type="Resource" id="Resource_cat_purr"]
+script = ExtResource("1_76itk")
+event = &"cat_purr"
+clips = Array[AudioStream]([ExtResource("c154_24")])
+volume_db = -4.0
+spatial = true
+note = "The Cat purrs when petted (core/154). The old pick cc0/kerzoven_purrsleepy, -4 dB."
+
+[sub_resource type="Resource" id="Resource_cat_hiss"]
+script = ExtResource("1_76itk")
+event = &"cat_hiss"
+clips = Array[AudioStream]([ExtResource("c154_25")])
+volume_db = -2.0
+spatial = true
+note = "The Cat hisses as it is thrown (core/154). The old pick cc0/knoflicek_cat8_hiss (Dan Knoflicek, Cat 8, CC-BY 3.0: credited), -2 dB."
+
+[sub_resource type="Resource" id="Resource_cat_land"]
+script = ExtResource("1_76itk")
+event = &"cat_land"
+clips = Array[AudioStream]([ExtResource("c154_26")])
+volume_db = -4.0
+spatial = true
+note = "The Cat lands, and hops into or out of the Elevator's car (core/154). The old pick synth/cat_land_a, -4 dB."
+
+[sub_resource type="Resource" id="Resource_cat_swat"]
+script = ExtResource("1_76itk")
+event = &"cat_swat"
+clips = Array[AudioStream]([ExtResource("c154_27")])
+volume_db = -6.0
+spatial = true
+note = "The Cat's swat touches a Sock (core/154). The old pick synth/cat_swat_a, -6 dB."
+
+[sub_resource type="Resource" id="Resource_litter_scratch"]
+script = ExtResource("1_76itk")
+event = &"litter_scratch"
+clips = Array[AudioStream]([ExtResource("c154_27")])
+volume_db = -6.0
+spatial = true
+note = "PLACEHOLDER (core/154, Q2712): the litterbox scratch while the Cat is boxed, at the litterbox. The swat's clip and level until the designer picks one of the three recordings core/179 brings."
+
+[sub_resource type="Resource" id="Resource_elevator_bell"]
+script = ExtResource("1_76itk")
+event = &"elevator_bell"
+clips = Array[AudioStream]([ExtResource("140_ping")])
+spatial = true
+note = "The Elevator's arrival, at that stop (core/154). Shares the ping's clips (elevator.md, Q2702); the old game picked cc0/springspring_bell from the ping's pool."
+
+[sub_resource type="Resource" id="Resource_elevator_creak"]
+script = ExtResource("1_76itk")
+event = &"elevator_creak"
+clips = Array[AudioStream]([ExtResource("105_dev"), ExtResource("c154_1")])
+volume_db = -6.0
+spatial = true
+note = "The rope and pulley creak while the Elevator rides, at the shaft (core/154). The old picks from the basket's creaks, cc0/kenney_creak3 and cc0/kenney_creak1, -6 dB."
+
+[sub_resource type="Resource" id="Resource_hatch_open"]
+script = ExtResource("1_76itk")
+event = &"hatch_open"
+clips = Array[AudioStream]([ExtResource("103_dev")])
+spatial = true
+note = "The Elevator's metal hatch slides open (core/154). The oven's clip, the old pick cc0/rubberduck_metal_open."
+
+[sub_resource type="Resource" id="Resource_hatch_close"]
+script = ExtResource("1_76itk")
+event = &"hatch_close"
+clips = Array[AudioStream]([ExtResource("104_dev")])
+spatial = true
+note = "The Elevator's metal hatch slides shut (core/154). The oven's clip, the old pick cc0/rubberduck_metal_close."
+
+[sub_resource type="Resource" id="Resource_elevator_button"]
+script = ExtResource("1_76itk")
+event = &"elevator_button"
+clips = Array[AudioStream]([ExtResource("c154_2")])
+spatial = true
+note = "A call button's answer (core/154). Names device_click's clip, the old pick cc0/kenney_switch11."
+
+[sub_resource type="Resource" id="Resource_elevator_ride"]
+script = ExtResource("1_76itk")
+event = &"elevator_ride"
+clips = Array[AudioStream]([ExtResource("c154_3")])
+volume_db = -4.0
+loop = true
+note = "PLACEHOLDER (core/154, Q2702): the dim ride's rumble, heard flat by the rider alone from the hatch shutting to the arrival. The old synth placeholder, none picked: its first candidate synth/elevator_ride_a, -4 dB."
+
+[sub_resource type="Resource" id="Resource_elevator_squeeze"]
+script = ExtResource("1_76itk")
+event = &"elevator_squeeze"
+clips = Array[AudioStream]([ExtResource("c154_4")])
+volume_db = -2.0
+spatial = true
+note = "PLACEHOLDER (core/154, Q2702): a second rider squeezes into the car, a rubbery squeak, at the car. The old synth placeholder, none picked: its first candidate synth/elevator_squeeze_a, -2 dB."
+
+[sub_resource type="Resource" id="Resource_vacuum_motor"]
+script = ExtResource("1_76itk")
+event = &"vacuum_motor"
+clips = Array[AudioStream]([ExtResource("c154_7")])
+spatial = true
+loop = true
+note = "The Sock vacuum's motor while the suction is on, a 3D loop at the container (core/154). None picked in the old game: its first candidate synth/vacuum_motor_a."
+
+[sub_resource type="Resource" id="Resource_vacuum_thwip"]
+script = ExtResource("1_76itk")
+event = &"vacuum_thwip"
+clips = Array[AudioStream]([ExtResource("c154_8")])
+spatial = true
+note = "A Sock sucked into the nozzle, at its mouth (core/154). None picked in the old game: its first candidate synth/vacuum_thwip_a. The old 0.09 s between per-Sock sounds (THWIP_GAP)."
+min_gap = 0.09
+
+[sub_resource type="Resource" id="Resource_vacuum_spit_tick"]
+script = ExtResource("1_76itk")
+event = &"vacuum_spit_tick"
+clips = Array[AudioStream]([ExtResource("c154_9")])
+spatial = true
+note = "A Sock spat out, its tick at the nozzle's mouth (core/154). None picked in the old game: its first candidate synth/vacuum_spit_tick_a. The old 0.09 s between per-Sock sounds (THWIP_GAP)."
+min_gap = 0.09
+
+[sub_resource type="Resource" id="Resource_vacuum_nozzle_hang"]
+script = ExtResource("1_76itk")
+event = &"vacuum_nozzle_hang"
+clips = Array[AudioStream]([ExtResource("c154_10")])
+spatial = true
+note = "The nozzle hung back in its clip (core/154). None picked in the old game: its first candidate synth/vacuum_nozzle_hang_a."
+
+[sub_resource type="Resource" id="Resource_vacuum_nozzle_drop"]
+script = ExtResource("1_76itk")
+event = &"vacuum_nozzle_drop"
+clips = Array[AudioStream]([ExtResource("c154_11")])
+spatial = true
+note = "The nozzle dropped on the floor (core/154). None picked in the old game: its first candidate synth/vacuum_nozzle_drop_a."
+
+[sub_resource type="Resource" id="Resource_vacuum_lift"]
+script = ExtResource("1_76itk")
+event = &"vacuum_lift"
+clips = Array[AudioStream]([ExtResource("c154_12")])
+spatial = true
+note = "A vacuum's body picked up (core/154). None picked in the old game: its first candidate synth/vacuum_lift_a."
+
+[sub_resource type="Resource" id="Resource_vacuum_set_down"]
+script = ExtResource("1_76itk")
+event = &"vacuum_set_down"
+clips = Array[AudioStream]([ExtResource("c154_13")])
+spatial = true
+note = "A vacuum's body set down (core/154). None picked in the old game: its first candidate synth/vacuum_set_down_a."
+
+[sub_resource type="Resource" id="Resource_beeper_beep"]
+script = ExtResource("1_76itk")
+event = &"beeper_beep"
+clips = Array[AudioStream]([ExtResource("140_ping")])
+volume_db = -6.0
+spatial = true
+note = "PLACEHOLDER (core/154, Q2698): the Sock detector's beep towards the nearest loose Sock, at the model. The ping's pool (synth/ping_d, the old pick), -6 dB."
+
+[sub_resource type="Resource" id="Resource_device_click"]
+script = ExtResource("1_76itk")
+event = &"device_click"
+clips = Array[AudioStream]([ExtResource("c154_2")])
+spatial = true
+note = "The TV's or the Radio's knob turned, at the device (core/154). The old pick cc0/kenney_switch11; the Elevator's button shares it."
+
+[sub_resource type="Resource" id="Resource_tv_static"]
+script = ExtResource("1_76itk")
+event = &"tv_static"
+clips = Array[AudioStream]([ExtResource("c154_14")])
+bus = "Music"
+spatial = true
+note = "TV static between channels, at the set (core/154). None picked in the old game: its first candidate synth/tv_static_a."
+
+[sub_resource type="Resource" id="Resource_radio_static"]
+script = ExtResource("1_76itk")
+event = &"radio_static"
+clips = Array[AudioStream]([ExtResource("c154_15")])
+bus = "Music"
+spatial = true
+note = "Radio tuning noise between channels, at the Radio (core/154). The old pick cc0/kresiek_radio_noise."
+
+[sub_resource type="Resource" id="Resource_tv_puppets"]
+script = ExtResource("1_76itk")
+event = &"tv_puppets"
+clips = Array[AudioStream]([ExtResource("c154_16")])
+bus = "Music"
+spatial = true
+loop = true
+note = "The TV's Sock puppet show, gibberish voices, a loop at the set (core/154). The old pick synth/tv_puppets_a."
+
+[sub_resource type="Resource" id="Resource_tv_shop"]
+script = ExtResource("1_76itk")
+event = &"tv_shop"
+clips = Array[AudioStream]([ExtResource("c154_17")])
+bus = "Music"
+spatial = true
+loop = true
+note = "The TV's Sock shopping, jingle and announcer, a loop at the set (core/154). The old pick synth/tv_shop_b."
+
+[sub_resource type="Resource" id="Resource_tv_news"]
+script = ExtResource("1_76itk")
+event = &"tv_news"
+clips = Array[AudioStream]([ExtResource("c154_18")])
+bus = "Music"
+spatial = true
+loop = true
+note = "The TV's weather, sting and presenter, a loop at the set (core/154). The old pick synth/tv_news_a."
+
+[sub_resource type="Resource" id="Resource_tv_testcard"]
+script = ExtResource("1_76itk")
+event = &"tv_testcard"
+clips = Array[AudioStream]([ExtResource("c154_19")])
+bus = "Music"
+spatial = true
+loop = true
+note = "The TV's test card tone, a loop at the set (core/154). The old pick cc0/wm_430hz."
+
+[sub_resource type="Resource" id="Resource_radio_land"]
+script = ExtResource("1_76itk")
+event = &"radio_land"
+clips = Array[AudioStream]([ExtResource("c154_20")])
+spatial = true
+note = "The thrown Radio lands, a clunk (core/154); the thrown vacuums land with it too (devices.md). The old pick cc0/rubberduck_wood_hit2."
+
+[sub_resource type="Resource" id="Resource_lamp_on"]
+script = ExtResource("1_76itk")
+event = &"lamp_on"
+clips = Array[AudioStream]([ExtResource("c154_5")])
+volume_db = -6.0
+note = "The lamps switch on at dusk, flat (core/154, Q2709). Names xray_on's clip; the old pick from that pool was cc0/funnydude_switch_on, -6 dB."
+
+[sub_resource type="Resource" id="Resource_lamp_off"]
+script = ExtResource("1_76itk")
+event = &"lamp_off"
+clips = Array[AudioStream]([ExtResource("c154_6")])
+volume_db = -6.0
+note = "The lamps switch off in the morning, flat (core/154, Q2709). Names xray_off's clip; the old pick from that pool was cc0/funnydude_switch_off, -6 dB."
 
 [sub_resource type="Resource" id="Resource_5vpok"]
 script = ExtResource("1_76itk")
@@ -541,5 +827,5 @@ note = "PLACEHOLDER (core/131): the Sole Mates cue, once at a Teammate's Hands w
 
 [resource]
 script = ExtResource("23_7apgx")
-events = Array[ExtResource("1_76itk")]([SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_jump"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape"), SubResource("Resource_fridge_open"), SubResource("Resource_fridge_close"), SubResource("Resource_oven_open"), SubResource("Resource_oven_close"), SubResource("Resource_drawer_thunk"), SubResource("Resource_basket_open"), SubResource("Resource_basket_close"), SubResource("Resource_litter_flap_open"), SubResource("Resource_litter_flap_close"), SubResource("Resource_piano_lid_open"), SubResource("Resource_piano_lid_close"), SubResource("Resource_cabinet_reveal"), SubResource("Resource_piano"), SubResource("Resource_ui_click"), SubResource("Resource_ui_hover"), SubResource("Resource_ping"), SubResource("Resource_part_pop"), SubResource("Resource_part_fit"), SubResource("Resource_padlock_pop"), SubResource("Resource_chain_drop"), SubResource("Resource_lock_door_open"), SubResource("Resource_washer_buzz"), SubResource("Resource_washer_rumble"), SubResource("Resource_final_pop"), SubResource("Resource_final_tick"), SubResource("Resource_final_rare"), SubResource("Resource_final_sting"), SubResource("Resource_wash_slosh"), SubResource("Resource_wash_slam"), SubResource("Resource_socks_pour"), SubResource("Resource_wash_calm"), SubResource("Resource_machine_break"), SubResource("Resource_coins"), SubResource("Resource_drawer_clack"), SubResource("Resource_menu_open"), SubResource("Resource_menu_close"), SubResource("Resource_buy"), SubResource("Resource_achievement"), SubResource("Resource_gift_rattle"), SubResource("Resource_match")])
+events = Array[ExtResource("1_76itk")]([SubResource("Resource_xray_on"), SubResource("Resource_xray_off"), SubResource("Resource_xray_ready"), SubResource("Resource_cat_meow"), SubResource("Resource_cat_purr"), SubResource("Resource_cat_hiss"), SubResource("Resource_cat_land"), SubResource("Resource_cat_swat"), SubResource("Resource_litter_scratch"), SubResource("Resource_elevator_bell"), SubResource("Resource_elevator_creak"), SubResource("Resource_hatch_open"), SubResource("Resource_hatch_close"), SubResource("Resource_elevator_button"), SubResource("Resource_elevator_ride"), SubResource("Resource_elevator_squeeze"), SubResource("Resource_vacuum_motor"), SubResource("Resource_vacuum_thwip"), SubResource("Resource_vacuum_spit_tick"), SubResource("Resource_vacuum_nozzle_hang"), SubResource("Resource_vacuum_nozzle_drop"), SubResource("Resource_vacuum_lift"), SubResource("Resource_vacuum_set_down"), SubResource("Resource_beeper_beep"), SubResource("Resource_device_click"), SubResource("Resource_tv_static"), SubResource("Resource_radio_static"), SubResource("Resource_tv_puppets"), SubResource("Resource_tv_shop"), SubResource("Resource_tv_news"), SubResource("Resource_tv_testcard"), SubResource("Resource_radio_land"), SubResource("Resource_lamp_on"), SubResource("Resource_lamp_off"), SubResource("Resource_5vpok"), SubResource("Resource_6qs2x"), SubResource("Resource_44v0t"), SubResource("Resource_6xncf"), SubResource("Resource_mm35u"), SubResource("Resource_lostpop"), SubResource("Resource_l5euo"), SubResource("Resource_x67l6"), SubResource("Resource_ns1cr"), SubResource("Resource_ss5n6"), SubResource("Resource_4jl0v"), SubResource("Resource_ojnwv"), SubResource("Resource_p8q3v"), SubResource("Resource_dxuwf"), SubResource("Resource_ubdnb"), SubResource("Resource_32gqa"), SubResource("Resource_ogaco"), SubResource("Resource_mf1m7"), SubResource("Resource_5o7ks"), SubResource("Resource_cepnw"), SubResource("Resource_jump"), SubResource("Resource_rksdm"), SubResource("Resource_knockdown"), SubResource("Resource_dragscrape"), SubResource("Resource_fridge_open"), SubResource("Resource_fridge_close"), SubResource("Resource_oven_open"), SubResource("Resource_oven_close"), SubResource("Resource_drawer_thunk"), SubResource("Resource_basket_open"), SubResource("Resource_basket_close"), SubResource("Resource_litter_flap_open"), SubResource("Resource_litter_flap_close"), SubResource("Resource_piano_lid_open"), SubResource("Resource_piano_lid_close"), SubResource("Resource_cabinet_reveal"), SubResource("Resource_piano"), SubResource("Resource_ui_click"), SubResource("Resource_ui_hover"), SubResource("Resource_ping"), SubResource("Resource_part_pop"), SubResource("Resource_part_fit"), SubResource("Resource_padlock_pop"), SubResource("Resource_chain_drop"), SubResource("Resource_lock_door_open"), SubResource("Resource_washer_buzz"), SubResource("Resource_washer_rumble"), SubResource("Resource_final_pop"), SubResource("Resource_final_tick"), SubResource("Resource_final_rare"), SubResource("Resource_final_sting"), SubResource("Resource_wash_slosh"), SubResource("Resource_wash_slam"), SubResource("Resource_socks_pour"), SubResource("Resource_wash_calm"), SubResource("Resource_machine_break"), SubResource("Resource_coins"), SubResource("Resource_drawer_clack"), SubResource("Resource_menu_open"), SubResource("Resource_menu_close"), SubResource("Resource_buy"), SubResource("Resource_achievement"), SubResource("Resource_gift_rattle"), SubResource("Resource_match")])
 muffling_scenes = Array[String](["res://game/entities/door/door.tscn", "res://game/entities/door/room_door.tscn", "res://game/entities/door/room_door_flipped.tscn"])

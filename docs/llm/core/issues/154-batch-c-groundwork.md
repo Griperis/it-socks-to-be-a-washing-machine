@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: zoo
@@ -104,3 +104,6 @@ the shells and the slots are scenes edited in the editor's format (Q2268), no co
 - The scratch's own sound is picked by the designer from three recordings (Q2712, 2026-11-26).
 
 ## Open follow-ups
+- [later] Kit fault (`kit/tools/godot_ai.py`): every invocation opens a new MCP session and never ends it (no DELETE). The godot-ai server allows 32 sessions, each idle for 30 min, so after about 30 single `call`s (the `--ready` polls of `godot_ai.sh start` count too) every call gets HTTP 503 until the editor restarts. `--batch` (one session) works around it. Fix: end the session on exit, or reuse one per checkout.
+- [later] Kit fault (godot-ai trial): `godot_ai.sh stop` fails drift_check on `house.tscn` after new ext_resources are added. The editor gives the four `resource_local_to_scene` Glow materials new sub-resource ids on its next save, and only a second save keeps them. `kit/tools/resave.sh` fixed it (two passes). `stop` could re-save twice, or say to run resave.sh.
+- [later] godot-ai cannot set node metadata (`node_set_property` with `metadata/surface` returns PROPERTY_NOT_ON_CLASS). The shells' ground has no `surface` meta and footsteps fall back to wood.

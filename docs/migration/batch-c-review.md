@@ -70,3 +70,10 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 
 | Ticket | The choice | What was done (the old answer) | Designer |
 |---|---|---|---|
+| core/154 | `elevator_bell`'s clip | the ping's clip (`ping__d.ogg`), as the ticket and Q2702 name the share; the old picked `cc0/springspring_bell` from the ping's pool (`data/sounds.json`, `game/audio/sound_bank.gd`:44) | |
+| core/154 | `lamp_on` / `lamp_off`'s clips and level | `xray_on`'s and `xray_off`'s laleksic clips, as the ticket names the share, at the old -6 dB; the old picked `cc0/funnydude_switch_on` / `_off` from that pool (`data/sounds.json`, `sound_bank.gd`:58-59) | |
+| core/154 | `elevator_creak`'s clips | the old two picks, `cc0/kenney_creak3` (the basket's file) and `cc0/kenney_creak1` (copied), -6 dB (`data/sounds.json`) | |
+| core/154 | the vacuums' seven sounds and `tv_static`, none picked in the old | each pool's first candidate, the synthesised `_a` (`sound_bank.gd`:150-160: "else its first candidate"); the recorded CC0 clips the old listed later were not brought | |
+| core/154 | the 0.09 s between the vacuums' per-Sock sounds | each SoundEvent's own `min_gap` 0.09 on `vacuum_thwip` and `vacuum_spit_tick` (devices.md); the old kept one gap per vacuum shared by both (`game/devices/vacuum_fx.gd`:17, :286-292) | |
+| core/154 | the shells' `ZooLabel` | each shell's `Name` label (the zoo's shared Label3D look); a `zoo_label.tscn` instanced on a station breaks `zoo:stations` (only the game's scenes or the station's own `game/zoo/<station>/` ones), so none is placed | |
+| core/154 | the Sounds station's room for 34 more buttons | `sounds_layout.tres`: 16 a row 0.6 m apart from x -5.8, rows 0.55 m apart, 0.3 m between groups, names at 0.002 m a pixel (the pad stays 12 x 8, and the zoo walk past its right side, sounds s07, stays clear); batch C's events first in the catalogue, so their pillars stand in the front row | |

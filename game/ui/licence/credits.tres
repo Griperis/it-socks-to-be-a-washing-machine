@@ -95,6 +95,7 @@ what = "Cat Purr & Meow"
 author = "kerzoven"
 source = "https://opengameart.org/content/cat-purr-meow"
 licence = "CC0 1.0"
+covers = PackedStringArray("assets/audio/cat_meow__kerzoven_softmew.ogg", "assets/audio/cat_purr__kerzoven_purrsleepy.ogg")
 
 [sub_resource type="Resource" id="Entry_11"]
 script = ExtResource("2_entry")
@@ -103,6 +104,7 @@ what = "Kitten Mew"
 author = "antumdeluge"
 source = "https://opengameart.org/content/kitten-mew"
 licence = "CC0 1.0"
+covers = PackedStringArray("assets/audio/cat_meow__antumdeluge_kitten_mew.ogg")
 
 [sub_resource type="Resource" id="Entry_12"]
 script = ExtResource("2_entry")
@@ -111,6 +113,7 @@ what = "Meow"
 author = "ignasd"
 source = "https://opengameart.org/content/meow"
 licence = "CC0 1.0"
+covers = PackedStringArray("assets/audio/cat_meow__ignasd_meow.ogg")
 
 [sub_resource type="Resource" id="Entry_13"]
 script = ExtResource("2_entry")
@@ -119,6 +122,7 @@ what = "cat sfx (the Cat's hiss)"
 author = "Dan Knoflicek"
 source = "https://opengameart.org/content/cat-sfx"
 licence = "CC-BY 3.0"
+covers = PackedStringArray("assets/audio/cat_hiss__knoflicek_cat8_hiss.ogg")
 
 [sub_resource type="Resource" id="Entry_14"]
 script = ExtResource("2_entry")
@@ -170,6 +174,7 @@ what = "430 Hz sine wave.wav"
 author = "Schminnte"
 source = "https://commons.wikimedia.org/wiki/File:430_Hz_sine_wave.wav"
 licence = "CC0 1.0"
+covers = PackedStringArray("assets/audio/tv_testcard__wm_430hz.ogg")
 
 [sub_resource type="Resource" id="Entry_20"]
 script = ExtResource("2_entry")
@@ -178,7 +183,7 @@ what = "50 RPG sound effects"
 author = "Kenney"
 source = "https://opengameart.org/content/50-rpg-sound-effects"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/basket_open__kenney_creak3.ogg", "assets/audio/buy__kenney_coins.ogg", "assets/audio/cupboard_close__kenney_door_close4.ogg", "assets/audio/cupboard_open__kenney_door_open1.ogg", "assets/audio/drop__kenney_drop_leather.ogg", "assets/audio/shelve__kenney_book_place1.ogg", "assets/audio/step_wood__kenney_footstep00.ogg")
+covers = PackedStringArray("assets/audio/basket_open__kenney_creak3.ogg", "assets/audio/buy__kenney_coins.ogg", "assets/audio/cupboard_close__kenney_door_close4.ogg", "assets/audio/cupboard_open__kenney_door_open1.ogg", "assets/audio/drop__kenney_drop_leather.ogg", "assets/audio/shelve__kenney_book_place1.ogg", "assets/audio/step_wood__kenney_footstep00.ogg", "assets/audio/elevator_creak__kenney_creak1.ogg")
 
 [sub_resource type="Resource" id="Entry_21"]
 script = ExtResource("2_entry")
@@ -187,7 +192,7 @@ what = "51 UI sound effects (buttons, switches and clicks)"
 author = "Kenney"
 source = "https://opengameart.org/content/51-ui-sound-effects-buttons-switches-and-clicks"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/ui_hover__kenney_rollover2.ogg")
+covers = PackedStringArray("assets/audio/ui_hover__kenney_rollover2.ogg", "assets/audio/device_click__kenney_switch11.ogg")
 
 [sub_resource type="Resource" id="Entry_22"]
 script = ExtResource("2_entry")
@@ -204,6 +209,7 @@ what = "75 CC0 breaking / falling / hit sfx"
 author = "rubberduck"
 source = "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx"
 licence = "CC0 1.0"
+covers = PackedStringArray("assets/audio/radio_land__rubberduck_wood_hit2.ogg")
 
 [sub_resource type="Resource" id="Entry_24"]
 script = ExtResource("2_entry")
@@ -459,6 +465,7 @@ what = "Radio Noise 1"
 author = "Kresiek The Furry"
 source = "https://opengameart.org/content/radio-noise-1"
 licence = "CC0 1.0"
+covers = PackedStringArray("assets/audio/radio_static__kresiek_radio_noise.ogg")
 
 [sub_resource type="Resource" id="Entry_55"]
 script = ExtResource("2_entry")
@@ -581,7 +588,7 @@ what = "Various Sound Effects"
 author = "laleksic"
 source = "https://opengameart.org/content/various-sound-effects"
 licence = "CC0 1.0"
-covers = PackedStringArray("assets/audio/drawer_close__laleksic_drawer_close.ogg", "assets/audio/drawer_open__laleksic_drawer_open.ogg")
+covers = PackedStringArray("assets/audio/drawer_close__laleksic_drawer_close.ogg", "assets/audio/drawer_open__laleksic_drawer_open.ogg", "assets/audio/xray_off__laleksic_switch_off.ogg", "assets/audio/xray_on__laleksic_switch_on.ogg")
 
 [sub_resource type="Resource" id="Entry_70"]
 script = ExtResource("2_entry")
@@ -794,7 +801,7 @@ section = "Made for It Socks"
 what = "Synthesised sounds and music (no samples)"
 author = "It Socks (tools/gen_sounds.py)"
 licence = "Part of the game"
-covers = PackedStringArray("assets/audio/synth/*", "assets/audio/cycle__a.ogg", "assets/audio/throw_charge__b.ogg", "assets/audio/knockdown__a.ogg", "assets/audio/washer_buzz__synth_*.ogg", "assets/audio/washer_rumble__synth_a.ogg", "assets/audio/ping__d.ogg", "assets/audio/match__a.ogg", "assets/audio/wash_slosh__synth_a.ogg", "assets/audio/wash_slam__synth_a.ogg", "assets/audio/achievement__synth_a.ogg", "assets/audio/gift_rattle__synth_a.ogg")
+covers = PackedStringArray("assets/audio/synth/*", "assets/audio/cycle__a.ogg", "assets/audio/throw_charge__b.ogg", "assets/audio/knockdown__a.ogg", "assets/audio/washer_buzz__synth_*.ogg", "assets/audio/washer_rumble__synth_a.ogg", "assets/audio/ping__d.ogg", "assets/audio/match__a.ogg", "assets/audio/wash_slosh__synth_a.ogg", "assets/audio/wash_slam__synth_a.ogg", "assets/audio/achievement__synth_a.ogg", "assets/audio/gift_rattle__synth_a.ogg", "assets/audio/elevator_ride__synth_a.ogg", "assets/audio/elevator_squeeze__synth_a.ogg", "assets/audio/vacuum_motor__synth_a.ogg", "assets/audio/vacuum_thwip__synth_a.ogg", "assets/audio/vacuum_spit_tick__synth_a.ogg", "assets/audio/vacuum_nozzle_hang__synth_a.ogg", "assets/audio/vacuum_nozzle_drop__synth_a.ogg", "assets/audio/vacuum_lift__synth_a.ogg", "assets/audio/vacuum_set_down__synth_a.ogg", "assets/audio/tv_static__synth_a.ogg", "assets/audio/tv_puppets__synth_a.ogg", "assets/audio/tv_shop__synth_b.ogg", "assets/audio/tv_news__synth_a.ogg", "assets/audio/cat_land__synth_a.ogg", "assets/audio/cat_swat__synth_a.ogg")
 
 [sub_resource type="Resource" id="Entry_96"]
 script = ExtResource("2_entry")
