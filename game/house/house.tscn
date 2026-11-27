@@ -90,6 +90,7 @@
 [ext_resource type="PackedScene" path="res://game/entities/laundry_bin/laundry_bin.tscn" id="102_bin"]
 [ext_resource type="PackedScene" path="res://game/laundry/laundry_day.tscn" id="103_day"]
 [ext_resource type="PackedScene" path="res://game/entities/wardrobe_station/wardrobe_station.tscn" id="104_wardrobe"]
+[ext_resource type="PackedScene" path="res://game/entities/encyclopedia_book/encyclopedia_book.tscn" id="105_book"]
 [ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_laundry.tres" id="tcab_laundry"]
 [ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_garage.tres" id="tcab_garage"]
 [ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_kitchen.tres" id="tcab_kitchen"]
@@ -731,6 +732,10 @@ transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 4.625, 3, 5.4)
 
 [node name="FloorLock" parent="FloorLocks/Attic/Padlock" index="0"]
 floor = 3
+
+[node name="EncyclopediaBook" parent="." instance=ExtResource("105_book")]
+transform = Transform3D(0.9781476, 0, -0.2079117, 0, 1, 0, 0.2079117, 0, 0.9781476, 0.95, -2.1, 0.5)
+metadata/note = "The house's one shared Sock encyclopedia (core/139): on the workshop's workbench at a New Game, as the old layout's props[] encyclopedia_book (0.95, 0.5, yaw -12 degrees; on the new bench's top, 2.1 m, where the old bench's was 2.0; core/150's detector starts 0.35 m beside it)."
 
 [node name="LaundryBins" type="Node3D" parent="."]
 metadata/note = "The seven candidate spots of the Laundry bins (core/93, the old layout's laundry_bins; judged by eye). A World uses bins_per_world of them (the Laundry day's draw): the one by the washer always. A new spot is a new instance, no code."

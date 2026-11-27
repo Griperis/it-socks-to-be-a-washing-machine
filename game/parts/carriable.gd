@@ -23,6 +23,14 @@
 ## full"). A leaver lays it where they stood; a load where it last lay. While carried its shapes are
 ## off: it never blocks its carrier, the aim or a drop.
 ##
+## A `one_slot` thing (core/139, the encyclopedia book; batch C's guide card is the next) is a Hands item
+## in one place instead of the whole Hands: it comes only into empty Hands, then takes one of their
+## places (Hands.capacity counts it), is listed and cycled by the wheel with the Socks and Pairs (Hands.list_size()),
+## and is drawn at the slot only while it is the active item. Whoever holds it and has it active reads it with the use key
+## (`use_held()`: a sibling with `held_use(by) -> bool`, the book's menu); it turns while the turn key is
+## held (`turning`, looks only on this machine). It is put down, handed over or let go as any carried
+## thing is (the right click, a leaver, a knocked-down player), never thrown.
+##
 ## The `carry_guards` seam (core/137): a sibling Part in the group GUARDS may refuse a pick
 ## (`pick_refusal(by) -> StringName`, empty to allow: a Teammate's present, "not_yours", said by nobody) and
 ## hide the thing from a player's crosshair (`aimable_by(by) -> bool`: no outline, no prompt, no click).
@@ -56,6 +64,8 @@ const FLOOR_PROBE := 0.5
 @export var pick_title := ""
 ## The crosshair's words with the click key while it is carried ("Open"; "": its `title`, with no key).
 @export var carry_title := ""
+## Whether it is a Hands item in one place instead of the whole Hands (the book).
+@export var one_slot := false
 
 @export_group("State")
 ## Who holds it: a player's id, or 0 when it lies at `at`.
@@ -77,6 +87,10 @@ var _off_shapes: Array[CollisionShape3D] = []
 var _put_from := Transform3D.IDENTITY
 var _put_left := 0.0
 var _put_time := 0.0
+## While its holder holds the turn key (set by their Player each frame), a one_slot thing turns in the slot.
+var turning := false
+## How far a one_slot thing is turned in the slot now, radians (looks only, this machine's).
+var _spin := 0.0
 
 
 func _enter_tree() -> void:
@@ -174,11 +188,11 @@ func pick_refusal(by: int) -> String:
 	return ""
 
 
-## Whether player `by`'s Hands hold anything: a Sock or a Pair, or a carried thing.
+## Whether player `by`'s Hands hold anything: a Sock or a Pair, a one-slot item, or a carried thing.
 func hands_busy(by: int) -> bool:
 	var h := hands()
 	if h != null:
-		return h.carries(by) != null or not h.items_of(by).is_empty()
+		return h.carries(by) != null or not h.items_of(by).is_empty() or h.one_slot_of(by) != null
 	return parts != null and parts.find(func(p: Part) -> bool: return p is Carriable and (p as Carriable).holder == by) != null
 
 
@@ -259,6 +273,18 @@ func left(by: int) -> Dictionary:
 ## The Host, after a load: nobody holds it (nothing is held offline); it lies where it was.
 func loaded(_host: String) -> Dictionary:
 	return grant({"holder": 0}) if holder != 0 else {}
+
+
+## The player's use key while this one_slot thing is their active item: the first sibling of it that
+## says `held_use(by)` did something (the book's menu opens). Returns whether one did.
+func use_held(by: int) -> bool:
+	var thing := get_parent()
+	if thing == null or holder != by:
+		return false
+	for node in thing.get_children():
+		if node != self and node.has_method(&"held_use") and bool(node.call(&"held_use", by)):
+			return true
+	return false
 
 
 ## The level's Hands (found once among the Parts), or null.
@@ -391,10 +417,18 @@ func _process(delta: float) -> void:
 	if thing == null:
 		return
 	if holder != 0:
+		if one_slot:
+			_spin = wrapf(_spin + (TAU / maxf(_turn_seconds(), 0.05) * delta if turning else 0.0), -PI, PI)
+			var h := hands()
+			thing.visible = h != null and h.one_slot_active(holder) == self
 		var pose: Variant = carry_pose(holder)
 		if pose is Transform3D:
-			thing.global_transform = pose
+			thing.global_transform = _spun(pose as Transform3D)
 		return
+	if one_slot:
+		_spin = 0.0
+		turning = false
+		thing.visible = true
 	if _put_left <= 0.0:
 		return
 	var looks := thing.get_node_or_null(^"Looks") as Node3D
@@ -406,6 +440,17 @@ func _process(delta: float) -> void:
 	looks.global_transform = _put_from.interpolate_with(thing.global_transform, k)
 	if _put_left <= 0.0:
 		looks.transform = Transform3D.IDENTITY
+
+
+## `pose` turned `_spin` about the up axis through the slot's place (a one_slot thing's turn in the hand).
+func _spun(pose: Transform3D) -> Transform3D:
+	return pose if _spin == 0.0 else Transform3D(Basis(Vector3.UP, _spin) * pose.basis, pose.origin)
+
+
+## Seconds a full turn takes while the turn key is held: the holder's Hands' own (HandsTuning.turn_time).
+func _turn_seconds() -> float:
+	var h := hands()
+	return h.tuning_of(holder).turn_time if h != null else 2.0
 
 
 ## Where player `by` holds it now as this machine draws them (their slot on their body), or null when

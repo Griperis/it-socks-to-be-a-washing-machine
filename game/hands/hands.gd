@@ -27,6 +27,13 @@
 ## catch lies at their feet), and a carried thing's put down is checked as a drop's place
 ## (spot_refusal()). body_frame() is where a carrier's body is drawn on this machine (its hold slot
 ## rides it).
+##
+## One-slot things (core/139, a Carriable with `one_slot`: the encyclopedia book): a Hands item in one
+## place instead of the whole Hands. It is listed after the Socks and Pairs (list_size(): one more
+## place, counted against the capacity) and the wheel cycles to it: the active index runs one past the
+## last Sock, and `active` keeps it. Then active_of() is -1 (no Sock is active, every Sock is tucked)
+## and in_hands() names it. The book is held alone (Q2722): while it is held no Sock, Pair or thing comes in
+## (pick_refusal() and can_take()), so the list never holds it beside another item; the list seam stays for batch C.
 class_name Hands
 extends Part
 
@@ -137,18 +144,58 @@ func items_of(by: int) -> PackedInt32Array:
 	return held.get(by, PackedInt32Array())
 
 
-## Player `by`'s active Sock, or -1 with empty Hands.
+## Player `by`'s active Sock, or -1 with empty Hands (or a one-slot item active).
 func active_of(by: int) -> int:
-	var items := items_of(by)
-	var i := int(active.get(key_of(by), active.get(by, items.size() - 1)))
-	return items[i] if i >= 0 and i < items.size() else -1
+	var i := active_index(by)
+	return items_of(by)[i] if i >= 0 else -1
 
 
-## The index of player `by`'s active item in items_of(), or -1.
+## The index of player `by`'s active item in items_of(), or -1 (none, or a one-slot item active).
 func active_index(by: int) -> int:
-	var items := items_of(by)
-	var i := int(active.get(key_of(by), active.get(by, items.size() - 1)))
-	return i if i >= 0 and i < items.size() else -1
+	var i := list_index(by)
+	return i if i < items_of(by).size() else -1
+
+
+## How many places player `by`'s Hands fill: their Socks and Pairs, and a one-slot item.
+func list_size(by: int) -> int:
+	return items_of(by).size() + (1 if one_slot_of(by) != null else 0)
+
+
+## The index of player `by`'s active item in the list the wheel cycles (the Socks and Pairs in the order
+## held, then a one-slot item), or -1 with empty Hands.
+func list_index(by: int) -> int:
+	var n := list_size(by)
+	var i := int(active.get(key_of(by), active.get(by, n - 1)))
+	return i if i >= 0 and i < n else n - 1
+
+
+## The one-slot thing (core/139) player `by` holds, or null.
+func one_slot_of(by: int) -> Carriable:
+	if not is_inside_tree() or parts == null:
+		return null
+	for node in get_tree().get_nodes_in_group(Carriable.GROUP):
+		var c := node as Carriable
+		if c != null and c.one_slot and c.holder == by and c.parts == parts:
+			return c
+	return null
+
+
+## The one-slot thing player `by` holds when it is their active item, else null.
+func one_slot_active(by: int) -> Carriable:
+	var c := one_slot_of(by)
+	return c if c != null and list_index(by) == items_of(by).size() else null
+
+
+## What player `by` holds in their Hands as the active item and puts down with the right click: the
+## whole-Hands thing they carry, else the one-slot thing when it is active; null for a Sock, a Pair or nothing.
+func in_hands(by: int) -> Carriable:
+	var c := carries(by)
+	return c if c != null else one_slot_active(by)
+
+
+## Whether player `by` holds an active item: a Sock, a Pair, a one-slot thing or a carried thing.
+func holds_active(by: int) -> bool:
+	return active_of(by) >= 0 or in_hands(by) != null
 
 
 ## The numbers that hold for player `by`: their player's HandsTuning when it is on this machine,
@@ -269,7 +316,7 @@ func pick_refusal(by: int, sock: int) -> String:
 		return SOON
 	if not parts.near_point(by, mess.where_of(sock), t.reach + t.reach_slack):
 		return FAR
-	if carries(by) != null or (items_of(by).size() >= t.capacity and mate_held(by, sock) < 0):
+	if carries(by) != null or one_slot_of(by) != null or (list_size(by) >= t.capacity and mate_held(by, sock) < 0):
 		return FULL
 	return ""
 
@@ -347,10 +394,10 @@ func decide(cmd: Command) -> Dictionary:
 			var step: Variant = cmd.args.get("step")
 			if not (step is int) or step == 0:
 				return refuse("wrong")
-			var items := items_of(cmd.by)
-			if items.size() < 2:
+			var places := list_size(cmd.by)
+			if places < 2:
 				return refuse("one")
-			return grant({"active": _with(_without(active, cmd.by), key_of(cmd.by), wrapi(active_index(cmd.by) + int(step), 0, items.size()))})
+			return grant({"active": _with(_without(active, cmd.by), key_of(cmd.by), wrapi(list_index(cmd.by) + int(step), 0, places))})
 		&"drop":
 			var point: Variant = cmd.args.get("point")
 			var normal: Variant = cmd.args.get("normal")
@@ -390,7 +437,7 @@ func carries(by: int) -> Carriable:
 		return null
 	for node in get_tree().get_nodes_in_group(Carriable.GROUP):
 		var c := node as Carriable
-		if c != null and c.holder == by and c.parts == parts:
+		if c != null and not c.one_slot and c.holder == by and c.parts == parts:
 			return c
 	return null
 
@@ -456,11 +503,11 @@ func take_refusal(to: int, sock: int) -> String:
 ## Whether player `to` has room for item `sock` in their Hands (line 18): a Pair needs a free place;
 ## a loose Sock pairs with its held mate or needs a free place.
 func can_take(to: int, sock: int) -> bool:
-	if carries(to) != null:
+	if carries(to) != null or one_slot_of(to) != null:
 		return false
 	if not mess.is_pair(sock) and mate_held(to, sock) >= 0:
 		return true
-	return items_of(to).size() < tuning_of(to).capacity
+	return list_size(to) < tuning_of(to).capacity
 
 
 ## Whether player `peer` is knocked down now (the level's Knockdowns; never, with none), or out of play

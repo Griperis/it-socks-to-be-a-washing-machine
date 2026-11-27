@@ -31,6 +31,8 @@ func cases() -> Array[Dictionary]:
 				"title": "coop/10 B16, B17, B26, H94, H112: the Host refuses a knock of the thrower, of a body already down, of nobody; a grab with full Hands, of a standing body, twice; a struggle of nobody dragged"},
 		{"name": "mate_capsule", "method": "case_mate_capsule", "world": false,
 				"title": "coop/10 E49, E52: a standing avatar's Mate capsule is on the Mate layer and off while it lies; the player bumps the lying body instead of walking through it"},
+		{"name": "book_spill", "method": "case_book_spill", "world": false,
+				"title": "core/139: a knocked-down Teammate holding the encyclopedia book lets it go where they stood, as a leaver (the Host's one answer carries the book's holder 0 and where it lies)"},
 	]
 
 
@@ -224,9 +226,27 @@ func case_mate_capsule() -> void:
 	_check(gap > 0.3 or player.global_position.y > 0.2, "E49: the player bumps the lying body instead of walking through it (%.2f m from its middle, %.2f up)" % [gap, player.global_position.y])
 
 
+## core/139: the Teammate holds the book (the Host's own pick as them), then is knocked down: the book is let go.
+func case_book_spill() -> void:
+	await _build(true)
+	var mate := _mate()
+	var book := _zoo.get_node(STATION + "/Book") as Node3D
+	var carriable := book.get_node("Carriable") as Carriable
+	book.global_position = mate.global_position + Vector3(0.6, 0.0, 0.0)
+	await _physics_ticks(2)
+	_parts().apply(_parts().answer(Command.new(&"pick", MATE, carriable.id)))
+	_check(carriable.holder == MATE and _hands().one_slot_of(MATE) == carriable, "the Teammate holds the book")
+	var stood := mate.global_position
+	_knock_mate(Vector3.FORWARD)
+	await _until(func() -> bool: return _kd().is_down(MATE), "the Teammate is knocked down", 60)
+	_check(carriable.holder == 0 and _hands().one_slot_of(MATE) == null, "the knocked-down Teammate let the book go")
+	_check(Vector2(book.global_position.x - stood.x, book.global_position.z - stood.z).length() < 1.0,
+			"it lies where they stood (%s, stood %s)" % [book.global_position, stood])
+
+
 # --- Helpers -------------------------------------------------------------------------------------
 
-func _build() -> void:
+func _build(with_book := false) -> void:
 	_holder = Node.new()
 	_holder.name = "Alone"
 	add_child(_holder)
@@ -235,6 +255,10 @@ func _build() -> void:
 		if not KEEP.has(String(station.name)):
 			station.get_parent().remove_child(station)
 			station.free()
+	if with_book:
+		var book := (load("res://game/entities/encyclopedia_book/encyclopedia_book.tscn") as PackedScene).instantiate()
+		book.name = "Book"
+		_zoo.get_node(STATION).add_child(book)
 	_holder.add_child(_zoo)
 	_parts().applied.connect(func(ev: Dictionary) -> void: _events.append(ev))
 	await _until(func() -> bool: return _player().is_on_floor() and _mess().looks_of(_spot_sock("SockA")) != null and _mate() != null,

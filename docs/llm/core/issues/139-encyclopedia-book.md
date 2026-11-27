@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: gifts
@@ -51,5 +51,10 @@ nodes on the Theme (Q2658).
 - The encyclopedia book stands in the house in batch B, as the old; batch C's guide card reuses its one-slot Hands
   item (Q2676, 2026-11-25).
 - The designer said yes to assets/17's book model (Q2696): swapping `game/entities/encyclopedia_book/looks_encyclopedia_book.tscn` in for the graybox Looks is this ticket's job; its graybox Looks root must be named `EncyclopediaBookLooks` (or rename one of the two so they match).
+- The encyclopedia book is held alone (Q2722, designer, 2026-11-27, a change from the old): picking it needs empty Hands (refused otherwise, "Hands full"), and while it is held nothing else is picked up or taken (Socks, Pairs, carried things, a hand-off); so it is never drawn tucked.
 
 ## Open follow-ups
+- [later] `hold_slot_book.tres` (0.1, 0.95, -0.5; stood up 1.35 rad) is a placeholder: the old drew the book in the hand
+  frame at (0.13, -0.13, -0.45); judge it by eye with the real glb.
+- [later] A knocked-down reader's spill is covered with a stand-in Teammate (`knockdown:book_spill`), not the local
+  player (a solo player has no ragdoll); whole-Hands carried things do not yet let go on a knock-down (core/150).

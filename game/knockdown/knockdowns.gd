@@ -328,6 +328,14 @@ func _decide_knock(cmd: Command) -> Dictionary:
 		if not dropped.is_empty():
 			changes.merge(dropped["changes"])
 			ev["dropped_at"] = dropped["dropped_at"]
+		# core/139: a held one-slot thing (the book) is let go too, where they stood, as a leaver's.
+		var book := hands.one_slot_of(target)
+		var spilled := book.left(target) if book != null else {}
+		if not spilled.is_empty():
+			changes.merge(spilled["changes"])
+			if not ev.has("dropped_at"):
+				var spill_at: Variant = parts.where.call(target) if parts.where.is_valid() else null
+				ev["dropped_at"] = spill_at if spill_at is Vector3 else hands.eyes_of(target)
 	return ev
 
 
@@ -347,7 +355,7 @@ func _decide_grab(cmd: Command) -> Dictionary:
 		return refuse(TAKEN)
 	if dragging_of(cmd.by) >= 0:
 		return refuse(BUSY)
-	if hands != null and hands.active_of(cmd.by) >= 0:
+	if hands != null and hands.holds_active(cmd.by):
 		return refuse(HANDS)
 	var rag := ragdoll_of(target)
 	if rag == null:
