@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: assets
 feature: assets

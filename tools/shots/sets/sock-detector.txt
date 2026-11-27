@@ -1,0 +1,5 @@
+# assets/26: the Sock detector's Looks framed as the old line-up (reference/it-socks
+# docs/art/sock_detector/final_lineup.png): its face from above the grip, its right side, three-quarter.
+face  --scene=res://tools/sock_detector_still.tscn --size=480x400 --do='5:sock_detector:0' --shots=20
+side  --scene=res://tools/sock_detector_still.tscn --size=480x400 --do='5:sock_detector:1' --shots=20
+quarter  --scene=res://tools/sock_detector_still.tscn --size=480x400 --do='5:sock_detector:2' --shots=20

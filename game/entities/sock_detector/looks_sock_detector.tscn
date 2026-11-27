@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://h7h5012hxeru"]
+
+[ext_resource type="PackedScene" uid="uid://dw3b2ehw63ax4" path="res://assets/sock_detector/sock_detector.glb" id="1_model"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_xjne6"]
+viewport_path = NodePath("../SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0fv3g"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_xjne6")
+roughness = 0.25
+
+[node name="LooksSockDetector" type="Node3D" unique_id=208243332]
+editor_description = "assets/26: the Sock detector's Looks (docs/architecture/devices.md \"Looks contracts\"). The old model lying on its back: the screen up (+Y), the nose and its aerial towards -Z, the grip towards +Z; the origin at the bottom centre of the head's footprint; 0.116 x 0.038 x 0.209 m."
+
+[node name="Model" parent="." unique_id=1406476382 instance=ExtResource("1_model")]
+
+[node name="Screen" parent="Model" index="1" unique_id=2123560433]
+material_override = SubResource("StandardMaterial3D_0fv3g")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1966047712]
+editor_description = "The detector's face: core/167's detector_screen.tscn goes in here. 320 x 280, as the 80 x 70 mm screen (Model/Screen, UV 0..1, the picture's top towards the nose), which shows it. Empty, it is clear and the screen reads dark."
+transparent_bg = true
+size = Vector2i(320, 280)
+
+[node name="Speaker" type="Marker3D" parent="." unique_id=480398685]
+editor_description = "Where the beep (beeper_beep, 3D, the ping's pool) plays from: the model's origin, as the old game played it from the model's position."
+gizmo_extents = 0.03
+
+[editable path="Model"]
