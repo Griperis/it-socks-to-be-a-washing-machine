@@ -6,7 +6,7 @@ area: core
 feature: economy
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-27
 blocked_by: ["[[132-old-tree-voice]]"]
 notes: ["batch B (Q2614); order: docs/migration/milestones.md Batch B, wave 6", "suggested model: sonnet"]
 terms: [Old Tree, Stage, Cabinet, Part, Fix, Final wash]

@@ -37,3 +37,4 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-26 [[143-lobby-wardrobe-key]] The Lobby's Wardrobe key and stats card: 0186656e (core/143-lobby-wardrobe-key)
 - 2026-11-26 [[10-drop-said-hands]] Drop the Hands numbers a player used to say: 32ea8066 (maintenance/10-drop-said-hands)
 - 2026-11-27 [[131-sole-cues]] The Sole cues: 2c3ba49e (core/131-sole-cues)
+- 2026-11-27 [[133-old-tree-help]] The Old Tree's help: 5f1fbd72 (core/133-old-tree-help)
