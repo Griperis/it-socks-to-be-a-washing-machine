@@ -257,6 +257,14 @@
       "origin_xy": false,
       "note": "assets/24: the Sock vacuum's hose, a skinned tube of 12 bones running 5 m from the origin along -Z (Godot); made by the same script"
     },
+    "backpack_vacuum": {
+      "class": "appliance",
+      "colliders": 0,
+      "source": "backpack_vacuum/backpack_vacuum",
+      "glb": "assets/vacuum_devices/backpack_vacuum.glb",
+      "origin_xy": false,
+      "note": "assets/25: the old capsule-tank Backpack vacuum (9,790 triangles, mesh for mesh the old glb's), at the old game's path; assets_src/generate/backpack_vacuum/make_backpack_vacuum.py. The origin is on the tank's axis, so the strap hoops round the wearer and the parked nozzle put the footprint off centre; no collider (the entity's box)"
+    },
     "armchair": {
       "class": "furniture",
       "colliders": 0,
