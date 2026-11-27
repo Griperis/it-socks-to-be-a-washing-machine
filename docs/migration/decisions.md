@@ -736,3 +736,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   editor re-save of the touched files, failing on any change) (designer, 2026-11-27;
   docs/research/godot-mcp-scene-authoring.md).
 - Q2725: assets/24, the Sock vacuum's model and Looks, is yes at its first line-up, 12,314 triangles accepted (the old nozzle pod) (designer, 2026-11-27).
+- Q2726: assets/21, the Elevator's models (the OUT OF ORDER plaque, the padlock sign and the car's floor letters as modelled parts), is yes at its first line-up (designer, 2026-11-27).
