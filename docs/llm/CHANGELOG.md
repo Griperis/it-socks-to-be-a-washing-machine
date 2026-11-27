@@ -52,3 +52,4 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-27 [[155-elevator-car-calls-hatches]] The Elevator: the car, calls, hatches, locks and out of order: 46cac5df (core/155-elevator-car-calls-hatches)
 - 2026-11-27 [[163-radio-carried-and-thrown]] The Radio carried and thrown; the thrown-knock rule: 03cd401b (core/163-radio-carried-and-thrown)
 - 2026-11-27 [[182-xrays-owning-and-clock]] The X-rays: owning, the keys, the clock, the Upgrades: 3f75ddb6 (core/182-xrays-owning-and-clock)
+- 2026-11-27 [[13-house-slices-timing-flaky]] The house's laying-slice timing case misses under load: 45b9ff17 (maintenance/13-house-slices-timing-flaky)
