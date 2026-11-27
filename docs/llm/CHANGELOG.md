@@ -47,3 +47,4 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-27 [[28-radio-model]] The Radio's model: e5d90b27 (assets/28-radio-model)
 - 2026-11-27 [[154-batch-c-groundwork]] Batch C's groundwork: every new sound, the seven station shells and the house's system slots: 51553306 (core/154-batch-c-groundwork)
 - 2026-11-27 [[25-backpack-vacuum-model]] The Backpack vacuum's model: 0b80857a (assets/25-backpack-vacuum-model)
+- 2026-11-27 [[27-tv-model]] The TV's model: 54fc6253 (assets/27-tv-model)
