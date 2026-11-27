@@ -65,5 +65,7 @@ every machine replays.
 - A thrown detector, Radio or Cat that hits a Teammate: a full-charge Throw knocks down, a weaker one bounces off to
   their feet, never caught; an Elevator rider is never hit (Q2700, 2026-11-26).
 - The TV and the Radio as the old; Socks on a picked-up Radio fall (Q2704, 2026-11-26).
+- The carried Radio rides the body at its hold slot, as built; it does not follow the camera (Q2730, 2026-11-27).
+- A knocked-down player drops whatever they carry, as a leaver does; kept (Q2731, 2026-11-27).
 
 ## Open follow-ups
