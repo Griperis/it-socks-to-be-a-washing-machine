@@ -738,3 +738,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2725: assets/24, the Sock vacuum's model and Looks, is yes at its first line-up, 12,314 triangles accepted (the old nozzle pod) (designer, 2026-11-27).
 - Q2726: assets/21, the Elevator's models (the OUT OF ORDER plaque, the padlock sign and the car's floor letters as modelled parts), is yes at its first line-up (designer, 2026-11-27).
 - Q2727: batch C's Elevator bell and lamp clicks play the old game's own picks: `springspring_bell` for `elevator_bell`, funnydude's clicks for `lamp_on`/`lamp_off` (designer, 2026-11-27; core/154).
+- Q2728: assets/23 (the wall clock), assets/25 (the Backpack vacuum), assets/26 (the Sock detector) and assets/28 (the Radio) are yes at their first line-ups, as built (designer, 2026-11-27).
