@@ -408,6 +408,7 @@ what = "Light Switch Turn On And Off SFX"
 author = "FunnyDude"
 source = "https://opengameart.org/content/light-switch-turn-on-and-off-sfx-0"
 licence = "CC0 1.0"
+covers = PackedStringArray("assets/audio/lamp_off__funnydude_switch_off.ogg", "assets/audio/lamp_on__funnydude_switch_on.ogg")
 
 [sub_resource type="Resource" id="Entry_48"]
 script = ExtResource("2_entry")
@@ -432,6 +433,7 @@ what = "Pleasing Bell Sound Effect"
 author = "Spring Spring"
 source = "https://opengameart.org/content/pleasing-bell-sound-effect"
 licence = "CC0 1.0"
+covers = PackedStringArray("assets/audio/elevator_bell__springspring_bell.ogg")
 
 [sub_resource type="Resource" id="Entry_51"]
 script = ExtResource("2_entry")

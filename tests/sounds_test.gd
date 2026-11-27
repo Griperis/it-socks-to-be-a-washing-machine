@@ -63,7 +63,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "core30_button_scene", "method": "case_core30_button_scene", "world": false,
 				"title": "core/30, real path: every Sounds button is sound_button.tscn with its name a zoo_label.tscn, and the player's walk up and use on one plays its sound"},
 		{"name": "c154_batch_c_events", "method": "case_c154_events", "world": false,
-				"title": "core/154: every batch C SoundEvent is in the catalogue with clips on its bus, flat or 3D, looping or not as the old game; the shared ones name the same files; the placeholders say so"},
+				"title": "core/154: every batch C SoundEvent is in the catalogue with clips on its bus, flat or 3D, looping or not as the old game; the shared ones name the same files, the bell and the lamps the old picks (Q2727); the placeholders say so"},
 		{"name": "c154_real_path_pillars", "method": "case_c154_pillars", "world": false,
 				"title": "core/154, real path: in the zoo's Sounds station the player walks up to the vacuum_thwip, elevator_bell, cat_meow and xray_on pillars and presses E on each: it plays"},
 	]
@@ -402,8 +402,7 @@ const BATCH_C := {
 	&"xray_ready": ["SFX", false, false],
 }
 ## Pairs that name the same clips (the tickets' shares).
-const SHARED: Array[Array] = [[&"lamp_on", &"xray_on"], [&"lamp_off", &"xray_off"], [&"elevator_button", &"device_click"],
-		[&"elevator_bell", &"ping"], [&"beeper_beep", &"ping"], [&"xray_ready", &"match"], [&"hatch_open", &"oven_open"],
+const SHARED: Array[Array] = [[&"elevator_button", &"device_click"], [&"beeper_beep", &"ping"], [&"xray_ready", &"match"], [&"hatch_open", &"oven_open"],
 		[&"hatch_close", &"oven_close"], [&"litter_scratch", &"cat_swat"]]
 
 
@@ -423,6 +422,11 @@ func case_c154_events() -> void:
 		var b := cat.find(pair[1])
 		_check(a != null and b != null and a.clips == b.clips, "%s names %s's clips" % pair)
 	_check(cat.find(&"elevator_creak").clips.has(cat.find(&"basket_open").clips[0]), "the Elevator's creak names the basket's creak")
+	# Q2727: the bell and the lamps' clicks are the old picks, files of their own.
+	for pick: Array in [[&"elevator_bell", "elevator_bell__springspring_bell.ogg"], [&"lamp_on", "lamp_on__funnydude_switch_on.ogg"],
+			[&"lamp_off", "lamp_off__funnydude_switch_off.ogg"]]:
+		var clips := cat.find(pick[0]).clips
+		_check(clips.size() == 1 and clips[0].resource_path.get_file() == pick[1], "%s plays the old pick %s" % pick)
 	for n: StringName in [&"elevator_ride", &"elevator_squeeze", &"litter_scratch"]:
 		_check(cat.find(n).note.begins_with("PLACEHOLDER"), "%s is marked a placeholder" % n)
 	_check(is_equal_approx(cat.find(&"vacuum_thwip").min_gap, 0.09) and is_equal_approx(cat.find(&"vacuum_spit_tick").min_gap, 0.09),

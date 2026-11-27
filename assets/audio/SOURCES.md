@@ -43,8 +43,8 @@ The old game's picks for the core events (ported, Q2319). CC0 or public domain, 
 | socks_pour__pyrano_whoosh_pour.ogg | cc0/pyrano_whoosh_pour | pyranostudios | CC0 | https://opengameart.org/content/air-whoosh (core/92: the old `socks_pour` pick, played at the porthole when the spit starts) |
 | elevator_creak__kenney_creak1.ogg | cc0/kenney_creak1 | Kenney | CC0 | https://opengameart.org/content/50-rpg-sound-effects (core/154: the old `elevator_creak` pick beside creak3) |
 | device_click__kenney_switch11.ogg | cc0/kenney_switch11 | Kenney | CC0 | https://opengameart.org/content/51-ui-sound-effects-buttons-switches-and-clicks (core/154: the old `device_click` and `elevator_button` pick) |
-| xray_on__laleksic_switch_on.ogg | cc0/laleksic_switch_on | laleksic | CC0 | https://opengameart.org/content/various-sound-effects (core/154: `xray_on`, and `lamp_on` names it) |
-| xray_off__laleksic_switch_off.ogg | cc0/laleksic_switch_off | laleksic | CC0 | https://opengameart.org/content/various-sound-effects (core/154: `xray_off`, and `lamp_off` names it) |
+| xray_on__laleksic_switch_on.ogg | cc0/laleksic_switch_on | laleksic | CC0 | https://opengameart.org/content/various-sound-effects (core/154: `xray_on`) |
+| xray_off__laleksic_switch_off.ogg | cc0/laleksic_switch_off | laleksic | CC0 | https://opengameart.org/content/various-sound-effects (core/154: `xray_off`) |
 | radio_static__kresiek_radio_noise.ogg | cc0/kresiek_radio_noise | Kresiek The Furry | CC0 | https://opengameart.org/content/radio-noise-1 |
 | tv_testcard__wm_430hz.ogg | cc0/wm_430hz | Schminnte | CC0 | https://commons.wikimedia.org/wiki/File:430_Hz_sine_wave.wav |
 | radio_land__rubberduck_wood_hit2.ogg | cc0/rubberduck_wood_hit2 | rubberduck | CC0 | https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx |
@@ -53,6 +53,9 @@ The old game's picks for the core events (ported, Q2319). CC0 or public domain, 
 | cat_meow__ignasd_meow.ogg | cc0/ignasd_meow | ignasd | CC0 | https://opengameart.org/content/meow |
 | cat_purr__kerzoven_purrsleepy.ogg | cc0/kerzoven_purrsleepy | kerzoven | CC0 | https://opengameart.org/content/cat-purr-meow (cut) |
 | cat_hiss__knoflicek_cat8_hiss.ogg | cc0/knoflicek_cat8_hiss | Dan Knoflicek | CC-BY 3.0 | https://opengameart.org/content/cat-sfx (Cat 8.wav; credited on the Licence page) |
+| elevator_bell__springspring_bell.ogg | cc0/springspring_bell | Spring Spring | CC0 | https://opengameart.org/content/pleasing-bell-sound-effect (core/154, Q2727: the old `elevator_bell` pick) |
+| lamp_on__funnydude_switch_on.ogg | cc0/funnydude_switch_on | FunnyDude | CC0 | https://opengameart.org/content/light-switch-turn-on-and-off-sfx-0 (core/154, Q2727: the old `lamp_on` pick) |
+| lamp_off__funnydude_switch_off.ogg | cc0/funnydude_switch_off | FunnyDude | CC0 | https://opengameart.org/content/light-switch-turn-on-and-off-sfx-0 (core/154, Q2727: the old `lamp_off` pick) |
 | elevator_ride__synth_a.ogg | synth/elevator_ride_a | tools/gen_sounds.py | synth | synthesised by the old tools/gen_sounds.py (no samples) |
 | elevator_squeeze__synth_a.ogg | synth/elevator_squeeze_a | tools/gen_sounds.py | synth | synthesised by the old tools/gen_sounds.py (no samples) |
 | vacuum_motor__synth_a.ogg | synth/vacuum_motor_a | tools/gen_sounds.py | synth | synthesised by the old tools/gen_sounds.py (no samples) |
@@ -77,4 +80,4 @@ core/98 brought the knockdown wash's two sounds, synthesised in the old game (`t
 
 core/145 brought the Achievement chime: the old game designed the toast's soft chime (Q1695) but never made one, so achievement__synth_a.ogg is the nearest synthesised clip of the old bench, `part_pop__c` ("two rising chimes, something new found", old `tools/gen_sounds.py` `_part_pop_c`), as the first candidate; the designer picks on the bench.
 
-core/154 brought batch C's sounds (the Elevator, the day's lamps, the devices, the TV and Radio, the Cat, the X-rays): the old picks, or for an event with no pick the pool's first candidate (the vacuums' seven, `tv_static`, and the placeholders `elevator_ride` and `elevator_squeeze`). Shared events name the existing files: `elevator_bell` and `beeper_beep` the ping's, `hatch_open`/`hatch_close` the oven's, `elevator_creak` the basket's creak3, `lamp_on`/`lamp_off` the X-ray's, `xray_ready` the match cue's, `litter_scratch` the swat's.
+core/154 brought batch C's sounds (the Elevator, the day's lamps, the devices, the TV and Radio, the Cat, the X-rays): the old picks, or for an event with no pick the pool's first candidate (the vacuums' seven, `tv_static`, and the placeholders `elevator_ride` and `elevator_squeeze`). Shared events name the existing files: `beeper_beep` the ping's, `hatch_open`/`hatch_close` the oven's, `elevator_creak` the basket's creak3, `xray_ready` the match cue's, `litter_scratch` the swat's.

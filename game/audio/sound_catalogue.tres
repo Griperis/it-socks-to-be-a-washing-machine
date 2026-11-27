@@ -100,18 +100,21 @@
 [ext_resource type="AudioStream" uid="uid://djk4eill5o3em" path="res://assets/audio/cat_hiss__knoflicek_cat8_hiss.ogg" id="c154_25"]
 [ext_resource type="AudioStream" uid="uid://ch8cdu76532au" path="res://assets/audio/cat_land__synth_a.ogg" id="c154_26"]
 [ext_resource type="AudioStream" uid="uid://cf18ousu58n1c" path="res://assets/audio/cat_swat__synth_a.ogg" id="c154_27"]
+[ext_resource type="AudioStream" uid="uid://c583xu6equpru" path="res://assets/audio/lamp_off__funnydude_switch_off.ogg" id="c154_28"]
+[ext_resource type="AudioStream" uid="uid://bb3ik1qn5lxv6" path="res://assets/audio/lamp_on__funnydude_switch_on.ogg" id="c154_29"]
+[ext_resource type="AudioStream" uid="uid://dl1fgw8x55ehs" path="res://assets/audio/elevator_bell__springspring_bell.ogg" id="c154_30"]
 
 [sub_resource type="Resource" id="Resource_xray_on"]
 script = ExtResource("1_76itk")
 event = &"xray_on"
 clips = Array[AudioStream]([ExtResource("c154_5")])
-note = "An X-ray shows, flat, for its player (core/154). The old pick cc0/laleksic_switch_on; the lamps' lamp_on names it too."
+note = "An X-ray shows, flat, for its player (core/154). The old pick cc0/laleksic_switch_on."
 
 [sub_resource type="Resource" id="Resource_xray_off"]
 script = ExtResource("1_76itk")
 event = &"xray_off"
 clips = Array[AudioStream]([ExtResource("c154_6")])
-note = "An X-ray's show ends, flat (core/154). The old pick cc0/laleksic_switch_off; the lamps' lamp_off names it too."
+note = "An X-ray's show ends, flat (core/154). The old pick cc0/laleksic_switch_off."
 
 [sub_resource type="Resource" id="Resource_xray_ready"]
 script = ExtResource("1_76itk")
@@ -171,9 +174,9 @@ note = "PLACEHOLDER (core/154, Q2712): the litterbox scratch while the Cat is bo
 [sub_resource type="Resource" id="Resource_elevator_bell"]
 script = ExtResource("1_76itk")
 event = &"elevator_bell"
-clips = Array[AudioStream]([ExtResource("140_ping")])
+clips = Array[AudioStream]([ExtResource("c154_30")])
 spatial = true
-note = "The Elevator's arrival, at that stop (core/154). Shares the ping's clips (elevator.md, Q2702); the old game picked cc0/springspring_bell from the ping's pool."
+note = "The Elevator's arrival, at that stop (core/154). The old pick from the ping's pool, cc0/springspring_bell (Q2727)."
 
 [sub_resource type="Resource" id="Resource_elevator_creak"]
 script = ExtResource("1_76itk")
@@ -349,16 +352,16 @@ note = "The thrown Radio lands, a clunk (core/154); the thrown vacuums land with
 [sub_resource type="Resource" id="Resource_lamp_on"]
 script = ExtResource("1_76itk")
 event = &"lamp_on"
-clips = Array[AudioStream]([ExtResource("c154_5")])
+clips = Array[AudioStream]([ExtResource("c154_29")])
 volume_db = -6.0
-note = "The lamps switch on at dusk, flat (core/154, Q2709). Names xray_on's clip; the old pick from that pool was cc0/funnydude_switch_on, -6 dB."
+note = "The lamps switch on at dusk, flat (core/154, Q2709). The old pick from the X-ray's pool, cc0/funnydude_switch_on, -6 dB (Q2727)."
 
 [sub_resource type="Resource" id="Resource_lamp_off"]
 script = ExtResource("1_76itk")
 event = &"lamp_off"
-clips = Array[AudioStream]([ExtResource("c154_6")])
+clips = Array[AudioStream]([ExtResource("c154_28")])
 volume_db = -6.0
-note = "The lamps switch off in the morning, flat (core/154, Q2709). Names xray_off's clip; the old pick from that pool was cc0/funnydude_switch_off, -6 dB."
+note = "The lamps switch off in the morning, flat (core/154, Q2709). The old pick from the X-ray's pool, cc0/funnydude_switch_off, -6 dB (Q2727)."
 
 [sub_resource type="Resource" id="Resource_5vpok"]
 script = ExtResource("1_76itk")
