@@ -740,3 +740,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2727: batch C's Elevator bell and lamp clicks play the old game's own picks: `springspring_bell` for `elevator_bell`, funnydude's clicks for `lamp_on`/`lamp_off` (designer, 2026-11-27; core/154).
 - Q2728: assets/23 (the wall clock), assets/25 (the Backpack vacuum), assets/26 (the Sock detector) and assets/28 (the Radio) are yes at their first line-ups, as built (designer, 2026-11-27).
 - Q2729: assets/27, the TV's model and Looks (the old CRT glass shader brought in with it), is yes at its first line-up; core/165 builds `tv.tscn` on it (designer, 2026-11-27).
+- Q2730: a carried Radio rides the body at the old spot measured from the feet; it does not follow the camera when the player looks up or down (the old held it in the first-person view) (designer, 2026-11-27; core/163).
+- Q2731: a knocked-down player drops whatever they carry, as a leaver does (before: only the book and Socks) (designer, 2026-11-27; core/163).
