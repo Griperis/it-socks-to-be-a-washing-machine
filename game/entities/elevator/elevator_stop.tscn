@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://o4l3ubf2ids6"]
+
+[ext_resource type="Script" uid="uid://bvo2cp4l8vpm5" path="res://game/entities/elevator/elevator_stop.gd" id="1_stop"]
+[ext_resource type="Script" uid="uid://ikklic73bb8l" path="res://game/entities/elevator/elevator_control.gd" id="2_control"]
+[ext_resource type="Script" uid="uid://bilshnr7wp5ir" path="res://game/parts/openable.gd" id="3_openable"]
+[ext_resource type="PackedScene" uid="uid://b8f16fcwjwsbw" path="res://game/entities/elevator/stop/looks_stop.tscn" id="4_looks"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="5_outline"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_button"]
+size = Vector3(0.07, 0.07, 0.04)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sill"]
+size = Vector3(0.54, 0.2, 0.19)
+
+[node name="ElevatorStop" type="Node3D" unique_id=876588229 node_paths=PackedStringArray("hatch", "button_aim", "hatch_outline", "button_outline", "car_floor", "sill")]
+editor_description = "core/155: one stop of the Elevator (elevator.md, The shape), dropped by hand as a child of the Elevator at its floor's height with its floor set here. Origin: the floor, in the hatch's face plane across the opening's middle, facing +Z (the shaft behind). The hatch's Control (HATCH) is first, so the hatch's body is aimed through it; the Openable is driven by the Elevator's answers and kept open on a load; the Button's Control (BUTTON) calls the car, its aim body put on the Looks' button of this floor at ready."
+script = ExtResource("1_stop")
+hatch = NodePath("Openable")
+button_aim = NodePath("Button")
+hatch_outline = NodePath("Outline")
+button_outline = NodePath("Button/Outline")
+car_floor = NodePath("CarFloor")
+sill = NodePath("Sill/Shape")
+
+[node name="Control" type="Node" parent="." unique_id=57112261]
+script = ExtResource("2_control")
+kind = 1
+
+[node name="Openable" type="Node" parent="." unique_id=1447924558]
+script = ExtResource("3_openable")
+open_sound = &"hatch_open"
+close_sound = &"hatch_close"
+sound_height = 1.1
+noun = "hatch"
+keeps_open_on_load = true
+driven = true
+
+[node name="Looks" parent="." unique_id=67539239 instance=ExtResource("4_looks")]
+
+[node name="Outline" type="Node3D" parent="." unique_id=966493623]
+script = ExtResource("5_outline")
+
+[node name="Button" type="Node3D" parent="." unique_id=1922872314]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.42, 0.92, 0.03)
+
+[node name="Control" type="Node" parent="Button" unique_id=1134716548]
+script = ExtResource("2_control")
+
+[node name="Aim" type="StaticBody3D" parent="Button" unique_id=2099552765]
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Button/Aim" unique_id=1581192720]
+shape = SubResource("BoxShape3D_button")
+
+[node name="Outline" type="Node3D" parent="Button" unique_id=841474444]
+script = ExtResource("5_outline")
+
+[node name="CarFloor" type="Marker3D" parent="." unique_id=76416490]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, -0.35)
+
+[node name="Sill" type="Area3D" parent="." unique_id=2003690911]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Shape" type="CollisionShape3D" parent="Sill" unique_id=1315194413]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -0.025)
+shape = SubResource("BoxShape3D_sill")

@@ -216,3 +216,8 @@ SockGenerators/Basement/Generated
 SockGenerators/First/Generated
 SockGenerators/Ground/Generated
 Systems/Day/Day
+Systems/Elevator/Elevator/Attic/Openable
+Systems/Elevator/Elevator/Basement/Openable
+Systems/Elevator/Elevator/Elevator
+Systems/Elevator/Elevator/First/Openable
+Systems/Elevator/Elevator/Ground/Openable

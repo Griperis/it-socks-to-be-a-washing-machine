@@ -45,6 +45,9 @@ signal shown(locked: bool, now: bool, unlocked: bool)
 ## Once open it cannot be shut by use and shows no prompt (the old LockedDoor's `toggleable = false`:
 ## a floor never locks again).
 @export var one_way := false
+## Another Part opens and shuts it in its own answers (an Elevator stop's hatch, core/155): its use asks nothing, a
+## Guest may not ask it, and it refuses every Command of its own. It is aimed through that Part's clickable.
+@export var driven := false
 
 @export_group("State")
 ## Open or shut. Tick it to place the thing open; while playing only the Host's answer changes it.
@@ -85,6 +88,8 @@ func movers() -> Array[AnimatableBody3D]:
 ## The player's use button: ask to turn it the other way. The Command carries the wanted value, so
 ## of two players pressing at once the second is refused "already" instead of undoing the first.
 func use(by: int) -> void:
+	if driven:
+		return
 	parts.ask(Command.new(&"open", by, id, {"open": not open}))
 
 
@@ -101,12 +106,14 @@ func aimable() -> bool:
 
 ## A Guest sends the wanted value, at most 5 presses a second.
 func accepts() -> Dictionary[StringName, Dictionary]:
+	if driven:
+		return {}
 	return {&"open": {"args": {"open": TYPE_BOOL}, "rate": 5}}
 
 
 func decide(cmd: Command) -> Dictionary:
 	var to: Variant = cmd.args.get("open")
-	if cmd.kind != &"open" or not (to is bool):
+	if driven or cmd.kind != &"open" or not (to is bool):
 		return refuse("wrong")
 	if not parts.near(cmd.by, get_parent(), reach):
 		return refuse("far")

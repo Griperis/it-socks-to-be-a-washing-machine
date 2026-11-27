@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="ElevatorTuning" format=3 uid="uid://bobe0urq14jcq"]
+
+[ext_resource type="Script" uid="uid://t806ye36oys0" path="res://game/entities/elevator/elevator_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")

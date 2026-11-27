@@ -1,3 +1,29 @@
 [gd_scene format=3 uid="uid://cxmpnpaakn1xg"]
 
+[ext_resource type="PackedScene" uid="uid://cm8bgt0a8kjw5" path="res://game/entities/elevator/elevator.tscn" id="1_elevator"]
+[ext_resource type="PackedScene" uid="uid://o4l3ubf2ids6" path="res://game/entities/elevator/elevator_stop.tscn" id="2_stop"]
+
 [node name="Elevator" type="Node3D" unique_id=639031169]
+
+[node name="Elevator" parent="." unique_id=260281508 instance=ExtResource("1_elevator")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.59, 0, 5.15)
+
+[node name="Basement" parent="Elevator" unique_id=562540019 instance=ExtResource("2_stop")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.35, -3, 0)
+floor = 0
+
+[node name="Ground" parent="Elevator" unique_id=768493328 instance=ExtResource("2_stop")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -0.35, 0, 0)
+
+[node name="Openable" parent="Elevator/Ground" index="1" unique_id=1447924558]
+open = true
+
+[node name="First" parent="Elevator" unique_id=1595910744 instance=ExtResource("2_stop")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.47, 3, 0)
+floor = 2
+
+[node name="Attic" parent="Elevator" unique_id=1676461034 instance=ExtResource("2_stop")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.36, 6, 0)
+floor = 3
+
+[editable path="Elevator/Ground"]
