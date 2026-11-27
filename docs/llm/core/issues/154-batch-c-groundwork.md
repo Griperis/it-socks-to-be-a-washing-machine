@@ -41,7 +41,7 @@ sounds).
 Every copied clip goes into `assets/audio/` with its `SOURCES.md` row and its `game/ui/licence/credits.tres` entry.
 
 **The station shells** (`game/zoo/stations/<name>.tscn`, each a floor, its own ground `StaticBody3D` with a collision
-shape under it, a `ZooLabel` and a Spawn; instanced by hand under `Stations` in `zoo.tscn`, Q2359), 14 m apart from
+shape under it, a `ZooLabel`, a Spawn and the `Pad` node `zoo:stations` requires; instanced by hand under `Stations` in `zoo.tscn`, Q2359), 14 m apart from
 x = 208 (the zoo's floor ends before x = 160, so each needs its own ground):
 
 | Station | x | Filled by |
@@ -76,6 +76,9 @@ nearest) and goes under "Settled by the old game" in `docs/migration/batch-c-rev
 merge, never `[later]` on its own.
 
 ## How it is authored
+The godot-ai trial (Q2724): the station shells, the house slots and their instancing in `zoo.tscn` and `house.tscn`
+are made through `kit/tools/godot_ai.sh` / `godot_ai.py` (the headless editor), not hand-written; report how it went
+(what worked, what had to be hand-done, time). `kit/tools/drift_check.sh` passes on every file touched.
 SoundEvents in the catalogue (the Sounds station shows each with no other change; the designer swaps any clip there);
 the shells and the slots are scenes edited in the editor's format (Q2268), no code.
 
