@@ -727,3 +727,11 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
 - Q2722: the encyclopedia book is held alone, a change from the old: picking it up needs empty Hands, and nothing else
   is picked or taken while it is held; so it is never drawn tucked (the old's `tucked_scale` dropped) (designer,
   2026-11-27; core/139).
+- Q2723: the editor re-save's losses are repaired on main at their source (the 7 list exports the editor cannot keep,
+  "Editable Children" marked on every instance a scene overrides into, a two-pass headless editor re-save of every
+  file), merged on a full pass; the designer's upgrade re-save is discarded; afterwards opening the editor and saving
+  changes nothing (designer, 2026-11-27; maintenance/12; docs/research/headless-editor-scene-authoring.md).
+- Q2724: agents author scenes through the godot-ai MCP (hi-godot/godot-ai, running headless in the editor), tried
+  first on core/154 before it becomes the rule; the kit gets a merge-time drift check (a text lint and a headless
+  editor re-save of the touched files, failing on any change) (designer, 2026-11-27;
+  docs/research/godot-mcp-scene-authoring.md).
