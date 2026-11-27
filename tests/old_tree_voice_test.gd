@@ -88,6 +88,7 @@ func case_bought_and_earshot() -> void:
 	var tree := _tree()
 	await _until(func() -> bool: return tree.serial == 1, "the first visit's line")
 	await _until(func() -> bool: return not Voices.talking(&"old_tree"), "the first line to end", 900)
+	_parts.apply(tree.grant({"tips": {str(_bank_key(1)): ["tree_tip_throw"]}}))  # core/133's tip is not this case's
 	_pass_cooldown(tree)
 	var bank := _station.get_node("Socks/Bank") as Bank
 	_parts.apply(bank.grant({"coins": {bank.key_of(1): 30}, "recent": {}}))

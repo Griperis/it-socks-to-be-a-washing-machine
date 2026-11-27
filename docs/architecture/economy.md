@@ -212,8 +212,10 @@ the button and plays `refuse` (the Host's refusal text shows as any refusal). Th
   picker, and answers the line; every machine plays it from the tree, heard and subtitled only near it. A first visit
   turns `greet` into `first`. The calls (after the first wash, until someone comes near) are the Host's own timer.
 - **`OldTree`'s state** (saved): `met: PackedStringArray` (player ids that heard their first line), `tips: Dictionary`
-  (player id -> tips said this run), `calling: bool`, `beat: Dictionary` (the Fix comment waiting: its trigger and the
-  Host clock it is due), `said: Dictionary` (the thresholds of the current Stage already said).
+  (player id -> tips said this run), `calling: bool`, `beat: Dictionary` (`comment`: the Fix comment due and not yet
+  said; `story`: the story beats waiting; the Host arms a comment on its own clock and lapses either after `beat_hold`),
+  `said: Dictionary` (`stage` and `step`: the Stage's thresholds already said). What the tree reads of the house is
+  `OldTreeHelp` (the bar's step, the Cabinets with a Row to fill, a loose Mate's floor, the tips due).
 - **`OldTreeTuning`** (`game/furniture/old_tree_tuning.tres`, the old `old_tree.json`, placeholders): away 45 s, idle
   40 s, check 0.25 s, beat gap 20 s, beat hold 120 s, beat delay 120-420 s, beat chance 0.75, presents nag 240 s
   (core/121's moment), stage thresholds 0.5/0.8/0.95, grumble and hint chances 0.35, call first delay 20 s, call gap

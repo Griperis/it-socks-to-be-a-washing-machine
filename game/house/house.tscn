@@ -90,6 +90,14 @@
 [ext_resource type="PackedScene" path="res://game/entities/laundry_bin/laundry_bin.tscn" id="102_bin"]
 [ext_resource type="PackedScene" path="res://game/laundry/laundry_day.tscn" id="103_day"]
 [ext_resource type="PackedScene" path="res://game/entities/wardrobe_station/wardrobe_station.tscn" id="104_wardrobe"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_laundry.tres" id="tcab_laundry"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_garage.tres" id="tcab_garage"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_kitchen.tres" id="tcab_kitchen"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_living.tres" id="tcab_living"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_kids_north.tres" id="tcab_kids_north"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_kids_east.tres" id="tcab_kids_east"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_loft_west.tres" id="tcab_loft_west"]
+[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_loft_east.tres" id="tcab_loft_east"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_part_slot"]
 size = Vector3(0.72, 0.97, 0.72)
@@ -609,6 +617,7 @@ kind = ExtResource("99_detergent")
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.42, -3, 8.15)
 
 [node name="Cabinet" parent="Cabinets/Laundry" index="0" node_paths=PackedStringArray("hands", "bank")]
+tree_hint = ExtResource("tcab_laundry")
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 collection = &"simple"
@@ -618,6 +627,7 @@ pool = Array[StringName]([&"simple"])
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, -3, 7.3)
 
 [node name="Cabinet" parent="Cabinets/Garage" index="0" node_paths=PackedStringArray("hands", "bank")]
+tree_hint = ExtResource("tcab_garage")
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 2
@@ -631,6 +641,7 @@ locked = true
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.35, 0, 4.99)
 
 [node name="Cabinet" parent="Cabinets/Kitchen" index="0" node_paths=PackedStringArray("hands", "bank")]
+tree_hint = ExtResource("tcab_kitchen")
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 2
@@ -642,6 +653,7 @@ locked = true
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 0, 2.08)
 
 [node name="Cabinet" parent="Cabinets/Living" index="0" node_paths=PackedStringArray("hands", "bank")]
+tree_hint = ExtResource("tcab_living")
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 2
@@ -653,6 +665,7 @@ locked = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.84, 3, 3.81)
 
 [node name="Cabinet" parent="Cabinets/KidsNorth" index="0" node_paths=PackedStringArray("hands", "bank")]
+tree_hint = ExtResource("tcab_kids_north")
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 3
@@ -664,6 +677,7 @@ locked = true
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 3, 5.38)
 
 [node name="Cabinet" parent="Cabinets/KidsEast" index="0" node_paths=PackedStringArray("hands", "bank")]
+tree_hint = ExtResource("tcab_kids_east")
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 3
@@ -675,6 +689,7 @@ locked = true
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.35, 6, 4.26)
 
 [node name="Cabinet" parent="Cabinets/LoftWest" index="0" node_paths=PackedStringArray("hands", "bank")]
+tree_hint = ExtResource("tcab_loft_west")
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 4
@@ -686,6 +701,7 @@ locked = true
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 6, 4.26)
 
 [node name="Cabinet" parent="Cabinets/LoftEast" index="0" node_paths=PackedStringArray("hands", "bank")]
+tree_hint = ExtResource("tcab_loft_east")
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 4

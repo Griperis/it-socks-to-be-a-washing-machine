@@ -204,7 +204,7 @@ func case_built_from_book() -> void:
 		else:
 			cutscenes += 1
 			_check(station.cutscene_pillars.has(t.id), "cutscene trigger %s has a pillar" % t.id)
-	_check(comments == 10 and cutscenes == 6, "10 comment (the washer's 4, the Old Tree's 6) and 6 cutscene triggers (%d, %d)" % [comments, cutscenes])
+	_check(comments == 37 and cutscenes == 6, "37 comment (the washer's 4, the Old Tree's 33) and 6 cutscene triggers (%d, %d)" % [comments, cutscenes])
 	_check(station.radio != null and station.radio.hum != null, "the radio has its hum")
 	var ground := station.get_node("Pad") as MeshInstance3D
 	var box := ground.global_transform * ground.get_aabb()

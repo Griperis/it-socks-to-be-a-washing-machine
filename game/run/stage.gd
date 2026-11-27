@@ -24,3 +24,13 @@ extends Resource
 ## The sequence that plays it (a `CutsceneScript` whose `voice` is `fix_cutscene`: the spit after a Fix that opens
 ## a floor, none after the last); none: the trigger's lines alone.
 @export var fix_script: CutsceneScript
+
+@export_group("The Old Tree's help (core/133)")
+## The tree's hint when a loose Mate lies on this Stage's floor (`tree_hint_<floor>`): said in an idle spell, never a spot.
+@export var tree_hint: VoiceTrigger
+## The comment on this Stage's Part, some time into the next Stage (`tree_part_<floor>`); none on the last Stage:
+## the peace line is the last Part's fitting's.
+@export var tree_part_comment: VoiceTrigger
+## The comment on the floor this Stage opens, some time into it (`tree_floor_<floor>`); none for the basement's.
+@export var tree_floor_comment: VoiceTrigger
+@export_group("")
