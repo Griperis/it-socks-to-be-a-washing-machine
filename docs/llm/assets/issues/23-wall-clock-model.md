@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: assets
 feature: assets
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-27
 blocked_by: []
 notes: ["batch C (Q2614); order: docs/migration/milestones.md Batch C, wave 2", "suggested model: opus"]
 terms: [the house]
@@ -43,11 +43,10 @@ old clock never collided).
 ## Answers
 - Batch C's models are ported from the old game by the port rules, each family with its strip and the old colours (Q2705, 2026-11-26).
 - The wall clock's hands are kept (Q2709, 2026-11-26).
+- The wall clock's line-up is yes (Q2728, 2026-11-27). Pointing `game/house/wall_clock/wall_clock.tscn` at
+  `game/house/wall_clock/looks_wall_clock.tscn` (the graybox gone) belongs to core/161, which builds that scene.
 
 ## Open follow-ups
-- [later] On the designer's yes: `game/house/wall_clock/wall_clock.tscn` (core/161, not built yet) points its Looks at
-  `game/house/wall_clock/looks_wall_clock.tscn` and the graybox goes; if core/161 lands after the yes, it instances
-  this Looks from the start.
 - [later] Kit: `kit/tools/blender/asset_checks.py` has no `origin_z` (the old manifest's) for a wall-hung asset, so
   `assets_src/generate/export.sh --check clock` reports "the bottom of the asset is at z=-0.1800" for the clock's
   origin on its back's centre, which the ticket asks for (advice only; asset_lint passes).
