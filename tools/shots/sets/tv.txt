@@ -1,0 +1,11 @@
+# assets/27: the TV's Looks framed as the old line-up (reference/it-socks docs/art/tv/final_lineup.png): front,
+# three-quarter, the right side, three-quarter from behind; then the panel close up collapsing off, in static, on
+# (a stand-in picture in the glass's feed), and the standby lamp lit.
+front  --scene=res://tools/tv_still.tscn --size=480x420 --do='5:tv:0' --shots=20
+quarter  --scene=res://tools/tv_still.tscn --size=480x420 --do='5:tv:1' --shots=20
+side  --scene=res://tools/tv_still.tscn --size=480x420 --do='5:tv:2' --shots=20
+back  --scene=res://tools/tv_still.tscn --size=480x420 --do='5:tv:3' --shots=20
+off  --scene=res://tools/tv_still.tscn --size=480x420 --do='5:tv:4' --shots=20
+static  --scene=res://tools/tv_still.tscn --size=480x420 --do='5:tv:5' --shots=20
+on  --scene=res://tools/tv_still.tscn --size=480x420 --do='5:tv:6' --shots=20
+lamp  --scene=res://tools/tv_still.tscn --size=480x420 --do='5:tv:7' --shots=20

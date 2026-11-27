@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://b7fh40bh1ddei"]
+
+[ext_resource type="Script" uid="uid://ol2csqlqf2v" path="res://tools/tv_still.gd" id="1_still"]
+[ext_resource type="PackedScene" uid="uid://cq6wpvynkfg4j" path="res://game/entities/tv/looks_tv.tscn" id="2_looks"]
+
+[sub_resource type="Gradient" id="Gradient_bars"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.143, 0.286, 0.429, 0.571, 0.714, 0.857)
+colors = PackedColorArray(0.75, 0.75, 0.75, 1, 0.75, 0.75, 0, 1, 0, 0.75, 0.75, 1, 0, 0.75, 0, 1, 0.75, 0, 0.75, 1, 0.75, 0, 0, 1, 0, 0, 0.75, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bars"]
+gradient = SubResource("Gradient_bars")
+width = 428
+height = 240
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
+sky_top_color = Color(0.9, 0.93, 1, 1)
+sky_horizon_color = Color(0.55, 0.56, 0.6, 1)
+ground_bottom_color = Color(0.12, 0.11, 0.1, 1)
+ground_horizon_color = Color(0.55, 0.56, 0.6, 1)
+
+[sub_resource type="Sky" id="Sky_sky"]
+sky_material = SubResource("ProceduralSkyMaterial_sky")
+
+[sub_resource type="Environment" id="Environment_bg"]
+background_mode = 1
+background_color = Color(0.33, 0.31, 0.29, 1)
+sky = SubResource("Sky_sky")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.4, 0.38, 0.36, 1)
+roughness = 0.9
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_floor"]
+material = SubResource("StandardMaterial3D_floor")
+size = Vector2(12, 12)
+
+[node name="TvStill" type="Node3D" unique_id=692708260]
+script = ExtResource("1_still")
+stand_in_picture = SubResource("GradientTexture2D_bars")
+
+[node name="Environment" type="WorldEnvironment" parent="." unique_id=1537821706]
+environment = SubResource("Environment_bg")
+
+[node name="Key" type="DirectionalLight3D" parent="." unique_id=1830116749]
+transform = Transform3D(0.8, 0, -0.6, -0.4243, 0.7071, -0.5657, 0.4243, 0.7071, 0.5657, 0, 4, 0)
+light_energy = 1.2
+shadow_enabled = true
+
+[node name="Fill" type="DirectionalLight3D" parent="." unique_id=262985221]
+transform = Transform3D(-0.2873, 0, 0.9578, 0.4773, 0.867, 0.1432, -0.8305, 0.4983, -0.2491, 0, 4, 0)
+light_energy = 0.4
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=1495702297]
+mesh = SubResource("PlaneMesh_floor")
+
+[node name="Looks" parent="." unique_id=1577737263 instance=ExtResource("2_looks")]
+
+[node name="Camera" type="Camera3D" parent="." unique_id=2096690643]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.61, 4.17)
+keep_aspect = 0
+current = true
+fov = 28.8

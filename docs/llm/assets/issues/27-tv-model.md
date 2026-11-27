@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: assets
 feature: assets
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-27
 blocked_by: []
 notes: ["batch C (Q2614); order: docs/migration/milestones.md Batch C, wave 9", "suggested model: opus"]
 terms: [TV]
@@ -37,5 +37,6 @@ The generator script under `assets_src/generate/tv/` and its `assets/blender_ass
 
 ## Answers
 - Batch C's models are ported from the old game by the port rules, each family with its strip and the old colours (Q2705, 2026-11-26).
+- Yes to the TV's model as the line-up shows it; the screen's thicker bottom band, the brighter doors and the early glass shader stay as they are (Q2729, 2026-11-27). `tv.tscn` does not exist on this base (nor on main), so pointing its Looks at `looks_tv.tscn` and dropping the graybox belongs to core/165.
 
 ## Open follow-ups

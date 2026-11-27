@@ -1,0 +1,210 @@
+[gd_scene format=3 uid="uid://cq6wpvynkfg4j"]
+
+[ext_resource type="PackedScene" uid="uid://s5x80fq01buq" path="res://assets/tv/tv.glb" id="1_model"]
+[ext_resource type="Shader" uid="uid://bqsgbvmtp6gkw" path="res://game/entities/tv/tv_glass.gdshader" id="2_glass"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2w8th"]
+resource_local_to_scene = true
+resource_name = "screen"
+render_priority = 0
+shader = ExtResource("2_glass")
+shader_parameter/power = 0.0
+shader_parameter/noise = 0.0
+shader_parameter/brightness = 1.5
+shader_parameter/lines = 120.0
+shader_parameter/glass = Color(0.05, 0.07, 0.065, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_va0vs"]
+resource_local_to_scene = true
+resource_name = "power_light"
+albedo_color = Color(0.851, 0.149, 0.098, 1)
+roughness = 0.3
+emission_enabled = true
+emission = Color(1, 0.72, 0.38, 1)
+emission_energy_multiplier = 0.0
+
+[sub_resource type="Animation" id="Animation_RESET"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model/Glass:material_override:shader_parameter/power")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Model/Glass:material_override:shader_parameter/noise")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Model/PowerLight:material_override:emission_energy_multiplier")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_off"]
+resource_name = "off"
+length = 0.25
+capture_included = true
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model/Glass:material_override:shader_parameter/power")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.25),
+"transitions": PackedFloat32Array(1),
+"update": 2,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Model/Glass:material_override:shader_parameter/noise")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Model/PowerLight:material_override:emission_energy_multiplier")
+tracks/2/interp = 0
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_on"]
+resource_name = "on"
+length = 0.25
+capture_included = true
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model/Glass:material_override:shader_parameter/power")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.25),
+"transitions": PackedFloat32Array(1),
+"update": 2,
+"values": [1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Model/Glass:material_override:shader_parameter/noise")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Model/PowerLight:material_override:emission_energy_multiplier")
+tracks/2/interp = 0
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.6]
+}
+
+[sub_resource type="Animation" id="Animation_static"]
+resource_name = "static"
+length = 0.6
+capture_included = true
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model/Glass:material_override:shader_parameter/power")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.25),
+"transitions": PackedFloat32Array(1),
+"update": 2,
+"values": [1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Model/Glass:material_override:shader_parameter/noise")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Model/PowerLight:material_override:emission_energy_multiplier")
+tracks/2/interp = 0
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.6]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_looks"]
+_data = {
+&"RESET": SubResource("Animation_RESET"),
+&"off": SubResource("Animation_off"),
+&"on": SubResource("Animation_on"),
+&"static": SubResource("Animation_static")
+}
+
+[node name="LooksTv" type="Node3D" unique_id=431684148]
+editor_description = "assets/27: the TV's Looks (tv-and-radio.md, Looks contracts): the old widescreen set on its walnut and cream console at its modelled size, the origin at the bottom centre, the front +Z. Glass (16:9, in the group no_outline: the outline never covers the picture) wears the CRT glass shader, whose feed TvScreen sets; PowerLight the standby lamp. Clips, as the old TvScreen and Device: on (the picture opens from a line over 0.25 s from wherever it was, the lamp glows at once), off (it collapses to a line and the glass goes dark over 0.25 s, the lamp out), static (0.6 s of static, opening the picture over 0.25 s if it was off, the lamp on)."
+
+[node name="Model" parent="." unique_id=2033679382 instance=ExtResource("1_model")]
+
+[node name="Glass" parent="Model" index="1" unique_id=1930318706 groups=["no_outline"]]
+material_override = SubResource("ShaderMaterial_2w8th")
+
+[node name="PowerLight" parent="Model" index="2" unique_id=1299197882]
+material_override = SubResource("StandardMaterial3D_va0vs")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1606457233]
+libraries/ = SubResource("AnimationLibrary_looks")
+
+[editable path="Model"]
