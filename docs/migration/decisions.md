@@ -724,3 +724,6 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   own sub-scene, not `house.tscn` (designer, 2026-11-27).
 - Q2721: the sound catalogue stays one file: a batch adds all its new sounds in one groundwork ticket (batch C's
   core/154) instead of splitting the catalogue per feature; maintenance/11 is dropped (designer, 2026-11-27).
+- Q2722: the encyclopedia book is held alone, a change from the old: picking it up needs empty Hands, and nothing else
+  is picked or taken while it is held; so it is never drawn tucked (the old's `tucked_scale` dropped) (designer,
+  2026-11-27; core/139).
