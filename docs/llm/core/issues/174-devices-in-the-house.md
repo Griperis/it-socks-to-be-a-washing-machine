@@ -20,7 +20,7 @@ kitchen behind the ground floor's lock, the Sock detector on the workshop's work
 TV in the living room in front of the north window, the Radio on a kitchen shelf playing Theme; and the Old Tree's
 vacuum tip. Build `docs/architecture/devices.md` "Seams" (core/139, core/132-133), draft 150-L:
 
-- in `house.tscn`: the three vacuums in the kitchen, the detector 0.35 m beside the book's placed spot turned 20
+- in the devices slot `game/house/systems/devices.tscn` (core/154, Q2720; not `house.tscn`): the three vacuums in the kitchen, the detector 0.35 m beside the book's placed spot turned 20
   degrees, the TV and the Radio (static Parts in the layout hash: their names and places are part of the save);
 - a New Game puts each back;
 - `tree_tip_vacuum`'s trigger file (its three recordings copied by core/132) and its field on the ground floor's Stage

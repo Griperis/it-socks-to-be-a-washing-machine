@@ -24,7 +24,7 @@ Nobody walks out. Build `docs/architecture/day-and-exterior.md` "The exterior vi
   `Exterior_North`, `_East`, `_South`, `_West` as MeshInstance3D (so the camera culls the sides it cannot see):
   graybox first (a lawn plane, the light wells at the port's basement windows 0.9 m out and 0.25 m wider each side,
   fence and house boxes, a street strip, the garage ramp at the port's garage door);
-- instanced under the house as `Exterior`; a cut of it outside one window of the Day station.
+- instanced as `Exterior` in the exterior slot `game/house/systems/exterior.tscn` (core/154, Q2720; not `house.tscn`); a cut of it outside one window of the Day station.
 
 The night glow of its windows and lamps is dropped (Q2709). The front and garage doors stay the shut bodies they are
 (Q2514).

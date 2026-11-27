@@ -20,7 +20,7 @@ minutes, the sun crosses the south low and warm, the moon lights the night, the 
 and every machine runs the Host's hour. Build `docs/architecture/day-and-exterior.md` "The day", "The shape" (`Day`,
 `DayLight`), "How it is authored", draft 149-G:
 
-- `Day` (`game/day/day.gd`, a Part in `house.tscn` beside `Lights`): `hour` as decided state, `shown_hour()`, the
+- `Day` (`game/day/day.gd`, a Part in the day slot `game/house/systems/day.tscn`, core/154, Q2720; not `house.tscn`): `hour` as decided state, `shown_hour()`, the
   verbs `start` and `sync` (Host only: on a join's `linked` and every `sync_every`), saved with the shown hour;
 - `DayTuning` (`length_minutes` 20, `start_hour` 9, `sunrise` 6, `sunset` 20, `sun_max_elevation` 28,
   `sunset_azimuth` 150, `moon_elevation` 40, `moon_azimuth` 60, `lamps_on` 19.5, `lamps_off` 7, `basement_ambient`

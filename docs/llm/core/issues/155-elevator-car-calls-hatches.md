@@ -34,7 +34,7 @@ then open floors only. Build `docs/architecture/elevator.md` "The shape", "Its v
   least 0.1, "%.1f s" of 2 s) set on `elevator_repair.tres` and `fast_elevator.tres` (no longer "Coming soon");
 - the bell, the creak at the shaft every 0.7 s along the ride, the hatch sounds, the button's click from the answer
   (the SoundEvents are core/154's);
-- placed in `house.tscn` at the shaft (house-kit-plan K09: inside x 3.24..3.94, z 4.8..5.5, a stop per floor);
+- placed in the Elevator slot `game/house/systems/elevator.tscn` (core/154, Q2720; not `house.tscn`) at the shaft (house-kit-plan K09: inside x 3.24..3.94, z 4.8..5.5, a stop per floor);
 - the Elevator station (shell from core/154 at x = 208): a two-storey shaft of house kit pieces with the real Elevator
   and two stops, a board of the stops, the tuning and the three Elevator Upgrades with their stat now -> top, a
   `SockGenerator` area and a Laundry bin by the lower hatch, its own `Run` mini plan with a locked upper floor and its

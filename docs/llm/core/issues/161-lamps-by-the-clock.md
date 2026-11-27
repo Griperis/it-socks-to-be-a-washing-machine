@@ -27,7 +27,8 @@ a click; at 7:00 they go off with a click but the basement's; the wall clock on 
 - the wall clock (`game/house/wall_clock/wall_clock.tscn`, `WallClock`, a view with no state reading the level's
   `Day`): graybox Looks with `hour_hand` and `minute_hand` turning about z (once in 12 hours, once an hour, the old
   `_show_time`), hung on the living room's wall where the old hung it (the old layout's `clock`, moved with its wall by
-  house-kit-plan), no collider; one in the Day station too.
+  house-kit-plan), placed in the day slot `game/house/systems/day.tscn` (core/154, Q2720; not `house.tscn`), no collider;
+  one in the Day station too.
 
 Dropped by Q2709, not built: the shades' glow, the night-blue panes, the grade and vignette by the hour, the outside's
 night glow. The clock's ticking (`amb_clock`) is M1.1's ambience, batch D.

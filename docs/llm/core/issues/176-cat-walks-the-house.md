@@ -32,8 +32,8 @@ resting", "The watchdog", "How it is authored", draft 151-A:
   0.3, climb 0.05, cell 0.05), Heaps over 0.12 m and open leaves as projected obstructions, re-baked off the main
   thread when they changed (under 2 ms of main thread); the Door scenes' `NavigationLink3D` (enabled while open) and
   doorway obstacle; a Door shut across a walk makes the Host plan again;
-- `CatStart` and the low-window nap markers in `house.tscn`, the nap markers in `sofa.tscn`, `double_bed.tscn`,
-  `bunk_bed.tscn`, `old_cot.tscn`, the Cat placed in `house.tscn`;
+- `CatStart` and the low-window nap markers in the Cat slot `game/house/systems/cat.tscn` (core/154, Q2720), the nap markers in `sofa.tscn`, `double_bed.tscn`,
+  `bunk_bed.tscn`, `old_cot.tscn`, the Cat placed in the Cat slot (not `house.tscn`);
 - the Cat station filled (shell from core/154 at x = 278): two graybox rooms joined by a real Door and a short stair to
   a landing, a sofa, a bed, a low-window marker, the real litterbox and washer, a `SockGenerator` area, the Cat with
   the station's own `cat_tuning_zoo.tres` (short timers, `fetch_chance` 1, `litter_every` 30 s, swats every 10-20 s), a

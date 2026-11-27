@@ -7,16 +7,16 @@ feature: zoo
 priority: now
 created: 2026-11-26
 done:
-blocked_by: []
+blocked_by: ["[[11-sound-catalogue-per-feature]]"]
 notes: ["batch C (Q2614); order: docs/migration/milestones.md Batch C, wave 1", "suggested model: sonnet"]
 terms: [Elevator, Cat, X-ray, Sock vacuum, Backpack vacuum, Sock detector, TV, Radio]
-suites: [sounds, sound_wiring, zoo, menus]
+suites: [sounds, sound_wiring, zoo, menus, house, save, coop_join]
 ---
 
-# Batch C's groundwork: every new sound and the seven station shells
+# Batch C's groundwork: every new sound, the seven station shells and the house's system slots
 
-Every SoundEvent the four batch C designs add, and every batch C zoo station's empty shell, in one ticket, so no later
-batch C ticket edits `game/audio/sound_catalogue.tres` or `game/zoo/zoo.tscn` (draft 150-S of `devices.md`, widened by
+Every SoundEvent the four batch C designs add, and every batch C zoo station's empty shell, and the house's five system slots, in one ticket, so no later
+batch C ticket edits the existing sound catalogue files, `game/zoo/zoo.tscn` or `game/house/house.tscn` (draft 150-S of `devices.md`, widened by
 core/153 to the whole batch: the Elevator's, the day's, the devices', the TV and Radio's, the Cat's and the X-rays'
 sounds).
 
@@ -38,6 +38,9 @@ sounds).
   (`cc0/laleksic_switch_off`), copied once as `xray_on__laleksic_switch_on.ogg`, `xray_off__laleksic_switch_off.ogg`;
   `xray_ready` naming `match`'s clip (core/131).
 
+The new SoundEvents go into per-feature catalogue files in `game/audio/catalogue/` (maintenance/11, Q2721):
+`elevator.tres`, `day.tres`, `devices.tres`, `tv_radio.tres`, `cat.tres`, `xrays.tres`.
+
 Every copied clip goes into `assets/audio/` with its `SOURCES.md` row and its `game/ui/licence/credits.tres` entry.
 
 **The station shells** (`game/zoo/stations/<name>.tscn`, each a floor, its own ground `StaticBody3D` with a collision
@@ -54,6 +57,20 @@ x = 208 (the zoo's floor ends before x = 160, so each needs its own ground):
 | `cat.tscn` | 278 | core/176 |
 | `xrays.tscn` | 292 | core/182 |
 
+**The house's system slots** (Q2720): five empty scenes in `game/house/systems/`, each a bare `Node3D` root at the
+house's origin, instanced once in `house.tscn` under one `Systems` node, so each later ticket edits only its own:
+
+| Slot | Filled by (in order) |
+|---|---|
+| `elevator.tscn` | core/155, then 156-158 if they place anything |
+| `day.tscn` | core/160 (the `Day` Part), core/161 (the lamps' clock, the wall clock) |
+| `exterior.tscn` | core/162 |
+| `cat.tscn` | core/176 (`CatStart`, the low-window nap markers, the Cat placed) |
+| `devices.tscn` | core/174 (the vacuums, the detector) |
+
+A Part placed in a slot is found, synced and saved like any other (Parts binds by path, so its id is
+`Systems/<slot>/...`); a case shows it.
+
 The Day station keeps the zoo's noon until core/160 gives it its own `WorldEnvironment` (Q2299).
 
 Batch C is built unattended (Q2603): an open choice this ticket does not settle takes the old game's answer (or the
@@ -63,7 +80,7 @@ merge, never `[later]` on its own.
 
 ## How it is authored
 SoundEvents in the catalogue (the Sounds station shows each with no other change; the designer swaps any clip there);
-the shells are scenes edited in the editor's format (Q2268), no code.
+the shells and the slots are scenes edited in the editor's format (Q2268), no code.
 
 ## Acceptance
 - Real path: in the Sounds station (built from the catalogue at load) the player walks to the `vacuum_thwip` pillar
@@ -73,6 +90,8 @@ the shells are scenes edited in the editor's format (Q2268), no code.
   `xray_ready` and `match`).
 - The seven shells load in the zoo at their x, each with its own ground under its Spawn (a player spawned there stands);
   the wiring check passes.
+- The five slots are instanced in `house.tscn` under `Systems`; a test Part placed in one is bound with the id
+  `Systems/<slot>/...` and survives a save and load (a case; removed or kept as a fixture, not left in the house).
 - Every new file under `assets/` has its credit (`menus` l02).
 - Placeholders: the sounds the old marked placeholder (`elevator_ride`, `elevator_squeeze`, `litter_scratch`).
 - `kit/tools/run.sh --touched` ends PASS; the real-path case drives player input through the scene's own wiring.
