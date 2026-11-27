@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://fsnt65uvvnqy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n3w80"]
+albedo_color = Color(0.42, 0.44, 0.48, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_v6kly"]
+material = SubResource("StandardMaterial3D_n3w80")
+size = Vector2(12, 12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l5bwp"]
+size = Vector3(12, 0.2, 12)
+
+[node name="Cat" type="Node3D" unique_id=867696738]
+
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=1246856797]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("PlaneMesh_v6kly")
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1388241278]
+
+[node name="Shape" type="CollisionShape3D" parent="Ground" unique_id=275317995]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_l5bwp")
+
+[node name="Name" type="Label3D" parent="." unique_id=1003078637]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2, 6.5)
+pixel_size = 0.004
+billboard = 2
+text = "Cat: empty until core/176 builds it (batch C)"
+vertical_alignment = 2
+autowrap_mode = 3
+width = 700.0
+
+[node name="Spawn" type="Marker3D" parent="." unique_id=836465411]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)

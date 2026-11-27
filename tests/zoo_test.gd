@@ -48,6 +48,8 @@ func cases() -> Array[Dictionary]:
 				"title": "Z02: the zoo has one Mess, one Hands and one Bank; every station's Socks are records of that Mess, lying where the station places them"},
 		{"name": "z03", "method": "case_z03", "world": false,
 				"title": "Z03: a station instanced without the zoo keeps its own Mess, Hands and Bank, and its links point at them"},
+		{"name": "c154_batch_c_shells", "method": "case_c154_shells", "world": false,
+				"title": "core/154: batch C's seven station shells stand 14 m apart from x = 208, each a Pad, a Name label and a Spawn over its own ground; the player put on each Spawn stands there"},
 		{"name": "z04", "method": "case_z04", "world": false,
 				"title": "Z04: a Sock thrown off the zoo's floor comes back to the zoo's return spot, in the zoo's Mess"},
 	]
@@ -445,6 +447,35 @@ func case_z04() -> void:
 	_check(mess.pose_of(sock).origin.distance_to(spot.global_position) <= mess.bodies_tuning().return_scatter + 0.001, "it lies at the zoo's return spot, scattered within its radius (core/16 P12)")
 	var looks := mess.looks_of(sock)
 	_check(looks != null and looks.get_parent() == LevelRuntime.of(_zoo).lying, "drawn in the zoo's Lying")
+
+
+## Batch C's station shells (core/154), each filled by a later ticket, and their x in the zoo.
+const BATCH_C_SHELLS := {"Elevator": 208.0, "Day": 222.0, "Vacuums": 236.0, "Detector": 250.0, "TvRadio": 264.0,
+		"Cat": 278.0, "XRays": 292.0}
+
+
+func case_c154_shells() -> void:
+	await _zoo_up()
+	var player := LevelRuntime.of(_zoo).player
+	for station_name: String in BATCH_C_SHELLS:
+		var station := _zoo.get_node_or_null("Stations/" + station_name) as Node3D
+		_check(station != null, "the zoo has the %s station" % station_name)
+		if station == null:
+			continue
+		_check(is_equal_approx(station.position.x, BATCH_C_SHELLS[station_name]), "%s stands at x = %.0f (%.1f)" % [station_name, BATCH_C_SHELLS[station_name], station.position.x])
+		for part: String in ["Pad", "Name", "Ground/Shape", "Spawn"]:
+			_check(station.get_node_or_null(part) != null, "%s has its %s" % [station_name, part])
+		var spawn := station.get_node_or_null("Spawn") as Marker3D
+		if spawn == null:
+			continue
+		player.global_position = spawn.global_position + Vector3(0.0, 0.3, 0.0)
+		player.velocity = Vector3.ZERO
+		player.reset_physics_interpolation()
+		await _physics_ticks(2)
+		await _until(func() -> bool: return player.is_on_floor(), "the player on %s's Spawn to stand" % station_name, 120)
+		await _physics_ticks(10)
+		_check(player.is_on_floor() and absf(player.global_position.y - spawn.global_position.y) < 0.1,
+				"the player put on %s's Spawn stands on its own ground (y %.2f)" % [station_name, player.global_position.y])
 
 
 ## A zoo, its player standing on the floor and every Sock lying.

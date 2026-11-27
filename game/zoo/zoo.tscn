@@ -18,9 +18,16 @@
 [ext_resource type="PackedScene" uid="uid://q216ydccycux" path="res://game/zoo/stations/screen.tscn" id="31_screen"]
 [ext_resource type="Resource" uid="uid://do11bnjgc3rph" path="res://game/zoo/screen/zoo_upgrades.tres" id="32_upgrades"]
 [ext_resource type="PackedScene" uid="uid://c3p6luowfkhuw" path="res://game/zoo/stations/materials.tscn" id="35_materials"]
+[ext_resource type="PackedScene" uid="uid://bipodtwbpm1xj" path="res://game/zoo/stations/elevator.tscn" id="35_mqqgj"]
 [ext_resource type="PackedScene" uid="uid://sv5wba3wf252" path="res://game/zoo/stations/furniture.tscn" id="36_furniture"]
+[ext_resource type="PackedScene" uid="uid://b37yjw7y4yama" path="res://game/zoo/stations/day.tscn" id="36_q5ohj"]
+[ext_resource type="PackedScene" uid="uid://cvehkyiouh2yv" path="res://game/zoo/stations/vacuums.tscn" id="37_6ni8r"]
+[ext_resource type="PackedScene" uid="uid://c8po6rp4ucq7w" path="res://game/zoo/stations/detector.tscn" id="38_7cq5y"]
+[ext_resource type="PackedScene" uid="uid://kg0duj5s33a6" path="res://game/zoo/stations/tv_radio.tscn" id="39_1ptt3"]
 [ext_resource type="PackedScene" uid="uid://b7tq2avatarst" path="res://game/zoo/stations/avatar.tscn" id="39_avatar"]
+[ext_resource type="PackedScene" uid="uid://fsnt65uvvnqy" path="res://game/zoo/stations/cat.tscn" id="40_4muay"]
 [ext_resource type="PackedScene" uid="uid://chiexs1bn5bo5" path="res://game/zoo/stations/knockdown.tscn" id="40_knockdown"]
+[ext_resource type="PackedScene" uid="uid://bil25dcjkeunn" path="res://game/zoo/stations/xrays.tscn" id="41_m7l2l"]
 [ext_resource type="PackedScene" uid="uid://q0tm1ywugfrf" path="res://game/level/level_runtime.tscn" id="43_runtime"]
 [ext_resource type="PackedScene" uid="uid://c6s728lc0yqao" path="res://game/zoo/stations/sock_generator.tscn" id="52_sock_generator"]
 [ext_resource type="PackedScene" uid="uid://bq03emocqql0c" path="res://game/zoo/stations/doors.tscn" id="53_doors"]
@@ -178,6 +185,27 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 180, 0, 2)
 
 [node name="Achievements" parent="Stations" unique_id=298957800 instance=ExtResource("145_achievements")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 194, 0, 2)
+
+[node name="Elevator" parent="Stations" unique_id=1644614346 instance=ExtResource("35_mqqgj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 208, 0, 2)
+
+[node name="Day" parent="Stations" unique_id=1805381353 instance=ExtResource("36_q5ohj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 222, 0, 2)
+
+[node name="Vacuums" parent="Stations" unique_id=768103186 instance=ExtResource("37_6ni8r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 236, 0, 2)
+
+[node name="Detector" parent="Stations" unique_id=896168186 instance=ExtResource("38_7cq5y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 250, 0, 2)
+
+[node name="TvRadio" parent="Stations" unique_id=723235078 instance=ExtResource("39_1ptt3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 264, 0, 2)
+
+[node name="Cat" parent="Stations" unique_id=867696738 instance=ExtResource("40_4muay")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 278, 0, 2)
+
+[node name="XRays" parent="Stations" unique_id=1593092249 instance=ExtResource("41_m7l2l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 292, 0, 2)
 
 [node name="ReturnSpot" type="Marker3D" parent="." unique_id=1397039282]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.5)

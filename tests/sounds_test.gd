@@ -62,6 +62,10 @@ func cases() -> Array[Dictionary]:
 				"title": "core/22 D04: the station runs alone with its buttons, its ambience and its tile patch"},
 		{"name": "core30_button_scene", "method": "case_core30_button_scene", "world": false,
 				"title": "core/30, real path: every Sounds button is sound_button.tscn with its name a zoo_label.tscn, and the player's walk up and use on one plays its sound"},
+		{"name": "c154_batch_c_events", "method": "case_c154_events", "world": false,
+				"title": "core/154: every batch C SoundEvent is in the catalogue with clips on its bus, flat or 3D, looping or not as the old game; the shared ones name the same files, the bell and the lamps the old picks (Q2727); the placeholders say so"},
+		{"name": "c154_real_path_pillars", "method": "case_c154_pillars", "world": false,
+				"title": "core/154, real path: in the zoo's Sounds station the player walks up to the vacuum_thwip, elevator_bell, cat_meow and xray_on pillars and presses E on each: it plays"},
 	]
 
 
@@ -379,6 +383,72 @@ func case_core30_button_scene() -> void:
 	var flat := _front_row(station, false)
 	await _press_button(player, station, flat)
 	_check(_count(flat) == 1, "the player's use on the %s button plays it (%d)" % [flat, _count(flat)])
+
+
+## Batch C's events (core/154): name -> [bus, spatial, loop]. Every one added at once so no later
+## batch C ticket edits the catalogue.
+const BATCH_C := {
+	&"elevator_bell": ["SFX", true, false], &"elevator_creak": ["SFX", true, false], &"hatch_open": ["SFX", true, false],
+	&"hatch_close": ["SFX", true, false], &"elevator_button": ["SFX", true, false], &"elevator_ride": ["SFX", false, true],
+	&"elevator_squeeze": ["SFX", true, false], &"lamp_on": ["SFX", false, false], &"lamp_off": ["SFX", false, false],
+	&"vacuum_motor": ["SFX", true, true], &"vacuum_thwip": ["SFX", true, false], &"vacuum_spit_tick": ["SFX", true, false],
+	&"vacuum_nozzle_hang": ["SFX", true, false], &"vacuum_nozzle_drop": ["SFX", true, false], &"vacuum_lift": ["SFX", true, false],
+	&"vacuum_set_down": ["SFX", true, false], &"beeper_beep": ["SFX", true, false], &"device_click": ["SFX", true, false],
+	&"tv_static": ["Music", true, false], &"radio_static": ["Music", true, false], &"tv_puppets": ["Music", true, true],
+	&"tv_shop": ["Music", true, true], &"tv_news": ["Music", true, true], &"tv_testcard": ["Music", true, true],
+	&"radio_land": ["SFX", true, false], &"cat_meow": ["SFX", true, false], &"cat_purr": ["SFX", true, false],
+	&"cat_hiss": ["SFX", true, false], &"cat_land": ["SFX", true, false], &"cat_swat": ["SFX", true, false],
+	&"litter_scratch": ["SFX", true, false], &"xray_on": ["SFX", false, false], &"xray_off": ["SFX", false, false],
+	&"xray_ready": ["SFX", false, false],
+}
+## Pairs that name the same clips (the tickets' shares).
+const SHARED: Array[Array] = [[&"elevator_button", &"device_click"], [&"beeper_beep", &"ping"], [&"xray_ready", &"match"], [&"hatch_open", &"oven_open"],
+		[&"hatch_close", &"oven_close"], [&"litter_scratch", &"cat_swat"]]
+
+
+func case_c154_events() -> void:
+	var cat := Sounds.catalogue
+	for n: StringName in BATCH_C:
+		var e := cat.find(n)
+		_check(e != null, "the catalogue has %s" % n)
+		if e == null:
+			continue
+		var want: Array = BATCH_C[n]
+		_check(not e.clips.is_empty() and not e.clips.has(null), "%s has clips" % n)
+		_check(e.bus == want[0] and e.spatial == want[1] and e.loop == want[2],
+				"%s is on %s, %s, %s (%s, %s, %s)" % [n, want[0], "3D" if want[1] else "flat", "a loop" if want[2] else "once", e.bus, e.spatial, e.loop])
+	for pair: Array in SHARED:
+		var a := cat.find(pair[0])
+		var b := cat.find(pair[1])
+		_check(a != null and b != null and a.clips == b.clips, "%s names %s's clips" % pair)
+	_check(cat.find(&"elevator_creak").clips.has(cat.find(&"basket_open").clips[0]), "the Elevator's creak names the basket's creak")
+	# Q2727: the bell and the lamps' clicks are the old picks, files of their own.
+	for pick: Array in [[&"elevator_bell", "elevator_bell__springspring_bell.ogg"], [&"lamp_on", "lamp_on__funnydude_switch_on.ogg"],
+			[&"lamp_off", "lamp_off__funnydude_switch_off.ogg"]]:
+		var clips := cat.find(pick[0]).clips
+		_check(clips.size() == 1 and clips[0].resource_path.get_file() == pick[1], "%s plays the old pick %s" % pick)
+	for n: StringName in [&"elevator_ride", &"elevator_squeeze", &"litter_scratch"]:
+		_check(cat.find(n).note.begins_with("PLACEHOLDER"), "%s is marked a placeholder" % n)
+	_check(is_equal_approx(cat.find(&"vacuum_thwip").min_gap, 0.09) and is_equal_approx(cat.find(&"vacuum_spit_tick").min_gap, 0.09),
+			"the vacuums' per-Sock sounds keep the old 0.09 s apart")
+	_check(is_equal_approx(cat.find(&"beeper_beep").volume_db, -6.0), "the beep is -6 dB (Q2698)")
+	for n: StringName in [&"vacuum_mode_click", &"vacuum_spit_out"]:
+		_check(not cat.has(n), "the dead %s is not carried over" % n)
+
+
+func case_c154_pillars() -> void:
+	await _zoo_up()
+	var station := _zoo.get_node("Stations/Sounds") as SoundsStation
+	var player := LevelRuntime.of(_zoo).player
+	for n: StringName in [&"vacuum_thwip", &"elevator_bell", &"cat_meow", &"xray_on"]:
+		_check(station.button_position(n) != Vector3.INF, "the station has a %s pillar" % n)
+		await _press_button(player, station, n)
+		await _until(func() -> bool: return _count(n) > 0, "the player's E on the %s pillar to play it" % n, 30)
+		_check(_count(n) == 1, "E on the %s pillar plays it (%d)" % [n, _count(n)])
+		var e := Sounds.catalogue.find(n)
+		if _count(n) > 0 and e.spatial:
+			var foot := station.global_position + station.button_position(n)
+			_check((_heard[0]["at"] as Vector3).distance_to(foot) < 0.01, "%s plays where its pillar stands" % n)
 
 
 ## The first event of the front row that is a world one (or a flat one).

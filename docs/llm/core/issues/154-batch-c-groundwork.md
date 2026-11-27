@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: zoo
@@ -21,11 +21,11 @@ core/153 to the whole batch: the Elevator's, the day's, the devices', the TV and
 sounds).
 
 **The SoundEvents** (the old picks, shares and numbers; the tables in each doc):
-- the Elevator (`elevator.md` "Sounds"): `elevator_bell` (the ping's clips), `elevator_creak` (the basket's creaks),
+- the Elevator (`elevator.md` "Sounds"): `elevator_bell` (the old pick `cc0/springspring_bell`, Q2727), `elevator_creak` (the basket's creaks),
   `hatch_open`, `hatch_close` (the oven's), `elevator_button` (naming `device_click`'s clip), `elevator_ride` (flat
   loop, the old synth placeholder), `elevator_squeeze` (the old synth placeholder); no climb sound (Q2702);
-- the day (`day-and-exterior.md` "How it is authored"): `lamp_on`, `lamp_off` (flat), naming `xray_on`'s and
-  `xray_off`'s clips (Q2709 keeps the click);
+- the day (`day-and-exterior.md` "How it is authored"): `lamp_on`, `lamp_off` (flat), the old picks
+  `cc0/funnydude_switch_on` and `_off` (Q2709 keeps the click, Q2727 the old picks);
 - the devices and the TV and Radio (`devices.md`, `tv-and-radio.md` "Sounds"): `vacuum_motor` (3D loop),
   `vacuum_thwip`, `vacuum_spit_tick` (with the old 0.09 s gap per vacuum), `vacuum_nozzle_hang`, `vacuum_nozzle_drop`,
   `vacuum_lift`, `vacuum_set_down`, `beeper_beep` (the ping's pool, -6 dB, Q2698), `device_click`, `tv_static`,
@@ -86,8 +86,8 @@ the shells and the slots are scenes edited in the editor's format (Q2268), no co
 - Real path: in the Sounds station (built from the catalogue at load) the player walks to the `vacuum_thwip` pillar
   and presses E; it plays. The same for `elevator_bell`, `cat_meow` and `xray_on`.
 - Every SoundEvent named above is in the catalogue with its clips; the shared ones name the same files
-  (`lamp_on` and `xray_on`, `elevator_button` and `device_click`, `elevator_bell`, `beeper_beep` and the ping's,
-  `xray_ready` and `match`).
+  (`elevator_button` and `device_click`, `beeper_beep` and the ping's, `xray_ready` and `match`); `elevator_bell`,
+  `lamp_on` and `lamp_off` play the old picks (Q2727).
 - The seven shells load in the zoo at their x, each with its own ground under its Spawn (a player spawned there stands);
   the wiring check passes.
 - The five slots are instanced in `house.tscn` under `Systems`; a test Part placed in one is bound with the id
@@ -102,5 +102,9 @@ the shells and the slots are scenes edited in the editor's format (Q2268), no co
 - The beep is the ping's pool (Q2698, 2026-11-26).
 - The ready sound borrows the Sole Mates cue (Q2701, 2026-11-26).
 - The scratch's own sound is picked by the designer from three recordings (Q2712, 2026-11-26).
+- The bell and the lamps' clicks are the old picks: `springspring_bell`, the funnydude clicks (Q2727, 2026-11-27).
 
 ## Open follow-ups
+- [later] Kit fault (`kit/tools/godot_ai.py`): every invocation opens a new MCP session and never ends it (no DELETE). The godot-ai server allows 32 sessions, each idle for 30 min, so after about 30 single `call`s (the `--ready` polls of `godot_ai.sh start` count too) every call gets HTTP 503 until the editor restarts. `--batch` (one session) works around it. Fix: end the session on exit, or reuse one per checkout.
+- [later] Kit fault (godot-ai trial): `godot_ai.sh stop` fails drift_check on `house.tscn` after new ext_resources are added. The editor gives the four `resource_local_to_scene` Glow materials new sub-resource ids on its next save, and only a second save keeps them. `kit/tools/resave.sh` fixed it (two passes). `stop` could re-save twice, or say to run resave.sh.
+- [later] godot-ai cannot set node metadata (`node_set_property` with `metadata/surface` returns PROPERTY_NOT_ON_CLASS). The shells' ground has no `surface` meta and footsteps fall back to wood.

@@ -4,4 +4,10 @@
 
 [resource]
 script = ExtResource("1_layout")
-row_pitch = 0.7
+per_row = 16
+column_pitch = 0.6
+row_pitch = 0.55
+group_gap = 0.3
+origin = Vector3(-5.8, 0, 0.9)
+group_offset = 0.3
+label_pixel_size = 0.002
