@@ -224,6 +224,11 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# line-up's view of that number (4-8: the pod, the pour, the suction, the hose and its tug).
 			world.call(&"show_view", int(arg))
 			return true
+		"tv":
+			# assets/27: arg a view 0-7: tools/tv_still.tscn frames the TV's Looks as the old line-up's view of that
+			# number (4-7: the panel close up collapsing off, in static, on with a stand-in picture; the lamp lit).
+			world.call(&"show_view", int(arg))
+			return true
 		"elevator":
 			# assets/21: arg a view of tools/elevator_still.gd VIEWS (shut, open, locked, unlock_a..c, repaired,
 			# press, letters): the Elevator's stop, car and letters posed by their Looks' own clips.

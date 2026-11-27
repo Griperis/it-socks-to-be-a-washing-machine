@@ -753,6 +753,13 @@
       "source": "elevator/elevator",
       "glb": "assets/elevator/elevator_signs.glb",
       "origin_xy": false
+    },
+    "tv": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "tv/tv",
+      "glb": "assets/tv/tv.glb",
+      "note": "assets/27: the old TV on its walnut media console (2,032 triangles, the old count), nodes Body, Glass (the 16:9 quad TvScreen draws on), PowerLight; assets_src/generate/tv/make_tv.py; no collider (the entity's box)"
     }
   }
 }
