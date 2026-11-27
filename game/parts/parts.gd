@@ -17,6 +17,9 @@ signal applied(ev: Dictionary)
 signal bound
 ## The last unsettle() was settled: the level's starting state is whole (house/09).
 signal settled
+## load_snapshot() wrote a whole state into the level (a late Guest's join, a save loaded): what is kept
+## only on this machine and never saved or joined (an X-ray's clock, core/182) starts afresh.
+signal snapshot_loaded
 
 ## The Host's player id, and the player's id when playing alone.
 const HOST := 1
@@ -380,6 +383,7 @@ func load_snapshot(snap: Dictionary) -> void:
 			part.write(snap[id], true)
 		elif is_spawned(StringName(id)):
 			_wait_for(StringName(id), snap[id])
+	snapshot_loaded.emit()
 
 
 ## Every part under `node`; a game link under the level (a level's private one) binds its own; what a

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://b44vvrmd3vsmy"]
+
+[ext_resource type="Script" uid="uid://d07grfboo2v6b" path="res://game/zoo/xrays/xray_upgrade_switch.gd" id="1_switch"]
+[ext_resource type="PackedScene" uid="uid://b4mtn5fi0wiu1" path="res://game/zoo/screen/upgrade_switch/looks_graybox.tscn" id="2_looks"]
+
+[node name="XRayUpgradeSwitch" type="Node3D" unique_id=547284575]
+
+[node name="XRayUpgradeSwitch" type="Node" parent="." unique_id=1998810233]
+script = ExtResource("1_switch")
+
+[node name="Looks" parent="." unique_id=812223216 instance=ExtResource("2_looks")]

@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://bb1daalej1geo"]
+
+[ext_resource type="Script" uid="uid://rd0ym4swqgm1" path="res://game/zoo/xrays/xray_board_row.gd" id="1_row"]
+
+[node name="XRayBoardRow" type="Node3D" unique_id=735175719]
+script = ExtResource("1_row")
+
+[node name="Icon" type="Sprite3D" parent="." unique_id=85927963]
+pixel_size = 0.0015
+
+[node name="Key" type="Sprite3D" parent="." unique_id=264835387]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+pixel_size = 0.004
+
+[node name="Text" type="Label3D" parent="." unique_id=1781140568]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16, 0, 0)
+pixel_size = 0.0018
+text = "X-ray"
+horizontal_alignment = 0

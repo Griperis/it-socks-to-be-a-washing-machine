@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UpgradeStat" format=3 uid="uid://cbvw8ykry3dii"]
+
+[ext_resource type="Script" uid="uid://buuwxe61yjepk" path="res://game/economy/upgrade_stat.gd" id="1_stat"]
+
+[resource]
+script = ExtResource("1_stat")
+base = 30.0
+kind = 2
+step = 0.2
+least = 0.1
+format = "%.0fs"

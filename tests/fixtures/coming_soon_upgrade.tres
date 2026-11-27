@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Upgrade" format=3 uid="uid://u3uohhuakwev"]
+
+[ext_resource type="Script" uid="uid://tco600m1ilvq" path="res://game/economy/upgrade.gd" id="1_upgrade"]
+[ext_resource type="Texture2D" uid="uid://de6lbiy63s2s7" path="res://assets/ui/upgrade_xray.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_upgrade")
+title = "Test Soon"
+tooltip = "A test-only Upgrade with no stat: its feature is not built."
+icon = ExtResource("2_icon")
+cell = Vector2i(1, 4)
+prices = PackedInt32Array(50)

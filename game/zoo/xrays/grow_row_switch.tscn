@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://wrmxbq4a66j7"]
+
+[ext_resource type="Script" uid="uid://bh37qs07duxiu" path="res://game/zoo/xrays/grow_row_switch.gd" id="1_switch"]
+[ext_resource type="PackedScene" uid="uid://b4mtn5fi0wiu1" path="res://game/zoo/screen/upgrade_switch/looks_graybox.tscn" id="2_looks"]
+
+[node name="GrowRowSwitch" type="Node3D" unique_id=372329783]
+
+[node name="GrowRowSwitch" type="Node" parent="." unique_id=1853924775]
+script = ExtResource("1_switch")
+
+[node name="Looks" parent="." unique_id=758195235 instance=ExtResource("2_looks")]

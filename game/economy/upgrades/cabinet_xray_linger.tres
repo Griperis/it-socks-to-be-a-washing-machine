@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://b5u2ajod3at5w" path="res://assets/ui/upgrade_cabinet_xray_linger.svg" id="1_4f2a5"]
 [ext_resource type="Resource" uid="uid://eattkm0na01b" path="res://game/economy/upgrades/cabinet_xray.tres" id="2_0byqs"]
 [ext_resource type="Script" uid="uid://tco600m1ilvq" path="res://game/economy/upgrade.gd" id="3_43fsx"]
+[ext_resource type="Resource" uid="uid://ddts3qhd2shvc" path="res://game/economy/stats/cabinet_xray_duration.tres" id="9_stat"]
 
 [resource]
 script = ExtResource("3_43fsx")
@@ -14,3 +15,4 @@ prices = PackedInt32Array(100, 160)
 needs = Dictionary[Resource, int]({
 ExtResource("2_0byqs"): 1
 })
+stat = ExtResource("9_stat")

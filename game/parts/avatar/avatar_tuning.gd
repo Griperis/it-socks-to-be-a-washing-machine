@@ -17,9 +17,9 @@ extends Resource
 ## The farthest a rider's sent place may be from the feet of the player they ride (core/41, Q2592); a
 ## pose further off is dropped.
 @export_range(0.5, 5.0, 0.1, "suffix:m") var ride_reach := 2.5 # placeholder: the designer's number (a guard: a stack of three is 1.4 m a step)
-## The area a pose may name: the zoo's floor (x and z) widened by `margin` on every side, and this
+## The area a pose may name: the zoo's stations (x and z; batch C's run out to x = 298, core/182) widened by `margin` on every side, and this
 ## height range. A pose outside it, or not a finite number, is dropped where it arrives.
-@export var area := Rect2(-20.0, -60.0, 180.0, 80.0)
+@export var area := Rect2(-20.0, -60.0, 330.0, 80.0)
 @export_range(0.0, 100.0, 1.0, "suffix:m") var margin := 30.0
 @export var height_range := Vector2(-50.0, 100.0)
 ## The pitch a pose may name, either way (the player's own pitch limit).

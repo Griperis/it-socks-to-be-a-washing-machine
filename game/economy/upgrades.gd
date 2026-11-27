@@ -238,7 +238,7 @@ func decide(cmd: Command) -> Dictionary:
 			if u == null:
 				return refuse(UNKNOWN)
 			var to := clampi(int(cmd.args.get("level", 0)), 0, u.top())
-			return grant(_level_patch(u, int(cmd.args.get("player", Parts.HOST)), to))
+			return grant(level_patch(u, int(cmd.args.get("player", Parts.HOST)), to))
 	return refuse("wrong")
 
 
@@ -250,7 +250,7 @@ func _decide_buy(cmd: Command) -> Dictionary:
 	if why != "":
 		ev = refuse(why)
 	else:
-		ev = grant(_level_patch(u, cmd.by, level(u, cmd.by) + 1))
+		ev = grant(level_patch(u, cmd.by, level(u, cmd.by) + 1))
 		var house_buy := u.is_house()
 		(ev["changes"] as Dictionary)[bank.id] = bank.spent_patch(cmd.by, 0 if house_buy else price, price if house_buy else 0)
 	ev["upgrade"] = String(cmd.args.get("upgrade", ""))
@@ -259,7 +259,7 @@ func _decide_buy(cmd: Command) -> Dictionary:
 
 
 ## The change that sets player `by`'s level of `upgrade` (the team's for a House one) to `to`.
-func _level_patch(upgrade: Upgrade, by: int, to: int) -> Dictionary:
+func level_patch(upgrade: Upgrade, by: int, to: int) -> Dictionary:
 	var uid := String(upgrade.id())
 	if upgrade.is_house():
 		var h := house.duplicate()

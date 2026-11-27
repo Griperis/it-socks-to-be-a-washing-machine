@@ -1,5 +1,22 @@
 [gd_scene format=3 uid="uid://bil25dcjkeunn"]
 
+[ext_resource type="PackedScene" uid="uid://d2u50k5e57ccb" path="res://game/parts/avatar/avatar.tscn" id="1_avatar"]
+[ext_resource type="Script" uid="uid://c3keykqyp2rbl" path="res://game/zoo/hand_off/hand_off_stand_in.gd" id="2_stand_in"]
+[ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="3_mess"]
+[ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="4_hands"]
+[ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="5_spot"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="6_designs"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="7_tuning"]
+[ext_resource type="Script" uid="uid://dn0mwe3boq5x5" path="res://game/knockdown/knockdowns.gd" id="8_knockdowns"]
+[ext_resource type="Resource" uid="uid://cmnf4rl43ha3a" path="res://game/knockdown/knockdown_tuning.tres" id="9_knock_tuning"]
+[ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/economy/bank.gd" id="10_bank"]
+[ext_resource type="Script" uid="uid://25em8fxakcsc" path="res://game/economy/upgrades.gd" id="11_upgrades"]
+[ext_resource type="PackedScene" uid="uid://h3610c6dred6" path="res://game/entities/cabinet/cabinet.tscn" id="12_cabinet"]
+[ext_resource type="PackedScene" uid="uid://dqcr0t6aah51x" path="res://game/devices/dust_sheet.tscn" id="13_sheet"]
+[ext_resource type="Script" uid="uid://wylvo3wib2rq" path="res://game/zoo/xrays/xray_board.gd" id="14_board"]
+[ext_resource type="Script" uid="uid://c6uu5d4fghfs8" path="res://game/zoo/xrays/xray_switches.gd" id="15_switches"]
+[ext_resource type="PackedScene" uid="uid://wrmxbq4a66j7" path="res://game/zoo/xrays/grow_row_switch.tscn" id="16_grow"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hsw48"]
 albedo_color = Color(0.42, 0.44, 0.48, 1)
 
@@ -10,26 +27,222 @@ size = Vector2(12, 12)
 [sub_resource type="BoxShape3D" id="BoxShape3D_i6ric"]
 size = Vector3(12, 0.2, 12)
 
-[node name="XRays" type="Node3D" unique_id=1593092249]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.72, 0.68, 0.6, 1)
 
-[node name="Pad" type="MeshInstance3D" parent="." unique_id=1975219839]
+[sub_resource type="BoxMesh" id="BoxMesh_wall"]
+material = SubResource("StandardMaterial3D_wall")
+size = Vector3(6, 2, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall"]
+size = Vector3(6, 2, 0.2)
+
+[node name="XRays" type="Node3D" unique_id=1690305297]
+
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=616661861]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
 mesh = SubResource("PlaneMesh_dorws")
 
-[node name="Ground" type="StaticBody3D" parent="." unique_id=679976434]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=239496555]
 
-[node name="Shape" type="CollisionShape3D" parent="Ground" unique_id=815857833]
+[node name="Shape" type="CollisionShape3D" parent="Ground" unique_id=232669284]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 shape = SubResource("BoxShape3D_i6ric")
 
-[node name="Name" type="Label3D" parent="." unique_id=1333889554]
+[node name="Name" type="Label3D" parent="." unique_id=176468]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2, 6.5)
 pixel_size = 0.004
 billboard = 2
-text = "X-rays: empty until core/182 builds it (batch C)"
+text = "X-rays: own the X-ray (the switches), pick a loose Sock and press 1: Show pair (its mate lies behind the wall, under the Heap, or in the Teammate's Hands). Own the Cabinet X-ray and press 2 holding a Sock or a Pair: Show Cabinet. Grow a Row grows the left Cabinet"
 vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="Spawn" type="Marker3D" parent="." unique_id=1498616001]
+[node name="Spawn" type="Marker3D" parent="." unique_id=1737284196]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+[node name="Wall" type="StaticBody3D" parent="." unique_id=300324701]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -2.5)
+
+[node name="Mesh" type="MeshInstance3D" parent="Wall" unique_id=610577220]
+mesh = SubResource("BoxMesh_wall")
+
+[node name="Shape" type="CollisionShape3D" parent="Wall" unique_id=322134822]
+shape = SubResource("BoxShape3D_wall")
+
+[node name="Board" type="Node3D" parent="." unique_id=334013234 node_paths=PackedStringArray("upgrades")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 1.9, -2.38)
+script = ExtResource("14_board")
+upgrades = NodePath("../Socks/Upgrades")
+
+[node name="Switches" type="Node3D" parent="." unique_id=81315809 node_paths=PackedStringArray("upgrades")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 4.5)
+script = ExtResource("15_switches")
+upgrades = NodePath("../Socks/Upgrades")
+
+[node name="Teammate" type="Node3D" parent="." unique_id=2142664313 node_paths=PackedStringArray("avatar", "holds")]
+script = ExtResource("2_stand_in")
+avatar = NodePath("11")
+holds = NodePath("../Spots/Held")
+
+[node name="11" parent="Teammate" unique_id=763321866 instance=ExtResource("1_avatar")]
+pose_position = Vector3(3.5, 0, -3)
+pose_yaw = 3.1415927
+
+[node name="CabinetSimple" parent="." unique_id=1003584823 instance=ExtResource("12_cabinet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4.5)
+
+[node name="Cabinet" parent="CabinetSimple" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
+hands = NodePath("../../Socks/Hands")
+bank = NodePath("../../Socks/Bank")
+
+[node name="CabinetPatterns" parent="." unique_id=72333910 instance=ExtResource("12_cabinet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, -4.5)
+
+[node name="Cabinet" parent="CabinetPatterns" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
+hands = NodePath("../../Socks/Hands")
+bank = NodePath("../../Socks/Bank")
+collection = &"patterns"
+locked = true
+
+[node name="DustSheet" parent="CabinetPatterns" unique_id=1518818822 instance=ExtResource("13_sheet")]
+
+[node name="GrowARow" parent="." unique_id=2089743551 instance=ExtResource("16_grow")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0, -1)
+
+[node name="GrowRowSwitch" parent="GrowARow" index="0" unique_id=1853924775 node_paths=PackedStringArray("cabinet")]
+cabinet = NodePath("../../CabinetSimple/Cabinet")
+
+[node name="Spots" type="Node3D" parent="." unique_id=1303554013]
+
+[node name="Loose" type="Marker3D" parent="Spots" unique_id=554943646]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5)
+script = ExtResource("5_spot")
+design = 9
+
+[node name="Behind" type="Marker3D" parent="Spots" unique_id=1416136143]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -3.6)
+script = ExtResource("5_spot")
+design = 9
+
+[node name="Second" type="Marker3D" parent="Spots" unique_id=1538748662]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 1.5)
+script = ExtResource("5_spot")
+design = 14
+
+[node name="UnderHeap" type="Marker3D" parent="Spots" unique_id=1419561899]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -1)
+script = ExtResource("5_spot")
+design = 14
+
+[node name="Third" type="Marker3D" parent="Spots" unique_id=1704257251]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 1.5)
+script = ExtResource("5_spot")
+design = 18
+
+[node name="Held" type="Marker3D" parent="Spots" unique_id=395164515]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2, 0, -2.4)
+script = ExtResource("5_spot")
+design = 18
+
+[node name="PairA" type="Marker3D" parent="Spots" unique_id=395515785]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0, 1.3)
+script = ExtResource("5_spot")
+design = 23
+
+[node name="PairB" type="Marker3D" parent="Spots" unique_id=1804476807]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4, 0, 1.6)
+script = ExtResource("5_spot")
+design = 23
+
+[node name="Dots" type="Marker3D" parent="Spots" unique_id=1642518207]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 1.5)
+script = ExtResource("5_spot")
+design = 133
+
+[node name="DotsMate" type="Marker3D" parent="Spots" unique_id=1774676839]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -1.8)
+script = ExtResource("5_spot")
+design = 133
+
+[node name="Heap1" type="Marker3D" parent="Spots" unique_id=110732620]
+transform = Transform3D(0.866, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866, 2.45, 0.05, -1.05)
+script = ExtResource("5_spot")
+design = 30
+
+[node name="Heap2" type="Marker3D" parent="Spots" unique_id=222725378]
+transform = Transform3D(0.5, 0, -0.866, 0, 1, 0, 0.866, 0, 0.5, 2.55, 0.09, -0.95)
+script = ExtResource("5_spot")
+design = 30
+
+[node name="Heap3" type="Marker3D" parent="Spots" unique_id=1235856108]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2.5, 0.13, -1.02)
+script = ExtResource("5_spot")
+design = 31
+
+[node name="Heap4" type="Marker3D" parent="Spots" unique_id=454183649]
+transform = Transform3D(-0.707, 0, 0.707, 0, 1, 0, -0.707, 0, -0.707, 2.42, 0.17, -0.98)
+script = ExtResource("5_spot")
+design = 31
+
+[node name="Heap5" type="Marker3D" parent="Spots" unique_id=2127447707]
+transform = Transform3D(0.966, 0, -0.259, 0, 1, 0, 0.259, 0, 0.966, 2.58, 0.21, -1.04)
+script = ExtResource("5_spot")
+design = 32
+
+[node name="Heap6" type="Marker3D" parent="Spots" unique_id=1825311717]
+transform = Transform3D(0.259, 0, 0.966, 0, 1, 0, -0.966, 0, 0.259, 2.5, 0.25, -1)
+script = ExtResource("5_spot")
+design = 32
+
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=108194924]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+
+[node name="Lying" type="Node3D" parent="." unique_id=1163090380]
+
+[node name="Flights" type="Node3D" parent="." unique_id=1515039275]
+
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=1230089303]
+_spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
+spawn_path = NodePath("../Flights")
+
+[node name="Socks" type="Node" parent="." unique_id=1655754968]
+
+[node name="Mess" type="Node" parent="Socks" unique_id=1834408126 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+script = ExtResource("3_mess")
+catalogue = ExtResource("6_designs")
+tuning = ExtResource("7_tuning")
+spots = NodePath("../../Spots")
+lying = NodePath("../../Lying")
+flights = NodePath("../../Flights")
+bounds = AABB(-6, -2, -6, 12, 8, 12)
+return_spot = NodePath("../../ReturnSpot")
+
+[node name="Hands" type="Node" parent="Socks" unique_id=721475808 node_paths=PackedStringArray("mess")]
+script = ExtResource("4_hands")
+mess = NodePath("../Mess")
+tuning = ExtResource("7_tuning")
+
+[node name="Knockdowns" type="Node" parent="Socks" unique_id=647687896 node_paths=PackedStringArray("hands")]
+script = ExtResource("8_knockdowns")
+tuning = ExtResource("9_knock_tuning")
+hands = NodePath("../Hands")
+
+[node name="Bank" type="Node" parent="Socks" unique_id=1947304475]
+script = ExtResource("10_bank")
+
+[node name="Upgrades" type="Node" parent="Socks" unique_id=1459304289 node_paths=PackedStringArray("bank")]
+script = ExtResource("11_upgrades")
+bank = NodePath("../Bank")
+
+[editable path="CabinetSimple"]
+[editable path="CabinetSimple/Drawer3"]
+[editable path="CabinetSimple/Drawer4"]
+[editable path="CabinetSimple/Drawer5"]
+[editable path="CabinetSimple/Drawer6"]
+[editable path="CabinetPatterns"]
+[editable path="CabinetPatterns/Drawer3"]
+[editable path="CabinetPatterns/Drawer4"]
+[editable path="CabinetPatterns/Drawer5"]
+[editable path="CabinetPatterns/Drawer6"]
+[editable path="GrowARow"]

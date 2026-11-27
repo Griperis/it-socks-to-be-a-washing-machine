@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="XRayTuning" format=3 uid="uid://b83obmphikcic"]
+
+[ext_resource type="Script" uid="uid://jocalgow5hsl" path="res://game/xray/xray_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")
