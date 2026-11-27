@@ -42,3 +42,6 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-27 [[12-editor-format-repair]] Every scene and resource in the editor's own format, with nothing lost: 760e1331 (maintenance/12-editor-format-repair)
 - 2026-11-27 [[24-sock-vacuum-model]] The Sock vacuum's model: d1b09697 (assets/24-sock-vacuum-model)
 - 2026-11-27 [[21-elevator-model]] The Elevator's model: 77d4e6ce (assets/21-elevator-model)
+- 2026-11-27 [[23-wall-clock-model]] The wall clock's model: c331170b (assets/23-wall-clock-model)
+- 2026-11-27 [[26-sock-detector-model]] The Sock detector's model: b4c80e99 (assets/26-sock-detector-model)
+- 2026-11-27 [[28-radio-model]] The Radio's model: e5d90b27 (assets/28-radio-model)
