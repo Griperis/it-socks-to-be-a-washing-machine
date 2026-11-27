@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: in-progress
+status: done
 kind: maintenance
 area: maintenance
 feature: frame
@@ -59,6 +59,7 @@ what you run into a throwaway place, not into the game.
 ## Answers
 - The editor re-save's losses are repaired at their source; the designer's re-save is discarded (Q2723, 2026-11-27).
 - Files are kept in the Godot editor's own format (Q2268).
+- glb node ids change on every import, engine #117605; the drift check ignores them (lead, 2026-11-27).
 
 ## Open follow-ups
 - [later] For the lead (technical, not the designer's): the 0-change re-save holds only in a checkout whose `.godot`
