@@ -28,7 +28,7 @@ goes on the review sheet (Q2604).
 | Batch | What | State |
 |---|---|---|
 | A | The run and the washer: Stages and floors, the First wash, the Laundry day (bins, Final wash), the Final screen, the voice system and the talking washing machine (Q2606); the run ends after the fourth Stage (Q2615) | designed (core/71-73), answered (Q2617-Q2643), filed (core/74): building |
-| B | Progression: Coins and Drawers, the Old Tree and the Upgrade grid, Stage presents and Gifts, the Wardrobe, Collections unlocking, Profile and encyclopedia, Achievements | designed (core/120-122), answered (Q2667-Q2683), filed (core/123): building |
+| B | Progression: Coins and Drawers, the Old Tree and the Upgrade grid, Stage presents and Gifts, the Wardrobe, Collections unlocking, Profile and encyclopedia, Achievements | designed (core/120-122), answered (Q2667-Q2683), filed (core/123), built (2026-11-27): the designer's play session |
 | C | The lived-in house: the day and the exterior, the Elevator, the Cat and litterbox, the X-rays, the vacuums, the detector, the TV and the Radio (no guide card, Q2695) | designed (core/149-152), answered (Q2693-Q2714), filed (core/153); built after batch B's last wave |
 | D | Finale and finish: the Drum finale, the other cutscenes, studio intro, M1.1's other sounds, controller, graphics presets, Steam | planned |
 
