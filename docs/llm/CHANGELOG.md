@@ -41,3 +41,4 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-27 [[139-encyclopedia-book]] The encyclopedia book in the house: 846b1be4 (core/139-encyclopedia-book)
 - 2026-11-27 [[12-editor-format-repair]] Every scene and resource in the editor's own format, with nothing lost: 760e1331 (maintenance/12-editor-format-repair)
 - 2026-11-27 [[24-sock-vacuum-model]] The Sock vacuum's model: d1b09697 (assets/24-sock-vacuum-model)
+- 2026-11-27 [[21-elevator-model]] The Elevator's model: 77d4e6ce (assets/21-elevator-model)
