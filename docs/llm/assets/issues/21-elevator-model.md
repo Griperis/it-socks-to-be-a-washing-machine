@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: assets
 feature: assets
@@ -47,3 +47,16 @@ letters' (`lit`, `dark`, `locked`) keyed in the Looks.
 - The letters and the plaque as modelled parts (Q2705, 2026-11-26).
 
 ## Open follow-ups
+- [blocking] The designer's look at the first line-up (stops here, Q2603 batch C's look rule):
+  `builds/review-elevator/elevator-old-vs-port.png` (Blender EEVEE; pairs old | port: the stop shut and out of order,
+  open with the car standing there, the call button, the column locked with the padlock sign, inside the car (the
+  floor letters: B plain, G lit, 1 locked, A plain; the old drew them in code, so its tile is a bare wall), the caged
+  lamp). Single tiles in `builds/review-elevator/tiles/`. The port's shaft wall and sill in the tiles are a stand-in
+  of the house kit's (not this model). Go or changes?
+- [later] Left for after the designer's yes: the Looks scenes (`elevator_car`, `elevator_stop`, `elevator_letter`
+  with the signs) built on these glbs to `game/entities/elevator/looks_contract.json` once core/155 lands (it is
+  not on main yet), their clips (`open`, `shut`, `out_of_order`, `repaired`, `locked`, `unlock`, `press`; `lit`,
+  `dark`, `locked`), `asset_lint` on them, and `elevator.tscn` / `elevator_stop.tscn` pointed at them.
+- [later] The ticket names the script both `tools/blender/elevator.py` and "under `assets_src/generate/elevator/`":
+  it is `tools/blender/elevator.py`, as the other single-asset ports (laundry bin, book, Wardrobe Station), listed in
+  `assets_src/generate/README.md`.

@@ -70,3 +70,5 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 
 | Ticket | The choice | What was done (the old answer) | Designer |
 |---|---|---|---|
+| assets/21 | The call button's column on the east-facing stops (first floor, attic): the old put it on the shaft's south side on every floor, so on the east-facing hatches it stood on the viewer's left | One stop model, placed turned per floor: the column is on the viewer's right on every floor (the west-facing hatches' side, as the old basement and kitchen) | `make_elevator.py` make_shaft() (bz0 = z1) | |
+| assets/21 | The font of the modelled letters (floor letters, the button's letter, "OUT OF ORDER"): the old drew them with Godot's default font (Open Sans), not in the game | Inter, the font Blender ships, at the old capitals' height; Blender's own default font draws "1" as a bare bar | `elevator_letter.gd`:63-71, `elevator_button.gd`:59-66, `lock_sign.gd`:73-77 | |
