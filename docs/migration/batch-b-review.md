@@ -67,7 +67,7 @@ ticket, the choice, what it did, the old file:line. The designer confirms or cha
 | core/132 | How many Old Tree recordings to copy ("162 less" the unported ones) | The old folder holds 161; less `tip_dirty` (1), `tip_pairing` (3) and the three Grotto groups (12): 145 copied, every one with its old text and segment times (the old `data/voiceover/old_tree/`) | |
 | core/132 | A call's level and reach | The same level as every line (the old `call_db` 12.5 = `voice_db` 12.5), carrying 16 m and subtitled within 16 m with no level band (OTV:427, OTV:465) | |
 | core/132 | An Upgrade newly affordable on a first visit | Said in place of the greeting, so the player is not met yet and the next greeting is the "first" line (the old order, OTV:274) | |
-| core/132 | The lines of core/133's, core/140's and batch C's moments | Copied with no trigger (the JSON's note names the owner and the trigger id); `final_wash` and `peace` marked `waits` (story beats) | |
+| core/132 | The lines of core/133's, core/140's and batch C's moments | Copied with no trigger (the JSON's note names the owner and the trigger id); `peace` marked `waits` (a story beat); `final_wash` later dropped (Q2718) | |
 | core/132 | The Old Tree's subtitle icon | None: the Theme's plain disc (the old row had no icon); a drawn icon is a look ticket | |
 | core/129 | The close key: the old "[ESC] Close" at the bottom right | The port's close key at the panel's top right, as every dialogue (Q2578); Esc and a pad's B shut it (the old UM:14) | |
 | core/129 | menu_open, menu_close: which sound | Silent, as the old (the designer's "No sound" in the old sounds.json); `buy` is the old pick cc0/kenney_coins, `refuse` the existing one | |
