@@ -716,9 +716,9 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   palette and fades) are yes and merge (designer, 2026-11-26).
 - Q2718: the Old Tree's "final wash" line (tree_final_wash) is dropped: in the port the Final wash is a
   cutscene that ends on the Final screen, so the tree never says it (designer, 2026-11-27; core/133).
-- Q2719: the batch review sheets merge with `merge=union` (`.gitattributes`), so branches that each add rows no longer
-  stop a merge; batch C starts each ticket as soon as its blockers are merged, its shared files are free and a slot is
-  open (the wave table is the guide), and ready branches merge together (designer, 2026-11-27).
+- Q2719: batch C starts each ticket as soon as its blockers are merged, its shared files are free and a slot is
+  open (the wave table is the guide), and ready branches merge together; the review sheets keep no `merge=union`: the
+  designer removed it (designer, 2026-11-27).
 - Q2720: batch C's house systems each get their own sub-scene, instanced once in `house.tscn` by core/154
   (`game/house/systems/`: the Elevator, the day, the exterior, the Cat, the devices); later tickets edit only their
   own sub-scene, not `house.tscn` (designer, 2026-11-27).
