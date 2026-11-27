@@ -211,7 +211,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 292, 0, 2)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.5)
 
 [node name="Runtime" parent="." unique_id=1728372765 instance=ExtResource("43_runtime")]
-mess_bounds = AABB(-20, -6, -60, 200, 20, 80)
+mess_bounds = AABB(-20, -6, -60, 330, 20, 80)
 hands_tuning = SubResource("Resource_zoo_hands")
 upgrades = ExtResource("32_upgrades")
 place_name = "zoo"

@@ -323,13 +323,20 @@ func _decide_knock(cmd: Command) -> Dictionary:
 	if ended >= 0:
 		ev["ended"] = ended
 		ev["why"] = KNOCKED
+	# core/163: a thrown carried thing that knocked them down bounces back off the body in this answer.
+	var thing := parts.of(StringName(cmd.args.get("thing", &""))) as Carriable if cmd.args.has("thing") else null
+	if thing != null and thing.flying() and cmd.args.get("from") is Vector3 and cmd.args.get("bounce") is Vector3:
+		changes.merge(thing.bounce_patch(cmd.args["from"], cmd.args["bounce"], true))
 	if hands != null:
 		var dropped := hands.left(target)
 		if not dropped.is_empty():
 			changes.merge(dropped["changes"])
 			ev["dropped_at"] = dropped["dropped_at"]
-		# core/139: a held one-slot thing (the book) is let go too, where they stood, as a leaver's.
-		var book := hands.one_slot_of(target)
+		# core/139: a held one-slot thing (the book) is let go too, where they stood, as a leaver's; core/163:
+		# so is a carried thing (the whole-Hands rule).
+		var book := hands.carries(target)
+		if book == null:
+			book = hands.one_slot_of(target)
 		var spilled := book.left(target) if book != null else {}
 		if not spilled.is_empty():
 			changes.merge(spilled["changes"])
@@ -520,6 +527,7 @@ func _physics_process(delta: float) -> void:
 # --- The Host's hit test and drags ---------------------------------------------------------------
 
 func _hits() -> void:
+	_thing_hits()
 	var mess := hands.mess if hands != null else null
 	if mess == null:
 		return
@@ -574,6 +582,55 @@ func _hits() -> void:
 			break
 	# Asked once the walk over the Throws is done: an answer changes the Throws (a catch ends one, a
 	# knock lets the knocked player's Hands fall).
+	for cmd in asks:
+		parts.ask(cmd)
+
+
+## The thrown-knock rule (core/163, devices.md, Q2700): the carried things in the air (Carriable.FLYING)
+## meet the bodies by the same test as a Throw's. A full charge knocks the Teammate down and the thing
+## bounces back off the body in the knock's answer (C27, sideways only, and falls); below it, it bounces
+## off to their feet, never caught. The thrower and a player down or washed are never hit; a thing that
+## hit a body hits nobody again.
+func _thing_hits() -> void:
+	var things := get_tree().get_nodes_in_group(Carriable.FLYING)
+	if things.is_empty():
+		return
+	var bodies := _bodies()
+	if bodies.size() < 2:
+		return
+	var asks: Array[Command] = []
+	for node in things:
+		var c := node as Carriable
+		if c == null or c.parts != parts:
+			continue
+		var ball := c.flying_ball()
+		if ball.is_empty() or bool(ball["hit"]):
+			continue
+		var at: Vector3 = ball["at"]
+		var r: float = ball["radius"]
+		var by: int = ball["by"]
+		var v: Vector3 = ball["vel"]
+		for b: Array in bodies:
+			var peer: int = b[0]
+			var feet: Vector3 = b[1]
+			var height: float = b[2]
+			if peer == by or is_down(peer) or not touches(at, r, feet, height, tuning.body_radius):
+				continue
+			var flat := Vector3(v.x, 0.0, v.z)
+			if float(ball["charge"]) < tuning.min_charge:
+				var k := hands.hand_off_numbers().bounce if hands != null else 0.5
+				bounces += 1
+				asks.append(Command.new(Carriable.BOUNCE, Parts.HOST, c.id,
+						{"from": ball["from"], "vel": Vector3(-v.x * k, v.y * k, -v.z * k), "hit": true}))
+				break
+			var push := flat.normalized() if flat.length() > 0.0001 else Vector3.FORWARD
+			var off := Vector3(at.x - feet.x, 0.0, at.z - feet.z)
+			knocks += 1
+			asks.append(Command.new(KNOCK, Parts.HOST, id, {"target": peer, "thrower": by, "push": push,
+					"high": clampf((at.y - feet.y) / maxf(height, 0.01), 0.0, 1.0),
+					"side": clampf(off.cross(push).y / (tuning.body_radius + r), -1.0, 1.0), "at": at,
+					"thing": c.id, "from": ball["from"], "bounce": -flat * tuning.bounce}))
+			break
 	for cmd in asks:
 		parts.ask(cmd)
 

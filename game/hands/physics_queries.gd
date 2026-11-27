@@ -98,6 +98,29 @@ static func overlap_colliders(node: Node, shape: Shape3D, xform: Transform3D, ma
 	return out
 
 
+## Where `shape` at `xform`, moved along `motion`, first touches something of `mask` (core/163, a thrown
+## carried thing's sweep): {"safe": the share of `motion` it moves free, "normal": the touched surface's},
+## or {} when it meets nothing (or `node` has no world yet). `exclude`: bodies it passes through.
+static func cast(node: Node, shape: Shape3D, xform: Transform3D, motion: Vector3, mask: int, exclude: Array[RID] = []) -> Dictionary:
+	var space := _space(node)
+	if space == null:
+		return {}
+	var q := PhysicsShapeQueryParameters3D.new()
+	q.shape = shape
+	q.transform = xform
+	q.motion = motion
+	q.collision_mask = mask
+	q.exclude = exclude
+	var frac := space.cast_motion(q)
+	if frac.size() < 2 or frac[1] >= 1.0:
+		return {}
+	q.transform = Transform3D(xform.basis, xform.origin + motion * frac[1])
+	q.motion = Vector3.ZERO
+	var info := space.get_rest_info(q)
+	var n: Vector3 = info.get("normal", -motion.normalized())
+	return {"safe": frac[0], "normal": n.normalized() if not n.is_zero_approx() else Vector3.UP}
+
+
 ## The physics space `node` is in, or null while it has no world.
 static func _space(node: Node) -> PhysicsDirectSpaceState3D:
 	if not node.is_inside_tree():
