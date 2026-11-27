@@ -735,3 +735,4 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   first on core/154 before it becomes the rule; the kit gets a merge-time drift check (a text lint and a headless
   editor re-save of the touched files, failing on any change) (designer, 2026-11-27;
   docs/research/godot-mcp-scene-authoring.md).
+- Q2725: assets/24, the Sock vacuum's model and Looks, is yes at its first line-up, 12,314 triangles accepted (the old nozzle pod) (designer, 2026-11-27).
