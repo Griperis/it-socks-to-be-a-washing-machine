@@ -1,0 +1,12 @@
+# assets/24: the Sock vacuum's Looks framed as the old line-up (reference/it-socks docs/art/sock_vacuum/final_lineup.png):
+# front, three-quarter, the right side, three-quarter from behind; then the nozzle's pod, the pour, the suction with
+# the full gauge, the hose at rest and in its tug.
+front  --scene=res://tools/sock_vacuum_still.tscn --size=360x420 --do='5:sock_vacuum:0' --shots=20
+quarter  --scene=res://tools/sock_vacuum_still.tscn --size=360x420 --do='5:sock_vacuum:1' --shots=20
+side  --scene=res://tools/sock_vacuum_still.tscn --size=360x420 --do='5:sock_vacuum:2' --shots=20
+back  --scene=res://tools/sock_vacuum_still.tscn --size=360x420 --do='5:sock_vacuum:3' --shots=20
+pod  --scene=res://tools/sock_vacuum_still.tscn --size=360x420 --do='5:sock_vacuum:4' --shots=20
+pour  --scene=res://tools/sock_vacuum_still.tscn --size=360x420 --do='5:sock_vacuum:5' --shots=20
+suction  --scene=res://tools/sock_vacuum_still.tscn --size=360x420 --do='5:sock_vacuum:6' --shots=20
+hose  --scene=res://tools/sock_vacuum_still.tscn --size=360x420 --do='5:sock_vacuum:7' --shots=20
+hose_tug  --scene=res://tools/sock_vacuum_still.tscn --size=360x420 --do='5:sock_vacuum:8' --shots=20

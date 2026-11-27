@@ -241,6 +241,22 @@
         20
       ]
     },
+    "sock_vacuum": {
+      "class": "appliance",
+      "colliders": 0,
+      "source": "sock_vacuum/sock_vacuum",
+      "glb": "assets/sock_vacuum/sock_vacuum.glb",
+      "origin_xy": false,
+      "note": "assets/24: the old container and nozzle (10,956 triangles) with the old nozzle pod (1,358) in one glb, 12,314 against the appliance class's 12,000; assets_src/generate/sock_vacuum/make_sock_vacuum.py. The nozzle hangs on the left and the spout stands out at the rear, so the footprint is not centred (the body is); no collider (the entity's box)"
+    },
+    "sock_vacuum_hose": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "sock_vacuum/hose",
+      "glb": "assets/sock_vacuum/hose.glb",
+      "origin_xy": false,
+      "note": "assets/24: the Sock vacuum's hose, a skinned tube of 12 bones running 5 m from the origin along -Z (Godot); made by the same script"
+    },
     "armchair": {
       "class": "furniture",
       "colliders": 0,

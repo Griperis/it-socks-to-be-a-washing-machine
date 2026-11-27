@@ -1,0 +1,1 @@
+{"nodes": ["Body", "Hook", "Nozzle", "NozzleMouth", "HoseTop", "Window", "Arriving", "Drop", "Gauge", "Pod", "SubViewport", "PodScreen", "Streaks", "Motes", "Motor", "AnimationPlayer"], "animations": ["pour", "settle", "fill", "motor_on", "motor_off"]}

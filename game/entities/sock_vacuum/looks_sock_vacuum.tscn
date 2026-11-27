@@ -1,0 +1,658 @@
+[gd_scene format=3 uid="uid://c60x64rov2fmg"]
+
+[ext_resource type="PackedScene" uid="uid://bwt43cnff1vmk" path="res://assets/sock_vacuum/sock_vacuum.glb" id="1_model"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_shtbd"]
+viewport_path = NodePath("Nozzle/Pod/SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5fy1y"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_shtbd")
+roughness = 0.1
+
+[sub_resource type="Gradient" id="Gradient_streak_fade"]
+offsets = PackedFloat32Array(0, 0.25, 0.75, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_streak_fade"]
+gradient = SubResource("Gradient_streak_fade")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_streaks"]
+emission_shape_offset = Vector3(0, 0, -0.32)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 0.12
+emission_ring_radius = 0.2
+emission_ring_inner_radius = 0.06
+emission_ring_cone_angle = 90.0
+radial_velocity_min = -1.66733
+radial_velocity_max = -1.28836
+gravity = Vector3(0, 0, 0)
+scale_min = 0.7
+scale_max = 1.2
+color_ramp = SubResource("GradientTexture1D_streak_fade")
+
+[sub_resource type="Gradient" id="Gradient_soft"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_soft"]
+gradient = SubResource("Gradient_soft")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_streak"]
+transparency = 1
+depth_draw_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 1, 1, 0.55)
+albedo_texture = SubResource("GradientTexture2D_soft")
+
+[sub_resource type="QuadMesh" id="QuadMesh_streak"]
+material = SubResource("StandardMaterial3D_streak")
+size = Vector2(0.012, 0.11)
+
+[sub_resource type="Gradient" id="Gradient_mote_fade"]
+offsets = PackedFloat32Array(0, 0.2, 0.8, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mote_fade"]
+gradient = SubResource("Gradient_mote_fade")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_motes"]
+emission_shape_offset = Vector3(0, 0, -0.7)
+emission_shape = 3
+emission_box_extents = Vector3(0.28, 0.02, 0.28)
+radial_velocity_min = -1.3
+radial_velocity_max = -0.9
+gravity = Vector3(0, 0, 0)
+scale_min = 0.6
+scale_max = 1.4
+color_ramp = SubResource("GradientTexture1D_mote_fade")
+turbulence_enabled = true
+turbulence_noise_strength = 0.4
+turbulence_noise_scale = 2.0
+turbulence_influence_min = 0.05
+turbulence_influence_max = 0.15
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mote"]
+transparency = 1
+depth_draw_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.92, 0.9, 0.86, 0.8)
+albedo_texture = SubResource("GradientTexture2D_soft")
+
+[sub_resource type="QuadMesh" id="QuadMesh_mote"]
+material = SubResource("StandardMaterial3D_mote")
+size = Vector2(0.014, 0.014)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gauge"]
+albedo_color = Color(0.3, 0.85, 0.35, 1)
+roughness = 0.6
+emission_enabled = true
+emission = Color(0.3, 0.85, 0.35, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_gauge"]
+material = SubResource("StandardMaterial3D_gauge")
+size = Vector3(0.022, 1, 0.004)
+
+[sub_resource type="Animation" id="Animation_RESET"]
+resource_name = "RESET"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tip:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Tip:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Tip/Gauge:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 0.001, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Tip/Gauge:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.12, 0.2225, 0.2155)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Tip/Gauge:mesh:material:albedo_color")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Color(0.3, 0.85, 0.35, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Tip/Gauge:mesh:material:emission")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Color(0.3, 0.85, 0.35, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Tip/Window/Arriving/Drop:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Tip/Window/Arriving/Drop:rotation")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Tip/Motor:volume_linear")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_fill"]
+resource_name = "fill"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tip/Gauge:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 0.001, 1), Vector3(1, 0.331, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Tip/Gauge:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.12, 0.2225, 0.2155), Vector3(-0.12, 0.3875, 0.2155)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Tip/Gauge:mesh:material:albedo_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Color(0.3, 0.85, 0.35, 1), Color(0.95, 0.75, 0.2, 1), Color(0.95, 0.2, 0.15, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Tip/Gauge:mesh:material:emission")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Color(0.3, 0.85, 0.35, 1), Color(0.95, 0.75, 0.2, 1), Color(0.95, 0.2, 0.15, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_motor_off"]
+resource_name = "motor_off"
+length = 0.12
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tip/Motor:volume_linear")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.12),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Tip/Motor:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.12),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_motor_on"]
+resource_name = "motor_on"
+length = 0.12
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tip/Motor:volume_linear")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.12),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Tip/Motor:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_pour"]
+resource_name = "pour"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tip:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.000193067, -0.0112866), Vector3(0, 0.00266022, -0.0418171), Vector3(0, 0.0114241, -0.0860777), Vector3(0, 0.0300481, -0.137582), Vector3(0, 0.0596798, -0.18928), Vector3(0, 0.0981255, -0.234807), Vector3(0, 0.140154, -0.269923), Vector3(0, 0.178748, -0.293297), Vector3(0, 0.206593, -0.306057), Vector3(0, 0.217133, -0.310099)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Tip:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.0342085, 0, 0), Vector3(0.12706, 0, 0), Vector3(0.263894, 0, 0), Vector3(0.430049, 0, 0), Vector3(0.610865, 0, 0), Vector3(0.791681, 0, 0), Vector3(0.957837, 0, 0), Vector3(1.09467, 0, 0), Vector3(1.18752, 0, 0), Vector3(1.22173, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_settle"]
+resource_name = "settle"
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Tip/Window/Arriving/Drop:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25, 0.275, 0.3, 0.325, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.2, 0), Vector3(0, 0.198186, 0), Vector3(0, 0.192744, 0), Vector3(0, 0.183673, 0), Vector3(0, 0.170975, 0), Vector3(0, 0.154649, 0), Vector3(0, 0.134694, 0), Vector3(0, 0.111111, 0), Vector3(0, 0.0839002, 0), Vector3(0, 0.0530612, 0), Vector3(0, 0.0185941, 0), Vector3(0, 0.00650826, 0), Vector3(0, 0.0146239, 0), Vector3(0, 0.0117275, 0), Vector3(0, 1.83697e-18, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Tip/Window/Arriving/Drop:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.05, 0.075, 0.1, 0.125, 0.15, 0.175, 0.2, 0.225, 0.25, 0.275, 0.3, 0.325, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(2, 1.2, 0), Vector3(1.80952, 1.08571, 0), Vector3(1.61905, 0.971429, 0), Vector3(1.42857, 0.857143, 0), Vector3(1.2381, 0.742857, 0), Vector3(1.04762, 0.628571, 0), Vector3(0.857143, 0.514286, 0), Vector3(0.666667, 0.4, 0), Vector3(0.47619, 0.285714, 0), Vector3(0.285714, 0.171429, 0), Vector3(0.0952381, 0.0571429, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_looks"]
+_data = {
+&"RESET": SubResource("Animation_RESET"),
+&"fill": SubResource("Animation_fill"),
+&"motor_off": SubResource("Animation_motor_off"),
+&"motor_on": SubResource("Animation_motor_on"),
+&"pour": SubResource("Animation_pour"),
+&"settle": SubResource("Animation_settle")
+}
+
+[node name="LooksSockVacuum" type="Node3D" unique_id=2143926739]
+editor_description = "assets/24: the Sock vacuum's Looks (docs/architecture/devices.md \"Looks contracts\"). Front +Z, the origin on the floor under the canister's middle. Tip carries the whole container: the pour clip tips it 70 degrees forward about the body's middle (played backwards to stand it up again)."
+
+[node name="Tip" type="Node3D" parent="." unique_id=2101994278]
+
+[node name="Model" parent="Tip" unique_id=208340046 instance=ExtResource("1_model")]
+
+[node name="Glass" parent="Tip/Model" index="1" unique_id=683972577]
+cast_shadow = 0
+
+[node name="PodScreen" parent="Tip/Model/Nozzle/Pod" parent_id_path=PackedInt32Array(208340046, 585271626) index="0" unique_id=762397467]
+material_override = SubResource("StandardMaterial3D_5fy1y")
+
+[node name="SubViewport" type="SubViewport" parent="Tip/Model/Nozzle/Pod" parent_id_path=PackedInt32Array(208340046, 585271626) index="1" unique_id=200949818]
+editor_description = "The Nozzle display's face: nozzle_display.tscn goes in here (150-I); 2:1 as the 92 x 46 mm screen, which shows it."
+size = Vector2i(368, 184)
+
+[node name="NozzleMouth" type="Marker3D" parent="Tip/Model/Nozzle" parent_id_path=PackedInt32Array(208340046, 123766939) index="1" unique_id=1314176157]
+editor_description = "The nozzle's mouth, 0.45 m from the grip: a sucked Sock flies here, a spat Sock leaves from here. Its -Z points out of the mouth (the aim when held); the streaks and motes ride it."
+transform = Transform3D(1, 0, 0, 0, 6.12323e-17, -1, 0, 1, 6.12323e-17, 0, -0.45, 0)
+gizmo_extents = 0.05
+
+[node name="Streaks" type="GPUParticles3D" parent="Tip/Model/Nozzle/NozzleMouth" unique_id=1233166882]
+editor_description = "Short soft white air streaks flowing into the mouth while the suction is on (the old vacuum_fx.gd air: 18 of 0.28 s from a ring 0.06 to 0.2 m wide 0.32 m ahead)."
+cast_shadow = 0
+emitting = false
+amount = 18
+lifetime = 0.28
+visibility_aabb = AABB(-1.8, -1.8, -1.8, 3.6, 3.6, 3.6)
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_streaks")
+draw_pass_1 = SubResource("QuadMesh_streak")
+
+[node name="Motes" type="GPUParticles3D" parent="Tip/Model/Nozzle/NozzleMouth" unique_id=1298351805]
+editor_description = "Small dust motes rising off a floor patch 0.7 m ahead of the mouth into it while the suction is on (the old vacuum_fx.gd dust: 14 of 0.7 s; the old moved the patch onto the holder's floor each frame and showed none past 1.6 m: the view sets the process material's emission_shape_offset)."
+cast_shadow = 0
+emitting = false
+amount = 14
+lifetime = 0.7
+visibility_aabb = AABB(-1.8, -1.8, -1.8, 3.6, 3.6, 3.6)
+transform_align = 1
+transform_align_channel_filter = 1
+process_material = SubResource("ParticleProcessMaterial_motes")
+draw_pass_1 = SubResource("QuadMesh_mote")
+
+[node name="Hook" type="Marker3D" parent="Tip" unique_id=1269465878]
+editor_description = "Where the hung nozzle's grip (the Nozzle's origin) sits in its parking clip: the old hook (0.31, 0.66, 0) turned to this front, 0.04 m lower."
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.31, 0.62, 0)
+gizmo_extents = 0.05
+
+[node name="HoseTop" type="Marker3D" parent="Tip" unique_id=1471839990]
+editor_description = "The hose port's mouth on top, where the hose's first bone is pinned; its -Z points up, out of the port (the hose's bones run along their -Z)."
+transform = Transform3D(1, 0, 0, 0, 6.12323e-17, 1, 0, -1, 6.12323e-17, 0, 0.71, -0.08)
+gizmo_extents = 0.05
+
+[node name="Window" type="Node3D" parent="Tip" unique_id=1349561420]
+editor_description = "The load's heap behind the glass, on the load's floor (0.19 m), turned half round as the old container's space. Heap00..Heap47 are the places of the most the Tank holds (48: 24 and Big Bag's two levels of 12), filled bottom up; a Tank of capacity c lays its Sock i on Heap round((i + 0.5) * 48 / c - 0.5), so a full Tank of any capacity reaches the top as the old WindowHeap did. A Sock's own Size times the window's 0.6 is the view's. Arriving is put on the place a sucked Sock lands on; the settle clip drops its Drop child onto it."
+transform = Transform3D(-1, 0, -1.22465e-16, 0, 1, 0, 1.22465e-16, 0, -1, 0, 0.19, 0)
+
+[node name="Heap00" type="Marker3D" parent="Tip/Window" unique_id=1368622295]
+transform = Transform3D(0.991562, 0, -0.129634, 0, 1, 0, 0.129634, 0, 0.991562, 0, 0.003125, 0)
+gizmo_extents = 0.03
+
+[node name="Heap01" type="Marker3D" parent="Tip/Window" unique_id=1575650332]
+transform = Transform3D(-0.954598, -0.169932, -0.244674, -0.194141, 0.977843, 0.0783087, 0.225945, 0.122255, -0.966438, -0.0578489, 0.009375, -0.0671049)
+gizmo_extents = 0.03
+
+[node name="Heap02" type="Marker3D" parent="Tip/Window" unique_id=1384156830]
+transform = Transform3D(0.837546, 0.0541739, 0.543674, 0.0882469, 0.968594, -0.232462, -0.539193, 0.242675, 0.806462, -0.115698, 0.015625, 0.0217902)
+gizmo_extents = 0.03
+
+[node name="Heap03" type="Marker3D" parent="Tip/Window" unique_id=1489703109]
+transform = Transform3D(0.352548, -0.114917, -0.928711, 0.164588, 0.984575, -0.0593503, 0.921206, -0.131931, 0.366024, 0.0624534, 0.021875, -0.0453147)
+gizmo_extents = 0.03
+
+[node name="Heap04" type="Marker3D" parent="Tip/Window" unique_id=805047653]
+transform = Transform3D(-0.669323, 0.111507, 0.734556, 0.0678428, 0.993716, -0.0890296, -0.739868, -0.00975518, -0.672682, 0.00460452, 0.028125, 0.0435803)
+gizmo_extents = 0.03
+
+[node name="Heap05" type="Marker3D" parent="Tip/Window" unique_id=779238665]
+transform = Transform3D(0.859467, -0.0598997, 0.50767, 0.108598, 0.991837, -0.0668261, -0.499523, 0.112567, 0.858956, -0.0532444, 0.034375, -0.0235246)
+gizmo_extents = 0.03
+
+[node name="Heap06" type="Marker3D" parent="Tip/Window" unique_id=866086662]
+transform = Transform3D(-0.653484, 0.162233, -0.739351, -0.0726805, 0.9588, 0.274626, 0.753443, 0.2332, -0.614769, -0.111093, 0.040625, 0.0653705)
+gizmo_extents = 0.03
+
+[node name="Heap07" type="Marker3D" parent="Tip/Window" unique_id=290321861]
+transform = Transform3D(0.319639, -0.00440236, 0.947529, -0.132774, 0.989915, 0.0493894, -0.938191, -0.141594, 0.315831, 0.0670579, 0.046875, -0.0017344)
+gizmo_extents = 0.03
+
+[node name="Heap08" type="Marker3D" parent="Tip/Window" unique_id=973990689]
+transform = Transform3D(0.844725, -0.175563, -0.505586, 0.16079, 0.984275, -0.0731405, 0.510477, -0.0195094, 0.85967, 0.00920903, 0.053125, -0.0688393)
+gizmo_extents = 0.03
+
+[node name="Heap09" type="Marker3D" parent="Tip/Window" unique_id=1819996969]
+transform = Transform3D(-0.982291, 0.0511297, 0.180249, 0.0686131, 0.99338, 0.0921323, -0.174345, 0.102868, -0.979297, -0.0486398, 0.059375, 0.0200558)
+gizmo_extents = 0.03
+
+[node name="Heap10" type="Marker3D" parent="Tip/Window" unique_id=1322447396]
+transform = Transform3D(0.971156, -0.117297, 0.207597, 0.158845, 0.967574, -0.196391, -0.17783, 0.223703, 0.958297, -0.106489, 0.065625, -0.0470491)
+gizmo_extents = 0.03
+
+[node name="Heap11" type="Marker3D" parent="Tip/Window" unique_id=1713034439]
+transform = Transform3D(-0.0112951, 0.10586, -0.994317, 0.153278, 0.982812, 0.102893, 0.988119, -0.151245, -0.0273269, 0.0716624, 0.071875, 0.0418459)
+gizmo_extents = 0.03
+
+[node name="Heap12" type="Marker3D" parent="Tip/Window" unique_id=1923226111]
+transform = Transform3D(-0.323478, -0.0646936, 0.944022, -0.0487018, 0.997476, 0.0516687, -0.944982, -0.0292618, -0.325812, 0.0138136, 0.078125, -0.025259)
+gizmo_extents = 0.03
+
+[node name="Heap13" type="Marker3D" parent="Tip/Window" unique_id=1258470051]
+transform = Transform3D(0.981341, 0.16174, 0.103969, -0.150176, 0.982426, -0.110842, -0.12007, 0.0931599, 0.988385, -0.0440353, 0.084375, 0.0636361)
+gizmo_extents = 0.03
+
+[node name="Heap14" type="Marker3D" parent="Tip/Window" unique_id=365471501]
+transform = Transform3D(-0.885823, -0.00868785, -0.463943, -0.106894, 0.976755, 0.185806, 0.451544, 0.214184, -0.86616, -0.101884, 0.090625, -0.0034688)
+gizmo_extents = 0.03
+
+[node name="Heap15" type="Marker3D" parent="Tip/Window" unique_id=802508006]
+transform = Transform3D(0.677966, -0.177628, 0.713309, 0.00222934, 0.970858, 0.239644, -0.735089, -0.16088, 0.658605, 0.0762669, 0.096875, -0.0705737)
+gizmo_extents = 0.03
+
+[node name="Heap16" type="Marker3D" parent="Tip/Window" unique_id=1081850078]
+transform = Transform3D(0.589243, 0.0469248, -0.806592, 0.00387624, 0.998136, 0.0609, 0.807947, -0.0390114, 0.587963, 0.0184181, 0.103125, 0.0183214)
+gizmo_extents = 0.03
+
+[node name="Heap17" type="Marker3D" parent="Tip/Window" unique_id=1998996387]
+transform = Transform3D(-0.834541, -0.124325, 0.536736, -0.0587053, 0.988727, 0.137743, -0.54781, 0.0834427, -0.832431, -0.0394308, 0.109375, -0.0487835)
+gizmo_extents = 0.03
+
+[node name="Heap18" type="Marker3D" parent="Tip/Window" unique_id=1804080718]
+transform = Transform3D(0.723554, 0.100496, 0.682913, 0.0696589, 0.973664, -0.217087, -0.686744, 0.204645, 0.697498, -0.0972797, 0.115625, 0.0401115)
+gizmo_extents = 0.03
+
+[node name="Heap19" type="Marker3D" parent="Tip/Window" unique_id=534538233]
+transform = Transform3D(-0.429745, -0.0681459, -0.900375, 0.125309, 0.982998, -0.134209, 0.894213, -0.170501, -0.4139, 0.0808715, 0.121875, -0.0269934)
+gizmo_extents = 0.03
+
+[node name="Heap20" type="Marker3D" parent="Tip/Window" unique_id=386473457]
+transform = Transform3D(0.0651541, 0.157869, 0.985308, -0.0596726, 0.986256, -0.154075, -0.996089, -0.0487573, 0.0736791, 0.0230226, 0.128125, 0.0619017)
+gizmo_extents = 0.03
+
+[node name="Heap21" type="Marker3D" parent="Tip/Window" unique_id=534603608]
+transform = Transform3D(0.959863, -0.0133049, -0.280154, -0.00791869, 0.99719, -0.0744889, 0.280358, 0.0737176, 0.957061, -0.0348263, 0.134375, -0.00520321)
+gizmo_extents = 0.03
+
+[node name="Heap22" type="Marker3D" parent="Tip/Window" unique_id=933015880]
+transform = Transform3D(-0.977436, -0.180803, -0.109217, -0.198141, 0.963977, 0.17745, 0.0731996, 0.195087, -0.978051, -0.0926752, 0.140625, -0.0723081)
+gizmo_extents = 0.03
+
+[node name="Heap23" type="Marker3D" parent="Tip/Window" unique_id=249808052]
+transform = Transform3D(0.903092, 0.0418226, 0.427405, -0.114296, 0.982758, 0.145339, -0.413957, -0.180105, 0.892301, 0.085476, 0.146875, 0.016587)
+gizmo_extents = 0.03
+
+[node name="Heap24" type="Marker3D" parent="Tip/Window" unique_id=369029851]
+transform = Transform3D(0.212167, -0.12895, -0.968688, 0.0851663, 0.989924, -0.113123, 0.973515, -0.0584986, 0.221011, 0.0276271, 0.153125, -0.050518)
+gizmo_extents = 0.03
+
+[node name="Heap25" type="Marker3D" parent="Tip/Window" unique_id=969735249]
+transform = Transform3D(-0.542542, 0.0980429, 0.834288, 0.10724, 0.993123, -0.0469702, -0.833155, 0.0639854, -0.549325, -0.0302218, 0.159375, 0.0383771)
+gizmo_extents = 0.03
+
+[node name="Heap26" type="Marker3D" parent="Tip/Window" unique_id=2024368966]
+transform = Transform3D(0.924197, -0.072317, 0.375006, 0.135774, 0.979978, -0.145633, -0.356966, 0.18551, 0.915512, -0.0880706, 0.165625, -0.0287278)
+gizmo_extents = 0.03
+
+[node name="Heap27" type="Marker3D" parent="Tip/Window" unique_id=1811381143]
+transform = Transform3D(-0.715902, 0.150874, -0.681705, 0.239557, 0.970182, -0.0368552, 0.655817, -0.189692, -0.730699, 0.0900805, 0.171875, 0.0601673)
+gizmo_extents = 0.03
+
+[node name="Heap28" type="Marker3D" parent="Tip/Window" unique_id=1935474785]
+transform = Transform3D(0.462504, -0.0177463, 0.886439, -0.0523147, 0.997511, 0.0472654, -0.885072, -0.0682343, 0.460425, 0.0322316, 0.178125, -0.00693761)
+gizmo_extents = 0.03
+
+[node name="Heap29" type="Marker3D" parent="Tip/Window" unique_id=236943208]
+transform = Transform3D(0.763401, -0.188436, -0.617827, 0.111504, 0.980586, -0.161301, 0.636228, 0.0542472, 0.769592, -0.0256173, 0.184375, -0.0740425)
+gizmo_extents = 0.03
+
+[node name="Heap30" type="Marker3D" parent="Tip/Window" unique_id=70839518]
+transform = Transform3D(-0.942806, 0.0374805, 0.331228, 0.0931594, 0.983692, 0.153858, -0.32006, 0.175915, -0.930922, -0.0834661, 0.190625, 0.0148526)
+gizmo_extents = 0.03
+
+[node name="Heap31" type="Marker3D" parent="Tip/Window" unique_id=992136477]
+transform = Transform3D(0.991394, -0.130901, 0.00165183, 0.127895, 0.971164, 0.201204, -0.027942, -0.199261, 0.979548, 0.094685, 0.196875, -0.0522524)
+gizmo_extents = 0.03
+
+[node name="Heap32" type="Marker3D" parent="Tip/Window" unique_id=2014892862]
+transform = Transform3D(-0.173605, 0.093532, -0.980364, 0.0933661, 0.992559, 0.078162, 0.98038, -0.0779635, -0.181046, 0.0368361, 0.203125, 0.0366427)
+gizmo_extents = 0.03
+
+[node name="Heap33" type="Marker3D" parent="Tip/Window" unique_id=927535662]
+transform = Transform3D(-0.179012, -0.0779515, 0.980754, 0.0299312, 0.995963, 0.0846235, -0.983391, 0.0445038, -0.175957, -0.0210127, 0.209375, -0.0304622)
+gizmo_extents = 0.03
+
+[node name="Heap34" type="Marker3D" parent="Tip/Window" unique_id=348693052]
+transform = Transform3D(0.987377, 0.147189, -0.0584961, -0.154784, 0.975027, -0.159259, 0.033594, 0.166303, 0.985502, -0.0788616, 0.215625, 0.0584329)
+gizmo_extents = 0.03
+
+[node name="Heap35" type="Marker3D" parent="Tip/Window" unique_id=929312660]
+transform = Transform3D(-0.948712, -0.021744, -0.315392, 0.0457098, 0.977714, -0.204904, 0.312818, -0.208811, -0.926576, 0.0992895, 0.221875, -0.00867201)
+gizmo_extents = 0.03
+
+[node name="Heap36" type="Marker3D" parent="Tip/Window" unique_id=950980613]
+transform = Transform3D(0.770401, -0.192336, 0.607856, 0.0950435, 0.977404, 0.188808, -0.630435, -0.0876852, 0.771273, 0.0414407, 0.228125, -0.0757769)
+gizmo_extents = 0.03
+
+[node name="Heap37" type="Marker3D" parent="Tip/Window" unique_id=614232325]
+transform = Transform3D(0.455265, 0.0336096, -0.889721, -0.046259, 0.998831, 0.0140609, 0.889153, 0.0347562, 0.456288, -0.0164082, 0.234375, 0.0131182)
+gizmo_extents = 0.03
+
+[node name="Heap38" type="Marker3D" parent="Tip/Window" unique_id=1341284323]
+transform = Transform3D(-0.747934, -0.136282, 0.649633, 0.00211331, 0.978202, 0.207643, -0.66377, 0.156676, -0.731342, -0.0742571, 0.240625, -0.0539868)
+gizmo_extents = 0.03
+
+[node name="Heap39" type="Marker3D" parent="Tip/Window" unique_id=737020466]
+transform = Transform3D(0.797692, 0.0872323, 0.596722, -0.199441, 0.971966, 0.124523, -0.569131, -0.218341, 0.792727, 0.103894, 0.246875, 0.0349083)
+gizmo_extents = 0.03
+
+[node name="Heap40" type="Marker3D" parent="Tip/Window" unique_id=1986541054]
+transform = Transform3D(-0.559874, -0.0820695, -0.824503, 0.0349666, 0.991856, -0.122471, 0.827839, -0.0973987, -0.552445, 0.0460452, 0.253125, -0.0321966)
+gizmo_extents = 0.03
+
+[node name="Heap41" type="Marker3D" parent="Tip/Window" unique_id=1144017126]
+transform = Transform3D(0.227942, 0.144824, 0.962844, -0.00876058, 0.989141, -0.146705, -0.973635, 0.0250052, 0.226736, -0.0118037, 0.259375, 0.0566985)
+gizmo_extents = 0.03
+
+[node name="Heap42" type="Marker3D" parent="Tip/Window" unique_id=1221521183]
+transform = Transform3D(0.906131, -0.02639, -0.422173, -0.038456, 0.988779, -0.144349, 0.421245, 0.147034, 0.894949, -0.0696526, 0.265625, -0.0104064)
+gizmo_extents = 0.03
+
+[node name="Heap43" type="Marker3D" parent="Tip/Window" unique_id=2116011102]
+transform = Transform3D(-0.973552, -0.192248, 0.123438, -0.214714, 0.954529, -0.206817, -0.0780654, -0.227851, -0.970562, 0.108499, 0.271875, -0.0775113)
+gizmo_extents = 0.03
+
+[node name="Heap44" type="Marker3D" parent="Tip/Window" unique_id=1065215095]
+transform = Transform3D(0.959948, 0.0290171, 0.278672, -0.0575779, 0.993824, 0.0948567, -0.274199, -0.107103, 0.95569, 0.0506497, 0.278125, 0.0113838)
+gizmo_extents = 0.03
+
+[node name="Heap45" type="Marker3D" parent="Tip/Window" unique_id=1282996238]
+transform = Transform3D(0.069695, -0.142373, -0.987356, -0.00534705, 0.989696, -0.143087, 0.997554, 0.0152519, 0.0682156, -0.00719918, 0.284375, -0.0557212)
+gizmo_extents = 0.03
+
+[node name="Heap46" type="Marker3D" parent="Tip/Window" unique_id=243321924]
+transform = Transform3D(-0.402881, 0.0841533, 0.911375, 0.159795, 0.986937, -0.0204916, -0.901195, 0.137378, -0.411066, -0.0650481, 0.290625, 0.0331739)
+gizmo_extents = 0.03
+
+[node name="Heap47" type="Marker3D" parent="Tip/Window" unique_id=618994047]
+transform = Transform3D(0.97733, -0.08441, 0.194165, 0.0339956, 0.967753, 0.249598, -0.208972, -0.237339, 0.948684, 0.113103, 0.296875, -0.033931)
+gizmo_extents = 0.03
+
+[node name="Arriving" type="Node3D" parent="Tip/Window" unique_id=2141677010]
+
+[node name="Drop" type="Node3D" parent="Tip/Window/Arriving" unique_id=1194676856]
+
+[node name="Gauge" type="MeshInstance3D" parent="Tip" unique_id=482833039]
+editor_description = "The fill gauge's bar in its slot left of the window; the fill clip, seeked to the Tank's share (0 to 1 s), grows it, amber from 75 % and red when full."
+transform = Transform3D(1, 0, 0, 0, 0.001, 0, 0, 0, 1, -0.12, 0.2225, 0.2155)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_gauge")
+
+[node name="Motor" type="AudioStreamPlayer3D" parent="Tip" unique_id=781750979]
+editor_description = "The motor's loop at the container's middle (vacuum_motor, core/154's SoundEvent); motor_on and motor_off fade it in and out over 0.12 s."
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33, 0)
+volume_db = inf_neg
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=193733076]
+libraries/ = SubResource("AnimationLibrary_looks")
+
+[editable path="Tip/Model"]
