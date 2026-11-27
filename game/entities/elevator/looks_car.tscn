@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://ttqsnhjglqn6"]
+
+[ext_resource type="PackedScene" uid="uid://8jj1n0uf85rn" path="res://assets/elevator/elevator_car.glb" id="1_car"]
+
+[node name="LooksCar" type="Node3D" unique_id=1273061703]
+editor_description = "assets/21: the Elevator car's Looks (elevator.md, The shape): the old stainless car and its caged brass lamp (lamp, kept for Elevator Duet). The origin on the car's floor at its middle; the house's axes: open at -X and +X, the side walls at -Z and +Z (the letters' column hangs on the +Z wall facing -Z). The seats' clips are the riders' (core/157)."
+
+[node name="Model" parent="." unique_id=529316894 instance=ExtResource("1_car")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.03, 0)

@@ -727,6 +727,32 @@
       "source": "wardrobe_station/wardrobe_station",
       "glb": "assets/wardrobe_station/wardrobe_station.glb",
       "origin_xy": false
+    },
+    "elevator_stop": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "elevator/elevator",
+      "glb": "assets/elevator/elevator_stop.glb",
+      "origin_xy": false
+    },
+    "elevator_car": {
+      "class": "furniture",
+      "colliders": 0,
+      "source": "elevator/elevator",
+      "glb": "assets/elevator/elevator_car.glb"
+    },
+    "elevator_letter": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "elevator/elevator",
+      "glb": "assets/elevator/elevator_letter.glb"
+    },
+    "elevator_signs": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "elevator/elevator",
+      "glb": "assets/elevator/elevator_signs.glb",
+      "origin_xy": false
     }
   }
 }

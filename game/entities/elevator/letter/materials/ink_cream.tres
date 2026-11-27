@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://con2tlydi4ytl"]
+
+[resource]
+resource_name = "ink_cream"
+shading_mode = 0
+albedo_color = Color(0.95, 0.95, 0.92, 1)

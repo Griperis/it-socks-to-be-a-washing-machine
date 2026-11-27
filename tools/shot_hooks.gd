@@ -224,6 +224,11 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# line-up's view of that number (4-8: the pod, the pour, the suction, the hose and its tug).
 			world.call(&"show_view", int(arg))
 			return true
+		"elevator":
+			# assets/21: arg a view of tools/elevator_still.gd VIEWS (shut, open, locked, unlock_a..c, repaired,
+			# press, letters): the Elevator's stop, car and letters posed by their Looks' own clips.
+			world.call(&"show_view", arg)
+			return true
 		"wardrobe_page":
 			# core/142: the zoo's player before the Wardrobe Station's wardrobe uses it: the doors open and the
 			# Wardrobe page shows. arg "hat": its Hats row stepped once (the first basic hat on the preview).
