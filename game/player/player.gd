@@ -144,6 +144,9 @@ var _listening: Parts = null
 ## and how long the HUD's refusal stays.
 var _time := 0.0
 var _drop_down_at := -1.0
+## When the use key and the left button went down (-1 while up): their held time goes to the thing in the Hands (core/163).
+var _interact_down_at := -1.0
+var _pick_down_at := -1.0
 var _zoom := 0.0
 var _message_left := 0.0
 ## T01: whether a Throw is charging, and how full its ring is (0 to 1 over the charge time).
@@ -324,6 +327,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_turn(-motion.relative.x * step, -motion.relative.y * step * _y_sign())
 	if _captured and (event.is_action_pressed(HANDS_NEXT) or event.is_action_pressed(HANDS_PREV)):
 		var h := hands()
+		# core/163: the wheel goes first to the thing in the Hands (the Filter's step, later).
+		var held := h.in_hands(player_id()) if h != null else null
+		if held != null and held.held_input(player_id(), HANDS_NEXT if event.is_action_pressed(HANDS_NEXT) else HANDS_PREV, true, 0.0):
+			return
 		if h != null and h.list_size(player_id()) > 1:
 			var step := 1 if event.is_action_pressed(HANDS_NEXT) else -1
 			# A one-slot thing (core/139) is in the list: the Host's answer, never a wheel guess of the Socks alone.
@@ -398,7 +405,16 @@ func _physics_process(delta: float) -> void:
 	_stack.after_move()
 	_time += delta
 	if not _input_blocked and Input.is_action_just_pressed(INTERACT):
+		_interact_down_at = _time
 		interact()
+	elif not _input_blocked and Input.is_action_just_released(INTERACT) and _interact_down_at >= 0.0:
+		# core/163: the use key's release goes to the thing in the Hands (the container's held pour, later).
+		var held_for := _time - _interact_down_at
+		_interact_down_at = -1.0
+		var h := hands()
+		var held := h.in_hands(player_id()) if h != null else null
+		if held != null:
+			held.held_input(player_id(), INTERACT, false, held_for)
 	_update_hands(delta)
 
 
@@ -611,10 +627,11 @@ func mirror_body() -> AvatarLooks:
 
 ## What interact does: uses the Part it aims at, unless the left click alone uses it (a piano key).
 func interact() -> Part:
-	# core/139: the use key reads the active one-slot item (the book), whatever is in reach.
+	# core/139, core/163: the use key goes first to the thing in the Hands (held_input(): the active book
+	# reads, the carried Radio's dial turns), whatever is in reach.
 	var h := hands()
-	var held := h.one_slot_active(player_id()) if h != null else null
-	if held != null and held.use_held(player_id()):
+	var held := h.in_hands(player_id()) if h != null else null
+	if held != null and held.held_input(player_id(), INTERACT, true, 0.0):
 		return null
 	_aim.force_raycast_update()
 	var part := aimed_part()
@@ -662,7 +679,8 @@ func _update_hands(delta: float) -> void:
 		return
 	var me := player_id()
 	var found := aim_found(h)
-	# core/78: a carried thing takes the whole Hands; it is put down or handed over, never thrown.
+	# core/78: a carried thing takes the whole Hands; it is put down or handed over, and thrown when it is
+	# throwable (core/163). Its buttons go first to its held_input().
 	var carried := h.in_hands(me)
 	var socks := h.active_of(me) >= 0
 	var holding := socks or carried != null
@@ -704,7 +722,17 @@ func _update_hands(delta: float) -> void:
 		return
 	if _grab_held and Input.is_action_just_released(PICK):
 		_let_go_body()  # H96
-	if Input.is_action_just_pressed(PICK) and aimed_body >= 0:
+	# core/163: the left button goes first to the thing in the Hands (the nozzle's suck, later).
+	var pick_used := false
+	if carried != null and Input.is_action_just_pressed(PICK):
+		_pick_down_at = _time
+		pick_used = carried.held_input(me, PICK, true, 0.0)
+	elif carried != null and Input.is_action_just_released(PICK) and _pick_down_at >= 0.0:
+		carried.held_input(me, PICK, false, _time - _pick_down_at)
+		_pick_down_at = -1.0
+	if pick_used:
+		pass
+	elif Input.is_action_just_pressed(PICK) and aimed_body >= 0:
 		# H93, Q2493: a lying body under the crosshair wins the click over a Sock or a thing.
 		_grab_held = true
 		kd.grab(me, aimed_body)
@@ -716,10 +744,24 @@ func _update_hands(delta: float) -> void:
 			use_aimed()
 	if Input.is_action_just_pressed(DROP_THROW):
 		_drop_down_at = _time
+		if carried != null and carried.held_input(me, DROP_THROW, true, 0.0):
+			_drop_down_at = -1.0  # the thing used the press (the nozzle's spit, later)
 	if carried != null:
+		# core/163: a throwable thing held past the tap charges a Throw as a Sock does (the thrown-knock rule).
+		if _drop_down_at >= 0.0 and not charging and carried.throwable and _time - _drop_down_at >= hands_tuning.tap:
+			_set_charge(true)
+		if charging:
+			charge = minf(1.0, charge + delta / maxf(h.tuning_of(me).charge_time, 0.01))  # Quick Charge
+			_ring.value = charge
 		if Input.is_action_just_released(DROP_THROW) and _drop_down_at >= 0.0:
+			var held_for := _time - _drop_down_at
 			_drop_down_at = -1.0
-			_put_carried(carried)
+			if carried.held_input(me, DROP_THROW, false, held_for):
+				_set_charge(false)
+			elif charging:
+				_throw_carried(carried)
+			else:
+				_put_carried(carried)
 		return
 	if _drop_down_at >= 0.0 and not charging and socks and _time - _drop_down_at >= hands_tuning.tap:
 		_set_charge(true)
@@ -862,6 +904,14 @@ func _put_carried(carried: Carriable) -> void:
 		say(CANT_DROP)
 		return
 	carried.put_down(me, spot["point"], spot["normal"], carried.held_yaw(me))
+
+
+## core/163: the carried thing's Throw along the aim with the charge the ring shows (the thrown-knock rule).
+func _throw_carried(carried: Carriable) -> void:
+	var power := charge
+	_set_charge(false)
+	var launch := carried.launch_of(player_id(), eyes(), aim_dir(), power)
+	carried.throw(player_id(), launch["from"], launch["vel"], power)
 
 
 ## core/78: a left click on a lying Carriable: with anything in the Hands "Hands full" at once (the

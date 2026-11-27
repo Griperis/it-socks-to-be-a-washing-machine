@@ -12,6 +12,8 @@ const KEEP := ["Handling"]
 const CRATE := "Stations/Handling/Crate"
 const BOOK := "Stations/Handling/Book"
 const BOOK_PLACE := Vector3(0.5, 0.0, 1.6)
+const RADIO := "Stations/Handling/Radio"
+const RADIO_PLACE := Vector3(-0.6, 0.0, 2.6)
 const NET_WAIT_S := 20.0
 const FPS := 60
 const LAG_MS := 50
@@ -24,6 +26,8 @@ func cases() -> Array[Dictionary]:
 	return [
 		{"name": "carry", "method": "case_carry", "world": false,
 				"title": "core/78, 50 ms one way: the Host's left click carries the crate and its right click lays it on the floor; the Guest sees it lying there, the same place and turn; the Guest carries it (the Host draws it at the Guest's slot) and lays it, the same on both"},
+		{"name": "radio", "method": "case_radio", "world": false,
+				"title": "core/163, 50 ms one way: the Guest throws the Radio under the full ring at the Host: on the Guest it flies at once (looks first), it bounces off the Host to their feet, never caught, and lies the same on both; the Host throws it at full charge at the Guest: knocked down on both, it bounces off in the knock's answer; a late joiner's copy of it sees it mid-air at the same age; it lies the same on both"},
 		{"name": "book", "method": "case_book", "world": false,
 				"title": "core/139, 50 ms one way: the Host takes the book with its left click and reads it (E: its own pages, its own profile; the Guest's pages stay shut); the Guest sees it carried at the Host's avatar's slot and, put down, lying there; the Guest takes it and reads it: its own pages, not the Host's"},
 	]
@@ -144,7 +148,79 @@ func case_book() -> void:
 	_drop_branches()
 
 
+## core/163: the Radio thrown in two machines (the thrown-knock rule).
+func case_radio() -> void:
+	var zoos := await _pair(LAG_MS, false, true)
+	var host: Node3D = zoos[0]
+	var guest: Node3D = zoos[1]
+	var g := _player(guest).player_id()
+	var lying := _radio_thing(host).global_position
+	var base := (host.get_node("Stations/Handling") as Node3D).global_position
+	# The Guest carries it by its own click.
+	await _aim(guest, lying + Vector3(0.0, 0.0, 1.2), lying + Vector3(0.0, 0.03, 0.05))
+	await _wait(func() -> bool: return _player(guest).aimed_part() == _radio(guest), "the Guest's crosshair on the Radio", FPS)
+	await _click(&"pick")
+	await _wait(func() -> bool: return _radio(host).holder == g and _radio(guest).holder == g, "the Guest carries it on both", FPS * 3)
+	# A weaker Throw at the Host.
+	var host_at := base + Vector3(0.0, 0.0, 5.0)
+	_place(host, host_at, host_at + Vector3(0.0, 1.6, -3.0))
+	await _stands_still(_player(host))
+	await _aim(guest, host_at + Vector3(0.0, 0.0, 1.6), host_at + Vector3.UP * 1.0)
+	var kd_host := _kd(host)
+	Input.action_press(&"drop_throw")
+	await _wait(func() -> bool: return _player(guest).charging and _player(guest).charge >= 0.5, "the Guest's ring to reach 0.5", FPS * 3)
+	var slot: Vector3 = _radio_thing(guest).global_position
+	Input.action_release(&"drop_throw")
+	await _paced_ticks(3)
+	_check(_radio(guest).holder == g and _radio_thing(guest).global_position.distance_to(slot) > 0.05,
+			"on the Guest it flies at once, before the Host's answer (%s from %s)" % [_radio_thing(guest).global_position, slot])
+	await _wait(func() -> bool: return kd_host.bounces == 1, "the Host's hit test bounces it off the Host", FPS * 3)
+	await _wait(func() -> bool: return not _radio(host).flying() and not _radio(guest).flying(), "it lands on both", FPS * 6)
+	await _paced_ticks(2)
+	_check(_radio(host).holder == 0 and _radio(guest).holder == 0 and kd_host.knocks == 0, "never caught, nobody knocked")
+	_check(_radio_thing(host).global_position.distance_to(_radio_thing(guest).global_position) < 0.001, "it lies the same on both")
+	var feet := _player(host).global_position
+	var down := _radio_thing(host).global_position
+	_check(Vector2(down.x - feet.x, down.z - feet.z).length() < 1.2, "at the Host's feet (%s, feet %s)" % [down, feet])
+	# The Host throws it at the Guest at full charge.
+	_place(guest, host_at + Vector3(0.0, 0.0, -2.0), host_at)
+	await _stands_still(_player(guest))
+	await _aim(host, down + Vector3(0.0, 0.0, 1.2), down + Vector3(0.0, 0.03, 0.05))
+	await _wait(func() -> bool: return _player(host).aimed_part() == _radio(host), "the Host's crosshair on the Radio", FPS)
+	await _click(&"pick")
+	await _wait(func() -> bool: return _radio(host).holder == Parts.HOST and _radio(guest).holder == Parts.HOST, "the Host carries it on both", FPS * 3)
+	var mate := _player(guest).global_position
+	await _aim(host, mate + Vector3(0.0, 0.0, 1.6), mate + Vector3.UP * 1.0)
+	Input.action_press(&"drop_throw")
+	await _wait(func() -> bool: return _player(host).charging and _player(host).charge >= 1.0, "the Host's ring to fill", FPS * 3)
+	Input.action_release(&"drop_throw")
+	await _wait(func() -> bool: return _radio(guest).flying(), "the Guest sees it fly", FPS * 2)
+	# A late joiner's copy of it, taken from the Host while it flies.
+	var copy := _radio(host).whole_state()
+	_check(not (copy.get("flight", {}) as Dictionary).is_empty(), "the Host's snapshot has it mid-air")
+	_radio(guest).write(copy, true)
+	_near(_radio(guest).flight_age(), _radio(host).flight_age(), 0.1, "the joined copy flies at the Host's age")
+	await _wait(func() -> bool: return _kd(host).is_down(g) and _kd(guest).is_down(g), "Q2700: the full charge knocks the Guest down, on both", FPS * 3)
+	_check(_kd(host).knocks == 1, "one knock")
+	await _wait(func() -> bool: return not _radio(host).flying() and not _radio(guest).flying(), "it lands on both", FPS * 6)
+	await _paced_ticks(2)
+	_check(_radio_thing(host).global_position.distance_to(_radio_thing(guest).global_position) < 0.001, "it lies the same on both")
+	_drop_branches()
+
+
 # --- Helpers -------------------------------------------------------------------------------------
+
+func _radio(zoo: Node3D) -> Carriable:
+	return zoo.get_node(RADIO + "/Carriable") as Carriable
+
+
+func _radio_thing(zoo: Node3D) -> Node3D:
+	return zoo.get_node(RADIO) as Node3D
+
+
+func _kd(zoo: Node3D) -> Knockdowns:
+	return LevelRuntime.of(zoo).parts.find(func(p: Part) -> bool: return p is Knockdowns) as Knockdowns
+
 
 func _book_thing(zoo: Node3D) -> Node3D:
 	return zoo.get_node(BOOK) as Node3D
@@ -158,9 +234,9 @@ func _book_menu(zoo: Node3D) -> EncyclopediaMenu:
 	return zoo.get_node(BOOK + "/EncyclopediaMenu") as EncyclopediaMenu
 
 
-func _pair(lag_ms: int, with_book := false) -> Array[Node3D]:
-	var host := _branch("Host", with_book)
-	var guest := _branch("Guest", with_book)
+func _pair(lag_ms: int, with_book := false, with_radio := false) -> Array[Node3D]:
+	var host := _branch("Host", with_book, with_radio)
+	var guest := _branch("Guest", with_book, with_radio)
 	await _frames(2)
 	var hs := LevelRuntime.of(host).session
 	var gs := LevelRuntime.of(guest).session
@@ -289,7 +365,7 @@ func _lag(zoo: Node3D, lag_ms: int) -> void:
 
 
 ## A zoo in a machine of its own (its own MultiplayerAPI and 3D world), with only the KEEP stations.
-func _branch(label: String, with_book := false) -> Node3D:
+func _branch(label: String, with_book := false, with_radio := false) -> Node3D:
 	var node := Node.new()
 	node.name = label
 	add_child(node)
@@ -309,6 +385,11 @@ func _branch(label: String, with_book := false) -> Node3D:
 		book.name = "Book"
 		book.position = BOOK_PLACE
 		zoo.get_node("Stations/Handling").add_child(book)
+	if with_radio:
+		var radio := (load("res://game/entities/radio/radio.tscn") as PackedScene).instantiate() as Node3D
+		radio.name = "Radio"
+		radio.position = RADIO_PLACE
+		zoo.get_node("Stations/Handling").add_child(radio)
 	view.add_child(zoo)
 	_branches.append(node)
 	return zoo

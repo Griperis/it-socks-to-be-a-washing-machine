@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="CarriedThrowTuning" format=3 uid="uid://bs5vljcv1wnf4"]
+
+[ext_resource type="Script" uid="uid://rh41sra7oxu7" path="res://game/parts/carried_throw_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")

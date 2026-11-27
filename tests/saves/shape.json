@@ -118,10 +118,11 @@
 	"res://game/parts/carriable.gd": {
 		"fields": {
 			"at": "Vector3",
+			"flight": "Dictionary",
 			"holder": "int",
 			"yaw": "float"
 		},
-		"version": 1
+		"version": 2
 	},
 	"res://game/parts/openable.gd": {
 		"fields": {

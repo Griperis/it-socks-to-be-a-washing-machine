@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://3dxmdwedc5kc"]
+
+[ext_resource type="PackedScene" uid="uid://ck21dqtuaksy3" path="res://game/entities/radio/looks_radio.tscn" id="1_looks"]
+[ext_resource type="Script" uid="uid://bkjerdg5jkff3" path="res://game/parts/carriable.gd" id="2_carriable"]
+[ext_resource type="Resource" uid="uid://rknhqu3nywqn" path="res://game/hands/hold_slot_radio.tres" id="3_slot"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="4_outline"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_radio"]
+size = Vector3(0.233, 0.147, 0.108)
+
+[node name="Radio" type="StaticBody3D" unique_id=1817943716]
+editor_description = "core/163: the Radio as a carried thing (tv-and-radio.md, R20-R29): a body on the house layer while it lies (its box is the old model's at 1.5 times, R1), carried and thrown by its Carriable (the whole-Hands rule, the thrown-knock rule). Silent until core/164 adds its ChannelKnob and RadioSound."
+
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=665258706]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0735, -0.009)
+shape = SubResource("BoxShape3D_radio")
+
+[node name="Looks" parent="." unique_id=679532809 instance=ExtResource("1_looks")]
+
+[node name="Outline" type="Node3D" parent="Looks" unique_id=392790640]
+script = ExtResource("4_outline")
+
+[node name="Carriable" type="Node" parent="." unique_id=820807816]
+script = ExtResource("2_carriable")
+slot = ExtResource("3_slot")
+title = "Radio"
+throwable = true
+land_sound = &"radio_land"

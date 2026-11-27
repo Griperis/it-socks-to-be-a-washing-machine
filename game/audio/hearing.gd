@@ -6,7 +6,8 @@
 ## leaver's dropped Hands at their last place. A knockdown (coop/10) is heard by everyone at the hit
 ## point and buzzes the knocked player's pad; a grab buzzes the dragged player's. A Hand-off or a catch
 ## (core/42) is the giver's drop and the receiver's pick or pair. A ping (core/43) is one blip at its spot
-## for everyone. Refusals are said by Player.say(),
+## for everyone. A thrown carried thing's landing (core/163) is its `land_sound` at the spot for everyone,
+## its Throw the thrower's "throw" and buzz. Refusals are said by Player.say(),
 ## which plays "refuse".
 ## Looks only: it reads the answer and decides nothing.
 class_name Hearing
@@ -74,6 +75,12 @@ static func applied(ev: Dictionary, me: int, parts: Parts, guessed := false) -> 
 				Sounds.play_at(&"ping", ev["at"])
 		&"shelve", &"thrown_shelve":
 			_shelved(ev, parts)
+		&"land":
+			# core/163: a thrown carried thing lands; everyone hears its landing sound there (the Radio's
+			# radio_land). One lost and come back by the washer only pops (above).
+			var thing := parts.of(StringName(ev.get("to", &""))) as Carriable if parts != null else null
+			if thing != null and thing.land_sound != &"" and ev.get("landed_at") is Vector3 and not ev.has(Mess.POPPED):
+				Sounds.play_at(thing.land_sound, ev["landed_at"])
 		&"left":
 			# coop/03: a leaver's Hands dropped where they stood; everyone still here hears it once,
 			# there (coop/05).
