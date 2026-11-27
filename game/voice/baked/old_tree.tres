@@ -158,10 +158,7 @@
 [ext_resource type="AudioStream" uid="uid://4nxwb57icedg" path="res://assets/voice/old_tree/tree_floor_attic_2.wav" id="136_qoe40"]
 [ext_resource type="AudioStream" uid="uid://c46ka8rum2l0c" path="res://assets/voice/old_tree/tree_floor_attic_3.wav" id="137_18g45"]
 [ext_resource type="AudioStream" uid="uid://dq6yfocpiu41g" path="res://assets/voice/old_tree/tree_floor_attic_4.wav" id="138_xpstj"]
-[ext_resource type="AudioStream" uid="uid://gcm3p0petdbi" path="res://assets/voice/old_tree/tree_final_wash_1.wav" id="139_e2485"]
-[ext_resource type="AudioStream" uid="uid://bvvn82fhyue3j" path="res://assets/voice/old_tree/tree_final_wash_2.wav" id="140_5wg3w"]
 [ext_resource type="Resource" path="res://game/voice/triggers/tree_part_first.tres" id="140_hgi7v"]
-[ext_resource type="AudioStream" uid="uid://cqsl7kbnvxnc1" path="res://assets/voice/old_tree/tree_final_wash_3.wav" id="141_8uk51"]
 [ext_resource type="AudioStream" uid="uid://ntvvpch3dryi" path="res://assets/voice/old_tree/tree_peace_1.wav" id="142_0w5u0"]
 [ext_resource type="AudioStream" uid="uid://1f1wv6we43aa" path="res://assets/voice/old_tree/tree_peace_2.wav" id="143_g0ahr"]
 [ext_resource type="AudioStream" uid="uid://ct0plv5s666ks" path="res://assets/voice/old_tree/tree_peace_3.wav" id="144_6xm3c"]
@@ -182,7 +179,6 @@
 [ext_resource type="Script" uid="uid://0spuefso45pc" path="res://game/voice/voice_bank.gd" id="156_r1q4c"]
 [ext_resource type="Resource" path="res://game/voice/speakers/old_tree.tres" id="157_skfrl"]
 [ext_resource type="Resource" path="res://game/voice/triggers/tree_floor_attic.tres" id="160_ikdy7"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_final_wash.tres" id="165_o6r3k"]
 [ext_resource type="Resource" path="res://game/voice/triggers/tree_peace.tres" id="169_koric"]
 
 [sub_resource type="Resource" id="seg_tree_call_1_0_0"]
@@ -3851,90 +3847,6 @@ takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_floor_attic_4_0")]
 placeholder = true
 marks = PackedStringArray()
 
-[sub_resource type="Resource" id="seg_tree_final_wash_1_0_0"]
-script = ExtResource("3_q8epu")
-start = 0.12
-end = 3.97
-key = &"VO_TREE_FINAL_WASH_1_1"
-
-[sub_resource type="Resource" id="seg_tree_final_wash_1_0_1"]
-script = ExtResource("3_q8epu")
-start = 4.39
-end = 6.98
-key = &"VO_TREE_FINAL_WASH_1_2"
-
-[sub_resource type="Resource" id="take_tree_final_wash_1_0"]
-script = ExtResource("2_vwrhp")
-stream = ExtResource("139_e2485")
-source_md5 = "4d13ce47fd4aa886f1021d3f1bace12c"
-duration = 7.33
-segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_final_wash_1_0_0"), SubResource("seg_tree_final_wash_1_0_1")])
-
-[sub_resource type="Resource" id="line_tree_final_wash_1"]
-script = ExtResource("1_tmhjc")
-id = &"tree_final_wash_1"
-triggers = Array[ExtResource("5_8o56u")]([ExtResource("165_o6r3k")])
-sets = PackedInt32Array()
-keys = PackedStringArray("VO_TREE_FINAL_WASH_1_1", "VO_TREE_FINAL_WASH_1_2")
-takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_final_wash_1_0")])
-waits = true
-placeholder = true
-marks = PackedStringArray()
-
-[sub_resource type="Resource" id="seg_tree_final_wash_2_0_0"]
-script = ExtResource("3_q8epu")
-start = 0.12
-end = 1.34
-key = &"VO_TREE_FINAL_WASH_2_1"
-
-[sub_resource type="Resource" id="seg_tree_final_wash_2_0_1"]
-script = ExtResource("3_q8epu")
-start = 1.76
-end = 4.42
-key = &"VO_TREE_FINAL_WASH_2_2"
-
-[sub_resource type="Resource" id="take_tree_final_wash_2_0"]
-script = ExtResource("2_vwrhp")
-stream = ExtResource("140_5wg3w")
-source_md5 = "ac4880213a06fe1c152efa848a79bc7f"
-duration = 4.771
-segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_final_wash_2_0_0"), SubResource("seg_tree_final_wash_2_0_1")])
-
-[sub_resource type="Resource" id="line_tree_final_wash_2"]
-script = ExtResource("1_tmhjc")
-id = &"tree_final_wash_2"
-triggers = Array[ExtResource("5_8o56u")]([ExtResource("165_o6r3k")])
-sets = PackedInt32Array()
-keys = PackedStringArray("VO_TREE_FINAL_WASH_2_1", "VO_TREE_FINAL_WASH_2_2")
-takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_final_wash_2_0")])
-waits = true
-placeholder = true
-marks = PackedStringArray()
-
-[sub_resource type="Resource" id="seg_tree_final_wash_3_0_0"]
-script = ExtResource("3_q8epu")
-start = 0.12
-end = 5.58
-key = &"VO_TREE_FINAL_WASH_3_1"
-
-[sub_resource type="Resource" id="take_tree_final_wash_3_0"]
-script = ExtResource("2_vwrhp")
-stream = ExtResource("141_8uk51")
-source_md5 = "c0ba58390fd684ab8c501a4ec2875a81"
-duration = 5.928
-segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_final_wash_3_0_0")])
-
-[sub_resource type="Resource" id="line_tree_final_wash_3"]
-script = ExtResource("1_tmhjc")
-id = &"tree_final_wash_3"
-triggers = Array[ExtResource("5_8o56u")]([ExtResource("165_o6r3k")])
-sets = PackedInt32Array()
-keys = PackedStringArray("VO_TREE_FINAL_WASH_3_1")
-takes = Array[ExtResource("2_vwrhp")]([SubResource("take_tree_final_wash_3_0")])
-waits = true
-placeholder = true
-marks = PackedStringArray()
-
 [sub_resource type="Resource" id="seg_tree_peace_1_0_0"]
 script = ExtResource("3_q8epu")
 start = 0.12
@@ -4348,5 +4260,5 @@ marks = PackedStringArray()
 [resource]
 script = ExtResource("156_r1q4c")
 speaker = ExtResource("157_skfrl")
-lines = Array[ExtResource("1_tmhjc")]([SubResource("line_tree_call_1"), SubResource("line_tree_call_2"), SubResource("line_tree_call_3"), SubResource("line_tree_call_4"), SubResource("line_tree_call_5"), SubResource("line_tree_first_1"), SubResource("line_tree_first_2"), SubResource("line_tree_first_3"), SubResource("line_tree_greet_1"), SubResource("line_tree_greet_2"), SubResource("line_tree_greet_3"), SubResource("line_tree_greet_4"), SubResource("line_tree_greet_5"), SubResource("line_tree_idle_1"), SubResource("line_tree_idle_2"), SubResource("line_tree_idle_3"), SubResource("line_tree_idle_4"), SubResource("line_tree_idle_5"), SubResource("line_tree_idle_6"), SubResource("line_tree_idle_7"), SubResource("line_tree_affordable_1"), SubResource("line_tree_affordable_2"), SubResource("line_tree_affordable_3"), SubResource("line_tree_affordable_4"), SubResource("line_tree_affordable_5"), SubResource("line_tree_bought_1"), SubResource("line_tree_bought_2"), SubResource("line_tree_bought_3"), SubResource("line_tree_bought_4"), SubResource("line_tree_bought_5"), SubResource("line_tree_bought_6"), SubResource("line_tree_grumble_1"), SubResource("line_tree_grumble_2"), SubResource("line_tree_grumble_3"), SubResource("line_tree_grumble_4"), SubResource("line_tree_grumble_5"), SubResource("line_tree_stage_half_1"), SubResource("line_tree_stage_half_2"), SubResource("line_tree_stage_half_3"), SubResource("line_tree_stage_most_1"), SubResource("line_tree_stage_most_2"), SubResource("line_tree_stage_most_3"), SubResource("line_tree_stage_last_1"), SubResource("line_tree_stage_last_2"), SubResource("line_tree_stage_last_3"), SubResource("line_tree_cabinet_laundry_1"), SubResource("line_tree_cabinet_laundry_2"), SubResource("line_tree_cabinet_laundry_3"), SubResource("line_tree_cabinet_laundry_4"), SubResource("line_tree_cabinet_garage_1"), SubResource("line_tree_cabinet_garage_2"), SubResource("line_tree_cabinet_garage_3"), SubResource("line_tree_cabinet_garage_4"), SubResource("line_tree_cabinet_kitchen_1"), SubResource("line_tree_cabinet_kitchen_2"), SubResource("line_tree_cabinet_kitchen_3"), SubResource("line_tree_cabinet_kitchen_4"), SubResource("line_tree_cabinet_living_1"), SubResource("line_tree_cabinet_living_2"), SubResource("line_tree_cabinet_living_3"), SubResource("line_tree_cabinet_living_4"), SubResource("line_tree_cabinet_kids_north_1"), SubResource("line_tree_cabinet_kids_north_2"), SubResource("line_tree_cabinet_kids_north_3"), SubResource("line_tree_cabinet_kids_north_4"), SubResource("line_tree_cabinet_kids_east_1"), SubResource("line_tree_cabinet_kids_east_2"), SubResource("line_tree_cabinet_kids_east_3"), SubResource("line_tree_cabinet_kids_east_4"), SubResource("line_tree_cabinet_loft_west_1"), SubResource("line_tree_cabinet_loft_west_2"), SubResource("line_tree_cabinet_loft_west_3"), SubResource("line_tree_cabinet_loft_west_4"), SubResource("line_tree_cabinet_loft_east_1"), SubResource("line_tree_cabinet_loft_east_2"), SubResource("line_tree_cabinet_loft_east_3"), SubResource("line_tree_cabinet_loft_east_4"), SubResource("line_tree_hint_basement_1"), SubResource("line_tree_hint_basement_2"), SubResource("line_tree_hint_basement_3"), SubResource("line_tree_hint_basement_4"), SubResource("line_tree_hint_ground_1"), SubResource("line_tree_hint_ground_2"), SubResource("line_tree_hint_ground_3"), SubResource("line_tree_hint_ground_4"), SubResource("line_tree_hint_first_1"), SubResource("line_tree_hint_first_2"), SubResource("line_tree_hint_first_3"), SubResource("line_tree_hint_first_4"), SubResource("line_tree_hint_attic_1"), SubResource("line_tree_hint_attic_2"), SubResource("line_tree_hint_attic_3"), SubResource("line_tree_hint_attic_4"), SubResource("line_tree_tip_throw_1"), SubResource("line_tree_tip_part_1"), SubResource("line_tree_tip_part_2"), SubResource("line_tree_tip_vacuum_1"), SubResource("line_tree_tip_vacuum_2"), SubResource("line_tree_tip_vacuum_3"), SubResource("line_tree_tip_elevator_1"), SubResource("line_tree_part_basement_1"), SubResource("line_tree_part_basement_2"), SubResource("line_tree_part_basement_3"), SubResource("line_tree_part_basement_4"), SubResource("line_tree_part_ground_1"), SubResource("line_tree_part_ground_2"), SubResource("line_tree_part_ground_3"), SubResource("line_tree_part_ground_4"), SubResource("line_tree_part_first_1"), SubResource("line_tree_part_first_2"), SubResource("line_tree_part_first_3"), SubResource("line_tree_part_first_4"), SubResource("line_tree_part_attic_1"), SubResource("line_tree_part_attic_2"), SubResource("line_tree_part_attic_3"), SubResource("line_tree_part_attic_4"), SubResource("line_tree_floor_ground_1"), SubResource("line_tree_floor_ground_2"), SubResource("line_tree_floor_ground_3"), SubResource("line_tree_floor_ground_4"), SubResource("line_tree_floor_first_1"), SubResource("line_tree_floor_first_2"), SubResource("line_tree_floor_first_3"), SubResource("line_tree_floor_first_4"), SubResource("line_tree_floor_attic_1"), SubResource("line_tree_floor_attic_2"), SubResource("line_tree_floor_attic_3"), SubResource("line_tree_floor_attic_4"), SubResource("line_tree_final_wash_1"), SubResource("line_tree_final_wash_2"), SubResource("line_tree_final_wash_3"), SubResource("line_tree_peace_1"), SubResource("line_tree_peace_2"), SubResource("line_tree_peace_3"), SubResource("line_tree_presents_ready_1"), SubResource("line_tree_presents_ready_2"), SubResource("line_tree_presents_ready_3"), SubResource("line_tree_presents_1"), SubResource("line_tree_presents_2"), SubResource("line_tree_presents_3"), SubResource("line_tree_presents_4"), SubResource("line_tree_present_taken_1"), SubResource("line_tree_present_taken_2"), SubResource("line_tree_present_taken_3"), SubResource("line_tree_present_taken_4")])
-lines_md5 = "b86a7413d9535bff540ad68dd4642e3a"
+lines = Array[ExtResource("1_tmhjc")]([SubResource("line_tree_call_1"), SubResource("line_tree_call_2"), SubResource("line_tree_call_3"), SubResource("line_tree_call_4"), SubResource("line_tree_call_5"), SubResource("line_tree_first_1"), SubResource("line_tree_first_2"), SubResource("line_tree_first_3"), SubResource("line_tree_greet_1"), SubResource("line_tree_greet_2"), SubResource("line_tree_greet_3"), SubResource("line_tree_greet_4"), SubResource("line_tree_greet_5"), SubResource("line_tree_idle_1"), SubResource("line_tree_idle_2"), SubResource("line_tree_idle_3"), SubResource("line_tree_idle_4"), SubResource("line_tree_idle_5"), SubResource("line_tree_idle_6"), SubResource("line_tree_idle_7"), SubResource("line_tree_affordable_1"), SubResource("line_tree_affordable_2"), SubResource("line_tree_affordable_3"), SubResource("line_tree_affordable_4"), SubResource("line_tree_affordable_5"), SubResource("line_tree_bought_1"), SubResource("line_tree_bought_2"), SubResource("line_tree_bought_3"), SubResource("line_tree_bought_4"), SubResource("line_tree_bought_5"), SubResource("line_tree_bought_6"), SubResource("line_tree_grumble_1"), SubResource("line_tree_grumble_2"), SubResource("line_tree_grumble_3"), SubResource("line_tree_grumble_4"), SubResource("line_tree_grumble_5"), SubResource("line_tree_stage_half_1"), SubResource("line_tree_stage_half_2"), SubResource("line_tree_stage_half_3"), SubResource("line_tree_stage_most_1"), SubResource("line_tree_stage_most_2"), SubResource("line_tree_stage_most_3"), SubResource("line_tree_stage_last_1"), SubResource("line_tree_stage_last_2"), SubResource("line_tree_stage_last_3"), SubResource("line_tree_cabinet_laundry_1"), SubResource("line_tree_cabinet_laundry_2"), SubResource("line_tree_cabinet_laundry_3"), SubResource("line_tree_cabinet_laundry_4"), SubResource("line_tree_cabinet_garage_1"), SubResource("line_tree_cabinet_garage_2"), SubResource("line_tree_cabinet_garage_3"), SubResource("line_tree_cabinet_garage_4"), SubResource("line_tree_cabinet_kitchen_1"), SubResource("line_tree_cabinet_kitchen_2"), SubResource("line_tree_cabinet_kitchen_3"), SubResource("line_tree_cabinet_kitchen_4"), SubResource("line_tree_cabinet_living_1"), SubResource("line_tree_cabinet_living_2"), SubResource("line_tree_cabinet_living_3"), SubResource("line_tree_cabinet_living_4"), SubResource("line_tree_cabinet_kids_north_1"), SubResource("line_tree_cabinet_kids_north_2"), SubResource("line_tree_cabinet_kids_north_3"), SubResource("line_tree_cabinet_kids_north_4"), SubResource("line_tree_cabinet_kids_east_1"), SubResource("line_tree_cabinet_kids_east_2"), SubResource("line_tree_cabinet_kids_east_3"), SubResource("line_tree_cabinet_kids_east_4"), SubResource("line_tree_cabinet_loft_west_1"), SubResource("line_tree_cabinet_loft_west_2"), SubResource("line_tree_cabinet_loft_west_3"), SubResource("line_tree_cabinet_loft_west_4"), SubResource("line_tree_cabinet_loft_east_1"), SubResource("line_tree_cabinet_loft_east_2"), SubResource("line_tree_cabinet_loft_east_3"), SubResource("line_tree_cabinet_loft_east_4"), SubResource("line_tree_hint_basement_1"), SubResource("line_tree_hint_basement_2"), SubResource("line_tree_hint_basement_3"), SubResource("line_tree_hint_basement_4"), SubResource("line_tree_hint_ground_1"), SubResource("line_tree_hint_ground_2"), SubResource("line_tree_hint_ground_3"), SubResource("line_tree_hint_ground_4"), SubResource("line_tree_hint_first_1"), SubResource("line_tree_hint_first_2"), SubResource("line_tree_hint_first_3"), SubResource("line_tree_hint_first_4"), SubResource("line_tree_hint_attic_1"), SubResource("line_tree_hint_attic_2"), SubResource("line_tree_hint_attic_3"), SubResource("line_tree_hint_attic_4"), SubResource("line_tree_tip_throw_1"), SubResource("line_tree_tip_part_1"), SubResource("line_tree_tip_part_2"), SubResource("line_tree_tip_vacuum_1"), SubResource("line_tree_tip_vacuum_2"), SubResource("line_tree_tip_vacuum_3"), SubResource("line_tree_tip_elevator_1"), SubResource("line_tree_part_basement_1"), SubResource("line_tree_part_basement_2"), SubResource("line_tree_part_basement_3"), SubResource("line_tree_part_basement_4"), SubResource("line_tree_part_ground_1"), SubResource("line_tree_part_ground_2"), SubResource("line_tree_part_ground_3"), SubResource("line_tree_part_ground_4"), SubResource("line_tree_part_first_1"), SubResource("line_tree_part_first_2"), SubResource("line_tree_part_first_3"), SubResource("line_tree_part_first_4"), SubResource("line_tree_part_attic_1"), SubResource("line_tree_part_attic_2"), SubResource("line_tree_part_attic_3"), SubResource("line_tree_part_attic_4"), SubResource("line_tree_floor_ground_1"), SubResource("line_tree_floor_ground_2"), SubResource("line_tree_floor_ground_3"), SubResource("line_tree_floor_ground_4"), SubResource("line_tree_floor_first_1"), SubResource("line_tree_floor_first_2"), SubResource("line_tree_floor_first_3"), SubResource("line_tree_floor_first_4"), SubResource("line_tree_floor_attic_1"), SubResource("line_tree_floor_attic_2"), SubResource("line_tree_floor_attic_3"), SubResource("line_tree_floor_attic_4"), SubResource("line_tree_peace_1"), SubResource("line_tree_peace_2"), SubResource("line_tree_peace_3"), SubResource("line_tree_presents_ready_1"), SubResource("line_tree_presents_ready_2"), SubResource("line_tree_presents_ready_3"), SubResource("line_tree_presents_1"), SubResource("line_tree_presents_2"), SubResource("line_tree_presents_3"), SubResource("line_tree_presents_4"), SubResource("line_tree_present_taken_1"), SubResource("line_tree_present_taken_2"), SubResource("line_tree_present_taken_3"), SubResource("line_tree_present_taken_4")])
+lines_md5 = "2fc804efa289f15bde6fc795a293a040"

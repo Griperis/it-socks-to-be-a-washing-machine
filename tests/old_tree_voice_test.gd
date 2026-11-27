@@ -36,7 +36,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "calls", "method": "case_calls", "world": false,
 				"title": "Q1864, Q1865: the Doors from the laundry to the garage start open at a New Game; after the First wash in the house the tree calls (heard from the laundry, within 16 m) until a player comes near, then says its \"first\" line"},
 		{"name": "saved", "method": "case_saved", "world": false,
-				"title": "a save keeps met, tips, calling, beat and said, not the last line; a load plays nothing; the data: the speaker with no acting, 145 lines, OldTreeTuning's old numbers"},
+				"title": "a save keeps met, tips, calling, beat and said, not the last line; a load plays nothing; the data: the speaker with no acting, 142 lines, OldTreeTuning's old numbers"},
 		{"name": "coop", "method": "case_coop", "world": false,
 				"title": "Q2545: a Guest walking up to the tree asks, the Host picks the line; both machines play the same line and take, and the Host keeps the Guest as met"},
 	]
@@ -213,7 +213,7 @@ func case_saved() -> void:
 			and speaker.unit_size == 2.5 and speaker.max_distance == 9.0 and speaker.cooldown == 120.0 and speaker.voice_db == 0.0,
 			"the speaker: no acting, the old numbers")
 	var lines := Voices.book().lines_of(&"old_tree")
-	_check(lines.size() == 145 and Voices.book().errors.is_empty(), "145 lines load clean (%d, %s)" % [lines.size(), Voices.book().errors])
+	_check(lines.size() == 142 and Voices.book().errors.is_empty(), "142 lines load clean (%d, %s)" % [lines.size(), Voices.book().errors])
 	for trigger: StringName in [OldTree.CALL, OldTree.FIRST, OldTree.GREET, OldTree.IDLE, OldTree.AFFORDABLE, OldTree.BOUGHT]:
 		var want: int = {OldTree.CALL: 5, OldTree.FIRST: 3, OldTree.GREET: 5, OldTree.IDLE: 7, OldTree.AFFORDABLE: 5, OldTree.BOUGHT: 6}[trigger]
 		_check(Voices.book().lines_for(&"old_tree", trigger).size() == want, "%s has %d lines" % [trigger, want])

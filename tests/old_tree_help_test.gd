@@ -172,13 +172,6 @@ func case_beats() -> void:
 	await _said(tree, PEACE)
 	_check((tree.beat.get("story", []) as Array).is_empty(), "the peace is said once")
 	await _until(func() -> bool: return not Voices.talking(&"old_tree"), "the peace line to end", 900)
-	# The Final wash while no one is near: it lapses.
-	_rt.player.global_position = (_level.get_node(TREE_AT) as Node3D).to_global(Vector3(-0.3, 0.0, 9.0))
-	_rt.player.reset_physics_interpolation()
-	await _until(func() -> bool: return not tree.near, "the player away")
-	_rt.parts.ask(Command.new(OldTree.BEAT, Parts.HOST, tree.id, {"trigger": String(OldTreeHelp.FINAL_WASH)}))
-	await _until(func() -> bool: return (tree.beat.get("story", []) as Array).has("tree_final_wash"), "the Final wash beat to wait")
-	await _until(func() -> bool: return (tree.beat.get("story", []) as Array).is_empty(), "an unheard beat to lapse", 900, 3.0)
 
 
 func case_data() -> void:
@@ -188,12 +181,12 @@ func case_data() -> void:
 		"tree_hint_basement": 4, "tree_hint_ground": 4, "tree_hint_first": 4, "tree_hint_attic": 4,
 		"tree_part_basement": 4, "tree_part_ground": 4, "tree_part_first": 4, "tree_part_attic": 4,
 		"tree_floor_ground": 4, "tree_floor_first": 4, "tree_floor_attic": 4,
-		"tree_tip_throw": 1, "tree_tip_part": 2, "tree_final_wash": 3, "tree_peace": 3}
+		"tree_tip_throw": 1, "tree_tip_part": 2, "tree_peace": 3}
 	for room: String in ["laundry", "garage", "kitchen", "living", "kids_north", "kids_east", "loft_west", "loft_east"]:
 		want["tree_cabinet_" + room] = 4
 	for trigger: String in want:
 		_check(book.lines_for(&"old_tree", StringName(trigger)).size() == want[trigger], "%s has %d lines" % [trigger, want[trigger]])
-	for trigger: StringName in [&"tree_final_wash", &"tree_peace"]:
+	for trigger: StringName in [&"tree_peace"]:
 		for l in book.lines_for(&"old_tree", trigger):
 			_check(l.waits, "%s waits (a story beat)" % l.id)
 		_check(load("res://game/voice/triggers/%s.tres" % trigger).ignores_cooldown, "%s skips the cooldown" % trigger)

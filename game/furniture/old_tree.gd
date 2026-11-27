@@ -266,8 +266,6 @@ func _host_verb(cmd: Command) -> Dictionary:
 						return refuse("already")
 					list.append(asked)
 					waiting["story"] = list
-					if StringName(asked) == OldTreeHelp.FINAL_WASH:
-						waiting["comment"] = ""  # the Final wash ends the Fix comments (the old)
 				else:
 					waiting["comment"] = asked
 			elif story:
@@ -504,8 +502,7 @@ func _help_step() -> void:
 		parts.ask(Command.new(BEAT, Parts.HOST, id, {"trigger": due}))
 	if _day != null and _day.final_started and not _final_seen:
 		_final_seen = true
-		_comment = {}
-		parts.ask(Command.new(BEAT, Parts.HOST, id, {"trigger": String(OldTreeHelp.FINAL_WASH)}))
+		_comment = {}  # the Final wash ends the Fix comments (the old); the tree says nothing over it (Q2718)
 	var waiting: Array[String] = []
 	if str(beat.get("comment", "")) != "":
 		waiting.append(str(beat["comment"]))

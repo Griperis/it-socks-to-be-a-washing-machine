@@ -1666,45 +1666,6 @@
       "timing": {"tree_floor_attic_4.wav": [[0.12, 3.18], [3.6, 5.48]]}
     },
     {
-      "id": "tree_final_wash_1",
-      "triggers": ["tree_final_wash"],
-      "sets": [],
-      "text": ["That's it, then. One last wash.", "After this, the house is quiet."],
-      "recordings": ["tree_final_wash_1.wav"],
-      "moods": [],
-      "order": 0,
-      "waits": true,
-      "placeholder": true,
-      "note": "",
-      "timing": {"tree_final_wash_1.wav": [[0.12, 3.97], [4.39, 6.98]]}
-    },
-    {
-      "id": "tree_final_wash_2",
-      "triggers": ["tree_final_wash"],
-      "sets": [],
-      "text": ["The final wash.", "I've waited a long time to see this."],
-      "recordings": ["tree_final_wash_2.wav"],
-      "moods": [],
-      "order": 0,
-      "waits": true,
-      "placeholder": true,
-      "note": "",
-      "timing": {"tree_final_wash_2.wav": [[0.12, 1.34], [1.76, 4.42]]}
-    },
-    {
-      "id": "tree_final_wash_3",
-      "triggers": ["tree_final_wash"],
-      "sets": [],
-      "text": ["Wash well. And well done. All of it."],
-      "recordings": ["tree_final_wash_3.wav"],
-      "moods": [],
-      "order": 0,
-      "waits": true,
-      "placeholder": true,
-      "note": "",
-      "timing": {"tree_final_wash_3.wav": [[0.12, 5.58]]}
-    },
-    {
       "id": "tree_peace_1",
       "triggers": ["tree_peace"],
       "sets": [],

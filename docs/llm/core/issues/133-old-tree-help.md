@@ -53,8 +53,6 @@ The chances and times are `OldTreeTuning`'s (`# placeholder:` the old).
 
 ## Answers
 - The Old Tree's voice comes in batch B (Q2670, 2026-11-25).
+- tree_final_wash is dropped: the Final wash is a cutscene (Q2718, 2026-11-27).
 
 ## Open follow-ups
-- [later] `tree_final_wash` is armed when the Final wash begins, but the Final wash is a cutscene (the tree keeps
-  quiet over it) that ends in the Final screen, so the line is heard only if the cutscene is skipped or off. The old
-  said it in play; where the port's tree says it is the designer's call.

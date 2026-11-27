@@ -8,8 +8,7 @@ extends RefCounted
 const STAGE: Array[StringName] = [&"tree_stage_half", &"tree_stage_most", &"tree_stage_last"]
 const TIPS: Array[StringName] = [&"tree_tip_throw", &"tree_tip_part"]
 const GRUMBLE := &"tree_grumble"
-const STORY: Array[StringName] = [&"tree_final_wash", &"tree_peace"]
-const FINAL_WASH := &"tree_final_wash"
+const STORY: Array[StringName] = [&"tree_peace"]
 const CABINET := "tree_cabinet_"
 const HINT := "tree_hint_"
 const COMMENTS: Array[String] = ["tree_part_", "tree_floor_"]
