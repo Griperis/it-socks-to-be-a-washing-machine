@@ -1,15 +1,15 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dmrrqcjmo0y38"]
 
-[ext_resource type="Script" path="res://game/entities/washer/washer_looks.gd" id="1_pdi0t"]
-[ext_resource type="Resource" path="res://game/entities/washer/washer_tuning.tres" id="2_ftxp0"]
-[ext_resource type="Resource" path="res://game/voice/speakers/washer.tres" id="3_56xsg"]
-[ext_resource type="Script" path="res://game/outline/outline.gd" id="4_cv3rm"]
+[ext_resource type="Script" uid="uid://dgxjhn2akrbig" path="res://game/entities/washer/washer_looks.gd" id="1_pdi0t"]
+[ext_resource type="Resource" uid="uid://cdbewbnn8t7l7" path="res://game/entities/washer/washer_tuning.tres" id="2_ftxp0"]
+[ext_resource type="Resource" uid="uid://v7tirw0tssx0" path="res://game/voice/speakers/washer.tres" id="3_56xsg"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="4_cv3rm"]
+[ext_resource type="Material" uid="uid://b4rvkpn063vgk" path="res://game/entities/washer/damage_spark_back.tres" id="dmg_back"]
+[ext_resource type="Material" uid="uid://cai3falvtd26d" path="res://game/entities/washer/damage_spark_cable.tres" id="dmg_cable"]
+[ext_resource type="Material" uid="uid://g3hssw8el0n5" path="res://game/entities/washer/damage_smoke.tres" id="dmg_smoke"]
+[ext_resource type="SphereMesh" uid="uid://bsby63xry0lbb" path="res://game/entities/washer/damage_smoke_mesh.tres" id="dmg_smoke_mesh"]
+[ext_resource type="BoxMesh" uid="uid://cnww27mklvfy1" path="res://game/entities/washer/damage_spark_mesh.tres" id="dmg_spark"]
 
-[ext_resource type="Material" path="res://game/entities/washer/damage_spark_back.tres" id="dmg_back"]
-[ext_resource type="Material" path="res://game/entities/washer/damage_spark_cable.tres" id="dmg_cable"]
-[ext_resource type="Mesh" path="res://game/entities/washer/damage_spark_mesh.tres" id="dmg_spark"]
-[ext_resource type="Material" path="res://game/entities/washer/damage_smoke.tres" id="dmg_smoke"]
-[ext_resource type="Mesh" path="res://game/entities/washer/damage_smoke_mesh.tres" id="dmg_smoke_mesh"]
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_csn8x"]
 albedo_color = Color(0.6, 0.85, 0.75, 1)
 
@@ -58,6 +58,31 @@ size = Vector3(0.1, 0.07, 0.04)
 
 [sub_resource type="BoxMesh" id="BoxMesh_s2ge0"]
 size = Vector3(0.1, 0.07, 0.04)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bubbles"]
+emission_shape = 1
+emission_sphere_radius = 0.12
+direction = Vector3(0, 1, 1)
+spread = 40.0
+initial_velocity_min = 0.2
+initial_velocity_max = 0.6
+gravity = Vector3(0, 0.25, 0)
+scale_min = 0.5
+scale_max = 1.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bubbles"]
+transparency = 1
+albedo_color = Color(0.85, 0.95, 1, 0.45)
+metallic_specular = 1.0
+roughness = 0.05
+rim_enabled = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_bubbles"]
+material = SubResource("StandardMaterial3D_bubbles")
+radius = 0.025
+height = 0.05
+radial_segments = 8
+rings = 4
 
 [sub_resource type="Animation" id="Animation_6rp4q"]
 length = 0.1
@@ -292,32 +317,6 @@ tracks/1/keys = PackedFloat32Array(0, 1, 0, 0, 0, 1, 0.25, 1, 0, 0, -0.70710677,
 _data = {
 &"spin": SubResource("Animation_pj2tw")
 }
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bubbles"]
-transparency = 1
-albedo_color = Color(0.85, 0.95, 1, 0.45)
-metallic_specular = 1.0
-roughness = 0.05
-rim_enabled = true
-rim = 1.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_bubbles"]
-material = SubResource("StandardMaterial3D_bubbles")
-radius = 0.025
-height = 0.05
-radial_segments = 8
-rings = 4
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bubbles"]
-emission_shape = 1
-emission_sphere_radius = 0.12
-direction = Vector3(0, 1, 1)
-spread = 40.0
-initial_velocity_min = 0.2
-initial_velocity_max = 0.6
-gravity = Vector3(0, 0.25, 0)
-scale_min = 0.5
-scale_max = 1.4
 
 [sub_resource type="Animation" id="Animation_ju2s2"]
 length = 6.0
@@ -760,6 +759,7 @@ bones/6/scale = Vector3(1, 1, 1)
 
 [node name="On_bob" type="BoneAttachment3D" parent="face_rig" unique_id=597947092]
 bone_name = "bob"
+bone_idx = 1
 
 [node name="Body" type="MeshInstance3D" parent="face_rig/On_bob" unique_id=1993875334]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.475, 0)
@@ -774,7 +774,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("BoxShape3D_6ux50")
 
 [node name="On_door_hinge" type="BoneAttachment3D" parent="face_rig" unique_id=1742402581]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.262, 0.42, 0.318)
 bone_name = "door_hinge"
+bone_idx = 2
 
 [node name="DoorDisc" type="MeshInstance3D" parent="face_rig/On_door_hinge" unique_id=1913476353]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.262, 0, 0.04)
@@ -782,7 +784,9 @@ material_override = SubResource("StandardMaterial3D_sv7ou")
 mesh = SubResource("CylinderMesh_raonw")
 
 [node name="On_brow_left_pivot" type="BoneAttachment3D" parent="face_rig" unique_id=1796815957]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.115, 0.729, 0.311)
 bone_name = "brow_left_pivot"
+bone_idx = 3
 
 [node name="Brow" type="MeshInstance3D" parent="face_rig/On_brow_left_pivot" unique_id=1007804526]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.04)
@@ -790,7 +794,9 @@ material_override = SubResource("StandardMaterial3D_flxta")
 mesh = SubResource("BoxMesh_0d4cl")
 
 [node name="On_brow_right_pivot" type="BoneAttachment3D" parent="face_rig" unique_id=148694833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.115, 0.729, 0.311)
 bone_name = "brow_right_pivot"
+bone_idx = 4
 
 [node name="Brow" type="MeshInstance3D" parent="face_rig/On_brow_right_pivot" unique_id=1719545629]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.04)
@@ -798,7 +804,9 @@ material_override = SubResource("StandardMaterial3D_flxta")
 mesh = SubResource("BoxMesh_3fti3")
 
 [node name="On_drum_spin" type="BoneAttachment3D" parent="face_rig" unique_id=972902528]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0.28)
 bone_name = "drum_spin"
+bone_idx = 5
 
 [node name="Lining" type="MeshInstance3D" parent="face_rig/On_drum_spin" unique_id=2141077001]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
@@ -813,7 +821,9 @@ light_cull_mask = 524288
 omni_range = 0.45
 
 [node name="On_laundry_tumble" type="BoneAttachment3D" parent="face_rig" unique_id=2097875743]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0.26)
 bone_name = "laundry_tumble"
+bone_idx = 6
 
 [node name="Pile" type="Node3D" parent="face_rig/On_laundry_tumble" unique_id=1950515461]
 visible = false
@@ -896,9 +906,6 @@ draw_pass_1 = SubResource("SphereMesh_bubbles")
 [node name="Outline" type="Node3D" parent="." unique_id=949872608]
 visible = false
 script = ExtResource("4_cv3rm")
-style = null
-meshes = Array[NodePath]([])
-shown = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=907597603]
 callback_mode_process = 0

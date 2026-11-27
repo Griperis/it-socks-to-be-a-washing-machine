@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="3_hands"]
 [ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="4_spot"]
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="5_designs"]
-[ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
 [ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/economy/bank.gd" id="7_bank"]
 [ext_resource type="PackedScene" uid="uid://ccaa5ngdrkqig" path="res://game/entities/door/door.tscn" id="8_door"]
 [ext_resource type="Script" uid="uid://dft6t5j05syl5" path="res://game/zoo/cabinet_gallery/cabinet_gallery.gd" id="9_gallery"]
@@ -97,7 +97,7 @@ shape = SubResource("BoxShape3D_lintel")
 [node name="Cabinet" parent="." unique_id=23677487 instance=ExtResource("1_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -2)
 
-[node name="Cabinet" parent="Cabinet" parent_id_path=PackedInt32Array(23677487) index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
+[node name="Cabinet" parent="Cabinet" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../Socks/Hands")
 bank = NodePath("../../Socks/Bank")
 
@@ -205,3 +205,9 @@ tuning = ExtResource("6_tuning")
 
 [node name="Bank" type="Node" parent="Socks" unique_id=1436186620]
 script = ExtResource("7_bank")
+
+[editable path="Cabinet"]
+[editable path="Cabinet/Drawer3"]
+[editable path="Cabinet/Drawer4"]
+[editable path="Cabinet/Drawer5"]
+[editable path="Cabinet/Drawer6"]

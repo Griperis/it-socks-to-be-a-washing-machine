@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://eyryy45wb3ab"]
 
 [ext_resource type="PackedScene" uid="uid://cx46cqa6rol85" path="res://assets/wardrobe/odd_pair.glb" id="1_glb"]
 

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dnld5uruswiht"]
 
 [ext_resource type="Script" uid="uid://dkb2d0d3qmqmy" path="res://addons/profily/scripts/advanced/advanced_module.gd" id="1_module"]
-[ext_resource type="StyleBox" path="res://addons/profily/styles/background_stylebox.tres" id="2_bg"]
+[ext_resource type="StyleBox" uid="uid://cefhjg6wkj5l7" path="res://addons/profily/styles/background_stylebox.tres" id="2_bg"]
 [ext_resource type="FontFile" uid="uid://dfrm2sykl2xby" path="res://addons/profily/fonts/Roboto-Regular.ttf" id="3_roboto"]
 
 [node name="AdvancedModule" type="PanelContainer" unique_id=1817813191]

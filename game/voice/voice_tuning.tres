@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="VoiceTuning" format=3]
+[gd_resource type="Resource" script_class="VoiceTuning" format=3 uid="uid://bjwuf2bp6m5si"]
 
-[ext_resource type="Script" path="res://game/voice/voice_tuning.gd" id="1_tuning"]
+[ext_resource type="Script" uid="uid://dexour34i46xf" path="res://game/voice/voice_tuning.gd" id="1_tuning"]
 
 [resource]
 script = ExtResource("1_tuning")

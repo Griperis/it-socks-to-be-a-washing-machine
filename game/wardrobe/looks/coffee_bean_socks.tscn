@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b0i16uwuomyty"]
 
 [ext_resource type="PackedScene" uid="uid://cj14wtwhj08b4" path="res://assets/wardrobe/coffee_bean_socks.glb" id="1_glb"]
 

@@ -1,17 +1,16 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://h3vityxu4f0c"]
 
-[node name="MoneyPop" type="HBoxContainer"]
+[node name="MoneyPop" type="HBoxContainer" unique_id=738731632]
 visible = false
 mouse_filter = 2
 theme_override_constants/separation = 6
 
-[node name="Amount" type="Label" parent="."]
+[node name="Amount" type="Label" parent="." unique_id=2120042757]
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"MoneyPopLabel"
 text = "+0"
 
-[node name="Icon" type="TextureRect" parent="."]
+[node name="Icon" type="TextureRect" parent="." unique_id=1475565525]
 custom_minimum_size = Vector2(67, 67)
 layout_mode = 2
 size_flags_vertical = 4

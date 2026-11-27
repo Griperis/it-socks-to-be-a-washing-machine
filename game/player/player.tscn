@@ -1,18 +1,17 @@
 [gd_scene format=3 uid="uid://k2c0o5v1yu3r"]
 
 [ext_resource type="Script" uid="uid://8s7los0s6lma" path="res://game/player/player.gd" id="1_player"]
-[ext_resource type="Resource" path="res://game/player/move_tuning.tres" id="2_tuning"]
-[ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="3_hands"]
+[ext_resource type="Resource" uid="uid://ib67iticnkjq" path="res://game/player/move_tuning.tres" id="2_tuning"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="3_hands"]
 [ext_resource type="Script" uid="uid://bnt2xg5i6167r" path="res://game/hands/held_view.gd" id="4_held"]
 [ext_resource type="Script" uid="uid://dx0rg67j6aq51" path="res://game/player/power_ring.gd" id="5_ring"]
 [ext_resource type="PackedScene" uid="uid://cefefw80y6uea" path="res://game/look/crosshair.tscn" id="6_cross"]
 [ext_resource type="Script" uid="uid://5bfknrgi4c41" path="res://game/audio/footsteps.gd" id="6_steps"]
-[ext_resource type="Resource" path="res://game/audio/footstep_tuning.tres" id="7_steps_tuning"]
+[ext_resource type="Resource" uid="uid://bbid103w4jrbx" path="res://game/audio/footstep_tuning.tres" id="7_steps_tuning"]
 [ext_resource type="Script" uid="uid://bqxru467300ek" path="res://game/ui/hud.gd" id="8_hud"]
-[ext_resource type="Resource" path="res://game/ui/hud_tuning.tres" id="9_hud_tuning"]
+[ext_resource type="Resource" uid="uid://cd3sd0g23e6ht" path="res://game/ui/hud_tuning.tres" id="9_hud_tuning"]
 [ext_resource type="PackedScene" uid="uid://c6ggi6fh377si" path="res://game/parts/avatar/looks_avatar.tscn" id="10_own_body"]
 [ext_resource type="Script" uid="uid://o2nt8eeij1by" path="res://game/hands/guest_ghosts.gd" id="11_ghosts"]
-[ext_resource type="Resource" uid="uid://5buhkrgy1c50" path="res://game/hands/ghost_tuning.tres" id="12_ghost_tuning"]
 [ext_resource type="PackedScene" uid="uid://cn3a05m85kv70" path="res://game/knockdown/vignette.tscn" id="13_vignette"]
 [ext_resource type="Script" uid="uid://c03n4n25hntrc" path="res://game/stacking/player_stack.gd" id="14_stack"]
 [ext_resource type="Resource" uid="uid://b4e3r68bxti0n" path="res://game/stacking/stacking_tuning.tres" id="15_stack_tuning"]
@@ -21,13 +20,13 @@
 [ext_resource type="PackedScene" uid="uid://bgma7k1j0iwkv" path="res://game/ping/ping_wheel.tscn" id="21_wheel"]
 [ext_resource type="Script" uid="uid://tiy0agr0vohh" path="res://game/player/pinger.gd" id="22_pinger"]
 [ext_resource type="Resource" uid="uid://e3fid8403c2f" path="res://game/ping/ping_tuning.tres" id="23_ping_tuning"]
-[ext_resource type="PackedScene" path="res://game/ui/stage_bar.tscn" id="24_stage_bar"]
-[ext_resource type="PackedScene" path="res://game/ui/whiteboard/tab_overlay.tscn" id="25_tab"]
-[ext_resource type="PackedScene" path="res://game/ui/money/money_counters.tscn" id="26_money"]
-[ext_resource type="PackedScene" path="res://game/ui/money/coin_flight.tscn" id="27_flight"]
-[ext_resource type="PackedScene" path="res://game/profile/achievement_toast.tscn" id="28_toast"]
-[ext_resource type="Script" path="res://game/ui/sole_cues.gd" id="29_sole"]
-[ext_resource type="Resource" path="res://game/ui/sole_cues_tuning.tres" id="30_sole_tuning"]
+[ext_resource type="PackedScene" uid="uid://b3pwmxkfhc5as" path="res://game/ui/stage_bar.tscn" id="24_stage_bar"]
+[ext_resource type="PackedScene" uid="uid://cttfc3otybwis" path="res://game/ui/whiteboard/tab_overlay.tscn" id="25_tab"]
+[ext_resource type="PackedScene" uid="uid://bf7fv67c71ylo" path="res://game/ui/money/money_counters.tscn" id="26_money"]
+[ext_resource type="PackedScene" uid="uid://drtvlckxtrg3l" path="res://game/ui/money/coin_flight.tscn" id="27_flight"]
+[ext_resource type="PackedScene" uid="uid://dd0esxy18thn1" path="res://game/profile/achievement_toast.tscn" id="28_toast"]
+[ext_resource type="Script" uid="uid://cq04cnibx6yhw" path="res://game/ui/sole_cues.gd" id="29_sole"]
+[ext_resource type="Resource" uid="uid://bqnvlbcj7a3x7" path="res://game/ui/sole_cues_tuning.tres" id="30_sole_tuning"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -50,10 +49,10 @@ unique_name_in_owner = true
 physics_interpolation_mode = 2
 first_person = true
 
-[node name="MirrorBody" parent="." instance=ExtResource("10_own_body")]
+[node name="MirrorBody" parent="." unique_id=186260586 instance=ExtResource("10_own_body")]
 unique_name_in_owner = true
-visible = false
 physics_interpolation_mode = 2
+visible = false
 leaves_trail = false
 
 [node name="Head" type="Node3D" parent="." unique_id=888082870]
@@ -63,8 +62,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 [node name="Camera" type="Camera3D" parent="Head" unique_id=1931129010]
 unique_name_in_owner = true
 physics_interpolation_mode = 2
-cull_mask = 1046527
 top_level = true
+cull_mask = 1046527
 current = true
 
 [node name="HeldView" type="Node3D" parent="Head/Camera" unique_id=463386115]
@@ -83,10 +82,10 @@ tuning = ExtResource("9_hud_tuning")
 [node name="Vignette" parent="Hud" unique_id=1460311761 instance=ExtResource("13_vignette")]
 unique_name_in_owner = true
 
-[node name="StageBar" parent="Hud" instance=ExtResource("24_stage_bar")]
+[node name="StageBar" parent="Hud" unique_id=884867559 instance=ExtResource("24_stage_bar")]
 unique_name_in_owner = true
 
-[node name="MoneyCounters" parent="Hud" node_paths=PackedStringArray("flight") instance=ExtResource("26_money")]
+[node name="MoneyCounters" parent="Hud" unique_id=569565442 node_paths=PackedStringArray("flight") instance=ExtResource("26_money")]
 unique_name_in_owner = true
 flight = NodePath("../CoinFlight")
 says_cheat = true
@@ -150,22 +149,18 @@ theme_override_colors/font_color = Color(0.95, 0.25, 0.2, 1)
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Named" type="HBoxContainer" parent="Hud/MessageRow"]
+[node name="Named" type="HBoxContainer" parent="Hud/MessageRow" unique_id=392390166]
 visible = false
 layout_mode = 2
 mouse_filter = 2
 theme_type_variation = &"HudRow"
 
-[node name="Who" type="Label" parent="Hud/MessageRow/Named"]
+[node name="Who" type="Label" parent="Hud/MessageRow/Named" unique_id=525140319]
 layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
 theme_type_variation = &"RowLabel"
 
-[node name="Rest" type="Label" parent="Hud/MessageRow/Named"]
+[node name="Rest" type="Label" parent="Hud/MessageRow/Named" unique_id=210750908]
 layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
 theme_type_variation = &"RowLabel"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 
@@ -215,18 +210,18 @@ mouse_filter = 2
 script = ExtResource("19_arrows")
 tuning = ExtResource("20_arrow_tuning")
 
-[node name="CoinFlight" parent="Hud" instance=ExtResource("27_flight")]
+[node name="CoinFlight" parent="Hud" unique_id=23044909 instance=ExtResource("27_flight")]
 unique_name_in_owner = true
 
 [node name="PingWheel" parent="Hud" unique_id=1460313012 instance=ExtResource("21_wheel")]
 
-[node name="TabOverlay" parent="Hud" instance=ExtResource("25_tab")]
+[node name="TabOverlay" parent="Hud" unique_id=1181219779 instance=ExtResource("25_tab")]
 unique_name_in_owner = true
 
-[node name="AchievementToast" parent="Hud" instance=ExtResource("28_toast")]
+[node name="AchievementToast" parent="Hud" unique_id=2026511727 instance=ExtResource("28_toast")]
 unique_name_in_owner = true
 
-[node name="SoleCues" type="Node" parent="Hud"]
+[node name="SoleCues" type="Node" parent="Hud" unique_id=769148751]
 script = ExtResource("29_sole")
 tuning = ExtResource("30_sole_tuning")
 
@@ -237,14 +232,13 @@ tuning = ExtResource("7_steps_tuning")
 [node name="Ghosts" type="Node" parent="." unique_id=1730582941]
 unique_name_in_owner = true
 script = ExtResource("11_ghosts")
-tuning = ExtResource("12_ghost_tuning")
 
 [node name="Stack" type="Node" parent="." unique_id=1730582942]
 unique_name_in_owner = true
 script = ExtResource("14_stack")
 tuning = ExtResource("15_stack_tuning")
 
-[node name="Pinger" type="Node" parent="." node_paths=PackedStringArray("wheel") unique_id=1460313013]
+[node name="Pinger" type="Node" parent="." unique_id=1460313013 node_paths=PackedStringArray("wheel")]
 unique_name_in_owner = true
 script = ExtResource("22_pinger")
 tuning = ExtResource("23_ping_tuning")

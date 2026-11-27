@@ -42,17 +42,24 @@ width = 700.0
 script = ExtResource("1_line_up")
 layout = ExtResource("2_layout")
 
-[node name="SheetedCabinet" parent="." instance=ExtResource("3_cabinet")]
+[node name="SheetedCabinet" parent="." unique_id=1157206295 instance=ExtResource("3_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.2, 0, 0.95)
 
-[node name="Cabinet" parent="SheetedCabinet" index="0"]
+[node name="Cabinet" parent="SheetedCabinet" index="0" unique_id=786621039]
 collection = &"sport"
 locked = true
 
-[node name="DustSheet" parent="SheetedCabinet" instance=ExtResource("4_sheet")]
+[node name="DustSheet" parent="SheetedCabinet" unique_id=1748386307 instance=ExtResource("4_sheet")]
 
-[node name="SheetSwitch" parent="." instance=ExtResource("5_switch")]
+[node name="SheetSwitch" parent="." unique_id=596154214 instance=ExtResource("5_switch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 0, 1.1)
 
-[node name="CabinetLockSwitch" parent="SheetSwitch" index="0" node_paths=PackedStringArray("cabinet")]
+[node name="CabinetLockSwitch" parent="SheetSwitch" index="0" unique_id=208754774 node_paths=PackedStringArray("cabinet")]
 cabinet = NodePath("../../SheetedCabinet/Cabinet")
+
+[editable path="SheetedCabinet"]
+[editable path="SheetedCabinet/Drawer3"]
+[editable path="SheetedCabinet/Drawer4"]
+[editable path="SheetedCabinet/Drawer5"]
+[editable path="SheetedCabinet/Drawer6"]
+[editable path="SheetSwitch"]

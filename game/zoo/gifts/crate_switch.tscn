@@ -1,16 +1,18 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://behvo7cmnnhx3"]
 
-[ext_resource type="Script" path="res://game/zoo/gifts/crate_switch.gd" id="1_switch"]
+[ext_resource type="Script" uid="uid://clopu5j4c2oam" path="res://game/zoo/gifts/crate_switch.gd" id="1_switch"]
 [ext_resource type="PackedScene" uid="uid://b4mtn5fi0wiu1" path="res://game/zoo/screen/upgrade_switch/looks_graybox.tscn" id="2_looks"]
-[ext_resource type="PackedScene" path="res://game/zoo/gifts/crate.tscn" id="3_crate"]
+[ext_resource type="PackedScene" uid="uid://dr5qvfds4cmo2" path="res://game/zoo/gifts/crate.tscn" id="3_crate"]
 
-[node name="CrateSwitch" type="Node3D"]
+[node name="CrateSwitch" type="Node3D" unique_id=887103893]
 
-[node name="CrateSwitch" type="Node" parent="."]
+[node name="CrateSwitch" type="Node" parent="." unique_id=648957167]
 script = ExtResource("1_switch")
 crate = ExtResource("3_crate")
 
-[node name="Looks" parent="." instance=ExtResource("2_looks")]
+[node name="Looks" parent="." unique_id=928115541 instance=ExtResource("2_looks")]
 
-[node name="Label" parent="Looks" index="2"]
+[node name="Label" parent="Looks" index="2" unique_id=1878057965]
 text = "Spawn a crate"
+
+[editable path="Looks"]

@@ -1,31 +1,30 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://md0frx1hqksf"]
 
-[ext_resource type="PackedScene" path="res://game/entities/encyclopedia_book/looks_encyclopedia_book.tscn" id="1_looks"]
-[ext_resource type="Script" path="res://game/parts/carriable.gd" id="2_carriable"]
-[ext_resource type="Resource" path="res://game/hands/hold_slot_book.tres" id="3_slot"]
-[ext_resource type="Script" path="res://game/outline/outline.gd" id="4_outline"]
-[ext_resource type="PackedScene" path="res://game/ui/encyclopedia/encyclopedia_menu.tscn" id="5_menu"]
+[ext_resource type="PackedScene" uid="uid://bgel0g0heplrt" path="res://game/entities/encyclopedia_book/looks_encyclopedia_book.tscn" id="1_looks"]
+[ext_resource type="Script" uid="uid://bkjerdg5jkff3" path="res://game/parts/carriable.gd" id="2_carriable"]
+[ext_resource type="Resource" uid="uid://br8abu5d66pkt" path="res://game/hands/hold_slot_book.tres" id="3_slot"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="4_outline"]
+[ext_resource type="PackedScene" uid="uid://j2b7s0f1flmg" path="res://game/ui/encyclopedia/encyclopedia_menu.tscn" id="5_menu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_book"]
 size = Vector3(0.19, 0.1, 0.25)
 
-[node name="EncyclopediaBook" type="StaticBody3D"]
+[node name="EncyclopediaBook" type="StaticBody3D" unique_id=271228917]
 
-[node name="Shape" type="CollisionShape3D" parent="."]
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1725001194]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
 shape = SubResource("BoxShape3D_book")
 
-[node name="Looks" parent="." instance=ExtResource("1_looks")]
+[node name="Looks" parent="." unique_id=1295696291 instance=ExtResource("1_looks")]
 
-[node name="Outline" type="Node3D" parent="Looks"]
+[node name="Outline" type="Node3D" parent="Looks" unique_id=1362025337]
 script = ExtResource("4_outline")
 
-[node name="Carriable" type="Node" parent="."]
+[node name="Carriable" type="Node" parent="." unique_id=226987221]
 script = ExtResource("2_carriable")
 slot = ExtResource("3_slot")
-handable = true
 title = "Sock Encyclopedia"
 one_slot = true
 
-[node name="EncyclopediaMenu" parent="." node_paths=PackedStringArray("carriable") instance=ExtResource("5_menu")]
+[node name="EncyclopediaMenu" parent="." unique_id=919537711 node_paths=PackedStringArray("carriable") instance=ExtResource("5_menu")]
 carriable = NodePath("../Carriable")

@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="CoinFlightTuning" format=3]
+[gd_resource type="Resource" script_class="CoinFlightTuning" format=3 uid="uid://baaf2y2lm6v3w"]
 
-[ext_resource type="Script" path="res://game/ui/money/coin_flight_tuning.gd" id="1_tuning"]
+[ext_resource type="Script" uid="uid://cqs45yl8fqs2s" path="res://game/ui/money/coin_flight_tuning.gd" id="1_tuning"]
 
 [resource]
 script = ExtResource("1_tuning")

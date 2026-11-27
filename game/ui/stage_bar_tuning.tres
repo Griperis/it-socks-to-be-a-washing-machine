@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="StageBarTuning" format=3]
+[gd_resource type="Resource" script_class="StageBarTuning" format=3 uid="uid://d2lyrkuxu5mym"]
 
-[ext_resource type="Script" path="res://game/ui/stage_bar_tuning.gd" id="1_tuning"]
+[ext_resource type="Script" uid="uid://cpcmclabisa5d" path="res://game/ui/stage_bar_tuning.gd" id="1_tuning"]
 
 [resource]
 script = ExtResource("1_tuning")

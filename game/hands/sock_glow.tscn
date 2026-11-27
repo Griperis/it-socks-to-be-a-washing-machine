@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://ble5hdworjtnn"]
 
-[ext_resource type="Script" path="res://game/hands/sock_glow.gd" id="1_glow"]
+[ext_resource type="Script" uid="uid://sxlxftyr31ly" path="res://game/hands/sock_glow.gd" id="1_glow"]
 
 [sub_resource type="StandardMaterial3D" id="Material_glow"]
 resource_local_to_scene = true
@@ -31,11 +31,9 @@ _data = {
 &"glow": SubResource("Animation_glow")
 }
 
-[node name="SockGlow" type="Node"]
+[node name="SockGlow" type="Node" unique_id=2004920900]
 script = ExtResource("1_glow")
 material = SubResource("Material_glow")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_glow")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=467657744]
+libraries/ = SubResource("AnimationLibrary_glow")

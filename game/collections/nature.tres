@@ -1,7 +1,7 @@
-[gd_resource type="Resource" format=3]
+[gd_resource type="Resource" script_class="SockCollection" format=3 uid="uid://wkx1mprwaajw"]
 
-[ext_resource type="Script" path="res://game/collections/sock_collection.gd" id="1_c"]
-[ext_resource type="Texture2D" path="res://assets/ui/nature.svg" id="2_icon"]
+[ext_resource type="Script" uid="uid://br28gq7r2ei2n" path="res://game/collections/sock_collection.gd" id="1_c"]
+[ext_resource type="Texture2D" uid="uid://by14tok7u3wjd" path="res://assets/ui/nature.svg" id="2_icon"]
 
 [resource]
 script = ExtResource("1_c")
@@ -12,4 +12,4 @@ cabinet_name = "Nature cabinet"
 icon = ExtResource("2_icon")
 paper = Color(0.5098, 0.7216, 0.5176, 1)
 ink = Color(0.1843, 0.4275, 0.1961, 1)
-bow = Color(0.2157, 0.5020, 0.2275, 1)
+bow = Color(0.2157, 0.502, 0.2275, 1)

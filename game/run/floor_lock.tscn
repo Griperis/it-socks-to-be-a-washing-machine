@@ -1,41 +1,41 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://2udbo7xj172e"]
 
-[ext_resource type="Script" path="res://game/parts/openable.gd" id="1_openable"]
-[ext_resource type="PackedScene" path="res://game/run/looks_lock_door.tscn" id="2_looks"]
-[ext_resource type="Script" path="res://game/run/floor_lock.gd" id="3_lock"]
-[ext_resource type="Resource" path="res://game/run/floor_lock_tuning.tres" id="4_tuning"]
-[ext_resource type="Script" path="res://game/outline/outline.gd" id="5_outline"]
+[ext_resource type="Script" uid="uid://bilshnr7wp5ir" path="res://game/parts/openable.gd" id="1_openable"]
+[ext_resource type="PackedScene" uid="uid://bwkepfqn3l2wt" path="res://game/run/looks_lock_door.tscn" id="2_looks"]
+[ext_resource type="Script" uid="uid://ddujfebvr0reo" path="res://game/run/floor_lock.gd" id="3_lock"]
+[ext_resource type="Resource" uid="uid://ctda7qqefvd8t" path="res://game/run/floor_lock_tuning.tres" id="4_tuning"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="5_outline"]
 
 [sub_resource type="BoxShape3D" id="Shape_aim"]
 size = Vector3(0.2, 0.24, 0.14)
 
-[node name="FloorLock" type="Node3D"]
+[node name="FloorLock" type="Node3D" unique_id=798129363]
 
-[node name="Openable" type="Node" parent="."]
+[node name="Openable" type="Node" parent="." unique_id=580107004]
 script = ExtResource("1_openable")
-noun = "Door"
 sound_height = 1.0
+noun = "Door"
 quiet_when_locked = true
 keeps_open_on_load = true
 one_way = true
 locked = true
 
-[node name="Looks" parent="." instance=ExtResource("2_looks")]
+[node name="Looks" parent="." unique_id=1238247617 instance=ExtResource("2_looks")]
 
-[node name="Padlock" type="Node3D" parent="."]
+[node name="Padlock" type="Node3D" parent="." unique_id=1858942151]
 
-[node name="FloorLock" type="Node" parent="Padlock" node_paths=PackedStringArray("aim", "outline")]
+[node name="FloorLock" type="Node" parent="Padlock" unique_id=1426185195 node_paths=PackedStringArray("aim", "outline")]
 script = ExtResource("3_lock")
 tuning = ExtResource("4_tuning")
 aim = NodePath("../Aim")
 outline = NodePath("../Outline")
 
-[node name="Aim" type="StaticBody3D" parent="Padlock"]
+[node name="Aim" type="StaticBody3D" parent="Padlock" unique_id=1489257932]
 collision_mask = 0
 
-[node name="Shape" type="CollisionShape3D" parent="Padlock/Aim"]
+[node name="Shape" type="CollisionShape3D" parent="Padlock/Aim" unique_id=1660603613]
 shape = SubResource("Shape_aim")
 
-[node name="Outline" type="Node3D" parent="Padlock"]
+[node name="Outline" type="Node3D" parent="Padlock" unique_id=1974523767]
 visible = false
 script = ExtResource("5_outline")

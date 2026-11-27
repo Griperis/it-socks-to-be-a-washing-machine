@@ -1,13 +1,11 @@
-[gd_resource type="Resource" script_class="WasherTuning" format=3]
+[gd_resource type="Resource" script_class="WasherTuning" format=3 uid="uid://cdbewbnn8t7l7"]
 
-[ext_resource type="Script" path="res://game/entities/washer/washer_tuning.gd" id="1_tuning"]
-[ext_resource type="Script" path="res://game/entities/washer/washer_cutscene_look.gd" id="2_look"]
+[ext_resource type="Script" uid="uid://bpg58pp8vuaef" path="res://game/entities/washer/washer_tuning.gd" id="1_tuning"]
+[ext_resource type="Script" uid="uid://t1fm1dxrg57v" path="res://game/entities/washer/washer_cutscene_look.gd" id="2_look"]
 
 [sub_resource type="Resource" id="Resource_0"]
 script = ExtResource("2_look")
 trigger = &"cutscene_first_wash"
-repair = 0.0
-damage = 1.0
 
 [sub_resource type="Resource" id="Resource_1"]
 script = ExtResource("2_look")
@@ -41,4 +39,5 @@ damage = 0.0
 
 [resource]
 script = ExtResource("1_tuning")
+no_voice_seconds = PackedFloat32Array(5, 5.5, 6.5, 7.5, 8.5, 10)
 cutscene_looks = Array[ExtResource("2_look")]([SubResource("Resource_0"), SubResource("Resource_1"), SubResource("Resource_2"), SubResource("Resource_3"), SubResource("Resource_4"), SubResource("Resource_5")])

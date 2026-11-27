@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="UpgradeStat" format=3]
+[gd_resource type="Resource" script_class="UpgradeStat" format=3 uid="uid://d00763utlfb5g"]
 
 [ext_resource type="Script" uid="uid://buuwxe61yjepk" path="res://game/economy/upgrade_stat.gd" id="1_stat"]
 

@@ -1,9 +1,9 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://2jtb72i6bx8x"]
 
-[ext_resource type="Script" path="res://game/parts/spawned_parts.gd" id="1_spawned"]
+[ext_resource type="Script" uid="uid://brahekcct16vq" path="res://game/parts/spawned_parts.gd" id="1_spawned"]
 
-[node name="Spawned" type="Node"]
+[node name="Spawned" type="Node" unique_id=990202624]
 script = ExtResource("1_spawned")
 
-[node name="Spawner" type="MultiplayerSpawner" parent="."]
+[node name="Spawner" type="MultiplayerSpawner" parent="." unique_id=2042407932]
 spawn_path = NodePath("..")

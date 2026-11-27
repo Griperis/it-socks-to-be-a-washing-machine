@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://c5i2jlrgmcseh" path="res://game/parts/avatar/avatar_looks.gd" id="1_looks"]
 [ext_resource type="PackedScene" uid="uid://ociuf17dwty7" path="res://assets/avatar/avatar.glb" id="2_model"]
 [ext_resource type="Resource" uid="uid://bep60a25bpkxr" path="res://game/parts/avatar/avatar_tuning.tres" id="3_tuning"]
-[ext_resource type="Script" path="res://game/wardrobe/dresser.gd" id="4_dresser"]
-[ext_resource type="Resource" path="res://game/wardrobe/wardrobe_tuning.tres" id="5_wardrobe"]
+[ext_resource type="Script" uid="uid://btgt7yipiltjs" path="res://game/wardrobe/dresser.gd" id="4_dresser"]
+[ext_resource type="Resource" uid="uid://daaaosrurrwbw" path="res://game/wardrobe/wardrobe_tuning.tres" id="5_wardrobe"]
 
 [node name="AvatarLooks" type="Node3D" unique_id=7225576]
 script = ExtResource("1_looks")
@@ -12,16 +12,17 @@ tuning = ExtResource("3_tuning")
 
 [node name="Body" parent="." unique_id=1060176876 instance=ExtResource("2_model")]
 
-[node name="NameTag" type="Label3D" parent="Body/Head" unique_id=1846203317]
+[node name="NameTag" type="Label3D" parent="Body/Head" parent_id_path=PackedInt32Array(1060176876, 1364644381) index="0" unique_id=1846203317]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 visible = false
 pixel_size = 0.004
 billboard = 1
-modulate = Color(1, 1, 1, 1)
 outline_modulate = Color(0.1, 0.07, 0.05, 1)
 font_size = 40
 outline_size = 10
 
-[node name="Dresser" type="Node" parent="."]
+[node name="Dresser" type="Node" parent="." unique_id=1999729640]
 script = ExtResource("4_dresser")
 tuning = ExtResource("5_wardrobe")
+
+[editable path="Body"]

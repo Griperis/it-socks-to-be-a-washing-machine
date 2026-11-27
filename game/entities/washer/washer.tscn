@@ -1,14 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bg23nos1v1ri7"]
 
-[ext_resource type="Script" path="res://game/entities/washer/washer.gd" id="1_washer"]
-[ext_resource type="Script" path="res://game/entities/washer/washer_senses.gd" id="2_senses"]
-[ext_resource type="Script" path="res://game/entities/washer/washer_shot.gd" id="3_shot"]
-[ext_resource type="PackedScene" path="res://game/entities/washer/looks_washer.tscn" id="4_looks"]
-[ext_resource type="Resource" path="res://game/entities/washer/washer_tuning.tres" id="5_tuning"]
-[ext_resource type="Resource" path="res://game/voice/speakers/washer.tres" id="6_speaker"]
-[ext_resource type="Script" path="res://game/entities/washer/washer_wash.gd" id="7_wash"]
-[ext_resource type="Script" path="res://game/entities/washer/wash_view.gd" id="8_view"]
-[ext_resource type="PackedScene" path="res://game/laundry/sock_spray.tscn" id="9_spray"]
+[ext_resource type="Script" uid="uid://cyt1rnm7q20eg" path="res://game/entities/washer/washer.gd" id="1_washer"]
+[ext_resource type="Script" uid="uid://dtyeu5l38nxb5" path="res://game/entities/washer/washer_senses.gd" id="2_senses"]
+[ext_resource type="Script" uid="uid://dq21udj5v8aqr" path="res://game/entities/washer/washer_shot.gd" id="3_shot"]
+[ext_resource type="PackedScene" uid="uid://bry5nvjsuibcx" path="res://game/entities/washer/looks_washer.tscn" id="4_looks"]
+[ext_resource type="Resource" uid="uid://cdbewbnn8t7l7" path="res://game/entities/washer/washer_tuning.tres" id="5_tuning"]
+[ext_resource type="Resource" uid="uid://v7tirw0tssx0" path="res://game/voice/speakers/washer.tres" id="6_speaker"]
+[ext_resource type="Script" uid="uid://ba88i3qje5u27" path="res://game/entities/washer/washer_wash.gd" id="7_wash"]
+[ext_resource type="Script" uid="uid://ck45pgxyuvl1j" path="res://game/entities/washer/wash_view.gd" id="8_view"]
+[ext_resource type="PackedScene" uid="uid://bxcbaprtgmik0" path="res://game/laundry/sock_spray.tscn" id="9_spray"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_body"]
 size = Vector3(0.7, 0.95, 0.7)
@@ -17,13 +17,13 @@ size = Vector3(0.7, 0.95, 0.7)
 radius = 0.085
 height = 0.17
 
-[node name="Washer" type="StaticBody3D" groups=["washer"]]
+[node name="Washer" type="StaticBody3D" unique_id=187726105 groups=["washer"]]
 collision_mask = 0
 metadata/footprint = [0.7, 0.7]
 metadata/height = 0.95
 metadata/note = "The basement washing machine: it talks (core/86), a solid box 0.7 x 0.95 x 0.7 m."
 
-[node name="Washer" type="Node" parent="." node_paths=PackedStringArray("looks", "sock_spray", "porthole")]
+[node name="Washer" type="Node" parent="." unique_id=1814470256 node_paths=PackedStringArray("looks", "sock_spray", "porthole")]
 script = ExtResource("1_washer")
 speaker = ExtResource("6_speaker")
 tuning = ExtResource("5_tuning")
@@ -31,71 +31,68 @@ looks = NodePath("../Looks")
 sock_spray = NodePath("../SockSpray")
 porthole = NodePath("../Porthole")
 
-[node name="Senses" type="Node" parent="." node_paths=PackedStringArray("washer")]
+[node name="Senses" type="Node" parent="." unique_id=1705570031 node_paths=PackedStringArray("washer")]
 script = ExtResource("2_senses")
 washer = NodePath("../Washer")
 tuning = ExtResource("5_tuning")
 
-[node name="Shape" type="CollisionShape3D" parent="."]
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1741268874]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.475, 0)
 shape = SubResource("BoxShape3D_body")
 
-[node name="PlayerBody" type="StaticBody3D" parent="."]
+[node name="PlayerBody" type="StaticBody3D" parent="." unique_id=129703714]
 collision_layer = 8
 collision_mask = 0
 
-[node name="Shape" type="CollisionShape3D" parent="PlayerBody"]
+[node name="Shape" type="CollisionShape3D" parent="PlayerBody" unique_id=1804065142]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.475, 0)
 shape = SubResource("BoxShape3D_body")
 
-[node name="Looks" parent="." instance=ExtResource("4_looks")]
+[node name="Looks" parent="." unique_id=1287356811 instance=ExtResource("4_looks")]
 
-[node name="Shots" type="Node3D" parent="."]
+[node name="Shots" type="Node3D" parent="." unique_id=1705067505]
 
-[node name="Wide" type="Marker3D" parent="Shots"]
+[node name="Wide" type="Marker3D" parent="Shots" unique_id=2049004982]
 transform = Transform3D(0.98503, -0.0698549, 0.157592, 0, 0.914212, 0.405237, -0.17238, -0.399171, 0.900526, 0.35, 1.425, 2)
 script = ExtResource("3_shot")
-fov = 60.0
 
-[node name="Close" type="Marker3D" parent="Shots"]
+[node name="Close" type="Marker3D" parent="Shots" unique_id=672608934]
 transform = Transform3D(0.996815, -0.0388692, 0.0696311, 0, 0.873169, 0.487417, -0.0797452, -0.485865, 0.870388, 0.06, 0.99, 1.05)
 script = ExtResource("3_shot")
-fov = 60.0
 
-[node name="Push" type="Marker3D" parent="Shots"]
+[node name="Push" type="Marker3D" parent="Shots" unique_id=795644811]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.63, 1.3)
 script = ExtResource("3_shot")
-fov = 60.0
 
-[node name="Spawns" type="Node3D" parent="."]
+[node name="Spawns" type="Node3D" parent="." unique_id=999095058]
 
-[node name="1" type="Marker3D" parent="Spawns"]
+[node name="1" type="Marker3D" parent="Spawns" unique_id=1840035074]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 1.2)
 
-[node name="2" type="Marker3D" parent="Spawns"]
+[node name="2" type="Marker3D" parent="Spawns" unique_id=509188253]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 1.2)
 
-[node name="3" type="Marker3D" parent="Spawns"]
+[node name="3" type="Marker3D" parent="Spawns" unique_id=665865671]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 0, 1.2)
 
-[node name="4" type="Marker3D" parent="Spawns"]
+[node name="4" type="Marker3D" parent="Spawns" unique_id=1398151352]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 0, 1.2)
 
-[node name="SockSpray" parent="." instance=ExtResource("9_spray")]
+[node name="SockSpray" parent="." unique_id=873869932 instance=ExtResource("9_spray")]
 
-[node name="Door" type="Marker3D" parent="."]
+[node name="Door" type="Marker3D" parent="." unique_id=1775354782]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.35)
 
-[node name="Porthole" type="Marker3D" parent="."]
+[node name="Porthole" type="Marker3D" parent="." unique_id=346916059]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0.36)
 
-[node name="Wash" type="Node" parent="." node_paths=PackedStringArray("door", "view")]
+[node name="Wash" type="Node" parent="." unique_id=1742445384 node_paths=PackedStringArray("door", "view")]
 script = ExtResource("7_wash")
 tuning = ExtResource("5_tuning")
 door = NodePath("../Door")
 view = NodePath("../WashView")
 
-[node name="WashView" type="Node3D" parent="." node_paths=PackedStringArray("looks", "drum", "blob", "slider", "camera", "overlay", "fade", "porthole", "slosh")]
+[node name="WashView" type="Node3D" parent="." unique_id=914208943 node_paths=PackedStringArray("looks", "drum", "blob", "slider", "camera", "overlay", "fade", "porthole", "slosh")]
 script = ExtResource("8_view")
 looks = NodePath("../Looks")
 drum = NodePath("Drum")
@@ -107,27 +104,27 @@ fade = NodePath("Overlay/Fade")
 porthole = NodePath("../Porthole")
 slosh = NodePath("Slosh")
 
-[node name="Drum" type="Node3D" parent="WashView"]
+[node name="Drum" type="Node3D" parent="WashView" unique_id=1495509028]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0.24)
 
-[node name="Blob" type="MeshInstance3D" parent="WashView/Drum"]
+[node name="Blob" type="MeshInstance3D" parent="WashView/Drum" unique_id=144138118]
 transform = Transform3D(1, 0, 0, 0, 0.8, 0, 0, 0, 0.55, 0.055, 0, 0)
 cast_shadow = 0
 mesh = SubResource("SphereMesh_blob")
 
-[node name="Slider" type="MeshInstance3D" parent="WashView"]
+[node name="Slider" type="MeshInstance3D" parent="WashView" unique_id=1389572062]
 cast_shadow = 0
 mesh = SubResource("SphereMesh_blob")
 
-[node name="Camera" type="Camera3D" parent="WashView"]
+[node name="Camera" type="Camera3D" parent="WashView" unique_id=106611105]
 cull_mask = 1045503
 fov = 60.0
 
-[node name="Overlay" type="CanvasLayer" parent="WashView"]
+[node name="Overlay" type="CanvasLayer" parent="WashView" unique_id=3609582]
 layer = 18
 visible = false
 
-[node name="Fade" type="ColorRect" parent="WashView/Overlay"]
+[node name="Fade" type="ColorRect" parent="WashView/Overlay" unique_id=441844006]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -136,5 +133,5 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Slosh" type="AudioStreamPlayer3D" parent="WashView"]
+[node name="Slosh" type="AudioStreamPlayer3D" parent="WashView" unique_id=1712946341]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42, 0.36)

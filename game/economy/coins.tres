@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="Currency" format=3]
+[gd_resource type="Resource" script_class="Currency" format=3 uid="uid://bpi7arhgagqdn"]
 
-[ext_resource type="Script" path="res://game/economy/currency.gd" id="1_currency"]
-[ext_resource type="Texture2D" path="res://assets/ui/coins.svg" id="2_icon"]
+[ext_resource type="Script" uid="uid://gwuw6c26fnbw" path="res://game/economy/currency.gd" id="1_currency"]
+[ext_resource type="Texture2D" uid="uid://dxqinno1ftv51" path="res://assets/ui/coins.svg" id="2_icon"]
 
 [resource]
 script = ExtResource("1_currency")

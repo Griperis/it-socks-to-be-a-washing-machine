@@ -1,8 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bb2nbrycqu7iu"]
 
-[ext_resource type="Script" path="res://game/ui/upgrade_menu/upgrade_tip.gd" id="1_tip"]
+[ext_resource type="Script" uid="uid://cf6630k0oh438" path="res://game/ui/upgrade_menu/upgrade_tip.gd" id="1_tip"]
 
-[node name="UpgradeTip" type="PanelContainer"]
+[node name="UpgradeTip" type="PanelContainer" unique_id=1327974286]
 top_level = true
 custom_minimum_size = Vector2(360, 0)
 offset_right = 360.0
@@ -10,12 +10,12 @@ mouse_filter = 2
 theme_type_variation = &"UpgradeTipPersonal"
 script = ExtResource("1_tip")
 
-[node name="Box" type="VBoxContainer" parent="."]
+[node name="Box" type="VBoxContainer" parent="." unique_id=1967669978]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 4
 
-[node name="Title" type="Label" parent="Box"]
+[node name="Title" type="Label" parent="Box" unique_id=1716375401]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
@@ -23,7 +23,7 @@ size_flags_horizontal = 3
 theme_type_variation = &"UpgradeTipTitle"
 autowrap_mode = 3
 
-[node name="Text" type="Label" parent="Box"]
+[node name="Text" type="Label" parent="Box" unique_id=1235601918]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
@@ -31,7 +31,7 @@ size_flags_horizontal = 3
 theme_type_variation = &"UpgradeTipText"
 autowrap_mode = 3
 
-[node name="Numbers" type="Label" parent="Box"]
+[node name="Numbers" type="Label" parent="Box" unique_id=1115597608]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
@@ -39,17 +39,17 @@ size_flags_horizontal = 3
 theme_type_variation = &"UpgradeTipNumbers"
 autowrap_mode = 3
 
-[node name="Line" type="HBoxContainer" parent="Box"]
+[node name="Line" type="HBoxContainer" parent="Box" unique_id=2112567476]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 8
 
-[node name="Level" type="Label" parent="Box/Line"]
+[node name="Level" type="Label" parent="Box/Line" unique_id=613009093]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"UpgradeTipText"
 
-[node name="Currency" type="TextureRect" parent="Box/Line"]
+[node name="Currency" type="TextureRect" parent="Box/Line" unique_id=1276502405]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
@@ -58,12 +58,12 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Price" type="Label" parent="Box/Line"]
+[node name="Price" type="Label" parent="Box/Line" unique_id=1762629632]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"UpgradeTipText"
 
-[node name="Needs" type="Label" parent="Box"]
+[node name="Needs" type="Label" parent="Box" unique_id=817626055]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
@@ -71,7 +71,7 @@ size_flags_horizontal = 3
 theme_type_variation = &"UpgradeTipNeeds"
 autowrap_mode = 3
 
-[node name="Soon" type="Label" parent="Box"]
+[node name="Soon" type="Label" parent="Box" unique_id=772419939]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"UpgradeTipText"

@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cpx8ju844kqf1"]
 
-[ext_resource type="Script" path="res://game/ui/upgrade_menu/upgrade_button.gd" id="1_button"]
-[ext_resource type="Texture2D" path="res://assets/ui/lock.svg" id="2_lock"]
+[ext_resource type="Script" uid="uid://daj2unlguggcl" path="res://game/ui/upgrade_menu/upgrade_button.gd" id="1_button"]
+[ext_resource type="Texture2D" uid="uid://bbd2sir6l08qr" path="res://assets/ui/lock.svg" id="2_lock"]
 
 [sub_resource type="Animation" id="Animation_lit_reset"]
 length = 0.001
@@ -125,7 +125,7 @@ _data = {
 &"shake": SubResource("Animation_shake")
 }
 
-[node name="UpgradeButton" type="Control"]
+[node name="UpgradeButton" type="Control" unique_id=720204632]
 custom_minimum_size = Vector2(92, 92)
 layout_mode = 3
 anchors_preset = 0
@@ -134,7 +134,7 @@ offset_bottom = 92.0
 mouse_filter = 2
 script = ExtResource("1_button")
 
-[node name="Key" type="Button" parent="."]
+[node name="Key" type="Button" parent="." unique_id=2013570190]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -146,10 +146,10 @@ pivot_offset = Vector2(46, 46)
 theme_type_variation = &"UpgradeButtonPersonal"
 metadata/own_lit = true
 
-[node name="Glow" type="Panel" parent="Key"]
+[node name="Glow" type="Panel" parent="Key" unique_id=562062372]
 unique_name_in_owner = true
-show_behind_parent = true
 modulate = Color(1, 1, 1, 0)
+show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -159,7 +159,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_type_variation = &"UpgradeGlowPersonal"
 
-[node name="Face" type="VBoxContainer" parent="Key"]
+[node name="Face" type="VBoxContainer" parent="Key" unique_id=983802791]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -174,13 +174,13 @@ mouse_filter = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="IconBox" type="Control" parent="Key/Face"]
+[node name="IconBox" type="Control" parent="Key/Face" unique_id=657399576]
 custom_minimum_size = Vector2(44, 44)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
 
-[node name="Icon" type="TextureRect" parent="Key/Face/IconBox"]
+[node name="Icon" type="TextureRect" parent="Key/Face/IconBox" unique_id=466920558]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -192,7 +192,7 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Lock" type="TextureRect" parent="Key/Face/IconBox"]
+[node name="Lock" type="TextureRect" parent="Key/Face/IconBox" unique_id=523100353]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -212,20 +212,20 @@ texture = ExtResource("2_lock")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Level" type="Label" parent="Key/Face"]
+[node name="Level" type="Label" parent="Key/Face" unique_id=959826135]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"UpgradeLevel"
 text = "0/1"
 horizontal_alignment = 1
 
-[node name="PriceRow" type="HBoxContainer" parent="Key/Face"]
+[node name="PriceRow" type="HBoxContainer" parent="Key/Face" unique_id=1438295598]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 4
 alignment = 1
 
-[node name="Currency" type="TextureRect" parent="Key/Face/PriceRow"]
+[node name="Currency" type="TextureRect" parent="Key/Face/PriceRow" unique_id=1504028393]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(18, 18)
 layout_mode = 2
@@ -234,16 +234,16 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Price" type="Label" parent="Key/Face/PriceRow"]
+[node name="Price" type="Label" parent="Key/Face/PriceRow" unique_id=1108934015]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"UpgradePrice"
 text = "0"
 
-[node name="Lit" type="AnimationPlayer" parent="."]
+[node name="Lit" type="AnimationPlayer" parent="." unique_id=1504996925]
 unique_name_in_owner = true
 libraries/ = SubResource("AnimationLibrary_lit")
 
-[node name="Shake" type="AnimationPlayer" parent="."]
+[node name="Shake" type="AnimationPlayer" parent="." unique_id=1102182350]
 unique_name_in_owner = true
 libraries/ = SubResource("AnimationLibrary_shake")

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="VoiceSpeaker" format=3]
+[gd_resource type="Resource" script_class="VoiceSpeaker" format=3 uid="uid://di3lqauv13wvg"]
 
 [ext_resource type="Script" uid="uid://8es185yuoi1s" path="res://game/voice/voice_speaker.gd" id="1_speaker"]
 

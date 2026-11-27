@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://pslm285iwe0c"]
 
 [ext_resource type="PackedScene" uid="uid://h3610c6dred6" path="res://game/entities/cabinet/cabinet.tscn" id="1_cabinet"]
-[ext_resource type="Resource" path="res://game/zoo/economy/economy_cabinet_tuning.tres" id="2_cab_tuning"]
+[ext_resource type="Resource" uid="uid://bruv524vxiqjp" path="res://game/zoo/economy/economy_cabinet_tuning.tres" id="2_cab_tuning"]
 [ext_resource type="Script" uid="uid://cyhr6nx34vjq0" path="res://game/mess/sock_generator.gd" id="3_gen"]
 [ext_resource type="Script" uid="uid://co2u54sk1yir8" path="res://game/mess/generated_socks.gd" id="4_generated"]
 [ext_resource type="Script" uid="uid://cub70qrwflqk1" path="res://game/mess/sock_area.gd" id="5_area"]
@@ -10,11 +10,11 @@
 [ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/economy/bank.gd" id="8_bank"]
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="9_designs"]
 [ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="10_hands_tuning"]
-[ext_resource type="PackedScene" path="res://game/zoo/economy/money_switch.tscn" id="11_switch"]
-[ext_resource type="Script" path="res://game/economy/upgrades.gd" id="12_upgrades"]
+[ext_resource type="PackedScene" uid="uid://cwbs8khw84t41" path="res://game/zoo/economy/money_switch.tscn" id="11_switch"]
+[ext_resource type="Script" uid="uid://25em8fxakcsc" path="res://game/economy/upgrades.gd" id="12_upgrades"]
 [ext_resource type="PackedScene" uid="uid://b0dgpaqabl8x4" path="res://game/furniture/old_tree.tscn" id="13_tree"]
-[ext_resource type="PackedScene" path="res://game/zoo/economy/upgrades_switch.tscn" id="14_upswitch"]
-[ext_resource type="Script" path="res://game/zoo/economy/upgrade_board.gd" id="15_board"]
+[ext_resource type="PackedScene" uid="uid://c8lnx8gq30ilt" path="res://game/zoo/economy/upgrades_switch.tscn" id="14_upswitch"]
+[ext_resource type="Script" uid="uid://c8hkcxlhttuu5" path="res://game/zoo/economy/upgrade_board.gd" id="15_board"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.62, 0.55, 0.3, 1)
@@ -26,20 +26,20 @@ size = Vector2(12, 8)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
 size = Vector3(14, 0.2, 10)
 
-[node name="Economy" type="Node3D"]
+[node name="Economy" type="Node3D" unique_id=1881433307]
 
-[node name="Pad" type="MeshInstance3D" parent="."]
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=1067729539]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 1)
 mesh = SubResource("PlaneMesh_pad")
 
-[node name="Ground" type="StaticBody3D" parent="."]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1955788605]
 metadata/surface = "wood"
 
-[node name="Shape" type="CollisionShape3D" parent="Ground"]
+[node name="Shape" type="CollisionShape3D" parent="Ground" unique_id=1264674151]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 1)
 shape = SubResource("BoxShape3D_ground")
 
-[node name="Name" type="Label3D" parent="."]
+[node name="Name" type="Label3D" parent="." unique_id=18130303]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 2, -3)
 pixel_size = 0.004
 billboard = 2
@@ -48,87 +48,87 @@ vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="Cabinet" parent="." instance=ExtResource("1_cabinet")]
+[node name="Cabinet" parent="." unique_id=833913627 instance=ExtResource("1_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2.5)
 
-[node name="Cabinet" parent="Cabinet" index="0" node_paths=PackedStringArray("hands", "bank")]
+[node name="Cabinet" parent="Cabinet" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
 tuning = ExtResource("2_cab_tuning")
 hands = NodePath("../../Socks/Hands")
 bank = NodePath("../../Socks/Bank")
 rows = 6
 
-[node name="Washer" type="Marker3D" parent="."]
+[node name="Washer" type="Marker3D" parent="." unique_id=52999289]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 4.5)
 
-[node name="Generator" type="Node3D" parent="." node_paths=PackedStringArray("washer", "scan")]
+[node name="Generator" type="Node3D" parent="." unique_id=1681026808 node_paths=PackedStringArray("washer", "scan")]
 script = ExtResource("3_gen")
 collections = Array[StringName]([&"simple"])
 washer = NodePath("../Washer")
 scan = NodePath("..")
 
-[node name="Simple" type="Node3D" parent="Generator"]
+[node name="Simple" type="Node3D" parent="Generator" unique_id=1061123583]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1.5)
 script = ExtResource("5_area")
 size = Vector3(5, 2.4, 4)
 pairs = 8
 hidden_share = 0.0
 
-[node name="Generated" type="Node" parent="Generator" node_paths=PackedStringArray("mess", "generator")]
+[node name="Generated" type="Node" parent="Generator" unique_id=1913722360 node_paths=PackedStringArray("mess", "generator")]
 script = ExtResource("4_generated")
 mess = NodePath("../../Socks/Mess")
 generator = NodePath("..")
 
-[node name="Coins" parent="." instance=ExtResource("11_switch")]
+[node name="Coins" parent="." unique_id=92104448 instance=ExtResource("11_switch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -2.5)
 
-[node name="MoneySwitch" parent="Coins" index="0" node_paths=PackedStringArray("bank")]
+[node name="MoneySwitch" parent="Coins" index="0" unique_id=1185872783 node_paths=PackedStringArray("bank")]
 bank = NodePath("../../Socks/Bank")
 
-[node name="Drawers" parent="." instance=ExtResource("11_switch")]
+[node name="Drawers" parent="." unique_id=1137042978 instance=ExtResource("11_switch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -2.5)
 
-[node name="MoneySwitch" parent="Drawers" index="0" node_paths=PackedStringArray("bank")]
+[node name="MoneySwitch" parent="Drawers" index="0" unique_id=1185872783 node_paths=PackedStringArray("bank")]
 bank = NodePath("../../Socks/Bank")
 pays = 1
 amount = 5
 
-[node name="OldTree" parent="." instance=ExtResource("13_tree")]
+[node name="OldTree" parent="." unique_id=10151619 instance=ExtResource("13_tree")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -2.5)
 
-[node name="ResetLevels" parent="." instance=ExtResource("14_upswitch")]
+[node name="ResetLevels" parent="." unique_id=827521095 instance=ExtResource("14_upswitch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -1)
 
-[node name="UpgradesSwitch" parent="ResetLevels" index="0" node_paths=PackedStringArray("upgrades")]
+[node name="UpgradesSwitch" parent="ResetLevels" index="0" unique_id=594619106 node_paths=PackedStringArray("upgrades")]
 upgrades = NodePath("../../Socks/Upgrades")
 
-[node name="Coop" parent="." instance=ExtResource("14_upswitch")]
+[node name="Coop" parent="." unique_id=406517562 instance=ExtResource("14_upswitch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1)
 
-[node name="UpgradesSwitch" parent="Coop" index="0" node_paths=PackedStringArray("upgrades")]
+[node name="UpgradesSwitch" parent="Coop" index="0" unique_id=594619106 node_paths=PackedStringArray("upgrades")]
 upgrades = NodePath("../../Socks/Upgrades")
 does = 1
 
-[node name="Board" type="Node3D" parent="." node_paths=PackedStringArray("upgrades")]
+[node name="Board" type="Node3D" parent="." unique_id=146357611 node_paths=PackedStringArray("upgrades")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5.8, 3.4, 4)
 script = ExtResource("15_board")
 upgrades = NodePath("../Socks/Upgrades")
 
-[node name="Spots" type="Node3D" parent="."]
+[node name="Spots" type="Node3D" parent="." unique_id=1907978596]
 
-[node name="ReturnSpot" type="Marker3D" parent="."]
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=1243390613]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 
-[node name="Lying" type="Node3D" parent="."]
+[node name="Lying" type="Node3D" parent="." unique_id=1941702742]
 
-[node name="Flights" type="Node3D" parent="."]
+[node name="Flights" type="Node3D" parent="." unique_id=720961896]
 
-[node name="FlightSpawner" type="MultiplayerSpawner" parent="."]
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=1003149554]
 _spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
 spawn_path = NodePath("../Flights")
 
-[node name="Socks" type="Node" parent="."]
+[node name="Socks" type="Node" parent="." unique_id=513733442]
 
-[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+[node name="Mess" type="Node" parent="Socks" unique_id=7529507 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
 script = ExtResource("6_mess")
 catalogue = ExtResource("9_designs")
 tuning = ExtResource("10_hands_tuning")
@@ -138,14 +138,24 @@ flights = NodePath("../../Flights")
 bounds = AABB(-7, -2, -4, 14, 8, 10)
 return_spot = NodePath("../../ReturnSpot")
 
-[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess")]
+[node name="Hands" type="Node" parent="Socks" unique_id=1821776200 node_paths=PackedStringArray("mess")]
 script = ExtResource("7_hands")
 mess = NodePath("../Mess")
 tuning = ExtResource("10_hands_tuning")
 
-[node name="Bank" type="Node" parent="Socks"]
+[node name="Bank" type="Node" parent="Socks" unique_id=274997581]
 script = ExtResource("8_bank")
 
-[node name="Upgrades" type="Node" parent="Socks" node_paths=PackedStringArray("bank")]
+[node name="Upgrades" type="Node" parent="Socks" unique_id=1212508369 node_paths=PackedStringArray("bank")]
 script = ExtResource("12_upgrades")
 bank = NodePath("../Bank")
+
+[editable path="Cabinet"]
+[editable path="Cabinet/Drawer3"]
+[editable path="Cabinet/Drawer4"]
+[editable path="Cabinet/Drawer5"]
+[editable path="Cabinet/Drawer6"]
+[editable path="Coins"]
+[editable path="Drawers"]
+[editable path="ResetLevels"]
+[editable path="Coop"]

@@ -1,9 +1,8 @@
-[gd_resource type="Resource" format=3]
+[gd_resource type="Resource" script_class="CollectionUnlocks" format=3 uid="uid://b7i2vyfslh34c"]
 
-[ext_resource type="Script" path="res://game/collections/collection_unlocks.gd" id="1_u"]
+[ext_resource type="Script" uid="uid://c51y1l0qoq86i" path="res://game/collections/collection_unlocks.gd" id="1_u"]
 
 [resource]
 script = ExtResource("1_u")
 start = Array[StringName]([&"simple", &"sport", &"patterns", &"animals", &"superhero", &"winter", &"nature", &"food"])
 order = Array[StringName]([&"space", &"fruit", &"machinery", &"drinks", &"tech", &"vegetables", &"transport", &"math"])
-per_finished_game = 1

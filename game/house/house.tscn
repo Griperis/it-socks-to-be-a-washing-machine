@@ -69,36 +69,79 @@
 [ext_resource type="Script" uid="uid://cyhr6nx34vjq0" path="res://game/mess/sock_generator.gd" id="82_generator"]
 [ext_resource type="Script" uid="uid://cub70qrwflqk1" path="res://game/mess/sock_area.gd" id="83_area"]
 [ext_resource type="Script" uid="uid://c76hgi71q4k4g" path="res://game/mess/sock_trail.gd" id="84_trail"]
-[ext_resource type="Script" path="res://game/house/house_lights.gd" id="86_lights"]
 [ext_resource type="Script" uid="uid://co2u54sk1yir8" path="res://game/mess/generated_socks.gd" id="85_generated"]
 [ext_resource type="PackedScene" uid="uid://bmwqvdc4bsecs" path="res://game/entities/door/room_door.tscn" id="86_door"]
+[ext_resource type="Script" uid="uid://ryhl4cndswip" path="res://game/house/house_lights.gd" id="86_lights"]
 [ext_resource type="PackedScene" uid="uid://1jfxjkr05r4r" path="res://game/entities/door/room_door_flipped.tscn" id="87_door_flipped"]
 [ext_resource type="Script" uid="uid://u22gclb5j8x6" path="res://game/house/door_shuts.gd" id="88_door_shuts"]
 [ext_resource type="Resource" uid="uid://u22gclb5im37" path="res://game/house/door_shut_rules.tres" id="89_door_rules"]
-[ext_resource type="PackedScene" path="res://game/run/run.tscn" id="90_run"]
-[ext_resource type="Resource" path="res://game/run/house_stage_plan.tres" id="91_stage_plan"]
-[ext_resource type="PackedScene" path="res://game/entities/washer/washer.tscn" id="92_washer"]
-[ext_resource type="PackedScene" path="res://game/run/floor_lock.tscn" id="93_lock_door"]
-[ext_resource type="PackedScene" path="res://game/run/floor_lock_gate.tscn" id="94_lock_gate"]
-[ext_resource type="PackedScene" path="res://game/entities/machine_part/machine_part.tscn" id="95_part"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_filter.tres" id="96_filter"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_motor.tres" id="97_motor"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_drum_belt.tres" id="98_belt"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_detergent.tres" id="99_detergent"]
+[ext_resource type="PackedScene" uid="uid://11gqrc7lsd8r" path="res://game/run/run.tscn" id="90_run"]
+[ext_resource type="Resource" uid="uid://ds3vckygf8rpv" path="res://game/run/house_stage_plan.tres" id="91_stage_plan"]
+[ext_resource type="PackedScene" uid="uid://bg23nos1v1ri7" path="res://game/entities/washer/washer.tscn" id="92_washer"]
+[ext_resource type="PackedScene" uid="uid://2udbo7xj172e" path="res://game/run/floor_lock.tscn" id="93_lock_door"]
+[ext_resource type="PackedScene" uid="uid://mhbxwq1uco31" path="res://game/run/floor_lock_gate.tscn" id="94_lock_gate"]
+[ext_resource type="PackedScene" uid="uid://bylqsqsyw6rmv" path="res://game/entities/machine_part/machine_part.tscn" id="95_part"]
+[ext_resource type="Resource" uid="uid://c8blxpue0cacg" path="res://game/entities/machine_part/part_filter.tres" id="96_filter"]
+[ext_resource type="Resource" uid="uid://br8ugvebmpffv" path="res://game/entities/machine_part/part_motor.tres" id="97_motor"]
+[ext_resource type="Resource" uid="uid://ba3jvy2k36fgk" path="res://game/entities/machine_part/part_drum_belt.tres" id="98_belt"]
+[ext_resource type="Resource" uid="uid://kjxfml1u8iqe" path="res://game/entities/machine_part/part_detergent.tres" id="99_detergent"]
 [ext_resource type="PackedScene" uid="uid://dqcr0t6aah51x" path="res://game/devices/dust_sheet.tscn" id="100_sheet"]
-[ext_resource type="Script" path="res://game/entities/machine_part/machine_part_slot.gd" id="101_slot"]
-[ext_resource type="PackedScene" path="res://game/entities/laundry_bin/laundry_bin.tscn" id="102_bin"]
-[ext_resource type="PackedScene" path="res://game/laundry/laundry_day.tscn" id="103_day"]
-[ext_resource type="PackedScene" path="res://game/entities/wardrobe_station/wardrobe_station.tscn" id="104_wardrobe"]
-[ext_resource type="PackedScene" path="res://game/entities/encyclopedia_book/encyclopedia_book.tscn" id="105_book"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_laundry.tres" id="tcab_laundry"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_garage.tres" id="tcab_garage"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_kitchen.tres" id="tcab_kitchen"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_living.tres" id="tcab_living"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_kids_north.tres" id="tcab_kids_north"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_kids_east.tres" id="tcab_kids_east"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_loft_west.tres" id="tcab_loft_west"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_loft_east.tres" id="tcab_loft_east"]
+[ext_resource type="Script" uid="uid://ocy5msoga2i1" path="res://game/entities/machine_part/machine_part_slot.gd" id="101_slot"]
+[ext_resource type="PackedScene" uid="uid://y7nbf2ss5sg4" path="res://game/entities/laundry_bin/laundry_bin.tscn" id="102_bin"]
+[ext_resource type="PackedScene" uid="uid://drplhdxvoydgt" path="res://game/laundry/laundry_day.tscn" id="103_day"]
+[ext_resource type="PackedScene" uid="uid://dk3o4ktarrk4a" path="res://game/entities/wardrobe_station/wardrobe_station.tscn" id="104_wardrobe"]
+[ext_resource type="PackedScene" uid="uid://md0frx1hqksf" path="res://game/entities/encyclopedia_book/encyclopedia_book.tscn" id="105_book"]
+[ext_resource type="Resource" uid="uid://br75semxifsfu" path="res://game/voice/triggers/tree_cabinet_garage.tres" id="tcab_garage"]
+[ext_resource type="Resource" uid="uid://17dsstmsm3yj" path="res://game/voice/triggers/tree_cabinet_kids_east.tres" id="tcab_kids_east"]
+[ext_resource type="Resource" uid="uid://cd1475fc6nuj1" path="res://game/voice/triggers/tree_cabinet_kids_north.tres" id="tcab_kids_north"]
+[ext_resource type="Resource" uid="uid://qapkx2kti275" path="res://game/voice/triggers/tree_cabinet_kitchen.tres" id="tcab_kitchen"]
+[ext_resource type="Resource" uid="uid://kwdxowq2302n" path="res://game/voice/triggers/tree_cabinet_laundry.tres" id="tcab_laundry"]
+[ext_resource type="Resource" uid="uid://jue2w5cikexw" path="res://game/voice/triggers/tree_cabinet_living.tres" id="tcab_living"]
+[ext_resource type="Resource" uid="uid://vc8ctuyvotu1" path="res://game/voice/triggers/tree_cabinet_loft_east.tres" id="tcab_loft_east"]
+[ext_resource type="Resource" uid="uid://c6djayf3f70rs" path="res://game/voice/triggers/tree_cabinet_loft_west.tres" id="tcab_loft_west"]
+
+[sub_resource type="Gradient" id="Gradient_glow"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_glow"]
+gradient = SubResource("Gradient_glow")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yrken"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.55, 0.85, 1, 0.8)
+albedo_texture = SubResource("GradientTexture2D_glow")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_47p03"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.55, 0.85, 1, 0.8)
+albedo_texture = SubResource("GradientTexture2D_glow")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ivcfb"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.55, 0.85, 1, 0.8)
+albedo_texture = SubResource("GradientTexture2D_glow")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y0tin"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.55, 0.85, 1, 0.8)
+albedo_texture = SubResource("GradientTexture2D_glow")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_part_slot"]
 size = Vector3(0.72, 0.97, 0.72)
@@ -117,7 +160,7 @@ shadow_blur = 1.5
 directional_shadow_max_distance = 18.0
 sky_mode = 1
 
-[node name="Picture" parent="." node_paths=PackedStringArray("world_environment", "sun") unique_id=234646926 instance=ExtResource("13_picture")]
+[node name="Picture" parent="." unique_id=234646926 node_paths=PackedStringArray("world_environment", "sun") instance=ExtResource("13_picture")]
 world_environment = NodePath("../Environment")
 sun = NodePath("../Sun")
 
@@ -333,7 +376,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(0)
 
 [node name="Ceiling_laundry" type="OmniLight3D" parent="Lights" unique_id=1406876837]
@@ -342,7 +385,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(0)
 
 [node name="Ceiling_boiler" type="OmniLight3D" parent="Lights" unique_id=1361744519]
@@ -351,7 +394,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(0)
 
 [node name="Ceiling_stair_lobby" type="OmniLight3D" parent="Lights" unique_id=1921770898]
@@ -360,7 +403,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(0)
 
 [node name="Ceiling_garage" type="OmniLight3D" parent="Lights" unique_id=1269629089]
@@ -369,7 +412,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(0)
 
 [node name="Ceiling_stairs_basement" type="OmniLight3D" parent="Lights" unique_id=147070147]
@@ -378,7 +421,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(0, 1)
 
 [node name="Ceiling_kitchen" type="OmniLight3D" parent="Lights" unique_id=65870976]
@@ -387,7 +430,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(1)
 
 [node name="Ceiling_hall" type="OmniLight3D" parent="Lights" unique_id=587346379]
@@ -396,7 +439,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(1)
 
 [node name="Ceiling_living" type="OmniLight3D" parent="Lights" unique_id=198353881]
@@ -405,7 +448,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(1)
 
 [node name="Ceiling_stairs_ground" type="OmniLight3D" parent="Lights" unique_id=426770898]
@@ -414,7 +457,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(1, 2)
 
 [node name="Ceiling_office" type="OmniLight3D" parent="Lights" unique_id=495201154]
@@ -423,7 +466,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Ceiling_bedroom" type="OmniLight3D" parent="Lights" unique_id=1387094287]
@@ -432,7 +475,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Ceiling_landing" type="OmniLight3D" parent="Lights" unique_id=966309601]
@@ -441,7 +484,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Ceiling_bathroom" type="OmniLight3D" parent="Lights" unique_id=20485797]
@@ -450,7 +493,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Ceiling_kids" type="OmniLight3D" parent="Lights" unique_id=2104704009]
@@ -459,7 +502,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Ceiling_stairs_first" type="OmniLight3D" parent="Lights" unique_id=1504451910]
@@ -468,7 +511,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(2, 3)
 
 [node name="Ceiling_loft_2" type="OmniLight3D" parent="Lights" unique_id=2047072146]
@@ -477,7 +520,7 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(3)
 
 [node name="Ceiling_loft_7" type="OmniLight3D" parent="Lights" unique_id=830428628]
@@ -486,21 +529,21 @@ light_color = Color(1, 0.88, 0.7, 1)
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 2.0
-omni_range = 6
+omni_range = 6.0
 metadata/lit_levels = PackedInt32Array(3)
 
 [node name="Lamp_FloorLamp" type="OmniLight3D" parent="Lights" unique_id=1796023232]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.13, 1.38, 8.13)
 light_color = Color(1, 0.88, 0.7, 1)
 light_energy = 0.7
-omni_range = 3
+omni_range = 3.0
 metadata/lit_levels = PackedInt32Array(1)
 
 [node name="Lamp_Nightstand" type="OmniLight3D" parent="Lights" unique_id=825885781]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.76, 3.78, 8.21)
 light_color = Color(1, 0.88, 0.7, 1)
 light_energy = 0.7
-omni_range = 3
+omni_range = 3.0
 metadata/lit_levels = PackedInt32Array(2)
 
 [node name="Doors" type="Node3D" parent="." unique_id=1264190857]
@@ -518,49 +561,49 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.25, -3, 0)
 [node name="WorkshopLobby" parent="Doors" unique_id=881000001 instance=ExtResource("87_door_flipped")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.96, -3, 2.75)
 
-[node name="Openable" parent="Doors/WorkshopLobby" parent_id_path=PackedInt32Array(881000001) index="0" unique_id=1481328664]
+[node name="Openable" parent="Doors/WorkshopLobby" index="0" unique_id=1481328664]
 open = true
 
 [node name="LaundryLobby" parent="Doors" unique_id=881000002 instance=ExtResource("86_door")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.96, -3, 4.1)
 
-[node name="Openable" parent="Doors/LaundryLobby" parent_id_path=PackedInt32Array(881000002) index="0" unique_id=99892436]
+[node name="Openable" parent="Doors/LaundryLobby" index="0" unique_id=99892436]
 open = true
 
 [node name="BoilerLobby" parent="Doors" unique_id=881000003 instance=ExtResource("87_door_flipped")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 5.25, -3, 1.96)
 
-[node name="Openable" parent="Doors/BoilerLobby" parent_id_path=PackedInt32Array(881000003) index="0" unique_id=1481328664]
+[node name="Openable" parent="Doors/BoilerLobby" index="0" unique_id=1481328664]
 open = true
 
 [node name="LobbyGarage" parent="Doors" unique_id=881000004 instance=ExtResource("87_door_flipped")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 6.46, -3, 4.75)
 
-[node name="Openable" parent="Doors/LobbyGarage" parent_id_path=PackedInt32Array(881000004) index="0" unique_id=1481328664]
+[node name="Openable" parent="Doors/LobbyGarage" index="0" unique_id=1481328664]
 open = true
 
 [node name="OfficeLanding" parent="Doors" unique_id=881000005 instance=ExtResource("87_door_flipped")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.96, 3, 2.75)
 
-[node name="Openable" parent="Doors/OfficeLanding" parent_id_path=PackedInt32Array(881000005) index="0" unique_id=1481328664]
+[node name="Openable" parent="Doors/OfficeLanding" index="0" unique_id=1481328664]
 open = true
 
 [node name="BedroomLanding" parent="Doors" unique_id=881000006 instance=ExtResource("86_door")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 3.96, 3, 4.1)
 
-[node name="Openable" parent="Doors/BedroomLanding" parent_id_path=PackedInt32Array(881000006) index="0" unique_id=99892436]
+[node name="Openable" parent="Doors/BedroomLanding" index="0" unique_id=99892436]
 open = true
 
 [node name="BathroomLanding" parent="Doors" unique_id=881000007 instance=ExtResource("86_door")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.54, 3, 2.75)
 
-[node name="Openable" parent="Doors/BathroomLanding" parent_id_path=PackedInt32Array(881000007) index="0" unique_id=99892436]
+[node name="Openable" parent="Doors/BathroomLanding" index="0" unique_id=99892436]
 open = true
 
 [node name="KidsLanding" parent="Doors" unique_id=881000008 instance=ExtResource("86_door")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 6.54, 3, 4.75)
 
-[node name="Openable" parent="Doors/KidsLanding" parent_id_path=PackedInt32Array(881000008) index="0" unique_id=99892436]
+[node name="Openable" parent="Doors/KidsLanding" index="0" unique_id=99892436]
 open = true
 
 [node name="Spawn" type="Marker3D" parent="." unique_id=1502210364]
@@ -573,43 +616,55 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.68, -3, 5.87)
 mess_bounds = AABB(-2, -5, -2, 14.5, 17, 12.5)
 load_screen = true
 
-[node name="Run" parent="." instance=ExtResource("90_run")]
+[node name="Run" parent="." unique_id=1402381964 instance=ExtResource("90_run")]
 
-[node name="Stages" parent="Run" index="0"]
+[node name="Stages" parent="Run" index="0" unique_id=1121104956]
 plan = ExtResource("91_stage_plan")
 
-[node name="Presents" parent="Run" index="7" node_paths=PackedStringArray("spot")]
+[node name="Presents" parent="Run" index="7" unique_id=1893270664 node_paths=PackedStringArray("spot")]
 spot = NodePath("../PresentSpot")
 
-[node name="PresentSpot" type="Marker3D" parent="Run"]
+[node name="PresentSpot" type="Marker3D" parent="Run" unique_id=524250859]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.185, -3, 6.475)
 metadata/note = "Where the Stage presents' heap lies: the Old Tree's south foot, the old first clear tree_spots entry ([1.2, 0.15] in the tree's frame: the four before it touch the port's tree; Q1605, core/137). Placed by hand."
 
-[node name="MachineParts" type="Node3D" parent="Run"]
+[node name="MachineParts" type="Node3D" parent="Run" unique_id=682987602]
 metadata/note = "The four Machine Parts, hidden under the house until their Stage completes (a Part's shapes are on until its first physics frame, so none stands where Socks are laid)."
 
-[node name="Filter" parent="Run/MachineParts" instance=ExtResource("95_part")]
+[node name="Filter" parent="Run/MachineParts" unique_id=545728816 instance=ExtResource("95_part")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, -8, 6.3)
 
-[node name="MachinePart" parent="Run/MachineParts/Filter" index="6"]
+[node name="Glow" parent="Run/MachineParts/Filter" index="2" unique_id=1157612825]
+material_override = SubResource("StandardMaterial3D_yrken")
+
+[node name="MachinePart" parent="Run/MachineParts/Filter" index="6" unique_id=580453522]
 kind = ExtResource("96_filter")
 
-[node name="Motor" parent="Run/MachineParts" instance=ExtResource("95_part")]
+[node name="Motor" parent="Run/MachineParts" unique_id=1758968881 instance=ExtResource("95_part")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, -8, 6.3)
 
-[node name="MachinePart" parent="Run/MachineParts/Motor" index="6"]
+[node name="Glow" parent="Run/MachineParts/Motor" index="2" unique_id=1157612825]
+material_override = SubResource("StandardMaterial3D_47p03")
+
+[node name="MachinePart" parent="Run/MachineParts/Motor" index="6" unique_id=580453522]
 kind = ExtResource("97_motor")
 
-[node name="DrumBelt" parent="Run/MachineParts" instance=ExtResource("95_part")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, -8, 6.3)
+[node name="DrumBelt" parent="Run/MachineParts" unique_id=1965783403 instance=ExtResource("95_part")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -8, 6.3)
 
-[node name="MachinePart" parent="Run/MachineParts/DrumBelt" index="6"]
+[node name="Glow" parent="Run/MachineParts/DrumBelt" index="2" unique_id=1157612825]
+material_override = SubResource("StandardMaterial3D_ivcfb")
+
+[node name="MachinePart" parent="Run/MachineParts/DrumBelt" index="6" unique_id=580453522]
 kind = ExtResource("98_belt")
 
-[node name="Detergent" parent="Run/MachineParts" instance=ExtResource("95_part")]
+[node name="Detergent" parent="Run/MachineParts" unique_id=771570274 instance=ExtResource("95_part")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4, -8, 6.3)
 
-[node name="MachinePart" parent="Run/MachineParts/Detergent" index="6"]
+[node name="Glow" parent="Run/MachineParts/Detergent" index="2" unique_id=1157612825]
+material_override = SubResource("StandardMaterial3D_y0tin")
+
+[node name="MachinePart" parent="Run/MachineParts/Detergent" index="6" unique_id=580453522]
 kind = ExtResource("99_detergent")
 
 [node name="Cabinets" type="Node3D" parent="." unique_id=1977464650]
@@ -617,186 +672,182 @@ kind = ExtResource("99_detergent")
 [node name="Laundry" parent="Cabinets" unique_id=1126269557 instance=ExtResource("81_cabinet")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.42, -3, 8.15)
 
-[node name="Cabinet" parent="Cabinets/Laundry" index="0" node_paths=PackedStringArray("hands", "bank")]
-tree_hint = ExtResource("tcab_laundry")
+[node name="Cabinet" parent="Cabinets/Laundry" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
-collection = &"simple"
 pool = Array[StringName]([&"simple"])
+tree_hint = ExtResource("tcab_laundry")
 
 [node name="Garage" parent="Cabinets" unique_id=15423979 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, -3, 7.3)
 
-[node name="Cabinet" parent="Cabinets/Garage" index="0" node_paths=PackedStringArray("hands", "bank")]
-tree_hint = ExtResource("tcab_garage")
+[node name="Cabinet" parent="Cabinets/Garage" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 2
-collection = &"sport"
 pool = Array[StringName]([&"machinery", &"transport", &"sport", &"tech"])
+tree_hint = ExtResource("tcab_garage")
+collection = &"sport"
 locked = true
 
-[node name="DustSheet" parent="Cabinets/Garage" instance=ExtResource("100_sheet")]
+[node name="DustSheet" parent="Cabinets/Garage" unique_id=2098887523 instance=ExtResource("100_sheet")]
 
 [node name="Kitchen" parent="Cabinets" unique_id=759235581 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.35, 0, 4.99)
 
-[node name="Cabinet" parent="Cabinets/Kitchen" index="0" node_paths=PackedStringArray("hands", "bank")]
-tree_hint = ExtResource("tcab_kitchen")
+[node name="Cabinet" parent="Cabinets/Kitchen" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 2
-collection = &"food"
 pool = Array[StringName]([&"fruit", &"vegetables", &"drinks", &"food"])
+tree_hint = ExtResource("tcab_kitchen")
+collection = &"food"
 locked = true
 
 [node name="Living" parent="Cabinets" unique_id=946583941 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 0, 2.08)
 
-[node name="Cabinet" parent="Cabinets/Living" index="0" node_paths=PackedStringArray("hands", "bank")]
-tree_hint = ExtResource("tcab_living")
+[node name="Cabinet" parent="Cabinets/Living" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 2
-collection = &"patterns"
 pool = Array[StringName]([&"patterns"])
+tree_hint = ExtResource("tcab_living")
+collection = &"patterns"
 locked = true
 
 [node name="KidsNorth" parent="Cabinets" unique_id=32228217 instance=ExtResource("81_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.84, 3, 3.81)
 
-[node name="Cabinet" parent="Cabinets/KidsNorth" index="0" node_paths=PackedStringArray("hands", "bank")]
-tree_hint = ExtResource("tcab_kids_north")
+[node name="Cabinet" parent="Cabinets/KidsNorth" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 3
-collection = &"animals"
 pool = Array[StringName]([&"animals", &"nature", &"superhero", &"space", &"math"])
+tree_hint = ExtResource("tcab_kids_north")
+collection = &"animals"
 locked = true
 
 [node name="KidsEast" parent="Cabinets" unique_id=2075620364 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 3, 5.38)
 
-[node name="Cabinet" parent="Cabinets/KidsEast" index="0" node_paths=PackedStringArray("hands", "bank")]
-tree_hint = ExtResource("tcab_kids_east")
+[node name="Cabinet" parent="Cabinets/KidsEast" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 3
-collection = &"superhero"
 pool = Array[StringName]([&"animals", &"nature", &"superhero", &"space", &"math"])
+tree_hint = ExtResource("tcab_kids_east")
+collection = &"superhero"
 locked = true
 
 [node name="LoftWest" parent="Cabinets" unique_id=1701359047 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.35, 6, 4.26)
 
-[node name="Cabinet" parent="Cabinets/LoftWest" index="0" node_paths=PackedStringArray("hands", "bank")]
-tree_hint = ExtResource("tcab_loft_west")
+[node name="Cabinet" parent="Cabinets/LoftWest" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 4
-collection = &"winter"
 pool = Array[StringName]([&"winter", &"space", &"nature", &"tech"])
+tree_hint = ExtResource("tcab_loft_west")
+collection = &"winter"
 locked = true
 
 [node name="LoftEast" parent="Cabinets" unique_id=1484615176 instance=ExtResource("81_cabinet")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 10.15, 6, 4.26)
 
-[node name="Cabinet" parent="Cabinets/LoftEast" index="0" node_paths=PackedStringArray("hands", "bank")]
-tree_hint = ExtResource("tcab_loft_east")
+[node name="Cabinet" parent="Cabinets/LoftEast" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../../Runtime/Socks/Hands")
 bank = NodePath("../../../Runtime/Socks/Bank")
 unlock_stage = 4
-collection = &"space"
 pool = Array[StringName]([&"winter", &"space", &"nature", &"tech"])
+tree_hint = ExtResource("tcab_loft_east")
+collection = &"space"
 locked = true
 
-[node name="WardrobeStation" parent="." instance=ExtResource("104_wardrobe")]
+[node name="WardrobeStation" parent="." unique_id=127905963 instance=ExtResource("104_wardrobe")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.38, 3, 3.94)
 
-[node name="FloorLocks" type="Node3D" parent="."]
+[node name="FloorLocks" type="Node3D" parent="." unique_id=393206632]
 
-[node name="Ground" parent="FloorLocks" instance=ExtResource("93_lock_door")]
+[node name="Ground" parent="FloorLocks" unique_id=473625124 instance=ExtResource("93_lock_door")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.875, 0, 5.45)
 
-[node name="FloorLock" parent="FloorLocks/Ground/Padlock" index="0"]
-floor = 1
-
-[node name="First" parent="FloorLocks" instance=ExtResource("93_lock_door")]
+[node name="First" parent="FloorLocks" unique_id=1223562404 instance=ExtResource("93_lock_door")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.875, 3, 5.45)
 
-[node name="FloorLock" parent="FloorLocks/First/Padlock" index="0"]
+[node name="FloorLock" parent="FloorLocks/First/Padlock" parent_id_path=PackedInt32Array(1223562404, 1858942151) index="0" unique_id=1426185195]
 floor = 2
 
-[node name="Attic" parent="FloorLocks" instance=ExtResource("94_lock_gate")]
+[node name="Attic" parent="FloorLocks" unique_id=1891526309 instance=ExtResource("94_lock_gate")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 4.625, 3, 5.4)
 
-[node name="FloorLock" parent="FloorLocks/Attic/Padlock" index="0"]
+[node name="FloorLock" parent="FloorLocks/Attic/Padlock" parent_id_path=PackedInt32Array(1891526309, 949968958) index="0" unique_id=847287275]
 floor = 3
 
-[node name="EncyclopediaBook" parent="." instance=ExtResource("105_book")]
+[node name="EncyclopediaBook" parent="." unique_id=2089386930 instance=ExtResource("105_book")]
 transform = Transform3D(0.9781476, 0, -0.2079117, 0, 1, 0, 0.2079117, 0, 0.9781476, 0.95, -2.1, 0.5)
 metadata/note = "The house's one shared Sock encyclopedia (core/139): on the workshop's workbench at a New Game, as the old layout's props[] encyclopedia_book (0.95, 0.5, yaw -12 degrees; on the new bench's top, 2.1 m, where the old bench's was 2.0; core/150's detector starts 0.35 m beside it)."
 
-[node name="LaundryBins" type="Node3D" parent="."]
+[node name="LaundryBins" type="Node3D" parent="." unique_id=1915695805]
 metadata/note = "The seven candidate spots of the Laundry bins (core/93, the old layout's laundry_bins; judged by eye). A World uses bins_per_world of them (the Laundry day's draw): the one by the washer always. A new spot is a new instance, no code."
 
-[node name="Laundry" parent="LaundryBins" instance=ExtResource("102_bin")]
+[node name="Laundry" parent="LaundryBins" unique_id=2029826536 instance=ExtResource("102_bin")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.5, -3, 4.15)
 
-[node name="LaundryBin" parent="LaundryBins/Laundry" index="3"]
+[node name="LaundryBin" parent="LaundryBins/Laundry" index="3" unique_id=289892309]
 always = true
 
-[node name="Bathroom" parent="LaundryBins" instance=ExtResource("102_bin")]
+[node name="Bathroom" parent="LaundryBins" unique_id=777368576 instance=ExtResource("102_bin")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.45, 3, 0.45)
 
-[node name="Bedroom" parent="LaundryBins" instance=ExtResource("102_bin")]
+[node name="Bedroom" parent="LaundryBins" unique_id=1436274396 instance=ExtResource("102_bin")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.45, 3, 7.78)
 
-[node name="Kids" parent="LaundryBins" instance=ExtResource("102_bin")]
+[node name="Kids" parent="LaundryBins" unique_id=214868442 instance=ExtResource("102_bin")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 9.55, 3, 3.73)
 
-[node name="Kitchen" parent="LaundryBins" instance=ExtResource("102_bin")]
+[node name="Kitchen" parent="LaundryBins" unique_id=970203636 instance=ExtResource("102_bin")]
 transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0.45, 0, 1.2)
 
-[node name="Living" parent="LaundryBins" instance=ExtResource("102_bin")]
+[node name="Living" parent="LaundryBins" unique_id=1697348027 instance=ExtResource("102_bin")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.55, 0, 0.45)
 
-[node name="Loft" parent="LaundryBins" instance=ExtResource("102_bin")]
+[node name="Loft" parent="LaundryBins" unique_id=1630202142 instance=ExtResource("102_bin")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 9.6, 6, 7.8)
 
-[node name="LaundryDay" parent="." instance=ExtResource("103_day")]
+[node name="LaundryDay" parent="." unique_id=281871129 instance=ExtResource("103_day")]
 
-[node name="Day" parent="LaundryDay" index="0" node_paths=PackedStringArray("spots", "stages")]
+[node name="Day" parent="LaundryDay" index="0" unique_id=393067151 node_paths=PackedStringArray("spots", "stages")]
 spots = NodePath("../../LaundryBins")
 stages = NodePath("../../Run/Stages")
 
 [node name="Washer" parent="." unique_id=173957773 instance=ExtResource("92_washer")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0.46, -3, 5.21)
 
-[node name="Washer" parent="Washer" index="0" node_paths=PackedStringArray("stages")]
+[node name="Washer" parent="Washer" index="0" unique_id=1814470256 node_paths=PackedStringArray("stages")]
 stages = NodePath("../../Run/Stages")
 
-[node name="PartSlot" type="StaticBody3D" parent="Washer"]
+[node name="PartSlot" type="StaticBody3D" parent="Washer" unique_id=1572220705]
 collision_layer = 0
 collision_mask = 0
 metadata/note = "Where a Machine Part goes in (core/91): it takes the crosshair only while a Part is out (MachinePartSlot.aim_body), else the Washer is aimed."
 
-[node name="Shape" type="CollisionShape3D" parent="Washer/PartSlot"]
+[node name="Shape" type="CollisionShape3D" parent="Washer/PartSlot" unique_id=1390821910]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.485, 0)
 shape = SubResource("BoxShape3D_part_slot")
 
-[node name="MachinePartSlot" type="Node" parent="Washer/PartSlot" node_paths=PackedStringArray("stages", "aim_body")]
+[node name="MachinePartSlot" type="Node" parent="Washer/PartSlot" unique_id=849218915 node_paths=PackedStringArray("stages", "aim_body")]
 script = ExtResource("101_slot")
 stages = NodePath("../../../Run/Stages")
 aim_body = NodePath("..")
 
 [node name="SockGenerators" type="Node3D" parent="." unique_id=1278909355]
 
-[node name="Basement" type="Node3D" parent="SockGenerators" node_paths=PackedStringArray("washer", "scan") unique_id=1769423610]
+[node name="Basement" type="Node3D" parent="SockGenerators" unique_id=1769423610 node_paths=PackedStringArray("washer", "scan")]
 script = ExtResource("82_generator")
+collections = Array[StringName]([&"simple", &"sport"])
 floor = 0
 lays_at_start = false
-collections = Array[StringName]([&"simple", &"sport"])
 washer = NodePath("../../Washer")
 scan = NodePath("../..")
 
@@ -819,16 +870,16 @@ script = ExtResource("84_trail")
 socks = 2
 to = Vector3(0, 1.5, -2)
 
-[node name="Generated" type="Node" parent="SockGenerators/Basement" node_paths=PackedStringArray("mess", "generator") unique_id=739529423]
+[node name="Generated" type="Node" parent="SockGenerators/Basement" unique_id=739529423 node_paths=PackedStringArray("mess", "generator")]
 script = ExtResource("85_generated")
 mess = NodePath("../../../Runtime/Socks/Mess")
 generator = NodePath("..")
 
-[node name="Ground" type="Node3D" parent="SockGenerators" node_paths=PackedStringArray("washer", "scan") unique_id=827901271]
+[node name="Ground" type="Node3D" parent="SockGenerators" unique_id=827901271 node_paths=PackedStringArray("washer", "scan")]
 script = ExtResource("82_generator")
+collections = Array[StringName]([&"food", &"patterns"])
 floor = 1
 lays_at_start = false
-collections = Array[StringName]([&"food", &"patterns"])
 washer = NodePath("../../Washer")
 scan = NodePath("../..")
 
@@ -851,16 +902,16 @@ script = ExtResource("84_trail")
 socks = 3
 to = Vector3(0, 1.5, -2)
 
-[node name="Generated" type="Node" parent="SockGenerators/Ground" node_paths=PackedStringArray("mess", "generator") unique_id=1342893363]
+[node name="Generated" type="Node" parent="SockGenerators/Ground" unique_id=1342893363 node_paths=PackedStringArray("mess", "generator")]
 script = ExtResource("85_generated")
 mess = NodePath("../../../Runtime/Socks/Mess")
 generator = NodePath("..")
 
-[node name="First" type="Node3D" parent="SockGenerators" node_paths=PackedStringArray("washer", "scan") unique_id=1297027466]
+[node name="First" type="Node3D" parent="SockGenerators" unique_id=1297027466 node_paths=PackedStringArray("washer", "scan")]
 script = ExtResource("82_generator")
+collections = Array[StringName]([&"animals", &"superhero"])
 floor = 2
 lays_at_start = false
-collections = Array[StringName]([&"animals", &"superhero"])
 washer = NodePath("../../Washer")
 scan = NodePath("../..")
 
@@ -883,16 +934,16 @@ script = ExtResource("84_trail")
 socks = 1
 to = Vector3(0, 1.5, -2)
 
-[node name="Generated" type="Node" parent="SockGenerators/First" node_paths=PackedStringArray("mess", "generator") unique_id=1654040943]
+[node name="Generated" type="Node" parent="SockGenerators/First" unique_id=1654040943 node_paths=PackedStringArray("mess", "generator")]
 script = ExtResource("85_generated")
 mess = NodePath("../../../Runtime/Socks/Mess")
 generator = NodePath("..")
 
-[node name="Attic" type="Node3D" parent="SockGenerators" node_paths=PackedStringArray("washer", "scan") unique_id=2043012127]
+[node name="Attic" type="Node3D" parent="SockGenerators" unique_id=2043012127 node_paths=PackedStringArray("washer", "scan")]
 script = ExtResource("82_generator")
+collections = Array[StringName]([&"winter", &"space"])
 floor = 3
 lays_at_start = false
-collections = Array[StringName]([&"winter", &"space"])
 washer = NodePath("../../Washer")
 scan = NodePath("../..")
 
@@ -903,7 +954,67 @@ size = Vector3(10.3, 2.4, 8.3)
 pairs = 130
 heap = true
 
-[node name="Generated" type="Node" parent="SockGenerators/Attic" node_paths=PackedStringArray("mess", "generator") unique_id=1461965443]
+[node name="Generated" type="Node" parent="SockGenerators/Attic" unique_id=1461965443 node_paths=PackedStringArray("mess", "generator")]
 script = ExtResource("85_generated")
 mess = NodePath("../../../Runtime/Socks/Mess")
 generator = NodePath("..")
+
+[editable path="Doors/WorkshopLobby"]
+[editable path="Doors/LaundryLobby"]
+[editable path="Doors/BoilerLobby"]
+[editable path="Doors/LobbyGarage"]
+[editable path="Doors/OfficeLanding"]
+[editable path="Doors/BedroomLanding"]
+[editable path="Doors/BathroomLanding"]
+[editable path="Doors/KidsLanding"]
+[editable path="Run"]
+[editable path="Run/MachineParts/Filter"]
+[editable path="Run/MachineParts/Motor"]
+[editable path="Run/MachineParts/DrumBelt"]
+[editable path="Run/MachineParts/Detergent"]
+[editable path="Cabinets/Laundry"]
+[editable path="Cabinets/Laundry/Drawer3"]
+[editable path="Cabinets/Laundry/Drawer4"]
+[editable path="Cabinets/Laundry/Drawer5"]
+[editable path="Cabinets/Laundry/Drawer6"]
+[editable path="Cabinets/Garage"]
+[editable path="Cabinets/Garage/Drawer3"]
+[editable path="Cabinets/Garage/Drawer4"]
+[editable path="Cabinets/Garage/Drawer5"]
+[editable path="Cabinets/Garage/Drawer6"]
+[editable path="Cabinets/Kitchen"]
+[editable path="Cabinets/Kitchen/Drawer3"]
+[editable path="Cabinets/Kitchen/Drawer4"]
+[editable path="Cabinets/Kitchen/Drawer5"]
+[editable path="Cabinets/Kitchen/Drawer6"]
+[editable path="Cabinets/Living"]
+[editable path="Cabinets/Living/Drawer3"]
+[editable path="Cabinets/Living/Drawer4"]
+[editable path="Cabinets/Living/Drawer5"]
+[editable path="Cabinets/Living/Drawer6"]
+[editable path="Cabinets/KidsNorth"]
+[editable path="Cabinets/KidsNorth/Drawer3"]
+[editable path="Cabinets/KidsNorth/Drawer4"]
+[editable path="Cabinets/KidsNorth/Drawer5"]
+[editable path="Cabinets/KidsNorth/Drawer6"]
+[editable path="Cabinets/KidsEast"]
+[editable path="Cabinets/KidsEast/Drawer3"]
+[editable path="Cabinets/KidsEast/Drawer4"]
+[editable path="Cabinets/KidsEast/Drawer5"]
+[editable path="Cabinets/KidsEast/Drawer6"]
+[editable path="Cabinets/LoftWest"]
+[editable path="Cabinets/LoftWest/Drawer3"]
+[editable path="Cabinets/LoftWest/Drawer4"]
+[editable path="Cabinets/LoftWest/Drawer5"]
+[editable path="Cabinets/LoftWest/Drawer6"]
+[editable path="Cabinets/LoftEast"]
+[editable path="Cabinets/LoftEast/Drawer3"]
+[editable path="Cabinets/LoftEast/Drawer4"]
+[editable path="Cabinets/LoftEast/Drawer5"]
+[editable path="Cabinets/LoftEast/Drawer6"]
+[editable path="FloorLocks/Ground"]
+[editable path="FloorLocks/First"]
+[editable path="FloorLocks/Attic"]
+[editable path="LaundryBins/Laundry"]
+[editable path="LaundryDay"]
+[editable path="Washer"]

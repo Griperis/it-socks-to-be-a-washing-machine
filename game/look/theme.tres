@@ -1,7 +1,348 @@
 [gd_resource type="Theme" format=3 uid="uid://llswt73vtefy"]
 
 [ext_resource type="Script" uid="uid://ftj7pj07q473" path="res://game/look/keycap_style.gd" id="1_keycap"]
-[ext_resource type="Texture2D" path="res://assets/look/slider_knob.svg" id="2_knob"]
+[ext_resource type="Texture2D" uid="uid://b5hb4ugam4ui1" path="res://assets/look/slider_knob.svg" id="2_knob"]
+
+[sub_resource type="StyleBox" id="Keycap_ChoiceButton_normal"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 11.0
+content_margin_bottom = 11.0
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
+lip = 5
+radius = 10
+margin = 6
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_esc"]
+
+[sub_resource type="StyleBox" id="Keycap_ChoiceButton_hover"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 11.0
+content_margin_bottom = 11.0
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.85098, 0.682353, 1)
+shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
+lip = 5
+radius = 10
+margin = 6
+
+[sub_resource type="StyleBox" id="Keycap_ChoiceButton_pressed"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 9.0
+content_margin_top = 9.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.94902, 0.607843, 0.294118, 1)
+shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
+lip = 5
+radius = 10
+margin = 6
+pressed = true
+
+[sub_resource type="StyleBox" id="Keycap_ChoiceOnButton_normal"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 11.0
+content_margin_bottom = 11.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.94902, 0.607843, 0.294118, 1)
+shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
+lip = 5
+radius = 10
+margin = 6
+
+[sub_resource type="StyleBox" id="Keycap_ChoiceOnButton_hover"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 11.0
+content_margin_bottom = 11.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.94902, 0.607843, 0.294118, 1)
+shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
+lip = 5
+radius = 10
+margin = 6
+
+[sub_resource type="StyleBox" id="Keycap_ChoiceOnButton_pressed"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 9.0
+content_margin_top = 9.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.94902, 0.607843, 0.294118, 1)
+shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
+lip = 5
+radius = 10
+margin = 6
+pressed = true
+
+[sub_resource type="StyleBox" id="Keycap_swatch"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 3.0
+content_margin_bottom = 3.0
+script = ExtResource("1_keycap")
+face_colour = Color(1, 1, 1, 1)
+shade_colour = Color(0.7, 0.7, 0.7, 1)
+lip = 3
+radius = 26
+border = 5
+margin = 0
+frame_colour = Color(0.7, 0.7, 0.7, 1)
+
+[sub_resource type="StyleBox" id="Keycap_swatch_pressed"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+script = ExtResource("1_keycap")
+face_colour = Color(1, 1, 1, 1)
+shade_colour = Color(0.7, 0.7, 0.7, 1)
+lip = 3
+radius = 26
+border = 5
+margin = 0
+pressed = true
+frame_colour = Color(0.7, 0.7, 0.7, 1)
+
+[sub_resource type="StyleBox" id="Keycap_swatch_picked"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+script = ExtResource("1_keycap")
+face_colour = Color(1, 1, 1, 1)
+shade_colour = Color(0.7, 0.7, 0.7, 1)
+radius = 26
+border = 5
+margin = 0
+
+[sub_resource type="StyleBox" id="Keycap_ExitButton_disabled"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.901961, 0.827451, 0.701961, 1)
+shade_colour = Color(0.72, 0.66, 0.56, 1)
+margin = 10
+
+[sub_resource type="StyleBox" id="Keycap_ExitButton_hover"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.896666, 0.436667, 0.36, 1)
+shade_colour = Color(0.658824, 0.223529, 0.164706, 1)
+margin = 10
+
+[sub_resource type="StyleBox" id="Keycap_ExitButton_pressed"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 14.0
+content_margin_top = 14.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.878431, 0.337255, 0.247059, 1)
+shade_colour = Color(0.658824, 0.223529, 0.164706, 1)
+margin = 10
+pressed = true
+
+[sub_resource type="StyleBox" id="Keycap_ExitButton_normal"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.878431, 0.337255, 0.247059, 1)
+shade_colour = Color(0.658824, 0.223529, 0.164706, 1)
+margin = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_final_column"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 0.22)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBox" id="Keycap_KeycapButton_disabled"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.901961, 0.827451, 0.701961, 1)
+shade_colour = Color(0.72, 0.66, 0.56, 1)
+margin = 10
+
+[sub_resource type="StyleBox" id="Keycap_KeycapButton_hover"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.956667, 0.666667, 0.4, 1)
+shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
+margin = 10
+
+[sub_resource type="StyleBox" id="Keycap_KeycapButton_pressed"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 14.0
+content_margin_top = 14.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.94902, 0.607843, 0.294118, 1)
+shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
+margin = 10
+pressed = true
+
+[sub_resource type="StyleBox" id="Keycap_KeycapButton_normal"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.94902, 0.607843, 0.294118, 1)
+shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
+margin = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_back"]
+bg_color = Color(0.901961, 0.827451, 0.701961, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.231373, 0.164706, 0.133333, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
+bg_color = Color(0.94902, 0.607843, 0.294118, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.231373, 0.164706, 0.133333, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_field"]
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.231373, 0.164706, 0.133333, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.94902, 0.607843, 0.294118, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.231373, 0.164706, 0.133333, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_track"]
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.901961, 0.827451, 0.701961, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.231373, 0.164706, 0.133333, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ready_on"]
+bg_color = Color(0.96, 0.76, 0.18, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.13, 0.1, 0.08, 1)
+corner_radius_top_left = 17
+corner_radius_top_right = 17
+corner_radius_bottom_right = 17
+corner_radius_bottom_left = 17
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ready_off"]
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.75, 0.68, 0.58, 1)
+corner_radius_top_left = 17
+corner_radius_top_right = 17
+corner_radius_bottom_right = 17
+corner_radius_bottom_left = 17
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_size_box"]
 content_margin_left = 7.0
@@ -19,240 +360,18 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="StyleBox" id="Keycap_panel"]
-script = ExtResource("1_keycap")
-face_colour = Color(1, 0.956863, 0.878431, 1)
-shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
-lip = 12
-radius = 22
-border = 4
-margin = 30
-pressed = false
-
 [sub_resource type="StyleBox" id="Keycap_stage_panel"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
 script = ExtResource("1_keycap")
 face_colour = Color(1, 0.956863, 0.878431, 1)
 shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
-lip = 6
 radius = 14
-border = 3
 margin = 10
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_KeycapButton_normal"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.94902, 0.607843, 0.294118, 1)
-shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
-lip = 6
-radius = 12
-border = 3
-margin = 10
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_KeycapButton_hover"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.956667, 0.666667, 0.4, 1)
-shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
-lip = 6
-radius = 12
-border = 3
-margin = 10
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_KeycapButton_pressed"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.94902, 0.607843, 0.294118, 1)
-shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
-lip = 6
-radius = 12
-border = 3
-margin = 10
-pressed = true
-
-[sub_resource type="StyleBox" id="Keycap_KeycapButton_disabled"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.901961, 0.827451, 0.701961, 1)
-shade_colour = Color(0.72, 0.66, 0.56, 1)
-lip = 6
-radius = 12
-border = 3
-margin = 10
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_ExitButton_normal"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.878431, 0.337255, 0.247059, 1)
-shade_colour = Color(0.658824, 0.223529, 0.164706, 1)
-lip = 6
-radius = 12
-border = 3
-margin = 10
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_ExitButton_hover"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.896666, 0.436667, 0.36, 1)
-shade_colour = Color(0.658824, 0.223529, 0.164706, 1)
-lip = 6
-radius = 12
-border = 3
-margin = 10
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_ExitButton_pressed"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.878431, 0.337255, 0.247059, 1)
-shade_colour = Color(0.658824, 0.223529, 0.164706, 1)
-lip = 6
-radius = 12
-border = 3
-margin = 10
-pressed = true
-
-[sub_resource type="StyleBox" id="Keycap_ExitButton_disabled"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.901961, 0.827451, 0.701961, 1)
-shade_colour = Color(0.72, 0.66, 0.56, 1)
-lip = 6
-radius = 12
-border = 3
-margin = 10
-pressed = false
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_esc"]
-
-[sub_resource type="StyleBox" id="Keycap_ChoiceButton_normal"]
-script = ExtResource("1_keycap")
-face_colour = Color(1, 0.956863, 0.878431, 1)
-shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
-lip = 5
-radius = 10
-border = 3
-margin = 6
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_ChoiceButton_hover"]
-script = ExtResource("1_keycap")
-face_colour = Color(1, 0.85098, 0.682353, 1)
-shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
-lip = 5
-radius = 10
-border = 3
-margin = 6
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_ChoiceButton_pressed"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.94902, 0.607843, 0.294118, 1)
-shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
-lip = 5
-radius = 10
-border = 3
-margin = 6
-pressed = true
-
-[sub_resource type="StyleBox" id="Keycap_ChoiceOnButton_normal"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.94902, 0.607843, 0.294118, 1)
-shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
-lip = 5
-radius = 10
-border = 3
-margin = 6
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_ChoiceOnButton_hover"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.94902, 0.607843, 0.294118, 1)
-shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
-lip = 5
-radius = 10
-border = 3
-margin = 6
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_ChoiceOnButton_pressed"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.94902, 0.607843, 0.294118, 1)
-shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
-lip = 5
-radius = 10
-border = 3
-margin = 6
-pressed = true
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_track"]
-bg_color = Color(0.901961, 0.827451, 0.701961, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.231373, 0.164706, 0.133333, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-anti_aliasing = true
-content_margin_top = 5.0
-content_margin_bottom = 5.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
-bg_color = Color(0.94902, 0.607843, 0.294118, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.231373, 0.164706, 0.133333, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-anti_aliasing = true
-content_margin_top = 5.0
-content_margin_bottom = 5.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_field"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.231373, 0.164706, 0.133333, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-anti_aliasing = true
-content_margin_left = 14.0
-content_margin_top = 8.0
-content_margin_right = 14.0
-content_margin_bottom = 8.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_back"]
-bg_color = Color(0.901961, 0.827451, 0.701961, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.231373, 0.164706, 0.133333, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-anti_aliasing = true
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
-bg_color = Color(0.94902, 0.607843, 0.294118, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.231373, 0.164706, 0.133333, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-anti_aliasing = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_subtitle_disc"]
 bg_color = Color(1, 0.956863, 0.878431, 1)
@@ -265,7 +384,295 @@ corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
-anti_aliasing = true
+
+[sub_resource type="StyleBox" id="Keycap_panel"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 30.0
+content_margin_top = 30.0
+content_margin_right = 42.0
+content_margin_bottom = 42.0
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
+lip = 12
+radius = 22
+border = 4
+margin = 30
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeHouse_normal"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.788235, 0.827451, 0.941176, 1)
+shade_colour = Color(0.117647, 0.168627, 0.333333, 1)
+radius = 14
+margin = 6
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeHouse_hover"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.890196, 0.913725, 0.984314, 1)
+shade_colour = Color(0.117647, 0.168627, 0.333333, 1)
+radius = 14
+margin = 6
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeHouse_pressed"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.788235, 0.827451, 0.941176, 1)
+shade_colour = Color(0.117647, 0.168627, 0.333333, 1)
+radius = 14
+margin = 6
+pressed = true
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeHouseMax_normal"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.788235, 0.827451, 0.941176, 1)
+shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
+radius = 14
+margin = 6
+frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
+frame_width = 5
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeHouseMax_hover"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.890196, 0.913725, 0.984314, 1)
+shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
+radius = 14
+margin = 6
+frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
+frame_width = 5
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeHouseMax_pressed"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.788235, 0.827451, 0.941176, 1)
+shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
+radius = 14
+margin = 6
+pressed = true
+frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
+frame_width = 5
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeOff_normal"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.839216, 0.819608, 0.784314, 1)
+shade_colour = Color(0.666667, 0.635294, 0.580392, 1)
+radius = 14
+margin = 6
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeOff_hover"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.858824, 0.839216, 0.807843, 1)
+shade_colour = Color(0.666667, 0.635294, 0.580392, 1)
+radius = 14
+margin = 6
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeOff_pressed"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.839216, 0.819608, 0.784314, 1)
+shade_colour = Color(0.666667, 0.635294, 0.580392, 1)
+radius = 14
+margin = 6
+pressed = true
+
+[sub_resource type="StyleBox" id="Keycap_UpgradePersonal_normal"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
+radius = 14
+margin = 6
+
+[sub_resource type="StyleBox" id="Keycap_UpgradePersonal_hover"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.85098, 0.682353, 1)
+shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
+radius = 14
+margin = 6
+
+[sub_resource type="StyleBox" id="Keycap_UpgradePersonal_pressed"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
+radius = 14
+margin = 6
+pressed = true
+
+[sub_resource type="StyleBox" id="Keycap_UpgradePersonalMax_normal"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
+radius = 14
+margin = 6
+frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
+frame_width = 5
+
+[sub_resource type="StyleBox" id="Keycap_UpgradePersonalMax_hover"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.85098, 0.682353, 1)
+shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
+radius = 14
+margin = 6
+frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
+frame_width = 5
+
+[sub_resource type="StyleBox" id="Keycap_UpgradePersonalMax_pressed"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
+radius = 14
+margin = 6
+pressed = true
+frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
+frame_width = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrade_glow_house"]
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0.372549, 0.498039, 0.878431, 0.85)
+shadow_size = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrade_glow_personal"]
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0.964706, 0.768627, 0.262745, 0.85)
+shadow_size = 16
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeTipHouse"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
+script = ExtResource("1_keycap")
+face_colour = Color(0.788235, 0.827451, 0.941176, 1)
+shade_colour = Color(0.117647, 0.168627, 0.333333, 1)
+lip = 8
+radius = 16
+margin = 16
+
+[sub_resource type="StyleBox" id="Keycap_UpgradeTipPersonal"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 24.0
+content_margin_bottom = 24.0
+script = ExtResource("1_keycap")
+face_colour = Color(1, 0.956863, 0.878431, 1)
+shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
+lip = 8
+radius = 16
+margin = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wardrobe_well"]
+content_margin_left = 12.0
+content_margin_top = 6.0
+content_margin_right = 12.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.231373, 0.164706, 0.133333, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_world_chosen"]
 content_margin_left = 10.0
@@ -289,297 +696,108 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ready_on"]
-bg_color = Color(0.96, 0.76, 0.18, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.13, 0.1, 0.08, 1)
-corner_radius_top_left = 17
-corner_radius_top_right = 17
-corner_radius_bottom_right = 17
-corner_radius_bottom_left = 17
-anti_aliasing = true
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ready_off"]
-bg_color = Color(1, 1, 1, 0)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0.75, 0.68, 0.58, 1)
-corner_radius_top_left = 17
-corner_radius_top_right = 17
-corner_radius_bottom_right = 17
-corner_radius_bottom_left = 17
-anti_aliasing = true
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wardrobe_well"]
-content_margin_left = 12.0
-content_margin_top = 6.0
-content_margin_right = 12.0
-content_margin_bottom = 6.0
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.231373, 0.164706, 0.133333, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="StyleBox" id="Keycap_swatch"]
-script = ExtResource("1_keycap")
-face_colour = Color(1, 1, 1, 1)
-shade_colour = Color(0.7, 0.7, 0.7, 1)
-lip = 3
-radius = 26
-border = 5
-margin = 0
-pressed = false
-frame_colour = Color(0.7, 0.7, 0.7, 1)
-
-[sub_resource type="StyleBox" id="Keycap_swatch_pressed"]
-script = ExtResource("1_keycap")
-face_colour = Color(1, 1, 1, 1)
-shade_colour = Color(0.7, 0.7, 0.7, 1)
-lip = 3
-radius = 26
-border = 5
-margin = 0
-pressed = true
-frame_colour = Color(0.7, 0.7, 0.7, 1)
-
-[sub_resource type="StyleBox" id="Keycap_swatch_picked"]
-script = ExtResource("1_keycap")
-face_colour = Color(1, 1, 1, 1)
-shade_colour = Color(0.7, 0.7, 0.7, 1)
-lip = 6
-radius = 26
-border = 5
-margin = 0
-pressed = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_final_column"]
-content_margin_left = 8.0
-content_margin_top = 8.0
-content_margin_right = 8.0
-content_margin_bottom = 8.0
-bg_color = Color(1, 1, 1, 0.22)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
-
-[sub_resource type="StyleBox" id="Keycap_UpgradeOff_normal"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.839216, 0.819608, 0.784314, 1)
-shade_colour = Color(0.666667, 0.635294, 0.580392, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_UpgradeOff_hover"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.858824, 0.839216, 0.807843, 1)
-shade_colour = Color(0.666667, 0.635294, 0.580392, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_UpgradeOff_pressed"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.839216, 0.819608, 0.784314, 1)
-shade_colour = Color(0.666667, 0.635294, 0.580392, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = true
-
-[sub_resource type="StyleBox" id="Keycap_UpgradePersonal_normal"]
-script = ExtResource("1_keycap")
-face_colour = Color(1, 0.956863, 0.878431, 1)
-shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_UpgradePersonal_hover"]
-script = ExtResource("1_keycap")
-face_colour = Color(1, 0.85098, 0.682353, 1)
-shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_UpgradePersonal_pressed"]
-script = ExtResource("1_keycap")
-face_colour = Color(1, 0.956863, 0.878431, 1)
-shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = true
-
-[sub_resource type="StyleBox" id="Keycap_UpgradePersonalMax_normal"]
-script = ExtResource("1_keycap")
-face_colour = Color(1, 0.956863, 0.878431, 1)
-shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = false
-frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
-frame_width = 5
-
-[sub_resource type="StyleBox" id="Keycap_UpgradePersonalMax_hover"]
-script = ExtResource("1_keycap")
-face_colour = Color(1, 0.85098, 0.682353, 1)
-shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = false
-frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
-frame_width = 5
-
-[sub_resource type="StyleBox" id="Keycap_UpgradePersonalMax_pressed"]
-script = ExtResource("1_keycap")
-face_colour = Color(1, 0.956863, 0.878431, 1)
-shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = true
-frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
-frame_width = 5
-
-[sub_resource type="StyleBox" id="Keycap_UpgradeTipPersonal"]
-script = ExtResource("1_keycap")
-face_colour = Color(1, 0.956863, 0.878431, 1)
-shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
-lip = 8
-radius = 16
-border = 3
-margin = 16
-pressed = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrade_glow_personal"]
-bg_color = Color(0, 0, 0, 0)
-corner_radius_top_left = 14
-corner_radius_top_right = 14
-corner_radius_bottom_right = 14
-corner_radius_bottom_left = 14
-shadow_color = Color(0.964706, 0.768627, 0.262745, 0.85)
-shadow_size = 16
-
-[sub_resource type="StyleBox" id="Keycap_UpgradeHouse_normal"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.788235, 0.827451, 0.941176, 1)
-shade_colour = Color(0.117647, 0.168627, 0.333333, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_UpgradeHouse_hover"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.890196, 0.913725, 0.984314, 1)
-shade_colour = Color(0.117647, 0.168627, 0.333333, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = false
-
-[sub_resource type="StyleBox" id="Keycap_UpgradeHouse_pressed"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.788235, 0.827451, 0.941176, 1)
-shade_colour = Color(0.117647, 0.168627, 0.333333, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = true
-
-[sub_resource type="StyleBox" id="Keycap_UpgradeHouseMax_normal"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.788235, 0.827451, 0.941176, 1)
-shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = false
-frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
-frame_width = 5
-
-[sub_resource type="StyleBox" id="Keycap_UpgradeHouseMax_hover"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.890196, 0.913725, 0.984314, 1)
-shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = false
-frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
-frame_width = 5
-
-[sub_resource type="StyleBox" id="Keycap_UpgradeHouseMax_pressed"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.788235, 0.827451, 0.941176, 1)
-shade_colour = Color(0.723529, 0.576471, 0.197059, 1)
-lip = 6
-radius = 14
-border = 3
-margin = 6
-pressed = true
-frame_colour = Color(0.964706, 0.768627, 0.262745, 1)
-frame_width = 5
-
-[sub_resource type="StyleBox" id="Keycap_UpgradeTipHouse"]
-script = ExtResource("1_keycap")
-face_colour = Color(0.788235, 0.827451, 0.941176, 1)
-shade_colour = Color(0.117647, 0.168627, 0.333333, 1)
-lip = 8
-radius = 16
-border = 3
-margin = 16
-pressed = false
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrade_glow_house"]
-bg_color = Color(0, 0, 0, 0)
-corner_radius_top_left = 14
-corner_radius_top_right = 14
-corner_radius_bottom_right = 14
-corner_radius_bottom_left = 14
-shadow_color = Color(0.372549, 0.498039, 0.878431, 0.85)
-shadow_size = 16
-
 [resource]
+Backdrop/base_type = &"ColorRect"
+ChoiceButton/base_type = &"Button"
+ChoiceButton/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
+ChoiceButton/colors/font_disabled_color = Color(0.231373, 0.164706, 0.133333, 1)
+ChoiceButton/colors/font_focus_color = Color(0.231373, 0.164706, 0.133333, 1)
+ChoiceButton/colors/font_hover_color = Color(0.231373, 0.164706, 0.133333, 1)
+ChoiceButton/colors/font_hover_pressed_color = Color(0.231373, 0.164706, 0.133333, 1)
+ChoiceButton/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
+ChoiceButton/colors/font_pressed_color = Color(0.231373, 0.164706, 0.133333, 1)
+ChoiceButton/constants/outline_size = 0
+ChoiceButton/font_sizes/font_size = 22
+ChoiceButton/styles/disabled = SubResource("Keycap_ChoiceButton_normal")
+ChoiceButton/styles/focus = SubResource("StyleBoxEmpty_esc")
+ChoiceButton/styles/hover = SubResource("Keycap_ChoiceButton_hover")
+ChoiceButton/styles/hover_pressed = SubResource("Keycap_ChoiceButton_pressed")
+ChoiceButton/styles/normal = SubResource("Keycap_ChoiceButton_normal")
+ChoiceButton/styles/pressed = SubResource("Keycap_ChoiceButton_pressed")
+ChoiceOnButton/base_type = &"Button"
+ChoiceOnButton/colors/font_color = Color(1, 1, 1, 1)
+ChoiceOnButton/colors/font_disabled_color = Color(1, 1, 1, 1)
+ChoiceOnButton/colors/font_focus_color = Color(1, 1, 1, 1)
+ChoiceOnButton/colors/font_hover_color = Color(1, 1, 1, 1)
+ChoiceOnButton/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+ChoiceOnButton/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
+ChoiceOnButton/colors/font_pressed_color = Color(1, 1, 1, 1)
+ChoiceOnButton/constants/outline_size = 6
+ChoiceOnButton/font_sizes/font_size = 22
+ChoiceOnButton/styles/disabled = SubResource("Keycap_ChoiceOnButton_normal")
+ChoiceOnButton/styles/focus = SubResource("StyleBoxEmpty_esc")
+ChoiceOnButton/styles/hover = SubResource("Keycap_ChoiceOnButton_hover")
+ChoiceOnButton/styles/hover_pressed = SubResource("Keycap_ChoiceOnButton_pressed")
+ChoiceOnButton/styles/normal = SubResource("Keycap_ChoiceOnButton_normal")
+ChoiceOnButton/styles/pressed = SubResource("Keycap_ChoiceOnButton_pressed")
+CloseButton/base_type = &"Button"
+CloseButton/colors/icon_focus_color = Color(1, 1, 1, 1)
+CloseButton/colors/icon_hover_color = Color(0.788235, 0.466667, 0.184314, 1)
+CloseButton/colors/icon_hover_pressed_color = Color(0.788235, 0.466667, 0.184314, 1)
+CloseButton/colors/icon_normal_color = Color(1, 1, 1, 1)
+CloseButton/colors/icon_pressed_color = Color(1, 1, 1, 1)
+CloseButton/constants/icon_max_width = 64
+CloseButton/styles/focus = SubResource("StyleBoxEmpty_esc")
+CloseButton/styles/hover = SubResource("StyleBoxEmpty_esc")
+CloseButton/styles/hover_pressed = SubResource("StyleBoxEmpty_esc")
+CloseButton/styles/normal = SubResource("StyleBoxEmpty_esc")
+CloseButton/styles/pressed = SubResource("StyleBoxEmpty_esc")
+ColourSwatch/base_type = &"Button"
+ColourSwatch/styles/disabled = SubResource("Keycap_swatch")
+ColourSwatch/styles/focus = SubResource("StyleBoxEmpty_esc")
+ColourSwatch/styles/hover = SubResource("Keycap_swatch")
+ColourSwatch/styles/hover_pressed = SubResource("Keycap_swatch_pressed")
+ColourSwatch/styles/normal = SubResource("Keycap_swatch")
+ColourSwatch/styles/pressed = SubResource("Keycap_swatch_pressed")
+ColourSwatchPicked/base_type = &"ColourSwatch"
+ColourSwatchPicked/styles/disabled = SubResource("Keycap_swatch_picked")
+ColourSwatchPicked/styles/hover = SubResource("Keycap_swatch_picked")
+ColourSwatchPicked/styles/hover_pressed = SubResource("Keycap_swatch_picked")
+ColourSwatchPicked/styles/normal = SubResource("Keycap_swatch_picked")
+ColourSwatchPicked/styles/pressed = SubResource("Keycap_swatch_picked")
+CornerKey/base_type = &"KeycapButton"
+CornerKey/constants/icon_max_width = 40
+EscButton/base_type = &"Button"
+EscButton/colors/font_color = Color(1, 1, 1, 1)
+EscButton/colors/font_focus_color = Color(0.788235, 0.466667, 0.184314, 1)
+EscButton/colors/font_hover_color = Color(0.788235, 0.466667, 0.184314, 1)
+EscButton/colors/font_hover_pressed_color = Color(0.788235, 0.466667, 0.184314, 1)
+EscButton/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
+EscButton/colors/font_pressed_color = Color(1, 1, 1, 1)
+EscButton/constants/h_separation = 6
+EscButton/constants/icon_max_width = 42
+EscButton/constants/outline_size = 8
+EscButton/font_sizes/font_size = 28
+EscButton/styles/focus = SubResource("StyleBoxEmpty_esc")
+EscButton/styles/hover = SubResource("StyleBoxEmpty_esc")
+EscButton/styles/hover_pressed = SubResource("StyleBoxEmpty_esc")
+EscButton/styles/normal = SubResource("StyleBoxEmpty_esc")
+EscButton/styles/pressed = SubResource("StyleBoxEmpty_esc")
+ExitButton/base_type = &"Button"
+ExitButton/colors/font_color = Color(1, 1, 1, 1)
+ExitButton/colors/font_disabled_color = Color(1, 1, 1, 1)
+ExitButton/colors/font_focus_color = Color(1, 1, 1, 1)
+ExitButton/colors/font_hover_color = Color(1, 1, 1, 1)
+ExitButton/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+ExitButton/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
+ExitButton/colors/font_pressed_color = Color(1, 1, 1, 1)
+ExitButton/constants/h_separation = 12
+ExitButton/constants/icon_max_width = 42
+ExitButton/constants/outline_size = 8
+ExitButton/font_sizes/font_size = 28
+ExitButton/styles/disabled = SubResource("Keycap_ExitButton_disabled")
+ExitButton/styles/focus = SubResource("StyleBoxEmpty_esc")
+ExitButton/styles/hover = SubResource("Keycap_ExitButton_hover")
+ExitButton/styles/hover_pressed = SubResource("Keycap_ExitButton_pressed")
+ExitButton/styles/normal = SubResource("Keycap_ExitButton_normal")
+ExitButton/styles/pressed = SubResource("Keycap_ExitButton_pressed")
+FinalCaption/base_type = &"PlainLabel"
+FinalCaption/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
+FinalCaption/font_sizes/font_size = 24
+FinalColumnFrame/base_type = &"PanelContainer"
+FinalColumnFrame/styles/panel = SubResource("StyleBoxFlat_final_column")
+FinalValue/base_type = &"FinalCaption"
+FinalValue/font_sizes/font_size = 44
 Heading1/base_type = &"OutlinedLabel"
 Heading1/font_sizes/font_size = 44
 Heading2/base_type = &"OutlinedLabel"
@@ -588,20 +806,96 @@ HintLabel/base_type = &"OutlinedLabel"
 HintLabel/font_sizes/font_size = 24
 Hud/colors/plain = Color(1, 1, 1, 1)
 Hud/colors/refusal = Color(0.95, 0.25, 0.2, 1)
+HudRow/base_type = &"HBoxContainer"
+HudRow/constants/separation = 6
+InkLabel/base_type = &"Label"
+InkLabel/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
+InkLabel/font_sizes/font_size = 24
+KeycapButton/base_type = &"Button"
+KeycapButton/colors/font_color = Color(1, 1, 1, 1)
+KeycapButton/colors/font_disabled_color = Color(1, 1, 1, 1)
+KeycapButton/colors/font_focus_color = Color(1, 1, 1, 1)
+KeycapButton/colors/font_hover_color = Color(1, 1, 1, 1)
+KeycapButton/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+KeycapButton/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
+KeycapButton/colors/font_pressed_color = Color(1, 1, 1, 1)
+KeycapButton/constants/h_separation = 12
+KeycapButton/constants/icon_max_width = 42
+KeycapButton/constants/outline_size = 8
+KeycapButton/font_sizes/font_size = 28
+KeycapButton/styles/disabled = SubResource("Keycap_KeycapButton_disabled")
+KeycapButton/styles/focus = SubResource("StyleBoxEmpty_esc")
+KeycapButton/styles/hover = SubResource("Keycap_KeycapButton_hover")
+KeycapButton/styles/hover_pressed = SubResource("Keycap_KeycapButton_pressed")
+KeycapButton/styles/normal = SubResource("Keycap_KeycapButton_normal")
+KeycapButton/styles/pressed = SubResource("Keycap_KeycapButton_pressed")
+LicenceLink/base_type = &"LinkButton"
+LicenceLink/colors/font_color = Color(0.788235, 0.466667, 0.184314, 1)
+LicenceLink/colors/font_focus_color = Color(0.788235, 0.466667, 0.184314, 1)
+LicenceLink/colors/font_hover_color = Color(0.94902, 0.607843, 0.294118, 1)
+LicenceLink/colors/font_pressed_color = Color(0.94902, 0.607843, 0.294118, 1)
+LicenceLink/font_sizes/font_size = 20
+LicenceLink/styles/focus = SubResource("StyleBoxEmpty_esc")
+LoadingBar/base_type = &"ProgressBar"
+LoadingBar/styles/background = SubResource("StyleBoxFlat_bar_back")
+LoadingBar/styles/fill = SubResource("StyleBoxFlat_bar_fill")
+MenuField/base_type = &"LineEdit"
+MenuField/colors/caret_color = Color(0.231373, 0.164706, 0.133333, 1)
+MenuField/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
+MenuField/colors/font_placeholder_color = Color(0.231373, 0.164706, 0.133333, 0.4)
+MenuField/font_sizes/font_size = 28
+MenuField/styles/focus = SubResource("StyleBoxEmpty_esc")
+MenuField/styles/normal = SubResource("StyleBoxFlat_field")
+MenuSlider/base_type = &"HSlider"
+MenuSlider/icons/grabber = ExtResource("2_knob")
+MenuSlider/icons/grabber_disabled = ExtResource("2_knob")
+MenuSlider/icons/grabber_highlight = ExtResource("2_knob")
+MenuSlider/styles/focus = SubResource("StyleBoxEmpty_esc")
+MenuSlider/styles/grabber_area = SubResource("StyleBoxFlat_fill")
+MenuSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_fill")
+MenuSlider/styles/slider = SubResource("StyleBoxFlat_track")
+MoneyLabel/base_type = &"OutlinedLabel"
+MoneyLabel/font_sizes/font_size = 30
+MoneyPopLabel/base_type = &"OutlinedLabel"
+MoneyPopLabel/font_sizes/font_size = 56
 OutlinedLabel/base_type = &"Label"
 OutlinedLabel/colors/font_color = Color(1, 1, 1, 1)
 OutlinedLabel/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
 OutlinedLabel/constants/outline_size = 8
 PlainLabel/base_type = &"OutlinedLabel"
 PlainLabel/constants/outline_size = 0
+PriceMax/base_type = &"UpgradePrice"
+PriceMax/colors/font_color = Color(0.964706, 0.768627, 0.262745, 1)
+PriceShort/base_type = &"UpgradePrice"
+PriceShort/colors/font_color = Color(1, 0.541176, 0.470588, 1)
 PromptLabel/base_type = &"OutlinedLabel"
 PromptLabel/font_sizes/font_size = 32
+ReadyCircle/base_type = &"PanelContainer"
+ReadyCircle/styles/panel = SubResource("StyleBoxFlat_ready_on")
+ReadyCircleOff/base_type = &"PanelContainer"
+ReadyCircleOff/styles/panel = SubResource("StyleBoxFlat_ready_off")
+RevealLine/base_type = &"RevealName"
+RevealLine/font_sizes/font_size = 28
+RevealName/base_type = &"OutlinedLabel"
+RevealName/constants/outline_size = 10
+RevealName/font_sizes/font_size = 44
+RevealRarity/base_type = &"RevealName"
+RevealRarity/font_sizes/font_size = 24
 RowLabel/base_type = &"OutlinedLabel"
 RowLabel/font_sizes/font_size = 28
+RowName/base_type = &"InkLabel"
+RowName/font_sizes/font_size = 26
+SectionHeadingHouse/base_type = &"Heading2"
+SectionHeadingHouse/colors/font_color = Color(0.890196, 0.913725, 0.984314, 1)
 SizeBox/base_type = &"PanelContainer"
 SizeBox/styles/panel = SubResource("StyleBoxFlat_size_box")
 SizeLetter/base_type = &"PlainLabel"
 SizeLetter/font_sizes/font_size = 23
+StagePanel/base_type = &"PanelContainer"
+StagePanel/styles/panel = SubResource("Keycap_stage_panel")
+StatusLabel/base_type = &"Label"
+StatusLabel/colors/font_color = Color(0.788235, 0.466667, 0.184314, 1)
+StatusLabel/font_sizes/font_size = 24
 SubtitleIcon/base_type = &"Panel"
 SubtitleIcon/styles/panel = SubResource("StyleBoxFlat_subtitle_disc")
 SubtitleLabel/base_type = &"OutlinedLabel"
@@ -611,258 +905,81 @@ SubtitleLabel/constants/outline_size = 10
 SubtitleLabel/font_sizes/font_size = 30
 ThinLabel/base_type = &"OutlinedLabel"
 ThinLabel/constants/outline_size = 6
-StagePanel/base_type = &"PanelContainer"
-StagePanel/styles/panel = SubResource("Keycap_stage_panel")
-TitlePanel/base_type = &"PanelContainer"
-TitlePanel/styles/panel = SubResource("Keycap_panel")
-KeycapButton/base_type = &"Button"
-KeycapButton/colors/font_color = Color(1, 1, 1, 1)
-KeycapButton/colors/font_pressed_color = Color(1, 1, 1, 1)
-KeycapButton/colors/font_hover_color = Color(1, 1, 1, 1)
-KeycapButton/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-KeycapButton/colors/font_focus_color = Color(1, 1, 1, 1)
-KeycapButton/colors/font_disabled_color = Color(1, 1, 1, 1)
-KeycapButton/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
-KeycapButton/constants/outline_size = 8
-KeycapButton/constants/h_separation = 12
-KeycapButton/constants/icon_max_width = 42
-KeycapButton/font_sizes/font_size = 28
-KeycapButton/styles/normal = SubResource("Keycap_KeycapButton_normal")
-KeycapButton/styles/hover = SubResource("Keycap_KeycapButton_hover")
-KeycapButton/styles/pressed = SubResource("Keycap_KeycapButton_pressed")
-KeycapButton/styles/hover_pressed = SubResource("Keycap_KeycapButton_pressed")
-KeycapButton/styles/disabled = SubResource("Keycap_KeycapButton_disabled")
-KeycapButton/styles/focus = SubResource("StyleBoxEmpty_esc")
-ExitButton/base_type = &"Button"
-ExitButton/colors/font_color = Color(1, 1, 1, 1)
-ExitButton/colors/font_pressed_color = Color(1, 1, 1, 1)
-ExitButton/colors/font_hover_color = Color(1, 1, 1, 1)
-ExitButton/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-ExitButton/colors/font_focus_color = Color(1, 1, 1, 1)
-ExitButton/colors/font_disabled_color = Color(1, 1, 1, 1)
-ExitButton/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
-ExitButton/constants/outline_size = 8
-ExitButton/constants/h_separation = 12
-ExitButton/constants/icon_max_width = 42
-ExitButton/font_sizes/font_size = 28
-ExitButton/styles/normal = SubResource("Keycap_ExitButton_normal")
-ExitButton/styles/hover = SubResource("Keycap_ExitButton_hover")
-ExitButton/styles/pressed = SubResource("Keycap_ExitButton_pressed")
-ExitButton/styles/hover_pressed = SubResource("Keycap_ExitButton_pressed")
-ExitButton/styles/disabled = SubResource("Keycap_ExitButton_disabled")
-ExitButton/styles/focus = SubResource("StyleBoxEmpty_esc")
-CornerKey/base_type = &"KeycapButton"
-CornerKey/constants/icon_max_width = 40
-EscButton/base_type = &"Button"
-EscButton/colors/font_color = Color(1, 1, 1, 1)
-EscButton/colors/font_pressed_color = Color(1, 1, 1, 1)
-EscButton/colors/font_hover_color = Color(0.788235, 0.466667, 0.184314, 1)
-EscButton/colors/font_hover_pressed_color = Color(0.788235, 0.466667, 0.184314, 1)
-EscButton/colors/font_focus_color = Color(0.788235, 0.466667, 0.184314, 1)
-EscButton/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
-EscButton/constants/outline_size = 8
-EscButton/constants/h_separation = 6
-EscButton/constants/icon_max_width = 42
-EscButton/font_sizes/font_size = 28
-EscButton/styles/normal = SubResource("StyleBoxEmpty_esc")
-EscButton/styles/hover = SubResource("StyleBoxEmpty_esc")
-EscButton/styles/pressed = SubResource("StyleBoxEmpty_esc")
-EscButton/styles/hover_pressed = SubResource("StyleBoxEmpty_esc")
-EscButton/styles/focus = SubResource("StyleBoxEmpty_esc")
-CloseButton/base_type = &"Button"
-CloseButton/colors/icon_normal_color = Color(1, 1, 1, 1)
-CloseButton/colors/icon_pressed_color = Color(1, 1, 1, 1)
-CloseButton/colors/icon_hover_color = Color(0.788235, 0.466667, 0.184314, 1)
-CloseButton/colors/icon_hover_pressed_color = Color(0.788235, 0.466667, 0.184314, 1)
-CloseButton/colors/icon_focus_color = Color(1, 1, 1, 1)
-CloseButton/constants/icon_max_width = 64
-CloseButton/styles/normal = SubResource("StyleBoxEmpty_esc")
-CloseButton/styles/hover = SubResource("StyleBoxEmpty_esc")
-CloseButton/styles/pressed = SubResource("StyleBoxEmpty_esc")
-CloseButton/styles/hover_pressed = SubResource("StyleBoxEmpty_esc")
-CloseButton/styles/focus = SubResource("StyleBoxEmpty_esc")
-ChoiceButton/base_type = &"Button"
-ChoiceButton/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
-ChoiceButton/colors/font_pressed_color = Color(0.231373, 0.164706, 0.133333, 1)
-ChoiceButton/colors/font_hover_color = Color(0.231373, 0.164706, 0.133333, 1)
-ChoiceButton/colors/font_hover_pressed_color = Color(0.231373, 0.164706, 0.133333, 1)
-ChoiceButton/colors/font_focus_color = Color(0.231373, 0.164706, 0.133333, 1)
-ChoiceButton/colors/font_disabled_color = Color(0.231373, 0.164706, 0.133333, 1)
-ChoiceButton/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
-ChoiceButton/constants/outline_size = 0
-ChoiceButton/font_sizes/font_size = 22
-ChoiceButton/styles/normal = SubResource("Keycap_ChoiceButton_normal")
-ChoiceButton/styles/disabled = SubResource("Keycap_ChoiceButton_normal")
-ChoiceButton/styles/hover = SubResource("Keycap_ChoiceButton_hover")
-ChoiceButton/styles/pressed = SubResource("Keycap_ChoiceButton_pressed")
-ChoiceButton/styles/hover_pressed = SubResource("Keycap_ChoiceButton_pressed")
-ChoiceButton/styles/focus = SubResource("StyleBoxEmpty_esc")
-ChoiceOnButton/base_type = &"Button"
-ChoiceOnButton/colors/font_color = Color(1, 1, 1, 1)
-ChoiceOnButton/colors/font_pressed_color = Color(1, 1, 1, 1)
-ChoiceOnButton/colors/font_hover_color = Color(1, 1, 1, 1)
-ChoiceOnButton/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-ChoiceOnButton/colors/font_focus_color = Color(1, 1, 1, 1)
-ChoiceOnButton/colors/font_disabled_color = Color(1, 1, 1, 1)
-ChoiceOnButton/colors/font_outline_color = Color(0.1, 0.07, 0.05, 1)
-ChoiceOnButton/constants/outline_size = 6
-ChoiceOnButton/font_sizes/font_size = 22
-ChoiceOnButton/styles/normal = SubResource("Keycap_ChoiceOnButton_normal")
-ChoiceOnButton/styles/disabled = SubResource("Keycap_ChoiceOnButton_normal")
-ChoiceOnButton/styles/hover = SubResource("Keycap_ChoiceOnButton_hover")
-ChoiceOnButton/styles/pressed = SubResource("Keycap_ChoiceOnButton_pressed")
-ChoiceOnButton/styles/hover_pressed = SubResource("Keycap_ChoiceOnButton_pressed")
-ChoiceOnButton/styles/focus = SubResource("StyleBoxEmpty_esc")
-MenuSlider/base_type = &"HSlider"
-MenuSlider/icons/grabber = ExtResource("2_knob")
-MenuSlider/icons/grabber_highlight = ExtResource("2_knob")
-MenuSlider/icons/grabber_disabled = ExtResource("2_knob")
-MenuSlider/styles/slider = SubResource("StyleBoxFlat_track")
-MenuSlider/styles/grabber_area = SubResource("StyleBoxFlat_fill")
-MenuSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_fill")
-MenuSlider/styles/focus = SubResource("StyleBoxEmpty_esc")
-MenuField/base_type = &"LineEdit"
-MenuField/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
-MenuField/colors/font_placeholder_color = Color(0.231373, 0.164706, 0.133333, 0.4)
-MenuField/colors/caret_color = Color(0.231373, 0.164706, 0.133333, 1)
-MenuField/font_sizes/font_size = 28
-MenuField/styles/normal = SubResource("StyleBoxFlat_field")
-MenuField/styles/focus = SubResource("StyleBoxEmpty_esc")
-InkLabel/base_type = &"Label"
-InkLabel/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
-InkLabel/font_sizes/font_size = 24
-RowName/base_type = &"InkLabel"
-RowName/font_sizes/font_size = 26
-WardrobeNameBox/base_type = &"PanelContainer"
-WardrobeNameBox/styles/panel = SubResource("StyleBoxFlat_wardrobe_well")
-WardrobeCount/base_type = &"InkLabel"
-WardrobeCount/font_sizes/font_size = 16
-ColourSwatch/base_type = &"Button"
-ColourSwatch/styles/normal = SubResource("Keycap_swatch")
-ColourSwatch/styles/hover = SubResource("Keycap_swatch")
-ColourSwatch/styles/pressed = SubResource("Keycap_swatch_pressed")
-ColourSwatch/styles/hover_pressed = SubResource("Keycap_swatch_pressed")
-ColourSwatch/styles/disabled = SubResource("Keycap_swatch")
-ColourSwatch/styles/focus = SubResource("StyleBoxEmpty_esc")
-ColourSwatchPicked/base_type = &"ColourSwatch"
-ColourSwatchPicked/styles/normal = SubResource("Keycap_swatch_picked")
-ColourSwatchPicked/styles/hover = SubResource("Keycap_swatch_picked")
-ColourSwatchPicked/styles/pressed = SubResource("Keycap_swatch_picked")
-ColourSwatchPicked/styles/hover_pressed = SubResource("Keycap_swatch_picked")
-ColourSwatchPicked/styles/disabled = SubResource("Keycap_swatch_picked")
-StatusLabel/base_type = &"Label"
-StatusLabel/colors/font_color = Color(0.788235, 0.466667, 0.184314, 1)
-StatusLabel/font_sizes/font_size = 24
 TitleHeading/base_type = &"OutlinedLabel"
 TitleHeading/font_sizes/font_size = 64
-LicenceLink/base_type = &"LinkButton"
-LicenceLink/colors/font_color = Color(0.788235, 0.466667, 0.184314, 1)
-LicenceLink/colors/font_hover_color = Color(0.94902, 0.607843, 0.294118, 1)
-LicenceLink/colors/font_pressed_color = Color(0.94902, 0.607843, 0.294118, 1)
-LicenceLink/colors/font_focus_color = Color(0.788235, 0.466667, 0.184314, 1)
-LicenceLink/font_sizes/font_size = 20
-LicenceLink/styles/focus = SubResource("StyleBoxEmpty_esc")
-LoadingBar/base_type = &"ProgressBar"
-LoadingBar/styles/background = SubResource("StyleBoxFlat_bar_back")
-LoadingBar/styles/fill = SubResource("StyleBoxFlat_bar_fill")
-Backdrop/base_type = &"ColorRect"
-HudRow/base_type = &"HBoxContainer"
-HudRow/constants/separation = 6
-FinalCaption/base_type = &"PlainLabel"
-FinalCaption/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
-FinalCaption/font_sizes/font_size = 24
-FinalValue/base_type = &"FinalCaption"
-FinalValue/font_sizes/font_size = 44
-FinalColumnFrame/base_type = &"PanelContainer"
-FinalColumnFrame/styles/panel = SubResource("StyleBoxFlat_final_column")
-RevealName/base_type = &"OutlinedLabel"
-RevealName/constants/outline_size = 10
-RevealName/font_sizes/font_size = 44
-RevealRarity/base_type = &"RevealName"
-RevealRarity/font_sizes/font_size = 24
-RevealLine/base_type = &"RevealName"
-RevealLine/font_sizes/font_size = 28
+TitlePanel/base_type = &"PanelContainer"
+TitlePanel/styles/panel = SubResource("Keycap_panel")
+UpgradeButtonHouse/base_type = &"Button"
+UpgradeButtonHouse/styles/disabled = SubResource("Keycap_UpgradeHouse_normal")
+UpgradeButtonHouse/styles/focus = SubResource("StyleBoxEmpty_esc")
+UpgradeButtonHouse/styles/hover = SubResource("Keycap_UpgradeHouse_hover")
+UpgradeButtonHouse/styles/hover_pressed = SubResource("Keycap_UpgradeHouse_pressed")
+UpgradeButtonHouse/styles/normal = SubResource("Keycap_UpgradeHouse_normal")
+UpgradeButtonHouse/styles/pressed = SubResource("Keycap_UpgradeHouse_pressed")
+UpgradeButtonHouseMax/base_type = &"Button"
+UpgradeButtonHouseMax/styles/disabled = SubResource("Keycap_UpgradeHouseMax_normal")
+UpgradeButtonHouseMax/styles/focus = SubResource("StyleBoxEmpty_esc")
+UpgradeButtonHouseMax/styles/hover = SubResource("Keycap_UpgradeHouseMax_hover")
+UpgradeButtonHouseMax/styles/hover_pressed = SubResource("Keycap_UpgradeHouseMax_pressed")
+UpgradeButtonHouseMax/styles/normal = SubResource("Keycap_UpgradeHouseMax_normal")
+UpgradeButtonHouseMax/styles/pressed = SubResource("Keycap_UpgradeHouseMax_pressed")
+UpgradeButtonHouseOff/base_type = &"Button"
+UpgradeButtonHouseOff/styles/disabled = SubResource("Keycap_UpgradeOff_normal")
+UpgradeButtonHouseOff/styles/focus = SubResource("StyleBoxEmpty_esc")
+UpgradeButtonHouseOff/styles/hover = SubResource("Keycap_UpgradeOff_hover")
+UpgradeButtonHouseOff/styles/hover_pressed = SubResource("Keycap_UpgradeOff_pressed")
+UpgradeButtonHouseOff/styles/normal = SubResource("Keycap_UpgradeOff_normal")
+UpgradeButtonHouseOff/styles/pressed = SubResource("Keycap_UpgradeOff_pressed")
+UpgradeButtonPersonal/base_type = &"Button"
+UpgradeButtonPersonal/styles/disabled = SubResource("Keycap_UpgradePersonal_normal")
+UpgradeButtonPersonal/styles/focus = SubResource("StyleBoxEmpty_esc")
+UpgradeButtonPersonal/styles/hover = SubResource("Keycap_UpgradePersonal_hover")
+UpgradeButtonPersonal/styles/hover_pressed = SubResource("Keycap_UpgradePersonal_pressed")
+UpgradeButtonPersonal/styles/normal = SubResource("Keycap_UpgradePersonal_normal")
+UpgradeButtonPersonal/styles/pressed = SubResource("Keycap_UpgradePersonal_pressed")
+UpgradeButtonPersonalMax/base_type = &"Button"
+UpgradeButtonPersonalMax/styles/disabled = SubResource("Keycap_UpgradePersonalMax_normal")
+UpgradeButtonPersonalMax/styles/focus = SubResource("StyleBoxEmpty_esc")
+UpgradeButtonPersonalMax/styles/hover = SubResource("Keycap_UpgradePersonalMax_hover")
+UpgradeButtonPersonalMax/styles/hover_pressed = SubResource("Keycap_UpgradePersonalMax_pressed")
+UpgradeButtonPersonalMax/styles/normal = SubResource("Keycap_UpgradePersonalMax_normal")
+UpgradeButtonPersonalMax/styles/pressed = SubResource("Keycap_UpgradePersonalMax_pressed")
+UpgradeButtonPersonalOff/base_type = &"Button"
+UpgradeButtonPersonalOff/styles/disabled = SubResource("Keycap_UpgradeOff_normal")
+UpgradeButtonPersonalOff/styles/focus = SubResource("StyleBoxEmpty_esc")
+UpgradeButtonPersonalOff/styles/hover = SubResource("Keycap_UpgradeOff_hover")
+UpgradeButtonPersonalOff/styles/hover_pressed = SubResource("Keycap_UpgradeOff_pressed")
+UpgradeButtonPersonalOff/styles/normal = SubResource("Keycap_UpgradeOff_normal")
+UpgradeButtonPersonalOff/styles/pressed = SubResource("Keycap_UpgradeOff_pressed")
+UpgradeGlowHouse/base_type = &"Panel"
+UpgradeGlowHouse/styles/panel = SubResource("StyleBoxFlat_upgrade_glow_house")
+UpgradeGlowPersonal/base_type = &"Panel"
+UpgradeGlowPersonal/styles/panel = SubResource("StyleBoxFlat_upgrade_glow_personal")
+UpgradeLevel/base_type = &"OutlinedLabel"
+UpgradeLevel/font_sizes/font_size = 18
+UpgradePrice/base_type = &"OutlinedLabel"
+UpgradePrice/font_sizes/font_size = 16
+UpgradeTipHouse/base_type = &"PanelContainer"
+UpgradeTipHouse/styles/panel = SubResource("Keycap_UpgradeTipHouse")
+UpgradeTipNeeds/base_type = &"UpgradeTipText"
+UpgradeTipNeeds/colors/font_color = Color(0.690196, 0.227451, 0.164706, 1)
+UpgradeTipNumbers/base_type = &"UpgradeTipText"
+UpgradeTipNumbers/colors/font_color = Color(0.788235, 0.466667, 0.184314, 1)
+UpgradeTipPersonal/base_type = &"PanelContainer"
+UpgradeTipPersonal/styles/panel = SubResource("Keycap_UpgradeTipPersonal")
+UpgradeTipText/base_type = &"PlainLabel"
+UpgradeTipText/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
+UpgradeTipText/font_sizes/font_size = 22
+UpgradeTipTitle/base_type = &"PlainLabel"
+UpgradeTipTitle/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
+UpgradeTipTitle/font_sizes/font_size = 28
+WardrobeCount/base_type = &"InkLabel"
+WardrobeCount/font_sizes/font_size = 16
+WardrobeNameBox/base_type = &"PanelContainer"
+WardrobeNameBox/styles/panel = SubResource("StyleBoxFlat_wardrobe_well")
 WhoName/base_type = &"InkLabel"
 WhoName/font_sizes/font_size = 28
 WorldRowChosen/base_type = &"PanelContainer"
 WorldRowChosen/styles/panel = SubResource("StyleBoxFlat_world_chosen")
 WorldRowPlain/base_type = &"PanelContainer"
 WorldRowPlain/styles/panel = SubResource("StyleBoxFlat_world_plain")
-ReadyCircle/base_type = &"PanelContainer"
-ReadyCircle/styles/panel = SubResource("StyleBoxFlat_ready_on")
-ReadyCircleOff/base_type = &"PanelContainer"
-ReadyCircleOff/styles/panel = SubResource("StyleBoxFlat_ready_off")
-MoneyLabel/base_type = &"OutlinedLabel"
-MoneyLabel/font_sizes/font_size = 30
-MoneyPopLabel/base_type = &"OutlinedLabel"
-MoneyPopLabel/font_sizes/font_size = 56
-UpgradeButtonPersonal/base_type = &"Button"
-UpgradeButtonPersonal/styles/normal = SubResource("Keycap_UpgradePersonal_normal")
-UpgradeButtonPersonal/styles/hover = SubResource("Keycap_UpgradePersonal_hover")
-UpgradeButtonPersonal/styles/pressed = SubResource("Keycap_UpgradePersonal_pressed")
-UpgradeButtonPersonal/styles/hover_pressed = SubResource("Keycap_UpgradePersonal_pressed")
-UpgradeButtonPersonal/styles/disabled = SubResource("Keycap_UpgradePersonal_normal")
-UpgradeButtonPersonal/styles/focus = SubResource("StyleBoxEmpty_esc")
-UpgradeButtonPersonalOff/base_type = &"Button"
-UpgradeButtonPersonalOff/styles/normal = SubResource("Keycap_UpgradeOff_normal")
-UpgradeButtonPersonalOff/styles/hover = SubResource("Keycap_UpgradeOff_hover")
-UpgradeButtonPersonalOff/styles/pressed = SubResource("Keycap_UpgradeOff_pressed")
-UpgradeButtonPersonalOff/styles/hover_pressed = SubResource("Keycap_UpgradeOff_pressed")
-UpgradeButtonPersonalOff/styles/disabled = SubResource("Keycap_UpgradeOff_normal")
-UpgradeButtonPersonalOff/styles/focus = SubResource("StyleBoxEmpty_esc")
-UpgradeButtonPersonalMax/base_type = &"Button"
-UpgradeButtonPersonalMax/styles/normal = SubResource("Keycap_UpgradePersonalMax_normal")
-UpgradeButtonPersonalMax/styles/hover = SubResource("Keycap_UpgradePersonalMax_hover")
-UpgradeButtonPersonalMax/styles/pressed = SubResource("Keycap_UpgradePersonalMax_pressed")
-UpgradeButtonPersonalMax/styles/hover_pressed = SubResource("Keycap_UpgradePersonalMax_pressed")
-UpgradeButtonPersonalMax/styles/disabled = SubResource("Keycap_UpgradePersonalMax_normal")
-UpgradeButtonPersonalMax/styles/focus = SubResource("StyleBoxEmpty_esc")
-UpgradeTipPersonal/base_type = &"PanelContainer"
-UpgradeTipPersonal/styles/panel = SubResource("Keycap_UpgradeTipPersonal")
-UpgradeGlowPersonal/base_type = &"Panel"
-UpgradeGlowPersonal/styles/panel = SubResource("StyleBoxFlat_upgrade_glow_personal")
-UpgradeButtonHouse/base_type = &"Button"
-UpgradeButtonHouse/styles/normal = SubResource("Keycap_UpgradeHouse_normal")
-UpgradeButtonHouse/styles/hover = SubResource("Keycap_UpgradeHouse_hover")
-UpgradeButtonHouse/styles/pressed = SubResource("Keycap_UpgradeHouse_pressed")
-UpgradeButtonHouse/styles/hover_pressed = SubResource("Keycap_UpgradeHouse_pressed")
-UpgradeButtonHouse/styles/disabled = SubResource("Keycap_UpgradeHouse_normal")
-UpgradeButtonHouse/styles/focus = SubResource("StyleBoxEmpty_esc")
-UpgradeButtonHouseOff/base_type = &"Button"
-UpgradeButtonHouseOff/styles/normal = SubResource("Keycap_UpgradeOff_normal")
-UpgradeButtonHouseOff/styles/hover = SubResource("Keycap_UpgradeOff_hover")
-UpgradeButtonHouseOff/styles/pressed = SubResource("Keycap_UpgradeOff_pressed")
-UpgradeButtonHouseOff/styles/hover_pressed = SubResource("Keycap_UpgradeOff_pressed")
-UpgradeButtonHouseOff/styles/disabled = SubResource("Keycap_UpgradeOff_normal")
-UpgradeButtonHouseOff/styles/focus = SubResource("StyleBoxEmpty_esc")
-UpgradeButtonHouseMax/base_type = &"Button"
-UpgradeButtonHouseMax/styles/normal = SubResource("Keycap_UpgradeHouseMax_normal")
-UpgradeButtonHouseMax/styles/hover = SubResource("Keycap_UpgradeHouseMax_hover")
-UpgradeButtonHouseMax/styles/pressed = SubResource("Keycap_UpgradeHouseMax_pressed")
-UpgradeButtonHouseMax/styles/hover_pressed = SubResource("Keycap_UpgradeHouseMax_pressed")
-UpgradeButtonHouseMax/styles/disabled = SubResource("Keycap_UpgradeHouseMax_normal")
-UpgradeButtonHouseMax/styles/focus = SubResource("StyleBoxEmpty_esc")
-UpgradeTipHouse/base_type = &"PanelContainer"
-UpgradeTipHouse/styles/panel = SubResource("Keycap_UpgradeTipHouse")
-UpgradeGlowHouse/base_type = &"Panel"
-UpgradeGlowHouse/styles/panel = SubResource("StyleBoxFlat_upgrade_glow_house")
-UpgradeLevel/base_type = &"OutlinedLabel"
-UpgradeLevel/font_sizes/font_size = 18
-UpgradePrice/base_type = &"OutlinedLabel"
-UpgradePrice/font_sizes/font_size = 16
-PriceShort/base_type = &"UpgradePrice"
-PriceShort/colors/font_color = Color(1, 0.541176, 0.470588, 1)
-PriceMax/base_type = &"UpgradePrice"
-PriceMax/colors/font_color = Color(0.964706, 0.768627, 0.262745, 1)
-UpgradeTipTitle/base_type = &"PlainLabel"
-UpgradeTipTitle/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
-UpgradeTipTitle/font_sizes/font_size = 28
-UpgradeTipText/base_type = &"PlainLabel"
-UpgradeTipText/colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
-UpgradeTipText/font_sizes/font_size = 22
-UpgradeTipNumbers/base_type = &"UpgradeTipText"
-UpgradeTipNumbers/colors/font_color = Color(0.788235, 0.466667, 0.184314, 1)
-UpgradeTipNeeds/base_type = &"UpgradeTipText"
-UpgradeTipNeeds/colors/font_color = Color(0.690196, 0.227451, 0.164706, 1)
-SectionHeadingHouse/base_type = &"Heading2"
-SectionHeadingHouse/colors/font_color = Color(0.890196, 0.913725, 0.984314, 1)

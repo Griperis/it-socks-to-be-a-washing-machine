@@ -9,7 +9,7 @@ extends Resource
 @export var colours: Array[Color] = [Color("f08a7a"), Color("4fb3a9"), Color("e3b448"), Color("b49ad8"),
 		Color("8fd6a8"), Color("86bfe8"), Color("e89ab4"), Color("55595f")]
 ## Their names, in the same order.
-@export var colour_names: PackedStringArray = ["coral", "teal", "mustard", "lilac", "mint", "sky blue", "rose", "charcoal"]
+@export var colour_names: Array[String] = ["coral", "teal", "mustard", "lilac", "mint", "sky blue", "rose", "charcoal"]
 ## The most players at once, the Host included (Q2443); the next is refused "The game is full".
 @export_range(1, 8, 1) var max_players := 4
 ## A new joiner stands this far to the Host's side, facing the same way (Q2448); a second joiner the

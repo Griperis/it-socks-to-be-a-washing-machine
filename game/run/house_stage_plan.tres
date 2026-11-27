@@ -1,37 +1,53 @@
-[gd_resource type="Resource" script_class="StagePlan" format=3]
+[gd_resource type="Resource" script_class="StagePlan" format=3 uid="uid://ds3vckygf8rpv"]
 
-[ext_resource type="Script" path="res://game/run/stage_plan.gd" id="1_plan"]
-[ext_resource type="Script" path="res://game/run/stage.gd" id="2_stage"]
-[ext_resource type="Script" path="res://game/ui/stage_bar_phase.gd" id="3_phase"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_filter.tres" id="4_part"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_motor.tres" id="5_part"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_drum_belt.tres" id="6_part"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_detergent.tres" id="7_part"]
+[ext_resource type="Script" uid="uid://cemc3u2nrs1dj" path="res://game/run/stage_plan.gd" id="1_plan"]
+[ext_resource type="Script" uid="uid://05jxt3pevbv5" path="res://game/run/stage.gd" id="2_stage"]
+[ext_resource type="Script" uid="uid://diaweqttllnwm" path="res://game/ui/stage_bar_phase.gd" id="3_phase"]
+[ext_resource type="Resource" uid="uid://c8blxpue0cacg" path="res://game/entities/machine_part/part_filter.tres" id="4_part"]
+[ext_resource type="Resource" uid="uid://br8ugvebmpffv" path="res://game/entities/machine_part/part_motor.tres" id="5_part"]
+[ext_resource type="Resource" uid="uid://ba3jvy2k36fgk" path="res://game/entities/machine_part/part_drum_belt.tres" id="6_part"]
+[ext_resource type="Resource" uid="uid://kjxfml1u8iqe" path="res://game/entities/machine_part/part_detergent.tres" id="7_part"]
+[ext_resource type="Resource" uid="uid://065dcqng2efe" path="res://game/voice/triggers/cutscene_fix_1.tres" id="11_trigger"]
+[ext_resource type="Resource" uid="uid://cw4x5o0ldw64f" path="res://game/voice/triggers/cutscene_fix_2.tres" id="12_trigger"]
+[ext_resource type="Resource" uid="uid://d3cl0oi0aok6d" path="res://game/voice/triggers/cutscene_fix_3.tres" id="13_trigger"]
+[ext_resource type="Resource" uid="uid://cq4r6eyho4be1" path="res://game/voice/triggers/cutscene_fix_4.tres" id="14_trigger"]
+[ext_resource type="Resource" uid="uid://djiesmi21phin" path="res://game/run/fix_scenes/fix_scene_1.tres" id="21_scene"]
+[ext_resource type="Resource" uid="uid://cjbu5ko1b001i" path="res://game/run/fix_scenes/fix_scene_2.tres" id="22_scene"]
+[ext_resource type="Resource" uid="uid://4yw5ciakxeeq" path="res://game/run/fix_scenes/fix_scene_3.tres" id="23_scene"]
+[ext_resource type="Resource" uid="uid://cod0blb3h0fgq" path="res://game/run/fix_scenes/fix_scene_4.tres" id="24_scene"]
+[ext_resource type="Resource" uid="uid://biwq53to2mumi" path="res://game/voice/triggers/tree_floor_attic.tres" id="tf_attic"]
+[ext_resource type="Resource" uid="uid://db6gw7r76imur" path="res://game/voice/triggers/tree_floor_first.tres" id="tf_first"]
+[ext_resource type="Resource" uid="uid://pin71uoec0f6" path="res://game/voice/triggers/tree_floor_ground.tres" id="tf_ground"]
+[ext_resource type="Resource" uid="uid://bo4dkgadaka2i" path="res://game/voice/triggers/tree_hint_attic.tres" id="th_attic"]
+[ext_resource type="Resource" uid="uid://bw0ehglpjn56" path="res://game/voice/triggers/tree_hint_basement.tres" id="th_basement"]
+[ext_resource type="Resource" uid="uid://dhio13mn5ounl" path="res://game/voice/triggers/tree_hint_first.tres" id="th_first"]
+[ext_resource type="Resource" uid="uid://bpllnln1g2gvh" path="res://game/voice/triggers/tree_hint_ground.tres" id="th_ground"]
+[ext_resource type="Resource" uid="uid://bs7eqh5ewl5aw" path="res://game/voice/triggers/tree_part_attic.tres" id="tp_attic"]
+[ext_resource type="Resource" uid="uid://blki2kgvwc6tw" path="res://game/voice/triggers/tree_part_basement.tres" id="tp_basement"]
+[ext_resource type="Resource" uid="uid://dfl76aa0g1tv3" path="res://game/voice/triggers/tree_part_first.tres" id="tp_first"]
+[ext_resource type="Resource" uid="uid://bkon5433couol" path="res://game/voice/triggers/tree_part_ground.tres" id="tp_ground"]
 
-[ext_resource type="Resource" path="res://game/voice/triggers/cutscene_fix_1.tres" id="11_trigger"]
-[ext_resource type="Resource" path="res://game/run/fix_scenes/fix_scene_1.tres" id="21_scene"]
-[ext_resource type="Resource" path="res://game/voice/triggers/cutscene_fix_2.tres" id="12_trigger"]
-[ext_resource type="Resource" path="res://game/run/fix_scenes/fix_scene_2.tres" id="22_scene"]
-[ext_resource type="Resource" path="res://game/voice/triggers/cutscene_fix_3.tres" id="13_trigger"]
-[ext_resource type="Resource" path="res://game/run/fix_scenes/fix_scene_3.tres" id="23_scene"]
-[ext_resource type="Resource" path="res://game/voice/triggers/cutscene_fix_4.tres" id="14_trigger"]
-[ext_resource type="Resource" path="res://game/run/fix_scenes/fix_scene_4.tres" id="24_scene"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_hint_basement.tres" id="th_basement"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_part_basement.tres" id="tp_basement"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_hint_ground.tres" id="th_ground"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_part_ground.tres" id="tp_ground"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_floor_ground.tres" id="tf_ground"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_hint_first.tres" id="th_first"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_part_first.tres" id="tp_first"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_floor_first.tres" id="tf_first"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_hint_attic.tres" id="th_attic"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_part_attic.tres" id="tp_attic"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_floor_attic.tres" id="tf_attic"]
+[sub_resource type="Resource" id="Resource_after"]
+script = ExtResource("3_phase")
+text = "Wash clothes %d/%d"
+source = &"laundry_bins"
+icons = 2
+icon = "laundry_bin"
+
+[sub_resource type="Resource" id="Resource_goal"]
+script = ExtResource("3_phase")
+text = "Wash the laundry"
+track = false
+
+[sub_resource type="Resource" id="Resource_stage_phase"]
+script = ExtResource("3_phase")
+text = "Stage %d: %s  %d/%d"
+source = &"stage_rows"
+icons = 1
 
 [sub_resource type="Resource" id="Resource_stage1"]
 script = ExtResource("2_stage")
 title = "Basement"
-pairs = 50
 part = ExtResource("4_part")
 comment_set = 1
 fix_cutscene = ExtResource("11_trigger")
@@ -80,24 +96,6 @@ fix_script = ExtResource("24_scene")
 tree_hint = ExtResource("th_attic")
 tree_part_comment = ExtResource("tp_attic")
 tree_floor_comment = ExtResource("tf_attic")
-
-[sub_resource type="Resource" id="Resource_goal"]
-script = ExtResource("3_phase")
-text = "Wash the laundry"
-track = false
-
-[sub_resource type="Resource" id="Resource_stage_phase"]
-script = ExtResource("3_phase")
-text = "Stage %d: %s  %d/%d"
-source = &"stage_rows"
-icons = 1
-
-[sub_resource type="Resource" id="Resource_after"]
-script = ExtResource("3_phase")
-text = "Wash clothes %d/%d"
-source = &"laundry_bins"
-icons = 2
-icon = "laundry_bin"
 
 [resource]
 script = ExtResource("1_plan")

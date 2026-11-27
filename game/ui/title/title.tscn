@@ -6,9 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://dft3tg0kq0vvb" path="res://assets/ui/menu_options.svg" id="4_options"]
 [ext_resource type="Texture2D" uid="uid://cptq4se7vvdh5" path="res://assets/ui/menu_exit.svg" id="5_exit"]
 [ext_resource type="Texture2D" uid="uid://bsaunnyq7oikd" path="res://assets/ui/menu_licence.svg" id="6_licence"]
-[ext_resource type="Texture2D" path="res://assets/ui/menu_encyclopedia.svg" id="7_encyclopedia"]
-[ext_resource type="Texture2D" path="res://assets/ui/menu_profile.svg" id="8_profile"]
-[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
+[ext_resource type="Texture2D" uid="uid://cjjj4ppgrcueb" path="res://assets/ui/menu_encyclopedia.svg" id="7_encyclopedia"]
+[ext_resource type="Texture2D" uid="uid://c06c02j5j51lo" path="res://assets/ui/menu_profile.svg" id="8_profile"]
+[ext_resource type="PackedScene" uid="uid://bdknhn3ghwi78" path="res://game/ui/close_button.tscn" id="close_btn"]
 
 [node name="Title" type="Control" unique_id=531573]
 layout_mode = 3
@@ -70,7 +70,6 @@ theme_type_variation = &"TitleHeading"
 text = "It Socks"
 horizontal_alignment = 1
 
-
 [node name="Solo" type="Button" parent="Pages/Center/Column/Panel/Stack/Home" unique_id=602844]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 72)
@@ -78,7 +77,6 @@ layout_mode = 2
 theme_type_variation = &"KeycapButton"
 text = "Solo"
 icon = ExtResource("2_play")
-
 
 [node name="MultiplayerKey" type="Button" parent="Pages/Center/Column/Panel/Stack/Home" unique_id=610763]
 unique_name_in_owner = true
@@ -88,7 +86,6 @@ theme_type_variation = &"KeycapButton"
 text = "Multiplayer"
 icon = ExtResource("3_coop")
 
-
 [node name="OptionsKey" type="Button" parent="Pages/Center/Column/Panel/Stack/Home" unique_id=618682]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 72)
@@ -96,7 +93,6 @@ layout_mode = 2
 theme_type_variation = &"KeycapButton"
 text = "Options"
 icon = ExtResource("4_options")
-
 
 [node name="Quit" type="Button" parent="Pages/Center/Column/Panel/Stack/Home" unique_id=626601]
 unique_name_in_owner = true
@@ -118,7 +114,6 @@ theme_type_variation = &"Heading1"
 text = "Multiplayer"
 horizontal_alignment = 1
 
-
 [node name="NameLabel" type="Label" parent="Pages/Center/Column/Panel/Stack/Multiplayer" unique_id=689953]
 layout_mode = 2
 theme_type_variation = &"InkLabel"
@@ -138,7 +133,6 @@ layout_mode = 2
 theme_type_variation = &"KeycapButton"
 text = "Host"
 icon = ExtResource("3_coop")
-
 
 [node name="JoinKey" type="Button" parent="Pages/Center/Column/Panel/Stack/Multiplayer" unique_id=658277]
 unique_name_in_owner = true
@@ -189,6 +183,10 @@ layout_mode = 2
 theme_type_variation = &"InkLabel"
 text = "The host's firewall must let It Socks through on UDP port 24680"
 autowrap_mode = 3
+
+[node name="Close" parent="Pages/Center/Column/Panel" unique_id=1884091446 instance=ExtResource("close_btn")]
+unique_name_in_owner = true
+layout_mode = 2
 
 [node name="Status" type="Label" parent="Pages/Center/Column" unique_id=753305]
 unique_name_in_owner = true
@@ -271,6 +269,3 @@ offset_bottom = -24.0
 grow_vertical = 0
 theme_type_variation = &"KeycapButton"
 text = "Zoo"
-
-[node name="Close" parent="Pages/Center/Column/Panel" instance=ExtResource("close_btn")]
-unique_name_in_owner = true

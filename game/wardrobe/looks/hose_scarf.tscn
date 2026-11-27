@@ -22,7 +22,7 @@ rings = 3
 
 [node name="hose_scarf" unique_id=455452506 instance=ExtResource("1_glb")]
 
-[node name="Drops" type="GPUParticles3D" parent="hose_scarf/hose_scarf_rig/Skeleton3D/hose_scarf_mesh" parent_id_path=PackedInt32Array(244264327) index="0" unique_id=384704314]
+[node name="Drops" type="GPUParticles3D" parent="hose_scarf/hose_scarf_rig/Skeleton3D/hose_scarf_mesh" parent_id_path=PackedInt32Array(501496608) index="0" unique_id=384704314]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.3)
 cast_shadow = 0
 amount = 1

@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://b0dgpaqabl8x4"]
 
 [ext_resource type="PackedScene" uid="uid://cxqpef0qggsru" path="res://game/furniture/looks/looks_old_tree.tscn" id="1_5pto0"]
-[ext_resource type="Script" path="res://game/furniture/old_tree.gd" id="2_tree"]
+[ext_resource type="Script" uid="uid://b6tuytdysvngb" path="res://game/furniture/old_tree.gd" id="2_tree"]
 [ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="3_outline"]
-[ext_resource type="PackedScene" path="res://game/ui/upgrade_menu/upgrade_menu.tscn" id="4_menu"]
-[ext_resource type="Resource" path="res://game/voice/speakers/old_tree.tres" id="5_speaker"]
-[ext_resource type="Resource" path="res://game/furniture/old_tree_tuning.tres" id="6_tuning"]
-[ext_resource type="Script" path="res://game/voice/voice_source.gd" id="7_voice"]
+[ext_resource type="PackedScene" uid="uid://1nrmlulsgnx0" path="res://game/ui/upgrade_menu/upgrade_menu.tscn" id="4_menu"]
+[ext_resource type="Resource" uid="uid://di3lqauv13wvg" path="res://game/voice/speakers/old_tree.tres" id="5_speaker"]
+[ext_resource type="Resource" uid="uid://ugjrc7y02jfw" path="res://game/furniture/old_tree_tuning.tres" id="6_tuning"]
+[ext_resource type="Script" uid="uid://7svijeoo82ul" path="res://game/voice/voice_source.gd" id="7_voice"]
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_m8l2f"]
 points = PackedVector3Array(0.07007, 1.01991, -0.11506, 0.08056, 1.0293, -0.19911, -0.0741, 1.03415, -0.32212, -0.16186, 1.03569, -0.38049, -0.39578, 1.02267, -0.37326, -0.5157, 1.0152, -0.362, -0.65274, 0.99412, -0.22997, -0.71451, 0.98326, -0.15756, -0.65148, 0.97, -0.00015, -0.60859, 0.96393, 0.07888, -0.39294, 0.96847, 0.14314, -0.2777, 0.97176, 0.16928, -0.07182, 0.99068, 0.092, 0.029, 1.00085, 0.04556, -0.32451, 1.28007, -0.08558)
@@ -104,7 +104,7 @@ metadata/rooms = ["Garage"]
 metadata/plan_spot = "The Old Tree (house/45: the Upgrade station, a garage corner)"
 metadata/note = "The Old Tree (Q1516): a forgotten artificial X-mas tree pulled half out of its torn box, the decorations box beside it, a tangled light string with a few bulbs still glowing warm (Q1509, Q1517; the material 'bulb_warm' is emissive). The same look all game (Q1510). Its back (-z) goes to a wall: the tree's box at -x, the decorations box at +x. lamp: the piece-local point of the one small warm light the game hangs by the lit bulbs."
 
-[node name="OldTree" type="Node" parent="." node_paths=PackedStringArray("menu", "voice", "call_voice")]
+[node name="OldTree" type="Node" parent="." unique_id=2080706204 node_paths=PackedStringArray("menu", "voice", "call_voice")]
 script = ExtResource("2_tree")
 menu = NodePath("../UpgradeMenu")
 speaker = ExtResource("5_speaker")
@@ -114,19 +114,19 @@ call_voice = NodePath("../CallVoice")
 
 [node name="Looks" parent="." unique_id=1317015923 instance=ExtResource("1_5pto0")]
 
-[node name="Outline" type="Node3D" parent="."]
+[node name="Outline" type="Node3D" parent="." unique_id=1674512187]
 visible = false
 script = ExtResource("3_outline")
 meshes = Array[NodePath]([NodePath("../Looks/Body")])
 
-[node name="UpgradeMenu" parent="." instance=ExtResource("4_menu")]
+[node name="UpgradeMenu" parent="." unique_id=1046876429 instance=ExtResource("4_menu")]
 
-[node name="Voice" type="Node3D" parent="."]
+[node name="Voice" type="Node3D" parent="." unique_id=30807041]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.31, 1.33, -0.12)
 script = ExtResource("7_voice")
 speaker = ExtResource("5_speaker")
 
-[node name="CallVoice" type="Node3D" parent="."]
+[node name="CallVoice" type="Node3D" parent="." unique_id=1885973878]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.31, 1.33, -0.12)
 script = ExtResource("7_voice")
 

@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://85ec17ipom08"]
 
 [ext_resource type="PackedScene" uid="uid://bymdlh6c8uk56" path="res://assets/wardrobe/hero_boots.glb" id="1_glb"]
 

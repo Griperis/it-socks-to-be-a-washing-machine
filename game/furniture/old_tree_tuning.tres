@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="OldTreeTuning" format=3]
+[gd_resource type="Resource" script_class="OldTreeTuning" format=3 uid="uid://ugjrc7y02jfw"]
 
-[ext_resource type="Script" path="res://game/furniture/old_tree_tuning.gd" id="1_tuning"]
+[ext_resource type="Script" uid="uid://b7wtwu4nlrkwd" path="res://game/furniture/old_tree_tuning.gd" id="1_tuning"]
 
 [resource]
 script = ExtResource("1_tuning")
+stage_thresholds = PackedFloat32Array(0.5, 0.8, 0.95)

@@ -1,14 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://of6jkomt6olk"]
 
-[node name="FinalTotalCell" type="VBoxContainer"]
+[node name="FinalTotalCell" type="VBoxContainer" unique_id=615131885]
 theme_override_constants/separation = 0
 
-[node name="Caption" type="Label" parent="."]
+[node name="Caption" type="Label" parent="." unique_id=1504970844]
 layout_mode = 2
 theme_type_variation = &"FinalCaption"
 horizontal_alignment = 1
 
-[node name="Value" type="Label" parent="."]
+[node name="Value" type="Label" parent="." unique_id=158095655]
 layout_mode = 2
 theme_type_variation = &"FinalValue"
 horizontal_alignment = 1

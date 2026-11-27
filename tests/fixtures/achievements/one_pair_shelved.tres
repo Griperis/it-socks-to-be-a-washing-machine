@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="Achievement" format=3]
+[gd_resource type="Resource" script_class="Achievement" format=3 uid="uid://sysstih7nb6y"]
 
-[ext_resource type="Script" path="res://game/profile/achievement.gd" id="1_a"]
+[ext_resource type="Script" uid="uid://bl7t4exy85efv" path="res://game/profile/achievement.gd" id="1_a"]
 
 [resource]
 script = ExtResource("1_a")

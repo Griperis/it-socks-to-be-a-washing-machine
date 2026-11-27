@@ -1,12 +1,10 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dd4tghyqwly1s"]
 
-[node name="SizeBox" type="PanelContainer"]
+[node name="SizeBox" type="PanelContainer" unique_id=1114847358]
 size_flags_vertical = 4
 mouse_filter = 2
 theme_type_variation = &"SizeBox"
 
-[node name="Letter" type="Label" parent="."]
+[node name="Letter" type="Label" parent="." unique_id=343334456]
 layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
 theme_type_variation = &"SizeLetter"

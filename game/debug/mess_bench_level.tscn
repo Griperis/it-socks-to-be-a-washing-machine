@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bq3k03tw0pu2k" path="res://game/parts/parts.gd" id="3_parts"]
 [ext_resource type="Script" uid="uid://fvy7sub2nyv5" path="res://game/zoo/heap/heap_spout.gd" id="4_spout"]
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="5_designs"]
-[ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="6_hands_tuning"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="6_hands_tuning"]
 [ext_resource type="PackedScene" uid="uid://ccaa5ngdrkqig" path="res://game/entities/door/door.tscn" id="8_door"]
 [ext_resource type="PackedScene" uid="uid://bkncq1hu4v824" path="res://game/entities/drawer/drawer.tscn" id="9_drawer"]
 

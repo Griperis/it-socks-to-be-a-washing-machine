@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="SoleCuesTuning" format=3]
+[gd_resource type="Resource" script_class="SoleCuesTuning" format=3 uid="uid://bqnvlbcj7a3x7"]
 
-[ext_resource type="Script" path="res://game/ui/sole_cues_tuning.gd" id="1_tune"]
+[ext_resource type="Script" uid="uid://x8g44ei02e0i" path="res://game/ui/sole_cues_tuning.gd" id="1_tune"]
 
 [resource]
 script = ExtResource("1_tune")

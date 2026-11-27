@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://d16i0xrvqq0bb"]
 
 [ext_resource type="PackedScene" uid="uid://b1kl3oqh2yw74" path="res://assets/wardrobe/hazard_stripe_socks.glb" id="1_glb"]
 

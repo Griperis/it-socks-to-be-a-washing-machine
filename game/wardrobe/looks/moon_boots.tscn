@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cny1kkfpb02bu"]
 
 [ext_resource type="PackedScene" uid="uid://ci7ls1uu82fgm" path="res://assets/wardrobe/moon_boots.glb" id="1_glb"]
 

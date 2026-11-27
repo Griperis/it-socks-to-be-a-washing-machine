@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="Upgrade" format=3]
+[gd_resource type="Resource" script_class="Upgrade" format=3 uid="uid://ymfh0eavrkf"]
 
-[ext_resource type="Texture2D" path="res://assets/ui/upgrade_mate_radar.svg" id="1_22u7h"]
-[ext_resource type="Resource" path="res://game/economy/upgrades/sole_mates.tres" id="2_f5lj5"]
-[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="3_43r2g"]
-[ext_resource type="Resource" path="res://game/economy/stats/mate_radar.tres" id="9_stat"]
+[ext_resource type="Texture2D" uid="uid://du80am2ctr4lh" path="res://assets/ui/upgrade_mate_radar.svg" id="1_22u7h"]
+[ext_resource type="Resource" uid="uid://b3ok422l8kdiv" path="res://game/economy/upgrades/sole_mates.tres" id="2_f5lj5"]
+[ext_resource type="Script" uid="uid://tco600m1ilvq" path="res://game/economy/upgrade.gd" id="3_43r2g"]
+[ext_resource type="Resource" uid="uid://ddm4uaks6kgas" path="res://game/economy/stats/mate_radar.tres" id="9_stat"]
 
 [resource]
 script = ExtResource("3_43r2g")
@@ -16,5 +16,5 @@ prices = PackedInt32Array(1)
 needs = Dictionary[Resource, int]({
 ExtResource("2_f5lj5"): 1
 })
-coop_only = true
 stat = ExtResource("9_stat")
+coop_only = true

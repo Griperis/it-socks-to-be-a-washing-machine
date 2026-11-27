@@ -1,11 +1,11 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bgbd07lcf6p50"]
 
-[ext_resource type="Script" path="res://game/zoo/achievements/achievement_switch.gd" id="1_switch"]
-[ext_resource type="PackedScene" path="res://game/zoo/screen/upgrade_switch/looks_graybox.tscn" id="2_looks"]
+[ext_resource type="Script" uid="uid://c63q55bv5pjin" path="res://game/zoo/achievements/achievement_switch.gd" id="1_switch"]
+[ext_resource type="PackedScene" uid="uid://b4mtn5fi0wiu1" path="res://game/zoo/screen/upgrade_switch/looks_graybox.tscn" id="2_looks"]
 
-[node name="AchievementSwitch" type="Node3D"]
+[node name="AchievementSwitch" type="Node3D" unique_id=68393493]
 
-[node name="AchievementSwitch" type="Node" parent="."]
+[node name="AchievementSwitch" type="Node" parent="." unique_id=1345903563]
 script = ExtResource("1_switch")
 
-[node name="Looks" parent="." instance=ExtResource("2_looks")]
+[node name="Looks" parent="." unique_id=1498595814 instance=ExtResource("2_looks")]

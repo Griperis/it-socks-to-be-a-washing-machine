@@ -1,25 +1,17 @@
-[gd_resource type="Resource" script_class="StagePlan" format=3]
+[gd_resource type="Resource" script_class="StagePlan" format=3 uid="uid://dxbsb5q8splqa"]
 
-[ext_resource type="Script" path="res://game/run/stage_plan.gd" id="1_plan"]
-[ext_resource type="Script" path="res://game/run/stage.gd" id="2_stage"]
-[ext_resource type="Script" path="res://game/ui/stage_bar_phase.gd" id="3_phase"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_filter.tres" id="4_part"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_motor.tres" id="5_part"]
+[ext_resource type="Script" uid="uid://cemc3u2nrs1dj" path="res://game/run/stage_plan.gd" id="1_plan"]
+[ext_resource type="Script" uid="uid://05jxt3pevbv5" path="res://game/run/stage.gd" id="2_stage"]
+[ext_resource type="Script" uid="uid://diaweqttllnwm" path="res://game/ui/stage_bar_phase.gd" id="3_phase"]
+[ext_resource type="Resource" uid="uid://c8blxpue0cacg" path="res://game/entities/machine_part/part_filter.tres" id="4_part"]
+[ext_resource type="Resource" uid="uid://br8ugvebmpffv" path="res://game/entities/machine_part/part_motor.tres" id="5_part"]
 
-[sub_resource type="Resource" id="Resource_stage1"]
-script = ExtResource("2_stage")
-title = "Basement"
-pairs = 50
-part = ExtResource("4_part")
-comment_set = 1
-
-[sub_resource type="Resource" id="Resource_stage2"]
-script = ExtResource("2_stage")
-title = "Ground"
-floor = 1
-pairs = 75
-part = ExtResource("5_part")
-comment_set = 2
+[sub_resource type="Resource" id="Resource_after"]
+script = ExtResource("3_phase")
+text = "Wash clothes %d/%d"
+source = &"laundry_bins"
+icons = 2
+icon = "laundry_bin"
 
 [sub_resource type="Resource" id="Resource_goal"]
 script = ExtResource("3_phase")
@@ -32,12 +24,19 @@ text = "Stage %d: %s  %d/%d"
 source = &"stage_rows"
 icons = 1
 
-[sub_resource type="Resource" id="Resource_after"]
-script = ExtResource("3_phase")
-text = "Wash clothes %d/%d"
-source = &"laundry_bins"
-icons = 2
-icon = "laundry_bin"
+[sub_resource type="Resource" id="Resource_stage1"]
+script = ExtResource("2_stage")
+title = "Basement"
+part = ExtResource("4_part")
+comment_set = 1
+
+[sub_resource type="Resource" id="Resource_stage2"]
+script = ExtResource("2_stage")
+title = "Ground"
+floor = 1
+pairs = 75
+part = ExtResource("5_part")
+comment_set = 2
 
 [resource]
 script = ExtResource("1_plan")

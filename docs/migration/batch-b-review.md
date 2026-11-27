@@ -40,6 +40,7 @@ Lobby. For each line say yes, or what to change; a change becomes a ticket. The 
 | core/145 Achievements | the system only: no list ships in batch B (Q2687); its station shows the toast with test entries |
 | core/147 Profile page | the title's Profile key and the ESC menu's entry; the tallies on top, the Achievements under them (Q2681) |
 | assets/16-20 | the line-ups: the present box, the book, the hats and clothes, the Socks pieces and Trail meshes, the Wardrobe station |
+| maintenance/12 Achievement toast's height | the toast's card is now as tall as its content: 380x113 for a one-line title, where main showed 380x323 at runtime (the hidden card measured its title one letter per line); a two-line title grows it |
 
 ## The lead's readings to confirm
 - Q2673's "another unlocked Collection": the Host's unlocked set (the one the New Game's draw used), since the Host

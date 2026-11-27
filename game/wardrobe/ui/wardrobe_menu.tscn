@@ -1,14 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b0yjukdjvhyno"]
 
-[ext_resource type="Script" path="res://game/wardrobe/ui/wardrobe_menu.gd" id="1_menu"]
-[ext_resource type="PackedScene" path="res://game/wardrobe/ui/wardrobe_page.tscn" id="2_page"]
+[ext_resource type="Script" uid="uid://ba4dvnv3so8oc" path="res://game/wardrobe/ui/wardrobe_menu.gd" id="1_menu"]
+[ext_resource type="PackedScene" uid="uid://csk11jg4sixy7" path="res://game/wardrobe/ui/wardrobe_page.tscn" id="2_page"]
 
-[node name="WardrobeMenu" type="CanvasLayer"]
+[node name="WardrobeMenu" type="CanvasLayer" unique_id=1916331589]
 layer = 10
 visible = false
 script = ExtResource("1_menu")
 
-[node name="Center" type="CenterContainer" parent="."]
+[node name="Center" type="CenterContainer" parent="." unique_id=1239061323]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -16,6 +16,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Page" parent="Center" instance=ExtResource("2_page")]
+[node name="Page" parent="Center" unique_id=376454064 instance=ExtResource("2_page")]
 unique_name_in_owner = true
 layout_mode = 2

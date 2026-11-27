@@ -1,14 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b31qc0jq442bk"]
 
-[ext_resource type="Script" path="res://game/ui/encyclopedia/encyclopedia.gd" id="1_page"]
-[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="2_close"]
+[ext_resource type="Script" uid="uid://dmhn3qiq17hr2" path="res://game/ui/encyclopedia/encyclopedia.gd" id="1_page"]
+[ext_resource type="PackedScene" uid="uid://bdknhn3ghwi78" path="res://game/ui/close_button.tscn" id="2_close"]
 
 [sub_resource type="Environment" id="Environment_stage"]
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_energy = 0.7
 
-[node name="Encyclopedia" type="Control"]
+[node name="Encyclopedia" type="Control" unique_id=1136553250]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,7 +17,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_page")
 
-[node name="Panel" type="PanelContainer" parent="."]
+[node name="Panel" type="PanelContainer" parent="." unique_id=651359643]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -28,33 +28,33 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"TitlePanel"
 
-[node name="Box" type="VBoxContainer" parent="Panel"]
+[node name="Box" type="VBoxContainer" parent="Panel" unique_id=1479119612]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="CloseGap" type="Control" parent="Panel/Box"]
+[node name="CloseGap" type="Control" parent="Panel/Box" unique_id=764444135]
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Header" type="HBoxContainer" parent="Panel/Box"]
+[node name="Header" type="HBoxContainer" parent="Panel/Box" unique_id=1787322757]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Prev" type="Button" parent="Panel/Box/Header"]
+[node name="Prev" type="Button" parent="Panel/Box/Header" unique_id=1375366668]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 theme_type_variation = &"KeycapButton"
 text = "<"
 
-[node name="Middle" type="HBoxContainer" parent="Panel/Box/Header"]
+[node name="Middle" type="HBoxContainer" parent="Panel/Box/Header" unique_id=2131171182]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 14
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="Panel/Box/Header/Middle"]
+[node name="Icon" type="TextureRect" parent="Panel/Box/Header/Middle" unique_id=938320373]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
@@ -63,35 +63,35 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Title" type="Label" parent="Panel/Box/Header/Middle"]
+[node name="Title" type="Label" parent="Panel/Box/Header/Middle" unique_id=1795760494]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"InkLabel"
 theme_override_font_sizes/font_size = 36
 
-[node name="Next" type="Button" parent="Panel/Box/Header"]
+[node name="Next" type="Button" parent="Panel/Box/Header" unique_id=42377630]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 theme_type_variation = &"KeycapButton"
 text = ">"
 
-[node name="Count" type="Label" parent="Panel/Box"]
+[node name="Count" type="Label" parent="Panel/Box" unique_id=667303223]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"InkLabel"
 horizontal_alignment = 1
 
-[node name="Page" type="Control" parent="Panel/Box"]
+[node name="Page" type="Control" parent="Panel/Box" unique_id=1074798504]
 custom_minimum_size = Vector2(1500, 620)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Stage" type="SubViewportContainer" parent="Panel/Box/Page"]
+[node name="Stage" type="SubViewportContainer" parent="Panel/Box/Page" unique_id=132885273]
 layout_mode = 0
 mouse_filter = 2
 
-[node name="SockStage" type="SubViewport" parent="Panel/Box/Page/Stage"]
+[node name="SockStage" type="SubViewport" parent="Panel/Box/Page/Stage" unique_id=809292006]
 unique_name_in_owner = true
 own_world_3d = true
 transparent_bg = true
@@ -100,20 +100,20 @@ msaa_3d = 2
 size = Vector2i(1500, 620)
 render_target_update_mode = 4
 
-[node name="Camera" type="Camera3D" parent="Panel/Box/Page/Stage/SockStage"]
+[node name="Camera" type="Camera3D" parent="Panel/Box/Page/Stage/SockStage" unique_id=1305790769]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 4, 0)
 environment = SubResource("Environment_stage")
 projection = 1
 size = 1.55
 far = 8.0
 
-[node name="Light" type="DirectionalLight3D" parent="Panel/Box/Page/Stage/SockStage"]
+[node name="Light" type="DirectionalLight3D" parent="Panel/Box/Page/Stage/SockStage" unique_id=1843933763]
 transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 4, 0)
 
-[node name="Socks" type="Node3D" parent="Panel/Box/Page/Stage/SockStage"]
+[node name="Socks" type="Node3D" parent="Panel/Box/Page/Stage/SockStage" unique_id=752468730]
 unique_name_in_owner = true
 
-[node name="Cells" type="GridContainer" parent="Panel/Box/Page"]
+[node name="Cells" type="GridContainer" parent="Panel/Box/Page" unique_id=403425138]
 unique_name_in_owner = true
 layout_mode = 0
 mouse_filter = 2
@@ -121,5 +121,6 @@ theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 10
 
-[node name="Close" parent="Panel" instance=ExtResource("2_close")]
+[node name="Close" parent="Panel" unique_id=1343934075 instance=ExtResource("2_close")]
 unique_name_in_owner = true
+layout_mode = 2

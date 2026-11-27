@@ -1,5 +1,5 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bumlhxiu0ensa"]
 
-[node name="WhoName" type="Label"]
+[node name="WhoName" type="Label" unique_id=210252704]
 theme_type_variation = &"WhoName"
 horizontal_alignment = 1

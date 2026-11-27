@@ -1,16 +1,14 @@
 [gd_scene format=3 uid="uid://qr7myiixfj7s"]
 
 [ext_resource type="Script" uid="uid://np0kd4555ypr" path="res://game/lobby/lobby.gd" id="1_lobby"]
-[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
-
-[ext_resource type="PackedScene" path="res://game/lobby/world_drawer.tscn" id="drawer"]
-[ext_resource type="PackedScene" path="res://game/lobby/lobby_stage.tscn" id="stage"]
-[ext_resource type="PackedScene" path="res://game/lobby/lobby_place.tscn" id="place"]
-[ext_resource type="PackedScene" path="res://game/lobby/who_page.tscn" id="who"]
-[ext_resource type="PackedScene" path="res://game/lobby/pairs_slider.tscn" id="pairs"]
-[ext_resource type="PackedScene" path="res://game/lobby/lobby_stats_card.tscn" id="stats"]
-[ext_resource type="PackedScene" path="res://game/wardrobe/ui/wardrobe_page.tscn" id="wardrobe_page"]
-[ext_resource type="Texture2D" path="res://assets/ui/menu_wardrobe.svg" id="wardrobe_icon"]
+[ext_resource type="PackedScene" uid="uid://bdknhn3ghwi78" path="res://game/ui/close_button.tscn" id="close_btn"]
+[ext_resource type="PackedScene" uid="uid://hjfitstg2mbs" path="res://game/lobby/world_drawer.tscn" id="drawer"]
+[ext_resource type="PackedScene" uid="uid://bsjb5hc7x52od" path="res://game/lobby/pairs_slider.tscn" id="pairs"]
+[ext_resource type="PackedScene" uid="uid://ddct7awb4s8ej" path="res://game/lobby/lobby_stage.tscn" id="stage"]
+[ext_resource type="PackedScene" uid="uid://8vn8dto4ptvk" path="res://game/lobby/lobby_stats_card.tscn" id="stats"]
+[ext_resource type="Texture2D" uid="uid://vphhxh8dyaun" path="res://assets/ui/menu_wardrobe.svg" id="wardrobe_icon"]
+[ext_resource type="PackedScene" uid="uid://csk11jg4sixy7" path="res://game/wardrobe/ui/wardrobe_page.tscn" id="wardrobe_page"]
+[ext_resource type="PackedScene" uid="uid://b8vbp2yjkocdb" path="res://game/lobby/who_page.tscn" id="who"]
 
 [node name="Lobby" type="Control" unique_id=965929202]
 layout_mode = 3
@@ -30,7 +28,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.168627, 0.129412, 0.109804, 1)
 
-[node name="Stage" parent="." instance=ExtResource("stage")]
+[node name="Stage" parent="." unique_id=1519446689 instance=ExtResource("stage")]
 unique_name_in_owner = true
 layout_mode = 1
 
@@ -54,10 +52,10 @@ theme_override_constants/separation = 24
 [node name="CardRow" type="HBoxContainer" parent="Margin/Column" unique_id=553166245]
 layout_mode = 2
 
-[node name="Left" type="Control" parent="Margin/Column/CardRow"]
+[node name="Left" type="Control" parent="Margin/Column/CardRow" unique_id=1115845440]
 layout_mode = 2
-mouse_filter = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
 [node name="Card" type="PanelContainer" parent="Margin/Column/CardRow" unique_id=1050039954]
 custom_minimum_size = Vector2(560, 0)
@@ -80,12 +78,12 @@ layout_mode = 2
 theme_type_variation = &"InkLabel"
 horizontal_alignment = 1
 
-[node name="Right" type="Control" parent="Margin/Column/CardRow"]
+[node name="Right" type="Control" parent="Margin/Column/CardRow" unique_id=1505461844]
 layout_mode = 2
-mouse_filter = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 
-[node name="WhoKey" type="Button" parent="Margin/Column/CardRow/Right"]
+[node name="WhoKey" type="Button" parent="Margin/Column/CardRow/Right" unique_id=760926723]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(56, 56)
@@ -95,10 +93,10 @@ offset_right = 72.0
 offset_bottom = 56.0
 theme_type_variation = &"KeycapButton"
 
-[node name="Gap" type="Control" parent="Margin/Column"]
+[node name="Gap" type="Control" parent="Margin/Column" unique_id=1720756205]
 layout_mode = 2
-mouse_filter = 2
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="Status" type="Label" parent="Margin/Column" unique_id=172002372]
 unique_name_in_owner = true
@@ -122,7 +120,7 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 24
 alignment = 1
 
-[node name="ReadyBox" type="VBoxContainer" parent="Margin/Column/Bar/Middle"]
+[node name="ReadyBox" type="VBoxContainer" parent="Margin/Column/Bar/Middle" unique_id=1910667095]
 layout_mode = 2
 theme_override_constants/separation = 4
 
@@ -133,13 +131,13 @@ layout_mode = 2
 theme_type_variation = &"KeycapButton"
 metadata/no_ui_sound = true
 
-[node name="ReadyCaption" type="Label" parent="Margin/Column/Bar/Middle/ReadyBox"]
+[node name="ReadyCaption" type="Label" parent="Margin/Column/Bar/Middle/ReadyBox" unique_id=284582190]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"ThinLabel"
 horizontal_alignment = 1
 
-[node name="StartBox" type="VBoxContainer" parent="Margin/Column/Bar/Middle"]
+[node name="StartBox" type="VBoxContainer" parent="Margin/Column/Bar/Middle" unique_id=1798432398]
 layout_mode = 2
 theme_override_constants/separation = 4
 
@@ -150,7 +148,7 @@ layout_mode = 2
 theme_type_variation = &"KeycapButton"
 disabled = true
 
-[node name="StartCaption" type="Label" parent="Margin/Column/Bar/Middle/StartBox"]
+[node name="StartCaption" type="Label" parent="Margin/Column/Bar/Middle/StartBox" unique_id=246741479]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"ThinLabel"
@@ -181,7 +179,7 @@ custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Places" type="Control" parent="."]
+[node name="Places" type="Control" parent="." unique_id=92184765]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -191,7 +189,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="WardrobeKey" type="Button" parent="."]
+[node name="WardrobeKey" type="Button" parent="." unique_id=1525012256]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(84, 84)
@@ -202,12 +200,13 @@ theme_type_variation = &"KeycapButton"
 icon = ExtResource("wardrobe_icon")
 icon_alignment = 1
 
-[node name="Stats" parent="." instance=ExtResource("stats")]
+[node name="Stats" parent="." unique_id=642765948 instance=ExtResource("stats")]
 unique_name_in_owner = true
 layout_mode = 0
 
-[node name="Drawer" parent="." instance=ExtResource("drawer")]
+[node name="Drawer" parent="." unique_id=1324705169 instance=ExtResource("drawer")]
 unique_name_in_owner = true
+layout_mode = 1
 
 [node name="Ask" type="Control" parent="." unique_id=1322529948]
 unique_name_in_owner = true
@@ -255,7 +254,7 @@ theme_type_variation = &"InkLabel"
 horizontal_alignment = 1
 autowrap_mode = 3
 
-[node name="AskPairs" parent="Ask/Center/Panel/Box" instance=ExtResource("pairs")]
+[node name="AskPairs" parent="Ask/Center/Panel/Box" unique_id=1532748465 instance=ExtResource("pairs")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -271,13 +270,15 @@ custom_minimum_size = Vector2(240, 72)
 layout_mode = 2
 theme_type_variation = &"ExitButton"
 
-[node name="AskClose" parent="Ask/Center/Panel" instance=ExtResource("close_btn")]
+[node name="AskClose" parent="Ask/Center/Panel" unique_id=442146961 instance=ExtResource("close_btn")]
 unique_name_in_owner = true
+layout_mode = 2
 
-[node name="Who" parent="." instance=ExtResource("who")]
+[node name="Who" parent="." unique_id=1193638648 instance=ExtResource("who")]
 unique_name_in_owner = true
+layout_mode = 1
 
-[node name="WardrobeLayer" type="Control" parent="."]
+[node name="WardrobeLayer" type="Control" parent="." unique_id=1242697126]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -287,7 +288,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Dim" type="ColorRect" parent="WardrobeLayer"]
+[node name="Dim" type="ColorRect" parent="WardrobeLayer" unique_id=891060635]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -296,7 +297,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.168627, 0.129412, 0.109804, 0.8)
 
-[node name="Center" type="CenterContainer" parent="WardrobeLayer"]
+[node name="Center" type="CenterContainer" parent="WardrobeLayer" unique_id=2071999018]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -305,6 +306,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Page" parent="WardrobeLayer/Center" instance=ExtResource("wardrobe_page")]
+[node name="Page" parent="WardrobeLayer/Center" unique_id=1885667173 instance=ExtResource("wardrobe_page")]
 unique_name_in_owner = true
 layout_mode = 2

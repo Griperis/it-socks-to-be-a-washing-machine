@@ -1,4 +1,4 @@
-[gd_resource type="SphereMesh" format=3]
+[gd_resource type="SphereMesh" format=3 uid="uid://bsby63xry0lbb"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_smoke"]
 transparency = 1

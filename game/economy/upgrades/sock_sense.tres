@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="Upgrade" format=3]
+[gd_resource type="Resource" script_class="Upgrade" format=3 uid="uid://do4lhwk83xj73"]
 
-[ext_resource type="Texture2D" path="res://assets/ui/upgrade_sock_sense.svg" id="1_hnqrj"]
-[ext_resource type="Resource" path="res://game/economy/upgrades/sock_smarts.tres" id="2_d86si"]
-[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="3_5jor3"]
-[ext_resource type="Resource" path="res://game/economy/stats/sock_sense.tres" id="4_qdo35"]
+[ext_resource type="Texture2D" uid="uid://uqfsnhpgp16u" path="res://assets/ui/upgrade_sock_sense.svg" id="1_hnqrj"]
+[ext_resource type="Resource" uid="uid://77q26f6p348u" path="res://game/economy/upgrades/sock_smarts.tres" id="2_d86si"]
+[ext_resource type="Script" uid="uid://tco600m1ilvq" path="res://game/economy/upgrade.gd" id="3_5jor3"]
+[ext_resource type="Resource" uid="uid://dyqbj1v0fjbdt" path="res://game/economy/stats/sock_sense.tres" id="4_qdo35"]
 
 [resource]
 script = ExtResource("3_5jor3")

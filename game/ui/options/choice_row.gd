@@ -16,7 +16,7 @@ const ON := &"ChoiceOnButton"
 @export var title := ""
 ## The values, and the words on their keycaps (alike in number).
 @export var values: Array = []
-@export var labels: PackedStringArray = []
+@export var labels: PackedStringArray
 
 var _keys: Array[Button] = []
 var _shown: Variant = null

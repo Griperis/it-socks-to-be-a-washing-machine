@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://6fcxdf8cnp3m"]
 
-[node name="UiIcon" type="TextureRect"]
+[node name="UiIcon" type="TextureRect" unique_id=1598186216]
+size_flags_vertical = 4
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
-size_flags_vertical = 4

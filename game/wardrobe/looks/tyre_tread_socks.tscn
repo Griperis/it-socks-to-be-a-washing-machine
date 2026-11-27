@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cm2rqvawhn8ec"]
 
 [ext_resource type="PackedScene" uid="uid://ddt2s1dmslpwc" path="res://assets/wardrobe/tyre_tread_socks.glb" id="1_glb"]
 

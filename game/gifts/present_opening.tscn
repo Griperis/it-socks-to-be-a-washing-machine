@@ -1,9 +1,9 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cuuflpneh6bxl"]
 
-[ext_resource type="Script" path="res://game/gifts/present_opening.gd" id="1_script"]
-[ext_resource type="PackedScene" path="res://game/gifts/looks_present.tscn" id="2_looks"]
+[ext_resource type="Script" uid="uid://bbe4lepo2ohr0" path="res://game/gifts/present_opening.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://b0njhnpexrbk3" path="res://game/gifts/looks_present.tscn" id="2_looks"]
 
-[node name="PresentOpening" type="Node3D"]
+[node name="PresentOpening" type="Node3D" unique_id=1400926575]
 script = ExtResource("1_script")
 
-[node name="Looks" parent="." instance=ExtResource("2_looks")]
+[node name="Looks" parent="." unique_id=24323708 instance=ExtResource("2_looks")]

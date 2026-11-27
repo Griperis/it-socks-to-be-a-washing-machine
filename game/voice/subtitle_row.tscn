@@ -1,14 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://clbw0qpv8kxbt"]
 
-[ext_resource type="Script" path="res://game/voice/subtitle_row.gd" id="1_row"]
+[ext_resource type="Script" uid="uid://cd8k81ustaedi" path="res://game/voice/subtitle_row.gd" id="1_row"]
 
-[node name="SubtitleRow" type="HBoxContainer"]
+[node name="SubtitleRow" type="HBoxContainer" unique_id=1396148888]
 mouse_filter = 2
 theme_override_constants/separation = 14
 alignment = 1
 script = ExtResource("1_row")
 
-[node name="Icon" type="TextureRect" parent="."]
+[node name="Icon" type="TextureRect" parent="." unique_id=1814875136]
 visible = false
 custom_minimum_size = Vector2(44, 44)
 layout_mode = 2
@@ -17,17 +17,16 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Disc" type="Panel" parent="."]
+[node name="Disc" type="Panel" parent="." unique_id=1882187070]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
 theme_type_variation = &"SubtitleIcon"
 
-[node name="Words" type="Label" parent="."]
+[node name="Words" type="Label" parent="." unique_id=148173034]
 layout_mode = 2
 size_flags_horizontal = 4
-mouse_filter = 2
 theme_type_variation = &"SubtitleLabel"
 horizontal_alignment = 1
 vertical_alignment = 1

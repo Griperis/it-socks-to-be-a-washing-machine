@@ -1,11 +1,11 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cqtkjfyd75u5x"]
 
-[ext_resource type="Script" path="res://game/zoo/wardrobe/wardrobe_switch.gd" id="1_switch"]
-[ext_resource type="PackedScene" path="res://game/zoo/screen/upgrade_switch/looks_graybox.tscn" id="2_looks"]
+[ext_resource type="Script" uid="uid://dj440sguajj6h" path="res://game/zoo/wardrobe/wardrobe_switch.gd" id="1_switch"]
+[ext_resource type="PackedScene" uid="uid://b4mtn5fi0wiu1" path="res://game/zoo/screen/upgrade_switch/looks_graybox.tscn" id="2_looks"]
 
-[node name="WardrobeSwitch" type="Node3D"]
+[node name="WardrobeSwitch" type="Node3D" unique_id=681602158]
 
-[node name="WardrobeSwitch" type="Node" parent="."]
+[node name="WardrobeSwitch" type="Node" parent="." unique_id=2111431046]
 script = ExtResource("1_switch")
 
-[node name="Looks" parent="." instance=ExtResource("2_looks")]
+[node name="Looks" parent="." unique_id=1777535055 instance=ExtResource("2_looks")]

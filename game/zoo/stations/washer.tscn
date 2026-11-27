@@ -1,9 +1,9 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://3cbnkhskubtl"]
 
-[ext_resource type="Script" path="res://game/zoo/washer/washer_station.gd" id="1_station"]
-[ext_resource type="PackedScene" path="res://game/entities/washer/washer.tscn" id="2_washer"]
-[ext_resource type="Resource" path="res://game/run/house_stage_plan.tres" id="3_plan"]
-[ext_resource type="Script" path="res://game/zoo/washer/washer_run.gd" id="4_run"]
+[ext_resource type="Script" uid="uid://cvalid1ug4q35" path="res://game/zoo/washer/washer_station.gd" id="1_station"]
+[ext_resource type="PackedScene" uid="uid://bg23nos1v1ri7" path="res://game/entities/washer/washer.tscn" id="2_washer"]
+[ext_resource type="Resource" uid="uid://ds3vckygf8rpv" path="res://game/run/house_stage_plan.tres" id="3_plan"]
+[ext_resource type="Script" uid="uid://djq2v1gidq88j" path="res://game/zoo/washer/washer_run.gd" id="4_run"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.55, 0.62, 0.6, 1)
@@ -22,26 +22,26 @@ albedo_color = Color(0.75, 0.74, 0.7, 1)
 material = SubResource("StandardMaterial3D_wall")
 size = Vector3(4, 2.4, 0.1)
 
-[node name="WasherStation" type="Node3D" node_paths=PackedStringArray("washer", "run", "pad", "title")]
+[node name="WasherStation" type="Node3D" unique_id=1097706522 node_paths=PackedStringArray("washer", "run", "pad", "title")]
 script = ExtResource("1_station")
 washer = NodePath("Washer/Washer")
 run = NodePath("Run")
 pad = NodePath("Pad")
 title = NodePath("Name")
 
-[node name="Pad" type="MeshInstance3D" parent="."]
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=137303732]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 3)
 mesh = SubResource("PlaneMesh_pad")
 
-[node name="Ground" type="StaticBody3D" parent="."]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=851787247]
 metadata/surface = "tile"
 
-[node name="Shape" type="CollisionShape3D" parent="Ground"]
+[node name="Shape" type="CollisionShape3D" parent="Ground" unique_id=781600935]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 3)
 shape = SubResource("BoxShape3D_ground")
 
-[node name="Name" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 2.0, -5)
+[node name="Name" type="Label3D" parent="." unique_id=548839885]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 2, -5)
 pixel_size = 0.004
 billboard = 2
 text = "Washer: the real washing machine with its senses on. Look at it for 4 s or throw a Sock at it and it comments (once it is broken: press \"Break it\"); the pillars set its mood level (core/87 shows it), the Stage whose comment set it draws from, or hand back to the run. One pillar fires each comment trigger as the game does; a \"Play\" pillar runs each cutscene trigger on the Cutscene frame (Space skips)"
@@ -49,16 +49,18 @@ vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="Wall" type="MeshInstance3D" parent="."]
+[node name="Wall" type="MeshInstance3D" parent="." unique_id=750587632]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -0.45)
 mesh = SubResource("BoxMesh_wall")
 
-[node name="Washer" parent="." instance=ExtResource("2_washer")]
+[node name="Washer" parent="." unique_id=1969679273 instance=ExtResource("2_washer")]
 
-[node name="Washer" parent="Washer" index="0" node_paths=PackedStringArray("stages")]
+[node name="Washer" parent="Washer" index="0" unique_id=1814470256 node_paths=PackedStringArray("stages")]
 stages = NodePath("../../Run")
 
-[node name="Run" type="Node" parent="." node_paths=PackedStringArray("washer")]
+[node name="Run" type="Node" parent="." unique_id=912185597 node_paths=PackedStringArray("washer")]
 script = ExtResource("4_run")
 washer = NodePath("../Washer/Washer")
 plan = ExtResource("3_plan")
+
+[editable path="Washer"]

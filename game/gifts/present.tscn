@@ -1,23 +1,23 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://pp1cu8yr3fi7"]
 
-[ext_resource type="PackedScene" path="res://game/gifts/looks_present.tscn" id="1_looks"]
-[ext_resource type="Script" path="res://game/parts/carriable.gd" id="2_carriable"]
-[ext_resource type="Resource" path="res://game/gifts/present_hold.tres" id="3_slot"]
-[ext_resource type="Script" path="res://game/gifts/present.gd" id="4_present"]
-[ext_resource type="Resource" path="res://game/gifts/present_tuning.tres" id="5_tuning"]
+[ext_resource type="PackedScene" uid="uid://b0njhnpexrbk3" path="res://game/gifts/looks_present.tscn" id="1_looks"]
+[ext_resource type="Script" uid="uid://bkjerdg5jkff3" path="res://game/parts/carriable.gd" id="2_carriable"]
+[ext_resource type="Resource" uid="uid://5il8vtdcpqcr" path="res://game/gifts/present_hold.tres" id="3_slot"]
+[ext_resource type="Script" uid="uid://dmhmi2cbwyq1o" path="res://game/gifts/present.gd" id="4_present"]
+[ext_resource type="Resource" uid="uid://6xkfr1sw7b77" path="res://game/gifts/present_tuning.tres" id="5_tuning"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_present"]
 size = Vector3(0.32, 0.36, 0.32)
 
-[node name="Present" type="StaticBody3D"]
+[node name="Present" type="StaticBody3D" unique_id=602218817]
 
-[node name="Shape" type="CollisionShape3D" parent="."]
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=941614173]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, 0)
 shape = SubResource("BoxShape3D_present")
 
-[node name="Looks" parent="." instance=ExtResource("1_looks")]
+[node name="Looks" parent="." unique_id=1930979447 instance=ExtResource("1_looks")]
 
-[node name="Carriable" type="Node" parent="."]
+[node name="Carriable" type="Node" parent="." unique_id=189320590]
 script = ExtResource("2_carriable")
 slot = ExtResource("3_slot")
 handable = false
@@ -25,6 +25,6 @@ title = "Present"
 pick_title = "Pick up"
 carry_title = "Open"
 
-[node name="Present" type="Node" parent="."]
+[node name="Present" type="Node" parent="." unique_id=732333102]
 script = ExtResource("4_present")
 tuning = ExtResource("5_tuning")

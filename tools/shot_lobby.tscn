@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c272jywj7dx4j"]
 
-[ext_resource type="Script" path="res://tools/shot_lobby.gd" id="1_shot"]
+[ext_resource type="Script" uid="uid://digwxb2euy2ds" path="res://tools/shot_lobby.gd" id="1_shot"]
 
-[node name="ShotLobby" type="Node"]
+[node name="ShotLobby" type="Node" unique_id=764332980]
 script = ExtResource("1_shot")

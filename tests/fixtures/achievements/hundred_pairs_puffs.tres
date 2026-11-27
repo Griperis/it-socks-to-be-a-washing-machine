@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="Achievement" format=3]
+[gd_resource type="Resource" script_class="Achievement" format=3 uid="uid://cv8gpxpna8mkk"]
 
-[ext_resource type="Script" path="res://game/profile/achievement.gd" id="1_a"]
-[ext_resource type="Resource" path="res://game/wardrobe/pieces/lint_puffs.tres" id="2_piece"]
+[ext_resource type="Script" uid="uid://bl7t4exy85efv" path="res://game/profile/achievement.gd" id="1_a"]
+[ext_resource type="Resource" uid="uid://nb4xd01y1yog" path="res://game/wardrobe/pieces/lint_puffs.tres" id="2_piece"]
 
 [resource]
 script = ExtResource("1_a")

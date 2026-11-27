@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="Upgrade" format=3]
+[gd_resource type="Resource" script_class="Upgrade" format=3 uid="uid://bnqf23gxp7px4"]
 
-[ext_resource type="Texture2D" path="res://assets/ui/upgrade_roomy_car.svg" id="1_xc5i4"]
-[ext_resource type="Resource" path="res://game/economy/upgrades/elevator_repair.tres" id="2_naf3t"]
-[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="3_w04lq"]
+[ext_resource type="Texture2D" uid="uid://crfyo1an4b8u6" path="res://assets/ui/upgrade_roomy_car.svg" id="1_xc5i4"]
+[ext_resource type="Resource" uid="uid://s4y2yg81pigu" path="res://game/economy/upgrades/elevator_repair.tres" id="2_naf3t"]
+[ext_resource type="Script" uid="uid://tco600m1ilvq" path="res://game/economy/upgrade.gd" id="3_w04lq"]
 
 [resource]
 script = ExtResource("3_w04lq")

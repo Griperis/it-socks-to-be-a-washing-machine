@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://cabdnviw3m0oh" path="res://game/net/roster.gd" id="4_roster"]
 [ext_resource type="Resource" uid="uid://b0moa0fsavwjb" path="res://game/net/coop_tuning.tres" id="5_coop"]
 [ext_resource type="Script" uid="uid://dy33gn2xqn3kx" path="res://game/lobby/lobby_state.gd" id="6_lobby"]
-[ext_resource type="Script" path="res://game/profile/achievements.gd" id="7_achievements"]
+[ext_resource type="Script" uid="uid://crypcapeps14r" path="res://game/profile/achievements.gd" id="7_achievements"]
 
 [node name="GameLink" type="Node" unique_id=174521561]
 script = ExtResource("1_link")
@@ -15,7 +15,7 @@ script = ExtResource("1_link")
 script = ExtResource("2_parts")
 id_prefix = "Runtime/"
 
-[node name="Session" type="Node" parent="." node_paths=PackedStringArray("link_parts", "roster") unique_id=1852015953]
+[node name="Session" type="Node" parent="." unique_id=1852015953 node_paths=PackedStringArray("link_parts", "roster")]
 script = ExtResource("3_session")
 link_parts = NodePath("../Parts")
 roster = NodePath("Roster")
@@ -25,9 +25,9 @@ tuning = ExtResource("5_coop")
 script = ExtResource("4_roster")
 tuning = ExtResource("5_coop")
 
-[node name="LobbyState" type="Node" parent="." node_paths=PackedStringArray("roster") unique_id=1290455817]
+[node name="LobbyState" type="Node" parent="." unique_id=1290455817 node_paths=PackedStringArray("roster")]
 script = ExtResource("6_lobby")
 roster = NodePath("../Session/Roster")
 
-[node name="Achievements" type="Node" parent="."]
+[node name="Achievements" type="Node" parent="." unique_id=1415866456]
 script = ExtResource("7_achievements")

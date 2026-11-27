@@ -1,20 +1,20 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://chqoim3be8nla"]
 
-[ext_resource type="Script" path="res://game/wardrobe/ui/colour_swatch.gd" id="1_swatch"]
+[ext_resource type="Script" uid="uid://p878o7u6b5ec" path="res://game/wardrobe/ui/colour_swatch.gd" id="1_swatch"]
 
-[node name="ColourSwatch" type="VBoxContainer"]
+[node name="ColourSwatch" type="VBoxContainer" unique_id=1018423710]
 custom_minimum_size = Vector2(64, 0)
 theme_override_constants/separation = 2
 script = ExtResource("1_swatch")
 
-[node name="Key" type="Button" parent="."]
+[node name="Key" type="Button" parent="." unique_id=469827103]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(52, 52)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"ColourSwatch"
 
-[node name="Who" type="Label" parent="."]
+[node name="Who" type="Label" parent="." unique_id=499453158]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 0)
 layout_mode = 2

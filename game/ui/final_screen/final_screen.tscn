@@ -1,11 +1,11 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bcq7qvbqnx3vt"]
 
-[ext_resource type="Script" path="res://game/ui/final_screen/final_screen.gd" id="1_screen"]
-[ext_resource type="Resource" path="res://game/ui/final_screen/final_screen_tuning.tres" id="2_tuning"]
-[ext_resource type="Resource" path="res://game/ui/final_screen/final_totals.tres" id="3_totals"]
-[ext_resource type="Resource" path="res://game/sock/designs.tres" id="4_designs"]
+[ext_resource type="Script" uid="uid://bg8qo1wcxmkjb" path="res://game/ui/final_screen/final_screen.gd" id="1_screen"]
+[ext_resource type="Resource" uid="uid://d26ddcbbdhqxw" path="res://game/ui/final_screen/final_screen_tuning.tres" id="2_tuning"]
+[ext_resource type="Resource" uid="uid://b6iikoimvaius" path="res://game/ui/final_screen/final_totals.tres" id="3_totals"]
+[ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="4_designs"]
 
-[node name="FinalScreen" type="CanvasLayer"]
+[node name="FinalScreen" type="CanvasLayer" unique_id=1092908201]
 process_mode = 3
 layer = 20
 script = ExtResource("1_screen")
@@ -13,7 +13,7 @@ tuning = ExtResource("2_tuning")
 totals = ExtResource("3_totals")
 catalogue = ExtResource("4_designs")
 
-[node name="Panel" type="PanelContainer" parent="."]
+[node name="Panel" type="PanelContainer" parent="." unique_id=1543291973]
 unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,36 +26,36 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"TitlePanel"
 
-[node name="Box" type="VBoxContainer" parent="Panel"]
+[node name="Box" type="VBoxContainer" parent="Panel" unique_id=727109271]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="Panel/Box"]
+[node name="Title" type="Label" parent="Panel/Box" unique_id=1804874861]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"Heading1"
 text = "Every sock has its mate"
 horizontal_alignment = 1
 
-[node name="Columns" type="HBoxContainer" parent="Panel/Box"]
+[node name="Columns" type="HBoxContainer" parent="Panel/Box" unique_id=1453226326]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 14
 alignment = 1
 
-[node name="Totals" type="HBoxContainer" parent="Panel/Box"]
+[node name="Totals" type="HBoxContainer" parent="Panel/Box" unique_id=1031298105]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 34
 alignment = 1
 
-[node name="Unlocked" type="VBoxContainer" parent="Panel/Box"]
+[node name="Unlocked" type="VBoxContainer" parent="Panel/Box" unique_id=617576632]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="Heading" type="Label" parent="Panel/Box/Unlocked"]
+[node name="Heading" type="Label" parent="Panel/Box/Unlocked" unique_id=2132160548]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
@@ -63,13 +63,13 @@ theme_type_variation = &"Heading2"
 text = "New Collection unlocked"
 horizontal_alignment = 1
 
-[node name="Cells" type="HBoxContainer" parent="Panel/Box/Unlocked"]
+[node name="Cells" type="HBoxContainer" parent="Panel/Box/Unlocked" unique_id=93829713]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 24
 
-[node name="Continue" type="Button" parent="Panel/Box"]
+[node name="Continue" type="Button" parent="Panel/Box" unique_id=1076180826]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

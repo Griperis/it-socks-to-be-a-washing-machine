@@ -5,23 +5,23 @@
 [ext_resource type="Script" uid="uid://by18xp3147q3t" path="res://game/voice/voice_segment.gd" id="3_q8epu"]
 [ext_resource type="AudioStream" uid="uid://cvgbpfglgyir3" path="res://assets/voice/old_tree/tree_call_1.wav" id="4_lbwg4"]
 [ext_resource type="Script" uid="uid://k1g7mn7jdf7a" path="res://game/voice/voice_trigger.gd" id="5_8o56u"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_call.tres" id="6_aclld"]
+[ext_resource type="Resource" uid="uid://bqf24kpqib08n" path="res://game/voice/triggers/tree_call.tres" id="6_aclld"]
 [ext_resource type="AudioStream" uid="uid://dd4clsov12xm6" path="res://assets/voice/old_tree/tree_call_2.wav" id="7_0bicw"]
 [ext_resource type="AudioStream" uid="uid://cetynhjnda88p" path="res://assets/voice/old_tree/tree_call_3.wav" id="8_qxt7a"]
 [ext_resource type="AudioStream" uid="uid://fh6y0206uoyt" path="res://assets/voice/old_tree/tree_call_4.wav" id="9_bmuy0"]
 [ext_resource type="AudioStream" uid="uid://bcm5g0oyn5jnp" path="res://assets/voice/old_tree/tree_call_5.wav" id="10_egqt8"]
 [ext_resource type="AudioStream" uid="uid://b46bfn4l42pgt" path="res://assets/voice/old_tree/tree_first_1.wav" id="11_5q3b1"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_first.tres" id="12_5t8ol"]
+[ext_resource type="Resource" uid="uid://ccjegum1cmnjw" path="res://game/voice/triggers/tree_first.tres" id="12_5t8ol"]
 [ext_resource type="AudioStream" uid="uid://c48myjmnven32" path="res://assets/voice/old_tree/tree_first_2.wav" id="13_y5gop"]
 [ext_resource type="AudioStream" uid="uid://dy6ejf7t68x57" path="res://assets/voice/old_tree/tree_first_3.wav" id="14_oc458"]
 [ext_resource type="AudioStream" uid="uid://dnmggecftchxp" path="res://assets/voice/old_tree/tree_greet_1.wav" id="15_i0hw3"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_greet.tres" id="16_n6uf0"]
+[ext_resource type="Resource" uid="uid://blrv3tlx4cavx" path="res://game/voice/triggers/tree_greet.tres" id="16_n6uf0"]
 [ext_resource type="AudioStream" uid="uid://c3wd7q1b3y6ow" path="res://assets/voice/old_tree/tree_greet_2.wav" id="17_pjmrj"]
 [ext_resource type="AudioStream" uid="uid://dhfj0dxnsvx8i" path="res://assets/voice/old_tree/tree_greet_3.wav" id="18_utygb"]
 [ext_resource type="AudioStream" uid="uid://bd4xlvs5vf4gf" path="res://assets/voice/old_tree/tree_greet_4.wav" id="19_gjvn0"]
 [ext_resource type="AudioStream" uid="uid://cx2excrrsdiph" path="res://assets/voice/old_tree/tree_greet_5.wav" id="20_tiwfi"]
 [ext_resource type="AudioStream" uid="uid://bep0q0u5hxkup" path="res://assets/voice/old_tree/tree_idle_1.wav" id="21_ggwx2"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_idle.tres" id="22_rmryn"]
+[ext_resource type="Resource" uid="uid://sx3gkcmo0qyg" path="res://game/voice/triggers/tree_idle.tres" id="22_rmryn"]
 [ext_resource type="AudioStream" uid="uid://cc3g001tl0hau" path="res://assets/voice/old_tree/tree_idle_2.wav" id="23_273q8"]
 [ext_resource type="AudioStream" uid="uid://cpjykoejh8m6a" path="res://assets/voice/old_tree/tree_idle_3.wav" id="24_nxoux"]
 [ext_resource type="AudioStream" uid="uid://ckqetal83ead0" path="res://assets/voice/old_tree/tree_idle_4.wav" id="25_ocu3p"]
@@ -29,20 +29,20 @@
 [ext_resource type="AudioStream" uid="uid://cmfgb1d7x7uij" path="res://assets/voice/old_tree/tree_idle_6.wav" id="27_e8mvs"]
 [ext_resource type="AudioStream" uid="uid://qataef275vjl" path="res://assets/voice/old_tree/tree_idle_7.wav" id="28_baylg"]
 [ext_resource type="AudioStream" uid="uid://cuxbbap6bpsft" path="res://assets/voice/old_tree/tree_affordable_1.wav" id="29_qqnh8"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_affordable.tres" id="30_imadg"]
+[ext_resource type="Resource" uid="uid://heu2veoqh30n" path="res://game/voice/triggers/tree_affordable.tres" id="30_imadg"]
 [ext_resource type="AudioStream" uid="uid://b0tpjce7ibefj" path="res://assets/voice/old_tree/tree_affordable_2.wav" id="31_tvhhs"]
 [ext_resource type="AudioStream" uid="uid://1ls0jnshobvx" path="res://assets/voice/old_tree/tree_affordable_3.wav" id="32_a5fs5"]
 [ext_resource type="AudioStream" uid="uid://4q2xo7mv6b88" path="res://assets/voice/old_tree/tree_affordable_4.wav" id="33_6wnad"]
 [ext_resource type="AudioStream" uid="uid://dtvepw7v3fa7q" path="res://assets/voice/old_tree/tree_affordable_5.wav" id="34_wsxac"]
 [ext_resource type="AudioStream" uid="uid://diuqjqq5a5fp0" path="res://assets/voice/old_tree/tree_bought_1.wav" id="35_w2qn0"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_bought.tres" id="36_k0rvm"]
+[ext_resource type="Resource" uid="uid://djespdebx5dcl" path="res://game/voice/triggers/tree_bought.tres" id="36_k0rvm"]
 [ext_resource type="AudioStream" uid="uid://bhg5trwxtmm70" path="res://assets/voice/old_tree/tree_bought_2.wav" id="37_lkm7y"]
 [ext_resource type="AudioStream" uid="uid://bkjrpvwm52kwe" path="res://assets/voice/old_tree/tree_bought_3.wav" id="38_bipwe"]
 [ext_resource type="AudioStream" uid="uid://dwvr7m7jouu5u" path="res://assets/voice/old_tree/tree_bought_4.wav" id="39_wm6gn"]
 [ext_resource type="AudioStream" uid="uid://3xiwo13nqegy" path="res://assets/voice/old_tree/tree_bought_5.wav" id="40_1jeda"]
 [ext_resource type="AudioStream" uid="uid://hsyumt167uoe" path="res://assets/voice/old_tree/tree_bought_6.wav" id="41_1xxoi"]
 [ext_resource type="AudioStream" uid="uid://xpagmiexj85g" path="res://assets/voice/old_tree/tree_grumble_1.wav" id="42_cshol"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_grumble.tres" id="43_baylg"]
+[ext_resource type="Resource" uid="uid://bc8v0p64vqbkl" path="res://game/voice/triggers/tree_grumble.tres" id="43_baylg"]
 [ext_resource type="AudioStream" uid="uid://cu5psgspm1kbs" path="res://assets/voice/old_tree/tree_grumble_2.wav" id="43_i0ciu"]
 [ext_resource type="AudioStream" uid="uid://djr3x1d0qvun5" path="res://assets/voice/old_tree/tree_grumble_3.wav" id="44_wnxwh"]
 [ext_resource type="AudioStream" uid="uid://bnakssklp7xu2" path="res://assets/voice/old_tree/tree_grumble_4.wav" id="45_qxd0j"]
@@ -50,96 +50,96 @@
 [ext_resource type="AudioStream" uid="uid://j3r8wuc5an6q" path="res://assets/voice/old_tree/tree_stage_half_1.wav" id="47_f2im7"]
 [ext_resource type="AudioStream" uid="uid://ctjiollxj5tfl" path="res://assets/voice/old_tree/tree_stage_half_2.wav" id="48_hgi7v"]
 [ext_resource type="AudioStream" uid="uid://bprh0opg5rptu" path="res://assets/voice/old_tree/tree_stage_half_3.wav" id="49_qlqbp"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_stage_half.tres" id="49_qqnh8"]
+[ext_resource type="Resource" uid="uid://cvyw8cpadn6hr" path="res://game/voice/triggers/tree_stage_half.tres" id="49_qqnh8"]
 [ext_resource type="AudioStream" uid="uid://02qb4spgxbkg" path="res://assets/voice/old_tree/tree_stage_most_1.wav" id="50_4g6jg"]
 [ext_resource type="AudioStream" uid="uid://c5hjsrror46sl" path="res://assets/voice/old_tree/tree_stage_most_2.wav" id="51_l4aea"]
 [ext_resource type="AudioStream" uid="uid://fy3ndbjsy31j" path="res://assets/voice/old_tree/tree_stage_most_3.wav" id="52_ikdy7"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_stage_most.tres" id="53_imadg"]
+[ext_resource type="Resource" uid="uid://dpqwyjmi20c6g" path="res://game/voice/triggers/tree_stage_most.tres" id="53_imadg"]
 [ext_resource type="AudioStream" uid="uid://tx3xwk3bwxgy" path="res://assets/voice/old_tree/tree_stage_last_1.wav" id="53_o6r3k"]
 [ext_resource type="AudioStream" uid="uid://dvvu1qis02ohv" path="res://assets/voice/old_tree/tree_stage_last_2.wav" id="54_koric"]
 [ext_resource type="AudioStream" uid="uid://cvctmbtldcsay" path="res://assets/voice/old_tree/tree_stage_last_3.wav" id="55_xpmbf"]
 [ext_resource type="AudioStream" uid="uid://csvsmdccpb7m3" path="res://assets/voice/old_tree/tree_cabinet_laundry_1.wav" id="56_6xrs5"]
 [ext_resource type="AudioStream" uid="uid://63ymmbchpfuy" path="res://assets/voice/old_tree/tree_cabinet_laundry_2.wav" id="57_exkd3"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_stage_last.tres" id="57_tvhhs"]
+[ext_resource type="Resource" uid="uid://5t0vlrqn5id2" path="res://game/voice/triggers/tree_stage_last.tres" id="57_tvhhs"]
 [ext_resource type="AudioStream" uid="uid://cidpn8xr27f7v" path="res://assets/voice/old_tree/tree_cabinet_laundry_3.wav" id="58_e1rvo"]
 [ext_resource type="AudioStream" uid="uid://du0ny64msdtr3" path="res://assets/voice/old_tree/tree_cabinet_laundry_4.wav" id="59_844ss"]
 [ext_resource type="AudioStream" uid="uid://c20r1sfefxboh" path="res://assets/voice/old_tree/tree_cabinet_garage_1.wav" id="60_gstf6"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_laundry.tres" id="61_a5fs5"]
+[ext_resource type="Resource" uid="uid://kwdxowq2302n" path="res://game/voice/triggers/tree_cabinet_laundry.tres" id="61_a5fs5"]
 [ext_resource type="AudioStream" uid="uid://cxos1tbbsd6xk" path="res://assets/voice/old_tree/tree_cabinet_garage_2.wav" id="61_sl3r5"]
 [ext_resource type="AudioStream" uid="uid://m8jc276vxt4g" path="res://assets/voice/old_tree/tree_cabinet_garage_3.wav" id="62_3jj5j"]
 [ext_resource type="AudioStream" uid="uid://rcjo2gxoagcm" path="res://assets/voice/old_tree/tree_cabinet_garage_4.wav" id="63_c06w5"]
 [ext_resource type="AudioStream" uid="uid://bauj4ix5q5pvd" path="res://assets/voice/old_tree/tree_cabinet_kitchen_1.wav" id="64_ggasp"]
 [ext_resource type="AudioStream" uid="uid://cvla8a8jj60jr" path="res://assets/voice/old_tree/tree_cabinet_kitchen_2.wav" id="65_toy6q"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_garage.tres" id="66_6wnad"]
+[ext_resource type="Resource" uid="uid://br75semxifsfu" path="res://game/voice/triggers/tree_cabinet_garage.tres" id="66_6wnad"]
 [ext_resource type="AudioStream" uid="uid://dwo33bel42613" path="res://assets/voice/old_tree/tree_cabinet_kitchen_3.wav" id="66_8djmv"]
 [ext_resource type="AudioStream" uid="uid://ybwiu8ctvpxq" path="res://assets/voice/old_tree/tree_cabinet_kitchen_4.wav" id="67_fdrwb"]
 [ext_resource type="AudioStream" uid="uid://bp7er71djf4xp" path="res://assets/voice/old_tree/tree_cabinet_living_1.wav" id="68_ow8ry"]
 [ext_resource type="AudioStream" uid="uid://t2aiebwgajnx" path="res://assets/voice/old_tree/tree_cabinet_living_2.wav" id="69_gt8nq"]
 [ext_resource type="AudioStream" uid="uid://by13ehrfvyffc" path="res://assets/voice/old_tree/tree_cabinet_living_3.wav" id="70_g8yv1"]
 [ext_resource type="AudioStream" uid="uid://b7f6nh0j0rhbn" path="res://assets/voice/old_tree/tree_cabinet_living_4.wav" id="71_bv3lv"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_kitchen.tres" id="71_wsxac"]
+[ext_resource type="Resource" uid="uid://qapkx2kti275" path="res://game/voice/triggers/tree_cabinet_kitchen.tres" id="71_wsxac"]
 [ext_resource type="AudioStream" uid="uid://dtfk4psqdisqx" path="res://assets/voice/old_tree/tree_cabinet_kids_north_1.wav" id="72_7slqc"]
 [ext_resource type="AudioStream" uid="uid://dtigabtrysexx" path="res://assets/voice/old_tree/tree_cabinet_kids_north_2.wav" id="73_w60h5"]
 [ext_resource type="AudioStream" uid="uid://i46x2o1yqenm" path="res://assets/voice/old_tree/tree_cabinet_kids_north_3.wav" id="74_ebtp2"]
 [ext_resource type="AudioStream" uid="uid://khtxwbecird2" path="res://assets/voice/old_tree/tree_cabinet_kids_north_4.wav" id="75_waojd"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_living.tres" id="76_w2qn0"]
+[ext_resource type="Resource" uid="uid://jue2w5cikexw" path="res://game/voice/triggers/tree_cabinet_living.tres" id="76_w2qn0"]
 [ext_resource type="AudioStream" uid="uid://tcwlgemtcpi0" path="res://assets/voice/old_tree/tree_cabinet_kids_east_1.wav" id="76_x5gip"]
 [ext_resource type="AudioStream" uid="uid://c14u34xxcxbn7" path="res://assets/voice/old_tree/tree_cabinet_kids_east_2.wav" id="77_73x1p"]
 [ext_resource type="AudioStream" uid="uid://bpatcmh5ysym2" path="res://assets/voice/old_tree/tree_cabinet_kids_east_3.wav" id="78_1tucu"]
 [ext_resource type="AudioStream" uid="uid://v28na25r8ma6" path="res://assets/voice/old_tree/tree_cabinet_kids_east_4.wav" id="79_1m2hu"]
 [ext_resource type="AudioStream" uid="uid://bnhrr4rrlsyth" path="res://assets/voice/old_tree/tree_cabinet_loft_west_1.wav" id="80_33aeu"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_kids_north.tres" id="81_k0rvm"]
+[ext_resource type="Resource" uid="uid://cd1475fc6nuj1" path="res://game/voice/triggers/tree_cabinet_kids_north.tres" id="81_k0rvm"]
 [ext_resource type="AudioStream" uid="uid://bc5t0brg1opp8" path="res://assets/voice/old_tree/tree_cabinet_loft_west_2.wav" id="81_uywod"]
 [ext_resource type="AudioStream" uid="uid://bnhprhmiy4hjf" path="res://assets/voice/old_tree/tree_cabinet_loft_west_3.wav" id="82_tmlu8"]
 [ext_resource type="AudioStream" uid="uid://cu87w72k186vc" path="res://assets/voice/old_tree/tree_cabinet_loft_west_4.wav" id="83_1sp50"]
 [ext_resource type="AudioStream" uid="uid://cfrcfsff81s7k" path="res://assets/voice/old_tree/tree_cabinet_loft_east_1.wav" id="84_ju2kb"]
 [ext_resource type="AudioStream" uid="uid://dlr81met3ktt3" path="res://assets/voice/old_tree/tree_cabinet_loft_east_2.wav" id="85_jd6ja"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_kids_east.tres" id="86_lkm7y"]
+[ext_resource type="Resource" uid="uid://17dsstmsm3yj" path="res://game/voice/triggers/tree_cabinet_kids_east.tres" id="86_lkm7y"]
 [ext_resource type="AudioStream" uid="uid://js81byok5a0y" path="res://assets/voice/old_tree/tree_cabinet_loft_east_3.wav" id="86_qsgvx"]
 [ext_resource type="AudioStream" uid="uid://taff4h4c50vi" path="res://assets/voice/old_tree/tree_cabinet_loft_east_4.wav" id="87_vonbh"]
 [ext_resource type="AudioStream" uid="uid://dyxwfc0djj1py" path="res://assets/voice/old_tree/tree_hint_basement_1.wav" id="88_7n5x3"]
 [ext_resource type="AudioStream" uid="uid://c74vf4ir2mpmj" path="res://assets/voice/old_tree/tree_hint_basement_2.wav" id="89_orvcy"]
 [ext_resource type="AudioStream" uid="uid://d15btm3uvbl7" path="res://assets/voice/old_tree/tree_hint_basement_3.wav" id="90_yh0gs"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_loft_west.tres" id="91_bipwe"]
+[ext_resource type="Resource" uid="uid://c6djayf3f70rs" path="res://game/voice/triggers/tree_cabinet_loft_west.tres" id="91_bipwe"]
 [ext_resource type="AudioStream" uid="uid://cxchhjopv7qwq" path="res://assets/voice/old_tree/tree_hint_basement_4.wav" id="91_nbfl6"]
 [ext_resource type="AudioStream" uid="uid://beunw2y0ihdjn" path="res://assets/voice/old_tree/tree_hint_ground_1.wav" id="92_cuht3"]
 [ext_resource type="AudioStream" uid="uid://c7ojjrkq3yako" path="res://assets/voice/old_tree/tree_hint_ground_2.wav" id="93_pqhgp"]
 [ext_resource type="AudioStream" uid="uid://bkw6yankgpl4w" path="res://assets/voice/old_tree/tree_hint_ground_3.wav" id="94_2acap"]
 [ext_resource type="AudioStream" uid="uid://pibv5v0vnwgf" path="res://assets/voice/old_tree/tree_hint_ground_4.wav" id="95_fqeq6"]
 [ext_resource type="AudioStream" uid="uid://c02oythqtjpwc" path="res://assets/voice/old_tree/tree_hint_first_1.wav" id="96_uvs0g"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_cabinet_loft_east.tres" id="96_wm6gn"]
+[ext_resource type="Resource" uid="uid://vc8ctuyvotu1" path="res://game/voice/triggers/tree_cabinet_loft_east.tres" id="96_wm6gn"]
 [ext_resource type="AudioStream" uid="uid://dx0pcyddbyjom" path="res://assets/voice/old_tree/tree_hint_first_2.wav" id="97_l1si1"]
 [ext_resource type="AudioStream" uid="uid://dfe0fjdhwoog8" path="res://assets/voice/old_tree/tree_hint_first_3.wav" id="98_fx20a"]
 [ext_resource type="AudioStream" uid="uid://c3dyr6scuqysf" path="res://assets/voice/old_tree/tree_hint_first_4.wav" id="99_opun7"]
 [ext_resource type="AudioStream" uid="uid://p8p8i8igcwio" path="res://assets/voice/old_tree/tree_hint_attic_1.wav" id="100_yblbx"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_hint_basement.tres" id="101_1jeda"]
+[ext_resource type="Resource" uid="uid://bw0ehglpjn56" path="res://game/voice/triggers/tree_hint_basement.tres" id="101_1jeda"]
 [ext_resource type="AudioStream" uid="uid://c820jp5sh5v8e" path="res://assets/voice/old_tree/tree_hint_attic_2.wav" id="101_w0ptl"]
 [ext_resource type="AudioStream" uid="uid://sp2d0px2ek2f" path="res://assets/voice/old_tree/tree_hint_attic_3.wav" id="102_fki6a"]
 [ext_resource type="AudioStream" uid="uid://bru68a7ih0j1g" path="res://assets/voice/old_tree/tree_hint_attic_4.wav" id="103_ivwxs"]
 [ext_resource type="AudioStream" uid="uid://dguaebncwvy7y" path="res://assets/voice/old_tree/tree_tip_throw_1.wav" id="104_sbucs"]
 [ext_resource type="AudioStream" uid="uid://bkjvq4ysilhyv" path="res://assets/voice/old_tree/tree_tip_part_1.wav" id="105_7crhp"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_hint_ground.tres" id="106_1xxoi"]
+[ext_resource type="Resource" uid="uid://bpllnln1g2gvh" path="res://game/voice/triggers/tree_hint_ground.tres" id="106_1xxoi"]
 [ext_resource type="AudioStream" uid="uid://bi5ts4mpip4pn" path="res://assets/voice/old_tree/tree_tip_part_2.wav" id="106_ebx7b"]
 [ext_resource type="AudioStream" uid="uid://bhom8ans2r7pb" path="res://assets/voice/old_tree/tree_tip_vacuum_1.wav" id="107_tfvuo"]
 [ext_resource type="AudioStream" uid="uid://cief07jj7858f" path="res://assets/voice/old_tree/tree_tip_vacuum_2.wav" id="108_k5d54"]
 [ext_resource type="AudioStream" uid="uid://x5vcsw00k0ve" path="res://assets/voice/old_tree/tree_tip_vacuum_3.wav" id="109_knfkk"]
 [ext_resource type="AudioStream" uid="uid://f5wv5qx10p23" path="res://assets/voice/old_tree/tree_tip_elevator_1.wav" id="110_wbatc"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_hint_first.tres" id="111_cshol"]
+[ext_resource type="Resource" uid="uid://dhio13mn5ounl" path="res://game/voice/triggers/tree_hint_first.tres" id="111_cshol"]
 [ext_resource type="AudioStream" uid="uid://curdyf0ponhlv" path="res://assets/voice/old_tree/tree_part_basement_1.wav" id="111_o4y20"]
 [ext_resource type="AudioStream" uid="uid://b2hegirofnp81" path="res://assets/voice/old_tree/tree_part_basement_2.wav" id="112_8p60b"]
 [ext_resource type="AudioStream" uid="uid://cq5afrfihi576" path="res://assets/voice/old_tree/tree_part_basement_3.wav" id="113_sfwfs"]
 [ext_resource type="AudioStream" uid="uid://oreila8ccuuj" path="res://assets/voice/old_tree/tree_part_basement_4.wav" id="114_ohl3w"]
 [ext_resource type="AudioStream" uid="uid://c6yn0w4gqy7lf" path="res://assets/voice/old_tree/tree_part_ground_1.wav" id="115_co0rj"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_hint_attic.tres" id="116_i0ciu"]
+[ext_resource type="Resource" uid="uid://bo4dkgadaka2i" path="res://game/voice/triggers/tree_hint_attic.tres" id="116_i0ciu"]
 [ext_resource type="AudioStream" uid="uid://b8o4o4201kpsk" path="res://assets/voice/old_tree/tree_part_ground_2.wav" id="116_oidjh"]
 [ext_resource type="AudioStream" uid="uid://cjvr6ublyea8q" path="res://assets/voice/old_tree/tree_part_ground_3.wav" id="117_ylo37"]
 [ext_resource type="AudioStream" uid="uid://dbiq5dhjg533t" path="res://assets/voice/old_tree/tree_part_ground_4.wav" id="118_a2cx4"]
 [ext_resource type="AudioStream" uid="uid://bxbk4ndpuj22b" path="res://assets/voice/old_tree/tree_part_first_1.wav" id="119_uck7b"]
 [ext_resource type="AudioStream" uid="uid://d3pky0tsebb0s" path="res://assets/voice/old_tree/tree_part_first_2.wav" id="120_mjxj7"]
 [ext_resource type="AudioStream" uid="uid://jsgb40x6ggdl" path="res://assets/voice/old_tree/tree_part_first_3.wav" id="121_81tw3"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_tip_throw.tres" id="121_wnxwh"]
+[ext_resource type="Resource" uid="uid://c7bwiiw38jn6w" path="res://game/voice/triggers/tree_tip_throw.tres" id="121_wnxwh"]
 [ext_resource type="AudioStream" uid="uid://d2ca2mlqr0706" path="res://assets/voice/old_tree/tree_part_first_4.wav" id="122_pxs1h"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_tip_part.tres" id="123_qxd0j"]
+[ext_resource type="Resource" uid="uid://c36p0hqawtpty" path="res://game/voice/triggers/tree_tip_part.tres" id="123_qxd0j"]
 [ext_resource type="AudioStream" uid="uid://cfev1nnoc4myt" path="res://assets/voice/old_tree/tree_part_attic_1.wav" id="123_sje67"]
 [ext_resource type="AudioStream" uid="uid://dco64nvlmbj2" path="res://assets/voice/old_tree/tree_part_attic_2.wav" id="124_iifct"]
 [ext_resource type="AudioStream" uid="uid://dt81eakdqux28" path="res://assets/voice/old_tree/tree_part_attic_3.wav" id="125_tsvsv"]
@@ -148,38 +148,38 @@
 [ext_resource type="AudioStream" uid="uid://i5b5yk4osp74" path="res://assets/voice/old_tree/tree_floor_ground_2.wav" id="128_7hq5n"]
 [ext_resource type="AudioStream" uid="uid://bh1f7kjqdgosf" path="res://assets/voice/old_tree/tree_floor_ground_3.wav" id="129_t85re"]
 [ext_resource type="AudioStream" uid="uid://cxhv6tsslboxy" path="res://assets/voice/old_tree/tree_floor_ground_4.wav" id="130_33jwt"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_part_basement.tres" id="130_ksoog"]
+[ext_resource type="Resource" uid="uid://blki2kgvwc6tw" path="res://game/voice/triggers/tree_part_basement.tres" id="130_ksoog"]
 [ext_resource type="AudioStream" uid="uid://bqku2kyysiu3s" path="res://assets/voice/old_tree/tree_floor_first_1.wav" id="131_x00l1"]
 [ext_resource type="AudioStream" uid="uid://bpdrmyimawgh" path="res://assets/voice/old_tree/tree_floor_first_2.wav" id="132_digtr"]
 [ext_resource type="AudioStream" uid="uid://bm5ch7mq8fybm" path="res://assets/voice/old_tree/tree_floor_first_3.wav" id="133_hgra8"]
 [ext_resource type="AudioStream" uid="uid://bj7e412giuqtt" path="res://assets/voice/old_tree/tree_floor_first_4.wav" id="134_yrex8"]
 [ext_resource type="AudioStream" uid="uid://4kpmh57jgq4t" path="res://assets/voice/old_tree/tree_floor_attic_1.wav" id="135_0vrbi"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_part_ground.tres" id="135_f2im7"]
+[ext_resource type="Resource" uid="uid://bkon5433couol" path="res://game/voice/triggers/tree_part_ground.tres" id="135_f2im7"]
 [ext_resource type="AudioStream" uid="uid://4nxwb57icedg" path="res://assets/voice/old_tree/tree_floor_attic_2.wav" id="136_qoe40"]
 [ext_resource type="AudioStream" uid="uid://c46ka8rum2l0c" path="res://assets/voice/old_tree/tree_floor_attic_3.wav" id="137_18g45"]
 [ext_resource type="AudioStream" uid="uid://dq6yfocpiu41g" path="res://assets/voice/old_tree/tree_floor_attic_4.wav" id="138_xpstj"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_part_first.tres" id="140_hgi7v"]
+[ext_resource type="Resource" uid="uid://dfl76aa0g1tv3" path="res://game/voice/triggers/tree_part_first.tres" id="140_hgi7v"]
 [ext_resource type="AudioStream" uid="uid://ntvvpch3dryi" path="res://assets/voice/old_tree/tree_peace_1.wav" id="142_0w5u0"]
 [ext_resource type="AudioStream" uid="uid://1f1wv6we43aa" path="res://assets/voice/old_tree/tree_peace_2.wav" id="143_g0ahr"]
 [ext_resource type="AudioStream" uid="uid://ct0plv5s666ks" path="res://assets/voice/old_tree/tree_peace_3.wav" id="144_6xm3c"]
 [ext_resource type="AudioStream" uid="uid://damnai02viu0l" path="res://assets/voice/old_tree/tree_presents_ready_1.wav" id="145_37g6c"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_part_attic.tres" id="145_qlqbp"]
+[ext_resource type="Resource" uid="uid://bs7eqh5ewl5aw" path="res://game/voice/triggers/tree_part_attic.tres" id="145_qlqbp"]
 [ext_resource type="AudioStream" uid="uid://bjsn8scd3xov3" path="res://assets/voice/old_tree/tree_presents_ready_2.wav" id="146_weun0"]
 [ext_resource type="AudioStream" uid="uid://cdxqmx3ymqwsw" path="res://assets/voice/old_tree/tree_presents_ready_3.wav" id="147_3gnij"]
 [ext_resource type="AudioStream" uid="uid://dyqdstdh462hi" path="res://assets/voice/old_tree/tree_presents_1.wav" id="148_ipycp"]
 [ext_resource type="AudioStream" uid="uid://g17j78vy36sh" path="res://assets/voice/old_tree/tree_presents_2.wav" id="149_g44cv"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_floor_ground.tres" id="150_4g6jg"]
+[ext_resource type="Resource" uid="uid://pin71uoec0f6" path="res://game/voice/triggers/tree_floor_ground.tres" id="150_4g6jg"]
 [ext_resource type="AudioStream" uid="uid://dofp8wkwse87s" path="res://assets/voice/old_tree/tree_presents_3.wav" id="150_gwkca"]
 [ext_resource type="AudioStream" uid="uid://bohuasook6hvq" path="res://assets/voice/old_tree/tree_presents_4.wav" id="151_csmxm"]
 [ext_resource type="AudioStream" uid="uid://hf2nt5n7aa45" path="res://assets/voice/old_tree/tree_present_taken_1.wav" id="152_g6ix0"]
 [ext_resource type="AudioStream" uid="uid://drcv2kuwg40k0" path="res://assets/voice/old_tree/tree_present_taken_2.wav" id="153_umvn0"]
 [ext_resource type="AudioStream" uid="uid://cjgegckbqh3br" path="res://assets/voice/old_tree/tree_present_taken_3.wav" id="154_nskm4"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_floor_first.tres" id="155_l4aea"]
+[ext_resource type="Resource" uid="uid://db6gw7r76imur" path="res://game/voice/triggers/tree_floor_first.tres" id="155_l4aea"]
 [ext_resource type="AudioStream" uid="uid://dcc0djc8gnja" path="res://assets/voice/old_tree/tree_present_taken_4.wav" id="155_t2vxr"]
 [ext_resource type="Script" uid="uid://0spuefso45pc" path="res://game/voice/voice_bank.gd" id="156_r1q4c"]
-[ext_resource type="Resource" path="res://game/voice/speakers/old_tree.tres" id="157_skfrl"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_floor_attic.tres" id="160_ikdy7"]
-[ext_resource type="Resource" path="res://game/voice/triggers/tree_peace.tres" id="169_koric"]
+[ext_resource type="Resource" uid="uid://di3lqauv13wvg" path="res://game/voice/speakers/old_tree.tres" id="157_skfrl"]
+[ext_resource type="Resource" uid="uid://biwq53to2mumi" path="res://game/voice/triggers/tree_floor_attic.tres" id="160_ikdy7"]
+[ext_resource type="Resource" uid="uid://bix7km5nhldxj" path="res://game/voice/triggers/tree_peace.tres" id="169_koric"]
 
 [sub_resource type="Resource" id="seg_tree_call_1_0_0"]
 script = ExtResource("3_q8epu")
@@ -313,7 +313,7 @@ key = &"VO_TREE_CALL_5_2"
 script = ExtResource("2_vwrhp")
 stream = ExtResource("10_egqt8")
 source_md5 = "ff42202b598bc0058506f0309f84d60c"
-duration = 7.2170000000000005
+duration = 7.217
 segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_call_5_0_0"), SubResource("seg_tree_call_5_0_1")])
 
 [sub_resource type="Resource" id="line_tree_call_5"]
@@ -874,7 +874,7 @@ key = &"VO_TREE_BOUGHT_1_1"
 script = ExtResource("2_vwrhp")
 stream = ExtResource("35_w2qn0")
 source_md5 = "f51485f214562d65abf2b655dff082a9"
-duration = 3.8080000000000003
+duration = 3.808
 segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_bought_1_0_0")])
 
 [sub_resource type="Resource" id="line_tree_bought_1"]
@@ -943,7 +943,7 @@ key = &"VO_TREE_BOUGHT_4_1"
 script = ExtResource("2_vwrhp")
 stream = ExtResource("39_wm6gn")
 source_md5 = "1f6e5475bcbe11b99583c6a1c0f388e1"
-duration = 3.8360000000000003
+duration = 3.836
 segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_bought_4_0_0")])
 
 [sub_resource type="Resource" id="line_tree_bought_4"]
@@ -1366,7 +1366,7 @@ key = &"VO_TREE_STAGE_LAST_2_2"
 script = ExtResource("2_vwrhp")
 stream = ExtResource("54_koric")
 source_md5 = "fdb8c874af5277d371865c5e534c5da5"
-duration = 7.5280000000000005
+duration = 7.528
 segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_stage_last_2_0_0"), SubResource("seg_tree_stage_last_2_0_1")])
 
 [sub_resource type="Resource" id="line_tree_stage_last_2"]
@@ -2091,7 +2091,7 @@ key = &"VO_TREE_CABINET_KIDS_EAST_4_2"
 script = ExtResource("2_vwrhp")
 stream = ExtResource("79_1m2hu")
 source_md5 = "5f9bc5ff0e392c2005f56ef3c7113f03"
-duration = 7.2780000000000005
+duration = 7.278
 segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_cabinet_kids_east_4_0_0"), SubResource("seg_tree_cabinet_kids_east_4_0_1")])
 
 [sub_resource type="Resource" id="line_tree_cabinet_kids_east_4"]
@@ -2659,7 +2659,7 @@ key = &"VO_TREE_HINT_FIRST_4_2"
 script = ExtResource("2_vwrhp")
 stream = ExtResource("99_opun7")
 source_md5 = "f624d4f64d4614f013bc4ff6c28b9fd7"
-duration = 7.5760000000000005
+duration = 7.576
 segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_hint_first_4_0_0"), SubResource("seg_tree_hint_first_4_0_1")])
 
 [sub_resource type="Resource" id="line_tree_hint_first_4"]
@@ -3515,7 +3515,7 @@ key = &"VO_TREE_FLOOR_GROUND_1_2"
 script = ExtResource("2_vwrhp")
 stream = ExtResource("127_5b1cx")
 source_md5 = "99cce649717e7c057fc40a0857efe8c6"
-duration = 7.8870000000000005
+duration = 7.887
 segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_floor_ground_1_0_0"), SubResource("seg_tree_floor_ground_1_0_1")])
 
 [sub_resource type="Resource" id="line_tree_floor_ground_1"]
@@ -4105,7 +4105,7 @@ key = &"VO_TREE_PRESENTS_3_2"
 script = ExtResource("2_vwrhp")
 stream = ExtResource("150_gwkca")
 source_md5 = "0134a834246bfb6b18c151423d5503c7"
-duration = 7.5280000000000005
+duration = 7.528
 segments = Array[ExtResource("3_q8epu")]([SubResource("seg_tree_presents_3_0_0"), SubResource("seg_tree_presents_3_0_1")])
 
 [sub_resource type="Resource" id="line_tree_presents_3"]

@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="UpgradeStat" format=3]
+[gd_resource type="Resource" script_class="UpgradeStat" format=3 uid="uid://dniw7dxbt0qfg"]
 
-[ext_resource type="Script" path="res://game/economy/upgrade_stat.gd" id="1_l28oe"]
+[ext_resource type="Script" uid="uid://buuwxe61yjepk" path="res://game/economy/upgrade_stat.gd" id="1_l28oe"]
 
 [resource]
 script = ExtResource("1_l28oe")

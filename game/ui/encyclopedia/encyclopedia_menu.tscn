@@ -1,8 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://j2b7s0f1flmg"]
 
-[ext_resource type="Script" path="res://game/ui/encyclopedia/encyclopedia_menu.gd" id="1_menu"]
+[ext_resource type="Script" uid="uid://c7wb4b2grdlov" path="res://game/ui/encyclopedia/encyclopedia_menu.gd" id="1_menu"]
 
-[node name="EncyclopediaMenu" type="CanvasLayer"]
+[node name="EncyclopediaMenu" type="CanvasLayer" unique_id=1285485085]
 layer = 10
 visible = false
 script = ExtResource("1_menu")

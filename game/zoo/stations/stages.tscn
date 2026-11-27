@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://tmnyx14meic5"]
 
 [ext_resource type="PackedScene" uid="uid://h3610c6dred6" path="res://game/entities/cabinet/cabinet.tscn" id="1_cabinet"]
 [ext_resource type="Script" uid="uid://3x55adfsatls" path="res://game/mess/mess.gd" id="2_mess"]
@@ -8,24 +8,23 @@
 [ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
 [ext_resource type="Script" uid="uid://56in2d06bxe" path="res://game/economy/bank.gd" id="7_bank"]
 [ext_resource type="PackedScene" uid="uid://dqcr0t6aah51x" path="res://game/devices/dust_sheet.tscn" id="8_sheet"]
-[ext_resource type="PackedScene" path="res://game/run/run.tscn" id="9_run"]
-[ext_resource type="Resource" path="res://game/zoo/stages/mini_plan.tres" id="10_mini"]
-[ext_resource type="Resource" path="res://game/run/house_stage_plan.tres" id="11_house"]
-[ext_resource type="Script" path="res://game/zoo/stages/stage_plan_board.gd" id="12_board"]
-[ext_resource type="PackedScene" path="res://game/zoo/stages/stages_switch.tscn" id="13_switch"]
+[ext_resource type="PackedScene" uid="uid://11gqrc7lsd8r" path="res://game/run/run.tscn" id="9_run"]
+[ext_resource type="Resource" uid="uid://dxbsb5q8splqa" path="res://game/zoo/stages/mini_plan.tres" id="10_mini"]
+[ext_resource type="Resource" uid="uid://ds3vckygf8rpv" path="res://game/run/house_stage_plan.tres" id="11_house"]
+[ext_resource type="Script" uid="uid://8w8dqn8d4sqp" path="res://game/zoo/stages/stage_plan_board.gd" id="12_board"]
+[ext_resource type="PackedScene" uid="uid://2vfufj2d4onp" path="res://game/zoo/stages/stages_switch.tscn" id="13_switch"]
 [ext_resource type="Script" uid="uid://cyhr6nx34vjq0" path="res://game/mess/sock_generator.gd" id="14_gen"]
 [ext_resource type="Script" uid="uid://co2u54sk1yir8" path="res://game/mess/generated_socks.gd" id="15_generated"]
 [ext_resource type="Script" uid="uid://cub70qrwflqk1" path="res://game/mess/sock_area.gd" id="16_area"]
-[ext_resource type="PackedScene" path="res://game/entities/machine_part/machine_part.tscn" id="17_part"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_filter.tres" id="18_filter"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_motor.tres" id="19_motor"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_drum_belt.tres" id="20_belt"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/part_detergent.tres" id="21_detergent"]
-[ext_resource type="Script" path="res://game/entities/machine_part/machine_part_slot.gd" id="22_slot"]
-
-[ext_resource type="PackedScene" path="res://game/run/floor_lock.tscn" id="23_door"]
-[ext_resource type="PackedScene" path="res://game/run/floor_lock_gate.tscn" id="24_gate"]
-[ext_resource type="PackedScene" path="res://game/zoo/stages/lock_switch.tscn" id="25_lockswitch"]
+[ext_resource type="PackedScene" uid="uid://bylqsqsyw6rmv" path="res://game/entities/machine_part/machine_part.tscn" id="17_part"]
+[ext_resource type="Resource" uid="uid://c8blxpue0cacg" path="res://game/entities/machine_part/part_filter.tres" id="18_filter"]
+[ext_resource type="Resource" uid="uid://br8ugvebmpffv" path="res://game/entities/machine_part/part_motor.tres" id="19_motor"]
+[ext_resource type="Resource" uid="uid://ba3jvy2k36fgk" path="res://game/entities/machine_part/part_drum_belt.tres" id="20_belt"]
+[ext_resource type="Resource" uid="uid://kjxfml1u8iqe" path="res://game/entities/machine_part/part_detergent.tres" id="21_detergent"]
+[ext_resource type="Script" uid="uid://ocy5msoga2i1" path="res://game/entities/machine_part/machine_part_slot.gd" id="22_slot"]
+[ext_resource type="PackedScene" uid="uid://2udbo7xj172e" path="res://game/run/floor_lock.tscn" id="23_door"]
+[ext_resource type="PackedScene" uid="uid://mhbxwq1uco31" path="res://game/run/floor_lock_gate.tscn" id="24_gate"]
+[ext_resource type="PackedScene" uid="uid://bmdm1et0545cv" path="res://game/zoo/stages/lock_switch.tscn" id="25_lockswitch"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.42, 0.36, 0.5, 1)
@@ -36,6 +35,49 @@ size = Vector2(16, 11)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
 size = Vector3(16, 0.2, 11)
+
+[sub_resource type="Gradient" id="Gradient_glow"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_glow"]
+gradient = SubResource("Gradient_glow")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5nko2"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.55, 0.85, 1, 0.8)
+albedo_texture = SubResource("GradientTexture2D_glow")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_viarp"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.55, 0.85, 1, 0.8)
+albedo_texture = SubResource("GradientTexture2D_glow")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4cjav"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.55, 0.85, 1, 0.8)
+albedo_texture = SubResource("GradientTexture2D_glow")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gpkqt"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.55, 0.85, 1, 0.8)
+albedo_texture = SubResource("GradientTexture2D_glow")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_platform"]
 albedo_color = Color(0.7, 0.66, 0.6, 1)
@@ -54,14 +96,14 @@ size = Vector3(1.6, 0.2, 2.6)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ramp"]
 size = Vector3(1.6, 0.2, 2.6)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_slot"]
+size = Vector3(0.9, 0.9, 0.7)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_slot"]
 albedo_color = Color(0.85, 0.87, 0.9, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_slot"]
 material = SubResource("StandardMaterial3D_slot")
-size = Vector3(0.9, 0.9, 0.7)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_slot"]
 size = Vector3(0.9, 0.9, 0.7)
 
 [sub_resource type="BoxMesh" id="BoxMesh_wall"]
@@ -71,21 +113,21 @@ size = Vector3(1.935, 2.7, 0.1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_wall"]
 size = Vector3(1.935, 2.7, 0.1)
 
-[node name="Stages" type="Node3D"]
+[node name="Stages" type="Node3D" unique_id=775396611]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 0, -6)
 
-[node name="Pad" type="MeshInstance3D" parent="."]
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=1053793476]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, -1)
 mesh = SubResource("PlaneMesh_pad")
 
-[node name="Ground" type="StaticBody3D" parent="."]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=163494318]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, -1)
 metadata/surface = "wood"
 
-[node name="Shape" type="CollisionShape3D" parent="Ground"]
+[node name="Shape" type="CollisionShape3D" parent="Ground" unique_id=1860885470]
 shape = SubResource("BoxShape3D_ground")
 
-[node name="Name" type="Label3D" parent="."]
+[node name="Name" type="Label3D" parent="." unique_id=1507554709]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 5)
 pixel_size = 0.004
 billboard = 2
@@ -94,324 +136,330 @@ vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="PlanBoard" type="Node3D" parent="."]
+[node name="PlanBoard" type="Node3D" parent="." unique_id=828345216]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -5)
 script = ExtResource("12_board")
 plan = ExtResource("11_house")
 
-[node name="Run" parent="." instance=ExtResource("9_run")]
+[node name="Run" parent="." unique_id=2090444719 instance=ExtResource("9_run")]
 
-[node name="Stages" parent="Run" index="0"]
+[node name="Stages" parent="Run" index="0" unique_id=1121104956]
 plan = ExtResource("10_mini")
 draw_first_start = false
 
-[node name="Presents" parent="Run" index="7" node_paths=PackedStringArray("spot")]
+[node name="Presents" parent="Run" index="7" unique_id=1893270664 node_paths=PackedStringArray("spot")]
 spot = NodePath("../PresentSpot")
 
-[node name="PresentSpot" type="Marker3D" parent="Run"]
+[node name="PresentSpot" type="Marker3D" parent="Run" unique_id=836425915]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 0, -1.8)
 metadata/note = "Where a Stage's presents lie (core/137): one per player for each Collection completed in the Stage."
 
-[node name="MachineParts" type="Node3D" parent="Run"]
+[node name="MachineParts" type="Node3D" parent="Run" unique_id=837757086]
 
-[node name="Filter" parent="Run/MachineParts" instance=ExtResource("17_part")]
+[node name="Filter" parent="Run/MachineParts" unique_id=1454016044 instance=ExtResource("17_part")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.2)
 
-[node name="MachinePart" parent="Run/MachineParts/Filter" index="6"]
+[node name="Glow" parent="Run/MachineParts/Filter" index="2" unique_id=1157612825]
+material_override = SubResource("StandardMaterial3D_5nko2")
+
+[node name="MachinePart" parent="Run/MachineParts/Filter" index="6" unique_id=580453522]
 kind = ExtResource("18_filter")
 
-[node name="Motor" parent="Run/MachineParts" instance=ExtResource("17_part")]
+[node name="Motor" parent="Run/MachineParts" unique_id=393341331 instance=ExtResource("17_part")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 2.2)
 
-[node name="MachinePart" parent="Run/MachineParts/Motor" index="6"]
+[node name="Glow" parent="Run/MachineParts/Motor" index="2" unique_id=1157612825]
+material_override = SubResource("StandardMaterial3D_viarp")
+
+[node name="MachinePart" parent="Run/MachineParts/Motor" index="6" unique_id=580453522]
 kind = ExtResource("19_motor")
 
-[node name="DrumBelt" parent="Run/MachineParts" instance=ExtResource("17_part")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0, 0, 2.2)
+[node name="DrumBelt" parent="Run/MachineParts" unique_id=1375293600 instance=ExtResource("17_part")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 2.2)
 
-[node name="MachinePart" parent="Run/MachineParts/DrumBelt" index="6"]
+[node name="Glow" parent="Run/MachineParts/DrumBelt" index="2" unique_id=1157612825]
+material_override = SubResource("StandardMaterial3D_4cjav")
+
+[node name="MachinePart" parent="Run/MachineParts/DrumBelt" index="6" unique_id=580453522]
 kind = ExtResource("20_belt")
 
-[node name="Detergent" parent="Run/MachineParts" instance=ExtResource("17_part")]
+[node name="Detergent" parent="Run/MachineParts" unique_id=1527288314 instance=ExtResource("17_part")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 2.2)
 
-[node name="MachinePart" parent="Run/MachineParts/Detergent" index="6"]
+[node name="Glow" parent="Run/MachineParts/Detergent" index="2" unique_id=1157612825]
+material_override = SubResource("StandardMaterial3D_gpkqt")
+
+[node name="MachinePart" parent="Run/MachineParts/Detergent" index="6" unique_id=580453522]
 kind = ExtResource("21_detergent")
 
-[node name="CabinetA" parent="." instance=ExtResource("1_cabinet")]
+[node name="CabinetA" parent="." unique_id=2120923978 instance=ExtResource("1_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
 
-[node name="Cabinet" parent="CabinetA" index="0" node_paths=PackedStringArray("hands", "bank")]
+[node name="Cabinet" parent="CabinetA" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../Socks/Hands")
 bank = NodePath("../../Socks/Bank")
 pool = Array[StringName]([&"simple", &"patterns"])
 
-[node name="Platform" type="StaticBody3D" parent="."]
+[node name="Platform" type="StaticBody3D" parent="." unique_id=970360482]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.3, -3.5)
 
-[node name="Mesh" type="MeshInstance3D" parent="Platform"]
+[node name="Mesh" type="MeshInstance3D" parent="Platform" unique_id=1085825219]
 mesh = SubResource("BoxMesh_platform")
 
-[node name="Shape" type="CollisionShape3D" parent="Platform"]
+[node name="Shape" type="CollisionShape3D" parent="Platform" unique_id=2033342428]
 shape = SubResource("BoxShape3D_platform")
 
-[node name="Ramp" type="StaticBody3D" parent="."]
+[node name="Ramp" type="StaticBody3D" parent="." unique_id=46478108]
 transform = Transform3D(1, 0, 0, 0, 0.970296, -0.241922, 0, 0.241922, 0.970296, 4, 0.22, -0.26)
 
-[node name="Mesh" type="MeshInstance3D" parent="Ramp"]
+[node name="Mesh" type="MeshInstance3D" parent="Ramp" unique_id=1932979364]
 mesh = SubResource("BoxMesh_ramp")
 
-[node name="Shape" type="CollisionShape3D" parent="Ramp"]
+[node name="Shape" type="CollisionShape3D" parent="Ramp" unique_id=1657495030]
 shape = SubResource("BoxShape3D_ramp")
 
-[node name="GateSpot" type="Marker3D" parent="."]
+[node name="GateSpot" type="Marker3D" parent="." unique_id=1139834300]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.6, -1.5)
 
-[node name="SlotBoxSpot" type="Marker3D" parent="."]
+[node name="SlotBoxSpot" type="Marker3D" parent="." unique_id=1565946088]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -4)
 
-[node name="SlotBox" type="StaticBody3D" parent="."]
+[node name="SlotBox" type="StaticBody3D" parent="." unique_id=840973204]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -4)
 
-[node name="Shape" type="CollisionShape3D" parent="SlotBox"]
+[node name="Shape" type="CollisionShape3D" parent="SlotBox" unique_id=1069242055]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
 shape = SubResource("BoxShape3D_slot")
 
-[node name="Looks" type="Node3D" parent="SlotBox"]
+[node name="Looks" type="Node3D" parent="SlotBox" unique_id=2116011967]
 
-[node name="Mesh" type="MeshInstance3D" parent="SlotBox/Looks"]
+[node name="Mesh" type="MeshInstance3D" parent="SlotBox/Looks" unique_id=2038762671]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
 mesh = SubResource("BoxMesh_slot")
 
-[node name="Label" type="Label3D" parent="SlotBox/Looks"]
+[node name="Label" type="Label3D" parent="SlotBox/Looks" unique_id=674639729]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
 pixel_size = 0.004
 billboard = 2
 text = "Washing machine (stand-in): click it with a Part in your Hands"
 
-[node name="MachinePartSlot" type="Node" parent="SlotBox" node_paths=PackedStringArray("stages")]
+[node name="MachinePartSlot" type="Node" parent="SlotBox" unique_id=271626725 node_paths=PackedStringArray("stages")]
 script = ExtResource("22_slot")
 stages = NodePath("../../Run/Stages")
 
-[node name="CabinetB" parent="." instance=ExtResource("1_cabinet")]
+[node name="CabinetB" parent="." unique_id=688520695 instance=ExtResource("1_cabinet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0.6, -5.2)
 
-[node name="Cabinet" parent="CabinetB" index="0" node_paths=PackedStringArray("hands", "bank")]
+[node name="Cabinet" parent="CabinetB" index="0" unique_id=786621039 node_paths=PackedStringArray("hands", "bank")]
 hands = NodePath("../../Socks/Hands")
 bank = NodePath("../../Socks/Bank")
 unlock_stage = 2
-collection = &"sport"
 pool = Array[StringName]([&"sport", &"animals", &"nature"])
+collection = &"sport"
 locked = true
 
-[node name="DustSheet" parent="CabinetB" instance=ExtResource("8_sheet")]
+[node name="DustSheet" parent="CabinetB" unique_id=463942995 instance=ExtResource("8_sheet")]
 
-[node name="Door" parent="." instance=ExtResource("23_door")]
+[node name="Door" parent="." unique_id=1792628449 instance=ExtResource("23_door")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -4.2)
 
-[node name="FloorLock" parent="Door/Padlock" index="0"]
-floor = 1
-
-[node name="Gate" parent="." instance=ExtResource("24_gate")]
+[node name="Gate" parent="." unique_id=1202606818 instance=ExtResource("24_gate")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.6, -1.5)
 
-[node name="FloorLock" parent="Gate/Padlock" index="0"]
-floor = 1
+[node name="Walls" type="Node3D" parent="." unique_id=379085028]
 
-[node name="Walls" type="Node3D" parent="."]
-
-[node name="DoorLeft" type="StaticBody3D" parent="Walls"]
+[node name="DoorLeft" type="StaticBody3D" parent="Walls" unique_id=2064661019]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5325, 1.35, -4.2)
 
-[node name="Mesh" type="MeshInstance3D" parent="Walls/DoorLeft"]
+[node name="Mesh" type="MeshInstance3D" parent="Walls/DoorLeft" unique_id=728902042]
 mesh = SubResource("BoxMesh_wall")
 
-[node name="Shape" type="CollisionShape3D" parent="Walls/DoorLeft"]
+[node name="Shape" type="CollisionShape3D" parent="Walls/DoorLeft" unique_id=496512970]
 shape = SubResource("BoxShape3D_wall")
 
-[node name="DoorRight" type="StaticBody3D" parent="Walls"]
+[node name="DoorRight" type="StaticBody3D" parent="Walls" unique_id=492734731]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4675, 1.35, -4.2)
 
-[node name="Mesh" type="MeshInstance3D" parent="Walls/DoorRight"]
+[node name="Mesh" type="MeshInstance3D" parent="Walls/DoorRight" unique_id=1282877685]
 mesh = SubResource("BoxMesh_wall")
 
-[node name="Shape" type="CollisionShape3D" parent="Walls/DoorRight"]
+[node name="Shape" type="CollisionShape3D" parent="Walls/DoorRight" unique_id=741395272]
 shape = SubResource("BoxShape3D_wall")
 
-[node name="GateLeft" type="StaticBody3D" parent="Walls"]
+[node name="GateLeft" type="StaticBody3D" parent="Walls" unique_id=1322192427]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4675, 1.95, -1.5)
 
-[node name="Mesh" type="MeshInstance3D" parent="Walls/GateLeft"]
+[node name="Mesh" type="MeshInstance3D" parent="Walls/GateLeft" unique_id=2014795097]
 mesh = SubResource("BoxMesh_wall")
 
-[node name="Shape" type="CollisionShape3D" parent="Walls/GateLeft"]
+[node name="Shape" type="CollisionShape3D" parent="Walls/GateLeft" unique_id=1521661626]
 shape = SubResource("BoxShape3D_wall")
 
-[node name="GateRight" type="StaticBody3D" parent="Walls"]
+[node name="GateRight" type="StaticBody3D" parent="Walls" unique_id=1447387366]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5325, 1.95, -1.5)
 
-[node name="Mesh" type="MeshInstance3D" parent="Walls/GateRight"]
+[node name="Mesh" type="MeshInstance3D" parent="Walls/GateRight" unique_id=1722801546]
 mesh = SubResource("BoxMesh_wall")
 
-[node name="Shape" type="CollisionShape3D" parent="Walls/GateRight"]
+[node name="Shape" type="CollisionShape3D" parent="Walls/GateRight" unique_id=1816055657]
 shape = SubResource("BoxShape3D_wall")
 
-[node name="Locks" parent="." instance=ExtResource("25_lockswitch")]
+[node name="Locks" parent="." unique_id=1171800946 instance=ExtResource("25_lockswitch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 1.5)
 
-[node name="LockSwitch" parent="Locks" index="0" node_paths=PackedStringArray("stages")]
+[node name="LockSwitch" parent="Locks" index="0" unique_id=1134547077 node_paths=PackedStringArray("stages")]
 stages = NodePath("../../Run/Stages")
 
-[node name="Complete" parent="." instance=ExtResource("13_switch")]
+[node name="Complete" parent="." unique_id=1436728045 instance=ExtResource("13_switch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 1.5)
 
-[node name="StagesSwitch" parent="Complete" index="0" node_paths=PackedStringArray("stages")]
+[node name="StagesSwitch" parent="Complete" index="0" unique_id=1958079234 node_paths=PackedStringArray("stages")]
 stages = NodePath("../../Run/Stages")
 does = 0
 
-[node name="FitNow" parent="." instance=ExtResource("13_switch")]
+[node name="FitNow" parent="." unique_id=2070189388 instance=ExtResource("13_switch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1.5)
 
-[node name="StagesSwitch" parent="FitNow" index="0" node_paths=PackedStringArray("stages")]
+[node name="StagesSwitch" parent="FitNow" index="0" unique_id=1958079234 node_paths=PackedStringArray("stages")]
 stages = NodePath("../../Run/Stages")
 
-[node name="NewRun" parent="." instance=ExtResource("13_switch")]
+[node name="NewRun" parent="." unique_id=1090786225 instance=ExtResource("13_switch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 1.5)
 
-[node name="StagesSwitch" parent="NewRun" index="0" node_paths=PackedStringArray("stages")]
+[node name="StagesSwitch" parent="NewRun" index="0" unique_id=1958079234 node_paths=PackedStringArray("stages")]
 stages = NodePath("../../Run/Stages")
 does = 2
 
-[node name="Generators" type="Node3D" parent="."]
+[node name="Generators" type="Node3D" parent="." unique_id=910686164]
 
-[node name="Ground" type="Node3D" parent="Generators" node_paths=PackedStringArray("washer", "scan")]
+[node name="Ground" type="Node3D" parent="Generators" unique_id=201491514 node_paths=PackedStringArray("washer", "scan")]
 script = ExtResource("14_gen")
-washer = NodePath("../../SlotBoxSpot")
 collections = Array[StringName]([&"simple"])
+washer = NodePath("../../SlotBoxSpot")
 scan = NodePath("../..")
 
-[node name="Floor" type="Node3D" parent="Generators/Ground"]
+[node name="Floor" type="Node3D" parent="Generators/Ground" unique_id=1917736374]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0.5)
 script = ExtResource("16_area")
 size = Vector3(6, 2.4, 4)
 pairs = 0
 
-[node name="Generated" type="Node" parent="Generators/Ground" node_paths=PackedStringArray("mess", "generator")]
+[node name="Generated" type="Node" parent="Generators/Ground" unique_id=1409798720 node_paths=PackedStringArray("mess", "generator")]
 script = ExtResource("15_generated")
 mess = NodePath("../../../Socks/Mess")
 generator = NodePath("..")
 
-[node name="Platform" type="Node3D" parent="Generators" node_paths=PackedStringArray("washer", "scan")]
+[node name="Platform" type="Node3D" parent="Generators" unique_id=788716996 node_paths=PackedStringArray("washer", "scan")]
 script = ExtResource("14_gen")
-washer = NodePath("../../SlotBoxSpot")
 collections = Array[StringName]([&"sport"])
+washer = NodePath("../../SlotBoxSpot")
 scan = NodePath("../..")
 
-[node name="Floor" type="Node3D" parent="Generators/Platform"]
+[node name="Floor" type="Node3D" parent="Generators/Platform" unique_id=1248606931]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.6, -3.2)
 script = ExtResource("16_area")
 size = Vector3(4.6, 2.4, 2.8)
 pairs = 0
 
-[node name="Generated" type="Node" parent="Generators/Platform" node_paths=PackedStringArray("mess", "generator")]
+[node name="Generated" type="Node" parent="Generators/Platform" unique_id=706658036 node_paths=PackedStringArray("mess", "generator")]
 script = ExtResource("15_generated")
 mess = NodePath("../../../Socks/Mess")
 generator = NodePath("..")
 
-[node name="Spots" type="Node3D" parent="."]
+[node name="Spots" type="Node3D" parent="." unique_id=279203736]
 
-[node name="Simple0" type="Marker3D" parent="Spots"]
+[node name="Simple0" type="Marker3D" parent="Spots" unique_id=669181657]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 0.2)
 script = ExtResource("4_spot")
 
-[node name="Simple0Mate" type="Marker3D" parent="Spots"]
+[node name="Simple0Mate" type="Marker3D" parent="Spots" unique_id=1729871247]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.05, 0, 0.2)
 script = ExtResource("4_spot")
 
-[node name="Simple1" type="Marker3D" parent="Spots"]
+[node name="Simple1" type="Marker3D" parent="Spots" unique_id=768661725]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0, 0.2)
 script = ExtResource("4_spot")
 design = 1
 
-[node name="Simple1Mate" type="Marker3D" parent="Spots"]
+[node name="Simple1Mate" type="Marker3D" parent="Spots" unique_id=22493857]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.15, 0, 0.2)
 script = ExtResource("4_spot")
 design = 1
 
-[node name="Simple2" type="Marker3D" parent="Spots"]
+[node name="Simple2" type="Marker3D" parent="Spots" unique_id=928667756]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7, 0, 0.2)
 script = ExtResource("4_spot")
 design = 2
 
-[node name="Simple2Mate" type="Marker3D" parent="Spots"]
+[node name="Simple2Mate" type="Marker3D" parent="Spots" unique_id=521127992]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.25, 0, 0.2)
 script = ExtResource("4_spot")
 design = 2
 
-[node name="Simple3" type="Marker3D" parent="Spots"]
+[node name="Simple3" type="Marker3D" parent="Spots" unique_id=605104379]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 0, 0.2)
 script = ExtResource("4_spot")
 design = 3
 
-[node name="Simple3Mate" type="Marker3D" parent="Spots"]
+[node name="Simple3Mate" type="Marker3D" parent="Spots" unique_id=1900608871]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.35, 0, 0.2)
 script = ExtResource("4_spot")
 design = 3
 
-[node name="Simple4" type="Marker3D" parent="Spots"]
+[node name="Simple4" type="Marker3D" parent="Spots" unique_id=862421386]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 0.75)
 script = ExtResource("4_spot")
 design = 4
 
-[node name="Simple4Mate" type="Marker3D" parent="Spots"]
+[node name="Simple4Mate" type="Marker3D" parent="Spots" unique_id=1463010092]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.05, 0, 0.75)
 script = ExtResource("4_spot")
 design = 4
 
-[node name="Simple5" type="Marker3D" parent="Spots"]
+[node name="Simple5" type="Marker3D" parent="Spots" unique_id=239995173]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6, 0, 0.75)
 script = ExtResource("4_spot")
 design = 5
 
-[node name="Simple5Mate" type="Marker3D" parent="Spots"]
+[node name="Simple5Mate" type="Marker3D" parent="Spots" unique_id=1567991996]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.15, 0, 0.75)
 script = ExtResource("4_spot")
 design = 5
 
-[node name="Sport0" type="Marker3D" parent="Spots"]
+[node name="Sport0" type="Marker3D" parent="Spots" unique_id=720181883]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.6, -3)
 script = ExtResource("4_spot")
 design = 230
 
-[node name="Sport0Mate" type="Marker3D" parent="Spots"]
+[node name="Sport0Mate" type="Marker3D" parent="Spots" unique_id=1419342871]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.95, 0.6, -3)
 script = ExtResource("4_spot")
 design = 230
 
-[node name="Sport1" type="Marker3D" parent="Spots"]
+[node name="Sport1" type="Marker3D" parent="Spots" unique_id=1020135170]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4, 0.6, -3)
 script = ExtResource("4_spot")
 design = 231
 
-[node name="Sport1Mate" type="Marker3D" parent="Spots"]
+[node name="Sport1Mate" type="Marker3D" parent="Spots" unique_id=871240877]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.85, 0.6, -3)
 script = ExtResource("4_spot")
 design = 231
 
-[node name="ReturnSpot" type="Marker3D" parent="."]
+[node name="ReturnSpot" type="Marker3D" parent="." unique_id=1916000701]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 2.5)
 
-[node name="Lying" type="Node3D" parent="."]
+[node name="Lying" type="Node3D" parent="." unique_id=695632393]
 
-[node name="Flights" type="Node3D" parent="."]
+[node name="Flights" type="Node3D" parent="." unique_id=459662189]
 
-[node name="FlightSpawner" type="MultiplayerSpawner" parent="."]
+[node name="FlightSpawner" type="MultiplayerSpawner" parent="." unique_id=1564112095]
 _spawnable_scenes = PackedStringArray("uid://uajin4n0hgrt", "uid://1pbfln7cmu0i")
 spawn_path = NodePath("../Flights")
 
-[node name="Socks" type="Node" parent="."]
+[node name="Socks" type="Node" parent="." unique_id=1848665543]
 
-[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
+[node name="Mess" type="Node" parent="Socks" unique_id=121187924 node_paths=PackedStringArray("spots", "lying", "flights", "return_spot")]
 script = ExtResource("2_mess")
 catalogue = ExtResource("5_designs")
 tuning = ExtResource("6_tuning")
@@ -421,10 +469,32 @@ flights = NodePath("../../Flights")
 bounds = AABB(-9, -2, -8, 18, 8, 14)
 return_spot = NodePath("../../ReturnSpot")
 
-[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess")]
+[node name="Hands" type="Node" parent="Socks" unique_id=1596918396 node_paths=PackedStringArray("mess")]
 script = ExtResource("3_hands")
 mess = NodePath("../Mess")
 tuning = ExtResource("6_tuning")
 
-[node name="Bank" type="Node" parent="Socks"]
+[node name="Bank" type="Node" parent="Socks" unique_id=1834895006]
 script = ExtResource("7_bank")
+
+[editable path="Run"]
+[editable path="Run/MachineParts/Filter"]
+[editable path="Run/MachineParts/Motor"]
+[editable path="Run/MachineParts/DrumBelt"]
+[editable path="Run/MachineParts/Detergent"]
+[editable path="CabinetA"]
+[editable path="CabinetA/Drawer3"]
+[editable path="CabinetA/Drawer4"]
+[editable path="CabinetA/Drawer5"]
+[editable path="CabinetA/Drawer6"]
+[editable path="CabinetB"]
+[editable path="CabinetB/Drawer3"]
+[editable path="CabinetB/Drawer4"]
+[editable path="CabinetB/Drawer5"]
+[editable path="CabinetB/Drawer6"]
+[editable path="Door"]
+[editable path="Gate"]
+[editable path="Locks"]
+[editable path="Complete"]
+[editable path="FitNow"]
+[editable path="NewRun"]

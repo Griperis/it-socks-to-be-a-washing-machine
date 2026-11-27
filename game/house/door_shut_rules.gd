@@ -9,7 +9,7 @@ extends Resource
 @export_range(0.0, 1.0, 0.001) var share := 0.333 # placeholder: ported (doors.json shut_share, Q518)
 ## Doors that always start open, by name: the way from the laundry room to the garage, so the Old Tree's calls
 ## carry (the old TREE_PATH). Names are the Door nodes' under the level's `Doors`.
-@export var keep_open: PackedStringArray = ["LaundryLobby", "LobbyGarage"] # placeholder: waits for the Old Tree (M4)
+@export var keep_open: Array[String] = ["LaundryLobby", "LobbyGarage"] # placeholder: waits for the Old Tree (M4)
 ## The seed the Doors are picked from (the level's own, as a generator's).
 @export var seed := 1 # placeholder: until the designer picks a seed for the house
 ## A new seed at every start (a New Game), as the Sock generator's switch of the same name: the choice is then

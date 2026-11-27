@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://d34ifagq11u3j"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glow"]
 bg_color = Color(0, 0, 0, 0)
@@ -9,10 +9,9 @@ corner_radius_bottom_left = 14
 shadow_color = Color(0.964706, 0.768627, 0.262745, 0.85)
 shadow_size = 16
 
-[node name="FocusGlow" type="Panel"]
+[node name="FocusGlow" type="Panel" unique_id=628773334]
 modulate = Color(1, 1, 1, 0)
 show_behind_parent = true
-layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="VoiceTrigger" format=3]
+[gd_resource type="Resource" script_class="VoiceTrigger" format=3 uid="uid://jue2w5cikexw"]
 
 [ext_resource type="Script" uid="uid://k1g7mn7jdf7a" path="res://game/voice/voice_trigger.gd" id="1_trigger"]
-[ext_resource type="Resource" path="res://game/voice/speakers/old_tree.tres" id="2_speaker"]
+[ext_resource type="Resource" uid="uid://di3lqauv13wvg" path="res://game/voice/speakers/old_tree.tres" id="2_speaker"]
 
 [resource]
 script = ExtResource("1_trigger")

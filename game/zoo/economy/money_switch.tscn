@@ -1,11 +1,11 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cwbs8khw84t41"]
 
-[ext_resource type="Script" path="res://game/zoo/economy/money_switch.gd" id="1_switch"]
-[ext_resource type="PackedScene" path="res://game/zoo/screen/upgrade_switch/looks_graybox.tscn" id="2_looks"]
+[ext_resource type="Script" uid="uid://d10esdqkwitvx" path="res://game/zoo/economy/money_switch.gd" id="1_switch"]
+[ext_resource type="PackedScene" uid="uid://b4mtn5fi0wiu1" path="res://game/zoo/screen/upgrade_switch/looks_graybox.tscn" id="2_looks"]
 
-[node name="MoneySwitch" type="Node3D"]
+[node name="MoneySwitch" type="Node3D" unique_id=1163866720]
 
-[node name="MoneySwitch" type="Node" parent="."]
+[node name="MoneySwitch" type="Node" parent="." unique_id=1185872783]
 script = ExtResource("1_switch")
 
-[node name="Looks" parent="." instance=ExtResource("2_looks")]
+[node name="Looks" parent="." unique_id=2046940163 instance=ExtResource("2_looks")]

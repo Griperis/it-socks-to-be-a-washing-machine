@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dd0esxy18thn1"]
 
-[ext_resource type="Script" path="res://game/profile/achievement_toast.gd" id="1_toast"]
-[ext_resource type="Resource" path="res://game/profile/achievement_tuning.tres" id="2_tuning"]
+[ext_resource type="Script" uid="uid://ci0kv80kdvuex" path="res://game/profile/achievement_toast.gd" id="1_toast"]
+[ext_resource type="Resource" uid="uid://ccbmlyws7wnd" path="res://game/profile/achievement_tuning.tres" id="2_tuning"]
 
 [sub_resource type="Animation" id="Animation_reset"]
 resource_name = "RESET"
@@ -94,7 +94,7 @@ _data = {
 &"slide_out": SubResource("Animation_out")
 }
 
-[node name="AchievementToast" type="Control"]
+[node name="AchievementToast" type="Control" unique_id=1623627313]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -105,7 +105,7 @@ mouse_filter = 2
 script = ExtResource("1_toast")
 tuning = ExtResource("2_tuning")
 
-[node name="Slot" type="Control" parent="."]
+[node name="Slot" type="Control" parent="." unique_id=1071394333]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -117,22 +117,22 @@ offset_bottom = 124.0
 grow_horizontal = 0
 mouse_filter = 2
 
-[node name="Card" type="PanelContainer" parent="Slot"]
+[node name="Card" type="PanelContainer" parent="Slot" unique_id=96021036]
 visible = false
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 0
 offset_left = 420.0
 offset_right = 800.0
-offset_bottom = 80.0
+offset_bottom = 113.0
 mouse_filter = 2
 theme_type_variation = &"UpgradeTipPersonal"
 
-[node name="Row" type="HBoxContainer" parent="Slot/Card"]
+[node name="Row" type="HBoxContainer" parent="Slot/Card" unique_id=330282382]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 14
 
-[node name="Icon" type="TextureRect" parent="Slot/Card/Row"]
+[node name="Icon" type="TextureRect" parent="Slot/Card/Row" unique_id=563631779]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 size_flags_vertical = 4
@@ -140,26 +140,25 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Text" type="VBoxContainer" parent="Slot/Card/Row"]
+[node name="Text" type="VBoxContainer" parent="Slot/Card/Row" unique_id=214887768]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Caption" type="Label" parent="Slot/Card/Row/Text"]
+[node name="Caption" type="Label" parent="Slot/Card/Row/Text" unique_id=775300249]
 layout_mode = 2
 theme_type_variation = &"InkLabel"
 text = "Achievement"
 
-[node name="Title" type="Label" parent="Slot/Card/Row/Text"]
+[node name="Title" type="Label" parent="Slot/Card/Row/Text" unique_id=1277667503]
+custom_minimum_size = Vector2(278, 0)
 layout_mode = 2
 theme_type_variation = &"UpgradeTipTitle"
 text = "Title"
 autowrap_mode = 3
 
-[node name="Slide" type="AnimationPlayer" parent="."]
+[node name="Slide" type="AnimationPlayer" parent="." unique_id=821094241]
 callback_mode_process = 2
-libraries = {
-&"": SubResource("AnimationLibrary_toast")
-}
+libraries/ = SubResource("AnimationLibrary_toast")

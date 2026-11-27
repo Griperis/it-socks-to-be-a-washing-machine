@@ -5,24 +5,32 @@
 [ext_resource type="Script" uid="uid://ftj7pj07q473" path="res://game/look/keycap_style.gd" id="3_keycap"]
 
 [sub_resource type="StyleBox" id="Keycap_plain"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
 script = ExtResource("3_keycap")
 face_colour = Color(1, 0.956863, 0.878431, 1)
 shade_colour = Color(0.901961, 0.827451, 0.701961, 1)
-lip = 6
 radius = 16
-border = 3
 margin = 10
 
 [sub_resource type="StyleBox" id="Keycap_chosen"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
 script = ExtResource("3_keycap")
 face_colour = Color(0.94902, 0.607843, 0.294118, 1)
 shade_colour = Color(0.788235, 0.466667, 0.184314, 1)
-lip = 6
 radius = 16
-border = 3
 margin = 10
 
-[node name="PingWheel" type="Control"]
+[node name="PingWheel" type="Control" unique_id=1657722565]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,17 +43,17 @@ tuning = ExtResource("2_tuning")
 plain = SubResource("Keycap_plain")
 chosen_style = SubResource("Keycap_chosen")
 
-[node name="Slice0" type="PanelContainer" parent="."]
+[node name="Slice0" type="PanelContainer" parent="." unique_id=2044119214]
 layout_mode = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Keycap_plain")
 
-[node name="Column" type="VBoxContainer" parent="Slice0"]
+[node name="Column" type="VBoxContainer" parent="Slice0" unique_id=1729945208]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Icon" type="TextureRect" parent="Slice0/Column"]
+[node name="Icon" type="TextureRect" parent="Slice0/Column" unique_id=1230791345]
 custom_minimum_size = Vector2(56, 56)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -53,23 +61,23 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Name" type="Label" parent="Slice0/Column"]
+[node name="Name" type="Label" parent="Slice0/Column" unique_id=393817878]
 layout_mode = 2
 theme_type_variation = &"OutlinedLabel"
 theme_override_font_sizes/font_size = 22
 horizontal_alignment = 1
 
-[node name="Slice1" type="PanelContainer" parent="."]
+[node name="Slice1" type="PanelContainer" parent="." unique_id=1070922752]
 layout_mode = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Keycap_plain")
 
-[node name="Column" type="VBoxContainer" parent="Slice1"]
+[node name="Column" type="VBoxContainer" parent="Slice1" unique_id=781305978]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Icon" type="TextureRect" parent="Slice1/Column"]
+[node name="Icon" type="TextureRect" parent="Slice1/Column" unique_id=1213651889]
 custom_minimum_size = Vector2(56, 56)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -77,23 +85,23 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Name" type="Label" parent="Slice1/Column"]
+[node name="Name" type="Label" parent="Slice1/Column" unique_id=1969768722]
 layout_mode = 2
 theme_type_variation = &"OutlinedLabel"
 theme_override_font_sizes/font_size = 22
 horizontal_alignment = 1
 
-[node name="Slice2" type="PanelContainer" parent="."]
+[node name="Slice2" type="PanelContainer" parent="." unique_id=2034903444]
 layout_mode = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Keycap_plain")
 
-[node name="Column" type="VBoxContainer" parent="Slice2"]
+[node name="Column" type="VBoxContainer" parent="Slice2" unique_id=1474042193]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Icon" type="TextureRect" parent="Slice2/Column"]
+[node name="Icon" type="TextureRect" parent="Slice2/Column" unique_id=1420438218]
 custom_minimum_size = Vector2(56, 56)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -101,23 +109,23 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Name" type="Label" parent="Slice2/Column"]
+[node name="Name" type="Label" parent="Slice2/Column" unique_id=73105819]
 layout_mode = 2
 theme_type_variation = &"OutlinedLabel"
 theme_override_font_sizes/font_size = 22
 horizontal_alignment = 1
 
-[node name="Slice3" type="PanelContainer" parent="."]
+[node name="Slice3" type="PanelContainer" parent="." unique_id=1177718289]
 layout_mode = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Keycap_plain")
 
-[node name="Column" type="VBoxContainer" parent="Slice3"]
+[node name="Column" type="VBoxContainer" parent="Slice3" unique_id=805170164]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Icon" type="TextureRect" parent="Slice3/Column"]
+[node name="Icon" type="TextureRect" parent="Slice3/Column" unique_id=1024888507]
 custom_minimum_size = Vector2(56, 56)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -125,23 +133,23 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Name" type="Label" parent="Slice3/Column"]
+[node name="Name" type="Label" parent="Slice3/Column" unique_id=726301623]
 layout_mode = 2
 theme_type_variation = &"OutlinedLabel"
 theme_override_font_sizes/font_size = 22
 horizontal_alignment = 1
 
-[node name="Slice4" type="PanelContainer" parent="."]
+[node name="Slice4" type="PanelContainer" parent="." unique_id=1767074285]
 layout_mode = 0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("Keycap_plain")
 
-[node name="Column" type="VBoxContainer" parent="Slice4"]
+[node name="Column" type="VBoxContainer" parent="Slice4" unique_id=1463585403]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Icon" type="TextureRect" parent="Slice4/Column"]
+[node name="Icon" type="TextureRect" parent="Slice4/Column" unique_id=1806960280]
 custom_minimum_size = Vector2(56, 56)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -149,7 +157,7 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Name" type="Label" parent="Slice4/Column"]
+[node name="Name" type="Label" parent="Slice4/Column" unique_id=2003415273]
 layout_mode = 2
 theme_type_variation = &"OutlinedLabel"
 theme_override_font_sizes/font_size = 22

@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="AchievementTuning" format=3]
+[gd_resource type="Resource" script_class="AchievementTuning" format=3 uid="uid://ccbmlyws7wnd"]
 
-[ext_resource type="Script" path="res://game/profile/achievement_tuning.gd" id="1_tuning"]
-[ext_resource type="Texture2D" path="res://assets/ui/simple.svg" id="2_icon"]
+[ext_resource type="Script" uid="uid://dodtu2g050uv6" path="res://game/profile/achievement_tuning.gd" id="1_tuning"]
+[ext_resource type="Texture2D" uid="uid://btmtm4s4kjj04" path="res://assets/ui/simple.svg" id="2_icon"]
 
 [resource]
 script = ExtResource("1_tuning")
