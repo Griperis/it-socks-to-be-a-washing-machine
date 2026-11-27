@@ -1,0 +1,9 @@
+# assets/28: the Radio's Looks framed as the old line-up (reference/it-socks docs/art/radio/final_lineup.png):
+# front, three-quarter, the right side, three-quarter from behind; then the face close up off, and on (the warm
+# glow) with the needle at half its travel.
+front  --scene=res://tools/radio_still.tscn --size=300x340 --do='5:radio:0' --shots=20
+quarter  --scene=res://tools/radio_still.tscn --size=300x340 --do='5:radio:1' --shots=20
+side  --scene=res://tools/radio_still.tscn --size=300x340 --do='5:radio:2' --shots=20
+back  --scene=res://tools/radio_still.tscn --size=300x340 --do='5:radio:3' --shots=20
+off  --scene=res://tools/radio_still.tscn --size=300x340 --do='5:radio:4' --shots=20
+on  --scene=res://tools/radio_still.tscn --size=300x340 --do='5:radio:5' --shots=20

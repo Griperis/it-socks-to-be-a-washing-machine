@@ -753,6 +753,13 @@
       "source": "elevator/elevator",
       "glb": "assets/elevator/elevator_signs.glb",
       "origin_xy": false
+    },
+    "radio": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "radio/radio",
+      "glb": "assets/radio/radio.glb",
+      "note": "assets/28: the old Radio (1,884 triangles, the old count), nodes Body, Dial, Needle, Speaker, PowerLight; assets_src/generate/radio/make_radio.py; modelled at the old size, its Looks shows it 1.5 times; no collider (the entity's box)"
     }
   }
 }
