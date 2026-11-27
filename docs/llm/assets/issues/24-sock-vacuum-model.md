@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: assets
 feature: assets
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-27
 blocked_by: []
 notes: ["batch C (Q2614); order: docs/migration/milestones.md Batch C, wave 1", "suggested model: opus"]
 terms: [Sock vacuum, Nozzle display]
@@ -42,5 +42,6 @@ materials (Q2177); the clips keyed in the Looks.
 
 ## Answers
 - Batch C's models are ported from the old game by the port rules, each family with its strip and the old colours (Q2705, 2026-11-26).
+- The line-up is approved, 12,314 triangles accepted; the swap into `sock_vacuum.tscn` (its Looks and the hose's mesh, the graybox gone) is core/168's, which builds the entity on this ticket's `looks_contract.json` files (Q2725, 2026-11-27).
 
 ## Open follow-ups
