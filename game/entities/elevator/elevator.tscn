@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://cm8bgt0a8kjw5"]
+
+[ext_resource type="Script" uid="uid://ypandmyche24" path="res://game/entities/elevator/elevator.gd" id="1_elevator"]
+[ext_resource type="Resource" uid="uid://bobe0urq14jcq" path="res://game/entities/elevator/elevator_tuning.tres" id="2_tuning"]
+[ext_resource type="Resource" uid="uid://c1r45t6r4scqu" path="res://game/economy/stats/elevator_repair.tres" id="3_repair"]
+[ext_resource type="Resource" uid="uid://dh53f1ixt7qjr" path="res://game/economy/stats/elevator_floor_time.tres" id="4_floor_time"]
+[ext_resource type="PackedScene" uid="uid://ttqsnhjglqn6" path="res://game/entities/elevator/looks_car.tscn" id="5_looks"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(0.6, 0.03, 0.58)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall"]
+size = Vector3(0.6, 0.6, 0.02)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_inside"]
+size = Vector3(0.6, 0.54, 0.54)
+
+[node name="Elevator" type="Node3D" unique_id=1877925404]
+editor_description = "core/155: the house's Elevator (elevator.md, The shape). Its root stands in the shaft's middle at the house's origin height; the stops (elevator_stop.tscn) are dropped by hand as children of this root where it is placed, each at its floor's height with its floor set. The Elevator Part holds the car and every verb; the Car is moved from stop to stop (only its height: no car is seen moving), its Body is the car's floor, side walls and roof, CarBox what rides, Letters the floor letters' column on its +z wall (built at ready)."
+
+[node name="Elevator" type="Node" parent="." unique_id=626880670 node_paths=PackedStringArray("car", "car_box", "letters")]
+script = ExtResource("1_elevator")
+tuning = ExtResource("2_tuning")
+repair_stat = ExtResource("3_repair")
+floor_time_stat = ExtResource("4_floor_time")
+car = NodePath("../Car")
+car_box = NodePath("../Car/CarBox/Shape")
+letters = NodePath("../Car/Letters")
+
+[node name="Car" type="Node3D" parent="." unique_id=1537508582]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+
+[node name="Looks" parent="Car" unique_id=392708400 instance=ExtResource("5_looks")]
+
+[node name="Body" type="StaticBody3D" parent="Car" unique_id=1202745435]
+collision_mask = 0
+
+[node name="Floor" type="CollisionShape3D" parent="Car/Body" unique_id=1942019186]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.015, 0)
+shape = SubResource("BoxShape3D_floor")
+
+[node name="WallLeft" type="CollisionShape3D" parent="Car/Body" unique_id=465582386]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.28)
+shape = SubResource("BoxShape3D_wall")
+
+[node name="WallRight" type="CollisionShape3D" parent="Car/Body" unique_id=680018973]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0.28)
+shape = SubResource("BoxShape3D_wall")
+
+[node name="Roof" type="CollisionShape3D" parent="Car/Body" unique_id=1266037507]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.585, 0)
+shape = SubResource("BoxShape3D_floor")
+
+[node name="CarBox" type="Area3D" parent="Car" unique_id=1549718377]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Shape" type="CollisionShape3D" parent="Car/CarBox" unique_id=1405631612]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.27, 0)
+shape = SubResource("BoxShape3D_inside")
+
+[node name="Letters" type="Node3D" parent="Car" unique_id=355524675]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0.264)

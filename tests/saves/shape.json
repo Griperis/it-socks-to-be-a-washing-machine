@@ -32,6 +32,19 @@
 		},
 		"version": 2
 	},
+	"res://game/entities/elevator/elevator.gd": {
+		"fields": {
+			"bound": "int",
+			"dragged": "Dictionary",
+			"from": "int",
+			"phase": "int",
+			"progress": "float",
+			"riders": "Array",
+			"stop": "int",
+			"time_left": "float"
+		},
+		"version": 1
+	},
 	"res://game/entities/laundry_bin/laundry_bin.gd": {
 		"fields": {
 			"full": "bool",

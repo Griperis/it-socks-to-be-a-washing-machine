@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://mgecirqso4jo"]
+
+[ext_resource type="Script" uid="uid://c0dl7qmdwc1u7" path="res://game/zoo/elevator/elevator_switch.gd" id="1_switch"]
+[ext_resource type="PackedScene" uid="uid://b4mtn5fi0wiu1" path="res://game/zoo/screen/upgrade_switch/looks_graybox.tscn" id="2_looks"]
+
+[node name="ElevatorSwitch" type="Node3D" unique_id=2102791180]
+
+[node name="ElevatorSwitch" type="Node" parent="." unique_id=2097104480]
+script = ExtResource("1_switch")
+
+[node name="Looks" parent="." unique_id=1726447242 instance=ExtResource("2_looks")]

@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://b7vprlce8aiei"]
+
+[ext_resource type="Script" uid="uid://ikklic73bb8l" path="res://game/entities/elevator/elevator_control.gd" id="1_control"]
+[ext_resource type="PackedScene" uid="uid://dhvnr73qpbsem" path="res://game/entities/elevator/letter/looks_letter.tscn" id="2_looks"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aim"]
+size = Vector3(0.08, 0.08, 0.02)
+
+[node name="ElevatorLetter" type="Node3D" unique_id=937594085]
+editor_description = "core/155: one floor letter of the car's column (elevator.md, The riders). The Elevator instances one per stop, B at the bottom, and shows its glyph; the Looks' lit, dark and locked clips show the car's floor and a locked floor. Its Control (LETTER) sends the car; only riders aim at it (core/157 turns the aim body on), so its aim body is on no layer yet."
+
+[node name="Control" type="Node" parent="." unique_id=267338297]
+script = ExtResource("1_control")
+kind = 2
+
+[node name="Aim" type="StaticBody3D" parent="." unique_id=59886621]
+collision_layer = 0
+collision_mask = 0
+
+[node name="Shape" type="CollisionShape3D" parent="Aim" unique_id=18719560]
+shape = SubResource("BoxShape3D_aim")
+
+[node name="Looks" parent="." unique_id=168004036 instance=ExtResource("2_looks")]

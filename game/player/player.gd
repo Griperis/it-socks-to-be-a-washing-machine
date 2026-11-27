@@ -1086,6 +1086,11 @@ func _on_applied(ev: Dictionary) -> void:
 		if said != "":
 			say(said)
 		return
+	if to is Elevator:
+		var refused := String(Elevator.SAYS.get(String(ev.get("reason", "")), ""))
+		if refused != "":
+			say(refused)
+		return
 	if StringName(ev.get("to", &"")) != _hands.id:
 		return
 	match String(ev.get("reason", "")):

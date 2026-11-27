@@ -27,6 +27,9 @@ enum Kind {
 @export_range(0.0, 1.0, 0.01) var least := 0.0 # placeholder: the old data/tuning/upgrades.json
 ## The tip card's "now -> next" format ("x%.2f", "%.2fs", "%d"); empty: no numbers shown.
 @export var format := ""
+## The tip card shows the value times this: a stat that is a share of a feature's own number shows that number
+## (Fast Elevator's share of the Elevator's 2 s a floor reads "2.0 s", core/155). 1: the value itself.
+@export var shown_times := 1.0
 
 
 ## The value at `level` (the summed levels of the Upgrades naming this stat).
@@ -54,5 +57,5 @@ func text_at(level: int) -> String:
 	if format == "":
 		return ""
 	if format.contains("%d"):
-		return format % roundi(value_at(level))
-	return format % value_at(level)
+		return format % roundi(value_at(level) * shown_times)
+	return format % (value_at(level) * shown_times)
