@@ -58,7 +58,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "k17_title_host_guest_on_pedestal", "method": "case_k17", "world": false,
 				"title": "core/113, real path: on the Lobby the title's Host key opened, a Guest that joins stands on the second pedestal in its colour, the Host's figure stays on the first"},
 		{"name": "k18_control_scenes_keep_layout_mode", "method": "case_k18", "world": false,
-				"title": "core/113: every game scene whose root is an anchored Control stores the root's layout_mode (the editor writes 3): an exported 4.7 build gives an instance of such a root, with no layout_mode on it either, size 0 (the Lobby's stage drew nothing in the build)"},
+				"title": "core/113: every game scene whose root is an anchored Control stores its layout_mode on the root, or on each instance under a Control (the editor 4.7.2 writes it there, maintenance/12): an exported 4.7 build gives an instance of such a root, with no layout_mode on it either, size 0 (the Lobby's stage drew nothing in the build)"},
 		{"name": "k19_wardrobe_key_real_path", "method": "case_k19", "world": false,
 				"title": "core/143, real path: the Wardrobe key (84 px, tooltip \"Wardrobe\") floats at 82% of this machine's own figure's width and no other figure has one; clicking it opens the Wardrobe page over the Lobby and clears this player's Ready; a click on the Socks row's arrow puts the Socks on the figure, Esc or the close key shuts the page; the figure wears them and the Ready stays cleared"},
 		{"name": "k20_stats_card", "method": "case_k20", "world": false,
@@ -895,6 +895,7 @@ func case_k17() -> void:
 
 func case_k18() -> void:
 	var missing: Array[String] = []
+	var roots: Array[String] = []
 	for path in _scenes_under("res://game"):
 		var state := (load(path) as PackedScene).get_state()
 		if state.get_node_count() == 0 or not ClassDB.is_parent_class(String(state.get_node_type(0)), &"Control"):
@@ -904,8 +905,28 @@ func case_k18() -> void:
 			names.append(state.get_node_property_name(0, p))
 		var anchored := names.any(func(n: StringName) -> bool: return String(n).begins_with("anchor"))
 		if anchored and not names.has(&"layout_mode"):
-			missing.append(path)
-	_check(missing.is_empty(), "every Control scene root with anchors stores its layout_mode (%s)" % [missing])
+			roots.append(path)
+	# The editor (4.7.2) leaves layout_mode off such a root and writes it on each instance under a Control instead
+	# (maintenance/12): every instance of one under a Control parent stores it.
+	for path in _scenes_under("res://game"):
+		var state := (load(path) as PackedScene).get_state()
+		for i in state.get_node_count():
+			var inst := state.get_node_instance(i)
+			if inst == null or not roots.has(inst.resource_path):
+				continue
+			var parent := String(state.get_node_path(i, true))
+			var parent_type := ""
+			for j in state.get_node_count():
+				if String(state.get_node_path(j)) == parent:
+					parent_type = String(state.get_node_type(j))
+			if parent_type == "" or not ClassDB.is_parent_class(parent_type, &"Control"):
+				continue
+			var has := false
+			for p in state.get_node_property_count(i):
+				has = has or state.get_node_property_name(i, p) == &"layout_mode"
+			if not has:
+				missing.append("%s in %s" % [inst.resource_path, path])
+	_check(missing.is_empty(), "every anchored Control scene stores its layout_mode on its root or on each instance under a Control (%s)" % [missing])
 
 
 ## The title, its Multiplayer key, then Host, the way a player goes; the Lobby it opens.

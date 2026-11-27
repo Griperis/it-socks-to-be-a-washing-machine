@@ -20,7 +20,7 @@ var _branches: Array[Node] = []
 func cases() -> Array[Dictionary]:
 	return [
 		{"name": "sealed", "method": "case_sealed", "world": false,
-				"title": "the house, the zoo and the one-box level each instance the runtime once, keep none of its nodes of their own and override nothing inside it"},
+				"title": "the house, the zoo and the one-box level each instance the runtime once, keep none of its nodes of their own and override nothing inside it (its children never editable; other instances may be, maintenance/12)"},
 		{"name": "settings", "method": "case_settings", "world": false,
 				"title": "what differs per level is set on the instance: the player starts on the level's Spawn, the zoo's player holds 3 and the zoo's corner says zoo, the Parts bind the whole level"},
 		{"name": "real_path_one_box_walk", "method": "case_real_path_one_box_walk", "world": false,
@@ -53,7 +53,7 @@ func case_sealed() -> void:
 			if String(state.get_node_path(i, true)) == ".":
 				_check(not RUNTIME_NODES.has(name), "%s: no %s of its own beside the runtime" % [path, name])
 		_same(instances, 1, "%s instances the runtime once" % path)
-		_check(not FileAccess.get_file_as_string(path).contains("[editable path="), "%s: no editable children" % path)
+		_check(not FileAccess.get_file_as_string(path).contains("[editable path=\"Runtime"), "%s: the runtime's children are not editable" % path)
 
 
 func case_settings() -> void:
