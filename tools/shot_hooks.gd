@@ -219,6 +219,11 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# as the old line-up's view of that number, the doors posed by its own clips.
 			world.call(&"show_view", int(arg))
 			return true
+		"sock_vacuum":
+			# assets/24: arg a view 0-8: tools/sock_vacuum_still.tscn frames the Sock vacuum's Looks as the old
+			# line-up's view of that number (4-8: the pod, the pour, the suction, the hose and its tug).
+			world.call(&"show_view", int(arg))
+			return true
 		"wardrobe_page":
 			# core/142: the zoo's player before the Wardrobe Station's wardrobe uses it: the doors open and the
 			# Wardrobe page shows. arg "hat": its Hats row stepped once (the first basic hat on the preview).

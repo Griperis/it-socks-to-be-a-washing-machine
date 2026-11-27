@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://yvax0o17vh58"]
+
+[ext_resource type="PackedScene" uid="uid://cp0ek1pglmxqu" path="res://assets/sock_vacuum/hose.glb" id="1_hose"]
+
+[sub_resource type="Animation" id="Animation_RESET"]
+resource_name = "RESET"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HoseRig/Skeleton3D/Hose:blend_shapes/tug")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_tug"]
+resource_name = "tug"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HoseRig/Skeleton3D/Hose:blend_shapes/tug")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0166667, 0.0333333, 0.05, 0.0666667, 0.0833333, 0.1, 0.116667, 0.133333, 0.15, 0.166667, 0.183333, 0.2, 0.216667, 0.233333, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [0.6503, 0.9246, 0.3641, -0.4293, -0.7333, -0.3627, 0.2473, 0.5277, 0.3066, -0.1118, -0.3196, -0.2018, 0.0282, 0.1212, 0.0561, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hose"]
+_data = {
+&"RESET": SubResource("Animation_RESET"),
+&"tug": SubResource("Animation_tug")
+}
+
+[node name="LooksHose" unique_id=1773663168 instance=ExtResource("1_hose")]
+editor_description = "assets/24: the Sock vacuum's hose (devices.md \"The hose\"): the cream ribbed tube with its chrome cuffs, 5 m on 12 bones hose_00 (the port's end, at the origin) to hose_11 (the nozzle's end) along -Z, for core/168's PhysicalBoneSimulator3D. The tug clip shakes its middle sideways for 0.25 s, the ends still (the old tug: sin(left * 60) * 0.05 m, fading)."
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1" unique_id=1723000815]
+libraries/ = SubResource("AnimationLibrary_hose")
