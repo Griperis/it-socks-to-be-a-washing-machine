@@ -714,3 +714,5 @@ Q2188-Q2195: Sock vacuum, Backpack vacuum, Splitter, Filter nozzle and Nozzle di
   the tumble, lean, rocking and sway, varied mark layouts, the old's timing (designer, 2026-11-26).
 - Q2717: the Trails (core/144, the final strips: every colour, tumble and sway as clips, three layouts, the old
   palette and fades) are yes and merge (designer, 2026-11-26).
+- Q2718: the Old Tree's "final wash" line (tree_final_wash) is dropped: in the port the Final wash is a
+  cutscene that ends on the Final screen, so the tree never says it (designer, 2026-11-27; core/133).
