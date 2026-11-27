@@ -2,12 +2,14 @@
 
 [ext_resource type="Texture2D" uid="uid://303gaw257teo" path="res://assets/ui/upgrade_cabinet_xray.svg" id="1_3grrw"]
 [ext_resource type="Script" uid="uid://tco600m1ilvq" path="res://game/economy/upgrade.gd" id="2_ttmk4"]
+[ext_resource type="Resource" uid="uid://oehsx2brfoj8" path="res://game/economy/stats/cabinet_xray.tres" id="9_stat"]
 
 [resource]
 script = ExtResource("2_ttmk4")
-title = "Cabinet X-ray: Show drawer"
-tooltip = "Show drawer (key 2): the right Cabinet drawer glows through walls."
+title = "Cabinet X-ray: Show Cabinet"
+tooltip = "Show Cabinet (key 2): the right Cabinet glows through walls."
 icon = ExtResource("1_3grrw")
 cell = Vector2i(3, 0)
 prices = PackedInt32Array(200)
+stat = ExtResource("9_stat")
 key_hint = "key 2"

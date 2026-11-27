@@ -27,6 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://dd0esxy18thn1" path="res://game/profile/achievement_toast.tscn" id="28_toast"]
 [ext_resource type="Script" uid="uid://cq04cnibx6yhw" path="res://game/ui/sole_cues.gd" id="29_sole"]
 [ext_resource type="Resource" uid="uid://bqnvlbcj7a3x7" path="res://game/ui/sole_cues_tuning.tres" id="30_sole_tuning"]
+[ext_resource type="Script" uid="uid://46wu25r7e01y" path="res://game/xray/xrays.gd" id="31_xrays"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -243,3 +244,7 @@ unique_name_in_owner = true
 script = ExtResource("22_pinger")
 tuning = ExtResource("23_ping_tuning")
 wheel = NodePath("../Hud/PingWheel")
+
+[node name="XRays" type="Node" parent="." unique_id=142471796]
+unique_name_in_owner = true
+script = ExtResource("31_xrays")

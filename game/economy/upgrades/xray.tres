@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://de6lbiy63s2s7" path="res://assets/ui/upgrade_xray.svg" id="1_dcusl"]
 [ext_resource type="Script" uid="uid://tco600m1ilvq" path="res://game/economy/upgrade.gd" id="2_emkno"]
+[ext_resource type="Resource" uid="uid://u0siod6b53xj" path="res://game/economy/stats/xray.tres" id="9_stat"]
 
 [resource]
 script = ExtResource("2_emkno")
@@ -10,4 +11,5 @@ tooltip = "Show pair (key 1): the held Sock's mate glows through walls."
 icon = ExtResource("1_dcusl")
 cell = Vector2i(2, 0)
 prices = PackedInt32Array(150)
+stat = ExtResource("9_stat")
 key_hint = "key 1"

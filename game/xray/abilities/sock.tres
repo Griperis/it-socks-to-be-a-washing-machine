@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="XRayAbility" format=3 uid="uid://bypvb68jyf1mc"]
+
+[ext_resource type="Script" uid="uid://dhtnwastsybq0" path="res://game/xray/xray_ability.gd" id="1_ability"]
+[ext_resource type="Resource" uid="uid://csfiistkxd65g" path="res://game/economy/upgrades/xray.tres" id="2_upgrade"]
+[ext_resource type="Resource" uid="uid://u0siod6b53xj" path="res://game/economy/stats/xray.tres" id="3_owned"]
+[ext_resource type="Resource" uid="uid://hdru7py5mwyt" path="res://game/economy/stats/all_hands_xray.tres" id="4_all"]
+[ext_resource type="Resource" uid="uid://dfhchnqbqsby7" path="res://game/economy/stats/xray_duration.tres" id="5_duration"]
+[ext_resource type="Resource" uid="uid://cs7rapl8lhg3q" path="res://game/economy/stats/xray_cooldown.tres" id="6_cooldown"]
+[ext_resource type="Texture2D" uid="uid://dho5k4fh60wjf" path="res://assets/ui/key_1.svg" id="7_key"]
+
+[resource]
+script = ExtResource("1_ability")
+upgrade = ExtResource("2_upgrade")
+owned = ExtResource("3_owned")
+all_hands = ExtResource("4_all")
+duration = ExtResource("5_duration")
+cooldown = ExtResource("6_cooldown")
+name = "Show pair"
+short_name = "X-ray"
+on_text = "Sock X-ray on"
+colour = Color(0.2, 0.8392157, 1, 1)
+key_icon = ExtResource("7_key")

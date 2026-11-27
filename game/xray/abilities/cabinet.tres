@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="XRayAbility" format=3 uid="uid://w3qe7d2vlhab"]
+
+[ext_resource type="Script" uid="uid://dhtnwastsybq0" path="res://game/xray/xray_ability.gd" id="1_ability"]
+[ext_resource type="Resource" uid="uid://eattkm0na01b" path="res://game/economy/upgrades/cabinet_xray.tres" id="2_upgrade"]
+[ext_resource type="Resource" uid="uid://oehsx2brfoj8" path="res://game/economy/stats/cabinet_xray.tres" id="3_owned"]
+[ext_resource type="Resource" uid="uid://bbifdcaruamd0" path="res://game/economy/stats/all_hands_cabinet_xray.tres" id="4_all"]
+[ext_resource type="Resource" uid="uid://ddts3qhd2shvc" path="res://game/economy/stats/cabinet_xray_duration.tres" id="5_duration"]
+[ext_resource type="Resource" uid="uid://cbvw8ykry3dii" path="res://game/economy/stats/cabinet_xray_cooldown.tres" id="6_cooldown"]
+[ext_resource type="Texture2D" uid="uid://0ffdqaaoccmj" path="res://assets/ui/key_2.svg" id="7_key"]
+
+[resource]
+script = ExtResource("1_ability")
+action = &"cabinet_xray_show"
+upgrade = ExtResource("2_upgrade")
+owned = ExtResource("3_owned")
+all_hands = ExtResource("4_all")
+duration = ExtResource("5_duration")
+cooldown = ExtResource("6_cooldown")
+shows = 1
+name = "Show Cabinet"
+short_name = "Cabinet X-ray"
+on_text = "Cabinet X-ray on"
+colour = Color(1, 0.65882355, 0.14901961, 1)
+key_icon = ExtResource("7_key")
+screen_slot = 1
+order = 1

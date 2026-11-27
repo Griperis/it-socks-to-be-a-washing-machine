@@ -20,6 +20,11 @@ const NET_WAIT_S := 20.0
 const LAYING_S := 20.0
 const TAGS := ["upgrades_test_a", "upgrades_test_b"]
 const CO_OP_ONLY: Array[StringName] = [&"roomy_car", &"sole_mates", &"sole_hands", &"mate_radar"]
+## A test-only Upgrade with no stat (core/182): the "Coming soon" case no longer leans on a batch C one.
+const SOON_UPGRADE := "res://tests/fixtures/coming_soon_upgrade.tres"
+## The X-rays' eight Upgrades (core/182), in an order their needs allow, each to its top.
+const XRAY_UPGRADES: Array[StringName] = [&"xray", &"all_hands_xray", &"xray_recharge", &"xray_linger",
+		&"cabinet_xray", &"all_hands_cabinet_xray", &"cabinet_xray_recharge", &"cabinet_xray_linger"]
 
 var _level: Node3D = null
 var _station: Node3D = null
@@ -35,7 +40,9 @@ func cases() -> Array[Dictionary]:
 		{"name": "real_path", "method": "case_real_path", "world": false,
 				"title": "real path: in the Economy station with 30 Coins the player presses E on the Old Tree and clicks Sock Smarts' button; it reads \"1/1\" and MAX and the Coins counter reads 0; a second click shakes it and the refusal reads \"Maxed out\"; Esc shuts the menu"},
 		{"name": "coming_soon", "method": "case_coming_soon", "world": false,
-				"title": "Q2669: a batch C Upgrade's button is greyed and reads \"Coming soon\"; a click is refused \"Coming soon\" and shakes it"},
+				"title": "Q2669: an Upgrade with no stat (a test-only one, core/182) is greyed and reads \"Coming soon\"; a click is refused \"Coming soon\" and shakes it"},
+		{"name": "xrays_bought", "method": "case_xrays_bought", "world": false,
+				"title": "core/182: the X-rays' eight Upgrades are bought from the menu to their tops, none \"Coming soon\"; the Cabinet X-ray's card reads \"Cabinet X-ray: Show Cabinet (key 2)\" and \"Show Cabinet (key 2): the right Cabinet glows through walls.\"; the cooldown's numbers read \"%.0fs\""},
 		{"name": "refusals", "method": "case_refusals", "world": false,
 				"title": "the old refusals: \"Locked\" (a need below its level, the lock over the icon, \"Needs: Sock Smarts\" on the tip card), \"Need Coins 120\" (too dear), Coins still flying are not spendable (Q2672); a House Upgrade is paid with the team's Drawers"},
 		{"name": "coop_only", "method": "case_coop_only", "world": false,
@@ -88,9 +95,10 @@ func case_real_path() -> void:
 func case_coming_soon() -> void:
 	await _build()
 	_set_coins(1000)
+	_ups.all().append(load(SOON_UPGRADE) as Upgrade)
 	var menu := await _open_at_tree()
-	var xray := menu.button(&"xray")
-	_check(xray != null and xray.state == UpgradeButton.OFF and xray.price_text() == "Coming soon", "X-ray is greyed and reads \"Coming soon\" (%s)" % xray.price_text())
+	var xray := menu.button(&"coming_soon_upgrade")
+	_check(xray != null and xray.state == UpgradeButton.OFF and xray.price_text() == "Coming soon", "the Upgrade with no stat is greyed and reads \"Coming soon\" (%s)" % (xray.price_text() if xray != null else "none"))
 	await _click(xray.key)
 	_check(_ups.level(xray.upgrade, 1) == 0 and _bank.of_player(1) == 1000, "nothing is bought")
 	_check(xray.shakes == 1 and _player.message() == "Coming soon", "it shakes and the refusal reads \"Coming soon\" (%s)" % _player.message())
@@ -109,17 +117,40 @@ func case_coming_soon() -> void:
 	_check(bottom.get_node(bottom.focus_neighbor_bottom) == menu.close_key(), "the last row's Down is the close key")
 
 
+func case_xrays_bought() -> void:
+	await _build()
+	_set_coins(2000)
+	var menu := await _open_at_tree()
+	for id in XRAY_UPGRADES:
+		var b := menu.button(id)
+		_check(b != null and b.price_text() != "Coming soon", "%s is for sale (%s)" % [id, b.price_text() if b != null else "none"])
+		if b == null:
+			continue
+		for _i in b.upgrade.top():
+			await _click(b.key)
+		_check(_ups.level(b.upgrade, 1) == b.upgrade.top() and b.price_text() == "MAX", "%s is bought to its top (%d)" % [id, _ups.level(b.upgrade, 1)])
+	_check(_bank.of_player(1) == 2000 - 1940, "the eight cost their old prices, 1940 Coins (%d left)" % _bank.of_player(1))
+	var cabinet := menu.button(&"cabinet_xray")
+	await _hover(cabinet.key)
+	var lines := menu.tip().lines()
+	_check(lines.has("Cabinet X-ray: Show Cabinet (key 2)") and lines.has("Show Cabinet (key 2): the right Cabinet glows through walls."),
+			"Q2713: the Cabinet X-ray's card reads its new title and tooltip (%s)" % [lines])
+	await _hover(menu.button(&"xray_recharge").key)
+	_check(menu.tip().lines().has("30s"), "the X-ray's cooldown at its top reads \"30s\" (%s)" % [menu.tip().lines()])
+
+
 func case_refusals() -> void:
 	await _build()
 	var smarts := Upgrades.find_upgrade(&"sock_smarts")
 	var sense := Upgrades.find_upgrade(&"sock_sense")
 	var became := []
+	_ups.all().append(load(SOON_UPGRADE) as Upgrade)
 	_ups.affordable.connect(func(_p: int, u: Upgrade) -> void: became.append(u.id()))
 	_set_coins(0)
 	await _physics_ticks(30)
 	_set_coins(200)
 	await _until(func() -> bool: return became.has(&"sock_smarts"), "Sock Smarts to become affordable")
-	_check(not became.has(&"sock_sense") and not became.has(&"xray"), "a locked or unbuilt one never does (%s)" % [became])
+	_check(not became.has(&"sock_sense") and not became.has(&"coming_soon_upgrade"), "a locked or unbuilt one never does (%s)" % [became])
 	var menu := await _open_at_tree()
 	var sense_button := menu.button(&"sock_sense")
 	_check(sense_button.lock_shown() and sense_button.state == UpgradeButton.OFF, "Sock Sense is greyed under its lock")
@@ -229,7 +260,7 @@ func case_data() -> void:
 	_check(sense.needs.size() == 1 and sense.needs.keys()[0] == Upgrades.find_upgrade(&"sock_smarts"), "Sock Sense needs Sock Smarts")
 	for u in all:
 		var built := u.id() in [&"sock_smarts", &"sock_sense", &"footwork", &"sprint", &"quick_grab", &"big_hands", &"long_arm", &"quick_charge",
-				&"sole_mates", &"sole_hands", &"mate_radar"]
+				&"sole_mates", &"sole_hands", &"mate_radar"] or XRAY_UPGRADES.has(u.id())
 		_check((u.stat != null) == built, "%s %s" % [u.id(), "has its stat" if built else "is Coming soon"])
 		_check(u.icon != null and u.title != "" and u.top() > 0, "%s has its icon, title and prices" % u.id())
 		_check(u.coop_only == CO_OP_ONLY.has(u.id()), "%s co-op only as the old" % u.id())

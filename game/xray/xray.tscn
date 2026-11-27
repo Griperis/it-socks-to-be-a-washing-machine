@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://cafnrgmq0slij"]
+
+[ext_resource type="Script" uid="uid://uovjs4sau05f" path="res://game/xray/xray.gd" id="1_xray"]
+
+[node name="XRay" type="Node" unique_id=735128877]
+script = ExtResource("1_xray")
+
+[node name="Show" type="Timer" parent="." unique_id=23269214]
+one_shot = true
+
+[node name="Cooldown" type="Timer" parent="." unique_id=1741625592]
+one_shot = true
