@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cw6725j40wc8v"]
+
+[ext_resource type="PackedScene" uid="uid://bumgnr2282uoh" path="res://assets/clock/clock.glb" id="1_clock"]
+
+[node name="LooksWallClock" type="Node3D" unique_id=7039112]
+editor_description = "assets/23: the wall clock's Looks (day-and-exterior.md, The wall clock): the old living room's clock. The origin is the centre of its back, on the wall; its face looks along +Z. hour_hand and minute_hand (under Model) pivot on the dial's centre and turn about their z, a negative angle clockwise, as the old _show_time turned them; at rest both point at 12. No collider (the old clock never collided)."
+
+[node name="Model" parent="." unique_id=189105030 instance=ExtResource("1_clock")]

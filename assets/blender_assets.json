@@ -753,6 +753,14 @@
       "source": "elevator/elevator",
       "glb": "assets/elevator/elevator_signs.glb",
       "origin_xy": false
+    },
+    "clock": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "clock/clock",
+      "glb": "assets/clock/clock.glb",
+      "origin_xy": false,
+      "note": "assets/23: the old wall clock (1,436 triangles), assets_src/generate/clock/make_clock.py. It hangs on a wall: its origin is the centre of its back, so its bottom is 0.18 m below the origin by design; no collider (the old clock never collided)"
     }
   }
 }

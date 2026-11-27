@@ -224,6 +224,11 @@ static func act(world: Node, what: String, arg: String) -> bool:
 			# line-up's view of that number (4-8: the pod, the pour, the suction, the hose and its tug).
 			world.call(&"show_view", int(arg))
 			return true
+		"wall_clock":
+			# assets/23: arg a view 0-4 of tools/wall_clock_still.gd VIEWS (the old line-up's four, the dial at
+			# 15:45), or old0-old4 for the old glb's copy in the same view.
+			world.call(&"show_view", arg)
+			return true
 		"elevator":
 			# assets/21: arg a view of tools/elevator_still.gd VIEWS (shut, open, locked, unlock_a..c, repaired,
 			# press, letters): the Elevator's stop, car and letters posed by their Looks' own clips.

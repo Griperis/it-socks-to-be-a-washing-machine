@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: ready-for-human
 kind: build
 area: assets
 feature: assets
@@ -45,3 +45,9 @@ old clock never collided).
 - The wall clock's hands are kept (Q2709, 2026-11-26).
 
 ## Open follow-ups
+- [later] On the designer's yes: `game/house/wall_clock/wall_clock.tscn` (core/161, not built yet) points its Looks at
+  `game/house/wall_clock/looks_wall_clock.tscn` and the graybox goes; if core/161 lands after the yes, it instances
+  this Looks from the start.
+- [later] Kit: `kit/tools/blender/asset_checks.py` has no `origin_z` (the old manifest's) for a wall-hung asset, so
+  `assets_src/generate/export.sh --check clock` reports "the bottom of the asset is at z=-0.1800" for the clock's
+  origin on its back's centre, which the ticket asks for (advice only; asset_lint passes).
