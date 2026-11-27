@@ -32,7 +32,8 @@
 ## place instead of the whole Hands. It is listed after the Socks and Pairs (list_size(): one more
 ## place, counted against the capacity) and the wheel cycles to it: the active index runs one past the
 ## last Sock, and `active` keeps it. Then active_of() is -1 (no Sock is active, every Sock is tucked)
-## and in_hands() names it. Picking a Sock makes the Sock active, as ever.
+## and in_hands() names it. The book is held alone (Q2722): while it is held no Sock, Pair or thing comes in
+## (pick_refusal() and can_take()), so the list never holds it beside another item; the list seam stays for batch C.
 class_name Hands
 extends Part
 
@@ -315,7 +316,7 @@ func pick_refusal(by: int, sock: int) -> String:
 		return SOON
 	if not parts.near_point(by, mess.where_of(sock), t.reach + t.reach_slack):
 		return FAR
-	if carries(by) != null or (list_size(by) >= t.capacity and mate_held(by, sock) < 0):
+	if carries(by) != null or one_slot_of(by) != null or (list_size(by) >= t.capacity and mate_held(by, sock) < 0):
 		return FULL
 	return ""
 
@@ -502,7 +503,7 @@ func take_refusal(to: int, sock: int) -> String:
 ## Whether player `to` has room for item `sock` in their Hands (line 18): a Pair needs a free place;
 ## a loose Sock pairs with its held mate or needs a free place.
 func can_take(to: int, sock: int) -> bool:
-	if carries(to) != null:
+	if carries(to) != null or one_slot_of(to) != null:
 		return false
 	if not mess.is_pair(sock) and mate_held(to, sock) >= 0:
 		return true

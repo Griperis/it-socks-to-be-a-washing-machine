@@ -21,8 +21,8 @@ func cases() -> Array[Dictionary]:
 	return [
 		{"name": "real_path", "method": "case_real_path", "world": false,
 				"title": "real path: in the house a left click on the book on the workbench (crosshair \"Sock Encyclopedia\") takes it into the empty Hands; the corner reads Read and Drop; E opens the pages (the reader's own profile: a held Design named, the others \"???\"), the player held and the mouse free; A turns back, D on, Left and Right too; Esc shuts them; E opens them again and shuts them; a right click puts the book down on the bench at the crosshair"},
-		{"name": "one_place", "method": "case_one_place", "world": false,
-				"title": "with room for three the book takes one place beside the Socks: it is only picked into empty Hands (a Sock held: Hands full), a Sock comes in after it, the wheel cycles Socks and book (the Socks tucked while the book is active, the book hidden while a Sock is), Cycle shows, a right click puts the active book down and keeps the Socks, and a full Hands (capacity 1) refuses a Sock beside the book"},
+		{"name": "held_alone", "method": "case_held_alone", "world": false,
+				"title": "Q2722: the book is held alone: with a Sock held a click on it is refused Hands full (the Host refuses the same); holding it a Sock is refused Hands full and nothing is handed in, with room for three; put the book down and the Sock is picked"},
 		{"name": "leaves_hands", "method": "case_leaves_hands", "world": false,
 				"title": "the book is never thrown (a held right click charges nothing); the pages shut by themselves and the player is held no more when the book leaves the Hands (put down by the Host's answer)"},
 	]
@@ -120,9 +120,9 @@ func case_real_path() -> void:
 	_near(angle_difference(book.rotation.y, wrapf(yaw, -PI, PI)), 0.0, 0.05, "turned as it was held")
 
 
-# --- One place among the Socks -------------------------------------------------------------------
+# --- Held alone ----------------------------------------------------------------------------------
 
-func case_one_place() -> void:
+func case_held_alone() -> void:
 	await _house()
 	var player := _player()
 	var carriable := _carriable()
@@ -132,59 +132,43 @@ func case_one_place() -> void:
 	tuning.capacity = 3
 	player.hands_tuning = tuning
 	var socks := _lying_socks(3)
-	# A Sock held: the book is refused Hands full, whatever the room.
+	var mess := _runtime().mess
+	# Holding a Sock, a click on the book is refused: Hands full, the book stays.
 	await _pick_sock(socks[0], 1)
-	await _go_to(FRONT)
-	_same(carriable.pick_refusal(me), Carriable.FULL, "with a Sock held the book is refused Hands full")
-	_same(hands.list_size(me), 1, "one place filled")
+	_stand_look(FRONT, AIM)
+	await _physics_ticks(4)
+	_check(player.aimed_part() == carriable, "the crosshair is on the book")
+	await _press(&"pick")
+	await _physics_ticks(4)
+	_check(carriable.holder == 0 and player.message() == "Hands full", "with a Sock held a click on the book is refused: Hands full (%s)" % player.message())
+	_same(carriable.pick_refusal(me), Carriable.FULL, "the Host refuses the same")
+	var ev := _runtime().parts.answer(Command.new(&"pick", me, carriable.id))
+	_check(not ev.get("ok", false) and ev.get("reason", "") == Carriable.FULL, "a pick of it is refused by the Host's answer")
 	_drop_socks()
 	await _until(func() -> bool: return hands.items_of(me).is_empty(), "the Hands are empty", 60)
-	# The book first, then a Sock beside it.
-	await _take_book()
-	_same(hands.list_size(me), 1, "the book fills one place")
-	await _pick_sock(socks[0], 1)
-	_same(hands.list_size(me), 2, "two places filled")
-	_check(hands.active_of(me) == socks[0] and hands.one_slot_active(me) == null, "the new Sock is the active item")
+	# Holding the book, a click on a Sock is refused (room or not), and nothing is handed in.
+	_stand_look(FRONT, AIM)
 	await _physics_ticks(4)
-	_check(not _thing().visible, "the book is not drawn while a Sock is active")
-	_check(player.hud().hints_text().contains("Cycle"), "the corner shows Cycle (%s)" % player.hud().hints_text())
-	# The wheel cycles to the book and back.
-	await _wheel(MOUSE_BUTTON_WHEEL_DOWN)
-	await _until(func() -> bool: return hands.one_slot_active(me) == carriable, "the wheel cycles to the book", 60)
-	_same(hands.active_of(me), -1, "no Sock is active then")
-	await _physics_ticks(4)
-	_check(_thing().visible, "the book is drawn once active")
-	_check(player.hud().hints_text().contains("Read"), "the corner reads Read (%s)" % player.hud().hints_text())
-	await _wheel(MOUSE_BUTTON_WHEEL_DOWN)
-	await _until(func() -> bool: return hands.active_of(me) == socks[0], "the wheel cycles back to the Sock", 60)
-	# A second Sock: Sock, Sock, book.
-	await _pick_sock(socks[1], 2)
-	_same(hands.list_size(me), 3, "three places filled")
-	await _go_to(_runtime().mess.where_of(socks[2]))
-	await _until(func() -> bool: return hands.pick_refusal(me, socks[2]) != Hands.SOON, "the grab interval to pass", 120)
-	_same(hands.pick_refusal(me, socks[2]), Hands.FULL, "no place is left for a third Sock")
-	await _wheel(MOUSE_BUTTON_WHEEL_UP)
-	await _until(func() -> bool: return hands.active_of(me) == socks[0], "the wheel back goes to the first Sock", 60)
-	await _wheel(MOUSE_BUTTON_WHEEL_UP)
-	await _until(func() -> bool: return hands.one_slot_active(me) == carriable, "and on round to the book", 60)
-	# A right click on the floor puts the book down, the Socks stay.
-	var here := player.global_position
-	_stand_look(here, here + Vector3(0.0, -0.9, -1.1))
+	await _press(&"pick")
+	await _until(func() -> bool: return carriable.holder == me, "an empty Hands take the book", 60)
+	await _go_to(mess.where_of(socks[1]))
+	await _until(func() -> bool: return hands.pick_refusal(me, socks[1]) != Hands.SOON, "the grab interval to pass", 120)
+	_same(hands.pick_refusal(me, socks[1]), Hands.FULL, "holding the book a Sock is refused Hands full, with room for three")
+	_check(not hands.can_take(me, socks[1]), "nothing is handed in either")
+	_same(hands.list_size(me), 1, "the book fills the Hands alone")
+	hands.pick(me, socks[1])
+	await _physics_ticks(6)
+	_check(hands.items_of(me).is_empty() and carriable.holder == me, "a Sock asked for anyway stays where it lies")
+	# Put the book down; then the Sock can be picked.
+	_stand_look(player.global_position, player.global_position + Vector3(0.0, -0.9, -1.1))
 	await _physics_ticks(4)
 	await _press(&"drop_throw")
-	await _until(func() -> bool: return carriable.holder == 0, "a right click puts the active book down", 60)
-	_same(hands.items_of(me).size(), 2, "the Socks stay in the Hands")
-	_check(hands.active_of(me) >= 0, "a Sock is the active item again")
-	# One place only: the book fills it, a Sock is refused.
-	_drop_socks()
-	await _until(func() -> bool: return hands.items_of(me).is_empty(), "the Hands are emptied", 60)
-	var one := player.hands_tuning.duplicate() as HandsTuning
-	one.capacity = 1
-	player.hands_tuning = one
-	await _take_book()
-	await _go_to(_runtime().mess.where_of(socks[1]))
+	await _until(func() -> bool: return carriable.holder == 0, "a right click puts the book down", 60)
+	await _go_to(mess.where_of(socks[1]))
 	await _until(func() -> bool: return hands.pick_refusal(me, socks[1]) != Hands.SOON, "the grab interval to pass", 120)
-	_same(hands.pick_refusal(me, socks[1]), Hands.FULL, "with one place the book fills it: a Sock is refused Hands full")
+	_same(hands.pick_refusal(me, socks[1]), "", "with the book down the Sock can be picked")
+	hands.pick(me, socks[1])
+	await _until(func() -> bool: return hands.items_of(me).size() == 1, "the Sock is picked", 60)
 
 
 # --- The book leaves the Hands -------------------------------------------------------------------
