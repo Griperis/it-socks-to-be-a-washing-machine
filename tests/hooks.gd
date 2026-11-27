@@ -17,6 +17,8 @@ static func scrub(tree: SceneTree) -> void:
 			link.get_parent().remove_child(link)
 			link.free()
 	SockGenerator.start_all = false
+	# maintenance/13: the laying's unit record (house:h09_slices_within_budget) is off in play.
+	SliceClock.keep_record(false)
 	Settings.autosave = false
 	Settings.reset_to_defaults()
 	Sounds.reset()
