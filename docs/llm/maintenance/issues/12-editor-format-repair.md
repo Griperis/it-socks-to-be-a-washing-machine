@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: done
+status: in-progress
 kind: maintenance
 area: maintenance
 feature: frame
@@ -61,6 +61,15 @@ what you run into a throwaway place, not into the game.
 - Files are kept in the Godot editor's own format (Q2268).
 
 ## Open follow-ups
+- [later] For the lead (technical, not the designer's): the 0-change re-save holds only in a checkout whose `.godot`
+  import wrote the committed ids. A glb's import gives its nodes new random `unique_id`s every time it is imported
+  (tried: reimporting assets/sock/ankle.glb alone changed `parent_id_path` of looks_ankle.tscn's Cloth), and the
+  editor writes those ids into every scene that overrides or adds a node inside a glb instance. On a fresh copy of
+  this branch (cold import, then a whole-project re-save) 13 files change, ids only (`unique_id`/`parent_id_path`,
+  nothing else): looks_washer, looks_present, looks_avatar, the 4 sock looks, and 6 wardrobe looks. So the main
+  checkout's own import will rewrite those 13 on its first re-save. No import option sets the ids. Choose: accept
+  ids inside glb instances as noise (the drift check ignores them), or move what those 13 scenes add under glb
+  nodes out of the glb instance. Everything else of the acceptance is met.
 - [later] The kit's own 9 scenes Godot sees (`kit/tests/{run,check,wiring}.tscn`, `kit/tests/support/wiring/*.tscn`,
   `kit/tools/{shot,net_shot}.tscn`) are not in the editor's format (no header uid, no ext uids, no `unique_id`): a
   headless re-save of `res://kit` changes all 9. A ticket agent cannot edit `kit/`; the lead re-saves them in the kit.
