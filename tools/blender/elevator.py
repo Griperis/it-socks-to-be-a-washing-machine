@@ -48,9 +48,10 @@ contract), so the pivots named below sit at the offset given from the root, whic
     cap              the round cap (`letter_cap`: the plain dark; `lit` and `locked` recolour it)
     ring             the red ring of a locked floor (shown by `locked`)
     glyph_b, glyph_g, glyph_1, glyph_a   the printed letter, one per floor (code shows its stop's)
-  elevator_signs   the stop's two signs side by side, each origin on its back's middle, its face +z (the
-                   stop's Looks hangs them on the hatch's face, where the old hung them: the padlock
-                   sign's back 0.0018 m and the plaque's 0.005 m in front of the hatch's origin):
+  elevator_signs   the stop's two signs, hung as the old hung them on the hatch's face (each origin on
+                   its back's middle, its face +z; the padlock sign's back at the root's z 0, the
+                   plaque's 0.0032 m in front of it; the stop's Looks puts the root 0.0018 m in front
+                   of the hatch's origin, on its middle; the root is 0.118 m under the signs' middle):
     lock_sign        the cream plaque with an ink padlock (a locked floor, drops at `unlock`)
     out_of_order     the cream plaque with "OUT OF / ORDER" printed in red (before Elevator Repair)
 
@@ -366,14 +367,14 @@ def build_signs():
     s.add(L.box(-0.055, 0.055, -0.07, 0.02, face, face + 0.02), "sign_ink")
     s.add(L.cyl("z", 0.0, -0.018, face + 0.019, face + 0.023, 0.011, n=12), "sign_cream")
     s.add(L.box(-0.004, 0.004, -0.048, -0.024, face + 0.019, face + 0.023), "sign_cream")
-    put(s, "lock_sign", r).location.x = -0.2       # side by side in the file; the Looks hangs each
+    put(s, "lock_sign", r)
     # The "Out of order" plaque (LockSign._build_tag: 0.36 x 0.17 ink, 0.344 x 0.154 cream, the words in
     # REFUSE red, font 56 on a 154 px plaque: 0.056 m).
     o = L.Part()
     o.add(L.box(-0.18, 0.18, -0.085, 0.085, 0.0, 0.012), "sign_ink")
     o.add(L.box(-0.172, 0.172, -0.077, 0.077, 0.002, 0.014), "sign_cream")
     o.add(text("OUT OF\nORDER", 0.056, (0.0, 0.0, 0.0145), res=2), "sign_red")
-    put(o, "out_of_order", r).location.x = 0.2
+    put(o, "out_of_order", r).location.y = -0.0032   # its back 0.016 - 0.0128 in front of the sign's (Blender -y)
     return r
 
 

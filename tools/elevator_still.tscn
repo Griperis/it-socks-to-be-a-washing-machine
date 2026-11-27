@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://dinlp1lj6b2o8"]
+
+[ext_resource type="Script" uid="uid://cccgoiek3hs5f" path="res://tools/elevator_still.gd" id="1_still"]
+[ext_resource type="PackedScene" uid="uid://b8f16fcwjwsbw" path="res://game/entities/elevator/stop/looks_stop.tscn" id="2_stop"]
+[ext_resource type="PackedScene" uid="uid://ttqsnhjglqn6" path="res://game/entities/elevator/looks_car.tscn" id="3_car"]
+[ext_resource type="PackedScene" uid="uid://dhvnr73qpbsem" path="res://game/entities/elevator/letter/looks_letter.tscn" id="4_letter"]
+[ext_resource type="Material" uid="uid://dl811xycipb8x" path="res://game/house/kit/materials/shaft.tres" id="5_shaft"]
+[ext_resource type="Material" uid="uid://d1y6gts7lv8e5" path="res://game/house/kit/materials/stainless.tres" id="6_stainless"]
+
+[sub_resource type="Environment" id="Environment_bg"]
+background_mode = 1
+background_color = Color(0.89, 0.85, 0.79, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.89, 0.85, 0.79, 1)
+ambient_light_energy = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.75, 0.54, 0.35, 1)
+roughness = 0.9
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_floor"]
+material = SubResource("StandardMaterial3D_floor")
+size = Vector2(12, 12)
+
+[sub_resource type="BoxMesh" id="Box_strip"]
+material = ExtResource("5_shaft")
+size = Vector3(0.08, 2.4, 0.04)
+
+[sub_resource type="BoxMesh" id="Box_below"]
+material = ExtResource("5_shaft")
+size = Vector3(0.54, 0.8, 0.04)
+
+[sub_resource type="BoxMesh" id="Box_above"]
+material = ExtResource("5_shaft")
+size = Vector3(0.54, 1.02, 0.04)
+
+[sub_resource type="BoxMesh" id="Box_side"]
+material = ExtResource("5_shaft")
+size = Vector3(0.04, 2.4, 0.66)
+
+[sub_resource type="BoxMesh" id="Box_sill"]
+material = ExtResource("6_stainless")
+size = Vector3(0.62, 0.03, 0.13)
+
+[node name="ElevatorStill" type="Node3D" unique_id=1164413915]
+script = ExtResource("1_still")
+
+[node name="Environment" type="WorldEnvironment" parent="." unique_id=1484212621]
+environment = SubResource("Environment_bg")
+
+[node name="Key" type="DirectionalLight3D" parent="." unique_id=723308768]
+transform = Transform3D(0.819, -0.369, 0.439, 0, 0.766, 0.643, -0.574, -0.527, 0.627, 0, 4, 0)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="Fill" type="DirectionalLight3D" parent="." unique_id=50015399]
+transform = Transform3D(-0.766, 0.415, -0.492, 0, 0.766, 0.643, 0.643, 0.495, -0.586, 0, 4, 0)
+light_energy = 0.35
+
+[node name="Room" type="OmniLight3D" parent="." unique_id=1969455632]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 2.4, 1.6)
+light_energy = 0.5
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=643188746]
+mesh = SubResource("PlaneMesh_floor")
+
+[node name="KitShaft" type="Node3D" parent="." unique_id=1510169517]
+
+[node name="Left" type="MeshInstance3D" parent="KitShaft" unique_id=2024202218]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.31, 1.2, -0.02)
+mesh = SubResource("Box_strip")
+
+[node name="Right" type="MeshInstance3D" parent="KitShaft" unique_id=2140622455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.31, 1.2, -0.02)
+mesh = SubResource("Box_strip")
+
+[node name="Below" type="MeshInstance3D" parent="KitShaft" unique_id=820684477]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -0.02)
+mesh = SubResource("Box_below")
+
+[node name="Above" type="MeshInstance3D" parent="KitShaft" unique_id=1590234646]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.89, -0.02)
+mesh = SubResource("Box_above")
+
+[node name="SideLeft" type="MeshInstance3D" parent="KitShaft" unique_id=274477024]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.33, 1.2, -0.37)
+mesh = SubResource("Box_side")
+
+[node name="SideRight" type="MeshInstance3D" parent="KitShaft" unique_id=1100328235]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.33, 1.2, -0.37)
+mesh = SubResource("Box_side")
+
+[node name="Sill" type="MeshInstance3D" parent="KitShaft" unique_id=1110543985]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.785, 0.005)
+mesh = SubResource("Box_sill")
+
+[node name="Stop" parent="." unique_id=305879900 instance=ExtResource("2_stop")]
+
+[node name="Car" parent="." unique_id=1310542753 instance=ExtResource("3_car")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 0, 0.8, -0.35)
+
+[node name="Letter0" parent="Car" unique_id=67543147 instance=ExtResource("4_letter")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.12, 0.264)
+
+[node name="Letter1" parent="Car" unique_id=602828260 instance=ExtResource("4_letter")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.24, 0.264)
+
+[node name="Letter2" parent="Car" unique_id=1497991646 instance=ExtResource("4_letter")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.36, 0.264)
+
+[node name="Letter3" parent="Car" unique_id=380329128 instance=ExtResource("4_letter")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.48, 0.264)
+
+[node name="Camera" type="Camera3D" parent="." unique_id=1348007922]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 2)
+current = true
+fov = 45.0
+near = 0.01

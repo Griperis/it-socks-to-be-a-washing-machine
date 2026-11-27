@@ -1,0 +1,12 @@
+# assets/21: the Elevator's Looks posed by their clips (tools/elevator_still.tscn): the ground floor's stop out of order,
+# open with the car (letters: B dark, G lit, 1 locked, A dark), locked, the unlock in three frames, the plaque dropping
+# (repaired), the button pressed, the letters from inside the car.
+shut  --scene=res://tools/elevator_still.tscn --size=480x480 --do='5:elevator:shut' --shots=20
+open  --scene=res://tools/elevator_still.tscn --size=480x480 --do='5:elevator:open' --shots=20
+locked  --scene=res://tools/elevator_still.tscn --size=480x480 --do='5:elevator:locked' --shots=20
+unlock_a  --scene=res://tools/elevator_still.tscn --size=480x480 --do='5:elevator:unlock_a' --shots=20
+unlock_b  --scene=res://tools/elevator_still.tscn --size=480x480 --do='5:elevator:unlock_b' --shots=20
+unlock_c  --scene=res://tools/elevator_still.tscn --size=480x480 --do='5:elevator:unlock_c' --shots=20
+repaired  --scene=res://tools/elevator_still.tscn --size=480x480 --do='5:elevator:repaired' --shots=20
+press  --scene=res://tools/elevator_still.tscn --size=480x480 --do='5:elevator:press' --shots=20
+letters  --scene=res://tools/elevator_still.tscn --size=480x480 --do='5:elevator:letters' --shots=20

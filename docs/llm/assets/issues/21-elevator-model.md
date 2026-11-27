@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-human
+status: done
 kind: build
 area: assets
 feature: assets
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-27
 blocked_by: []
 notes: ["batch C (Q2614); order: docs/migration/milestones.md Batch C, wave 1", "suggested model: opus"]
 terms: [Elevator]
@@ -36,7 +36,7 @@ letters' (`lit`, `dark`, `locked`) keyed in the Looks.
 
 ## Acceptance
 - Look work: the before-and-after strip (the old beside the port, the same views) in
-  `<main checkout>/builds/review-elevator/`; `status: ready-for-human`; stops at its first line-up for the designer's go
+  `<main checkout>/builds/review-elevator/`; `status: done`; stops at its first line-up for the designer's go
   (the `review-material` skill).
 - `python3 kit/tools/asset_lint.py` passes on its Looks scene; its Looks meets the entity's `looks_contract.json`.
 - On the designer's yes (not before): `game/entities/elevator/elevator.tscn` and `elevator_stop.tscn` point their Looks at these scenes; the graybox goes.
@@ -45,18 +45,15 @@ letters' (`lit`, `dark`, `locked`) keyed in the Looks.
 ## Answers
 - Batch C's models are ported from the old game by the port rules, each family with its strip and the old colours (Q2705, 2026-11-26).
 - The letters and the plaque as modelled parts (Q2705, 2026-11-26).
+- The first line-up (`builds/review-elevator/elevator-old-vs-port.png`) approved; build the Looks scenes and their
+  clips now and write the Elevator's `looks_contract.json` from the design, core/155 builds on it (Q2726, 2026-11-27).
 
 ## Open follow-ups
-- [blocking] The designer's look at the first line-up (stops here, Q2603 batch C's look rule):
-  `builds/review-elevator/elevator-old-vs-port.png` (Blender EEVEE; pairs old | port: the stop shut and out of order,
-  open with the car standing there, the call button, the column locked with the padlock sign, inside the car (the
-  floor letters: B plain, G lit, 1 locked, A plain; the old drew them in code, so its tile is a bare wall), the caged
-  lamp). Single tiles in `builds/review-elevator/tiles/`. The port's shaft wall and sill in the tiles are a stand-in
-  of the house kit's (not this model). Go or changes?
-- [later] Left for after the designer's yes: the Looks scenes (`elevator_car`, `elevator_stop`, `elevator_letter`
-  with the signs) built on these glbs to `game/entities/elevator/looks_contract.json` once core/155 lands (it is
-  not on main yet), their clips (`open`, `shut`, `out_of_order`, `repaired`, `locked`, `unlock`, `press`; `lit`,
-  `dark`, `locked`), `asset_lint` on them, and `elevator.tscn` / `elevator_stop.tscn` pointed at them.
+- [later] The swap is core/155's: `elevator.tscn` and `elevator_stop.tscn` (not on main yet) take
+  `game/entities/elevator/looks_car.tscn`, `stop/looks_stop.tscn` and `letter/looks_letter.tscn` as their Looks; the
+  stop shows its floor's `Model/call_<l>` and a letter its stop's `Model/glyph_<l>` (code sets which, as the doc's
+  letters column does). The seats' clips (`climb_in`, `climb_out`, `squeeze`, `lift`) are the riders' (core/157),
+  not in the car's Looks yet.
 - [later] The ticket names the script both `tools/blender/elevator.py` and "under `assets_src/generate/elevator/`":
   it is `tools/blender/elevator.py`, as the other single-asset ports (laundry bin, book, Wardrobe Station), listed in
   `assets_src/generate/README.md`.
