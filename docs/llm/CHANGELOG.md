@@ -45,3 +45,5 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-27 [[23-wall-clock-model]] The wall clock's model: c331170b (assets/23-wall-clock-model)
 - 2026-11-27 [[26-sock-detector-model]] The Sock detector's model: b4c80e99 (assets/26-sock-detector-model)
 - 2026-11-27 [[28-radio-model]] The Radio's model: e5d90b27 (assets/28-radio-model)
+- 2026-11-27 [[154-batch-c-groundwork]] Batch C's groundwork: every new sound, the seven station shells and the house's system slots: 51553306 (core/154-batch-c-groundwork)
+- 2026-11-27 [[25-backpack-vacuum-model]] The Backpack vacuum's model: 0b80857a (assets/25-backpack-vacuum-model)

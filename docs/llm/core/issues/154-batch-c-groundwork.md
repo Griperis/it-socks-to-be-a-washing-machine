@@ -6,7 +6,7 @@ area: core
 feature: zoo
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-27
 blocked_by: []
 notes: ["batch C (Q2614); order: docs/migration/milestones.md Batch C, wave 1", "suggested model: sonnet"]
 terms: [Elevator, Cat, X-ray, Sock vacuum, Backpack vacuum, Sock detector, TV, Radio]
