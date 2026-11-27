@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: maintenance
 area: maintenance
 feature: frame
@@ -42,3 +42,13 @@ the machine. A timing case that misses because the machine is busy is a flaky te
 
 ## Answers
 - A flaky test is a defect to rework, never to tolerate or switch off (`kit/docs/TESTING.md`).
+
+## Open follow-ups
+- [later] For the lead (kit): `_budget`'s busy guard (`kit/tests/suite.gd`) reads the guest's /proc schedstat and
+  load. On this machine (a Hyper-V guest, 16 vCPUs, no steal time reported) a host that takes a vCPU away shows as
+  run time, not as wait: in a missed laying the main thread waited 0 µs while a floor cell took 15 ms. So the guard
+  says "not busy" and other wall-time cases can miss the same way. The lane could count /proc/stat steal where a
+  hypervisor reports it, or judge by a fixed calibration loop timed beside the case.
+- [later] The case takes each unit's least time over 3 layings in one process, so a cost only the first laying of a
+  process pays (cold caches) is hidden. Here the first laying's longest slice could not be told apart from a host
+  stall (19 to 747 ms wall; least-work 10.7 ms).

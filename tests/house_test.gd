@@ -19,6 +19,9 @@ const FURNITURE := "res://game/furniture"
 ## The least wall time a wait on the house's laying gives it: on a busy machine the loading screen's
 ## slices shrink (SliceClock lets fewer units fit), so the laying takes more frames, not a set number.
 const LAYING_S := 20.0
+## How many times house:h09_slices_within_budget lays the house: a unit's least time over these is its
+## own work, not a busy machine's (maintenance/13).
+const H09_LAYINGS := 3
 ## The old spawn moved to the plan (room.gd spawn_pos 1.58, -2.9, 5.59 in the laundry, spawn_yaw).
 const SPAWN := Vector3(1.68, -3.0, 5.87)
 const SPAWN_YAW := 0.922
@@ -113,7 +116,7 @@ func cases() -> Array[Dictionary]:
 		{"name": "real_path_loading_screen", "method": "case_real_path_loading_screen", "world": false,
 				"title": "real path (house/09, Q2542): F5 shows the loading screen (\"Loading the house...\", Q2579, a filling bar) while the Socks are laid a slice per frame, the player held at the spawn though walk is pressed; then every Socks appears at once and the player walks"},
 		{"name": "h09_slices_within_budget", "method": "case_h09_slices_within_budget", "world": false, "perf": true,
-				"title": "house/09: no frame's slice of laying the house runs past the loading screen's slice budget: each unit of work runs only when the longest of its kind still fits"},
+				"title": "house/09: no frame's slice of laying the house does more work than the loading screen's slice budget (each unit at its least time over three layings, so a busy machine cannot fail it): each unit of work runs only when the longest of its kind still fits"},
 		{"name": "h09_same_seed_sliced", "method": "case_h09_same_seed_sliced", "world": false,
 				"title": "house/09: the same seed lays the same Socks (Designs, poses, generators' records) all in one frame and over many frames"},
 		{"name": "h09_trail_stays_on_treads", "method": "case_h09_trail_stays_on_treads", "world": false,
@@ -1325,24 +1328,61 @@ func case_real_path_loading_screen() -> void:
 
 
 func case_h09_slices_within_budget() -> void:
-	var mark := _cpu_mark()
-	_level = (load(HOUSE) as PackedScene).instantiate() as Node3D
-	add_child(_level)
-	var screen := LevelRuntime.of(_level).loading
-	await _until(func() -> bool: return not screen.is_showing(), "the house's Socks to be laid", 3000)
-	var budget := screen.tuning.slice_ms
+	# The wall time of a slice is the laying's work plus whatever the machine did meanwhile: in a VM a
+	# busy host takes the core away mid-unit without the guest seeing a wait (its own CPU clock counts
+	# it as run), so a floor cell of well under a millisecond can take 15 ms (maintenance/13). The same seed lays the same units in the same
+	# order however the frames slice them, so each slice is judged by its units' least time over
+	# H09_LAYINGS layings: the work the laying put in that slice, which a busy moment cannot add to.
+	var units: Array[PackedInt32Array] = []
+	var ends: Array[PackedInt32Array] = []
+	var walls: Array[PackedInt32Array] = []
+	var budget := 0.0
+	for k in H09_LAYINGS:
+		SliceClock.keep_record(true)
+		_level = (load(HOUSE) as PackedScene).instantiate() as Node3D
+		add_child(_level)
+		var screen := LevelRuntime.of(_level).loading
+		await _until(func() -> bool: return not screen.is_showing(), "the house's Socks to be laid", 3000)
+		budget = screen.tuning.slice_ms
+		units.append(SliceClock.units)
+		ends.append(SliceClock.slice_ends)
+		walls.append(screen.slices)
+		_check(SliceClock.slice_ends.size() == screen.slices.size(), "laying %d: every slice is recorded (%d of %d)" % [
+				k + 1, SliceClock.slice_ends.size(), screen.slices.size()])
+		SliceClock.keep_record(false)
+		_level.free()
+		_level = null
+		await get_tree().process_frame
+	var sizes := units.map(func(u: PackedInt32Array) -> int: return u.size())
+	var same: bool = sizes.all(func(n: int) -> bool: return n == sizes[0]) and sizes[0] > 0
+	_check(same, "every laying runs the same units (%s)" % [sizes])
+	if not same:
+		return
+	var least := units[0].duplicate()
+	for u in units:
+		for i in least.size():
+			least[i] = mini(least[i], u[i])
 	# The last slice is the reveal (every Sock joins the Mess and is drawn, all at once, Q2523), not laying.
-	var laying := screen.slices.slice(0, screen.slices.size() - 1)
 	var over: Array[float] = []
 	var longest := 0
-	for s in laying:
-		longest = maxi(longest, s)
-		if s / 1000.0 > budget:
-			over.append(s / 1000.0)
-	Log.info("house", "house/09: %d slices of laying, the longest %.1f ms (budget %.0f ms); the reveal %.1f ms; longest frame %.1f ms" % [
-			laying.size(), longest / 1000.0, budget, screen.slices[-1] / 1000.0, screen.longest_frame / 1000.0])
-	_budget(over.is_empty(), "no slice of laying runs past %.0f ms (%d of %d do: %s)" % [
-			budget, over.size(), laying.size(), over], mark)
+	var longest_wall := 0
+	var slices := 0
+	for k in H09_LAYINGS:
+		var from := 0
+		for s in ends[k].size() - 1:
+			var work := 0
+			for i in range(from, ends[k][s]):
+				work += least[i]
+			from = ends[k][s]
+			longest = maxi(longest, work)
+			longest_wall = maxi(longest_wall, walls[k][s])
+			slices += 1
+			if work / 1000.0 > budget:
+				over.append(work / 1000.0)
+	Log.info("house", "house/09: %d layings, %d slices of laying, %d units; the longest slice's work %.1f ms (budget %.0f ms), the longest slice's wall time %.1f ms" % [
+			H09_LAYINGS, slices, least.size(), longest / 1000.0, budget, longest_wall / 1000.0])
+	_check(over.is_empty(), "no slice of laying does more than %.0f ms of work (%d of %d do: %s)" % [
+			budget, over.size(), slices, over.slice(0, 10)])
 
 
 func case_h09_same_seed_sliced() -> void:

@@ -171,6 +171,7 @@ func _process(delta: float) -> void:
 	_last_start = t0
 	var done := mess.lay_step(t0 + int(tuning.slice_ms * 1000.0))
 	var took := Time.get_ticks_usec() - t0
+	SliceClock.end_slice()
 	longest_slice = maxi(longest_slice, took)
 	slices.append(took)
 	frames += 1
