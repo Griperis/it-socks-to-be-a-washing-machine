@@ -49,3 +49,7 @@ tests/flaky/
 
 # The Windows editor keeps a temporary copy of each GDExtension library it loads (hot reload).
 addons/**/~*.dll
+
+# godot-ai (Q2724): the server venv and the per-session plugin, never committed (kit/docs/godot-ai.md)
+extras/godot-ai/
+addons/godot_ai/
