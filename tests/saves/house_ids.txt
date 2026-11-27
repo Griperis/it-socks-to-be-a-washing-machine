@@ -215,3 +215,4 @@ SockGenerators/Attic/Generated
 SockGenerators/Basement/Generated
 SockGenerators/First/Generated
 SockGenerators/Ground/Generated
+Systems/Day/Day

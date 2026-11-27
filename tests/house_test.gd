@@ -853,7 +853,10 @@ func case_h01_main_scene() -> void:
 	_check(env.environment != null and env.environment.resource_path == "res://game/look/noon_environment.tres", "the zoo's noon sky and grade")
 	fresh.free()
 	var sun := house.get_node("Sun") as DirectionalLight3D
-	_check(sun.shadow_enabled and is_equal_approx(sun.light_energy, 2.4), "the zoo's sun")
+	_check(sun.shadow_enabled, "the zoo's sun, shadowed")
+	var day_light := house.get_node("Systems/Day/DayLight") as DayLight
+	_check(day_light.picture == house.get_node("Picture") and sun.visible and sun.light_energy > 1.0,
+			"the house's day lights it (core/160: the sun of %.2f h at %.2f)" % [day_light.hour, sun.light_energy])
 	_check(house.get_node_or_null("Picture") != null, "and its picture (AgX, grade)")
 	var seen := {}
 	_needs(HOUSE, seen)

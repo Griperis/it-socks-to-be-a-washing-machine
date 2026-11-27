@@ -1,9 +1,13 @@
 ## The picture of a level (core/18): puts a graphics preset on the level's WorldEnvironment, its Sun and the window's
 ## viewport, and shows or hides the vignette. The zoo has one (picture.tscn). It takes the preset the project setting
 ## names (GraphicsPreset.chosen()) unless a preset is set here, and works on its own copies of the Environment and the
-## Sky, so one level's preset never edits the shared resource.
+## Sky (and the sky's material), so one level's preset or hour never edits the shared resource. The day (DayLight,
+## core/160) writes those copies through environment() and sky_material().
 class_name Picture
 extends Node
+
+## A picture with no vignette layer of its own (the Day station's, beside the zoo's) leaves it empty.
+const WIRING_OPTIONAL := ["vignette"]
 
 
 @export var world_environment: WorldEnvironment
@@ -32,10 +36,23 @@ func _ready() -> void:
 		var env := world_environment.environment.duplicate() as Environment
 		if env.sky != null:
 			env.sky = env.sky.duplicate() as Sky
+			if env.sky.sky_material != null:
+				env.sky.sky_material = env.sky.sky_material.duplicate() as Material
 		_grade_table = env.adjustment_color_correction
 		world_environment.environment = env
 	apply(preset if preset != null else GraphicsPreset.chosen())
 	Settings.changed.connect(_on_setting)
+
+
+## The Environment on screen: this picture's own copy once it is ready (null with none).
+func environment() -> Environment:
+	return world_environment.environment if world_environment != null else null
+
+
+## The material of the sky on screen (this picture's own copy), or null when the sky is no shader's.
+func sky_material() -> ShaderMaterial:
+	var env := environment()
+	return env.sky.sky_material as ShaderMaterial if env != null and env.sky != null else null
 
 
 ## Options changed the preset or SSAO: the picture follows at once (a set `preset` stays).

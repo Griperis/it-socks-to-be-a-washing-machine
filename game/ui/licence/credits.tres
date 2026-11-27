@@ -755,6 +755,7 @@ what = "Stuttgart Suburbs (dusk sky)"
 author = "Andreas Mischok"
 source = "https://polyhaven.com/a/stuttgart_suburbs"
 licence = "CC0 1.0"
+covers = PackedStringArray("assets/sky/stuttgart_suburbs_2k.hdr")
 
 [sub_resource type="Resource" id="Entry_90"]
 script = ExtResource("2_entry")
@@ -763,6 +764,7 @@ what = "Street Lamp (night sky)"
 author = "Greg Zaal"
 source = "https://polyhaven.com/a/street_lamp"
 licence = "CC0 1.0"
+covers = PackedStringArray("assets/sky/street_lamp_2k.hdr")
 
 [sub_resource type="Resource" id="Entry_91"]
 script = ExtResource("2_entry")

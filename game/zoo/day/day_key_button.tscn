@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://daeur0fsvrtb4"]
+
+[ext_resource type="Script" uid="uid://bx0uedcyy0182" path="res://game/zoo/day/day_zoo_switch.gd" id="1_switch"]
+[ext_resource type="PackedScene" uid="uid://cdaqfj4hve4ul" path="res://game/zoo/zoo_label.tscn" id="2_label"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_swatch"]
+resource_local_to_scene = true
+albedo_color = Color(0.45, 0.65, 0.85, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_button"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_button"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[node name="DayKeyButton" type="Node3D" unique_id=1067989440]
+
+[node name="Body" type="StaticBody3D" parent="." unique_id=1243710797]
+
+[node name="Mesh" type="MeshInstance3D" parent="Body" unique_id=527699859]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+material_override = SubResource("StandardMaterial3D_swatch")
+mesh = SubResource("BoxMesh_button")
+
+[node name="Shape" type="CollisionShape3D" parent="Body" unique_id=623197295]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+shape = SubResource("BoxShape3D_button")
+
+[node name="Switch" type="Node" parent="." unique_id=362558720]
+script = ExtResource("1_switch")
+
+[node name="Label" parent="." unique_id=1674305463 instance=ExtResource("2_label")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.01, 0.3)
+pixel_size = 0.0025
+modulate = Color(0.97, 0.97, 0.92, 1)
+text = "12:00"

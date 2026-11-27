@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="DayTuning" format=3 uid="uid://dvansrfmsj8c7"]
+
+[ext_resource type="Script" uid="uid://bi2uamndo0u11" path="res://game/day/day_tuning.gd" id="1_tuning"]
+
+[resource]
+script = ExtResource("1_tuning")

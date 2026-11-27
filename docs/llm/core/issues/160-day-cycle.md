@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: core
 feature: house
@@ -67,3 +67,7 @@ is the hour's.
 - The zoo keeps its fixed noon (Q2299).
 
 ## Open follow-ups
+- [later] The keys' lamp factor (`DayKey.lamps`, 1.0 by day to 1.5 at night) is sampled by DayLight but written by
+  core/161's `HouseLights.lamp_factor`; `DayLight.lamps_switched` is there for core/161's click.
+- [later] The perf case `house:h09_slices_within_budget` was over budget in this branch's `--touched` run (4 of 191
+  laying slices past 14 ms, 8 processes at once); the day adds one sample every 6 frames. Worth a look in the timing lane.
