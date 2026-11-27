@@ -23,7 +23,9 @@ brings the set and its fourth channel, the Test card. Build `docs/architecture/t
   turns it off, R19), `TvScreen` (the SubViewport with the channel's show scene, the CRT shader, at most `fps` 15 and
   only while on, past its static and on screen: `VisibleOnScreenNotifier3D`), `TvSound` (3D, `unit_size` 2.5, heard
   within `earshot` 7 m when `Sounds.reach_of` is CLEAR or MUFFLED, on Music at -7.2 dB under the Radio), `TvTuning`;
-- graybox Looks and contract with `Glass` left out of the outline and the `static`, `off`, `on` clips (the power light);
+- the TV's Looks is assets/27's `game/entities/tv/looks_tv.tscn` (merged before this ticket, Q2729): its `Glass` (left out of
+  the outline, the old CRT glass shader `tv_glass.gdshader` with its picture input free for `TvScreen`) and its `static`,
+  `off`, `on` clips (the power light); no graybox;
 - `testcard.tscn` (colour bars, a grey step strip, "IT SOCKS TV" in a ringed box, its 1 kHz tone `tv_testcard`) and its
   channel file;
 - the TV in the TV and Radio station.
@@ -38,7 +40,7 @@ merge, never `[later]` on its own.
 
 ## How it is authored
 `TvTuning` in the inspector; the Test card a scene in nodes on the Theme (Q2658); the static, off and on are clips in
-the Looks (Q2697); then assets/27.
+the Looks (Q2697), already made by assets/27.
 
 ## Acceptance
 - Real path: in the TV and Radio station the player presses E on the TV: `device_click`, the screen fills with static
@@ -51,5 +53,6 @@ the Looks (Q2697); then assets/27.
 
 ## Answers
 - The four shows with their texts and timings; a load turns the TV off; the TV's spot (Q2704, 2026-11-26).
+- The TV's model and Looks are assets/27's, yes as built (Q2729, 2026-11-27).
 
 ## Open follow-ups
