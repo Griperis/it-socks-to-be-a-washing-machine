@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="Upgrade" format=3]
+[gd_resource type="Resource" script_class="Upgrade" format=3 uid="uid://bdt8tc3qkb2fu"]
 
-[ext_resource type="Texture2D" path="res://assets/ui/upgrade_wide_nozzle.svg" id="1_eqro5"]
-[ext_resource type="Resource" path="res://game/economy/upgrades/long_hose.tres" id="2_5xx4d"]
-[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="3_begmx"]
+[ext_resource type="Texture2D" uid="uid://diwhist5wsvq1" path="res://assets/ui/upgrade_wide_nozzle.svg" id="1_eqro5"]
+[ext_resource type="Resource" uid="uid://dqtgntk1lkypu" path="res://game/economy/upgrades/long_hose.tres" id="2_5xx4d"]
+[ext_resource type="Script" uid="uid://tco600m1ilvq" path="res://game/economy/upgrade.gd" id="3_begmx"]
 
 [resource]
 script = ExtResource("3_begmx")

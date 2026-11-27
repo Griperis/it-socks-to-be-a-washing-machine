@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bi30mir0mbtcj"]
 
 [ext_resource type="PackedScene" uid="uid://baewb430o8bdx" path="res://assets/wardrobe/kiwi_socks.glb" id="1_glb"]
 

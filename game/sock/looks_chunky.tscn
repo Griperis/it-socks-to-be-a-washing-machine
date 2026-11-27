@@ -128,7 +128,7 @@ _data = {
 
 [node name="Body" parent="." unique_id=441565160 instance=ExtResource("1_model")]
 
-[node name="Cloth" type="SpringBoneSimulator3D" parent="Body/sock_chunky/chunky_rig/Skeleton3D" parent_id_path=PackedInt32Array(441565160, 1989540739) index="1" unique_id=1394550894]
+[node name="Cloth" type="SpringBoneSimulator3D" parent="Body/sock_chunky/chunky_rig/Skeleton3D" parent_id_path=PackedInt32Array(441565160, 1369927926) index="1" unique_id=1394550894]
 active = false
 influence = 0.0
 setting_count = 1

@@ -1,10 +1,10 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cttfc3otybwis"]
 
-[ext_resource type="Script" path="res://game/ui/whiteboard/tab_overlay.gd" id="1_overlay"]
-[ext_resource type="Resource" path="res://game/ui/whiteboard/whiteboard_tuning.tres" id="2_tuning"]
-[ext_resource type="PackedScene" path="res://game/ui/whiteboard/whiteboard_sheet.tscn" id="3_sheet"]
+[ext_resource type="Script" uid="uid://doknxetqbr772" path="res://game/ui/whiteboard/tab_overlay.gd" id="1_overlay"]
+[ext_resource type="Resource" uid="uid://7nixxsphjn0p" path="res://game/ui/whiteboard/whiteboard_tuning.tres" id="2_tuning"]
+[ext_resource type="PackedScene" uid="uid://b28qxutkp2k0r" path="res://game/ui/whiteboard/whiteboard_sheet.tscn" id="3_sheet"]
 
-[node name="TabOverlay" type="Control"]
+[node name="TabOverlay" type="Control" unique_id=1105234055]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,12 +15,12 @@ mouse_filter = 2
 script = ExtResource("1_overlay")
 tuning = ExtResource("2_tuning")
 
-[node name="Frame" type="ColorRect" parent="."]
+[node name="Frame" type="ColorRect" parent="." unique_id=1387097711]
 unique_name_in_owner = true
 layout_mode = 0
 mouse_filter = 2
 color = Color(0.72, 0.73, 0.72, 1)
 
-[node name="Sheet" parent="." instance=ExtResource("3_sheet")]
+[node name="Sheet" parent="." unique_id=1497389898 instance=ExtResource("3_sheet")]
 unique_name_in_owner = true
 layout_mode = 0

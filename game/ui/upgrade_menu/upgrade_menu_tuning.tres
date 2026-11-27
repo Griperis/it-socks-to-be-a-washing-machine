@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="UpgradeMenuTuning" format=3]
+[gd_resource type="Resource" script_class="UpgradeMenuTuning" format=3 uid="uid://c6b858pwbafsq"]
 
-[ext_resource type="Script" path="res://game/ui/upgrade_menu/upgrade_menu_tuning.gd" id="1_tuning"]
+[ext_resource type="Script" uid="uid://by2ovqmcm1c0w" path="res://game/ui/upgrade_menu/upgrade_menu_tuning.gd" id="1_tuning"]
 
 [resource]
 script = ExtResource("1_tuning")

@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: maintenance
 area: maintenance
 feature: frame
@@ -59,3 +59,11 @@ what you run into a throwaway place, not into the game.
 ## Answers
 - The editor re-save's losses are repaired at their source; the designer's re-save is discarded (Q2723, 2026-11-27).
 - Files are kept in the Godot editor's own format (Q2268).
+
+## Open follow-ups
+- [later] The kit's own 9 scenes Godot sees (`kit/tests/{run,check,wiring}.tscn`, `kit/tests/support/wiring/*.tscn`,
+  `kit/tools/{shot,net_shot}.tscn`) are not in the editor's format (no header uid, no ext uids, no `unique_id`): a
+  headless re-save of `res://kit` changes all 9. A ticket agent cannot edit `kit/`; the lead re-saves them in the kit.
+- [later] A cold import (no `.godot`) on Linux rewrites ~300 committed mesh `.res` files (`assets/cabinet/*.res`,
+  `assets/furniture/meshes/*.res`) a few bytes each; a warm import leaves them alone. Not committed here (they are the
+  glb imports' output, not this ticket's); worth a look whether the designer's Windows import writes them differently.

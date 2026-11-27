@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cqsjqx3iurnqq"]
 
-[node name="UpgradeSpacer" type="Control"]
+[node name="UpgradeSpacer" type="Control" unique_id=1495433639]
 custom_minimum_size = Vector2(92, 92)
 layout_mode = 3
 anchors_preset = 0

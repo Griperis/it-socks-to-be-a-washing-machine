@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bpyxa4ruadhwg" path="res://game/ui/options/options.gd" id="1_options"]
 [ext_resource type="PackedScene" uid="uid://21yxowo6t1da" path="res://game/ui/options/choice_row.tscn" id="2_choice"]
 [ext_resource type="PackedScene" uid="uid://bar07nhyknsry" path="res://game/ui/options/slider_row.tscn" id="3_slider"]
-[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="close_btn"]
+[ext_resource type="PackedScene" uid="uid://bdknhn3ghwi78" path="res://game/ui/close_button.tscn" id="close_btn"]
 
 [node name="Options" type="Control" unique_id=270246]
 process_mode = 3
@@ -69,55 +69,31 @@ labels = PackedStringArray("Off", "On")
 layout_mode = 2
 key = "audio/master_volume"
 title = "Master"
-min_value = 0.0
-max_value = 1.0
-step = 0.05
-percent = true
 
 [node name="Music" parent="Panel/Box/Scroll/Rows" unique_id=167299 instance=ExtResource("3_slider")]
 layout_mode = 2
 key = "audio/music_volume"
 title = "Music"
-min_value = 0.0
-max_value = 1.0
-step = 0.05
-percent = true
 
 [node name="Effects" parent="Panel/Box/Scroll/Rows" unique_id=175218 instance=ExtResource("3_slider")]
 layout_mode = 2
 key = "audio/sfx_volume"
 title = "Effects"
-min_value = 0.0
-max_value = 1.0
-step = 0.05
-percent = true
 
 [node name="Ambience" parent="Panel/Box/Scroll/Rows" unique_id=183137 instance=ExtResource("3_slider")]
 layout_mode = 2
 key = "audio/ambient_volume"
 title = "Ambience"
-min_value = 0.0
-max_value = 1.0
-step = 0.05
-percent = true
 
 [node name="Voices" parent="Panel/Box/Scroll/Rows" unique_id=191056 instance=ExtResource("3_slider")]
 layout_mode = 2
 key = "audio/voice_volume"
 title = "Voices"
-min_value = 0.0
-max_value = 1.0
-step = 0.05
-percent = true
 
 [node name="UI" parent="Panel/Box/Scroll/Rows" unique_id=198975 instance=ExtResource("3_slider")]
 layout_mode = 2
 key = "audio/ui_volume"
 title = "UI"
-min_value = 0.0
-max_value = 1.0
-step = 0.05
-percent = true
 
 [node name="Mousespeed" parent="Panel/Box/Scroll/Rows" unique_id=206894 instance=ExtResource("3_slider")]
 layout_mode = 2
@@ -125,7 +101,6 @@ key = "input/mouse_speed"
 title = "Mouse speed"
 min_value = 0.2
 max_value = 3.0
-step = 0.05
 percent = false
 
 [node name="InvertY" parent="Panel/Box/Scroll/Rows" unique_id=214813 instance=ExtResource("2_choice")]
@@ -141,7 +116,6 @@ key = "input/pad_speed"
 title = "Pad speed"
 min_value = 0.2
 max_value = 3.0
-step = 0.05
 percent = false
 
 [node name="Padrumble" parent="Panel/Box/Scroll/Rows" unique_id=230651 instance=ExtResource("2_choice")]
@@ -179,5 +153,6 @@ title = "FPS cap"
 values = [0, 30, 60, 120, 144]
 labels = PackedStringArray("None", "30", "60", "120", "144")
 
-[node name="Back" parent="Panel" instance=ExtResource("close_btn")]
+[node name="Back" parent="Panel" unique_id=367959616 instance=ExtResource("close_btn")]
 unique_name_in_owner = true
+layout_mode = 2

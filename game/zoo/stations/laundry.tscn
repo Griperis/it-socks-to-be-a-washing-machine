@@ -1,13 +1,13 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bsplx4penvtsk"]
 
-[ext_resource type="PackedScene" path="res://game/laundry/sock_spray.tscn" id="1_spray"]
-[ext_resource type="Script" path="res://game/zoo/laundry/spray_pillar.gd" id="2_pillar"]
-[ext_resource type="PackedScene" path="res://game/entities/laundry_bin/laundry_bin.tscn" id="3_bin"]
-[ext_resource type="Script" path="res://game/zoo/laundry/bin_pillar.gd" id="4_bin_pillar"]
-[ext_resource type="PackedScene" path="res://game/laundry/laundry_day.tscn" id="5_day"]
-[ext_resource type="Script" path="res://game/zoo/laundry/laundry_pillar.gd" id="6_pillar"]
-[ext_resource type="Script" path="res://game/zoo/laundry/laundry_label.gd" id="7_label"]
-[ext_resource type="Script" path="res://game/zoo/laundry/laundry_run.gd" id="8_run"]
+[ext_resource type="PackedScene" uid="uid://bxcbaprtgmik0" path="res://game/laundry/sock_spray.tscn" id="1_spray"]
+[ext_resource type="Script" uid="uid://cr4nwplm2qyje" path="res://game/zoo/laundry/spray_pillar.gd" id="2_pillar"]
+[ext_resource type="PackedScene" uid="uid://y7nbf2ss5sg4" path="res://game/entities/laundry_bin/laundry_bin.tscn" id="3_bin"]
+[ext_resource type="Script" uid="uid://domclgeknfjix" path="res://game/zoo/laundry/bin_pillar.gd" id="4_bin_pillar"]
+[ext_resource type="PackedScene" uid="uid://drplhdxvoydgt" path="res://game/laundry/laundry_day.tscn" id="5_day"]
+[ext_resource type="Script" uid="uid://b2k0l3myhks20" path="res://game/zoo/laundry/laundry_pillar.gd" id="6_pillar"]
+[ext_resource type="Script" uid="uid://cye6wj0vhyxox" path="res://game/zoo/laundry/laundry_label.gd" id="7_label"]
+[ext_resource type="Script" uid="uid://dhj1m2g7buhrc" path="res://game/zoo/laundry/laundry_run.gd" id="8_run"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.62, 0.7, 0.78, 1)
@@ -44,21 +44,21 @@ size = Vector3(0.5, 1, 0.3)
 [sub_resource type="BoxShape3D" id="BoxShape3D_button"]
 size = Vector3(0.5, 1, 0.3)
 
-[node name="Laundry" type="Node3D"]
+[node name="Laundry" type="Node3D" unique_id=751706313]
 
-[node name="Pad" type="MeshInstance3D" parent="."]
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=940242553]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
 mesh = SubResource("PlaneMesh_pad")
 
-[node name="Ground" type="StaticBody3D" parent="."]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=602924472]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 metadata/surface = "wood"
 
-[node name="Shape" type="CollisionShape3D" parent="Ground"]
+[node name="Shape" type="CollisionShape3D" parent="Ground" unique_id=1422443728]
 shape = SubResource("BoxShape3D_ground")
 
-[node name="Name" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 3.5)
+[node name="Name" type="Label3D" parent="." unique_id=73112999]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3.5)
 pixel_size = 0.004
 billboard = 2
 text = "Laundry: the spray of Socks out of the washing machine's door (press E on the pillar); the Laundry bins: carry one, press E on the Bin pillar to empty it"
@@ -66,72 +66,72 @@ vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="Washer" type="MeshInstance3D" parent="." groups=["washer"]]
+[node name="Washer" type="MeshInstance3D" parent="." unique_id=1987589385 groups=["washer"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, -3)
 mesh = SubResource("BoxMesh_washer")
 
-[node name="Porthole" type="Marker3D" parent="Washer"]
+[node name="Porthole" type="Marker3D" parent="Washer" unique_id=1810510209]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.05, 0.47)
 
-[node name="Mark" type="MeshInstance3D" parent="Washer/Porthole"]
+[node name="Mark" type="MeshInstance3D" parent="Washer/Porthole" unique_id=1733141543]
 mesh = SubResource("SphereMesh_porthole")
 
-[node name="Spray" parent="." instance=ExtResource("1_spray")]
+[node name="Spray" parent="." unique_id=471125474 instance=ExtResource("1_spray")]
 
-[node name="SprayPillar" type="StaticBody3D" parent="."]
+[node name="SprayPillar" type="StaticBody3D" parent="." unique_id=1570378425]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 3)
 
-[node name="SprayPillar" type="Node" parent="SprayPillar" node_paths=PackedStringArray("spray", "porthole")]
+[node name="SprayPillar" type="Node" parent="SprayPillar" unique_id=190942440 node_paths=PackedStringArray("spray", "porthole")]
 script = ExtResource("2_pillar")
 spray = NodePath("../../Spray")
 porthole = NodePath("../../Washer/Porthole")
 
-[node name="Mesh" type="MeshInstance3D" parent="SprayPillar"]
+[node name="Mesh" type="MeshInstance3D" parent="SprayPillar" unique_id=1015627772]
 mesh = SubResource("BoxMesh_button")
 
-[node name="Shape" type="CollisionShape3D" parent="SprayPillar"]
+[node name="Shape" type="CollisionShape3D" parent="SprayPillar" unique_id=1516187775]
 shape = SubResource("BoxShape3D_button")
 
-[node name="Label" type="Label3D" parent="SprayPillar"]
+[node name="Label" type="Label3D" parent="SprayPillar" unique_id=1066898714]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 pixel_size = 0.004
 billboard = 2
 text = "Spray"
 
-[node name="BinFull" parent="." instance=ExtResource("3_bin")]
+[node name="BinFull" parent="." unique_id=1997178984 instance=ExtResource("3_bin")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 0.5)
 
-[node name="BinEmpty" parent="." instance=ExtResource("3_bin")]
+[node name="BinEmpty" parent="." unique_id=1524237100 instance=ExtResource("3_bin")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0.5)
 
-[node name="LaundryBin" parent="BinEmpty" index="3"]
+[node name="LaundryBin" parent="BinEmpty" index="3" unique_id=289892309]
 full = false
 
-[node name="BinPillar" type="StaticBody3D" parent="."]
+[node name="BinPillar" type="StaticBody3D" parent="." unique_id=1953262421]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.5, 3)
 
-[node name="BinPillar" type="Node" parent="BinPillar" node_paths=PackedStringArray("bin")]
+[node name="BinPillar" type="Node" parent="BinPillar" unique_id=1674043528 node_paths=PackedStringArray("bin")]
 script = ExtResource("4_bin_pillar")
 bin = NodePath("../../BinFull/LaundryBin")
 
-[node name="Mesh" type="MeshInstance3D" parent="BinPillar"]
+[node name="Mesh" type="MeshInstance3D" parent="BinPillar" unique_id=1539410453]
 mesh = SubResource("BoxMesh_button")
 
-[node name="Shape" type="CollisionShape3D" parent="BinPillar"]
+[node name="Shape" type="CollisionShape3D" parent="BinPillar" unique_id=702579098]
 shape = SubResource("BoxShape3D_button")
 
-[node name="Label" type="Label3D" parent="BinPillar"]
+[node name="Label" type="Label3D" parent="BinPillar" unique_id=139498347]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 pixel_size = 0.004
 billboard = 2
 text = "Bin"
 
-[node name="BinThird" parent="." instance=ExtResource("3_bin")]
+[node name="BinThird" parent="." unique_id=925182784 instance=ExtResource("3_bin")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
 
-[node name="LaundryDay" parent="." instance=ExtResource("5_day")]
+[node name="LaundryDay" parent="." unique_id=1653653777 instance=ExtResource("5_day")]
 
-[node name="Day" parent="LaundryDay" index="0" node_paths=PackedStringArray("spots", "stages")]
+[node name="Day" parent="LaundryDay" index="0" unique_id=393067151 node_paths=PackedStringArray("spots", "stages")]
 spots = NodePath("../..")
 stages = NodePath("../../Run")
 cutscene = false
@@ -139,73 +139,76 @@ opens_final_screen = false
 first_wash = 2
 drawn = true
 
-[node name="Run" type="Node" parent="." node_paths=PackedStringArray("day", "washer")]
+[node name="Run" type="Node" parent="." unique_id=1065741297 node_paths=PackedStringArray("day", "washer")]
 script = ExtResource("8_run")
 day = NodePath("../LaundryDay/Day")
 washer = NodePath("../Washer")
 
-[node name="LastFixPillar" type="StaticBody3D" parent="."]
+[node name="LastFixPillar" type="StaticBody3D" parent="." unique_id=1223568640]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0.5, 3)
 
-[node name="LaundryPillar" type="Node" parent="LastFixPillar" node_paths=PackedStringArray("run")]
+[node name="LaundryPillar" type="Node" parent="LastFixPillar" unique_id=1931797085 node_paths=PackedStringArray("run")]
 script = ExtResource("6_pillar")
 run = NodePath("../../Run")
 
-[node name="Mesh" type="MeshInstance3D" parent="LastFixPillar"]
+[node name="Mesh" type="MeshInstance3D" parent="LastFixPillar" unique_id=398582604]
 mesh = SubResource("BoxMesh_button")
 
-[node name="Shape" type="CollisionShape3D" parent="LastFixPillar"]
+[node name="Shape" type="CollisionShape3D" parent="LastFixPillar" unique_id=57488019]
 shape = SubResource("BoxShape3D_button")
 
-[node name="Label" type="Label3D" parent="LastFixPillar"]
+[node name="Label" type="Label3D" parent="LastFixPillar" unique_id=1902213524]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 pixel_size = 0.004
 billboard = 2
 text = "Last Fix done"
 
-[node name="FinalPillar" type="StaticBody3D" parent="."]
+[node name="FinalPillar" type="StaticBody3D" parent="." unique_id=1873393187]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0.5, 3)
 
-[node name="LaundryPillar" type="Node" parent="FinalPillar" node_paths=PackedStringArray("run")]
+[node name="LaundryPillar" type="Node" parent="FinalPillar" unique_id=1047514480 node_paths=PackedStringArray("run")]
 script = ExtResource("6_pillar")
 run = NodePath("../../Run")
 kind = 1
 
-[node name="Mesh" type="MeshInstance3D" parent="FinalPillar"]
+[node name="Mesh" type="MeshInstance3D" parent="FinalPillar" unique_id=1845738225]
 mesh = SubResource("BoxMesh_button")
 
-[node name="Shape" type="CollisionShape3D" parent="FinalPillar"]
+[node name="Shape" type="CollisionShape3D" parent="FinalPillar" unique_id=1342260400]
 shape = SubResource("BoxShape3D_button")
 
-[node name="Label" type="Label3D" parent="FinalPillar"]
+[node name="Label" type="Label3D" parent="FinalPillar" unique_id=1386228066]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 pixel_size = 0.004
 billboard = 2
 text = "Final wash"
 
-[node name="FirstWashPillar" type="StaticBody3D" parent="."]
+[node name="FirstWashPillar" type="StaticBody3D" parent="." unique_id=755885047]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.5, 3)
 
-[node name="LaundryPillar" type="Node" parent="FirstWashPillar" node_paths=PackedStringArray("run")]
+[node name="LaundryPillar" type="Node" parent="FirstWashPillar" unique_id=1494871180 node_paths=PackedStringArray("run")]
 script = ExtResource("6_pillar")
 run = NodePath("../../Run")
 kind = 2
 
-[node name="Mesh" type="MeshInstance3D" parent="FirstWashPillar"]
+[node name="Mesh" type="MeshInstance3D" parent="FirstWashPillar" unique_id=180227569]
 mesh = SubResource("BoxMesh_button")
 
-[node name="Shape" type="CollisionShape3D" parent="FirstWashPillar"]
+[node name="Shape" type="CollisionShape3D" parent="FirstWashPillar" unique_id=388779780]
 shape = SubResource("BoxShape3D_button")
 
-[node name="Label" type="Label3D" parent="FirstWashPillar"]
+[node name="Label" type="Label3D" parent="FirstWashPillar" unique_id=713495776]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 pixel_size = 0.004
 billboard = 2
 text = "First wash"
 
-[node name="Tally" type="Label3D" parent="." node_paths=PackedStringArray("day")]
+[node name="Tally" type="Label3D" parent="." unique_id=856426556 node_paths=PackedStringArray("day")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -3)
 pixel_size = 0.004
 billboard = 2
 script = ExtResource("7_label")
 day = NodePath("../LaundryDay/Day")
+
+[editable path="BinEmpty"]
+[editable path="LaundryDay"]

@@ -1,5 +1,5 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bgel0g0heplrt"]
 
-[ext_resource type="PackedScene" path="res://assets/encyclopedia_book/encyclopedia_book.glb" id="1_model"]
+[ext_resource type="PackedScene" uid="uid://ddcnmo83ggt13" path="res://assets/encyclopedia_book/encyclopedia_book.glb" id="1_model"]
 
-[node name="EncyclopediaBookLooks" instance=ExtResource("1_model")]
+[node name="EncyclopediaBookLooks" unique_id=315131633 instance=ExtResource("1_model")]

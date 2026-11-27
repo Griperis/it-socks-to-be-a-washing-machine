@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://pukcmlqun4v1"]
 
 [ext_resource type="PackedScene" uid="uid://b5if1ir50ecdv" path="res://assets/wardrobe/rainbow_stripes.glb" id="1_glb"]
 

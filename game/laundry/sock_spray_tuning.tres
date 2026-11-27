@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="SockSprayTuning" format=3]
+[gd_resource type="Resource" script_class="SockSprayTuning" format=3 uid="uid://cnkwq4w5mf0us"]
 
-[ext_resource type="Script" path="res://game/laundry/sock_spray_tuning.gd" id="1_tuning"]
+[ext_resource type="Script" uid="uid://jmldbuwtpv60" path="res://game/laundry/sock_spray_tuning.gd" id="1_tuning"]
 
 [resource]
 script = ExtResource("1_tuning")

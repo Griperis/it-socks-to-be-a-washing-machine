@@ -6,9 +6,8 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sheet"]
 cull_mode = 2
 albedo_color = Color(0.9254902, 0.89411765, 0.83137256, 1)
-roughness = 1.0
 
-[node name="DustSheet" type="MeshInstance3D"]
+[node name="DustSheet" type="MeshInstance3D" unique_id=518999714]
 material_override = SubResource("StandardMaterial3D_sheet")
 script = ExtResource("1_sheet")
 tuning = ExtResource("2_tuning")

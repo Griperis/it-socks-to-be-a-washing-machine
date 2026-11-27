@@ -1,21 +1,21 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bf7fv67c71ylo"]
 
-[ext_resource type="Script" path="res://game/ui/money/money_counters.gd" id="1_counters"]
-[ext_resource type="PackedScene" path="res://game/ui/money/money_counter.tscn" id="2_counter"]
-[ext_resource type="Resource" path="res://game/economy/coins.tres" id="3_coins"]
-[ext_resource type="Resource" path="res://game/economy/drawers.tres" id="4_drawers"]
+[ext_resource type="Script" uid="uid://cwryjn1flp47j" path="res://game/ui/money/money_counters.gd" id="1_counters"]
+[ext_resource type="PackedScene" uid="uid://in2kjltskvu0" path="res://game/ui/money/money_counter.tscn" id="2_counter"]
+[ext_resource type="Resource" uid="uid://bpi7arhgagqdn" path="res://game/economy/coins.tres" id="3_coins"]
+[ext_resource type="Resource" uid="uid://pk72eayeybxr" path="res://game/economy/drawers.tres" id="4_drawers"]
 
-[node name="MoneyCounters" type="HBoxContainer"]
+[node name="MoneyCounters" type="HBoxContainer" unique_id=1626384856]
 offset_left = 24.0
 offset_top = 16.0
 mouse_filter = 2
 theme_override_constants/separation = 28
 script = ExtResource("1_counters")
 
-[node name="Coins" parent="." instance=ExtResource("2_counter")]
+[node name="Coins" parent="." unique_id=661773981 instance=ExtResource("2_counter")]
 layout_mode = 2
 currency = ExtResource("3_coins")
 
-[node name="Drawers" parent="." instance=ExtResource("2_counter")]
+[node name="Drawers" parent="." unique_id=386346518 instance=ExtResource("2_counter")]
 layout_mode = 2
 currency = ExtResource("4_drawers")

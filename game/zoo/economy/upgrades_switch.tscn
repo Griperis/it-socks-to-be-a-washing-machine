@@ -1,11 +1,11 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c8lnx8gq30ilt"]
 
-[ext_resource type="Script" path="res://game/zoo/economy/upgrades_switch.gd" id="1_switch"]
-[ext_resource type="PackedScene" path="res://game/zoo/screen/upgrade_switch/looks_graybox.tscn" id="2_looks"]
+[ext_resource type="Script" uid="uid://bhsoo84v5gqx4" path="res://game/zoo/economy/upgrades_switch.gd" id="1_switch"]
+[ext_resource type="PackedScene" uid="uid://b4mtn5fi0wiu1" path="res://game/zoo/screen/upgrade_switch/looks_graybox.tscn" id="2_looks"]
 
-[node name="UpgradesSwitch" type="Node3D"]
+[node name="UpgradesSwitch" type="Node3D" unique_id=1549983919]
 
-[node name="UpgradesSwitch" type="Node" parent="."]
+[node name="UpgradesSwitch" type="Node" parent="." unique_id=594619106]
 script = ExtResource("1_switch")
 
-[node name="Looks" parent="." instance=ExtResource("2_looks")]
+[node name="Looks" parent="." unique_id=308875403 instance=ExtResource("2_looks")]

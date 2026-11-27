@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="LobbyTuning" format=3]
+[gd_resource type="Resource" script_class="LobbyTuning" format=3 uid="uid://w5dr6yqvkkru"]
 
-[ext_resource type="Script" path="res://game/lobby/lobby_tuning.gd" id="1_t"]
+[ext_resource type="Script" uid="uid://c6yk3m138gskc" path="res://game/lobby/lobby_tuning.gd" id="1_t"]
 
 [resource]
 script = ExtResource("1_t")

@@ -1,33 +1,32 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://y7nbf2ss5sg4"]
 
-[ext_resource type="PackedScene" path="res://game/entities/laundry_bin/laundry_bin_looks.tscn" id="1_looks"]
-[ext_resource type="Script" path="res://game/parts/carriable.gd" id="2_carriable"]
-[ext_resource type="Script" path="res://game/entities/laundry_bin/laundry_bin.gd" id="3_bin"]
-[ext_resource type="Resource" path="res://game/hands/hold_slot_bin.tres" id="4_slot"]
-[ext_resource type="Resource" path="res://game/laundry/laundry_tuning.tres" id="5_tuning"]
-[ext_resource type="Script" path="res://game/outline/outline.gd" id="6_outline"]
+[ext_resource type="PackedScene" uid="uid://c8wggy8vcs8nm" path="res://game/entities/laundry_bin/laundry_bin_looks.tscn" id="1_looks"]
+[ext_resource type="Script" uid="uid://bkjerdg5jkff3" path="res://game/parts/carriable.gd" id="2_carriable"]
+[ext_resource type="Script" uid="uid://dmqc0t2u23vjb" path="res://game/entities/laundry_bin/laundry_bin.gd" id="3_bin"]
+[ext_resource type="Resource" uid="uid://xdy460n2k0i4" path="res://game/hands/hold_slot_bin.tres" id="4_slot"]
+[ext_resource type="Resource" uid="uid://b70hnwir4sw5u" path="res://game/laundry/laundry_tuning.tres" id="5_tuning"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="6_outline"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_bin"]
 size = Vector3(0.44, 0.52, 0.34)
 
-[node name="LaundryBin" type="StaticBody3D"]
+[node name="LaundryBin" type="StaticBody3D" unique_id=1999618648]
 
-[node name="Shape" type="CollisionShape3D" parent="."]
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1505695246]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26, 0)
 shape = SubResource("BoxShape3D_bin")
 
-[node name="Looks" parent="." instance=ExtResource("1_looks")]
+[node name="Looks" parent="." unique_id=2137926595 instance=ExtResource("1_looks")]
 
-[node name="Outline" type="Node3D" parent="Looks"]
+[node name="Outline" type="Node3D" parent="Looks" unique_id=4062204]
 script = ExtResource("6_outline")
 
-[node name="Carriable" type="Node" parent="."]
+[node name="Carriable" type="Node" parent="." unique_id=1236839274]
 script = ExtResource("2_carriable")
 slot = ExtResource("4_slot")
-handable = true
 title = "Laundry bin, dirty"
 
-[node name="LaundryBin" type="Node" parent="." node_paths=PackedStringArray("carriable")]
+[node name="LaundryBin" type="Node" parent="." unique_id=289892309 node_paths=PackedStringArray("carriable")]
 script = ExtResource("3_bin")
 carriable = NodePath("../Carriable")
 tuning = ExtResource("5_tuning")

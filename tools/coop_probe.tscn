@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" uid="uid://d0p81vodybfki" path="res://tools/coop_probe.gd" id="1_probe"]
 
-[node name="CoopProbe" type="Node"]
+[node name="CoopProbe" type="Node" unique_id=1766275702]
 script = ExtResource("1_probe")

@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="WardrobePiece" format=3]
+[gd_resource type="Resource" script_class="WardrobePiece" format=3 uid="uid://c3j8sb4xtpltj"]
 
-[ext_resource type="Script" path="res://game/wardrobe/wardrobe_piece.gd" id="1_piece"]
-[ext_resource type="PackedScene" path="res://game/wardrobe/looks/milk_carton_costume.tscn" id="2_looks"]
+[ext_resource type="Script" uid="uid://dukpy3e7fo1v7" path="res://game/wardrobe/wardrobe_piece.gd" id="1_piece"]
+[ext_resource type="PackedScene" uid="uid://dvf8q25u6qjg5" path="res://game/wardrobe/looks/milk_carton_costume.tscn" id="2_looks"]
 
 [resource]
 script = ExtResource("1_piece")

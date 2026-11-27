@@ -1,16 +1,16 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://1nrmlulsgnx0"]
 
-[ext_resource type="Script" path="res://game/ui/upgrade_menu/upgrade_menu.gd" id="1_menu"]
-[ext_resource type="PackedScene" path="res://game/ui/money/money_counters.tscn" id="2_counters"]
-[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="3_close"]
-[ext_resource type="PackedScene" path="res://game/ui/upgrade_menu/upgrade_tip.tscn" id="4_tip"]
+[ext_resource type="Script" uid="uid://c47a1a7bdu2a2" path="res://game/ui/upgrade_menu/upgrade_menu.gd" id="1_menu"]
+[ext_resource type="PackedScene" uid="uid://bf7fv67c71ylo" path="res://game/ui/money/money_counters.tscn" id="2_counters"]
+[ext_resource type="PackedScene" uid="uid://bdknhn3ghwi78" path="res://game/ui/close_button.tscn" id="3_close"]
+[ext_resource type="PackedScene" uid="uid://bb2nbrycqu7iu" path="res://game/ui/upgrade_menu/upgrade_tip.tscn" id="4_tip"]
 
-[node name="UpgradeMenu" type="CanvasLayer"]
+[node name="UpgradeMenu" type="CanvasLayer" unique_id=508919238]
 layer = 10
 visible = false
 script = ExtResource("1_menu")
 
-[node name="Center" type="CenterContainer" parent="."]
+[node name="Center" type="CenterContainer" parent="." unique_id=1315364882]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -18,43 +18,43 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Panel" type="PanelContainer" parent="Center"]
+[node name="Panel" type="PanelContainer" parent="Center" unique_id=1259110572]
 layout_mode = 2
 theme_type_variation = &"TitlePanel"
 
-[node name="Box" type="VBoxContainer" parent="Center/Panel"]
+[node name="Box" type="VBoxContainer" parent="Center/Panel" unique_id=1684251033]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Header" type="HBoxContainer" parent="Center/Panel/Box"]
+[node name="Header" type="HBoxContainer" parent="Center/Panel/Box" unique_id=1337009715]
 layout_mode = 2
 theme_override_constants/separation = 24
 
-[node name="Title" type="Label" parent="Center/Panel/Box/Header"]
+[node name="Title" type="Label" parent="Center/Panel/Box/Header" unique_id=2107109512]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"Heading1"
 text = "The Old Tree"
 
-[node name="Counters" parent="Center/Panel/Box/Header" instance=ExtResource("2_counters")]
+[node name="Counters" parent="Center/Panel/Box/Header" unique_id=357964502 instance=ExtResource("2_counters")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Room" type="Control" parent="Center/Panel/Box/Header"]
+[node name="Room" type="Control" parent="Center/Panel/Box/Header" unique_id=1185805234]
 custom_minimum_size = Vector2(64, 0)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Sections" type="HBoxContainer" parent="Center/Panel/Box"]
+[node name="Sections" type="HBoxContainer" parent="Center/Panel/Box" unique_id=1829360312]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 40
 
-[node name="Close" parent="Center/Panel" instance=ExtResource("3_close")]
+[node name="Close" parent="Center/Panel" unique_id=1526931017 instance=ExtResource("3_close")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Tip" parent="." instance=ExtResource("4_tip")]
+[node name="Tip" parent="." unique_id=1173300515 instance=ExtResource("4_tip")]
 unique_name_in_owner = true
 visible = false

@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bwkepfqn3l2wt"]
 
-[ext_resource type="Material" path="res://game/entities/door/materials/door.tres" id="1_wood"]
-[ext_resource type="Material" path="res://game/entities/door/materials/brass.tres" id="2_brass"]
+[ext_resource type="Material" uid="uid://coykeifcd4kmx" path="res://game/entities/door/materials/door.tres" id="1_wood"]
+[ext_resource type="Material" uid="uid://ebw8rx071c8d" path="res://game/entities/door/materials/brass.tres" id="2_brass"]
 
 [sub_resource type="BoxMesh" id="Mesh_post"]
 material = ExtResource("1_wood")
@@ -9,6 +9,13 @@ size = Vector3(0.135, 2.1, 0.1)
 
 [sub_resource type="BoxShape3D" id="Shape_post"]
 size = Vector3(0.135, 2.1, 0.1)
+
+[sub_resource type="BoxMesh" id="Mesh_panel"]
+material = ExtResource("1_wood")
+size = Vector3(1.13, 0.6, 0.1)
+
+[sub_resource type="BoxShape3D" id="Shape_panel"]
+size = Vector3(1.13, 0.6, 0.1)
 
 [sub_resource type="BoxMesh" id="Mesh_leaf"]
 material = ExtResource("1_wood")
@@ -25,13 +32,6 @@ size = Vector3(0.9, 0.02, 0.02)
 material = ExtResource("2_brass")
 size = Vector3(0.1, 0.12, 0.04)
 
-[sub_resource type="BoxMesh" id="Mesh_panel"]
-material = ExtResource("1_wood")
-size = Vector3(1.13, 0.6, 0.1)
-
-[sub_resource type="BoxShape3D" id="Shape_panel"]
-size = Vector3(1.13, 0.6, 0.1)
-
 [sub_resource type="Animation" id="Animation_open"]
 resource_name = "open"
 length = 2.2
@@ -46,6 +46,11 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, -2, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, -1.5708, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="Library_open"]
+_data = {
+&"open": SubResource("Animation_open")
 }
 
 [sub_resource type="Animation" id="Animation_unlock"]
@@ -148,77 +153,72 @@ tracks/7/keys = {
 "values": [true, false]
 }
 
-[sub_resource type="AnimationLibrary" id="Library_open"]
-_data = {
-&"open": SubResource("Animation_open")
-}
-
 [sub_resource type="AnimationLibrary" id="Library_unlock"]
 _data = {
 &"unlock": SubResource("Animation_unlock")
 }
 
-[node name="LooksLockDoor" type="Node3D"]
+[node name="LooksLockDoor" type="Node3D" unique_id=2132865946]
 
-[node name="frame" type="Node3D" parent="."]
+[node name="frame" type="Node3D" parent="." unique_id=2141785769]
 
-[node name="PostLeft" type="MeshInstance3D" parent="frame"]
+[node name="PostLeft" type="MeshInstance3D" parent="frame" unique_id=267520735]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4975, 1.05, 0)
 mesh = SubResource("Mesh_post")
 
-[node name="PostRight" type="MeshInstance3D" parent="frame"]
+[node name="PostRight" type="MeshInstance3D" parent="frame" unique_id=1911783983]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4975, 1.05, 0)
 mesh = SubResource("Mesh_post")
 
-[node name="Posts" type="StaticBody3D" parent="frame"]
+[node name="Posts" type="StaticBody3D" parent="frame" unique_id=222362794]
 collision_mask = 0
 
-[node name="ShapeLeft" type="CollisionShape3D" parent="frame/Posts"]
+[node name="ShapeLeft" type="CollisionShape3D" parent="frame/Posts" unique_id=2014332669]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4975, 1.05, 0)
 shape = SubResource("Shape_post")
 
-[node name="ShapeRight" type="CollisionShape3D" parent="frame/Posts"]
+[node name="ShapeRight" type="CollisionShape3D" parent="frame/Posts" unique_id=1250765888]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4975, 1.05, 0)
 shape = SubResource("Shape_post")
 
-[node name="panel" type="MeshInstance3D" parent="."]
+[node name="panel" type="MeshInstance3D" parent="." unique_id=291328573]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
 mesh = SubResource("Mesh_panel")
 
-[node name="PanelBody" type="StaticBody3D" parent="panel"]
+[node name="PanelBody" type="StaticBody3D" parent="panel" unique_id=1270986437]
 collision_mask = 0
 
-[node name="Shape" type="CollisionShape3D" parent="panel/PanelBody"]
+[node name="Shape" type="CollisionShape3D" parent="panel/PanelBody" unique_id=1236209384]
 shape = SubResource("Shape_panel")
 
-[node name="leaf" type="AnimatableBody3D" parent="."]
+[node name="leaf" type="AnimatableBody3D" parent="." unique_id=1236817410]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.413, 0, 0)
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="leaf"]
+[node name="Mesh" type="MeshInstance3D" parent="leaf" unique_id=1436439804]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.413, 1.0495, 0)
 mesh = SubResource("Mesh_leaf")
 
-[node name="Shape" type="CollisionShape3D" parent="leaf"]
+[node name="Shape" type="CollisionShape3D" parent="leaf" unique_id=2134323393]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.413, 1.0495, 0)
 shape = SubResource("Shape_leaf")
 
-[node name="chain" type="Node3D" parent="."]
+[node name="chain" type="Node3D" parent="." unique_id=1797595322]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0.07)
 
-[node name="Mesh" type="MeshInstance3D" parent="chain"]
+[node name="Mesh" type="MeshInstance3D" parent="chain" unique_id=1325563756]
 mesh = SubResource("Mesh_chain")
 
-[node name="padlock" type="Node3D" parent="."]
+[node name="padlock" type="Node3D" parent="." unique_id=717818002]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0.08)
 
-[node name="Mesh" type="MeshInstance3D" parent="padlock"]
+[node name="Mesh" type="MeshInstance3D" parent="padlock" unique_id=1470724749]
 mesh = SubResource("Mesh_padlock")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=264018770]
 callback_mode_process = 0
 libraries/ = SubResource("Library_open")
 
-[node name="UnlockPlayer" type="AnimationPlayer" parent="."]
+[node name="UnlockPlayer" type="AnimationPlayer" parent="." unique_id=700700608]
 callback_mode_process = 0
 libraries/ = SubResource("Library_unlock")

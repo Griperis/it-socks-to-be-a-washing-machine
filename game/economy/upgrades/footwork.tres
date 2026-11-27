@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="Upgrade" format=3]
+[gd_resource type="Resource" script_class="Upgrade" format=3 uid="uid://pt4af5thhnp7"]
 
-[ext_resource type="Texture2D" path="res://assets/ui/upgrade_speed.svg" id="1_wolwn"]
-[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_qn4k6"]
-[ext_resource type="Resource" path="res://game/economy/stats/walk_speed.tres" id="3_stat"]
+[ext_resource type="Texture2D" uid="uid://c7mrgj1jm76et" path="res://assets/ui/upgrade_speed.svg" id="1_wolwn"]
+[ext_resource type="Script" uid="uid://tco600m1ilvq" path="res://game/economy/upgrade.gd" id="2_qn4k6"]
+[ext_resource type="Resource" uid="uid://caqhv6xoe7sdx" path="res://game/economy/stats/walk_speed.tres" id="3_stat"]
 
 [resource]
 script = ExtResource("2_qn4k6")

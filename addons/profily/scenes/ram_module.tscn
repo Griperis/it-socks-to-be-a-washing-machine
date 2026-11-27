@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://c8ha675svl15i" path="res://addons/profily/scripts/ram/ram_monitor.gd" id="2_monitor"]
 [ext_resource type="Script" uid="uid://clvjay4cwvwsm" path="res://addons/profily/scripts/ram/ram_graph.gd" id="3_graph"]
 [ext_resource type="Script" uid="uid://byfi5dmwxxpvb" path="res://addons/profily/scripts/ram/ram_text.gd" id="4_text"]
-[ext_resource type="StyleBox" path="res://addons/profily/styles/background_stylebox.tres" id="5_bg"]
+[ext_resource type="StyleBox" uid="uid://cefhjg6wkj5l7" path="res://addons/profily/styles/background_stylebox.tres" id="5_bg"]
 [ext_resource type="FontFile" uid="uid://dfrm2sykl2xby" path="res://addons/profily/fonts/Roboto-Regular.ttf" id="6_roboto"]
 
 [node name="RamModule" type="Control" unique_id=1839110376]

@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bavr58l24aiu0"]
 
-[ext_resource type="Script" path="res://game/zoo/washer/washer_pillar.gd" id="1_pillar"]
+[ext_resource type="Script" uid="uid://hbondgff3oou" path="res://game/zoo/washer/washer_pillar.gd" id="1_pillar"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pillar"]
 albedo_color = Color(0.45, 0.65, 0.85, 1)
@@ -12,22 +12,22 @@ size = Vector3(0.3, 1, 0.3)
 [sub_resource type="BoxShape3D" id="BoxShape3D_pillar"]
 size = Vector3(0.3, 1, 0.3)
 
-[node name="Pillar" type="Node3D"]
+[node name="Pillar" type="Node3D" unique_id=1547867338]
 
-[node name="Body" type="StaticBody3D" parent="."]
+[node name="Body" type="StaticBody3D" parent="." unique_id=396029353]
 
-[node name="Mesh" type="MeshInstance3D" parent="Body"]
+[node name="Mesh" type="MeshInstance3D" parent="Body" unique_id=452783266]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 mesh = SubResource("BoxMesh_pillar")
 
-[node name="Shape" type="CollisionShape3D" parent="Body"]
+[node name="Shape" type="CollisionShape3D" parent="Body" unique_id=1132595574]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_pillar")
 
-[node name="Press" type="Node" parent="Body"]
+[node name="Press" type="Node" parent="Body" unique_id=591981874]
 script = ExtResource("1_pillar")
 
-[node name="Label" type="Label3D" parent="."]
+[node name="Label" type="Label3D" parent="." unique_id=1376493170]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 pixel_size = 0.0025
 billboard = 2

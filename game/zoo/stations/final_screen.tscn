@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://ogsx8xnw21ed"]
 
-[ext_resource type="Script" path="res://game/zoo/final_screen/final_screen_station.gd" id="1_station"]
-[ext_resource type="PackedScene" path="res://game/ui/final_screen/final_screen.tscn" id="2_screen"]
+[ext_resource type="Script" uid="uid://c0mvxdho1loq1" path="res://game/zoo/final_screen/final_screen_station.gd" id="1_station"]
+[ext_resource type="PackedScene" uid="uid://bcq7qvbqnx3vt" path="res://game/ui/final_screen/final_screen.tscn" id="2_screen"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.72, 0.62, 0.45, 1)
@@ -13,24 +13,24 @@ size = Vector2(12, 8)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
 size = Vector3(14, 0.2, 10)
 
-[node name="FinalScreen" type="Node3D" node_paths=PackedStringArray("screen", "pad", "title")]
+[node name="FinalScreen" type="Node3D" unique_id=1172128273 node_paths=PackedStringArray("screen", "pad", "title")]
 script = ExtResource("1_station")
 screen = NodePath("Screen")
 pad = NodePath("Pad")
 title = NodePath("Name")
 
-[node name="Pad" type="MeshInstance3D" parent="."]
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=23397139]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 1)
 mesh = SubResource("PlaneMesh_pad")
 
-[node name="Ground" type="StaticBody3D" parent="."]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=2140414908]
 metadata/surface = "wood"
 
-[node name="Shape" type="CollisionShape3D" parent="Ground"]
+[node name="Shape" type="CollisionShape3D" parent="Ground" unique_id=897840949]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 1)
 shape = SubResource("BoxShape3D_ground")
 
-[node name="Name" type="Label3D" parent="."]
+[node name="Name" type="Label3D" parent="." unique_id=1637681591]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 2, -3)
 pixel_size = 0.004
 billboard = 2
@@ -39,4 +39,4 @@ vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="Screen" parent="." instance=ExtResource("2_screen")]
+[node name="Screen" parent="." unique_id=2093135961 instance=ExtResource("2_screen")]

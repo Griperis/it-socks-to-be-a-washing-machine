@@ -1,39 +1,39 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://11gqrc7lsd8r"]
 
-[ext_resource type="Script" path="res://game/run/stages.gd" id="1_stages"]
-[ext_resource type="Script" path="res://game/run/stage_spawner.gd" id="2_spawner"]
-[ext_resource type="Script" path="res://game/run/run_tallies.gd" id="3_tallies"]
-[ext_resource type="Script" path="res://game/run/run_record.gd" id="4_record"]
-[ext_resource type="PackedScene" path="res://game/parts/spawned_parts.tscn" id="5_spawned"]
-[ext_resource type="Script" path="res://game/profile/tally_recorder.gd" id="6_recorder"]
-[ext_resource type="Script" path="res://game/collections/profile_recorder.gd" id="7_profile_recorder"]
-[ext_resource type="Script" path="res://game/gifts/presents.gd" id="8_presents"]
-[ext_resource type="Resource" path="res://game/gifts/present_tuning.tres" id="9_present_tuning"]
+[ext_resource type="Script" uid="uid://bgcde5vg23d7j" path="res://game/run/stages.gd" id="1_stages"]
+[ext_resource type="Script" uid="uid://c4atqhymcci4k" path="res://game/run/stage_spawner.gd" id="2_spawner"]
+[ext_resource type="Script" uid="uid://bd8g1virtn8lx" path="res://game/run/run_tallies.gd" id="3_tallies"]
+[ext_resource type="Script" uid="uid://g1ue3t5gvgqe" path="res://game/run/run_record.gd" id="4_record"]
+[ext_resource type="PackedScene" uid="uid://2jtb72i6bx8x" path="res://game/parts/spawned_parts.tscn" id="5_spawned"]
+[ext_resource type="Script" uid="uid://blitrauvwlkqt" path="res://game/profile/tally_recorder.gd" id="6_recorder"]
+[ext_resource type="Script" uid="uid://bo136qjntovid" path="res://game/collections/profile_recorder.gd" id="7_profile_recorder"]
+[ext_resource type="Script" uid="uid://djhhmgwtxwb7e" path="res://game/gifts/presents.gd" id="8_presents"]
+[ext_resource type="Resource" uid="uid://6xkfr1sw7b77" path="res://game/gifts/present_tuning.tres" id="9_present_tuning"]
 
-[node name="Run" type="Node3D"]
+[node name="Run" type="Node3D" unique_id=1992260400]
 
-[node name="Stages" type="Node" parent="."]
+[node name="Stages" type="Node" parent="." unique_id=1121104956]
 script = ExtResource("1_stages")
 
-[node name="StageSpawner" type="Node" parent="." node_paths=PackedStringArray("stages")]
+[node name="StageSpawner" type="Node" parent="." unique_id=68558559 node_paths=PackedStringArray("stages")]
 script = ExtResource("2_spawner")
 stages = NodePath("../Stages")
 
-[node name="RunTallies" type="Node" parent="."]
+[node name="RunTallies" type="Node" parent="." unique_id=1016469316]
 script = ExtResource("3_tallies")
 
-[node name="RunRecord" type="Node" parent="."]
+[node name="RunRecord" type="Node" parent="." unique_id=1890664193]
 script = ExtResource("4_record")
 
-[node name="TallyRecorder" type="Node" parent="."]
+[node name="TallyRecorder" type="Node" parent="." unique_id=1378204145]
 script = ExtResource("6_recorder")
 
-[node name="ProfileRecorder" type="Node" parent="."]
+[node name="ProfileRecorder" type="Node" parent="." unique_id=513347307]
 script = ExtResource("7_profile_recorder")
 
-[node name="Spawned" parent="." instance=ExtResource("5_spawned")]
+[node name="Spawned" parent="." unique_id=795020593 instance=ExtResource("5_spawned")]
 
-[node name="Presents" type="Node" parent="." node_paths=PackedStringArray("spawned", "stages")]
+[node name="Presents" type="Node" parent="." unique_id=1893270664 node_paths=PackedStringArray("spawned", "stages")]
 script = ExtResource("8_presents")
 spawned = NodePath("../Spawned")
 stages = NodePath("../Stages")

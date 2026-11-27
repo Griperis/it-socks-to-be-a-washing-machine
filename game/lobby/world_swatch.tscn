@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://do2mf0ons32ww"]
 
-[node name="WorldSwatch" type="ColorRect"]
+[node name="WorldSwatch" type="ColorRect" unique_id=99316208]
 custom_minimum_size = Vector2(14, 14)

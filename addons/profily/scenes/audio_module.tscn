@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dksdcjuj4e4y5" path="res://addons/profily/scripts/audio/audio_monitor.gd" id="2_monitor"]
 [ext_resource type="Script" uid="uid://sufh3h23xqce" path="res://addons/profily/scripts/audio/audio_graph.gd" id="3_graph"]
 [ext_resource type="Script" uid="uid://jgcrdjhu4iuy" path="res://addons/profily/scripts/audio/audio_text.gd" id="4_text"]
-[ext_resource type="StyleBox" path="res://addons/profily/styles/background_stylebox.tres" id="5_bg"]
+[ext_resource type="StyleBox" uid="uid://cefhjg6wkj5l7" path="res://addons/profily/styles/background_stylebox.tres" id="5_bg"]
 [ext_resource type="FontFile" uid="uid://dfrm2sykl2xby" path="res://addons/profily/fonts/Roboto-Regular.ttf" id="6_roboto"]
 
 [node name="AudioModule" type="Control" unique_id=2068959497]

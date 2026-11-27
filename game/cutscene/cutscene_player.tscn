@@ -1,23 +1,23 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://sars655hww8l"]
 
-[ext_resource type="Script" path="res://game/cutscene/cutscene_player.gd" id="1_player"]
-[ext_resource type="Resource" path="res://game/cutscene/cutscene_tuning.tres" id="2_tuning"]
+[ext_resource type="Script" uid="uid://dml84ph17dfmo" path="res://game/cutscene/cutscene_player.gd" id="1_player"]
+[ext_resource type="Resource" uid="uid://2c60ndmd10jr" path="res://game/cutscene/cutscene_tuning.tres" id="2_tuning"]
 
-[node name="CutscenePlayer" type="Node"]
+[node name="CutscenePlayer" type="Node" unique_id=692741395]
 script = ExtResource("1_player")
 tuning = ExtResource("2_tuning")
 
-[node name="Camera" type="Camera3D" parent="."]
+[node name="Camera" type="Camera3D" parent="." unique_id=1127412072]
 unique_name_in_owner = true
 cull_mask = 1045503
 fov = 60.0
 
-[node name="Overlay" type="CanvasLayer" parent="."]
+[node name="Overlay" type="CanvasLayer" parent="." unique_id=1135884481]
 unique_name_in_owner = true
 layer = 19
 visible = false
 
-[node name="Fade" type="ColorRect" parent="Overlay"]
+[node name="Fade" type="ColorRect" parent="Overlay" unique_id=1800694310]
 unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,7 +27,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Skip" type="HBoxContainer" parent="Overlay"]
+[node name="Skip" type="HBoxContainer" parent="Overlay" unique_id=1208900580]
 unique_name_in_owner = true
 anchors_preset = 3
 anchor_left = 1.0
@@ -42,7 +42,7 @@ grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="Key" type="TextureRect" parent="Overlay/Skip"]
+[node name="Key" type="TextureRect" parent="Overlay/Skip" unique_id=877747071]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
@@ -51,9 +51,8 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Words" type="Label" parent="Overlay/Skip"]
+[node name="Words" type="Label" parent="Overlay/Skip" unique_id=189723633]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
 theme_type_variation = &"HintLabel"
 text = "Skip"

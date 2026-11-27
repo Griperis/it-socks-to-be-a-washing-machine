@@ -1,8 +1,8 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bmsnhn6o3b4jf"]
 
-[ext_resource type="Script" path="res://game/gifts/gift_reveal.gd" id="1_script"]
-[ext_resource type="PackedScene" path="res://game/wardrobe/ui/preview_stage.tscn" id="2_stage"]
-[ext_resource type="PackedScene" path="res://game/gifts/looks_present.tscn" id="3_looks"]
+[ext_resource type="Script" uid="uid://dwh7vn1w4ybx2" path="res://game/gifts/gift_reveal.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://oinepejc7h2u" path="res://game/wardrobe/ui/preview_stage.tscn" id="2_stage"]
+[ext_resource type="PackedScene" uid="uid://b0njhnpexrbk3" path="res://game/gifts/looks_present.tscn" id="3_looks"]
 
 [sub_resource type="Animation" id="Animation_pop_reset"]
 length = 0.001
@@ -97,11 +97,11 @@ _data = {
 &"spin_trail": SubResource("Animation_spin_trail")
 }
 
-[node name="GiftReveal" type="CanvasLayer"]
+[node name="GiftReveal" type="CanvasLayer" unique_id=171470389]
 layer = 8
 script = ExtResource("1_script")
 
-[node name="Root" type="Control" parent="."]
+[node name="Root" type="Control" parent="." unique_id=667111573]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -111,7 +111,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Stage" parent="Root" instance=ExtResource("2_stage")]
+[node name="Stage" parent="Root" unique_id=897809939 instance=ExtResource("2_stage")]
 custom_minimum_size = Vector2(520, 520)
 layout_mode = 1
 anchors_preset = 8
@@ -126,23 +126,24 @@ offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Stage" parent="Root/Stage" index="0"]
+[node name="Stage" parent="Root/Stage" index="0" unique_id=90257533]
 size = Vector2i(520, 520)
+render_target_update_mode = 0
 
-[node name="Camera" parent="Root/Stage/Stage" index="2"]
+[node name="Camera" parent="Root/Stage/Stage" index="2" unique_id=677924528]
 transform = Transform3D(-1, 0, 0, 0, 0.9856, 0.169, 0, 0.169, -0.9856, 0, 1.32, -1.75)
 
-[node name="Turntable" type="Node3D" parent="Root/Stage/Stage"]
+[node name="Turntable" type="Node3D" parent="Root/Stage/Stage" index="5" unique_id=1099171757]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 1.02, 0)
 
-[node name="Spin" type="Node3D" parent="Root/Stage/Stage/Turntable"]
+[node name="Spin" type="Node3D" parent="Root/Stage/Stage/Turntable" unique_id=510629347]
 rotation_order = 4
 
-[node name="Box" parent="Root/Stage/Stage" instance=ExtResource("3_looks")]
+[node name="Box" parent="Root/Stage/Stage" index="6" unique_id=1716358471 instance=ExtResource("3_looks")]
 transform = Transform3D(1.40413, 0, -0.76709, 0, 1.6, 0, 0.76709, 0, 1.40413, 0, 0.74, 0)
 visible = false
 
-[node name="Caption" type="VBoxContainer" parent="Root"]
+[node name="Caption" type="VBoxContainer" parent="Root" unique_id=2090854025]
 visible = false
 layout_mode = 1
 anchors_preset = 7
@@ -156,32 +157,28 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="Name" type="Label" parent="Root/Caption"]
+[node name="Name" type="Label" parent="Root/Caption" unique_id=699628457]
 layout_mode = 2
 theme_type_variation = &"RevealName"
 text = "Piece"
 horizontal_alignment = 1
 
-[node name="Rarity" type="Label" parent="Root/Caption"]
+[node name="Rarity" type="Label" parent="Root/Caption" unique_id=94838226]
 layout_mode = 2
 theme_type_variation = &"RevealRarity"
 text = "Rare"
 horizontal_alignment = 1
 
-[node name="Line" type="Label" parent="Root/Caption"]
+[node name="Line" type="Label" parent="Root/Caption" unique_id=1814571826]
 layout_mode = 2
 theme_type_variation = &"RevealLine"
 text = "New in your Wardrobe"
 horizontal_alignment = 1
 
-[node name="PopPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_pop")
-}
+[node name="PopPlayer" type="AnimationPlayer" parent="." unique_id=1474482405]
+libraries/ = SubResource("AnimationLibrary_pop")
 
-[node name="SpinPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_spin")
-}
+[node name="SpinPlayer" type="AnimationPlayer" parent="." unique_id=1395637756]
+libraries/ = SubResource("AnimationLibrary_spin")
 
 [editable path="Root/Stage"]

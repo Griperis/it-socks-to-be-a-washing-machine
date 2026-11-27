@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="HoldSlot" format=3]
+[gd_resource type="Resource" script_class="HoldSlot" format=3 uid="uid://fob0v6jpyuun"]
 
-[ext_resource type="Script" path="res://game/hands/hold_slot.gd" id="1_slot"]
+[ext_resource type="Script" uid="uid://bg22556wss3nl" path="res://game/hands/hold_slot.gd" id="1_slot"]
 
 [resource]
 script = ExtResource("1_slot")

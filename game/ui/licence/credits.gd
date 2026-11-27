@@ -5,11 +5,11 @@ class_name Credits
 extends Resource
 
 ## The game's lines, the first shown larger ("It Socks", "A game by ...", "Built with Godot Engine").
-@export var game_lines: PackedStringArray = []
+@export var game_lines: PackedStringArray
 @export var entries: Array[CreditEntry] = []
 ## The "Licences" links at the end: their words and addresses (alike in number).
-@export var licence_names: PackedStringArray = []
-@export var licence_links: PackedStringArray = []
+@export var licence_names: PackedStringArray
+@export var licence_links: PackedStringArray
 
 
 ## The sections in the order their first entry comes.

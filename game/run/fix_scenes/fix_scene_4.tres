@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="CutsceneScript" format=3]
+[gd_resource type="Resource" script_class="CutsceneScript" format=3 uid="uid://cod0blb3h0fgq"]
 
-[ext_resource type="Script" path="res://game/cutscene/cutscene_script.gd" id="1_script"]
-[ext_resource type="Resource" path="res://game/voice/triggers/cutscene_fix_4.tres" id="2_trigger"]
+[ext_resource type="Script" uid="uid://ccubsbfq74guu" path="res://game/cutscene/cutscene_script.gd" id="1_script"]
+[ext_resource type="Resource" uid="uid://cq4r6eyho4be1" path="res://game/voice/triggers/cutscene_fix_4.tres" id="2_trigger"]
 
 [resource]
 script = ExtResource("1_script")

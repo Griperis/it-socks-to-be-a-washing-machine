@@ -1,14 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cr48ownm0safh"]
 
-[ext_resource type="Script" path="res://game/zoo/economy/upgrade_board_row.gd" id="1_row"]
+[ext_resource type="Script" uid="uid://48gdah4f2mg7" path="res://game/zoo/economy/upgrade_board_row.gd" id="1_row"]
 
-[node name="UpgradeBoardRow" type="Node3D"]
+[node name="UpgradeBoardRow" type="Node3D" unique_id=1116412329]
 script = ExtResource("1_row")
 
-[node name="Icon" type="Sprite3D" parent="."]
+[node name="Icon" type="Sprite3D" parent="." unique_id=351223145]
 pixel_size = 0.0012
 
-[node name="Text" type="Label3D" parent="."]
+[node name="Text" type="Label3D" parent="." unique_id=21720724]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08, 0, 0)
 pixel_size = 0.0018
 text = "Upgrade"

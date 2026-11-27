@@ -1,11 +1,11 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://drtvlckxtrg3l"]
 
-[ext_resource type="Script" path="res://game/ui/money/coin_flight.gd" id="1_flight"]
-[ext_resource type="Resource" path="res://game/ui/money/coin_flight_tuning.tres" id="2_tuning"]
-[ext_resource type="PackedScene" path="res://game/ui/money/money_pop.tscn" id="3_pop"]
-[ext_resource type="PackedScene" path="res://game/ui/money/flying_icon.tscn" id="4_icon"]
+[ext_resource type="Script" uid="uid://clngyoj3lo41b" path="res://game/ui/money/coin_flight.gd" id="1_flight"]
+[ext_resource type="Resource" uid="uid://baaf2y2lm6v3w" path="res://game/ui/money/coin_flight_tuning.tres" id="2_tuning"]
+[ext_resource type="PackedScene" uid="uid://h3vityxu4f0c" path="res://game/ui/money/money_pop.tscn" id="3_pop"]
+[ext_resource type="PackedScene" uid="uid://dk07hsdm2gbet" path="res://game/ui/money/flying_icon.tscn" id="4_icon"]
 
-[node name="CoinFlight" type="Control"]
+[node name="CoinFlight" type="Control" unique_id=1228915855]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

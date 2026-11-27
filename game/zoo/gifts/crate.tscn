@@ -1,8 +1,11 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dr5qvfds4cmo2"]
 
-[ext_resource type="Script" path="res://game/parts/carriable.gd" id="1_carriable"]
-[ext_resource type="Resource" path="res://game/hands/hold_slot_bin.tres" id="2_slot"]
-[ext_resource type="Script" path="res://game/outline/outline.gd" id="3_outline"]
+[ext_resource type="Script" uid="uid://bkjerdg5jkff3" path="res://game/parts/carriable.gd" id="1_carriable"]
+[ext_resource type="Resource" uid="uid://xdy460n2k0i4" path="res://game/hands/hold_slot_bin.tres" id="2_slot"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="3_outline"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_crate"]
+size = Vector3(0.44, 0.34, 0.52)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crate"]
 albedo_color = Color(0.72, 0.52, 0.3, 1)
@@ -11,25 +14,22 @@ albedo_color = Color(0.72, 0.52, 0.3, 1)
 material = SubResource("StandardMaterial3D_crate")
 size = Vector3(0.44, 0.34, 0.52)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_crate"]
-size = Vector3(0.44, 0.34, 0.52)
+[node name="Crate" type="StaticBody3D" unique_id=816844539]
 
-[node name="Crate" type="StaticBody3D"]
-
-[node name="Shape" type="CollisionShape3D" parent="."]
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=1086166262]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.17, 0)
 shape = SubResource("BoxShape3D_crate")
 
-[node name="Looks" type="Node3D" parent="."]
+[node name="Looks" type="Node3D" parent="." unique_id=139493896]
 
-[node name="Mesh" type="MeshInstance3D" parent="Looks"]
+[node name="Mesh" type="MeshInstance3D" parent="Looks" unique_id=222713408]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.17, 0)
 mesh = SubResource("BoxMesh_crate")
 
-[node name="Outline" type="Node3D" parent="Looks"]
+[node name="Outline" type="Node3D" parent="Looks" unique_id=1983363012]
 script = ExtResource("3_outline")
 
-[node name="Carriable" type="Node" parent="."]
+[node name="Carriable" type="Node" parent="." unique_id=975553151]
 script = ExtResource("1_carriable")
 slot = ExtResource("2_slot")
 title = "Crate"

@@ -1,14 +1,15 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bdknhn3ghwi78"]
 
-[ext_resource type="Script" path="res://game/ui/close_button.gd" id="1_close"]
+[ext_resource type="Script" uid="uid://dw8q128mto22i" path="res://game/ui/close_button.gd" id="1_close"]
 [ext_resource type="Texture2D" uid="uid://38pexbvy6uov" path="res://assets/ui/key_esc.svg" id="2_esc"]
 
-[node name="CloseButton" type="Control"]
-layout_mode = 2
+[node name="CloseButton" type="Control" unique_id=96852503]
+layout_mode = 3
+anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("1_close")
 
-[node name="Key" type="Button" parent="."]
+[node name="Key" type="Button" parent="." unique_id=488181444]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 1

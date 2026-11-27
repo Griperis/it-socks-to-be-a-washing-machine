@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c7kccqrhqnhd0"]
 
 [ext_resource type="PackedScene" uid="uid://c06tp2w82oqlu" path="res://assets/wardrobe/paw_socks.glb" id="1_glb"]
 

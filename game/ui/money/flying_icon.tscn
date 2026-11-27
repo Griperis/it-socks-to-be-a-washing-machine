@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dk07hsdm2gbet"]
 
-[node name="FlyingIcon" type="TextureRect"]
+[node name="FlyingIcon" type="TextureRect" unique_id=2139256892]
 visible = false
 custom_minimum_size = Vector2(34, 34)
 offset_right = 34.0

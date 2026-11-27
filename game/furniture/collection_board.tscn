@@ -1,9 +1,8 @@
 [gd_scene format=3 uid="uid://baovhffvuha3h"]
 
 [ext_resource type="PackedScene" uid="uid://dybotb3qx4fbl" path="res://game/furniture/looks/looks_collection_board.tscn" id="1_kbg16"]
-
-[ext_resource type="Script" path="res://game/furniture/whiteboard.gd" id="2_board"]
-[ext_resource type="Resource" path="res://game/ui/whiteboard/whiteboard_tuning.tres" id="3_tuning"]
+[ext_resource type="Script" uid="uid://34g1dvxvw0n" path="res://game/furniture/whiteboard.gd" id="2_board"]
+[ext_resource type="Resource" uid="uid://7nixxsphjn0p" path="res://game/ui/whiteboard/whiteboard_tuning.tres" id="3_tuning"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_o0buj"]
 size = Vector3(0.73, 0.022, 0.97)

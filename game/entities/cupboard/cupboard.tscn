@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cetnblb56hc5v"]
 
 [ext_resource type="Script" uid="uid://bilshnr7wp5ir" path="res://game/parts/openable.gd" id="1_openable"]
-[ext_resource type="PackedScene" path="res://game/entities/cupboard/looks_graybox.tscn" id="2_looks"]
+[ext_resource type="PackedScene" uid="uid://dijsu0eo4h308" path="res://game/entities/cupboard/looks_graybox.tscn" id="2_looks"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_body"]
 size = Vector3(1, 2, 0.45)

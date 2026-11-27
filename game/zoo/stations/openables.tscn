@@ -30,5 +30,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
 [node name="CupboardLocked" parent="." unique_id=1033906892 instance=ExtResource("1_cupboard")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
 
-[node name="Openable" parent="CupboardLocked" parent_id_path=PackedInt32Array(1033906892) index="0" unique_id=1763187273]
+[node name="Openable" parent="CupboardLocked" index="0" unique_id=1763187273]
 locked = true
+
+[editable path="CupboardLocked"]

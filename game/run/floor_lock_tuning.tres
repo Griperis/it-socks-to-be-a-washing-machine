@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="FloorLockTuning" format=3]
+[gd_resource type="Resource" script_class="FloorLockTuning" format=3 uid="uid://ctda7qqefvd8t"]
 
-[ext_resource type="Script" path="res://game/run/floor_lock_tuning.gd" id="1_tuning"]
+[ext_resource type="Script" uid="uid://bxiofssgjro26" path="res://game/run/floor_lock_tuning.gd" id="1_tuning"]
 
 [resource]
 script = ExtResource("1_tuning")

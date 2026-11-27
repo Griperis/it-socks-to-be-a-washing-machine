@@ -1,6 +1,8 @@
 [gd_resource type="Resource" script_class="PlayerUpgrades" format=3 uid="uid://do11bnjgc3rph"]
 
 [ext_resource type="Script" uid="uid://upoimxvreytc" path="res://game/player/player_upgrades.gd" id="1_upgrades"]
+[ext_resource type="Resource" uid="uid://dyqbj1v0fjbdt" path="res://game/economy/stats/sock_sense.tres" id="2_3la58"]
+[ext_resource type="Resource" uid="uid://dniw7dxbt0qfg" path="res://game/economy/stats/sock_smarts.tres" id="3_wld0v"]
 
 [resource]
 script = ExtResource("1_upgrades")

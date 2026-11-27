@@ -1,76 +1,78 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://csk11jg4sixy7"]
 
-[ext_resource type="Script" path="res://game/wardrobe/ui/wardrobe_page.gd" id="1_page"]
-[ext_resource type="PackedScene" path="res://game/wardrobe/ui/preview_stage.tscn" id="2_stage"]
-[ext_resource type="PackedScene" path="res://game/parts/avatar/looks_avatar.tscn" id="3_avatar"]
-[ext_resource type="PackedScene" path="res://game/wardrobe/ui/wardrobe_row.tscn" id="4_row"]
-[ext_resource type="PackedScene" path="res://game/ui/close_button.tscn" id="5_close"]
+[ext_resource type="Script" uid="uid://88ew0lhp422y" path="res://game/wardrobe/ui/wardrobe_page.gd" id="1_page"]
+[ext_resource type="PackedScene" uid="uid://oinepejc7h2u" path="res://game/wardrobe/ui/preview_stage.tscn" id="2_stage"]
+[ext_resource type="PackedScene" uid="uid://c6ggi6fh377si" path="res://game/parts/avatar/looks_avatar.tscn" id="3_avatar"]
+[ext_resource type="PackedScene" uid="uid://cg7fb1av7u365" path="res://game/wardrobe/ui/wardrobe_row.tscn" id="4_row"]
+[ext_resource type="PackedScene" uid="uid://bdknhn3ghwi78" path="res://game/ui/close_button.tscn" id="5_close"]
 
-[node name="WardrobePage" type="PanelContainer"]
+[node name="WardrobePage" type="PanelContainer" unique_id=1020061210]
 custom_minimum_size = Vector2(900, 0)
 theme_type_variation = &"TitlePanel"
 script = ExtResource("1_page")
 
-[node name="Box" type="VBoxContainer" parent="."]
+[node name="Box" type="VBoxContainer" parent="." unique_id=110003174]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Heading" type="Label" parent="Box"]
+[node name="Heading" type="Label" parent="Box" unique_id=2080966348]
 layout_mode = 2
 theme_type_variation = &"Heading1"
 text = "Colour & Wardrobe"
 
-[node name="Body" type="HBoxContainer" parent="Box"]
+[node name="Body" type="HBoxContainer" parent="Box" unique_id=495903430]
 layout_mode = 2
 theme_override_constants/separation = 22
 
-[node name="Preview" parent="Box/Body" instance=ExtResource("2_stage")]
+[node name="Preview" parent="Box/Body" unique_id=288224800 instance=ExtResource("2_stage")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Creature" parent="Box/Body/Preview/Stage/Shown" instance=ExtResource("3_avatar")]
+[node name="Creature" parent="Box/Body/Preview/Stage/Shown" parent_id_path=PackedInt32Array(288224800, 1935652898) index="0" unique_id=1425998909 instance=ExtResource("3_avatar")]
 unique_name_in_owner = true
 leaves_trail = false
 
-[node name="TrailSample" parent="Box/Body/Preview/Stage/Shown" instance=ExtResource("3_avatar")]
+[node name="TrailSample" parent="Box/Body/Preview/Stage/Shown" parent_id_path=PackedInt32Array(288224800, 1935652898) index="1" unique_id=1620096098 instance=ExtResource("3_avatar")]
 unique_name_in_owner = true
 leaves_trail = false
 
-[node name="Rows" type="VBoxContainer" parent="Box/Body"]
+[node name="Rows" type="VBoxContainer" parent="Box/Body" unique_id=1566897198]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 26
 alignment = 1
 
-[node name="Colours" type="HFlowContainer" parent="Box/Body/Rows"]
+[node name="Colours" type="HFlowContainer" parent="Box/Body/Rows" unique_id=139486019]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 6
 theme_override_constants/v_separation = 4
 
-[node name="Hats" parent="Box/Body/Rows" instance=ExtResource("4_row")]
+[node name="Hats" parent="Box/Body/Rows" unique_id=1498652193 instance=ExtResource("4_row")]
 unique_name_in_owner = true
 layout_mode = 2
 title = "Hats"
 
-[node name="Clothes" parent="Box/Body/Rows" instance=ExtResource("4_row")]
+[node name="Clothes" parent="Box/Body/Rows" unique_id=1606327316 instance=ExtResource("4_row")]
 unique_name_in_owner = true
 layout_mode = 2
 slot = 1
 title = "Clothes"
 
-[node name="Socks" parent="Box/Body/Rows" instance=ExtResource("4_row")]
+[node name="Socks" parent="Box/Body/Rows" unique_id=627715200 instance=ExtResource("4_row")]
 unique_name_in_owner = true
 layout_mode = 2
 slot = 2
 title = "Socks"
 
-[node name="Trail" parent="Box/Body/Rows" instance=ExtResource("4_row")]
+[node name="Trail" parent="Box/Body/Rows" unique_id=871618847 instance=ExtResource("4_row")]
 unique_name_in_owner = true
 layout_mode = 2
 slot = 3
 title = "Trail"
 
-[node name="Close" parent="." instance=ExtResource("5_close")]
+[node name="Close" parent="." unique_id=1733507475 instance=ExtResource("5_close")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[editable path="Box/Body/Preview"]

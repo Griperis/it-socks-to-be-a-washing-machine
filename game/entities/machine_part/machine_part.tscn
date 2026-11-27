@@ -1,10 +1,10 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bylqsqsyw6rmv"]
 
-[ext_resource type="PackedScene" path="res://game/entities/machine_part/looks_filter_graybox.tscn" id="1_looks"]
-[ext_resource type="Script" path="res://game/parts/carriable.gd" id="2_carriable"]
-[ext_resource type="Script" path="res://game/entities/machine_part/machine_part.gd" id="3_part"]
-[ext_resource type="Resource" path="res://game/hands/hold_slot_part.tres" id="4_slot"]
-[ext_resource type="Resource" path="res://game/entities/machine_part/machine_part_tuning.tres" id="5_tuning"]
+[ext_resource type="PackedScene" uid="uid://04c1f7c0uobm" path="res://game/entities/machine_part/looks_filter_graybox.tscn" id="1_looks"]
+[ext_resource type="Script" uid="uid://bkjerdg5jkff3" path="res://game/parts/carriable.gd" id="2_carriable"]
+[ext_resource type="Script" uid="uid://cb10xhrmh7xsp" path="res://game/entities/machine_part/machine_part.gd" id="3_part"]
+[ext_resource type="Resource" uid="uid://fob0v6jpyuun" path="res://game/hands/hold_slot_part.tres" id="4_slot"]
+[ext_resource type="Resource" uid="uid://cwt6kkcq3rhh7" path="res://game/entities/machine_part/machine_part_tuning.tres" id="5_tuning"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_part"]
 size = Vector3(0.26, 0.26, 0.26)
@@ -38,6 +38,16 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_fade"]
 gradient = SubResource("Gradient_fade")
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sparkle"]
+emission_shape = 1
+emission_sphere_radius = 0.176
+direction = Vector3(0, 1, 0)
+spread = 20.0
+initial_velocity_max = 0.1
+gravity = Vector3(0, 0.25, 0)
+scale_min = 0.5
+color_ramp = SubResource("GradientTexture1D_fade")
+
 [sub_resource type="Gradient" id="Gradient_speck"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
@@ -67,18 +77,6 @@ particles_anim_loop = false
 material = SubResource("StandardMaterial3D_speck")
 size = Vector2(0.05, 0.05)
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sparkle"]
-emission_shape = 1
-emission_sphere_radius = 0.176
-direction = Vector3(0, 1, 0)
-spread = 20.0
-initial_velocity_min = 0.0
-initial_velocity_max = 0.1
-gravity = Vector3(0, 0.25, 0)
-scale_min = 0.5
-scale_max = 1.0
-color_ramp = SubResource("GradientTexture1D_fade")
-
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_burst"]
 emission_shape = 1
 emission_sphere_radius = 0.05
@@ -93,22 +91,22 @@ scale_min = 0.6
 scale_max = 1.2
 color_ramp = SubResource("GradientTexture1D_fade")
 
-[node name="MachinePart" type="StaticBody3D"]
+[node name="MachinePart" type="StaticBody3D" unique_id=1690417425]
 
-[node name="Shape" type="CollisionShape3D" parent="."]
+[node name="Shape" type="CollisionShape3D" parent="." unique_id=977667309]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.13, 0)
 shape = SubResource("BoxShape3D_part")
 
-[node name="Looks" parent="." instance=ExtResource("1_looks")]
+[node name="Looks" parent="." unique_id=479788277 instance=ExtResource("1_looks")]
 
-[node name="Glow" type="MeshInstance3D" parent="."]
+[node name="Glow" type="MeshInstance3D" parent="." unique_id=1157612825]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
 visible = false
 material_override = SubResource("StandardMaterial3D_glow")
 cast_shadow = 0
 mesh = SubResource("QuadMesh_glow")
 
-[node name="Sparkle" type="GPUParticles3D" parent="."]
+[node name="Sparkle" type="GPUParticles3D" parent="." unique_id=2121101800]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.132, 0)
 emitting = false
 amount = 10
@@ -117,7 +115,7 @@ visibility_aabb = AABB(-1, -1, -1, 2, 2, 2)
 process_material = SubResource("ParticleProcessMaterial_sparkle")
 draw_pass_1 = SubResource("QuadMesh_speck")
 
-[node name="Burst" type="GPUParticles3D" parent="."]
+[node name="Burst" type="GPUParticles3D" parent="." unique_id=2103125611]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 emitting = false
 amount = 18
@@ -128,12 +126,11 @@ visibility_aabb = AABB(-1, -1, -1, 2, 2, 2)
 process_material = SubResource("ParticleProcessMaterial_burst")
 draw_pass_1 = SubResource("QuadMesh_speck")
 
-[node name="Carriable" type="Node" parent="."]
+[node name="Carriable" type="Node" parent="." unique_id=152974102]
 script = ExtResource("2_carriable")
 slot = ExtResource("4_slot")
-handable = true
 
-[node name="MachinePart" type="Node" parent="." node_paths=PackedStringArray("carriable")]
+[node name="MachinePart" type="Node" parent="." unique_id=580453522 node_paths=PackedStringArray("carriable")]
 script = ExtResource("3_part")
 carriable = NodePath("../Carriable")
 tuning = ExtResource("5_tuning")

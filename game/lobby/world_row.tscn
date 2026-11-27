@@ -1,30 +1,30 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cnbbrfncou661"]
 
-[ext_resource type="Script" path="res://game/lobby/world_row.gd" id="1_row"]
+[ext_resource type="Script" uid="uid://bhxe7t547x4hq" path="res://game/lobby/world_row.gd" id="1_row"]
 
-[node name="WorldRow" type="PanelContainer"]
+[node name="WorldRow" type="PanelContainer" unique_id=997069426]
 script = ExtResource("1_row")
 
-[node name="Box" type="VBoxContainer" parent="."]
+[node name="Box" type="VBoxContainer" parent="." unique_id=400923364]
 layout_mode = 2
 
-[node name="Top" type="HBoxContainer" parent="Box"]
+[node name="Top" type="HBoxContainer" parent="Box" unique_id=372647473]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Swatches" type="HBoxContainer" parent="Box/Top"]
+[node name="Swatches" type="HBoxContainer" parent="Box/Top" unique_id=1743330213]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 4
 
-[node name="Tick" type="Label" parent="Box/Top"]
+[node name="Tick" type="Label" parent="Box/Top" unique_id=286468085]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_type_variation = &"InkLabel"
 
-[node name="Title" type="Label" parent="Box/Top"]
+[node name="Title" type="Label" parent="Box/Top" unique_id=1872483847]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -32,17 +32,17 @@ theme_type_variation = &"InkLabel"
 clip_text = true
 text_overrun_behavior = 3
 
-[node name="Choose" type="Button" parent="Box/Top"]
+[node name="Choose" type="Button" parent="Box/Top" unique_id=816130543]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"KeycapButton"
 
-[node name="Delete" type="Button" parent="Box/Top"]
+[node name="Delete" type="Button" parent="Box/Top" unique_id=1364435087]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"ExitButton"
 
-[node name="Details" type="Label" parent="Box"]
+[node name="Details" type="Label" parent="Box" unique_id=1136317936]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"ThinLabel"

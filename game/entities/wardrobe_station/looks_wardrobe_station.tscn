@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dljl2msqh663s"]
 
-[ext_resource type="PackedScene" path="res://assets/wardrobe_station/wardrobe_station.glb" id="1_model"]
-[ext_resource type="Script" path="res://game/outline/outline.gd" id="2_outline"]
+[ext_resource type="PackedScene" uid="uid://baskwhv11n4fc" path="res://assets/wardrobe_station/wardrobe_station.glb" id="1_model"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="2_outline"]
 
 [sub_resource type="Animation" id="Animation_reset"]
 length = 0.001
@@ -91,13 +91,13 @@ _data = {
 &"shut": SubResource("Animation_shut")
 }
 
-[node name="LooksWardrobeStation" instance=ExtResource("1_model")]
+[node name="LooksWardrobeStation" unique_id=798253605 instance=ExtResource("1_model")]
 
-[node name="Outline" type="Node3D" parent="."]
+[node name="Outline" type="Node3D" parent="." index="3" unique_id=2084384956]
 visible = false
 script = ExtResource("2_outline")
 meshes = Array[NodePath]([NodePath("../door_left"), NodePath("../door_right")])
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="4" unique_id=1939649001]
 callback_mode_process = 0
 libraries/ = SubResource("AnimationLibrary_doors")

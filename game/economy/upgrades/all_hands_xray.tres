@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="Upgrade" format=3]
+[gd_resource type="Resource" script_class="Upgrade" format=3 uid="uid://eewlt0ofug7m"]
 
-[ext_resource type="Texture2D" path="res://assets/ui/upgrade_all_hands_xray.svg" id="1_obfhw"]
-[ext_resource type="Resource" path="res://game/economy/upgrades/xray.tres" id="2_c8qow"]
-[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="3_pjdef"]
+[ext_resource type="Texture2D" uid="uid://cnok5codydsv8" path="res://assets/ui/upgrade_all_hands_xray.svg" id="1_obfhw"]
+[ext_resource type="Resource" uid="uid://csfiistkxd65g" path="res://game/economy/upgrades/xray.tres" id="2_c8qow"]
+[ext_resource type="Script" uid="uid://tco600m1ilvq" path="res://game/economy/upgrade.gd" id="3_pjdef"]
 
 [resource]
 script = ExtResource("3_pjdef")

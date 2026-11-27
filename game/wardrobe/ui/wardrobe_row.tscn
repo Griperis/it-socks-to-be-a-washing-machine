@@ -1,42 +1,42 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cg7fb1av7u365"]
 
-[ext_resource type="Script" path="res://game/wardrobe/ui/wardrobe_row.gd" id="1_row"]
+[ext_resource type="Script" uid="uid://bi86kqp11hs11" path="res://game/wardrobe/ui/wardrobe_row.gd" id="1_row"]
 
-[node name="WardrobeRow" type="HBoxContainer"]
+[node name="WardrobeRow" type="HBoxContainer" unique_id=2134722175]
 theme_override_constants/separation = 10
 script = ExtResource("1_row")
 
-[node name="Head" type="VBoxContainer" parent="."]
+[node name="Head" type="VBoxContainer" parent="." unique_id=1766664036]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 0
 
-[node name="Heading" type="Label" parent="Head"]
+[node name="Heading" type="Label" parent="Head" unique_id=1736418461]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"InkLabel"
 
-[node name="Count" type="Label" parent="Head"]
+[node name="Count" type="Label" parent="Head" unique_id=145681425]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"WardrobeCount"
 
-[node name="Prev" type="Button" parent="."]
+[node name="Prev" type="Button" parent="." unique_id=1123509122]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(56, 0)
 layout_mode = 2
 theme_type_variation = &"KeycapButton"
 text = "<"
 
-[node name="NameBox" type="PanelContainer" parent="."]
+[node name="NameBox" type="PanelContainer" parent="." unique_id=352186591]
 custom_minimum_size = Vector2(230, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_type_variation = &"WardrobeNameBox"
 
-[node name="Name" type="Label" parent="NameBox"]
+[node name="Name" type="Label" parent="NameBox" unique_id=1512059162]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"InkLabel"
@@ -44,7 +44,7 @@ text = "None"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Next" type="Button" parent="."]
+[node name="Next" type="Button" parent="." unique_id=2129200047]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(56, 0)
 layout_mode = 2

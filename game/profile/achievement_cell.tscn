@@ -1,14 +1,15 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://ctiy1n3hd5xmq"]
 
-[ext_resource type="Script" path="res://game/profile/achievement_cell.gd" id="1_cell"]
+[ext_resource type="Script" uid="uid://byoutjf6am6ib" path="res://game/profile/achievement_cell.gd" id="1_cell"]
 
-[node name="Cell" type="Control"]
+[node name="Cell" type="Control" unique_id=564235314]
 custom_minimum_size = Vector2(440, 96)
-layout_mode = 2
+layout_mode = 3
+anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("1_cell")
 
-[node name="Row" type="HBoxContainer" parent="."]
+[node name="Row" type="HBoxContainer" parent="." unique_id=1117745764]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,7 +19,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 12
 
-[node name="Icon" type="TextureRect" parent="Row"]
+[node name="Icon" type="TextureRect" parent="Row" unique_id=914789700]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
@@ -27,19 +28,19 @@ mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Text" type="VBoxContainer" parent="Row"]
+[node name="Text" type="VBoxContainer" parent="Row" unique_id=1635470544]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="Title" type="Label" parent="Row/Text"]
+[node name="Title" type="Label" parent="Row/Text" unique_id=1453654358]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"InkLabel"
 theme_override_font_sizes/font_size = 24
 
-[node name="Description" type="Label" parent="Row/Text"]
+[node name="Description" type="Label" parent="Row/Text" unique_id=1517400277]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(340, 0)
 layout_mode = 2
@@ -47,7 +48,7 @@ theme_type_variation = &"InkLabel"
 theme_override_font_sizes/font_size = 16
 autowrap_mode = 3
 
-[node name="Date" type="Label" parent="Row/Text"]
+[node name="Date" type="Label" parent="Row/Text" unique_id=1055480926]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"InkLabel"

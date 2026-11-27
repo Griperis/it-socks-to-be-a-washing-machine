@@ -2,12 +2,6 @@
 
 [ext_resource type="Script" uid="uid://x02utju23ik4" path="res://game/ping/ping_mark.gd" id="1_mark"]
 
-[sub_resource type="TorusMesh" id="TorusMesh_ring"]
-inner_radius = 0.2
-outer_radius = 0.32
-rings = 32
-ring_segments = 6
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rim"]
 render_priority = 10
 transparency = 1
@@ -15,65 +9,67 @@ no_depth_test = true
 shading_mode = 0
 albedo_color = Color(0.231373, 0.164706, 0.133333, 1)
 
+[sub_resource type="TorusMesh" id="TorusMesh_ring"]
+inner_radius = 0.2
+outer_radius = 0.32
+rings = 32
+ring_segments = 6
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_band"]
 render_priority = 11
 transparency = 1
 no_depth_test = true
 shading_mode = 0
 
-[node name="PingMark" type="Node3D"]
+[node name="PingMark" type="Node3D" unique_id=999941197]
 script = ExtResource("1_mark")
 
-[node name="Ring" type="Node3D" parent="."]
+[node name="Ring" type="Node3D" parent="." unique_id=1027801461]
 
-[node name="Rim" type="MeshInstance3D" parent="Ring"]
+[node name="Rim" type="MeshInstance3D" parent="Ring" unique_id=1112585908]
 transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 1, 0, 0, 0)
-cast_shadow = 0
-mesh = SubResource("TorusMesh_ring")
 material_override = SubResource("StandardMaterial3D_rim")
-
-[node name="Band" type="MeshInstance3D" parent="Ring"]
-transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 1, 0, 0, 0)
 cast_shadow = 0
 mesh = SubResource("TorusMesh_ring")
+
+[node name="Band" type="MeshInstance3D" parent="Ring" unique_id=1315433264]
+transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 1, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_band")
-
-[node name="Sticker" type="Sprite3D" parent="."]
 cast_shadow = 0
+mesh = SubResource("TorusMesh_ring")
+
+[node name="Sticker" type="Sprite3D" parent="." unique_id=1804515454]
+cast_shadow = 0
+pixel_size = 0.001
+billboard = 1
+no_depth_test = true
+fixed_size = true
+texture_filter = 5
 render_priority = 10
-pixel_size = 0.001
-fixed_size = true
-billboard = 1
-shaded = false
-no_depth_test = true
-texture_filter = 5
 
-[node name="Emoji" type="Sprite3D" parent="Sticker"]
+[node name="Emoji" type="Sprite3D" parent="Sticker" unique_id=633400459]
 cast_shadow = 0
+pixel_size = 0.001
+billboard = 1
+no_depth_test = true
+fixed_size = true
+texture_filter = 5
 render_priority = 11
-pixel_size = 0.001
-fixed_size = true
-billboard = 1
-shaded = false
-no_depth_test = true
-texture_filter = 5
 
-[node name="OverHead" type="Sprite3D" parent="."]
+[node name="OverHead" type="Sprite3D" parent="." unique_id=1271819073]
 cast_shadow = 0
+pixel_size = 0.001
+billboard = 1
+no_depth_test = true
+fixed_size = true
+texture_filter = 5
 render_priority = 10
-pixel_size = 0.001
-fixed_size = true
-billboard = 1
-shaded = false
-no_depth_test = true
-texture_filter = 5
 
-[node name="Emoji" type="Sprite3D" parent="OverHead"]
+[node name="Emoji" type="Sprite3D" parent="OverHead" unique_id=914704487]
 cast_shadow = 0
-render_priority = 11
 pixel_size = 0.001
-fixed_size = true
 billboard = 1
-shaded = false
 no_depth_test = true
+fixed_size = true
 texture_filter = 5
+render_priority = 11

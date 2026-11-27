@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="MachinePartTuning" format=3]
+[gd_resource type="Resource" script_class="MachinePartTuning" format=3 uid="uid://cwt6kkcq3rhh7"]
 
-[ext_resource type="Script" path="res://game/entities/machine_part/machine_part_tuning.gd" id="1_tuning"]
+[ext_resource type="Script" uid="uid://co2ypjuge6vdi" path="res://game/entities/machine_part/machine_part_tuning.gd" id="1_tuning"]
 
 [resource]
 script = ExtResource("1_tuning")

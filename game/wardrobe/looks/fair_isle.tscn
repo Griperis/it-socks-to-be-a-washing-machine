@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://3t0uucycnxqm"]
 
 [ext_resource type="PackedScene" uid="uid://bmi5cr7nxbqx7" path="res://assets/wardrobe/fair_isle.glb" id="1_glb"]
 

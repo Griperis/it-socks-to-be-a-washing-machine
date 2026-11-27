@@ -21,16 +21,6 @@
 [ext_resource type="AudioStream" uid="uid://bbrbmyon08han" path="res://assets/audio/step_wood__kenney_footstep00.ogg" id="19_cfsws"]
 [ext_resource type="AudioStream" uid="uid://cx4pf1qrjtf5c" path="res://assets/audio/step_tile__owlish_hard1.ogg" id="20_bd74q"]
 [ext_resource type="AudioStream" uid="uid://cyqixh0hpku02" path="res://assets/audio/land__qubodup_jumpland.ogg" id="21_7fcml"]
-[ext_resource type="AudioStream" path="res://assets/audio/part_pop__rubberduck_plop1_pop.ogg" id="201_partpop"]
-[ext_resource type="AudioStream" path="res://assets/audio/coins__starninjas_coin1.ogg" id="203_coins"]
-[ext_resource type="AudioStream" path="res://assets/audio/buy__kenney_coins.ogg" id="204_buy"]
-[ext_resource type="AudioStream" path="res://assets/audio/match__a.ogg" id="204_match"]
-[ext_resource type="AudioStream" path="res://assets/audio/achievement__synth_a.ogg" id="209_achievement"]
-[ext_resource type="AudioStream" path="res://assets/audio/gift_rattle__synth_a.ogg" id="210_gift_rattle"]
-[ext_resource type="AudioStream" path="res://assets/audio/part_fit__rubberduck_v2_lock_open_fit.ogg" id="202_partfit"]
-[ext_resource type="AudioStream" path="res://assets/audio/socks_pour__pyrano_whoosh_pour.ogg" id="206_pour"]
-[ext_resource type="AudioStream" path="res://assets/audio/wash_calm__iamgiorgio_wash.ogg" id="207_washcalm"]
-[ext_resource type="AudioStream" path="res://assets/audio/machine_break__tomoisace_clanking.ogg" id="208_break"]
 [ext_resource type="Script" uid="uid://dla4npa6bg5ot" path="res://game/audio/sound_catalogue.gd" id="23_7apgx"]
 [ext_resource type="AudioStream" uid="uid://bcpoohpp2d6b5" path="res://assets/audio/knockdown__a.ogg" id="24_knock"]
 [ext_resource type="AudioStream" uid="uid://bc34ctawd4er7" path="res://assets/audio/fridge_open__rubberduck_microwave_open.ogg" id="101_dev"]
@@ -67,13 +57,22 @@
 [ext_resource type="AudioStream" uid="uid://cpfkxmdjedjus" path="res://assets/audio/piano/piano_remeau_108.ogg" id="132_dev"]
 [ext_resource type="AudioStream" uid="uid://brkbljhd7tmub" path="res://assets/audio/ping__d.ogg" id="140_ping"]
 [ext_resource type="AudioStream" uid="uid://bkkgwmxcfqpld" path="res://assets/audio/ui_click__qubodup_click1.ogg" id="200_ui"]
+[ext_resource type="AudioStream" uid="uid://b4b273w7oqqip" path="res://assets/audio/part_pop__rubberduck_plop1_pop.ogg" id="201_partpop"]
 [ext_resource type="AudioStream" uid="uid://cu5i6rjh67ey4" path="res://assets/audio/ui_hover__kenney_rollover2.ogg" id="201_ui"]
-
-[ext_resource type="AudioStream" path="res://assets/audio/washer_buzz__synth_a.ogg" id="301_buzza"]
-[ext_resource type="AudioStream" path="res://assets/audio/washer_buzz__synth_c.ogg" id="302_buzzc"]
-[ext_resource type="AudioStream" path="res://assets/audio/washer_rumble__synth_a.ogg" id="303_rumble"]
-[ext_resource type="AudioStream" path="res://assets/audio/wash_slosh__synth_a.ogg" id="304_slosh"]
-[ext_resource type="AudioStream" path="res://assets/audio/wash_slam__synth_a.ogg" id="305_slam"]
+[ext_resource type="AudioStream" uid="uid://c3hbhmf6l1yd4" path="res://assets/audio/part_fit__rubberduck_v2_lock_open_fit.ogg" id="202_partfit"]
+[ext_resource type="AudioStream" uid="uid://cqblb0pqf5618" path="res://assets/audio/coins__starninjas_coin1.ogg" id="203_coins"]
+[ext_resource type="AudioStream" uid="uid://bhl6td581ufoq" path="res://assets/audio/buy__kenney_coins.ogg" id="204_buy"]
+[ext_resource type="AudioStream" uid="uid://bfiu101ygx5fo" path="res://assets/audio/match__a.ogg" id="204_match"]
+[ext_resource type="AudioStream" uid="uid://3hegw3p4eu2d" path="res://assets/audio/socks_pour__pyrano_whoosh_pour.ogg" id="206_pour"]
+[ext_resource type="AudioStream" uid="uid://dj7un28vh684w" path="res://assets/audio/wash_calm__iamgiorgio_wash.ogg" id="207_washcalm"]
+[ext_resource type="AudioStream" uid="uid://bbi71ro21eyq6" path="res://assets/audio/machine_break__tomoisace_clanking.ogg" id="208_break"]
+[ext_resource type="AudioStream" uid="uid://v24xqyyc2bi6" path="res://assets/audio/achievement__synth_a.ogg" id="209_achievement"]
+[ext_resource type="AudioStream" uid="uid://d1encshuuldtu" path="res://assets/audio/gift_rattle__synth_a.ogg" id="210_gift_rattle"]
+[ext_resource type="AudioStream" uid="uid://bdukt3i22xeln" path="res://assets/audio/washer_buzz__synth_a.ogg" id="301_buzza"]
+[ext_resource type="AudioStream" uid="uid://mlxi7uj6wtlx" path="res://assets/audio/washer_buzz__synth_c.ogg" id="302_buzzc"]
+[ext_resource type="AudioStream" uid="uid://bc35adbphqdt8" path="res://assets/audio/washer_rumble__synth_a.ogg" id="303_rumble"]
+[ext_resource type="AudioStream" uid="uid://0vxeaxanvhs0" path="res://assets/audio/wash_slosh__synth_a.ogg" id="304_slosh"]
+[ext_resource type="AudioStream" uid="uid://bel3fubd0g064" path="res://assets/audio/wash_slam__synth_a.ogg" id="305_slam"]
 
 [sub_resource type="Resource" id="Resource_5vpok"]
 script = ExtResource("1_76itk")
@@ -383,29 +382,6 @@ clips = Array[AudioStream]([ExtResource("202_partfit")])
 spatial = true
 note = "A Machine Part goes into the washing machine (core/79). Old pick cc0/rubberduck_v2_lock_open_fit."
 
-[sub_resource type="Resource" id="Resource_socks_pour"]
-script = ExtResource("1_76itk")
-event = &"socks_pour"
-clips = Array[AudioStream]([ExtResource("206_pour")])
-spatial = true
-note = "PLACEHOLDER (core/93): the Socks pouring out of the washing machine's porthole, a whoosh, and each Laundry bin's pour into it. The old first pick cc0/pyrano_whoosh_pour (none chosen). Pick and level on the Sounds bench."
-
-[sub_resource type="Resource" id="Resource_wash_calm"]
-script = ExtResource("1_76itk")
-event = &"wash_calm"
-clips = Array[AudioStream]([ExtResource("207_washcalm")])
-volume_db = -6.0
-spatial = true
-loop = true
-note = "PLACEHOLDER (core/94): the calm wash loop at the washing machine in the First wash, -6 dB. The old first pick cc0/iamgiorgio_wash (none chosen). Pick and level on the Sounds bench."
-
-[sub_resource type="Resource" id="Resource_machine_break"]
-script = ExtResource("1_76itk")
-event = &"machine_break"
-clips = Array[AudioStream]([ExtResource("208_break")])
-spatial = true
-note = "PLACEHOLDER (core/94): the washing machine breaking at the end of the First wash's calm wash, clanks and a rattle. The old first pick cc0/tomoisace_clanking (none chosen). Pick and level on the Sounds bench."
-
 [sub_resource type="Resource" id="Resource_padlock_pop"]
 script = ExtResource("1_76itk")
 event = &"padlock_pop"
@@ -465,14 +441,6 @@ clips = Array[AudioStream]([ExtResource("204_match")])
 volume_db = -8.0
 note = "PLACEHOLDER (core/95): a rare Pair (or piece) pops on the Final screen. The old game played its match cue, which had no pick (the first synth candidate played, -8 dB)."
 
-[sub_resource type="Resource" id="Resource_match"]
-script = ExtResource("1_76itk")
-event = &"match"
-clips = Array[AudioStream]([ExtResource("204_match")])
-volume_db = -8.0
-spatial = true
-note = "PLACEHOLDER (core/131): the Sole Mates cue, once at a Teammate's Hands when a match starts. The old game's match cue, no pick: its first synthesised candidate (two soft round notes rising), -8 dB."
-
 [sub_resource type="Resource" id="Resource_final_sting"]
 script = ExtResource("1_76itk")
 event = &"final_sting"
@@ -493,6 +461,29 @@ event = &"wash_slam"
 clips = Array[AudioStream]([ExtResource("305_slam")])
 spatial = true
 note = "PLACEHOLDER (core/98): the old wash_slam, no pick, its first synthesised candidate; the washer's door slams as the body goes in and bursts as it comes out, heard at the porthole."
+
+[sub_resource type="Resource" id="Resource_socks_pour"]
+script = ExtResource("1_76itk")
+event = &"socks_pour"
+clips = Array[AudioStream]([ExtResource("206_pour")])
+spatial = true
+note = "PLACEHOLDER (core/93): the Socks pouring out of the washing machine's porthole, a whoosh, and each Laundry bin's pour into it. The old first pick cc0/pyrano_whoosh_pour (none chosen). Pick and level on the Sounds bench."
+
+[sub_resource type="Resource" id="Resource_wash_calm"]
+script = ExtResource("1_76itk")
+event = &"wash_calm"
+clips = Array[AudioStream]([ExtResource("207_washcalm")])
+volume_db = -6.0
+spatial = true
+loop = true
+note = "PLACEHOLDER (core/94): the calm wash loop at the washing machine in the First wash, -6 dB. The old first pick cc0/iamgiorgio_wash (none chosen). Pick and level on the Sounds bench."
+
+[sub_resource type="Resource" id="Resource_machine_break"]
+script = ExtResource("1_76itk")
+event = &"machine_break"
+clips = Array[AudioStream]([ExtResource("208_break")])
+spatial = true
+note = "PLACEHOLDER (core/94): the washing machine breaking at the end of the First wash's calm wash, clanks and a rattle. The old first pick cc0/tomoisace_clanking (none chosen). Pick and level on the Sounds bench."
 
 [sub_resource type="Resource" id="Resource_coins"]
 script = ExtResource("1_76itk")
@@ -539,6 +530,14 @@ event = &"gift_rattle"
 clips = Array[AudioStream]([ExtResource("210_gift_rattle")])
 spatial = true
 note = "PLACEHOLDER (core/138): the old game's first of its synthesised candidates (synth/gift_rattle__a, timed to the 5 Hz wobble quickening by 3 Hz), none picked; the designer picks on the bench. Heard at an opened present by every machine."
+
+[sub_resource type="Resource" id="Resource_match"]
+script = ExtResource("1_76itk")
+event = &"match"
+clips = Array[AudioStream]([ExtResource("204_match")])
+volume_db = -8.0
+spatial = true
+note = "PLACEHOLDER (core/131): the Sole Mates cue, once at a Teammate's Hands when a match starts. The old game's match cue, no pick: its first synthesised candidate (two soft round notes rising), -8 dB."
 
 [resource]
 script = ExtResource("23_7apgx")

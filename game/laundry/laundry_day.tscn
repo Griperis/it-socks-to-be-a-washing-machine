@@ -1,10 +1,10 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://drplhdxvoydgt"]
 
-[ext_resource type="Script" path="res://game/laundry/laundry_day.gd" id="1_day"]
-[ext_resource type="Resource" path="res://game/laundry/laundry_tuning.tres" id="2_tuning"]
+[ext_resource type="Script" uid="uid://cqfqrh2f7mea" path="res://game/laundry/laundry_day.gd" id="1_day"]
+[ext_resource type="Resource" uid="uid://b70hnwir4sw5u" path="res://game/laundry/laundry_tuning.tres" id="2_tuning"]
 
-[node name="LaundryDay" type="Node"]
+[node name="LaundryDay" type="Node" unique_id=1305675340]
 
-[node name="Day" type="Node" parent="."]
+[node name="Day" type="Node" parent="." unique_id=393067151]
 script = ExtResource("1_day")
 tuning = ExtResource("2_tuning")

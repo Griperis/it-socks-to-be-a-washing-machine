@@ -1,10 +1,10 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b0njhnpexrbk3"]
 
-[ext_resource type="PackedScene" path="res://assets/present/present_box.glb" id="1_model"]
-[ext_resource type="Shader" path="res://game/gifts/gift_paper.gdshader" id="2_paper"]
-[ext_resource type="Script" path="res://game/outline/outline.gd" id="3_outline"]
+[ext_resource type="PackedScene" uid="uid://ctk7jupbabkvi" path="res://assets/present/present_box.glb" id="1_model"]
+[ext_resource type="Shader" uid="uid://choyw3ckyv0e6" path="res://game/gifts/gift_paper.gdshader" id="2_paper"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="3_outline"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_paper"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crfsa"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("2_paper")
@@ -15,7 +15,7 @@ shader_parameter/ink_strength = 0.0
 shader_parameter/size = 0.3
 shader_parameter/roughness_value = 0.45
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ribbon"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xuyqa"]
 resource_local_to_scene = true
 albedo_color = Color(0.85, 0.2, 0.25, 1)
 roughness = 0.45
@@ -25,8 +25,6 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_glow"]
 gradient = SubResource("Gradient_glow")
-width = 64
-height = 64
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0)
@@ -48,6 +46,18 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_fade"]
 gradient = SubResource("Gradient_fade")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sparkle"]
+resource_local_to_scene = true
+emission_shape = 1
+emission_sphere_radius = 0.24
+direction = Vector3(0, 1, 0)
+spread = 20.0
+initial_velocity_max = 0.35
+gravity = Vector3(0, 0.25, 0)
+scale_min = 0.6
+color = Color(0.85, 0.2, 0.25, 1)
+color_ramp = SubResource("GradientTexture1D_fade")
 
 [sub_resource type="Gradient" id="Gradient_speck"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -77,24 +87,6 @@ particles_anim_loop = false
 material = SubResource("StandardMaterial3D_speck")
 size = Vector2(0.035, 0.035)
 
-[sub_resource type="QuadMesh" id="QuadMesh_burst"]
-material = SubResource("StandardMaterial3D_speck")
-size = Vector2(0.05, 0.05)
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sparkle"]
-resource_local_to_scene = true
-emission_shape = 1
-emission_sphere_radius = 0.24
-direction = Vector3(0, 1, 0)
-spread = 20.0
-initial_velocity_min = 0.0
-initial_velocity_max = 0.35
-gravity = Vector3(0, 0.25, 0)
-scale_min = 0.6
-scale_max = 1.0
-color = Color(0.85, 0.2, 0.25, 1)
-color_ramp = SubResource("GradientTexture1D_fade")
-
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_burst"]
 resource_local_to_scene = true
 emission_shape = 1
@@ -110,6 +102,10 @@ scale_min = 0.6
 scale_max = 1.2
 color = Color(0.85, 0.2, 0.25, 1)
 color_ramp = SubResource("GradientTexture1D_fade")
+
+[sub_resource type="QuadMesh" id="QuadMesh_burst"]
+material = SubResource("StandardMaterial3D_speck")
+size = Vector2(0.05, 0.05)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pop"]
 resource_local_to_scene = true
@@ -285,7 +281,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_open"]
 resource_name = "open"
-length = 2
+length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -391,26 +387,26 @@ _data = {
 &"open": SubResource("Animation_open")
 }
 
-[node name="LooksPresent" type="Node3D"]
+[node name="LooksPresent" type="Node3D" unique_id=725803785]
 
-[node name="Box" parent="." instance=ExtResource("1_model")]
+[node name="Box" parent="." unique_id=1126719318 instance=ExtResource("1_model")]
 
-[node name="Box" parent="Box" index="0"]
-surface_material_override/0 = SubResource("ShaderMaterial_paper")
-surface_material_override/1 = SubResource("StandardMaterial3D_ribbon")
+[node name="Box" parent="Box" index="0" unique_id=1025610495]
+surface_material_override/0 = SubResource("ShaderMaterial_crfsa")
+surface_material_override/1 = SubResource("StandardMaterial3D_xuyqa")
 
-[node name="Lid" parent="Box/Box" index="0"]
-surface_material_override/0 = SubResource("ShaderMaterial_paper")
-surface_material_override/1 = SubResource("StandardMaterial3D_ribbon")
+[node name="Lid" parent="Box/Box" index="0" unique_id=1076609460]
+surface_material_override/0 = SubResource("ShaderMaterial_crfsa")
+surface_material_override/1 = SubResource("StandardMaterial3D_xuyqa")
 
-[node name="Glow" type="MeshInstance3D" parent="."]
+[node name="Glow" type="MeshInstance3D" parent="." unique_id=714634592]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
 visible = false
 material_override = SubResource("StandardMaterial3D_glow")
 cast_shadow = 0
 mesh = SubResource("QuadMesh_glow")
 
-[node name="Sparkle" type="GPUParticles3D" parent="."]
+[node name="Sparkle" type="GPUParticles3D" parent="." unique_id=1041466033]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, 0)
 emitting = false
 amount = 10
@@ -419,7 +415,7 @@ visibility_aabb = AABB(-1, -1, -1, 2, 2, 2)
 process_material = SubResource("ParticleProcessMaterial_sparkle")
 draw_pass_1 = SubResource("QuadMesh_sparkle")
 
-[node name="Burst" type="GPUParticles3D" parent="."]
+[node name="Burst" type="GPUParticles3D" parent="." unique_id=2091765932]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 emitting = false
 amount = 18
@@ -430,7 +426,7 @@ visibility_aabb = AABB(-1, -1, -1, 2, 2, 2)
 process_material = SubResource("ParticleProcessMaterial_burst")
 draw_pass_1 = SubResource("QuadMesh_burst")
 
-[node name="Pop" type="GPUParticles3D" parent="."]
+[node name="Pop" type="GPUParticles3D" parent="." unique_id=1374632443]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 emitting = false
 amount = 28
@@ -441,7 +437,7 @@ visibility_aabb = AABB(-1.5, -1.5, -1.5, 3, 3, 3)
 process_material = SubResource("ParticleProcessMaterial_pop")
 draw_pass_1 = SubResource("QuadMesh_burst")
 
-[node name="Tag" type="Label3D" parent="."]
+[node name="Tag" type="Label3D" parent="." unique_id=774178013]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.58, 0)
 visible = false
 pixel_size = 0.004
@@ -450,11 +446,11 @@ text = "Player"
 font_size = 40
 outline_size = 10
 
-[node name="Outline" type="Node3D" parent="."]
+[node name="Outline" type="Node3D" parent="." unique_id=49623650]
 script = ExtResource("3_outline")
 meshes = Array[NodePath]([NodePath("../Box/Box"), NodePath("../Box/Box/Lid")])
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_looks")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=550093843]
+libraries/ = SubResource("AnimationLibrary_looks")
+
+[editable path="Box"]

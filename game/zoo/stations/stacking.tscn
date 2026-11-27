@@ -36,13 +36,13 @@ size = Vector3(1.5, 0.2, 1.5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_board"]
 size = Vector3(1.5, 0.2, 1.5)
 
-[node name="Stacking" type="Node3D"]
+[node name="Stacking" type="Node3D" unique_id=2128350997]
 
-[node name="Pad" type="MeshInstance3D" parent="."]
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=1497547557]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, -0.5)
 mesh = SubResource("PlaneMesh_pad")
 
-[node name="Name" type="Label3D" parent="."]
+[node name="Name" type="Label3D" parent="." unique_id=115518612]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 2.1, -2.2)
 pixel_size = 0.004
 billboard = 2
@@ -51,34 +51,34 @@ vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="Ledge" type="StaticBody3D" parent="."]
+[node name="Ledge" type="StaticBody3D" parent="." unique_id=2005154162]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.7, 0)
 
-[node name="Mesh" type="MeshInstance3D" parent="Ledge"]
+[node name="Mesh" type="MeshInstance3D" parent="Ledge" unique_id=976529972]
 mesh = SubResource("BoxMesh_ledge")
 
-[node name="Shape" type="CollisionShape3D" parent="Ledge"]
+[node name="Shape" type="CollisionShape3D" parent="Ledge" unique_id=1602074510]
 shape = SubResource("BoxShape3D_ledge")
 
-[node name="Ramp" type="StaticBody3D" parent="."]
+[node name="Ramp" type="StaticBody3D" parent="." unique_id=814595794]
 transform = Transform3D(0.766, -0.6428, 0, 0.6428, 0.766, 0, 0, 0, 1, -2.784, 0.62, 0)
 
-[node name="Mesh" type="MeshInstance3D" parent="Ramp"]
+[node name="Mesh" type="MeshInstance3D" parent="Ramp" unique_id=377644541]
 mesh = SubResource("BoxMesh_ramp")
 
-[node name="Shape" type="CollisionShape3D" parent="Ramp"]
+[node name="Shape" type="CollisionShape3D" parent="Ramp" unique_id=393268704]
 shape = SubResource("BoxShape3D_ramp")
 
-[node name="LowBoard" type="StaticBody3D" parent="."]
+[node name="LowBoard" type="StaticBody3D" parent="." unique_id=1092718497]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.4, -2.2)
 
-[node name="Mesh" type="MeshInstance3D" parent="LowBoard"]
+[node name="Mesh" type="MeshInstance3D" parent="LowBoard" unique_id=1414487031]
 mesh = SubResource("BoxMesh_board")
 
-[node name="Shape" type="CollisionShape3D" parent="LowBoard"]
+[node name="Shape" type="CollisionShape3D" parent="LowBoard" unique_id=827878497]
 shape = SubResource("BoxShape3D_board")
 
-[node name="Teammates" type="Node3D" parent="." node_paths=PackedStringArray("carrier", "still")]
+[node name="Teammates" type="Node3D" parent="." unique_id=1120476851 node_paths=PackedStringArray("carrier", "still")]
 script = ExtResource("2_stand_in")
 carrier = NodePath("7")
 still = NodePath("8")
@@ -86,7 +86,7 @@ stacking = ExtResource("3_stacking")
 moving = ExtResource("4_moving")
 numbers_at = Vector3(-1.5, 0.01, 1.4)
 
-[node name="7" parent="Teammates" instance=ExtResource("1_avatar")]
+[node name="7" parent="Teammates" unique_id=503224352 instance=ExtResource("1_avatar")]
 
-[node name="8" parent="Teammates" instance=ExtResource("1_avatar")]
+[node name="8" parent="Teammates" unique_id=1632829419 instance=ExtResource("1_avatar")]
 pose_position = Vector3(3, 0, -2.2)

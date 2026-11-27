@@ -1,14 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://btflsknfh176"]
 
-[ext_resource type="Script" path="res://game/zoo/collections/collection_row.gd" id="1_row"]
-[ext_resource type="PackedScene" path="res://game/zoo/zoo_label.tscn" id="2_label"]
-
-[sub_resource type="QuadMesh" id="QuadMesh_swatch"]
-size = Vector2(0.3, 0.3)
+[ext_resource type="Script" uid="uid://crefyax6ry84o" path="res://game/zoo/collections/collection_row.gd" id="1_row"]
+[ext_resource type="PackedScene" uid="uid://cdaqfj4hve4ul" path="res://game/zoo/zoo_label.tscn" id="2_label"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_colour"]
 resource_local_to_scene = true
 shading_mode = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_swatch"]
+size = Vector2(0.3, 0.3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_paper"]
 resource_local_to_scene = true
@@ -22,7 +22,7 @@ shading_mode = 0
 resource_local_to_scene = true
 shading_mode = 0
 
-[node name="CollectionRow" type="Node3D" node_paths=PackedStringArray("icon", "name_label", "colour_swatch", "cabinet_label", "paper_swatch", "ink_swatch", "bow_swatch", "place_label", "held_label")]
+[node name="CollectionRow" type="Node3D" unique_id=1590750087 node_paths=PackedStringArray("icon", "name_label", "colour_swatch", "cabinet_label", "paper_swatch", "ink_swatch", "bow_swatch", "place_label", "held_label")]
 script = ExtResource("1_row")
 icon = NodePath("Icon")
 name_label = NodePath("Name")
@@ -34,9 +34,9 @@ bow_swatch = NodePath("Bow")
 place_label = NodePath("Place")
 held_label = NodePath("Held")
 
-[node name="Icon" type="Sprite3D" parent="."]
+[node name="Icon" type="Sprite3D" parent="." unique_id=394570643]
 
-[node name="Name" parent="." instance=ExtResource("2_label")]
+[node name="Name" parent="." unique_id=1285871412 instance=ExtResource("2_label")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0, 0)
 pixel_size = 0.004
 double_sided = true
@@ -46,12 +46,12 @@ font_size = 48
 outline_size = 8
 horizontal_alignment = 0
 
-[node name="Colour" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0, 0, 0)
+[node name="Colour" type="MeshInstance3D" parent="." unique_id=1541882249]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
 material_override = SubResource("StandardMaterial3D_colour")
 mesh = SubResource("QuadMesh_swatch")
 
-[node name="Cabinet" parent="." instance=ExtResource("2_label")]
+[node name="Cabinet" parent="." unique_id=959646287 instance=ExtResource("2_label")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 0, 0)
 pixel_size = 0.004
 double_sided = true
@@ -61,22 +61,22 @@ font_size = 48
 outline_size = 8
 horizontal_alignment = 0
 
-[node name="Paper" type="MeshInstance3D" parent="."]
+[node name="Paper" type="MeshInstance3D" parent="." unique_id=1594390771]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 0, 0)
 material_override = SubResource("StandardMaterial3D_paper")
 mesh = SubResource("QuadMesh_swatch")
 
-[node name="Ink" type="MeshInstance3D" parent="."]
+[node name="Ink" type="MeshInstance3D" parent="." unique_id=1537607560]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.95, 0, 0)
 material_override = SubResource("StandardMaterial3D_ink")
 mesh = SubResource("QuadMesh_swatch")
 
-[node name="Bow" type="MeshInstance3D" parent="."]
+[node name="Bow" type="MeshInstance3D" parent="." unique_id=2106802268]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.3, 0, 0)
 material_override = SubResource("StandardMaterial3D_bow")
 mesh = SubResource("QuadMesh_swatch")
 
-[node name="Place" parent="." instance=ExtResource("2_label")]
+[node name="Place" parent="." unique_id=192054524 instance=ExtResource("2_label")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.7, 0, 0)
 pixel_size = 0.004
 double_sided = true
@@ -86,7 +86,7 @@ font_size = 48
 outline_size = 8
 horizontal_alignment = 0
 
-[node name="Held" parent="." instance=ExtResource("2_label")]
+[node name="Held" parent="." unique_id=988177735 instance=ExtResource("2_label")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9, 0, 0)
 pixel_size = 0.004
 double_sided = true

@@ -1,5 +1,3 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dm8q5opl8ne8u"]
 
-[node name="HudLabel" type="Label"]
-size_flags_vertical = 4
-mouse_filter = 2
+[node name="HudLabel" type="Label" unique_id=2144881966]

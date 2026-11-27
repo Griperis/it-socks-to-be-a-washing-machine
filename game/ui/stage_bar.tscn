@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b3pwmxkfhc5as"]
 
-[ext_resource type="Script" path="res://game/ui/stage_bar.gd" id="1_bar"]
-[ext_resource type="Resource" path="res://game/ui/stage_bar_tuning.tres" id="2_tuning"]
+[ext_resource type="Script" uid="uid://bnrkm4rke3gds" path="res://game/ui/stage_bar.gd" id="1_bar"]
+[ext_resource type="Resource" uid="uid://d2lyrkuxu5mym" path="res://game/ui/stage_bar_tuning.tres" id="2_tuning"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_track"]
 bg_color = Color(0.05, 0.05, 0.07, 0.9)
@@ -22,9 +22,8 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[node name="StageBar" type="PanelContainer"]
+[node name="StageBar" type="PanelContainer" unique_id=1938519581]
 visible = false
-layout_mode = 3
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -35,38 +34,37 @@ theme_type_variation = &"StagePanel"
 script = ExtResource("1_bar")
 tuning = ExtResource("2_tuning")
 
-[node name="Row" type="HBoxContainer" parent="."]
+[node name="Row" type="HBoxContainer" parent="." unique_id=1248692091]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 14
 
-[node name="Icons" type="Control" parent="Row"]
+[node name="Icons" type="Control" parent="Row" unique_id=575135068]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
 
-[node name="Column" type="VBoxContainer" parent="Row"]
+[node name="Column" type="VBoxContainer" parent="Row" unique_id=775496770]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 4
 
-[node name="Label" type="Label" parent="Row/Column"]
+[node name="Label" type="Label" parent="Row/Column" unique_id=288377038]
 unique_name_in_owner = true
 layout_mode = 2
-mouse_filter = 2
 theme_type_variation = &"PlainLabel"
 theme_override_colors/font_color = Color(0.231373, 0.164706, 0.133333, 1)
 theme_override_font_sizes/font_size = 22
 
-[node name="Track" type="Panel" parent="Row/Column"]
+[node name="Track" type="Panel" parent="Row/Column" unique_id=1182939964]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 16)
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_track")
 
-[node name="Fill" type="Panel" parent="Row/Column/Track"]
+[node name="Fill" type="Panel" parent="Row/Column/Track" unique_id=565764152]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 3.0

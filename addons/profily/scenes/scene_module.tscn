@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://y06t3fjchm1a" path="res://addons/profily/scripts/scene/scene_monitor.gd" id="2_monitor"]
 [ext_resource type="Script" uid="uid://chtbkv3j1tdi" path="res://addons/profily/scripts/scene/scene_graph.gd" id="3_graph"]
 [ext_resource type="Script" uid="uid://5i0namgta6ah" path="res://addons/profily/scripts/scene/scene_text.gd" id="4_text"]
-[ext_resource type="StyleBox" path="res://addons/profily/styles/background_stylebox.tres" id="5_bg"]
+[ext_resource type="StyleBox" uid="uid://cefhjg6wkj5l7" path="res://addons/profily/styles/background_stylebox.tres" id="5_bg"]
 [ext_resource type="FontFile" uid="uid://dfrm2sykl2xby" path="res://addons/profily/fonts/Roboto-Regular.ttf" id="6_roboto"]
 
 [node name="SceneModule" type="Control" unique_id=1193263087]

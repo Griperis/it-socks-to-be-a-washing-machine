@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://drsa245r5sien"]
 
 [ext_resource type="PackedScene" uid="uid://c47s4ol1w03ls" path="res://assets/wardrobe/broccoli_fluff_socks.glb" id="1_glb"]
 

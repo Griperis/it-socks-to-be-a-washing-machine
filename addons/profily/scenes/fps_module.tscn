@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://brg2kaysgol7n" path="res://addons/profily/scripts/fps/fps_monitor.gd" id="2_monitor"]
 [ext_resource type="Script" uid="uid://dhts2m066xii" path="res://addons/profily/scripts/fps/fps_graph.gd" id="3_graph"]
 [ext_resource type="Script" uid="uid://df0gmvtepor8" path="res://addons/profily/scripts/fps/fps_text.gd" id="4_text"]
-[ext_resource type="StyleBox" path="res://addons/profily/styles/background_stylebox.tres" id="5_bg"]
+[ext_resource type="StyleBox" uid="uid://cefhjg6wkj5l7" path="res://addons/profily/styles/background_stylebox.tres" id="5_bg"]
 [ext_resource type="FontFile" uid="uid://dfrm2sykl2xby" path="res://addons/profily/fonts/Roboto-Regular.ttf" id="6_roboto"]
 [ext_resource type="FontFile" uid="uid://dj4t3w5akbyun" path="res://addons/profily/fonts/Roboto-Bold.ttf" id="7_roboto_bold"]
 

@@ -1,15 +1,15 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dk74njhpudle3"]
 
-[ext_resource type="Script" path="res://game/zoo/wardrobe/piece_stand.gd" id="1_stand"]
-[ext_resource type="PackedScene" path="res://game/parts/avatar/looks_avatar.tscn" id="2_looks"]
+[ext_resource type="Script" uid="uid://c617htkru6srq" path="res://game/zoo/wardrobe/piece_stand.gd" id="1_stand"]
+[ext_resource type="PackedScene" uid="uid://c6ggi6fh377si" path="res://game/parts/avatar/looks_avatar.tscn" id="2_looks"]
 
-[node name="PieceStand" type="Node3D"]
+[node name="PieceStand" type="Node3D" unique_id=1253738696]
 script = ExtResource("1_stand")
 
-[node name="Looks" parent="." instance=ExtResource("2_looks")]
+[node name="Looks" parent="." unique_id=1148431232 instance=ExtResource("2_looks")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, 0)
 
-[node name="Label" type="Label3D" parent="."]
+[node name="Label" type="Label3D" parent="." unique_id=600055435]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
 pixel_size = 0.0025
 billboard = 1

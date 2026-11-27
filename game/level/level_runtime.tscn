@@ -20,10 +20,10 @@
 [ext_resource type="Script" uid="uid://bf87f1xinusc0" path="res://game/ping/pings.gd" id="22_pings"]
 [ext_resource type="Resource" uid="uid://e3fid8403c2f" path="res://game/ping/ping_tuning.tres" id="23_ping_tuning"]
 [ext_resource type="Script" uid="uid://tmma7k3a2ybj" path="res://game/ping/ping_marks.gd" id="24_marks"]
-[ext_resource type="Script" path="res://game/cutscene/cutscenes.gd" id="25_cutscenes"]
-[ext_resource type="PackedScene" path="res://game/cutscene/cutscene_player.tscn" id="26_cutscene_player"]
-[ext_resource type="PackedScene" path="res://game/ui/final_screen/final_screen.tscn" id="27_final_screen"]
-[ext_resource type="Script" path="res://game/economy/upgrades.gd" id="28_upgrades"]
+[ext_resource type="Script" uid="uid://ddld4fakdjsjb" path="res://game/cutscene/cutscenes.gd" id="25_cutscenes"]
+[ext_resource type="PackedScene" uid="uid://sars655hww8l" path="res://game/cutscene/cutscene_player.tscn" id="26_cutscene_player"]
+[ext_resource type="PackedScene" uid="uid://bcq7qvbqnx3vt" path="res://game/ui/final_screen/final_screen.tscn" id="27_final_screen"]
+[ext_resource type="Script" uid="uid://25em8fxakcsc" path="res://game/economy/upgrades.gd" id="28_upgrades"]
 
 [node name="LevelRuntime" type="Node3D" unique_id=573781402]
 script = ExtResource("0_runtime")
@@ -42,7 +42,7 @@ spawn_path = NodePath("../Flights")
 
 [node name="Socks" type="Node" parent="." unique_id=970226274]
 
-[node name="Mess" type="Node" parent="Socks" node_paths=PackedStringArray("spots", "lying", "flights") unique_id=161512457]
+[node name="Mess" type="Node" parent="Socks" unique_id=161512457 node_paths=PackedStringArray("spots", "lying", "flights")]
 script = ExtResource("7_mess")
 catalogue = ExtResource("10_designs")
 tuning = ExtResource("11_tuning")
@@ -50,12 +50,12 @@ spots = NodePath("../../Spots")
 lying = NodePath("../../Lying")
 flights = NodePath("../../Flights")
 
-[node name="Hands" type="Node" parent="Socks" node_paths=PackedStringArray("mess") unique_id=567136988]
+[node name="Hands" type="Node" parent="Socks" unique_id=567136988 node_paths=PackedStringArray("mess")]
 script = ExtResource("8_hands")
 mess = NodePath("../Mess")
 tuning = ExtResource("11_tuning")
 
-[node name="Knockdowns" type="Node" parent="Socks" node_paths=PackedStringArray("hands") unique_id=2063851314]
+[node name="Knockdowns" type="Node" parent="Socks" unique_id=2063851314 node_paths=PackedStringArray("hands")]
 script = ExtResource("16_knockdowns")
 tuning = ExtResource("17_knock_tuning")
 hands = NodePath("../Hands")
@@ -63,40 +63,40 @@ hands = NodePath("../Hands")
 [node name="Bank" type="Node" parent="Socks" unique_id=916480979]
 script = ExtResource("9_bank")
 
-[node name="Upgrades" type="Node" parent="Socks" node_paths=PackedStringArray("bank")]
+[node name="Upgrades" type="Node" parent="Socks" unique_id=1674682231 node_paths=PackedStringArray("bank")]
 script = ExtResource("28_upgrades")
 bank = NodePath("../Bank")
 
-[node name="Pings" type="Node" parent="." node_paths=PackedStringArray("mess") unique_id=1460313001]
+[node name="Pings" type="Node" parent="." unique_id=1460313001 node_paths=PackedStringArray("mess")]
 script = ExtResource("22_pings")
 tuning = ExtResource("23_ping_tuning")
 mess = NodePath("../Socks/Mess")
 
-[node name="Marks" type="Node3D" parent="Pings" node_paths=PackedStringArray("pings") unique_id=1460313002]
+[node name="Marks" type="Node3D" parent="Pings" unique_id=1460313002 node_paths=PackedStringArray("pings")]
 script = ExtResource("24_marks")
 pings = NodePath("..")
 
-[node name="Cutscenes" type="Node" parent="." node_paths=PackedStringArray("knockdowns", "player")]
+[node name="Cutscenes" type="Node" parent="." unique_id=979870363 node_paths=PackedStringArray("knockdowns", "player")]
 script = ExtResource("25_cutscenes")
 knockdowns = NodePath("../Socks/Knockdowns")
 player = NodePath("../CutscenePlayer")
 
-[node name="CutscenePlayer" parent="." instance=ExtResource("26_cutscene_player")]
+[node name="CutscenePlayer" parent="." unique_id=178985686 instance=ExtResource("26_cutscene_player")]
 
-[node name="FinalScreen" parent="." instance=ExtResource("27_final_screen")]
+[node name="FinalScreen" parent="." unique_id=1516301012 instance=ExtResource("27_final_screen")]
 
 [node name="Parts" type="Node" parent="." unique_id=427637761]
 script = ExtResource("1_parts")
 
 [node name="Players" type="Node3D" parent="." unique_id=464476505]
 
-[node name="Avatars" type="MultiplayerSpawner" parent="." node_paths=PackedStringArray("local_body") unique_id=1885243291]
+[node name="Avatars" type="MultiplayerSpawner" parent="." unique_id=1885243291 node_paths=PackedStringArray("local_body")]
 spawn_path = NodePath("../Players")
 script = ExtResource("4_avatars")
 avatar_scene = ExtResource("5_avatar")
 local_body = NodePath("../Player")
 
-[node name="Net" type="Node" parent="." node_paths=PackedStringArray("avatars", "autosave") unique_id=432951409]
+[node name="Net" type="Node" parent="." unique_id=432951409 node_paths=PackedStringArray("avatars", "autosave")]
 script = ExtResource("6_net")
 avatars = NodePath("../Avatars")
 autosave = NodePath("../Autosave")
@@ -110,16 +110,16 @@ offset_top = 68.0
 offset_right = 600.0
 offset_bottom = 94.0
 
-[node name="Autosave" type="Node" parent="." node_paths=PackedStringArray("parts") unique_id=1731902455]
+[node name="Autosave" type="Node" parent="." unique_id=1731902455 node_paths=PackedStringArray("parts")]
 script = ExtResource("18_autosave")
 parts = NodePath("../Parts")
 tuning = ExtResource("19_save_tuning")
 
-[node name="EscMenu" parent="." node_paths=PackedStringArray("autosave", "net") unique_id=1093755214 instance=ExtResource("20_esc_menu")]
+[node name="EscMenu" parent="." unique_id=1093755214 node_paths=PackedStringArray("autosave", "net") instance=ExtResource("20_esc_menu")]
 autosave = NodePath("../Autosave")
 net = NodePath("../Net")
 
-[node name="LoadingScreen" parent="." node_paths=PackedStringArray("mess", "parts", "player") unique_id=1739204816 instance=ExtResource("21_loading")]
+[node name="LoadingScreen" parent="." unique_id=1739204816 node_paths=PackedStringArray("mess", "parts", "player") instance=ExtResource("21_loading")]
 mess = NodePath("../Socks/Mess")
 parts = NodePath("../Parts")
 player = NodePath("../Player")

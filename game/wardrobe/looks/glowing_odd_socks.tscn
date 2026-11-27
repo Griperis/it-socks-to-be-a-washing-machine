@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bshen672u5yjq"]
 
 [ext_resource type="PackedScene" uid="uid://cmxgtqa6oyfak" path="res://assets/wardrobe/glowing_odd_socks.glb" id="1_glb"]
 
@@ -81,11 +81,11 @@ _data = {
 
 [node name="glowing_odd_socks" unique_id=906177464 instance=ExtResource("1_glb")]
 
-[node name="sock_l" parent="glowing_odd_socks" parent_id_path=PackedInt32Array(73354709) index="0" unique_id=1135860911]
+[node name="sock_l" parent="glowing_odd_socks" parent_id_path=PackedInt32Array(87523587) index="0" unique_id=31367176]
 surface_material_override/0 = SubResource("StandardMaterial3D_5w1sk")
 surface_material_override/1 = SubResource("StandardMaterial3D_esgju")
 
-[node name="sock_r" parent="glowing_odd_socks" parent_id_path=PackedInt32Array(73354709) index="1" unique_id=732603625]
+[node name="sock_r" parent="glowing_odd_socks" parent_id_path=PackedInt32Array(87523587) index="1" unique_id=906737718]
 surface_material_override/0 = SubResource("StandardMaterial3D_5w1sk")
 surface_material_override/1 = SubResource("StandardMaterial3D_esgju")
 

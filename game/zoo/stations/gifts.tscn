@@ -1,11 +1,11 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bvglp3wknasvc"]
 
-[ext_resource type="PackedScene" path="res://game/parts/spawned_parts.tscn" id="1_spawned"]
-[ext_resource type="PackedScene" path="res://game/zoo/gifts/crate_switch.tscn" id="2_switch"]
-[ext_resource type="Script" path="res://game/gifts/presents.gd" id="3_presents"]
-[ext_resource type="Resource" path="res://game/gifts/present_tuning.tres" id="4_tuning"]
-[ext_resource type="PackedScene" path="res://game/zoo/gifts/gift_switch.tscn" id="5_gift_switch"]
-[ext_resource type="Script" path="res://game/zoo/gifts/gift_shelf.gd" id="6_shelf"]
+[ext_resource type="PackedScene" uid="uid://2jtb72i6bx8x" path="res://game/parts/spawned_parts.tscn" id="1_spawned"]
+[ext_resource type="PackedScene" uid="uid://behvo7cmnnhx3" path="res://game/zoo/gifts/crate_switch.tscn" id="2_switch"]
+[ext_resource type="Script" uid="uid://djhhmgwtxwb7e" path="res://game/gifts/presents.gd" id="3_presents"]
+[ext_resource type="Resource" uid="uid://6xkfr1sw7b77" path="res://game/gifts/present_tuning.tres" id="4_tuning"]
+[ext_resource type="PackedScene" uid="uid://c3y5ivg0cs6pd" path="res://game/zoo/gifts/gift_switch.tscn" id="5_gift_switch"]
+[ext_resource type="Script" uid="uid://cmqokv45p78ss" path="res://game/zoo/gifts/gift_shelf.gd" id="6_shelf"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.55, 0.42, 0.5, 1)
@@ -30,20 +30,20 @@ height = 2.4
 height = 2.4
 radius = 0.6
 
-[node name="Gifts" type="Node3D"]
+[node name="Gifts" type="Node3D" unique_id=1865051182]
 
-[node name="Pad" type="MeshInstance3D" parent="."]
+[node name="Pad" type="MeshInstance3D" parent="." unique_id=2141690096]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 4)
 mesh = SubResource("PlaneMesh_pad")
 
-[node name="Ground" type="StaticBody3D" parent="."]
+[node name="Ground" type="StaticBody3D" parent="." unique_id=867921134]
 metadata/surface = "wood"
 
-[node name="Shape" type="CollisionShape3D" parent="Ground"]
+[node name="Shape" type="CollisionShape3D" parent="Ground" unique_id=52811988]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 4)
 shape = SubResource("BoxShape3D_ground")
 
-[node name="Name" type="Label3D" parent="."]
+[node name="Name" type="Label3D" parent="." unique_id=228835168]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -3.5)
 pixel_size = 0.004
 billboard = 2
@@ -52,57 +52,66 @@ vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
-[node name="OldTree" type="StaticBody3D" parent="."]
+[node name="OldTree" type="StaticBody3D" parent="." unique_id=1576121812]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
 
-[node name="Mesh" type="MeshInstance3D" parent="OldTree"]
+[node name="Mesh" type="MeshInstance3D" parent="OldTree" unique_id=249696036]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 mesh = SubResource("CylinderMesh_tree")
 
-[node name="Shape" type="CollisionShape3D" parent="OldTree"]
+[node name="Shape" type="CollisionShape3D" parent="OldTree" unique_id=1506973567]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
 shape = SubResource("CylinderShape3D_tree")
 
-[node name="PresentSpot" type="Marker3D" parent="." groups=["present_spots"]]
+[node name="PresentSpot" type="Marker3D" parent="." unique_id=1049370752 groups=["present_spots"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -1)
 
-[node name="Spawned" parent="." instance=ExtResource("1_spawned")]
+[node name="Spawned" parent="." unique_id=904391983 instance=ExtResource("1_spawned")]
 
-[node name="Presents" type="Node" parent="." node_paths=PackedStringArray("spawned", "spot")]
+[node name="Presents" type="Node" parent="." unique_id=279381710 node_paths=PackedStringArray("spawned", "spot")]
 script = ExtResource("3_presents")
 spawned = NodePath("../Spawned")
 spot = NodePath("../PresentSpot")
 tuning = ExtResource("4_tuning")
 
-[node name="CrateSwitch" parent="." instance=ExtResource("2_switch")]
+[node name="CrateSwitch" parent="." unique_id=261048415 instance=ExtResource("2_switch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -1)
 
-[node name="CrateSwitch" parent="CrateSwitch" index="0" node_paths=PackedStringArray("spawned", "spot")]
+[node name="CrateSwitch" parent="CrateSwitch" index="0" unique_id=648957167 node_paths=PackedStringArray("spawned", "spot")]
 spawned = NodePath("../../Spawned")
 spot = NodePath("../../PresentSpot")
 
-[node name="Dial" parent="." instance=ExtResource("5_gift_switch")]
+[node name="Dial" parent="." unique_id=382198109 instance=ExtResource("5_gift_switch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1.5)
 
-[node name="GiftSwitch" parent="Dial" index="0"]
+[node name="GiftSwitch" parent="Dial" index="0" unique_id=320750517]
 mode = 0
 
-[node name="Drop" parent="." instance=ExtResource("5_gift_switch")]
+[node name="Drop" parent="." unique_id=2077072257 instance=ExtResource("5_gift_switch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 1.5)
 
-[node name="GiftSwitch" parent="Drop" index="0" node_paths=PackedStringArray("presents", "dial")]
+[node name="GiftSwitch" parent="Drop" index="0" unique_id=320750517 node_paths=PackedStringArray("presents", "dial")]
 presents = NodePath("../../Presents")
 dial = NodePath("../../Dial/GiftSwitch")
 
-[node name="Complete" parent="." instance=ExtResource("5_gift_switch")]
+[node name="Complete" parent="." unique_id=948148488 instance=ExtResource("5_gift_switch")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 1.5)
 
-[node name="GiftSwitch" parent="Complete" index="0" node_paths=PackedStringArray("dial")]
+[node name="GiftSwitch" parent="Complete" index="0" unique_id=320750517 node_paths=PackedStringArray("dial")]
 mode = 2
 dial = NodePath("../../Dial/GiftSwitch")
 
-[node name="Shelf" type="Node3D" parent="."]
+[node name="Shelf" type="Node3D" parent="." unique_id=644248559]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.2, 0, 5)
 script = ExtResource("6_shelf")
 row_pitch = 0.95
 column_pitch = 5.4
+
+[editable path="CrateSwitch"]
+[editable path="CrateSwitch/Looks"]
+[editable path="Dial"]
+[editable path="Dial/Looks"]
+[editable path="Drop"]
+[editable path="Drop/Looks"]
+[editable path="Complete"]
+[editable path="Complete/Looks"]

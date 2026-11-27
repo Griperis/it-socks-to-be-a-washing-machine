@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c8wggy8vcs8nm"]
 
-[ext_resource type="PackedScene" path="res://assets/laundry_bin/laundry_bin.glb" id="1_model"]
+[ext_resource type="PackedScene" uid="uid://cx77l3pakskct" path="res://assets/laundry_bin/laundry_bin.glb" id="1_model"]
 
 [sub_resource type="Animation" id="Animation_tip"]
 resource_name = "tip"
@@ -12,10 +12,10 @@ tracks/0/path = NodePath("Aim/Tip:rotation:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [-0.0, -0.65247, -1.27221, -1.82817, -1.8326, -1.8326, -1.8326, -1.8326, -1.8326, -1.8326, -1.8326, -1.82817, -1.27221, -0.65247, -0.0]
+"values": [0.0, -0.65247, -1.27221, -1.82817, -1.8326, -1.8326, -1.8326, -1.8326, -1.8326, -1.8326, -1.8326, -1.82817, -1.27221, -0.65247, 0.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_looks"]
@@ -23,13 +23,11 @@ _data = {
 &"tip": SubResource("Animation_tip")
 }
 
-[node name="LaundryBinLooks" type="Node3D"]
+[node name="LaundryBinLooks" type="Node3D" unique_id=1352826155]
 
-[node name="Aim" type="Node3D" parent="."]
+[node name="Aim" type="Node3D" parent="." unique_id=2091666021]
 
-[node name="Tip" parent="Aim" instance=ExtResource("1_model")]
+[node name="Tip" parent="Aim" unique_id=1826404785 instance=ExtResource("1_model")]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_looks")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=702868690]
+libraries/ = SubResource("AnimationLibrary_looks")

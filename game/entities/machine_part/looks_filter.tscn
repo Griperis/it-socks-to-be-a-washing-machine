@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://2g4soblytps8"]
 
-[ext_resource type="PackedScene" path="res://assets/parts/filter.glb" id="1_model"]
-[ext_resource type="Script" path="res://game/outline/outline.gd" id="2_outline"]
+[ext_resource type="PackedScene" uid="uid://w7tmqrsf35s5" path="res://assets/parts/filter.glb" id="1_model"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="2_outline"]
 
 [sub_resource type="Animation" id="Animation_reset"]
 length = 0.001
@@ -64,16 +64,14 @@ _data = {
 &"lying": SubResource("Animation_lying")
 }
 
-[node name="LooksFilter" type="Node3D"]
+[node name="LooksFilter" type="Node3D" unique_id=1466187735]
 
-[node name="Part" type="Node3D" parent="."]
+[node name="Part" type="Node3D" parent="." unique_id=369914638]
 
-[node name="Model" parent="Part" instance=ExtResource("1_model")]
+[node name="Model" parent="Part" unique_id=1011936264 instance=ExtResource("1_model")]
 
-[node name="Outline" type="Node3D" parent="Part"]
+[node name="Outline" type="Node3D" parent="Part" unique_id=1661346599]
 script = ExtResource("2_outline")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_looks")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=2008349766]
+libraries/ = SubResource("AnimationLibrary_looks")

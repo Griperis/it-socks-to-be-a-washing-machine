@@ -5,9 +5,9 @@
 [ext_resource type="Script" uid="uid://bhnyafx64xtj7" path="res://game/hands/hands.gd" id="3_hands"]
 [ext_resource type="Script" uid="uid://boe1uyknftlk4" path="res://game/mess/sock_spot.gd" id="4_spot"]
 [ext_resource type="Resource" uid="uid://b11yo6efhfycb" path="res://game/sock/designs.tres" id="5_designs"]
-[ext_resource type="Resource" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
+[ext_resource type="Resource" uid="uid://cfr70wnwduvgy" path="res://game/hands/hands_tuning.tres" id="6_tuning"]
 [ext_resource type="Script" uid="uid://bij0j4p250y1i" path="res://game/zoo/handling/lose_button.gd" id="7_lose"]
-[ext_resource type="PackedScene" path="res://game/zoo/handling/crate.tscn" id="8_crate"]
+[ext_resource type="PackedScene" uid="uid://deqbivof53cvo" path="res://game/zoo/handling/crate.tscn" id="8_crate"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pad"]
 albedo_color = Color(0.3, 0.5, 0.42, 1)
@@ -310,7 +310,7 @@ text = "Sink a Sock"
 [node name="ReturnSpot" type="Marker3D" parent="." unique_id=1523368637]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 1.5)
 
-[node name="Crate" parent="." instance=ExtResource("8_crate")]
+[node name="Crate" parent="." unique_id=2094143929 instance=ExtResource("8_crate")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1, 0, 1.6)
 
 [node name="Lying" type="Node3D" parent="." unique_id=2068667678]

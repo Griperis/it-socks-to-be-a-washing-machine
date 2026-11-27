@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="RumbleCue" format=3]
+[gd_resource type="Resource" script_class="RumbleCue" format=3 uid="uid://c2wy0cwfv3uvg"]
 
 [ext_resource type="Script" uid="uid://cyvtgu8gwp4kp" path="res://game/audio/rumble_cue.gd" id="1_cue"]
 

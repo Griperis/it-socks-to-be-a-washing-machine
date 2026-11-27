@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="MachinePartKind" format=3]
+[gd_resource type="Resource" script_class="MachinePartKind" format=3 uid="uid://ba3jvy2k36fgk"]
 
-[ext_resource type="Script" path="res://game/entities/machine_part/machine_part_kind.gd" id="1_kind"]
-[ext_resource type="PackedScene" path="res://game/entities/machine_part/looks_drum_belt.tscn" id="2_looks"]
+[ext_resource type="Script" uid="uid://c7ovpkihyxx5u" path="res://game/entities/machine_part/machine_part_kind.gd" id="1_kind"]
+[ext_resource type="PackedScene" uid="uid://dm1plp72p8ff7" path="res://game/entities/machine_part/looks_drum_belt.tscn" id="2_looks"]
 
 [resource]
 script = ExtResource("1_kind")

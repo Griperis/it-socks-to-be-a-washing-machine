@@ -9,7 +9,7 @@ extends Resource
 @export var author := ""
 @export var source := ""
 @export var licence := ""
-@export var covers: PackedStringArray = []
+@export var covers: PackedStringArray
 
 
 ## Whether this entry accounts for the asset at `path` (relative to the project: "assets/ui/sock.svg").

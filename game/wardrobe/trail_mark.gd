@@ -1,6 +1,8 @@
 ## One mark of a Trail (core/128, Q2680): the root of every `trails/<id>.tscn`. The mark's look is the
 ## editor nodes under it (one-shot GPUParticles3D with no shadow, an AnimationPlayer's autoplay `mark`
-## clip where it has staged motion); this script moves nothing: it frees the mark after `life`. The
+## clip where it has staged motion); this script moves nothing: it starts the particles as the mark is laid
+## and frees it after `life`. The particles are saved not emitting, as the editor saves a one-shot emitter
+## it has played to its end (maintenance/12), so the mark starts them in `_ready`. The
 ## Dresser keeps at most `max_marks` of one creature's marks alive, the oldest freed first.
 class_name TrailMark
 extends Node3D
@@ -34,6 +36,8 @@ func _ready() -> void:
 			if n != keep:
 				remove_child(n)
 				n.queue_free()
+	for p: Node in find_children("*", "GPUParticles3D", true, false):
+		(p as GPUParticles3D).emitting = true
 	if age > 0.0:
 		for a: Node in find_children("*", "AnimationPlayer", true, false):
 			var player := a as AnimationPlayer

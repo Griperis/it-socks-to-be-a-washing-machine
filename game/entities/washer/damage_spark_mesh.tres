@@ -1,12 +1,9 @@
-[gd_resource type="BoxMesh" format=3]
+[gd_resource type="BoxMesh" format=3 uid="uid://cnww27mklvfy1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spark"]
 shading_mode = 0
 vertex_color_use_as_albedo = true
 albedo_color = Color(0.75, 0.9, 1, 1)
-emission_enabled = true
-emission = Color(0.75, 0.9, 1, 1)
-emission_energy_multiplier = 6.0
 
 [resource]
 material = SubResource("StandardMaterial3D_spark")

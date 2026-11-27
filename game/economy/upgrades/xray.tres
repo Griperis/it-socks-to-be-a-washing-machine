@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="Upgrade" format=3]
+[gd_resource type="Resource" script_class="Upgrade" format=3 uid="uid://csfiistkxd65g"]
 
-[ext_resource type="Texture2D" path="res://assets/ui/upgrade_xray.svg" id="1_dcusl"]
-[ext_resource type="Script" path="res://game/economy/upgrade.gd" id="2_emkno"]
+[ext_resource type="Texture2D" uid="uid://de6lbiy63s2s7" path="res://assets/ui/upgrade_xray.svg" id="1_dcusl"]
+[ext_resource type="Script" uid="uid://tco600m1ilvq" path="res://game/economy/upgrade.gd" id="2_emkno"]
 
 [resource]
 script = ExtResource("2_emkno")

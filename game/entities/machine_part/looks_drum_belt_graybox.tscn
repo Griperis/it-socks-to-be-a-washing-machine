@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://v2cu4ukrvahm"]
 
-[ext_resource type="Script" path="res://game/outline/outline.gd" id="2_outline"]
+[ext_resource type="Script" uid="uid://c1wqwf2de7qwk" path="res://game/outline/outline.gd" id="2_outline"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gray"]
 albedo_color = Color(0.25, 0.25, 0.28, 1)
@@ -70,18 +70,16 @@ _data = {
 &"lying": SubResource("Animation_lying")
 }
 
-[node name="LooksGrayboxDrumBelt" type="Node3D"]
+[node name="LooksGrayboxDrumBelt" type="Node3D" unique_id=423144738]
 
-[node name="Part" type="Node3D" parent="."]
+[node name="Part" type="Node3D" parent="." unique_id=1777512278]
 
-[node name="Model" type="MeshInstance3D" parent="Part"]
+[node name="Model" type="MeshInstance3D" parent="Part" unique_id=538143287]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.025, 0)
 mesh = SubResource("BoxMesh_gray")
 
-[node name="Outline" type="Node3D" parent="Part"]
+[node name="Outline" type="Node3D" parent="Part" unique_id=555467712]
 script = ExtResource("2_outline")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_looks")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=537546231]
+libraries/ = SubResource("AnimationLibrary_looks")
