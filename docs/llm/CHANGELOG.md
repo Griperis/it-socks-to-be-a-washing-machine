@@ -49,3 +49,6 @@ One line per merged ticket, oldest first, written by kit/tools/integrate.sh. Bef
 - 2026-11-27 [[25-backpack-vacuum-model]] The Backpack vacuum's model: 0b80857a (assets/25-backpack-vacuum-model)
 - 2026-11-27 [[27-tv-model]] The TV's model: 54fc6253 (assets/27-tv-model)
 - 2026-11-27 [[160-day-cycle]] The day: the clock, the sun and moon, the sky: 72d7ea83 (core/160-day-cycle)
+- 2026-11-27 [[155-elevator-car-calls-hatches]] The Elevator: the car, calls, hatches, locks and out of order: 46cac5df (core/155-elevator-car-calls-hatches)
+- 2026-11-27 [[163-radio-carried-and-thrown]] The Radio carried and thrown; the thrown-knock rule: 03cd401b (core/163-radio-carried-and-thrown)
+- 2026-11-27 [[182-xrays-owning-and-clock]] The X-rays: owning, the keys, the clock, the Upgrades: 3f75ddb6 (core/182-xrays-owning-and-clock)

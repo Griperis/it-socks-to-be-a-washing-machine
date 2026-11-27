@@ -6,7 +6,7 @@ area: core
 feature: hands
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-27
 blocked_by: ["[[154-batch-c-groundwork]]", "[[130-personal-upgrades]]", "[[139-encyclopedia-book]]"]
 notes: ["batch C (Q2614); order: docs/migration/milestones.md Batch C, wave 2", "suggested model: opus"]
 terms: [Radio, Carrying the Radio, Throw, Hand-off, Teammate, Hands]
