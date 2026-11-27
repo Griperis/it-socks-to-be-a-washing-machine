@@ -1,3 +1,25 @@
 [gd_scene format=3 uid="uid://b37yvsq2622e3"]
 
+[ext_resource type="Script" uid="uid://mmamt6uwtv3o" path="res://game/day/day.gd" id="1_day"]
+[ext_resource type="Resource" uid="uid://dvansrfmsj8c7" path="res://game/day/day_tuning.tres" id="2_tuning"]
+[ext_resource type="Script" uid="uid://jk61irxn0ugh" path="res://game/day/day_light.gd" id="3_light"]
+
 [node name="Day" type="Node3D" unique_id=1219047200]
+
+[node name="Day" type="Node" parent="." unique_id=1119220638]
+script = ExtResource("1_day")
+tuning = ExtResource("2_tuning")
+
+[node name="DayLight" type="Node" parent="." unique_id=1883512103 node_paths=PackedStringArray("day", "basement_probe")]
+script = ExtResource("3_light")
+day = NodePath("../Day")
+basement_probe = NodePath("../BasementLight")
+
+[node name="BasementLight" type="ReflectionProbe" parent="." unique_id=1112552694]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.25, -1.8, 4.25)
+blend_distance = 0.05
+size = Vector3(11.5, 3.4, 9.5)
+interior = true
+ambient_mode = 2
+ambient_color = Color(1, 0.83137256, 0.627451, 1)
+ambient_color_energy = 0.0

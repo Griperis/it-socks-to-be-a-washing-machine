@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DayKey" format=3 uid="uid://bavfbf0c3us6x"]
+
+[ext_resource type="Script" uid="uid://bne4fyogpv0lt" path="res://game/day/day_key.gd" id="1_key"]
+
+[resource]
+script = ExtResource("1_key")
+hour = 7.5
+light_colour = Color(1, 0.72, 0.48, 1)
+light_energy = 2.0
+sky_energy = 0.7
+ambient = 0.65

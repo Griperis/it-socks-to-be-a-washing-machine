@@ -2,6 +2,8 @@
 
 [ext_resource type="Shader" uid="uid://6quf0gcvup7v" path="res://game/look/day_sky.gdshader" id="1_shader"]
 [ext_resource type="Texture2D" uid="uid://dantickggu07x" path="res://assets/sky/suburban_garden_2k.hdr" id="2_day"]
+[ext_resource type="Texture2D" uid="uid://ddrbq25qfudmg" path="res://assets/sky/stuttgart_suburbs_2k.hdr" id="3_dusk"]
+[ext_resource type="Texture2D" uid="uid://cf8mkx12xsoty" path="res://assets/sky/street_lamp_2k.hdr" id="4_night"]
 
 [sub_resource type="Gradient" id="Gradient_noon"]
 offsets = PackedFloat32Array(0, 0.5, 1)
@@ -14,13 +16,22 @@ width = 64
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sky"]
 shader = ExtResource("1_shader")
 shader_parameter/day_panorama = ExtResource("2_day")
+shader_parameter/dusk_panorama = ExtResource("3_dusk")
+shader_parameter/night_panorama = ExtResource("4_night")
 shader_parameter/normalise = 8.0
+shader_parameter/dusk_normalise = null
+shader_parameter/night_normalise = null
 shader_parameter/turn = 0.67
+shader_parameter/dusk_turn = null
+shader_parameter/night_turn = null
+shader_parameter/phase = null
 shader_parameter/energy = 0.9
 shader_parameter/clip = 8.0
 shader_parameter/light_saturation = 0.3
 shader_parameter/light_tint = Color(1, 0.95, 0.88, 1)
 shader_parameter/sky_floor = 36.0
+shader_parameter/dusk_sky_floor = null
+shader_parameter/night_sky_floor = null
 shader_parameter/horizon_haze = 0.35
 
 [sub_resource type="Sky" id="Sky_noon"]

@@ -1,5 +1,22 @@
 [gd_scene format=3 uid="uid://b37yjw7y4yama"]
 
+[ext_resource type="PackedScene" uid="uid://daeur0fsvrtb4" path="res://game/zoo/day/day_key_button.tscn" id="p_button"]
+[ext_resource type="PackedScene" uid="uid://ci8kqq05p50h0" path="res://game/house/kit/pieces/corner_exterior.tscn" id="p_c"]
+[ext_resource type="PackedScene" uid="uid://bp1xcpd321mvx" path="res://game/house/kit/pieces/ceiling_2m.tscn" id="p_ce"]
+[ext_resource type="PackedScene" uid="uid://3woe3fuw6ggn" path="res://game/house/kit/pieces/door_exterior_15m.tscn" id="p_d"]
+[ext_resource type="PackedScene" uid="uid://6vld1hsionme" path="res://game/house/kit/pieces/floor_2m.tscn" id="p_f"]
+[ext_resource type="PackedScene" uid="uid://oul2y4ja61sm" path="res://game/house/kit/pieces/wall_exterior_1m.tscn" id="p_w1"]
+[ext_resource type="PackedScene" uid="uid://w66hojg041ls" path="res://game/house/kit/pieces/wall_exterior_2m.tscn" id="p_w2"]
+[ext_resource type="PackedScene" uid="uid://bcrn42ucil2g" path="res://game/house/kit/pieces/wall_exterior_05m.tscn" id="p_w05"]
+[ext_resource type="PackedScene" uid="uid://cx8ugc45wjq1x" path="res://game/house/kit/pieces/window_150_090_210_2m.tscn" id="p_win"]
+[ext_resource type="Environment" uid="uid://ducjspjkhsl37" path="res://game/look/noon_environment.tres" id="r_env"]
+[ext_resource type="Resource" uid="uid://dvansrfmsj8c7" path="res://game/day/day_tuning.tres" id="r_tuning"]
+[ext_resource type="Script" uid="uid://mmamt6uwtv3o" path="res://game/day/day.gd" id="s_day"]
+[ext_resource type="Script" uid="uid://jk61irxn0ugh" path="res://game/day/day_light.gd" id="s_light"]
+[ext_resource type="Script" uid="uid://ryhl4cndswip" path="res://game/house/house_lights.gd" id="s_lights"]
+[ext_resource type="Script" uid="uid://dyag4lhyx6va8" path="res://game/look/picture.gd" id="s_picture"]
+[ext_resource type="Script" uid="uid://bt5ihx38ed2p7" path="res://game/zoo/day/day_station.gd" id="s_station"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iy0br"]
 albedo_color = Color(0.42, 0.44, 0.48, 1)
 
@@ -10,7 +27,30 @@ size = Vector2(12, 12)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ls5h7"]
 size = Vector3(12, 0.2, 12)
 
-[node name="Day" type="Node3D" unique_id=1805381353]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_knob"]
+albedo_color = Color(0.95, 0.85, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_knob"]
+material = SubResource("StandardMaterial3D_knob")
+size = Vector3(0.08, 0.3, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tgpv8"]
+resource_local_to_scene = true
+albedo_color = Color(0.3, 0.75, 0.45, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kkw7u"]
+resource_local_to_scene = true
+albedo_color = Color(0.8, 0.35, 0.3, 1)
+
+[node name="Day" type="Node3D" unique_id=1805381353 node_paths=PackedStringArray("day", "day_light", "picture", "lights", "sun_holder", "board", "knob")]
+script = ExtResource("s_station")
+day = NodePath("Day")
+day_light = NodePath("DayLight")
+picture = NodePath("Picture")
+lights = NodePath("Lights")
+sun_holder = NodePath("SunHolder")
+board = NodePath("Board")
+knob = NodePath("Board/Knob")
 
 [node name="Pad" type="MeshInstance3D" parent="." unique_id=1989241666]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
@@ -26,10 +66,157 @@ shape = SubResource("BoxShape3D_ls5h7")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2, 6.5)
 pixel_size = 0.004
 billboard = 2
-text = "Day: empty until core/160 builds it (batch C); the zoo's noon until then"
+text = "Day (core/160): the room runs its own day; a key button sets its hour, the slider's notches every hour, the speed switch x1 or x60, the lock switch locks the level of the second lamp. The rest of the zoo stays at noon."
 vertical_alignment = 2
 autowrap_mode = 3
 width = 700.0
 
 [node name="Spawn" type="Marker3D" parent="." unique_id=2012431325]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+[node name="Environment" type="WorldEnvironment" parent="." unique_id=580404172]
+environment = ExtResource("r_env")
+
+[node name="SunHolder" type="Node3D" parent="." unique_id=1565792728]
+visible = false
+
+[node name="Sun" type="DirectionalLight3D" parent="SunHolder" unique_id=1200473201]
+transform = Transform3D(0.900969, -0.198987, 0.385564, 0, 0.888633, 0.458618, -0.433884, -0.413201, 0.800631, 0, 6, 0)
+light_color = Color(1, 0.93, 0.82, 1)
+light_energy = 2.4
+shadow_enabled = true
+shadow_blur = 1.5
+directional_shadow_max_distance = 18.0
+sky_mode = 1
+
+[node name="Picture" type="Node" parent="." unique_id=1477403683 node_paths=PackedStringArray("world_environment", "sun")]
+script = ExtResource("s_picture")
+world_environment = NodePath("../Environment")
+sun = NodePath("../SunHolder/Sun")
+
+[node name="Day" type="Node" parent="." unique_id=863149637]
+script = ExtResource("s_day")
+tuning = ExtResource("r_tuning")
+
+[node name="DayLight" type="Node" parent="." unique_id=1058637033 node_paths=PackedStringArray("day", "picture", "lights")]
+script = ExtResource("s_light")
+day = NodePath("../Day")
+picture = NodePath("../Picture")
+lights = NodePath("../Lights")
+
+[node name="Lights" type="Node3D" parent="." unique_id=12034508]
+script = ExtResource("s_lights")
+floors = PackedFloat32Array(0, 3)
+day_level = -1
+
+[node name="Lamp" type="OmniLight3D" parent="Lights" unique_id=511906103]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, -4)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 4.0
+metadata/lit_levels = PackedInt32Array(0)
+
+[node name="LockedLamp" type="OmniLight3D" parent="Lights" unique_id=1594305889]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2.6, -2)
+light_color = Color(1, 0.88, 0.7, 1)
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+omni_range = 4.0
+metadata/lit_levels = PackedInt32Array(1)
+
+[node name="Room" type="Node3D" parent="." unique_id=1883613668]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.02, -5)
+
+[node name="CornerNW" parent="Room" unique_id=470471644 instance=ExtResource("p_c")]
+
+[node name="CornerNE" parent="Room" unique_id=964454184 instance=ExtResource("p_c")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4, 0, 0)
+
+[node name="CornerSE" parent="Room" unique_id=25839332 instance=ExtResource("p_c")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 4, 0, 4)
+
+[node name="CornerSW" parent="Room" unique_id=228973808 instance=ExtResource("p_c")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 4)
+
+[node name="NorthWall2m" parent="Room" unique_id=2062457208 instance=ExtResource("p_w2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+
+[node name="NorthWall1m" parent="Room" unique_id=633641 instance=ExtResource("p_w1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0)
+
+[node name="EastWall1m" parent="Room" unique_id=1592313111 instance=ExtResource("p_w1")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4, 0, 0.5)
+
+[node name="EastWindow" parent="Room" unique_id=1447492216 instance=ExtResource("p_win")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 4, 0, 1.5)
+
+[node name="SouthWindow" parent="Room" unique_id=746646860 instance=ExtResource("p_win")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 3.5, 0, 4)
+
+[node name="SouthWall1m" parent="Room" unique_id=1946875616 instance=ExtResource("p_w1")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 1.5, 0, 4)
+
+[node name="WestDoor" parent="Room" unique_id=2021684055 instance=ExtResource("p_d")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 3.5)
+
+[node name="WestWall1m" parent="Room" unique_id=1946391676 instance=ExtResource("p_w1")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 2)
+
+[node name="WestWall05m" parent="Room" unique_id=518516922 instance=ExtResource("p_w05")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 1)
+
+[node name="Floor1" parent="Room" unique_id=398724634 instance=ExtResource("p_f")]
+
+[node name="Ceiling1" parent="Room" unique_id=106938504 instance=ExtResource("p_ce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+
+[node name="Floor2" parent="Room" unique_id=998766891 instance=ExtResource("p_f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="Ceiling2" parent="Room" unique_id=1217617214 instance=ExtResource("p_ce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3, 0)
+
+[node name="Floor3" parent="Room" unique_id=1241727931 instance=ExtResource("p_f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+
+[node name="Ceiling3" parent="Room" unique_id=1737849522 instance=ExtResource("p_ce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 2)
+
+[node name="Floor4" parent="Room" unique_id=1848051195 instance=ExtResource("p_f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+
+[node name="Ceiling4" parent="Room" unique_id=1251412236 instance=ExtResource("p_ce")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3, 2)
+
+[node name="Board" type="Node3D" parent="." unique_id=410016824]
+
+[node name="Knob" type="MeshInstance3D" parent="Board" unique_id=533742710]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0.2)
+mesh = SubResource("BoxMesh_knob")
+
+[node name="Speed" parent="Board" unique_id=1367449232 instance=ExtResource("p_button")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.3, 0, -1)
+
+[node name="Mesh" parent="Board/Speed/Body" parent_id_path=PackedInt32Array(1367449232, 1243710797) index="0" unique_id=527699859]
+material_override = SubResource("StandardMaterial3D_tgpv8")
+
+[node name="Switch" parent="Board/Speed" index="1" unique_id=362558720 node_paths=PackedStringArray("day")]
+day = NodePath("../../../Day")
+does = 1
+
+[node name="Lock" parent="Board" unique_id=1612821722 instance=ExtResource("p_button")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.3, 0, -2)
+
+[node name="Mesh" parent="Board/Lock/Body" parent_id_path=PackedInt32Array(1612821722, 1243710797) index="0" unique_id=527699859]
+material_override = SubResource("StandardMaterial3D_kkw7u")
+
+[node name="Switch" parent="Board/Lock" index="1" unique_id=362558720 node_paths=PackedStringArray("day", "lights")]
+day = NodePath("../../../Day")
+does = 2
+lights = NodePath("../../../Lights")
+
+[editable path="Board/Speed"]
+[editable path="Board/Lock"]

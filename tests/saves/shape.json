@@ -1,4 +1,10 @@
 {
+	"res://game/day/day.gd": {
+		"fields": {
+			"hour": "float"
+		},
+		"version": 1
+	},
 	"res://game/devices/piano_key.gd": {
 		"fields": {
 			"by": "int",
