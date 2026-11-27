@@ -40,3 +40,7 @@ project.godot merge=godot-project
 
 # Agents append rows to the batch review sheet side by side; keep every row on a merge.
 docs/migration/batch-a-review.md merge=union
+
+# The batch review sheets: every branch appends rows to the same tables, so a merge keeps both sides
+# (designer, Q2719).
+docs/migration/batch-*-review.md merge=union
