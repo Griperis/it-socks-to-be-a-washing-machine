@@ -1,6 +1,6 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: assets
 feature: assets
@@ -38,5 +38,6 @@ materials.
 
 ## Answers
 - Batch C's models are ported from the old game by the port rules, each family with its strip and the old colours (Q2705, 2026-11-26).
+- The line-up is right as built (Q2728, 2026-11-27). `radio.tscn` does not exist on this base, so pointing its Looks at `looks_radio.tscn` and dropping the graybox belongs to core/163.
 
 ## Open follow-ups

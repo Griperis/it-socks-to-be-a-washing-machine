@@ -768,6 +768,13 @@
       "glb": "assets/clock/clock.glb",
       "origin_xy": false,
       "note": "assets/23: the old wall clock (1,436 triangles), assets_src/generate/clock/make_clock.py. It hangs on a wall: its origin is the centre of its back, so its bottom is 0.18 m below the origin by design; no collider (the old clock never collided)"
+    },
+    "radio": {
+      "class": "prop",
+      "colliders": 0,
+      "source": "radio/radio",
+      "glb": "assets/radio/radio.glb",
+      "note": "assets/28: the old Radio (1,884 triangles, the old count), nodes Body, Dial, Needle, Speaker, PowerLight; assets_src/generate/radio/make_radio.py; modelled at the old size, its Looks shows it 1.5 times; no collider (the entity's box)"
     }
   }
 }
