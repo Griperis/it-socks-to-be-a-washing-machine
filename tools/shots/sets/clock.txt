@@ -1,0 +1,7 @@
+# assets/23: the wall clock's Looks framed as the old line-up (reference/it-socks docs/art/clock/final_lineup.png):
+# front, three-quarter, the right side, three-quarter from behind, the hands at 10:10; then the dial at 15:45.
+front  --scene=res://tools/wall_clock_still.tscn --size=240x280 --do='5:wall_clock:0' --shots=20
+quarter  --scene=res://tools/wall_clock_still.tscn --size=240x280 --do='5:wall_clock:1' --shots=20
+side  --scene=res://tools/wall_clock_still.tscn --size=240x280 --do='5:wall_clock:2' --shots=20
+back  --scene=res://tools/wall_clock_still.tscn --size=240x280 --do='5:wall_clock:3' --shots=20
+dial  --scene=res://tools/wall_clock_still.tscn --size=240x280 --do='5:wall_clock:4' --shots=20
