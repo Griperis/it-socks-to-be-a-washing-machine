@@ -1,0 +1,11 @@
+# assets/25: the Backpack vacuum's Looks framed as the old stills (reference/it-socks
+# assets/vacuum_devices/backpack_vacuum_lineup.png, make_backpack_vacuum.py still()): front, three-quarter, the right
+# side, three-quarter from behind, lying; the dial empty and at 0.6; the nozzle lifted with the needle full; worn.
+front  --scene=res://tools/backpack_vacuum_still.tscn --size=360x420 --do='5:backpack_vacuum:0' --shots=20
+quarter  --scene=res://tools/backpack_vacuum_still.tscn --size=360x420 --do='5:backpack_vacuum:1' --shots=20
+side  --scene=res://tools/backpack_vacuum_still.tscn --size=360x420 --do='5:backpack_vacuum:2' --shots=20
+back  --scene=res://tools/backpack_vacuum_still.tscn --size=360x420 --do='5:backpack_vacuum:3' --shots=20
+dial  --scene=res://tools/backpack_vacuum_still.tscn --size=360x420 --do='5:backpack_vacuum:4' --shots=20
+dial_60  --scene=res://tools/backpack_vacuum_still.tscn --size=360x420 --do='5:backpack_vacuum:5' --shots=20
+lifted  --scene=res://tools/backpack_vacuum_still.tscn --size=360x420 --do='5:backpack_vacuum:6' --shots=20
+worn  --scene=res://tools/backpack_vacuum_still.tscn --size=360x420 --do='5:backpack_vacuum:7' --shots=20

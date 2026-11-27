@@ -1,12 +1,12 @@
 ---
 type: ticket
-status: ready-for-agent
+status: done
 kind: build
 area: assets
 feature: assets
 priority: now
 created: 2026-11-26
-done:
+done: 2026-11-27
 blocked_by: []
 notes: ["batch C (Q2614); order: docs/migration/milestones.md Batch C, wave 4", "suggested model: opus"]
 terms: [Backpack vacuum]
@@ -39,5 +39,6 @@ shared materials; the clips keyed in the Looks.
 
 ## Answers
 - Batch C's models are ported from the old game by the port rules, each family with its strip and the old colours (Q2705, 2026-11-26).
+- The line-up is approved, the settle clip included; `backpack_vacuum.tscn` does not exist yet, so the swap into it (its Looks, the graybox gone) is core/172's, which builds the entity on this ticket's `looks_contract.json` and draws the held nozzle (Q2728, 2026-11-27).
 
 ## Open follow-ups
